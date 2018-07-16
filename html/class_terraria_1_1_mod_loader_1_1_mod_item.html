@@ -221,6 +221,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acfa5895f0e52f0df7c833558b0f23b86"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86">GetAlpha</a> (Color lightColor)</td></tr>
 <tr class="memdesc:acfa5895f0e52f0df7c833558b0f23b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.  <a href="#acfa5895f0e52f0df7c833558b0f23b86">More...</a><br /></td></tr>
 <tr class="separator:acfa5895f0e52f0df7c833558b0f23b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd11b72839ceacbcbe16b74b8b489f98"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#afd11b72839ceacbcbe16b74b8b489f98">GetHealLife</a> (Player player, bool quickHeal, ref int healValue)</td></tr>
+<tr class="memdesc:afd11b72839ceacbcbe16b74b8b489f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.  <a href="#afd11b72839ceacbcbe16b74b8b489f98">More...</a><br /></td></tr>
+<tr class="separator:afd11b72839ceacbcbe16b74b8b489f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f615e41c2784795a6e9d3b7ec9efaa3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9f615e41c2784795a6e9d3b7ec9efaa3">GetHealMana</a> (Player player, bool quickHeal, ref int healValue)</td></tr>
+<tr class="memdesc:a9f615e41c2784795a6e9d3b7ec9efaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.  <a href="#a9f615e41c2784795a6e9d3b7ec9efaa3">More...</a><br /></td></tr>
+<tr class="separator:a9f615e41c2784795a6e9d3b7ec9efaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47d510bf84c19afbd9e9e99fd709d5f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ad47d510bf84c19afbd9e9e99fd709d5f">GetWeaponCrit</a> (Player player, ref int crit)</td></tr>
 <tr class="memdesc:ad47d510bf84c19afbd9e9e99fd709d5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify this weapon's crit chance based on player buffs, etc. Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time. This means that if you want your own custom damage class, all vanilla damage classes must be set to false. If you use a custom damage class, the crit value will equal item.crit Vanilla checks classes in this order: melee, ranged, magic, thrown, and summon cannot crit. So if you set both melee class and another class to true, only the melee crit will actually be used.  <a href="#ad47d510bf84c19afbd9e9e99fd709d5f">More...</a><br /></td></tr>
 <tr class="separator:ad47d510bf84c19afbd9e9e99fd709d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -508,8 +514,8 @@ Properties</h2></td></tr>
 
 <p>This is essentially the same as <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01029">1029</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;        {</div><div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01049">1049</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;        {</div><div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac90ec46c3c5018c66bb3be49426fe96f"></a>
@@ -543,8 +549,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00488">488</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        {</div><div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00508">508</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        {</div><div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac7fedbda0e561959eefd688955c6e614"></a>
@@ -588,8 +594,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00981">981</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;        {</div><div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01001">1001</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;        {</div><div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a927b398aaf14af68887155d098291f0f"></a>
@@ -647,8 +653,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00732">732</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        {</div><div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00752">752</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        {</div><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad84fa7ea1bfb09b8a9de2ec37a6cb48c"></a>
@@ -681,8 +687,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00593">593</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div><div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00613">613</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        {</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a32905e0fcd530a2e3e7a2d5221a488ad"></a>
@@ -761,8 +767,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00948">948</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;        {</div><div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00968">968</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;        {</div><div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aba9ed6109a5d3b87eeae1da58970422b"></a>
@@ -920,8 +926,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00928">928</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;        {</div><div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00948">948</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;        {</div><div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afa5946db6c2cd1ea5165c59c90a7a77d"></a>
@@ -966,8 +972,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00368">368</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        {</div><div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00388">388</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        {</div><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afc6b474a8fe5ac64453c3ecffbd538d1"></a>
@@ -1012,8 +1018,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this instance [can hit PVP] the specified player; otherwise, <code>false</code>. </dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00405">405</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        {</div><div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00425">425</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        {</div><div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a18c67843a4f6b151c530c1165991ec87"></a>
@@ -1046,8 +1052,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00810">810</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        {</div><div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00830">830</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        {</div><div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a45537fbcc95bff5e0855b183e178f524"></a>
@@ -1073,8 +1079,8 @@ Properties</h2></td></tr>
 
 <p>Returns whether or not this item does something when it is right-clicked in the inventory. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00612">612</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        {</div><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00632">632</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;        {</div><div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af19bcb03073673df4d45192e7fcbf7da"></a>
@@ -1141,8 +1147,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00956">956</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;        {</div><div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00976">976</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;        {</div><div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a812e93a69c5ba2a04cc6e68e7c756649"></a>
@@ -1263,8 +1269,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00313">313</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        {</div><div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00333">333</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abccc8228ad371afde7231d4763b0824e"></a>
@@ -1298,8 +1304,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00449">449</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        {</div><div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00469">469</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        {</div><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad6b829c635b333febf4a76f07aa32774"></a>
@@ -1364,8 +1370,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00721">721</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        {</div><div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00741">741</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        {</div><div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a11b11d67ff7ae61881d98f48f824262f"></a>
@@ -1392,8 +1398,8 @@ Properties</h2></td></tr>
 <p>Return false to hide the player's body when this body armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00699">699</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        {</div><div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00719">719</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        {</div><div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a83bff919c933c5a873286028b35e1f1a"></a>
@@ -1437,8 +1443,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00682">682</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        {</div><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00702">702</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        {</div><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a28a6bb0e8ec1d7d11e70d12169603ca3"></a>
@@ -1482,8 +1488,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00673">673</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        {</div><div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00693">693</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        {</div><div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3cf8e1d6d927d1c4f5952e43f2883c52"></a>
@@ -1510,8 +1516,8 @@ Properties</h2></td></tr>
 <p>Return false to hide the player's head when this head armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00690">690</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        {</div><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00710">710</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        {</div><div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4c5bf5212c99fa20ba3ad5355b6b3ad1"></a>
@@ -1538,8 +1544,8 @@ Properties</h2></td></tr>
 <p>Return false to hide the player's legs when this leg armor or shoe accessory is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00708">708</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        {</div><div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00728">728</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        {</div><div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac53dd0f4d41cf3b0a6171416b8ef2d9c"></a>
@@ -1583,8 +1589,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00938">938</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;        {</div><div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00958">958</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;        {</div><div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="acfa5895f0e52f0df7c833558b0f23b86"></a>
@@ -1618,8 +1624,112 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00840">840</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        {</div><div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00860">860</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;        {</div><div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="afd11b72839ceacbcbe16b74b8b489f98"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModItem.GetHealLife </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quickHeal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>healValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player using the item.</td></tr>
+    <tr><td class="paramname">quickHeal</td><td>Whether the item is being used through quick heal or not.</td></tr>
+    <tr><td class="paramname">healValue</td><td>The amount of life being healed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00261">261</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        {</div><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9f615e41c2784795a6e9d3b7ec9efaa3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModItem.GetHealMana </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quickHeal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>healValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player using the item.</td></tr>
+    <tr><td class="paramname">quickHeal</td><td>Whether the item is being used through quick heal or not.</td></tr>
+    <tr><td class="paramname">healValue</td><td>The amount of mana being healed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00271">271</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        {</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad47d510bf84c19afbd9e9e99fd709d5f"></a>
@@ -1663,8 +1773,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00291">291</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        {</div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00311">311</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        {</div><div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af2170bc3ec0925114fa9488767bf2ceb"></a>
@@ -1708,8 +1818,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00264">264</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        {</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00284">284</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0a164ee54c4cdc62cf52e5e20c43930c"></a>
@@ -1753,8 +1863,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00277">277</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        {</div><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00297">297</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1f5a9d2747d4a5412e98e88eb5065e5b"></a>
@@ -1798,8 +1908,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00792">792</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;        {</div><div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00812">812</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        {</div><div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1ae4da771af03f10ebecb0b2b43b2b75"></a>
@@ -1833,8 +1943,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00801">801</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        {</div><div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00821">821</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        {</div><div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4742648a8debe52f7be61425dfda41fb"></a>
@@ -1902,8 +2012,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00478">478</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        {</div><div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00498">498</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        {</div><div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9379b0e1afdddb01dfb0c198ebeddee4"></a>
@@ -1930,10 +2040,10 @@ Properties</h2></td></tr>
 <p>Allows you to determine the offset of this item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the vanilla holdout offset; returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00909">909</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00929">929</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01520">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;        {</div><div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01552">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;        {</div><div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -1972,8 +2082,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine the point on this item's sprite that the player holds onto when using this item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the vanilla holdout origin (zero); returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00918">918</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;        {</div><div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00938">938</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;        {</div><div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab88d0592b9355ad0a194ec3f73792aed"></a>
@@ -2058,8 +2168,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00756">756</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        {</div><div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00776">776</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        {</div><div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a96dd26858841172db14aa3798635c2ba"></a>
@@ -2085,10 +2195,10 @@ Properties</h2></td></tr>
 
 <p>Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00971">971</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00991">991</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01623">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;        {</div><div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01655">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;        {</div><div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -2151,8 +2261,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00533">533</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        {</div><div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00553">553</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        {</div><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a146b63f35e144131997ef0e081a9f500"></a>
@@ -2178,8 +2288,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not the Angler can ever randomly request this type of item for his daily quest. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00963">963</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;        {</div><div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00983">983</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;        {</div><div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7411ef16c0702304775364b6c177b690"></a>
@@ -2230,11 +2340,11 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00552">552</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00572">572</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
 <p>References <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a>.</p>
-<div class="fragment"><div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;        {</div><div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> headItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;            <span class="keywordflow">if</span> (head &gt;= 0)</div><div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;            {</div><div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;                headItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.headType[head], <span class="keyword">true</span>);</div><div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;            }</div><div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bodyItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;            <span class="keywordflow">if</span> (body &gt;= 0)</div><div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;            {</div><div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;                bodyItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.bodyType[body], <span class="keyword">true</span>);</div><div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;            }</div><div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> legItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;            <span class="keywordflow">if</span> (legs &gt;= 0)</div><div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;            {</div><div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;                legItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.legType[legs], <span class="keyword">true</span>);</div><div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;            }</div><div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">IsArmorSet</a>(headItem, bodyItem, legItem);</div><div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.SoundType.Item</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a324513758f139965b9c5d13c588c5517"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">Terraria.ModLoader.ModItem.IsArmorSet</a></div><div class="ttdeci">virtual bool IsArmorSet(Item head, Item body, Item legs)</div><div class="ttdoc">Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00533">ModItem.cs:533</a></div></div>
+<div class="fragment"><div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        {</div><div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> headItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;            <span class="keywordflow">if</span> (head &gt;= 0)</div><div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;            {</div><div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;                headItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.headType[head], <span class="keyword">true</span>);</div><div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;            }</div><div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bodyItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;            <span class="keywordflow">if</span> (body &gt;= 0)</div><div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;            {</div><div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;                bodyItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.bodyType[body], <span class="keyword">true</span>);</div><div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;            }</div><div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> legItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;            <span class="keywordflow">if</span> (legs &gt;= 0)</div><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;            {</div><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;                legItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.legType[legs], <span class="keyword">true</span>);</div><div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;            }</div><div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">IsArmorSet</a>(headItem, bodyItem, legItem);</div><div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.SoundType.Item</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a324513758f139965b9c5d13c588c5517"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a324513758f139965b9c5d13c588c5517">Terraria.ModLoader.ModItem.IsArmorSet</a></div><div class="ttdeci">virtual bool IsArmorSet(Item head, Item body, Item legs)</div><div class="ttdoc">Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00553">ModItem.cs:553</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2269,8 +2379,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00830">830</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        {</div><div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00850">850</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;        {</div><div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aabea527359d0dc86e0f339938fdec7a7"></a>
@@ -2303,8 +2413,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00998">998</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;        {</div><div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01018">1018</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;        {</div><div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a40be9291015b233a975e12ee6862da0f"></a>
@@ -2337,8 +2447,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01006">1006</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;        {</div><div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01026">1026</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;        {</div><div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a06d18d25a2aa2ec8f908cbb3f41cb645"></a>
@@ -2382,8 +2492,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00358">358</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        {</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00378">378</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        {</div><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2ae356ad4f3345c64c6096f3cbcf8fff"></a>
@@ -2483,8 +2593,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00381">381</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        {</div><div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00401">401</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        {</div><div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae18cf93cad8a7699240c9b8ae2584f5f"></a>
@@ -2542,8 +2652,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00417">417</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        {</div><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00437">437</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        {</div><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab4235d9107ea3dd403a760666051995a"></a>
@@ -2576,8 +2686,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01084">1084</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;        {</div><div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01104">1104</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;        {</div><div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4e4112cadf7f23f51b913cda238c8708"></a>
@@ -2610,8 +2720,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01022">1022</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;        {</div><div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01042">1042</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;        {</div><div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5f7a03b9388a7610935e6f628b257dfe"></a>
@@ -2644,8 +2754,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01014">1014</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;        {</div><div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01034">1034</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;        {</div><div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5954012f872a84362f335c55905ade15"></a>
@@ -2707,8 +2817,8 @@ Properties</h2></td></tr>
 
 <p>This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called. Reforging preserves modded data on the item. &lt;/summary </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00648">648</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        {</div><div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00668">668</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        {</div><div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a37428a76cceee9aa18d7dc23294a2689"></a>
@@ -2741,8 +2851,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00323">323</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        {</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00343">343</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        {</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab34acf5234d176f4e43cc6b6075fbfe7"></a>
@@ -2775,8 +2885,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00459">459</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;        {</div><div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00479">479</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        {</div><div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7531a27b227757d9bc54400dcd6e9877"></a>
@@ -2809,8 +2919,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01037">1037</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;        {</div><div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01057">1057</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;        {</div><div class="line"><a name="l01059"></a><span class="lineno"> 1059</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a63c7985c667874242863473945097423"></a>
@@ -2875,8 +2985,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00393">393</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        {</div><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00413">413</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        {</div><div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a63802f959b06e51f33c304f6843ea452"></a>
@@ -2934,8 +3044,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00428">428</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00448">448</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        {</div><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af4c3bac6bb5b2b23cb4818591699cc24"></a>
@@ -2969,8 +3079,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00820">820</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        {</div><div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00840">840</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        {</div><div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac53a548e1400eada55a6526d2f320d6c"></a>
@@ -3003,10 +3113,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00629">629</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00649">649</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01030">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        {</div><div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01062">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        {</div><div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -3083,8 +3193,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00303">303</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        {</div><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00323">323</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        {</div><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aeea295ae4ec512d2f6667019b044f8b4"></a>
@@ -3163,8 +3273,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00900">900</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;        {</div><div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00920">920</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;        {</div><div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a54385d73d3d336122fc059417b549a1f"></a>
@@ -3236,8 +3346,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00869">869</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;        {</div><div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00889">889</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;        {</div><div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5348de1211c3411b9c35f4f89f657bf0"></a>
@@ -3270,8 +3380,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01057">1057</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;        {</div><div class="line"><a name="l01059"></a><span class="lineno"> 1059</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01077">1077</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;        {</div><div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a19fb2f197f4c742edbb6e041a3e61235"></a>
@@ -3304,8 +3414,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01076">1076</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;        {</div><div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01096">1096</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;        {</div><div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abff6902616c430c246022e7962f8a68d"></a>
@@ -3331,8 +3441,8 @@ Properties</h2></td></tr>
 
 <p>This hook gets called immediately after an item gets reforged by the Goblin Tinkerer. Useful for modifying modded data based on the reforge result. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00664">664</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        {</div><div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00684">684</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        {</div><div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0bbfe0412b953aeb45519d55252c4938"></a>
@@ -3358,8 +3468,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00783">783</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        {</div><div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00803">803</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        {</div><div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0ea62be5bfe41cc6aa2ef5aa5b0a042d"></a>
@@ -3439,8 +3549,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00884">884</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;        {</div><div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00904">904</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;        {</div><div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a313ae3ea4a3871b608a7b069640728ca"></a>
@@ -3513,8 +3623,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00855">855</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;        {</div><div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00875">875</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;        {</div><div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a043cfc5cc5b5b913820c0f5d4d09d01c"></a>
@@ -3566,8 +3676,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to draw this tooltip</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01048">1048</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;        {</div><div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01068">1068</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;        {</div><div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f551ec97a311981a8c8a499706d340d"></a>
@@ -3612,8 +3722,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to draw this tooltip line</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01067">1067</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;        {</div><div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01087">1087</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;        {</div><div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aff4f5fa502e17122315ddf771c6eb8ec"></a>
@@ -3637,8 +3747,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00655">655</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        {</div><div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.modItem?.NewPreReforge();</div><div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_adfa21ecac7d2f1cc3bd373dc75b4b356"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">Terraria.ModLoader.ModItem.item</a></div><div class="ttdeci">Item item</div><div class="ttdoc">The item object that this ModItem controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00027">ModItem.cs:27</a></div></div>
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00675">675</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        {</div><div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.modItem?.NewPreReforge();</div><div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_adfa21ecac7d2f1cc3bd373dc75b4b356"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">Terraria.ModLoader.ModItem.item</a></div><div class="ttdeci">Item item</div><div class="ttdoc">The item object that this ModItem controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00027">ModItem.cs:27</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -3672,8 +3782,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00576">576</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        {</div><div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00596">596</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        {</div><div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae747b9a32a40363605021ad509a18d8f"></a>
@@ -3710,8 +3820,8 @@ Properties</h2></td></tr>
 
 <p>Returns if the normal reforge pricing is applied. If true or false is returned and the price is altered, the price will equal the altered price. The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value. </p>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00638">638</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        {</div><div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00658">658</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        {</div><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a788f215aa9817b3ffced439263cc8187"></a>
@@ -3744,8 +3854,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00621">621</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        {</div><div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00641">641</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        {</div><div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aaaaa13c80516ca138787656a39221fd1"></a>
@@ -3772,8 +3882,8 @@ Properties</h2></td></tr>
 <p>Allows you to save custom data for this item. Returns null by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00989">989</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;        {</div><div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l01009">1009</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;        {</div><div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6d9fbbb1dec7e25959a345a9e4f78428"></a>
@@ -3851,8 +3961,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00605">605</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        {</div><div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00625">625</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        {</div><div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9de5c2591b0443b342a81003bfc86540"></a>
@@ -3973,8 +4083,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00338">338</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        {</div><div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00358">358</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        {</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a74f7c560dc57b27176ff8e679293af9c"></a>
@@ -4018,8 +4128,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00776">776</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        {</div><div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00796">796</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        {</div><div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a27451213353309352f573c65bd04bb92"></a>
@@ -4063,8 +4173,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00514">514</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        {</div><div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00534">534</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        {</div><div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad494945eb650e562db4ff0cfd2febff7"></a>
@@ -4097,8 +4207,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00542">542</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        {</div><div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00562">562</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;        {</div><div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a97ecf45d8562925b848f2fbc0c5b36a5"></a>
@@ -4131,8 +4241,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00505">505</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        {</div><div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00525">525</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        {</div><div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a04f28e9888bbe158d5980bdba17b21f5"></a>
@@ -4165,8 +4275,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00497">497</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        {</div><div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00517">517</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        {</div><div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a85bd45997c1b92b94f8829f3807aeae5"></a>
@@ -4210,8 +4320,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00523">523</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        {</div><div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00543">543</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        {</div><div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6869b103de1055245cf851a26d9238b3"></a>
@@ -4244,8 +4354,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00584">584</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        {</div><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00604">604</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        {</div><div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a69d1426d0848927a3d7e25c023d90ddc"></a>
@@ -4280,8 +4390,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00438">438</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        {</div><div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00458">458</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        {</div><div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a39ed4bd787da12be5f039168c7a70cd9"></a>
@@ -4315,8 +4425,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00468">468</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        {</div><div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00488">488</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        {</div><div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a15b9ecf34b37c76d5d5773b91f66761f"></a>
@@ -4367,8 +4477,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00349">349</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        {</div><div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00369">369</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        {</div><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac55f54912bc941bc46599f6318976aa2"></a>
@@ -4509,8 +4619,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00745">745</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;        {</div><div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00765">765</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        {</div><div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa3849baf5c0607283abd3b59da1f631a"></a>
@@ -4555,8 +4665,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00766">766</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        {</div><div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00786">786</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        {</div><div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -4574,7 +4684,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00083">83</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01030">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01062">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
 
 </div>
 </div>
@@ -4678,7 +4788,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00580">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02206">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00604">Terraria.ModLoader.ModLoader.BuildSort()</a>, <a class="el" href="_item_loader_8cs_source.html#l01233">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00263">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00580">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02206">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00604">Terraria.ModLoader.ModLoader.BuildSort()</a>, <a class="el" href="_item_loader_8cs_source.html#l01265">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00263">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
 
 </div>
 </div>

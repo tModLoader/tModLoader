@@ -183,6 +183,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a299177fe4b54040faa2e8c535a44c5fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a299177fe4b54040faa2e8c535a44c5fa">GetFishingLevel</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> fishingRod, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bait, ref int fishingLevel)</td></tr>
 <tr class="memdesc:a299177fe4b54040faa2e8c535a44c5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the player's fishing power. As an example of the type of stuff that should go here, the phase of the moon can influence fishing power.  <a href="#a299177fe4b54040faa2e8c535a44c5fa">More...</a><br /></td></tr>
 <tr class="separator:a299177fe4b54040faa2e8c535a44c5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f4fae883d92393f463889d371f4123"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a64f4fae883d92393f463889d371f4123">GetHealLife</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, bool quickHeal, ref int healValue)</td></tr>
+<tr class="memdesc:a64f4fae883d92393f463889d371f4123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.  <a href="#a64f4fae883d92393f463889d371f4123">More...</a><br /></td></tr>
+<tr class="separator:a64f4fae883d92393f463889d371f4123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed65f7e493f7194c35ae38264a5df27"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a9ed65f7e493f7194c35ae38264a5df27">GetHealMana</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, bool quickHeal, ref int healValue)</td></tr>
+<tr class="memdesc:a9ed65f7e493f7194c35ae38264a5df27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.  <a href="#a9ed65f7e493f7194c35ae38264a5df27">More...</a><br /></td></tr>
+<tr class="separator:a9ed65f7e493f7194c35ae38264a5df27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be6b87cc1d8482986853f65bb7d6250"><td class="memItemLeft" align="right" valign="top">virtual Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2be6b87cc1d8482986853f65bb7d6250">GetMapBackgroundImage</a> ()</td></tr>
 <tr class="memdesc:a2be6b87cc1d8482986853f65bb7d6250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the background that displays when viewing the map. Return null if you do not want to change the background. Returns null by default.  <a href="#a2be6b87cc1d8482986853f65bb7d6250">More...</a><br /></td></tr>
 <tr class="separator:a2be6b87cc1d8482986853f65bb7d6250"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -465,8 +471,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00787">787</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        {</div><div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00807">807</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        {</div><div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af2a28d3c043a84ede9cfb4f5e10672c1"></a>
@@ -563,8 +569,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00701">701</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        {</div><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00721">721</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        {</div><div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aee2d81b9b20a2b470790837e47ae12ef"></a>
@@ -598,8 +604,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00731">731</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        {</div><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00751">751</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;        {</div><div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab04c85a24421eda597731c46fbc2f997"></a>
@@ -644,8 +650,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00564">564</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        {</div><div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00584">584</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        {</div><div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8d53bb83d4c253ab8dc4f16df668eb46"></a>
@@ -690,8 +696,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00599">599</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;        {</div><div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00619">619</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        {</div><div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a301c01c1b0d2fe06d22ea78908382019"></a>
@@ -736,8 +742,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00635">635</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;        {</div><div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00655">655</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        {</div><div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae4d308298d0ec916701fc5864f2bce07"></a>
@@ -782,8 +788,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00668">668</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        {</div><div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00688">688</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        {</div><div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0dbe40ee2401b0018b096cc85c3ebb3b"></a>
@@ -876,8 +882,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00768">768</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        {</div><div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00788">788</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        {</div><div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8df0879f930e49f6d4b81b4d8decd4be"></a>
@@ -956,8 +962,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00507">507</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        {</div><div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00527">527</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        {</div><div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a68eb90c795e9643b0bd2af1c639e4c36"></a>
@@ -1098,8 +1104,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00808">808</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        {</div><div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00828">828</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        {</div><div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a155cba1e22cce620d994dac9d88e993e"></a>
@@ -1159,8 +1165,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00795">795</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        {</div><div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00815">815</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;        {</div><div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a299177fe4b54040faa2e8c535a44c5fa"></a>
@@ -1211,8 +1217,112 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00778">778</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        {</div><div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00798">798</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;        {</div><div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a64f4fae883d92393f463889d371f4123"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.GetHealLife </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quickHeal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>healValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item.</td></tr>
+    <tr><td class="paramname">quickHeal</td><td>Whether the item is being used through quick heal or not.</td></tr>
+    <tr><td class="paramname">healValue</td><td>The amount of life being healed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00479">479</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        {</div><div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9ed65f7e493f7194c35ae38264a5df27"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.GetHealMana </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quickHeal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>healValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item.</td></tr>
+    <tr><td class="paramname">quickHeal</td><td>Whether the item is being used through quick heal or not.</td></tr>
+    <tr><td class="paramname">healValue</td><td>The amount of mana being healed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00489">489</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        {</div><div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2be6b87cc1d8482986853f65bb7d6250"></a>
@@ -1284,8 +1394,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00496">496</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        {</div><div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00516">516</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        {</div><div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a00b3ebcecd9ac3927c98d7267e3c0cca"></a>
@@ -1329,8 +1439,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00478">478</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        {</div><div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00498">498</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;        {</div><div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5e7c22c4c605693f4f726b902074a3bf"></a>
@@ -1374,8 +1484,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00487">487</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;        {</div><div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00507">507</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        {</div><div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad786d90b187737eeba3b23020f2167a0"></a>
@@ -1639,8 +1749,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00544">544</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        {</div><div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00564">564</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        {</div><div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac98ff1db7484c7cf96f7ca4d4a278a8d"></a>
@@ -1708,8 +1818,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00832">832</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        {</div><div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00852">852</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;        {</div><div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3cde8f8bdd569e9fe5aca8b7e30c7185"></a>
@@ -1742,10 +1852,10 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00816">816</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00836">836</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01105">Terraria.ModLoader.PlayerHooks.ModifyDrawInfo()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        {</div><div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01133">Terraria.ModLoader.PlayerHooks.ModifyDrawInfo()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        {</div><div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -1790,8 +1900,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00824">824</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        {</div><div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00844">844</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;        {</div><div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a42197e724e0dc2ae7f81d1cd2313381e"></a>
@@ -1842,8 +1952,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00712">712</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        {</div><div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00732">732</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        {</div><div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2cc69d42fb045917852abe92d423cebf"></a>
@@ -1894,8 +2004,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00742">742</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        {</div><div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00762">762</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;        {</div><div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad8577573d7660b4e49d18d1ab06e03d2"></a>
@@ -1960,8 +2070,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00577">577</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        {</div><div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00597">597</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        {</div><div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1a2fe132bd0027cf73f4c10cf2229f5a"></a>
@@ -2033,8 +2143,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00613">613</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        {</div><div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00633">633</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        {</div><div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9054e7ac006cb3a7a37ab55693a376be"></a>
@@ -2092,8 +2202,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00647">647</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        {</div><div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00667">667</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        {</div><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a87773cecdc388fd4df42596611cc2b7b"></a>
@@ -2151,8 +2261,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00680">680</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;        {</div><div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00700">700</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        {</div><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab90eb3f01a1df40684e1afdc6e5b9cbc"></a>
@@ -2178,8 +2288,8 @@ Properties</h2></td></tr>
 
 <p>Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place. </p>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00839">839</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;        {</div><div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00859">859</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;        {</div><div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac6927f61bbe5edbb9437117a94fc2c64"></a>
@@ -2212,8 +2322,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00847">847</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;        {</div><div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00867">867</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;        {</div><div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae8dbfbc03aeba36009cca97321fb8754"></a>
@@ -2292,8 +2402,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00519">519</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        {</div><div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00539">539</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;        {</div><div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6c573a92f3a8df8f393ca26492d7eb3b"></a>
@@ -2326,8 +2436,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00871">871</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;        {</div><div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00891">891</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;        {</div><div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a84506b45ac50a3c509f28617f57aa6af"></a>
@@ -2378,8 +2488,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00554">554</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;        {</div><div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00574">574</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        {</div><div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9a527fd0a56cab1b9ba7770d6df47f8a"></a>
@@ -2430,8 +2540,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00722">722</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        {</div><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00742">742</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        {</div><div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad20550a6da423c58672c4f788c9c9b9d"></a>
@@ -2482,8 +2592,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00752">752</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        {</div><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00772">772</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        {</div><div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2cd21e98bc50351cea57cf644a2859f6"></a>
@@ -2548,8 +2658,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00589">589</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        {</div><div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00609">609</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        {</div><div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a98bce9c244c690123cf6046c356f0adf"></a>
@@ -2614,8 +2724,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00625">625</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        {</div><div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00645">645</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        {</div><div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5bea6d8868f61c4b7784c6b0c402af7c"></a>
@@ -2673,8 +2783,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00658">658</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        {</div><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00678">678</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;        {</div><div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a91309cb667e23771797bb11f3c078878"></a>
@@ -2732,8 +2842,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00691">691</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        {</div><div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00711">711</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        {</div><div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac77ddaf77206489d15d331bd4e88b536"></a>
@@ -2766,8 +2876,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00879">879</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;        {</div><div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00899">899</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;        {</div><div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6ad45698330b18f5ac20b72500c5cd71"></a>
@@ -2800,8 +2910,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00855">855</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;        {</div><div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00875">875</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;        {</div><div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6a03d8b7abc65d7eff11f47c2c7f60b1"></a>
@@ -2834,8 +2944,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00863">863</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;        {</div><div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00883">883</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;        {</div><div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a229ce725992fed1702e8f48865dfd024"></a>
@@ -3791,8 +3901,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to block the default code (sell and trash) from running. Returns false by default.</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00890">890</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        {</div><div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00910">910</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;        {</div><div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3f06ebdab0af3b5f825c6a706599a38b"></a>
@@ -3872,8 +3982,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00534">534</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        {</div><div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00554">554</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;        {</div><div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3905e96a9c70d498528df9121380fb1c"></a>

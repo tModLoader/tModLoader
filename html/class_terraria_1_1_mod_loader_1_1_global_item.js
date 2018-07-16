@@ -25,6 +25,8 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "DrawLegs", "class_terraria_1_1_mod_loader_1_1_global_item.html#adad50c3778f90aeb18dfdf4e04cc2fa0", null ],
     [ "ExtractinatorUse", "class_terraria_1_1_mod_loader_1_1_global_item.html#a0edc645e49d4ae2ddb75f4fa1df28391", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_global_item.html#a9e7f8130872df2d2b2f9c7f54ff8da23", null ],
+    [ "GetHealLife", "class_terraria_1_1_mod_loader_1_1_global_item.html#ae3021ba84707ae5401b47179803b8998", null ],
+    [ "GetHealMana", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab08d8867a8e1a61d9f6b0aeb2b189584", null ],
     [ "GetWeaponCrit", "class_terraria_1_1_mod_loader_1_1_global_item.html#a3a2d8c931f1b1dc48c9b80857beac396", null ],
     [ "GetWeaponDamage", "class_terraria_1_1_mod_loader_1_1_global_item.html#af784697302f85202dd2dc3927e2f7714", null ],
     [ "GetWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_global_item.html#a369cd9e3be472dbd6738d4256cf07c4f", null ],

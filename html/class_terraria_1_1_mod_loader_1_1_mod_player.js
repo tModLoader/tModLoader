@@ -17,6 +17,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "FrameEffects", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e", null ],
     [ "GetDyeTraderReward", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac412621fb39079d5db3fee8bf1bcc9bc", null ],
     [ "GetFishingLevel", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a299177fe4b54040faa2e8c535a44c5fa", null ],
+    [ "GetHealLife", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a64f4fae883d92393f463889d371f4123", null ],
+    [ "GetHealMana", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9ed65f7e493f7194c35ae38264a5df27", null ],
     [ "GetMapBackgroundImage", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a2be6b87cc1d8482986853f65bb7d6250", null ],
     [ "GetWeaponCrit", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aff71dc1d2b49d1efa3cae8f16e4fdf6a", null ],
     [ "GetWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a00b3ebcecd9ac3927c98d7267e3c0cca", null ],
