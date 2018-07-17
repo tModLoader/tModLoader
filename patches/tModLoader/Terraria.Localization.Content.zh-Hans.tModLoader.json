@@ -94,7 +94,7 @@
 		"ModPackViewList": "查看列表",
 		"ModPackEnableThisList": "启用该列表",
 		"ModPackEnableOnlyThisList": "仅启用该列表",
-		"ModPackUpdateListWithEnabled": "更新列表已启用",
+		"ModPackUpdateListWithEnabled": "将已启用模组更新至该列表",
 		"ModPackViewModsInModBrowser": "在模组浏览器中查看",
 		"ModPackModsAvailableStatus": "总共{0}个,已启用{1}个,已禁用{2}个,缺少{3}个",
 		"ModPackModsMissing": "未找到下列模组:\n{0}",
