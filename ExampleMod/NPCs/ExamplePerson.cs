@@ -182,6 +182,7 @@ namespace ExampleMod.NPCs
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
 			button = Language.GetTextValue("LegacyInterface.28");
+			button2 = "Awesomeify";
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -189,6 +190,16 @@ namespace ExampleMod.NPCs
 			if (firstButton)
 			{
 				shop = true;
+			}
+			else
+			{
+				// If the 2nd button is pressed, open the inventory...
+				Main.playerInventory = true;
+				// remove the chat window...
+				Main.npcChatText = "";
+				// and start an instance of our UIState.
+				ExampleMod.instance.examplePersonUserInterface.SetState(new UI.ExamplePersonUI());
+				// Note that even though we remove the chat window, Main.LocalPlayer.talkNPC will still be set correctly and we are still technically chatting with the npc.
 			}
 		}
 

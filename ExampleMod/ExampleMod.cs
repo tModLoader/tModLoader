@@ -27,6 +27,7 @@ namespace ExampleMod
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
+		internal UserInterface examplePersonUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyID;
@@ -104,6 +105,11 @@ namespace ExampleMod
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
+
+				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
+				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
+				examplePersonUserInterface = new UserInterface();
+				// We will call .SetState later in ExamplePerson.OnChatButtonClicked
 			}
 
 			// Register custom mod translations, lives left is for Spirit of Purity
@@ -285,6 +291,8 @@ namespace ExampleMod
 		{
 			if (exampleUserInterface != null && ExampleUI.visible)
 				exampleUserInterface.Update(gameTime);
+			if (examplePersonUserInterface != null)
+				examplePersonUserInterface.Update(gameTime);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -300,6 +308,20 @@ namespace ExampleMod
 						{
 							exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+			}
+			int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+			if (InventoryIndex != -1)
+			{
+				layers.Insert(InventoryIndex + 1, new LegacyGameInterfaceLayer(
+					"ExampleMod: Example Person UI",
+					delegate
+					{
+						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
+						examplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)

@@ -273,7 +273,9 @@
     <Compile Include="Tiles\TEScoreBoard.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
+    <Compile Include="UI\ExamplePersonUI.cs" />
     <Compile Include="UI\ExampleUI.cs" />
+    <Compile Include="UI\VanillaItemSlotWrapper.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
     <Compile Include="Waters\ExampleWaterfallStyle.cs" />
     <Compile Include="Waters\ExampleWaterStyle.cs" />
