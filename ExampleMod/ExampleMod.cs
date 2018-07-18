@@ -298,7 +298,7 @@ namespace ExampleMod
 					{
 						if (ExampleUI.visible)
 						{
-							exampleUI.Draw(Main.spriteBatch);
+							exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
 						return true;
 					},

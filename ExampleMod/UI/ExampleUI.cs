@@ -10,6 +10,8 @@ using System.Linq;
 
 namespace ExampleMod.UI
 {
+	// ExampleUIs visibility is toggled by typing "/coin" in chat. (See CoinCommand.cs)
+	// ExampleUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement.
 	class ExampleUI : UIState
 	{
 		public UIPanel coinCounterPanel;
@@ -93,6 +95,7 @@ namespace ExampleMod.UI
 			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
 			if (coinCounterPanel.ContainsPoint(MousePosition))
 			{
+				// Checking ContainsPoint and then setting mouseInterface to true is very common. This causes clicks to not cause the player to use current items. 
 				Main.LocalPlayer.mouseInterface = true;
 			}
 			if (dragging)
@@ -100,6 +103,21 @@ namespace ExampleMod.UI
 				coinCounterPanel.Left.Set(MousePosition.X - offset.X, 0f);
 				coinCounterPanel.Top.Set(MousePosition.Y - offset.Y, 0f);
 				Recalculate();
+			}
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime); // don't remove.
+
+			// Here we check if the coinCounterPanel is outside the UIState rectangle. (in other words, the whole screen)
+			// By doing this and some simple math, we can snap the panel back on screen if the user resizes his window or otherwise changes resolution.
+			if (!coinCounterPanel.GetDimensions().ToRectangle().Intersects(GetDimensions().ToRectangle()))
+			{
+				var parentSpace = GetDimensions().ToRectangle();
+				coinCounterPanel.Left.Pixels = Utils.Clamp(coinCounterPanel.Left.Pixels, 0, parentSpace.Right - coinCounterPanel.Width.Pixels);
+				coinCounterPanel.Top.Pixels = Utils.Clamp(coinCounterPanel.Top.Pixels, 0, parentSpace.Bottom - coinCounterPanel.Height.Pixels);
+				coinCounterPanel.Recalculate();
 			}
 		}
 
@@ -209,19 +227,21 @@ namespace ExampleMod.UI
 		{
 			if (item.type == ItemID.CopperCoin)
 			{
-				(mod as ExampleMod).exampleUI.updateValue(item.stack);
+				ExampleMod.instance.exampleUI.updateValue(item.stack);
+				// We can cast mod to ExampleMod or just utilize ExampleMod.instance.
+				// (mod as ExampleMod).exampleUI.updateValue(item.stack);
 			}
 			else if (item.type == ItemID.SilverCoin)
 			{
-				(mod as ExampleMod).exampleUI.updateValue(item.stack * 100);
+				ExampleMod.instance.exampleUI.updateValue(item.stack * 100);
 			}
 			else if (item.type == ItemID.GoldCoin)
 			{
-				(mod as ExampleMod).exampleUI.updateValue(item.stack * 10000);
+				ExampleMod.instance.exampleUI.updateValue(item.stack * 10000);
 			}
 			else if (item.type == ItemID.PlatinumCoin)
 			{
-				(mod as ExampleMod).exampleUI.updateValue(item.stack * 1000000);
+				ExampleMod.instance.exampleUI.updateValue(item.stack * 1000000);
 			}
 			return base.OnPickup(item, player);
 		}
