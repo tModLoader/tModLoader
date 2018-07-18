@@ -7,6 +7,7 @@ using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
+	// [AutoloadHead] and npc.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{

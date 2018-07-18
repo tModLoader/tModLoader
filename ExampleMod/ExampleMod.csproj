@@ -120,6 +120,10 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageAccessory.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageItem.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamagePlayer.cs" />
+    <Compile Include="Items\ExampleDamageClass\Mundane.cs" />
     <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
@@ -203,6 +207,7 @@
     <Compile Include="NPCs\PuritySpirit\PuritySpiritSky.cs" />
     <Compile Include="NPCs\Sarcophagus.cs" />
     <Compile Include="NPCs\Worm.cs" />
+    <Compile Include="Prefixes\AwesomePrefix.cs" />
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ElementShield.cs" />
