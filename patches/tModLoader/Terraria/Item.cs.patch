@@ -383,7 +383,7 @@
 +		public Item CloneWithModdedDataFrom(Item dataSource)
 +		{
 +			Item newItem = (Item)base.MemberwiseClone();
-+			newItem.modItem = modItem?.Clone(newItem);
++			newItem.modItem = dataSource.modItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
  		}
