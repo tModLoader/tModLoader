@@ -17,7 +17,7 @@ namespace ExampleMod.UI
 
 		public override void OnInitialize()
 		{
-			vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.ChestItem, 0.85f);
+			vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f);
 			vanillaItemSlot.Left.Pixels = 50;
 			vanillaItemSlot.Top.Pixels = 270;
 			// Here we limit the items that can be placed in the slot. We are fine with placing an empty item in or a non-empty item that can be prefixed. Calling Prefix(-3) is the way to know if the item in question can take a prefix or not.

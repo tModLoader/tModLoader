@@ -20,7 +20,7 @@ namespace ExampleMod.UI
 		float scale;
 		internal Func<Item, bool> validItem; 
 
-		public VanillaItemSlotWrapper(int context = ItemSlot.Context.ChestItem, float scale = 1f)
+		public VanillaItemSlotWrapper(int context = ItemSlot.Context.BankItem, float scale = 1f)
 		{
 			this.context = context;
 			this.scale = scale;
