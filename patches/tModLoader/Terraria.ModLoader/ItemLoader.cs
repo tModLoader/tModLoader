@@ -1656,10 +1656,10 @@ namespace Terraria.ModLoader
 		{
 			ModItem modItem = GetItem(itemID);
 			if (modItem != null)
-				notAvailable &= !modItem.IsAnglerQuestAvailable();
+				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
 			foreach (var g in HookIsAnglerQuestAvailable.arr)
-				notAvailable &= !g.IsAnglerQuestAvailable(itemID);
+				notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 		}
 
 		private delegate void DelegateAnglerChat(int type, ref string chat, ref string catchLocation);
