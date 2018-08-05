@@ -911,7 +911,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			if (modName == "Terraria")
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
+				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
 
 			Mod mod = GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
