@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.UI
 				client.DownloadProgressChanged += Client_DownloadProgressChanged;
 				client.DownloadFileCompleted += Client_DownloadFileCompleted;
 				currentDownload = modsToDownload.Dequeue();
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{currentDownload.displayname}"));
 				client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 			}
 			else
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.UI
 				if (modsToDownload.Count != 0)
 				{
 					currentDownload = modsToDownload.Dequeue();
-					loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
+					loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{currentDownload.displayname}"));
 					loadProgress.SetProgress(0f);
 					client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 				}
@@ -189,7 +189,7 @@ namespace Terraria.ModLoader.UI
 			missingMods.Clear();
 			foreach (var desiredMod in specialModPackFilter)
 			{
-				var mod = items.FirstOrDefault(x => x.mod == desiredMod) ?? null;
+				var mod = items.FirstOrDefault(x => x.mod == desiredMod);
 				if (mod == null)
 					missingMods.Add(desiredMod);
 				else
