@@ -75,7 +75,7 @@ namespace Terraria.ModLoader
 				catch (Exception e)
 				{
 					ModLoader.DisableMod(mod.Name);
-					throw new AddRecipesException(mod, "An error occured in adding recipe groups for " + mod.Name, e);
+					throw new AddRecipesException(mod, "An error occurred in adding recipe groups for " + mod.Name, e);
 				}
 			}
 			FixRecipeGroupLookups();

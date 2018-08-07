@@ -112,7 +112,7 @@
 		// "MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
 		// "MPErrorModHashMismatch": "Hash mismatch",
 		// "MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
-		// "MPErrorModDownloadError": "An error occured while downloading {0}",
+		// "MPErrorModDownloadError": "An error occurred while downloading {0}",
 		// "MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// Mod Browser
@@ -216,7 +216,7 @@
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
 		// Extract Mod
-		// "ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",
+		// "ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
 		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
 		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
 		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
