@@ -7,6 +7,7 @@ using Terraria.UI;
 using System;
 using Terraria.ID;
 using System.Linq;
+using Terraria.Localization;
 
 namespace ExampleMod.UI
 {
@@ -14,34 +15,40 @@ namespace ExampleMod.UI
 	// ExampleUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement.
 	class ExampleUI : UIState
 	{
-		public UIPanel coinCounterPanel;
+		public DragableUIPanel coinCounterPanel;
 		public UIMoneyDisplay moneyDiplay;
 		public static bool visible = false;
 
+		// In OnInitialize, we place various UIElements onto our UIState (this class).
+		// UIState classes have width and height equal to the full screen, because of this, usually we first define a UIElement that will act as the container for our UI.
+		// We then place various other UIElement onto that container UIElement positioned relative to the container UIElement.
 		public override void OnInitialize()
 		{
-			coinCounterPanel = new UIPanel();
+			// Here we define our container UIElement. In DragableUIPanel.cs, you can see that DragableUIPanel is a UIPanel with a couple added features.
+			coinCounterPanel = new DragableUIPanel();
 			coinCounterPanel.SetPadding(0);
+			// We need to place this UIElement in relation to its Parent. Later we will be calling `base.Append(coinCounterPanel);`. 
+			// This means that this class, ExampleUI, will be our Parent. Since ExampleUI is a UIState, the Left and Top are relative to the top left of the screen.
 			coinCounterPanel.Left.Set(400f, 0f);
 			coinCounterPanel.Top.Set(100f, 0f);
 			coinCounterPanel.Width.Set(170f, 0f);
 			coinCounterPanel.Height.Set(70f, 0f);
 			coinCounterPanel.BackgroundColor = new Color(73, 94, 171);
 
-			coinCounterPanel.OnMouseDown += new UIElement.MouseEvent(DragStart);
-			coinCounterPanel.OnMouseUp += new UIElement.MouseEvent(DragEnd);
-
+			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
+			// By properly nesting UIElements, we can position things relatively to each other easily.
 			Texture2D buttonPlayTexture = ModLoader.GetTexture("Terraria/UI/ButtonPlay");
-			UIImageButton playButton = new UIImageButton(buttonPlayTexture);
+			UIHoverImageButton playButton = new UIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
 			playButton.Left.Set(110, 0f);
 			playButton.Top.Set(10, 0f);
 			playButton.Width.Set(22, 0f);
 			playButton.Height.Set(22, 0f);
+			// UIHoverImageButton doesn't do anything when Clicked. Here we assign a method that we'd like to be called when the button is clicked.
 			playButton.OnClick += new MouseEvent(PlayButtonClicked);
 			coinCounterPanel.Append(playButton);
 
 			Texture2D buttonDeleteTexture = ModLoader.GetTexture("Terraria/UI/ButtonDelete");
-			UIImageButton closeButton = new UIImageButton(buttonDeleteTexture);
+			UIHoverImageButton closeButton = new UIHoverImageButton(buttonDeleteTexture, Language.GetTextValue("LegacyInterface.52")); // Localized text for "Close"
 			closeButton.Left.Set(140, 0f);
 			closeButton.Top.Set(10, 0f);
 			closeButton.Width.Set(22, 0f);
@@ -49,6 +56,8 @@ namespace ExampleMod.UI
 			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
 			coinCounterPanel.Append(closeButton);
 
+			// UIMoneyDisplay is a fairly complicated custom UIElement. UIMoneyDisplay handles drawing some text and coin textures.
+			// Organization is key to managing UI design. Making a contained UIElement like UIMoneyDisplay will make many things easier.
 			moneyDiplay = new UIMoneyDisplay();
 			moneyDiplay.Left.Set(15, 0f);
 			moneyDiplay.Top.Set(20, 0f);
@@ -57,6 +66,10 @@ namespace ExampleMod.UI
 			coinCounterPanel.Append(moneyDiplay);
 
 			base.Append(coinCounterPanel);
+
+			// As a recap, ExampleUI is a UIState, meaning it covers the whole screen. We attach coinCounterPanel to ExampleUI some distance from the top left corner.
+			// We then place playButton, closeButton, and moneyDiplay onto coinCounterPanel so we can easily place these UIElements relative to coinCounterPanel.
+			// Since coinCounterPanel will move, this proper organization will move playButton, closeButton, and moneyDiplay properly when coinCounterPanel moves.
 		}
 
 		private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
@@ -69,56 +82,6 @@ namespace ExampleMod.UI
 		{
 			Main.PlaySound(SoundID.MenuOpen);
 			visible = false;
-		}
-
-		Vector2 offset;
-		public bool dragging = false;
-		private void DragStart(UIMouseEvent evt, UIElement listeningElement)
-		{
-			offset = new Vector2(evt.MousePosition.X - coinCounterPanel.Left.Pixels, evt.MousePosition.Y - coinCounterPanel.Top.Pixels);
-			dragging = true;
-		}
-
-		private void DragEnd(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Vector2 end = evt.MousePosition;
-			dragging = false;
-
-			coinCounterPanel.Left.Set(end.X - offset.X, 0f);
-			coinCounterPanel.Top.Set(end.Y - offset.Y, 0f);
-
-			Recalculate();
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
-			if (coinCounterPanel.ContainsPoint(MousePosition))
-			{
-				// Checking ContainsPoint and then setting mouseInterface to true is very common. This causes clicks to not cause the player to use current items. 
-				Main.LocalPlayer.mouseInterface = true;
-			}
-			if (dragging)
-			{
-				coinCounterPanel.Left.Set(MousePosition.X - offset.X, 0f);
-				coinCounterPanel.Top.Set(MousePosition.Y - offset.Y, 0f);
-				Recalculate();
-			}
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-			base.Update(gameTime); // don't remove.
-
-			// Here we check if the coinCounterPanel is outside the UIState rectangle. (in other words, the whole screen)
-			// By doing this and some simple math, we can snap the panel back on screen if the user resizes his window or otherwise changes resolution.
-			if (!coinCounterPanel.GetDimensions().ToRectangle().Intersects(GetDimensions().ToRectangle()))
-			{
-				var parentSpace = GetDimensions().ToRectangle();
-				coinCounterPanel.Left.Pixels = Utils.Clamp(coinCounterPanel.Left.Pixels, 0, parentSpace.Right - coinCounterPanel.Width.Pixels);
-				coinCounterPanel.Top.Pixels = Utils.Clamp(coinCounterPanel.Top.Pixels, 0, parentSpace.Bottom - coinCounterPanel.Height.Pixels);
-				coinCounterPanel.Recalculate();
-			}
 		}
 
 		public void updateValue(int pickedUp)
