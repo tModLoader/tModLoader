@@ -80,7 +80,7 @@ namespace Terraria.ModLoader
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
 				Main.NewText(line, color.R, color.G, color.B);
-		} 
+		}
 	}
 
 	internal class PlayerCommandCaller : CommandCaller

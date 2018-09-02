@@ -94,12 +94,12 @@ namespace Terraria.ModLoader
 			modBrowser.updateFilterMode = UpdateFilter.Available;
 			modBrowser.searchFilterMode = SearchFilter.Name;
 			modBrowser.modSideFilterMode = ModSideFilter.All;
-			modBrowser.SearchFilterToggle?.setCurrentState((int)modBrowser.searchFilterMode);
-			if (modBrowser._categoryButtons.Count == 3)
+			if (modBrowser._categoryButtons.Count == 4) // basically checking if modBrowser._isInitialized
 			{
 				modBrowser._categoryButtons[0].setCurrentState((int)modBrowser.sortMode);
 				modBrowser._categoryButtons[1].setCurrentState((int)modBrowser.updateFilterMode);
 				modBrowser._categoryButtons[2].setCurrentState((int)modBrowser.modSideFilterMode);
+				modBrowser._categoryButtons[3].setCurrentState((int)modBrowser.searchFilterMode);
 			}
 			modBrowser.loading = false;
 			ModLoader.modsDirCache.Clear();
@@ -238,7 +238,7 @@ namespace Terraria.ModLoader
 			{
 				offY = 210;
 				spacing = 42;
-				numButtons = 7;
+				numButtons = 9;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++)
 				{
@@ -282,6 +282,22 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AllowGreaterResolutions{(ModLoader.allowGreaterResolutions ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.allowGreaterResolutions = !ModLoader.allowGreaterResolutions;
 				}
 
 				buttonIndex++;

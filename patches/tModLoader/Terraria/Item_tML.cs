@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria
@@ -11,6 +12,30 @@ namespace Terraria
 		public TagCompound SerializeData()
 		{
 			return ItemIO.Save(this);
+		}
+
+		internal static void PopulateMaterialCache()
+		{
+			for (int i = 0; i < Recipe.numRecipes; i++)
+			{
+				int num = 0;
+				while (Main.recipe[i].requiredItem[num].type > 0)
+				{
+					ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[num].type] = true;
+					num++;
+				}
+			}
+			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values)
+			{
+				foreach (var item in recipeGroup.ValidItems)
+				{
+					ItemID.Sets.IsAMaterial[item] = true;
+				}
+			}
+			ItemID.Sets.IsAMaterial[71] = false;
+			ItemID.Sets.IsAMaterial[72] = false;
+			ItemID.Sets.IsAMaterial[73] = false;
+			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
 		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)

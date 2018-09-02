@@ -5,6 +5,7 @@
 filename = '../src/tModLoader/Terraria.Localization.Content.{0}.tModLoader.json'
 
 languages = ['zh-Hans', 'ru-RU', 'pt-BR', 'pl-PL', 'it-IT', 'fr-FR', 'es-ES', 'de-DE']
+missings = []
 for language in languages:
     #language = 'zh-Hans'
     otherLanguage = ''
@@ -45,9 +46,16 @@ for language in languages:
             #print(otherLanguage)
     # Save changes.
     if missing > 0:
+        missings.append( (language, missing) )
         print("Missing:",missing)
     with open(filename.format(language), 'w', encoding='utf-8') as output:
         output.write(otherLanguage)
 
+with open('./TranslationsNeeded.txt', 'w', encoding='utf-8') as output:
+    if len(missings) == 0:
+        output.write('All Translations up-to-date!')
+    else:
+        for entry in missings: 
+            output.write(str(entry[0]) + " " + str(entry[1]) + "\n")
 print("Make sure to run Diff.")
 input("Press Enter to continue...")

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -206,7 +207,7 @@ namespace Terraria.ModLoader
 			}
 			else if (banner != 0 || bannerItem != 0)
 			{
-				ErrorLogger.Log($"{mod.DisplayName}: {Name}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {mod.DisplayName} developers.");
+				ErrorLogger.Log(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
 			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{
@@ -638,7 +639,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual string TownNPCName()
 		{
-			return "No-Name";
+			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
 		}
 
 		/// <summary>
@@ -651,16 +652,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give this town NPC a chat message when a player talks to it. By default returns something embarrassing.
+		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool CanChat()
+		{
+			return npc.townNPC;
+		}
+
+		/// <summary>
+		/// Allows you to give this NPC a chat message when a player talks to it. By default returns something embarrassing.
 		/// </summary>
 		/// <returns></returns>
 		public virtual string GetChat()
 		{
-			return "My modder forgot to give me a chat message.";
+			return Language.GetTextValue("tModLoader.DefaultTownNPCChat");
 		}
 
 		/// <summary>
-		/// Allows you to set the text for the buttons that appear on this town NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
+		/// Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
 		/// </summary>
 		/// <param name="button"></param>
 		/// <param name="button2"></param>
@@ -669,7 +679,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen whenever a button is clicked on this town NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+		/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
 		/// </summary>
 		/// <param name="firstButton"></param>
 		/// <param name="shop"></param>
@@ -678,7 +688,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add items to this town NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
+		/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
 		/// </summary>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>

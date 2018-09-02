@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 
 		public ModItem()
 		{
-			item = new Item {modItem = this};
+			item = new Item { modItem = this };
 		}
 
 		/// <summary>
@@ -130,8 +130,10 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual ModItem NewInstance(Item itemClone) {
-			if (CloneNewInstances) {
+		public virtual ModItem NewInstance(Item itemClone)
+		{
+			if (CloneNewInstances)
+			{
 				var clone = Clone();
 				clone.item = itemClone;
 				return clone;
@@ -150,7 +152,7 @@ namespace Terraria.ModLoader
 		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
-		public virtual void SetDefaults() 
+		public virtual void SetDefaults()
 		{
 		}
 
@@ -173,7 +175,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
-		public virtual void AutoStaticDefaults() {
+		public virtual void AutoStaticDefaults()
+		{
 			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";
@@ -250,6 +253,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
@@ -303,12 +326,22 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the OnConsumeAmmo hook is never called.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
 		public virtual bool ConsumeAmmo(Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to makes things happen when ammo is consumed. Called both by the gun and by the ammo.
+		/// Called before the ammo stack is reduced.
+		/// </summary>
+		/// <param name="player">The player.</param>
+		public virtual void OnConsumeAmmo(Player player)
+		{
 		}
 
 		/// <summary>
@@ -429,12 +462,22 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// If this item is consumable and this returns true, then this item will be consumed upon usage. Returns true by default.
+		/// If false is returned, the OnConsumeItem hook is never called.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <returns></returns>
 		public virtual bool ConsumeItem(Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this item is consumed.
+		/// Called before the item stack is reduced.
+		/// </summary>
+		/// <param name="player">The player.</param>
+		public virtual void OnConsumeItem(Player player)
+		{
 		}
 
 		/// <summary>
@@ -513,7 +556,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give set bonuses to the armor set that this armor is in.
+		/// Allows you to give set bonuses to the armor set that this armor is in. Set player.setBonus to a string for the bonus description.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		public virtual void UpdateArmorSet(Player player)

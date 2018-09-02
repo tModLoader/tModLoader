@@ -186,6 +186,15 @@
  			}
  			if ((double)num14 >= 1.2)
  			{
+@@ -1290,6 +_,8 @@
+ 
+ 		public bool checkMat()
+ 		{
++			material = ItemID.Sets.IsAMaterial[type];
++			return ItemID.Sets.IsAMaterial[type]; // bypass performance issue.
+ 			if (this.type >= 71 && this.type <= 74)
+ 			{
+ 				this.material = false;
 @@ -1306,6 +_,14 @@
  						return true;
  					}
@@ -374,7 +383,7 @@
 +		public Item CloneWithModdedDataFrom(Item dataSource)
 +		{
 +			Item newItem = (Item)base.MemberwiseClone();
-+			newItem.modItem = modItem?.Clone(newItem);
++			newItem.modItem = dataSource.modItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems.Select(g => g.Clone(dataSource, newItem)).ToArray();
 +			return newItem;
  		}

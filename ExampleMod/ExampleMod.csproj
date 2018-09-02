@@ -77,6 +77,7 @@
     <Compile Include="Commands\ScoreCommand.cs" />
     <Compile Include="Commands\SoundCommand.cs" />
     <Compile Include="Commands\VolcanoCommand.cs" />
+    <Compile Include="Dusts\AdvancedDust.cs" />
     <Compile Include="Dusts\Bubble.cs" />
     <Compile Include="Dusts\EtherealFlame.cs" />
     <Compile Include="Dusts\ExampleSolution.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Dusts\Smoke.cs" />
     <Compile Include="Dusts\Sparkle.cs" />
     <Compile Include="Dusts\SpectreDust.cs" />
+    <Compile Include="ExampleAdvancedRecipe.cs" />
     <Compile Include="ExampleCustomCurrency.cs" />
     <Compile Include="ExampleMod.cs" />
     <Compile Include="ExamplePlayer.cs" />
@@ -119,15 +121,21 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageAccessory.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageItem.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamagePlayer.cs" />
+    <Compile Include="Items\ExampleDamageClass\Mundane.cs" />
     <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
+    <Compile Include="Items\ExampleHealingPotion.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
     <Compile Include="Items\ExampleLifeFruit.cs" />
     <Compile Include="Items\ExampleMagicMirror.cs" />
+    <Compile Include="Items\Infinity.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -184,6 +192,7 @@
     <Compile Include="NPCs\Abomination\CaptiveElement.cs" />
     <Compile Include="NPCs\Abomination\CaptiveElement2.cs" />
     <Compile Include="NPCs\Abomination\FreedElement.cs" />
+    <Compile Include="NPCs\DeathAnimation.cs" />
     <Compile Include="NPCs\ExampleChestSummon.cs" />
     <Compile Include="NPCs\ExampleGlobalNPC.cs" />
     <Compile Include="NPCs\ExamplePerson.cs" />
@@ -191,6 +200,7 @@
     <Compile Include="NPCs\FlutterSlime.cs" />
     <Compile Include="NPCs\Hover.cs" />
     <Compile Include="NPCs\Octopus.cs" />
+    <Compile Include="NPCs\FallenSoul.cs" />
     <Compile Include="NPCs\PartyZombie.cs" />
     <Compile Include="NPCs\PuritySpirit\PurityShield.cs" />
     <Compile Include="NPCs\PuritySpirit\PuritySpirit.cs" />
@@ -198,6 +208,7 @@
     <Compile Include="NPCs\PuritySpirit\PuritySpiritSky.cs" />
     <Compile Include="NPCs\Sarcophagus.cs" />
     <Compile Include="NPCs\Worm.cs" />
+    <Compile Include="Prefixes\AwesomePrefix.cs" />
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ElementShield.cs" />
@@ -233,6 +244,7 @@
     <Compile Include="Projectiles\SparklingBall.cs" />
     <Compile Include="Projectiles\Wisp.cs" />
     <Compile Include="RecipeHelper.cs" />
+    <Compile Include="SimpleModPlayer.cs" />
     <Compile Include="Sounds\Custom\WatchOut.cs" />
     <Compile Include="Sounds\Item\Wooo.cs" />
     <Compile Include="Tiles\AnimatedLoom.cs" />
@@ -262,7 +274,9 @@
     <Compile Include="Tiles\TEScoreBoard.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
+    <Compile Include="UI\ExamplePersonUI.cs" />
     <Compile Include="UI\ExampleUI.cs" />
+    <Compile Include="UI\VanillaItemSlotWrapper.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
     <Compile Include="Waters\ExampleWaterfallStyle.cs" />
     <Compile Include="Waters\ExampleWaterStyle.cs" />

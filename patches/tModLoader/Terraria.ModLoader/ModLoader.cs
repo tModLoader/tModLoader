@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 	{
 		//change Terraria.Main.DrawMenu change drawn version number string to include this
 		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 1, 3);
+		public static readonly Version version = new Version(0, 10, 1, 5);
 		// Marks this release as a beta release, preventing publishing and marking all built mods as unpublishable.
 #if !BETA
 		public static readonly string versionedName = "tModLoader v" + version;
@@ -80,6 +80,8 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
+		internal static bool removeForcedMinimumZoom;
+		internal static bool allowGreaterResolutions;
 		internal static string commandLineModPack = "";
 		private static string steamID64 = "";
 		internal static string SteamID64
@@ -140,7 +142,7 @@ namespace Terraria.ModLoader
 			}
 			if (Main.dedServ)
 			{
-				Console.WriteLine("Adding mod content...");
+				Console.WriteLine(Language.GetTextValue("tModLoader.AddingModContent"));
 			}
 			int num = 0;
 			foreach (Mod mod in mods.Values)
@@ -348,6 +350,8 @@ namespace Terraria.ModLoader
 
 			foreach (string fileName in Directory.GetFiles(ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 			{
+				if (Path.GetFileName(fileName) == "temporaryDownload.tmod")
+					continue;
 				var lastModified = File.GetLastWriteTime(fileName);
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified)
 				{
@@ -358,7 +362,8 @@ namespace Terraria.ModLoader
 					}
 					catch (Exception e) //this will probably spam, given the number of calls to FindMods
 					{
-						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.LoadErrorErrorReadingModFile", modFile.path));
+						// TODO: Reflect these skipped Mods in the UI somehow.
+						//ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.LoadErrorErrorReadingModFile", modFile.path));
 						continue;
 					}
 
@@ -433,7 +438,7 @@ namespace Terraria.ModLoader
 			{
 				Directory.CreateDirectory(UI.UIModPacks.ModListSaveDirectory);
 
-				Console.WriteLine($"Loading specified modpack: {commandLineModPack}\n");
+				Console.WriteLine(Language.GetTextValue("tModLoader.LoadingSpecifiedModPack", commandLineModPack) + "\n");
 				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 				foreach (var mod in FindMods())
 				{
@@ -446,9 +451,9 @@ namespace Terraria.ModLoader
 			{
 				string err;
 				if (e is FileNotFoundException)
-					err = $"Modpack {filePath} does not exist.\n";
+					err = Language.GetTextValue("tModLoader.ModPackDoesNotExist", filePath) + "\n";
 				else
-					err = $"The {commandLineModPack} modpack failed to be read properly, it might be malformed. ({e.Message})\n";
+					err = Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack, e.Message) + "\n";
 
 				if (Main.dedServ)
 				{
@@ -906,7 +911,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			if (modName == "Terraria")
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + name + ".xnb");
+				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
 
 			Mod mod = GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
@@ -989,6 +994,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", ModLoader.musicStreamMode);
 			Main.Configuration.Put("AlwaysLogExceptions", ModLoader.alwaysLogExceptions);
+			Main.Configuration.Put("RemoveForcedMinimumZoom", ModLoader.removeForcedMinimumZoom);
+			Main.Configuration.Put("AllowGreaterResolutions", ModLoader.allowGreaterResolutions);
 		}
 
 		internal static void LoadConfiguration()
@@ -1001,6 +1008,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get<bool>("DontRemindModBrowserDownloadEnable", ref ModLoader.dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get<byte>("MusicStreamMode", ref ModLoader.musicStreamMode);
 			Main.Configuration.Get<bool>("AlwaysLogExceptions", ref ModLoader.alwaysLogExceptions);
+			Main.Configuration.Get<bool>("RemoveForcedMinimumZoom", ref ModLoader.removeForcedMinimumZoom);
+			Main.Configuration.Get<bool>("AllowGreaterResolutions", ref ModLoader.removeForcedMinimumZoom);
 		}
 
 		/// <summary>

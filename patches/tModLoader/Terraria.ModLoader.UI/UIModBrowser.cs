@@ -32,6 +32,7 @@ namespace Terraria.ModLoader.UI
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uILoader;
 		public UITextPanel<string> uIHeaderTextPanel;
+		public UIText uINoModsFoundText;
 		internal UIInputTextField filterTextBox;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		private UITextPanel<string> reloadButton;
@@ -117,6 +118,10 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 
+			uINoModsFoundText = new UIText(Language.GetTextValue("tModLoader.MBNoModsFound"), 1f, false);
+			uINoModsFoundText.HAlign = 0.5f;
+			uINoModsFoundText.SetPadding(15f);
+
 			modList.SetScrollbar(uIScrollbar);
 			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true);
 			uIHeaderTextPanel.HAlign = 0.5f;
@@ -162,7 +167,7 @@ namespace Terraria.ModLoader.UI
 				Main.PlaySound(SoundID.MenuTick);
 			};
 
-			downloadAllButton = new UITextPanel<string>("Download All", 1f, false);
+			downloadAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBDownloadAll"), 1f, false);
 			downloadAllButton.Width.Set(-10f, 0.5f);
 			downloadAllButton.Height.Set(25f, 0f);
 			downloadAllButton.HAlign = 1f;
@@ -173,7 +178,7 @@ namespace Terraria.ModLoader.UI
 			downloadAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Azure * 0.7f, s, e);
 			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
 
-			updateAllButton = new UITextPanel<string>("Update All", 1f, false);
+			updateAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUpdateAll"), 1f, false);
 			updateAllButton.Width.Set(-10f, 0.5f);
 			updateAllButton.Height.Set(25f, 0f);
 			updateAllButton.HAlign = 1f;
@@ -187,7 +192,7 @@ namespace Terraria.ModLoader.UI
 				if (!loading)
 				{
 					var updatableMods = items.Where(x => x.update && !x.updateIsDowngrade).Select(x => x.mod).ToList();
-					DownloadMods(updatableMods, "Update All");
+					DownloadMods(updatableMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
 				}
 			};
 
@@ -374,11 +379,17 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
+			bool hasNoModsFoundNotif = modList.HasChild(uINoModsFoundText);
+			if (modList.Count <= 0 && !hasNoModsFoundNotif)
+				modList.Add(uINoModsFoundText);
+			else if (hasNoModsFoundNotif)
+				modList.RemoveChild(uINoModsFoundText);
 			uIElement.RemoveChild(updateAllButton);
-			if(SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
+			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
 			{
 				uIElement.Append(updateAllButton);
 			}
+
 		}
 
 		public override void OnActivate()
@@ -542,13 +553,13 @@ namespace Terraria.ModLoader.UI
 					if (modsideString == "Client") modside = ModSide.Client;
 					if (modsideString == "Server") modside = ModSide.Server;
 					if (modsideString == "NoSync") modside = ModSide.NoSync;
-					bool exists = false;
+					//bool exists = false; // unused?
 					bool update = false;
 					bool updateIsDowngrade = false;
 					var installed = installedMods.FirstOrDefault(m => m.Name == name);
 					if (installed != null)
 					{
-						exists = true;
+						//exists = true;
 						var cVersion = new Version(version.Substring(1));
 						if (cVersion > installed.modFile.version)
 							update = true;

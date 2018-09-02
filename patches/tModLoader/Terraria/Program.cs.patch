@@ -27,16 +27,16 @@
  				};
  			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
++			// These need to be here since LoadParameters is too late since new Main() and its static initializers happens first.
 +			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
 +			{
 +				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
 +			}
-+			ErrorLogger.ClearLogs();
-+			if (LaunchParameters.ContainsKey("-build"))
++			if (Program.LaunchParameters.ContainsKey("-tmlsavedirectory"))
 +			{
-+				ModCompile.BuildModCommandLine(LaunchParameters["-build"]);
-+				return;
++				Program.LaunchParameters["-savedirectory"] = Program.LaunchParameters["-tmlsavedirectory"];
 +			}
++			ErrorLogger.ClearLogs();
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();

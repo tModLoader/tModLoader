@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.UI;
 using System.Net;
 using System.Collections.Specialized;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>(downloads + " downloads (" + downloadsversion + " latest version)", 1f, false);
+			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedModsStats", downloads, downloadsversion), 1f, false);
 			button.Width.Set(260f, 0f);
 			button.Height.Set(30f, 0f);
 			button.Left.Set(10f, 0f);
@@ -47,7 +48,7 @@ namespace Terraria.ModLoader.UI
 			//	button.OnMouseOver += UICommon.FadedMouseOver;
 			//	button.OnMouseOut += UICommon.FadedMouseOut;
 			base.Append(button);
-			button2 = new UITextPanel<string>("Unpublish", 1f, false);
+			button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUnpublish"), 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(150f, 0f);
 			button2.Left.Set(360f, 0f);

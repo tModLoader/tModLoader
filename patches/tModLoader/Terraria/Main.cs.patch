@@ -60,6 +60,15 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -324,7 +_,7 @@
+ 		public static float sunCircle;
+ 		public static int BlackFadeIn = 0;
+ 		public static bool noWindowBorder = false;
+-		private RasterizerState Rasterizer = RasterizerState.CullCounterClockwise;
++		public RasterizerState Rasterizer = RasterizerState.CullCounterClockwise;
+ 		private static string _cachedTitle;
+ 		public static int ugBack = 0;
+ 		public static int oldUgBack = 0;
 @@ -358,6 +_,9 @@
  		public static int lastMouseY;
  		public static bool mouseLeft;
@@ -255,6 +264,20 @@
  		}
  
  		public static void InitializeItemAnimations()
+@@ -2566,9 +_,10 @@
+ 					Main._renderTargetMaxSize = 2048;
+ 					break;
+ 				case GraphicsProfile.HiDef:
+-					Main.maxScreenW = 4096;
+-					Main.maxScreenH = 4096;
+-					Main._renderTargetMaxSize = 4096;
++					int hiRes = ModLoader.ModLoader.allowGreaterResolutions ? 8192 : 4096;
++					Main.maxScreenW = hiRes;
++					Main.maxScreenH = hiRes;
++					Main._renderTargetMaxSize = hiRes;
+ 					Main.TrySupporting8K();
+ 					break;
+ 			}
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -834,6 +857,23 @@
  			}
  			if (Main.netMode == 1)
  			{
+@@ -12612,6 +_,7 @@
+ 				{
+ 					Main.player[Main.myPlayer].AdjTiles();
+ 				}
++				PlayerHooks.UpdateAutopause(Main.player[Main.myPlayer]);
+ 				Main.gamePaused = true;
+ 				return;
+ 			}
+@@ -12624,6 +_,8 @@
+ 			PortalHelper.UpdatePortalPoints();
+ 			Main.tileSolid[379] = false;
+ 			Main.ActivePlayersCount = 0;
++			if (Main.netMode == 1 && Netplay.syncingWorld)
++				goto IL_1B52;
+ 			int num12 = 0;
+ 			while (num12 < 255)
+ 			{
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()
@@ -1155,13 +1195,15 @@
  				}
  				if (Main.HoverItem.healLife > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.player[Main.myPlayer].GetHealLife(Main.HoverItem));
 +					tooltipNames[num4] = "HealLife";
  					num4++;
  				}
  				if (Main.HoverItem.healMana > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.player[Main.myPlayer].GetHealMana(Main.HoverItem));
 +					tooltipNames[num4] = "HealMana";
  					num4++;
  				}
@@ -1580,7 +1622,12 @@
  				}
  				else
  				{
-@@ -15515,13 +_,25 @@
+@@ -15511,17 +_,30 @@
+ 							baseColor = new Microsoft.Xna.Framework.Color((int)((byte)(120f * num20)), (int)((byte)(190f * num20)), (int)((byte)(120f * num20)), a);
+ 						}
+ 					}
+-					else if (l == num4 - 1)
++					else if (drawableLines[l].mod.Equals("Terraria") && drawableLines[l].Name.Equals("Price"))
  					{
  						baseColor = color;
  					}
@@ -1593,6 +1640,7 @@
 +					if (overrideColor[l].HasValue)
 +					{
 +						drawColor = overrideColor[l].Value * num20;
++						drawableLines[l].overrideColor = drawColor;
 +					}
 +
 +					if (ItemLoader.PreDrawTooltipLine(Main.HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
@@ -3284,6 +3332,14 @@
  				return;
  			}
  			if (item.type == 3858)
+@@ -33483,6 +_,7 @@
+ 				num6 -= 2f;
+ 				num5 -= 2f;
+ 				Main.spriteBatch.Draw(texture2D, new Vector2(item.position.X - Main.screenPosition.X + (float)(rectangle3.Width / 2) + num6, item.position.Y - Main.screenPosition.Y + (float)(rectangle3.Height / 2) + num5), new Microsoft.Xna.Framework.Rectangle?(rectangle3), new Microsoft.Xna.Framework.Color(255, 255, 255, 63) * 0.75f, num4, rectangle3.Size() / 2f, scale, SpriteEffects.None, 0f);
++				ItemLoader.PostDrawInWorld(item, Main.spriteBatch, color, alpha, num4, scale, whoami);
+ 				return;
+ 			}
+ 			if (ItemID.Sets.TrapSigned[item.type])
 @@ -33497,16 +_,25 @@
  					Main.spriteBatch.Draw(Main.glowMaskTexture[(int)item.glowMask], new Vector2(item.position.X - Main.screenPosition.X + (float)(Main.itemTexture[item.type].Width / 2) + num6, item.position.Y - Main.screenPosition.Y + (float)(Main.itemTexture[item.type].Height / 2) + num5 + 2f), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num4, new Vector2((float)(Main.itemTexture[item.type].Width / 2), (float)(Main.itemTexture[item.type].Height / 2)), scale, SpriteEffects.None, 0f);
  				}
@@ -3357,6 +3413,18 @@
  			if (!flag)
  			{
  				Main.DrawNPCChatButtons(num, color2, num2, focusText, focusText2);
+@@ -34616,7 +_,10 @@
+ 							IngameFancyUI.OpenVirtualKeyboard(1);
+ 							return;
+ 						}
+-						else if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 369)
++						if (!NPCLoader.PreChatButtonClicked(true))
++							return;
++						NPCLoader.OnChatButtonClicked(true);
++						if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 369)
+ 						{
+ 							Main.npcChatCornerItem = 0;
+ 							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
 @@ -34943,7 +_,7 @@
  										for (int l = 0; l < 22; l++)
  										{
@@ -3366,22 +3434,16 @@
  											{
  												Main.player[Main.myPlayer].DelBuff(l);
  												l = -1;
-@@ -34999,6 +_,7 @@
- 								Main.PlaySound(12, -1, -1, 1, 1f, 0f);
- 								return;
- 							}
-+							NPCLoader.OnChatButtonClicked(true);
- 						}
+@@ -35003,6 +_,9 @@
  					}
  					else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
-@@ -35058,6 +_,7 @@
- 							Main.HelpText();
- 							Main.npcChatText = Lang.BartenderHelpText(Main.npc[Main.player[Main.myPlayer].talkNPC]);
- 						}
+ 					{
++						if (!NPCLoader.PreChatButtonClicked(false))
++							return;
 +						NPCLoader.OnChatButtonClicked(false);
- 					}
- 				}
- 			}
+ 						if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 20)
+ 						{
+ 							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
 @@ -36133,14 +_,13 @@
  							int num31 = (int)(Main.player[Main.myPlayer].manaSickReduction * 100f) + 1;
  							Main.buffString = Main.buffString + num31 + "%";
@@ -3471,6 +3533,25 @@
  				Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  			}
  		}
+@@ -37535,7 +_,8 @@
+ 				{
+ 					if (Main.item[i].active)
+ 					{
+-						Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)((double)Main.item[i].position.X + (double)Main.item[i].width * 0.5 - (double)Main.itemTexture[Main.item[i].type].Width * 0.5), (int)(Main.item[i].position.Y + (float)Main.item[i].height - (float)Main.itemTexture[Main.item[i].type].Height), Main.itemTexture[Main.item[i].type].Width, Main.itemTexture[Main.item[i].type].Height);
++						Microsoft.Xna.Framework.Rectangle value = Main.itemAnimations[Main.item[i].type]?.GetFrame(Main.itemTexture[Main.item[i].type]) ?? Main.itemTexture[Main.item[i].type].Bounds;
++						value.Location = new Microsoft.Xna.Framework.Point((int)(Main.item[i].position.X + Main.item[i].width * 0.5 - value.Width * 0.5), (int)(Main.item[i].position.Y + Main.item[i].height - value.Height));
+ 						if (rectangle.Intersects(value))
+ 						{
+ 							Main.player[Main.myPlayer].showItemIcon = false;
+@@ -37616,7 +_,7 @@
+ 						if (flag2 && ((Main.npc[k].type != 85 && Main.npc[k].type != 341 && Main.npc[k].aiStyle != 87) || Main.npc[k].ai[0] != 0f) && Main.npc[k].type != 488)
+ 						{
+ 							bool flag3 = Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == k;
+-							if (Main.npc[k].townNPC || Main.npc[k].type == 105 || Main.npc[k].type == 106 || Main.npc[k].type == 123 || Main.npc[k].type == 354 || Main.npc[k].type == 376 || Main.npc[k].type == 579 || Main.npc[k].type == 453)
++							if (NPCLoader.CanChat(Main.npc[k]))
+ 							{
+ 								Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
+ 								Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)Main.npc[k].position.X, (int)Main.npc[k].position.Y, Main.npc[k].width, Main.npc[k].height);
 @@ -38028,6 +_,7 @@
  				if (num4 > 0)
  				{
@@ -3728,14 +3809,15 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num94], new Vector2((float)(num3 + num101 + array5[num94]), (float)(num2 + num4 * num94 + num102) + origin.Y * array7[num94] + (float)array4[num94]), color10, 0f, origin, num103, SpriteEffects.None, 0f);
  						}
  						else
-@@ -46498,10 +_,25 @@
+@@ -46498,10 +_,29 @@
  				{
  					num111 = 2;
  				}
 -				Vector2 origin3 = Main.fontMouseText.MeasureString(Main.versionNumber);
 +				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +				string patreonShortURL = @"patreon.com/tModLoader";
-+				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + Environment.NewLine + supportMessage;
++				bool showPatreon = Main.menuMode == 0;
++				string drawVersion = Main.versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 +				Vector2 origin3 = Main.fontMouseText.MeasureString(drawVersion);
  				origin3.X *= 0.5f;
  				origin3.Y *= 0.5f;
@@ -3745,13 +3827,16 @@
 +				{
 +					color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
 +				}
-+				origin3 = Main.fontMouseText.MeasureString(supportMessage);
-+				Vector2 urlSize = Main.fontMouseText.MeasureString(patreonShortURL);
-+				Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-+				if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin3.X + 10, Main.screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)))
++				if (showPatreon)
 +				{
-+					Main.PlaySound(SoundID.MenuOpen);
-+					Process.Start("https://www.patreon.com/tModLoader");
++					origin3 = Main.fontMouseText.MeasureString(supportMessage);
++					Vector2 urlSize = Main.fontMouseText.MeasureString(patreonShortURL);
++					Main.spriteBatch.DrawString(Main.fontMouseText, patreonShortURL, new Vector2(origin3.X + (float)num110 + 10f, (float)Main.screenHeight - origin3.Y + (float)num111 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++					if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin3.X + 10, Main.screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)))
++					{
++						Main.PlaySound(SoundID.MenuOpen);
++						Process.Start("https://www.patreon.com/tModLoader");
++					}
 +				}
  			}
  			Vector2 bonus = Main.DrawThickCursor(false);
@@ -4169,6 +4254,17 @@
  			float num55 = (float)(Main.maxTilesX / 4200);
  			num55 *= num55;
  			Main.atmo = (float)((double)((Main.screenPosition.Y + (float)(Main.screenHeight / 2)) / 16f - (65f + 10f * num55)) / (Main.worldSurface / 5.0));
+@@ -57292,8 +_,8 @@
+ 			}
+ 			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+ 			base.Draw(gameTime);
+-			float val = (float)Main.screenWidth / 1920f;
+-			float val2 = (float)Main.screenHeight / 1200f;
++			float val = (float)Main.screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 1920f : 8192f);
++			float val2 = (float)Main.screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 1200f : 8192f);
+ 			Main.GameViewMatrix.Effects = ((Main.gameMenu || Main.player[Main.myPlayer].gravDir == 1f) ? SpriteEffects.None : SpriteEffects.FlipVertically);
+ 			Main.BackgroundViewMatrix.Effects = Main.GameViewMatrix.Effects;
+ 			Main.ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
 @@ -57307,6 +_,7 @@
  			{
  				this.Rasterizer = RasterizerState.CullClockwise;

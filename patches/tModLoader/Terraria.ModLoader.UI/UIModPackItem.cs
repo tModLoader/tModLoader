@@ -36,6 +36,7 @@ namespace Terraria.ModLoader.UI
 		readonly UITextPanel<string> enableListButton;
 		readonly UITextPanel<string> enableListOnlyButton;
 		readonly UITextPanel<string> viewInModBrowserButton;
+		readonly UITextPanel<string> updateListWithEnabledButton;
 		private readonly UIImageButton deleteButton;
 		private readonly string filename;
 
@@ -83,7 +84,7 @@ namespace Terraria.ModLoader.UI
 			UITextPanel<string> viewListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList"), 1f, false);
 			viewListButton.Width.Set(100f, 0f);
 			viewListButton.Height.Set(30f, 0f);
-			viewListButton.Left.Set(430f, 0f);
+			viewListButton.Left.Set(407f, 0f);
 			viewListButton.Top.Set(40f, 0f);
 			viewListButton.PaddingTop -= 2f;
 			viewListButton.PaddingBottom -= 2f;
@@ -95,7 +96,7 @@ namespace Terraria.ModLoader.UI
 			enableListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList"), 1f, false);
 			enableListButton.Width.Set(100f, 0f);
 			enableListButton.Height.Set(30f, 0f);
-			enableListButton.Left.Set(273f, 0f);
+			enableListButton.Left.Set(248f, 0f);
 			enableListButton.Top.Set(40f, 0f);
 			enableListButton.PaddingTop -= 2f;
 			enableListButton.PaddingBottom -= 2f;
@@ -107,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			enableListOnlyButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList"), 1f, false);
 			enableListOnlyButton.Width.Set(100f, 0f);
 			enableListOnlyButton.Height.Set(30f, 0f);
-			enableListOnlyButton.Left.Set(75f, 0f);
+			enableListOnlyButton.Left.Set(50f, 0f);
 			enableListOnlyButton.Top.Set(40f, 0f);
 			enableListOnlyButton.PaddingTop -= 2f;
 			enableListOnlyButton.PaddingBottom -= 2f;
@@ -119,7 +120,7 @@ namespace Terraria.ModLoader.UI
 			viewInModBrowserButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser"), 1f, false);
 			viewInModBrowserButton.Width.Set(50f, 0f);
 			viewInModBrowserButton.Height.Set(30f, 0f);
-			viewInModBrowserButton.Left.Set(75f, 0f);
+			viewInModBrowserButton.Left.Set(50f, 0f);
 			viewInModBrowserButton.Top.Set(80f, 0f);
 			viewInModBrowserButton.PaddingTop -= 2f;
 			viewInModBrowserButton.PaddingBottom -= 2f;
@@ -127,6 +128,18 @@ namespace Terraria.ModLoader.UI
 			viewInModBrowserButton.OnMouseOut += UICommon.FadedMouseOut;
 			viewInModBrowserButton.OnClick += ViewInModBrowser;
 			base.Append(viewInModBrowserButton);
+
+			updateListWithEnabledButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled"), 1f, false);
+			updateListWithEnabledButton.Width.Set(50f, 0f);
+			updateListWithEnabledButton.Height.Set(30f, 0f);
+			updateListWithEnabledButton.Left.Set(304f, 0f);
+			updateListWithEnabledButton.Top.Set(80f, 0f);
+			updateListWithEnabledButton.PaddingTop -= 2f;
+			updateListWithEnabledButton.PaddingBottom -= 2f;
+			updateListWithEnabledButton.OnMouseOver += UICommon.FadedMouseOver;
+			updateListWithEnabledButton.OnMouseOut += UICommon.FadedMouseOut;
+			updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(filename);
+			Append(updateListWithEnabledButton);
 
 			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete"));
 			deleteButton.Top.Set(40f, 0f);
@@ -158,7 +171,7 @@ namespace Terraria.ModLoader.UI
 			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 355, innerDimensions.Y);
 			this.DrawPanel(spriteBatch, drawPos, 350f);
-			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(15f, 5f));
+			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
 			//if (this.enabled != ModLoader.ModLoaded(mod.name))
 			//{
 			//	drawPos += new Vector2(120f, 5f);
@@ -227,7 +240,7 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.Activate();
 			Interface.modBrowser.filterTextBox.currentString = "";
 			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
-			Interface.modBrowser.SpecialModPackFilterTitle = "Modlist";// Too long: " + modListItem.modName.Text;
+			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 			Interface.modBrowser.modSideFilterMode = ModSideFilter.All;
 			Interface.modBrowser.UpdateFilterToggle.setCurrentState((int)Interface.modBrowser.updateFilterMode);
@@ -274,12 +287,22 @@ namespace Terraria.ModLoader.UI
 			string message = "";
 			for (int i = 0; i < modListItem.mods.Length; i++)
 			{
-				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : "") + "\n";
+				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? Language.GetTextValue("tModLoader.ModPackDisabled") : "") + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
 			Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsContained", message));
 			Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
 			Main.menuMode = Interface.infoMessageID;
+		}
+
+		public override int CompareTo(object obj)
+		{
+			var item = obj as UIModPackItem;
+			if (item == null)
+			{
+				return base.CompareTo(obj);
+			}
+			return filename.CompareTo(item.filename);
 		}
 	}
 }

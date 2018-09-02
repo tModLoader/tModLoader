@@ -159,12 +159,14 @@ namespace Terraria.ModLoader.UI
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory.StartNew(
-				delegate {
+				delegate
+				{
 					var modSources = ModLoader.FindModSources();
 					var modFiles = ModLoader.FindMods();
 					return Tuple.Create(modSources, modFiles);
 				})
-				.ContinueWith(task => {
+				.ContinueWith(task =>
+				{
 					var modSources = task.Result.Item1;
 					var modFiles = task.Result.Item2;
 					foreach (string sourcePath in modSources)

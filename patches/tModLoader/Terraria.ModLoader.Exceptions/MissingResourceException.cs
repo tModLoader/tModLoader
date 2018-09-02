@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Exceptions
 {
@@ -32,7 +33,7 @@ namespace Terraria.ModLoader.Exceptions
 			closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
 			if (closestMatch != null && closestMatch != "")
 			{
-				return $"Expected resource not found:\n    {message}\nClosest guess: (Is there a spelling or folder placement error?)\n    {closestMatch}\n";
+				return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", message, closestMatch) + "\n";
 			}
 			return message;
 		}

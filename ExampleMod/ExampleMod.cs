@@ -27,19 +27,21 @@ namespace ExampleMod
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
+		internal UserInterface examplePersonUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyID;
 
 		public ExampleMod()
 		{
-			Properties = new ModProperties()
-			{
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true,
-				AutoloadBackgrounds = true
-			};
+			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
+			//Properties = new ModProperties()
+			//{
+			//	Autoload = true,
+			//	AutoloadGores = true,
+			//	AutoloadSounds = true,
+			//	AutoloadBackgrounds = true
+			//};
 		}
 
 		public override void Load()
@@ -74,7 +76,7 @@ namespace ExampleMod
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 
-				// Change the vailla loom texture
+				// Change the vanilla loom texture
 				Main.instance.LoadTiles(TileID.Loom); // First load the tile texture
 				Main.tileTexture[TileID.Loom] = GetTexture("Tiles/AnimatedLoom"); // Now we change it
 
@@ -96,11 +98,18 @@ namespace ExampleMod
 				exampleEffectRef.Value = exampleEffect;
 				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
 
+				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
+
 				// Custom UI
 				exampleUI = new ExampleUI();
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
+
+				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
+				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
+				examplePersonUserInterface = new UserInterface();
+				// We will call .SetState later in ExamplePerson.OnChatButtonClicked
 			}
 
 			// Register custom mod translations, lives left is for Spirit of Purity
@@ -114,7 +123,7 @@ namespace ExampleMod
 			text.SetDefault("<{0}> {1}");
 			AddTranslation(text);
 
-			// Volcano warning is for the random vulcano tremor
+			// Volcano warning is for the random volcano tremor
 			text = CreateTranslation("VolcanoWarning");
 			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
 			AddTranslation(text);
@@ -128,6 +137,7 @@ namespace ExampleMod
 				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
+				GameShaders.Misc.Remove("ExampleMod:DeathAnimation");
 			}
 
 			// Unload static references
@@ -279,8 +289,10 @@ namespace ExampleMod
 
 		public override void UpdateUI(GameTime gameTime)
 		{
-			if (exampleUserInterface != null)
+			if (exampleUserInterface != null && ExampleUI.visible)
 				exampleUserInterface.Update(gameTime);
+			if (examplePersonUserInterface != null)
+				examplePersonUserInterface.Update(gameTime);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -294,8 +306,22 @@ namespace ExampleMod
 					{
 						if (ExampleUI.visible)
 						{
-							exampleUI.Draw(Main.spriteBatch);
+							exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+			}
+			int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+			if (InventoryIndex != -1)
+			{
+				layers.Insert(InventoryIndex + 1, new LegacyGameInterfaceLayer(
+					"ExampleMod: Example Person UI",
+					delegate
+					{
+						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
+						examplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)

@@ -17,12 +17,12 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
 		private static readonly bool[] vanillaLongerExpertDebuff = new bool[BuffID.Count];
 		private static readonly bool[] vanillaCanBeCleared = new bool[BuffID.Count];
-		
+
 		private delegate void DelegateUpdatePlayer(int type, Player player, ref int buffIndex);
-		private static DelegateUpdatePlayer[] HookUpdatePlayer; 
+		private static DelegateUpdatePlayer[] HookUpdatePlayer;
 		private delegate void DelegateUpdateNPC(int type, NPC npc, ref int buffIndex);
-		private static DelegateUpdateNPC[] HookUpdateNPC; 
-		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer; 
+		private static DelegateUpdateNPC[] HookUpdateNPC;
+		private static Func<int, Player, int, int, bool>[] HookReApplyPlayer;
 		private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
 		private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
@@ -100,7 +100,7 @@ namespace Terraria.ModLoader
 				Lang._buffNameCache[k] = LocalizedText.Empty;
 				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
 			}
-			
+
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);

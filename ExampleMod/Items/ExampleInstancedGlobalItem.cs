@@ -39,7 +39,7 @@ namespace ExampleMod.Items
 
 		public override int ChoosePrefix(Item item, UnifiedRandom rand)
 		{
-			if (item.accessory || item.damage > 0 && item.maxStack == 1 && rand.NextBool(30))
+			if ((item.accessory || item.damage > 0) && item.maxStack == 1 && rand.NextBool(30))
 			{
 				return mod.PrefixType(rand.Next(2) == 0 ? "Awesome" : "ReallyAwesome");
 			}

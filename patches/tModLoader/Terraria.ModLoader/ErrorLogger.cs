@@ -41,11 +41,11 @@ namespace Terraria.ModLoader
 
 		internal static void LogCompileErrors(CompilerErrorCollection errors, bool forWindows)
 		{
-			string errorHeader = "An error ocurred while compiling a mod." + Environment.NewLine + Environment.NewLine;
+			string errorHeader = Language.GetTextValue("tModLoader.BuildErrorCompilingError") + Environment.NewLine + Environment.NewLine;
 			string badInstallHint = "";
 			if (!forWindows && ModLoader.windows)
 			{
-				badInstallHint = "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well." + Environment.NewLine + Environment.NewLine;
+				badInstallHint = Language.GetTextValue("tModLoader.BuildErrorModCompileFolderHint") + Environment.NewLine + Environment.NewLine;
 			}
 			Console.WriteLine(errorHeader + badInstallHint);
 			Directory.CreateDirectory(LogPath);
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader
 		internal static void LogDllBuildError(string modDir)
 		{
 			Directory.CreateDirectory(LogPath);
-			var errorText = "Missing dll files for " + Path.GetFileName(modDir) + Environment.NewLine + Environment.NewLine +
+			var errorText = Language.GetTextValue("tModLoader.BuildErrorMissingDllFilesFor", Path.GetFileName(modDir)) + Environment.NewLine + Environment.NewLine +
 							string.Join(Environment.NewLine, buildDllLines);
 			File.WriteAllText(CompileErrorPath, errorText);
 			Console.WriteLine(errorText);
@@ -178,7 +178,7 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(message);
 			}
-			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;
@@ -192,7 +192,7 @@ namespace Terraria.ModLoader
 			{
 				writer.WriteLine(message);
 			}
-			Interface.errorMessage.SetMessage("The Mod Browser server response:\n\n" + message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
 			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;

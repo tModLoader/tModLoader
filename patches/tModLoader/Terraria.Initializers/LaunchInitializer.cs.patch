@@ -1,9 +1,10 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
-@@ -1,6 +_,9 @@
--using System;
+@@ -1,6 +_,11 @@
+ using System;
 +using System.Collections.Generic;
  using System.Diagnostics;
++using System.IO;
 +using System.Linq;
 +using System.Text.RegularExpressions;
  using Terraria.Localization;
@@ -63,10 +64,31 @@
  			}
  		}
  
-@@ -172,6 +_,14 @@
+@@ -156,6 +_,19 @@
+ 			{
+ 				LanguageManager.Instance.SetLanguage(text);
+ 			}
++
++			// We handle the build parameter this far in
++			// so vanilla can take care of loading the appropriate localization keys beforehand
++			if ((text = LaunchInitializer.TryParameter(new string[]
++				{
++					"-build"
++				})) != null)
++			{
++				// Inside the build from command line, the application exits
++				// Anything beyond this point will not be executed
++				ModCompile.BuildModCommandLine(text);
++			}
++
+ 			string worldName;
+ 			if ((worldName = LaunchInitializer.TryParameter(new string[]
+ 				{
+@@ -171,6 +_,14 @@
+ 				})) != null)
  			{
  				game.NewMOTD(newMOTD);
- 			}
++			}
 +			string modPath;
 +			if ((modPath = LaunchInitializer.TryParameter(new string[]
 +				{
@@ -74,8 +96,7 @@
 +				})) != null)
 +			{
 +				ModLoader.ModLoader.modPath = modPath;
-+			}
+ 			}
  			string banFilePath;
  			if ((banFilePath = LaunchInitializer.TryParameter(new string[]
- 				{
 

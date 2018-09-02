@@ -22,7 +22,8 @@ namespace Terraria.ModLoader.IO
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			var tag = new TagCompound
+			{
 				["chests"] = SaveChests(),
 				["tiles"] = TileIO.SaveTiles(),
 				["containers"] = TileIO.SaveContainers(),
@@ -46,7 +47,7 @@ namespace Terraria.ModLoader.IO
 			path = Path.ChangeExtension(path, ".twld");
 			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
-			
+
 			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 			if (buf[0] != 0x1F || buf[1] != 0x8B)
 			{
@@ -95,7 +96,8 @@ namespace Terraria.ModLoader.IO
 				if (itemTagList == null) //doesn't need mod saving
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["items"] = itemTagList,
 					["x"] = chest.x,
 					["y"] = chest.y
@@ -128,7 +130,8 @@ namespace Terraria.ModLoader.IO
 				{
 					if (npc.townNPC)
 					{
-						TagCompound tag = new TagCompound {
+						TagCompound tag = new TagCompound
+						{
 							["mod"] = npc.modNPC.mod.Name,
 							["name"] = npc.modNPC.Name,
 							["displayName"] = npc.GivenName,
@@ -142,7 +145,8 @@ namespace Terraria.ModLoader.IO
 					}
 					else if (NPCID.Sets.SavesAndLoads[npc.type])
 					{
-						TagCompound tag = new TagCompound {
+						TagCompound tag = new TagCompound
+						{
 							["mod"] = npc.modNPC.mod.Name,
 							["name"] = npc.modNPC.Name,
 							["x"] = npc.position.X,
@@ -203,7 +207,8 @@ namespace Terraria.ModLoader.IO
 				if (NPC.killCount[type] <= 0)
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = NPCLoader.GetNPC(type).mod.Name,
 					["name"] = NPCLoader.GetNPC(type).Name,
 					["count"] = NPC.killCount[type]
@@ -237,7 +242,8 @@ namespace Terraria.ModLoader.IO
 			int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
 			var modItem = ItemLoader.GetItem(type);
 
-			return new TagCompound {
+			return new TagCompound
+			{
 				["mod"] = modItem.mod.Name,
 				["itemName"] = modItem.Name
 			};
@@ -310,7 +316,8 @@ namespace Terraria.ModLoader.IO
 				if (data == null)
 					continue;
 
-				list.Add(new TagCompound {
+				list.Add(new TagCompound
+				{
 					["mod"] = modWorld.mod.Name,
 					["name"] = modWorld.Name,
 					["data"] = data
@@ -534,7 +541,8 @@ namespace Terraria.ModLoader.IO
 				}
 				else
 				{
-					var tag = new TagCompound {
+					var tag = new TagCompound
+					{
 						["mod"] = modName,
 						["name"] = name,
 						["legacyData"] = data

@@ -1,9 +1,9 @@
 ﻿namespace Terraria.ModLoader.Default.Patreon
 {
-	class toplayz_Head : PatreonItem
+	internal class toplayz_Head : PatreonItem
 	{
 		public override string PatreonName => "toplayz";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Head;
+		public override EquipType PatreonEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -13,10 +13,10 @@
 		}
 	}
 
-	class toplayz_Body : PatreonItem
+	internal class toplayz_Body : PatreonItem
 	{
 		public override string PatreonName => "toplayz";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Body;
+		public override EquipType PatreonEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -26,10 +26,10 @@
 		}
 	}
 
-	class toplayz_Legs : PatreonItem
+	internal class toplayz_Legs : PatreonItem
 	{
 		public override string PatreonName => "toplayz";
-		public override PatreonItemType PatreonEquipType => PatreonItemType.Legs;
+		public override EquipType PatreonEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 
@@ -13,9 +14,10 @@ namespace Terraria.ModLoader.UI
 		private int gotoMenu;
 		private LocalMod mod;
 
-		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {".dll", ".pdb"};
+		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) { ".dll", ".pdb" };
 
-		public override void OnInitialize() {
+		public override void OnInitialize()
+		{
 			loadProgress = new UILoadProgress();
 			loadProgress.Width.Set(0f, 0.8f);
 			loadProgress.MaxWidth.Set(600f, 0f);
@@ -31,10 +33,11 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
 				.StartNew(() => Interface.extractMod._Extract())
-				.ContinueWith(t => {
+				.ContinueWith(t =>
+				{
 					var e = t.Result;
 					if (e != null)
-						ErrorLogger.LogException(e, "An error occured while extracting " + mod.Name);
+						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name));
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
@@ -50,26 +53,29 @@ namespace Terraria.ModLoader.UI
 			this.gotoMenu = gotoMenu;
 		}
 
-		private Exception _Extract() {
+		private Exception _Extract()
+		{
 			StreamWriter log = null;
-			try {
+			try
+			{
 				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
 				if (Directory.Exists(dir))
 					Directory.Delete(dir, true);
 				Directory.CreateDirectory(dir);
 
-				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) {AutoFlush = true};
-				
-				if (mod.properties.hideCode)
-					log.WriteLine("The modder has chosen to hide the code from tModReader.");
-				else if (!mod.properties.includeSource)
-					log.WriteLine("The modder has not chosen to include their source code.");
-				if (mod.properties.hideResources)
-					log.WriteLine("The modder has chosen to hide resources (ie. images) from tModReader.");
+				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) { AutoFlush = true };
 
-				log.WriteLine("Files:");
+				if (mod.properties.hideCode)
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
+				else if (!mod.properties.includeSource)
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractNoSourceCodeMessage"));
+				if (mod.properties.hideResources)
+					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideResourcesMessage"));
+
+				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
+
 				void WriteFile(string name, byte[] content)
 				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
@@ -92,15 +98,38 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 
-				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) => WriteFile(name, reader.ReadBytes(len)));
+				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) =>
+				{
+					byte[] data = reader.ReadBytes(len);
+
+					// check if subject is rawimg, then read it as rawimg and convert back to png
+					if (name.EndsWith(".rawimg"))
+					{
+						using (var ms = new MemoryStream(data))
+						{
+							var img = ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, ms);
+							using (var pngstream = new MemoryStream())
+							{
+								img.SaveAsPng(pngstream, img.Width, img.Height);
+								data = pngstream.ToArray();
+							}
+						}
+
+						name = Path.ChangeExtension(name, "png");
+					}
+
+					WriteFile(name, data);
+				});
 				foreach (var entry in mod.modFile)
 					WriteFile(entry.Key, entry.Value);
 			}
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				log?.WriteLine(e);
 				return e;
 			}
-			finally {
+			finally
+			{
 				log?.Close();
 				mod?.modFile.UnloadAssets();
 			}

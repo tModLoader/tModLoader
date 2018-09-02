@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.Default.Patreon;
@@ -7,7 +8,7 @@ using Terraria.ModLoader.Default.Patreon;
 namespace Terraria.ModLoader.Default
 {
 	internal class ModLoaderMod : Mod
-	{
+	{	
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
@@ -41,38 +42,46 @@ namespace Terraria.ModLoader.Default
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
-			AddPatreon();
+			AddPatronSets();
+			AddPlayer("PatronModPlayer", new PatronModPlayer());
 		}
 
-		private void AddPatreon()
+		// If new types arrise (probably not), change the format:
+		// head, body, legs, wings, <new>
+		private static readonly PatreonItem[][] PatronSets =
 		{
-			AddPatreonItemAndEquipType(new toplayz_Head(), "toplayz", EquipType.Head);
-			AddPatreonItemAndEquipType(new toplayz_Body(), "toplayz", EquipType.Body);
-			AddPatreonItemAndEquipType(new toplayz_Legs(), "toplayz", EquipType.Legs);
-			AddPatreonItemAndEquipType(new KittyKitCatCat_Head(), "KittyKitCatCat", EquipType.Head);
-			AddPatreonItemAndEquipType(new KittyKitCatCat_Body(), "KittyKitCatCat", EquipType.Body);
-			AddPatreonItemAndEquipType(new KittyKitCatCat_Legs(), "KittyKitCatCat", EquipType.Legs);
-			AddPatreonItemAndEquipType(new litcherally_Head(), "litcherally", EquipType.Head);
-			AddPatreonItemAndEquipType(new litcherally_Body(), "litcherally", EquipType.Body);
-			AddPatreonItemAndEquipType(new litcherally_Legs(), "litcherally", EquipType.Legs);
-			AddPatreonItemAndEquipType(new PotyBlank_Head(), "PotyBlank", EquipType.Head);
-			AddPatreonItemAndEquipType(new PotyBlank_Body(), "PotyBlank", EquipType.Body);
-			AddPatreonItemAndEquipType(new PotyBlank_Legs(), "PotyBlank", EquipType.Legs);
-			AddPatreonItemAndEquipType(new Dinidini_Head(), "dinidini", EquipType.Head);
-			AddPatreonItemAndEquipType(new Dinidini_Body(), "dinidini", EquipType.Body);
-			AddPatreonItemAndEquipType(new Dinidini_Legs(), "dinidini", EquipType.Legs);
+			new PatreonItem[] { new toplayz_Head(), new toplayz_Body(), new toplayz_Legs() },
+			new PatreonItem[] { new KittyKitCatCat_Head(), new KittyKitCatCat_Body(), new KittyKitCatCat_Legs() },
+			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
+			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
+			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
+			new PatreonItem[] { new Saethar_Head(), new Saethar_Body(), new Saethar_Legs(), new Saethar_Wings(),  },
+			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  }
+		};
+
+		private void AddPatronSets()
+		{
+			// Flatten, and select items not null
+			foreach (var patronItem in PatronSets.SelectMany(x => x))
+			{
+				AddPatreonItemAndEquipType(patronItem, patronItem.PatreonName, patronItem.PatreonEquipType);
+			}
 		}
 
+		// Adds the given patreon item to ModLoader, and handles loading its assets automatically
 		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)
 		{
+			// If a client, we need to add several textures
 			if (!Main.dedServ)
 			{
 				AddTexture($"Patreon.{name}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}"));
 				AddTexture($"Patreon.{name}_{equipType}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}_{equipType}"));
-				if (equipType == EquipType.Body)
+				if (equipType == EquipType.Body) // If a body, add the arms texture
 					AddTexture($"Patreon.{name}_{equipType}_Arms", ReadTexture($"Patreon.{name}_{equipType}_Arms"));
 			}
+			// Adds the item to ModLoader, as well as the normal assets
 			AddItem($"{name}_{equipType}", item);
+			// AddEquipTexture adds the arms and female body assets automatically, if EquipType is Body
 			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
 		}
 
@@ -91,8 +100,30 @@ namespace Terraria.ModLoader.Default
 		private static Texture2D ReadTexture(string file)
 		{
 			Assembly assembly = Assembly.GetExecutingAssembly();
+			// if someone set the type or name wrong, the stream will be null.
 			Stream stream = assembly.GetManifestResourceStream("Terraria.ModLoader.Default." + file + ".png");
+			if (stream == null) // [sanity check, makes it easier to know what's wrong]
+				throw new ArgumentException("Given EquipType for PatreonItem or name is not valid. It is possible either does not match up with the classname. If you added a new EquipType, modify GetEquipTypeSuffix() and AddPatreonItemAndEquipType() first.");
 			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
-	}
+
+
+		private const int ChanceToGetArmor = 20;
+		
+		internal static bool TryGettingPatreonArmor(Player player)
+     		{
+     			if (Main.rand.NextBool(ChanceToGetArmor))
+     			{
+     				int randomIndex = Main.rand.Next(PatronSets.Length);
+     				
+     				foreach (var patreonItem in PatronSets[randomIndex])
+     				{
+     					player.QuickSpawnItem(patreonItem.item.type);
+     				}
+     
+     				return true;
+     			}
+     			return false;
+     		}
+     	}
 }

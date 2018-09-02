@@ -79,7 +79,8 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual GlobalItem NewInstance(Item item) {
+		public virtual GlobalItem NewInstance(Item item)
+		{
 			if (CloneNewInstances)
 				return Clone();
 
@@ -155,6 +156,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
@@ -212,10 +235,19 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
+		/// If false is returned, the OnConsumeAmmo hook is never called.
 		/// </summary>
 		public virtual bool ConsumeAmmo(Item item, Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when ammo is consumed. Called both by the gun and by the ammo.
+		/// Called before the ammo stack is reduced.
+		/// </summary>
+		public virtual void OnConsumeAmmo(Item item, Player player)
+		{
 		}
 
 		/// <summary>
@@ -303,10 +335,19 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.
+		/// If false is returned, the OnConsumeItem hook is never called.
 		/// </summary>
 		public virtual bool ConsumeItem(Item item, Player player)
 		{
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this item is consumed.
+		/// Called before the item stack is reduced.
+		/// </summary>
+		public virtual void OnConsumeItem(Item item, Player player)
+		{
 		}
 
 		/// <summary>
@@ -468,6 +509,7 @@ namespace Terraria.ModLoader
 		/// Return false to stop the default items from being dropped; returns true by default. 
 		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". 
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
@@ -481,6 +523,7 @@ namespace Terraria.ModLoader
 		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
 		/// Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag".
 		/// For boss bags and crates, arg will be set to the type of the item being opened.
+		/// This method is also called for modded bossBags that are properly implemented.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
