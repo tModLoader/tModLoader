@@ -98,12 +98,12 @@ namespace Terraria.ModLoader
 					int slot = GetSoundSlot(type, sound);
 					if (type != SoundType.Music)
 					{
-						GetSoundArray(type)[slot] = ModLoader.GetSound(sound);
+						GetSoundArray(type)[slot] = ModContent.GetSound(sound);
 						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.CreateInstance() ?? null;
 					}
 					else
 					{
-						Main.music[slot] = ModLoader.GetMusic(sound) ?? null;
+						Main.music[slot] = ModContent.GetMusic(sound) ?? null;
 					}
 				}
 			}

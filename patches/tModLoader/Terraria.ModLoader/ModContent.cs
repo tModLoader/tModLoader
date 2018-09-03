@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.UI;
+using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
@@ -12,6 +14,10 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
+	/// <summary>
+	/// Manages content added by mods.
+	/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+	/// </summary>
 	public class ModContent
 	{
 		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
@@ -252,7 +258,7 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
-			GameInput.PlayerInput.ReInitialize();
+			PlayerInput.ReInitialize();
 		}
 
 		public static void Unload()
@@ -295,7 +301,7 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
-			GameContent.UI.CustomCurrencyManager.Initialize();
+			CustomCurrencyManager.Initialize();
 
 			CleanupModReferences();
 		}

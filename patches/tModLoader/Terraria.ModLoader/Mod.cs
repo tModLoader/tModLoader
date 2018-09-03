@@ -584,7 +584,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
 
-			ModLoader.GetTexture(texture); //ensure texture exists
+			ModContent.GetTexture(texture); //ensure texture exists
 
 			equipTexture.Texture = texture;
 			equipTexture.mod = this;
@@ -598,11 +598,11 @@ namespace Terraria.ModLoader
 
 			if (type == EquipType.Body)
 			{
-				if (femaleTexture == null || !ModLoader.TextureExists(femaleTexture))
+				if (femaleTexture == null || !ModContent.TextureExists(femaleTexture))
 					femaleTexture = texture;
 				EquipLoader.femaleTextures[slot] = femaleTexture;
 
-				ModLoader.GetTexture(armTexture); //ensure texture exists
+				ModContent.GetTexture(armTexture); //ensure texture exists
 				EquipLoader.armTextures[slot] = armTexture;
 			}
 			if (item != null)
@@ -748,7 +748,7 @@ namespace Terraria.ModLoader
 			dust.mod = this;
 			dust.Name = name;
 			dust.Type = ModDust.ReserveDustID();
-			dust.Texture = !string.IsNullOrEmpty(texture) ? ModLoader.GetTexture(texture) : Main.dustTexture;
+			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture) : Main.dustTexture;
 
 			dusts[name] = dust;
 			ModDust.dusts.Add(dust);
@@ -1294,7 +1294,7 @@ namespace Terraria.ModLoader
 			NPCHeadLoader.heads[texture] = slot;
 			if (!Main.dedServ)
 			{
-				ModLoader.GetTexture(texture);
+				ModContent.GetTexture(texture);
 			}
 			/*else if (Main.dedServ && !(ModLoader.FileExists(texture + ".png") || ModLoader.FileExists(texture + ".rawimg")))
 			{
@@ -1315,7 +1315,7 @@ namespace Terraria.ModLoader
 
 			int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 			NPCHeadLoader.bossHeads[texture] = slot;
-			ModLoader.GetTexture(texture);
+			ModContent.GetTexture(texture);
 			if (npcType >= 0)
 			{
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
@@ -1543,10 +1543,10 @@ namespace Terraria.ModLoader
 
 			foreach (var entry in extraTextures)
 			{
-				if (!ModLoader.TextureExists(entry.Value))
+				if (!ModContent.TextureExists(entry.Value))
 					continue;
 
-				Texture2D extraTexture = ModLoader.GetTexture(entry.Value);
+				Texture2D extraTexture = ModContent.GetTexture(entry.Value);
 				switch (entry.Key)
 				{
 					case MountTextureType.Back:
@@ -1947,7 +1947,7 @@ namespace Terraria.ModLoader
 			if (modSound != null)
 			{
 				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound = ModLoader.GetSound(soundPath);
+				modSound.sound = ModContent.GetSound(soundPath);
 			}
 		}
 
@@ -2013,7 +2013,7 @@ namespace Terraria.ModLoader
 				throw new Exception("AddBackgroundTexture can only be called from Mod.Load or Mod.Autoload");
 
 			BackgroundTextureLoader.backgrounds[texture] = BackgroundTextureLoader.ReserveBackgroundSlot();
-			ModLoader.GetTexture(texture);
+			ModContent.GetTexture(texture);
 		}
 
 		/// <summary>
@@ -2188,7 +2188,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
 
-			return ModLoader.RegisterHotKey(this, name, defaultKey);
+			return ModContent.RegisterHotKey(this, name, defaultKey);
 		}
 
 		/// <summary>
@@ -2228,11 +2228,11 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModTile tile in tiles.Values)
 			{
-				Main.tileTexture[tile.Type] = ModLoader.GetTexture(tile.texture);
+				Main.tileTexture[tile.Type] = ModContent.GetTexture(tile.texture);
 				TileLoader.SetDefaults(tile);
 				if (TileID.Sets.HasOutlines[tile.Type])
 				{
-					Main.highlightMaskTexture[tile.Type] = ModLoader.GetTexture(tile.HighlightTexture);
+					Main.highlightMaskTexture[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
 				}
 				if (!string.IsNullOrEmpty(tile.chest))
 				{
@@ -2245,7 +2245,7 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModWall wall in walls.Values)
 			{
-				Main.wallTexture[wall.Type] = ModLoader.GetTexture(wall.texture);
+				Main.wallTexture[wall.Type] = ModContent.GetTexture(wall.texture);
 				wall.SetDefaults();
 			}
 			foreach (GlobalWall globalWall in globalWalls.Values)
@@ -2273,18 +2273,18 @@ namespace Terraria.ModLoader
 			}
 			foreach (ModBuff buff in buffs.Values)
 			{
-				Main.buffTexture[buff.Type] = ModLoader.GetTexture(buff.texture);
+				Main.buffTexture[buff.Type] = ModContent.GetTexture(buff.texture);
 				buff.SetDefaults();
 			}
 			foreach (ModWaterStyle waterStyle in waterStyles.Values)
 			{
-				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModLoader.GetTexture(waterStyle.texture);
-				Main.liquidTexture[waterStyle.Type] = ModLoader.GetTexture(waterStyle.blockTexture);
+				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.texture);
+				Main.liquidTexture[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
 			}
 			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values)
 			{
 				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type]
-					= ModLoader.GetTexture(waterfallStyle.texture);
+					= ModContent.GetTexture(waterfallStyle.texture);
 			}
 		}
 
@@ -2366,7 +2366,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Shorthand for calling ModLoader.GetTexture(this.FileName(name)).
+		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
 		/// </summary>
 		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
 		public Texture2D GetTexture(string name)
@@ -2403,7 +2403,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Shorthand for calling ModLoader.GetSound(this.FileName(name)).
+		/// Shorthand for calling ModContent.GetSound(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
@@ -2428,7 +2428,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Shorthand for calling ModLoader.GetMusic(this.FileName(name)).
+		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>

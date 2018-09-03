@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 			}
 			foreach (string texture in gores.Keys)
 			{
-				Main.goreTexture[gores[texture]] = ModLoader.GetTexture(texture);
+				Main.goreTexture[gores[texture]] = ModContent.GetTexture(texture);
 			}
 		}
 
