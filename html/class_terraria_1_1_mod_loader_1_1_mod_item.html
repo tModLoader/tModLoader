@@ -803,7 +803,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00096">96</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00646">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00645">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a1ce00f06389a5baef958ccb7a6653cfb"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1ce00f06389a5baef958ccb7a6653cfb">Terraria.ModLoader.ModItem.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">Gets the mod. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00039">ModItem.cs:39</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00049">Mod.cs:49</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
@@ -847,10 +847,10 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00178">178</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_loader_8cs_source.html#l00885">Terraria.ModLoader.ModLoader.GetTexture()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00905">Terraria.ModLoader.ModLoader.TextureExists()</a>.</p>
+<p>References <a class="el" href="_mod_content_8cs_source.html#l00072">Terraria.ModLoader.ModContent.GetTexture()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00092">Terraria.ModLoader.ModContent.TextureExists()</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02206">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        {</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            Main.itemTexture[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = ModLoader.GetTexture(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85">Texture</a>);</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            var flameTexture = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85">Texture</a> + <span class="stringliteral">&quot;_Flame&quot;</span>;</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> (ModLoader.TextureExists(flameTexture))</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            {</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                Main.itemFlameTexture[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = ModLoader.GetTexture(flameTexture);</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                Main.itemFlameLoaded[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = <span class="keyword">true</span>;</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            }</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">IsDefault</a>())</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#a170d1dcc6361482e8b9874c44a31954b">SetDefault</a>(Regex.Replace(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a92544625403e1dc870f35a339de80738">Name</a>, <span class="stringliteral">&quot;([A-Z])&quot;</span>, <span class="stringliteral">&quot; $1&quot;</span>).Trim());</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_adfa21ecac7d2f1cc3bd373dc75b4b356"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">Terraria.ModLoader.ModItem.item</a></div><div class="ttdeci">Item item</div><div class="ttdoc">The item object that this ModItem controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00027">ModItem.cs:27</a></div></div>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02205">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        {</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            Main.itemTexture[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = ModContent.GetTexture(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85">Texture</a>);</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            var flameTexture = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85">Texture</a> + <span class="stringliteral">&quot;_Flame&quot;</span>;</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> (ModContent.TextureExists(flameTexture))</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            {</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                Main.itemFlameTexture[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = ModContent.GetTexture(flameTexture);</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                Main.itemFlameLoaded[<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">item</a>.type] = <span class="keyword">true</span>;</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            }</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">IsDefault</a>())</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355">DisplayName</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#a170d1dcc6361482e8b9874c44a31954b">SetDefault</a>(Regex.Replace(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a92544625403e1dc870f35a339de80738">Name</a>, <span class="stringliteral">&quot;([A-Z])&quot;</span>, <span class="stringliteral">&quot; $1&quot;</span>).Trim());</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_adfa21ecac7d2f1cc3bd373dc75b4b356"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356">Terraria.ModLoader.ModItem.item</a></div><div class="ttdeci">Item item</div><div class="ttdoc">The item object that this ModItem controls. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00027">ModItem.cs:27</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_aefeef1e7ba614411d9ce7f70fb961355"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355">Terraria.ModLoader.ModItem.DisplayName</a></div><div class="ttdeci">ModTranslation DisplayName</div><div class="ttdoc">The translations for the display name of this item. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00057">ModItem.cs:57</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_item_html_a9aba9b04ef606dfdfc575f299146ae85"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85">Terraria.ModLoader.ModItem.Texture</a></div><div class="ttdeci">virtual string Texture</div><div class="ttdoc">The file name of this item&amp;#39;s texture file in the mod loader&amp;#39;s file space. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_item_8cs_source.html#l00074">ModItem.cs:74</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_translation_html_ac1fd751f1ed8a9139b64f9d07f2a43d4"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4">Terraria.ModLoader.ModTranslation.IsDefault</a></div><div class="ttdeci">bool IsDefault()</div><div class="ttdef"><b>Definition:</b> <a href="_mod_translation_8cs_source.html#l00042">ModTranslation.cs:42</a></div></div>
@@ -864,9 +864,10 @@ Properties</h2></td></tr>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_item_aae528c9f401b23845f68032e0e5514af_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_item_aae528c9f401b23845f68032e0e5514af_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_item_aae528c9f401b23845f68032e0e5514af_cgraph" id="class_terraria_1_1_mod_loader_1_1_mod_item_aae528c9f401b23845f68032e0e5514af_cgraph">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="249,5,455,46"/>
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Returns whether or not a texture with the specified name exists. " alt="" coords="249,70,455,111"/>
-<area shape="rect" id="node4" href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Shorthand for calling ModLoader.TextureExists(this.FileName(name)). " alt="" coords="504,70,715,111"/>
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="248,5,461,46"/>
+<area shape="rect" id="node4" href="class_terraria_1_1_mod_loader_1_1_mod_content.html#a556b4c3c23ea56d8047846905927a9fb" title="Returns whether or not a texture with the specified name exists. " alt="" coords="248,70,461,111"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="511,5,718,46"/>
+<area shape="rect" id="node5" href="class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Shorthand for calling ModLoader.TextureExists(this.FileName(name)). " alt="" coords="509,70,720,111"/>
 </map>
 </div>
 </p>
@@ -3990,7 +3991,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00171">171</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02206">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l02205">Terraria.ModLoader.Mod.AddTranslation()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        {</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -4734,7 +4735,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00074">74</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00646">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00645">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 
 </div>
 </div>
@@ -4761,7 +4762,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00263">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00451">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00331">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -4788,7 +4789,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00580">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02206">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00604">Terraria.ModLoader.ModLoader.BuildSort()</a>, <a class="el" href="_item_loader_8cs_source.html#l01265">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_loader_8cs_source.html#l00263">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00579">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00120">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00451">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_8cs_source.html#l02205">Terraria.ModLoader.Mod.AddTranslation()</a>, <a class="el" href="_mod_content_8cs_source.html#l00400">Terraria.ModLoader.ModContent.DisposeMusic()</a>, <a class="el" href="_item_loader_8cs_source.html#l01265">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_content_8cs_source.html#l00331">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00075">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
 
 </div>
 </div>
@@ -4815,7 +4816,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00039">39</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_8cs_source.html#l00646">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00451">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_8cs_source.html#l00645">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 
 </div>
 </div>
@@ -4841,7 +4842,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_8cs_source.html#l00646">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00451">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_8cs_source.html#l00645">Terraria.ModLoader.Mod.AutoloadItem()</a>.</p>
 
 </div>
 </div>
@@ -4867,7 +4868,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00066">66</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00452">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00263">Terraria.ModLoader.ModLoader.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00451">Terraria.ModLoader.Mod.AddItem()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00331">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>

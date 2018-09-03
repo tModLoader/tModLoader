@@ -101,6 +101,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "ConsoleBuildStatus", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status.html", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_console_build_status" ],
       [ "IBuildStatus", "interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html", "interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status" ]
     ] ],
+    [ "ModContent.cs", "_mod_content_8cs.html", [
+      [ "ModContent", "class_terraria_1_1_mod_loader_1_1_mod_content.html", "class_terraria_1_1_mod_loader_1_1_mod_content" ]
+    ] ],
     [ "ModDust.cs", "_mod_dust_8cs.html", [
       [ "ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", "class_terraria_1_1_mod_loader_1_1_mod_dust" ]
     ] ],

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ModContent.SoundExists" name="Terraria.ModLoader.ModContent.SoundExists">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="267,5,474,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a35563b1649ca9175be9b0c1a9d9b37aa" title="Shorthand for calling ModLoader.SoundExists(this.FileName(name)). " alt="" coords="269,70,473,111"/>
+</map>

@@ -28,6 +28,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", "class_terraria_1_1_mod_loader_1_1_mod_buff" ],
     [ "ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", "class_terraria_1_1_mod_loader_1_1_mod_cactus" ],
     [ "ModCommand", "class_terraria_1_1_mod_loader_1_1_mod_command.html", "class_terraria_1_1_mod_loader_1_1_mod_command" ],
+    [ "ModContent", "class_terraria_1_1_mod_loader_1_1_mod_content.html", "class_terraria_1_1_mod_loader_1_1_mod_content" ],
     [ "ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", "class_terraria_1_1_mod_loader_1_1_mod_dust" ],
     [ "ModGore", "class_terraria_1_1_mod_loader_1_1_mod_gore.html", "class_terraria_1_1_mod_loader_1_1_mod_gore" ],
     [ "ModHotKey", "class_terraria_1_1_mod_loader_1_1_mod_hot_key.html", "class_terraria_1_1_mod_loader_1_1_mod_hot_key" ],

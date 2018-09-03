@@ -1,11 +1,10 @@
 var dir_74fadca5af88c7a374b16ca7b71ad489 =
 [
-    [ "AddRecipesException.cs", "_add_recipes_exception_8cs.html", [
-      [ "AddRecipesException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception" ]
-    ] ],
+    [ "AddRecipesException.cs", "_add_recipes_exception_8cs.html", null ],
     [ "CustomModDataException.cs", "_custom_mod_data_exception_8cs.html", [
       [ "CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception" ]
     ] ],
+    [ "LoadingException.cs", "_loading_exception_8cs.html", null ],
     [ "MissingResourceException.cs", "_missing_resource_exception_8cs.html", [
       [ "LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance" ],
       [ "MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception" ]

@@ -70,6 +70,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],
     [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
     [ "Terraria.ModLoader.ModCommand", "class_terraria_1_1_mod_loader_1_1_mod_command.html", null ],
+    [ "Terraria.ModLoader.ModContent", "class_terraria_1_1_mod_loader_1_1_mod_content.html", null ],
     [ "Terraria.ModLoader.ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", null ],
     [ "Terraria.ModLoader.ModGore", "class_terraria_1_1_mod_loader_1_1_mod_gore.html", null ],
     [ "Terraria.ModLoader.ModNet.ModHeader", "class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html", null ],
@@ -165,7 +166,6 @@ var hierarchy =
     [ "Terraria.ModLoader.WaterStyleLoader", "class_terraria_1_1_mod_loader_1_1_water_style_loader.html", null ],
     [ "Terraria.ModLoader.WorldHooks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html", null ],
     [ "Exception", null, [
-      [ "Terraria.ModLoader.Exceptions.AddRecipesException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_add_recipes_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.ModNameException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
