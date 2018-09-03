@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UIManageControls.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UIManageControls.cs
+@@ -9,6 +_,7 @@
+ using Terraria.Graphics;
+ using Terraria.Initializers;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
 @@ -37,7 +_,8 @@
  			"sp10",
  			"sp11",
@@ -48,7 +56,7 @@
  			};
 +			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
 +			_ModBindings.Clear();
-+			foreach (var hotkey in ModLoader.ModLoader.modHotKeys)
++			foreach (var hotkey in ModContent.modHotKeys)
 +			{
 +				_ModBindings.Add(hotkey.Value.displayName);
 +				_BindingsFullLine.Add(hotkey.Value.displayName);
@@ -125,7 +133,7 @@
  			}
 +			if (_ModBindings.Contains(bind))
 +			{
-+				string defaultKey = ModLoader.ModLoader.modHotKeys.Single(x => x.Key == bind).Value.defaultKey;
++				string defaultKey = ModContent.modHotKeys.Single(x => x.Key == bind).Value.defaultKey;
 +				UIElement container = new UIElement();
 +				var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +				left.Width.Precent = 0.68f;

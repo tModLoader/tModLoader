@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameInput\TriggersSet.cs
 +++ src/tModLoader\Terraria.GameInput\TriggersSet.cs
+@@ -2,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameInput
+ {
 @@ -36,6 +_,42 @@
  			}
  		}
@@ -48,7 +56,7 @@
  			{
  				this.KeyStatus.Add(current, false);
 +			}
-+			foreach (var current in ModLoader.ModLoader.modHotKeys)
++			foreach (var current in ModContent.modHotKeys)
 +			{
 +				this.KeyStatus.Add(current.Value.displayName, false);
  			}

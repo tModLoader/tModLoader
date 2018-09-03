@@ -114,7 +114,7 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							foreach (var item in ModContent.modHotKeys)
 +							{
 +								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
 +							}
@@ -143,7 +143,7 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							foreach (var item in ModContent.modHotKeys)
 +							{
 +								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
 +							}
@@ -172,7 +172,7 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							foreach (var item in ModContent.modHotKeys)
 +							{
 +								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
 +							}
@@ -201,7 +201,7 @@
  							c.KeyStatus["Hotbar10"].Add("D0");
  							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
  							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModLoader.ModLoader.modHotKeys)
++							foreach (var item in ModContent.modHotKeys)
 +							{
 +								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
 +							}
