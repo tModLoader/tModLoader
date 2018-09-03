@@ -28,87 +28,33 @@ namespace Terraria.ModLoader.UI
 			Append(subProgress);
 		}
 
-		internal void SetProgressFinding()
+		public string SubProgressText {
+			set => subProgress?.SetText(value);
+		}
+		
+		public int modCount;
+		private string stageText;
+		public void SetLoadStage(string stageText, int modCount = -1)
 		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSFinding"));
-				loadProgress.SetProgress(0f);
-			}
+			this.stageText = stageText;
+			this.modCount = modCount;
+			if (modCount < 0)
+				SetProgressText(Language.GetTextValue(stageText));
+				
+			loadProgress?.SetProgress(0);
+			SubProgressText = "";
 		}
 
-		internal void SetProgressCompatibility(string mod, int num, int max)
+		private void SetProgressText(string text)
 		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSCompatibilizing", mod));
-				loadProgress.SetProgress((float)num / (float)max);
-			}
+			Console.WriteLine(text);
+			loadProgress?.SetText(text);
 		}
 
-		internal void SetProgressReading(string mod, int num, int max)
+		public void SetCurrentMod(int i, string mod)
 		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSReading", mod));
-				loadProgress.SetProgress((float)num / (float)max);
-			}
-			else if (num == 0)
-			{
-				Console.WriteLine(Language.GetTextValue("tModLoader.MSReading", mod));
-			}
-		}
-
-		internal void SetProgressInit(string mod, int num, int max)
-		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSIntializing") + mod);
-				loadProgress.SetProgress((float)num / (float)max);
-			}
-			else
-			{
-				Console.WriteLine(Language.GetTextValue("tModLoader.MSIntializing") + mod);
-			}
-		}
-
-		internal void SetSubProgressInit(string message)
-		{
-			if (!Main.dedServ)
-			{
-				subProgress.SetText(message);
-			}
-		}
-
-		internal void SetProgressSetup(float progress)
-		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSSettingUp"));
-				loadProgress.SetProgress(progress);
-			}
-		}
-
-		internal void SetProgressLoad(string mod, int num, int max)
-		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSLoading") + mod);
-				loadProgress.SetProgress((float)num / (float)max);
-			}
-			else
-			{
-				Console.WriteLine(Language.GetTextValue("tModLoader.MSLoading") + mod);
-			}
-		}
-
-		internal void SetProgressRecipes()
-		{
-			if (!Main.dedServ)
-			{
-				loadProgress.SetText(Language.GetTextValue("tModLoader.MSAddingRecipes"));
-				loadProgress.SetProgress(0f);
-			}
+			SetProgressText(Language.GetTextValue(stageText, mod));
+			loadProgress?.SetProgress(i / (float) modCount);
 		}
 	}
 }

@@ -196,7 +196,7 @@ namespace Terraria.ModLoader
 			if (!CommandLineModPackOverride())
 				return false;
 
-			Interface.loadMods.SetProgressFinding();
+			Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.

@@ -241,7 +241,7 @@
 		// There should be ModName after ':'
 		// "MSLoading": "Loading Mod: ",
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
-		// "MSCompatibilizing": "Compatibilizing: {0}",
+		// "MSSandboxing": "Compatibilizing: {0}",
 		// "MSReading": "Reading: {0}",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",

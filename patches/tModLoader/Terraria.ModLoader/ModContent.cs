@@ -186,79 +186,71 @@ namespace Terraria.ModLoader
 
 		internal static void Load()
 		{
-			if (Main.dedServ)
-				Console.WriteLine(Language.GetTextValue("tModLoader.AddingModContent"));
-			
-			int num = 0;
-			foreach (var mod in ModLoader.Mods)
+			try
 			{
-				Interface.loadMods.SetProgressInit(mod.Name, num++, ModLoader.ModCount);
-				try
-				{
+				Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.ModCount);
+				LoadModContent(mod => {
 					mod.loading = true;
 					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
 					mod.Autoload();
 					mod.Load();
 					mod.loading = false;
-				}
-				catch (Exception e)
-				{
-					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
-					Main.menuMode = Interface.errorMessageID;
-					return;
-				}
-			}
-			Interface.loadMods.SetProgressSetup(0f);
-			ResizeArrays();
-			RecipeGroupHelper.FixRecipeGroupLookups();
-
-			num = 0;
-			foreach (Mod mod in ModLoader.Mods)
-			{
-				Interface.loadMods.SetProgressLoad(mod.Name, num++, ModLoader.ModCount);
-				try
-				{
+				});
+				
+				Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+				ResizeArrays();
+				RecipeGroupHelper.FixRecipeGroupLookups();
+				
+				Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.ModCount);
+				LoadModContent(mod => {
 					mod.SetupContent();
 					mod.PostSetupContent();
 					mod.File?.UnloadAssets();
-				}
-				catch (Exception e)
-				{
-					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.tModLoaderVersion, e);
-					Main.menuMode = Interface.errorMessageID;
-					return;
-				}
-			}
-			RefreshModLanguage(Language.ActiveCulture);
+				});
 
-			if (Main.dedServ)
-				ModNet.AssignNetIDs();
+				if (Main.dedServ)
+					ModNet.AssignNetIDs();
 			
-			Main.player[255] = new Player(false); // setup inventory is unnecessary 
-
-			MapLoader.SetupModMap();
-			ItemSorting.SetupWhiteLists();
-
-			Interface.loadMods.SetProgressRecipes();
-			for (int k = 0; k < Recipe.maxRecipes; k++)
-			{
-				Main.recipe[k] = new Recipe();
+				Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			
+				RefreshModLanguage(Language.ActiveCulture);
+				MapLoader.SetupModMap();
+				ItemSorting.SetupWhiteLists();
+				PlayerInput.ReInitialize();
+				SetupRecipes();
 			}
+			catch (LoadingException e)
+			{
+				ModLoader.DisableMod(e.mod.Name);
+				ErrorLogger.LogLoadingError(e.mod.Name, e.mod.Version, e.InnerException, e is AddRecipesException);
+				Main.menuMode = Interface.errorMessageID;
+			}
+		}
+
+		private static void LoadModContent(Action<Mod> loadAction)
+		{
+			int num = 0;
+			foreach (var mod in ModLoader.Mods)
+			{
+				Interface.loadMods.SetCurrentMod(num++, mod.Name);
+				try {
+					loadAction(mod);
+				}
+				catch (Exception e) {
+					throw new LoadingException(mod, e.Message, e);
+				}
+			}
+		}
+
+		private static void SetupRecipes()
+		{
+			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
+			for (int k = 0; k < Recipe.maxRecipes; k++)
+				Main.recipe[k] = new Recipe();
+			
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
-			try
-			{
-				Recipe.SetupRecipes();
-			}
-			catch (AddRecipesException e)
-			{
-				ErrorLogger.LogLoadingError(e.modName, ModLoader.version, e.InnerException, true);
-				Main.menuMode = Interface.errorMessageID;
-				return;
-			}
-			PlayerInput.ReInitialize();
+			Recipe.SetupRecipes();
 		}
 
 		public static void Unload()

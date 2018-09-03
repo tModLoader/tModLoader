@@ -242,7 +242,7 @@
 		// There should be ModName after ':'
 		"MSLoading": "Ładowanie Moda: ",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
-		"MSCompatibilizing": "Kompatybilizowanie: {0}",
+		"MSSandboxing": "Kompatybilizowanie: {0}",
 		"MSReading": "Ładowanie: {0}",
 		"MSSettingUp": "Konfigurowanie...",
 		"MSAddingRecipes": "Dodawanie przepisów...",

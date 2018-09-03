@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				return;
 
-			Interface.loadMods.SetSubProgressInit(path);
+			Interface.loadMods.SubProgressText = path;
 
 			string extension = Path.GetExtension(path);
 			path = Path.ChangeExtension(path, null);
@@ -306,7 +306,7 @@ namespace Terraria.ModLoader
 			if (Code == null)
 				return;
 
-			Interface.loadMods.SetSubProgressInit(Language.GetTextValue("tModLoader.MSFinishingResourceLoading"));
+			Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
 			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
 
@@ -440,8 +440,6 @@ namespace Terraria.ModLoader
 			{
 				AutoloadBackgrounds();
 			}
-
-			Interface.loadMods.SetSubProgressInit("");
 		}
 
 		/// <summary>

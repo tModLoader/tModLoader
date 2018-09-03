@@ -35,7 +35,6 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					ModLoader.DisableMod(mod.Name);
 					throw new AddRecipesException(mod, "An error occurred in adding recipes for " + mod.Name, e);
 				}
 			}
@@ -51,7 +50,6 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					ModLoader.DisableMod(mod.Name);
 					throw new AddRecipesException(mod, "An error occurred after adding recipes for " + mod.Name, e);
 				}
 			}

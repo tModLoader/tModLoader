@@ -242,7 +242,7 @@
 		// There should be ModName after ':'
 		"MSLoading": "加载中：",
 		"MSFinishingResourceLoading": "资源加载完成",
-		"MSCompatibilizing": "增容中: {0}",
+		"MSSandboxing": "增容中: {0}",
 		"MSReading": "读取中: {0}",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
