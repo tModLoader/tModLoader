@@ -764,7 +764,7 @@ Generating caller graph for function Terraria.ModLoader.ModCommand.Action
 Generating docs for nested compound Terraria::ModLoader::ModCompile::BuildingMod...
 Generating call graph for function Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod
 Generating docs for nested compound Terraria::ModLoader::ModCompile::ConsoleBuildStatus...
-Generating docs for nested compound T/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:111: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+Generating docs for nested compound T/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:131: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
 erraria::ModLoader::ModCompile::IBuildStatus...
 Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.SetProgress
 Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.SetStatus
@@ -2057,5 +2057,5 @@ Patching output file 121/124
 Patching output file 122/124
 Patching output file 123/124
 Patching output file 124/124
-lookup cache used 10881/131072 hits=100601 misses=11353
+lookup cache used 10886/131072 hits=100707 misses=11358
 finished...

@@ -20,7 +20,7 @@ var searchData=
   ['bodyglowmaskcolor',['bodyGlowMaskColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a9aa1041d8b95a93f25a0f989980220b9',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['bodyorigin',['bodyOrigin',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a540c3839d5fa6954ae13a028d8e2a746',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['bossbag',['bossBag',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab618ea4188158ae253b8389d618bc22d',1,'Terraria::ModLoader::ModNPC']]],
-  ['bossbagnpc',['BossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a',1,'Terraria::ModLoader::ModItem']]],
+  ['bossbagnpc',['bossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb',1,'Terraria.ModLoader.ModItem.bossBagNPC()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a',1,'Terraria.ModLoader.ModItem.BossBagNPC()']]],
   ['bossheadtexture',['BossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb940e3a94773201ef20922939157528',1,'Terraria::ModLoader::ModNPC']]],
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
