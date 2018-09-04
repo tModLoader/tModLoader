@@ -37,7 +37,7 @@ namespace ExampleMod.UI
 
 			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
 			// By properly nesting UIElements, we can position things relatively to each other easily.
-			Texture2D buttonPlayTexture = ModLoader.GetTexture("Terraria/UI/ButtonPlay");
+			Texture2D buttonPlayTexture = ModContent.GetTexture("Terraria/UI/ButtonPlay");
 			UIHoverImageButton playButton = new UIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
 			playButton.Left.Set(110, 0f);
 			playButton.Top.Set(10, 0f);
@@ -47,7 +47,7 @@ namespace ExampleMod.UI
 			playButton.OnClick += new MouseEvent(PlayButtonClicked);
 			coinCounterPanel.Append(playButton);
 
-			Texture2D buttonDeleteTexture = ModLoader.GetTexture("Terraria/UI/ButtonDelete");
+			Texture2D buttonDeleteTexture = ModContent.GetTexture("Terraria/UI/ButtonDelete");
 			UIHoverImageButton closeButton = new UIHoverImageButton(buttonDeleteTexture, Language.GetTextValue("LegacyInterface.52")); // Localized text for "Close"
 			closeButton.Left.Set(140, 0f);
 			closeButton.Top.Set(10, 0f);

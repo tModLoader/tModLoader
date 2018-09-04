@@ -472,7 +472,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool CheckProjOnSwing(Player player, Item item)
 		{
-			return item.modItem == null || !item.modItem.projOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
+			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
 		private delegate void DelegatePickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
@@ -1051,7 +1051,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool IsModBossBag(Item item)
 		{
-			return item.modItem != null && item.modItem.bossBagNPC > 0;
+			return item.modItem != null && item.modItem.BossBagNPC > 0;
 		}
 
 		//in Terraria.Player.OpenBossBag after setting num14 call
@@ -1062,10 +1062,10 @@ namespace Terraria.ModLoader
 		public static void OpenBossBag(int type, Player player, ref int npc)
 		{
 			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.bossBagNPC > 0)
+			if (modItem != null && modItem.BossBagNPC > 0)
 			{
 				modItem.OpenBossBag(player);
-				npc = modItem.bossBagNPC;
+				npc = modItem.BossBagNPC;
 			}
 		}
 

@@ -73,15 +73,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
-		/// <summary>
-		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
-		/// </summary>
-		public bool projOnSwing;
-		/// <summary>
-		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
-		/// </summary>
-		public int bossBagNPC;
-
 		public ModItem()
 		{
 			item = new Item { modItem = this };
@@ -143,8 +134,6 @@ namespace Terraria.ModLoader
 			copy.item = itemClone;
 			copy.mod = mod;
 			copy.Name = Name;
-			copy.projOnSwing = projOnSwing;
-			copy.bossBagNPC = bossBagNPC;
 			return copy;
 		}
 
@@ -1001,6 +990,16 @@ namespace Terraria.ModLoader
 		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
 		{
 		}
+		
+		/// <summary>
+		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
+		/// </summary>
+		public virtual bool OnlyShootOnSwing => false;
+
+		/// <summary>
+		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
+		/// </summary>
+		public virtual int BossBagNPC => 0;
 
 		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.

@@ -138,7 +138,7 @@ namespace ExampleMod
 			score = reader.ReadInt32();
 		}
 
-		public override void SetupStartInventory(IList<Item> items)
+		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
 		{
 			Item item = new Item();
 			item.SetDefaults(mod.ItemType("ExampleItem"));

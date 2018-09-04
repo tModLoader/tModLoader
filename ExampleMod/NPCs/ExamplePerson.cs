@@ -256,9 +256,10 @@ namespace ExampleMod.NPCs
 			{
 			}
 			// Here is an example of how your npc can sell items from other mods.
-			if (ModLoader.GetLoadedMods().Contains("SummonersAssociation"))
+			var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
+			if (modSummonersAssociation != null)
 			{
-				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SummonersAssociation").ItemType("BloodTalisman"));
+				shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 				nextSlot++;
 			}
 		}
