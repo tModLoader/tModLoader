@@ -188,7 +188,7 @@ namespace Terraria.ModLoader
 		{
 			try
 			{
-				Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.ModCount);
+				Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 				LoadModContent(mod => {
 					mod.loading = true;
 					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
@@ -201,7 +201,7 @@ namespace Terraria.ModLoader
 				ResizeArrays();
 				RecipeGroupHelper.FixRecipeGroupLookups();
 				
-				Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.ModCount);
+				Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 				LoadModContent(mod => {
 					mod.SetupContent();
 					mod.PostSetupContent();

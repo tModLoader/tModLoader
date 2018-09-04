@@ -73,6 +73,26 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
+		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
+		public bool projOnSwing;
+
+		[Obsolete("override ModItem.BossBagNPC property", true)]
+		public int bossBagNPC;
+
+		[Obsolete]
+		private bool ProjOnSwing_Obsolete
+		{
+			get => projOnSwing;
+			set => projOnSwing = value;
+		}
+
+		[Obsolete]
+		private int BossBagNPC_Obsolete
+		{
+			get => bossBagNPC;
+			set => bossBagNPC = value;
+		}
+
 		public ModItem()
 		{
 			item = new Item { modItem = this };
@@ -134,6 +154,8 @@ namespace Terraria.ModLoader
 			copy.item = itemClone;
 			copy.mod = mod;
 			copy.Name = Name;
+			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
+			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
 			return copy;
 		}
 
@@ -994,12 +1016,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
 		/// </summary>
-		public virtual bool OnlyShootOnSwing => false;
+		public virtual bool OnlyShootOnSwing => ProjOnSwing_Obsolete;
 
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
-		public virtual int BossBagNPC => 0;
+		public virtual int BossBagNPC => BossBagNPC_Obsolete;
 
 		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.
