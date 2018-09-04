@@ -22,6 +22,7 @@ var searchData=
   ['modnameexception_2ecs',['ModNameException.cs',['../_mod_name_exception_8cs.html',1,'']]],
   ['modnet_2ecs',['ModNet.cs',['../_mod_net_8cs.html',1,'']]],
   ['modnpc_2ecs',['ModNPC.cs',['../_mod_n_p_c_8cs.html',1,'']]],
+  ['modorganizer_2ecs',['ModOrganizer.cs',['../_mod_organizer_8cs.html',1,'']]],
   ['modpacket_2ecs',['ModPacket.cs',['../_mod_packet_8cs.html',1,'']]],
   ['modplayer_2ecs',['ModPlayer.cs',['../_mod_player_8cs.html',1,'']]],
   ['modprefix_2ecs',['ModPrefix.cs',['../_mod_prefix_8cs.html',1,'']]],

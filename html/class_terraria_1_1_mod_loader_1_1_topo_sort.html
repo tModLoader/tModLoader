@@ -255,23 +255,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_topo_sort_8cs_source.html#l00077">77</a> of file <a class="el" href="_topo_sort_8cs_source.html">TopoSort.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00301">Terraria.ModLoader.ModLoader.VerifyNames()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            var <span class="keyword">set</span> = <span class="keyword">new</span> HashSet&lt;T&gt;();</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be">BuildSet</a>(t, <a class="code" href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a269c78e1b6e4d16501abda7b1bc1d9ef">dependencyDict</a>, <span class="keyword">set</span>);</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">set</span>;</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_topo_sort_html_a8fceff4c28a1bc57e154c14aaf4604be"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be">Terraria.ModLoader.TopoSort.BuildSet</a></div><div class="ttdeci">static void BuildSet(T t, IDictionary&lt; T, List&lt; T &gt;&gt; dict, ISet&lt; T &gt; set)</div><div class="ttdef"><b>Definition:</b> <a href="_topo_sort_8cs_source.html#l00054">TopoSort.cs:54</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_topo_sort_html_a269c78e1b6e4d16501abda7b1bc1d9ef"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a269c78e1b6e4d16501abda7b1bc1d9ef">Terraria.ModLoader.TopoSort.dependencyDict</a></div><div class="ttdeci">IDictionary&lt; T, List&lt; T &gt; &gt; dependencyDict</div><div class="ttdef"><b>Definition:</b> <a href="_topo_sort_8cs_source.html#l00027">TopoSort.cs:27</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_topo_sort_aa17b39e0f4dc6aedd1d4e5744696fe83_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_topo_sort_aa17b39e0f4dc6aedd1d4e5744696fe83_icgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_topo_sort_aa17b39e0f4dc6aedd1d4e5744696fe83_icgraph" id="class_terraria_1_1_mod_loader_1_1_topo_sort_aa17b39e0f4dc6aedd1d4e5744696fe83_icgraph">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a71c4e06832d08cb443023450aa433102" title="Terraria.ModLoader.ModLoader.\lVerifyNames" alt="" coords="249,5,455,46"/>
-</map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="a6152af7144ca29a63779ae08bddf4697"></a>
@@ -353,23 +339,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_topo_sort_8cs_source.html#l00065">65</a> of file <a class="el" href="_topo_sort_8cs_source.html">TopoSort.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00301">Terraria.ModLoader.ModLoader.VerifyNames()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            List&lt;T&gt; <a class="code" href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a647791e38aa96d1553e695d0c04365db">list</a>;</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a269c78e1b6e4d16501abda7b1bc1d9ef">dependencyDict</a>.TryGetValue(t, out list) ? list : <span class="keyword">new</span> List&lt;T&gt;();</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_topo_sort_html_a647791e38aa96d1553e695d0c04365db"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a647791e38aa96d1553e695d0c04365db">Terraria.ModLoader.TopoSort.list</a></div><div class="ttdeci">readonly ReadOnlyCollection&lt; T &gt; list</div><div class="ttdef"><b>Definition:</b> <a href="_topo_sort_8cs_source.html#l00026">TopoSort.cs:26</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_topo_sort_html_a269c78e1b6e4d16501abda7b1bc1d9ef"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_topo_sort.html#a269c78e1b6e4d16501abda7b1bc1d9ef">Terraria.ModLoader.TopoSort.dependencyDict</a></div><div class="ttdeci">IDictionary&lt; T, List&lt; T &gt; &gt; dependencyDict</div><div class="ttdef"><b>Definition:</b> <a href="_topo_sort_8cs_source.html#l00027">TopoSort.cs:27</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_topo_sort_ab1814a04c5538ae6d8f942914eb83290_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_topo_sort_ab1814a04c5538ae6d8f942914eb83290_icgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_topo_sort_ab1814a04c5538ae6d8f942914eb83290_icgraph" id="class_terraria_1_1_mod_loader_1_1_topo_sort_ab1814a04c5538ae6d8f942914eb83290_icgraph">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a71c4e06832d08cb443023450aa433102" title="Terraria.ModLoader.ModLoader.\lVerifyNames" alt="" coords="249,5,455,46"/>
-</map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="a1e1ad665a6f72dea42559d37e7068cc8"></a>
@@ -467,8 +439,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_topo_sort_8cs_source.html#l00026">26</a> of file <a class="el" href="_topo_sort_8cs_source.html">TopoSort.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_loader_8cs_source.html#l00301">Terraria.ModLoader.ModLoader.VerifyNames()</a>.</p>
 
 </div>
 </div>

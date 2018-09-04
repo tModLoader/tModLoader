@@ -19,6 +19,7 @@ var searchData=
   ['wavcacheio_2ecs',['WAVCacheIO.cs',['../_w_a_v_cache_i_o_8cs.html',1,'']]],
   ['weakdependencies',['weakDependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ae643996c2853e9920e00158a40170f55',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['weakdepname',['WeakDepName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a02b7417ef7a92de374f735302631561f',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
+  ['weakmodreferences',['weakModReferences',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3',1,'Terraria::ModLoader::ModLoader']]],
   ['windows',['windows',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac0d1dcc0ee625f8883c8967e0e660a84',1,'Terraria::ModLoader::ModLoader']]],
   ['wings',['Wings',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a4f496f608b10704ccca7da3296bf4c9e',1,'Terraria.ModLoader.PlayerLayer.Wings()'],['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a703e7b3b4e2a07715552e466e0d231bd',1,'Terraria.ModLoader.Wings()']]],
   ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]],

@@ -135,6 +135,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModNPC.cs", "_mod_n_p_c_8cs.html", [
       [ "ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c" ]
     ] ],
+    [ "ModOrganizer.cs", "_mod_organizer_8cs.html", null ],
     [ "ModPacket.cs", "_mod_packet_8cs.html", [
       [ "ModPacket", "class_terraria_1_1_mod_loader_1_1_mod_packet.html", "class_terraria_1_1_mod_loader_1_1_mod_packet" ]
     ] ],
