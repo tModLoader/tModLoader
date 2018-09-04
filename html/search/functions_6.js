@@ -87,6 +87,8 @@ var searchData=
   ['getpalmtreetexture',['GetPalmTreeTexture',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a5d4cf9c73304fe58a5b62d78785fea93',1,'Terraria::ModLoader::TileLoader']]],
   ['getpalmtreetoptextures',['GetPalmTreeTopTextures',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a11bc44183a309d2ebc924c2f6cb43c7f',1,'Terraria::ModLoader::TileLoader']]],
   ['getpayloadid',['GetPayloadId',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a41b115306fe2805b6b9cf41f55145c46',1,'Terraria::ModLoader::IO::TagIO']]],
+  ['getplayer',['GetPlayer',['../class_terraria_1_1_mod_loader_1_1_mod.html#ab441b99bd955ec3b943e77902e5603b4',1,'Terraria::ModLoader::Mod']]],
+  ['getplayer_3c_20t_20_3e',['GetPlayer&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a92298bf7247dbe3f7c9ee7d4ff74c1fc',1,'Terraria::ModLoader::Mod']]],
   ['getprefix',['GetPrefix',['../class_terraria_1_1_mod_loader_1_1_mod.html#a3558de5981a7b38d16dd1e1b0c0ee2e4',1,'Terraria.ModLoader.Mod.GetPrefix()'],['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad12de39d616e3b701c85f970912eb545',1,'Terraria.ModLoader.ModPrefix.GetPrefix()']]],
   ['getprefix_3c_20t_20_3e',['GetPrefix&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a2912f7fcfaf67727f3ba65a6ae7dc8cd',1,'Terraria::ModLoader::Mod']]],
   ['getprefixesincategory',['GetPrefixesInCategory',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a9ff37de33b6ffd07763665a9f503e496',1,'Terraria::ModLoader::ModPrefix']]],

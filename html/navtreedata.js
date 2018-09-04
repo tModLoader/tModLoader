@@ -29,18 +29,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_add_recipes_exception_8cs.html",
-"_tmod_file_8cs_source.html",
-"class_terraria_1_1_mod_loader_1_1_global_item.html#ab15e1c31f090d04da4d9c68432c7d77c",
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328",
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a667a8d1892880d65e0226f530cd4c82a",
-"class_terraria_1_1_mod_loader_1_1_mod.html#aa2df60c138c72148d426806d077bca9c",
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#afa5946db6c2cd1ea5165c59c90a7a77d",
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#ad4d50f250fda2b3df2e45ef78c85013d",
-"class_terraria_1_1_mod_loader_1_1_mod_tree.html#a193103af2e365f63b101c6ab0cc91994",
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#afcc3efe6468c080508788a38a4955df5",
-"class_terraria_1_1_mod_loader_1_1_player_layer.html#af130cf265b8cc48a6e66eccadd5a3bdb",
-"class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#a615305929b2cf8d93aa7857a11c01062",
-"functions_func_h.html"
+"_tile_loader_8cs_source.html",
+"class_terraria_1_1_mod_loader_1_1_global_item.html#ab08d8867a8e1a61d9f6b0aeb2b189584",
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6d85be6826465184a0c159ff793b69b6",
+"class_terraria_1_1_mod_loader_1_1_item_loader.html#a644084e5d29884bc4f5829f3dc85d6aa",
+"class_terraria_1_1_mod_loader_1_1_mod.html#a9cab728dabe85fe39eccff20b79d86e5",
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355",
+"class_terraria_1_1_mod_loader_1_1_mod_player.html#aca9c4f67053ee8f250d4aa502d9a40d0",
+"class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac57794c1d477666a0b0936ddc407665f",
+"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af14c5aa284a7ec0f2014c50ccb5467c0",
+"class_terraria_1_1_mod_loader_1_1_player_layer.html#acb4b40493cdbdc293e2cc7d047078af8",
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853",
+"functions_func_d.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"functions_func_d.html":[1,3,1,3],
+"functions_func_e.html":[1,3,1,4],
+"functions_func_f.html":[1,3,1,5],
+"functions_func_g.html":[1,3,1,6],
 "functions_func_h.html":[1,3,1,7],
 "functions_func_i.html":[1,3,1,8],
 "functions_func_j.html":[1,3,1,9],
@@ -74,8 +78,8 @@ var NAVTREEINDEX12 =
 "namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[0,0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[1,0,0,0,0],
-"namespace_terraria_1_1_mod_loader_1_1_i_o.html":[1,0,0,0,1],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[0,0,0,0,1],
+"namespace_terraria_1_1_mod_loader_1_1_i_o.html":[1,0,0,0,1],
 "namespacemembers.html":[0,1,0],
 "namespacemembers_enum.html":[0,1,1],
 "namespaces.html":[0,0],

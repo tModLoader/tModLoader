@@ -93,7 +93,7 @@ var searchData=
   ['assemblymanager_2ecs',['AssemblyManager.cs',['../_assembly_manager_8cs.html',1,'']]],
   ['assemblyname',['AssemblyName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac302b5327050b9849dcf52e7b26e01cb',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['assets',['Assets',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317aa9aedeaf1f77b8642abe528503b8c5de8',1,'Terraria::ModLoader::IO::TmodFile']]],
-  ['asyncloadqueue',['AsyncLoadQueue',['../class_terraria_1_1_mod_loader_1_1_mod.html#a166fd53d0720138236b9a189393c03b3',1,'Terraria::ModLoader::Mod']]],
+  ['asyncloadqueue',['AsyncLoadQueue',['../class_terraria_1_1_mod_loader_1_1_mod.html#a0fcebfa8559b2cfea3db7189c32b94e0',1,'Terraria::ModLoader::Mod']]],
   ['attribute',['Attribute',['../class_attribute.html',1,'']]],
   ['autodefaults',['AutoDefaults',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a32905e0fcd530a2e3e7a2d5221a488ad',1,'Terraria.ModLoader.ModItem.AutoDefaults()'],['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ab17ffafd13b5784b4202de347fb05324',1,'Terraria.ModLoader.ModPrefix.AutoDefaults()']]],
   ['autolightselect',['AutoLightSelect',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a06d82afb38abd3ed06d0d1e4c024ad19',1,'Terraria.ModLoader.ItemLoader.AutoLightSelect()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a585772b09b6212477f3334acc95e14b5',1,'Terraria.ModLoader.ModItem.AutoLightSelect()']]],

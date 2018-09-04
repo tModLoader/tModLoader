@@ -116,6 +116,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModHotkey.cs", "_mod_hotkey_8cs.html", [
       [ "ModHotKey", "class_terraria_1_1_mod_loader_1_1_mod_hot_key.html", "class_terraria_1_1_mod_loader_1_1_mod_hot_key" ]
     ] ],
+    [ "ModInternals.cs", "_mod_internals_8cs.html", [
+      [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ]
+    ] ],
     [ "ModItem.cs", "_mod_item_8cs.html", [
       [ "ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", "class_terraria_1_1_mod_loader_1_1_mod_item" ]
     ] ],
