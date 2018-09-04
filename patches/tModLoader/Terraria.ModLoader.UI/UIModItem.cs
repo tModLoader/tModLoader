@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.UI
 				modReferenceIcon.Top.Set(47f, 0f);
 				modReferenceIcon.OnClick += (a, b) =>
 				{
-					var modList = ModLoader.FindMods();
+					var modList = ModOrganizer.FindMods();
 					var missing = new List<string>();
 					foreach (var modRef in modRefs)
 					{

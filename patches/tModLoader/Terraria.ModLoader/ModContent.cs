@@ -184,7 +184,7 @@ namespace Terraria.ModLoader
 			return modHotKeys[key];
 		}
 
-		internal static void Load()
+		internal static bool Load()
 		{
 			try
 			{
@@ -218,12 +218,14 @@ namespace Terraria.ModLoader
 				ItemSorting.SetupWhiteLists();
 				PlayerInput.ReInitialize();
 				SetupRecipes();
+				return true;
 			}
 			catch (LoadingException e)
 			{
 				ModLoader.DisableMod(e.mod.Name);
 				ErrorLogger.LogLoadingError(e.mod.Name, e.mod.Version, e.InnerException, e is AddRecipesException);
 				Main.menuMode = Interface.errorMessageID;
+				return false;
 			}
 		}
 

@@ -162,7 +162,7 @@ namespace Terraria.ModLoader.UI
 				delegate
 				{
 					var modSources = ModLoader.FindModSources();
-					var modFiles = ModLoader.FindMods();
+					var modFiles = ModOrganizer.FindMods();
 					return Tuple.Create(modSources, modFiles);
 				})
 				.ContinueWith(task =>

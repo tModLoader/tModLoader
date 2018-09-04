@@ -71,7 +71,7 @@ namespace Terraria.ModLoader
 			}
 
 			//figure out which of the installed mods are required for building
-			var installedMods = FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
+			var installedMods = ModOrganizer.FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
 
 			var requiredFromInstall = new HashSet<LocalMod>();
 			void Require(LocalMod mod)
@@ -93,9 +93,9 @@ namespace Terraria.ModLoader
 			List<BuildingMod> modsToBuild;
 			try
 			{
-				EnsureDependenciesExist(modList, true);
-				EnsureTargetVersionsMet(modList);
-				var sortedModList = Sort(modList);
+				ModOrganizer.EnsureDependenciesExist(modList, true);
+				ModOrganizer.EnsureTargetVersionsMet(modList);
+				var sortedModList = ModOrganizer.Sort(modList);
 				modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
 			}
 			catch (ModSortingException e)

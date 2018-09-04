@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.UI
 			Directory.CreateDirectory(ModListSaveDirectory);
 
 			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
-			var foundMods = ModLoader.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
+			var foundMods = ModOrganizer.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
 			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
 
@@ -124,7 +124,7 @@ namespace Terraria.ModLoader.UI
 			Task.Factory
 				.StartNew(delegate
 				{
-					mods = ModLoader.FindMods().Select(m => m.Name).ToArray();
+					mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 					return FindModLists();
 				})
 				.ContinueWith(task =>

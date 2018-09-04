@@ -22,7 +22,7 @@
 +					"-modpack"
 +				})) != null)
 +			{
-+				ModLoader.ModLoader.commandLineModPack = modPack;
++				ModOrganizer.commandLineModPack = modPack;
 +			}
  		}
  
@@ -52,7 +52,7 @@
 +				}
 +
 +				Main.showSplash = false;
-+				ModLoader.ModLoader.PostLoad += () =>
++				ModLoader.ModLoader.OnSuccessfulLoad += () =>
 +				{
 +					WorldGen.clearWorld();
 +					Main.LoadPlayers();

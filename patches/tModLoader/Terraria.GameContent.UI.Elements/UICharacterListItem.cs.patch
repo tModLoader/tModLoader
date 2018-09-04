@@ -27,7 +27,7 @@
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
-@@ -90,6 +_,63 @@
+@@ -90,6 +_,64 @@
  			{
  				base.Append(uIImageButton4);
  			}
@@ -44,8 +44,9 @@
 +			}
 +			if (data.Player.usedMods != null)
 +			{
-+				var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.GetLoadedMods()).ToList();
-+				var newMods = ModLoader.ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
++				var currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
++				var missingMods = data.Player.usedMods.Except(currentModNames).ToList();
++				var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
 +				if (missingMods.Count > 0 || newMods.Count > 0)
 +				{
 +					UIText warningLabel = new UIText("", 1f, false)

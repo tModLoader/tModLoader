@@ -288,6 +288,7 @@ namespace Terraria.ModLoader
 					ModLoader.DisableMod(mod.Name);
 					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
 				})));
+				Main.menuMode = Interface.errorMessageID;
 				return null;
 			}
 			catch (Exception e)
@@ -295,6 +296,7 @@ namespace Terraria.ModLoader
 				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
 				ModLoader.DisableMod(mod.Name);
 				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
+				Main.menuMode = Interface.errorMessageID;
 				return null;
 			}
 		}
