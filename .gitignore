@@ -6,12 +6,11 @@
 *.suo
 *.cache
 *.force
-solutions/**/*.zip
 installer2/*.class
 installer2/*.jar
-/solutions/packages
 solutions/documentation/html
 solutions/documentation/*.tmp
-solutions/*.zip
-solutions/.vs/**/*
-solutions/.idea/**/*
+solutions/**.zip
+**/packages/
+**/.vs/
+**/.idea/

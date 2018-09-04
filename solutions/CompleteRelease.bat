@@ -43,11 +43,12 @@ copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%destinationFo
 :: ModCompile
 copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Windows %version%\ModCompile\tModLoaderMac.exe" /y
 copy ..\references\FNA.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\FNA.dll" /y
-copy ..\references\Microsoft.CodeAnalysis.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.dll" /y
-copy ..\references\Microsoft.CodeAnalysis.CSharp.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.CSharp.dll" /y
 copy ..\references\Mono.Cecil.Pdb.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Mono.Cecil.Pdb.dll" /y
-copy ..\references\System.Reflection.Metadata.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Reflection.Metadata.dll" /y
 copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\RoslynWrapper.dll" /y
+copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Reflection.Metadata.dll" /y
+copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Collections.Immutable.dll" /y
+copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.dll" /y
+copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.CSharp.dll" /y
 
 copy ..\installer2\WindowsInstaller.jar "%destinationFolder%\tModLoader Windows %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%destinationFolder%\tModLoader Windows %version%\README.txt" /y
