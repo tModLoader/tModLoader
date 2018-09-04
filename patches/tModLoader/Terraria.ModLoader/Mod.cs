@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Graphics;
-using ReLogic.Utilities;
-using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 using Terraria.Audio;
 using Terraria.ModLoader.Audio;
 using Terraria.Localization;
@@ -59,40 +54,6 @@ namespace Terraria.ModLoader
 		internal short netID = -1;
 		public bool IsNetSynced => netID >= 0;
 
-		internal bool loading;
-		private Queue<Task> AsyncLoadQueue = new Queue<Task>();
-		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal readonly IDictionary<string, MusicData> musics = new Dictionary<string, MusicData>();
-		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
-		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
-		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
-		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
-		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
-		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-		internal readonly IDictionary<string, ModPrefix> prefixes = new Dictionary<string, ModPrefix>();
-		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
-		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
-		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
-		internal readonly IDictionary<string, ModTileEntity> tileEntities = new Dictionary<string, ModTileEntity>();
-		internal readonly IDictionary<string, ModWall> walls = new Dictionary<string, ModWall>();
-		internal readonly IDictionary<string, GlobalWall> globalWalls = new Dictionary<string, GlobalWall>();
-		internal readonly IDictionary<string, ModProjectile> projectiles = new Dictionary<string, ModProjectile>();
-		internal readonly IDictionary<string, GlobalProjectile> globalProjectiles = new Dictionary<string, GlobalProjectile>();
-		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
-		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
-		internal readonly IDictionary<string, ModPlayer> players = new Dictionary<string, ModPlayer>();
-		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
-		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
-		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
-		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
-		internal readonly IDictionary<string, ModUgBgStyle> ugBgStyles = new Dictionary<string, ModUgBgStyle>();
-		internal readonly IDictionary<string, ModSurfaceBgStyle> surfaceBgStyles = new Dictionary<string, ModSurfaceBgStyle>();
-		internal readonly IDictionary<string, GlobalBgStyle> globalBgStyles = new Dictionary<string, GlobalBgStyle>();
-		internal readonly IDictionary<string, ModWaterStyle> waterStyles = new Dictionary<string, ModWaterStyle>();
-		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
-		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
-		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
@@ -173,273 +134,6 @@ namespace Terraria.ModLoader
 			}
 
 			throw new ResourceLoadException($"Unknown streaming asset {path}{extension}. ");
-		}
-
-		private void LoadTexture(string path, int len, BinaryReader reader, bool rawimg)
-		{
-			try
-			{
-				var texTask = rawimg
-					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, reader)
-					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, new MemoryStream(reader.ReadBytes(len)));//needs a seekable stream
-
-				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t =>
-				{
-					var tex = t.Result;
-					tex.Name = Name + "/" + path;
-					lock (textures)
-						textures[path] = tex;
-				}));
-			}
-			catch (Exception e)
-			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), e);
-			}
-		}
-
-		private void LoadWav(string path, byte[] bytes)
-		{
-			try
-			{
-				if (path.StartsWith("Sounds/Music/"))
-				{
-					musics[path] = new MusicData(bytes, false);
-				}
-				else
-				{
-					//SoundEffect.FromStream needs a stream with a length
-					sounds[path] = SoundEffect.FromStream(new MemoryStream(bytes));
-				}
-			}
-			catch (Exception e)
-			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
-			}
-		}
-
-		private void LoadMP3(string path, byte[] bytes)
-		{
-			string wavCacheFilename = this.Name + "_" + path.Replace('/', '_') + "_" + Version + ".wav";
-			WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-			try
-			{
-				if (path.StartsWith("Sounds/Music/"))
-				{
-					if (ModLoader.musicStreamMode != 1)
-					{//no cache
-						musics[path] = new MusicData(bytes, true);
-						return;
-					}
-
-					if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename))
-					{
-						WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
-					}
-
-					musics[path] = new MusicData(Path.Combine(WAVCacheIO.ModCachePath, wavCacheFilename));
-					return;
-				}
-
-				sounds[path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename) ?
-					SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename)) :
-					WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
-			}
-			catch (Exception e)
-			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorMP3SoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
-			}
-		}
-
-		private void LoadFont(string path, byte[] data)
-		{
-			string fontFilenameNoExtension = Name + "_" + path.Replace('/', '_') + "_" + Version;
-			string fontFilename = fontFilenameNoExtension + ".xnb";
-			FontCacheIO.DeleteIfOlder(File.path, fontFilename);
-			if (!FontCacheIO.FontCacheAvailable(fontFilename))
-			{
-				FileUtilities.WriteAllBytes(FontCacheIO.FontCachePath + Path.DirectorySeparatorChar + fontFilename, data, false);
-			}
-			try
-			{
-				fonts[path] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
-			}
-			catch (Exception e)
-			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorFontFailedToLoad", path), e);
-			}
-		}
-
-		private void LoadEffect(string path, BinaryReader br)
-		{
-			try
-			{
-				char x = (char)br.ReadByte();//x
-				char n = (char)br.ReadByte();//n
-				char b = (char)br.ReadByte();//b
-				char w = (char)br.ReadByte();//w
-				byte xnbFormatVersion = br.ReadByte();//5
-				byte flags = br.ReadByte();//flags
-				UInt32 compressedDataSize = br.ReadUInt32();
-				if ((flags & 0x80) != 0)
-				{
-					// TODO: figure out the compression used.
-					throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCannotLoadCompressedEffects"));
-					//UInt32 decompressedDataSize = br.ReadUInt32();
-				}
-				int typeReaderCount = br.ReadVarInt();
-				string typeReaderName = br.ReadString();
-				int typeReaderVersion = br.ReadInt32();
-				int sharedResourceCount = br.ReadVarInt();
-				int typeid = br.ReadVarInt();
-				UInt32 size = br.ReadUInt32();
-				byte[] effectBytecode = br.ReadBytes((int)size);
-				effects[path] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
-			}
-			catch (Exception e)
-			{
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorEffectFailedToLoad", path), e);
-			}
-		}
-
-		internal void Autoload()
-		{
-			if (Code == null)
-				return;
-
-			Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
-			while (AsyncLoadQueue.Count > 0)
-				AsyncLoadQueue.Dequeue().Wait();
-
-			AutoloadLocalization();
-			IList<Type> modGores = new List<Type>();
-			IList<Type> modSounds = new List<Type>();
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture))
-			{
-				if (type.IsAbstract || type.GetConstructor(new Type[0]) == null)//don't autoload things with no default constructor
-				{
-					continue;
-				}
-				if (type.IsSubclassOf(typeof(ModItem)))
-				{
-					AutoloadItem(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalItem)))
-				{
-					AutoloadGlobalItem(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModPrefix)))
-				{
-					AutoloadPrefix(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModDust)))
-				{
-					AutoloadDust(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModTile)))
-				{
-					AutoloadTile(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalTile)))
-				{
-					AutoloadGlobalTile(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModTileEntity)))
-				{
-					AutoloadTileEntity(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWall)))
-				{
-					AutoloadWall(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalWall)))
-				{
-					AutoloadGlobalWall(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModProjectile)))
-				{
-					AutoloadProjectile(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalProjectile)))
-				{
-					AutoloadGlobalProjectile(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModNPC)))
-				{
-					AutoloadNPC(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalNPC)))
-				{
-					AutoloadGlobalNPC(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModPlayer)))
-				{
-					AutoloadPlayer(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModBuff)))
-				{
-					AutoloadBuff(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalBuff)))
-				{
-					AutoloadGlobalBuff(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModMountData)))
-				{
-					AutoloadMountData(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModGore)))
-				{
-					modGores.Add(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModSound)))
-				{
-					modSounds.Add(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWorld)))
-				{
-					AutoloadModWorld(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModUgBgStyle)))
-				{
-					AutoloadUgBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModSurfaceBgStyle)))
-				{
-					AutoloadSurfaceBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalBgStyle)))
-				{
-					AutoloadGlobalBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWaterStyle)))
-				{
-					AutoloadWaterStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWaterfallStyle)))
-				{
-					AutoloadWaterfallStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalRecipe)))
-				{
-					AutoloadGlobalRecipe(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModCommand)))
-				{
-					AutoloadCommand(type);
-				}
-			}
-			if (Properties.AutoloadGores)
-			{
-				AutoloadGores(modGores);
-			}
-			if (Properties.AutoloadSounds)
-			{
-				AutoloadSounds(modSounds);
-			}
-			if (Properties.AutoloadBackgrounds)
-			{
-				AutoloadBackgrounds();
-			}
 		}
 
 		/// <summary>
@@ -530,11 +224,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalItem GetGlobalItem(string name)
-		{
-			GlobalItem globalItem;
-			return globalItems.TryGetValue(name, out globalItem) ? globalItem : null;
-		}
+		public GlobalItem GetGlobalItem(string name) => globalItems.TryGetValue(name, out var globalItem) ? globalItem : null;
 
 		/// <summary>
 		/// Same as the other GetGlobalItem, but assumes that the class name and internal name are the same.
@@ -622,16 +312,14 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="type">The type.</param>
 		/// <returns></returns>
-		public EquipTexture GetEquipTexture(string name, EquipType type)
-		{
-			EquipTexture texture;
-			return equipTextures.TryGetValue(Tuple.Create(name, type), out texture) ? texture : null;
-		}
+		public EquipTexture GetEquipTexture(string name, EquipType type) => 
+			equipTextures.TryGetValue(Tuple.Create(name, type), out var texture) ? texture : null;
 
 		/// <summary>
 		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
+		/// <param name="type"></param>
 		/// <returns></returns>
 		public int GetEquipSlot(string name, EquipType type) => GetEquipTexture(name, type)?.Slot ?? -1;
 
@@ -639,41 +327,15 @@ namespace Terraria.ModLoader
 		/// Same as GetEquipSlot, except returns the number as an sbyte (signed byte) for your convenience.
 		/// </summary>
 		/// <param name="name">The name.</param>
+		/// <param name="type"></param>
 		/// <returns></returns>
 		public sbyte GetAccessorySlot(string name, EquipType type) => (sbyte)GetEquipSlot(name, type);
-
-		private void AutoloadItem(Type type)
-		{
-			ModItem item = (ModItem)Activator.CreateInstance(type);
-			item.mod = this;
-			string name = type.Name;
-			if (item.Autoload(ref name))
-			{
-				AddItem(name, item);
-				var autoloadEquip = type.GetAttribute<AutoloadEquip>();
-				if (autoloadEquip != null)
-					foreach (var equip in autoloadEquip.equipTypes)
-						AddEquipTexture(item, equip, item.Name, item.Texture + '_' + equip,
-							item.Texture + "_Arms", item.Texture + "_FemaleBody");
-			}
-		}
-
-		private void AutoloadGlobalItem(Type type)
-		{
-			GlobalItem globalItem = (GlobalItem)Activator.CreateInstance(type);
-			globalItem.mod = this;
-			string name = type.Name;
-			if (globalItem.Autoload(ref name))
-			{
-				AddGlobalItem(name, globalItem);
-			}
-		}
 
 		/// <summary>
 		/// Adds a prefix to your mod with the specified internal name. This method should be called in Load. You can obtain an instance of ModPrefix by overriding it then creating an instance of the subclass.
 		/// </summary>
 		/// <param name="name">The name.</param>
-		/// <param name="item">The prefix.</param>
+		/// <param name="prefix">The prefix.</param>
 		/// <exception cref="System.Exception">You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.</exception>
 		public void AddPrefix(string name, ModPrefix prefix)
 		{
@@ -721,17 +383,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public byte PrefixType<T>() where T : ModPrefix => PrefixType(typeof(T).Name);
 
-		private void AutoloadPrefix(Type type)
-		{
-			ModPrefix prefix = (ModPrefix)Activator.CreateInstance(type);
-			prefix.mod = this;
-			string name = type.Name;
-			if (prefix.Autoload(ref name))
-			{
-				AddPrefix(name, prefix);
-			}
-		}
-
 		/// <summary>
 		/// Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally, preferably through the constructor of an overriding class. Leave the texture as an empty string to use the vanilla dust sprite sheet.
 		/// </summary>
@@ -757,11 +408,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModDust GetDust(string name)
-		{
-			ModDust dust;
-			return dusts.TryGetValue(name, out dust) ? dust : null;
-		}
+		public ModDust GetDust(string name) => dusts.TryGetValue(name, out var dust) ? dust : null;
 
 		/// <summary>
 		/// Same as the other GetDust, but assumes that the class name and internal name are the same.
@@ -783,18 +430,6 @@ namespace Terraria.ModLoader
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public int DustType<T>() where T : ModDust => DustType(typeof(T).Name);
-
-		private void AutoloadDust(Type type)
-		{
-			ModDust dust = (ModDust)Activator.CreateInstance(type);
-			dust.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (dust.Autoload(ref name, ref texture))
-			{
-				AddDust(name, dust, texture);
-			}
-		}
 
 		/// <summary>
 		/// Adds a type of tile to the game with the specified name and texture.
@@ -824,11 +459,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModTile GetTile(string name)
-		{
-			ModTile tile;
-			return tiles.TryGetValue(name, out tile) ? tile : null;
-		}
+		public ModTile GetTile(string name) => tiles.TryGetValue(name, out var tile) ? tile : null;
 
 		/// <summary>
 		/// Same as the other GetTile, but assumes that the class name and internal name are the same.
@@ -873,11 +504,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalTile GetGlobalTile(string name)
-		{
-			GlobalTile globalTile;
-			return globalTiles.TryGetValue(name, out globalTile) ? globalTile : null;
-		}
+		public GlobalTile GetGlobalTile(string name) => globalTiles.TryGetValue(name, out var globalTile) ? globalTile : null;
 
 		/// <summary>
 		/// Same as the other GetGlobalTile, but assumes that the class name and internal name are the same.
@@ -885,29 +512,6 @@ namespace Terraria.ModLoader
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public T GetGlobalTile<T>() where T : GlobalTile => (T)GetGlobalTile(typeof(T).Name);
-
-		private void AutoloadTile(Type type)
-		{
-			ModTile tile = (ModTile)Activator.CreateInstance(type);
-			tile.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (tile.Autoload(ref name, ref texture))
-			{
-				AddTile(name, tile, texture);
-			}
-		}
-
-		private void AutoloadGlobalTile(Type type)
-		{
-			GlobalTile globalTile = (GlobalTile)Activator.CreateInstance(type);
-			globalTile.mod = this;
-			string name = type.Name;
-			if (globalTile.Autoload(ref name))
-			{
-				AddGlobalTile(name, globalTile);
-			}
-		}
 
 		/// <summary>
 		/// Manually add a tile entity during Load.
@@ -932,11 +536,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModTileEntity GetTileEntity(string name)
-		{
-			ModTileEntity tileEntity;
-			return tileEntities.TryGetValue(name, out tileEntity) ? tileEntity : null;
-		}
+		public ModTileEntity GetTileEntity(string name) => 
+			tileEntities.TryGetValue(name, out var tileEntity) ? tileEntity : null;
 
 		/// <summary>
 		/// Same as the other GetTileEntity, but assumes that the class name and internal name are the same.
@@ -958,17 +559,6 @@ namespace Terraria.ModLoader
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public int TileEntityType<T>() where T : ModTileEntity => TileEntityType(typeof(T).Name);
-
-		private void AutoloadTileEntity(Type type)
-		{
-			ModTileEntity tileEntity = (ModTileEntity)Activator.CreateInstance(type);
-			tileEntity.mod = this;
-			string name = type.Name;
-			if (tileEntity.Autoload(ref name))
-			{
-				AddTileEntity(name, tileEntity);
-			}
-		}
 
 		/// <summary>
 		/// Adds a type of wall to the game with the specified name and texture.
@@ -995,11 +585,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModWall GetWall(string name)
-		{
-			ModWall wall;
-			return walls.TryGetValue(name, out wall) ? wall : null;
-		}
+		public ModWall GetWall(string name) => walls.TryGetValue(name, out var wall) ? wall : null;
 
 		public T GetWall<T>() where T : ModWall => (T)GetWall(typeof(T).Name);
 
@@ -1039,36 +625,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalWall GetGlobalWall(string name)
-		{
-			GlobalWall globalWall;
-			return globalWalls.TryGetValue(name, out globalWall) ? globalWall : null;
-		}
+		public GlobalWall GetGlobalWall(string name) => globalWalls.TryGetValue(name, out var globalWall) ? globalWall : null;
 
 		public T GetGlobalWall<T>() where T : GlobalWall => (T)GetGlobalWall(typeof(T).Name);
-
-		private void AutoloadWall(Type type)
-		{
-			ModWall wall = (ModWall)Activator.CreateInstance(type);
-			wall.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (wall.Autoload(ref name, ref texture))
-			{
-				AddWall(name, wall, texture);
-			}
-		}
-
-		private void AutoloadGlobalWall(Type type)
-		{
-			GlobalWall globalWall = (GlobalWall)Activator.CreateInstance(type);
-			globalWall.mod = this;
-			string name = type.Name;
-			if (globalWall.Autoload(ref name))
-			{
-				AddGlobalWall(name, globalWall);
-			}
-		}
 
 		/// <summary>
 		/// Adds a type of projectile to the game with the specified name.
@@ -1097,11 +656,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModProjectile GetProjectile(string name)
-		{
-			ModProjectile proj;
-			return projectiles.TryGetValue(name, out proj) ? proj : null;
-		}
+		public ModProjectile GetProjectile(string name) => projectiles.TryGetValue(name, out var proj) ? proj : null;
 
 		public T GetProjectile<T>() where T : ModProjectile => (T)GetProjectile(typeof(T).Name);
 
@@ -1153,44 +708,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalProjectile GetGlobalProjectile(string name)
-		{
-			GlobalProjectile globalProj;
-			return globalProjectiles.TryGetValue(name, out globalProj) ? globalProj : null;
-		}
+		public GlobalProjectile GetGlobalProjectile(string name) => globalProjectiles.TryGetValue(name, out var globalProj) ? globalProj : null;
 
 		public T GetGlobalProjectile<T>() where T : GlobalProjectile => (T)GetGlobalProjectile(typeof(T).Name);
-
-		private void AutoloadProjectile(Type type)
-		{
-			ModProjectile projectile = (ModProjectile)Activator.CreateInstance(type);
-			projectile.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (projectile.Autoload(ref name))
-			{
-				AddProjectile(name, projectile);
-			}
-		}
-
-		private void AutoloadGlobalProjectile(Type type)
-		{
-			GlobalProjectile globalProjectile = (GlobalProjectile)Activator.CreateInstance(type);
-			globalProjectile.mod = this;
-			string name = type.Name;
-			if (globalProjectile.Autoload(ref name))
-			{
-				AddGlobalProjectile(name, globalProjectile);
-			}
-		}
 
 		/// <summary>
 		/// Adds a type of NPC to the game with the specified name and texture. Also allows you to give the NPC alternate textures.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="npc">The NPC.</param>
-		/// <param name="texture">The texture.</param>
-		/// <param name="altTextures">The alt textures.</param>
 		public void AddNPC(string name, ModNPC npc)
 		{
 			if (!loading)
@@ -1213,11 +739,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModNPC GetNPC(string name)
-		{
-			ModNPC npc;
-			return npcs.TryGetValue(name, out npc) ? npc : null;
-		}
+		public ModNPC GetNPC(string name) => npcs.TryGetValue(name, out var npc) ? npc : null;
 
 		public T GetNPC<T>() where T : ModNPC => (T)GetNPC(typeof(T).Name);
 
@@ -1250,7 +772,7 @@ namespace Terraria.ModLoader
 			globalNPC.mod = this;
 			globalNPC.Name = name;
 
-			this.globalNPCs[name] = globalNPC;
+			globalNPCs[name] = globalNPC;
 			globalNPC.index = NPCLoader.globalNPCs.Count;
 			NPCLoader.globalIndexes[Name + ':' + name] = NPCLoader.globalNPCs.Count;
 			if (NPCLoader.globalIndexesByType.ContainsKey(globalNPC.GetType()))
@@ -1269,11 +791,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalNPC GetGlobalNPC(string name)
-		{
-			GlobalNPC globalNPC;
-			return globalNPCs.TryGetValue(name, out globalNPC) ? globalNPC : null;
-		}
+		public GlobalNPC GetGlobalNPC(string name) => globalNPCs.TryGetValue(name, out var globalNPC) ? globalNPC : null;
 
 		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)GetGlobalNPC(typeof(T).Name);
 
@@ -1282,7 +800,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npcType">Type of the NPC.</param>
 		/// <param name="texture">The texture.</param>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public void AddNPCHeadTexture(int npcType, string texture)
 		{
 			if (!loading)
@@ -1306,6 +824,7 @@ namespace Terraria.ModLoader
 		/// Assigns a head texture that can be used by NPCs on the map.
 		/// </summary>
 		/// <param name="texture">The texture.</param>
+		/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
 		public void AddBossHeadTexture(string texture, int npcType = -1)
 		{
 			if (!loading)
@@ -1317,41 +836,6 @@ namespace Terraria.ModLoader
 			if (npcType >= 0)
 			{
 				NPCHeadLoader.npcToBossHead[npcType] = slot;
-			}
-		}
-
-		private void AutoloadNPC(Type type)
-		{
-			ModNPC npc = (ModNPC)Activator.CreateInstance(type);
-			npc.mod = this;
-			string name = type.Name;
-			if (npc.Autoload(ref name))
-			{
-				AddNPC(name, npc);
-				string texture = npc.Texture;
-				var autoloadHead = type.GetAttribute<AutoloadHead>();
-				if (autoloadHead != null)
-				{
-					string headTexture = npc.HeadTexture;
-					AddNPCHeadTexture(npc.npc.type, headTexture);
-				}
-				var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
-				if (autoloadBossHead != null)
-				{
-					string headTexture = npc.BossHeadTexture;
-					AddBossHeadTexture(headTexture, npc.npc.type);
-				}
-			}
-		}
-
-		private void AutoloadGlobalNPC(Type type)
-		{
-			GlobalNPC globalNPC = (GlobalNPC)Activator.CreateInstance(type);
-			globalNPC.mod = this;
-			string name = type.Name;
-			if (globalNPC.Autoload(ref name))
-			{
-				AddGlobalNPC(name, globalNPC);
 			}
 		}
 
@@ -1372,16 +856,14 @@ namespace Terraria.ModLoader
 			PlayerHooks.Add(player);
 		}
 
-		private void AutoloadPlayer(Type type)
-		{
-			ModPlayer player = (ModPlayer)Activator.CreateInstance(type);
-			player.mod = this;
-			string name = type.Name;
-			if (player.Autoload(ref name))
-			{
-				AddPlayer(name, player);
-			}
-		}
+		/// <summary>
+		/// Gets the ModPlayer of this mod corresponding to the given name. Returns null if no ModPlayer with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public ModPlayer GetPlayer(string name) => players.TryGetValue(name, out var player) ? player : null;
+
+		public T GetPlayer<T>() where T : ModPlayer => (T)GetPlayer(typeof(T).Name);
 
 		/// <summary>
 		/// Adds a type of buff to the game with the specified internal name and texture.
@@ -1408,26 +890,12 @@ namespace Terraria.ModLoader
 			BuffLoader.buffs.Add(buff);
 		}
 
-		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
-		{
-			key = key.Replace(" ", "_");
-			if (translations.ContainsKey(key))
-			{
-				return translations[key];
-			}
-			return new ModTranslation(key, defaultEmpty);
-		}
-
 		/// <summary>
 		/// Gets the ModBuff of this mod corresponding to the given name. Returns null if no ModBuff with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModBuff GetBuff(string name)
-		{
-			ModBuff buff;
-			return buffs.TryGetValue(name, out buff) ? buff : null;
-		}
+		public ModBuff GetBuff(string name) => buffs.TryGetValue(name, out var buff) ? buff : null;
 
 		public T GetBuff<T>() where T : ModBuff => (T)GetBuff(typeof(T).Name);
 
@@ -1464,53 +932,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalBuff GetGlobalBuff(string name)
-		{
-			GlobalBuff globalBuff;
-			return globalBuffs.TryGetValue(name, out globalBuff) ? globalBuff : null;
-		}
+		public GlobalBuff GetGlobalBuff(string name) => globalBuffs.TryGetValue(name, out var globalBuff) ? globalBuff : null;
 
 		public T GetGlobalBuff<T>() where T : GlobalBuff => (T)GetGlobalBuff(typeof(T).Name);
-
-		private void AutoloadBuff(Type type)
-		{
-			ModBuff buff = (ModBuff)Activator.CreateInstance(type);
-			buff.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (buff.Autoload(ref name, ref texture))
-			{
-				AddBuff(name, buff, texture);
-			}
-		}
-
-		private void AutoloadGlobalBuff(Type type)
-		{
-			GlobalBuff globalBuff = (GlobalBuff)Activator.CreateInstance(type);
-			globalBuff.mod = this;
-			string name = type.Name;
-			if (globalBuff.Autoload(ref name))
-			{
-				AddGlobalBuff(name, globalBuff);
-			}
-		}
-
-		private void AutoloadMountData(Type type)
-		{
-			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
-			mount.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			IDictionary<MountTextureType, string> extraTextures = new Dictionary<MountTextureType, string>();
-			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType)))
-			{
-				extraTextures[textureType] = texture + "_" + textureType.ToString();
-			}
-			if (mount.Autoload(ref name, ref texture, extraTextures))
-			{
-				AddMount(name, mount, texture, extraTextures);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given mount to the game with the given name and texture. The extraTextures dictionary should optionally map types of mount textures to the texture paths you want to include.
@@ -1580,11 +1004,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModMountData GetMount(string name)
-		{
-			ModMountData modMountData;
-			return mountDatas.TryGetValue(name, out modMountData) ? modMountData : null;
-		}
+		public ModMountData GetMount(string name) => mountDatas.TryGetValue(name, out var modMountData) ? modMountData : null;
 
 		public T GetMount<T>() where T : ModMountData => (T)GetMount(typeof(T).Name);
 
@@ -1619,27 +1039,12 @@ namespace Terraria.ModLoader
 			WorldHooks.Add(modWorld);
 		}
 
-		private void AutoloadModWorld(Type type)
-		{
-			ModWorld modWorld = (ModWorld)Activator.CreateInstance(type);
-			modWorld.mod = this;
-			string name = type.Name;
-			if (modWorld.Autoload(ref name))
-			{
-				AddModWorld(name, modWorld);
-			}
-		}
-
 		/// <summary>
 		/// Gets the ModWorld instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModWorld GetModWorld(string name)
-		{
-			ModWorld world;
-			return worlds.TryGetValue(name, out world) ? world : null;
-		}
+		public ModWorld GetModWorld(string name) => worlds.TryGetValue(name, out var world) ? world : null;
 
 		/// <summary>
 		/// Same as the other GetModWorld, but assumes that the class name and internal name are the same.
@@ -1671,24 +1076,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModUgBgStyle GetUgBgStyle(string name)
-		{
-			ModUgBgStyle bgStyle;
-			return ugBgStyles.TryGetValue(name, out bgStyle) ? bgStyle : null;
-		}
+		public ModUgBgStyle GetUgBgStyle(string name) => ugBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
 
 		public T GetUgBgStyle<T>() where T : ModUgBgStyle => (T)GetUgBgStyle(typeof(T).Name);
-
-		private void AutoloadUgBgStyle(Type type)
-		{
-			ModUgBgStyle ugBgStyle = (ModUgBgStyle)Activator.CreateInstance(type);
-			ugBgStyle.mod = this;
-			string name = type.Name;
-			if (ugBgStyle.Autoload(ref name))
-			{
-				AddUgBgStyle(name, ugBgStyle);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given surface background style with the given name to this mod.
@@ -1713,11 +1103,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModSurfaceBgStyle GetSurfaceBgStyle(string name)
-		{
-			ModSurfaceBgStyle bgStyle;
-			return surfaceBgStyles.TryGetValue(name, out bgStyle) ? bgStyle : null;
-		}
+		public ModSurfaceBgStyle GetSurfaceBgStyle(string name) => surfaceBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
 
 		public T GetSurfaceBgStyle<T>() where T : ModSurfaceBgStyle => (T)GetSurfaceBgStyle(typeof(T).Name);
 
@@ -1729,17 +1115,6 @@ namespace Terraria.ModLoader
 		public int GetSurfaceBgStyleSlot(string name) => GetSurfaceBgStyle(name)?.Slot ?? -1;
 
 		public int GetSurfaceBgStyleSlot<T>() where T : ModSurfaceBgStyle => GetSurfaceBgStyleSlot(typeof(T).Name);
-
-		private void AutoloadSurfaceBgStyle(Type type)
-		{
-			ModSurfaceBgStyle surfaceBgStyle = (ModSurfaceBgStyle)Activator.CreateInstance(type);
-			surfaceBgStyle.mod = this;
-			string name = type.Name;
-			if (surfaceBgStyle.Autoload(ref name))
-			{
-				AddSurfaceBgStyle(name, surfaceBgStyle);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given global background style with the given name to this mod.
@@ -1763,24 +1138,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public GlobalBgStyle GetGlobalBgStyle(string name)
-		{
-			GlobalBgStyle bgStyle;
-			return globalBgStyles.TryGetValue(name, out bgStyle) ? bgStyle : null;
-		}
+		public GlobalBgStyle GetGlobalBgStyle(string name) => globalBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
 
 		public T GetGlobalBgStyle<T>() where T : GlobalBgStyle => (T)GetGlobalBgStyle(typeof(T).Name);
-
-		private void AutoloadGlobalBgStyle(Type type)
-		{
-			GlobalBgStyle globalBgStyle = (GlobalBgStyle)Activator.CreateInstance(type);
-			globalBgStyle.mod = this;
-			string name = type.Name;
-			if (globalBgStyle.Autoload(ref name))
-			{
-				AddGlobalBgStyle(name, globalBgStyle);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given water style to the game with the given name, texture path, and block texture path.
@@ -1809,26 +1169,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModWaterStyle GetWaterStyle(string name)
-		{
-			ModWaterStyle waterStyle;
-			return waterStyles.TryGetValue(name, out waterStyle) ? waterStyle : null;
-		}
+		public ModWaterStyle GetWaterStyle(string name) => waterStyles.TryGetValue(name, out var waterStyle) ? waterStyle : null;
 
 		public T GetWaterStyle<T>() where T : ModWaterStyle => (T)GetWaterStyle(typeof(T).Name);
-
-		private void AutoloadWaterStyle(Type type)
-		{
-			ModWaterStyle waterStyle = (ModWaterStyle)Activator.CreateInstance(type);
-			waterStyle.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			string blockTexture = texture + "_Block";
-			if (waterStyle.Autoload(ref name, ref texture, ref blockTexture))
-			{
-				AddWaterStyle(name, waterStyle, texture, blockTexture);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given waterfall style to the game with the given name and texture path.
@@ -1855,11 +1198,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModWaterfallStyle GetWaterfallStyle(string name)
-		{
-			ModWaterfallStyle waterfallStyle;
-			return waterfallStyles.TryGetValue(name, out waterfallStyle) ? waterfallStyle : null;
-		}
+		public ModWaterfallStyle GetWaterfallStyle(string name) => waterfallStyles.TryGetValue(name, out var waterfallStyle) ? waterfallStyle : null;
 
 		public T GetWaterfallStyle<T>() where T : ModWaterfallStyle => (T)GetWaterfallStyle(typeof(T).Name);
 
@@ -1871,18 +1210,6 @@ namespace Terraria.ModLoader
 		public int GetWaterfallStyleSlot(string name) => GetWaterfallStyle(name)?.Type ?? -1;
 
 		public int GetWaterfallStyleSlot<T>() where T : ModWaterfallStyle => GetWaterfallStyleSlot(typeof(T).Name);
-
-		private void AutoloadWaterfallStyle(Type type)
-		{
-			ModWaterfallStyle waterfallStyle = (ModWaterfallStyle)Activator.CreateInstance(type);
-			waterfallStyle.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (waterfallStyle.Autoload(ref name, ref texture))
-			{
-				AddWaterfallStyle(name, waterfallStyle, texture);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior.
@@ -1915,20 +1242,6 @@ namespace Terraria.ModLoader
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public int GetGoreSlot<T>() where T : ModGore => GetGoreSlot(typeof(T).Name);
-
-		private void AutoloadGores(IList<Type> modGores)
-		{
-			var modGoreNames = modGores.ToDictionary(t => t.Namespace + "." + t.Name);
-			foreach (var texture in textures.Keys.Where(t => t.StartsWith("Gores/")))
-			{
-				ModGore modGore = null;
-				Type t;
-				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out t))
-					modGore = (ModGore)Activator.CreateInstance(t);
-
-				AddGore(Name + '/' + texture, modGore);
-			}
-		}
 
 		/// <summary>
 		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
@@ -1965,42 +1278,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
 
-		private void AutoloadSounds(IList<Type> modSounds)
-		{
-			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
-			foreach (var sound in sounds.Keys.Where(t => t.StartsWith("Sounds/")))
-			{
-				string substring = sound.Substring("Sounds/".Length);
-				SoundType soundType = SoundType.Custom;
-				if (substring.StartsWith("Item/"))
-				{
-					soundType = SoundType.Item;
-				}
-				else if (substring.StartsWith("NPCHit/"))
-				{
-					soundType = SoundType.NPCHit;
-				}
-				else if (substring.StartsWith("NPCKilled/"))
-				{
-					soundType = SoundType.NPCKilled;
-				}
-				ModSound modSound = null;
-				Type t;
-				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t))
-					modSound = (ModSound)Activator.CreateInstance(t);
-
-				AddSound(soundType, Name + '/' + sound, modSound);
-			}
-			foreach (var music in musics.Keys.Where(t => t.StartsWith("Sounds/")))
-			{
-				string substring = music.Substring("Sounds/".Length);
-				if (substring.StartsWith("Music/"))
-				{
-					AddSound(SoundType.Music, Name + '/' + music);
-				}
-			}
-		}
-
 		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
 		/// </summary>
@@ -2021,14 +1298,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public int GetBackgroundSlot(string name) => BackgroundTextureLoader.GetBackgroundSlot(Name + '/' + name);
 
-		private void AutoloadBackgrounds()
-		{
-			foreach (string texture in textures.Keys.Where(t => t.StartsWith("Backgrounds/")))
-			{
-				AddBackgroundTexture(Name + '/' + texture);
-			}
-		}
-
 		/// <summary>
 		/// Manually add a Global Recipe during Load
 		/// </summary>
@@ -2046,16 +1315,14 @@ namespace Terraria.ModLoader
 			RecipeHooks.Add(globalRecipe);
 		}
 
-		private void AutoloadGlobalRecipe(Type type)
-		{
-			GlobalRecipe globalRecipe = (GlobalRecipe)Activator.CreateInstance(type);
-			globalRecipe.mod = this;
-			string name = type.Name;
-			if (globalRecipe.Autoload(ref name))
-			{
-				AddGlobalRecipe(name, globalRecipe);
-			}
-		}
+		/// <summary>
+		/// Gets the global recipe corresponding to the specified name.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public GlobalRecipe GetGlobalRecipe(string name) => globalRecipes.TryGetValue(name, out var globalRecipe) ? globalRecipe : null;
+
+		public T GetGlobalRecipe<T>() where T : GlobalRecipe => (T)GetGlobalRecipe(typeof(T).Name);
 
 		/// <summary>
 		/// Manually add a Command during Load
@@ -2069,28 +1336,6 @@ namespace Terraria.ModLoader
 			mc.Name = name;
 			CommandManager.Add(mc);
 		}
-
-		private void AutoloadCommand(Type type)
-		{
-			var mc = (ModCommand)Activator.CreateInstance(type);
-			mc.mod = this;
-			var name = type.Name;
-			if (mc.Autoload(ref name))
-				AddCommand(name, mc);
-		}
-
-		/// <summary>
-		/// Gets the global recipe corresponding to the specified name.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public GlobalRecipe GetGlobalRecipe(string name)
-		{
-			GlobalRecipe globalRecipe;
-			return globalRecipes.TryGetValue(name, out globalRecipe) ? globalRecipe : null;
-		}
-
-		public T GetGlobalRecipe<T>() where T : GlobalRecipe => (T)GetGlobalRecipe(typeof(T).Name);
 
 		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
@@ -2193,11 +1438,8 @@ namespace Terraria.ModLoader
 		/// Creates a ModTranslation object that you can use in AddTranslation.
 		/// </summary>
 		/// <param name="key">The key for the ModTranslation. The full key will be Mods.ModName.key</param>
-		public ModTranslation CreateTranslation(string key)
-		{
-			key = string.Format("Mods.{0}.{1}", Name, key);
-			return new ModTranslation(key);
-		}
+		public ModTranslation CreateTranslation(string key) => 
+			new ModTranslation(string.Format("Mods.{0}.{1}", Name, key));
 
 		/// <summary>
 		/// Adds a ModTranslation to the game so that you can use Language.GetText to get a LocalizedText.
@@ -2207,140 +1449,10 @@ namespace Terraria.ModLoader
 			translations[translation.Key] = translation;
 		}
 
-		internal void SetupContent()
+		internal ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
 		{
-			foreach (ModItem item in items.Values)
-			{
-				ItemLoader.SetDefaults(item.item, false);
-				item.AutoStaticDefaults();
-				item.SetStaticDefaults();
-			}
-			foreach (ModPrefix prefix in prefixes.Values)
-			{
-				prefix.AutoDefaults();
-				prefix.SetDefaults();
-			}
-			foreach (ModDust dust in dusts.Values)
-			{
-				dust.SetDefaults();
-			}
-			foreach (ModTile tile in tiles.Values)
-			{
-				Main.tileTexture[tile.Type] = ModContent.GetTexture(tile.texture);
-				TileLoader.SetDefaults(tile);
-				if (TileID.Sets.HasOutlines[tile.Type])
-				{
-					Main.highlightMaskTexture[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
-				}
-				if (!string.IsNullOrEmpty(tile.chest))
-				{
-					TileID.Sets.BasicChest[tile.Type] = true;
-				}
-			}
-			foreach (GlobalTile globalTile in globalTiles.Values)
-			{
-				globalTile.SetDefaults();
-			}
-			foreach (ModWall wall in walls.Values)
-			{
-				Main.wallTexture[wall.Type] = ModContent.GetTexture(wall.texture);
-				wall.SetDefaults();
-			}
-			foreach (GlobalWall globalWall in globalWalls.Values)
-			{
-				globalWall.SetDefaults();
-			}
-			foreach (ModProjectile projectile in projectiles.Values)
-			{
-				ProjectileLoader.SetDefaults(projectile.projectile, false);
-				projectile.AutoStaticDefaults();
-				projectile.SetStaticDefaults();
-			}
-			foreach (ModNPC npc in npcs.Values)
-			{
-				NPCLoader.SetDefaults(npc.npc, false);
-				npc.AutoStaticDefaults();
-				npc.SetStaticDefaults();
-			}
-			foreach (ModMountData modMountData in mountDatas.Values)
-			{
-				var mountData = modMountData.mountData;
-				mountData.modMountData = modMountData;
-				MountLoader.SetupMount(mountData);
-				Mount.mounts[modMountData.Type] = mountData;
-			}
-			foreach (ModBuff buff in buffs.Values)
-			{
-				Main.buffTexture[buff.Type] = ModContent.GetTexture(buff.texture);
-				buff.SetDefaults();
-			}
-			foreach (ModWaterStyle waterStyle in waterStyles.Values)
-			{
-				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.texture);
-				Main.liquidTexture[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
-			}
-			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values)
-			{
-				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type]
-					= ModContent.GetTexture(waterfallStyle.texture);
-			}
-		}
-
-		internal void UnloadContent()
-		{
-			Unload();
-			recipes.Clear();
-			items.Clear();
-			globalItems.Clear();
-			equipTextures.Clear();
-			prefixes.Clear();
-			dusts.Clear();
-			tiles.Clear();
-			globalTiles.Clear();
-			tileEntities.Clear();
-			walls.Clear();
-			globalWalls.Clear();
-			players.Clear();
-			projectiles.Clear();
-			globalProjectiles.Clear();
-			npcs.Clear();
-			globalNPCs.Clear();
-			buffs.Clear();
-			globalBuffs.Clear();
-			mountDatas.Clear();
-			worlds.Clear();
-			ugBgStyles.Clear();
-			surfaceBgStyles.Clear();
-			globalBgStyles.Clear();
-			waterStyles.Clear();
-			waterfallStyles.Clear();
-			globalRecipes.Clear();
-			translations.Clear();
-			if (!Main.dedServ)
-			{
-				// Manually Dispose IDisposables to free up unmanaged memory immediately
-				/* Skip this for now, too many mods don't unload properly and run into exceptions.
-				foreach (var sound in sounds)
-				{
-					sound.Value.Dispose();
-				}
-				foreach (var effect in effects)
-				{
-					effect.Value.Dispose();
-				}
-				foreach (var texture in textures)
-				{
-					texture.Value.Dispose();
-				}
-				*/
-			}
-			sounds.Clear();
-			effects.Clear();
-			foreach (var tex in textures.Values)
-				tex?.Dispose();
-			textures.Clear();
-			musics.Clear();
-			fonts.Clear();
+			key = key.Replace(" ", "_");
+			return translations.TryGetValue(key, out var translation) ? translation : new ModTranslation(key, defaultEmpty);
 		}
 
 		/// <summary>
@@ -2348,29 +1460,22 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public byte[] GetFileBytes(string name)
-		{
-			return File?.GetFile(name);
-		}
+		public byte[] GetFileBytes(string name) => File?.GetFile(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used here.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool FileExists(string name)
-		{
-			return File != null && File.HasFile(name);
-		}
+		public bool FileExists(string name) => File != null && File.HasFile(name);
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
 		/// </summary>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public Texture2D GetTexture(string name)
 		{
-			Texture2D t;
-			if (!textures.TryGetValue(name, out t))
+			if (!textures.TryGetValue(name, out var t))
 				throw new MissingResourceException(name, textures.Keys);
 
 			return t;
@@ -2381,10 +1486,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool TextureExists(string name)
-		{
-			return textures.ContainsKey(name);
-		}
+		public bool TextureExists(string name) => textures.ContainsKey(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.AddTexture(this.FileName(name), texture).
@@ -2405,11 +1507,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public SoundEffect GetSound(string name)
 		{
-			SoundEffect sound;
-			if (!sounds.TryGetValue(name, out sound))
+			if (!sounds.TryGetValue(name, out var sound))
 				throw new MissingResourceException(name);
 
 			return sound;
@@ -2420,24 +1521,19 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool SoundExists(string name)
-		{
-			return sounds.ContainsKey(name);
-		}
+		public bool SoundExists(string name) => sounds.ContainsKey(name);
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public Music GetMusic(string name)
 		{
-			MusicData sound;
-			if (!musics.TryGetValue(name, out sound))
-			{
+			if (!musics.TryGetValue(name, out var sound))
 				throw new MissingResourceException(name);
-			}
+			
 			return sound.GetInstance();
 		}
 
@@ -2446,19 +1542,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool MusicExists(string name)
-		{
-			return musics.ContainsKey(name);
-		}
+		public bool MusicExists(string name) => musics.ContainsKey(name);
 
 		/// <summary>
 		/// Gets a SpriteFont loaded from the specified path.
 		/// </summary>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public DynamicSpriteFont GetFont(string name)
 		{
-			DynamicSpriteFont font;
-			if (!fonts.TryGetValue(name, out font))
+			if (!fonts.TryGetValue(name, out var font))
 				throw new MissingResourceException(name);
 
 			return font;
@@ -2467,74 +1559,24 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Used to check if a custom SpriteFont exists
 		/// </summary>
-		public bool FontExists(string name)
-		{
-			return fonts.ContainsKey(name);
-		}
+		public bool FontExists(string name) => fonts.ContainsKey(name);
 
 		/// <summary>
 		/// Gets an Effect loaded from the specified path.
 		/// </summary>
-		/// <exception cref="Terraria.ModLoader.Exceptions.MissingResourceException"></exception>
+		/// <exception cref="MissingResourceException"></exception>
 		public Effect GetEffect(string name)
 		{
-			Effect effect;
-			if (!effects.TryGetValue(name, out effect))
+			if (!effects.TryGetValue(name, out var effect))
 				throw new MissingResourceException(name);
 
 			return effect;
 		}
 
 		/// <summary>
-		/// Loads .lang files
-		/// </summary>
-		private void AutoloadLocalization()
-		{
-			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			var translationFiles = File.Where(x => Path.GetExtension(x.Key) == ".lang");
-			foreach (var translationFile in translationFiles)
-			{
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(translationFile.Value);
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Key));
-
-				using (StringReader reader = new StringReader(translationFileContents))
-				{
-					string line;
-					while ((line = reader.ReadLine()) != null)
-					{
-						int split = line.IndexOf('=');
-						if (split < 0)
-							continue; // lines witout a = are ignored
-						string key = line.Substring(0, split).Trim().Replace(" ", "_");
-						string value = line.Substring(split + 1).Trim();
-						if (value.Length == 0)
-						{
-							continue;
-						}
-						value = value.Replace("\\n", "\n");
-						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-						//string key = key;
-						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-							modTranslationDictionary[key] = mt = CreateTranslation(key);
-						mt.AddTranslation(culture, value);
-					}
-				}
-			}
-
-			foreach (var value in modTranslationDictionary.Values)
-			{
-				AddTranslation(value);
-			}
-		}
-
-		/// <summary>
 		/// Used to check if a custom Effect exists
 		/// </summary>
-		public bool EffectExists(string name)
-		{
-			return effects.ContainsKey(name);
-		}
+		public bool EffectExists(string name) => effects.ContainsKey(name);
 
 		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
