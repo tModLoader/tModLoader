@@ -10,7 +10,7 @@ installer2/*.class
 installer2/*.jar
 solutions/documentation/html
 solutions/documentation/*.tmp
-solutions/**.zip
+solutions/**/*.zip
 **/packages/
 **/.vs/
 **/.idea/
