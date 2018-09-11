@@ -47,7 +47,7 @@ namespace ExampleMod.Projectiles
 				projectile.Kill();
 				return;
 			}
-			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
 			if (modPlayer.elementShields <= projectile.ai[0])
 			{
 				projectile.Kill();

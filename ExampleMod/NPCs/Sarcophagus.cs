@@ -91,7 +91,7 @@ namespace ExampleMod.NPCs
 							target.AddBuff(BuffID.Darkness, 240, true);
 							if (target.FindBuffIndex(BuffID.Cursed) >= 0 || target.FindBuffIndex(BuffID.Slow) >= 0 || target.FindBuffIndex(BuffID.Darkness) >= 0)
 							{
-                                target.GetModPlayer<ExamplePlayer>(mod).lockTime = 60;
+                                target.GetModPlayer<ExamplePlayer>().lockTime = 60;
 							}
 						}
 					}

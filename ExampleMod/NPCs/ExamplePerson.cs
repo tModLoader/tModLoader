@@ -230,7 +230,7 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHealingPotion"));
 				nextSlot++;
 			}
-			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample)
 			{
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
 				nextSlot++;

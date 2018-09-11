@@ -15,7 +15,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
 			if (player.ownedProjectileCounts[mod.ProjectileType("PurityWisp")] > 0)
 			{
 				modPlayer.purityMinion = true;

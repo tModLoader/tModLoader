@@ -7,7 +7,7 @@ namespace ExampleMod.Backgrounds
 	{
 		public override bool ChooseBgStyle()
 		{
-			return !Main.gameMenu && Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample;
+			return !Main.gameMenu && Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample;
 		}
 
 		// Use this to keep far Backgrounds like the mountains.

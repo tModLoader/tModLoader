@@ -73,7 +73,7 @@ namespace ExampleMod.NPCs
 			if (npc.lifeMax > 5 && npc.value > 0f)
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ExampleItem"));
-				if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+				if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>().ZoneExample)
 				{
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BossItem"));
 				}
@@ -172,7 +172,7 @@ namespace ExampleMod.NPCs
 
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
 		{
-			if (player.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
+			if (player.GetModPlayer<ExamplePlayer>().ZoneExample)
 			{
 				spawnRate = (int)(spawnRate * 5f);
 				maxSpawns = (int)(maxSpawns * 5f);

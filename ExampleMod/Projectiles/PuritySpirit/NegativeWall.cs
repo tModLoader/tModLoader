@@ -62,7 +62,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				Player player = Main.player[k];
 				if (player.active && !player.dead && player.Hitbox.Intersects(projectile.Hitbox))
 				{
-					ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
+					ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
 					if (modPlayer.purityDebuffCooldown <= 0)
 					{
 						modPlayer.PuritySpiritDebuff();

@@ -9,7 +9,7 @@ namespace ExampleMod.Items
 		{
 			if (item.healLife > 0)
 			{
-				if (player.GetModPlayer<ExamplePlayer>(mod).badHeal)
+				if (player.GetModPlayer<ExamplePlayer>().badHeal)
 				{
 					int heal = item.healLife;
 					int damage = player.statLifeMax2 - player.statLife;

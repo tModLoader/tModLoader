@@ -52,7 +52,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			}
 			if (projectile.localAI[0] % 10 == 0)
 			{
-				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(SoundID.Item20);
@@ -93,7 +93,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			if (target.hurtCooldowns[1] <= 0)
 			{
-				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>();
 				modPlayer.defenseEffect = 1f;
 			}
 		}

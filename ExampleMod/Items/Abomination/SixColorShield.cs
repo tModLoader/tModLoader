@@ -31,7 +31,7 @@ namespace ExampleMod.Items.Abomination
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<ExamplePlayer>(mod).elementShield = true;
+			player.GetModPlayer<ExamplePlayer>().elementShield = true;
 		}
 
 		public override Color? GetAlpha(Color lightColor)

@@ -36,7 +36,7 @@ namespace ExampleMod.Projectiles.Minions
 		public override void CheckActive()
 		{
 			Player player = Main.player[projectile.owner];
-			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
 			if (player.dead)
 			{
 				modPlayer.purityMinion = false;

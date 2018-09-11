@@ -17,7 +17,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<ExamplePlayer>(mod).badHeal = true;
+			player.GetModPlayer<ExamplePlayer>().badHeal = true;
 		}
 	}
 }

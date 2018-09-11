@@ -39,7 +39,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.ai[1] += 1f;
 			if (projectile.ai[1] == charge)
 			{
-				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(SoundID.Zombie, -1, -1, 104);
@@ -60,7 +60,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			if (target.hurtCooldowns[1] <= 0)
 			{
-				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>();
 				modPlayer.constantDamage = projectile.damage;
 				modPlayer.percentDamage = Main.expertMode ? 0.6f : 0.5f;
 			}
