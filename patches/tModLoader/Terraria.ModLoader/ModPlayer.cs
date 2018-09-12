@@ -885,7 +885,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called when a player enters the world.
+		/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
 		/// </summary>
 		/// <param name="player">The player that entered the world.</param>
 		public virtual void OnEnterWorld(Player player)
