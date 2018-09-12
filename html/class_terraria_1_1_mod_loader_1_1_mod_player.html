@@ -262,7 +262,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6bb0584ad6810e06dbad60b0bdca5818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when ammo is consumed. Called before the ammo stack is reduced.  <a href="#a6bb0584ad6810e06dbad60b0bdca5818">More...</a><br /></td></tr>
 <tr class="separator:a6bb0584ad6810e06dbad60b0bdca5818"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c573a92f3a8df8f393ca26492d7eb3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a6c573a92f3a8df8f393ca26492d7eb3b">OnEnterWorld</a> (Player <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f">player</a>)</td></tr>
-<tr class="memdesc:a6c573a92f3a8df8f393ca26492d7eb3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a player enters the world.  <a href="#a6c573a92f3a8df8f393ca26492d7eb3b">More...</a><br /></td></tr>
+<tr class="memdesc:a6c573a92f3a8df8f393ca26492d7eb3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>. Can also be used for informational messages.  <a href="#a6c573a92f3a8df8f393ca26492d7eb3b">More...</a><br /></td></tr>
 <tr class="separator:a6c573a92f3a8df8f393ca26492d7eb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84506b45ac50a3c509f28617f57aa6af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a84506b45ac50a3c509f28617f57aa6af">OnHitAnything</a> (float x, float y, Entity victim)</td></tr>
 <tr class="memdesc:a84506b45ac50a3c509f28617f57aa6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.  <a href="#a84506b45ac50a3c509f28617f57aa6af">More...</a><br /></td></tr>
@@ -2428,7 +2428,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called when a player enters the world. </p>
+<p>Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>. Can also be used for informational messages. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player that entered the world.</td></tr>
