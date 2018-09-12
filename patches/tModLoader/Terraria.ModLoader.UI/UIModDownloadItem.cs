@@ -39,8 +39,8 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D dividerTexture;
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
-		private readonly UITextPanel<string> updateButton;
-		private readonly UITextPanel<string> moreInfoButton;
+		private readonly UIAutoScaleTextTextPanel<string> updateButton;
+		private readonly UIAutoScaleTextTextPanel<string> moreInfoButton;
 		private UIImage modIcon;
 		public bool update = false;
 		public bool updateIsDowngrade = false;
@@ -80,9 +80,9 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			moreInfoButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
+			moreInfoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
 			moreInfoButton.Width.Set(100f, 0f);
-			moreInfoButton.Height.Set(30f, 0f);
+			moreInfoButton.Height.Set(36f, 0f);
 			moreInfoButton.Left.Set(this.left, 0f);
 			moreInfoButton.Top.Set(40f, 0f);
 			moreInfoButton.PaddingTop -= 2f;
@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.UI
 
 			if (update || installed == null)
 			{
-				updateButton = new UITextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
+				updateButton = new UIAutoScaleTextTextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
 					false);
 				updateButton.CopyStyle(moreInfoButton);
 				updateButton.Width.Set(HasModIcon ? 120f : 200f, 0f);

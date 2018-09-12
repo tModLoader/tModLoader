@@ -176,8 +176,8 @@
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIEnterPassphraseMenu.cs" />
@@ -329,12 +329,13 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,116 @@
+@@ -606,5 +_,117 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\CopyCodeButton.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Body.png" />

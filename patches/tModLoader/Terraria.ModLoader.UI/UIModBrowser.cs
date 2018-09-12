@@ -185,8 +185,8 @@ namespace Terraria.ModLoader.UI
 			updateAllButton.VAlign = 1f;
 			updateAllButton.Top.Set(-20f, 0f);
 			updateAllButton.BackgroundColor = Color.Orange * 0.7f;
-			updateAllButton.OnMouseOver += UICommon.FadedMouseOver;
-			updateAllButton.OnMouseOut += UICommon.FadedMouseOut;
+			updateAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Orange, s, e);
+			updateAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Orange * 0.7f, s, e);
 			updateAllButton.OnClick += (s, e) =>
 			{
 				if (!loading)

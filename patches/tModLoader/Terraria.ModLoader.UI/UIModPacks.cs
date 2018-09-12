@@ -58,9 +58,9 @@ namespace Terraria.ModLoader.UI
 			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(titleTextPanel);
 
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+			UIAutoScaleTextTextPanel<string> backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 1f / 2f);
-			backButton.Height.Set(25f, 0f);
+			backButton.Height.Set(40f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
 			backButton.OnMouseOver += UICommon.FadedMouseOver;
@@ -68,7 +68,8 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			UIColorTextPanel saveNewButton = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"), Color.Green, 1f, false);
+			UIAutoScaleTextTextPanel<string> saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"), 1f, false);
+			saveNewButton.TextColor = Color.Green;
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.HAlign = 1f;
 			saveNewButton.OnMouseOver += UICommon.FadedMouseOver;

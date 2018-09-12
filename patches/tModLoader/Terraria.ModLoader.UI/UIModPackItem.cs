@@ -33,10 +33,10 @@ namespace Terraria.ModLoader.UI
 		private readonly int numModsEnabled;
 		private readonly int numModsDisabled;
 		private readonly int numModsMissing;
-		readonly UITextPanel<string> enableListButton;
-		readonly UITextPanel<string> enableListOnlyButton;
-		readonly UITextPanel<string> viewInModBrowserButton;
-		readonly UITextPanel<string> updateListWithEnabledButton;
+		readonly UIAutoScaleTextTextPanel<string> enableListButton;
+		readonly UIAutoScaleTextTextPanel<string> enableListOnlyButton;
+		readonly UIAutoScaleTextTextPanel<string> viewInModBrowserButton;
+		readonly UIAutoScaleTextTextPanel<string> updateListWithEnabledButton;
 		private readonly UIImageButton deleteButton;
 		private readonly string filename;
 
@@ -81,9 +81,9 @@ namespace Terraria.ModLoader.UI
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
 
-			UITextPanel<string> viewListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList"), 1f, false);
+			UIAutoScaleTextTextPanel<string> viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList"), 1f, false);
 			viewListButton.Width.Set(100f, 0f);
-			viewListButton.Height.Set(30f, 0f);
+			viewListButton.Height.Set(40f, 0f);
 			viewListButton.Left.Set(407f, 0f);
 			viewListButton.Top.Set(40f, 0f);
 			viewListButton.PaddingTop -= 2f;
@@ -93,9 +93,9 @@ namespace Terraria.ModLoader.UI
 			viewListButton.OnClick += ViewListInfo;
 			base.Append(viewListButton);
 
-			enableListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList"), 1f, false);
-			enableListButton.Width.Set(100f, 0f);
-			enableListButton.Height.Set(30f, 0f);
+			enableListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList"), 1f, false);
+			enableListButton.Width.Set(151f, 0f);
+			enableListButton.Height.Set(36f, 0f);
 			enableListButton.Left.Set(248f, 0f);
 			enableListButton.Top.Set(40f, 0f);
 			enableListButton.PaddingTop -= 2f;
@@ -105,9 +105,9 @@ namespace Terraria.ModLoader.UI
 			enableListButton.OnClick += EnableList;
 			base.Append(enableListButton);
 
-			enableListOnlyButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList"), 1f, false);
-			enableListOnlyButton.Width.Set(100f, 0f);
-			enableListOnlyButton.Height.Set(30f, 0f);
+			enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList"), 1f, false);
+			enableListOnlyButton.Width.Set(190f, 0f);
+			enableListOnlyButton.Height.Set(36f, 0f);
 			enableListOnlyButton.Left.Set(50f, 0f);
 			enableListOnlyButton.Top.Set(40f, 0f);
 			enableListOnlyButton.PaddingTop -= 2f;
@@ -117,9 +117,9 @@ namespace Terraria.ModLoader.UI
 			enableListOnlyButton.OnClick += EnableListOnly;
 			base.Append(enableListOnlyButton);
 
-			viewInModBrowserButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser"), 1f, false);
-			viewInModBrowserButton.Width.Set(50f, 0f);
-			viewInModBrowserButton.Height.Set(30f, 0f);
+			viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser"), 1f, false);
+			viewInModBrowserButton.Width.Set(246f, 0f);
+			viewInModBrowserButton.Height.Set(36f, 0f);
 			viewInModBrowserButton.Left.Set(50f, 0f);
 			viewInModBrowserButton.Top.Set(80f, 0f);
 			viewInModBrowserButton.PaddingTop -= 2f;
@@ -129,9 +129,9 @@ namespace Terraria.ModLoader.UI
 			viewInModBrowserButton.OnClick += ViewInModBrowser;
 			base.Append(viewInModBrowserButton);
 
-			updateListWithEnabledButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled"), 1f, false);
-			updateListWithEnabledButton.Width.Set(50f, 0f);
-			updateListWithEnabledButton.Height.Set(30f, 0f);
+			updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled"), 1f, false);
+			updateListWithEnabledButton.Width.Set(225f, 0f);
+			updateListWithEnabledButton.Height.Set(36f, 0f);
 			updateListWithEnabledButton.Left.Set(304f, 0f);
 			updateListWithEnabledButton.Top.Set(80f, 0f);
 			updateListWithEnabledButton.PaddingTop -= 2f;

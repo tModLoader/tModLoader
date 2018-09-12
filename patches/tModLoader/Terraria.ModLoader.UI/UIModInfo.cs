@@ -15,9 +15,9 @@ namespace Terraria.ModLoader.UI
 		internal UIElement uIElement;
 		public UIMessageBox modInfo;
 		public UITextPanel<string> uITextPanel;
-		internal UITextPanel<string> modHomepageButton;
-		internal UITextPanel<string> extractButton;
-		internal UITextPanel<string> deleteButton;
+		internal UIAutoScaleTextTextPanel<string> modHomepageButton;
+		internal UIAutoScaleTextTextPanel<string> extractButton;
+		internal UIAutoScaleTextTextPanel<string> deleteButton;
 		private int gotoMenu = 0;
 		private LocalMod localMod;
 		private string url = "";
@@ -59,9 +59,9 @@ namespace Terraria.ModLoader.UI
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uITextPanel);
 
-			modHomepageButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
-			modHomepageButton.Width.Set(-10f, 1f);
-			modHomepageButton.Height.Set(25f, 0f);
+			modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
+			modHomepageButton.Width.Set(0f, 1f);
+			modHomepageButton.Height.Set(40f, 0f);
 			modHomepageButton.VAlign = 1f;
 			modHomepageButton.Top.Set(-65f, 0f);
 			modHomepageButton.OnMouseOver += UICommon.FadedMouseOver;
@@ -69,9 +69,9 @@ namespace Terraria.ModLoader.UI
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+			UIAutoScaleTextTextPanel<string> backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			backButton.Width.Set(-10f, 0.333f);
-			backButton.Height.Set(25f, 0f);
+			backButton.Height.Set(40f, 0f);
 			backButton.VAlign = 1f;
 			backButton.Top.Set(-20f, 0f);
 			backButton.OnMouseOver += UICommon.FadedMouseOver;
@@ -79,9 +79,9 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			extractButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
+			extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
 			extractButton.Width.Set(-10f, 0.333f);
-			extractButton.Height.Set(25f, 0f);
+			extractButton.Height.Set(40f, 0f);
 			extractButton.VAlign = 1f;
 			extractButton.HAlign = 0.5f;
 			extractButton.Top.Set(-20f, 0f);
@@ -90,9 +90,9 @@ namespace Terraria.ModLoader.UI
 			extractButton.OnClick += ExtractClick;
 			uIElement.Append(extractButton);
 
-			deleteButton = new UITextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
+			deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
 			deleteButton.Width.Set(-10f, 0.333f);
-			deleteButton.Height.Set(25f, 0f);
+			deleteButton.Height.Set(40f, 0f);
 			deleteButton.VAlign = 1f;
 			deleteButton.HAlign = 1f;
 			deleteButton.Top.Set(-20f, 0f);

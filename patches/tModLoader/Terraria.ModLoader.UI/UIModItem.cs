@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		private int modIconAdjust;
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
-		private readonly UITextPanel<string> button2;
+		private readonly UIAutoScaleTextTextPanel<string> toggleModEnabledButton;
 		private UIImage modIcon;
 		readonly UIHoverImage keyImage;
 		private bool loaded;
@@ -60,28 +60,28 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(modIconAdjust + 10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
-			button.Width.Set(100f, 0f);
-			button.Height.Set(30f, 0f);
-			button.Left.Set(430f, 0f);
-			button.Top.Set(40f, 0f);
-			button.PaddingTop -= 2f;
-			button.PaddingBottom -= 2f;
-			button.OnMouseOver += UICommon.FadedMouseOver;
-			button.OnMouseOut += UICommon.FadedMouseOut;
-			button.OnClick += this.Moreinfo;
-			base.Append(button);
-			button2 = new UITextPanel<string>(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
-			button2.Width.Set(100f, 0f);
-			button2.Height.Set(30f, 0f);
-			button2.Left.Set(button.Left.Pixels - button2.Width.Pixels - 5f, 0f);
-			button2.Top.Set(40f, 0f);
-			button2.PaddingTop -= 2f;
-			button2.PaddingBottom -= 2f;
-			button2.OnMouseOver += UICommon.FadedMouseOver;
-			button2.OnMouseOut += UICommon.FadedMouseOut;
-			button2.OnClick += this.ToggleEnabled;
-			base.Append(button2);
+			UIAutoScaleTextTextPanel<string> moreInfoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
+			moreInfoButton.Width.Set(100f, 0f);
+			moreInfoButton.Height.Set(36f, 0f);
+			moreInfoButton.Left.Set(430f, 0f);
+			moreInfoButton.Top.Set(40f, 0f);
+			moreInfoButton.PaddingTop -= 2f;
+			moreInfoButton.PaddingBottom -= 2f;
+			moreInfoButton.OnMouseOver += UICommon.FadedMouseOver;
+			moreInfoButton.OnMouseOut += UICommon.FadedMouseOut;
+			moreInfoButton.OnClick += this.Moreinfo;
+			base.Append(moreInfoButton);
+			toggleModEnabledButton = new UIAutoScaleTextTextPanel<string>(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
+			toggleModEnabledButton.Width.Set(100f, 0f);
+			toggleModEnabledButton.Height.Set(36f, 0f);
+			toggleModEnabledButton.Left.Set(moreInfoButton.Left.Pixels - toggleModEnabledButton.Width.Pixels - 5f, 0f);
+			toggleModEnabledButton.Top.Set(40f, 0f);
+			toggleModEnabledButton.PaddingTop -= 2f;
+			toggleModEnabledButton.PaddingBottom -= 2f;
+			toggleModEnabledButton.OnMouseOver += UICommon.FadedMouseOver;
+			toggleModEnabledButton.OnMouseOut += UICommon.FadedMouseOut;
+			toggleModEnabledButton.OnClick += this.ToggleEnabled;
+			base.Append(toggleModEnabledButton);
 
 			var modRefs = mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (modRefs.Length > 0 && !mod.Enabled)
@@ -90,7 +90,7 @@ namespace Terraria.ModLoader.UI
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 					Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs));
-				modReferenceIcon.Left.Set(button2.Left.Pixels - 24f, 0f);
+				modReferenceIcon.Left.Set(toggleModEnabledButton.Left.Pixels - 24f, 0f);
 				modReferenceIcon.Top.Set(47f, 0f);
 				modReferenceIcon.OnClick += (a, b) =>
 				{
@@ -238,7 +238,7 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(12, -1, -1, 1);
 			mod.Enabled = !mod.Enabled;
-			button2.SetText(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
+			toggleModEnabledButton.SetText(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
 		}
 
 		internal void Enable()
