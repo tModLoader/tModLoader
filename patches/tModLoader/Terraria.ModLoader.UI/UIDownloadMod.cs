@@ -42,6 +42,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void SetDownloading(string name)
 		{
+			Logging.tML.InfoFormat("Downloading Mod: {0}", name);
 			this.name = name;
 		}
 
@@ -59,6 +60,7 @@ namespace Terraria.ModLoader.UI
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement)
 		{
+			Logging.tML.InfoFormat("Download Cancelled");
 			Main.PlaySound(10);
 			cancelAction();
 		}

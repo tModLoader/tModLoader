@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Audio;
 using Terraria.ModLoader.Audio;
 using Terraria.Localization;
+using log4net;
 
 namespace Terraria.ModLoader
 {
@@ -27,6 +28,10 @@ namespace Terraria.ModLoader
 		/// The assembly code this is loaded when tModLoader loads this mod.
 		/// </summary>
 		public Assembly Code { get; internal set; }
+		/// <summary>
+		/// A logger with this mod's name for easy logging.
+		/// </summary>
+		public ILog Logger { get; internal set; }
 
 		/// <summary>
 		/// Stores the name of the mod. This name serves as the mod's identification, and also helps with saving everything your mod adds. By default this returns the name of the folder that contains all your code and stuff.

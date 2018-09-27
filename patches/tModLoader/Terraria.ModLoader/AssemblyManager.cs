@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using log4net;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Terraria.ModLoader.IO;
@@ -231,6 +232,7 @@ namespace Terraria.ModLoader
 				var m = (Mod)Activator.CreateInstance(modType);
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
+				m.Logger = LogManager.GetLogger(m.Name);
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
 				return m;

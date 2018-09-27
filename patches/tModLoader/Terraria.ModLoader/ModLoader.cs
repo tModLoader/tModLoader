@@ -164,6 +164,7 @@ namespace Terraria.ModLoader
 
 		internal static void Reload()
 		{
+			Logging.tML.Info("Reloading");
 			Unload();
 			Main.menuMode = Interface.loadModsID;
 		}
@@ -188,10 +189,14 @@ namespace Terraria.ModLoader
 		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
 		internal static void SetModEnabled(string modName, bool active)
 		{
-			if (active)
+			if (active) {
 				EnabledMods.Add(modName);
-			else
+				Logging.tML.InfoFormat("Enabling Mod: {0}", modName);
+			}
+			else {
 				EnabledMods.Remove(modName);
+				Logging.tML.InfoFormat("Disabling Mod: {0}", modName);
+			}
 
 			ModOrganizer.SaveEnabledMods();
 		}

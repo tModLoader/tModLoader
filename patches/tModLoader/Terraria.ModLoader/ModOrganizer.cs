@@ -119,6 +119,7 @@ namespace Terraria.ModLoader
 				else
 					err = Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack, e.Message) + "\n";
 
+				// TODO
 				if (Main.dedServ)
 				{
 					Console.ForegroundColor = ConsoleColor.Red;

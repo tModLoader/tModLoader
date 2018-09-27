@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,40 +_,53 @@
+@@ -17,34 +_,46 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
      <OutputPath>bin\x86\WindowsRelease\</OutputPath>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
@@ -47,14 +47,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-       <PropertyGroup>
-         <Optimize>false</Optimize>
-         <DebugType>full</DebugType>
-+        <OutputType>Exe</OutputType>
-       </PropertyGroup>
-     </When>
-     <Otherwise>
-@@ -81,19 +_,47 @@
+@@ -81,19 +_,50 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -102,6 +95,9 @@
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
 +    </Reference>
++    <Reference Include="log4net">
++      <HintPath>..\..\references\log4net.dll</HintPath>
++    </Reference>
 +    <Reference Include="System.Windows.Forms">
 +      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
 +    </Reference>
@@ -124,7 +120,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,168 @@
+@@ -368,6 +_,169 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -230,6 +226,7 @@
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
 +    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\LocalMod.cs" />
++    <Compile Include="Terraria.ModLoader\Logging.cs" />
 +    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
@@ -301,7 +298,7 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,24 @@
+@@ -538,10 +_,25 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -325,6 +322,7 @@
 +      <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />

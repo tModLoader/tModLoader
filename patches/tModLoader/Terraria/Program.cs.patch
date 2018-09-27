@@ -8,6 +8,43 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -63,6 +_,7 @@
+ 		{
+ 			Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
+ 			Program.LoadedEverything = true;
++			Logging.Terraria.Info("JIT loading finished");
+ 		}
+ 
+ 		private static void ForceJITOnAssembly(Assembly assembly)
+@@ -139,8 +_,9 @@
+ 
+ 		private static void SetupLogging()
+ 		{
++			Logging.Init();
+ 			bool flag = Program.LaunchParameters.ContainsKey("-logfile");
+-			if (flag)
++			if (false)
+ 			{
+ 				string text = Program.LaunchParameters["-logfile"];
+ 				if (text == null || text.Trim() == "")
+@@ -175,7 +_,7 @@
+ 				string text = "================\r\n";
+ 				text += string.Format("{0}: First-Chance Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
+ 				text += "================\r\n\r\n";
+-				Console.Write(text);
++				Console.WriteLine(text);
+ 				if (useMiniDumps)
+ 				{
+ 					CrashDump.WriteException(CrashDump.Options.WithIndirectlyReferencedMemory, Path.Combine(Main.SavePath, "Dumps"));
+@@ -187,7 +_,7 @@
+ 				string text = "================\r\n";
+ 				text += string.Format("{0}: Unhandled Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
+ 				text += "================\r\n";
+-				Console.Write(text);
++				Console.WriteLine(text);
+ 				if (useFullDumps)
+ 				{
+ 					CrashDump.WriteException(dumpOptions, Path.Combine(Main.SavePath, "Dumps"));
 @@ -205,8 +_,12 @@
  #endif
  			try
@@ -40,6 +77,14 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
+@@ -247,6 +_,7 @@
+ 				}
+ 				catch (Exception e)
+ 				{
++					Logging.Terraria.Fatal("Main engine crash", e);
+ 					Program.DisplayException(e);
+ 				}
+ 			}
 @@ -264,6 +_,13 @@
  				}
  #if CLIENT

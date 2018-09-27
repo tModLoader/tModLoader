@@ -47,8 +47,11 @@ namespace Terraria.ModLoader.UI
 
 		private void SetProgressText(string text)
 		{
-			Console.WriteLine(text);
-			loadProgress?.SetText(text);
+			Logging.tML.Info(text);
+			if (Main.dedServ)
+				Console.WriteLine(text);
+			else
+				loadProgress.SetText(text);
 		}
 
 		public void SetCurrentMod(int i, string mod)
