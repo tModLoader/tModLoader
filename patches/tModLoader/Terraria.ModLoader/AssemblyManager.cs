@@ -118,8 +118,14 @@ namespace Terraria.ModLoader
 				{
 					modFile.Read(TmodFile.LoadedState.Code);
 
+					string suffixPlat = ModLoader.windows ? ".Windows.dll" : ".Mono.dll";
 					foreach (var dll in properties.dllReferences)
-						LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
+					{
+						LoadAssembly(EncapsulateReferences(
+							modFile.GetFile("lib/" + dll + suffixPlat) ??
+							modFile.GetFile("lib/" + dll + ".dll")
+						));
+					}
 
 					assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
 					NeedsReload = false;
