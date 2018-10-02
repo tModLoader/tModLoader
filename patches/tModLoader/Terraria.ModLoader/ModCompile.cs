@@ -427,7 +427,22 @@ namespace Terraria.ModLoader
 			refs.AddRange(GetTerrariaReferences(tempDir, forWindows));
 
 			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
+			string suffixPlat = forWindows ? ".Windows.dll" : ".Mono.dll";
+			refs.AddRange(mod.properties.dllReferences.Select(refDll =>
+			{
+				refDll = Path.Combine(mod.path, "lib/" + refDll);
+				//check if .Windows.dll /.Mono.dll exists when compiling for that platform
+				if (File.Exists(refDll + suffixPlat))
+				{
+					refDll += suffixPlat;
+				}
+				else
+				{
+					//fallback to main .dll
+					refDll += ".dll";
+				}
+				return refDll;
+			}));
 
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods)
