@@ -1,48 +1,44 @@
-<!--
+<!-- 
 
-PLEASE use the following template when creating an issue. We can't exactly know what every issue is about before it's posted, so we set a baseline of information required to suit all possible issues. (hopefully) 
+PLEASE use the following template when creating an issue. We can't exactly know what every issue is about before it's posted, so we set a baseline of information required to suit most issues.
 
-Do you want to ask a question? Are you looking for support? Our discord server is more suitable for this: http://discord.me/tmodloader
+PLEASE DO NOT create issues for the following problems: problem installing tModLoader, forums offline, a specific mod crash.
+Do you have any of these issues? Or doo you want to ask a question? Are you looking for support? Our discord server is more suitable for this: http://discord.me/tmodloader 
 
 You should only create an issue thread to report an actual issue related to the tModLoader API.
-If you think something is mod related, report to the mod's respective author(s), not us.
+If you think something is mod related, report to the mod's respective author(s)
 
 Prerequisites
  * Checked the FAQs for common issues and their solutions: http://forums.terraria.org/index.php?threads/.28901/
  * Checked that your issue isn't already filed: https://github.com/bluemagic123/tModLoader/issues
 -->
-
 ### Description
-
-<!-- Describe your issue(s) here. (What happens?) -->
+<!-- Describe your issue(s) here. What is the issue?
+Please keep this as concise as possible, preferably a single line describing the issue. For example:
+"When I press X button in menu Y, the component Z becomes unclickable" -->
 
 ### Steps to Reproduce
+<!-- Please describe the steps to reproduce this issue -->
 
 1. [First Step]
 2. [Second Step]
 3. [and so on...]
 
 ### Expected behavior 
-
-<!-- What is expected to happen? -->
-
-### Actual behavior
-
 <!-- What should be happening? If you don't know, leave what you think should happen -->
 
-### Reproduction frequency
+### Actual behavior
+<!-- What is actually happening? -->
 
+### Reproduction frequency
 <!-- How often are you reliably able to reproduce this issue? -->
 
 ### Versions
-
-<!-- Which versions are applicable for this issue? -->
-The tModLoader version should be notified in the bottom left corner when in the main menu. Follow this format: `vX.X.X.X tModLoader` or `tModLoader vX.X.X.X`
+<!-- Which versions are applicable for this issue?
+The tModLoader version should be notified in the bottom left corner when in the main menu. Follow this format: `vX.X.X.X tModLoader` or `tModLoader vX.X.X.X` (MAJOR.MINOR.BUILD.REVISION) -->
 
 ### Mods
-
 <!-- List all of the mods you are using when reproducing this issue. We'd appreciate it if you could also test this without mods enabled (if applicable) -->
 
 ### Additional Information
-
 <!-- Any additional information, configuration or data that might be necessary to reproduce the issue. -->
