@@ -1502,7 +1502,7 @@ namespace Terraria.ModLoader
 		public void AddTexture(string name, Texture2D texture)
 		{
 			if (TextureExists(name))
-				throw new ModNameException("Texture already exist: " + name);
+				throw new Exception("Texture already exist: " + name);
 
 			textures[name] = texture;
 		}

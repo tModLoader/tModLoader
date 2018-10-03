@@ -1,0 +1,4 @@
+author = Chicken Bones
+version = 0.1
+displayName = Build Fail 5
+noCompile = true

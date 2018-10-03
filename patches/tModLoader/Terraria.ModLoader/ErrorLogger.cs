@@ -19,122 +19,6 @@ namespace Terraria.ModLoader
 		/// The file path to which logs are written and stored.
 		/// </summary>
 		public static readonly string LogPath = Path.Combine(Main.SavePath, "Logs");
-		internal static string CompileErrorPath = Path.Combine(LogPath, "Compile Errors.txt");
-		private static readonly string[] buildDllLines =
-		{
-			"Must have either All.dll or both of Windows.dll and Mono.dll",
-			"All.dll must not have any references to Microsoft.Xna.Framework or FNA",
-			"Windows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll",
-			"Mono.dll must reference a non-windows Terraria.exe and FNA.dll"
-		};
-
-		internal static void LogBuildError(string errorText)
-		{
-			Directory.CreateDirectory(LogPath);
-			File.WriteAllText(CompileErrorPath, errorText);
-			Console.WriteLine(errorText);
-
-			Interface.errorMessage.SetMessage(errorText);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(CompileErrorPath);
-		}
-
-		internal static void LogCompileErrors(CompilerErrorCollection errors, bool forWindows)
-		{
-			string errorHeader = Language.GetTextValue("tModLoader.BuildErrorCompilingError") + Environment.NewLine + Environment.NewLine;
-			string badInstallHint = "";
-			if (!forWindows && ModLoader.windows)
-			{
-				badInstallHint = Language.GetTextValue("tModLoader.BuildErrorModCompileFolderHint") + Environment.NewLine + Environment.NewLine;
-			}
-			Console.WriteLine(errorHeader + badInstallHint);
-			Directory.CreateDirectory(LogPath);
-			CompilerError displayError = null;
-			using (var writer = File.CreateText(CompileErrorPath))
-			{
-				foreach (CompilerError error in errors)
-				{
-					writer.WriteLine(error + Environment.NewLine);
-					Console.WriteLine(error);
-					if (!error.IsWarning && displayError == null)
-						displayError = error;
-				}
-			}
-			Interface.errorMessage.SetMessage(errorHeader + badInstallHint + displayError);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(CompileErrorPath);
-		}
-
-		internal static void LogDllBuildError(string modDir)
-		{
-			Directory.CreateDirectory(LogPath);
-			var errorText = Language.GetTextValue("tModLoader.BuildErrorMissingDllFilesFor", Path.GetFileName(modDir)) + Environment.NewLine + Environment.NewLine +
-							string.Join(Environment.NewLine, buildDllLines);
-			File.WriteAllText(CompileErrorPath, errorText);
-			Console.WriteLine(errorText);
-
-			Interface.errorMessage.SetMessage(errorText);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(CompileErrorPath);
-		}
-
-		internal static void LogDependencyError(string error)
-		{
-			Directory.CreateDirectory(LogPath);
-			string file = Path.Combine(LogPath, "Loading Errors.txt");
-			File.WriteAllText(file, error);
-			Console.WriteLine(error);
-
-			Interface.errorMessage.SetMessage(error);
-			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
-			Interface.errorMessage.SetFile(file);
-		}
-
-		internal static void LogLoadingError(string modFile, Version modBuildVersion, Exception e, bool recipes = false)
-		{
-			Directory.CreateDirectory(LogPath);
-			string file = LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt";
-			using (StreamWriter writer = File.CreateText(file))
-			{
-				writer.WriteLine(e.Message);
-				writer.WriteLine(e.StackTrace);
-				Exception inner = e.InnerException;
-				while (inner != null)
-				{
-					writer.WriteLine();
-					writer.WriteLine("Inner Exception:");
-					writer.WriteLine(inner.Message);
-					writer.WriteLine(inner.StackTrace);
-					inner = inner.InnerException;
-				}
-			}
-			string message;
-			if (recipes)
-			{
-				message = Language.GetTextValue("tModLoader.LoadErrorRecipes", modFile);
-			}
-			else
-			{
-				message = Language.GetTextValue("tModLoader.LoadError", modFile);
-			}
-			if (modBuildVersion != ModLoader.version)
-			{
-				message += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", modBuildVersion, ModLoader.versionedName);
-			}
-			message += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabledSeeBelowForError");
-			message += "\n\n" + e.Message + "\n" + e.StackTrace;
-			if (Main.dedServ)
-			{
-				Console.WriteLine(message);
-			}
-			Interface.errorMessage.SetMessage(message);
-			Interface.errorMessage.SetGotoMenu(Interface.reloadModsID);
-			Interface.errorMessage.SetFile(file);
-			if (!string.IsNullOrEmpty(e.HelpLink))
-			{
-				Interface.errorMessage.SetWebHelpURL(e.HelpLink);
-			}
-		}
 
 		private static Object logExceptionLock = new Object();
 		//add try catch to Terraria.WorldGen.worldGenCallBack
@@ -163,7 +47,6 @@ namespace Terraria.ModLoader
 				}
 				Interface.errorMessage.SetMessage(msg + "\n\n" + e.Message + "\n" + e.StackTrace);
 				Interface.errorMessage.SetGotoMenu(0);
-				Interface.errorMessage.SetFile(file);
 				Main.gameMenu = true;
 				Main.menuMode = Interface.errorMessageID;
 			}
@@ -180,7 +63,6 @@ namespace Terraria.ModLoader
 			}
 			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}
@@ -194,21 +76,6 @@ namespace Terraria.ModLoader
 			}
 			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
 			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
-			Interface.errorMessage.SetFile(file);
-			Main.gameMenu = true;
-			Main.menuMode = Interface.errorMessageID;
-		}
-
-		internal static void LogMissingMods(string msg)
-		{
-			Directory.CreateDirectory(LogPath);
-			string file = Path.Combine(LogPath, "Missing Mods.txt");
-			File.WriteAllText(file, msg);
-			Console.WriteLine(msg);
-
-			Interface.errorMessage.SetMessage(msg);
-			Interface.errorMessage.SetGotoMenu(0);
-			Interface.errorMessage.SetFile(file);
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}
@@ -287,8 +154,6 @@ namespace Terraria.ModLoader
 					LogPath + Path.DirectorySeparatorChar + "Logs.txt",
 					LogPath + Path.DirectorySeparatorChar + "Network Error.txt",
 					LogPath + Path.DirectorySeparatorChar + "Runtime Error.txt",
-					LogPath + Path.DirectorySeparatorChar + "Loading Errors.txt",
-					CompileErrorPath,
 				};
 				foreach (var file in files)
 				{
@@ -302,22 +167,6 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-		}
-
-		//this is a terrible hack on an average system
-		public static void LogMulti(IEnumerable<Action> logCalls)
-		{
-			if (Main.dedServ)
-			{
-				foreach (var call in logCalls)
-					call();
-				return;
-			}
-
-			var list = logCalls.ToArray();
-			list[0]();
-			if (list.Length > 1)
-				Interface.errorMessage.OverrideContinueAction(() => LogMulti(list.Skip(1)));
 		}
 	}
 }

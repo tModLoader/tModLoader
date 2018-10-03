@@ -59,6 +59,8 @@ namespace Terraria.ModLoader
 		internal static void Unload()
 		{
 			netMods = null;
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+				AllowVanillaClients = false;
 		}
 
 		internal static void SyncMods(int clientIndex)
@@ -142,8 +144,12 @@ namespace Terraria.ModLoader
 				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
-
-				ErrorLogger.LogMissingMods(msg);
+				
+				Logging.tML.Warn(msg);
+				Interface.errorMessage.SetMessage(msg);
+				Interface.errorMessage.SetGotoMenu(0);
+				Main.gameMenu = true;
+				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
 

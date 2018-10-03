@@ -4,16 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;
-using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using System.Security.Cryptography;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using Terraria.ModLoader.Audio;
 
 namespace Terraria.ModLoader
@@ -75,9 +72,8 @@ namespace Terraria.ModLoader
 			get => gog ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
 			set => steamID64 = value;
 		}
-
-		internal static bool isModder;
-		internal static bool alwaysLogExceptions;
+		
+		internal static bool reportFirstChanceExceptions;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
@@ -113,14 +109,12 @@ namespace Terraria.ModLoader
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
-
+		
 		internal static void Load()
 		{
 			try
 			{
 				var modInstances = ModOrganizer.LoadMods();
-				if (modInstances == null)
-					return;
 			
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
 				modInstances.Insert(0, new ModLoaderMod());
@@ -128,45 +122,115 @@ namespace Terraria.ModLoader
 				foreach (var mod in mods)
 					modsByName[mod.Name] = mod;
 
-				if (!ModContent.Load())
-					return;
+				ModContent.Load();
 
-				if (OnSuccessfulLoad != null)
+				if (OnSuccessfulLoad != null) {
 					OnSuccessfulLoad();
-				else
+					OnSuccessfulLoad = null;
+				}
+				else {
 					Main.menuMode = 0;
+				}
 			}
-			finally
+			catch (Exception e)
 			{
-				OnSuccessfulLoad = null;
+				var responsibleMods = new List<string>();
+				if (e.Data.Contains("mod"))
+					responsibleMods.Add((string)e.Data["mod"]);
+				if (e.Data.Contains("mods"))
+					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
+					
+				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+				if (responsibleMods.Count == 1) {
+					var mod = ModOrganizer.FindMods().SingleOrDefault(m => m.Name == responsibleMods[0]);
+					if (mod != null && mod.modFile.tModLoaderVersion != version)
+						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.modFile.tModLoaderVersion, versionedName);
+				}
+				if (responsibleMods.Count > 0)
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
+				else
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
+
+				Logging.tML.Error(msg, e);
+
+				foreach (var mod in responsibleMods)
+					DisableMod(mod);
+
+				DisplayLoadError(msg, e, responsibleMods.Count == 0);
 			}
-		}
-
-		internal static void Unload()
-		{
-			foreach (var mod in mods.Reverse())
-				mod.UnloadContent();
-			
-			mods = new Mod[0];
-			modsByName.Clear();
-
-			ModContent.Unload();
-
-			GC.Collect();
-			if (isModder) {
-				foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
-					ErrorLogger.Log(mod.Name + " not fully unloaded during unload.");
-			}
-
-			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
-				ModNet.AllowVanillaClients = false;
 		}
 
 		internal static void Reload()
 		{
-			Logging.tML.Info("Reloading");
-			Unload();
-			Main.menuMode = Interface.loadModsID;
+			Logging.tML.Info("Unloading mods");
+			if (Main.dedServ)
+				Console.WriteLine("Unloading mods...");
+
+			try
+			{
+				foreach (var mod in mods.Reverse()) {
+					try {
+						mod.UnloadContent();
+					} catch (Exception e) {
+						e.Data["mod"] = mod.Name;
+						throw;
+					}
+				}
+			
+				mods = new Mod[0];
+				modsByName.Clear();
+
+				ModContent.Unload();
+
+				GC.Collect();
+				foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
+					Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
+
+				if (Main.dedServ)
+					Load();
+				else
+					Main.menuMode = Interface.loadModsID;
+			}
+			catch (Exception e)
+			{
+				var msg = Language.GetTextValue("tModLoader.UnloadError");
+				
+				if (e.Data.Contains("mod"))
+					msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
+
+				Logging.tML.Fatal(msg, e);
+				DisplayLoadError(msg, e, true);
+			}
+		}
+
+		private static void DisplayLoadError(string msg, Exception e, bool fatal)
+		{
+			msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
+
+			if (Main.dedServ)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(msg);
+				Console.ResetColor();
+
+				if (fatal) {
+					Console.WriteLine("Press any key to exit...");
+					Console.ReadKey();
+					Environment.Exit(-1);
+				}
+				else {
+					Reload();
+				}
+			}
+			else
+			{
+				Interface.errorMessage.SetMessage(msg);
+				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
+				if (!string.IsNullOrEmpty(e.HelpLink))
+					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
+
+				Main.menuMode = Interface.errorMessageID;
+			}
 		}
 
 		// TODO: This doesn't work on mono for some reason. Investigate.
@@ -210,24 +274,14 @@ namespace Terraria.ModLoader
 		internal static void BuildAllMods()
 		{
 			ThreadPool.QueueUserWorkItem(_ =>
-				{
-					PostBuildMenu(ModCompile.BuildAll(FindModSources(), Interface.buildMod));
-				});
+				PostBuildMenu(new ModCompile(Interface.buildMod).BuildAll(FindModSources())));
 		}
 
 		internal static void BuildMod()
 		{
 			Interface.buildMod.SetProgress(0, 1);
-			ThreadPool.QueueUserWorkItem(_ => {
-				try
-				{
-					PostBuildMenu(ModCompile.Build(modToBuild, Interface.buildMod));
-				}
-				catch (Exception e)
-				{
-					ErrorLogger.LogException(e);
-				}
-			});
+			ThreadPool.QueueUserWorkItem(_ =>
+				PostBuildMenu(new ModCompile(Interface.buildMod).Build(modToBuild)));
 		}
 
 		private static void PostBuildMenu(bool success)
@@ -244,7 +298,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
-			Main.Configuration.Put("AlwaysLogExceptions", alwaysLogExceptions);
+			Main.Configuration.Put("AlwaysLogExceptions", reportFirstChanceExceptions);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 		}
@@ -258,9 +312,18 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("MusicStreamMode", ref musicStreamMode);
-			Main.Configuration.Get("AlwaysLogExceptions", ref alwaysLogExceptions);
+			Main.Configuration.Get("AlwaysLogExceptions", ref reportFirstChanceExceptions);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 			Main.Configuration.Get("AllowGreaterResolutions", ref removeForcedMinimumZoom);
+			Logging.LogFirstChanceExceptions(reportFirstChanceExceptions);
+		}
+
+		internal static void SetModderMode()
+		{
+#if CLIENT
+			reportFirstChanceExceptions = true;
+			SaveConfiguration();
+#endif
 		}
 
 		/// <summary>

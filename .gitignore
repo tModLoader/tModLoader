@@ -14,3 +14,9 @@ solutions/**/*.zip
 **/packages/
 **/.vs/
 **/.idea/
+/test/Test Local/Players
+/test/Test Local/Worlds
+/test/Test Local/Logs
+/test/Test Local/*.json
+/test/Test Local/Mods
+/test/Test Local/Mod Configs

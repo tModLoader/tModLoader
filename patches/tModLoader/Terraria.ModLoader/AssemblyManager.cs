@@ -224,8 +224,7 @@ namespace Terraria.ModLoader
 			{
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
-					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.")
-					{
+					throw new Exception(mod.Name + " does not have a class extending Mod. Mods need a Mod class to function.") {
 						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
 					};
 
@@ -260,12 +259,10 @@ namespace Terraria.ModLoader
 
 			if (Debugger.IsAttached)
 			{
-				ModLoader.isModder = true;
+				ModLoader.SetModderMode();
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}
-			if (ModLoader.alwaysLogExceptions)
-				ModCompile.ActivateExceptionReporting();
 
 			try
 			{
@@ -284,22 +281,8 @@ namespace Terraria.ModLoader
 			}
 			catch (AggregateException ae)
 			{
-				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() =>
-				{
-					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-				})));
-				Main.menuMode = Interface.errorMessageID;
-				return null;
-			}
-			catch (Exception e)
-			{
-				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-				ModLoader.DisableMod(mod.Name);
-				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-				Main.menuMode = Interface.errorMessageID;
-				return null;
+				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]);
+				throw;
 			}
 		}
 

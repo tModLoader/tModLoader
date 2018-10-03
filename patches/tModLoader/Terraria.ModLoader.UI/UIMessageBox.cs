@@ -83,11 +83,7 @@ namespace Terraria.ModLoader.UI
 			foreach (string line in lines)
 			{
 				string drawString = line;
-				if (drawString.Length == 0)
-				{
-					position += textHeight;
-				}
-				while (drawString.Length > 0)
+				do
 				{
 					string remainder = "";
 					while (font.MeasureString(drawString).X > space.Width)
@@ -108,6 +104,7 @@ namespace Terraria.ModLoader.UI
 					position += textHeight;
 					drawString = remainder;
 				}
+				while (drawString.Length > 0);
 			}
 			height = position;
 			heightNeedsRecalculating = false;

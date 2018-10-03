@@ -269,11 +269,12 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = (ModLoader.alwaysLogExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
+				buttonNames[buttonIndex] = (ModLoader.reportFirstChanceExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
-					ModLoader.alwaysLogExceptions = !ModLoader.alwaysLogExceptions;
+					ModLoader.reportFirstChanceExceptions = !ModLoader.reportFirstChanceExceptions;
+					Logging.LogFirstChanceExceptions(ModLoader.reportFirstChanceExceptions);
 				}
 
 				buttonIndex++;
@@ -368,9 +369,7 @@ namespace Terraria.ModLoader
 				}
 				else if (command == "r")
 				{
-					Console.WriteLine("Unloading mods...");
-					ModLoader.Unload();
-					ModLoader.Load();
+					ModLoader.Reload();
 					exit = true;
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length)

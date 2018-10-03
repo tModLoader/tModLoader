@@ -29,13 +29,12 @@ namespace Terraria.ModLoader
 				{
 					mod.AddRecipes();
 					foreach (ModItem item in mod.items.Values)
-					{
 						item.AddRecipes();
-					}
 				}
 				catch (Exception e)
 				{
-					throw new AddRecipesException(mod, "An error occurred in adding recipes for " + mod.Name, e);
+					e.Data["mod"] = mod.Name;
+					throw;
 				}
 			}
 		}
@@ -50,7 +49,8 @@ namespace Terraria.ModLoader
 				}
 				catch (Exception e)
 				{
-					throw new AddRecipesException(mod, "An error occurred after adding recipes for " + mod.Name, e);
+					e.Data["mod"] = mod.Name;
+					throw;
 				}
 			}
 		}

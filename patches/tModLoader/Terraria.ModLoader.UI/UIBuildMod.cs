@@ -1,5 +1,7 @@
+using log4net.Core;
 using System;
-using System.IO;
+using System.CodeDom.Compiler;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -27,7 +29,39 @@ namespace Terraria.ModLoader.UI
 
 		public void SetStatus(string msg)
 		{
+			Logging.tML.Info(msg);
 			loadProgress.SetText(msg);
+		}
+
+		public void LogError(string mod, string msg, Exception e = null)
+		{
+			Logging.tML.Error(msg, e);
+
+			msg = Language.GetTextValue("tModLoader.BuildError", mod) + "\n" + msg;
+			if (e != null)
+				msg += "\n" + e;
+			Interface.errorMessage.SetMessage(msg);
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		public void LogCompileErrors(string mod, CompilerErrorCollection errors, string hint)
+		{
+			int warnings = 0;
+			CompilerError displayError = null;
+			foreach (CompilerError error in errors)
+			{
+				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, error, null);
+				if (error.IsWarning)
+					warnings++;
+				else if (displayError == null)
+					displayError = error;
+			}
+			var msg = Language.GetTextValue("tModLoader.CompileError", mod, errors.Count - warnings, warnings);
+			if (hint != null)
+				msg += "\n" + hint;
+			Interface.errorMessage.SetMessage(msg + "\n\n" + displayError);
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
 		}
 	}
 }

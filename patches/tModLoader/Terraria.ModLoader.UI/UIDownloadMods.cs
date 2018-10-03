@@ -98,7 +98,6 @@ namespace Terraria.ModLoader.UI
 					{
 						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBExceededBandwidth"));
 						Interface.errorMessage.SetGotoMenu(0);
-						Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 						Main.gameMenu = true;
 						Main.menuMode = Interface.errorMessageID;
 					}
@@ -106,7 +105,6 @@ namespace Terraria.ModLoader.UI
 					{
 						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBUnknownMBError"));
 						Interface.errorMessage.SetGotoMenu(0);
-						Interface.errorMessage.SetFile(ErrorLogger.LogPath);
 						Main.gameMenu = true;
 						Main.menuMode = Interface.errorMessageID;
 					}

@@ -184,49 +184,38 @@ namespace Terraria.ModLoader
 			return modHotKeys[key];
 		}
 
-		internal static bool Load()
+		internal static void Load()
 		{
-			try
-			{
-				Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
-				LoadModContent(mod => {
-					mod.loading = true;
-					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
-					mod.Autoload();
-					mod.Load();
-					mod.loading = false;
-				});
-				
-				Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
-				ResizeArrays();
-				RecipeGroupHelper.FixRecipeGroupLookups();
-				
-				Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
-				LoadModContent(mod => {
-					mod.SetupContent();
-					mod.PostSetupContent();
-					mod.File?.UnloadAssets();
-				});
+			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			LoadModContent(mod => {
+				mod.loading = true;
+				mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
+				mod.Autoload();
+				mod.Load();
+				mod.loading = false;
+			});
+			
+			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+			ResizeArrays();
+			RecipeGroupHelper.FixRecipeGroupLookups();
+			
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			LoadModContent(mod => {
+				mod.SetupContent();
+				mod.PostSetupContent();
+				mod.File?.UnloadAssets();
+			});
 
-				if (Main.dedServ)
-					ModNet.AssignNetIDs();
+			if (Main.dedServ)
+				ModNet.AssignNetIDs();
 			
-				Main.player[255] = new Player(false); // setup inventory is unnecessary 
+			Main.player[255] = new Player(false); // setup inventory is unnecessary 
 			
-				RefreshModLanguage(Language.ActiveCulture);
-				MapLoader.SetupModMap();
-				ItemSorting.SetupWhiteLists();
-				PlayerInput.ReInitialize();
-				SetupRecipes();
-				return true;
-			}
-			catch (LoadingException e)
-			{
-				ModLoader.DisableMod(e.mod.Name);
-				ErrorLogger.LogLoadingError(e.mod.Name, e.mod.Version, e.InnerException, e is AddRecipesException);
-				Main.menuMode = Interface.errorMessageID;
-				return false;
-			}
+			RefreshModLanguage(Language.ActiveCulture);
+			MapLoader.SetupModMap();
+			ItemSorting.SetupWhiteLists();
+			PlayerInput.ReInitialize();
+			SetupRecipes();
 		}
 
 		private static void LoadModContent(Action<Mod> loadAction)
@@ -239,7 +228,8 @@ namespace Terraria.ModLoader
 					loadAction(mod);
 				}
 				catch (Exception e) {
-					throw new LoadingException(mod, e.Message, e);
+					e.Data["mod"] = mod.Name;
+					throw;
 				}
 			}
 		}

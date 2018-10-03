@@ -6,18 +6,22 @@ using log4net.Core;
 using log4net.Layout;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		private static readonly string LogDir = Path.Combine(Main.SavePath, "Logs");
-		
+		public static readonly string LogDir = Path.Combine(Main.SavePath, "Logs");
+		public static string LogPath { get; private set; }
+
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
@@ -50,7 +54,7 @@ namespace Terraria.ModLoader
 			});
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = Path.Combine(LogDir, RollLogs(side)),
+				File = LogPath = Path.Combine(LogDir, RollLogs(side)),
 				AppendToFile = false,
 				Encoding = Encoding.UTF8,
 				Layout = layout
@@ -67,7 +71,7 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
 
 			HookModuleLoad();
-			ReportExceptions();
+			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 		}
 
 		private static string RollLogs(string baseName)
@@ -151,21 +155,42 @@ namespace Terraria.ModLoader
             AppDomain.CurrentDomain.AssemblyResolve += a;
         }
 
-		private static void ReportExceptions()
+		internal static void LogFirstChanceExceptions(bool enabled)
 		{
-			/*Exception previousFirstChance = null;
-			AppDomain.CurrentDomain.FirstChanceException += (s, args) => {
-				if (previousFirstChance?.Message != args.Exception.Message)
-				{
-					tML.Debug("First-Chance Exception", args.Exception);
-					previousFirstChance = args.Exception;
-				}
-			};*/
-			AppDomain.CurrentDomain.UnhandledException += (s, args) => {
-				tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
-			};
+			if (enabled)
+				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
+			else
+				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
 		}
-		
+
+		private static HashSet<string> pastExceptions = new HashSet<string>();
+		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
+		{
+			if (!pastExceptions.Add(args.Exception.ToString()))
+				return;
+			if (args.Exception.Source == "MP3Sharp")
+				return;
+
+			var stackTrace = new StackTrace(true).ToString();
+			if (stackTrace.Contains("Terraria.ModLoader.ModCompile"))
+				return;
+
+			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+#if CLIENT
+			float soundVolume = Main.soundVolume;
+			Main.soundVolume = 0f;
+			Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);
+			Main.soundVolume = soundVolume;
+#else
+			Console.ForegroundColor = ConsoleColor.DarkMagenta;
+			Console.WriteLine(msg);
+			Console.ResetColor();
+#endif
+
+			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException"), args.Exception);
+			tML.Warn(stackTrace);
+		}
+
 		private static Regex statusRegex = new Regex(@"(.+?)[: \d]*%$");
 		internal static void LogStatusChange(string oldStatusText, string newStatusText)
 		{
@@ -175,7 +200,7 @@ namespace Terraria.ModLoader
 			if (newBase != oldBase && newBase.Length > 0)
 				LogManager.GetLogger("StatusText").Info(newBase);
 		}
-		
+
 		internal static void ServerConsoleLine(string msg) => ServerConsoleLine(msg, Level.Info);
 		internal static void ServerConsoleLine(string msg, Level level)
 		{
