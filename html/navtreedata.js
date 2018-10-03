@@ -28,19 +28,19 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_add_recipes_exception_8cs.html",
-"_tile_i_o_8cs_source.html",
-"class_terraria_1_1_mod_loader_1_1_global_item.html#aa61f8b08fb3fa63cc21b00e4e308da5e",
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a4b3724a8fd2755be65d05870f988c1e8",
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a6340390161b06b7bee79fd7fe768c718",
-"class_terraria_1_1_mod_loader_1_1_mod.html#a9b4f3708456ec1045b23d86abcc5499c",
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ae360f7809f0151bf1bdbc78dc5dae8c1",
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#ac98ff1db7484c7cf96f7ca4d4a278a8d",
-"class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4",
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af0e5a905ef5feddfc63457b7c401a81d",
-"class_terraria_1_1_mod_loader_1_1_player_layer.html#aa30b56c1ab7f1e63b5bde83f9dc8fd10",
-"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afd6319262926a061727405025ece1a7c",
-"functions_func_c.html"
+"_assembly_manager_8cs.html",
+"_tmod_file_8cs_source.html",
+"class_terraria_1_1_mod_loader_1_1_global_item.html#ab9b83e46b236c8f1683ef146d0648f61",
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#ae303cd2682665e8b08bebf71256a0b13",
+"class_terraria_1_1_mod_loader_1_1_item_loader.html#a6d8d1440ff05e3ed4afdf86ee1ad83b8",
+"class_terraria_1_1_mod_loader_1_1_mod.html#a9009e3f4273585a05b0cec84682bec5f",
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad6b829c635b333febf4a76f07aa32774",
+"class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc",
+"class_terraria_1_1_mod_loader_1_1_mod_translation.html#a4fb09fe6ba0530e2d2ffd7513c98ca11",
+"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae883437d578a19a0cb6573c06203302e",
+"class_terraria_1_1_mod_loader_1_1_player_layer.html#a5bc93a2366cc7d8cf606eaf5d082c396",
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db",
+"functions_d.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

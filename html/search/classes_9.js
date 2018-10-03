@@ -14,7 +14,6 @@ var searchData=
   ['moditem',['ModItem',['../class_terraria_1_1_mod_loader_1_1_mod_item.html',1,'Terraria::ModLoader']]],
   ['modloader',['ModLoader',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html',1,'Terraria::ModLoader']]],
   ['modmountdata',['ModMountData',['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html',1,'Terraria::ModLoader']]],
-  ['modnameexception',['ModNameException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception.html',1,'Terraria::ModLoader::Exceptions']]],
   ['modnet',['ModNet',['../class_terraria_1_1_mod_loader_1_1_mod_net.html',1,'Terraria::ModLoader']]],
   ['modnpc',['ModNPC',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html',1,'Terraria::ModLoader']]],
   ['modpacket',['ModPacket',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html',1,'Terraria::ModLoader']]],

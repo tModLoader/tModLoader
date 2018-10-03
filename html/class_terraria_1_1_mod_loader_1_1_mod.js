@@ -195,6 +195,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "Code", "class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb", null ],
     [ "File", "class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a", null ],
+    [ "Logger", "class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916", null ],
     [ "Properties", "class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea", null ],
     [ "Side", "class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777", null ]
 ];

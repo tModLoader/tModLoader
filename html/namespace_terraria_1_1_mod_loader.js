@@ -23,6 +23,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", "class_terraria_1_1_mod_loader_1_1_global_tile" ],
     [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ],
     [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ],
+    [ "Logging", "class_terraria_1_1_mod_loader_1_1_logging.html", "class_terraria_1_1_mod_loader_1_1_logging" ],
     [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ],
     [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ],
     [ "ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", "class_terraria_1_1_mod_loader_1_1_mod_buff" ],

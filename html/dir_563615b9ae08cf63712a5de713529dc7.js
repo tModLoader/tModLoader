@@ -79,6 +79,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ]
     ] ],
     [ "LocalMod.cs", "_local_mod_8cs.html", null ],
+    [ "Logging.cs", "_logging_8cs.html", [
+      [ "Logging", "class_terraria_1_1_mod_loader_1_1_logging.html", "class_terraria_1_1_mod_loader_1_1_logging" ]
+    ] ],
     [ "MapEntry.cs", "_map_entry_8cs.html", null ],
     [ "MapLegend.cs", "_map_legend_8cs.html", [
       [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ]

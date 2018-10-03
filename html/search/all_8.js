@@ -167,6 +167,7 @@ var searchData=
   ['hookmodifyscreenposition',['HookModifyScreenPosition',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a0d40e53939b1dde99f5e5274f076dd71',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmodifytooltips',['HookModifyTooltips',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ae5e1e9826bdf9c6f6f2902eb09cef4ff',1,'Terraria::ModLoader::ItemLoader']]],
   ['hookmodifyzoom',['HookModifyZoom',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#af623cb47b6b182e6a5e1754939ddadfb',1,'Terraria::ModLoader::PlayerHooks']]],
+  ['hookmoduleload',['HookModuleLoad',['../class_terraria_1_1_mod_loader_1_1_logging.html#a89f808ff938917029747421b96e9396a',1,'Terraria::ModLoader::Logging']]],
   ['hookmouseover',['HookMouseOver',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2a428233799fd307bdb72d932fd3cd8f',1,'Terraria::ModLoader::TileLoader']]],
   ['hookmouseoverfar',['HookMouseOverFar',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a058e88d37cfcf5c92b233b77d00b57a1',1,'Terraria::ModLoader::TileLoader']]],
   ['hooknaturalliferegen',['HookNaturalLifeRegen',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a2800bb6dc6768aec858bedbd0fb449db',1,'Terraria::ModLoader::PlayerHooks']]],

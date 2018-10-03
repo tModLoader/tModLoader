@@ -65,6 +65,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
     [ "Terraria.ModLoader.Exceptions.LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", null ],
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],
+    [ "Terraria.ModLoader.Logging", "class_terraria_1_1_mod_loader_1_1_logging.html", null ],
     [ "Terraria.ModLoader.MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", null ],
     [ "Terraria.ModLoader.Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", null ],
     [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],
@@ -167,7 +168,6 @@ var hierarchy =
     [ "Terraria.ModLoader.WorldHooks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html", null ],
     [ "Exception", null, [
       [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
-      [ "Terraria.ModLoader.Exceptions.ModNameException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", null ],

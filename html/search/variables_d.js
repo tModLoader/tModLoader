@@ -5,6 +5,7 @@ var searchData=
   ['marble',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['martianmadness',['MartianMadness',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6f2997aac758c10792fe3793b3ee0e60',1,'Terraria::ModLoader::SpawnCondition']]],
   ['martianprobe',['MartianProbe',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9d573e5a6b52d608c8c198aae36b98dd',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['max_5flogs',['MAX_LOGS',['../class_terraria_1_1_mod_loader_1_1_logging.html#a1cb7261c48401438e766f4a983fdf491',1,'Terraria::ModLoader::Logging']]],
   ['maxwidth',['maxWidth',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a1768ab9cf4c3446585fcc44abc61627e',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['message',['Message',['../class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html#a9afe9d7f142d2a3438f5cda63a36c287',1,'Terraria::ModLoader::TopoSort::SortingException']]],
   ['meteor',['Meteor',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7506caac82a6e05c83fdcadc7bc1f846',1,'Terraria::ModLoader::SpawnCondition']]],

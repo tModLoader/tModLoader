@@ -17,6 +17,7 @@ var searchData=
   ['loaded',['loaded',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a25dec7b693a6ac7c8e7690bf9447b179',1,'Terraria.ModLoader.TileLoader.loaded()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a26945400102ee133ead362be72521b85',1,'Terraria.ModLoader.WallLoader.loaded()']]],
   ['loadedmods',['LoadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria::ModLoader::ModLoader']]],
   ['loadindex',['loadIndex',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#afc438fe5f44ed3c7c1e4abb10ac36e66',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
+  ['logdir',['LogDir',['../class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0',1,'Terraria::ModLoader::Logging']]],
   ['logexceptionlock',['logExceptionLock',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a9db819d470d381feb335d205add852ae',1,'Terraria::ModLoader::ErrorLogger']]],
   ['loglock',['logLock',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a660367139f86f703a14dd0bc63a379c0',1,'Terraria::ModLoader::ErrorLogger']]],
   ['logpath',['LogPath',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa',1,'Terraria::ModLoader::ErrorLogger']]],

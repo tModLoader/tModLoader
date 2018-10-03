@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_mod_loader =
 [
+    [ "DisplayLoadError", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a9c39985f4dd7249d4c81a147de16ca33", null ],
     [ "FileExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a942be3cd0174b0a4e1c918a5466b5f8f", null ],
     [ "GetLoadedMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af51b45cfb6b7e1c6025c733eca9ecbd9", null ],

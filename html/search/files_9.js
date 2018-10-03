@@ -19,7 +19,6 @@ var searchData=
   ['moditem_2ecs',['ModItem.cs',['../_mod_item_8cs.html',1,'']]],
   ['modloader_2ecs',['ModLoader.cs',['../_mod_loader_8cs.html',1,'']]],
   ['modmountdata_2ecs',['ModMountData.cs',['../_mod_mount_data_8cs.html',1,'']]],
-  ['modnameexception_2ecs',['ModNameException.cs',['../_mod_name_exception_8cs.html',1,'']]],
   ['modnet_2ecs',['ModNet.cs',['../_mod_net_8cs.html',1,'']]],
   ['modnpc_2ecs',['ModNPC.cs',['../_mod_n_p_c_8cs.html',1,'']]],
   ['modorganizer_2ecs',['ModOrganizer.cs',['../_mod_organizer_8cs.html',1,'']]],

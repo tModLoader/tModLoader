@@ -1,5 +1,4 @@
 <map id="Terraria.ModLoader.ErrorLogger.Log" name="Terraria.ModLoader.ErrorLogger.Log">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="231,5,427,46"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1" title="Terraria.ModLoader.ModCompile.\lBuildingMod.BuildingMod" alt="" coords="222,70,437,111"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203" title="Terraria.ModLoader.Mod.Load\lEffect" alt="" coords="485,5,680,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="222,5,418,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203" title="Terraria.ModLoader.Mod.Load\lEffect" alt="" coords="467,5,661,46"/>
 </map>
