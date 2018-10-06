@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -80,7 +81,7 @@ namespace Terraria.ModLoader.UI
 				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
 					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++ / (float)mod.modFile.FileCount);
+					loadProgress.SetProgress(i++ / (float)mod.modFile.TotalFileCount);
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
@@ -120,6 +121,7 @@ namespace Terraria.ModLoader.UI
 
 					WriteFile(name, data);
 				});
+
 				foreach (var entry in mod.modFile)
 					WriteFile(entry.Key, entry.Value);
 			}

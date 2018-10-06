@@ -91,6 +91,7 @@ namespace Terraria.ModLoader.IO
 		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() => files.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		public int FileCount => files.Count;
+		public int TotalFileCount { get; private set; }
 
 		internal void Save()
 		{
@@ -131,6 +132,8 @@ namespace Terraria.ModLoader.IO
 		{
 			if (desiredState <= state)
 				return;
+
+			bool updateTotalFileCount = TotalFileCount <= 1;
 
 			using (var fileStream = File.OpenRead(path))
 			using (var hReader = new BinaryReader(fileStream))
@@ -178,6 +181,7 @@ namespace Terraria.ModLoader.IO
 						if (fileState == LoadedState.Streaming && desiredState >= LoadedState.Streaming)
 						{
 							var end = deflateStream.TotalOut + len;
+							if (updateTotalFileCount) TotalFileCount++;
 							streamingHandler(fileName, len, reader);
 							if (deflateStream.TotalOut < end)
 								reader.ReadBytes((int)(end - deflateStream.TotalOut));
@@ -193,6 +197,7 @@ namespace Terraria.ModLoader.IO
 						}
 					}
 				}
+				if (updateTotalFileCount) TotalFileCount += FileCount;
 			}
 
 			if (desiredState >= LoadedState.Info && !HasFile("Info"))
