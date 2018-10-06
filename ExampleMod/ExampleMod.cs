@@ -32,6 +32,12 @@ namespace ExampleMod
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyID;
 
+		// Your mod instance has a Logger field, use it.
+		// OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
+		// You need to reference the log4net library to do this, this can be found in the tModLoader repository
+		// inside the references folder. You do not have to add this to build.txt as tML has it natively.
+		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
+
 		public ExampleMod()
 		{
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
@@ -47,6 +53,9 @@ namespace ExampleMod
 		public override void Load()
 		{
 			instance = this;
+			// Will show up in client.log under the ExampleMod name
+			Logger.InfoFormat("{0} example logging", this.Name);
+			// ErrorLogger.Log("blabla"); REPLACE THIS WITH ABOVE
 
 			// Adds boss head textures for the Abomination boss
 			for (int k = 1; k <= 4; k++)
@@ -401,7 +410,7 @@ namespace ExampleMod
 						}
 						if (!found)
 						{
-							ErrorLogger.Log("Error: Projectile not found");
+							Logger.Error("Error: Projectile not found");
 						}
 					}
 					break;
@@ -438,7 +447,7 @@ namespace ExampleMod
 					lifeFruitsPlayer.GetModPlayer<ExamplePlayer>().exampleLifeFruits = exampleLifeFruits;
 					break;
 				default:
-					ErrorLogger.Log("ExampleMod: Unknown Message type: " + msgType);
+					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
 					break;
 			}
 		}

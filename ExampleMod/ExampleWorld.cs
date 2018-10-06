@@ -67,7 +67,7 @@ namespace ExampleMod
 			}
 			else
 			{
-				ErrorLogger.Log("ExampleMod: Unknown loadVersion: " + loadVersion);
+				mod.Logger.WarnFormat("ExampleMod: Unknown loadVersion: {0}", loadVersion);
 			}
 		}
 
