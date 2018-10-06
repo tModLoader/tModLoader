@@ -141,8 +141,6 @@ Properties</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a8136baff4b314ceb7c49426c95ed5b32"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a8136baff4b314ceb7c49426c95ed5b32">_LogModPublishOrUnpublishInfo</a> (string message, int interfaceId)</td></tr>
-<tr class="separator:a8136baff4b314ceb7c49426c95ed5b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95d4316559982c21c828d0e68e1721f9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9">Archive</a> (string logPath)</td></tr>
 <tr class="separator:a95d4316559982c21c828d0e68e1721f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6304b2b34e06e095a8a7ff99e1a6c0b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">CanOpen</a> (string fileName)</td></tr>
@@ -172,42 +170,6 @@ Static Private Attributes</h2></td></tr>
 <div class="textblock">
 <p>Definition at line <a class="el" href="_logging_8cs_source.html#l00020">20</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a8136baff4b314ceb7c49426c95ed5b32"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging._LogModPublishOrUnpublishInfo </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>interfaceId</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00230">230</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            Logging.tML.Info(message);</div><div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            Interface.errorMessage.SetMessage(Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.MBServerResponse&quot;</span>, message));</div><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            Interface.errorMessage.SetGotoMenu(interfaceId);</div><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            Main.gameMenu = <span class="keyword">true</span>;</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;            Main.menuMode = Interface.errorMessageID;</div><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="a95d4316559982c21c828d0e68e1721f9"></a>
 <div class="memitem">
 <div class="memproto">

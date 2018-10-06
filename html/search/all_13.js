@@ -62,6 +62,7 @@ var searchData=
   ['torch',['torch',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#afbe1c8db2e449068ac201af997ac218c',1,'Terraria::ModLoader::ModTile']]],
   ['tostream',['ToStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a548368b52deae062f23e0819578c6e46',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tostring',['ToString',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a07b956fc2bb3c83b0f815afa3caf8b83',1,'Terraria.ModLoader.ModNet.ModHeader.ToString()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af590c6c7bdedea389a24b4b9ecf08d92',1,'Terraria.ModLoader.IO.TagCompound.ToString()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#acfec77bae1fb664acadb848a91afaadc',1,'Terraria.ModLoader.IO.TagPrinter.ToString()']]],
+  ['totalfilecount',['TotalFileCount',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ae674daa8fc502e13f5fd08912fa68d12',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['totalmeleespeedmultiplier',['TotalMeleeSpeedMultiplier',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1a227129a4dd20d9076a3f2cef375d5f',1,'Terraria::ModLoader::PlayerHooks']]],
   ['totalusetimemultiplier',['TotalUseTimeMultiplier',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9bd01c29baa931eed9e6a336843eea3b',1,'Terraria::ModLoader::PlayerHooks']]],
   ['towncritter',['TownCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a78bb4d6d65c2da43c4d547caf1645b2f',1,'Terraria::ModLoader::SpawnCondition']]],

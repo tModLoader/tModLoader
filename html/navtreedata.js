@@ -32,7 +32,7 @@ var NAVTREEINDEX =
 "_tmod_file_8cs_source.html",
 "class_terraria_1_1_mod_loader_1_1_global_item.html#ab680a7570915fd60f736de93f38ccc86",
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#ab84bd27c080e01b61965ebb261ef822a",
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a6cf9686c2ef2bec5520b7864c6450df8",
+"class_terraria_1_1_mod_loader_1_1_item_loader.html#a6cec4b71a6f2e057b5f83e5dd68be412",
 "class_terraria_1_1_mod_loader_1_1_mod.html#a8e910c412ffad9c0c591a1287add7161",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad580fc73425d033b40df11bd561981d4",
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab38fbee5966d671f00ee1bf2b29e188f",

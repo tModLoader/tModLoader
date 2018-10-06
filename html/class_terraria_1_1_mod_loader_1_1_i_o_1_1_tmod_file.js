@@ -25,6 +25,7 @@ var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file =
     [ "name", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#acaf448eb733e7bf5e4383c707ee37186", null ],
     [ "signature", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a05a56943fff84a75403e7e0f93998832", null ],
     [ "tModLoaderVersion", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a87adf48bce101e9bd38fd7221e0a3dab", null ],
+    [ "TotalFileCount", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ae674daa8fc502e13f5fd08912fa68d12", null ],
     [ "ValidModBrowserSignature", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#aad491bd094cf3b7a1d5dcb8724abd3fc", null ],
     [ "version", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a7f718c6834ad10c459dca288b3605617", null ]
 ];
