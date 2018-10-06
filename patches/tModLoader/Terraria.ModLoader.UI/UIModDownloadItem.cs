@@ -387,7 +387,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (WebException e)
 			{
-				Logging.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
@@ -411,7 +411,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e)
 			{
-				Logging.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}

@@ -452,7 +452,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e)
 			{
-				Logging.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
@@ -573,7 +573,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e)
 			{
-				Logging.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
@@ -620,6 +620,34 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			return 0;
+		}
+
+		internal static void LogModBrowserException(Exception e)
+		{
+			string errorMessage = Language.GetTextValue("tModLoader.MBBrowserError") + "\n\n" + e.Message + "\n" + e.StackTrace;
+			Logging.tML.Error(errorMessage);
+			Interface.errorMessage.SetMessage(errorMessage);
+			Interface.errorMessage.SetGotoMenu(0);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModPublishInfo(string message)
+		{
+			Logging.tML.Info(message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModUnpublishInfo(string message)
+		{
+			Logging.tML.Info(message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
+			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
 		}
 	}
 

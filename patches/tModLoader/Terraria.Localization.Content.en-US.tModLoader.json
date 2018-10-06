@@ -156,6 +156,7 @@
 		"MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		"MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
 		"MBNoModsFound": "No mods found",
+		"MBBrowserError": "The mod browser encountered an error.",
 		"1SecondAgo": "1 second ago",
 		"XSecondsAgo": "{0} seconds ago",
 		"1MinuteAgo": "1 minute ago",
@@ -211,6 +212,8 @@
 		"New1Mod": "1 new mod.",
 		"NewXMods": "{0} new mods.",
 		"NewModsListing": "New mods:\n{0}",
+		"PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		"PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Build",
@@ -272,6 +275,8 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continue",
-		"PatreonSetTooltip": "Thank you for your support!"
+		"PatreonSetTooltip": "Thank you for your support!",
+		"WorldGenError": "A problem was encountered during world generation",
+		"WorldIODataException": "The game encountered a mod data problem for a world.",
 	}
 }

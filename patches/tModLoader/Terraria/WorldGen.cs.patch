@@ -80,7 +80,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				Logging.Terraria.Error(e);
++				Logging.Terraria.Error(Language.GetTextValue("tModLoader.WorldGenError"), e);
 +			}
 +		}
 +
@@ -106,7 +106,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				Logging.Terraria.Error(e);
++				Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerLoadWorldFail"), e);
 +			}
 +		}
 +

@@ -3728,7 +3728,7 @@
 +						}
 +						else
 +						{
-+							Logging.tML.Error(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						}
  						Main.netMode = 0;
  					}
@@ -3762,7 +3762,7 @@
 +						}
 +						else
 +						{
-+							Logging.tML.Error(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						}
  						Main.menuMode = 0;
  						Main.netMode = 0;

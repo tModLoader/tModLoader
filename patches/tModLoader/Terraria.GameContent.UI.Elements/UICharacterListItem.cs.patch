@@ -121,7 +121,7 @@
 +
 +		private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 +		{
-+			Logging.Terraria.Error(this._data.customDataFail.InnerException);
++			Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerCustomDataFail"), this._data.customDataFail.InnerException);
  		}
  
  		public override int CompareTo(object obj)
