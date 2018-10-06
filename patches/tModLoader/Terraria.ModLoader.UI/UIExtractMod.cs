@@ -33,12 +33,15 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
-				.StartNew(() => Interface.extractMod._Extract())
+				.StartNew(() => {
+					Interface.extractMod.mod.modFile.Read(TmodFile.LoadedState.Streaming, updateFileCountOnly: true);
+					Interface.extractMod._Extract();
+				})
 				.ContinueWith(t =>
 				{
-					var e = t.Result;
-					if (e != null)
-						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), e);
+					var exception = t?.Exception;
+					if (exception != null)
+						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
@@ -81,7 +84,7 @@ namespace Terraria.ModLoader.UI
 				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
 					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++ / (float)mod.modFile.TotalFileCount);
+					loadProgress.SetProgress(i++ / (float)mod.modFile.FileCount);
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
@@ -93,6 +96,9 @@ namespace Terraria.ModLoader.UI
 
 					if (!hidden)
 					{
+						if (name == "Info")
+							name = "build.txt";
+
 						var path = Path.Combine(dir, name);
 						Directory.CreateDirectory(Path.GetDirectoryName(path));
 						File.WriteAllBytes(path, content);
