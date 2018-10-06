@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_error_logger =
 [
     [ "ClearLogs", "class_terraria_1_1_mod_loader_1_1_error_logger.html#af4e9179977b854c98acc97134cfd110c", null ],
+    [ "GetCallerName", "class_terraria_1_1_mod_loader_1_1_error_logger.html#af9b561c67bce6d2d89517863d011d65f", null ],
     [ "Log", "class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225", null ],
     [ "Log", "class_terraria_1_1_mod_loader_1_1_error_logger.html#a482452c467e1a6f8005b2968a12c3930", null ],
     [ "logExceptionLock", "class_terraria_1_1_mod_loader_1_1_error_logger.html#a9db819d470d381feb335d205add852ae", null ],
