@@ -251,7 +251,7 @@ namespace Terraria.ModLoader
 				catch { }
 
 				File.Delete(downloadingMod.path);
-				ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name));
+				Logging.tML.Error(Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name), e);
 				downloadingMod = null;
 			}
 		}

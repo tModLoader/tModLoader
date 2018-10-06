@@ -823,7 +823,7 @@
 +				}
 +				catch (Exception e)
 +				{
-+					ErrorLogger.LogException(e);
++					Logging.Terraria.Error(e);
  				}
  				this._isDrawingOrUpdating = false;
  			}
@@ -3728,7 +3728,7 @@
 +						}
 +						else
 +						{
-+							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(WorldIO.customDataFail.InnerException);
 +						}
  						Main.netMode = 0;
  					}
@@ -3762,7 +3762,7 @@
 +						}
 +						else
 +						{
-+							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(WorldIO.customDataFail.InnerException);
 +						}
  						Main.menuMode = 0;
  						Main.netMode = 0;
@@ -4162,7 +4162,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(e);
 +				throw;
 +			}
 +		}

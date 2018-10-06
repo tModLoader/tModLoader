@@ -9,8 +9,8 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
 	/// <summary>
+	/// NOTE: This class is deprecated. Use Terraria.ModLoader.Logging instead
 	/// This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.
 	/// </summary>
 	public static class ErrorLogger

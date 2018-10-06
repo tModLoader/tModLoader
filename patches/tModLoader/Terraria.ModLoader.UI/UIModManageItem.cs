@@ -102,11 +102,11 @@ namespace Terraria.ModLoader.UI
 				};
 				byte[] result = UploadFile.UploadFiles(url, null, values);
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
-				ErrorLogger.LogModUnPublish(s);
+				Logging.LogModUnpublishInfo(s);
 			}
 			catch (Exception e)
 			{
-				ErrorLogger.LogModBrowserException(e);
+				Logging.LogModBrowserException(e);
 			}
 		}
 	}

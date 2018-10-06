@@ -80,7 +80,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(e);
 +			}
 +		}
 +
@@ -106,7 +106,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(e);
 +			}
 +		}
 +

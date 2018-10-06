@@ -25,7 +25,7 @@ namespace Terraria.ModLoader
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
-		public static void Init()
+		internal static void Init()
 		{
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
@@ -61,7 +61,6 @@ namespace Terraria.ModLoader
 			};
 			fileAppender.ActivateOptions();
 			appenders.Add(fileAppender);
-
 
 			BasicConfigurator.Configure(appenders.ToArray());
 
@@ -206,6 +205,35 @@ namespace Terraria.ModLoader
 		{
 			Console.WriteLine(msg);
 			Terraria.Logger.Log(null, level, msg, null);
+		}
+
+		internal static void LogModBrowserException(Exception e)
+		{
+			string errorMessage = "The game has crashed accessing Web Resources!\n\n" + e.Message + "\n" + e.StackTrace;
+			Logging.tML.Error(errorMessage);
+			Interface.errorMessage.SetMessage(errorMessage);
+			Interface.errorMessage.SetGotoMenu(0);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModPublishInfo(string message)
+		{
+			_LogModPublishOrUnpublishInfo(message, Interface.modSourcesID);
+		}
+
+		internal static void LogModUnpublishInfo(string message)
+		{
+			_LogModPublishOrUnpublishInfo(message, Interface.managePublishedID);
+		}
+
+		private static void _LogModPublishOrUnpublishInfo(string message, int interfaceId)
+		{
+			Logging.tML.Info(message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
+			Interface.errorMessage.SetGotoMenu(interfaceId);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
 		}
 	}
 }

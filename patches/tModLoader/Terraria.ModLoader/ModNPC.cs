@@ -207,7 +207,7 @@ namespace Terraria.ModLoader
 			}
 			else if (banner != 0 || bannerItem != 0)
 			{
-				ErrorLogger.Log(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
+				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
 			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{

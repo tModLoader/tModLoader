@@ -121,7 +121,7 @@
 +
 +		private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 +		{
-+			ErrorLogger.LogException(this._data.customDataFail.InnerException);
++			Logging.Terraria.Error(this._data.customDataFail.InnerException);
  		}
  
  		public override int CompareTo(object obj)

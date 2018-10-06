@@ -196,7 +196,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (WebException e)
 			{
-				ErrorLogger.LogModBrowserException(e);
+				Logging.LogModBrowserException(e);
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace Terraria.ModLoader.UI
 					Main.menuMode = Interface.modSourcesID;
 					return;
 				}
-				ErrorLogger.LogModBrowserException(e.Error);
+				Logging.LogModBrowserException(e.Error);
 				return;
 			}
 			var result = e.Result;
@@ -229,7 +229,7 @@ namespace Terraria.ModLoader.UI
 				responseLength -= 257;
 			}
 			string response = Encoding.UTF8.GetString(result, 0, responseLength);
-			ErrorLogger.LogModPublish(response);
+			Logging.LogModPublishInfo(response);
 		}
 
 		private class PatientWebClient : WebClient

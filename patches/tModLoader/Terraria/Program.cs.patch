@@ -60,7 +60,7 @@
  			}
  			catch
  			{
-@@ -227,6 +_,16 @@
+@@ -227,6 +_,15 @@
  				};
  			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
@@ -73,7 +73,6 @@
 +			{
 +				Program.LaunchParameters["-savedirectory"] = Program.LaunchParameters["-tmlsavedirectory"];
 +			}
-+			ErrorLogger.ClearLogs();
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();

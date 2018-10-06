@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.UI
 				{
 					var e = t.Result;
 					if (e != null)
-						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name));
+						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), e);
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
