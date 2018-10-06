@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_erro
 </div><!--header-->
 <div class="contents">
 
-<p>This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.  
+<p>NOTE: This class is deprecated. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html">Terraria.ModLoader.Logging</a> instead This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.  
  <a href="class_terraria_1_1_mod_loader_1_1_error_logger.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ErrorLogger:</div>
@@ -156,7 +156,7 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a660367139f86f703a14dd0bc63a379c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files. </p>
+<div class="textblock"><p>NOTE: This class is deprecated. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html">Terraria.ModLoader.Logging</a> instead This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files. </p>
 
 <p>Definition at line <a class="el" href="_error_logger_8cs_source.html#l00016">16</a> of file <a class="el" href="_error_logger_8cs_source.html">ErrorLogger.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -214,24 +214,9 @@ Static Private Attributes</h2></td></tr>
 <p>You can use this method for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder. </p>
 
 <p>Definition at line <a class="el" href="_error_logger_8cs_source.html#l00087">87</a> of file <a class="el" href="_error_logger_8cs_source.html">ErrorLogger.cs</a>.</p>
-
-<p>Referenced by <a class="el" href="_mod_n_p_c_8cs_source.html#l00201">Terraria.ModLoader.ModNPC.AutoStaticDefaults()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            lock (<a class="code" href="class_terraria_1_1_mod_loader_1_1_error_logger.html#a660367139f86f703a14dd0bc63a379c0">logLock</a>)</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                Directory.CreateDirectory(<a class="code" href="class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa">LogPath</a>);</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keyword">using</span> (StreamWriter writer = File.AppendText(<a class="code" href="class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa">LogPath</a> + Path.DirectorySeparatorChar + <span class="stringliteral">&quot;Logs.txt&quot;</span>))</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    writer.WriteLine(message);</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                }</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_error_logger_html_aa9a8c718043dbefec4d9f3e44e39ccaa"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa">Terraria.ModLoader.ErrorLogger.LogPath</a></div><div class="ttdeci">static readonly string LogPath</div><div class="ttdoc">The file path to which logs are written and stored. </div><div class="ttdef"><b>Definition:</b> <a href="_error_logger_8cs_source.html#l00021">ErrorLogger.cs:21</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_error_logger_html_a660367139f86f703a14dd0bc63a379c0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_error_logger.html#a660367139f86f703a14dd0bc63a379c0">Terraria.ModLoader.ErrorLogger.logLock</a></div><div class="ttdeci">static Object logLock</div><div class="ttdef"><b>Definition:</b> <a href="_error_logger_8cs_source.html#l00083">ErrorLogger.cs:83</a></div></div>
 </div><!-- fragment -->
-<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_error_logger_a389b47286140d38044d0f0470a556225_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_error_logger_a389b47286140d38044d0f0470a556225_icgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_error_logger_a389b47286140d38044d0f0470a556225_icgraph" id="class_terraria_1_1_mod_loader_1_1_error_logger_a389b47286140d38044d0f0470a556225_icgraph">
-<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="222,5,418,46"/>
-<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203" title="Terraria.ModLoader.Mod.Load\lEffect" alt="" coords="467,5,661,46"/>
-</map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="a482452c467e1a6f8005b2968a12c3930"></a>
