@@ -14,7 +14,7 @@
 		"ModsOpenModsFolder": "Открыть папку модов",
 		"ModsModPacks": "Сборки модов",
 		"ModsDisable": "Выключить",
-		"ModsEnable": "Включить", 
+		"ModsEnable": "Включить",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
@@ -40,28 +40,34 @@
 		"ModsXBuffs": "{0} бафф(а/ов)",
 		"ModsXMounts": "{0} ездовой(-го/-ых) питомец(а/ов)",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "Произошла ошибка при загрузке {0}",
-		"LoadErrorRecipes": "Произошла ошибка при добавлении рецептов для {0}",
-		"LoadErrorDisabledSeeBelowForError": "Этот мод был автоматически отключен. Смотрите ниже для самой ошибки:",
+		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "Было обнаружено, что этот мод был собран для tModLoader версии v{0}\nОднако, Вы используете версию v{1}",
 		"LoadErrorDependencyMissing": "Отсутствует мод: {0} который необходим для корректной работы {1}",
 		"LoadErrorErrorReadingModFile": "Ошибка чтения файла мода {0}",
 		"LoadErrorHashMismatchCorrupted": "Хеш-сумма не совпадает, данные были изменены или повреждены",
 		"LoadErrorDependencyVersionTooLow": "{0} требует наличии версии {1} мода {2} но версия {3} установлена на данный момент",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы обозначили ModNPC.banner или ModNPC.bannerItem, но не остальное. Убедитесь, что вы обозначили оба параметра, проверьте на орфографические ошибки и если после этого предмет существует при использовании mod.ItemType(). Сообщите об этом разработчику {0}.",
+		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		// "BuildError": "An error ocurred while building {0}",
+		// "CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		"BuildErrorModNameEmpty": "Мод должен иметь хоть какое либо название",
 		"BuildErrorModNamedTerraria": "Мод не может быть назван Terraria",
 		"BuildErrorModNameHasPeriod": "Внутреннее имя мода не может содержать точки",
 		"BuildErrorTwoModsSameName": "Два мода имеют одно и то же имя - {0}",
-		"BuildErrorCompilingError": "Произошла ошибка при компиляции мода",
 		"BuildErrorModCompileFolderHint": "Очень вероятно, что tModLoader был установлен неправильно. Удостоверьтесь, что папка ModCompile присутствует в корне игры.",
-		"BuildErrorMissingDllFilesFor": "Отсутствуют dll файлы для {0}",
+		// "BuildErrorModReference": "Failed to read mod reference {0}",
+		// "BuildErrorMissingDllFiles": "Missing dll files for noCompile: {0}\n\nMust have either All.dll or both of Windows.dll and Mono.dll\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nWindows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll\nMono.dll must reference a non-windows Terraria.exe and FNA.dll",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Название мода {0} не совпадает с названием сборки {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Имя пространства имен и папки мода не совпадают. Корневое пространство имен имен должно быть названо как папка мода.",
 		"BuildErrorNoModClass": "Удостоверьтесь, что у вас есть ровно один класс, происходящий от Mod.",
 		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 должен быть установлен на вашем компьютере для компиляции C# 6.0",
 		"BuildErrorPDBWindowsOnly": "PDB файлы могут быть созданы только на Windows, для Windows.",
+		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
+		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
 		"BuildErrorFailedLoadBuildTxt": "Не удалось загрузить {0}",
 		"LoadErrorTextureFailedToLoad": "Не удалось загрузить файл с текстурой из {0}",
 		"LoadErrorWavSoundFailedToLoad": "Не удалось загрузить звуковой файл wav из {0}",
@@ -75,9 +81,10 @@
 		"LoadError2ModItemSameName": "Вы попытались добавить 2 ModItem'а с одинаковым именем: {0}. Либо у двух ваших классов одинаковое имя, но они находятся в разных пространствах имен во время автозагрузки, либо вы вручную вызвали AddItem для двух предметов с одним именем.",
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nПредполагаемый файл: (Была ли ошибка в написании или расположении в папках?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Бесшумно пойманное исключение: ",
-		"RuntimeErrorSeeLogsTxtForFullTrace": "(полный стэк-трейс исключения может быть найден в файле Logs.txt)",
+		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Открыть логи",
 		"OpenWebHelp": "Открыть веб помощь",
+		// "Exit": "Exit",
 
 		// Mod Info
 		"ModInfoHeader": "Описание мода: ",
@@ -149,8 +156,9 @@
 		"MBExceededBandwidth": "Сервер Браузера мода достиг своего дневного лимита на скачивание. Пожалуйста, посетите домашнюю страницу мода, чтобы найти альтернативные способы загрузки, либо попробуйте снова чуть позже.",
 		"MBUnknownMBError": "Неизвестная ошибка Браузера модов. Попробуйте снова чуть позже.",
 		"MBNoModsFound": "Моды не обнаружены",
-		"XSecondsAgo": "{0} секунд(ы) назад",	//Programmable grammatical declension would be nice.
+		// "MBBrowserError": "The mod browser encountered an error.",
 		"1SecondAgo": "1 секунду назад",
+		"XSecondsAgo": "{0} секунд(ы) назад",	//Programmable grammatical declension would be nice.
 		"1MinuteAgo": "1 минуту назад",
 		"XMinutesAgo": "{0} минут(ы) назад",
 		"1HourAgo": "1 час назад",
@@ -204,6 +212,8 @@
 		"New1Mod": "1 новый мод.",
 		"NewXMods": "{0} новых мода(-ов).",
 		"NewModsListing": "Новые моды:\n{0}",
+		// "PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		// "PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -229,20 +239,20 @@
 		"CommandModListClientMods": "Клиентосторонние моды:",
 		"CommandModListModlist": "Список модов:",
 
+		// Mod Building
+		// "Building": "Building: {0}",
+		// "ReadingProperties": "Reading properties: {0}",
+		// "CompilingWindows": "Compiling {0} for Windows...",
+		// "CompilingMono": "Compiling {0} for Mono...",
+		// "LoadingEAC": "Loading pre-compiled Windows.dll with edit and continue support",
+		// "Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "Чтение настроек мода:",
-		"MSCompilingWindows": "Компиляция мода {0} для Windows",
-		"MSCompilingMono": "Компиляция мода {0} для Mono",
-		// There should be ModName after ':'
-		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		// There should be ModName after ':'
+		// "MSInstantiating": "Instantiating Mods...",
+		"MSSandboxing": "Настройка совместимости: {0}",
 		"MSIntializing": "Инициализация мода: ",
-		// There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
 		"MSFinishingResourceLoading": "Завершается загрузка ресурсов",
-		"MSSandboxing": "Настройка совместимости: {0}",
-		"MSReading": "Чтение: {0}",
 		"MSSettingUp": "Настройка...",
 		"MSAddingRecipes": "Добавление рецептов...",
 		"AddingModContent": "Добавление контента модов...",
@@ -265,6 +275,8 @@
 		// Misc
 		"OK": "ОК",
 		"Continue": "Продолжить",
-		"PatreonSetTooltip": "Спасибо за вашу поддержку!"
+		"PatreonSetTooltip": "Спасибо за вашу поддержку!",
+		// "WorldGenError": "A problem was encountered during world generation",
+		// "WorldIODataException": "The game encountered a mod data problem for a world.",
 	}
 }

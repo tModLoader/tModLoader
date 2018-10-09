@@ -15,7 +15,7 @@
 		"ModsOpenModsFolder": "Otwórz folder z modami",
 		"ModsModPacks": "Paczki modów",
 		"ModsDisable": "Wyłącz",
-		"ModsEnable": "Włącz", 
+		"ModsEnable": "Włącz",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
@@ -33,7 +33,7 @@
 		"ModsSortNamesReverseAlph": "Sortuj odwrotnie alfabetycznie",
 		"ModsShowAllMods": "Pokaż wszystkie",
 		"ModsShowEnabledMods": "Pokaż tylko włączone",
-		"ModsShowDisabledMods": "Pokaż tylko wyłączone",	
+		"ModsShowDisabledMods": "Pokaż tylko wyłączone",
 		// "ModsXItems": "{0} items",
 		// "ModsXNPCs": "{0} NPCs",
 		// "ModsXTiles": "{0} tiles",
@@ -41,28 +41,34 @@
 		// "ModsXBuffs": "{0} buffs",
 		// "ModsXMounts": "{0} mounts",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
-		"LoadErrorRecipes": "Wystąpił błąd podczas dodawania przepisów dla {0}",
-		"LoadErrorDisabledSeeBelowForError": "Mod został automatycznie wyłączony. Treść błędu:",
+		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "Wykryto mod dla tModLoader v{0}\nUżywasz tModLoader v{1}",
 		"LoadErrorDependencyMissing": "Brakujący mod: {0} wymagany przez {1}",
 		"LoadErrorErrorReadingModFile": "Błąd podczas ładowania pliku moda {0}",
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorDependencyVersionTooLow": "{0} wymaga {2} w wersji {1}, ale zainstalowana jest {3}",
 		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		// "BuildError": "An error ocurred while building {0}",
+		// "CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		"BuildErrorModNameEmpty": "Nazwa moda nie może być pusta",
 		"BuildErrorModNamedTerraria": "Mody nie mogą się nazywać Terraria",
 		"BuildErrorModNameHasPeriod": "Wewnętrzna nazwa moda nie może zawierać kropki.",
 		"BuildErrorTwoModsSameName": "Kilka modów używa tej samej wewnętrznej nazwy {0}.",
-		// "BuildErrorCompilingError": "An error ocurred while compiling a mod.",
 		// "BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
-		// "BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		// "BuildErrorModReference": "Failed to read mod reference {0}",
+		// "BuildErrorMissingDllFiles": "Missing dll files for noCompile: {0}\n\nMust have either All.dll or both of Windows.dll and Mono.dll\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nWindows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll\nMono.dll must reference a non-windows Terraria.exe and FNA.dll",
 		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		// "BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
 		// "BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
 		// "BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
+		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
+		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
 		// "BuildErrorFailedLoadBuildTxt": "Failed to load {0}",
 		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
@@ -74,11 +80,12 @@
 		// "LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 		// "LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
 		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
-		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
+		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n\t\t{1}",
 		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
-		// "RuntimeErrorSeeLogsTxtForFullTrace": "(see Logs.txt for full trace)",
+		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Otwórz logi",
 		"OpenWebHelp": "Otwórz pomoc",
+		// "Exit": "Exit",
 
 		// Mod Info
 		"ModInfoHeader": "Informacje o modzie: ",
@@ -103,7 +110,7 @@
 		// "ModPackDisabled": " - Disabled",
 		// "ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
 		// "ModPackDoesNotExist": "Modpack {0} does not exist.",
-		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
+		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed.",
 
 		// ModNet/Multiplayer
 		// "MPSyncingMods": "Syncing Mods",
@@ -150,6 +157,7 @@
 		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
 		// "MBNoModsFound": "No mods found",
+		// "MBBrowserError": "The mod browser encountered an error.",
 		// "1SecondAgo": "1 second ago",
 		// "XSecondsAgo": "{0} seconds ago",
 		// "1MinuteAgo": "1 minute ago",
@@ -182,7 +190,7 @@
 		"MusicStreamModeConvert": "Ładowanie muzyki: Konwersja na życzenie",
 		"MusicStreamModeStream": "Ładowanie muzyki: Strumieniuj z pamięci podręcznej",
 		"AlwaysLogExceptionsYes": "Zawsze loguj wyjątki: Włączone",
-		"AlwaysLogExceptionsNo": "Zawsze loguj wyjątki: Wyłączone",		
+		"AlwaysLogExceptionsNo": "Zawsze loguj wyjątki: Wyłączone",
 		"ExperimentalFeaturesYes": "Eksperymentalne funkcje: Włączone",
 		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
 		// "RemoveForcedMinimumZoomYes": "Remove Forced Minimum Zoom: On",
@@ -205,6 +213,8 @@
 		"New1Mod": "Nowe mody: 1",
 		"NewXMods": "Nowe mody: {0}",
 		"NewModsListing": "Nowe mody:\n{0}",
+		// "PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		// "PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Zbuduj",
@@ -230,20 +240,20 @@
 		// "CommandModListClientMods": "Client Mods:",
 		// "CommandModListModlist": "Modlist:",
 
+		// Mod Building
+		// "Building": "Building: {0}",
+		// "ReadingProperties": "Reading properties: {0}",
+		// "CompilingWindows": "Compiling {0} for Windows...",
+		// "CompilingMono": "Compiling {0} for Mono...",
+		// "LoadingEAC": "Loading pre-compiled Windows.dll with edit and continue support",
+		// "Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "Ładowanie właściwości: ",
-		"MSCompilingWindows": "Kompilowanie {0} dla Windows...",
-		"MSCompilingMono": "Kompilowanie {0} dla Mono...",
-		// There should be ModName after ':'
-		"MSBuilding": "Budowanie ",
 		"MSFinding": "Szukanie Modów...",
-		// There should be ModName after ':'
+		// "MSInstantiating": "Instantiating Mods...",
+		"MSSandboxing": "Kompatybilizowanie: {0}",
 		"MSIntializing": "Inicjalizowanie: ",
-		// There should be ModName after ':'
 		"MSLoading": "Ładowanie Moda: ",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
-		"MSSandboxing": "Kompatybilizowanie: {0}",
-		"MSReading": "Ładowanie: {0}",
 		"MSSettingUp": "Konfigurowanie...",
 		"MSAddingRecipes": "Dodawanie przepisów...",
 		// "AddingModContent": "Adding mod content...",
@@ -266,6 +276,8 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Kontynuuj",
-		"PatreonSetTooltip": "Dzięki za wsparcie!"
+		"PatreonSetTooltip": "Dzięki za wsparcie!",
+		// "WorldGenError": "A problem was encountered during world generation",
+		// "WorldIODataException": "The game encountered a mod data problem for a world.",
 	}
 }
