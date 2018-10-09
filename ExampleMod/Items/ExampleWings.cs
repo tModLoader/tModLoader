@@ -44,8 +44,8 @@ namespace ExampleMod.Items
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "EquipMaterial", 60);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("EquipMaterial"), 60);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

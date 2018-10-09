@@ -29,7 +29,7 @@ namespace ExampleMod.Items.Placeable
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Dresser);
-			recipe.AddIngredient(null, "ExampleBlock", 10);
+			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

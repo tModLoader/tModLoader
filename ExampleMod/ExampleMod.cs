@@ -187,7 +187,7 @@ namespace ExampleMod
 		{
 			// Here is an example of a recipe.
 			ModRecipe recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
+			recipe.AddIngredient(this.ItemType("ExampleItem"));
 			recipe.SetResult(ItemID.Wood, 999);
 			recipe.AddRecipe();
 

@@ -65,8 +65,8 @@ namespace ExampleMod.Projectiles
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Shuriken, 10);
-			recipe.AddIngredient(null, "ExampleItem", 1);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 1);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this, 10);
 			recipe.AddRecipe();
 		}

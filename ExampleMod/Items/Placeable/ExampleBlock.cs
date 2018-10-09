@@ -49,16 +49,16 @@ namespace ExampleMod.Items.Placeable
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"));
 			recipe.SetResult(this, 10);
 			recipe.AddRecipe();
 			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleWall", 4);
+			recipe.AddIngredient(mod.ItemType("ExampleWall"), 4);
 			recipe.SetResult(this);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.AddRecipe();
 			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExamplePlatform", 2);
+			recipe.AddIngredient(mod.ItemType("ExamplePlatform"), 2);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

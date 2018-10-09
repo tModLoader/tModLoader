@@ -42,7 +42,7 @@ namespace ExampleMod.Items.Weapons
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem", 10);
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddIngredient(ItemID.WoodYoyo);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
