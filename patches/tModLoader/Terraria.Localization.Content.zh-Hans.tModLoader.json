@@ -61,7 +61,7 @@
 		"BuildErrorTwoModsSameName": "两个模组共享相同的内部名称 {0}",
 		"BuildErrorModCompileFolderHint": "你很可能没有正确地安装,请确保你已安装[ModCompile]文件夹.",
 		"BuildErrorModReference": "读取模组引用 {0} 失败",
-		"BuildErrorMissingDllFiles": "缺少用于noCompile的dll文件: {0}\n\n必须具有[All.dll]或[Windows.dll]和Mono.dll]\n[All.dll]必须无[Microsoft.Xna.Framework]或[FNA]的任何引用\nWindows.dll必须引用Windows[Terraria.exe]和[Microsoft.Xna.Framework.dll]\nMono.dll必须引用非Windows[Terraria.exe]和[FNA.dll]",
+		"BuildErrorMissingDllFiles": "缺少用于[noCompile]的dll文件: {0}\n\n必须具有[All.dll]或[Windows.dll]和Mono.dll]\n[All.dll]必须无[Microsoft.Xna.Framework]或[FNA]的任何引用\n[Windows.dll]必须引用Windows[Terraria.exe]和[Microsoft.Xna.Framework.dll]\n[Mono.dll]必须引用非Windows[Terraria.exe]和[FNA.dll]",
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
@@ -245,7 +245,7 @@
 		"ReadingProperties": "读取中: {0}",
 		"CompilingWindows": "编译Windows版 {0}...",
 		"CompilingMono": "编译Mono版 {0}...",
-		"LoadingEAC": "加载预编译的Windows.dll以支持编辑并继续",
+		"LoadingEAC": "加载预编译的[Windows.dll]以支持编辑并继续",
 		"Packaging": "合包中: {0}",
 		// There should be ModName after ':'
 		"MSFinding": "查找模组...",
