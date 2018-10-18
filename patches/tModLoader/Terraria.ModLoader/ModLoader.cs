@@ -114,6 +114,7 @@ namespace Terraria.ModLoader
 		{
 			try
 			{
+				MonoModHooks.Initialize();
 				var modInstances = ModOrganizer.LoadMods();
 			
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
@@ -174,6 +175,9 @@ namespace Terraria.ModLoader
 					} catch (Exception e) {
 						e.Data["mod"] = mod.Name;
 						throw;
+					}
+					finally {
+						MonoModHooks.RemoveAll(mod);
 					}
 				}
 			

@@ -4,6 +4,7 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,15 +25,38 @@ namespace Terraria.ModLoader
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
+		
+#if CLIENT
+		internal const string side = "client";
+#else
+		internal const string side = "server";
+#endif
 
 		internal static void Init()
 		{
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
+#if !WINDOWS
+			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new [] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
+#endif
+
 			if (!Directory.Exists(LogDir))
 				Directory.CreateDirectory(LogDir);
 
+			ConfigureAppenders();
+
+			tML.InfoFormat("Starting {0}{1} {2}", ModLoader.versionedName, ModLoader.compressedPlatformRepresentation, side);
+			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
+			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
+			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
+
+			HookModuleLoad();
+			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
+		}
+
+		private static void ConfigureAppenders()
+		{
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
@@ -40,18 +64,17 @@ namespace Terraria.ModLoader
 
 			var appenders = new List<IAppender>();
 #if CLIENT
-			string side = "client";
 			appenders.Add(new ConsoleAppender {
 				Name = "ConsoleAppender",
 				Layout = layout
 			});
 #else
-			string side = "server";
-#endif
 			appenders.Add(new DebugAppender {
 				Name = "DebugAppender",
 				Layout = layout
 			});
+#endif
+
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
 				File = LogPath = Path.Combine(LogDir, RollLogs(side)),
@@ -63,14 +86,6 @@ namespace Terraria.ModLoader
 			appenders.Add(fileAppender);
 
 			BasicConfigurator.Configure(appenders.ToArray());
-
-			tML.InfoFormat("Starting {0}{1} {2}", ModLoader.versionedName, ModLoader.compressedPlatformRepresentation, side);
-			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
-			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
-			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
-
-			HookModuleLoad();
-			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 		}
 
 		private static string RollLogs(string baseName)
@@ -119,7 +134,7 @@ namespace Terraria.ModLoader
 			if (existingLogs.Count > 0)
 				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
 
-			using (var zip = new ZipFile(Path.Combine(LogDir, $"{time:yyyy-MM-dd}-{n}.zip"))) {
+			using (var zip = new ZipFile(Path.Combine(LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
 				zip.AddFile(logPath, "");
 				zip.Save();
 			}
@@ -144,15 +159,11 @@ namespace Terraria.ModLoader
 		}
 
 		private static void HookModuleLoad() {
-            var f = typeof(AppDomain).GetField("_AssemblyResolve", BindingFlags.Instance | BindingFlags.NonPublic);
-            var a = (ResolveEventHandler)f.GetValue(AppDomain.CurrentDomain);
-            f.SetValue(AppDomain.CurrentDomain, null);
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
-                tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);
-                return null;
-            };
-            AppDomain.CurrentDomain.AssemblyResolve += a;
-        }
+			AssemblyManager.AssemblyResolveEarly((sender, args) => {
+				tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);
+				return null;
+			});
+		}
 
 		internal static void LogFirstChanceExceptions(bool enabled)
 		{
@@ -165,13 +176,18 @@ namespace Terraria.ModLoader
 		private static HashSet<string> pastExceptions = new HashSet<string>();
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 		{
-			if (!pastExceptions.Add(args.Exception.ToString()))
-				return;
 			if (args.Exception.Source == "MP3Sharp")
 				return;
 
 			var stackTrace = new StackTrace(true).ToString();
-			if (stackTrace.Contains("Terraria.ModLoader.ModCompile"))
+			if (stackTrace.Contains("Terraria.ModLoader.ModCompile") ||
+				stackTrace.Contains("Delegate.CreateDelegateNoSecurityCheck") ||
+				stackTrace.Contains("MethodBase.GetMethodBody"))
+				return;
+
+			stackTrace = stackTrace.Substring(stackTrace.IndexOf('\n'));
+			var exString = args.Exception.GetType() + ": " + args.Exception.Message + stackTrace;
+			if (!pastExceptions.Add(exString))
 				return;
 
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
@@ -185,16 +201,14 @@ namespace Terraria.ModLoader
 			Console.WriteLine(msg);
 			Console.ResetColor();
 #endif
-
-			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException"), args.Exception);
-			tML.Warn(stackTrace);
+			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 		}
 
 		private static Regex statusRegex = new Regex(@"(.+?)[: \d]*%$");
 		internal static void LogStatusChange(string oldStatusText, string newStatusText)
 		{
 			// trim numbers and percentage to reduce log spam
-			var oldBase = statusRegex.Match(oldStatusText).Groups[1].Value;
+			var oldBase = statusRegex.Match(oldStatusText).Groups[1].Value; 
 			var newBase = statusRegex.Match(newStatusText).Groups[1].Value;
 			if (newBase != oldBase && newBase.Length > 0)
 				LogManager.GetLogger("StatusText").Info(newBase);
@@ -205,6 +219,16 @@ namespace Terraria.ModLoader
 		{
 			Console.WriteLine(msg);
 			Terraria.Logger.Log(null, level, msg, null);
+		}
+
+		private delegate Encoding orig_GetEncoding(string name);
+		private delegate Encoding hook_GetEncoding(orig_GetEncoding orig, string name);
+		private static Encoding HookGetEncoding(orig_GetEncoding orig, string name)
+		{
+			if (name == "IBM437")
+				return null;
+			
+			return orig(name);
 		}
 	}
 }

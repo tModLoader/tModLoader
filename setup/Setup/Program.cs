@@ -17,6 +17,7 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string libDir = Path.Combine(appDir, "..", "lib");
 		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
 		public static string LogDir => Path.Combine(baseDir, "logs");
+		public static string ReferencesDir => Path.Combine(baseDir, "references");
 
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
@@ -31,9 +32,8 @@ namespace Terraria.ModLoader.Setup
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, resArgs) => {
-				var path = Path.Combine(libDir, new AssemblyName(resArgs.Name).Name);
-				path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
-				return path != null ? Assembly.LoadFrom(path) : null;
+				var name = new AssemblyName(resArgs.Name).Name;
+				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(ReferencesDir, name);
 			};
 
 			if (args.Length == 1 && args[0] == "--steamdir") {
@@ -46,6 +46,13 @@ namespace Terraria.ModLoader.Setup
 				return;
 
 			Application.Run(new MainForm());
+		}
+
+		private static Assembly ResolveAssemblyFrom(string libDir, string name)
+		{
+			var path = Path.Combine(libDir, name);
+			path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
+			return path != null ? Assembly.LoadFrom(path) : null;
 		}
 
 		private static void LoadBaseDir(string[] args) {

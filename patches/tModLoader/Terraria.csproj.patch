@@ -47,7 +47,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -81,19 +_,50 @@
+@@ -81,19 +_,61 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -83,7 +83,6 @@
 -    </Reference>
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="Ionic.Zip.Reduced">
-+      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
 +    </Reference>
 +    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
@@ -97,6 +96,18 @@
 +    </Reference>
 +    <Reference Include="log4net">
 +      <HintPath>..\..\references\log4net.dll</HintPath>
++    </Reference>
++    <Reference Include="TerrariaHooks" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <HintPath>..\..\references\TerrariaHooks.Windows.dll</HintPath>
++    </Reference>
++    <Reference Include="TerrariaHooks" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <HintPath>..\..\references\TerrariaHooks.Mono.dll</HintPath>
++    </Reference>
++    <Reference Include="MonoMod.RuntimeDetour">
++      <HintPath>..\..\references\MonoMod.RuntimeDetour.dll</HintPath>
++    </Reference>
++    <Reference Include="MonoMod.Utils">
++      <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
 +    </Reference>
 +    <Reference Include="System.Windows.Forms">
 +      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
@@ -120,7 +131,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,166 @@
+@@ -368,6 +_,167 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -259,6 +270,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWaterStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\MonoModHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MusicPriority.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeEditor.cs" />
@@ -295,7 +307,7 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,25 @@
+@@ -538,10 +_,33 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -321,6 +333,14 @@
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
++    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
