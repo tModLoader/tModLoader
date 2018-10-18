@@ -1,5 +1,11 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod.html#a88db51eef454364879d2238029140302":[1,0,0,0,25,92],
+"class_terraria_1_1_mod_loader_1_1_mod.html#a8a88e102920c0596be47c89571f03160":[1,0,0,0,25,34],
+"class_terraria_1_1_mod_loader_1_1_mod.html#a8c23cd0bf5d82c15ed3e752e9fb9bf6a":[1,0,0,0,25,158],
+"class_terraria_1_1_mod_loader_1_1_mod.html#a8c3738c5de5f664d22d6377be97adbd4":[1,0,0,0,25,135],
+"class_terraria_1_1_mod_loader_1_1_mod.html#a8e36571c37bdeb431499f50edbc3c9cf":[1,0,0,0,25,70],
+"class_terraria_1_1_mod_loader_1_1_mod.html#a8e910c412ffad9c0c591a1287add7161":[1,0,0,0,25,105],
 "class_terraria_1_1_mod_loader_1_1_mod.html#a9009e3f4273585a05b0cec84682bec5f":[1,0,0,0,25,144],
 "class_terraria_1_1_mod_loader_1_1_mod.html#a91412ee9e3927f94e75229d6a720e01b":[1,0,0,0,25,87],
 "class_terraria_1_1_mod_loader_1_1_mod.html#a92298bf7247dbe3f7c9ee7d4ff74c1fc":[1,0,0,0,25,116],
@@ -243,11 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c":[1,0,0,0,33,28],
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac55f54912bc941bc46599f6318976aa2":[1,0,0,0,33,96],
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7fedbda0e561959eefd688955c6e614":[1,0,0,0,33,3],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ac829b6c3ec83b62928f0a555d4088b5c":[1,0,0,0,33,20],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ac90ec46c3c5018c66bb3be49426fe96f":[1,0,0,0,33,2],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#acee6ab1745b9d9011a1e002ed1f35939":[1,0,0,0,33,106],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86":[1,0,0,0,33,29],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad47d510bf84c19afbd9e9e99fd709d5f":[1,0,0,0,33,32],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad494945eb650e562db4ff0cfd2febff7":[1,0,0,0,33,88],
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad580fc73425d033b40df11bd561981d4":[1,0,0,0,33,111]
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ac829b6c3ec83b62928f0a555d4088b5c":[1,0,0,0,33,20]
 };

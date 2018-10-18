@@ -1,5 +1,11 @@
 var NAVTREEINDEX6 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ac90ec46c3c5018c66bb3be49426fe96f":[1,0,0,0,33,2],
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#acee6ab1745b9d9011a1e002ed1f35939":[1,0,0,0,33,106],
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#acfa5895f0e52f0df7c833558b0f23b86":[1,0,0,0,33,29],
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad47d510bf84c19afbd9e9e99fd709d5f":[1,0,0,0,33,32],
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad494945eb650e562db4ff0cfd2febff7":[1,0,0,0,33,88],
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#ad580fc73425d033b40df11bd561981d4":[1,0,0,0,33,111],
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad6b829c635b333febf4a76f07aa32774":[1,0,0,0,33,22],
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad84fa7ea1bfb09b8a9de2ec37a6cb48c":[1,0,0,0,33,5],
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4":[1,0,0,0,33,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#a98f11468d4af2b252f2ec3745a798f1d":[1,0,0,0,40,70],
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9a527fd0a56cab1b9ba7770d6df47f8a":[1,0,0,0,40,45],
 "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9ed65f7e493f7194c35ae38264a5df27":[1,0,0,0,40,18],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#aa26938f486aab4a4022503f24dda30c8":[1,0,0,0,40,68],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#aa6846104ccfa767cae2605dad1e1e79e":[1,0,0,0,40,69],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e":[1,0,0,0,40,82],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea":[1,0,0,0,40,73],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#aad518cd62e03e602fc231c3d7a4934e9":[1,0,0,0,40,32],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#ab04c85a24421eda597731c46fbc2f997":[1,0,0,0,40,4],
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#ab38fbee5966d671f00ee1bf2b29e188f":[1,0,0,0,40,65]
+"class_terraria_1_1_mod_loader_1_1_mod_player.html#aa26938f486aab4a4022503f24dda30c8":[1,0,0,0,40,68]
 };

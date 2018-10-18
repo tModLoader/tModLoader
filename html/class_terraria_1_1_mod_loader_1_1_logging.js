@@ -2,9 +2,13 @@ var class_terraria_1_1_mod_loader_1_1_logging =
 [
     [ "Archive", "class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9", null ],
     [ "CanOpen", "class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b", null ],
+    [ "ConfigureAppenders", "class_terraria_1_1_mod_loader_1_1_logging.html#a3bd5f56a76a41af81063b3f9d72cbab5", null ],
     [ "DeleteOldArchives", "class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387", null ],
     [ "FirstChanceExceptionHandler", "class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f", null ],
+    [ "hook_GetEncoding", "class_terraria_1_1_mod_loader_1_1_logging.html#aa77d8c6eb50837ddd08094269457f7bd", null ],
+    [ "HookGetEncoding", "class_terraria_1_1_mod_loader_1_1_logging.html#a4ee052d38eb589a3ee12e4f1c267210f", null ],
     [ "HookModuleLoad", "class_terraria_1_1_mod_loader_1_1_logging.html#a89f808ff938917029747421b96e9396a", null ],
+    [ "orig_GetEncoding", "class_terraria_1_1_mod_loader_1_1_logging.html#a6af84d77d46c744da40f2cbac401f7ca", null ],
     [ "RollLogs", "class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8", null ],
     [ "LogDir", "class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0", null ],
     [ "MAX_LOGS", "class_terraria_1_1_mod_loader_1_1_logging.html#a1cb7261c48401438e766f4a983fdf491", null ],
