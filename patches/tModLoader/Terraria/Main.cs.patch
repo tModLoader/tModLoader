@@ -882,7 +882,7 @@
  			}
  			if (Main.netMode == 1)
  			{
-@@ -12612,6 +_,7 @@
+@@ -12612,10 +_,12 @@
  				{
  					Main.player[Main.myPlayer].AdjTiles();
  				}
@@ -890,6 +890,11 @@
  				Main.gamePaused = true;
  				return;
  			}
+ 			Main.gamePaused = false;
++			WorldHooks.PreUpdateEntities();
+ 			if (!Main.dedServ && (double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0 && Main.netMode != 2)
+ 			{
+ 				Star.UpdateStars();
 @@ -12624,6 +_,8 @@
  			PortalHelper.UpdatePortalPoints();
  			Main.tileSolid[379] = false;
@@ -899,6 +904,78 @@
  			int num12 = 0;
  			while (num12 < 255)
  			{
+@@ -12649,6 +_,7 @@
+ 				goto IL_1864;
+ 			}
+ 			Main._gameUpdateCount += 1u;
++			WorldHooks.PostUpdatePlayers();
+ 			if (Main.netMode != 1)
+ 			{
+ 				try
+@@ -12713,6 +_,7 @@
+ 				Main.npc[num14].UpdateNPC(num14);
+ 				goto IL_19A7;
+ 			}
++			WorldHooks.PostUpdateNPCs();
+ 			int num15 = 0;
+ 			while (num15 < 500)
+ 			{
+@@ -12738,6 +_,7 @@
+ 				Main.gore[num15].Update();
+ 				goto IL_19EE;
+ 			}
++			WorldHooks.PostUpdateGores();
+ 			LockOnHelper.SetUP();
+ 			int num16 = 0;
+ 			while (num16 < 1000)
+@@ -12767,6 +_,7 @@
+ 			}
+ 			Main.ProjectileUpdateLoopIndex = -1;
+ 			LockOnHelper.SetDOWN();
++			WorldHooks.PostUpdateProjectiles();
+ 			int num17 = 0;
+ 			while (num17 < 400)
+ 			{
+@@ -12792,6 +_,7 @@
+ 				Main.item[num17].UpdateItem(num17);
+ 				goto IL_1A9B;
+ 			}
++			WorldHooks.PostUpdateItems();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
+@@ -12811,6 +_,7 @@
+ 			}
+ 			Dust.UpdateDust();
+ 			IL_1AF0:
++			WorldHooks.PostUpdateDusts();
+ 			if (Main.netMode != 2)
+ 			{
+ 				CombatText.UpdateCombatText();
+@@ -12831,6 +_,7 @@
+ 			}
+ 			Main.UpdateTime();
+ 			IL_1B1E:
++			WorldHooks.PostUpdateTime();
+ 			Main.tileSolid[379] = true;
+ 			if (Main.netMode != 1)
+ 			{
+@@ -12851,6 +_,7 @@
+ 				Main.UpdateInvasion();
+ 			}
+ 			IL_1B52:
++			WorldHooks.PostUpdateInvasion();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
+@@ -12880,6 +_,7 @@
+ 				Main.UpdateClient();
+ 			}
+ 			IL_1B9A:
++			WorldHooks.PostUpdateNet();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()

@@ -109,6 +109,62 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PreUpdateEntities()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdatePlayers()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateNPCs()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateGores()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateProjectiles()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateItems()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateDusts()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateTime()
+		{
+		}
+
+		/// <summary>
 		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.
 		/// </summary>
 		public virtual void PreUpdate()
@@ -119,6 +175,20 @@ namespace Terraria.ModLoader
 		/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night. This hook is called every frame.
 		/// </summary>
 		public virtual void PostUpdate()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateInvasion()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void PostUpdateNet()
 		{
 		}
 

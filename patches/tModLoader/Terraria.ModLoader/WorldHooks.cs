@@ -87,6 +87,70 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void PreUpdateEntities()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PreUpdateEntities();
+			}
+		}
+
+		public static void PostUpdatePlayers()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdatePlayers();
+			}
+		}
+
+		public static void PostUpdateNPCs()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateNPCs();
+			}
+		}
+
+		public static void PostUpdateGores()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateGores();
+			}
+		}
+
+		public static void PostUpdateProjectiles()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateProjectiles();
+			}
+		}
+
+		public static void PostUpdateItems()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateItems();
+			}
+		}
+
+		public static void PostUpdateDusts()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateDusts();
+			}
+		}
+
+		public static void PostUpdateTime()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateTime();
+			}
+		}
+
 		public static void PreUpdate()
 		{
 			foreach (ModWorld modWorld in worlds)
@@ -100,6 +164,22 @@ namespace Terraria.ModLoader
 			foreach (ModWorld modWorld in worlds)
 			{
 				modWorld.PostUpdate();
+			}
+		}
+
+		public static void PostUpdateInvasion()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateInvasion();
+			}
+		}
+
+		public static void PostUpdateNet()
+		{
+			foreach (ModWorld modWorld in worlds)
+			{
+				modWorld.PostUpdateNet();
 			}
 		}
 
