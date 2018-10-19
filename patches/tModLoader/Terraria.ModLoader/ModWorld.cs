@@ -111,56 +111,56 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PreUpdateEntities()
+		public virtual void PreUpdateAnything()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdatePlayers()
+		public virtual void MidUpdatePlayerNPC()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateNPCs()
+		public virtual void MidUpdateNPCGore()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateGores()
+		public virtual void MidUpdateGoreProjectile()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateProjectiles()
+		public virtual void MidUpdateProjectileItem()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateItems()
+		public virtual void MidUpdateItemDust()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateDusts()
+		public virtual void MidUpdateDustTime()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateTime()
+		public virtual void MidUpdateTimeWorld()
 		{
 		}
 
@@ -181,14 +181,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateInvasion()
+		public virtual void MidUpdateInvasionNet()
 		{
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual void PostUpdateNet()
+		public virtual void PostUpdateEverything()
 		{
 		}
 

@@ -87,67 +87,67 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PreUpdateEntities()
+		public static void PreUpdateAnything()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PreUpdateEntities();
+				modWorld.PreUpdateAnything();
 			}
 		}
 
-		public static void PostUpdatePlayers()
+		public static void MidUpdatePlayerNPC()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdatePlayers();
+				modWorld.MidUpdatePlayerNPC();
 			}
 		}
 
-		public static void PostUpdateNPCs()
+		public static void MidUpdateNPCGore()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateNPCs();
+				modWorld.MidUpdateNPCGore();
 			}
 		}
 
-		public static void PostUpdateGores()
+		public static void MidUpdateGoreProjectile()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateGores();
+				modWorld.MidUpdateGoreProjectile();
 			}
 		}
 
-		public static void PostUpdateProjectiles()
+		public static void MidUpdateProjectileItem()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateProjectiles();
+				modWorld.MidUpdateProjectileItem();
 			}
 		}
 
-		public static void PostUpdateItems()
+		public static void MidUpdateItemDust()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateItems();
+				modWorld.MidUpdateItemDust();
 			}
 		}
 
-		public static void PostUpdateDusts()
+		public static void MidUpdateDustTime()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateDusts();
+				modWorld.MidUpdateDustTime();
 			}
 		}
 
-		public static void PostUpdateTime()
+		public static void MidUpdateTimeWorld()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateTime();
+				modWorld.MidUpdateTimeWorld();
 			}
 		}
 
@@ -167,19 +167,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PostUpdateInvasion()
+		public static void MidUpdateInvasionNet()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateInvasion();
+				modWorld.MidUpdateInvasionNet();
 			}
 		}
 
-		public static void PostUpdateNet()
+		public static void PostUpdateEverything()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PostUpdateNet();
+				modWorld.PostUpdateEverything();
 			}
 		}
 
