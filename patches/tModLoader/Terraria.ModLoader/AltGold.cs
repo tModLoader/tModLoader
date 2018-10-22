@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		public readonly int oreBarItemType;
 		private static readonly List<AltGold> AltGolds = new List<AltGold>();
 
-		public static AltGold ChosenAltGold;
+		public static AltGold ChosenAltGold { get; private set; }
 
 		public AltGold(int oreTileType, int oreBarItemType)
 		{
@@ -20,6 +20,11 @@ namespace Terraria.ModLoader
 		internal static AltGold GetAltGold()
 		{
 			return ChosenAltGold ?? (ChosenAltGold = AltGolds[WorldGen.genRand.Next(AltGolds.Count)]);
+		}
+
+		internal static void UnchooseAltGold()
+		{
+			ChosenAltGold = null;
 		}
 
 		internal static void Add(AltGold alt)

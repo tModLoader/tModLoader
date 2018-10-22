@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		public readonly int oreBarItemType;
 		private static readonly List<AltCopper> AltCoppers = new List<AltCopper>();
 
-		public static AltCopper ChosenAltCopper;
+		public static AltCopper ChosenAltCopper { get; private set; }
 
 		public AltCopper(int oreTileType, int oreBarItemType)
 		{
@@ -20,6 +20,11 @@ namespace Terraria.ModLoader
 		internal static AltCopper GetAltCopper()
 		{
 			return ChosenAltCopper ?? (ChosenAltCopper = AltCoppers[WorldGen.genRand.Next(AltCoppers.Count)]);
+		}
+
+		internal static void UnchooseAltCopper()
+		{
+			ChosenAltCopper = null;
 		}
 
 		internal static void Add(AltCopper alt)

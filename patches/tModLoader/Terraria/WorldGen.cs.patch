@@ -203,7 +203,7 @@
 +			WorldGen.AddAlt(new AltSilver(TileID.Tungsten, ItemID.TungstenBar));
 +			WorldGen.AddAlt(new AltGold(TileID.Gold, ItemID.GoldBar));
 +			WorldGen.AddAlt(new AltGold(TileID.Platinum, ItemID.PlatinumBar));
-+			
++				
  			int dungeonSide = 0;
  			ushort jungleHut = (ushort)WorldGen.genRand.Next(5);
  			int howFar = 0;
@@ -215,7 +215,7 @@
  			WorldGen.AddGenerationPass("Reset", delegate(GenerationProgress progress)
  				{
  					Liquid.ReInit();
-@@ -4637,38 +_,18 @@
+@@ -4637,38 +_,22 @@
  					int num = 86400;
  					Main.slimeRainTime = (double)(-(double)WorldGen.genRand.Next(num * 2, num * 3));
  					Main.cloudBGActive = (float)(-(float)WorldGen.genRand.Next(8640, 86400));
@@ -252,9 +252,13 @@
 -						WorldGen.GoldTierOre = 169;
 -					}
 +					copper = AltCopper.GetAltCopper().oreTileType;
-+					iron = AltIron.GetAltIron().oreTileType
-+					silver = AltSilver.GetAltSilver().oreTileType
-+					gold = AltGold.GetAltGold().oreTileType
++					iron = AltIron.GetAltIron().oreTileType;
++					silver = AltSilver.GetAltSilver().oreTileType;
++					gold = AltGold.GetAltGold().oreTileType;
++					AltCopper.UnchooseAltCopper();
++					AltIron.UnchooseAltIron();
++					AltSilver.UnchooseAltSilver();
++					AltGold.UnchooseAltGold();
 +					WorldGen.CopperTierOre = AltCopper.GetAltCopper().oreTileType;
 +					WorldGen.IronTierOre = AltIron.GetAltIron().oreTileType;
 +					WorldGen.SilverTierOre = AltSilver.GetAltSilver().oreTileType;
@@ -2042,7 +2046,7 @@
  								{
  									bool flag21 = WorldGen.mergeUp;
  									bool flag22 = WorldGen.mergeDown;
-@@ -52842,5 +_,25 @@
+@@ -52842,5 +_,27 @@
  		{
  			return Main.tile[x, y + 1] != null && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && (Main.tile[x, y].type != 254 || context == TileCuttingContext.TilePlacement);
  		}
@@ -2064,6 +2068,8 @@
 +				case AltGold altGold:
 +					AltGold.Add(altGold);
 +					break;
++				default:
++					throw Exception("Invalid alt added")
 +			}
 +		}
  	}

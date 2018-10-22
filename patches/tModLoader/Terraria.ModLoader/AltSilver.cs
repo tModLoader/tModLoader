@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		public readonly int oreBarItemType;
 		private static readonly List<AltSilver> AltSilvers = new List<AltSilver>();
 
-		public static AltSilver ChosenAltSilver;
+		public static AltSilver ChosenAltSilver { get; private set; }
 
 		public AltSilver(int oreTileType, int oreBarItemType)
 		{
@@ -17,9 +17,14 @@ namespace Terraria.ModLoader
 			this.oreBarItemType = ItemLoader.ItemCount > oreBarItemType ? oreBarItemType : throw new Exception("oreBarItemType is an invalid item");
 		}
 
-		internal static AltSilver GetAltSilver()
+		public static AltSilver GetAltSilver()
 		{
 			return ChosenAltSilver ?? (ChosenAltSilver = AltSilvers[WorldGen.genRand.Next(AltSilvers.Count)]);
+		}
+
+		internal static void UnchooseAltSilver()
+		{
+			ChosenAltSilver = null;
 		}
 
 		internal static void Add(AltSilver alt)
