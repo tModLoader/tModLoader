@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items
@@ -17,7 +18,7 @@ namespace ExampleMod.Items
 			item.width = 26;
 			item.height = 26;
 			item.uniqueStack = true;
-			item.rare = -11;		//The rarity of -11 gives the item orange color
+			item.rare = ItemRarityID.Quest;
 		}
 
 		public override bool IsQuestFish()
