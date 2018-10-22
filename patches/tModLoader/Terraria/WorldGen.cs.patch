@@ -168,7 +168,7 @@
  			WorldGen.worldCleared = true;
  		}
  
-@@ -4566,17 +_,18 @@
+@@ -4566,21 +_,32 @@
  
  		public static void generateWorld(int seed, GenerationProgress customProgressObject = null)
  		{
@@ -193,6 +193,20 @@
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
+ 			int gold = 8;
++			
++			WorldGen.AddAlt(new AltCopper(TileID.Copper, ItemID.CopperBar));
++			WorldGen.AddAlt(new AltCopper(TileID.Tin, ItemID.TinBar));
++			WorldGen.AddAlt(new AltIron(TileID.Iron, ItemID.IronBar));
++			WorldGen.AddAlt(new AltIron(TileID.Lead, ItemID.LeadBar));
++			WorldGen.AddAlt(new AltSilver(TileID.Silver, ItemID.SilverBar));
++			WorldGen.AddAlt(new AltSilver(TileID.Tungsten, ItemID.TungstenBar));
++			WorldGen.AddAlt(new AltGold(TileID.Gold, ItemID.GoldBar));
++			WorldGen.AddAlt(new AltGold(TileID.Platinum, ItemID.PlatinumBar));
++			
+ 			int dungeonSide = 0;
+ 			ushort jungleHut = (ushort)WorldGen.genRand.Next(5);
+ 			int howFar = 0;
 @@ -4617,6 +_,7 @@
  					}
  				}
@@ -201,6 +215,57 @@
  			WorldGen.AddGenerationPass("Reset", delegate(GenerationProgress progress)
  				{
  					Liquid.ReInit();
+@@ -4637,38 +_,18 @@
+ 					int num = 86400;
+ 					Main.slimeRainTime = (double)(-(double)WorldGen.genRand.Next(num * 2, num * 3));
+ 					Main.cloudBGActive = (float)(-(float)WorldGen.genRand.Next(8640, 86400));
+-					WorldGen.CopperTierOre = 7;
+-					WorldGen.IronTierOre = 6;
+-					WorldGen.SilverTierOre = 9;
+-					WorldGen.GoldTierOre = 8;
+-					WorldGen.copperBar = 20;
+-					WorldGen.ironBar = 22;
+-					WorldGen.silverBar = 21;
+-					WorldGen.goldBar = 19;
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						copper = 166;
+-						WorldGen.copperBar = 703;
+-						WorldGen.CopperTierOre = 166;
+-					}
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						iron = 167;
+-						WorldGen.ironBar = 704;
+-						WorldGen.IronTierOre = 167;
+-					}
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						silver = 168;
+-						WorldGen.silverBar = 705;
+-						WorldGen.SilverTierOre = 168;
+-					}
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						gold = 169;
+-						WorldGen.goldBar = 706;
+-						WorldGen.GoldTierOre = 169;
+-					}
++					copper = AltCopper.GetAltCopper().oreTileType;
++					iron = AltIron.GetAltIron().oreTileType
++					silver = AltSilver.GetAltSilver().oreTileType
++					gold = AltGold.GetAltGold().oreTileType
++					WorldGen.CopperTierOre = AltCopper.GetAltCopper().oreTileType;
++					WorldGen.IronTierOre = AltIron.GetAltIron().oreTileType;
++					WorldGen.SilverTierOre = AltSilver.GetAltSilver().oreTileType;
++					WorldGen.GoldTierOre = AltGold.GetAltGold().oreTileType;
++					WorldGen.copperBar = AltCopper.GetAltCopper().oreBarItemType;
++					WorldGen.ironBar = AltIron.GetAltIron().oreBarItemType;
++					WorldGen.silverBar = AltSilver.GetAltSilver().oreBarItemType;
++					WorldGen.goldBar = AltGold.GetAltGold().oreBarItemType;
+ 					WorldGen.crimson = (WorldGen.genRand.Next(2) == 0);
+ 					if (WorldGen.WorldGenParam_Evil == 0)
+ 					{
 @@ -7468,7 +_,7 @@
  									int num12 = WorldGen.genRand.Next(num - m, num + m + 1);
  									int num13 = WorldGen.genRand.Next(num2 - num6, num2 + num6 - 2);
@@ -1977,4 +2042,30 @@
  								{
  									bool flag21 = WorldGen.mergeUp;
  									bool flag22 = WorldGen.mergeDown;
+@@ -52842,5 +_,25 @@
+ 		{
+ 			return Main.tile[x, y + 1] != null && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && (Main.tile[x, y].type != 254 || context == TileCuttingContext.TilePlacement);
+ 		}
++
++
++		public static void AddAlt<T>(T alt)
++		{
++			switch (T)
++			{
++				case AltCopper altCopper:
++					AltCopper.Add(altCopper);
++					break;
++				case AltIron altIron:
++					AltIron.Add(altIron);
++					break;
++				case AltSilver altSilver:
++					AltSilver.Add(altSilver);
++					break;
++				case AltGold altGold:
++					AltGold.Add(altGold);
++					break;
++			}
++		}
+ 	}
+ }
 
