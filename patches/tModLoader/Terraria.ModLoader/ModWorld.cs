@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Use this if you want to do something before anything in the World gets updated.
-		/// Gets called after UI updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated.
+		/// Called after UI updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated.
 		/// <para />
 		/// When <see cref="Main.autoPause" /> is true or <see cref="Main.FrameSkipMode" /> is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the World or Entities. This hook - and every hook after it - only gets called on frames with a full update.
 		/// <para />
@@ -121,7 +121,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after all Players are updated, but before any NPCs get updated.
+		/// Called after Players got updated, but before any NPCs get updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateAnything" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after all NPCs are updated, but before any Gores get updated.
+		/// Called after NPCs got updated, but before any Gores get updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateGoreProjectile" />.
@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after all Gores are updated, but before any Projectiles get updated.
+		/// Called after Gores got updated, but before any Projectiles get updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateNPCGore" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateProjectileItem" />.
@@ -161,7 +161,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after all Items are updated, but before any Dust gets updated.
+		/// Called after Items got updated, but before any Dust gets updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateProjectileItem" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateDustTime" />.
@@ -171,7 +171,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after all Dust is updated, but before Time effects get updated.
+		/// Called after Dust got updated, but before Time (day/night, events, etc.) gets updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateItemDust" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateTimeWorld" />.
@@ -181,7 +181,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after Time effects are updated, but before the World gets updated.
+		/// Called after Time got updated, but before the World gets updated.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateDustTime" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateInvasionNet" />.
@@ -205,7 +205,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after Invasions are updated. The only thing that is updated after this is the Network.
+		/// Called after Invasions got updated. The only thing that is updated after this is the Network.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateTimeWorld" />.
 		/// If you are looking to hook even after the Network is updated, see <see cref="PostUpdateEverything" />.
@@ -215,7 +215,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immediately after the Network is updated, this is the last thing that happens in an update.
+		/// Called after the Network got updated, this is the last hook that happens in an update.
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
