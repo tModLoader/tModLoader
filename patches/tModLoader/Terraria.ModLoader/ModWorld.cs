@@ -114,77 +114,77 @@ namespace Terraria.ModLoader
 		/// <para />
 		/// When <see cref="Main.autoPause" /> is true or <see cref="Main.FrameSkipMode" /> is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the World or Entities. This hook - and every hook after it - only gets called on frames with a full update.
 		/// <para />
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdatePlayerNPC" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// </summary>
 		public virtual void PreUpdateAnything()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all Players are updated, but before any NPCs get updated.
+		/// Gets called immediately after all Players are updated, but before any NPCs get updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="PreUpdateAnything" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateAnything" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
 		/// </summary>
 		public virtual void MidUpdatePlayerNPC()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all NPCs are updated, but before any Gores get updated.
+		/// Gets called immediately after all NPCs are updated, but before any Gores get updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdatePlayerNPC" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateGoreProjectile" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdatePlayerNPC" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateGoreProjectile" />.
 		/// </summary>
 		public virtual void MidUpdateNPCGore()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all Gores are updated, but before any Projectiles get updated.
+		/// Gets called immediately after all Gores are updated, but before any Projectiles get updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateNPCGore" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateProjectileItem" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateNPCGore" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateProjectileItem" />.
 		/// </summary>
 		public virtual void MidUpdateGoreProjectile()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all Projectiles are updated, but before any Items get updated.
+		/// Gets called immediately after all Projectiles are updated, but before any Items get updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateGoreProjectile" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateItemDust" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateGoreProjectile" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateItemDust" />.
 		/// </summary>
 		public virtual void MidUpdateProjectileItem()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all Items are updated, but before any Dust gets updated.
+		/// Gets called immediately after all Items are updated, but before any Dust gets updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateProjectileItem" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateDustTime" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateProjectileItem" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateDustTime" />.
 		/// </summary>
 		public virtual void MidUpdateItemDust()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after all Dust is updated, but before Time effects get updated.
+		/// Gets called immediately after all Dust is updated, but before Time effects get updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateItemDust" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateTimeWorld" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateItemDust" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateTimeWorld" />.
 		/// </summary>
 		public virtual void MidUpdateDustTime()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after Time effects are updated, but before the World gets updated.
+		/// Gets called immediately after Time effects are updated, but before the World gets updated.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateDustTime" />.
-		/// If you are looking too hook a later part of the update process, see <see cref="MidUpdateInvasionNet" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateDustTime" />.
+		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
 		public virtual void MidUpdateTimeWorld()
 		{
@@ -205,19 +205,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets called immedeately after Invasions are updated. The only thing that is updated after this is the Network.
+		/// Gets called immediately after Invasions are updated. The only thing that is updated after this is the Network.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateTimeWorld" />.
-		/// If you are looking too hook even after the Network is updated, see <see cref="PostUpdateEverything" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateTimeWorld" />.
+		/// If you are looking to hook even after the Network is updated, see <see cref="PostUpdateEverything" />.
 		/// </summary>
 		public virtual void MidUpdateInvasionNet()
 		{
 		}
 
 		/// <summary>
-		/// Gets called immedeately after the Network is updated, this is the last thing that happens in an update.
+		/// Gets called immediately after the Network is updated, this is the last thing that happens in an update.
 		/// <para />
-		/// If you are looking too hook an earlier part of the update process, see <see cref="MidUpdateInvasionNet" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
 		public virtual void PostUpdateEverything()
 		{
