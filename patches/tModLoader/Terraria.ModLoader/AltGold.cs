@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 			this.oreBarItemType = ItemLoader.ItemCount > oreBarItemType ? oreBarItemType : throw new Exception("oreBarItemType is an invalid item");
 		}
 
-		internal static AltGold GetAltGold()
+		public static AltGold GetAltGold()
 		{
 			return ChosenAltGold ?? (ChosenAltGold = AltGolds[WorldGen.genRand.Next(AltGolds.Count)]);
 		}

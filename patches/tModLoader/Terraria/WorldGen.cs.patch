@@ -920,6 +920,130 @@
  						{
  							Main.tile[k, l].type = type;
  							WorldGen.SquareTileFrame(k, l, true);
+@@ -26612,25 +_,21 @@
+ 			{
+ 				if (WorldGen.oreTier1 == -1)
+ 				{
+-					WorldGen.oreTier1 = 107;
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						WorldGen.oreTier1 = 221;
+-					}
+-				}
+-				int num5 = 12;
+-				if (WorldGen.oreTier1 == 221)
+-				{
+-					num5 += 9;
+-					num3 *= 0.9f;
+-				}
++					AltCobalt.UnchooseAltCobalt();
++				}
++				else if (AltCobalt.unchosen())
++				{
++					AltCobalt.tryFind(WorldGen.oreTier1);
++				}
++				WorldGen.oreTier1 = AltCobalt.GetAltCobalt().oreTileType;
++				num3 *= AltCobalt.GetAltCobalt().abundanceMultiplier;
+ 				if (Main.netMode == 0)
+ 				{
+-					Main.NewText(Lang.misc[num5].Value, 50, 255, 130, false);
++					Main.NewText(AltCobalt.GetAltCobalt().oreBlessingText, 50, 255, 130, false);
+ 				}
+ 				else if (Main.netMode == 2)
+ 				{
+-					NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num5].Key, new object[0]), new Color(50, 255, 130), -1);
++					NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(AltCobalt.GetAltCobalt().oreBlessingText), new Color(50, 255, 130), -1);
+ 				}
+ 				num = WorldGen.oreTier1;
+ 				num3 *= 1.05f;
+@@ -26639,25 +_,22 @@
+ 			{
+ 				if (WorldGen.oreTier2 == -1)
+ 				{
+-					WorldGen.oreTier2 = 108;
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						WorldGen.oreTier2 = 222;
+-					}
+-				}
+-				int num6 = 13;
+-				if (WorldGen.oreTier2 == 222)
+-				{
+-					num6 += 9;
+-					num3 *= 0.9f;
+-				}
++					AltMythril.UnchooseAltMythril();
++				}
++				else if (AltMythril.unchosen())
++				{
++					AltMythril.tryFind(WorldGen.oreTier2);
++				}
++
++				WorldGen.oreTier2 = AltMythril.GetAltMythril().oreTileType;
++				num3 *= AltMythril.GetAltMythril().abundanceMultiplier;
+ 				if (Main.netMode == 0)
+ 				{
+-					Main.NewText(Lang.misc[num6].Value, 50, 255, 130, false);
++					Main.NewText(AltMythril.GetAltMythril().oreBlessingText, 50, 255, 130, false);
+ 				}
+ 				else if (Main.netMode == 2)
+ 				{
+-					NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num6].Key, new object[0]), new Color(50, 255, 130), -1);
++					NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(AltMythril.GetAltMythril().oreBlessingText), new Color(50, 255, 130), -1);
+ 				}
+ 				num = WorldGen.oreTier2;
+ 			}
+@@ -26665,25 +_,22 @@
+ 			{
+ 				if (WorldGen.oreTier3 == -1)
+ 				{
+-					WorldGen.oreTier3 = 111;
+-					if (WorldGen.genRand.Next(2) == 0)
+-					{
+-						WorldGen.oreTier3 = 223;
+-					}
+-				}
+-				int num7 = 14;
+-				if (WorldGen.oreTier3 == 223)
+-				{
+-					num7 += 9;
+-					num3 *= 0.9f;
+-				}
++					AltAdamantite.UnchooseAltAdamantite();
++				}
++				else if (AltAdamantite.unchosen())
++				{
++					AltAdamantite.tryFind(WorldGen.oreTier3);
++				}
++
++				WorldGen.oreTier3 = AltAdamantite.GetAltAdamantite().oreTileType;
++				num3 *= AltAdamantite.GetAltAdamantite().abundanceMultiplier
+ 				if (Main.netMode == 0)
+ 				{
+-					Main.NewText(Lang.misc[num7].Value, 50, 255, 130, false);
++					Main.NewText(AltAdamantite.GetAltAdamantite().oreBlessingText, 50, 255, 130, false);
+ 				}
+ 				else if (Main.netMode == 2)
+ 				{
+-					NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[num7].Key, new object[0]), new Color(50, 255, 130), -1);
++					NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(AltAdamantite.GetAltAdamantite().oreBlessingText), new Color(50, 255, 130), -1);
+ 				}
+ 				num = WorldGen.oreTier3;
+ 			}
+@@ -26692,11 +_,11 @@
+ 			{
+ 				int i2 = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+ 				double num9 = Main.worldSurface;
+-				if (num == 108 || num == 222)
++				if (WorldGen.altarCount % 3 == 1)
+ 				{
+ 					num9 = Main.rockLayer;
+ 				}
+-				if (num == 111 || num == 223)
++				if (WorldGen.altarCount % 3 == 2)
+ 				{
+ 					num9 = (Main.rockLayer + Main.rockLayer + (double)Main.maxTilesY) / 3.0;
+ 				}
 @@ -26773,7 +_,7 @@
  				{
  					flag = true;

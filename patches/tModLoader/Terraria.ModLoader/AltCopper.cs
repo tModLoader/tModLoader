@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 			this.oreBarItemType = ItemLoader.ItemCount > oreBarItemType ? oreBarItemType : throw new Exception("oreBarItemType is an invalid item");
 		}
 
-		internal static AltCopper GetAltCopper()
+		public static AltCopper GetAltCopper()
 		{
 			return ChosenAltCopper ?? (ChosenAltCopper = AltCoppers[WorldGen.genRand.Next(AltCoppers.Count)]);
 		}
