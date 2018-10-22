@@ -5,7 +5,7 @@
 	{
 		/// <summary>Minus twelve (-12)\nExpert: Rainbow\nFlag: item.expert</summary>
 		public const int Expert = -12;
-		/// <summary>Minus two (-2)\nQuest: Amber\nFlag: item.quest</summary>
+		/// <summary>Minus eleven (-11)\nQuest: Amber\nFlag: item.quest</summary>
 		public const int Quest = -11;
 		/// <summary>Minus one (-1)</summary>
 		public const int Gray = -1;
