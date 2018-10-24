@@ -47,7 +47,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.localAI[0] += 1f;
 			if (!Main.dedServ && projectile.localAI[0] >= 180f && projectile.localAI[0] < 480f && Main.rand.Next(10) == 0)
 			{
-				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0)
 				{
 					Main.PlaySound(SoundID.Item14);
@@ -123,7 +123,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			if (target.hurtCooldowns[1] <= 0)
 			{
-				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>();
 				modPlayer.constantDamage = projectile.damage;
 				modPlayer.percentDamage = Main.expertMode ? 1.2f : 1f;
 			}

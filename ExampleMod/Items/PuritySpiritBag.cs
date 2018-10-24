@@ -20,7 +20,6 @@ namespace ExampleMod.Items
 			item.height = 24;
 			item.rare = 11;
 			item.expert = true;
-			bossBagNPC = mod.NPCType("PuritySpirit");
 		}
 
 		public override bool CanRightClick()
@@ -46,6 +45,11 @@ namespace ExampleMod.Items
 				player.QuickSpawnItem(ItemID.Bunny);
 			}
 			player.QuickSpawnItem(mod.ItemType("PurityShield"));
+		}
+
+		public override int BossBagNPC
+		{
+			get { return mod.NPCType("PuritySpirit"); }
 		}
 	}
 }

@@ -41,28 +41,34 @@
 		"ModsXBuffs": "{0} buffs",
 		"ModsXMounts": "{0} mounts",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
-		"LoadErrorRecipes": "An error occurred while adding recipes for {0}",
-		"LoadErrorDisabledSeeBelowForError": "This mod has automatically been disabled. See below for actual error:",
+		"LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		"LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
 		"LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
 		"LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		"UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		"BuildError": "An error ocurred while building {0}",
+		"CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		"BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
 		"BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
 		"BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
 		"BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
-		"BuildErrorCompilingError": "An error ocurred while compiling a mod.",
 		"BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
-		"BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		"BuildErrorModReference": "Failed to read mod reference {0}",
+		"BuildErrorMissingDllFiles": "Missing dll files for noCompile: {0}\n\nMust have either All.dll or both of Windows.dll and Mono.dll\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nWindows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll\nMono.dll must reference a non-windows Terraria.exe and FNA.dll",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
 		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
 		"BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
+		"BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
+		"BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
 		"BuildErrorFailedLoadBuildTxt": "Failed to load {0}",
 		"LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		"LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
@@ -74,11 +80,12 @@
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 		"LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
 		"LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
-		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
+		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n\t\t{1}",
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
-		"RuntimeErrorSeeLogsTxtForFullTrace": "(see Logs.txt for full trace)",
+		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Open Logs",
 		"OpenWebHelp": "Open Web Help",
+		"Exit": "Exit",
 
 		// Mod Info
 		"ModInfoHeader": "Mod Info: ",
@@ -94,14 +101,16 @@
 		"ModPackViewList": "View List",
 		"ModPackEnableThisList": "Enable this List",
 		"ModPackEnableOnlyThisList": "Enable only this List",
+		"ModPackUpdateListWithEnabled": "Update List with Enabled",
 		"ModPackViewModsInModBrowser": "View Mods in Mod Browser",
 		"ModPackModsAvailableStatus": "{0} Total, {1} Enabled, {2} Disabled, {3} Missing",
 		"ModPackModsMissing": "The following mods were not found:\n{0}",
 		"ModPackModsContained": "This list contains the following mods:\n{0}",
 		"ModPackMissing": " - Missing",
+		"ModPackDisabled": " - Disabled",
 		"ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
 		"ModPackDoesNotExist": "Modpack {0} does not exist.",
-		"ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
+		"ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed.",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Syncing Mods",
@@ -111,7 +120,7 @@
 		"MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
 		"MPErrorModHashMismatch": "Hash mismatch",
 		"MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
-		"MPErrorModDownloadError": "An error occured while downloading {0}",
+		"MPErrorModDownloadError": "An error occurred while downloading {0}",
 		"MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// Mod Browser
@@ -148,6 +157,7 @@
 		"MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		"MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
 		"MBNoModsFound": "No mods found",
+		"MBBrowserError": "The mod browser encountered an error.",
 		"1SecondAgo": "1 second ago",
 		"XSecondsAgo": "{0} seconds ago",
 		"1MinuteAgo": "1 minute ago",
@@ -170,7 +180,7 @@
 		"MBMyPublishedModsStats": "{0} downloads ({1} latest version)",
 		"EnterSteamID": "Please Enter Your SteamID",
 		"PasteSteamID": "Paste SteamID (ctrl-v)",
-		"MBServerResonponse": "The Mod Browser server response:\n\n{0}",
+		"MBServerResponse": "The Mod Browser server response:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "Download Mods From Servers: On",
@@ -203,6 +213,8 @@
 		"New1Mod": "1 new mod.",
 		"NewXMods": "{0} new mods.",
 		"NewModsListing": "New mods:\n{0}",
+		"PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		"PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Build",
@@ -215,7 +227,7 @@
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
 		// Extract Mod
-		"ExtractErrorWhileExtractingMod": "An error occured while extracting {0}",
+		"ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
 		"ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
 		"ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
 		"ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
@@ -228,20 +240,20 @@
 		"CommandModListClientMods": "Client Mods:",
 		"CommandModListModlist": "Modlist:",
 
+		// Mod Building
+		"Building": "Building: {0}",
+		"ReadingProperties": "Reading properties: {0}",
+		"CompilingWindows": "Compiling {0} for Windows...",
+		"CompilingMono": "Compiling {0} for Mono...",
+		"LoadingEAC": "Loading pre-compiled Windows.dll with edit and continue support",
+		"Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "Reading Properties: ",
-		"MSCompilingWindows": "Compiling {0} for Windows...",
-		"MSCompilingMono": "Compiling {0} for Mono...",
-		// There should be ModName after ':'
-		"MSBuilding": "Building ",
 		"MSFinding": "Finding Mods...",
-		// There should be ModName after ':'
-		"MSIntializing": "Initializing: ",
-		// There should be ModName after ':'
-		"MSLoading": "Loading Mod: ",
+		"MSInstantiating": "Instantiating Mods...",
+		"MSSandboxing": "Sandboxing: {0}",
+		"MSIntializing": "Initializing: {0}",
+		"MSLoading": "Loading: {0}",
 		"MSFinishingResourceLoading": "Finishing Resource Loading",
-		"MSCompatibilizing": "Compatibilizing: {0}",
-		"MSReading": "Reading: {0}",
 		"MSSettingUp": "Setting up...",
 		"MSAddingRecipes": "Adding Recipes...",
 		"AddingModContent": "Adding mod content...",
@@ -264,6 +276,8 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continue",
-		"PatreonSetTooltip": "Thank you for your support!"
+		"PatreonSetTooltip": "Thank you for your support!",
+		"WorldGenError": "A problem was encountered during world generation",
+		"WorldIODataException": "The game encountered a mod data problem for a world.",
 	}
 }

@@ -106,10 +106,9 @@ namespace Terraria.ModLoader
 			{
 				properties.description = File.ReadAllText(descriptionfile);
 			}
-			string[] lines = File.ReadAllLines(propertiesFile);
-			foreach (string line in lines)
+			foreach (string line in File.ReadAllLines(propertiesFile))
 			{
-				if (String.IsNullOrWhiteSpace(line))
+				if (string.IsNullOrWhiteSpace(line))
 				{
 					continue;
 				}
@@ -150,19 +149,19 @@ namespace Terraria.ModLoader
 						properties.homepage = value;
 						break;
 					case "noCompile":
-						properties.noCompile = value.ToLower() == "true";
+						properties.noCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "hideCode":
-						properties.hideCode = value.ToLower() == "true";
+						properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "hideResources":
-						properties.hideResources = value.ToLower() == "true";
+						properties.hideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "includeSource":
-						properties.includeSource = value.ToLower() == "true";
+						properties.includeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "includePDB":
-						properties.includePDB = value.ToLower() == "true";
+						properties.includePDB = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "buildIgnore":
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();

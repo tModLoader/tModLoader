@@ -7,6 +7,7 @@ using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
+	// [AutoloadHead] and npc.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
@@ -181,6 +182,7 @@ namespace ExampleMod.NPCs
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
 			button = Language.GetTextValue("LegacyInterface.28");
+			button2 = "Awesomeify";
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -188,6 +190,16 @@ namespace ExampleMod.NPCs
 			if (firstButton)
 			{
 				shop = true;
+			}
+			else
+			{
+				// If the 2nd button is pressed, open the inventory...
+				Main.playerInventory = true;
+				// remove the chat window...
+				Main.npcChatText = "";
+				// and start an instance of our UIState.
+				ExampleMod.instance.examplePersonUserInterface.SetState(new UI.ExamplePersonUI());
+				// Note that even though we remove the chat window, Main.LocalPlayer.talkNPC will still be set correctly and we are still technically chatting with the npc.
 			}
 		}
 
@@ -213,6 +225,11 @@ namespace ExampleMod.NPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHamaxe"));
 			nextSlot++;
+			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce))
+			{
+				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHealingPotion"));
+				nextSlot++;
+			}
 			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample && !ExampleMod.exampleServerConfig.DisableExampleWings)
 			{
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
@@ -239,9 +256,10 @@ namespace ExampleMod.NPCs
 			{
 			}
 			// Here is an example of how your npc can sell items from other mods.
-			if (ModLoader.GetLoadedMods().Contains("SummonersAssociation"))
+			var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
+			if (modSummonersAssociation != null)
 			{
-				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SummonersAssociation").ItemType("BloodTalisman"));
+				shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 				nextSlot++;
 			}
 		}

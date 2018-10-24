@@ -106,7 +106,7 @@ namespace Terraria.ModLoader
 				modBrowser._categoryButtons[3].setCurrentState((int)modBrowser.searchFilterMode);
 			}
 			modBrowser.loading = false;
-			ModLoader.modsDirCache.Clear();
+			ModOrganizer.modsDirCache.Clear();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 
@@ -146,7 +146,7 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(loadMods);
 				Main.menuMode = 888;
-				ModLoader.Load();
+				ModLoader.BeginLoad();
 			}
 			else if (Main.menuMode == buildModID)
 			{
@@ -273,11 +273,12 @@ namespace Terraria.ModLoader
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = (ModLoader.alwaysLogExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
+				buttonNames[buttonIndex] = (ModLoader.reportFirstChanceExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(SoundID.MenuTick);
-					ModLoader.alwaysLogExceptions = !ModLoader.alwaysLogExceptions;
+					ModLoader.reportFirstChanceExceptions = !ModLoader.reportFirstChanceExceptions;
+					Logging.LogFirstChanceExceptions(ModLoader.reportFirstChanceExceptions);
 				}
 
 				buttonIndex++;
@@ -336,7 +337,7 @@ namespace Terraria.ModLoader
 			{
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				var mods = ModLoader.FindMods();
+				var mods = ModOrganizer.FindMods();
 				for (int k = 0; k < mods.Length; k++)
 				{
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
@@ -377,9 +378,7 @@ namespace Terraria.ModLoader
 				}
 				else if (command == "r")
 				{
-					Console.WriteLine("Unloading mods...");
-					ModLoader.Unload();
-					ModLoader.do_Load(null);
+					ModLoader.Reload();
 					exit = true;
 				}
 				else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length)

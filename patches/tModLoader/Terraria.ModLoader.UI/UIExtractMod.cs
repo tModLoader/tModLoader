@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -32,12 +33,15 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
-				.StartNew(() => Interface.extractMod._Extract())
+				.StartNew(() => {
+					Interface.extractMod.mod.modFile.Read(TmodFile.LoadedState.Streaming, updateFileCountOnly: true);
+					Interface.extractMod._Extract();
+				})
 				.ContinueWith(t =>
 				{
-					var e = t.Result;
-					if (e != null)
-						ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name));
+					var exception = t?.Exception;
+					if (exception != null)
+						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
 					else
 						Main.menuMode = gotoMenu;
 				}, TaskScheduler.FromCurrentSynchronizationContext());
@@ -92,6 +96,9 @@ namespace Terraria.ModLoader.UI
 
 					if (!hidden)
 					{
+						if (name == "Info")
+							name = "build.txt";
+
 						var path = Path.Combine(dir, name);
 						Directory.CreateDirectory(Path.GetDirectoryName(path));
 						File.WriteAllBytes(path, content);
@@ -120,6 +127,7 @@ namespace Terraria.ModLoader.UI
 
 					WriteFile(name, data);
 				});
+
 				foreach (var entry in mod.modFile)
 					WriteFile(entry.Key, entry.Value);
 			}

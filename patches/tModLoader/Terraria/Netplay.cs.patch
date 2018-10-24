@@ -8,14 +8,17 @@
  using System.Net;
  using System.Net.Sockets;
  
-@@ -7,6 +_,7 @@
+@@ -7,8 +_,10 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
 +using System.Threading.Tasks;
  using Terraria.IO;
  using Terraria.Localization;
++using Terraria.ModLoader;
  using Terraria.Net;
+ using Terraria.Net.Sockets;
+ using Terraria.Social;
 @@ -17,7 +_,7 @@
  #if !WINDOWS
  using Terraria.Social.Base;
@@ -72,6 +75,14 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
+@@ -241,6 +_,7 @@
+ 
+ 		private static void ClientLoopSetup(RemoteAddress address)
+ 		{
++			Logging.Terraria.InfoFormat("Connecting to {0}", address.GetFriendlyName());
+ 			Netplay.ResetNetDiag();
+ 			Main.ServerSideCharacter = false;
+ 			if (Main.rand == null)
 @@ -264,9 +_,11 @@
  			}
  			Netplay.disconnect = false;

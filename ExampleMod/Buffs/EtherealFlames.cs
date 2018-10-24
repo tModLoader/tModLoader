@@ -18,12 +18,12 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<ExamplePlayer>(mod).eFlames = true;
+			player.GetModPlayer<ExamplePlayer>().eFlames = true;
 		}
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.GetGlobalNPC<ExampleGlobalNPC>(mod).eFlames = true;
+			npc.GetGlobalNPC<ExampleGlobalNPC>().eFlames = true;
 		}
 	}
 }

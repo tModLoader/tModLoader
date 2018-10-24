@@ -131,6 +131,13 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.
 		/// </summary>
 		/// <param name="items"></param>
+		/// <param name="mediumcoreDeath">If true, the inventory is being setup for a character that dies in mediumcore rather than a newly created player.</param>
+		public virtual void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+		{
+		}
+
+		// @todo: SetupStartInventory marked obsolete until v0.11
+		[method: Obsolete("SetupStartInventory now has an overload with a mediumcoreDeath bool argument, please use that.")]
 		public virtual void SetupStartInventory(IList<Item> items)
 		{
 		}
@@ -461,6 +468,26 @@ namespace Terraria.ModLoader
 		public virtual float MeleeSpeedMultiplier(Item item)
 		{
 			return 1f;
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+		{
 		}
 
 		/// <summary>
@@ -858,7 +885,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called when a player enters the world.
+		/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
 		/// </summary>
 		/// <param name="player">The player that entered the world.</param>
 		public virtual void OnEnterWorld(Player player)

@@ -23,18 +23,19 @@ namespace Terraria.ModLoader.Setup
 
 			var modCompile = Path.Combine(SteamDir, "ModCompile");
 
-			var references = new[] {"FNA.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
-				"System.Reflection.Metadata.dll", "Mono.Cecil.Pdb.dll" };
+			var references = new[] {"FNA.dll", "Mono.Cecil.Pdb.dll" };
 			foreach (var dll in references)
-				Copy(Path.Combine(Program.baseDir, "references/"+dll), Path.Combine(modCompile, dll));
+				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
 
-			Copy(Path.Combine(Program.baseDir, "RoslynWrapper/bin/Release/RoslynWrapper.dll"), Path.Combine(modCompile, "RoslynWrapper.dll"));
+			var roslynRefs = new[] {"RoslynWrapper.dll", "System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll"};
+			foreach (var dll in roslynRefs)
+				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
 
 			taskInterface.SetStatus("Generating Debug Configuration");
-			File.WriteAllText(Path.Combine(Program.baseDir, "src/tModLoader/Terraria.csproj.user"), DebugConfig);
+			File.WriteAllText(Path.Combine(baseDir, "src/tModLoader/Terraria.csproj.user"), DebugConfig);
 
 			taskInterface.SetStatus("Compiling tModLoaderMac.exe");
-			compileFailed = Program.RunCmd(Path.Combine(Program.baseDir, "solutions"), "msbuild",
+			compileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
 				"tModLoader.sln /p:Configuration=MacRelease /p:Platform=\"x86\"",
 				null, null, null, taskInterface.CancellationToken()
 			) != 0;

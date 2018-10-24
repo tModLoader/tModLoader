@@ -37,12 +37,12 @@ namespace Terraria.ModLoader.UI
 		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		internal string filter;
-		private UIColorTextPanel buttonEA;
-		private UIColorTextPanel buttonDA;
-		private UITextPanel<string> buttonRM;
-		private UITextPanel<string> buttonB;
-		private UITextPanel<string> buttonOMF;
-		private UITextPanel<string> buttonMP;
+		private UIAutoScaleTextTextPanel<string> buttonEA;
+		private UIAutoScaleTextTextPanel<string> buttonDA;
+		private UIAutoScaleTextTextPanel<string> buttonRM;
+		private UIAutoScaleTextTextPanel<string> buttonB;
+		private UIAutoScaleTextTextPanel<string> buttonOMF;
+		private UIAutoScaleTextTextPanel<string> buttonMP;
 
 		public override void OnInitialize()
 		{
@@ -84,37 +84,39 @@ namespace Terraria.ModLoader.UI
 			uIHeaderTexTPanel.SetPadding(15f);
 			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTexTPanel);
-			buttonEA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsEnableAll"), Color.Green, 1f, false);
+			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll"), 1f, false);
+			buttonEA.TextColor = Color.Green;
 			buttonEA.Width.Set(-10f, 1f / 3f);
-			buttonEA.Height.Set(25f, 0f);
+			buttonEA.Height.Set(40f, 0f);
 			buttonEA.VAlign = 1f;
 			buttonEA.Top.Set(-65f, 0f);
 			buttonEA.OnMouseOver += UICommon.FadedMouseOver;
 			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonEA.OnClick += this.EnableAll;
 			uIElement.Append(buttonEA);
-			buttonDA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsDisableAll"), Color.Red, 1f, false);
+			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"), 1f, false);
+			buttonDA.TextColor = Color.Red;
 			buttonDA.CopyStyle(buttonEA);
 			buttonDA.HAlign = 0.5f;
 			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
 			buttonDA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonDA.OnClick += this.DisableAll;
 			uIElement.Append(buttonDA);
-			buttonRM = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"), 1f, false);
+			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"), 1f, false);
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
 			buttonRM.OnMouseOver += UICommon.FadedMouseOver;
 			buttonRM.OnMouseOut += UICommon.FadedMouseOut;
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
-			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
 			buttonB.CopyStyle(buttonEA);
 			buttonB.Top.Set(-20f, 0f);
 			buttonB.OnMouseOver += UICommon.FadedMouseOver;
 			buttonB.OnMouseOut += UICommon.FadedMouseOut;
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
-			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
 			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
@@ -213,7 +215,7 @@ namespace Terraria.ModLoader.UI
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 
-			buttonMP = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"), 1f, false);
+			buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"), 1f, false);
 			buttonMP.CopyStyle(buttonOMF);
 			buttonMP.HAlign = 1f;
 			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
@@ -352,7 +354,7 @@ namespace Terraria.ModLoader.UI
 			if (SynchronizationContext.Current == null)
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 			Task.Factory
-				.StartNew(ModLoader.FindMods)
+				.StartNew(ModOrganizer.FindMods)
 				.ContinueWith(task =>
 				{
 					var mods = task.Result;

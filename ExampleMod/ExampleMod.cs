@@ -27,11 +27,18 @@ namespace ExampleMod
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect exampleEffect;
 		private UserInterface exampleUserInterface;
+		internal UserInterface examplePersonUserInterface;
 		internal ExampleUI exampleUI;
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyID;
 		internal static ExampleConfigClient exampleClientConfig;
 		internal static ExampleConfigServer exampleServerConfig;
+
+		// Your mod instance has a Logger field, use it.
+		// OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
+		// You need to reference the log4net library to do this, this can be found in the tModLoader repository
+		// inside the references folder. You do not have to add this to build.txt as tML has it natively.
+		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
 		public ExampleMod()
 		{
@@ -48,6 +55,9 @@ namespace ExampleMod
 		public override void Load()
 		{
 			instance = this;
+			// Will show up in client.log under the ExampleMod name
+			Logger.InfoFormat("{0} example logging", this.Name);
+			// ErrorLogger.Log("blabla"); REPLACE THIS WITH ABOVE
 
 			// Adds boss head textures for the Abomination boss
 			for (int k = 1; k <= 4; k++)
@@ -57,7 +67,7 @@ namespace ExampleMod
 			}
 
 			// Registers a new hotkey
-			RandomBuffHotKey = RegisterHotKey("Random Buff", "P");
+			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v%3dxnagamestudio.41) for special keys
 
 			// Registers a new custom currency
 			FaceCustomCurrencyID = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
@@ -106,6 +116,11 @@ namespace ExampleMod
 				exampleUI.Activate();
 				exampleUserInterface = new UserInterface();
 				exampleUserInterface.SetState(exampleUI);
+
+				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
+				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
+				examplePersonUserInterface = new UserInterface();
+				// We will call .SetState later in ExamplePerson.OnChatButtonClicked
 			}
 
 			// Register custom mod translations, lives left is for Spirit of Purity
@@ -174,7 +189,7 @@ namespace ExampleMod
 		{
 			// Here is an example of a recipe.
 			ModRecipe recipe = new ModRecipe(this);
-			recipe.AddIngredient(null, "ExampleItem");
+			recipe.AddIngredient(this.ItemType("ExampleItem"));
 			recipe.SetResult(ItemID.Wood, 999);
 			recipe.AddRecipe();
 
@@ -287,6 +302,8 @@ namespace ExampleMod
 		{
 			if (exampleUserInterface != null && ExampleUI.visible)
 				exampleUserInterface.Update(gameTime);
+			if (examplePersonUserInterface != null)
+				examplePersonUserInterface.Update(gameTime);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -300,8 +317,22 @@ namespace ExampleMod
 					{
 						if (ExampleUI.visible)
 						{
-							exampleUI.Draw(Main.spriteBatch);
+							exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+			}
+			int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+			if (InventoryIndex != -1)
+			{
+				layers.Insert(InventoryIndex + 1, new LegacyGameInterfaceLayer(
+					"ExampleMod: Example Person UI",
+					delegate
+					{
+						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
+						examplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)
@@ -381,7 +412,7 @@ namespace ExampleMod
 						}
 						if (!found)
 						{
-							ErrorLogger.Log("Error: Projectile not found");
+							Logger.Error("Error: Projectile not found");
 						}
 					}
 					break;
@@ -418,7 +449,7 @@ namespace ExampleMod
 					lifeFruitsPlayer.GetModPlayer<ExamplePlayer>().exampleLifeFruits = exampleLifeFruits;
 					break;
 				default:
-					ErrorLogger.Log("ExampleMod: Unknown Message type: " + msgType);
+					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
 					break;
 			}
 		}

@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			foreach (string texture in backgrounds.Keys)
 			{
 				int slot = backgrounds[texture];
-				Main.backgroundTexture[slot] = ModLoader.GetTexture(texture);
+				Main.backgroundTexture[slot] = ModContent.GetTexture(texture);
 				Main.backgroundWidth[slot] = Main.backgroundTexture[slot].Width;
 				Main.backgroundHeight[slot] = Main.backgroundTexture[slot].Height;
 				Main.backgroundLoaded[slot] = true;

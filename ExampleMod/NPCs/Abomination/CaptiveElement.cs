@@ -307,7 +307,7 @@ namespace ExampleMod.NPCs.Abomination
 				{
 					rotation *= -1f;
 				}
-				spriteBatch.Draw(ModLoader.GetTexture("ExampleMod/NPCs/Abomination/Rune"), npc.Center - Main.screenPosition, null, color.Value, rotation, new Vector2(64, 64), 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(ModContent.GetTexture("ExampleMod/NPCs/Abomination/Rune"), npc.Center - Main.screenPosition, null, color.Value, rotation, new Vector2(64, 64), 1f, SpriteEffects.None, 0f);
 			}
 			return true;
 		}

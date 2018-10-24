@@ -28,7 +28,7 @@ namespace ExampleMod.Items
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem", 10);
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();
 		}

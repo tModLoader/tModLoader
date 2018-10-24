@@ -17,7 +17,7 @@ namespace ExampleMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<ExamplePlayer>(mod).nullified = true;
+			player.GetModPlayer<ExamplePlayer>().nullified = true;
 		}
 	}
 }

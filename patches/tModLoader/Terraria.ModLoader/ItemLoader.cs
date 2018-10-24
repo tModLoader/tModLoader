@@ -386,6 +386,38 @@ namespace Terraria.ModLoader
 			return multiplier;
 		}
 
+		private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(g => g.GetHealLife);
+		/// <summary>
+		/// Calls ModItem.GetHealLife, then all GlobalItem.GetHealLife hooks.
+		/// </summary>
+		public static void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetHealLife(player, quickHeal, ref healValue);
+
+			foreach (var g in HookGetHealLife.arr)
+				g.Instance(item).GetHealLife(item, player, quickHeal, ref healValue);
+		}
+
+		private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(g => g.GetHealMana);
+		/// <summary>
+		/// Calls ModItem.GetHealMana, then all GlobalItem.GetHealMana hooks.
+		/// </summary>
+		public static void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			item.modItem?.GetHealMana(player, quickHeal, ref healValue);
+
+			foreach (var g in HookGetHealMana.arr)
+				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
 		/// <summary>
@@ -440,7 +472,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool CheckProjOnSwing(Player player, Item item)
 		{
-			return item.modItem == null || !item.modItem.projOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
+			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
 		private delegate void DelegatePickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
@@ -691,7 +723,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool ConsumeItem(Item item, Player player)
 		{
-			//if (item.IsAir) return true;
+			if (item.IsAir) return true;
 			if (item.modItem != null && !item.modItem.ConsumeItem(player))
 				return false;
 
@@ -1019,7 +1051,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool IsModBossBag(Item item)
 		{
-			return item.modItem != null && item.modItem.bossBagNPC > 0;
+			return item.modItem != null && item.modItem.BossBagNPC > 0;
 		}
 
 		//in Terraria.Player.OpenBossBag after setting num14 call
@@ -1030,10 +1062,10 @@ namespace Terraria.ModLoader
 		public static void OpenBossBag(int type, Player player, ref int npc)
 		{
 			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.bossBagNPC > 0)
+			if (modItem != null && modItem.BossBagNPC > 0)
 			{
 				modItem.OpenBossBag(player);
-				npc = modItem.bossBagNPC;
+				npc = modItem.BossBagNPC;
 			}
 		}
 
@@ -1624,10 +1656,10 @@ namespace Terraria.ModLoader
 		{
 			ModItem modItem = GetItem(itemID);
 			if (modItem != null)
-				notAvailable &= !modItem.IsAnglerQuestAvailable();
+				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
 			foreach (var g in HookIsAnglerQuestAvailable.arr)
-				notAvailable &= !g.IsAnglerQuestAvailable(itemID);
+				notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 		}
 
 		private delegate void DelegateAnglerChat(int type, ref string chat, ref string catchLocation);

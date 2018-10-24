@@ -34,6 +34,9 @@
     <RootNamespace>ExampleMod</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\references\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
@@ -95,6 +98,7 @@
     <Compile Include="Dusts\Sparkle.cs" />
     <Compile Include="Dusts\SpectreDust.cs" />
     <Compile Include="ExampleConfig.cs" />
+    <Compile Include="ExampleAdvancedRecipe.cs" />
     <Compile Include="ExampleCustomCurrency.cs" />
     <Compile Include="ExampleMod.cs" />
     <Compile Include="ExamplePlayer.cs" />
@@ -125,10 +129,15 @@
     <Compile Include="Items\CarKey.cs" />
     <Compile Include="Items\CopperShortsword.cs" />
     <Compile Include="Items\EquipMaterial.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageAccessory.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamageItem.cs" />
+    <Compile Include="Items\ExampleDamageClass\ExampleDamagePlayer.cs" />
+    <Compile Include="Items\ExampleDamageClass\Mundane.cs" />
     <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
+    <Compile Include="Items\ExampleHealingPotion.cs" />
     <Compile Include="Items\ExampleHook.cs" />
     <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
     <Compile Include="Items\ExampleItem.cs" />
@@ -207,6 +216,7 @@
     <Compile Include="NPCs\PuritySpirit\PuritySpiritSky.cs" />
     <Compile Include="NPCs\Sarcophagus.cs" />
     <Compile Include="NPCs\Worm.cs" />
+    <Compile Include="Prefixes\AwesomePrefix.cs" />
     <Compile Include="Projectiles\ElementBall.cs" />
     <Compile Include="Projectiles\ElementLaser.cs" />
     <Compile Include="Projectiles\ElementShield.cs" />
@@ -272,7 +282,11 @@
     <Compile Include="Tiles\TEScoreBoard.cs" />
     <Compile Include="Tiles\VoidMonolith.cs" />
     <Compile Include="Tiles\VoidSky.cs" />
+    <Compile Include="UI\DragableUIPanel.cs" />
+    <Compile Include="UI\ExamplePersonUI.cs" />
     <Compile Include="UI\ExampleUI.cs" />
+    <Compile Include="UI\UIHoverImageButton.cs" />
+    <Compile Include="UI\VanillaItemSlotWrapper.cs" />
     <Compile Include="Walls\ExampleWall.cs" />
     <Compile Include="Waters\ExampleWaterfallStyle.cs" />
     <Compile Include="Waters\ExampleWaterStyle.cs" />

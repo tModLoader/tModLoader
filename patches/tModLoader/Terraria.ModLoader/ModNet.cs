@@ -67,7 +67,7 @@ namespace Terraria.ModLoader
 
 		internal static void AssignNetIDs()
 		{
-			netMods = ModLoader.LoadedMods.Where(mod => mod.Side != ModSide.Server).ToArray();
+			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
 				netMods[i].netID = i;
 		}
@@ -75,6 +75,8 @@ namespace Terraria.ModLoader
 		internal static void Unload()
 		{
 			netMods = null;
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+				AllowVanillaClients = false;
 		}
 
 		internal static void SyncMods(int clientIndex)
@@ -82,7 +84,7 @@ namespace Terraria.ModLoader
 			var p = new ModPacket(MessageID.SyncMods);
 			p.Write(AllowVanillaClients);
 
-			var syncMods = ModLoader.LoadedMods.Where(mod => mod.Side == ModSide.Both).ToArray();
+			var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToArray();
 			p.Write(syncMods.Length);
 			Console.WriteLine($"syncMods {syncMods.Length}");
 
@@ -120,8 +122,8 @@ namespace Terraria.ModLoader
 			AllowVanillaClients = reader.ReadBoolean();
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
-			var clientMods = ModLoader.LoadedMods;
-			var modFiles = ModLoader.FindMods();
+			var clientMods = ModLoader.Mods;
+			var modFiles = ModOrganizer.FindMods();
 			var needsReload = false;
 			downloadQueue.Clear();
 			pendingConfigs.Clear();
@@ -185,8 +187,12 @@ namespace Terraria.ModLoader
 				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
-
-				ErrorLogger.LogMissingMods(msg);
+				
+				Logging.tML.Warn(msg);
+				Interface.errorMessage.SetMessage(msg);
+				Interface.errorMessage.SetGotoMenu(0);
+				Main.gameMenu = true;
+				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
 
@@ -288,7 +294,7 @@ namespace Terraria.ModLoader
 				catch { }
 
 				File.Delete(downloadingMod.path);
-				ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name));
+				Logging.tML.Error(Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name), e);
 				downloadingMod = null;
 			}
 		}
@@ -297,7 +303,7 @@ namespace Terraria.ModLoader
 		{
 			if (needsReload)
 			{
-				ModLoader.PostLoad = NetReload;
+				ModLoader.OnSuccessfulLoad = NetReload;
 				ModLoader.Reload();
 				return;
 			}
@@ -317,7 +323,7 @@ namespace Terraria.ModLoader
 
 			downloadingMod = null;
 			netMods = null;
-			foreach (var mod in ModLoader.LoadedMods)
+			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;
 
 			new ModPacket(MessageID.SyncMods).Send();
@@ -351,7 +357,7 @@ namespace Terraria.ModLoader
 
 		private static void ReadNetIDs(BinaryReader reader)
 		{
-			var mods = ModLoader.LoadedMods;
+			var mods = ModLoader.Mods;
 			var list = new List<Mod>();
 			var n = reader.ReadInt32();
 			for (short i = 0; i < n; i++)
@@ -387,7 +393,7 @@ namespace Terraria.ModLoader
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in ModLoader.LoadedMods)
+			foreach (var mod in ModLoader.Mods)
 			{
 				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
 				{
@@ -406,7 +412,7 @@ namespace Terraria.ModLoader
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		{
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.LoadedMods)
+			foreach (Mod mod in ModLoader.Mods)
 			{
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}

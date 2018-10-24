@@ -90,7 +90,7 @@ namespace Terraria.ModLoader.IO
 
 		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() => files.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		public int FileCount => files.Count;
+		public int FileCount { get; private set; }
 
 		internal void Save()
 		{
@@ -127,10 +127,12 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal delegate void ReadStreamingAsset(string path, int len, BinaryReader reader);
-		internal void Read(LoadedState desiredState, ReadStreamingAsset streamingHandler = null)
+		internal void Read(LoadedState desiredState, ReadStreamingAsset streamingHandler = null, bool updateFileCountOnly = false)
 		{
 			if (desiredState <= state)
 				return;
+
+			if (updateFileCountOnly) FileCount = 0;
 
 			using (var fileStream = File.OpenRead(path))
 			using (var hReader = new BinaryReader(fileStream))
@@ -178,7 +180,8 @@ namespace Terraria.ModLoader.IO
 						if (fileState == LoadedState.Streaming && desiredState >= LoadedState.Streaming)
 						{
 							var end = deflateStream.TotalOut + len;
-							streamingHandler(fileName, len, reader);
+							if (updateFileCountOnly) FileCount++;
+							else streamingHandler(fileName, len, reader);
 							if (deflateStream.TotalOut < end)
 								reader.ReadBytes((int)(end - deflateStream.TotalOut));
 							else if (deflateStream.TotalOut > end)
@@ -189,21 +192,29 @@ namespace Terraria.ModLoader.IO
 						{
 							byte[] content = reader.ReadBytes(len);
 							if (fileState > state && fileState <= desiredState)
-								AddFile(fileName, content);
+								if (updateFileCountOnly) FileCount++;
+								else AddFile(fileName, content);
 						}
 					}
 				}
 			}
 
-			if (desiredState >= LoadedState.Info && !HasFile("Info"))
-				throw new Exception("Missing Info file");
+			if (!updateFileCountOnly)
+			{
+				if (desiredState >= LoadedState.Info && !HasFile("Info"))
+					throw new Exception("Missing Info file");
 
-			if (desiredState >= LoadedState.Code && !HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
-				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
+				if (desiredState >= LoadedState.Code && !HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
+					throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
 
-			state = desiredState;
-			if (state > LoadedState.Assets)
-				state = LoadedState.Assets;
+				state = desiredState;
+				if (state > LoadedState.Assets)
+					state = LoadedState.Assets;
+			}
+			else if (FileCount <= 0)
+			{
+				FileCount = files.Count;
+			}
 		}
 
 		private static LoadedState GetFileState(string fileName)

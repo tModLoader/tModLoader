@@ -95,11 +95,11 @@ namespace Terraria.ModLoader
 			if (!MapLoader.initialized)
 			{
 				MapEntry entry = new MapEntry(color, name);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
+				if (!MapLoader.wallEntries.Keys.Contains(Type))
 				{
-					MapLoader.tileEntries[Type] = new List<MapEntry>();
+					MapLoader.wallEntries[Type] = new List<MapEntry>();
 				}
-				MapLoader.tileEntries[Type].Add(entry);
+				MapLoader.wallEntries[Type].Add(entry);
 			}
 		}
 

@@ -73,14 +73,25 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
-		/// <summary>
-		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
-		/// </summary>
+		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
 		public bool projOnSwing;
-		/// <summary>
-		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
-		/// </summary>
+
+		[Obsolete("override ModItem.BossBagNPC property", true)]
 		public int bossBagNPC;
+
+		[Obsolete]
+		private bool ProjOnSwing_Obsolete
+		{
+			get => projOnSwing;
+			set => projOnSwing = value;
+		}
+
+		[Obsolete]
+		private int BossBagNPC_Obsolete
+		{
+			get => bossBagNPC;
+			set => bossBagNPC = value;
+		}
 
 		public ModItem()
 		{
@@ -143,8 +154,8 @@ namespace Terraria.ModLoader
 			copy.item = itemClone;
 			copy.mod = mod;
 			copy.Name = Name;
-			copy.projOnSwing = projOnSwing;
-			copy.bossBagNPC = bossBagNPC;
+			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
+			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
 			return copy;
 		}
 
@@ -177,12 +188,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults()
 		{
-			Main.itemTexture[item.type] = ModLoader.GetTexture(Texture);
+			Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
 
 			var flameTexture = Texture + "_Flame";
-			if (ModLoader.TextureExists(flameTexture))
+			if (ModContent.TextureExists(flameTexture))
 			{
-				Main.itemFlameTexture[item.type] = ModLoader.GetTexture(flameTexture);
+				Main.itemFlameTexture[item.type] = ModContent.GetTexture(flameTexture);
 				Main.itemFlameLoaded[item.type] = true;
 			}
 
@@ -250,6 +261,26 @@ namespace Terraria.ModLoader
 		public virtual float MeleeSpeedMultiplier(Player player)
 		{
 			return 1f;
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of life being healed.</param>
+		public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue)
+		{
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="healValue">The amount of mana being healed.</param>
+		public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue)
+		{
 		}
 
 		/// <summary>
@@ -981,6 +1012,16 @@ namespace Terraria.ModLoader
 		public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
 		{
 		}
+		
+		/// <summary>
+		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
+		/// </summary>
+		public virtual bool OnlyShootOnSwing => ProjOnSwing_Obsolete;
+
+		/// <summary>
+		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
+		/// </summary>
+		public virtual int BossBagNPC => BossBagNPC_Obsolete;
 
 		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.

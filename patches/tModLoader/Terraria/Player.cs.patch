@@ -10,7 +10,7 @@
  
  namespace Terraria
  {
-@@ -40,19 +_,23 @@
+@@ -40,19 +_,24 @@
  			public static void PlayerConnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
@@ -25,6 +25,7 @@
  
  			public static void EnterWorld(int playerIndex)
  			{
++				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave);
 +				Interface.ResetData();
  				if (Player.Hooks.OnEnterWorld != null)
  				{
@@ -151,19 +152,68 @@
  					{
  						this.buffTime[j] += num;
  						if (this.buffTime[j] > Player.manaSickTimeMax)
-@@ -1990,6 +_,7 @@
+@@ -1961,6 +_,22 @@
+ 			return num;
+ 		}
+ 
++		public int GetHealLife(Item item, bool quickHeal = false)
++		{
++			int healValue = item.healLife;
++			ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
++			PlayerHooks.GetHealLife(this, item, quickHeal, ref healValue);
++			return healValue > 0 ? healValue : 0;
++		}
++
++		public int GetHealMana(Item item, bool quickHeal = false)
++		{
++			int healValue = item.healMana;
++			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
++			PlayerHooks.GetHealMana(this, item, quickHeal, ref healValue);
++			return healValue > 0 ? healValue : 0;
++		}
++
+ 		public void QuickHeal()
+ 		{
+ 			if (this.noItems)
+@@ -1990,8 +_,11 @@
  					this.AddBuff(21, this.potionDelay, true);
  				}
  			}
+-			this.statLife += item.healLife;
+-			this.statMana += item.healMana;
 +			ItemLoader.UseItem(item, this);
- 			this.statLife += item.healLife;
- 			this.statMana += item.healMana;
++			int healLife = this.GetHealLife(item, true);
++			int healMana = this.GetHealMana(item, true);
++			this.statLife += healLife;
++			this.statMana += healMana;
  			if (this.statLife > this.statLifeMax2)
-@@ -2012,7 +_,10 @@
- 					this.ManaEffect(item.healMana);
- 				}
+ 			{
+ 				this.statLife = this.statLifeMax2;
+@@ -2000,19 +_,22 @@
+ 			{
+ 				this.statMana = this.statManaMax2;
  			}
+-			if (item.healLife > 0 && Main.myPlayer == this.whoAmI)
+-			{
+-				this.HealEffect(item.healLife, true);
+-			}
+-			if (item.healMana > 0)
++			if (healLife > 0 && Main.myPlayer == this.whoAmI)
++			{
++				this.HealEffect(healLife, true);
++			}
++			if (healMana > 0)
+ 			{
+ 				this.AddBuff(94, Player.manaSickTime, true);
+ 				if (Main.myPlayer == this.whoAmI)
+ 				{
+-					this.ManaEffect(item.healMana);
+-				}
+-			}
 -			item.stack--;
++					this.ManaEffect(healMana);
++				}
++			}
 +			if (ItemLoader.ConsumeItem(item, this))
 +			{
 +				item.stack--;
@@ -171,15 +221,19 @@
  			if (item.stack <= 0)
  			{
  				item.TurnToAir();
-@@ -2028,7 +_,7 @@
+@@ -2028,9 +_,9 @@
  			for (int i = 0; i < 58; i++)
  			{
  				Item item = this.inventory[i];
 -				if (item.stack > 0 && item.type > 0 && item.potion && item.healLife > 0)
+-				{
+-					int num3 = item.healLife - num;
 +				if (item.stack > 0 && item.type > 0 && item.potion && item.healLife > 0 && ItemLoader.CanUseItem(item, this))
- 				{
- 					int num3 = item.healLife - num;
++				{
++					int num3 = this.GetHealLife(item, true) - num;
  					if (num2 < 0)
+ 					{
+ 						if (num3 > num2)
 @@ -2061,7 +_,7 @@
  			}
  			for (int i = 0; i < 58; i++)
@@ -189,19 +243,45 @@
  				{
  					Main.PlaySound(this.inventory[i].UseSound, this.position);
  					if (this.inventory[i].potion)
-@@ -2077,6 +_,7 @@
+@@ -2077,8 +_,11 @@
  							this.AddBuff(21, this.potionDelay, true);
  						}
  					}
+-					this.statLife += this.inventory[i].healLife;
+-					this.statMana += this.inventory[i].healMana;
 +					ItemLoader.UseItem(this.inventory[i], this);
- 					this.statLife += this.inventory[i].healLife;
- 					this.statMana += this.inventory[i].healMana;
++					int healLife = this.GetHealLife(this.inventory[i], true);
++					int healMana = this.GetHealMana(this.inventory[i], true);
++					this.statLife += healLife;
++					this.statMana += healMana;
  					if (this.statLife > this.statLifeMax2)
-@@ -2099,7 +_,10 @@
- 							this.ManaEffect(this.inventory[i].healMana);
- 						}
+ 					{
+ 						this.statLife = this.statLifeMax2;
+@@ -2087,19 +_,22 @@
+ 					{
+ 						this.statMana = this.statManaMax2;
  					}
+-					if (this.inventory[i].healLife > 0 && Main.myPlayer == this.whoAmI)
+-					{
+-						this.HealEffect(this.inventory[i].healLife, true);
+-					}
+-					if (this.inventory[i].healMana > 0)
++					if (healLife > 0 && Main.myPlayer == this.whoAmI)
++					{
++						this.HealEffect(healLife, true);
++					}
++					if (healMana > 0)
+ 					{
+ 						this.AddBuff(94, Player.manaSickTime, true);
+ 						if (Main.myPlayer == this.whoAmI)
+ 						{
+-							this.ManaEffect(this.inventory[i].healMana);
+-						}
+-					}
 -					this.inventory[i].stack--;
++							this.ManaEffect(healMana);
++						}
++					}
 +					if (ItemLoader.ConsumeItem(this.inventory[i], this))
 +					{
 +						this.inventory[i].stack--;
@@ -414,7 +494,7 @@
 -		private void TryGettingDevArmor()
 +		public void TryGettingDevArmor()
  		{
-+			if (ModLoader.Default.Patreon.PatreonItem.TryGettingPatreonArmor(this))
++			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonArmor(this))
 +				return;
  			if (Main.rand.Next(20) != 0)
  			{
@@ -4788,24 +4868,39 @@
  					if (this.whoAmI == Main.myPlayer)
  					{
  						this.hairDye = (byte)item.hairDye;
-@@ -36471,7 +_,7 @@
+@@ -36470,21 +_,23 @@
+ 				}
  				if (item.healLife > 0)
  				{
- 					this.statLife += item.healLife;
+-					this.statLife += item.healLife;
 -					this.itemTime = item.useTime;
+-					if (Main.myPlayer == this.whoAmI)
+-					{
+-						this.HealEffect(item.healLife, true);
++					int healLife = this.GetHealLife(item);
++					this.statLife += healLife;
 +					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
- 					if (Main.myPlayer == this.whoAmI)
- 					{
- 						this.HealEffect(item.healLife, true);
-@@ -36480,7 +_,7 @@
++					if (healLife > 0 && Main.myPlayer == this.whoAmI)
++					{
++						this.HealEffect(healLife, true);
+ 					}
+ 				}
  				if (item.healMana > 0)
  				{
- 					this.statMana += item.healMana;
+-					this.statMana += item.healMana;
 -					this.itemTime = item.useTime;
+-					if (Main.myPlayer == this.whoAmI)
++					int healMana = this.GetHealMana(item);
++					this.statMana += healMana;
 +					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
- 					if (Main.myPlayer == this.whoAmI)
++					if (healMana > 0 && Main.myPlayer == this.whoAmI)
  					{
  						this.AddBuff(94, Player.manaSickTime, true);
+-						this.ManaEffect(item.healMana);
++						this.ManaEffect(healMana);
+ 					}
+ 				}
+ 				if (item.buffType > 0)
 @@ -36493,11 +_,11 @@
  					{
  						this.AddBuff(item.buffType, item.buffTime, true);
@@ -5238,7 +5333,7 @@
  
  		public void DropItems()
  		{
-+			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this);
++			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this, true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory)
 +			{
@@ -5572,7 +5667,7 @@
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;
  			this.width = 20;
-@@ -39486,16 +_,17 @@
+@@ -39486,16 +_,13 @@
  			}
  			this.trashItem = new Item();
  			this.grappling[0] = -1;
@@ -5585,10 +5680,10 @@
 +			}
  			this.statManaMax = 20;
  			this.extraAccessory = false;
- 			if (Main.cEd)
- 			{
- 				this.inventory[3].SetDefaults(603, false);
- 			}
+-			if (Main.cEd)
+-			{
+-				this.inventory[3].SetDefaults(603, false);
+-			}
 -			for (int n = 0; n < 470; n++)
 +			for (int n = 0; n < this.adjTile.Length; n++)
  			{

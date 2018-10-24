@@ -40,8 +40,8 @@ namespace ExampleMod.Items.Weapons
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.MusketBall, 50);
-			recipe.AddIngredient(null, "ExampleItem", 1);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 1);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this, 50);
 			recipe.AddRecipe();
 		}

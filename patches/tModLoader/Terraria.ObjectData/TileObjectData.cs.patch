@@ -88,6 +88,22 @@
  		{
  			get
  			{
+@@ -1521,6 +_,15 @@
+ 					this.WaterPlacement = LiquidPlacement.NotAllowed;
+ 				}
+ 			}
++			// Detect modder mistake: IndexOutOfRangeException
++			if (Height != _tileObjectCoords.heights.Length)
++			{
++				TileObjectData.FixNewTile();
++				throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.")
++				{
++					HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-Tile"
++				};
++			}
+ 		}
+ 
+ 		private void WriteCheck()
 @@ -1531,7 +_,7 @@
  			}
  		}

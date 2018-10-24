@@ -185,8 +185,8 @@ namespace Terraria.ModLoader.UI
 			updateAllButton.VAlign = 1f;
 			updateAllButton.Top.Set(-20f, 0f);
 			updateAllButton.BackgroundColor = Color.Orange * 0.7f;
-			updateAllButton.OnMouseOver += UICommon.FadedMouseOver;
-			updateAllButton.OnMouseOut += UICommon.FadedMouseOut;
+			updateAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Orange, s, e);
+			updateAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Orange * 0.7f, s, e);
 			updateAllButton.OnClick += (s, e) =>
 			{
 				if (!loading)
@@ -452,7 +452,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e)
 			{
-				ErrorLogger.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
@@ -487,7 +487,7 @@ namespace Terraria.ModLoader.UI
 				if (SynchronizationContext.Current == null)
 					SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 				Task.Factory
-					.StartNew(ModLoader.FindMods)
+					.StartNew(ModOrganizer.FindMods)
 					.ContinueWith(task =>
 					{
 						PopulateFromJSON(task.Result, response);
@@ -573,7 +573,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e)
 			{
-				ErrorLogger.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
@@ -620,6 +620,34 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			return 0;
+		}
+
+		internal static void LogModBrowserException(Exception e)
+		{
+			string errorMessage = Language.GetTextValue("tModLoader.MBBrowserError") + "\n\n" + e.Message + "\n" + e.StackTrace;
+			Logging.tML.Error(errorMessage);
+			Interface.errorMessage.SetMessage(errorMessage);
+			Interface.errorMessage.SetGotoMenu(0);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModPublishInfo(string message)
+		{
+			Logging.tML.Info(message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
+			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
+		}
+
+		internal static void LogModUnpublishInfo(string message)
+		{
+			Logging.tML.Info(message);
+			Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBServerResponse", message));
+			Interface.errorMessage.SetGotoMenu(Interface.managePublishedID);
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
 		}
 	}
 

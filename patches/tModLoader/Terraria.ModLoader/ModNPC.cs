@@ -200,14 +200,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults()
 		{
-			Main.npcTexture[npc.type] = ModLoader.GetTexture(Texture);
+			Main.npcTexture[npc.type] = ModContent.GetTexture(Texture);
 			if (banner != 0 && bannerItem != 0)
 			{
 				NPCLoader.bannerToItem[banner] = bannerItem;
 			}
 			else if (banner != 0 || bannerItem != 0)
 			{
-				ErrorLogger.Log(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
+				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
 			}
 			if (npc.lifeMax > 32767 || npc.boss)
 			{
@@ -232,7 +232,7 @@ namespace Terraria.ModLoader
 			}
 			for (int k = 1; k <= altTextureCount; k++)
 			{
-				Main.npcAltTextures[npc.type][k] = ModLoader.GetTexture(altTextures[k - 1]);
+				Main.npcAltTextures[npc.type][k] = ModContent.GetTexture(altTextures[k - 1]);
 			}
 
 			if (DisplayName.IsDefault())
@@ -589,7 +589,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning.
+		/// Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not Main.LocalPlayer when checking Player or ModPlayer fields, otherwise your mod won't work in Multiplayer.
 		/// </summary>
 		/// <param name="spawnInfo"></param>
 		/// <returns></returns>

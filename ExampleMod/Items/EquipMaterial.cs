@@ -13,7 +13,7 @@ namespace ExampleMod.Items
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

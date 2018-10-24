@@ -1,6 +1,6 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -9,13 +9,20 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIErrorMessage : UIState
 	{
-		private UIMessageBox message = new UIMessageBox("");
+		private UIMessageBox message;
 		private UIElement area;
-		private int gotoMenu = 0;
-		private string file;
+		private int gotoMenu;
+		private UITextPanel<string> continueButton;
 		private string webHelpURL;
 		private UITextPanel<string> webHelpButton;
-		private Action continueAction;
+
+		public UIErrorMessage() {
+			if (Main.dedServ)
+				return;
+
+			message = new UIMessageBox("");
+			continueButton = new UITextPanel<string>("", 0.7f, true);
+		}
 
 		public override void OnInitialize()
 		{
@@ -28,18 +35,17 @@ namespace Terraria.ModLoader.UI
 			message.Height.Set(-110f, 1f);
 			message.HAlign = 0.5f;
 			area.Append(message);
-
-			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.Continue"), 0.7f, true);
-			button.Width.Set(-10f, 0.5f);
-			button.Height.Set(50f, 0f);
-			button.Top.Set(-108f, 1f);
-			button.OnMouseOver += UICommon.FadedMouseOver;
-			button.OnMouseOut += UICommon.FadedMouseOut;
-			button.OnClick += ContinueClick;
-			area.Append(button);
+			
+			continueButton.Width.Set(-10f, 0.5f);
+			continueButton.Height.Set(50f, 0f);
+			continueButton.Top.Set(-108f, 1f);
+			continueButton.OnMouseOver += UICommon.FadedMouseOver;
+			continueButton.OnMouseOut += UICommon.FadedMouseOut;
+			continueButton.OnClick += ContinueClick;
+			area.Append(continueButton);
 
 			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
-			button2.CopyStyle(button);
+			button2.CopyStyle(continueButton);
 			button2.HAlign = 1f;
 			button2.OnMouseOver += UICommon.FadedMouseOver;
 			button2.OnMouseOut += UICommon.FadedMouseOut;
@@ -80,32 +86,23 @@ namespace Terraria.ModLoader.UI
 		internal void SetGotoMenu(int gotoMenu)
 		{
 			this.gotoMenu = gotoMenu;
-			continueAction = null;
-		}
-
-		internal void OverrideContinueAction(Action action)
-		{
-			continueAction = action;
-			gotoMenu = Interface.errorMessageID;
-		}
-
-		internal void SetFile(string file)
-		{
-			this.file = file;
+			continueButton.SetText(gotoMenu >= 0 ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("tModLoader.Exit"));
+			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 		}
 
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10);
+			if (gotoMenu < 0)
+				Environment.Exit(0);
 
-			continueAction?.Invoke();
 			Main.menuMode = gotoMenu;
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10);
-			Process.Start(file);
+			Process.Start(Logging.LogPath);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement)

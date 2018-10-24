@@ -110,9 +110,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
+		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
+		private static HookList HookSetupStartInventoryOld = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
 
-		public static IList<Item> SetupStartInventory(Player player)
+		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false)
 		{
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
@@ -127,7 +128,17 @@ namespace Terraria.ModLoader
 			item.SetDefaults(3506);
 			item.Prefix(-1);
 			items.Add(item);
+			if (Main.cEd && !mediumcoreDeath)
+			{
+				item = new Item();
+				item.SetDefaults(603);
+				items.Add(item);
+			}
 			foreach (int index in HookSetupStartInventory.arr)
+			{
+				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
+			}
+			foreach (int index in HookSetupStartInventoryOld.arr)
 			{
 				player.modPlayers[index].SetupStartInventory(items);
 			}
@@ -675,6 +686,34 @@ namespace Terraria.ModLoader
 		{
 			return TotalUseTimeMultiplier(player, item) * MeleeSpeedMultiplier(player, item)
 				* ItemLoader.MeleeSpeedMultiplier(item, player);
+		}
+
+		private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(p => p.GetHealLife);
+
+		public static void GetHealLife(Player player, Item item, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookGetHealLife.arr)
+			{
+				player.modPlayers[index].GetHealLife(item, quickHeal, ref healValue);
+			}
+		}
+
+		private delegate void DelegateGetHealMana(Item item, bool quickHeal, ref int healValue);
+		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(p => p.GetHealMana);
+
+		public static void GetHealMana(Player player, Item item, bool quickHeal, ref int healValue)
+		{
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookGetHealMana.arr)
+			{
+				player.modPlayers[index].GetHealMana(item, quickHeal, ref healValue);
+			}
 		}
 
 		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);

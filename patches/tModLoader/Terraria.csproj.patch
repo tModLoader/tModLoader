@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,40 +_,52 @@
+@@ -17,34 +_,46 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
      <OutputPath>bin\x86\WindowsRelease\</OutputPath>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
@@ -15,6 +15,7 @@
      <OutputPath>bin\x86\WindowsDebug\</OutputPath>
      <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
 +    <PlatformTarget>x86</PlatformTarget>
++    <LangVersion>default</LangVersion>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
      <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
@@ -46,22 +47,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-       <PropertyGroup>
-         <Optimize>false</Optimize>
-         <DebugType>full</DebugType>
-+        <OutputType>Exe</OutputType>
-       </PropertyGroup>
-     </When>
-     <Otherwise>
-@@ -73,6 +_,7 @@
-     </Otherwise>
-   </Choose>
-   <ItemGroup>
-+    <Reference Include="Microsoft.CSharp" />
-     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('WINDOWS'))" />
-@@ -81,19 +_,47 @@
+@@ -81,19 +_,61 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -97,7 +83,6 @@
 -    </Reference>
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="Ionic.Zip.Reduced">
-+      <SpecificVersion>False</SpecificVersion>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
 +    </Reference>
 +    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
@@ -108,6 +93,21 @@
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
++    </Reference>
++    <Reference Include="log4net">
++      <HintPath>..\..\references\log4net.dll</HintPath>
++    </Reference>
++    <Reference Include="TerrariaHooks" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <HintPath>..\..\references\TerrariaHooks.Windows.dll</HintPath>
++    </Reference>
++    <Reference Include="TerrariaHooks" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <HintPath>..\..\references\TerrariaHooks.Mono.dll</HintPath>
++    </Reference>
++    <Reference Include="MonoMod.RuntimeDetour">
++      <HintPath>..\..\references\MonoMod.RuntimeDetour.dll</HintPath>
++    </Reference>
++    <Reference Include="MonoMod.Utils">
++      <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
 +    </Reference>
 +    <Reference Include="System.Windows.Forms">
 +      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
@@ -131,14 +131,18 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,177 @@
+@@ -368,6 +_,184 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Dinidini.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\Orian.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\PatreonItem.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\PatronModPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Polyblank.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\Remeus.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\Saethar.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\toplayz.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\AprilFools.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\HelpCommand.cs" />
@@ -152,9 +156,7 @@
 +    <Compile Include="Terraria.ModLoader.Default\MysteryWorld.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\MysteryPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\StartBag.cs" />
-+    <Compile Include="Terraria.ModLoader.Exceptions\AddRecipesException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\CustomModDataException.cs" />
-+    <Compile Include="Terraria.ModLoader.Exceptions\ModNameException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\ModSortingException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\OldHookException.cs" />
@@ -178,8 +180,8 @@
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIColorTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadMods.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIEnterPassphraseMenu.cs" />
@@ -248,16 +250,19 @@
 +    <Compile Include="Terraria.ModLoader\Interface.cs" />
 +    <Compile Include="Terraria.ModLoader\ItemLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\LocalMod.cs" />
++    <Compile Include="Terraria.ModLoader\Logging.cs" />
 +    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
++    <Compile Include="Terraria.ModLoader\ModInternals.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBackgroundStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBuff.cs" />
 +    <Compile Include="Terraria.ModLoader\ModCommand.cs" />
 +    <Compile Include="Terraria.ModLoader\ModCompile.cs" />
 +    <Compile Include="Terraria.ModLoader\ConvertiblePlants.cs" />
 +    <Compile Include="Terraria.ModLoader\ModConfig.cs" />
++    <Compile Include="Terraria.ModLoader\ModContent.cs" />
 +    <Compile Include="Terraria.ModLoader\ModDust.cs" />
 +    <Compile Include="Terraria.ModLoader\ModGore.cs" />
 +    <Compile Include="Terraria.ModLoader\ModHooks.cs" />
@@ -267,6 +272,7 @@
 +    <Compile Include="Terraria.ModLoader\ModMountData.cs" />
 +    <Compile Include="Terraria.ModLoader\ModNet.cs" />
 +    <Compile Include="Terraria.ModLoader\ModNPC.cs" />
++    <Compile Include="Terraria.ModLoader\ModOrganizer.cs" />
 +    <Compile Include="Terraria.ModLoader\ModPacket.cs" />
 +    <Compile Include="Terraria.ModLoader\ModPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader\ModPrefix.cs" />
@@ -281,6 +287,7 @@
 +    <Compile Include="Terraria.ModLoader\ModWall.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWaterStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModWorld.cs" />
++    <Compile Include="Terraria.ModLoader\MonoModHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\MusicPriority.cs" />
 +    <Compile Include="Terraria.ModLoader\NPCSpawnHelper.cs" />
 +    <Compile Include="Terraria.ModLoader\RecipeEditor.cs" />
@@ -317,7 +324,7 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,24 @@
+@@ -538,10 +_,33 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -341,11 +348,20 @@
 +      <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
++    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,96 @@
+@@ -606,5 +_,120 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -353,6 +369,30 @@
 +    <Content Include="Icon.ico" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDecrement.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonIncrement.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\CopyCodeButton.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Wings.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Wings_Wings.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Orian_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Remeus_Legs_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Polyblank_Body_Body.png" />

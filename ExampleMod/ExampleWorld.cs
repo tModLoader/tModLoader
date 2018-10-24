@@ -67,7 +67,7 @@ namespace ExampleMod
 			}
 			else
 			{
-				ErrorLogger.Log("ExampleMod: Unknown loadVersion: " + loadVersion);
+				mod.Logger.WarnFormat("ExampleMod: Unknown loadVersion: {0}", loadVersion);
 			}
 		}
 
@@ -440,7 +440,7 @@ namespace ExampleMod
 
 		public override void ResetNearbyTileEffects()
 		{
-			ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 			modPlayer.voidMonolith = false;
 			exampleTiles = 0;
 		}

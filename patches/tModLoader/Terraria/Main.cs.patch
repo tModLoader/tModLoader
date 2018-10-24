@@ -144,6 +144,22 @@
  		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  		public static UIManageControls ManageControlsMenu = new UIManageControls();
  		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
+@@ -671,7 +_,14 @@
+ 		public static int LogoA = 255;
+ 		public static int LogoB = 0;
+ 		public static bool LogoT = false;
+-		public static string statusText = "";
++		private static string _statusText = "";
++		public static string statusText {
++			get => _statusText;
++			set {
++				Logging.LogStatusChange(_statusText, value);
++				_statusText = value;
++			}
++		}
+ 		public static string worldName = "";
+ 		public static int worldID;
+ 		public static int background = 0;
 @@ -1067,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
@@ -368,7 +384,7 @@
 +							}
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpack=")
 +							{
-+								ModLoader.ModLoader.commandLineModPack = text.Substring(8);
++								ModOrganizer.commandLineModPack = text.Substring(8);
  							}
  							if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							{
@@ -382,7 +398,7 @@
  			Main.dedServ = true;
  			Main.showSplash = false;
  			this.Initialize();
-+			ModLoader.ModLoader.do_Load(null);
++			ModLoader.ModLoader.Load();
  			while (Main.worldPathName == null || Main.worldPathName == "")
  			{
  				bool flag = true;
@@ -433,11 +449,20 @@
  				}
  			}
 +			//run one tick to JIT all the game content now rather than when a player connects
-+			Console.WriteLine("Running one update...");
++			Logging.ServerConsoleLine("Running one update...");
 +			Update(new GameTime());
  			try
  			{
  				Console.Clear();
+@@ -4310,7 +_,7 @@
+ 			}
+ 			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
+ 			Console.WriteLine("");
+-			Console.WriteLine(Language.GetTextValue("CLI.ListeningOnPort", Netplay.ListenPort));
++			Logging.ServerConsoleLine(Language.GetTextValue("CLI.ListeningOnPort", Netplay.ListenPort));
+ 			Console.WriteLine(Language.GetTextValue("CLI.HelpHint"));
+ 			Console.WriteLine("");
+ 			Console.Title = "Terraria Server: " + Main.worldName;
 @@ -4320,20 +_,11 @@
  				Main.startDedInput();
  			}
@@ -798,7 +823,7 @@
 +				}
 +				catch (Exception e)
 +				{
-+					ErrorLogger.LogException(e);
++					Logging.Terraria.Error(e);
  				}
  				this._isDrawingOrUpdating = false;
  			}
@@ -1195,13 +1220,15 @@
  				}
  				if (Main.HoverItem.healLife > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.HoverItem.healLife);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresLife", Main.player[Main.myPlayer].GetHealLife(Main.HoverItem));
 +					tooltipNames[num4] = "HealLife";
  					num4++;
  				}
  				if (Main.HoverItem.healMana > 0)
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.HoverItem.healMana);
++					array[num4] = Language.GetTextValue("CommonItemTooltip.RestoresMana", Main.player[Main.myPlayer].GetHealMana(Main.HoverItem));
 +					tooltipNames[num4] = "HealMana";
  					num4++;
  				}
@@ -3531,6 +3558,16 @@
  				Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  			}
  		}
+@@ -37535,7 +_,8 @@
+ 				{
+ 					if (Main.item[i].active)
+ 					{
+-						Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)((double)Main.item[i].position.X + (double)Main.item[i].width * 0.5 - (double)Main.itemTexture[Main.item[i].type].Width * 0.5), (int)(Main.item[i].position.Y + (float)Main.item[i].height - (float)Main.itemTexture[Main.item[i].type].Height), Main.itemTexture[Main.item[i].type].Width, Main.itemTexture[Main.item[i].type].Height);
++						Microsoft.Xna.Framework.Rectangle value = Main.itemAnimations[Main.item[i].type]?.GetFrame(Main.itemTexture[Main.item[i].type]) ?? Main.itemTexture[Main.item[i].type].Bounds;
++						value.Location = new Microsoft.Xna.Framework.Point((int)(Main.item[i].position.X + Main.item[i].width * 0.5 - value.Width * 0.5), (int)(Main.item[i].position.Y + Main.item[i].height - value.Height));
+ 						if (rectangle.Intersects(value))
+ 						{
+ 							Main.player[Main.myPlayer].showItemIcon = false;
 @@ -37616,7 +_,7 @@
  						if (flag2 && ((Main.npc[k].type != 85 && Main.npc[k].type != 341 && Main.npc[k].aiStyle != 87) || Main.npc[k].ai[0] != 0f) && Main.npc[k].type != 488)
  						{
@@ -3691,7 +3728,7 @@
 +						}
 +						else
 +						{
-+							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						}
  						Main.netMode = 0;
  					}
@@ -3725,7 +3762,7 @@
 +						}
 +						else
 +						{
-+							ErrorLogger.LogException(WorldIO.customDataFail.InnerException);
++							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
 +						}
  						Main.menuMode = 0;
  						Main.netMode = 0;
@@ -4125,7 +4162,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(e);
 +				throw;
 +			}
 +		}

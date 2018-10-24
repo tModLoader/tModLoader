@@ -41,28 +41,34 @@
 		"ModsXBuffs": "{0}个Buff",
 		"ModsXMounts": "{0}个坐骑",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
-		"LoadErrorRecipes": "该模组添加合成配方时发生错误 {0}",
-		"LoadErrorDisabledSeeBelowForError": "该模组已被自动禁用,请参阅下面的实际错误:",
+		"LoadErrorDisabled": "该模组已被自动禁用.",
+		"LoadErrorCulpritUnknown": "该模组错误原因未知，必须重新启动tModLoader.",
 		"LoadErrorVersionMessage": "该模组检测出是生成于 tModLoader v{0}\n但是,你正在使用 {1}",
 		"LoadErrorDependencyMissing": "缺少依赖: {0} 要求对象: {1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {0} 开发者.",
+		"UnloadError": "卸载时会发生一个或多个错误,必须重新启动tModLoader以防止发生更多问题.",
+		"DefensiveUnload": "{0} 无法正常卸载.无论加载过程中是否有任何错误,模组作者都必须使用防御性编程(Defensive Programming)来确保卸载完成.",
+		"BuildError": "{0} 编译时发生错误",
+		"CompileError": "{0} 编译失败,出现 {1} 错误和 {2} 警告",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
 		"BuildErrorTwoModsSameName": "两个模组共享相同的内部名称 {0}",
-		"BuildErrorCompilingError": "该模组编译时发生错误.",
 		"BuildErrorModCompileFolderHint": "你很可能没有正确地安装,请确保你已安装[ModCompile]文件夹.",
-		"BuildErrorMissingDllFilesFor": "缺少dll文件 {0}",
+		"BuildErrorModReference": "读取模组引用 {0} 失败",
+		"BuildErrorMissingDllFiles": "缺少用于[noCompile]的dll文件: {0}\n\n必须具有[All.dll]或[Windows.dll]和Mono.dll]\n[All.dll]必须无[Microsoft.Xna.Framework]或[FNA]的任何引用\n[Windows.dll]必须引用Windows[Terraria.exe]和[Microsoft.Xna.Framework.dll]\n[Mono.dll]必须引用非Windows[Terraria.exe]和[FNA.dll]",
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
 		"BuildErrorDotNet45forCS6": "必须安装[.NET Framework 4.5]才能编译[C＃ 6.0]",
 		"BuildErrorPDBWindowsOnly": "仅在[windows]上支持生成[windows]的[PDB]文件.",
+		"BuildErrorEACWindowsOnly": "仅在Windows上支持编辑并继续.",
+		"BuildErrorEACLoadFailed": "无法启用编辑并继续: {0}",
 		"BuildErrorFailedLoadBuildTxt": "加载失败 {0}",
 		"LoadErrorTextureFailedToLoad": "在 {0} 的纹理文件加载失败",
 		"LoadErrorWavSoundFailedToLoad": "在 {0} 的[vav]音频文件加载失败",
@@ -76,9 +82,10 @@
 		"LoadError2ModItemSameName": "你正在尝试添加两个具有相同名称的模组项目: {0}.也许两个类共享类名,但在不同的命名空间中自动加载,或你已用两个相同名称手动调用添加的项目.",
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能:(是否拼写或文件夹放置错误?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
-		"RuntimeErrorSeeLogsTxtForFullTrace": "(完整跟踪请查阅[Logs.txt])",
+		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整跟踪)",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
+		"Exit": "退出",
 
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",
@@ -94,11 +101,13 @@
 		"ModPackViewList": "查看列表",
 		"ModPackEnableThisList": "启用该列表",
 		"ModPackEnableOnlyThisList": "仅启用该列表",
+		"ModPackUpdateListWithEnabled": "将已启用模组更新至该列表",
 		"ModPackViewModsInModBrowser": "在模组浏览器中查看",
 		"ModPackModsAvailableStatus": "总共{0}个,已启用{1}个,已禁用{2}个,缺少{3}个",
 		"ModPackModsMissing": "未找到下列模组:\n{0}",
 		"ModPackModsContained": "该列表包含下列模组:\n{0}",
 		"ModPackMissing": " - 缺少",
+		"ModPackDisabled": " - 禁用",
 		"ModPackLoadingSpecifiedModPack": "加载指定模组整合包: {0}",
 		"ModPackDoesNotExist": "模组整合包 {0} 不存在.",
 		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏. ({1})",
@@ -148,6 +157,7 @@
 		"MBExceededBandwidth": "模组浏览器的服务器已超过每日的带宽分配,请前往该模组的主页进行备用下载,或稍后重试.",
 		"MBUnknownMBError": "未知模组浏览器错误.请稍后重试",
 		"MBNoModsFound": "未找到模组",
+		"MBBrowserError": "模组浏览器发生错误.",
 		"1SecondAgo": "1秒前",
 		"XSecondsAgo": "{0}秒前",
 		"1MinuteAgo": "1分钟前",
@@ -170,7 +180,7 @@
 		"MBMyPublishedModsStats": "{0}次下载({1}次为最新版本)",
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID (ctrl-v)",
-		"MBServerResonponse": "模组浏览器服务器响应:\n\n{0}",
+		"MBServerResponse": "模组浏览器服务器响应:\n\n{0}",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
@@ -203,6 +213,8 @@
 		"New1Mod": "新增1个模组.",
 		"NewXMods": "新增{0}个模组.",
 		"NewModsListing": "新增模组:\n{0}",
+		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
+		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
 
 		// Mod Sources
 		"MSBuild": "生成",
@@ -228,20 +240,20 @@
 		"CommandModListClientMods": "客户端模组:",
 		"CommandModListModlist": "模组列表:",
 
+		// Mod Building
+		"Building": "生成中: {0}",
+		"ReadingProperties": "读取中: {0}",
+		"CompilingWindows": "编译Windows版 {0}...",
+		"CompilingMono": "编译Mono版 {0}...",
+		"LoadingEAC": "加载预编译的[Windows.dll]以支持编辑并继续",
+		"Packaging": "合包中: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "读取中：",
-		"MSCompilingWindows": "编译Windows版 {0}...",
-		"MSCompilingMono": "编译Mono版 {0}...",
-		// There should be ModName after ':'
-		"MSBuilding": "生成中：",
 		"MSFinding": "查找模组...",
-		// There should be ModName after ':'
+		"MSInstantiating": "初始化...",
+		"MSSandboxing": "增容中: {0}",
 		"MSIntializing": "初始化：",
-		// There should be ModName after ':'
 		"MSLoading": "加载中：",
 		"MSFinishingResourceLoading": "资源加载完成",
-		"MSCompatibilizing": "增容中: {0}",
-		"MSReading": "读取中: {0}",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
 		"AddingModContent": "添加模组内容...",
@@ -254,7 +266,7 @@
 		"UnloadedItemItemNameTooltip": "物品: {0}",
 		"AprilFoolsJoke": "愚人节玩笑",
 		"DefaultTownNPCName": "无名氏",
-		"DefaultTownNPCChat": "我的作者忘了给我一个聊天信息.",
+		"DefaultTownNPCChat": "我的作者忘记给我一个聊天信息了.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
@@ -264,6 +276,8 @@
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
-		"PatreonSetTooltip": "感谢您的支持!"
+		"PatreonSetTooltip": "感谢您的支持!",
+		"WorldGenError": "生成世界时遇到问题",
+		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 	}
 }

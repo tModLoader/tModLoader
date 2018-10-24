@@ -35,9 +35,9 @@ namespace Terraria.ModLoader.UI
 			this.modName.Left.Set(10f, 0f);
 			this.modName.Top.Set(5f, 0f);
 			base.Append(this.modName);
-			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuild"), 1f, false);
+			UIAutoScaleTextTextPanel<string> button = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild"), 1f, false);
 			button.Width.Set(100f, 0f);
-			button.Height.Set(30f, 0f);
+			button.Height.Set(36f, 0f);
 			button.Left.Set(10f, 0f);
 			button.Top.Set(40f, 0f);
 			button.PaddingTop -= 2f;
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.UI
 			button.OnMouseOut += UICommon.FadedMouseOut;
 			button.OnClick += this.BuildMod;
 			base.Append(button);
-			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"), 1f, false);
+			UIAutoScaleTextTextPanel<string> button2 = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"), 1f, false);
 			button2.CopyStyle(button);
 			button2.Width.Set(200f, 0f);
 			button2.Left.Set(150f, 0f);
@@ -57,7 +57,7 @@ namespace Terraria.ModLoader.UI
 			this.builtMod = builtMod;
 			if (builtMod != null)
 			{
-				UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"), 1f, false);
+				UIAutoScaleTextTextPanel<string> button3 = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"), 1f, false);
 				button3.CopyStyle(button2);
 				button3.Width.Set(100f, 0f);
 				button3.Left.Set(390f, 0f);
@@ -196,7 +196,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (WebException e)
 			{
-				ErrorLogger.LogModBrowserException(e);
+				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace Terraria.ModLoader.UI
 					Main.menuMode = Interface.modSourcesID;
 					return;
 				}
-				ErrorLogger.LogModBrowserException(e.Error);
+				UIModBrowser.LogModBrowserException(e.Error);
 				return;
 			}
 			var result = e.Result;
@@ -229,7 +229,7 @@ namespace Terraria.ModLoader.UI
 				responseLength -= 257;
 			}
 			string response = Encoding.UTF8.GetString(result, 0, responseLength);
-			ErrorLogger.LogModPublish(response);
+			UIModBrowser.LogModPublishInfo(response);
 		}
 
 		private class PatientWebClient : WebClient

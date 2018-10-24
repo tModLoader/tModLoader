@@ -108,11 +108,11 @@ namespace Terraria.ModLoader
 				{
 					int slot = entry.Key;
 					EquipTexture texture = entry.Value;
-					GetTextureArray(type)[slot] = ModLoader.GetTexture(texture.Texture);
+					GetTextureArray(type)[slot] = ModContent.GetTexture(texture.Texture);
 					if (type == EquipType.Body)
 					{
-						Main.femaleBodyTexture[slot] = ModLoader.GetTexture(femaleTextures[slot]);
-						Main.armorArmTexture[slot] = ModLoader.GetTexture(armTextures[slot]);
+						Main.femaleBodyTexture[slot] = ModContent.GetTexture(femaleTextures[slot]);
+						Main.armorArmTexture[slot] = ModContent.GetTexture(armTextures[slot]);
 					}
 				}
 			}

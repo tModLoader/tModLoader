@@ -57,7 +57,7 @@ namespace ExampleMod.Items.Placeable
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Torch, 3);
-			recipe.AddIngredient(null, "ExampleBlock");
+			recipe.AddIngredient(mod.ItemType("ExampleBlock"));
 			recipe.SetResult(this, 3);
 			recipe.AddRecipe();
 		}

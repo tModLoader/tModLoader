@@ -30,7 +30,7 @@
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
-@@ -90,15 +_,85 @@
+@@ -90,15 +_,86 @@
  			{
  				base.Append(uIImageButton4);
  			}
@@ -47,8 +47,9 @@
 +			}
 +			if (data.Player.usedMods != null)
 +			{
-+				var missingMods = data.Player.usedMods.Except(ModLoader.ModLoader.GetLoadedMods()).ToList();
-+				var newMods = ModLoader.ModLoader.GetLoadedMods().Except(new string[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
++				var currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
++				var missingMods = data.Player.usedMods.Except(currentModNames).ToList();
++				var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
 +				if (missingMods.Count > 0 || newMods.Count > 0)
 +				{
 +					UIText warningLabel = new UIText("", 1f, false)
@@ -143,7 +144,7 @@
 +
 +		private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 +		{
-+			ErrorLogger.LogException(this._data.customDataFail.InnerException);
++			Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerCustomDataFail"), this._data.customDataFail.InnerException);
 +		}
 +
 +		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)

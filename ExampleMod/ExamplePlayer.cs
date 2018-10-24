@@ -138,7 +138,7 @@ namespace ExampleMod
 			score = reader.ReadInt32();
 		}
 
-		public override void SetupStartInventory(IList<Item> items)
+		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
 		{
 			Item item = new Item();
 			item.SetDefaults(mod.ItemType("ExampleItem"));
@@ -153,7 +153,7 @@ namespace ExampleMod
 
 		public override bool CustomBiomesMatch(Player other)
 		{
-			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>();
 			return ZoneExample == modOther.ZoneExample;
 			// If you have several Zones, you might find the &= operator or other logic operators useful:
 			// bool allMatch = true;
@@ -166,7 +166,7 @@ namespace ExampleMod
 
 		public override void CopyCustomBiomesTo(Player other)
 		{
-			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>();
 			modOther.ZoneExample = ZoneExample;
 		}
 
@@ -684,7 +684,7 @@ namespace ExampleMod
 				}
 				Player drawPlayer = drawInfo.drawPlayer;
 				Mod mod = ModLoader.GetMod("ExampleMod");
-				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.reviveTime > 0)
 				{
 					Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/Revive");
@@ -702,7 +702,7 @@ namespace ExampleMod
 				}
 				Player drawPlayer = drawInfo.drawPlayer;
 				Mod mod = ModLoader.GetMod("ExampleMod");
-				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>(mod);
+				ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.lockTime > 0)
 				{
 					int frame = 2;

@@ -95,6 +95,7 @@ Before you're about to make a contribution, please check [this article](https://
 ### Getting the tModLoader code for the first time
 ___
 1. Clone this repository
+* (Temporary Extra Step) Download Terraria 1.3.5.2 from steam. [Instructions](https://github.com/blushiemagic/tModLoader/issues/227#issuecomment-324450642)
 2. Open setup.bat in the root folder
     * If setup.bat won't open, you must unblock all the files in the cloned repository
 3. Select your vanilla terraria.exe (must be vanilla) ([img](https://i.imgur.com/MccGyvB.png))

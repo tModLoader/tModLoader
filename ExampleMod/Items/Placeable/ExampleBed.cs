@@ -29,8 +29,8 @@ namespace ExampleMod.Items.Placeable
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Bed);
-			recipe.AddIngredient(null, "ExampleBlock", 10);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

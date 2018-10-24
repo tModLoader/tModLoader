@@ -48,10 +48,11 @@ namespace Terraria.ModLoader.Setup
 			this.menuItemWarnings = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemSingleDecompileThread = new System.Windows.Forms.ToolStripMenuItem();
 			this.resetTimeStampOptimizationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.buttonSetupDebugging = new System.Windows.Forms.Button();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.decompileServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.formatCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.buttonSetupDebugging = new System.Windows.Forms.Button();
+			this.hookGenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -271,6 +272,31 @@ namespace Terraria.ModLoader.Setup
 			this.resetTimeStampOptimizationsToolStripMenuItem.Text = "Reset TimeStamp Optimizations";
 			this.resetTimeStampOptimizationsToolStripMenuItem.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
 			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.decompileServerToolStripMenuItem,
+            this.formatCodeToolStripMenuItem,
+            this.hookGenToolStripMenuItem});
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+			this.toolsToolStripMenuItem.Text = "Tools";
+			// 
+			// decompileServerToolStripMenuItem
+			// 
+			this.decompileServerToolStripMenuItem.Name = "decompileServerToolStripMenuItem";
+			this.decompileServerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.decompileServerToolStripMenuItem.Text = "Decompile Server";
+			this.decompileServerToolStripMenuItem.Click += new System.EventHandler(this.menuItemDecompileServer_Click);
+			// 
+			// formatCodeToolStripMenuItem
+			// 
+			this.formatCodeToolStripMenuItem.Enabled = false;
+			this.formatCodeToolStripMenuItem.Name = "formatCodeToolStripMenuItem";
+			this.formatCodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.formatCodeToolStripMenuItem.Text = "Format Code";
+			this.formatCodeToolStripMenuItem.Click += new System.EventHandler(this.menuItemFormatCode_Click);
+			// 
 			// buttonSetupDebugging
 			// 
 			this.buttonSetupDebugging.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -283,29 +309,12 @@ namespace Terraria.ModLoader.Setup
 			this.buttonSetupDebugging.UseVisualStyleBackColor = true;
 			this.buttonSetupDebugging.Click += new System.EventHandler(this.buttonTask_Click);
 			// 
-			// toolsToolStripMenuItem
+			// hookGenToolStripMenuItem
 			// 
-			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.decompileServerToolStripMenuItem,
-            this.formatCodeToolStripMenuItem});
-			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-			this.toolsToolStripMenuItem.Text = "Tools";
-			// 
-			// decompileServerToolStripMenuItem
-			// 
-			this.decompileServerToolStripMenuItem.Name = "decompileServerToolStripMenuItem";
-			this.decompileServerToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-			this.decompileServerToolStripMenuItem.Text = "Decompile Server";
-			this.decompileServerToolStripMenuItem.Click += new System.EventHandler(this.menuItemDecompileServer_Click);
-			// 
-			// formatCodeToolStripMenuItem
-			// 
-			this.formatCodeToolStripMenuItem.Enabled = false;
-			this.formatCodeToolStripMenuItem.Name = "formatCodeToolStripMenuItem";
-			this.formatCodeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-			this.formatCodeToolStripMenuItem.Text = "Format Code";
-			this.formatCodeToolStripMenuItem.Click += new System.EventHandler(this.menuItemFormatCode_Click);
+			this.hookGenToolStripMenuItem.Name = "hookGenToolStripMenuItem";
+			this.hookGenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.hookGenToolStripMenuItem.Text = "HookGen";
+			this.hookGenToolStripMenuItem.Click += new System.EventHandler(this.menuItemHookGen_Click);
 			// 
 			// MainForm
 			// 
@@ -361,6 +370,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem decompileServerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem formatCodeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem hookGenToolStripMenuItem;
 	}
 }
 
