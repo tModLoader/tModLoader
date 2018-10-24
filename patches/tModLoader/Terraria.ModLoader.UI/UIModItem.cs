@@ -91,7 +91,7 @@ namespace Terraria.ModLoader.UI
 				configButton = new UITextPanel<string>("Config", 1f, false);
 				configButton.Width.Set(100f, 0f);
 				configButton.Height.Set(30f, 0f);
-				configButton.Left.Set(button2.Left.Pixels - configButton.Width.Pixels - 5f, 0f);
+				configButton.Left.Set(toggleModEnabledButton.Left.Pixels - configButton.Width.Pixels - 5f, 0f);
 				configButton.Top.Set(40f, 0f);
 				configButton.PaddingTop -= 2f;
 				configButton.PaddingBottom -= 2f;

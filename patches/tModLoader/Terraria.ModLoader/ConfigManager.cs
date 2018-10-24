@@ -83,7 +83,7 @@ namespace Terraria.ModLoader
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.PostLoad == ModNet.NetReload)
+			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.OnSuccessfulLoad == ModNet.NetReload)
 			{
 				//path = Path.Combine(ServerModConfigPath, filename);
 				//if (!File.Exists(path))
@@ -147,7 +147,7 @@ namespace Terraria.ModLoader
 
 		internal static bool AnyModNeedsReload()
 		{
-			foreach (var mod in ModLoader.LoadedMods)
+			foreach (var mod in ModLoader.Mods)
 			{
 				if (ModNeedsReload(mod))
 				{

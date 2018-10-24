@@ -316,7 +316,7 @@ namespace Terraria.ModLoader
 			}
 			if (ConfigManager.AnyModNeedsReload())
 			{
-				ModLoader.PostLoad = NetReload;
+				ModLoader.OnSuccessfulLoad = NetReload;
 				ModLoader.Reload();
 				return;
 			}

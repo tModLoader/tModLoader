@@ -62,7 +62,7 @@
 +				ConfigManager.LoadAll();
 +				if (ConfigManager.AnyModNeedsReload())
 +				{
-+					ModLoader.ModLoader.PostLoad += () =>
++					ModLoader.ModLoader.OnSuccessfulLoad += () =>
 +					{
 +						Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
 +						Main.ActivePlayerFileData.SetAsActive();
