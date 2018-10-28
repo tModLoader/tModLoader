@@ -90,7 +90,7 @@ namespace ExampleMod.Projectiles
 				// Drop a javelin item, 1 in 18 chance (~5.5% chance)
 				int item =
 				Main.rand.NextBool(18)
-					? Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, mod.ItemType<ExampleJavelin>())
+					? Item.NewItem(projectile.getRect(), mod.ItemType<ExampleJavelin>())
 					: 0;
 
 				// Sync the drop for multiplayer

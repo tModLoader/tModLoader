@@ -128,7 +128,7 @@ namespace ExampleMod.NPCs
 		{
 			if (Main.rand.NextBool(50))
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Nazar);
+				Item.NewItem(npc.getRect(), ItemID.Nazar);
 			}
 		}
 

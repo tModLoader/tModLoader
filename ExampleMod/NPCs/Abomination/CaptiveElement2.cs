@@ -444,7 +444,7 @@ namespace ExampleMod.NPCs.Abomination
 			}
 			if (Main.rand.NextBool(10))
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationTrophy"));
+				Item.NewItem(npc.getRect(), mod.ItemType("AbominationTrophy"));
 			}
 			if (Main.expertMode)
 			{
@@ -454,11 +454,11 @@ namespace ExampleMod.NPCs.Abomination
 			{
 				if (Main.rand.NextBool(7))
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationMask"));
+					Item.NewItem(npc.getRect(), mod.ItemType("AbominationMask"));
 				}
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoltenDrill"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
+				Item.NewItem(npc.getRect(), mod.ItemType("MoltenDrill"));
+				Item.NewItem(npc.getRect(), mod.ItemType("ElementResidue"));
+				Item.NewItem(npc.getRect(), mod.ItemType("PurityTotem"));
 			}
 			if (!ExampleWorld.downedAbomination)
 			{

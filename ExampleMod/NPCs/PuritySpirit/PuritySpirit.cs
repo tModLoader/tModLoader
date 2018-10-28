@@ -734,7 +734,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			);
 			if (trophyChoice > 0)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, trophyChoice);
+				Item.NewItem(npc.getRect(), trophyChoice);
 			}
 			if (Main.expertMode)
 			{
@@ -754,8 +754,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Tuple.Create(mod.ItemType<Items.Armor.BunnyMask>(), 1.0),
 					Tuple.Create((int)ItemID.Bunny, 5.0)
 				);
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, maskChoice);
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType<Items.PurityShield>());
+				Item.NewItem(npc.getRect(), maskChoice);
+				Item.NewItem(npc.getRect(), mod.ItemType<Items.PurityShield>());
 			}
 			ExampleWorld.downedPuritySpirit = true; */
 
@@ -775,7 +775,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 			if (item > 0)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, item);
+				Item.NewItem(npc.getRect(), item);
 			}
 			if (Main.expertMode)
 			{
@@ -786,17 +786,17 @@ namespace ExampleMod.NPCs.PuritySpirit
 				choice = Main.rand.Next(7);
 				if (choice == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PuritySpiritMask"));
+					Item.NewItem(npc.getRect(), mod.ItemType("PuritySpiritMask"));
 				}
 				else if (choice == 1)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BunnyMask"));
+					Item.NewItem(npc.getRect(), mod.ItemType("BunnyMask"));
 				}
 				if (choice != 1)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Bunny);
+					Item.NewItem(npc.getRect(), ItemID.Bunny);
 				}
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityShield"));
+				Item.NewItem(npc.getRect(), mod.ItemType("PurityShield"));
 			}
 			if (!ExampleWorld.downedPuritySpirit)
 			{
