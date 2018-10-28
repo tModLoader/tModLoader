@@ -24,7 +24,7 @@ namespace ExampleMod.Items
 		public override void UseStyle(Player player)
 		{
 			// Each frame, make some dust
-			if (Main.rand.NextBool(2))
+			if (Main.rand.NextBool())
 			{
 				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, default(Color), 1.1f);
 			}

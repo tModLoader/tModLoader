@@ -442,7 +442,7 @@ namespace ExampleMod.NPCs.Abomination
 					}
 				}
 			}
-			if (Main.rand.Next(10) == 0)
+			if (Main.rand.NextBool(10))
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationTrophy"));
 			}
@@ -452,7 +452,7 @@ namespace ExampleMod.NPCs.Abomination
 			}
 			else
 			{
-				if (Main.rand.Next(7) == 0)
+				if (Main.rand.NextBool(7))
 				{
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationMask"));
 				}
@@ -485,7 +485,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void OnHitPlayer(Player player, int dmgDealt, bool crit)
 		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
+			if (Main.expertMode || Main.rand.NextBool())
 			{
 				int debuff = GetDebuff();
 				if (debuff >= 0)

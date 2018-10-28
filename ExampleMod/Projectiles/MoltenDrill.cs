@@ -29,7 +29,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			if (Main.rand.Next(10) == 0)
+			if (Main.rand.NextBool(10))
 			{
 				target.AddBuff(BuffID.OnFire, 180, false);
 			}
@@ -37,7 +37,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitPvp(Player target, int damage, bool crit)
 		{
-			if (Main.rand.Next(10) == 0)
+			if (Main.rand.NextBool(10))
 			{
 				target.AddBuff(BuffID.OnFire, 180, false);
 			}

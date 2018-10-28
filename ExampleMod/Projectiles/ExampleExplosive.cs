@@ -86,7 +86,7 @@ namespace ExampleMod.Projectiles
 			else
 			{
 				// Smoke and fuse dust spawn.
-				if (Main.rand.Next(2) == 0)
+				if (Main.rand.NextBool())
 				{
 					int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 1f);
 					Main.dust[dustIndex].scale = 0.1f + (float)Main.rand.Next(5) * 0.1f;

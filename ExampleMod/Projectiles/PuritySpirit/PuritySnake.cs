@@ -118,7 +118,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public void CreateDust(Vector2 pos)
 		{
-			if (Main.rand.Next(5) == 0)
+			if (Main.rand.NextBool(5))
 			{
 				int dust = Dust.NewDust(pos, projectile.width, projectile.height, mod.DustType("Smoke"), 0f, 0f, 0, new Color(0, 180, 0));
 				Main.dust[dust].scale = 2f;

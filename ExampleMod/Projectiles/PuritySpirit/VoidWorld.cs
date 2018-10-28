@@ -45,7 +45,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		public override void AI()
 		{
 			projectile.localAI[0] += 1f;
-			if (!Main.dedServ && projectile.localAI[0] >= 180f && projectile.localAI[0] < 480f && Main.rand.Next(10) == 0)
+			if (!Main.dedServ && projectile.localAI[0] >= 180f && projectile.localAI[0] < 480f && Main.rand.NextBool(10))
 			{
 				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0)

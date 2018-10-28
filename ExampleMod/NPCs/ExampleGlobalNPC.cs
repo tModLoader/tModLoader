@@ -96,7 +96,7 @@ namespace ExampleMod.NPCs
 							stack++;
 						}
 					}
-					else if (Main.rand.Next(2) == 0)
+					else if (Main.rand.NextBool())
 					{
 						stack++;
 					}
@@ -160,7 +160,7 @@ namespace ExampleMod.NPCs
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 1.8f;
 					Main.dust[dust].velocity.Y -= 0.5f;
-					if (Main.rand.Next(4) == 0)
+					if (Main.rand.NextBool(4))
 					{
 						Main.dust[dust].noGravity = false;
 						Main.dust[dust].scale *= 0.5f;

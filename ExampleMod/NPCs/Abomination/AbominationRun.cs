@@ -75,7 +75,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void OnHitPlayer(Player player, int damage, bool crit)
 		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
+			if (Main.expertMode || Main.rand.NextBool())
 			{
 				player.AddBuff(BuffID.OnFire, 600, true);
 			}

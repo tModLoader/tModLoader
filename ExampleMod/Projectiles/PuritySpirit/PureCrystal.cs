@@ -67,7 +67,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		{
 			for (int k = 0; k < Player.maxBuffs; k++)
 			{
-				if (target.buffType[k] > 0 && target.buffTime[k] > 0 && BuffLoader.CanBeCleared(target.buffType[k]) && Main.rand.Next(2) == 0)
+				if (target.buffType[k] > 0 && target.buffTime[k] > 0 && BuffLoader.CanBeCleared(target.buffType[k]) && Main.rand.NextBool())
 				{
 					target.DelBuff(k);
 					k--;

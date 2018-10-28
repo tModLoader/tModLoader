@@ -55,7 +55,7 @@ namespace ExampleMod.Items.Armor
 
 		public override void UpdateVanity(Player player, EquipType type)
 		{
-			if (Main.rand.Next(20) == 0)
+			if (Main.rand.NextBool(20))
 			{
 				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
 			}

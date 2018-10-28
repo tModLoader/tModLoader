@@ -66,7 +66,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
 		{
-			if ((Main.expertMode || Main.rand.Next(2) == 0) && projectile.ai[0] >= 0f)
+			if ((Main.expertMode || Main.rand.NextBool()) && projectile.ai[0] >= 0f)
 			{
 				target.AddBuff((int)projectile.ai[0], (int)projectile.ai[1], true);
 			}

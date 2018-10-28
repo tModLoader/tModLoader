@@ -81,7 +81,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				target.AddBuff(mod.BuffType("EtherealFlames"), 300);
 			}
