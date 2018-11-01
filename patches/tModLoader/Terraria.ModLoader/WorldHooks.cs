@@ -87,11 +87,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void PreUpdateAnything()
+		public static void PreUpdateEntities()
 		{
 			foreach (ModWorld modWorld in worlds)
 			{
-				modWorld.PreUpdateAnything();
+				modWorld.PreUpdateEntities();
 			}
 		}
 

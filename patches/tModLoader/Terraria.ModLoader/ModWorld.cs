@@ -116,14 +116,14 @@ namespace Terraria.ModLoader
 		/// <para />
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// </summary>
-		public virtual void PreUpdateAnything()
+		public virtual void PreUpdateEntities()
 		{
 		}
 
 		/// <summary>
 		/// Called after Players got updated, but before any NPCs get updated.
 		/// <para />
-		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateAnything" />.
+		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateEntities" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
 		/// </summary>
 		public virtual void MidUpdatePlayerNPC()

@@ -891,7 +891,7 @@
  				return;
  			}
  			Main.gamePaused = false;
-+			WorldHooks.PreUpdateAnything();
++			WorldHooks.PreUpdateEntities();
  			if (!Main.dedServ && (double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0 && Main.netMode != 2)
  			{
  				Star.UpdateStars();
