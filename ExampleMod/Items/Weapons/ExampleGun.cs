@@ -117,7 +117,7 @@ namespace ExampleMod.Items.Weapons
 			return true;
 		}*/
 
-		// How can I get a "Clockwork Assault Riffle" effect?
+		// How can I get a "Clockwork Assault Rifle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
 		/*	The following changes to SetDefaults()
 		 	item.useAnimation = 12;
