@@ -1771,9 +1771,7 @@ Running dot for graph 581/746
 Running dot for graph 582/746
 Running dot for graph 583/746
 Running dot for graph 584/746
-Running doterror: Image `/home/travis/build/blushiemagic/tModLoader/code_docs/tModLoader/html/class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler__inherit__graph.png' produced by dot is not a valid PNG!
-You should either select a different format (DOT_IMAGE_FORMAT in the config file) or install a more recent version of graphviz (1.7+)
- for graph 585/746
+Running dot for graph 585/746
 Running dot for graph 586/746
 Running dot for graph 587/746
 Running dot for graph 588/746
