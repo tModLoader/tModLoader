@@ -317,7 +317,7 @@ namespace ExampleMod
 		public void PuritySpiritDebuff()
 		{
 			bool flag = true;
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				flag = false;
 				for (int k = 0; k < 2; k++)
@@ -354,7 +354,7 @@ namespace ExampleMod
 					}
 				}
 			}
-			if (flag || Main.expertMode || Main.rand.Next(2) == 0)
+			if (flag || Main.expertMode || Main.rand.NextBool())
 			{
 				player.AddBuff(mod.BuffType("Undead"), 1800, false);
 			}
@@ -617,11 +617,11 @@ namespace ExampleMod
 			{
 				return;
 			}
-			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.Next(3) == 0)
+			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.NextBool(3))
 			{
 				caughtType = mod.ItemType("SparklingSphere");
 			}
-			if (player.gravDir == -1f && questFish == mod.ItemType("ExampleQuestFish") && Main.rand.Next(2) == 0)
+			if (player.gravDir == -1f && questFish == mod.ItemType("ExampleQuestFish") && Main.rand.NextBool())
 			{
 				caughtType = mod.ItemType("ExampleQuestFish");
 			}
@@ -661,7 +661,7 @@ namespace ExampleMod
 		{
 			if (eFlames)
 			{
-				if (Main.rand.Next(4) == 0 && drawInfo.shadow == 0f)
+				if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
 				{
 					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, mod.DustType("EtherealFlame"), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
 					Main.dust[dust].noGravity = true;

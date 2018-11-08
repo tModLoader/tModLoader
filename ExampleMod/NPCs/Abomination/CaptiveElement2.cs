@@ -442,9 +442,9 @@ namespace ExampleMod.NPCs.Abomination
 					}
 				}
 			}
-			if (Main.rand.Next(10) == 0)
+			if (Main.rand.NextBool(10))
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationTrophy"));
+				Item.NewItem(npc.getRect(), mod.ItemType("AbominationTrophy"));
 			}
 			if (Main.expertMode)
 			{
@@ -452,13 +452,13 @@ namespace ExampleMod.NPCs.Abomination
 			}
 			else
 			{
-				if (Main.rand.Next(7) == 0)
+				if (Main.rand.NextBool(7))
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationMask"));
+					Item.NewItem(npc.getRect(), mod.ItemType("AbominationMask"));
 				}
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoltenDrill"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
+				Item.NewItem(npc.getRect(), mod.ItemType("MoltenDrill"));
+				Item.NewItem(npc.getRect(), mod.ItemType("ElementResidue"));
+				Item.NewItem(npc.getRect(), mod.ItemType("PurityTotem"));
 			}
 			if (!ExampleWorld.downedAbomination)
 			{
@@ -485,7 +485,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void OnHitPlayer(Player player, int dmgDealt, bool crit)
 		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
+			if (Main.expertMode || Main.rand.NextBool())
 			{
 				int debuff = GetDebuff();
 				if (debuff >= 0)

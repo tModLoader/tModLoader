@@ -65,10 +65,10 @@ namespace ExampleMod.Items.Placeable
 
 		public override void ExtractinatorUse(ref int resultType, ref int resultStack)
 		{
-			if (Main.rand.Next(30) == 0)
+			if (Main.rand.NextBool(30))
 			{
 				resultType = mod.ItemType("FoulOrb");
-				if (Main.rand.Next(5) == 0)
+				if (Main.rand.NextBool(5))
 				{
 					resultStack += Main.rand.Next(2);
 				}

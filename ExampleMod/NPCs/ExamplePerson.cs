@@ -143,7 +143,7 @@ namespace ExampleMod.NPCs
 		public override string GetChat()
 		{
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.Next(4) == 0)
+			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
 				return "Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?";
 			}
@@ -166,7 +166,7 @@ namespace ExampleMod.NPCs
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.Next(4) == 0)
+			if (partyGirl >= 0 && Main.rand.NextBool(4))
 			{
 				chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
 			}

@@ -87,7 +87,7 @@ namespace ExampleMod.Projectiles.Pets
 			else if (projectile.ai[0] < fadeInTicks + fullBrightTicks)
 			{
 				projectile.alpha = 0;
-				if (Main.rand.Next(6) == 0)
+				if (Main.rand.NextBool(6))
 				{
 					int num145 = Dust.NewDust(projectile.position, projectile.width, projectile.height, 73, 0f, 0f, 200, default(Color), 0.8f);
 					Main.dust[num145].velocity *= 0.3f;

@@ -227,7 +227,7 @@ namespace ExampleMod.NPCs
 							if (npc.position.X + (float)npc.width > vector17.X && npc.position.X < vector17.X + 16f && npc.position.Y + (float)npc.height > vector17.Y && npc.position.Y < vector17.Y + 16f)
 							{
 								flag18 = true;
-								if (Main.rand.Next(100) == 0 && npc.behindTiles && Main.tile[num184, num185].nactive())
+								if (Main.rand.NextBool(100) && npc.behindTiles && Main.tile[num184, num185].nactive())
 								{
 									WorldGen.KillTile(num184, num185, true, true, false);
 								}

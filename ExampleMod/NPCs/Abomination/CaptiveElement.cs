@@ -217,7 +217,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void OnHitPlayer(Player player, int dmgDealt, bool crit)
 		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
+			if (Main.expertMode || Main.rand.NextBool())
 			{
 				int debuff = GetDebuff();
 				if (debuff >= 0)

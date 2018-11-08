@@ -161,7 +161,7 @@ namespace ExampleMod.NPCs.Abomination
 				{
 					rotationSpeed = 1f + (rotationSpeed - 1f) / 2f;
 				}
-				if (Main.rand.Next(2) == 0)
+				if (Main.rand.NextBool())
 				{
 					rotationSpeed *= -1;
 				}
@@ -232,7 +232,7 @@ namespace ExampleMod.NPCs.Abomination
 			{
 				ExpertLaser();
 			}
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				float radius = (float)Math.Sqrt(Main.rand.Next(sphereRadius * sphereRadius));
 				double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
@@ -358,7 +358,7 @@ namespace ExampleMod.NPCs.Abomination
 		// We use this method to inflict a debuff on a player on contact. OnFire is inflicted 100% of the time in expert, and 50% of the time on non-expert mode.
 		public override void OnHitPlayer(Player player, int damage, bool crit)
 		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
+			if (Main.expertMode || Main.rand.NextBool())
 			{
 				player.AddBuff(BuffID.OnFire, 600, true);
 			}

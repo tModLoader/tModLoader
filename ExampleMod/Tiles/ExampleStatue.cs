@@ -56,10 +56,10 @@ namespace ExampleMod.Tiles
 				if (Wiring.CheckMech(x, y, 60) && Item.MechSpawn(spawnX, spawnY, ItemID.SilverCoin) && Item.MechSpawn(spawnX, spawnY, ItemID.GoldCoin) && Item.MechSpawn(spawnX, spawnY, ItemID.PlatinumCoin))
 				{
 					int id = ItemID.SilverCoin;
-					if (Main.rand.Next(100) == 0)
+					if (Main.rand.NextBool(100))
 					{
 						id++;
-						if (Main.rand.Next(100) == 0)
+						if (Main.rand.NextBool(100))
 						{
 							id++;
 						}

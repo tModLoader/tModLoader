@@ -125,8 +125,8 @@ namespace ExampleMod.UI
 							reforgeItem.Prefix(ExampleMod.instance.PrefixType("Awesome"));
 						}
 						vanillaItemSlot.item = reforgeItem.Clone();
-						vanillaItemSlot.item.position.X = Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(vanillaItemSlot.item.width / 2);
-						vanillaItemSlot.item.position.Y = Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(vanillaItemSlot.item.height / 2);
+						vanillaItemSlot.item.position.X = Main.LocalPlayer.position.X + (float)(Main.LocalPlayer.width / 2) - (float)(vanillaItemSlot.item.width / 2);
+						vanillaItemSlot.item.position.Y = Main.LocalPlayer.position.Y + (float)(Main.LocalPlayer.height / 2) - (float)(vanillaItemSlot.item.height / 2);
 						vanillaItemSlot.item.favorited = favorited;
 						vanillaItemSlot.item.stack = stack;
 						ItemLoader.PostReforge(vanillaItemSlot.item);

@@ -144,6 +144,7 @@
     <Compile Include="Items\ExampleLifeFruit.cs" />
     <Compile Include="Items\ExampleMagicMirror.cs" />
     <Compile Include="Items\Infinity.cs" />
+    <Compile Include="Items\Placeable\ExampleLamp.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Tiles\ExampleDoorOpen.cs" />
     <Compile Include="Tiles\ExampleDresser.cs" />
     <Compile Include="Tiles\ExampleGlobalTile.cs" />
+    <Compile Include="Tiles\ExampleLamp.cs" />
     <Compile Include="Tiles\ExampleMusicBox.cs" />
     <Compile Include="Tiles\ExampleHerb.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />

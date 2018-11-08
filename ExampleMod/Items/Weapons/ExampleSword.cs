@@ -39,7 +39,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override void MeleeEffects(Player player, Rectangle hitbox)
 		{
-			if (Main.rand.Next(3) == 0)
+			if (Main.rand.NextBool(3))
 			{
 				//Emit dusts when swing the sword
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));

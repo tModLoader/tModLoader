@@ -79,7 +79,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override void MeleeEffects(Player player, Rectangle hitbox)
 		{
-			if (Main.rand.Next(3) == 0)
+			if (Main.rand.NextBool(3))
 			{
 				if (player.altFunctionUse == 2)
 				{

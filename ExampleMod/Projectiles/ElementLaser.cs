@@ -51,7 +51,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
 		{
-			if (Main.rand.Next(2) == 0 && projectile.ai[0] >= 0f)
+			if (Main.rand.NextBool() && projectile.ai[0] >= 0f)
 			{
 				int debuff = GetDebuff();
 				if (debuff >= 0)

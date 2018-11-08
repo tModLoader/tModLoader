@@ -51,7 +51,7 @@ namespace ExampleMod.Projectiles.Minions
 		{
 			if (projectile.ai[0] == 0f)
 			{
-				if (Main.rand.Next(5) == 0)
+				if (Main.rand.NextBool(5))
 				{
 					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, mod.DustType("PuriumFlame"));
 					Main.dust[dust].velocity.Y -= 1.2f;
@@ -59,7 +59,7 @@ namespace ExampleMod.Projectiles.Minions
 			}
 			else
 			{
-				if (Main.rand.Next(3) == 0)
+				if (Main.rand.NextBool(3))
 				{
 					Vector2 dustVel = projectile.velocity;
 					if (dustVel != Vector2.Zero)

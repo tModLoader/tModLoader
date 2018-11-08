@@ -31,7 +31,7 @@ namespace ExampleMod.Items
 					break;
 				}
 			}
-			if (hasGel && Main.rand.Next(10) == 0)
+			if (hasGel && Main.rand.NextBool(10))
 			{
 				Main.NewText("Revenge for our fallen brothers!!!", Color.Green.R, Color.Green.G, Color.Green.B);
 				Player player = Main.LocalPlayer;

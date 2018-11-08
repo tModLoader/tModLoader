@@ -53,11 +53,11 @@ namespace ExampleMod.Items
 		public override void HoldItem(Player player)
 		{
 			Vector2 position = GetLightPosition(player) - new Vector2(20f, 20f);
-			if (Main.rand.Next(10) == 0)
+			if (Main.rand.NextBool(10))
 			{
 				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
 			}
-			if (Main.rand.Next(3) == 0)
+			if (Main.rand.NextBool(3))
 			{
 				Dust.NewDust(position, 40, 40, mod.DustType("Sparkle"));
 			}

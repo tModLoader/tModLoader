@@ -89,8 +89,8 @@ namespace ExampleMod.Projectiles
 			{
 				// Drop a javelin item, 1 in 18 chance (~5.5% chance)
 				int item =
-				Main.rand.Next(18) == 0
-					? Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, mod.ItemType<ExampleJavelin>())
+				Main.rand.NextBool(18)
+					? Item.NewItem(projectile.getRect(), mod.ItemType<ExampleJavelin>())
 					: 0;
 
 				// Sync the drop for multiplayer
@@ -217,14 +217,14 @@ namespace ExampleMod.Projectiles
 						90f); // Please notice the MathHelper usage, offset the rotation by 90 degrees (to radians because rotation uses radians) because the sprite's rotation is not aligned!
 
 				// Spawn some random dusts as the javelin travels
-				if (Main.rand.Next(3) == 0)
+				if (Main.rand.NextBool(3))
 				{
 					Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, mod.DustType<Dusts.Sparkle>(),
 						projectile.velocity.X * .2f, projectile.velocity.Y * .2f, 200, Scale: 1.2f);
 					dust.velocity += projectile.velocity * 0.3f;
 					dust.velocity *= 0.2f;
 				}
-				if (Main.rand.Next(4) == 0)
+				if (Main.rand.NextBool(4))
 				{
 					Dust dust = Dust.NewDustDirect(projectile.position, projectile.height, projectile.width, mod.DustType<Dusts.Sparkle>(),
 						0, 0, 254, Scale: 0.3f);

@@ -42,7 +42,7 @@ namespace ExampleMod.Projectiles
 
 		public override void PostAI()
 		{
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 16);
 				dust.noGravity = true;

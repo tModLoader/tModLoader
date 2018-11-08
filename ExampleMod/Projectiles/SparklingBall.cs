@@ -20,7 +20,7 @@ namespace ExampleMod.Projectiles
 		public override void AI()
 		{
 			projectile.velocity.Y += projectile.ai[0];
-			if (Main.rand.Next(3) == 0)
+			if (Main.rand.NextBool(3))
 			{
 				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f);
 			}

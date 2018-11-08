@@ -72,7 +72,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				int debuff = GetDebuff();
 				if (debuff > 0)
@@ -84,7 +84,7 @@ namespace ExampleMod.Projectiles
 
 		public override void OnHitPvp(Player target, int damage, bool crit)
 		{
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool())
 			{
 				int debuff = GetDebuff();
 				if (debuff > 0)

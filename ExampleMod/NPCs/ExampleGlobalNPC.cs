@@ -72,10 +72,10 @@ namespace ExampleMod.NPCs
 		{
 			if (npc.lifeMax > 5 && npc.value > 0f)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ExampleItem"));
+				Item.NewItem(npc.getRect(), mod.ItemType("ExampleItem"));
 				if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>().ZoneExample)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BossItem"));
+					Item.NewItem(npc.getRect(), mod.ItemType("BossItem"));
 				}
 			}
 			if (((npc.type == NPCID.Pumpking && Main.pumpkinMoon) || (npc.type == NPCID.IceQueen && Main.snowMoon)) && NPC.waveNumber > 10)
@@ -96,17 +96,17 @@ namespace ExampleMod.NPCs
 							stack++;
 						}
 					}
-					else if (Main.rand.Next(2) == 0)
+					else if (Main.rand.NextBool())
 					{
 						stack++;
 					}
 					string type = npc.type == NPCID.Pumpking ? "ScytheBlade" : "Icicle";
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType(type), stack);
+					Item.NewItem(npc.getRect(), mod.ItemType(type), stack);
 				}
 			}
 			if (npc.type == NPCID.DukeFishron && !Main.expertMode)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Bubble"), Main.rand.Next(5, 8));
+				Item.NewItem(npc.getRect(), mod.ItemType("Bubble"), Main.rand.Next(5, 8));
 			}
 			if (npc.type == NPCID.Bunny && npc.AnyInteractions())
 			{
@@ -160,7 +160,7 @@ namespace ExampleMod.NPCs
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 1.8f;
 					Main.dust[dust].velocity.Y -= 0.5f;
-					if (Main.rand.Next(4) == 0)
+					if (Main.rand.NextBool(4))
 					{
 						Main.dust[dust].noGravity = false;
 						Main.dust[dust].scale *= 0.5f;
