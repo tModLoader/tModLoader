@@ -962,7 +962,13 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1)
  			{
  				if ((float)num + vector.X + 4f > (float)hackedScreenWidth)
-@@ -14617,22 +_,28 @@
+@@ -14612,27 +_,33 @@
+ 			{
+ 				Main.HoverItem.knockBack *= 1f + (1f - Main.player[Main.myPlayer].stealth) * 0.5f;
+ 			}
+-			int num3 = 20;
++			int num3 = 20 + Main.HoverItem.ToolTip?.Lines ?? 0;
+ 			int num4 = 1;
  			string[] array = new string[num3];
  			bool[] array2 = new bool[num3];
  			bool[] array3 = new bool[num3];
