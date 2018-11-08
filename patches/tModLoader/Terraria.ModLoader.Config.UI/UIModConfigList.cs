@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using Terraria.UI.Gamepad;
-using Newtonsoft.Json;
-using System.Reflection;
-using Terraria.Localization;
 using Terraria.GameContent.UI.States;
+using Terraria.Localization;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
 	internal class UIModConfigList : UIState
 	{
@@ -152,8 +140,8 @@ namespace Terraria.ModLoader.UI
 						if (config.Mode == MultiplayerSyncMode.ServerDictates)
 						{
 							t.BackgroundColor = Color.Pink * 0.7f;
-							t.OnMouseOver += (a,b) => t.BackgroundColor = Color.Pink;
-							t.OnMouseOut += (a,b) => t.BackgroundColor = Color.Pink * 0.7f;
+							t.OnMouseOver += (a, b) => t.BackgroundColor = Color.Pink;
+							t.OnMouseOut += (a, b) => t.BackgroundColor = Color.Pink * 0.7f;
 						}
 					}
 				}

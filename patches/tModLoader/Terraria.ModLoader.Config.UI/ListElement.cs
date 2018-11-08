@@ -1,19 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Collections;
-using System.Reflection;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal class UIModConfigListItem : UIModConfigItem
+	internal class ListElement : ConfigElement
 	{
 		// does not apply?
 		//public override int NumberTicks => 0;
@@ -27,7 +24,7 @@ namespace Terraria.ModLoader.UI
 
 		float scale = 1f;
 
-		public UIModConfigListItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public ListElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			MaxHeight.Set(300, 0f);
 
@@ -110,7 +107,7 @@ namespace Terraria.ModLoader.UI
 			sortedContainer.Append(text);
 			Append(sortedContainer);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
 			upButton.Top.Set(40, 0f);
 			upButton.Left.Set(0, 0f);
 			upButton.OnClick += (a, b) =>
@@ -127,7 +124,7 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(upButton);
 
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
 			downButton.Top.Set(52, 0f);
 			downButton.Left.Set(0, 0f);
 			downButton.OnClick += (a, b) =>

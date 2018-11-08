@@ -1,21 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
 using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Dynamic;
-using System.Reflection;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal abstract class IUIModConfigDictionaryElementWrapper
+	internal abstract class IDictionaryElementWrapper
 	{
 		//public UIModConfigDictionaryElementWrapper() { }
 		internal virtual object Key => null;
@@ -29,7 +25,7 @@ namespace Terraria.ModLoader.UI
 		//}
 	}
 
-	internal class UIModConfigDictionaryElementWrapper<K, V> : IUIModConfigDictionaryElementWrapper
+	internal class DictionaryElementWrapper<K, V> : IDictionaryElementWrapper
 	{
 		private IDictionary dictionary;
 		//private object _key;
@@ -80,7 +76,7 @@ namespace Terraria.ModLoader.UI
 		internal override object Key => key;
 		internal override object Value => value;
 		//internal UIModConfigDictionaryItem parent;
-		public UIModConfigDictionaryElementWrapper(K key, V value, IDictionary dictionary) //, UIModConfigDictionaryItem parent)
+		public DictionaryElementWrapper(K key, V value, IDictionary dictionary) //, UIModConfigDictionaryItem parent)
 		{
 			this.dictionary = dictionary;
 			this._key = key;
@@ -98,7 +94,7 @@ namespace Terraria.ModLoader.UI
 	//	}
 	//}
 
-	internal class UIModConfigDictionaryItem : UIModConfigItem
+	internal class DictionaryElement : ConfigElement
 	{
 		private object data;
 		private List<object> dataAsList;
@@ -107,11 +103,11 @@ namespace Terraria.ModLoader.UI
 		private int sliderIDStart;
 		private NestedUIList dataList;
 		internal UIText save;
-		public List<IUIModConfigDictionaryElementWrapper> dataWrapperList;
+		public List<IDictionaryElementWrapper> dataWrapperList;
 
 		float scale = 1f;
 
-		public UIModConfigDictionaryItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public DictionaryElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			drawLabel = false;
 
@@ -227,7 +223,7 @@ namespace Terraria.ModLoader.UI
 
 			Append(sortedContainer);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
 			upButton.Top.Set(40, 0f);
 			upButton.Left.Set(0, 0f);
 			upButton.OnClick += (a, b) =>
@@ -244,7 +240,7 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(upButton);
 
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
 			downButton.Top.Set(52, 0f);
 			downButton.Left.Set(0, 0f);
 			downButton.OnClick += (a, b) =>
@@ -268,7 +264,7 @@ namespace Terraria.ModLoader.UI
 			dataList.Clear();
 			var deleteButtonTexture = TextureManager.Load("Images/UI/ButtonDelete");
 			int top = 0;
-			dataWrapperList = new List<IUIModConfigDictionaryElementWrapper>();
+			dataWrapperList = new List<IDictionaryElementWrapper>();
 
 			//var genericListType = typeof(List<>);
 			//var specificListType = genericListType.MakeGenericType(typeof(double));
@@ -296,7 +292,7 @@ namespace Terraria.ModLoader.UI
 			//IProxy proxy = (IProxy)Activator.CreateInstance(genericType);
 
 			//Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
-			Type genericType = typeof(UIModConfigDictionaryElementWrapper<,>).MakeGenericType(keyType, valueType);
+			Type genericType = typeof(DictionaryElementWrapper<,>).MakeGenericType(keyType, valueType);
 
 
 			var keys = ((IDictionary)data).Keys;
@@ -314,7 +310,7 @@ namespace Terraria.ModLoader.UI
 				//sampleObject.value = valuesEnumerator.Current;
 				//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(sampleObject);
 
-				IUIModConfigDictionaryElementWrapper proxy = (IUIModConfigDictionaryElementWrapper)Activator.CreateInstance(genericType,
+				IDictionaryElementWrapper proxy = (IDictionaryElementWrapper)Activator.CreateInstance(genericType,
 					new object[] { keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
 				dataWrapperList.Add(proxy);
 				//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };  

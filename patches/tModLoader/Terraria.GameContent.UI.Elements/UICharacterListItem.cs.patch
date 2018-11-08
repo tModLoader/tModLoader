@@ -26,7 +26,7 @@
 +			this._errorTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
 +				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonError.png"));
 +			this._configTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
-+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonConfig.png"));
++				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonConfig.png"));
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);

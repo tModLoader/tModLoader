@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using Terraria.ModLoader.IO;
-using Terraria.ModLoader.Exceptions;
-using Terraria.ID;
+using System.Linq;
 using System.Reflection;
+using Terraria.ID;
+using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.Exceptions;
 using Terraria.UI;
-using Terraria.ModLoader.UI;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Config
 {
 	public static class ConfigManager
 	{

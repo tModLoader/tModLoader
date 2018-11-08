@@ -13,6 +13,7 @@ using Terraria.ModLoader.Audio;
 using Terraria.Localization;
 using log4net;
 using System.Linq;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader
 {

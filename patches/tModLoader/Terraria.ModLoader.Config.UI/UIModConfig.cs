@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using Newtonsoft.Json;
-using System.Reflection;
-using Terraria.GameContent.UI.States;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
-using Terraria.GameInput;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
 	// TODO: In-game version of this UI.
 	// TODO: Dictionary
@@ -472,50 +469,50 @@ namespace Terraria.ModLoader.UI
 					e = new UIText($"CustomUI for {memberInfo.Name} does not have the correct constructor.");
 				}
 			}
-			else if (type == typeof(JSONItem))
+			else if (type == typeof(ItemDefinition))
 			{
-				e = new UIModConfigItemDefinitionItem(memberInfo, item, ref sliderIDInPage, (IList<JSONItem>)array, index);
+				e = new ItemDefinitionElement(memberInfo, item, ref sliderIDInPage, (IList<ItemDefinition>)array, index);
 			}
 			else if (type == typeof(Color))
 			{
-				e = new UIModConfigColorItem(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
+				e = new ColorElement(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
 				//elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
 			}
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
-				e = new UIModConfigBooleanItem(memberInfo, item, (IList<bool>)array, index);
+				e = new BooleanElement(memberInfo, item, (IList<bool>)array, index);
 				sliderIDInPage++;
 			}
 			else if (type == typeof(float))
 			{
-				e = new UIModConfigFloatItem(memberInfo, item, sliderIDInPage++, (IList<float>)array, index);
+				e = new FloatElement(memberInfo, item, sliderIDInPage++, (IList<float>)array, index);
 			}
 			else if (type == typeof(byte))
 			{
-				e = new UIModConfigByteItem(memberInfo, item, sliderIDInPage++, (IList<byte>)array, index);
+				e = new ByteElement(memberInfo, item, sliderIDInPage++, (IList<byte>)array, index);
 			}
 			else if (type == typeof(uint))
 			{
-				e = new UIModConfigUIntItem(memberInfo, item, sliderIDInPage++, (IList<uint>)array, index);
+				e = new UIntElement(memberInfo, item, sliderIDInPage++, (IList<uint>)array, index);
 			}
 			else if (type == typeof(int))
 			{
 				RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
 				if (rangeAttribute != null)
-					e = new UIModConfigIntRangeItem(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
+					e = new IntRangeElement(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
 				else
-					e = new UIModConfigIntInputItem(memberInfo, item, (IList<int>)array, index);
+					e = new IntInputElement(memberInfo, item, (IList<int>)array, index);
 			}
 			else if (type == typeof(string))
 			{
 				OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 				if (ost != null)
 				{
-					e = new UIModConfigStringItem(memberInfo, item, sliderIDInPage++, (IList<string>)array, index);
+					e = new StringOptionElement(memberInfo, item, sliderIDInPage++, (IList<string>)array, index);
 				}
 				else
 				{
-					e = new UIModConfigStringInputItem(memberInfo, item, (IList<string>)array, index);
+					e = new StringInputElement(memberInfo, item, (IList<string>)array, index);
 					sliderIDInPage++;
 				}
 			}
@@ -527,26 +524,26 @@ namespace Terraria.ModLoader.UI
 				}
 				else
 				{
-					e = new UIModConfigEnumItem(memberInfo, item, sliderIDInPage++);
+					e = new EnumElement(memberInfo, item, sliderIDInPage++);
 				}
 			}
 			else if (type.IsArray)
 			{
-				e = new UIModConfigArrayItem(memberInfo, item, ref sliderIDInPage);
+				e = new ArrayElement(memberInfo, item, ref sliderIDInPage);
 				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
 			{
-				e = new UIModConfigListItem(memberInfo, item, ref sliderIDInPage);
+				e = new ListElement(memberInfo, item, ref sliderIDInPage);
 				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>))
 			{
-				e = new UIModConfigSetItem(memberInfo, item, ref sliderIDInPage);
+				e = new SetElement(memberInfo, item, ref sliderIDInPage);
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				e = new UIModConfigDictionaryItem(memberInfo, item, ref sliderIDInPage);
+				e = new DictionaryElement(memberInfo, item, ref sliderIDInPage);
 				//elementHeight = 300;
 			}
 			else if (type.IsClass)
@@ -561,7 +558,7 @@ namespace Terraria.ModLoader.UI
 						JsonConvert.PopulateObject("{}", listItem, ConfigManager.serializerSettings);
 						((IList)array)[index] = listItem;
 					}
-					e = new UIModConfigObjectItem(memberInfo, listItem, ref sliderIDInPage, (IList)array, index);
+					e = new ObjectElement(memberInfo, listItem, ref sliderIDInPage, (IList)array, index);
 					//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
 				else
@@ -613,7 +610,7 @@ namespace Terraria.ModLoader.UI
 					}
 					else
 					{
-						e = new UIModConfigObjectItem(memberInfo, subitem, ref sliderIDInPage);
+						e = new ObjectElement(memberInfo, subitem, ref sliderIDInPage);
 						//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 					}
 				}
@@ -769,179 +766,5 @@ namespace Terraria.ModLoader.UI
 		//	base.Recalculate();
 		//	mainConfigList?.Recalculate();
 		//}
-	}
-
-	public class PropertyFieldWrapper
-	{
-		private FieldInfo fieldInfo;
-		private PropertyInfo propertyInfo;
-
-		public PropertyFieldWrapper(FieldInfo fieldInfo)
-		{
-			this.fieldInfo = fieldInfo;
-		}
-
-		public PropertyFieldWrapper(PropertyInfo propertyInfo)
-		{
-			this.propertyInfo = propertyInfo;
-		}
-
-		public bool isField => fieldInfo != null;
-		public bool isProperty => propertyInfo != null;
-
-		public MemberInfo MemberInfo => fieldInfo != null ? fieldInfo : (MemberInfo)propertyInfo;
-
-		public string Name => fieldInfo?.Name ?? propertyInfo.Name;
-
-		public Type Type => fieldInfo?.FieldType ?? propertyInfo.PropertyType;
-
-		public object GetValue(Object obj)
-		{
-			if (fieldInfo != null)
-				return fieldInfo.GetValue(obj);
-			else
-				return propertyInfo.GetValue(obj, null);
-		}
-
-		public void SetValue(Object obj, object value)
-		{
-			if (fieldInfo != null)
-				fieldInfo.SetValue(obj, value);
-			else
-			{
-				if (propertyInfo.CanWrite) // TODO: Grey out?
-					propertyInfo.SetValue(obj, value, null);
-			}
-		}
-
-		public bool CanWrite => fieldInfo != null ? true : propertyInfo.CanWrite;
-	}
-
-	abstract class UIConfigRangeItem : UIModConfigItem
-	{
-		internal bool drawTicks;
-		public abstract int NumberTicks { get; }
-		public abstract float TickIncrement { get; }
-		protected Func<float> _GetProportion;
-		protected Action<float> _SetProportion;
-		private int _sliderIDInPage;
-
-		public UIConfigRangeItem(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
-		{
-			this._sliderIDInPage = sliderIDInPage;
-			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
-		}
-
-		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
-		{
-			perc = Utils.Clamp(perc, -.05f, 1.05f);
-			if (colorMethod == null)
-			{
-				colorMethod = new Utils.ColorLerpMethod(Utils.ColorLerp_BlackToWhite);
-			}
-			Texture2D colorBarTexture = Main.colorBarTexture;
-			Vector2 vector = new Vector2((float)colorBarTexture.Width, (float)colorBarTexture.Height) * scale;
-			IngameOptions.valuePosition.X = IngameOptions.valuePosition.X - (float)((int)vector.X);
-			Rectangle rectangle = new Rectangle((int)IngameOptions.valuePosition.X, (int)IngameOptions.valuePosition.Y - (int)vector.Y / 2, (int)vector.X, (int)vector.Y);
-			Rectangle destinationRectangle = rectangle;
-			int num = 167;
-			float num2 = (float)rectangle.X + 5f * scale;
-			float num3 = (float)rectangle.Y + 4f * scale;
-			if (drawTicks)
-			{
-				int numTicks = NumberTicks;
-				if (numTicks > 1)
-				{
-					for (int tick = 0; tick < numTicks; tick++)
-					{
-						float percent = tick * TickIncrement;
-						if (percent <= 1f)
-							sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
-					}
-				}
-			}
-			sb.Draw(colorBarTexture, rectangle, Color.White);
-			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
-			{
-				float percent = num4 / (float)num;
-				sb.Draw(Main.colorBlipTexture, new Vector2(num2 + num4 * scale, num3), null, colorMethod(percent), 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-			}
-			rectangle.Inflate((int)(-5f * scale), 2);
-			//rectangle.X = (int)num2;
-			//rectangle.Y = (int)num3;
-			bool flag = rectangle.Contains(new Point(Main.mouseX, Main.mouseY));
-			if (lockState == 2)
-			{
-				flag = false;
-			}
-			if (flag || lockState == 1)
-			{
-				sb.Draw(Main.colorHighlightTexture, destinationRectangle, Main.OurFavoriteColor);
-			}
-			sb.Draw(Main.colorSliderTexture, new Vector2(num2 + 167f * scale * perc, num3 + 4f * scale), null, Color.White, 0f, new Vector2(0.5f * (float)Main.colorSliderTexture.Width, 0.5f * (float)Main.colorSliderTexture.Height), scale, SpriteEffects.None, 0f);
-			if (Main.mouseX >= rectangle.X && Main.mouseX <= rectangle.X + rectangle.Width)
-			{
-				IngameOptions.inBar = flag;
-				return (float)(Main.mouseX - rectangle.X) / (float)rectangle.Width;
-			}
-			IngameOptions.inBar = false;
-			if (rectangle.X >= Main.mouseX)
-			{
-				return 0f;
-			}
-			return 1f;
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.DrawSelf(spriteBatch);
-			float num = 6f;
-			int num2 = 0;
-			IngameOptions.rightHover = -1;
-			if (!Main.mouseLeft)
-			{
-				IngameOptions.rightLock = -1;
-			}
-			if (IngameOptions.rightLock == this._sliderIDInPage)
-			{
-				num2 = 1;
-			}
-			else if (IngameOptions.rightLock != -1)
-			{
-				num2 = 2;
-			}
-			CalculatedStyle dimensions = base.GetDimensions();
-			float num3 = dimensions.Width + 1f;
-			Vector2 vector = new Vector2(dimensions.X, dimensions.Y);
-			bool flag2 = base.IsMouseHovering;
-			if (num2 == 1)
-			{
-				flag2 = true;
-			}
-			if (num2 == 2)
-			{
-				flag2 = false;
-			}
-			Vector2 vector2 = vector;
-			vector2.X += 8f;
-			vector2.Y += 2f + num;
-			vector2.X -= 17f;
-			Main.colorBarTexture.Frame(1, 1, 0, 0);
-			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
-			IngameOptions.valuePosition = vector2;
-			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
-			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
-			{
-				IngameOptions.rightHover = this._sliderIDInPage;
-				if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
-				{
-					this._SetProportion(obj);
-				}
-			}
-			if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
-			{
-				IngameOptions.rightLock = IngameOptions.rightHover;
-			}
-		}
 	}
 }

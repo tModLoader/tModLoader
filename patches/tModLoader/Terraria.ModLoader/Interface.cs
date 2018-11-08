@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 

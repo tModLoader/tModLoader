@@ -1,18 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
+using Terraria.ModLoader.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal class UIModConfigIntInputItem : UIModConfigItem
+	internal class IntInputElement : ConfigElement
 	{
 		private Func<int> _GetValue;
 		private Action<int> _SetValue;
@@ -20,7 +16,7 @@ namespace Terraria.ModLoader.UI
 		int max = 100;
 		int increment = 1;
 
-		public UIModConfigIntInputItem(PropertyFieldWrapper memberInfo, object item, IList<int> array, int index) : base(memberInfo, item, (IList)array)
+		public IntInputElement(PropertyFieldWrapper memberInfo, object item, IList<int> array, int index) : base(memberInfo, item, (IList)array)
 		{
 			_GetValue = () => DefaultGetValue();
 			_SetValue = (int value) => DefaultSetValue(value);
@@ -72,7 +68,7 @@ namespace Terraria.ModLoader.UI
 			uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(_GetValue().ToString());
 			Append(uIInputTextField);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
 			upButton.Recalculate();
 			upButton.Top.Set(4f, 0f);
 			upButton.Left.Set(-30, 1f);
@@ -82,7 +78,7 @@ namespace Terraria.ModLoader.UI
 				uIInputTextField.SetText(_GetValue().ToString());
 			};
 			textBoxBackground.Append(upButton);
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
 			downButton.Top.Set(16, 0f);
 			downButton.Left.Set(-30, 1f);
 			downButton.OnClick += (a, b) =>
@@ -107,7 +103,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	internal class UIModConfigIntRangeItem : UIConfigRangeItem
+	internal class IntRangeElement : RangeElement
 	{
 		private Func<int> _GetValue;
 		private Action<int> _SetValue;
@@ -119,7 +115,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public UIModConfigIntRangeItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
@@ -180,7 +176,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	internal class UIModConfigUIntItem : UIConfigRangeItem
+	internal class UIntElement : RangeElement
 	{
 		private Func<uint> _GetValue;
 		private Action<uint> _SetValue;
@@ -192,7 +188,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public UIModConfigUIntItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<uint> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public UIntElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<uint> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
@@ -253,7 +249,7 @@ namespace Terraria.ModLoader.UI
 		}
 	}
 
-	internal class UIModConfigByteItem : UIConfigRangeItem
+	internal class ByteElement : RangeElement
 	{
 		private Func<byte> _GetValue;
 		private Action<byte> _SetValue;
@@ -265,7 +261,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public UIModConfigByteItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<byte> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public ByteElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<byte> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();

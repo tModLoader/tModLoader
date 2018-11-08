@@ -16,6 +16,7 @@ using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
 using Terraria.Localization;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
 {

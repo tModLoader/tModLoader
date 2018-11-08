@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader

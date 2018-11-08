@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
+using Terraria.ModLoader.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal class UIModConfigStringInputItem : UIModConfigItem
+	internal class StringInputElement : ConfigElement
 	{
 		private Func<string> _GetValue;
 		private Action<string> _SetValue;
 
-		public UIModConfigStringInputItem(PropertyFieldWrapper memberInfo, object item, IList<string> array, int index) : base(memberInfo, item, (IList)array)
+		public StringInputElement(PropertyFieldWrapper memberInfo, object item, IList<string> array, int index) : base(memberInfo, item, (IList)array)
 		{
 			_GetValue = () => DefaultGetValue();
 			_SetValue = (string value) => DefaultSetValue(value);

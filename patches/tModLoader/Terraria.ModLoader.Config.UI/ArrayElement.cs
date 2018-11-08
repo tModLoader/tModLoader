@@ -1,19 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal class UIModConfigArrayItem : UIModConfigItem
+	internal class ArrayElement : ConfigElement
 	{
 		private object data;
 		private NestedUIList dataList;
@@ -22,13 +13,13 @@ namespace Terraria.ModLoader.UI
 		//public override int NumberTicks => 0;
 		//public override float TickIncrement => 0;
 
-		public UIModConfigArrayItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public ArrayElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			MaxHeight.Set(300, 0f);
 
 			drawLabel = false;
 			string name = memberInfo.Name;
-			
+
 			if (labelAttribute != null)
 			{
 				name = labelAttribute.Label;

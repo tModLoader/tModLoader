@@ -286,7 +286,7 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
-			ConfigManager.Unload();
+			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 
 			CleanupModReferences();

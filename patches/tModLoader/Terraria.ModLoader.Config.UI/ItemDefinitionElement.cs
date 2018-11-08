@@ -3,120 +3,26 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	// JSONItemConverter should allow this to be used as a dictionary key.
-	[TypeConverter(typeof(JSONItemConverter))]
-	//[CustomModConfigItem(typeof(UIModConfigItemDefinitionItem))]
-	public class JSONItem
+	class ItemDefinitionElement : ConfigElement
 	{
-		public string mod;
-		public string name;
-
-		public JSONItem()
-		{
-			mod = "";
-			name = "";
-		}
-
-		public JSONItem(string mod, string name)
-		{
-			this.mod = mod;
-			this.name = name;
-		}
-
-		public bool IsUnloaded => GetID() == 0 && !(name == "" && mod == "");
-
-		public override bool Equals(object obj)
-		{
-			JSONItem p = obj as JSONItem;
-			if (p == null)
-			{
-				return false;
-			}
-			return (mod == p.mod) && (name == p.name);
-		}
-
-		public override int GetHashCode()
-		{
-			return new { mod, name }.GetHashCode();
-		}
-
-		public int GetID()
-		{
-			if (mod == "Terraria")
-			{
-				if (!ItemID.Search.ContainsName(name))
-					return 0;
-				return ItemID.Search.GetId(name);
-			}
-			return ModLoader.GetMod(this.mod)?.GetItem(this.name)?.item.type ?? 0;
-		}
-	}
-
-	internal class JSONItemConverter : TypeConverter
-	{
-		// Overrides the CanConvertFrom method of TypeConverter.
-		// The ITypeDescriptorContext interface provides the context for the
-		// conversion. Typically, this interface is used at design time to
-		// provide information about the design-time container.
-		public override bool CanConvertFrom(ITypeDescriptorContext context,
-		   Type sourceType)
-		{
-			if (sourceType == typeof(string))
-			{
-				return true;
-			}
-			return base.CanConvertFrom(context, sourceType);
-		}
-
-		// Overrides the ConvertFrom method of TypeConverter.
-		public override object ConvertFrom(ITypeDescriptorContext context,
-		   CultureInfo culture, object value)
-		{
-			if (value is string)
-			{
-				// ModNames can't have spaces, but ItemNames can I think.
-				string[] v = ((string)value).Split(new char[] { ' ' }, 2);
-				return new JSONItem(v[0], v[1]);
-			}
-			return base.ConvertFrom(context, culture, value);
-		}
-
-		// Overrides the ConvertTo method of TypeConverter.
-		public override object ConvertTo(ITypeDescriptorContext context,
-		   CultureInfo culture, object value, Type destinationType)
-		{
-			if (destinationType == typeof(string))
-			{
-				JSONItem item = (JSONItem)value;
-				return $"{item.mod} {item.name}";
-			}
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
-
-	class UIModConfigItemDefinitionItem : UIModConfigItem
-	{
-		private List<UIModConfigItemDefinitionChoice> items;
+		private List<ItemDefinitionOptionElement> items;
 		private bool updateNeeded;
 		private bool itemSelectionExpanded;
 
-		private Func<JSONItem> _GetValue;
-		private Action<JSONItem> _SetValue;
-		private UIModConfigItemDefinitionChoice itemChoice;
+		private Func<ItemDefinition> _GetValue;
+		private Action<ItemDefinition> _SetValue;
+		private ItemDefinitionOptionElement itemChoice;
 		private UIPanel chooserPanel;
 		private NestedUIGrid chooserGrid;
 		private UIFocusInputTextField chooserFilter;
@@ -124,15 +30,15 @@ namespace Terraria.ModLoader.UI
 
 		private float itemScale = 0.5f;
 
-		public UIModConfigItemDefinitionItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList<JSONItem> array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		public ItemDefinitionElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList<ItemDefinition> array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
 		{
 			Height.Set(30f, 0f);
 
 			_GetValue = () => DefaultGetValue();
-			_SetValue = (JSONItem value) => DefaultSetValue(value);
+			_SetValue = (ItemDefinition value) => DefaultSetValue(value);
 
 			//itemChoice = new UIModConfigItemDefinitionChoice(_GetValue()?.GetID() ?? 0, 0.5f);
-			itemChoice = new UIModConfigItemDefinitionChoice(_GetValue(), 0.5f);
+			itemChoice = new ItemDefinitionOptionElement(_GetValue(), 0.5f);
 			itemChoice.Top.Set(2f, 0f);
 			itemChoice.Left.Set(-30, 1f);
 			itemChoice.OnClick += (a, b) =>
@@ -197,7 +103,7 @@ namespace Terraria.ModLoader.UI
 			chooserPanel.Append(scrollbar);
 			//Append(chooserPanel);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
 			upButton.Recalculate();
 			upButton.Top.Set(-4f, 0f);
 			upButton.Left.Set(-24, 1f);
@@ -211,7 +117,7 @@ namespace Terraria.ModLoader.UI
 			};
 			chooserPanel.Append(upButton);
 
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
 			downButton.Top.Set(8, 0f);
 			downButton.Left.Set(-24, 1f);
 			downButton.OnClick += (a, b) =>
@@ -232,20 +138,20 @@ namespace Terraria.ModLoader.UI
 			updateNeeded = false;
 			if (itemSelectionExpanded && items == null)
 			{
-				items = new List<UIModConfigItemDefinitionChoice>();
+				items = new List<ItemDefinitionOptionElement>();
 				for (int i = 0; i < ItemLoader.ItemCount; i++)
 				{
 					int capturedID = i;
-					UIModConfigItemDefinitionChoice item = new UIModConfigItemDefinitionChoice(capturedID, 0.5f);
+					ItemDefinitionOptionElement item = new ItemDefinitionOptionElement(capturedID, 0.5f);
 					item.OnClick += (a, b) =>
 					{
 						if (capturedID >= ItemID.Count)
 						{
 							var moditem = ItemLoader.GetItem(capturedID);
-							_SetValue(new JSONItem(moditem.mod.Name, moditem.Name));
+							_SetValue(new ItemDefinition(moditem.mod.Name, moditem.Name));
 						}
 						else
-							_SetValue(new JSONItem("Terraria", ItemID.Search.GetName(capturedID)));
+							_SetValue(new ItemDefinition("Terraria", ItemID.Search.GetName(capturedID)));
 						updateNeeded = true;
 						itemSelectionExpanded = false;
 					};
@@ -264,7 +170,7 @@ namespace Terraria.ModLoader.UI
 			}
 			if (itemSelectionExpanded)
 			{
-				var passed = new List<UIModConfigItemDefinitionChoice>();
+				var passed = new List<ItemDefinitionOptionElement>();
 				foreach (var item in items)
 				{
 					if (ItemID.Sets.Deprecated[item.itemType])
@@ -288,21 +194,21 @@ namespace Terraria.ModLoader.UI
 			itemChoice.SetItem(_GetValue());
 		}
 
-		void DefaultSetValue(JSONItem text)
+		void DefaultSetValue(ItemDefinition text)
 		{
 			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, text);
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		JSONItem DefaultGetValue()
+		ItemDefinition DefaultGetValue()
 		{
-			return (JSONItem)memberInfo.GetValue(item);
+			return (ItemDefinition)memberInfo.GetValue(item);
 		}
 	}
 
 	// TODO: Override string for "Unloaded item" etc.
-	internal class UIModConfigItemDefinitionChoice : UIElement
+	internal class ItemDefinitionOptionElement : UIElement
 	{
 		public static Texture2D defaultBackgroundTexture = Main.inventoryBack9Texture;
 		public Texture2D backgroundTexture = defaultBackgroundTexture;
@@ -312,7 +218,7 @@ namespace Terraria.ModLoader.UI
 		public string nameoverload;
 		private bool unloaded;
 
-		public UIModConfigItemDefinitionChoice(JSONItem item, float scale = .75f)
+		public ItemDefinitionOptionElement(ItemDefinition item, float scale = .75f)
 		{
 			this.itemType = item?.GetID() ?? 0;
 			if (item?.IsUnloaded ?? false)
@@ -327,7 +233,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(defaultBackgroundTexture.Height * scale, 0f);
 		}
 
-		public UIModConfigItemDefinitionChoice(Item item, float scale = .75f)
+		public ItemDefinitionOptionElement(Item item, float scale = .75f)
 		{
 			this.scale = scale;
 			this.item = item;
@@ -336,7 +242,7 @@ namespace Terraria.ModLoader.UI
 			this.Height.Set(defaultBackgroundTexture.Height * scale, 0f);
 		}
 
-		public UIModConfigItemDefinitionChoice(int itemType, float scale = .75f)
+		public ItemDefinitionOptionElement(int itemType, float scale = .75f)
 		{
 			this.scale = scale;
 			this.item = new Item();
@@ -355,7 +261,7 @@ namespace Terraria.ModLoader.UI
 			unloaded = false;
 		}
 
-		public void SetItem(JSONItem item)
+		public void SetItem(ItemDefinition item)
 		{
 			nameoverload = null;
 			unloaded = false;
@@ -446,7 +352,7 @@ namespace Terraria.ModLoader.UI
 					if (IsMouseHovering)
 					{
 						UIModConfig.tooltip = "Nothing";
-						if(!string.IsNullOrEmpty(nameoverload))
+						if (!string.IsNullOrEmpty(nameoverload))
 							UIModConfig.tooltip = nameoverload;
 					}
 				}
@@ -455,7 +361,7 @@ namespace Terraria.ModLoader.UI
 
 		public override int CompareTo(object obj)
 		{
-			UIModConfigItemDefinitionChoice other = obj as UIModConfigItemDefinitionChoice;
+			ItemDefinitionOptionElement other = obj as ItemDefinitionOptionElement;
 			return itemType.CompareTo(other.itemType);
 		}
 	}

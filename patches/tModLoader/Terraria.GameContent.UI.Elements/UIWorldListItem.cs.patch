@@ -1,10 +1,11 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
-@@ -5,6 +_,7 @@
+@@ -5,6 +_,8 @@
  using Terraria.Graphics;
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Config;
  using Terraria.Social;
  using Terraria.UI;
  
@@ -39,7 +40,7 @@
  			this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
  			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
 +			this._configTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
-+				System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonConfig.png"));
++				System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonConfig.png"));
  		}
  
  		private void InitializeAppearance()

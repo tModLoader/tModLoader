@@ -10,6 +10,7 @@ using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 using System.Reflection;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
 {

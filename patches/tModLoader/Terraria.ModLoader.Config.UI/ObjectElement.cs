@@ -1,27 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using Newtonsoft.Json;
-using System.Collections;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	class UIModConfigObjectItem : UIModConfigItem
+	class ObjectElement : ConfigElement
 	{
 		private NestedUIList dataList;
 		// Label:
 		//  Members
 		//  Members
-		public UIModConfigObjectItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item, array)
+		public ObjectElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item, array)
 		{
 			drawLabel = false;
 

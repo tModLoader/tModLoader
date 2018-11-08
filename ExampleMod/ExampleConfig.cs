@@ -10,8 +10,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Config.UI;
 
 namespace ExampleMod
 {
@@ -202,12 +202,12 @@ namespace ExampleMod
 
 		public Dictionary<int, float> IntFloatDictionary;
 		public Dictionary<string, Pair> StringPairDictionary;
-		public Dictionary<JSONItem, float> JsonItemFloatDictionary;
+		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary;
 
 		public HashSet<string> stringSet;
-		public HashSet<JSONItem> itemSet;
+		public HashSet<ItemDefinition> itemSet;
 
-		public JSONItem specialItem;
+		public ItemDefinition specialItem;
 
 		[BackgroundColor(255, 0, 0)]
 		public List<Pair> ListOfPair;
@@ -251,9 +251,9 @@ namespace ExampleMod
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
 			if (JsonItemFloatDictionary == null)
-				JsonItemFloatDictionary = new Dictionary<JSONItem, float>();
+				JsonItemFloatDictionary = new Dictionary<ItemDefinition, float>();
 			stringSet = stringSet ?? new HashSet<string>();
-			itemSet = itemSet ?? new HashSet<JSONItem>();
+			itemSet = itemSet ?? new HashSet<ItemDefinition>();
 			//if (gradient == null)
 			//	gradient = new Gradient();
 			//if (simpleDataExample == null)
@@ -275,7 +275,7 @@ namespace ExampleMod
 			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here.
 			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
 
-			string missingFieldExample = (string)_additionalData["missingFieldExample"];
+			//string missingFieldExample = (string)_additionalData["missingFieldExample"];
 		}
 
 		public override ModConfig Clone()
@@ -288,16 +288,16 @@ namespace ExampleMod
 			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
 			clone.gradient = gradient == null ? null : gradient.Clone();
 			clone.pairExample = pairExample == null ? null : pairExample.Clone();
-			clone.specialItem = specialItem == null ? null : new JSONItem(specialItem.mod, specialItem.name);
+			clone.specialItem = specialItem == null ? null : new ItemDefinition(specialItem.mod, specialItem.name);
 			clone.simpleDataExample2 = simpleDataExample2.Clone();
 			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
 			clone.ArrayOfString = (string[])ArrayOfString.Clone();
 			clone.ListOfPair = ListOfPair.ConvertAll(pair => pair.Clone());
 			clone.IntFloatDictionary = IntFloatDictionary.ToDictionary(i => i.Key, i => i.Value);
 			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
-			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new JSONItem(i.Key.mod, i.Key.name), i => i.Value);
+			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new ItemDefinition(i.Key.mod, i.Key.name), i => i.Value);
 			clone.stringSet = new HashSet<string>(stringSet);
-			clone.itemSet = new HashSet<JSONItem>(itemSet);
+			clone.itemSet = new HashSet<ItemDefinition>(itemSet);
 			return clone;
 		}
 
@@ -428,7 +428,7 @@ namespace ExampleMod
 		}
 	}
 
-	class UIModConfigGradientItem : UIModConfigItem
+	class UIModConfigGradientItem : ConfigElement
 	{
 		//public UIModConfigVector2Item(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)

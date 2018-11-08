@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	class UIModConfigStringItem : UIConfigRangeItem
+	class StringOptionElement : RangeElement
 	{
 		//private Func<string> _TextDisplayFunction;
 
@@ -22,7 +16,7 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => options.Length;
 		public override float TickIncrement => 1f / (options.Length - 1);
 
-		public UIModConfigStringItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public StringOptionElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 			options = optionsAttribute.optionLabels;
@@ -32,7 +26,7 @@ namespace Terraria.ModLoader.UI
 			_GetIndex = () => DefaultGetIndex();
 			_SetValue = (int value) => DefaultSetValue(value);
 
-			if(array != null)
+			if (array != null)
 			{
 				_GetValue = () => array[index];
 				_SetValue = (int value) => { array[index] = options[value]; Interface.modConfig.SetPendingChanges(); };

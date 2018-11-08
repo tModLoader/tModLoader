@@ -431,7 +431,7 @@
  						return;
  					}
 +				case MessageID.InGameChangeConfig:
-+					ConfigManager.HandleInGameChangeConfigPacket(reader, whoAmI);
++					ModLoader.Config.ConfigManager.HandleInGameChangeConfigPacket(reader, whoAmI);
 +					return;
 +				case MessageID.ModPacket:
 +					ModNet.HandleModPacket(reader, whoAmI);

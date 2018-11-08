@@ -1,21 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using Newtonsoft.Json;
 using System.Collections;
+using System.Collections.Generic;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	class UIModConfigColorItem : UIModConfigItem
+	class ColorElement : ConfigElement
 	{
 		class ColorObject
 		{
@@ -88,7 +78,7 @@ namespace Terraria.ModLoader.UI
 
 		int height;
 		ColorObject c;
-		public UIModConfigColorItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
+		public ColorElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			if (array != null)
 			{

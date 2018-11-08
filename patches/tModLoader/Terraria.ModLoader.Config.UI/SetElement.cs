@@ -1,25 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
-using Terraria.GameInput;
 using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
-using System.Collections.Generic;
-using System.Collections;
-using System.Reflection;
-using System.Linq;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal abstract class IUIModConfigSetElementWrapper
+	internal abstract class ISetElementWrapper
 	{
 		internal virtual object Value => null;
 	}
 
-	internal class UIModConfigSetElementWrapper<V> : IUIModConfigSetElementWrapper
+	internal class SetElementWrapper<V> : ISetElementWrapper
 	{
 		private object set;
 
@@ -41,7 +37,7 @@ namespace Terraria.ModLoader.UI
 					_value = value;
 					addMethod.Invoke(set, new object[] { _value });
 				}
-				
+
 				//if (set.Contains(value))
 				//{
 
@@ -56,26 +52,25 @@ namespace Terraria.ModLoader.UI
 		}
 		internal override object Value => value;
 
-		public UIModConfigSetElementWrapper(V value, object set)
+		public SetElementWrapper(V value, object set)
 		{
 			this.set = set;
 			this._value = value;
 		}
 	}
 
-
-	internal class UIModConfigSetItem : UIModConfigItem
+	internal class SetElement : ConfigElement
 	{
 		private object data;
 		private Type setType;
 		private int sliderIDStart;
 		private NestedUIList dataList;
 
-		public List<IUIModConfigSetElementWrapper> dataWrapperList;
+		public List<ISetElementWrapper> dataWrapperList;
 
 		float scale = 1f;
 
-		public UIModConfigSetItem(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public SetElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
 		{
 			MaxHeight.Set(300, 0f);
 
@@ -171,7 +166,7 @@ namespace Terraria.ModLoader.UI
 			sortedContainer.Append(text);
 			Append(sortedContainer);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonIncrement.png")));
+			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
 			upButton.Top.Set(40, 0f);
 			upButton.Left.Set(0, 0f);
 			upButton.OnClick += (a, b) =>
@@ -188,7 +183,7 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(upButton);
 
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonDecrement.png")));
+			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
 			downButton.Top.Set(52, 0f);
 			downButton.Left.Set(0, 0f);
 			downButton.OnClick += (a, b) =>
@@ -213,16 +208,16 @@ namespace Terraria.ModLoader.UI
 			dataList.Clear();
 			var deleteButtonTexture = TextureManager.Load("Images/UI/ButtonDelete");
 			int top = 0;
-			dataWrapperList = new List<IUIModConfigSetElementWrapper>();
+			dataWrapperList = new List<ISetElementWrapper>();
 
-			Type genericType = typeof(UIModConfigSetElementWrapper<>).MakeGenericType(itemType);
+			Type genericType = typeof(SetElementWrapper<>).MakeGenericType(itemType);
 
 			var valuesEnumerator = ((IEnumerable)data).GetEnumerator();
 
 			int i = 0;
 			while (valuesEnumerator.MoveNext())
 			{
-				IUIModConfigSetElementWrapper proxy = (IUIModConfigSetElementWrapper)Activator.CreateInstance(genericType,
+				ISetElementWrapper proxy = (ISetElementWrapper)Activator.CreateInstance(genericType,
 					new object[] { valuesEnumerator.Current, (object)data });
 				dataWrapperList.Add(proxy);
 

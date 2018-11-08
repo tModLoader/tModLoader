@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.UI;
-using Terraria.UI.Chat;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.Config.UI
 {
-	internal class UIModConfigFloatItem : UIConfigRangeItem
+	internal class FloatElement : RangeElement
 	{
 		private Func<float> _GetValue;
 		private Action<float> _SetValue;
@@ -21,13 +15,13 @@ namespace Terraria.ModLoader.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (increment) / (max - min);
 
-		public UIModConfigFloatItem(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<float> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public FloatElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<float> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
 			this._SetValue = (float value) => DefaultSetValue(value);
 
-			if(array != null)
+			if (array != null)
 			{
 				_GetValue = () => array[index];
 				_SetValue = (float value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
