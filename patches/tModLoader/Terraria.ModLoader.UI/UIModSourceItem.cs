@@ -1,17 +1,17 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
-using Terraria.UI;
-using System.Net;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections.Specialized;
-using Terraria.ModLoader.IO;
-using System.Linq;
 using Terraria.Localization;
+using Terraria.ModLoader.IO;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -172,6 +172,10 @@ namespace Terraria.ModLoader.UI
 					{ "modreferences", String.Join(", ", bp.modReferences.Select(x => x.mod)) },
 					{ "modside", bp.side.ToFriendlyString() },
 				};
+				if (values["steamid64"].Length != 17)
+					throw new WebException($"The steamid64 '{values["steamid64"]}' is invalid, verify that you are logged into Steam and don't have a pirated copy of Terraria.");
+				if (string.IsNullOrEmpty(values["author"]))
+					throw new WebException($"You need to specify an author in build.txt");
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 				using (PatientWebClient client = new PatientWebClient())
