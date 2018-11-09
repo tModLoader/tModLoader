@@ -41,6 +41,12 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>..\references\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>..\references\MonoMod.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\ReLogic.dll</HintPath>
@@ -53,6 +59,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Terraria">
       <HintPath>..\src\tModLoader\bin\x86\WindowsDebug\Terraria.exe</HintPath>
+    </Reference>
+    <Reference Include="TerrariaHooks.Windows">
+      <HintPath>..\references\TerrariaHooks.Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

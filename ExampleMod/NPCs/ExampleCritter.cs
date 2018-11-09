@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoMod.RuntimeDetour.HookGen;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -13,6 +14,17 @@ namespace ExampleMod.NPCs
 	/// </summary>
 	class ExampleCritterNPC : ModNPC
 	{
+		public override bool Autoload(ref string name)
+		{
+			IL.Terraria.Wiring.HitWireSingle += HookStatue;
+			return base.Autoload(ref name);
+		}
+
+		private void HookStatue(HookIL il)
+		{
+			throw new NotImplementedException();
+		}
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Lava Snail");
