@@ -56,7 +56,8 @@ namespace Terraria.ModLoader.Default
 			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
 			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
 			new PatreonItem[] { new Saethar_Head(), new Saethar_Body(), new Saethar_Legs(), new Saethar_Wings(),  },
-			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  }
+			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  },
+			new PatreonItem[] { new Squid_Head(), new Squid_Body(), new Squid_Legs()  },
 		};
 
 		private void AddPatronSets()
