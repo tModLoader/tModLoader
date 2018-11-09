@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using Terraria.Localization;
 
-namespace Terraria.ModLoader.Default.Patreon
+namespace Terraria.ModLoader.Default.Developer
 {
-	internal abstract class PatreonItem : ModItem
+	internal abstract class DeveloperItem : ModItem
 	{
-		// Make sure the name and classname prefix match exactly.
+		public virtual string TooltipBrief { get; }
 		public abstract string SetName { get; }
 		public abstract EquipType ItemEquipType { get; }
 		public virtual string SetSuffix => "'s";
@@ -15,28 +14,28 @@ namespace Terraria.ModLoader.Default.Patreon
 		protected string EquipTypeSuffix
 			=> Enum.GetName(typeof(EquipType), ItemEquipType);
 
-		public override string Texture => $"ModLoader/Patreon.{SetName}_{EquipTypeSuffix}";
+		public override string Texture => $"ModLoader/Developer.{SetName}_{EquipTypeSuffix}";
 
 		public override void SetStaticDefaults()
 		{
 			string displayName =
 				EquipTypeSuffix != null
-					? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
-					: "ITEM NAME ERROR";
+				? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
+				: "ITEM NAME ERROR";
 			DisplayName.SetDefault(displayName);
 		}
 
 		public override void SetDefaults()
 		{
-			item.rare = 9;
+			item.rare = 11;
 			item.vanity = true;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip"))
+			var line = new TooltipLine(mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item")
 			{
-				overrideColor = Color.Aquamarine
+				overrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);
 		}

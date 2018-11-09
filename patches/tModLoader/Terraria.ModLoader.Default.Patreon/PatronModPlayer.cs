@@ -9,9 +9,10 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override bool CloneNewInstances => true;
 
-		public bool OrianSet;
+		public static PatronModPlayer Player(Player player) 
+			=> player.GetModPlayer<PatronModPlayer>();
 
-		public static PatronModPlayer Player(Player player) => player.GetModPlayer<PatronModPlayer>();
+		public bool OrianSet;
 
 		public override void ResetEffects()
 		{

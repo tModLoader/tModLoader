@@ -2,8 +2,8 @@
 {
 	internal class toplayz_Head : PatreonItem
 	{
-		public override string PatreonName => "toplayz";
-		public override EquipType PatreonEquipType => EquipType.Head;
+		public override string SetName => "toplayz";
+		public override EquipType ItemEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -15,8 +15,8 @@
 
 	internal class toplayz_Body : PatreonItem
 	{
-		public override string PatreonName => "toplayz";
-		public override EquipType PatreonEquipType => EquipType.Body;
+		public override string SetName => "toplayz";
+		public override EquipType ItemEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -28,8 +28,8 @@
 
 	internal class toplayz_Legs : PatreonItem
 	{
-		public override string PatreonName => "toplayz";
-		public override EquipType PatreonEquipType => EquipType.Legs;
+		public override string SetName => "toplayz";
+		public override EquipType ItemEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{

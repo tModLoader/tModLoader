@@ -131,10 +131,13 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,169 @@
+@@ -368,6 +_,172 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperItem.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperPlayer.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Developer\Jofairden.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Dinidini.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\KittyKitCatCat.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Orian.cs" />
@@ -346,12 +349,27 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,131 @@
+@@ -606,5 +_,146 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head_Shader.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms_Shader.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body_Shader.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Legs_Legs_Shader.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms_Glow.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body_Glow.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head_Glow.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Legs_Legs_Glow.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Glory_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Glory_Body_Arms.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Glory_Body_Body.png" />

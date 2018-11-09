@@ -4,8 +4,8 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	internal class Squid_Head : PatreonItem
 	{
-		public override string PatreonName => "Squid";
-		public override EquipType PatreonEquipType => EquipType.Head;
+		public override string SetName => "Squid";
+		public override EquipType ItemEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -16,8 +16,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	
 	internal class Squid_Body : PatreonItem
 	{
-		public override string PatreonName => "Squid";
-		public override EquipType PatreonEquipType => EquipType.Body;
+		public override string SetName => "Squid";
+		public override EquipType ItemEquipType => EquipType.Body;
 		
 		public override void SetDefaults()
 		{
@@ -28,8 +28,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	
 	internal class Squid_Legs : PatreonItem
 	{
-		public override string PatreonName => "Squid";
-		public override EquipType PatreonEquipType => EquipType.Legs;
+		public override string SetName => "Squid";
+		public override EquipType ItemEquipType => EquipType.Legs;
 		
 		public override void SetDefaults()
 		{

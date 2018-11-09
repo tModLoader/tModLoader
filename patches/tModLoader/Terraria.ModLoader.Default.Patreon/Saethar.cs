@@ -4,8 +4,8 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	internal class Saethar_Head : PatreonItem
 	{
-		public override string PatreonName => "Saethar";
-		public override EquipType PatreonEquipType => EquipType.Head;
+		public override string SetName => "Saethar";
+		public override EquipType ItemEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -16,8 +16,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	
 	internal class Saethar_Body : PatreonItem
 	{
-		public override string PatreonName => "Saethar";
-		public override EquipType PatreonEquipType => EquipType.Body;
+		public override string SetName => "Saethar";
+		public override EquipType ItemEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -28,8 +28,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	
 	internal class Saethar_Legs : PatreonItem
 	{
-		public override string PatreonName => "Saethar";
-		public override EquipType PatreonEquipType => EquipType.Legs;
+		public override string SetName => "Saethar";
+		public override EquipType ItemEquipType => EquipType.Legs;
 		
 		public override void SetDefaults()
 		{
@@ -40,8 +40,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	
 	internal class Saethar_Wings : PatreonItem
 	{
-		public override string PatreonName => "Saethar";
-		public override EquipType PatreonEquipType => EquipType.Wings;
+		public override string SetName => "Saethar";
+		public override EquipType ItemEquipType => EquipType.Wings;
 		
 		public override void SetDefaults()
 		{

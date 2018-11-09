@@ -2,8 +2,8 @@
 {
 	internal class dinidini_Head : PatreonItem
 	{
-		public override string PatreonName => "dinidini";
-		public override EquipType PatreonEquipType => EquipType.Head;
+		public override string SetName => "dinidini";
+		public override EquipType ItemEquipType => EquipType.Head;
 
 		public override void SetDefaults()
 		{
@@ -15,8 +15,8 @@
 
 	internal class dinidini_Body : PatreonItem
 	{
-		public override string PatreonName => "dinidini";
-		public override EquipType PatreonEquipType => EquipType.Body;
+		public override string SetName => "dinidini";
+		public override EquipType ItemEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -28,8 +28,8 @@
 
 	internal class dinidini_Legs : PatreonItem
 	{
-		public override string PatreonName => "dinidini";
-		public override EquipType PatreonEquipType => EquipType.Legs;
+		public override string SetName => "dinidini";
+		public override EquipType ItemEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{
@@ -41,8 +41,8 @@
 
 	internal class dinidini_Wings : PatreonItem
 	{
-		public override string PatreonName => "dinidini";
-		public override EquipType PatreonEquipType => EquipType.Wings;
+		public override string SetName => "dinidini";
+		public override EquipType ItemEquipType => EquipType.Wings;
 
 		public override void SetDefaults()
 		{

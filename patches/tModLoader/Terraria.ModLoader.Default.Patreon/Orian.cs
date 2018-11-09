@@ -5,14 +5,14 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	internal class Orian_Head : PatreonItem
 	{
-		public override string PatreonName => "Orian";
-		public override EquipType PatreonEquipType => EquipType.Head;
+		public override string SetName => "Orian";
+		public override EquipType ItemEquipType => EquipType.Head;
 
 		public override bool IsVanitySet(int head, int body, int legs)
 		{
-			return head == mod.GetEquipSlot($"{PatreonName}_{EquipType.Head}", EquipType.Head)
-				   && body == mod.GetEquipSlot($"{PatreonName}_{EquipType.Body}", EquipType.Body)
-				   && legs == mod.GetEquipSlot($"{PatreonName}_{EquipType.Legs}", EquipType.Legs);
+			return head == mod.GetEquipSlot($"{SetName}_{EquipType.Head}", EquipType.Head)
+				   && body == mod.GetEquipSlot($"{SetName}_{EquipType.Body}", EquipType.Body)
+				   && legs == mod.GetEquipSlot($"{SetName}_{EquipType.Legs}", EquipType.Legs);
 		}
 
 		public override void UpdateVanitySet(Player player)
@@ -30,8 +30,8 @@ namespace Terraria.ModLoader.Default.Patreon
 
 	internal class Orian_Body : PatreonItem
 	{
-		public override string PatreonName => "Orian";
-		public override EquipType PatreonEquipType => EquipType.Body;
+		public override string SetName => "Orian";
+		public override EquipType ItemEquipType => EquipType.Body;
 
 		public override void SetDefaults()
 		{
@@ -43,8 +43,8 @@ namespace Terraria.ModLoader.Default.Patreon
 
 	internal class Orian_Legs : PatreonItem
 	{
-		public override string PatreonName => "Orian";
-		public override EquipType PatreonEquipType => EquipType.Legs;
+		public override string SetName => "Orian";
+		public override EquipType ItemEquipType => EquipType.Legs;
 
 		public override void SetDefaults()
 		{

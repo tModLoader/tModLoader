@@ -1,14 +1,15 @@
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Default.Developer;
 using Terraria.ModLoader.Default.Patreon;
 
 namespace Terraria.ModLoader.Default
 {
 	internal class ModLoaderMod : Mod
-	{	
+	{
 		private static bool texturesLoaded;
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
@@ -44,6 +45,8 @@ namespace Terraria.ModLoader.Default
 			AddCommand("ModlistCommand", new ModlistCommand());
 			AddPatronSets();
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
+			AddDeveloperSets();
+			AddPlayer("DeveloperPlayer", new DeveloperPlayer());
 		}
 
 		// If new types arrise (probably not), change the format:
@@ -66,20 +69,37 @@ namespace Terraria.ModLoader.Default
 			// Flatten, and select items not null
 			foreach (var patronItem in PatronSets.SelectMany(x => x))
 			{
-				AddPatreonItemAndEquipType(patronItem, patronItem.PatreonName, patronItem.PatreonEquipType);
+				AddItemAndEquipType(patronItem, "Patreon", patronItem.SetName, patronItem.ItemEquipType);
+			}
+		}
+
+		private static readonly DeveloperItem[][] DeveloperSets =
+		{
+			new DeveloperItem[] { new PowerRanger_Head(), new PowerRanger_Body(), new PowerRanger_Legs() }
+		};
+
+
+		private void AddDeveloperSets()
+		{
+			// Flatten, and select items not null
+			foreach (var developerItem in DeveloperSets.SelectMany(x => x))
+			{
+				AddItemAndEquipType(developerItem, "Developer", developerItem.SetName, developerItem.ItemEquipType);
 			}
 		}
 
 		// Adds the given patreon item to ModLoader, and handles loading its assets automatically
-		private void AddPatreonItemAndEquipType(ModItem item, string name, EquipType equipType)
+		private void AddItemAndEquipType(ModItem item, string prefix, string name, EquipType equipType)
 		{
 			// If a client, we need to add several textures
 			if (!Main.dedServ)
 			{
-				AddTexture($"Patreon.{name}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}"));
-				AddTexture($"Patreon.{name}_{equipType}_{equipType}", ReadTexture($"Patreon.{name}_{equipType}_{equipType}"));
+				AddTexture($"{prefix}.{name}_{equipType}", ReadTexture($"{prefix}.{name}_{equipType}"));
+				AddTexture($"{prefix}.{name}_{equipType}_{equipType}", ReadTexture($"{prefix}.{name}_{equipType}_{equipType}"));
 				if (equipType == EquipType.Body) // If a body, add the arms texture
-					AddTexture($"Patreon.{name}_{equipType}_Arms", ReadTexture($"Patreon.{name}_{equipType}_Arms"));
+				{
+					AddTexture($"{prefix}.{name}_{equipType}_Arms", ReadTexture($"{prefix}.{name}_{equipType}_Arms"));
+				}
 			}
 			// Adds the item to ModLoader, as well as the normal assets
 			AddItem($"{name}_{equipType}", item);
@@ -99,33 +119,36 @@ namespace Terraria.ModLoader.Default
 			texturesLoaded = true;
 		}
 
-		private static Texture2D ReadTexture(string file)
+		internal static Texture2D ReadTexture(string file)
 		{
 			Assembly assembly = Assembly.GetExecutingAssembly();
 			// if someone set the type or name wrong, the stream will be null.
 			Stream stream = assembly.GetManifestResourceStream("Terraria.ModLoader.Default." + file + ".png");
 			if (stream == null) // [sanity check, makes it easier to know what's wrong]
+			{
 				throw new ArgumentException("Given EquipType for PatreonItem or name is not valid. It is possible either does not match up with the classname. If you added a new EquipType, modify GetEquipTypeSuffix() and AddPatreonItemAndEquipType() first.");
+			}
+
 			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
 
 
 		private const int ChanceToGetArmor = 20;
-		
+
 		internal static bool TryGettingPatreonArmor(Player player)
-     		{
-     			if (Main.rand.NextBool(ChanceToGetArmor))
-     			{
-     				int randomIndex = Main.rand.Next(PatronSets.Length);
-     				
-     				foreach (var patreonItem in PatronSets[randomIndex])
-     				{
-     					player.QuickSpawnItem(patreonItem.item.type);
-     				}
-     
-     				return true;
-     			}
-     			return false;
-     		}
-     	}
+		{
+			if (Main.rand.NextBool(ChanceToGetArmor))
+			{
+				int randomIndex = Main.rand.Next(PatronSets.Length);
+
+				foreach (var patreonItem in PatronSets[randomIndex])
+				{
+					player.QuickSpawnItem(patreonItem.item.type);
+				}
+
+				return true;
+			}
+			return false;
+		}
+	}
 }
