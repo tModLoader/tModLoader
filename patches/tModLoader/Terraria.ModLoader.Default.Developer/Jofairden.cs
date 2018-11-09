@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
-using ItemID = Terraria.ID.ItemID;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Developer
 {
@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Default.Developer
 		public override string TooltipBrief => "Jofairden's ";
 		public sealed override string SetName => "PowerRanger";
 		public const int ShaderNumSegments = 8;
-		public const int ShaderDrawOffset = 3;
+		public const int ShaderDrawOffset = 2;
 
 		public sealed override void SetStaticDefaults()
 		{
@@ -31,11 +31,11 @@ namespace Terraria.ModLoader.Default.Developer
 
 		protected static Vector2 GetDrawOffset(int i)
 		{
-			//return new Vector2(0, 2).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
+			return new Vector2(0, ShaderDrawOffset).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 
-			var halfDist = 4 / 2;
-			var offY = halfDist + halfDist * i % halfDist;
-			return new Vector2(0, offY).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
+			//var halfDist = ShaderDrawOffset / 2;
+			//var offY = halfDist + halfDist * i % halfDist;
+			//return new Vector2(0, offY).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 		}
 
 		public static float LayerStrength = 0f;
@@ -162,7 +162,7 @@ namespace Terraria.ModLoader.Default.Developer
 			});
 		}
 
-		public static PlayerLayer CreatGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc)
+		public static PlayerLayer CreateGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc)
 		{
 			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) =>
 			{
@@ -194,8 +194,10 @@ namespace Terraria.ModLoader.Default.Developer
 					drawDataInfo.origin,
 					1f,
 					effects,
-					0);
-				data.shader = GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
+					0)
+				{
+					shader = GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye)
+				};
 				Main.playerDrawData.Add(data);
 			});
 		}
@@ -226,7 +228,7 @@ namespace Terraria.ModLoader.Default.Developer
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreatGlowLayer("AndromedonHeadGlow", PlayerLayer.Head, drawInfo =>
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonHeadGlow", PlayerLayer.Head, drawInfo =>
 		{
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Head_Head_Glow");
 			return GetHeadDrawDataInfo(drawInfo, _glowTexture);
@@ -252,7 +254,7 @@ namespace Terraria.ModLoader.Default.Developer
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreatGlowLayer("AndromedonBodyGlow", PlayerLayer.Body, drawInfo =>
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonBodyGlow", PlayerLayer.Body, drawInfo =>
 		{
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Body_Body_Glow");
 			return GetBodyDrawDataInfo(drawInfo, _glowTexture);
@@ -278,7 +280,7 @@ namespace Terraria.ModLoader.Default.Developer
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreatGlowLayer("AndromedonLegsGlow", PlayerLayer.Head, drawInfo =>
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonLegsGlow", PlayerLayer.Head, drawInfo =>
 		{
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Legs_Legs_Glow");
 			return GetLegDrawDataInfo(drawInfo, _glowTexture);

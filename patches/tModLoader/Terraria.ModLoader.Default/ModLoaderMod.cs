@@ -78,7 +78,6 @@ namespace Terraria.ModLoader.Default
 			new DeveloperItem[] { new PowerRanger_Head(), new PowerRanger_Body(), new PowerRanger_Legs() }
 		};
 
-
 		private void AddDeveloperSets()
 		{
 			// Flatten, and select items not null
@@ -132,18 +131,30 @@ namespace Terraria.ModLoader.Default
 			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
 
+		private const int ChanceToGetPatreonArmor = 20;
+		private const int ChanceToGetDevArmor = 30;
 
-		private const int ChanceToGetArmor = 20;
-
-		internal static bool TryGettingPatreonArmor(Player player)
+		internal static bool TryGettingPatreonOrDevArmor(Player player)
 		{
-			if (Main.rand.NextBool(ChanceToGetArmor))
+			if (Main.rand.NextBool(ChanceToGetPatreonArmor))
 			{
 				int randomIndex = Main.rand.Next(PatronSets.Length);
 
 				foreach (var patreonItem in PatronSets[randomIndex])
 				{
 					player.QuickSpawnItem(patreonItem.item.type);
+				}
+
+				return true;
+			}
+
+			if (Main.rand.NextBool(ChanceToGetDevArmor))
+			{
+				int randomIndex = Main.rand.Next(DeveloperSets.Length);
+
+				foreach (var developerItem in DeveloperSets[randomIndex])
+				{
+					player.QuickSpawnItem(developerItem.item.type);
 				}
 
 				return true;

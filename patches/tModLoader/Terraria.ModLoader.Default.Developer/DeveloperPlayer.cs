@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Default.Developer
 {
@@ -29,7 +27,7 @@ namespace Terraria.ModLoader.Default.Developer
 			if (!AndromedonSet)
 			{
 				if (AndromedonItem.LayerStrength >= 0
-				    && Main.rand.NextBool(2))
+					&& Main.rand.NextBool(2))
 				{
 					AndromedonItem.LayerStrength -= 0.02f;
 				}
@@ -37,7 +35,7 @@ namespace Terraria.ModLoader.Default.Developer
 			else
 			{
 				if (AndromedonItem.LayerStrength <= 1
-				    && Main.rand.NextBool(2))
+					&& Main.rand.NextBool(2))
 				{
 					AndromedonItem.LayerStrength += 0.02f;
 				}
@@ -47,7 +45,7 @@ namespace Terraria.ModLoader.Default.Developer
 			{
 				Lighting.AddLight(
 					player.Center,
-					Main.DiscoColor.ToVector3() * AndromedonItem.LayerStrength * ((float)Main.time%2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f)));
+					Main.DiscoColor.ToVector3() * AndromedonItem.LayerStrength * ((float)Main.time % 2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f)));
 			}
 		}
 
@@ -85,7 +83,7 @@ namespace Terraria.ModLoader.Default.Developer
 				i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Arms"));
 				if (i != -1)
 				{
-					
+
 					layers.Insert(i + 1, PowerRanger_Body.GlowLayer);
 				}
 
