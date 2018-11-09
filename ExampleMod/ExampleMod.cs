@@ -180,6 +180,10 @@ namespace ExampleMod
 			});
 			// Registers the new recipe group with the specified name
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
+
+			// Modifying a vanilla recipe group. Now we can use Lava Snail to craft Snail Statue
+			RecipeGroup SnailGroup = RecipeGroup.recipeGroups[RecipeGroup.recipeGroupIDs["Snails"]];
+			SnailGroup.ValidItems.Add(ItemType<NPCs.ExampleCritterItem>());
 		}
 
 		// Learn how to do Recipes: https://github.com/blushiemagic/tModLoader/wiki/Basic-Recipes 
