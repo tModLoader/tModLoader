@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Mono.Cecil.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,9 +22,92 @@ namespace ExampleMod.NPCs
 			return base.Autoload(ref name);
 		}
 
+
+		/// <summary>
+		/// Change the following code sequence in Wiring.HitWireSingle
+		/// num145 = Utils.SelectRandom(Main.rand, new short[5]
+		/// {
+		/// 	359,
+		/// 	359,
+		/// 	359,
+		/// 	359,
+		/// 	360,
+		/// });
+		/// 
+		/// to 
+		/// 
+		/// var arr = new short[5]
+		/// {
+		/// 	359,
+		/// 	359,
+		/// 	359,
+		/// 	359,
+		/// 	360,
+		/// }
+		/// arr = arr.ToList().Add(id).ToArray();
+		/// num145 = Utils.SelectRandom(Main.rand, arr);
+		/// 
+		/// </summary>
+		/// <param name="il"></param>
 		private void HookStatue(HookIL il)
 		{
-			throw new NotImplementedException();
+			// obtain a cursor positioned before the first instruction of the method
+			// the cursor is used for navigating and modifying the il
+			var c = il.At(0);
+
+			// the exact location for this hook is very complex to search for due to the hook instructions not being unique, and buried deep in control flow
+			// switch statements are sometimes compiled to if-else chains, and debug builds litter the code with no-ops and redundant locals
+
+			// in general you want to search using structure and function rather than numerical constants which may change across different versions or compile settings
+			// using local variable indices is almost always a bad idea
+
+			// we can search for
+			// switch (*)
+			//   case 56:
+			//     Utils.SelectRandom *
+
+			// in general you'd want to look for a specific switch variable, or perhaps the containing switch (type) { case 105:
+			// but the generated IL is really variable and hard to match in this case
+
+			// we'll just use the fact that there are no other switch statements with case 56, followed by a SelectRandom
+
+			HookILLabel[] targets = null;
+			while (c.TryGotoNext(i => i.MatchSwitch(out targets)))
+			{
+				// some optimising compilers generate a sub so that all the switch cases start at 0
+				// ldc.i4.s 51
+				// sub
+				// switch
+				int offset = 0;
+				if (c.Prev.MatchSub() && c.Prev.Previous.MatchLdcI4(out offset));
+				
+				// not enough switch instructions
+				if (targets.Length < 56-offset)
+					continue;
+
+				var target = targets[56-offset];
+				if (target == null)
+					continue;
+				
+				// move the cursor to case 56:
+				c.GotoLabel(target);
+				// there's lots of extra checks we could add here to make sure we're at the right spot, such as not encountering any branching instructions
+				c.GotoNext(i => i.MatchCall(typeof(Utils), nameof(Utils.SelectRandom)));
+
+				// goto next positions us before the instruction we searched for, so we can insert our array modifying code right here
+				c.EmitDelegate<Func<short[], short[]>>(arr => {
+					// convert the array to a list, add our custom snail, and back to an array
+					var list = arr.ToList();
+					list.Add((short) npc.type);
+					return list.ToArray();
+				});
+
+				// hook applied successfully
+				return;
+			}
+
+			// couldn't find the right place to insert
+			throw new Exception("Hook location not found, switch(*) { case 56: ...");
 		}
 
 		public override void SetStaticDefaults()

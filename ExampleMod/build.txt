@@ -7,3 +7,4 @@ hideResources = false
 includeSource = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = true
+languageVersion = 6
