@@ -35,5 +35,6 @@ var searchData=
   ['modwaterfallstyle',['ModWaterfallStyle',['../class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html',1,'Terraria::ModLoader']]],
   ['modwaterstyle',['ModWaterStyle',['../class_terraria_1_1_mod_loader_1_1_mod_water_style.html',1,'Terraria::ModLoader']]],
   ['modworld',['ModWorld',['../class_terraria_1_1_mod_loader_1_1_mod_world.html',1,'Terraria::ModLoader']]],
+  ['monomodhooks',['MonoModHooks',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html',1,'Terraria::ModLoader']]],
   ['mountloader',['MountLoader',['../class_terraria_1_1_mod_loader_1_1_mount_loader.html',1,'Terraria::ModLoader']]]
 ];

@@ -2,6 +2,7 @@ var searchData=
 [
   ['mac',['mac',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab',1,'Terraria::ModLoader::ModLoader']]],
   ['makedefault',['makeDefault',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html#a6d65e0fec2b1b5fe56ff744ee0f6e31a',1,'Terraria::ModLoader::IO::TagIO::ClassPayloadHandler']]],
+  ['manager',['manager',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#ae16d891175eb71f85380c27dad46a511',1,'Terraria::ModLoader::MonoModHooks']]],
   ['marble',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['martianmadness',['MartianMadness',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6f2997aac758c10792fe3793b3ee0e60',1,'Terraria::ModLoader::SpawnCondition']]],
   ['martianprobe',['MartianProbe',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9d573e5a6b52d608c8c198aae36b98dd',1,'Terraria::ModLoader::SpawnCondition']]],
@@ -20,7 +21,7 @@ var searchData=
   ['modfile',['modFile',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#adc377e63fee81c682346b68b7990b5d0',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['modname',['modName',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html#af3694e36d87c388f5bf1532e420d0207',1,'Terraria::ModLoader::Exceptions::CustomModDataException']]],
   ['modpath',['ModPath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f',1,'Terraria::ModLoader::ModLoader']]],
-  ['mods',['mods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a25c79bf62cc53bb9a05dda3e404aaf6b',1,'Terraria.ModLoader.ModLoader.mods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5',1,'Terraria.ModLoader.ModLoader.Mods()']]],
+  ['mods',['Mods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5',1,'Terraria.ModLoader.ModLoader.Mods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a25c79bf62cc53bb9a05dda3e404aaf6b',1,'Terraria.ModLoader.ModLoader.mods()']]],
   ['modsbyname',['modsByName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758',1,'Terraria::ModLoader::ModLoader']]],
   ['modsourcepath',['ModSourcePath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65d6fb535bb0f112020ebe47261a31f0',1,'Terraria::ModLoader::ModLoader']]],
   ['module',['module',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a74f54f42aed60cf34d520fcde90d059f',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter']]],

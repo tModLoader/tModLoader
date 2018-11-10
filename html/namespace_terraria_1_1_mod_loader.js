@@ -57,6 +57,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style" ],
     [ "ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", "class_terraria_1_1_mod_loader_1_1_mod_water_style" ],
     [ "ModWorld", "class_terraria_1_1_mod_loader_1_1_mod_world.html", "class_terraria_1_1_mod_loader_1_1_mod_world" ],
+    [ "MonoModHooks", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks" ],
     [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ],
     [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ],
     [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ],

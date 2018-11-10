@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['nativeaccesscheck',['NativeAccessCheck',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a8b7e4b1886428b79994c6a20f24aca09',1,'Terraria::ModLoader::MonoModHooks']]],
   ['naturalliferegen',['NaturalLifeRegen',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#ae8dbfbc03aeba36009cca97321fb8754',1,'Terraria.ModLoader.ModPlayer.NaturalLifeRegen()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ab4be07bb9a6ce2de5ad645cabacd9eb2',1,'Terraria.ModLoader.PlayerHooks.NaturalLifeRegen()']]],
   ['nearbyeffects',['NearbyEffects',['../class_terraria_1_1_mod_loader_1_1_global_tile.html#a75d6d7dc00775570ea6a6d500c736c7b',1,'Terraria.ModLoader.GlobalTile.NearbyEffects()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a10cca98611fc831d5d06c1f53644996a',1,'Terraria.ModLoader.ModTile.NearbyEffects()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac82336d36c69388e1ee3d4cd3fa56808',1,'Terraria.ModLoader.TileLoader.NearbyEffects()']]],
   ['needsmodsaving',['NeedsModSaving',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aa991a5fac9a39cb28729b887d1c1bb3e',1,'Terraria::ModLoader::ItemLoader']]],
