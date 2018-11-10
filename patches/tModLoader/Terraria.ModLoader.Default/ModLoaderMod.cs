@@ -14,6 +14,7 @@ namespace Terraria.ModLoader.Default
 		private static Texture2D mysteryItemTexture;
 		private static Texture2D startBagTexture;
 		private static Texture2D mysteryTileTexture;
+		internal static ModLoaderMod Instance;
 
 		public override string Name => "ModLoader";
 		public override Version Version => ModLoader.version;
@@ -47,6 +48,8 @@ namespace Terraria.ModLoader.Default
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
 			AddDeveloperSets();
 			AddPlayer("DeveloperPlayer", new DeveloperPlayer());
+
+			Instance = this;
 		}
 
 		// If new types arrise (probably not), change the format:
@@ -160,6 +163,11 @@ namespace Terraria.ModLoader.Default
 				return true;
 			}
 			return false;
+		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI)
+		{
+			ModNetHandler.HandlePacket(reader, whoAmI);
 		}
 	}
 }

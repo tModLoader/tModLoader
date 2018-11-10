@@ -1,19 +1,252 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Developer
 {
-	class DrawDataInfo
+	internal class AndromedonNetHandler : NetHandler
 	{
-		public Vector2 position;
-		public Texture2D texture;
-		public Rectangle? frame;
-		public float rotation;
-		public Vector2 origin;
+		public const byte FullStatePacket = 1;
+		public const byte AuraTimePacket = 2;
+
+		public AndromedonNetHandler(byte handlerType) : base(handlerType)
+		{
+		}
+
+		public override void HandlePacket(BinaryReader r, int fromWho)
+		{
+			switch (r.ReadByte())
+			{
+				case FullStatePacket:
+					HandleState(r, fromWho);
+					break;
+				case AuraTimePacket:
+					HandleAuraTime(r, fromWho);
+					break;
+			}
+		}
+
+		public void SendState(int toWho, int fromWho, AndromedonEffect effect)
+		{
+			var packet = GetPacket(FullStatePacket, fromWho);
+			packet.Write(effect.LayerStrength);
+			packet.Write(effect.ShaderStrength);
+			packet.Write(effect._auraTime);
+			packet.Send(toWho, fromWho);
+		}
+
+		private void HandleState(BinaryReader r, int fromWho)
+		{
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				fromWho = r.ReadByte();
+			}
+
+			AndromedonEffect effect = DeveloperPlayer.GetPlayer(Main.player[fromWho]).AndromedonEffect;
+			effect.LayerStrength = r.ReadSingle();
+			effect.ShaderStrength = r.ReadSingle();
+			effect._auraTime = r.ReadInt32();
+
+			if (Main.netMode == NetmodeID.Server)
+			{
+				SendState(-1, fromWho, effect);
+			}
+		}
+
+		public void SendAuraTime(int toWho, int fromWho, int auraTime)
+		{
+			var packet = GetPacket(AuraTimePacket, fromWho);
+			packet.Write(auraTime);
+			packet.Send(toWho, fromWho);
+		}
+
+		private void HandleAuraTime(BinaryReader r, int fromWho)
+		{
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				fromWho = r.ReadByte();
+			}
+
+			DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(Main.player[fromWho]);
+			int auraTime = r.ReadInt32();
+			devPlayer.AndromedonEffect._auraTime = auraTime;
+			
+			if (Main.netMode == NetmodeID.Server)
+			{
+				SendAuraTime(-1, fromWho, auraTime);
+			}
+		}
+	}
+
+	internal sealed class AndromedonEffect : ICloneable
+	{
+		public bool HasSetBonus;
+		public bool HasAura => _auraTime > 0;
+		public float LayerStrength;
+		public float ShaderStrength;
+
+		private int _lastLife = -1;
+		internal int _auraTime;
+
+		private int? _headSlot;
+		private int? _bodySlot;
+		private int? _legSlot;
+
+		public void ResetEffects()
+		{
+			HasSetBonus = false;
+		}
+
+		public void UpdateDead()
+		{
+			HasSetBonus = false;
+			_auraTime = 0;
+		}
+
+		public void UpdateEffects(Player player)
+		{
+			if (!HasAura)
+			{
+				if (ShaderStrength > 0f)
+				{
+					ShaderStrength -= 0.02f;
+				}
+			}
+			else
+			{
+				if (ShaderStrength <= 1f)
+				{
+					ShaderStrength += 0.02f;
+				}
+				else
+				{
+					_auraTime--;
+				}
+			}
+
+			if (!HasSetBonus)
+			{
+				if (LayerStrength > 0)
+				{
+					LayerStrength -= 0.02f;
+				}
+			}
+			else
+			{
+				if (LayerStrength <= 1)
+				{
+					LayerStrength += 0.02f;
+				}
+			}
+
+			if (ShaderStrength > 0f)
+			{
+				Lighting.AddLight(
+					player.Center,
+					Main.DiscoColor.ToVector3() * LayerStrength * ((float)Main.time % 2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f)));
+			}
+		}
+
+		public void UpdateAura(Player player)
+		{
+			if (_lastLife <= -1)
+			{
+				_lastLife = player.statLife;
+			}
+			int diff = _lastLife - player.statLife;
+			if (diff >= 0.1f * player.statLifeMax2)
+			{
+				_auraTime = 300 + diff;
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					ModNetHandler.Andromedon.SendAuraTime(-1, player.whoAmI, _auraTime);
+				}
+			}
+			_lastLife = player.statLife;
+		}
+
+		public void ModifyDrawLayers(Mod mod, Player player, List<PlayerLayer> layers)
+		{
+			_headSlot = _headSlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Head}", EquipType.Head);
+			_bodySlot = _bodySlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
+			_legSlot = _legSlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
+
+			if (LayerStrength >= 0f)
+			{
+				int i;
+
+				if (player.head == _headSlot)
+				{
+					PowerRanger_Head.GlowLayer.visible = true;
+
+					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Head"));
+					if (i != -1)
+					{
+						if (ShaderStrength > 0f)
+						{
+							PowerRanger_Head.ShaderLayer.visible = true;
+							layers.Insert(i - 1, PowerRanger_Head.ShaderLayer);
+						}
+						layers.Insert(i + 2, PowerRanger_Head.GlowLayer);
+					}
+				}
+
+				if (player.body == _bodySlot)
+				{
+					if (ShaderStrength > 0f)
+					{
+						PowerRanger_Body.ShaderLayer.visible = true;
+						i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Body"));
+						if (i != -1)
+						{
+							layers.Insert(i - 1, PowerRanger_Body.ShaderLayer);
+						}
+					}
+
+					PowerRanger_Body.GlowLayer.visible = true;
+					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Arms"));
+					if (i != -1)
+					{
+						layers.Insert(i + 1, PowerRanger_Body.GlowLayer);
+					}
+				}
+
+				if (player.legs == _legSlot)
+				{
+					PowerRanger_Legs.GlowLayer.visible = true;
+
+					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Legs"));
+					if (i != -1)
+					{
+						if (ShaderStrength > 0f)
+						{
+							PowerRanger_Legs.ShaderLayer.visible = true;
+							layers.Insert(i - 1, PowerRanger_Legs.ShaderLayer);
+						}
+						layers.Insert(i + 2, PowerRanger_Legs.GlowLayer);
+					}
+				}
+			}
+		}
+
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
+	}
+
+	internal class DrawDataInfo
+	{
+		public Vector2 Position;
+		public Rectangle? Frame;
+		public float Rotation;
+		public Texture2D Texture;
+		public Vector2 Origin;
 	}
 
 	abstract class AndromedonItem : DeveloperItem
@@ -22,6 +255,8 @@ namespace Terraria.ModLoader.Default.Developer
 		public sealed override string SetName => "PowerRanger";
 		public const int ShaderNumSegments = 8;
 		public const int ShaderDrawOffset = 2;
+
+		private static int? ShaderId;
 
 		public sealed override void SetStaticDefaults()
 		{
@@ -38,22 +273,12 @@ namespace Terraria.ModLoader.Default.Developer
 			//return new Vector2(0, offY).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 		}
 
-		public static float LayerStrength = 0f;
-
 		private static void BeginShaderBatch(SpriteBatch batch)
 		{
 			batch.End();
 			RasterizerState rasterizerState = Main.LocalPlayer.gravDir == 1f ? RasterizerState.CullCounterClockwise : RasterizerState.CullClockwise;
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
 		}
-
-		//private static void ResetBatch(SpriteBatch batch)
-		//{
-		//	batch.End();
-		//	RasterizerState rasterizerState = Main.LocalPlayer.gravDir == 1f ? RasterizerState.CullCounterClockwise : RasterizerState.CullClockwise;
-		//	batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
-		//	//Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-		//}
 
 		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture)
 		{
@@ -66,11 +291,11 @@ namespace Terraria.ModLoader.Default.Developer
 
 			return new DrawDataInfo
 			{
-				position = pos,
-				frame = drawPlayer.bodyFrame,
-				texture = texture,
-				origin = drawInfo.headOrigin,
-				rotation = drawPlayer.headRotation
+				Position = pos,
+				Frame = drawPlayer.bodyFrame,
+				Origin = drawInfo.headOrigin,
+				Rotation = drawPlayer.headRotation,
+				Texture = texture
 			};
 		}
 
@@ -85,11 +310,11 @@ namespace Terraria.ModLoader.Default.Developer
 
 			return new DrawDataInfo
 			{
-				position = pos,
-				frame = drawPlayer.bodyFrame,
-				texture = texture,
-				origin = drawInfo.bodyOrigin,
-				rotation = drawPlayer.bodyRotation
+				Position = pos,
+				Frame = drawPlayer.bodyFrame,
+				Origin = drawInfo.bodyOrigin,
+				Rotation = drawPlayer.bodyRotation,
+				Texture = texture
 			};
 		}
 
@@ -104,11 +329,11 @@ namespace Terraria.ModLoader.Default.Developer
 
 			return new DrawDataInfo
 			{
-				position = pos,
-				frame = drawPlayer.legFrame,
-				texture = texture,
-				origin = drawInfo.legOrigin,
-				rotation = drawPlayer.legRotation
+				Position = pos,
+				Frame = drawPlayer.legFrame,
+				Origin = drawInfo.legOrigin,
+				Rotation = drawPlayer.legRotation,
+				Texture = texture
 			};
 		}
 
@@ -123,6 +348,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 				DrawDataInfo drawDataInfo = getDataFunc.Invoke(drawInfo);
 				Player drawPlayer = drawInfo.drawPlayer;
+				DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(drawPlayer);
 				SpriteEffects effects = SpriteEffects.None;
 				if (drawPlayer.direction == -1)
 				{
@@ -135,12 +361,12 @@ namespace Terraria.ModLoader.Default.Developer
 				}
 
 				DrawData data = new DrawData(
-					drawDataInfo.texture,
-					drawDataInfo.position,
-					drawDataInfo.frame,
-					Color.White * Main.essScale * LayerStrength,
-					drawDataInfo.rotation,
-					drawDataInfo.origin,
+					drawDataInfo.Texture,
+					drawDataInfo.Position,
+					drawDataInfo.Frame,
+					Color.White * Main.essScale * devPlayer.AndromedonEffect.LayerStrength * devPlayer.AndromedonEffect.ShaderStrength,
+					drawDataInfo.Rotation,
+					drawDataInfo.Origin,
 					1f,
 					effects,
 					0);
@@ -148,7 +374,8 @@ namespace Terraria.ModLoader.Default.Developer
 				SpriteBatch backup = Main.spriteBatch;
 
 				BeginShaderBatch(Main.spriteBatch);
-				GameShaders.Armor.Apply(GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye), drawPlayer, data);
+				ShaderId = ShaderId ?? GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
+				GameShaders.Armor.Apply(ShaderId.Value, drawPlayer, data);
 				var centerPos = data.position;
 
 				for (int i = 0; i < ShaderNumSegments; i++)
@@ -174,6 +401,7 @@ namespace Terraria.ModLoader.Default.Developer
 				DrawDataInfo drawDataInfo = getDataFunc.Invoke(drawInfo);
 
 				Player drawPlayer = drawInfo.drawPlayer;
+				DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(drawPlayer);
 				SpriteEffects effects = SpriteEffects.None;
 				if (drawPlayer.direction == -1)
 				{
@@ -186,18 +414,21 @@ namespace Terraria.ModLoader.Default.Developer
 				}
 
 				DrawData data = new DrawData(
-					drawDataInfo.texture,
-					drawDataInfo.position,
-					drawDataInfo.frame,
-					Color.White * Main.essScale * LayerStrength,
-					drawDataInfo.rotation,
-					drawDataInfo.origin,
+					drawDataInfo.Texture,
+					drawDataInfo.Position,
+					drawDataInfo.Frame,
+					Color.White * Main.essScale * devPlayer.AndromedonEffect.LayerStrength,
+					drawDataInfo.Rotation,
+					drawDataInfo.Origin,
 					1f,
 					effects,
-					0)
+					0);
+
+				if (devPlayer.AndromedonEffect.HasAura)
 				{
-					shader = GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye)
-				};
+					ShaderId = ShaderId ?? GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
+					data.shader = ShaderId.Value;
+				}
 				Main.playerDrawData.Add(data);
 			});
 		}
@@ -222,7 +453,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void UpdateVanitySet(Player player)
 		{
-			DeveloperPlayer.GetPlayer(player).AndromedonSet = true;
+			DeveloperPlayer.GetPlayer(player).AndromedonEffect.HasSetBonus = true;
 		}
 
 		private static Texture2D _glowTexture;
