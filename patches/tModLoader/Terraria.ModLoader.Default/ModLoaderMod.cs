@@ -164,10 +164,5 @@ namespace Terraria.ModLoader.Default
 			}
 			return false;
 		}
-
-		public override void HandlePacket(BinaryReader reader, int whoAmI)
-		{
-			ModNetHandler.HandlePacket(reader, whoAmI);
-		}
 	}
 }

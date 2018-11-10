@@ -9,80 +9,6 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Developer
 {
-	internal class AndromedonNetHandler : NetHandler
-	{
-		public const byte FullStatePacket = 1;
-		public const byte AuraTimePacket = 2;
-
-		public AndromedonNetHandler(byte handlerType) : base(handlerType)
-		{
-		}
-
-		public override void HandlePacket(BinaryReader r, int fromWho)
-		{
-			switch (r.ReadByte())
-			{
-				case FullStatePacket:
-					HandleState(r, fromWho);
-					break;
-				case AuraTimePacket:
-					HandleAuraTime(r, fromWho);
-					break;
-			}
-		}
-
-		public void SendState(int toWho, int fromWho, AndromedonEffect effect)
-		{
-			var packet = GetPacket(FullStatePacket, fromWho);
-			packet.Write(effect.LayerStrength);
-			packet.Write(effect.ShaderStrength);
-			packet.Write(effect._auraTime);
-			packet.Send(toWho, fromWho);
-		}
-
-		private void HandleState(BinaryReader r, int fromWho)
-		{
-			if (Main.netMode == NetmodeID.MultiplayerClient)
-			{
-				fromWho = r.ReadByte();
-			}
-
-			AndromedonEffect effect = DeveloperPlayer.GetPlayer(Main.player[fromWho]).AndromedonEffect;
-			effect.LayerStrength = r.ReadSingle();
-			effect.ShaderStrength = r.ReadSingle();
-			effect._auraTime = r.ReadInt32();
-
-			if (Main.netMode == NetmodeID.Server)
-			{
-				SendState(-1, fromWho, effect);
-			}
-		}
-
-		public void SendAuraTime(int toWho, int fromWho, int auraTime)
-		{
-			var packet = GetPacket(AuraTimePacket, fromWho);
-			packet.Write(auraTime);
-			packet.Send(toWho, fromWho);
-		}
-
-		private void HandleAuraTime(BinaryReader r, int fromWho)
-		{
-			if (Main.netMode == NetmodeID.MultiplayerClient)
-			{
-				fromWho = r.ReadByte();
-			}
-
-			DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(Main.player[fromWho]);
-			int auraTime = r.ReadInt32();
-			devPlayer.AndromedonEffect._auraTime = auraTime;
-			
-			if (Main.netMode == NetmodeID.Server)
-			{
-				SendAuraTime(-1, fromWho, auraTime);
-			}
-		}
-	}
-
 	internal sealed class AndromedonEffect : ICloneable
 	{
 		public bool HasSetBonus;
@@ -162,10 +88,6 @@ namespace Terraria.ModLoader.Default.Developer
 			if (diff >= 0.1f * player.statLifeMax2)
 			{
 				_auraTime = 300 + diff;
-				if (Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					ModNetHandler.Andromedon.SendAuraTime(-1, player.whoAmI, _auraTime);
-				}
 			}
 			_lastLife = player.statLife;
 		}

@@ -30,24 +30,4 @@ namespace Terraria.ModLoader.Default
 			return p;
 		}
 	}
-
-	internal class ModNetHandler
-	{
-		// When a lot of handlers are added, it might be wise to automate
-		// creation of them
-
-		public const byte AndromedonType = 1;
-
-		internal static AndromedonNetHandler Andromedon = new AndromedonNetHandler(AndromedonType);
-
-		public static void HandlePacket(BinaryReader r, int fromWho)
-		{
-			switch (r.ReadByte())
-			{
-				case AndromedonType:
-					Andromedon.HandlePacket(r, fromWho);
-					break;
-			}
-		}
-	}
 }
