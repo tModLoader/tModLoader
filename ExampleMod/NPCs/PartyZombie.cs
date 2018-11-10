@@ -27,6 +27,8 @@ namespace ExampleMod.NPCs
 			npc.aiStyle = 3;
 			aiType = NPCID.Zombie;
 			animationType = NPCID.Zombie;
+			banner = Item.NPCtoBanner(NPCID.Zombie);
+			bannerItem = Item.BannerToItem(banner);
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
