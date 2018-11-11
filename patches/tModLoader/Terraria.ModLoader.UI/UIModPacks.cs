@@ -1,15 +1,15 @@
-﻿using System.IO;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.GameContent.UI.States;
-using Newtonsoft.Json;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -133,20 +133,30 @@ namespace Terraria.ModLoader.UI
 					string[] modListsFullPath = task.Result;
 					foreach (string modListFilePath in modListsFullPath)
 					{
-						string[] mods = { };
-						//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
-
-						if (File.Exists(modListFilePath))
+						try
 						{
-							using (StreamReader r = new StreamReader(modListFilePath))
-							{
-								string json = r.ReadToEnd();
-								mods = JsonConvert.DeserializeObject<string[]>(json);
-							}
-						}
+							string[] mods = { };
+							//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
 
-						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
-						modListList.Add(modItem);
+							if (File.Exists(modListFilePath))
+							{
+								using (StreamReader r = new StreamReader(modListFilePath))
+								{
+									string json = r.ReadToEnd();
+
+									mods = JsonConvert.DeserializeObject<string[]>(json);
+								}
+							}
+							UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
+							modListList.Add(modItem);
+						}
+						catch
+						{
+							UIAutoScaleTextTextPanel<string> badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modListFilePath)));
+							badModPackMessage.Width.Set(0, 1);
+							badModPackMessage.Height.Set(50, 0);
+							modListList.Add(badModPackMessage);
+						}
 					}
 					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());

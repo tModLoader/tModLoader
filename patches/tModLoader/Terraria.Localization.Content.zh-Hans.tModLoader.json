@@ -110,7 +110,7 @@
 		"ModPackDisabled": " - 禁用",
 		"ModPackLoadingSpecifiedModPack": "加载指定模组整合包: {0}",
 		"ModPackDoesNotExist": "模组整合包 {0} 不存在.",
-		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏. ({1})",
+		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏.",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
