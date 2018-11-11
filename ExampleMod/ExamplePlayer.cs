@@ -46,6 +46,7 @@ namespace ExampleMod
 		public bool blockyHideVanity;
 		public bool blockyForceVanity;
 		public bool blockyPower;
+		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 
 		private const int maxExampleLifeFruits = 10;
 		public int exampleLifeFruits = 0;
@@ -73,6 +74,12 @@ namespace ExampleMod
 			player.statLifeMax2 += exampleLifeFruits * 2;
 		}
 
+		public override void OnEnterWorld(Player player)
+		{
+			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
+			ExampleMod.instance.exampleUI.exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
+		}
+
 		// In MP, other clients need accurate information about your player or else bugs happen.
 		// clientClone, SyncPlayer, and SendClientChanges, ensure that information is correct.
 		// We only need to do this for data that is changed by code not executed by all clients, 
@@ -80,31 +87,38 @@ namespace ExampleMod
 		// For example, examplePet doesn't need to be synced because all clients know that the player is wearing the ExamplePet item in an equipment slot. 
 		// The examplePet bool is set for that player on every clients computer independently (via the Buff.Update), keeping that data in sync.
 		// ExampleLifeFruits, however might be out of sync. For example, when joining a server, we need to share the exampleLifeFruits variable with all other clients.
+		// In addition, in ExampleUI we have a button that toggles "Non-Stop Party". We need to sync this whenever it changes.
 		public override void clientClone(ModPlayer clientClone)
 		{
 			ExamplePlayer clone = clientClone as ExamplePlayer;
 			// Here we would make a backup clone of values that are only correct on the local players Player instance.
 			// Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
-			// clone.someLocalVariable = someLocalVariable;
+			clone.nonStopParty = nonStopParty;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
 			ModPacket packet = mod.GetPacket();
-			packet.Write((byte)ExampleModMessageType.ExampleLifeFruits);
+			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);
+			packet.Write(nonStopParty); // While we sync nonStopParty in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
 			packet.Send(toWho, fromWho);
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer)
 		{
 			// Here we would sync something like an RPG stat whenever the player changes it.
-			// So far, ExampleMod has nothing that needs this.
-			// if (clientPlayer.someLocalVariable != someLocalVariable)
-			// {
-			//    Send a Mod Packet with the changes.
-			// }
+			ExamplePlayer clone = clientPlayer as ExamplePlayer;
+			if (clone.nonStopParty != nonStopParty)
+			{
+				// Send a Mod Packet with the changes.
+				var packet = mod.GetPacket();
+				packet.Write((byte)ExampleModMessageType.NonStopPartyChanged);
+				packet.Write((byte)player.whoAmI);
+				packet.Write(nonStopParty);
+				packet.Send();
+			}
 		}
 
 		public override void UpdateDead()
@@ -115,10 +129,12 @@ namespace ExampleMod
 
 		public override TagCompound Save()
 		{
+			// Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
 			return new TagCompound {
 				// {"somethingelse", somethingelse}, // To save more data, add additional lines
 				{"score", score},
 				{"exampleLifeFruits", exampleLifeFruits},
+				{"nonStopParty", nonStopParty},
 			};
 			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
@@ -130,6 +146,8 @@ namespace ExampleMod
 		{
 			score = tag.GetInt("score");
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
+			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
+			nonStopParty = tag.GetBool("nonStopParty"); 
 		}
 
 		public override void LoadLegacy(BinaryReader reader)
@@ -673,6 +691,15 @@ namespace ExampleMod
 				g *= 0.2f;
 				b *= 0.7f;
 				fullBright = true;
+			}
+			if (nonStopParty && drawInfo.shadow == 0f && Main.rand.NextBool(6)) // checking shadow == 0 helps avoid spawning extra dust because of extra shadow draws.
+			{
+				int dustIndex = Dust.NewDust(drawInfo.position + new Vector2(drawInfo.drawPlayer.width/2 - 2, -30), 4, 4, 219, 0f, 0f, 100, default(Color), 1f);
+				Dust dust = Main.dust[dustIndex];
+				dust.velocity.X = Main.rand.NextFloat(-1f, 1f);
+				dust.velocity.Y = Main.rand.NextFloat(-3, -1.5f);
+				dust.scale = 1f + Main.rand.NextFloat(-.030f, .031f);
+				Main.playerDrawDust.Add(dustIndex);
 			}
 		}
 

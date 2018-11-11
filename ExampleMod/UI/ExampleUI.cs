@@ -17,6 +17,7 @@ namespace ExampleMod.UI
 	{
 		public DragableUIPanel coinCounterPanel;
 		public UIMoneyDisplay moneyDiplay;
+		public UIHoverImageButton exampleButton;
 		public static bool visible = false;
 
 		// In OnInitialize, we place various UIElements onto our UIState (this class).
@@ -56,6 +57,15 @@ namespace ExampleMod.UI
 			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
 			coinCounterPanel.Append(closeButton);
 
+			Texture2D buttonFavoriteTexture = ModContent.GetTexture("Terraria/UI/ButtonFavoriteActive");
+			exampleButton = new UIHoverImageButton(buttonFavoriteTexture, "SendClientChanges Example: Non-Stop Party (???)"); // See ExamplePlayer.OnEnterWorld
+			exampleButton.Left.Set(140, 0f);
+			exampleButton.Top.Set(36, 0f);
+			exampleButton.Width.Set(22, 0f);
+			exampleButton.Height.Set(22, 0f);
+			exampleButton.OnClick += new MouseEvent(ExampleButtonClicked);
+			coinCounterPanel.Append(exampleButton);
+
 			// UIMoneyDisplay is a fairly complicated custom UIElement. UIMoneyDisplay handles drawing some text and coin textures.
 			// Organization is key to managing UI design. Making a contained UIElement like UIMoneyDisplay will make many things easier.
 			moneyDiplay = new UIMoneyDisplay();
@@ -82,6 +92,13 @@ namespace ExampleMod.UI
 		{
 			Main.PlaySound(SoundID.MenuOpen);
 			visible = false;
+		}
+
+		private void ExampleButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+		{
+			var examplePlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+			examplePlayer.nonStopParty = !examplePlayer.nonStopParty;
+			exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (examplePlayer.nonStopParty ? "On" : "Off");
 		}
 
 		public void updateValue(int pickedUp)

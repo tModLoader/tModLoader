@@ -72,7 +72,7 @@ namespace ExampleMod.UI
 			{
 				int awesomePrice = Item.buyPrice(0, 1, 0, 0);
 
-				string costText = Lang.inter[46].Value + ": ";
+				string costText = Language.GetTextValue("LegacyInterface.46") + ": ";
 				string coinsText = "";
 				int[] coins = Utils.CoinsSplit(awesomePrice);
 				if (coins[3] > 0)

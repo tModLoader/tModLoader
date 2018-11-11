@@ -1,21 +1,19 @@
+using ExampleMod.NPCs.PuritySpirit;
+using ExampleMod.Tiles;
+using ExampleMod.UI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.NPCs.PuritySpirit;
-using ExampleMod.Tiles;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using ExampleMod.UI;
 using Terraria.UI;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
-using System;
 
 namespace ExampleMod
 {
@@ -428,7 +426,7 @@ namespace ExampleMod
 				case ExampleModMessageType.HeroLives:
 					Player player = Main.player[reader.ReadInt32()];
 					int lives = reader.ReadInt32();
-					player.GetModPlayer<ExamplePlayer>(this).heroLives = lives;
+					player.GetModPlayer<ExamplePlayer>().heroLives = lives;
 					if (lives > 0)
 					{
 						NetworkText text;
@@ -444,11 +442,27 @@ namespace ExampleMod
 					}
 					break;
 				// This message syncs ExamplePlayer.exampleLifeFruits
-				case ExampleModMessageType.ExampleLifeFruits:
+				case ExampleModMessageType.ExamplePlayerSyncPlayer:
 					byte playernumber = reader.ReadByte();
-					Player lifeFruitsPlayer = Main.player[playernumber];
+					ExamplePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExamplePlayer>();
 					int exampleLifeFruits = reader.ReadInt32();
-					lifeFruitsPlayer.GetModPlayer<ExamplePlayer>().exampleLifeFruits = exampleLifeFruits;
+					examplePlayer.exampleLifeFruits = exampleLifeFruits;
+					examplePlayer.nonStopParty = reader.ReadBoolean();
+					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+					break;
+				case ExampleModMessageType.NonStopPartyChanged:
+					playernumber = reader.ReadByte();
+					examplePlayer = Main.player[playernumber].GetModPlayer<ExamplePlayer>();
+					examplePlayer.nonStopParty = reader.ReadBoolean();
+					// Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
+					if (Main.netMode == NetmodeID.Server)
+					{
+						var packet = GetPacket();
+						packet.Write((byte)ExampleModMessageType.NonStopPartyChanged);
+						packet.Write(playernumber);
+						packet.Write(examplePlayer.nonStopParty);
+						packet.Send(-1, playernumber);
+					}
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
@@ -463,7 +477,8 @@ namespace ExampleMod
 		VolcanicRubbleMultiplayerFix,
 		PuritySpirit,
 		HeroLives,
-		ExampleLifeFruits
+		ExamplePlayerSyncPlayer,
+		NonStopPartyChanged
 	}
 
 	/*public static class ExampleModExtensions
