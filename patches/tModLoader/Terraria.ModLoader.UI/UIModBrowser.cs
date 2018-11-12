@@ -433,6 +433,7 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (WebException e)
 			{
+				ShowOfflineTroubleshootingMessage();
 				if (e.Status == WebExceptionStatus.Timeout)
 				{
 					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
@@ -461,6 +462,7 @@ namespace Terraria.ModLoader.UI
 		{
 			if (e.Error != null)
 			{
+				ShowOfflineTroubleshootingMessage();
 				if (e.Cancelled)
 				{
 				}
@@ -591,6 +593,20 @@ namespace Terraria.ModLoader.UI
 		{
 			uIHeaderTextPanel.SetText(heading, 0.8f, true);
 			uIHeaderTextPanel.Recalculate();
+		}
+
+		private void ShowOfflineTroubleshootingMessage()
+		{
+			var message = new UIMessageBox(Language.GetTextValue("tModLoader.MBOfflineTroubleshooting"));
+			message.Width.Set(0, 1);
+			message.Height.Set(400, 0);
+			message.OnDoubleClick += (a, b) =>
+			{
+				System.Diagnostics.Process.Start("http://javid.ddns.net/tModLoader/DirectModDownloadListing.php");
+			};
+			modList.Add(message);
+			message.SetScrollbar(new UIScrollbar());
+			uIPanel.RemoveChild(uILoader);
 		}
 
 		//unused

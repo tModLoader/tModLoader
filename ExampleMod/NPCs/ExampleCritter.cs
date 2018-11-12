@@ -22,7 +22,6 @@ namespace ExampleMod.NPCs
 			return base.Autoload(ref name);
 		}
 
-
 		/// <summary>
 		/// Change the following code sequence in Wiring.HitWireSingle
 		/// num145 = Utils.SelectRandom(Main.rand, new short[5]

@@ -149,6 +149,7 @@
 		"MBOfflineWithReason": "DÉCONNECTÉ ({0})",
 		"MBBusy": "Occupé",
 		"MBUnknown": "Inconnu",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		"MBClickToViewDependencyMods": "Cliquer pour voir les dépendances:\n{0}",
 		"MBModsNotFoundOnline": "Les Mods suivants n'ont pas été trouvés sur le navigateur: {0}",
 		"MBFilterDependencies": "Dépendances",
