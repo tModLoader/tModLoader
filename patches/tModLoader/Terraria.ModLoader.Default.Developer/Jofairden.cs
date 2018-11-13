@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -293,8 +292,6 @@ namespace Terraria.ModLoader.Default.Developer
 					effects,
 					0);
 
-				SpriteBatch backup = Main.spriteBatch;
-
 				BeginShaderBatch(Main.spriteBatch);
 				ShaderId = ShaderId ?? GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
 				GameShaders.Armor.Apply(ShaderId.Value, drawPlayer, data);
@@ -307,7 +304,6 @@ namespace Terraria.ModLoader.Default.Developer
 				}
 
 				data.position = centerPos;
-				Main.spriteBatch = backup;
 			});
 		}
 
