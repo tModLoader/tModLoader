@@ -17,6 +17,8 @@ var searchData=
   ['townsnowcritter',['TownSnowCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a4cfd8aafe7bcb3671f56e288d524c6f8',1,'Terraria::ModLoader::SpawnCondition']]],
   ['townwatercritter',['TownWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf6a18b307a10ae0040d721f9f2f459f',1,'Terraria::ModLoader::SpawnCondition']]],
   ['translations',['translations',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a6757bc70b2fba03c68998a2647f4da75',1,'Terraria::ModLoader::ModTranslation']]],
+  ['txdatatype',['txDataType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a3bda8e7a332d021139160bac1000dcc2',1,'Terraria::ModLoader::ModNet']]],
+  ['txmsgtype',['txMsgType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a92921858a896cc74668a40c8972b8ae3',1,'Terraria::ModLoader::ModNet']]],
   ['type',['Type',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a7fb0f0fe7741c799b95d674397c645ec',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['typenamecache',['typeNameCache',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a6f0a3405fc0e483264d29f79b3c8bb53',1,'Terraria::ModLoader::IO::TagSerializer']]]
 ];

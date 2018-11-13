@@ -7,11 +7,16 @@ var class_terraria_1_1_mod_loader_1_1_mod_net =
     [ "NetReload", "class_terraria_1_1_mod_loader_1_1_mod_net.html#af08b022c78c7eccb5d20735a3e75bfb0", null ],
     [ "OnModsDownloaded", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb", null ],
     [ "ReadNetIDs", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a7634a7cc6435ffb2f86239cd554a624c", null ],
+    [ "SetupDiagnostics", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aa0fca9c327a57eec13abdbaa065f993a", null ],
     [ "CHUNK_SIZE", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aa80fb5bd418f807364eec0f4c1e3fbb9", null ],
     [ "downloadingFile", "class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6", null ],
     [ "downloadingLength", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aae814b95283be86b1b3d858effecfe30", null ],
     [ "downloadingMod", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2", null ],
     [ "downloadQueue", "class_terraria_1_1_mod_loader_1_1_mod_net.html#af8ec83e3ea88f98c0bb81c3613c03279", null ],
     [ "netMods", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd", null ],
+    [ "rxDataType", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a181180be2847764153c54bff8579b743", null ],
+    [ "rxMsgType", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a22cb82108f22c5d0556cc5001a69bbbc", null ],
+    [ "txDataType", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a3bda8e7a332d021139160bac1000dcc2", null ],
+    [ "txMsgType", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a92921858a896cc74668a40c8972b8ae3", null ],
     [ "AllowVanillaClients", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ab8064730e38058a96249fe85619abffa", null ]
 ];
