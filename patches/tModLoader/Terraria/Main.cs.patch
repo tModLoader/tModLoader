@@ -3646,6 +3646,14 @@
  				Main.InReforgeMenu = false;
  			}
  			Main.hoverItemName = "";
+@@ -40287,6 +_,7 @@
+ 					text2 = string.Format("{0:0,0}", Main.txDataType[j]);
+ 					Main.spriteBatch.DrawString(Main.fontMouseText, text2, new Vector2((float)num3, (float)num4), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+ 				}
++				ModNet.DrawModDiagnoseNet();
+ 			}
+ 		}
+ 
 @@ -40424,6 +_,11 @@
  							if (type == 439 || type == 370)
  							{

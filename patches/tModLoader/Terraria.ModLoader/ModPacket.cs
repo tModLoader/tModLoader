@@ -14,6 +14,7 @@ namespace Terraria.ModLoader
 	{
 		private byte[] buf;
 		private ushort len;
+		internal short netID = -1;
 
 		internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity))
 		{
@@ -29,7 +30,16 @@ namespace Terraria.ModLoader
 			Finish();
 
 			if (Main.netMode == 1)
+			{
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
+				Main.txMsg++;
+				Main.txData += len;
+				if (netID > 0)
+				{
+					ModNet.txMsgType[netID]++;
+					ModNet.txDataType[netID] += len;
+				}
+			}
 			else if (toClient != -1)
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
 			else

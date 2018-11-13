@@ -1604,6 +1604,7 @@ namespace Terraria.ModLoader
 
 			var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 			p.Write(netID);
+			p.netID = netID;
 			return p;
 		}
 	}

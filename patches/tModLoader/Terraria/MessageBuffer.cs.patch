@@ -431,7 +431,7 @@
  						return;
  					}
 +				case 250:
-+					ModNet.HandleModPacket(reader, whoAmI);
++					ModNet.HandleModPacket(reader, whoAmI, length);
 +					return;
 +				case 251:
 +					if (Main.netMode == 1)

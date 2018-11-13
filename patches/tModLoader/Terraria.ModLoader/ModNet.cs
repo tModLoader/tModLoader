@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,6 +57,7 @@ namespace Terraria.ModLoader
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
 				netMods[i].netID = i;
+			SetupDiagnostics();
 		}
 
 		internal static void Unload()
@@ -61,6 +65,7 @@ namespace Terraria.ModLoader
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
 				AllowVanillaClients = false;
+			SetupDiagnostics();
 		}
 
 		internal static void SyncMods(int clientIndex)
@@ -269,6 +274,7 @@ namespace Terraria.ModLoader
 			netMods = null;
 			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;
+			SetupDiagnostics();
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
@@ -313,18 +319,23 @@ namespace Terraria.ModLoader
 					mod.netID = i;
 			}
 			netMods = list.ToArray();
+			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			WorldHooks.ReadNetWorldOrder(reader);
 		}
 
-		internal static void HandleModPacket(BinaryReader reader, int whoAmI)
+		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
 		{
 			var id = reader.ReadInt16();
 			if (id < 0)
 				ReadNetIDs(reader);
 			else
+			{
 				GetMod(id)?.HandlePacket(reader, whoAmI);
+				rxMsgType[id]++;
+				rxDataType[id] += length;
+			}
 		}
 
 		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
@@ -361,6 +372,63 @@ namespace Terraria.ModLoader
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}
 			return hijacked;
+		}
+
+		// Mirror of Main class network diagnostic fields, but mod specific.
+		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModWorld/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
+		public static int[] rxMsgType;
+		public static int[] rxDataType;
+		public static int[] txMsgType;
+		public static int[] txDataType;
+
+		private static void SetupDiagnostics()
+		{
+			rxMsgType = netMods == null ? null : new int[netMods.Length];
+			rxDataType = netMods == null ? null : new int[netMods.Length];
+			txMsgType = netMods == null ? null : new int[netMods.Length];
+			txDataType = netMods == null ? null : new int[netMods.Length];
+		}
+
+		internal static void ResetNetDiag()
+		{
+			if (netMods == null) return;
+			for (int i = 0; i < netMods.Length; i++)
+			{
+				rxMsgType[i] = 0;
+				rxDataType[i] = 0;
+				txMsgType[i] = 0;
+				txDataType[i] = 0;
+			}
+		}
+
+		internal static void DrawModDiagnoseNet()
+		{
+			if (netMods == null) return;
+			float scale = 0.7f;
+			
+			for (int j = -1; j < netMods.Length; j++)
+			{
+				int i = j + Main.maxMsg + 2;
+				int x = 200;
+				int y = 120;
+				int xAdjust = i / 50;
+				x += xAdjust * 400;
+				y += (i - xAdjust * 50) * 13;
+				if(j == -1)
+				{
+					Main.spriteBatch.DrawString(Main.fontMouseText, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+					continue;
+				}
+				Main.spriteBatch.DrawString(Main.fontMouseText, netMods[j].Name, new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 120;
+				Main.spriteBatch.DrawString(Main.fontMouseText, rxMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 30;
+				Main.spriteBatch.DrawString(Main.fontMouseText, rxDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 80;
+				Main.spriteBatch.DrawString(Main.fontMouseText, txMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 30;
+				Main.spriteBatch.DrawString(Main.fontMouseText, txDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+			}
 		}
 	}
 }
