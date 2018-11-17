@@ -245,6 +245,21 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 		}
 
+		internal static void UnloadModContent()
+		{
+			foreach (var mod in ModLoader.Mods.Reverse()) {
+				try {
+					mod.UnloadContent();
+				} catch (Exception e) {
+					e.Data["mod"] = mod.Name;
+					throw;
+				}
+				finally {
+					MonoModHooks.RemoveAll(mod);
+				}
+			}
+		}
+
 		public static void Unload()
 		{
 			ItemLoader.Unload();
@@ -421,8 +436,9 @@ namespace Terraria.ModLoader
 			{
 				Main.player[i] = new Player();
 			}
-			// TODO: This breaks net reload. Restore this cleanup step later?
-			// Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+
+			Main.clientPlayer = new Player(false);
+			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 

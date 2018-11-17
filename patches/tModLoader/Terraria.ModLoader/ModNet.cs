@@ -88,12 +88,22 @@ namespace Terraria.ModLoader
 
 		internal static void SyncClientMods(BinaryReader reader)
 		{
+			SyncClientMods(reader, out var needsReload);
+			if (downloadQueue.Count > 0)
+				DownloadNextMod();
+			else
+				OnModsDownloaded(needsReload);
+		}
+
+		// This method is split so that the local variables aren't held by the GC when reloading
+		internal static void SyncClientMods(BinaryReader reader, out bool needsReload)
+		{
 			AllowVanillaClients = reader.ReadBoolean();
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			var clientMods = ModLoader.Mods;
 			var modFiles = ModOrganizer.FindMods();
-			var needsReload = false;
+			needsReload = false;
 			downloadQueue.Clear();
 			var syncSet = new HashSet<string>();
 			var blockedList = new List<ModHeader>();
@@ -157,11 +167,6 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.errorMessageID;
 				return;
 			}
-
-			if (downloadQueue.Count > 0)
-				DownloadNextMod();
-			else
-				OnModsDownloaded(needsReload);
 		}
 
 		private static void DownloadNextMod()
@@ -265,7 +270,7 @@ namespace Terraria.ModLoader
 		{
 			if (needsReload)
 			{
-				ModLoader.OnSuccessfulLoad = NetReload;
+				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
 			}
@@ -278,17 +283,22 @@ namespace Terraria.ModLoader
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
-
-		private static void NetReload()
+		
+		private static Action NetReload()
 		{
-			Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
-			Main.ActivePlayerFileData.SetAsActive();
-			//from Netplay.ClientLoopSetup
-			Main.player[Main.myPlayer].hostile = false;
-			Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
+			// Main.ActivePlayerFileData gets cleared during reload
+			var path = Main.ActivePlayerFileData.Path;
+			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
+			return () => {
+				// re-select the current player
+				Player.GetFileData(path, isCloudSave).SetAsActive();
+				//from Netplay.ClientLoopSetup
+				Main.player[Main.myPlayer].hostile = false;
+				Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
 
-			Main.menuMode = 10;
-			OnModsDownloaded(false);
+				Main.menuMode = 10;
+				OnModsDownloaded(false);
+			};
 		}
 
 		internal static void SendNetIDs(int toClient)

@@ -59,8 +59,7 @@ namespace Terraria.ModLoader
 		/// <summary>The file path in which mod sources are stored. Mod sources are the code and images that developers work with.</summary>
 		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
 		internal const int earliestRelease = 149;
-		
-		private static Mod[] mods = new Mod[0];
+
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		private static WeakReference[] weakModReferences = new WeakReference[0];
 
@@ -86,8 +85,8 @@ namespace Terraria.ModLoader
 		internal static bool skipLoad;
 
 		internal static Action OnSuccessfulLoad;
-		
-		public static Mod[] Mods => mods;
+
+		public static Mod[] Mods { get; private set; } = new Mod[0];
 
 		/// <summary>
 		/// Gets the instance of the Mod with the specified name.
@@ -98,13 +97,13 @@ namespace Terraria.ModLoader
 			return m;
 		}
 
-		public static Mod GetMod(int index) => index >= 0 && index < mods.Length ? mods[index] : null;
+		public static Mod GetMod(int index) => index >= 0 && index < Mods.Length ? Mods[index] : null;
 		
 		[Obsolete("Use ModLoader.Mods", true)]
-		public static Mod[] LoadedMods => mods;
+		public static Mod[] LoadedMods => Mods;
 
 		[Obsolete("Use ModLoader.Mods.Length", true)]
-		public static int ModCount => mods.Length;
+		public static int ModCount => Mods.Length;
 		
 		[Obsolete("Use Modloader.Mods.Select(m => m.Name)", true)]
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
@@ -120,8 +119,8 @@ namespace Terraria.ModLoader
 			
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
 				modInstances.Insert(0, new ModLoaderMod());
-				mods = modInstances.ToArray();
-				foreach (var mod in mods)
+				Mods = modInstances.ToArray();
+				foreach (var mod in Mods)
 					modsByName[mod.Name] = mod;
 
 				ModContent.Load();
@@ -165,33 +164,10 @@ namespace Terraria.ModLoader
 
 		internal static void Reload()
 		{
-			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ)
-				Console.WriteLine("Unloading mods...");
-
 			try
 			{
-				foreach (var mod in mods.Reverse()) {
-					try {
-						mod.UnloadContent();
-					} catch (Exception e) {
-						e.Data["mod"] = mod.Name;
-						throw;
-					}
-					finally {
-						MonoModHooks.RemoveAll(mod);
-					}
-				}
-			
-				mods = new Mod[0];
-				modsByName.Clear();
-
-				ModContent.Unload();
-
-				GC.Collect();
-				foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
-					Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
-
+				Unload();
+				
 				if (Main.dedServ)
 					Load();
 				else
@@ -207,6 +183,23 @@ namespace Terraria.ModLoader
 				Logging.tML.Fatal(msg, e);
 				DisplayLoadError(msg, e, true);
 			}
+		}
+
+		private static void Unload()
+		{
+			Logging.tML.Info("Unloading mods");
+			if (Main.dedServ)
+				Console.WriteLine("Unloading mods...");
+			
+			ModContent.UnloadModContent();
+			Mods = new Mod[0];
+			modsByName.Clear();
+			ModContent.Unload();
+			
+			Thread.MemoryBarrier();
+			GC.Collect();
+			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
+				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
 		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)

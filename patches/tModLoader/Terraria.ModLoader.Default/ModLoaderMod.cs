@@ -16,6 +16,13 @@ namespace Terraria.ModLoader.Default
 		private static Texture2D mysteryTileTexture;
 		internal static ModLoaderMod Instance;
 
+		// If new types arrise (probably not), change the format:
+		// head, body, legs, wings, <new>
+		private static PatreonItem[][] PatronSets;
+		private static DeveloperItem[][] DeveloperSets;
+		private const int ChanceToGetPatreonArmor = 20;
+		private const int ChanceToGetDevArmor = 30;
+
 		public override string Name => "ModLoader";
 		public override Version Version => ModLoader.version;
 		public override Version tModLoaderVersion => ModLoader.version;
@@ -52,23 +59,24 @@ namespace Terraria.ModLoader.Default
 			Instance = this;
 		}
 
-		// If new types arrise (probably not), change the format:
-		// head, body, legs, wings, <new>
-		private static readonly PatreonItem[][] PatronSets =
+		public override void Unload()
 		{
-			new PatreonItem[] { new toplayz_Head(), new toplayz_Body(), new toplayz_Legs() },
-			new PatreonItem[] { new KittyKitCatCat_Head(), new KittyKitCatCat_Body(), new KittyKitCatCat_Legs() },
-			new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
-			new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
-			new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
-			new PatreonItem[] { new Saethar_Head(), new Saethar_Body(), new Saethar_Legs(), new Saethar_Wings(),  },
-			new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs()  },
-			new PatreonItem[] { new Squid_Head(), new Squid_Body(), new Squid_Legs()  },
-			new PatreonItem[] { new Glory_Head(), new Glory_Body(), new Glory_Legs()  }
-		};
+			PatronSets = null;
+			DeveloperSets = null;
+		}
 
 		private void AddPatronSets()
 		{
+			PatronSets = new [] {
+				new PatreonItem[] { new toplayz_Head(), new toplayz_Body(), new toplayz_Legs() },
+				new PatreonItem[] { new KittyKitCatCat_Head(), new KittyKitCatCat_Body(), new KittyKitCatCat_Legs() },
+				new PatreonItem[] { new Polyblank_Head(), new Polyblank_Body(), new Polyblank_Legs() },
+				new PatreonItem[] { new dinidini_Head(), new dinidini_Body(), new dinidini_Legs(), new dinidini_Wings() },
+				new PatreonItem[] { new Remeus_Head(), new Remeus_Body(), new Remeus_Legs() },
+				new PatreonItem[] { new Saethar_Head(), new Saethar_Body(), new Saethar_Legs(), new Saethar_Wings() },
+				new PatreonItem[] { new Orian_Head(), new Orian_Body(), new Orian_Legs() }
+			};
+
 			// Flatten, and select items not null
 			foreach (var patronItem in PatronSets.SelectMany(x => x))
 			{
@@ -76,13 +84,12 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		private static readonly DeveloperItem[][] DeveloperSets =
-		{
-			new DeveloperItem[] { new PowerRanger_Head(), new PowerRanger_Body(), new PowerRanger_Legs() }
-		};
-
 		private void AddDeveloperSets()
 		{
+			DeveloperSets = new [] {
+				new DeveloperItem[] { new PowerRanger_Head(), new PowerRanger_Body(), new PowerRanger_Legs() }
+			};
+
 			// Flatten, and select items not null
 			foreach (var developerItem in DeveloperSets.SelectMany(x => x))
 			{
@@ -133,9 +140,6 @@ namespace Terraria.ModLoader.Default
 
 			return Texture2D.FromStream(Main.instance.GraphicsDevice, stream);
 		}
-
-		private const int ChanceToGetPatreonArmor = 20;
-		private const int ChanceToGetDevArmor = 30;
 
 		internal static bool TryGettingPatreonOrDevArmor(Player player)
 		{

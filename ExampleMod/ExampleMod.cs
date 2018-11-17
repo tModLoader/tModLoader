@@ -100,11 +100,7 @@ namespace ExampleMod
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 				// exampleFont = GetFont("Fonts/ExampleFont"); 
-				exampleEffect = GetEffect("Effects/ExampleEffect");
-				Ref<Effect> exampleEffectRef = new Ref<Effect>();
-				exampleEffectRef.Value = exampleEffect;
-				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
-
+				GameShaders.Armor.BindShader(ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
 
 				// Custom UI
@@ -145,6 +141,13 @@ namespace ExampleMod
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
 				GameShaders.Misc.Remove("ExampleMod:DeathAnimation");
+
+				Filters.Scene.Remove("ExampleMod:PuritySpirit");
+				SkyManager.Instance.Remove("ExampleMod:PuritySpirit");
+				Filters.Scene.Remove("ExampleMod:MonolithVoid");
+				SkyManager.Instance.Remove("ExampleMod:MonolithVoid");
+
+				GameShaders.Armor.Remove(ItemType<Items.ExampleDye>());
 			}
 
 			// Unload static references
