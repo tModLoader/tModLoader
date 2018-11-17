@@ -110,6 +110,12 @@ namespace Terraria.ModLoader.UI
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 		}
 
+		internal void ContinueIsRetry()
+		{
+			if(gotoMenu >= 0)
+				continueButton.SetText(Language.GetTextValue("tModLoader.Retry"));
+		}
+
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10);

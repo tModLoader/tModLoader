@@ -159,7 +159,7 @@ namespace Terraria.ModLoader
 				foreach (var mod in responsibleMods)
 					DisableMod(mod);
 
-				DisplayLoadError(msg, e, false);
+				DisplayLoadError(msg, e, false, responsibleMods.Count > 0);
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DisplayLoadError(string msg, Exception e, bool fatal)
+		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 		{
 			msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
 
@@ -235,6 +235,8 @@ namespace Terraria.ModLoader
 				if (!string.IsNullOrEmpty(e.HelpLink))
 					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
 				Interface.errorMessage.ShowSkipModsButton();
+				if(continueIsRetry)
+					Interface.errorMessage.ContinueIsRetry();
 
 				Main.menuMode = Interface.errorMessageID;
 			}
