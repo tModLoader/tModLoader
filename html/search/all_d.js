@@ -118,7 +118,7 @@ var searchData=
   ['modrecipe',['ModRecipe',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html#ad968acec2ec7b19df6937a5e3b3a2903',1,'Terraria::ModLoader::ModRecipe']]],
   ['modrecipe',['ModRecipe',['../class_terraria_1_1_mod_loader_1_1_mod_recipe.html',1,'Terraria::ModLoader']]],
   ['modrecipe_2ecs',['ModRecipe.cs',['../_mod_recipe_8cs.html',1,'']]],
-  ['mods',['mods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a25c79bf62cc53bb9a05dda3e404aaf6b',1,'Terraria.ModLoader.ModLoader.mods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5',1,'Terraria.ModLoader.ModLoader.Mods()']]],
+  ['mods',['Mods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5',1,'Terraria.ModLoader.ModLoader.Mods()'],['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a25c79bf62cc53bb9a05dda3e404aaf6b',1,'Terraria.ModLoader.ModLoader.mods()']]],
   ['modsbyname',['modsByName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758',1,'Terraria::ModLoader::ModLoader']]],
   ['modside',['ModSide',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06',1,'Terraria::ModLoader']]],
   ['modside_2ecs',['ModSide.cs',['../_mod_side_8cs.html',1,'']]],
