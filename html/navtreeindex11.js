@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab20dcffcb0522a2040a23a7d4e354f74":[1,0,0,0,73,60],
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb":[1,0,0,0,73,19],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc":[1,0,0,0,73,82],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf5bfaa98f27fe7eaa9e04359a470749":[1,0,0,0,73,101],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf6a18b307a10ae0040d721f9f2f459f":[1,0,0,0,73,97],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a896b0437728b98a317aa2ca7da5a4af3":[1,0,0,0,81,0],
 "class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a8a2e4e46736ff0e0702a5edff0c2a56d":[1,0,0,0,81,1],
 "class_terraria_1_1_mod_loader_1_1_world_hooks.html":[1,0,0,0,83],
-"class_terraria_1_1_mod_loader_1_1_world_hooks.html#a20ff815a2a8b095b807c3f51ce409588":[1,0,0,0,83,1],
-"class_terraria_1_1_mod_loader_1_1_world_hooks.html#a9216806d65e8d1bf13e682f141efb28d":[1,0,0,0,83,4],
-"class_terraria_1_1_mod_loader_1_1_world_hooks.html#ac20f66cf108700570f22952f7407bb23":[1,0,0,0,83,6]
+"class_terraria_1_1_mod_loader_1_1_world_hooks.html#a20ff815a2a8b095b807c3f51ce409588":[1,0,0,0,83,1]
 };

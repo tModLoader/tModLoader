@@ -52,6 +52,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ErrorLogger.cs", "_error_logger_8cs.html", [
       [ "ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", "class_terraria_1_1_mod_loader_1_1_error_logger" ]
     ] ],
+    [ "FrameworkVersion.cs", "_framework_version_8cs.html", null ],
     [ "GlobalBuff.cs", "_global_buff_8cs.html", [
       [ "GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", "class_terraria_1_1_mod_loader_1_1_global_buff" ]
     ] ],

@@ -24,6 +24,7 @@ var searchData=
   ['fontcacheio_2ecs',['FontCacheIO.cs',['../_font_cache_i_o_8cs.html',1,'']]],
   ['fontexists',['FontExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ade5d55a43735a11dded9db34d5f73305',1,'Terraria::ModLoader::Mod']]],
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],
+  ['frameworkversion_2ecs',['FrameworkVersion.cs',['../_framework_version_8cs.html',1,'']]],
   ['frogcritter',['FrogCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0576ddf1b86463287a14626af1a375bf',1,'Terraria::ModLoader::SpawnCondition']]],
   ['frombase64',['FromBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#aabc0f58cfcbca0707a5416cdbe5dffc0',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['fromfile',['FromFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#acce7382a98854f9ee3af15557fc23405',1,'Terraria::ModLoader::IO::TagIO']]],

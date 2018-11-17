@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.AssemblyManager.LoadedMod" name="Terraria.ModLoader.AssemblyManager.LoadedMod">
-<area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html" title="Terraria.ModLoader.IO.TmodFile" alt="" coords="588,636,799,663"/>
-<area shape="rect" id="node14" href="$class_i_enumerable_3_01_key_value_pair_3_01string_00_01byte[]_4_4.html" title="IEnumerable\&lt; KeyValuePair\l\&lt; string, byte[]\&gt;\&gt;" alt="" coords="157,790,344,831"/>
+<area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html" title="Terraria.ModLoader.IO.TmodFile" alt="" coords="588,779,799,805"/>
+<area shape="rect" id="node14" href="$class_i_enumerable_3_01_key_value_pair_3_01string_00_01byte[]_4_4.html" title="IEnumerable\&lt; KeyValuePair\l\&lt; string, byte[]\&gt;\&gt;" alt="" coords="157,837,344,878"/>
 </map>
