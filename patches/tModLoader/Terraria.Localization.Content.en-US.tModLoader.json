@@ -65,6 +65,7 @@
 		"BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
 		"BuildErrorDotNet46Required": ".NET Framework 4.5 must be installed to compile mods",
+		"BuildErrorMissingReferenceAssemblies": ".NET 4.0 Client Profile Reference Assemblies not found. Please install Visual Studio or install the developer pack <link>",
 		"BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		"BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		"BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",

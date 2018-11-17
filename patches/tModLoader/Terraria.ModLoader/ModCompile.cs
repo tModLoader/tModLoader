@@ -519,9 +519,9 @@ namespace Terraria.ModLoader
 
 			var frameworkRefPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client";
 			if (!Directory.Exists(frameworkRefPath))
-				frameworkRefPath = Path.Combine(modCompileDir, "4.0 Client Reference Assemblies");
+				frameworkRefPath = Path.Combine(modCompileDir, "v4.0 Client Reference Assemblies");
 			if (!Directory.Exists(frameworkRefPath)) {
-				status.LogError(Language.GetTextValue("tModLoader.BuildErrorDotNet46Required"));
+				status.LogError(Language.GetTextValue("tModLoader.BuildErrorMissingReferenceAssemblies"));
 				return false;
 			}
 
