@@ -15,6 +15,8 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> continueButton;
 		private string webHelpURL;
 		private UITextPanel<string> webHelpButton;
+		private UITextPanel<string> skipLoadButton;
+		private bool showSkipButton;
 
 		public UIErrorMessage() {
 			if (Main.dedServ)
@@ -44,21 +46,29 @@ namespace Terraria.ModLoader.UI
 			continueButton.OnClick += ContinueClick;
 			area.Append(continueButton);
 
-			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
-			button2.CopyStyle(continueButton);
-			button2.HAlign = 1f;
-			button2.OnMouseOver += UICommon.FadedMouseOver;
-			button2.OnMouseOut += UICommon.FadedMouseOut;
-			button2.OnClick += OpenFile;
-			area.Append(button2);
+			UITextPanel<string> openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
+			openLogsButton.CopyStyle(continueButton);
+			openLogsButton.HAlign = 1f;
+			openLogsButton.OnMouseOver += UICommon.FadedMouseOver;
+			openLogsButton.OnMouseOut += UICommon.FadedMouseOut;
+			openLogsButton.OnClick += OpenFile;
+			area.Append(openLogsButton);
 
 			webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
-			webHelpButton.CopyStyle(button2);
+			webHelpButton.CopyStyle(openLogsButton);
 			webHelpButton.Top.Set(-55f, 1f);
 			webHelpButton.OnMouseOver += UICommon.FadedMouseOver;
 			webHelpButton.OnMouseOut += UICommon.FadedMouseOut;
 			webHelpButton.OnClick += VisitRegisterWebpage;
 			area.Append(webHelpButton);
+
+			skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
+			skipLoadButton.CopyStyle(continueButton);
+			skipLoadButton.Top.Set(-55f, 1f);
+			skipLoadButton.OnMouseOver += UICommon.FadedMouseOver;
+			skipLoadButton.OnMouseOut += UICommon.FadedMouseOut;
+			skipLoadButton.OnClick += SkipLoad;
+			area.Append(skipLoadButton);
 
 			Append(area);
 		}
@@ -70,17 +80,27 @@ namespace Terraria.ModLoader.UI
 				area.RemoveChild(webHelpButton);
 			else
 				area.Append(webHelpButton);
+			if (showSkipButton)
+				area.Append(skipLoadButton);
+			else
+				area.RemoveChild(skipLoadButton);
 		}
 
 		internal void SetMessage(string text)
 		{
 			message.SetText(text);
 			SetWebHelpURL("");
+			showSkipButton = false;
 		}
 
 		internal void SetWebHelpURL(string text)
 		{
 			this.webHelpURL = text;
+		}
+
+		internal void ShowSkipModsButton(bool skip = true)
+		{
+			this.showSkipButton = skip;
 		}
 
 		internal void SetGotoMenu(int gotoMenu)
@@ -109,6 +129,13 @@ namespace Terraria.ModLoader.UI
 		{
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			Process.Start(webHelpURL);
+		}
+
+		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(ID.SoundID.MenuOpen);
+			ModLoader.skipLoad = true;
+			Main.menuMode = gotoMenu;
 		}
 	}
 }

@@ -83,6 +83,7 @@ namespace Terraria.ModLoader
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
 		internal static bool buildAll = false;
+		internal static bool skipLoad;
 
 		internal static Action OnSuccessfulLoad;
 		
@@ -140,6 +141,7 @@ namespace Terraria.ModLoader
 					responsibleMods.Add((string)e.Data["mod"]);
 				if (e.Data.Contains("mods"))
 					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
+				responsibleMods.Remove("ModLoader");
 					
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
@@ -157,7 +159,7 @@ namespace Terraria.ModLoader
 				foreach (var mod in responsibleMods)
 					DisableMod(mod);
 
-				DisplayLoadError(msg, e, responsibleMods.Count == 0);
+				DisplayLoadError(msg, e, false);
 			}
 		}
 
@@ -232,6 +234,7 @@ namespace Terraria.ModLoader
 				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
 				if (!string.IsNullOrEmpty(e.HelpLink))
 					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
+				Interface.errorMessage.ShowSkipModsButton();
 
 				Main.menuMode = Interface.errorMessageID;
 			}

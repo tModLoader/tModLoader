@@ -85,6 +85,7 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整跟踪)",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
+		// "SkipToMainMenu": "Skip Loading Mods",
 		"Exit": "退出",
 
 		// Mod Info

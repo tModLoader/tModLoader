@@ -85,6 +85,7 @@
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Otwórz logi",
 		"OpenWebHelp": "Otwórz pomoc",
+		// "SkipToMainMenu": "Skip Loading Mods",
 		// "Exit": "Exit",
 
 		// Mod Info
