@@ -344,26 +344,15 @@ namespace Terraria.ModLoader
 			{
 				private ModuleDefinition module;
 
-				public HeaderCopyWriter(ModuleDefinition module)
-				{
+				public HeaderCopyWriter(ModuleDefinition module) {
 					this.module = module;
 				}
 
-				public bool GetDebugHeader(out ImageDebugDirectory directory, out byte[] header)
-				{
-					if (!module.HasDebugHeader)
-					{
-						directory = new ImageDebugDirectory();
-						header = null;
-						return false;
-					}
+				public ImageDebugHeader GetDebugHeader() => module.GetDebugHeader();
 
-					directory = module.GetDebugHeader(out header);
-					return true;
-				}
+				public ISymbolReaderProvider GetReaderProvider() => throw new NotImplementedException();
+				public void Write(MethodDebugInformation info) => throw new NotImplementedException();
 
-				public void Write(Mono.Cecil.Cil.MethodBody body) { }
-				public void Write(MethodSymbols symbols) { }
 				public void Dispose() { }
 			}
 
