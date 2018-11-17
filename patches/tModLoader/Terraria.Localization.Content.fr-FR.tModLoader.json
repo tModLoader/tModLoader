@@ -87,6 +87,7 @@
 		// "SkipToMainMenu": "Skip Loading Mods",
 		// "Retry": "Retry",
 		// "Exit": "Exit",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		"ModInfoHeader": "Détails: ",

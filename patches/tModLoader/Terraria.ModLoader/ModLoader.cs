@@ -234,7 +234,8 @@ namespace Terraria.ModLoader
 				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
 				if (!string.IsNullOrEmpty(e.HelpLink))
 					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
-				Interface.errorMessage.ShowSkipModsButton();
+				if(!fatal)
+					Interface.errorMessage.ShowSkipModsButton();
 				if(continueIsRetry)
 					Interface.errorMessage.ContinueIsRetry();
 

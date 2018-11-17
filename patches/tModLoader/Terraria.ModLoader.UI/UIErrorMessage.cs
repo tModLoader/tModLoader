@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -12,7 +13,8 @@ namespace Terraria.ModLoader.UI
 		private UIMessageBox message;
 		private UIElement area;
 		private int gotoMenu;
-		private UITextPanel<string> continueButton;
+		private UITextPanel<string> continueButton; // also Retry and Exit
+		private UITextPanel<string> exitAndDisableAllButton;
 		private string webHelpURL;
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
@@ -70,6 +72,13 @@ namespace Terraria.ModLoader.UI
 			skipLoadButton.OnClick += SkipLoad;
 			area.Append(skipLoadButton);
 
+			exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
+			exitAndDisableAllButton.CopyStyle(skipLoadButton);
+			exitAndDisableAllButton.TextColor = Color.Red;
+			exitAndDisableAllButton.OnMouseOver += UICommon.FadedMouseOver;
+			exitAndDisableAllButton.OnMouseOut += UICommon.FadedMouseOut;
+			exitAndDisableAllButton.OnClick += ExitAndDisableAll;
+
 			Append(area);
 		}
 
@@ -84,6 +93,10 @@ namespace Terraria.ModLoader.UI
 				area.Append(skipLoadButton);
 			else
 				area.RemoveChild(skipLoadButton);
+			if(gotoMenu < 0)
+				area.Append(exitAndDisableAllButton);
+			else
+				area.RemoveChild(exitAndDisableAllButton);
 		}
 
 		internal void SetMessage(string text)
@@ -123,6 +136,16 @@ namespace Terraria.ModLoader.UI
 				Environment.Exit(0);
 
 			Main.menuMode = gotoMenu;
+		}
+
+		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement)
+		{
+			var enabledMods = new HashSet<string>(ModLoader.EnabledMods);
+			foreach (var mod in enabledMods)
+			{
+				ModLoader.DisableMod(mod);
+			}
+			Environment.Exit(0);
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
