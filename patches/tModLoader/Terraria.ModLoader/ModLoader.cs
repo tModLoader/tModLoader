@@ -158,7 +158,7 @@ namespace Terraria.ModLoader
 				foreach (var mod in responsibleMods)
 					DisableMod(mod);
 
-				DisplayLoadError(msg, e, false, responsibleMods.Count > 0);
+				DisplayLoadError(msg, e, false, responsibleMods.Count == 0);
 			}
 		}
 
