@@ -173,6 +173,7 @@ namespace Terraria.ModLoader
 				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
 		}
 
+		internal static void ResetPastExceptions() => pastExceptions.Clear();
 		private static HashSet<string> pastExceptions = new HashSet<string>();
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 		{

@@ -99,6 +99,7 @@ namespace Terraria.ModLoader
 		internal static void SyncClientMods(BinaryReader reader, out bool needsReload)
 		{
 			AllowVanillaClients = reader.ReadBoolean();
+			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			var clientMods = ModLoader.Mods;
@@ -159,7 +160,7 @@ namespace Terraria.ModLoader
 				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
-				
+
 				Logging.tML.Warn(msg);
 				Interface.errorMessage.SetMessage(msg);
 				Interface.errorMessage.SetGotoMenu(0);
@@ -283,7 +284,7 @@ namespace Terraria.ModLoader
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
-		
+
 		private static Action NetReload()
 		{
 			// Main.ActivePlayerFileData gets cleared during reload
@@ -415,7 +416,7 @@ namespace Terraria.ModLoader
 		{
 			if (netMods == null) return;
 			float scale = 0.7f;
-			
+
 			for (int j = -1; j < netMods.Length; j++)
 			{
 				int i = j + Main.maxMsg + 2;
@@ -424,7 +425,7 @@ namespace Terraria.ModLoader
 				int xAdjust = i / 50;
 				x += xAdjust * 400;
 				y += (i - xAdjust * 50) * 13;
-				if(j == -1)
+				if (j == -1)
 				{
 					Main.spriteBatch.DrawString(Main.fontMouseText, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 					continue;

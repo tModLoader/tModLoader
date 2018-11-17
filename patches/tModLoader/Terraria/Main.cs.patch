@@ -336,6 +336,17 @@
  			bool flag = Main.Configuration.Save(true);
  			return flag && PlayerInput.Save();
  		}
+@@ -2937,6 +_,10 @@
+ 				return;
+ 			}
+ 			Main.Configuration.Load();
++#if SERVER
++			ModLoader.ModLoader.LoadConfiguration();
++			return;
++#endif
+ 			Main.Configuration.Get<bool>("SmartCursorToggle", ref Main.cSmartCursorToggle);
+ 			Main.Configuration.Get<bool>("MapEnabled", ref Main.mapEnabled);
+ 			Main.Configuration.Get<int>("InvasionBarMode", ref Main.invasionProgressMode);
 @@ -3225,6 +_,7 @@
  					Main.cMapAlphaDown
  				};
@@ -444,17 +455,21 @@
  			WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
-@@ -4301,6 +_,9 @@
+@@ -4301,16 +_,21 @@
  					Console.WriteLine(Main.statusText);
  				}
  			}
 +			//run one tick to JIT all the game content now rather than when a player connects
 +			Logging.ServerConsoleLine("Running one update...");
++			Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +			Update(new GameTime());
  			try
  			{
  				Console.Clear();
-@@ -4310,7 +_,7 @@
++				Logging.ResetPastExceptions(); // "Running one update..." above.
+ 			}
+ 			catch
+ 			{
  			}
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
@@ -562,6 +577,14 @@
  					}
  					else
  					{
+@@ -4556,6 +_,7 @@
+ 							try
+ 							{
+ 								Console.Clear();
++								Logging.ResetPastExceptions(); // "CLI.Clear_Command" above.
+ 								continue;
+ 							}
+ 							catch
 @@ -4776,7 +_,7 @@
  		public static void InitLifeBytes()
  		{
@@ -594,6 +617,16 @@
  			}
  			for (int num13 = 0; num13 < 1001; num13++)
  			{
+@@ -7368,6 +_,9 @@
+ #if CLIENT
+ 			this.ClientInitialize();
+ #endif
++#if SERVER
++			this.OpenSettings();
++#endif
+ 		}
+ 
+ 		private void ClientInitialize()
 @@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
