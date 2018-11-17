@@ -14,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "PostBuildMenu", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0c6a5060345e8ee56b6514c5eaa69e99", null ],
     [ "SoundExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a166119387b99ba4ecb7ba613471fc625", null ],
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a", null ],
+    [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa54932655d63761842ee92641848e469", null ],
     [ "_enabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a", null ],
     [ "beta", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a006f1cb5c37f8099bb089a0a59f39ed5", null ],
     [ "compressedPlatformRepresentation", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7", null ],
@@ -23,8 +24,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "mac", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab", null ],
     [ "ModCount", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a55b743e8b6af63233a618f244f71334f", null ],
     [ "ModPath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f", null ],
-    [ "mods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a25c79bf62cc53bb9a05dda3e404aaf6b", null ],
-    [ "Mods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5", null ],
     [ "modsByName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758", null ],
     [ "ModSourcePath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a65d6fb535bb0f112020ebe47261a31f0", null ],
     [ "steamID64", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e", null ],
@@ -32,5 +31,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "versionedName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad492cc67d552a98b9b58fd49ac7bf427", null ],
     [ "weakModReferences", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3", null ],
     [ "windows", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac0d1dcc0ee625f8883c8967e0e660a84", null ],
+    [ "Mods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5", null ],
     [ "SteamID64", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a734c915242ff947b30c8edd7e003ed06", null ]
 ];
