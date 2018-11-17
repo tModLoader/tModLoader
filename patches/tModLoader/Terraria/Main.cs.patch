@@ -891,7 +891,7 @@
  				return;
  			}
  			Main.gamePaused = false;
-+			WorldHooks.PreUpdateEntities();
++			ModHooks.PreUpdateEntities();
  			if (!Main.dedServ && (double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0 && Main.netMode != 2)
  			{
  				Star.UpdateStars();
@@ -908,7 +908,7 @@
  				goto IL_1864;
  			}
  			Main._gameUpdateCount += 1u;
-+			WorldHooks.MidUpdatePlayerNPC();
++			ModHooks.MidUpdatePlayerNPC();
  			if (Main.netMode != 1)
  			{
  				try
@@ -916,7 +916,7 @@
  				Main.npc[num14].UpdateNPC(num14);
  				goto IL_19A7;
  			}
-+			WorldHooks.MidUpdateNPCGore();
++			ModHooks.MidUpdateNPCGore();
  			int num15 = 0;
  			while (num15 < 500)
  			{
@@ -924,7 +924,7 @@
  				Main.gore[num15].Update();
  				goto IL_19EE;
  			}
-+			WorldHooks.MidUpdateGoreProjectile();
++			ModHooks.MidUpdateGoreProjectile();
  			LockOnHelper.SetUP();
  			int num16 = 0;
  			while (num16 < 1000)
@@ -932,7 +932,7 @@
  			}
  			Main.ProjectileUpdateLoopIndex = -1;
  			LockOnHelper.SetDOWN();
-+			WorldHooks.MidUpdateProjectileItem();
++			ModHooks.MidUpdateProjectileItem();
  			int num17 = 0;
  			while (num17 < 400)
  			{
@@ -940,7 +940,7 @@
  				Main.item[num17].UpdateItem(num17);
  				goto IL_1A9B;
  			}
-+			WorldHooks.MidUpdateItemDust();
++			ModHooks.MidUpdateItemDust();
  			if (Main.ignoreErrors)
  			{
  				try
@@ -948,7 +948,7 @@
  			}
  			Dust.UpdateDust();
  			IL_1AF0:
-+			WorldHooks.MidUpdateDustTime();
++			ModHooks.MidUpdateDustTime();
  			if (Main.netMode != 2)
  			{
  				CombatText.UpdateCombatText();
@@ -956,7 +956,7 @@
  			}
  			Main.UpdateTime();
  			IL_1B1E:
-+			WorldHooks.MidUpdateTimeWorld();
++			ModHooks.MidUpdateTimeWorld();
  			Main.tileSolid[379] = true;
  			if (Main.netMode != 1)
  			{
@@ -964,7 +964,7 @@
  				Main.UpdateInvasion();
  			}
  			IL_1B52:
-+			WorldHooks.MidUpdateInvasionNet();
++			ModHooks.MidUpdateInvasionNet();
  			if (Main.ignoreErrors)
  			{
  				try
@@ -972,7 +972,7 @@
  				Main.UpdateClient();
  			}
  			IL_1B9A:
-+			WorldHooks.PostUpdateEverything();
++			ModHooks.PostUpdateEverything();
  			if (Main.ignoreErrors)
  			{
  				try
