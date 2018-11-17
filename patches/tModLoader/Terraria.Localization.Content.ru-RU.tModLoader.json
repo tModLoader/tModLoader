@@ -64,7 +64,7 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Название мода {0} не совпадает с названием сборки {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Имя пространства имен и папки мода не совпадают. Корневое пространство имен имен должно быть названо как папка мода.",
 		"BuildErrorNoModClass": "Удостоверьтесь, что у вас есть ровно один класс, происходящий от Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 должен быть установлен на вашем компьютере для компиляции C# 6.0",
+		"BuildErrorDotNet46Required": ".NET Framework 4.5 должен быть установлен на вашем компьютере для компиляции C# 6.0",
 		"BuildErrorPDBWindowsOnly": "PDB файлы могут быть созданы только на Windows, для Windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",

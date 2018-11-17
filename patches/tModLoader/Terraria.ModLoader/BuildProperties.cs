@@ -63,7 +63,6 @@ namespace Terraria.ModLoader
 		internal bool editAndContinue = false;
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
-		internal int languageVersion = 4;
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;
@@ -165,13 +164,6 @@ namespace Terraria.ModLoader
 						break;
 					case "buildIgnore":
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
-						break;
-					case "languageVersion":
-						if (!int.TryParse(value, out properties.languageVersion))
-							throw new Exception("languageVersion not an int: " + value);
-
-						if (properties.languageVersion < 4 || properties.languageVersion > 6)
-							throw new Exception("languageVersion (" + properties.languageVersion + ") must be between 4 and 6");
 						break;
 					case "side":
 						if (!Enum.TryParse(value, true, out properties.side))

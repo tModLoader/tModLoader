@@ -64,7 +64,7 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
+		"BuildErrorDotNet46Required": ".NET Framework 4.5 must be installed to compile mods",
 		"BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		"BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		"BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",

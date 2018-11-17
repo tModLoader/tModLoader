@@ -33,11 +33,17 @@ namespace Terraria.ModLoader.UI
 			loadProgress.SetText(msg);
 		}
 
-		public void LogError(string mod, string msg, Exception e = null)
+		private string mod;
+		public void SetMod(string modName)
+		{
+			mod = modName;
+		}
+
+		public void LogError(string msg, Exception e = null)
 		{
 			Logging.tML.Error(msg, e);
 
-			msg = Language.GetTextValue("tModLoader.BuildError", mod) + "\n" + msg;
+			msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "") + "\n" + msg;
 			if (e != null)
 				msg += "\n" + e;
 			Interface.errorMessage.SetMessage(msg);
@@ -45,7 +51,7 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.errorMessageID;
 		}
 
-		public void LogCompileErrors(string mod, CompilerErrorCollection errors, string hint)
+		public void LogCompileErrors(string dllName, CompilerErrorCollection errors, string hint)
 		{
 			int warnings = 0;
 			CompilerError displayError = null;
@@ -57,7 +63,7 @@ namespace Terraria.ModLoader.UI
 				else if (displayError == null)
 					displayError = error;
 			}
-			var msg = Language.GetTextValue("tModLoader.CompileError", mod, errors.Count - warnings, warnings);
+			var msg = Language.GetTextValue("tModLoader.CompileError", dllName, errors.Count - warnings, warnings);
 			if (hint != null)
 				msg += "\n" + hint;
 			Interface.errorMessage.SetMessage(msg + "\n\n" + displayError);

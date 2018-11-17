@@ -64,7 +64,7 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Le nom de Mod {0} ne correspond pas au nom d'Assembly {1}",
 		"BuildErrorNamespaceFolderDontMatch": "L'Espace de Noms et le nom de dossier ne correspondent pas. L'Espace de Noms primaire doit correspondre au nom du dossier.",
 		"BuildErrorNoModClass": "Soyez certain d'avoir une classe Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 doit être installé pour compiler du C# 6.0",
+		"BuildErrorDotNet46Required": ".NET Framework 4.5 doit être installé pour compiler les mods",
 		"BuildErrorPDBWindowsOnly": "Les documents PDB ne peuvent être générés que pour Windows, sur Windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",

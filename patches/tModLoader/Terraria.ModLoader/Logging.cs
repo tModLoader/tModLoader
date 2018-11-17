@@ -47,6 +47,7 @@ namespace Terraria.ModLoader
 			ConfigureAppenders();
 
 			tML.InfoFormat("Starting {0}{1} {2}", ModLoader.versionedName, ModLoader.compressedPlatformRepresentation, side);
+			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
