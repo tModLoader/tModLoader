@@ -33,6 +33,7 @@ namespace Terraria.ModLoader
 		internal const int extractModID = 10019;
 		internal const int downloadModsID = 10020;
 		internal const int uploadModID = 10021;
+		internal const int developerModeHelpID = 10022;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -51,6 +52,7 @@ namespace Terraria.ModLoader
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIDownloadMods downloadMods = new UIDownloadMods();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
+		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
@@ -63,11 +65,23 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
-			if (selectedMenu == buttonIndex)
+			if (ModLoader.DeveloperMode)
 			{
-				Main.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modSourcesID;
+				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(10, -1, -1, 1);
+					Main.menuMode = modSourcesID;
+				}
+			}
+			else
+			{
+				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuEnableDeveloperMode");
+				if (selectedMenu == buttonIndex)
+				{
+					Main.PlaySound(10, -1, -1, 1);
+					Main.menuMode = developerModeHelpID;
+				}
 			}
 			buttonIndex++;
 			numButtons++;
@@ -136,6 +150,11 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == modSourcesID)
 			{
 				Main.MenuUI.SetState(modSources);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == developerModeHelpID)
+			{
+				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == loadModsID)

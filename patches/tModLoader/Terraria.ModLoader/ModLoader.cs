@@ -333,6 +333,45 @@ namespace Terraria.ModLoader
 #endif
 		}
 
+		private static bool? developerMode;
+		public static bool DeveloperMode
+		{
+			get {
+				if (!developerMode.HasValue)
+					developerMode = CheckDeveloperMode();
+				return developerMode.Value;
+			}
+		}
+
+		internal static void ResetDeveloperMode()
+		{
+			developerMode = null;
+		}
+
+		internal static bool CheckDeveloperMode()
+		{
+			bool requirementsSatisfied = true;
+			requirementsSatisfied &= ModCompileFolderCheck();
+			requirementsSatisfied &= DotNet46Check();
+			requirementsSatisfied &= DotNetAssembliesCheck();
+			return requirementsSatisfied;
+		}
+
+		internal static bool ModCompileFolderCheck()
+		{
+			return Main.rand.NextBool();
+		}
+
+		internal static bool DotNet46Check()
+		{
+			return Main.rand.NextBool();
+		}
+
+		internal static bool DotNetAssembliesCheck()
+		{
+			return Main.rand.NextBool();
+		}
+
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>

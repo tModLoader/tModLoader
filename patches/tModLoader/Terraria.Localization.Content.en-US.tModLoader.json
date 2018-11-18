@@ -5,6 +5,7 @@
 		"MenuModBrowser": "Mod Browser",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
+		"MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
@@ -229,6 +230,11 @@
 		"MSManagePublished": "Manage Published",
 		"MSPublish": "Publish",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+
+		"EDMModCompileFolderNeededMessage": "Mod Compile folder out of data or missing. Click to download the Mod Compile folder.",
+		"EDMDotNet46NeededMessage": ".Net 4.6 not installed. Click to download the download .Net 4.6.",
+		"EDMReferencesAssembliesNeededMessage": "Reference Assemblies not found. Either install Visual Studio or click here to download.",
+		"EDMTutorialNeededMessage": "Making Mods with tModLoader. Click here to view the modding tutorial.",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
