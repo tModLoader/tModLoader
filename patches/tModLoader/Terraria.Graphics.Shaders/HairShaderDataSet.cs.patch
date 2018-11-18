@@ -1,0 +1,16 @@
+--- src/Terraria\Terraria.Graphics.Shaders\HairShaderDataSet.cs
++++ src/tModLoader\Terraria.Graphics.Shaders\HairShaderDataSet.cs
+@@ -7,9 +_,9 @@
+ {
+ 	public class HairShaderDataSet
+ 	{
+-		protected List<HairShaderData> _shaderData = new List<HairShaderData>();
+-		protected Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
+-		protected byte _shaderDataCount;
++		internal List<HairShaderData> _shaderData = new List<HairShaderData>();
++		internal Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
++		internal byte _shaderDataCount;
+ 
+ 		public T BindShader<T>(int itemId, T shaderData) where T : HairShaderData
+ 		{
+

@@ -186,6 +186,8 @@ namespace Terraria.ModLoader
 
 		internal static void Load()
 		{
+			CacheVanillaState();
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.loading = true;
@@ -216,6 +218,11 @@ namespace Terraria.ModLoader
 			ItemSorting.SetupWhiteLists();
 			PlayerInput.ReInitialize();
 			SetupRecipes();
+		}
+
+		private static void CacheVanillaState()
+		{
+			EffectsTracker.CacheVanillaState();
 		}
 
 		private static void LoadModContent(Action<Mod> loadAction)
@@ -301,6 +308,7 @@ namespace Terraria.ModLoader
 			TagSerializer.Reload();
 			ModNet.Unload();
 			CustomCurrencyManager.Initialize();
+			EffectsTracker.RemoveModEffects();
 
 			CleanupModReferences();
 		}

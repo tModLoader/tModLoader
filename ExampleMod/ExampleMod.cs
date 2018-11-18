@@ -140,14 +140,6 @@ namespace ExampleMod
 				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
-				GameShaders.Misc.Remove("ExampleMod:DeathAnimation");
-
-				Filters.Scene.Remove("ExampleMod:PuritySpirit");
-				SkyManager.Instance.Remove("ExampleMod:PuritySpirit");
-				Filters.Scene.Remove("ExampleMod:MonolithVoid");
-				SkyManager.Instance.Remove("ExampleMod:MonolithVoid");
-
-				GameShaders.Armor.Remove(ItemType<Items.ExampleDye>());
 			}
 
 			// Unload static references

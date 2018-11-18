@@ -1,20 +1,16 @@
 --- src/Terraria\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
 +++ src/tModLoader\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
-@@ -15,6 +_,16 @@
- 			this._shaderLookupDictionary[itemId] = ++this._shaderDataCount;
- 			this._shaderData.Add(shaderData);
- 			return shaderData;
-+		}
-+
-+		public void Remove(int itemId)
-+		{
-+			int shaderId = GetShaderIdFromItemId(itemId);
-+			if (shaderId > 0)
-+			{
-+				_shaderLookupDictionary.Remove(itemId);
-+				_shaderData[shaderId - 1] = null;
-+			}
- 		}
+@@ -6,9 +_,9 @@
+ {
+ 	public class ArmorShaderDataSet
+ 	{
+-		protected List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
+-		protected Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
+-		protected int _shaderDataCount;
++		internal List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
++		internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
++		internal int _shaderDataCount;
  
- 		public void Apply(int shaderId, Entity entity, DrawData? drawData = null)
+ 		public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData
+ 		{
 
