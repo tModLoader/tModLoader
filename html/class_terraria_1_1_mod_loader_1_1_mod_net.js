@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod_net =
 [
     [ "ModHeader", "class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html", "class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header" ],
+    [ "AddNoSyncDeps", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aa7de2d7bfa1a5f7aca632c766575b9fb", null ],
     [ "DownloadNextMod", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ab82781355566bc2feb1334751ee47f67", null ],
     [ "GetMod", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a6d757dc15f73811be2ab927e0419d256", null ],
     [ "IsModdedClient", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ab0864e08a521b65ccf01b36be9217666", null ],

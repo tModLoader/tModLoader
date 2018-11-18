@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v',['V',['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html#ab8bcae1dd8ce9ed35e9592c5c89f6a7a',1,'Terraria::ModLoader::EffectsTracker::KeyCache']]],
+  ['v',['V',['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html#a93895641cf119225f3de7b36d628e192',1,'Terraria::ModLoader::EffectsTracker::KeyCache']]],
   ['validateitem',['ValidateItem',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a24fc4d2c08a22c38dd7738adbbda9ca6',1,'Terraria::ModLoader::ModPrefix']]],
   ['validtile',['ValidTile',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0',1,'Terraria::ModLoader::ModTileEntity']]],
   ['vanillacanchat',['VanillaCanChat',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a664c66587e33aad8e9c2d21f65027095',1,'Terraria::ModLoader::NPCLoader']]],

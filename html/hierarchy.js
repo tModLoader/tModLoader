@@ -19,12 +19,9 @@ var hierarchy =
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
     [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
-    [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
-    [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
+    [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer_3_01_info_type_01_4.html", [
+      [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ],
       [ "Terraria.ModLoader.PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.DrawLayer< PlayerHeadDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
-      [ "Terraria.ModLoader.PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", null ]
     ] ],
     [ "Terraria.ModLoader.EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", null ],
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
@@ -64,7 +61,7 @@ var hierarchy =
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
     [ "Terraria.ModLoader.EffectsTracker.KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", [
-      [ "Terraria.ModLoader.EffectsTracker.KeyCache< K, V >", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", null ]
+      [ "Terraria.ModLoader.EffectsTracker.KeyCache< K, V >", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache_3_01_k_00_01_v_01_4.html", null ]
     ] ],
     [ "Terraria.ModLoader.Exceptions.LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", null ],
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],
@@ -107,10 +104,9 @@ var hierarchy =
     [ "Terraria.ModLoader.NPCSpawnHelper", "class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html", null ],
     [ "Terraria.ModLoader.NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", null ],
     [ "Terraria.ModLoader.IO.TagIO.PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", [
-      [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", [
-      [ "Terraria.ModLoader.IO.TagIO.ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html", null ]
+      [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html", [
+        [ "Terraria.ModLoader.IO.TagIO.ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html", null ]
+      ] ]
     ] ],
     [ "Terraria.ModLoader.PlayerDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html", null ],
     [ "Terraria.ModLoader.PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", null ],
@@ -126,35 +122,17 @@ var hierarchy =
     [ "Terraria.ModLoader.IO.TagPrinter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html", null ],
     [ "Terraria.ModLoader.IO.TagSerializable", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html", null ],
     [ "Terraria.ModLoader.IO.TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< bool, byte >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< Color, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< Rectangle, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< T, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
-    [ "Terraria.ModLoader.IO.TagSerializer< uint, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< ulong, long >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< ushort, short >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.UShortTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< Vector2, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.Vector2TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector2_tag_serializer.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IO.TagSerializer< Vector3, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-      [ "Terraria.ModLoader.IO.Vector3TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector3_tag_serializer.html", null ]
+      [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer_3_01_t_00_01_s_01_4.html", [
+        [ "Terraria.ModLoader.IO.BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.UShortTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.Vector2TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector2_tag_serializer.html", null ],
+        [ "Terraria.ModLoader.IO.Vector3TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector3_tag_serializer.html", null ]
+      ] ]
     ] ],
     [ "TileEntity", "class_tile_entity.html", [
       [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", null ]
@@ -163,7 +141,9 @@ var hierarchy =
     [ "Terraria.ModLoader.TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", [
       [ "Terraria.ModLoader.DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", null ]
     ] ],
-    [ "Terraria.ModLoader.TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", null ],
+    [ "Terraria.ModLoader.TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4.html", [
+      [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4_1_1_sorting_exception.html", null ]
+    ] ],
     [ "Terraria.ModLoader.UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", null ],
     [ "Terraria.ModLoader.IO.UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", null ],
     [ "Terraria.ModLoader.WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", null ],
@@ -175,7 +155,6 @@ var hierarchy =
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", null ],
-      [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
       [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
     ] ],
     [ "Recipe", null, [

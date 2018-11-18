@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.TileLoader.IsModMusicBox" name="Terraria.ModLoader.TileLoader.IsModMusicBox">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#ab0fc8ff564415d20026a14b4975f3efc" title="Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main..." alt="" coords="257,5,445,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a01f7bae79dfd53b5c1ed19aeb3cfae61" title="Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terrar..." alt="" coords="257,70,445,111"/>
-</map>

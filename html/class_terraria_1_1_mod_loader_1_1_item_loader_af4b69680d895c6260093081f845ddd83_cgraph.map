@@ -1,6 +1,3 @@
 <map id="Terraria.ModLoader.ItemLoader.DrawBody" name="Terraria.ModLoader.ItemLoader.DrawBody">
 <area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a998b26d3af50f2304fa78176035f9e62" title="Return false to hide the player&#39;s body when this body equipment texture is worn. By default this will..." alt="" coords="261,5,432,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="261,70,432,111"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="480,70,693,111"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="742,70,949,111"/>
 </map>

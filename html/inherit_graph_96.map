@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html" title="A struct that contains information that may help with PlayerHeadLayer drawing. " alt="" coords="6,5,181,46"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4.html" title="Terraria.ModLoader.TopoSort\&lt; T \&gt;" alt="" coords="6,12,229,39"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4_1_1_sorting_exception.html" title="Terraria.ModLoader.TopoSort\l\&lt; T \&gt;.SortingException" alt="" coords="278,5,469,46"/>
 </map>

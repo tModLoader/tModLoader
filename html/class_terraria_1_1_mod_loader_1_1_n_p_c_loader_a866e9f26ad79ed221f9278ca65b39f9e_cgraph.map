@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.NPCLoader.OnChatButtonClicked" name="Terraria.ModLoader.NPCLoader.OnChatButtonClicked">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="269,5,443,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a9dc1f2fadc19db07e55dcb2f061aad" title="Allows you to make something happen whenever a button is clicked on this NPC&#39;s chat window..." alt="" coords="265,70,447,111"/>
-</map>

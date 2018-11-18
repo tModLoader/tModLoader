@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AddBackgroundTexture" name="Terraria.ModLoader.Mod.AddBackgroundTexture">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9" title="Returns the slot/ID of the background texture with the given name. " alt="" coords="246,5,469,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="517,34,731,75"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="779,34,986,75"/>
-</map>

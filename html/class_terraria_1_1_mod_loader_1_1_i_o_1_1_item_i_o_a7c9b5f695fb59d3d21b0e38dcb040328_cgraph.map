@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.IO.ItemIO.ToBase64" name="Terraria.ModLoader.IO.ItemIO.ToBase64">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a4b3724a8fd2755be65d05870f988c1e8" title="Terraria.ModLoader.IO.Item\lIO.Save" alt="" coords="238,5,421,46"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a548368b52deae062f23e0819578c6e46" title="Terraria.ModLoader.IO.Tag\lIO.ToStream" alt="" coords="240,70,419,111"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad12de39d616e3b701c85f970912eb545" title="Returns the ModPrefix associated with specified type If not a ModPrefix, returns null. " alt="" coords="470,5,671,46"/>
-</map>

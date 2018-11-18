@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.Kill" name="Terraria.ModLoader.ProjectileLoader.Kill">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,5,421,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1d449abeb4ee387b6b2ebe33da5693aa" title="Allows you to control what happens when a projectile is killed (for example, creating dust or making ..." alt="" coords="246,70,421,111"/>
-</map>

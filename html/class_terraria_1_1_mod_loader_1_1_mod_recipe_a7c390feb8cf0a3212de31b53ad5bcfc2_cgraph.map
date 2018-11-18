@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.ModRecipe.AddIngredient" name="Terraria.ModLoader.ModRecipe.AddIngredient">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2" title="Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with th..." alt="" coords="262,12,485,39"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.NPCLoader.TownNPCAttackProj" name="Terraria.ModLoader.NPCLoader.TownNPCAttackProj">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="266,5,441,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afcee386f81c0bd5f45acb274ccb9f17d" title="Allows you to determine the projectile type of a town NPC&#39;s attack, and how long it takes for the pro..." alt="" coords="265,70,442,111"/>
-</map>

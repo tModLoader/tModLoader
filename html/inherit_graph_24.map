@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_global_buff.html" title="This class allows you to modify the behavior of any buff in the game. " alt="" coords="6,5,205,32"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. " alt="" coords="6,5,210,32"/>
 </map>
