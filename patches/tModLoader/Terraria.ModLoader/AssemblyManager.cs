@@ -198,6 +198,7 @@ namespace Terraria.ModLoader
 
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
+
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
 
@@ -324,6 +325,24 @@ namespace Terraria.ModLoader
 		{
 			assemblyBinaries.TryGetValue(name, out var code);
 			return code;
+		}
+
+		internal static bool FirstModInStackTrace(StackTrace stack, out string modName)
+		{
+			for (int i = 0; i < stack.FrameCount; i++)
+			{
+				StackFrame frame = stack.GetFrame(i);
+				MethodBase caller = frame.GetMethod();
+				var assembly = caller?.DeclaringType?.Assembly;
+				if (assembly == null || !hostModForAssembly.TryGetValue(assembly, out var mod))
+					continue;
+
+				modName = mod.Name;
+				return true;
+			}
+
+			modName = null;
+			return false;
 		}
 
 		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver

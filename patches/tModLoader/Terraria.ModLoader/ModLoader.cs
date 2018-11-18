@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader.Audio;
+using System.Diagnostics;
 
 namespace Terraria.ModLoader
 {
@@ -141,7 +142,10 @@ namespace Terraria.ModLoader
 				if (e.Data.Contains("mods"))
 					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
 				responsibleMods.Remove("ModLoader");
-					
+				
+				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
+					responsibleMods.Add(stackMod);
+
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().SingleOrDefault(m => m.Name == responsibleMods[0]);
