@@ -192,6 +192,8 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:acca754eb5945b489d8af37e2af08aaba"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#acca754eb5945b489d8af37e2af08aaba">DeveloperMode</a><code> [get]</code></td></tr>
+<tr class="separator:acca754eb5945b489d8af37e2af08aaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e45b91da361a28991e56b4fceb29d5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5">Mods</a><code> [get, private set]</code></td></tr>
 <tr class="separator:aa5e45b91da361a28991e56b4fceb29d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -209,6 +211,8 @@ Static Private Attributes</h2></td></tr>
 <tr class="memitem:a90cd23cb256c959b05d8a943f71fff5a"><td class="memItemLeft" align="right" valign="top">static HashSet&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a">_enabledMods</a></td></tr>
 <tr class="memdesc:a90cd23cb256c959b05d8a943f71fff5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file. <a href="#a90cd23cb256c959b05d8a943f71fff5a">More...</a><br /></td></tr>
 <tr class="separator:a90cd23cb256c959b05d8a943f71fff5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e0e9b7f11749b6da4685d9b95a640b7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a8e0e9b7f11749b6da4685d9b95a640b7">developerMode</a></td></tr>
+<tr class="separator:a8e0e9b7f11749b6da4685d9b95a640b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f3885f31513af7aa4fdc29f16cb6758"><td class="memItemLeft" align="right" valign="top">static readonly IDictionary&lt; string, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758">modsByName</a> = new Dictionary&lt;string, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&gt;(StringComparer.OrdinalIgnoreCase)</td></tr>
 <tr class="separator:a0f3885f31513af7aa4fdc29f16cb6758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc7651ad2b53d988265a0c1ddad6ff5e"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e">steamID64</a> = &quot;&quot;</td></tr>
@@ -780,6 +784,28 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8e0e9b7f11749b6da4685d9b95a640b7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.ModLoader.developerMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00336">336</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a191014086a6e58e2099d1b1250f070a0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1077,6 +1103,28 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a class="anchor" id="acca754eb5945b489d8af37e2af08aaba"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.ModLoader.DeveloperMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00338">338</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aa5e45b91da361a28991e56b4fceb29d5"></a>
 <div class="memitem">
 <div class="memproto">
