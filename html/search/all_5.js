@@ -5,6 +5,7 @@ var searchData=
   ['editspawnrange',['EditSpawnRange',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa1d334e4354e574e6660581805280b23',1,'Terraria.ModLoader.GlobalNPC.EditSpawnRange()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aecd6e6cc37c287e1d477db243364b0b9',1,'Terraria.ModLoader.NPCLoader.EditSpawnRange()']]],
   ['editspawnrate',['EditSpawnRate',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a63bf497418d5bbb5592355a2f44f31a5',1,'Terraria.ModLoader.GlobalNPC.EditSpawnRate()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa3c1075b462bc4c9bccb800492ad1c18',1,'Terraria.ModLoader.NPCLoader.EditSpawnRate()']]],
   ['effectexists',['EffectExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#a79e02b7c7d7dccc70abd554a6f6de1ea',1,'Terraria::ModLoader::Mod']]],
+  ['effectstracker_2ecs',['EffectsTracker.cs',['../_effects_tracker_8cs.html',1,'']]],
   ['enableeac',['EnableEaC',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9d80010aa1b56a4d51d208f240652d42',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['encapsulatename',['EncapsulateName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#acb7a0b19359fe4ce746d033d880a623c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['encapsulatereferences',['EncapsulateReferences',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac5c3718bc5def39e46596eec59f0123c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],

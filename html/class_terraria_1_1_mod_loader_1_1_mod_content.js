@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_mod_content =
 [
+    [ "CacheVanillaState", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a0c785b05972bd4f2d10b576dbb026051", null ],
     [ "DisposeMusic", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a60eea5814ee1e397f921dd37943ccde7", null ],
     [ "FileExists", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a655c322bc2f38fc63ca0b275ea42fe53", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod_content.html#ae5711f0be2add40901c9ce9f42a67eb9", null ],
