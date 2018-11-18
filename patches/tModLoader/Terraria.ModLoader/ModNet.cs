@@ -47,6 +47,8 @@ namespace Terraria.ModLoader
 		public static Mod GetMod(int netID) =>
 			netID >= 0 && netID < netMods.Length ? netMods[netID] : null;
 
+		public static int NetModCount => netMods.Length;
+
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
 		private static ModHeader downloadingMod;
 		private static FileStream downloadingFile;
@@ -57,7 +59,6 @@ namespace Terraria.ModLoader
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
 				netMods[i].netID = i;
-			SetupDiagnostics();
 		}
 
 		internal static void Unload()
@@ -65,7 +66,6 @@ namespace Terraria.ModLoader
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
 				AllowVanillaClients = false;
-			SetupDiagnostics();
 		}
 
 		internal static void SyncMods(int clientIndex)
@@ -280,7 +280,6 @@ namespace Terraria.ModLoader
 			netMods = null;
 			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;
-			SetupDiagnostics();
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
@@ -305,7 +304,6 @@ namespace Terraria.ModLoader
 		internal static void SendNetIDs(int toClient)
 		{
 			var p = new ModPacket(MessageID.ModPacket);
-			p.Write((short)-1);
 			p.Write(netMods.Length);
 			foreach (var mod in netMods)
 				p.Write(mod.Name);
@@ -338,12 +336,15 @@ namespace Terraria.ModLoader
 
 		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
 		{
-			var id = reader.ReadInt16();
-			if (id < 0)
+			if (netMods == null) {
 				ReadNetIDs(reader);
-			else
-			{
-				GetMod(id)?.HandlePacket(reader, whoAmI);
+				return;
+			}
+
+			var id = NetModCount < 256 ? reader.ReadByte() : reader.ReadInt16();
+			GetMod(id)?.HandlePacket(reader, whoAmI);
+
+			if (Main.netMode == 1) {
 				rxMsgType[id]++;
 				rxDataType[id] += length;
 			}
@@ -387,6 +388,7 @@ namespace Terraria.ModLoader
 
 		// Mirror of Main class network diagnostic fields, but mod specific.
 		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModWorld/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
+		// Currently we only update these on client
 		public static int[] rxMsgType;
 		public static int[] rxDataType;
 		public static int[] txMsgType;
@@ -394,15 +396,15 @@ namespace Terraria.ModLoader
 
 		private static void SetupDiagnostics()
 		{
-			rxMsgType = netMods == null ? null : new int[netMods.Length];
-			rxDataType = netMods == null ? null : new int[netMods.Length];
-			txMsgType = netMods == null ? null : new int[netMods.Length];
-			txDataType = netMods == null ? null : new int[netMods.Length];
+			rxMsgType = new int[netMods.Length];
+			rxDataType = new int[netMods.Length];
+			txMsgType = new int[netMods.Length];
+			txDataType = new int[netMods.Length];
 		}
 
 		internal static void ResetNetDiag()
 		{
-			if (netMods == null) return;
+			if (netMods == null || Main.netMode == 2) return;
 			for (int i = 0; i < netMods.Length; i++)
 			{
 				rxMsgType[i] = 0;

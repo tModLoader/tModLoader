@@ -1603,7 +1603,11 @@ namespace Terraria.ModLoader
 				throw new Exception("Cannot get packet for " + Name + " because it does not exist on the other side");
 
 			var p = new ModPacket(MessageID.ModPacket, capacity + 5);
-			p.Write(netID);
+			if (ModNet.NetModCount < 256)
+				p.Write((byte)netID);
+			else
+				p.Write(netID);
+
 			p.netID = netID;
 			return p;
 		}
