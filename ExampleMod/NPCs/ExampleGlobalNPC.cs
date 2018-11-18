@@ -201,6 +201,11 @@ namespace ExampleMod.NPCs
                 shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Infinity>());
                 nextSlot++;
             }
+			else if (type == NPCID.Stylist)
+			{
+				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.ExampleHairDye>());
+				nextSlot++;
+			}
 		}
 
 		// Make any NPC with a chat complain to the player if they have the stinky debuff.

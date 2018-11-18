@@ -143,6 +143,7 @@
     <Compile Include="Items\ExampleDrawTooltips.cs" />
     <Compile Include="Items\ExampleDye.cs" />
     <Compile Include="Items\ExampleGlobalRecipe.cs" />
+    <Compile Include="Items\ExampleHairDye.cs" />
     <Compile Include="Items\ExampleHamaxe.cs" />
     <Compile Include="Items\ExampleHealingPotion.cs" />
     <Compile Include="Items\ExampleHook.cs" />
