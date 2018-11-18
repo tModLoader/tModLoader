@@ -73,8 +73,10 @@ namespace Terraria.ModLoader
 			var p = new ModPacket(MessageID.SyncMods);
 			p.Write(AllowVanillaClients);
 
-			var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToArray();
-			p.Write(syncMods.Length);
+			var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
+			AddNoSyncDeps(syncMods);
+
+			p.Write(syncMods.Count);
 			foreach (var mod in syncMods)
 			{
 				p.Write(mod.Name);
@@ -84,6 +86,18 @@ namespace Terraria.ModLoader
 			}
 
 			p.Send(clientIndex);
+		}
+
+		private static void AddNoSyncDeps(List<Mod> syncMods)
+		{
+			var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
+			while (queue.Count > 0) {
+				var depNames = ModOrganizer.dependencyCache[queue.Dequeue().Name];
+				foreach (var dep in depNames.Select(ModLoader.GetMod).Where(m => m.Side == ModSide.NoSync && !syncMods.Contains(m))) {
+					syncMods.Add(dep);
+					queue.Enqueue(dep);
+				}
+			}
 		}
 
 		internal static void SyncClientMods(BinaryReader reader)

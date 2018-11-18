@@ -17,7 +17,11 @@ namespace Terraria.ModLoader
 	internal class ModOrganizer
 	{
 		internal static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
+
 		internal static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
+		
+		internal static Dictionary<string, List<string>> dependencyCache; // for some internal features that need to lookup dependencies after load
+
 		internal static LocalMod[] FindMods()
 		{
 			Directory.CreateDirectory(ModLoader.ModPath);
@@ -75,6 +79,7 @@ namespace Terraria.ModLoader
 				EnsureDependenciesExist(modsToLoad, false);
 				EnsureTargetVersionsMet(modsToLoad);
 				modsToLoad = Sort(modsToLoad);
+				dependencyCache = modsToLoad.ToDictionary(m => m.Name, m => m.properties.RefNames(false).ToList());
 			}
 			catch (ModSortingException e)
 			{
