@@ -53,6 +53,9 @@ namespace Terraria.ModLoader
 
 		internal static void RemoveModEffects()
 		{
+			if (KeyCaches == null)
+				return;
+
 			foreach (var kc in KeyCaches)
 				kc.Reset();
 			KeyCaches = null;
