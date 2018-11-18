@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.EquipTexture.UpdateVanity" name="Terraria.ModLoader.EquipTexture.UpdateVanity">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a74f5b7e0fdbcc2e20e834d7601245e3c" title="Calls each of the item&#39;s equipment texture&#39;s UpdateVanity hook. " alt="" coords="225,5,431,46"/>
+</map>

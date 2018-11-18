@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.TileLoader.SetDrawPositions" name="Terraria.ModLoader.TileLoader.SetDrawPositions">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a7aca44c9ddb9a8b8fa0e952390949ee5" title="Allows you to customize the position in which this tile is drawn. Width refers to the width of one fr..." alt="" coords="257,5,445,46"/>
+</map>

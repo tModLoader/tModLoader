@@ -2,7 +2,7 @@ var searchData=
 [
   ['palmtreedust',['PalmTreeDust',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a4d0c6dff9d1fa78c183d3fe532922580',1,'Terraria::ModLoader::TileLoader']]],
   ['palmtreegrowthfxgore',['PalmTreeGrowthFXGore',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a004006756d98c5ddffc29306b57860dd',1,'Terraria::ModLoader::TileLoader']]],
-  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html#ac304850935865284a8840503287a4a58',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler&lt; T &gt;']]],
+  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ac304850935865284a8840503287a4a58',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
   ['pickammo',['PickAmmo',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a72388f01c5226d661f0f3334948e382e',1,'Terraria.ModLoader.GlobalItem.PickAmmo()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#abf5513e75efc840365545fc71e726137',1,'Terraria.ModLoader.ItemLoader.PickAmmo()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ae2075eb78b069d64abfb30a3565b015f',1,'Terraria.ModLoader.ModItem.PickAmmo()']]],
   ['pickpowercheck',['PickPowerCheck',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad3969b766d46d9c70709064648e57052',1,'Terraria::ModLoader::TileLoader']]],
   ['place',['Place',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#afd6ecccaa16bdc0a936430439a37c1f5',1,'Terraria::ModLoader::ModTileEntity']]],

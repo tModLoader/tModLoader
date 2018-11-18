@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.ModifyDrawInfo" name="Terraria.ModLoader.PlayerHooks.ModifyDrawInfo">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a3cde8f8bdd569e9fe5aca8b7e30c7185" title="Allows you to modify the drawing parameters of the player before drawing begins. " alt="" coords="230,5,434,46"/>
+</map>

@@ -65,5 +65,5 @@ var searchData=
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html',1,'Terraria::ModLoader::ModCompile']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1',1,'Terraria::ModLoader::ModCompile::BuildingMod']]],
   ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]],
-  ['buildset',['BuildSet',['../class_terraria_1_1_mod_loader_1_1_topo_sort_3_01_t_01_4.html#a8fceff4c28a1bc57e154c14aaf4604be',1,'Terraria::ModLoader::TopoSort&lt; T &gt;']]]
+  ['buildset',['BuildSet',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be',1,'Terraria::ModLoader::TopoSort']]]
 ];

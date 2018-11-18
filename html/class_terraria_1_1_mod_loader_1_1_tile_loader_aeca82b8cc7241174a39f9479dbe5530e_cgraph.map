@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.TileLoader.AnimateTiles" name="Terraria.ModLoader.TileLoader.AnimateTiles">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ec8460becadc0e768d0f58ba11d9a2e" title="Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has bee..." alt="" coords="257,5,445,46"/>
+</map>

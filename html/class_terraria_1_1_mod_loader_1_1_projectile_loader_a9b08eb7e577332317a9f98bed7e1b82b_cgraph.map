@@ -1,3 +1,4 @@
 <map id="Terraria.ModLoader.ProjectileLoader.MinionContactDamage" name="Terraria.ModLoader.ProjectileLoader.MinionContactDamage">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="254,5,429,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="273,5,447,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab216a84d7301f86afada25f4b9f17156" title="Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet. " alt="" coords="253,70,467,111"/>
 </map>

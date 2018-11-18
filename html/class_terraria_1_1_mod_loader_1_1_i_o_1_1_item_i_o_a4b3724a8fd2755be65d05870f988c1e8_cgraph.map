@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.IO.ItemIO.Save" name="Terraria.ModLoader.IO.ItemIO.Save">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad12de39d616e3b701c85f970912eb545" title="Returns the ModPrefix associated with specified type If not a ModPrefix, returns null. " alt="" coords="238,5,439,46"/>
+</map>

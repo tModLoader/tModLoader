@@ -1,4 +1,3 @@
-<map id="Terraria.ModLoader.IO.TagIO.PayloadHandler" name="Terraria.ModLoader.IO.TagIO.PayloadHandler">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler_3_01_t_01_4.html" title="Terraria.ModLoader.IO.Tag\lIO.PayloadHandler\&lt; T \&gt;" alt="" coords="15,97,193,138"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler_3_01_t_01_4.html" title="Terraria.ModLoader.IO.Tag\lIO.ClassPayloadHandler\&lt; T \&gt;" alt="" coords="5,187,203,229"/>
+<map id="Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;" name="Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html" title="PayloadHandler" alt="" coords="37,5,152,32"/>
 </map>

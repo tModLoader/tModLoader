@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ModWorld.ChooseWaterStyle" name="Terraria.ModLoader.ModWorld.ChooseWaterStyle">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b" title="Terraria.ModLoader.World\lHooks.ChooseWaterStyle" alt="" coords="257,5,431,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a306112e44bb7c3dd458ebf3e9b65e370" title="Terraria.ModLoader.Water\lStyleLoader.ChooseWaterStyle" alt="" coords="480,5,685,46"/>
+</map>

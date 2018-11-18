@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.ModGore.GetGoreSlot" name="Terraria.ModLoader.ModGore.GetGoreSlot">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a0f77bc7cc6bb96b5c825c9b008b0ac70" title="Adds the given texture to the game as a custom gore, with the given custom gore behavior. If no custom gore behavior is provided, the custom gore will have the default vanilla behavior. " alt="" coords="248,12,467,39"/>
+</map>
