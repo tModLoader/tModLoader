@@ -10,7 +10,7 @@ var searchData=
   ['basescale',['baseScale',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#acbe56b8589c1a8356fdeefa690680bcd',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['beachangler',['BeachAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae472cd43fc4d9848b595348be7b3804d',1,'Terraria::ModLoader::SpawnCondition']]],
   ['bed',['bed',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a20eb169106fcf5771e14c757c3de2185',1,'Terraria::ModLoader::ModTile']]],
-  ['beta',['beta',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a006f1cb5c37f8099bb089a0a59f39ed5',1,'Terraria::ModLoader::ModLoader']]],
+  ['beta',['beta',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3dabc9061f57772c53ab2d7cbf9a6685',1,'Terraria::ModLoader::ModLoader']]],
   ['blockloot',['blockLoot',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8',1,'Terraria::ModLoader::NPCLoader']]],
   ['blockweight',['blockWeight',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6d561cfc71bb2f51c6034d0c9ecd4d96',1,'Terraria::ModLoader::SpawnCondition']]],
   ['body',['Body',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#adc5045a73cc11c77fe6ea20d61d06dab',1,'Terraria::ModLoader::PlayerLayer']]],
@@ -20,9 +20,10 @@ var searchData=
   ['bodyglowmaskcolor',['bodyGlowMaskColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a9aa1041d8b95a93f25a0f989980220b9',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['bodyorigin',['bodyOrigin',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a540c3839d5fa6954ae13a028d8e2a746',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['bossbag',['bossBag',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab618ea4188158ae253b8389d618bc22d',1,'Terraria::ModLoader::ModNPC']]],
-  ['bossbagnpc',['BossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a',1,'Terraria.ModLoader.ModItem.BossBagNPC()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb',1,'Terraria.ModLoader.ModItem.bossBagNPC()']]],
+  ['bossbagnpc',['bossBagNPC',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a7a8d81109a06450e23a08537b7febdcb',1,'Terraria.ModLoader.ModItem.bossBagNPC()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a',1,'Terraria.ModLoader.ModItem.BossBagNPC()']]],
   ['bossheadtexture',['BossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb940e3a94773201ef20922939157528',1,'Terraria::ModLoader::ModNPC']]],
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['branchname',['branchName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380',1,'Terraria::ModLoader::ModLoader']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
   ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]]
 ];
