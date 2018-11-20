@@ -65,8 +65,8 @@ namespace Terraria.ModLoader
 		public static readonly string ModSourcePath = Path.Combine(Main.SavePath, "Mod Sources");
 		public static readonly int ModCompileVersion = 1;
 
-		private static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-		private static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
+		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
+		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
 
 		internal static string[] FindModSources()
 		{
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader
 				return true;
 
 			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.0 Client Reference Assemblies");
-			if (Directory.Exists(referenceAssembliesPath))
+			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
 				return true;
 
 			referenceAssembliesPath = null;

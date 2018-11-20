@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Ionic.Zip;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -139,14 +141,45 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadModCompile()
 		{
-			// download UI, then clear all files in folder (not directories), extract zip and reload UI
-			throw new NotImplementedException();
+			Main.PlaySound(SoundID.MenuOpen);
+			// Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/ModCompile.zip for releases
+			string url = "https://www.dropbox.com/s/cf9bdrw273whv97/ModCompileTest.zip?dl=1";
+			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
+			Directory.CreateDirectory(ModCompile.modCompileDir);
+			DownloadFile("ModCompile", url, file, () => DeleteFilesAndUnzip(file));
 		}
 
 		private void DirectDownloadRefAssemblies()
 		{
-			// download UI, then just extract to correct location and reload UI
-			throw new NotImplementedException();
+			Main.PlaySound(SoundID.MenuOpen);
+			// Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/v4.0_Client.zip for releases
+			string url = "https://www.dropbox.com/s/5gg5pj8hxrz18ej/v4.0_ClientTest.zip?dl=1";
+			string folder = Path.Combine(ModCompile.modCompileDir, "v4.0 Client Reference Assemblies");
+			string file = Path.Combine(folder, "v4.0_Client.zip");
+			Directory.CreateDirectory(folder);
+			DownloadFile("v4.0 Client Reference Assemblies", url, file, () => DeleteFilesAndUnzip(file));
+		}
+
+		private void DeleteFilesAndUnzip(string zipFile, bool deleteFiles = false)
+		{
+			string folder = Path.GetDirectoryName(zipFile);
+			Directory.CreateDirectory(folder);
+			if (deleteFiles)
+				foreach (FileInfo file in new DirectoryInfo(folder).EnumerateFiles())
+				{
+					if (file.Name != Path.GetFileName(zipFile))
+						file.Delete();
+				}
+			using (ZipFile zip = ZipFile.Read(zipFile))
+				zip.ExtractAll(folder, ExtractExistingFileAction.OverwriteSilently);
+			File.Delete(zipFile);
+			Main.menuMode = Interface.developerModeHelpID;
+		}
+
+		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete)
+		{
+			Interface.downloadFile.SetDownloading(name, url, file, downloadModCompileComplete);
+			Main.menuMode = Interface.downloadFileID;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
