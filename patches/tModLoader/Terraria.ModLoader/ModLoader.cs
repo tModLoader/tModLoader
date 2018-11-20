@@ -56,10 +56,7 @@ namespace Terraria.ModLoader
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;
-		internal static string modPath = Main.SavePath + Path.DirectorySeparatorChar + "Mods";
-		/// <summary>The file path in which mod sources are stored. Mod sources are the code and images that developers work with.</summary>
-		public static readonly string ModSourcePath = Main.SavePath + Path.DirectorySeparatorChar + "Mod Sources";
-		internal const int earliestRelease = 149;
+		internal static string modPath = Path.Combine(Main.SavePath, "Mods");
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		private static WeakReference[] weakModReferences = new WeakReference[0];
@@ -73,7 +70,6 @@ namespace Terraria.ModLoader
 			set => steamID64 = value;
 		}
 		
-		internal static bool reportFirstChanceExceptions;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
@@ -272,16 +268,10 @@ namespace Terraria.ModLoader
 			ModOrganizer.SaveEnabledMods();
 		}
 
-		internal static string[] FindModSources()
-		{
-			Directory.CreateDirectory(ModSourcePath);
-			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name != ".vs").ToArray();
-		}
-
 		internal static void BuildAllMods()
 		{
 			ThreadPool.QueueUserWorkItem(_ =>
-				PostBuildMenu(new ModCompile(Interface.buildMod).BuildAll(FindModSources())));
+				PostBuildMenu(new ModCompile(Interface.buildMod).BuildAll()));
 		}
 
 		internal static void BuildMod()
@@ -305,7 +295,6 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
-			Main.Configuration.Put("AlwaysLogExceptions", reportFirstChanceExceptions);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 		}
@@ -319,57 +308,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("MusicStreamMode", ref musicStreamMode);
-			Main.Configuration.Get("AlwaysLogExceptions", ref reportFirstChanceExceptions);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 			Main.Configuration.Get("AllowGreaterResolutions", ref removeForcedMinimumZoom);
-			Logging.LogFirstChanceExceptions(reportFirstChanceExceptions);
-		}
-
-		internal static void SetModderMode()
-		{
-#if CLIENT
-			reportFirstChanceExceptions = true;
-			SaveConfiguration();
-#endif
-		}
-
-		private static bool? developerMode;
-		public static bool DeveloperMode
-		{
-			get {
-				if (!developerMode.HasValue)
-					developerMode = CheckDeveloperMode();
-				return developerMode.Value;
-			}
-		}
-
-		internal static void ResetDeveloperMode()
-		{
-			developerMode = null;
-		}
-
-		internal static bool CheckDeveloperMode()
-		{
-			bool requirementsSatisfied = true;
-			requirementsSatisfied &= ModCompileFolderCheck();
-			requirementsSatisfied &= DotNet46Check();
-			requirementsSatisfied &= DotNetAssembliesCheck();
-			return requirementsSatisfied;
-		}
-
-		internal static bool ModCompileFolderCheck()
-		{
-			return Main.rand.NextBool();
-		}
-
-		internal static bool DotNet46Check()
-		{
-			return Main.rand.NextBool();
-		}
-
-		internal static bool DotNetAssembliesCheck()
-		{
-			return Main.rand.NextBool();
 		}
 
 		/// <summary>

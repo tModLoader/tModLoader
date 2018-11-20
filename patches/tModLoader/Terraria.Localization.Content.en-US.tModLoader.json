@@ -65,8 +65,6 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		"BuildErrorDotNet46Required": ".NET Framework 4.5 must be installed to compile mods",
-		"BuildErrorMissingReferenceAssemblies": ".NET 4.0 Client Profile Reference Assemblies not found. Please install Visual Studio or install the developer pack <link>",
 		"BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		"BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		"BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -231,10 +229,19 @@
 		"MSPublish": "Publish",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
-		"EDMModCompileFolderNeededMessage": "Mod Compile folder out of data or missing. Click to download the Mod Compile folder.",
-		"EDMDotNet46NeededMessage": ".Net 4.6 not installed. Click to download the download .Net 4.6.",
-		"EDMReferencesAssembliesNeededMessage": "Reference Assemblies not found. Either install Visual Studio or click here to download.",
-		"EDMTutorialNeededMessage": "Making Mods with tModLoader. Click here to view the modding tutorial.",
+		// Developer Mode UI
+		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		"DMModCompileUpdate": "ModCompile folder out of date.",
+		"DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		"DMModCompileSatisfied": "ModCompile folder up of date.",
+		"DMDotNetSatisfied": "{0} is installed",
+		"DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		"DMReferenceAssembliesMissing": ".NET 4.0 Reference Assemblies not found. Please install Visual Studio with the .NET 4.0 Targetting pack.",
+		"DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.0",
+		"DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		"DMVisualStudio": "Visual Studio",
+		"DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		"DMTutorial": "Tutorial",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",

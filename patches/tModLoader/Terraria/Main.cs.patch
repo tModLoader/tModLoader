@@ -3958,6 +3958,34 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num94], new Vector2((float)(num3 + num101 + array5[num94]), (float)(num2 + num4 * num94 + num102) + origin.Y * array7[num94] + (float)array4[num94]), color10, 0f, origin, num103, SpriteEffects.None, 0f);
  						}
  						else
+@@ -46467,6 +_,27 @@
+ 				Vector2 origin2 = Main.fontMouseText.MeasureString(text6);
+ 				origin2.X *= 0.5f;
+ 				origin2.Y *= 0.5f;
++				if (Main.menuMode == 0 && !ModCompile.DeveloperMode)
++				{
++					origin2.Y *= 2;
++					var text = "Enable Developer Mode";
++					// measure and draw text from bottom right
++					var textSize = fontMouseText.MeasureString(text);
++					var pos = new Vector2(screenWidth - 10f + num107, screenHeight - 2f + num108);
++					var d_color = color11;
++					if (num106 == 4) // final draw
++					{
++						var rect = new Microsoft.Xna.Framework.Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
++						bool mouseover = rect.Contains(Main.mouseX, Main.mouseY);
++						d_color = mouseover ? highVersionColor : new Microsoft.Xna.Framework.Color(120, 120, 120, 76);
++						if (mouseover && Main.mouseLeftRelease && Main.mouseLeft)
++						{
++							Main.PlaySound(SoundID.MenuOpen);
++							Main.menuMode = Interface.developerModeHelpID;
++						}
++					}
++					Main.spriteBatch.DrawString(fontMouseText, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
++				}
+ 				Main.spriteBatch.DrawString(Main.fontMouseText, text6, new Vector2((float)Main.screenWidth - origin2.X + (float)num107 - 10f, (float)Main.screenHeight - origin2.Y + (float)num108 - 2f), color11, 0f, origin2, 1f, SpriteEffects.None, 0f);
+ 			}
+ 			for (int num109 = 0; num109 < 5; num109++)
 @@ -46498,10 +_,29 @@
  				{
  					num111 = 2;

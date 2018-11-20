@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 
 			HookModuleLoad();
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
+			LogFirstChanceExceptions(ModCompile.DeveloperMode);
 		}
 
 		private static void ConfigureAppenders()

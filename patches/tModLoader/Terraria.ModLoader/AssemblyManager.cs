@@ -292,7 +292,7 @@ namespace Terraria.ModLoader
 
 			if (Debugger.IsAttached)
 			{
-				ModLoader.SetModderMode();
+				ModCompile.DeveloperMode = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}

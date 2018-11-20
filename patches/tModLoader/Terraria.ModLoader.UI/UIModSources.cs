@@ -114,8 +114,8 @@ namespace Terraria.ModLoader.UI
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModLoader.ModSourcePath);
-			Process.Start(ModLoader.ModSourcePath);
+			Directory.CreateDirectory(ModCompile.ModSourcePath);
+			Process.Start(ModCompile.ModSourcePath);
 		}
 
 		private void BuildMods(UIMouseEvent evt, UIElement listeningElement)
@@ -161,7 +161,7 @@ namespace Terraria.ModLoader.UI
 			Task.Factory.StartNew(
 				delegate
 				{
-					var modSources = ModLoader.FindModSources();
+					var modSources = ModCompile.FindModSources();
 					var modFiles = ModOrganizer.FindMods();
 					return Tuple.Create(modSources, modFiles);
 				})

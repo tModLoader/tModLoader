@@ -65,26 +65,16 @@ namespace Terraria.ModLoader
 			}
 			buttonIndex++;
 			numButtons++;
-			if (ModLoader.DeveloperMode)
-			{
+			if (ModCompile.DeveloperMode) {
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
 				if (selectedMenu == buttonIndex)
 				{
 					Main.PlaySound(10, -1, -1, 1);
-					Main.menuMode = modSourcesID;
+					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
 				}
+				buttonIndex++;
+				numButtons++;
 			}
-			else
-			{
-				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuEnableDeveloperMode");
-				if (selectedMenu == buttonIndex)
-				{
-					Main.PlaySound(10, -1, -1, 1);
-					Main.menuMode = developerModeHelpID;
-				}
-			}
-			buttonIndex++;
-			numButtons++;
 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
 			if (selectedMenu == buttonIndex)
 			{
@@ -285,15 +275,6 @@ namespace Terraria.ModLoader
 				{
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
-				}
-
-				buttonIndex++;
-				buttonNames[buttonIndex] = (ModLoader.reportFirstChanceExceptions ? Language.GetTextValue("tModLoader.AlwaysLogExceptionsYes") : Language.GetTextValue("tModLoader.AlwaysLogExceptionsNo"));
-				if (selectedMenu == buttonIndex)
-				{
-					Main.PlaySound(SoundID.MenuTick);
-					ModLoader.reportFirstChanceExceptions = !ModLoader.reportFirstChanceExceptions;
-					Logging.LogFirstChanceExceptions(ModLoader.reportFirstChanceExceptions);
 				}
 
 				buttonIndex++;

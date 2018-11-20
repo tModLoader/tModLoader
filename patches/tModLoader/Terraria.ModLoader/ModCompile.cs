@@ -62,7 +62,87 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static readonly string ModSourcePath = Path.Combine(Main.SavePath, "Mod Sources");
+		public static readonly int ModCompileVersion = 1;
+
 		private static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
+		private static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
+
+		internal static string[] FindModSources()
+		{
+			Directory.CreateDirectory(ModSourcePath);
+			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name[0] != '.').ToArray();
+		}
+
+		private static bool? developerMode;
+		public static bool DeveloperMode
+		{
+			get {
+				if (!developerMode.HasValue)
+					developerMode = Directory.Exists(ModSourcePath) && FindModSources().Length > 0 || File.Exists(modCompileVersionPath);
+
+				return developerMode.Value;
+			}
+			set {
+				developerMode = value;
+				Logging.LogFirstChanceExceptions(value);
+			}
+		}
+
+		internal static bool DeveloperModeReady(out string errorKey)
+		{
+			return DotNet46Check(out errorKey) &&
+				ModCompileVersionCheck(out errorKey) &&
+				ReferenceAssembliesCheck(out errorKey);
+		}
+
+		internal static bool ModCompileVersionCheck(out string infoKey)
+		{
+			if (File.Exists(modCompileVersionPath) && File.ReadAllText(modCompileVersionPath) == ModCompileVersion.ToString())
+			{
+				infoKey = "tModLoader.DMModCompileSatisfied";
+				return true;
+			}
+#if DEBUG
+			infoKey = "tModLoader.DMModCompileDev";
+#else
+			infoKey = "tModLoader." + (Directory.Exists(modCompileDir) ? "DMModCompileUpdate" : "DMModCompileMissing");
+#endif
+			return false;
+		}
+
+		internal static bool DotNet46Check(out string infoKey)
+		{
+			bool ret = FrameworkVersion.Framework == ".NET Framework" && FrameworkVersion.Version > new Version(4, 6);
+			infoKey = "tModLoader." + (ret ? "DMDotNetSatisfied" : "DMDotNet46Required");
+			return ret;
+		}
+
+		private static string referenceAssembliesPath;
+		internal static bool ReferenceAssembliesCheck()
+		{
+			if (referenceAssembliesPath != null)
+				return true;
+
+			referenceAssembliesPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client";
+			if (Directory.Exists(referenceAssembliesPath))
+				return true;
+
+			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.0 Client Reference Assemblies");
+			if (Directory.Exists(referenceAssembliesPath))
+				return true;
+
+			referenceAssembliesPath = null;
+			return false;
+		}
+
+		internal static bool ReferenceAssembliesCheck(out string infoKey)
+		{
+			var ret = ReferenceAssembliesCheck();
+			infoKey = "tModLoader." + (ret ? "DMReferenceAssembliesSatisfied" : "DMReferenceAssembliesMissing");
+			return ret;
+		}
+
 		internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
 		private static IList<string> moduleReferences;
 
@@ -73,11 +153,10 @@ namespace Terraria.ModLoader
 			status.SetMod(null);
 		}
 
-		internal bool BuildAll(string[] modFolders)
+		internal bool BuildAll()
 		{
 			var modList = new List<LocalMod>();
-			//read mod sources folder
-			foreach (var modFolder in modFolders)
+			foreach (var modFolder in FindModSources())
 			{
 				var mod = ReadProperties(modFolder);
 				if (mod == null)
@@ -316,7 +395,6 @@ namespace Terraria.ModLoader
 
 			mod.modFile.Save();
 			EnableMod(mod.Name);
-			SetModderMode();
 			return true;
 		}
 
@@ -504,9 +582,9 @@ namespace Terraria.ModLoader
 
 		private bool LoadCompilationReferences()
 		{
-			if (FrameworkVersion.Version < new Version(4, 6))
+			if (!DeveloperModeReady(out string errorKey))
 			{
-				status.LogError(Language.GetTextValue("tModLoader.BuildErrorDotNet46Required"));
+				status.LogError(Language.GetTextValue(errorKey));
 				return false;
 			}
 
@@ -517,20 +595,12 @@ namespace Terraria.ModLoader
 				.Select(refName => Assembly.Load(refName).Location)
 				.Where(loc => loc != "").ToList();
 
-			var frameworkRefPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client";
-			if (!Directory.Exists(frameworkRefPath))
-				frameworkRefPath = Path.Combine(modCompileDir, "v4.0 Client Reference Assemblies");
-			if (!Directory.Exists(frameworkRefPath)) {
-				status.LogError(Language.GetTextValue("tModLoader.BuildErrorMissingReferenceAssemblies"));
-				return false;
-			}
-
-			var referenceNames = new HashSet<string>(Directory.GetFiles(frameworkRefPath, "*.dll").Select(p => Path.GetFileName(p)));
+			var referenceNames = new HashSet<string>(Directory.GetFiles(referenceAssembliesPath, "*.dll").Select(p => Path.GetFileName(p)));
 			for (int i = 0; i < moduleReferences.Count; i++)
 			{
 				var refName = Path.GetFileName(moduleReferences[i]);
 				if (referenceNames.Contains(refName))
-					moduleReferences[i] = Path.Combine(frameworkRefPath, refName);
+					moduleReferences[i] = Path.Combine(referenceAssembliesPath, refName);
 			}
 			return true;
 		}
