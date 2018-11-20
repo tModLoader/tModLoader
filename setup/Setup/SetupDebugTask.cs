@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static Terraria.ModLoader.Setup.Program;
 
@@ -31,6 +32,9 @@ namespace Terraria.ModLoader.Setup
 			foreach (var dll in roslynRefs)
 				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
 
+			taskInterface.SetStatus("Updating ModCompile version");
+			UpdateModCompileVersion(modCompile);
+
 			taskInterface.SetStatus("Generating Debug Configuration");
 			File.WriteAllText(Path.Combine(baseDir, "src/tModLoader/Terraria.csproj.user"), DebugConfig);
 
@@ -39,6 +43,19 @@ namespace Terraria.ModLoader.Setup
 				"tModLoader.sln /p:Configuration=MacRelease /p:Platform=\"x86\"",
 				null, null, null, taskInterface.CancellationToken()
 			) != 0;
+		}
+
+		private void UpdateModCompileVersion(string modCompileDir)
+		{
+			var modCompileCsPath = Path.Combine(baseDir, "src", "tModLoader", "Terraria.ModLoader", "ModCompile.cs");
+			var match = Regex.Match(File.ReadAllText(modCompileCsPath), @"ModCompileVersion = (\d+);");
+			string version = match.Groups[1].Value;
+			File.WriteAllText(Path.Combine(modCompileDir, "version"), version);
+		}
+
+		private void UpdateModCompileVersion()
+		{
+			throw new NotImplementedException();
 		}
 
 		public override bool Failed() {
