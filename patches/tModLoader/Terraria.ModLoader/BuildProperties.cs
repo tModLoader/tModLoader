@@ -266,7 +266,7 @@ namespace Terraria.ModLoader
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
-					if (ModLoader.beta)
+					if (ModLoader.beta > 0)
 						writer.Write("beta");
 					writer.Write("");
 				}

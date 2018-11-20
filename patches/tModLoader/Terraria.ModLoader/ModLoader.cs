@@ -21,17 +21,19 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		//change Terraria.Main.DrawMenu change drawn version number string to include this
-		/// <summary>The name and version number of tModLoader.</summary>
-		public static readonly Version version = new Version(0, 10, 1, 5);
-		// Marks this release as a beta release, preventing publishing and marking all built mods as unpublishable.
-#if !BETA
-		public static readonly string versionedName = "tModLoader v" + version;
-		public static readonly bool beta = false;
-#else
-		public static readonly string versionedName = "tModLoader v" + version + " - BetaNameHere Beta 1";
-		public static readonly bool beta = true;
-#endif
+		public static readonly Version version = new Version(0, 11, 0, 0);
+
+		public static readonly string branchName = "";
+		// beta > 0 cannot publish to mod browser
+		public static readonly int beta = 1;
+
+		public static readonly string versionedName = $"tModLoader v{version}" +
+				(branchName.Length == 0 ? "" : $" {branchName}") +
+				(beta == 0 ? "" : $" Beta {beta}");
+		public static readonly string versionTag = $"v{version}" +
+				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
+				(beta == 0 ? "" : $"-beta{beta}");
+
 #if WINDOWS
 		public static readonly bool windows = true;
 #else
@@ -53,6 +55,7 @@ namespace Terraria.ModLoader
 		public static readonly bool gog = false;
 #endif
 		public static readonly string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
+
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		/// <summary>The file path in which mods are stored.</summary>
 		public static string ModPath => modPath;

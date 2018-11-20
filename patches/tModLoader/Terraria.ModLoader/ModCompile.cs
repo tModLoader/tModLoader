@@ -63,7 +63,6 @@ namespace Terraria.ModLoader
 		}
 
 		public static readonly string ModSourcePath = Path.Combine(Main.SavePath, "Mod Sources");
-		public static readonly int ModCompileVersion = 1;
 
 		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
 		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
@@ -98,7 +97,7 @@ namespace Terraria.ModLoader
 
 		internal static bool ModCompileVersionCheck(out string infoKey)
 		{
-			if (File.Exists(modCompileVersionPath) && File.ReadAllText(modCompileVersionPath) == ModCompileVersion.ToString())
+			if (File.Exists(modCompileVersionPath) && File.ReadAllText(modCompileVersionPath) == versionTag)
 			{
 				infoKey = "tModLoader.DMModCompileSatisfied";
 				return true;
