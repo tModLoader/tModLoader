@@ -2084,5 +2084,5 @@ Patching output file 123/126
 Patching output file 124/126
 Patching output file 125/126
 Patching output file 126/126
-lookup cache used 11152/131072 hits=102755 misses=11629
+lookup cache used 11154/131072 hits=102784 misses=11631
 finished...
