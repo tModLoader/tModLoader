@@ -53,14 +53,14 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
-		
-		private void LoadTexture(string path, int len, BinaryReader reader, bool rawimg)
+
+		private void LoadTexture(string path, Stream stream, bool rawimg)
 		{
 			try
 			{
 				var texTask = rawimg
-					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, reader)
-					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, new MemoryStream(reader.ReadBytes(len)));//needs a seekable stream
+					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, new BinaryReader(stream))
+					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, stream);
 
 				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t =>
 				{
@@ -73,6 +73,10 @@ namespace Terraria.ModLoader
 			catch (Exception e)
 			{
 				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), e);
+			}
+			finally
+			{
+				stream.Close();
 			}
 		}
 
@@ -824,12 +828,11 @@ namespace Terraria.ModLoader
 		private void AutoloadLocalization()
 		{
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			var translationFiles = File.Where(x => Path.GetExtension(x.Key) == ".lang");
-			foreach (var translationFile in translationFiles)
+			foreach (var translationFile in File.Where(name => Path.GetExtension(name) == ".lang"))
 			{
 				// .lang files need to be UTF8 encoded.
-				string translationFileContents = System.Text.Encoding.UTF8.GetString(translationFile.Value);
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Key));
+				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
+				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile));
 
 				using (StringReader reader = new StringReader(translationFileContents))
 				{

@@ -131,7 +131,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,177 @@
+@@ -368,6 +_,179 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -170,6 +170,7 @@
 +    <Compile Include="Terraria.ModLoader.Exceptions\ResourceLoadException.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\BigEndian.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\BinaryIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\ContentConverters.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\FontCacheIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ImageIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\ItemIO.cs" />
@@ -184,6 +185,7 @@
 +    <Compile Include="Terraria.ModLoader.IO\WorldIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagCompound.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
++    <Compile Include="Terraria.ModLoader.IO\WrappedStream.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />

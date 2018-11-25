@@ -67,6 +67,12 @@ namespace Terraria.ModLoader.IO
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) =>
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
+		public static void RawToPng(Stream src, Stream dst)
+		{
+			using (var img = RawToTexture2D(Main.instance.GraphicsDevice, src))
+				img.SaveAsPng(dst, img.Width, img.Height);
+		}
+
 		public static Tuple<int, int, byte[]> ReadRaw(Stream src) =>
 			ReadRaw(new BinaryReader(src, Encoding.UTF8));
 
@@ -104,6 +110,13 @@ namespace Terraria.ModLoader.IO
 		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream)
 		{
 #if WINDOWS
+			if (!(stream is MemoryStream))
+			{
+				var ms = new MemoryStream((int)stream.Length);
+				stream.CopyTo(ms);
+				ms.Position = 0;
+				stream = ms;
+			}
 			return Task.Factory.StartNew(() => Texture2D.FromStream(graphicsDevice, stream));
 #else
 			Texture2D.TextureDataFromStreamEXT(stream, out int width, out int height, out byte[] rawdata, -1, -1, false);

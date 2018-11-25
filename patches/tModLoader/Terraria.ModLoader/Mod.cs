@@ -101,13 +101,43 @@ namespace Terraria.ModLoader
 		public virtual void PostAddRecipes()
 		{
 		}
-
-		public virtual void LoadResourceFromStream(string path, int len, BinaryReader reader)
+		
+		public virtual void LoadResources()
 		{
-			if (Main.dedServ)
+			if (File == null)
 				return;
 
-			Interface.loadMods.SubProgressText = path;
+			var skipCache = new HashSet<string>();
+			File.EnsureOpen();
+			File.ForEach((path, len, getStream) =>
+			{
+				// wrap with a message which updates the UI
+				Stream _stream = null;
+				Stream _getStream() {
+					Interface.loadMods.SubProgressText = path;
+					return _stream = getStream();
+				};
+
+				if (LoadResource(path, len, _getStream))
+					skipCache.Add(path);
+
+				// cleanup for them because why not
+				_stream?.Dispose();
+			});
+			File.CacheFiles(skipCache);
+		}
+
+		/// <summary>
+		/// Hook for pre-loading resources
+		/// </summary>
+		/// <param name="path">The path of the resource within the tmod</param>
+		/// <param name="length">The length of the uncompressed resource</param>
+		/// <param name="getStream">A function which returns a stream containing the file content</param>
+		/// <returns>true if the file will no-longer be needed and should not be cached</returns>
+		public virtual bool LoadResource(string path, int length, Func<Stream> getStream)
+		{
+			if (LoadResourceLegacy(path, length, getStream))
+				return false;
 
 			string extension = Path.GetExtension(path);
 			path = Path.ChangeExtension(path, null);
@@ -115,30 +145,44 @@ namespace Terraria.ModLoader
 			{
 				case ".png":
 				case ".rawimg":
-					//png files need a seekable stream
-					LoadTexture(path, len, reader, extension == ".rawimg");
-					return;
+					if (!Main.dedServ)
+						LoadTexture(path, getStream(), extension == ".rawimg");
+					return true;
 				case ".wav":
-					LoadWav(path, reader.ReadBytes(len));
-					return;
+					if (!Main.dedServ)
+						LoadWav(path, getStream().ReadBytes(length));
+					return true;
 				case ".mp3":
-					LoadMP3(path, reader.ReadBytes(len));
-					return;
+					if (!Main.dedServ)
+						LoadMP3(path, getStream().ReadBytes(length));
+					return true;
 				case ".xnb":
-					if (path.StartsWith("Fonts/"))
-					{
-						LoadFont(path, reader.ReadBytes(len));
-						return;
-					}
-					if (path.StartsWith("Effects/"))
-					{
-						LoadEffect(path, reader);
-						return;
-					}
-					throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorUnknownXNBFileHint", path));
+					if (Main.dedServ) {}
+					else if (path.StartsWith("Fonts/"))
+						LoadFont(path, getStream().ReadBytes(length));
+					else if (path.StartsWith("Effects/"))
+						LoadEffect(path, new BinaryReader(getStream()));
+					else
+						throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorUnknownXNBFileHint", path));
+					return true;
 			}
 
-			throw new ResourceLoadException($"Unknown streaming asset {path}{extension}. ");
+			return false;
+		}
+
+		[Obsolete]
+		private bool LoadResourceLegacy(string path, int length, Func<Stream> getStream)
+		{
+			using (var stream = getStream())
+			{
+				LoadResourceFromStream(path, length, new BinaryReader(stream));
+				return stream.Position > 0;
+			}
+		}
+
+		[Obsolete("Use LoadResource instead", true)]
+		public virtual void LoadResourceFromStream(string path, int len, BinaryReader reader)
+		{
 		}
 
 		/// <summary>
@@ -1461,11 +1505,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Shorthand for calling ModLoader.GetFileBytes(this.FileName(name)). Note that file extensions are used here.
+		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public byte[] GetFileBytes(string name) => File?.GetFile(name);
+		public byte[] GetFileBytes(string name) => File?.GetBytes(name);
+
+		/// <summary>
+		/// Retrieve contents of files within the tmod file
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public Stream GetFileSteam(string name) => File?.GetStream(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used here.

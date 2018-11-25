@@ -39,12 +39,16 @@ namespace Terraria.ModLoader.UI
 			{
 				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
-
+			
 			if (mod.modFile.HasFile("icon.png"))
 			{
 				try
 				{
-					var modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, new MemoryStream(mod.modFile.GetFile("icon.png")));
+					Texture2D modIconTexture;
+					using (mod.modFile.EnsureOpen())
+					using (var s = mod.modFile.GetStream("icon.png"))
+						modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, s);
+
 					if (modIconTexture.Width == 80 && modIconTexture.Height == 80)
 					{
 						modIcon = new UIImage(modIconTexture);

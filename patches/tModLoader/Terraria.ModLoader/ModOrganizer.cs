@@ -37,8 +37,10 @@ namespace Terraria.ModLoader
 					try
 					{
 						var modFile = new TmodFile(fileName);
-						modFile.Read(TmodFile.LoadedState.Info);
+						modFile.Read();
+						modFile.VerifyCoreFiles();
 						mod = new LocalMod(modFile) { lastModified = lastModified };
+						modFile.Close();
 					}
 					catch (Exception e)
 					{

@@ -191,7 +191,7 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.loading = true;
-				mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
+				mod.LoadResources();
 				mod.Autoload();
 				mod.Load();
 				mod.loading = false;
@@ -205,7 +205,6 @@ namespace Terraria.ModLoader
 			LoadModContent(mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
-				mod.File?.UnloadAssets();
 			});
 
 			if (Main.dedServ)
@@ -257,6 +256,7 @@ namespace Terraria.ModLoader
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
 					mod.UnloadContent();
+					mod.File?.Close();
 				} catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;

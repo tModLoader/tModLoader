@@ -119,13 +119,13 @@ namespace Terraria.ModLoader
 
 				try
 				{
-					modFile.Read(TmodFile.LoadedState.Code);
+					using (modFile.EnsureOpen()) {
+						foreach (var dll in properties.dllReferences)
+							LoadAssembly(EncapsulateReferences(modFile.GetBytes("lib/" + dll + ".dll")));
 
-					foreach (var dll in properties.dllReferences)
-						LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
-
-					assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
-					NeedsReload = false;
+						assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
+						NeedsReload = false;
+					}
 				}
 				catch (Exception e)
 				{

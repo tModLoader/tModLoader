@@ -251,7 +251,8 @@ namespace Terraria.ModLoader
 				{
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read(TmodFile.LoadedState.Info);
+					mod.Read();
+					mod.Close();
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));

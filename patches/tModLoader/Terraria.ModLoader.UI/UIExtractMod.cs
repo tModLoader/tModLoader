@@ -34,7 +34,6 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
 				.StartNew(() => {
-					Interface.extractMod.mod.modFile.Read(TmodFile.LoadedState.Streaming, updateFileCountOnly: true);
 					Interface.extractMod._Extract();
 				})
 				.ContinueWith(t =>
@@ -60,6 +59,7 @@ namespace Terraria.ModLoader.UI
 		private Exception _Extract()
 		{
 			StreamWriter log = null;
+			IDisposable modHandle = null;
 			try
 			{
 				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
@@ -79,12 +79,17 @@ namespace Terraria.ModLoader.UI
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
-
-				void WriteFile(string name, byte[] content)
+				modHandle = mod.modFile.EnsureOpen();
+				mod.modFile.ForEach((name, len, getStream) =>
 				{
+					ContentConverters.Reverse(ref name, out var converter);
+
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
 					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++ / (float)mod.modFile.FileCount);
+					loadProgress.SetProgress(i++ / (float)mod.modFile.Count);
+
+					if (name == "tModReader.txt")
+						return;
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
@@ -93,43 +98,24 @@ namespace Terraria.ModLoader.UI
 					if (hidden)
 						log.Write("[hidden] ");
 					log.WriteLine(name);
+					if (hidden)
+						return;
 
-					if (!hidden)
+					if (name == "Info")
+						name = "build.txt";
+
+					var path = Path.Combine(dir, name);
+					Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+					using (var dst = File.OpenWrite(path))
+					using (var src = getStream())
 					{
-						if (name == "Info")
-							name = "build.txt";
-
-						var path = Path.Combine(dir, name);
-						Directory.CreateDirectory(Path.GetDirectoryName(path));
-						File.WriteAllBytes(path, content);
+						if (converter != null)
+							converter(src, dst);
+						else
+							src.CopyTo(dst);
 					}
-				}
-
-				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) =>
-				{
-					byte[] data = reader.ReadBytes(len);
-
-					// check if subject is rawimg, then read it as rawimg and convert back to png
-					if (name.EndsWith(".rawimg"))
-					{
-						using (var ms = new MemoryStream(data))
-						{
-							var img = ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, ms);
-							using (var pngstream = new MemoryStream())
-							{
-								img.SaveAsPng(pngstream, img.Width, img.Height);
-								data = pngstream.ToArray();
-							}
-						}
-
-						name = Path.ChangeExtension(name, "png");
-					}
-
-					WriteFile(name, data);
 				});
-
-				foreach (var entry in mod.modFile)
-					WriteFile(entry.Key, entry.Value);
 			}
 			catch (Exception e)
 			{
@@ -139,7 +125,7 @@ namespace Terraria.ModLoader.UI
 			finally
 			{
 				log?.Close();
-				mod?.modFile.UnloadAssets();
+				modHandle?.Dispose();
 			}
 			return null;
 		}

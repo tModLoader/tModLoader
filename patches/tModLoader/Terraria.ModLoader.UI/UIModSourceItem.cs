@@ -153,7 +153,7 @@ namespace Terraria.ModLoader.UI
 					{
 						Name = "iconfile",
 						Filename = "icon.png",
-						Content = modFile.GetFile("icon.png")
+						Content = modFile.GetBytes("icon.png")
 					});
 				}
 				if (bp.beta)

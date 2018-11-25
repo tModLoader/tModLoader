@@ -56,8 +56,8 @@ namespace Terraria.ModLoader
 		internal Version version = new Version(1, 0);
 		internal string displayName = "";
 		internal bool noCompile = false;
-		internal bool hideCode = false;
-		internal bool hideResources = false;
+		internal bool hideCode = true;
+		internal bool hideResources = true;
 		internal bool includeSource = false;
 		internal bool includePDB = false;
 		internal bool editAndContinue = false;
@@ -278,14 +278,7 @@ namespace Terraria.ModLoader
 		internal static BuildProperties ReadModFile(TmodFile modFile)
 		{
 			BuildProperties properties = new BuildProperties();
-			properties.hideCode = true;
-			properties.hideResources = true;
-			byte[] data = modFile.GetFile("Info");
-
-			if (data.Length == 0)
-				return properties;
-
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
+			using (var reader = new BinaryReader(modFile.GetStream("Info")))
 			{
 				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
 				{

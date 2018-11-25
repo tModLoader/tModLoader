@@ -10,22 +10,28 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader.IO
 {
-	public class TmodFile : IEnumerable<KeyValuePair<string, byte[]>>
+	// warning class is not threadsafe
+	public class TmodFile : IEnumerable<string>
 	{
-		public enum LoadedState
+		private class FileEntry
 		{
-			None,
-			Integrity,
-			Info,
-			Code,
-			Assets,
-			Streaming
+			public string name;
+			public int offset; // from the start of the file
+			public int size;
+			public int compressedSize;
+			public byte[] cachedBytes;
 		}
 
-		public readonly string path;
+		public const uint MIN_COMPRESS_SIZE = 1<<10;//1KB
+		public const uint MAX_CACHE_SIZE = 1<<17;//128KB
 
-		private LoadedState state;
-		private IDictionary<string, byte[]> files = new Dictionary<string, byte[]>();
+		private static string Sanitize(string path) => path.Replace('\\', '/');
+
+		public readonly string path;
+		
+		private FileStream fileStream;
+		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>();
+		private FileEntry[] fileTable;
 
 		public Version tModLoaderVersion
 		{
@@ -58,19 +64,58 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		private Exception readException;
-
 		internal TmodFile(string path)
 		{
 			this.path = path;
 		}
 
-		public bool HasFile(string fileName) => files.ContainsKey(fileName.Replace('\\', '/'));
+		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
-		public byte[] GetFile(string fileName)
+		[Obsolete("Use GetStream or GetBytes instead", true)]
+		public byte[] GetFile(string fileName) => GetBytes(fileName);
+
+		public byte[] GetBytes(string fileName)
 		{
-			files.TryGetValue(fileName.Replace('\\', '/'), out var data);
-			return data;
+			if (!files.TryGetValue(Sanitize(fileName), out var entry))
+				return null;
+
+			if (entry.cachedBytes != null && entry.compressedSize == entry.size)
+				return entry.cachedBytes;
+			
+			using (var stream = GetStream(entry))
+				return stream.ReadBytes(entry.size);
+		}
+
+		private EntryReadStream lastEntryReadStream;
+		private Stream GetStream(FileEntry entry)
+		{
+			Stream stream;
+			if (entry.cachedBytes != null) 
+			{
+				stream = new MemoryStream(entry.cachedBytes);
+			}
+			else 
+			{
+				if (fileStream == null)
+					throw new IOException("File not open: "+path);
+				if (lastEntryReadStream != null && !lastEntryReadStream.IsDisposed)
+					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.name}");
+
+				stream = lastEntryReadStream = new EntryReadStream(fileStream, entry.offset, entry.compressedSize, entry.name);
+			}
+
+			if (entry.compressedSize != entry.size)
+				stream = new DeflateStream(stream, CompressionMode.Decompress);
+
+			return stream;
+		}
+
+		public Stream GetStream(string fileName)
+		{
+			if (!files.TryGetValue(Sanitize(fileName), out var entry))
+				throw new KeyNotFoundException(fileName);
+
+			return GetStream(entry);
 		}
 
 		/// <summary>
@@ -80,179 +125,269 @@ namespace Terraria.ModLoader.IO
 		/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
 		internal void AddFile(string fileName, byte[] data)
 		{
-			files[fileName.Replace('\\', '/')] = data;
+			fileName = Sanitize(fileName);
+			int size = data.Length;
+			
+			if (size > MIN_COMPRESS_SIZE && ShouldCompress(fileName)) {
+				using (var ms = new MemoryStream(data.Length)) {
+					using (var ds = new DeflateStream(ms, CompressionMode.Compress))
+						ds.Write(data, 0, data.Length);
+					
+					var compressed = ms.ToArray();
+					if (compressed.Length < size)
+						data = compressed;
+				}
+			}
+
+			files[fileName] = new FileEntry {
+				name = fileName,
+				size = size,
+				compressedSize = data.Length,
+				cachedBytes = data,
+			};
+
+			fileTable = null;
 		}
 
-		internal void RemoveFile(string fileName)
+		internal void RemoveFile(string fileName) {
+			files.Remove(Sanitize(fileName));
+			fileTable = null;
+		}
+
+		public delegate void EntryIterator(string name, int len, Func<Stream> getStream);
+		public void ForEach(EntryIterator iterator)
 		{
-			files.Remove(fileName.Replace('\\', '/'));
+			foreach (var f in fileTable)
+				iterator(f.name, f.size, () => GetStream(f));
 		}
 
-		public IEnumerator<KeyValuePair<string, byte[]>> GetEnumerator() => files.GetEnumerator();
+		public int Count => fileTable.Length;
+		public IEnumerator<string> GetEnumerator() => fileTable?.Select(s => s.name)?.GetEnumerator() ?? files.Keys.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		public int FileCount { get; private set; }
 
 		internal void Save()
 		{
+			// invalidate the read handle
+			Close();
+
+			int fileStartPos;
+			byte[] data;
+			// write all mod-specific data to a single array and sign it
+			// in the current version this means
+			// name
+			// version
+			// file count
+			// file-entries:
+			//   filename
+			//   uncompressed file size
+			//   compressed file size (stored size)
 			using (var dataStream = new MemoryStream())
+			using (var writer = new BinaryWriter(dataStream))
 			{
-				using (var writerStream = new DeflateStream(dataStream, CompressionMode.Compress))
-				using (var writer = new BinaryWriter(writerStream))
-				{
-					writer.Write(name);
-					writer.Write(version.ToString());
+				writer.Write(name);
+				writer.Write(version.ToString());
 
-					writer.Write(files.Count);
-					foreach (var entry in files.OrderBy(e => GetFileState(e.Key)))
-					{
-						writer.Write(entry.Key);
-						writer.Write(entry.Value.Length);
-						writer.Write(entry.Value);
-					}
+				// write file table
+				writer.Write(files.Count);
+				fileTable = files.Values.ToArray();
+
+				int offset = 0;
+				foreach (var f in fileTable)
+				{
+					writer.Write(f.name);
+					writer.Write(f.size);
+					writer.Write(f.compressedSize);
+					if (f.compressedSize != f.cachedBytes.Length)
+						throw new Exception($"compressedSize ({f.compressedSize}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.name}");
+
+					// update offsets (from end of file-table)
+					f.offset = offset;
+					offset += f.compressedSize;
 				}
-				var data = dataStream.ToArray();
+				fileStartPos = (int)dataStream.Position;
+
+				foreach (var f in fileTable)
+					writer.Write(f.cachedBytes);
+
+				data = dataStream.ToArray();
 				hash = SHA1.Create().ComputeHash(data);
-
-				using (var fileStream = File.Create(path))
-				using (var fileWriter = new BinaryWriter(fileStream))
-				{
-					fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
-					fileWriter.Write(ModLoader.version.ToString());
-					fileWriter.Write(hash);
-					fileWriter.Write(signature);
-					fileWriter.Write(data.Length);
-					fileWriter.Write(data);
-				}
 			}
+
+			// write the general TMOD header and data blob
+			// TMOD ascii identifier
+			// tModLoader version
+			// hash
+			// signature
+			// data length
+			// signed data
+			using (var fileStream = File.Create(path))
+			using (var fileWriter = new BinaryWriter(fileStream))
+			{
+				fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
+				fileWriter.Write(ModLoader.version.ToString());
+				fileWriter.Write(hash);
+				fileWriter.Write(signature);
+				fileWriter.Write(data.Length);
+
+				fileStartPos += (int)fileStream.Position;
+				fileWriter.Write(data);
+			}
+
+			//update file table offsets
+			foreach (var f in files.Values)
+				f.offset += fileStartPos;
 		}
 
-		internal delegate void ReadStreamingAsset(string path, int len, BinaryReader reader);
-		internal void Read(LoadedState desiredState, ReadStreamingAsset streamingHandler = null, bool updateFileCountOnly = false)
+		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png");
+
+		internal void Read()
 		{
-			if (desiredState <= state)
+			if (fileStream != null)
+				throw new Exception("File has already been read");
+			
+			fileStream = File.OpenRead(path);
+			var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
+			
+			// read header info
+			if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
+				throw new Exception("Magic Header != \"TMOD\"");
+
+			tModLoaderVersion = new Version(reader.ReadString());
+			hash = reader.ReadBytes(20);
+			signature = reader.ReadBytes(256);
+			//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
+			int datalen = reader.ReadInt32();
+
+			// verify integrity
+			long pos = fileStream.Position;
+			var verifyHash = SHA1.Create().ComputeHash(fileStream);
+			if (!verifyHash.SequenceEqual(hash))
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
+
+			fileStream.Position = pos;
+
+			if (tModLoaderVersion < new Version(0, 11, 0, 0)) {
+				Upgrade();
 				return;
-
-			if (updateFileCountOnly) FileCount = 0;
-
-			using (var fileStream = File.OpenRead(path))
-			using (var hReader = new BinaryReader(fileStream))
+			}
+				
+			// read hashed/signed mod info
+			name = reader.ReadString();
+			version = new Version(reader.ReadString());
+				
+			// read file table
+			int offset = 0;
+			fileTable = new FileEntry[reader.ReadInt32()];
+			for (int i = 0; i < fileTable.Length; i++)
 			{
-				if (Encoding.ASCII.GetString(hReader.ReadBytes(4)) != "TMOD")
-					throw new Exception("Magic Header != \"TMOD\"");
+				var f = new FileEntry {
+					name = reader.ReadString(),
+					size = reader.ReadInt32(),
+					compressedSize = reader.ReadInt32(),
+					offset = offset
+				};
+				fileTable[i] = f;
+				files[f.name] = f;
 
-				tModLoaderVersion = new Version(hReader.ReadString());
-				hash = hReader.ReadBytes(20);
-				signature = hReader.ReadBytes(256);
-				//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
-				int datalen = hReader.ReadInt32();
-
-				if (state < LoadedState.Integrity)
-				{
-					long pos = fileStream.Position;
-					var verifyHash = SHA1.Create().ComputeHash(fileStream);
-					if (!verifyHash.SequenceEqual(hash))
-						throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
-
-					state = LoadedState.Integrity;
-					if (desiredState == LoadedState.Integrity)
-						return;
-
-					fileStream.Position = pos;
-				}
-
-				bool filesAreLoadOrdered = tModLoaderVersion >= new Version(0, 10, 1, 2);
-
-				using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
-				using (var reader = new BinaryReader(deflateStream))
-				{
-					name = reader.ReadString();
-					version = new Version(reader.ReadString());
-
-					int count = reader.ReadInt32();
-					for (int i = 0; i < count; i++)
-					{
-						string fileName = reader.ReadString();
-						LoadedState fileState = GetFileState(fileName);
-						if (filesAreLoadOrdered && fileState > desiredState)
-							break;
-
-						int len = reader.ReadInt32();
-						if (fileState == LoadedState.Streaming && desiredState >= LoadedState.Streaming)
-						{
-							var end = deflateStream.TotalOut + len;
-							if (updateFileCountOnly) FileCount++;
-							else streamingHandler(fileName, len, reader);
-							if (deflateStream.TotalOut < end)
-								reader.ReadBytes((int)(end - deflateStream.TotalOut));
-							else if (deflateStream.TotalOut > end)
-								throw new IOException(
-									$"Read too many bytes ({deflateStream.Position - end - len}>{len}) while loading streaming asset: {fileName}");
-						}
-						else
-						{
-							byte[] content = reader.ReadBytes(len);
-							if (fileState > state && fileState <= desiredState)
-								if (updateFileCountOnly) FileCount++;
-								else AddFile(fileName, content);
-						}
-					}
-				}
+				offset += f.compressedSize;
 			}
 
-			if (!updateFileCountOnly)
-			{
-				if (desiredState >= LoadedState.Info && !HasFile("Info"))
-					throw new Exception("Missing Info file");
+			int fileStartPos = (int)fileStream.Position;
+			foreach (var f in fileTable)
+				f.offset += fileStartPos;
+		}
 
-				if (desiredState >= LoadedState.Code && !HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
-					throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
-
-				state = desiredState;
-				if (state > LoadedState.Assets)
-					state = LoadedState.Assets;
-			}
-			else if (FileCount <= 0)
+		public void CacheFiles(ISet<string> skip = null)
+		{
+			fileStream.Seek(fileTable[0].offset, SeekOrigin.Begin);
+			foreach (var f in fileTable)
 			{
-				FileCount = files.Count;
+				if (f.compressedSize > MAX_CACHE_SIZE || (skip?.Contains(f.name) ?? false)) {
+					fileStream.Seek(f.compressedSize, SeekOrigin.Current);
+					continue;
+				}
+				
+				f.cachedBytes = fileStream.ReadBytes(f.compressedSize);
 			}
 		}
 
-		private static LoadedState GetFileState(string fileName)
+		public void RemoveFromCache(IEnumerable<string> fileNames)
 		{
-			if (fileName == "Info" || fileName == "icon.png")
-				return LoadedState.Info;
-
-			if (fileName.EndsWith(".dll") || fileName.EndsWith(".pdb"))
-				return LoadedState.Code;
-
-			if (fileName.EndsWith(".png") || fileName.EndsWith(".rawimg") ||
-					fileName.EndsWith(".mp3") || fileName.EndsWith(".wav") ||
-					fileName.EndsWith(".xnb") ||
-					fileName.StartsWith("Streaming/"))
-				return LoadedState.Streaming;
-
-			return LoadedState.Assets;
+			foreach (var fileName in fileNames)
+				files[fileName].cachedBytes = null;
 		}
 
-		internal void UnloadAssets()
+		public void ResetCache()
 		{
-			files = files
-				.Where(file => GetFileState(file.Key) < LoadedState.Assets)
-				.ToDictionary(file => file.Key, file => file.Value);
+			foreach (var f in fileTable)
+				f.cachedBytes = null;
+		}
 
-			state = LoadedState.Code;
+		private class DisposeWrapper : IDisposable
+		{
+			private Action dispose;
+			public DisposeWrapper(Action dispose)
+			{
+				this.dispose = dispose;
+			}
+			public void Dispose() => dispose?.Invoke();
+		}
+		public IDisposable EnsureOpen()
+		{
+			if (fileStream != null)
+				return new DisposeWrapper(null);
+
+			fileStream = File.OpenRead(path);
+			return new DisposeWrapper(Close);
+		}
+
+		public void Close()
+		{
+			fileStream?.Close();
+			fileStream = null;
+		}
+		
+		// load Code and Info files into the cache
+		// unfortunately this will recompress files individually which were previously decompressed, but that'll have to do
+		private void Upgrade()
+		{
+			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
+			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
+
+			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
+			using (var reader = new BinaryReader(deflateStream))
+			{
+				name = reader.ReadString();
+				version = new Version(reader.ReadString());
+
+				int count = reader.ReadInt32();
+				for (int i = 0; i < count; i++)
+					AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
+			}
+
+			Save();
+			Read();
+		}
+
+		public void VerifyCoreFiles()
+		{
+			if (!HasFile("Info"))
+				throw new Exception("Missing Info file");
+
+			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
+				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
 		}
 
 		public byte[] GetMainAssembly(bool? windows = null)
 		{
 			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
-			return HasFile("All.dll") ? GetFile("All.dll") : isWindows ? GetFile("Windows.dll") : GetFile("Mono.dll");
+			return HasFile("All.dll") ? GetBytes("All.dll") : isWindows ? GetBytes("Windows.dll") : GetBytes("Mono.dll");
 		}
 
 		public byte[] GetMainPDB(bool? windows = null)
 		{
 			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
-			return HasFile("All.pdb") ? GetFile("All.pdb") : isWindows ? GetFile("Windows.pdb") : GetFile("Mono.pdb");
+			return HasFile("All.pdb") ? GetBytes("All.pdb") : isWindows ? GetBytes("Windows.pdb") : GetBytes("Mono.pdb");
 		}
 	}
 }

@@ -392,6 +392,7 @@ namespace Terraria.ModLoader
 
 			WAVCacheIO.ClearCache(mod.Name);
 
+			GetMod(mod.Name).File.Close(); // if the mod is currently loaded, the file-handle needs to be released
 			mod.modFile.Save();
 			EnableMod(mod.Name);
 			return true;
@@ -399,20 +400,14 @@ namespace Terraria.ModLoader
 
 		private static void AddResource(TmodFile modFile, string relPath, string filePath)
 		{
-			if (relPath.EndsWith(".png") && relPath != "icon.png")
+			using (var src = File.OpenRead(filePath))
+			using (var dst = new MemoryStream())
 			{
-				using (var fs = File.OpenRead(filePath))
-				{
-					var rawimg = ImageIO.ToRawBytes(fs);
-					if (rawimg != null)
-					{//some pngs can't be converted to rawimg
-						modFile.AddFile(Path.ChangeExtension(relPath, "rawimg"), rawimg);
-						return;
-					}
-				}
+				if (!ContentConverters.Convert(ref relPath, src, dst))
+					src.CopyTo(dst);
+				
+				modFile.AddFile(relPath, dst.ToArray());
 			}
-
-			modFile.AddFile(relPath, File.ReadAllBytes(filePath));
 		}
 
 		private bool VerifyName(string modName, byte[] dll)
@@ -477,16 +472,18 @@ namespace Terraria.ModLoader
 				if (mods.ContainsKey(refName))
 					continue;
 
-				var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
+				LocalMod mod;
 				try
 				{
-					modFile.Read(TmodFile.LoadedState.Code);
+					var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
+					modFile.Read();
+					mod = new LocalMod(modFile);
+					modFile.Close();
 				}
 				catch (Exception ex)
 				{
 					throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModReference", refName), ex);
 				}
-				var mod = new LocalMod(modFile);
 				mods[refName] = mod;
 				FindReferencedMods(mod.properties, mods);
 			}
@@ -519,15 +516,17 @@ namespace Terraria.ModLoader
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods)
 			{
-				var path = Path.Combine(tempDir, refMod + ".dll");
-				File.WriteAllBytes(path, refMod.modFile.GetMainAssembly(forWindows));
-				refs.Add(path);
-
-				foreach (var refDll in refMod.properties.dllReferences)
-				{
-					path = Path.Combine(tempDir, refDll + ".dll");
-					File.WriteAllBytes(path, refMod.modFile.GetFile("lib/" + refDll + ".dll"));
+				using (refMod.modFile.EnsureOpen()) {
+					var path = Path.Combine(tempDir, refMod + ".dll");
+					File.WriteAllBytes(path, refMod.modFile.GetMainAssembly(forWindows));
 					refs.Add(path);
+
+					foreach (var refDll in refMod.properties.dllReferences)
+					{
+						path = Path.Combine(tempDir, refDll + ".dll");
+						File.WriteAllBytes(path, refMod.modFile.GetBytes("lib/" + refDll + ".dll"));
+						refs.Add(path);
+					}
 				}
 			}
 
