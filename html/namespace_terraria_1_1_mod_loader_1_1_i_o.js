@@ -5,6 +5,7 @@ var namespace_terraria_1_1_mod_loader_1_1_i_o =
     [ "BinaryIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o" ],
     [ "BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer" ],
     [ "ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer" ],
+    [ "ContentConverters", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_content_converters.html", null ],
     [ "ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o" ],
     [ "ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o" ],
     [ "Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer" ],

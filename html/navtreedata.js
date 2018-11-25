@@ -16,7 +16,6 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
-        [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", null ]
       ] ]
     ] ],
@@ -29,18 +28,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_assembly_manager_8cs.html",
-"_tag_serializer_8cs_source.html",
-"class_terraria_1_1_mod_loader_1_1_global_item.html#ab13a7e5991436dcd79fd394ca9be3e45",
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6e07a04a50ec3c449e1f4f64bdfa30ad",
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a657f3541ee47a371314fa78792625737",
-"class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6",
-"class_terraria_1_1_mod_loader_1_1_mod_item.html#aabea527359d0dc86e0f339938fdec7a7",
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#a64f4fae883d92393f463889d371f4123",
-"class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0a022f7b80deccc7ee66aa262a2ea261",
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa16baedc558a8f7156d20f4cefaf283d",
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#aee079f2168048fe40540b027b57ceae1",
-"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9072c7867cf87d192059bf8476853dd8",
-"class_terraria_1_1_mod_loader_1_1_water_style_loader.html"
+"_tag_serializable_8cs_source.html",
+"class_terraria_1_1_mod_loader_1_1_global_item.html#aa2a81cac7c1d573e93345ca95019ad9e",
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a478d23984f4495a4f01c96177f129c05",
+"class_terraria_1_1_mod_loader_1_1_item_loader.html#a41870d481bd8d84bc17e6298a46b9e90",
+"class_terraria_1_1_mod_loader_1_1_mod.html#a59eb389447351a320bd470ff5da532d2",
+"class_terraria_1_1_mod_loader_1_1_mod_item.html#a5954012f872a84362f335c55905ade15",
+"class_terraria_1_1_mod_loader_1_1_mod_player.html#a0866e599583b3d4e57c0b74457911d63",
+"class_terraria_1_1_mod_loader_1_1_mod_tile.html#a95a82c278436ca2c53728dfb7b5c56c9",
+"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a77091498f3619483429d140d2fce40c2",
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#ac92ae726cfe916db36a2d2575392ecc0",
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a475a145a78b7251a8444afbd9dfdc06b",
+"class_terraria_1_1_mod_loader_1_1_wall_loader.html#a095fd17a9e93bf2e3b72225677e39337",
+"struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a7aca85c2a04da30c9b304eaa0dd2b388"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -118,6 +118,10 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_i_o_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a66cc649b9810b8a3424a140f0a2765a2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html#a66cc649b9810b8a3424a140f0a2765a2">ReadBytes</a> (this Stream stream, byte[] buf)</td></tr>
+<tr class="separator:a66cc649b9810b8a3424a140f0a2765a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a78d716f0e2275d00fdeb25548534ee"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html#a8a78d716f0e2275d00fdeb25548534ee">ReadBytes</a> (this Stream stream, int len)</td></tr>
+<tr class="separator:a8a78d716f0e2275d00fdeb25548534ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbe38eaa1382745a38c8bfc9743ff5c6"><td class="memItemLeft" align="right" valign="top">static Item&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html#adbe38eaa1382745a38c8bfc9743ff5c6">ReadItem</a> (this <a class="el" href="class_binary_reader.html">BinaryReader</a> reader, bool readStack=false, bool readFavorite=false)</td></tr>
 <tr class="separator:adbe38eaa1382745a38c8bfc9743ff5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f96c1e8b962082f1e432f54985e1dd9"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html#a5f96c1e8b962082f1e432f54985e1dd9">ReadVarInt</a> (this <a class="el" href="class_binary_reader.html">BinaryReader</a> reader)</td></tr>
@@ -135,6 +139,79 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p>Definition at line <a class="el" href="_binary_i_o_8cs_source.html#l00006">6</a> of file <a class="el" href="_binary_i_o_8cs_source.html">BinaryIO.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a66cc649b9810b8a3424a140f0a2765a2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.IO.BinaryIO.ReadBytes </td>
+          <td>(</td>
+          <td class="paramtype">this Stream&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">byte[]&#160;</td>
+          <td class="paramname"><em>buf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_binary_i_o_8cs_source.html#l00068">68</a> of file <a class="el" href="_binary_i_o_8cs_source.html">BinaryIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordtype">int</span> r, pos = 0;</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">while</span> ((r = stream.Read(buf, pos, buf.Length - pos)) &gt; 0)</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                pos += r;</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">if</span> (pos != buf.Length)</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_i_o_exception.html">IOException</a>($<span class="stringliteral">&quot;Stream did not contain enough bytes ({pos}) &lt; ({buf.Length})&quot;</span>);</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div><div class="ttc" id="class_i_o_exception_html"><div class="ttname"><a href="class_i_o_exception.html">IOException</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8a78d716f0e2275d00fdeb25548534ee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static byte [] Terraria.ModLoader.IO.BinaryIO.ReadBytes </td>
+          <td>(</td>
+          <td class="paramtype">this Stream&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_binary_i_o_8cs_source.html#l00078">78</a> of file <a class="el" href="_binary_i_o_8cs_source.html">BinaryIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            var buf = <span class="keyword">new</span> byte[len];</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            stream.ReadBytes(buf);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">return</span> buf;</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="adbe38eaa1382745a38c8bfc9743ff5c6"></a>
 <div class="memitem">
 <div class="memproto">

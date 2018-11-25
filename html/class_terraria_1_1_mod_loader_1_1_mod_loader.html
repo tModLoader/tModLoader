@@ -197,7 +197,7 @@ Properties</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a3685348d7daa3d5abf8f0f1b33b8a275"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3685348d7daa3d5abf8f0f1b33b8a275">DisplayLoadError</a> (string msg, Exception e, bool fatal, bool continueIsRetry=false)</td></tr>
+<tr class="memitem:a3685348d7daa3d5abf8f0f1b33b8a275"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3685348d7daa3d5abf8f0f1b33b8a275">DisplayLoadError</a> (string msg, <a class="el" href="class_exception.html">Exception</a> e, bool fatal, bool continueIsRetry=false)</td></tr>
 <tr class="separator:a3685348d7daa3d5abf8f0f1b33b8a275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c6a5060345e8ee56b6514c5eaa69e99"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0c6a5060345e8ee56b6514c5eaa69e99">PostBuildMenu</a> (bool success)</td></tr>
 <tr class="separator:a0c6a5060345e8ee56b6514c5eaa69e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,7 +237,7 @@ Static Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Exception&#160;</td>
+          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
           <td class="paramname"><em>e</em>, </td>
         </tr>
         <tr>
@@ -565,8 +565,8 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00243">243</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
 
-<p>References <a class="el" href="_tmod_file_8cs_source.html#l00043">Terraria.ModLoader.IO.TmodFile.hash</a>.</p>
-<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            var f = <span class="keyword">new</span> RSAPKCS1SignatureDeformatter();</div><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            var v = AsymmetricAlgorithm.Create(<span class="stringliteral">&quot;RSA&quot;</span>);</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            f.SetHashAlgorithm(<span class="stringliteral">&quot;SHA1&quot;</span>);</div><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            v.FromXmlString(xmlPublicKey);</div><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            f.SetKey(v);</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">return</span> f.VerifySignature(mod.<a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a58ddd1c61911fd6a178f4298670decb3">hash</a>, mod.signature);</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a58ddd1c61911fd6a178f4298670decb3"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a58ddd1c61911fd6a178f4298670decb3">Terraria.ModLoader.IO.TmodFile.hash</a></div><div class="ttdeci">byte[] hash</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00043">TmodFile.cs:43</a></div></div>
+<p>References <a class="el" href="_tmod_file_8cs_source.html#l00049">Terraria.ModLoader.IO.TmodFile.hash</a>.</p>
+<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        {</div><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            var f = <span class="keyword">new</span> RSAPKCS1SignatureDeformatter();</div><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            var v = AsymmetricAlgorithm.Create(<span class="stringliteral">&quot;RSA&quot;</span>);</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            f.SetHashAlgorithm(<span class="stringliteral">&quot;SHA1&quot;</span>);</div><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            v.FromXmlString(xmlPublicKey);</div><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            f.SetKey(v);</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">return</span> f.VerifySignature(mod.<a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a58ddd1c61911fd6a178f4298670decb3">hash</a>, mod.signature);</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_html_a58ddd1c61911fd6a178f4298670decb3"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a58ddd1c61911fd6a178f4298670decb3">Terraria.ModLoader.IO.TmodFile.hash</a></div><div class="ttdeci">byte[] hash</div><div class="ttdef"><b>Definition:</b> <a href="_tmod_file_8cs_source.html#l00049">TmodFile.cs:49</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1090,7 +1090,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00040">40</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_tmod_file_8cs_source.html#l00246">Terraria.ModLoader.IO.TmodFile.GetMainAssembly()</a>, <a class="el" href="_tmod_file_8cs_source.html#l00252">Terraria.ModLoader.IO.TmodFile.GetMainPDB()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00178">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssembly()</a>.</p>
+<p>Referenced by <a class="el" href="_tmod_file_8cs_source.html#l00381">Terraria.ModLoader.IO.TmodFile.GetMainAssembly()</a>, <a class="el" href="_tmod_file_8cs_source.html#l00387">Terraria.ModLoader.IO.TmodFile.GetMainPDB()</a>, and <a class="el" href="_assembly_manager_8cs_source.html#l00178">Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssembly()</a>.</p>
 
 </div>
 </div>
@@ -1115,7 +1115,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00089">89</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00091">Terraria.ModLoader.ModNet.AddNoSyncDeps()</a>, <a class="el" href="_tag_serializer_8cs_source.html#l00063">Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;.GetType()</a>, <a class="el" href="_mod_content_8cs_source.html#l00228">Terraria.ModLoader.ModContent.LoadModContent()</a>, <a class="el" href="_mod_net_8cs_source.html#l00284">Terraria.ModLoader.ModNet.OnModsDownloaded()</a>, <a class="el" href="_mod_hooks_8cs_source.html#l00239">Terraria.ModLoader.Mod.PreSaveAndQuit()</a>, <a class="el" href="_mod_net_8cs_source.html#l00331">Terraria.ModLoader.ModNet.ReadNetIDs()</a>, <a class="el" href="_mod_content_8cs_source.html#l00346">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>, <a class="el" href="_mod_content_8cs_source.html#l00167">Terraria.ModLoader.ModContent.SetLocalizedText()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00244">Terraria.ModLoader.ModContent.SetupRecipes()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00091">Terraria.ModLoader.ModNet.AddNoSyncDeps()</a>, <a class="el" href="_tag_serializer_8cs_source.html#l00063">Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;.GetType()</a>, <a class="el" href="_mod_content_8cs_source.html#l00227">Terraria.ModLoader.ModContent.LoadModContent()</a>, <a class="el" href="_mod_net_8cs_source.html#l00285">Terraria.ModLoader.ModNet.OnModsDownloaded()</a>, <a class="el" href="_mod_hooks_8cs_source.html#l00239">Terraria.ModLoader.Mod.PreSaveAndQuit()</a>, <a class="el" href="_mod_net_8cs_source.html#l00332">Terraria.ModLoader.ModNet.ReadNetIDs()</a>, <a class="el" href="_mod_content_8cs_source.html#l00346">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>, <a class="el" href="_mod_content_8cs_source.html#l00167">Terraria.ModLoader.ModContent.SetLocalizedText()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00243">Terraria.ModLoader.ModContent.SetupRecipes()</a>.</p>
 
 </div>
 </div>

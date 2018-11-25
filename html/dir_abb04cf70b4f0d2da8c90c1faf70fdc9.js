@@ -7,6 +7,9 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
     [ "BinaryIO.cs", "_binary_i_o_8cs.html", [
       [ "BinaryIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o" ]
     ] ],
+    [ "ContentConverters.cs", "_content_converters_8cs.html", [
+      [ "ContentConverters", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_content_converters.html", null ]
+    ] ],
     [ "FontCacheIO.cs", "_font_cache_i_o_8cs.html", null ],
     [ "ImageIO.cs", "_image_i_o_8cs.html", [
       [ "ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o" ]
@@ -46,11 +49,14 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
     ] ],
     [ "TileIO.cs", "_tile_i_o_8cs.html", null ],
     [ "TmodFile.cs", "_tmod_file_8cs.html", [
+      [ "DisposeWrapper", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper" ],
+      [ "FileEntry", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry" ],
       [ "TmodFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file" ]
     ] ],
     [ "UploadFile.cs", "_upload_file_8cs.html", [
       [ "UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file" ]
     ] ],
     [ "WAVCacheIO.cs", "_w_a_v_cache_i_o_8cs.html", null ],
-    [ "WorldIO.cs", "_world_i_o_8cs.html", null ]
+    [ "WorldIO.cs", "_world_i_o_8cs.html", null ],
+    [ "WrappedStream.cs", "_wrapped_stream_8cs.html", null ]
 ];

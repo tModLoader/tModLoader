@@ -18,6 +18,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ModCompile.BuildingMod", "class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html", null ],
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
+    [ "Terraria.ModLoader.IO.ContentConverters", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_content_converters.html", null ],
     [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
     [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
     [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
@@ -29,6 +30,15 @@ var hierarchy =
     [ "Terraria.ModLoader.EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", null ],
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
     [ "Terraria.ModLoader.ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", null ],
+    [ "Exception", "class_exception.html", [
+      [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", null ],
+      [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
+      [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
+    ] ],
+    [ "Terraria.ModLoader.IO.TmodFile.FileEntry", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html", null ],
     [ "Terraria.ModLoader.GlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_global_bg_style.html", null ],
     [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
     [ "Terraria.ModLoader.GlobalItem", "class_terraria_1_1_mod_loader_1_1_global_item.html", null ],
@@ -47,7 +57,10 @@ var hierarchy =
     [ "ICloneable", "class_i_cloneable.html", [
       [ "Terraria.ModLoader.IO.TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", null ]
     ] ],
-    [ "IEnumerable< KeyValuePair< string, byte[]>>", "class_i_enumerable_3_01_key_value_pair_3_01string_00_01byte[]_4_4.html", [
+    [ "IDisposable", "class_i_disposable.html", [
+      [ "Terraria.ModLoader.IO.TmodFile.DisposeWrapper", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html", null ]
+    ] ],
+    [ "IEnumerable", "class_i_enumerable.html", [
       [ "Terraria.ModLoader.IO.TmodFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html", null ]
     ] ],
     [ "IEnumerable< KeyValuePair< string, object >>", "class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html", [
@@ -170,14 +183,6 @@ var hierarchy =
     [ "Terraria.ModLoader.WaterfallStyleLoader", "class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html", null ],
     [ "Terraria.ModLoader.WaterStyleLoader", "class_terraria_1_1_mod_loader_1_1_water_style_loader.html", null ],
     [ "Terraria.ModLoader.WorldHooks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html", null ],
-    [ "Exception", null, [
-      [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
-      [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
-      [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
-      [ "Terraria.ModLoader.Exceptions.ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", null ],
-      [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
-      [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
-    ] ],
     [ "Recipe", null, [
       [ "Terraria.ModLoader.ModRecipe", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html", null ]
     ] ]

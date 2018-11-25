@@ -3,6 +3,7 @@ var searchData=
   ['ocean',['Ocean',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae65bb31b4b0fd34318c4fb001c114a7e',1,'Terraria::ModLoader::SpawnCondition']]],
   ['oceanangler',['OceanAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a67d02405c628cbf19defe959d6a64167',1,'Terraria::ModLoader::SpawnCondition']]],
   ['oceanmonster',['OceanMonster',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aab7742d0a9a8c5db93d1f95b23be69e0',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['offset',['offset',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a09674dc6e4102bd6a63a6bba1435660d',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['old',['Old',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051',1,'Terraria::ModLoader::ModHotKey']]],
   ['oldonesarmy',['OldOnesArmy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad8dce19d1c0a8fcd1331f984025e6300',1,'Terraria::ModLoader::SpawnCondition']]],
   ['onedroplogo',['oneDropLogo',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7',1,'Terraria::ModLoader::DrawableTooltipLine']]],

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['lastentryreadstream',['lastEntryReadStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a9f0e1d64f782f5f7502748faaf88a9c7',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],
   ['legarmorshader',['legArmorShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a1d80d2ea2666e65cdf0f95e7626b6fee',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['legcolor',['legColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a24f060c7f3a5b3c1746666cdf365e1c1',1,'Terraria::ModLoader::PlayerDrawInfo']]],
@@ -23,7 +24,6 @@ var searchData=
   ['loaded',['loaded',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a25dec7b693a6ac7c8e7690bf9447b179',1,'Terraria.ModLoader.TileLoader.loaded()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a26945400102ee133ead362be72521b85',1,'Terraria.ModLoader.WallLoader.loaded()']]],
   ['loadedmod',['LoadedMod',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html',1,'Terraria::ModLoader::AssemblyManager']]],
   ['loadedmods',['LoadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria::ModLoader::ModLoader']]],
-  ['loadedstate',['LoadedState',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#add1bbc50f57070839a1403bb1b32317a',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['loadeffect',['LoadEffect',['../class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203',1,'Terraria::ModLoader::Mod']]],
   ['loadfont',['LoadFont',['../class_terraria_1_1_mod_loader_1_1_mod.html#aa6aabcd58da266cf2bd8137a20ef481d',1,'Terraria::ModLoader::Mod']]],
   ['loadindex',['loadIndex',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#afc438fe5f44ed3c7c1e4abb10ac36e66',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
@@ -31,8 +31,11 @@ var searchData=
   ['loadlegacyinventory',['LoadLegacyInventory',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a99a595a8f7b87afad6adef7eff286d17',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['loadmodcontent',['LoadModContent',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a5b13b15051009ce957e96bada101ee81',1,'Terraria::ModLoader::ModContent']]],
   ['loadmp3',['LoadMP3',['../class_terraria_1_1_mod_loader_1_1_mod.html#adb2b13233e458dfe2002327bbc5535b8',1,'Terraria::ModLoader::Mod']]],
+  ['loadresource',['LoadResource',['../class_terraria_1_1_mod_loader_1_1_mod.html#a06060e108c1ffa96c6893671cffe20d3',1,'Terraria::ModLoader::Mod']]],
   ['loadresourcefromstream',['LoadResourceFromStream',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5f3343389eaa5fc6680de4f2ddc6e0c6',1,'Terraria::ModLoader::Mod']]],
-  ['loadtexture',['LoadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a56dd948da866d00425bbc67ab93a324c',1,'Terraria::ModLoader::Mod']]],
+  ['loadresourcelegacy',['LoadResourceLegacy',['../class_terraria_1_1_mod_loader_1_1_mod.html#ae7a8023ea29719e60cfab70d95f3c624',1,'Terraria::ModLoader::Mod']]],
+  ['loadresources',['LoadResources',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6e0e8bff817d6b27299d096b1ac96afd',1,'Terraria::ModLoader::Mod']]],
+  ['loadtexture',['LoadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6f8ab2adf81e70cdb42b584e5b4dbe1a',1,'Terraria::ModLoader::Mod']]],
   ['loadwav',['LoadWav',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad8d6c9667327591d69c269794091c4b2',1,'Terraria::ModLoader::Mod']]],
   ['localmod_2ecs',['LocalMod.cs',['../_local_mod_8cs.html',1,'']]],
   ['log',['Log',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225',1,'Terraria.ModLoader.ErrorLogger.Log(string message)'],['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a482452c467e1a6f8005b2968a12c3930',1,'Terraria.ModLoader.ErrorLogger.Log(object param, bool alternateOutput=false)']]],

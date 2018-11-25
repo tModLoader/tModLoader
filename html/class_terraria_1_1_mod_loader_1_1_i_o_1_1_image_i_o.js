@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o =
 [
     [ "PngToTexture2DAsync", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a478d23984f4495a4f01c96177f129c05", null ],
+    [ "RawToPng", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a43aa3e6287b9585235aae671e16436ef", null ],
     [ "RawToTexture2D", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#abddb301b48f0f2b82c048c1d7c5d40ce", null ],
     [ "RawToTexture2D", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#aefa2c9787fafe8d2e98fa231ef876e7a", null ],
     [ "RawToTexture2DAsync", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ae8697e6299da726bc81891da83695898", null ],
