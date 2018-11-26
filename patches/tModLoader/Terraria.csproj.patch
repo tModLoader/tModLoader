@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,34 +_,46 @@
+@@ -17,34 +_,48 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
      <OutputPath>bin\x86\WindowsRelease\</OutputPath>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
@@ -15,12 +15,14 @@
      <OutputPath>bin\x86\WindowsDebug\</OutputPath>
      <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
 +    <PlatformTarget>x86</PlatformTarget>
++    <PdbFile>tModLoaderDebug</PdbFile>
 +    <LangVersion>default</LangVersion>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
      <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
      <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
 +    <PlatformTarget>x86</PlatformTarget>
++    <PdbFile>tModLoaderServerDebug</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
      <OutputPath>bin\x86\MacRelease\</OutputPath>
@@ -470,7 +472,6 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -494,7 +495,7 @@
 +copy "$(TargetDir)$(TargetName)$(TargetExt)" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25$(TargetExt)"
 +
 +IF NOT %25RELEASEFILE:Debug=%25==%25RELEASEFILE%25 (
-+	copy "$(TargetDir)$(TargetName).pdb" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25.pdb"
++	copy "$(TargetDir)%25RELEASEFILE%25.pdb" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25.pdb"
 +)
 +
 +)</PostBuildEvent>
@@ -503,4 +504,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+

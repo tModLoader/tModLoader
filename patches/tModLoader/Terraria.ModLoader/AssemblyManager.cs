@@ -328,18 +328,25 @@ namespace Terraria.ModLoader
 			return code;
 		}
 
+		public static bool GetAssemblyOwner(Assembly assembly, out string modName)
+		{
+			if (hostModForAssembly.TryGetValue(assembly, out var mod)) {
+				modName = mod.Name;
+				return true;
+			}
+
+			modName = null;
+			return false;
+		}
+
 		internal static bool FirstModInStackTrace(StackTrace stack, out string modName)
 		{
 			for (int i = 0; i < stack.FrameCount; i++)
 			{
 				StackFrame frame = stack.GetFrame(i);
-				MethodBase caller = frame.GetMethod();
-				var assembly = caller?.DeclaringType?.Assembly;
-				if (assembly == null || !hostModForAssembly.TryGetValue(assembly, out var mod))
-					continue;
-
-				modName = mod.Name;
-				return true;
+				var assembly = frame.GetMethod()?.DeclaringType?.Assembly;
+				if (assembly != null && GetAssemblyOwner(assembly, out modName))
+					return true;
 			}
 
 			modName = null;

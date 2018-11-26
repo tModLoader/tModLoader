@@ -55,6 +55,7 @@ namespace Terraria.ModLoader
 			HookModuleLoad();
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			LogFirstChanceExceptions(ModCompile.DeveloperMode);
+			PrettifyStackTraceSources();
 		}
 
 		private static void ConfigureAppenders()
@@ -175,24 +176,45 @@ namespace Terraria.ModLoader
 				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
 		}
 
-		internal static void ResetPastExceptions() => pastExceptions.Clear();
 		private static HashSet<string> pastExceptions = new HashSet<string>();
+		internal static void ResetPastExceptions() => pastExceptions.Clear();
+
+		private static HashSet<string> ignoreSources = new HashSet<string> {
+			"MP3Sharp"
+		};
+		public static void IgnoreExceptionSource(string source) => ignoreSources.Add(source);
+		
+		private static List<string> ignoreContents = new List<string> {
+			"Terraria.ModLoader.ModCompile",
+			"Delegate.CreateDelegateNoSecurityCheck",
+			"MethodBase.GetMethodBody",
+		};
+
+		public static void IgnoreExceptionContents(string source)
+		{
+			if (!ignoreContents.Contains(source))
+				ignoreContents.Add(source);
+		}
+		
+		private static Exception previousException;
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 		{
-			if (args.Exception.Source == "MP3Sharp")
+			if (args.Exception == previousException || ignoreSources.Contains(args.Exception.Source))
 				return;
 
-			var stackTrace = new StackTrace(true).ToString();
-			if (stackTrace.Contains("Terraria.ModLoader.ModCompile") ||
-				stackTrace.Contains("Delegate.CreateDelegateNoSecurityCheck") ||
-				stackTrace.Contains("MethodBase.GetMethodBody"))
+			var stackTrace = new StackTrace(true);
+			PrettifyStackTraceSources(stackTrace.GetFrames());
+			var traceString = stackTrace.ToString();
+			
+			if (ignoreSources.Any(traceString.Contains))
 				return;
 
-			stackTrace = stackTrace.Substring(stackTrace.IndexOf('\n'));
-			var exString = args.Exception.GetType() + ": " + args.Exception.Message + stackTrace;
+			traceString = traceString.Substring(traceString.IndexOf('\n'));
+			var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 			if (!pastExceptions.Add(exString))
 				return;
 
+			previousException = args.Exception;
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
 #if CLIENT
 			if (Main.ContentLoaded) {
@@ -234,6 +256,55 @@ namespace Terraria.ModLoader
 				return null;
 			
 			return orig(name);
+		}
+
+		private static readonly FieldInfo f_strFileName =
+			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic);
+
+		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
+		
+		private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
+		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
+		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)
+		{
+			orig(self, e, fNeedFileInfo);
+			if (fNeedFileInfo)
+				PrettifyStackTraceSources(self.GetFrames());
+		}
+
+		private static void PrettifyStackTraceSources(StackFrame[] frames)
+		{
+			if (frames == null)
+				return;
+			
+			foreach (var frame in frames) {
+				string filename = frame.GetFileName();
+				var assembly = frame.GetMethod()?.DeclaringType?.Assembly;
+				if (filename == null || assembly == null)
+					continue;
+
+				string trim;
+				if (AssemblyManager.GetAssemblyOwner(assembly, out var modName))
+					trim = modName;
+				else if (assembly == TerrariaAssembly)
+					trim = "tModLoader";
+				else
+					continue;
+
+				int idx = filename.LastIndexOf(trim, StringComparison.InvariantCultureIgnoreCase);
+				if (idx > 0) {
+					filename = filename.Substring(idx);
+					f_strFileName.SetValue(frame, filename);
+				}
+			}
+		}
+
+		private static void PrettifyStackTraceSources()
+		{
+			if (f_strFileName == null)
+				return;
+			
+			new Hook(typeof(StackTrace).GetConstructor(new[] {typeof(Exception), typeof(bool)}), new hook_StackTrace(HookStackTraceEx));
 		}
 	}
 }
