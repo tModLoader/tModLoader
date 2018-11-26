@@ -17,6 +17,7 @@ var searchData=
   ['playersafe',['playerSafe',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aedf609963b14f1e49cbd78745b9b09d1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['position',['position',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#aa4840c2eb76e8f0ef1a90bb60e21dde2',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['prefixcount',['PrefixCount',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#abc75ad010edb8a32bba66962af2ac696',1,'Terraria::ModLoader::ModPrefix']]],
+  ['previousexception',['previousException',['../class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781',1,'Terraria::ModLoader::Logging']]],
   ['projectilecount',['ProjectileCount',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['projonswing',['projOnSwing',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abe9fcfbfbdb4b5dedd9859aa8f1f5b36',1,'Terraria::ModLoader::ModItem']]],
   ['properties',['properties',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad66ceae780a51e4824580d5424c11447',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],

@@ -1,6 +1,8 @@
 var searchData=
 [
   ['icegolem',['IceGolem',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a94bf56b7bcc8ff6b997a211672bdd896',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['ignorecontents',['ignoreContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f',1,'Terraria::ModLoader::Logging']]],
+  ['ignoresources',['ignoreSources',['../class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308',1,'Terraria::ModLoader::Logging']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a177941f839c1b12fe3c27cd30d26eeae',1,'Terraria::ModLoader::ModContent']]],
   ['indent',['indent',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#aee0f3a1ba8fc9b8a5d59fdb38b03602c',1,'Terraria::ModLoader::IO::TagPrinter']]],
   ['index',['index',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832',1,'Terraria::ModLoader::DrawableTooltipLine']]],
