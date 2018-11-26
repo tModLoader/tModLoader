@@ -195,10 +195,12 @@ namespace Terraria.ModLoader
 
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
 #if CLIENT
-			float soundVolume = Main.soundVolume;
-			Main.soundVolume = 0f;
-			Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);
-			Main.soundVolume = soundVolume;
+			if (Main.ContentLoaded) {
+				float soundVolume = Main.soundVolume;
+				Main.soundVolume = 0f;
+				Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);
+				Main.soundVolume = soundVolume;
+			}
 #else
 			Console.ForegroundColor = ConsoleColor.DarkMagenta;
 			Console.WriteLine(msg);
