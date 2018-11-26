@@ -267,6 +267,7 @@ namespace Terraria.ModLoader
 				m.Logger = LogManager.GetLogger(m.Name);
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
+				m.tModLoaderVersion = mod.properties.buildVersion;
 				return m;
 			}
 			catch (Exception e)

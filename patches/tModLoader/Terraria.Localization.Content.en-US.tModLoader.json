@@ -21,6 +21,7 @@
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
 		"BetaModCantPublish": "This mod was built on beta version and can't be published",
 		"BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		"OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "Reload Required",
 		"ModsByline": "By: {0}",
 		"ModsMoreInfo": "More info",

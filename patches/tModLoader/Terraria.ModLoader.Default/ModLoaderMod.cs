@@ -25,7 +25,6 @@ namespace Terraria.ModLoader.Default
 
 		public override string Name => "ModLoader";
 		public override Version Version => ModLoader.version;
-		public override Version tModLoaderVersion => ModLoader.version;
 
 		internal ModLoaderMod()
 		{

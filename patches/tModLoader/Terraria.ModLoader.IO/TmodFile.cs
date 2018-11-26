@@ -365,6 +365,11 @@ namespace Terraria.ModLoader.IO
 					AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
 			}
 
+			// update buildVersion
+			var info = BuildProperties.ReadModFile(this);
+			info.buildVersion = tModLoaderVersion;
+			AddFile("Info", info.ToBytes());
+			
 			Save();
 			Read();
 		}

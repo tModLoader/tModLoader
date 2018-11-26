@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The version of tModLoader that was being used when this mod was built.
 		/// </summary>
-		public virtual Version tModLoaderVersion => File.tModLoaderVersion;
+		public Version tModLoaderVersion { get; internal set; }
 		/// <summary>
 		/// This version number of this mod.
 		/// </summary>
@@ -136,7 +136,7 @@ namespace Terraria.ModLoader
 		/// <returns>true if the file will no-longer be needed and should not be cached</returns>
 		public virtual bool LoadResource(string path, int length, Func<Stream> getStream)
 		{
-			if (LoadResourceLegacy(path, length, getStream))
+			if (tModLoaderVersion < new Version(0, 11) && LoadResourceLegacy(path, length, getStream))
 				return false;
 
 			string extension = Path.GetExtension(path);

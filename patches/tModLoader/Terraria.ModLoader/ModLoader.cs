@@ -148,8 +148,8 @@ namespace Terraria.ModLoader
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().SingleOrDefault(m => m.Name == responsibleMods[0]);
-					if (mod != null && mod.modFile.tModLoaderVersion != version)
-						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.modFile.tModLoaderVersion, versionedName);
+					if (mod != null && mod.tModLoaderVersion != version)
+						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				}
 				if (responsibleMods.Count > 0)
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");

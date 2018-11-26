@@ -224,6 +224,7 @@ namespace Terraria.ModLoader
 			EffectsTracker.CacheVanillaState();
 		}
 
+		internal static Mod LoadingMod { get; private set; }
 		private static void LoadModContent(Action<Mod> loadAction)
 		{
 			int num = 0;
@@ -231,11 +232,15 @@ namespace Terraria.ModLoader
 			{
 				Interface.loadMods.SetCurrentMod(num++, mod.Name);
 				try {
+					LoadingMod = mod;
 					loadAction(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
+				}
+				finally {
+					LoadingMod = null;
 				}
 			}
 		}

@@ -11,6 +11,7 @@ namespace Terraria.ModLoader
 
 		public string Name => modFile.name;
 		public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
+		public Version tModLoaderVersion => properties.buildVersion;
 
 		public bool Enabled
 		{

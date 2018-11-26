@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.UI
 			base.SetPadding(6f);
 			//base.OnClick += this.ToggleEnabled;
 			string text = mod.DisplayName + " v" + mod.modFile.version;
-			if (mod.modFile.tModLoaderVersion < new Version(0, 10))
+			if (mod.tModLoaderVersion < new Version(0, 10))
 			{
 				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
