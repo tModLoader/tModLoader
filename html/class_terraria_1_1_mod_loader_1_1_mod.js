@@ -204,12 +204,12 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "AsyncLoadQueue", "class_terraria_1_1_mod_loader_1_1_mod.html#a0fcebfa8559b2cfea3db7189c32b94e0", null ],
     [ "IsNetSynced", "class_terraria_1_1_mod_loader_1_1_mod.html#a85bbf627eb7bd116ac182667bc443770", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09", null ],
-    [ "tModLoaderVersion", "class_terraria_1_1_mod_loader_1_1_mod.html#ad6eec5ecd13b9a42378033a8a2a6d608", null ],
     [ "Version", "class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64", null ],
     [ "Code", "class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb", null ],
     [ "File", "class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a", null ],
     [ "Logger", "class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916", null ],
     [ "Properties", "class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea", null ],
-    [ "Side", "class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777", null ]
+    [ "Side", "class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777", null ],
+    [ "tModLoaderVersion", "class_terraria_1_1_mod_loader_1_1_mod.html#a4e848917652bd85f14bc46810496f339", null ]
 ];

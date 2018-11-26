@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.ModCompile.BuildingMod" name="Terraria.ModLoader.ModCompile.BuildingMod">
-<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html" title="Terraria.ModLoader.IO.TmodFile" alt="" coords="637,303,848,329"/>
-<area shape="rect" id="node14" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html" title="Terraria.ModLoader.IO.Tmod\lFile.FileEntry" alt="" coords="251,29,440,70"/>
-<area shape="rect" id="node12" href="$class_i_enumerable.html" title="IEnumerable\&lt; string \&gt;" alt="" coords="270,95,421,121"/>
+<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html" title="Terraria.ModLoader.IO.TmodFile" alt="" coords="637,327,848,353"/>
+<area shape="rect" id="node14" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html" title="Terraria.ModLoader.IO.Tmod\lFile.FileEntry" alt="" coords="251,57,440,98"/>
+<area shape="rect" id="node12" href="$class_i_enumerable.html" title="IEnumerable\&lt; string \&gt;" alt="" coords="270,185,421,212"/>
 </map>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_mod_loader_1_1_wall_loader.html":[1,0,0,0,80],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a095fd17a9e93bf2e3b72225677e39337":[1,0,0,0,80,21],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a12d788b1db996536fbcab46206dbb0aa":[1,0,0,0,80,16],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1acf233cc635924ba44924c5007d2b90":[1,0,0,0,80,2],
@@ -66,16 +67,16 @@ var NAVTREEINDEX12 =
 "dir_abb04cf70b4f0d2da8c90c1faf70fdc9.html":[2,0,0,0,2],
 "dir_b2dee0249ca1c6e98736e679cc6a5269.html":[2,0,0],
 "files.html":[2,0],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -113,8 +114,8 @@ var NAVTREEINDEX12 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2],
 "functions_vars.html":[1,3,2,0],
+"functions_vars.html":[1,3,2],
 "functions_vars_a.html":[1,3,2,1],
 "functions_vars_b.html":[1,3,2,2],
 "functions_vars_c.html":[1,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a157ca091fcdb30a0a6c83643e7907538":[1,0,0,0,64,13],
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f":[1,0,0,0,64,12],
 "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a3e3ec364079b4e7db1ec709bc19e82c4":[1,0,0,0,64,14],
-"struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a4f1b75ef1543e2c69bc8246ed598f6f5":[1,0,0,0,64,10],
-"struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a68aaf59a24ffc56466449ad7bd91d842":[1,0,0,0,64,2]
+"struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a4f1b75ef1543e2c69bc8246ed598f6f5":[1,0,0,0,64,10]
 };
