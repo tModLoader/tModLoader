@@ -266,7 +266,7 @@ namespace Terraria.ModLoader.IO
 
 			fileStream.Position = pos;
 
-			if (tModLoaderVersion < new Version(0, 11, 0, 0)) {
+			if (tModLoaderVersion < new Version(0, 11)) {
 				Upgrade();
 				return;
 			}

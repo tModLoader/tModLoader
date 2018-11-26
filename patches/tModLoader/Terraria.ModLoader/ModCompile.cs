@@ -392,7 +392,7 @@ namespace Terraria.ModLoader
 
 			WAVCacheIO.ClearCache(mod.Name);
 
-			GetMod(mod.Name).File.Close(); // if the mod is currently loaded, the file-handle needs to be released
+			GetMod(mod.Name)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 			mod.modFile.Save();
 			EnableMod(mod.Name);
 			return true;
