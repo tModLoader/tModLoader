@@ -170,49 +170,6 @@ namespace Terraria.ModLoader.IO
 			// invalidate the read handle
 			Close();
 
-			int fileStartPos;
-			byte[] data;
-			// write all mod-specific data to a single array and sign it
-			// in the current version this means
-			// name
-			// version
-			// file count
-			// file-entries:
-			//   filename
-			//   uncompressed file size
-			//   compressed file size (stored size)
-			using (var dataStream = new MemoryStream())
-			using (var writer = new BinaryWriter(dataStream))
-			{
-				writer.Write(name);
-				writer.Write(version.ToString());
-
-				// write file table
-				writer.Write(files.Count);
-				fileTable = files.Values.ToArray();
-
-				int offset = 0;
-				foreach (var f in fileTable)
-				{
-					writer.Write(f.name);
-					writer.Write(f.size);
-					writer.Write(f.compressedSize);
-					if (f.compressedSize != f.cachedBytes.Length)
-						throw new Exception($"compressedSize ({f.compressedSize}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.name}");
-
-					// update offsets (from end of file-table)
-					f.offset = offset;
-					offset += f.compressedSize;
-				}
-				fileStartPos = (int)dataStream.Position;
-
-				foreach (var f in fileTable)
-					writer.Write(f.cachedBytes);
-
-				data = dataStream.ToArray();
-				hash = SHA1.Create().ComputeHash(data);
-			}
-
 			// write the general TMOD header and data blob
 			// TMOD ascii identifier
 			// tModLoader version
@@ -220,22 +177,60 @@ namespace Terraria.ModLoader.IO
 			// signature
 			// data length
 			// signed data
-			using (var fileStream = File.Create(path))
-			using (var fileWriter = new BinaryWriter(fileStream))
+			using (fileStream = File.Create(path))
+			using (var writer = new BinaryWriter(fileStream))
 			{
-				fileWriter.Write(Encoding.ASCII.GetBytes("TMOD"));
-				fileWriter.Write(ModLoader.version.ToString());
-				fileWriter.Write(hash);
-				fileWriter.Write(signature);
-				fileWriter.Write(data.Length);
+				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
+				writer.Write(ModLoader.version.ToString());
+				
+				int hashPos = (int) fileStream.Position;
+				writer.Write(new byte[20+256+4]); //hash, sig, data length
 
-				fileStartPos += (int)fileStream.Position;
-				fileWriter.Write(data);
+				int dataPos = (int) fileStream.Position;
+				writer.Write(name);
+				writer.Write(version.ToString());
+				
+				// write file table
+				// file count
+				// file-entries:
+				//   filename
+				//   uncompressed file size
+				//   compressed file size (stored size)
+				fileTable = files.Values.ToArray();
+				writer.Write(fileTable.Length);
+
+				foreach (var f in fileTable)
+				{
+					if (f.compressedSize != f.cachedBytes.Length)
+						throw new Exception($"compressedSize ({f.compressedSize}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.name}");
+					
+					writer.Write(f.name);
+					writer.Write(f.size);
+					writer.Write(f.compressedSize);
+				}
+				
+				// write compressed files and update offsets
+				int offset = (int)fileStream.Position; // offset starts at end of file table
+				foreach (var f in fileTable) {
+					writer.Write(f.cachedBytes);
+					
+					f.offset = offset;
+					offset += f.compressedSize;
+				}
+
+				// update hash
+				fileStream.Position = dataPos;
+				hash = SHA1.Create().ComputeHash(fileStream);
+
+				fileStream.Position = hashPos;
+				writer.Write(hash);
+				
+				//skip signature
+				fileStream.Seek(256, SeekOrigin.Current);
+				
+				// write data length
+				writer.Write((int)(fileStream.Length - dataPos));
 			}
-
-			//update file table offsets
-			foreach (var f in files.Values)
-				f.offset += fileStartPos;
 		}
 
 		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png");
