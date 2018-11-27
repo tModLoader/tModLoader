@@ -478,7 +478,7 @@
  			Console.WriteLine(Language.GetTextValue("CLI.HelpHint"));
  			Console.WriteLine("");
  			Console.Title = "Terraria Server: " + Main.worldName;
-@@ -4320,20 +_,11 @@
+@@ -4320,20 +_,12 @@
  				Main.startDedInput();
  			}
  			stopwatch.Start();
@@ -498,6 +498,7 @@
 -					num10 += totalMilliseconds - num9;
 -					stopwatch.Reset();
 -					stopwatch.Start();
++				ServerHangWatchdog.Checkin();
 +				{
  					if (Main.oldStatusText != Main.statusText)
  					{

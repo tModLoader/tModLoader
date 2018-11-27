@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -199,7 +200,9 @@ namespace Terraria.ModLoader
 		private static Exception previousException;
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 		{
-			if (args.Exception == previousException || ignoreSources.Contains(args.Exception.Source))
+			if (args.Exception == previousException || 
+				args.Exception is ThreadAbortException ||
+				ignoreSources.Contains(args.Exception.Source))
 				return;
 
 			var stackTrace = new StackTrace(true);
@@ -242,10 +245,17 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ServerConsoleLine(string msg) => ServerConsoleLine(msg, Level.Info);
-		internal static void ServerConsoleLine(string msg, Level level)
+		internal static void ServerConsoleLine(string msg, Level level, Exception ex = null, ILog log = null)
 		{
+			if (level == Level.Warn)
+				Console.ForegroundColor = ConsoleColor.Yellow;
+			else if (level == Level.Error)
+				Console.ForegroundColor = ConsoleColor.Red;
+
 			Console.WriteLine(msg);
-			Terraria.Logger.Log(null, level, msg, null);
+			Console.ResetColor();
+
+			(log ?? Terraria).Logger.Log(null, level, msg, ex);
 		}
 
 		private delegate Encoding orig_GetEncoding(string name);
@@ -272,7 +282,7 @@ namespace Terraria.ModLoader
 				PrettifyStackTraceSources(self.GetFrames());
 		}
 
-		private static void PrettifyStackTraceSources(StackFrame[] frames)
+		public static void PrettifyStackTraceSources(StackFrame[] frames)
 		{
 			if (frames == null)
 				return;
