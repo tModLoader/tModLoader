@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 		internal bool hideCode = true;
 		internal bool hideResources = true;
 		internal bool includeSource = false;
-		internal bool includePDB = false;
+		internal bool includePDB = true;
 		internal bool editAndContinue = false;
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
