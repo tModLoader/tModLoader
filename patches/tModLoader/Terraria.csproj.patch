@@ -359,7 +359,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,146 @@
+@@ -606,5 +_,147 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -458,6 +458,7 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\UIModBrowserIcons.png" />
 +  </ItemGroup>
 +  <ItemGroup>
++    <None Include=".editorconfig" />
 +    <None Include="App.config">
 +      <SubType>Designer</SubType>
 +    </None>
