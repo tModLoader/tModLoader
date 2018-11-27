@@ -223,6 +223,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "RecipeHooks.cs", "_recipe_hooks_8cs.html", [
       [ "RecipeHooks", "class_terraria_1_1_mod_loader_1_1_recipe_hooks.html", "class_terraria_1_1_mod_loader_1_1_recipe_hooks" ]
     ] ],
+    [ "ServerHangWatchdog.cs", "_server_hang_watchdog_8cs.html", null ],
     [ "SoundLoader.cs", "_sound_loader_8cs.html", [
       [ "SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", "class_terraria_1_1_mod_loader_1_1_sound_loader" ]
     ] ],
