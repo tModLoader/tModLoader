@@ -394,6 +394,7 @@ namespace Terraria.ModLoader
 
 			GetMod(mod.Name)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 			mod.modFile.Save();
+			mod.modFile.Close();
 			EnableMod(mod.Name);
 			return true;
 		}

@@ -181,7 +181,7 @@ namespace Terraria.ModLoader.IO
 			using (var writer = new BinaryWriter(fileStream))
 			{
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));
-				writer.Write(ModLoader.version.ToString());
+				writer.Write((tModLoaderVersion = ModLoader.version).ToString());
 				
 				int hashPos = (int) fileStream.Position;
 				writer.Write(new byte[20+256+4]); //hash, sig, data length
@@ -231,6 +231,7 @@ namespace Terraria.ModLoader.IO
 				// write data length
 				writer.Write((int)(fileStream.Length - dataPos));
 			}
+			fileStream = null;
 		}
 
 		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png");
@@ -365,8 +366,13 @@ namespace Terraria.ModLoader.IO
 			info.buildVersion = tModLoaderVersion;
 			AddFile("Info", info.ToBytes());
 			
+			// write to the new format (also updates the file offset table)
 			Save();
-			Read();
+			// clear all the file contents from AddFile
+			ResetCache();
+			// Save closes the file so re-open it
+			fileStream = File.OpenRead(path);
+			// Read contract fulfilled
 		}
 
 		public void VerifyCoreFiles()
