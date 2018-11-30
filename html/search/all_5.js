@@ -11,6 +11,7 @@ var searchData=
   ['encapsulatereferences',['EncapsulateReferences',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac5c3718bc5def39e46596eec59f0123c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['enchantedsword',['EnchantedSword',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a832d14b93e7a2fb75dfbfff0c77ef6fd',1,'Terraria::ModLoader::SpawnCondition']]],
   ['ensureopen',['EnsureOpen',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a47dbf42ff27d9d07248873faba17ee64',1,'Terraria::ModLoader::IO::TmodFile']]],
+  ['enter',['Enter',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#ab6f479a5c466461a9922767458bb7c9c',1,'Terraria::ModLoader::GLCallLocker']]],
   ['entryiterator',['EntryIterator',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac607e17170d7ec82ebe6da28dddc6f34',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['environment',['Environment',['../namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a0ba29c6a1afacf586b03a26162c72274',1,'Terraria::ModLoader']]],
   ['equiploader',['EquipLoader',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html#a6f29f0695eaea5f40fb00bc6ff462a44',1,'Terraria::ModLoader::EquipLoader']]],

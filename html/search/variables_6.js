@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['f_5fgldevice',['f_GLDevice',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#af0856079ff6e7d08d9d61da9bfe6b5dc',1,'Terraria::ModLoader::GLCallLocker']]],
   ['f_5fstrfilename',['f_strFileName',['../class_terraria_1_1_mod_loader_1_1_logging.html#ae6a1f763e931c7194b404a9ee056da28',1,'Terraria::ModLoader::Logging']]],
   ['face',['Face',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a120f8e2dd0b4a1ba42d7de43cd16e069',1,'Terraria::ModLoader::PlayerLayer']]],
   ['faceacc',['FaceAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a3b32234508897b5f267182bd5b2e8f2b',1,'Terraria.ModLoader.PlayerLayer.FaceAcc()'],['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#ad9bc1b2e4499a7498d1a0e49c3ca9a33',1,'Terraria.ModLoader.PlayerHeadLayer.FaceAcc()']]],

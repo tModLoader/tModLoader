@@ -70,6 +70,7 @@ var searchData=
   ['rollchance',['RollChance',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764',1,'Terraria::ModLoader::ModPrefix']]],
   ['rolllogs',['RollLogs',['../class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8',1,'Terraria::ModLoader::Logging']]],
   ['rotation',['rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc',1,'Terraria::ModLoader::DrawableTooltipLine']]],
+  ['runglactions',['RunGLActions',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#a724cc1c9013fa7ef64c48f862f86cc61',1,'Terraria::ModLoader::GLCallLocker']]],
   ['rxdatatype',['rxDataType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a181180be2847764153c54bff8579b743',1,'Terraria::ModLoader::ModNet']]],
   ['rxmsgtype',['rxMsgType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a22cb82108f22c5d0556cc5001a69bbbc',1,'Terraria::ModLoader::ModNet']]]
 ];
