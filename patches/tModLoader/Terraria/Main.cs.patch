@@ -20,9 +20,11 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
-@@ -77,7 +_,7 @@
+@@ -76,8 +_,9 @@
+ #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
++		public static int mainThreadId;
  
 -		public const int curRelease = 193;
 +		public const int curRelease = 194;
@@ -628,6 +630,26 @@
  		}
  
  		private void ClientInitialize()
+@@ -7455,7 +_,8 @@
+ 		public T OurLoad<T>(string path)
+ 		{
+ 			T result;
+-			lock (Main.globalTextureLocker)
++			GLCallLocker.Enter(globalTextureLocker);
++			try
+ 			{
+ 				if (TexturePackSupport.Enabled && typeof(T) == this.t2d)
+ 				{
+@@ -7468,6 +_,9 @@
+ 					}
+ 				}
+ 				result = base.Content.Load<T>(path);
++			}
++			finally {
++				Monitor.Exit(globalTextureLocker);
+ 			}
+ 			return result;
+ 		}
 @@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
@@ -637,6 +659,17 @@
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
+@@ -7511,6 +_,10 @@
+ 			this.LoadFonts();
+ 			Mount.Initialize();
+ 			Minecart.Initialize();
++
++			// move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
++			CaptureManager.Instance = new CaptureManager();
++			LiquidRenderer.Instance = new LiquidRenderer();
+ 		}
+ 
+ 		private void LoadFonts()
 @@ -8639,6 +_,8 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);

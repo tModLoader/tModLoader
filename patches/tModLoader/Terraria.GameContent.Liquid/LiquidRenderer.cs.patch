@@ -20,4 +20,12 @@
  						if (tile == null)
  						{
  							tile = new Tile();
+@@ -659,7 +_,6 @@
+ 			array2[1] = 200;
+ 			array2[2] = 240;
+ 			LiquidRenderer.VISCOSITY_MASK = array2;
+-			LiquidRenderer.Instance = new LiquidRenderer();
+ 		}
+ 	}
+ }
 

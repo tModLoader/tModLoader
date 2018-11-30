@@ -55,8 +55,13 @@ namespace Terraria.ModLoader
 
 			HookModuleLoad();
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
-			LogFirstChanceExceptions(ModCompile.DeveloperMode);
 			PrettifyStackTraceSources();
+
+			if (ModCompile.DeveloperMode) {
+				tML.Info("Developer mode enabled");
+				LogFirstChanceExceptions(true);
+				GLCallLocker.EnableWarnings();
+			}
 		}
 
 		private static void ConfigureAppenders()
@@ -171,8 +176,12 @@ namespace Terraria.ModLoader
 
 		internal static void LogFirstChanceExceptions(bool enabled)
 		{
-			if (enabled)
+			if (enabled) {
+				if (FrameworkVersion.Framework == "Mono")
+					tML.Warn("First-chance exception reporting is not implemented on Mono");
+
 				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
+			}
 			else
 				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
 		}
