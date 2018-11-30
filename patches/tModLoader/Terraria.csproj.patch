@@ -1,15 +1,17 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,34 +_,48 @@
+@@ -17,34 +_,54 @@
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
      <OutputPath>bin\x86\WindowsRelease\</OutputPath>
      <DefineConstants>CLIENT; WINDOWS</DefineConstants>
 +    <PlatformTarget>x86</PlatformTarget>
++    <PdbFile>tModLoader</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
      <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
      <DefineConstants>SERVER; WINDOWS</DefineConstants>
 +    <PlatformTarget>x86</PlatformTarget>
++    <PdbFile>tModLoaderServer</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
      <OutputPath>bin\x86\WindowsDebug\</OutputPath>
@@ -28,21 +30,25 @@
      <OutputPath>bin\x86\MacRelease\</OutputPath>
      <DefineConstants>CLIENT; MAC</DefineConstants>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
++    <PdbFile>tModLoader</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
      <OutputPath>bin\x86\MacServerRelease\</OutputPath>
      <DefineConstants>SERVER; MAC</DefineConstants>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
++    <PdbFile>tModLoaderServer</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
      <OutputPath>bin\x86\LinuxRelease\</OutputPath>
      <DefineConstants>CLIENT; LINUX</DefineConstants>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
++    <PdbFile>tModLoader</PdbFile>
    </PropertyGroup>
    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
      <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
      <DefineConstants>SERVER; LINUX</DefineConstants>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
++    <PdbFile>tModLoaderServer</PdbFile>
 +  </PropertyGroup>
 +  <PropertyGroup>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -473,6 +479,7 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -505,5 +512,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>

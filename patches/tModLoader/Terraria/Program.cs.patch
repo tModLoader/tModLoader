@@ -60,7 +60,7 @@
  			}
  			catch
  			{
-@@ -227,9 +_,19 @@
+@@ -227,6 +_,15 @@
  				};
  			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
@@ -76,10 +76,6 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
-+			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
- 			using (Main main = new Main())
- 			{
- 				try
 @@ -247,6 +_,7 @@
  				}
  				catch (Exception e)
