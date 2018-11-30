@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -26,6 +27,20 @@ namespace Terraria.ModLoader.UI
 			subProgress.HAlign = 0.5f;
 			subProgress.VAlign = 0.5f;
 			Append(subProgress);
+		}
+
+		public override void OnActivate() {
+			ModLoader.BeginLoad();
+			GLCallLocker.ActionsAreSpeedrun = true;
+		}
+
+		public override void OnDeactivate() {
+			GLCallLocker.ActionsAreSpeedrun = false;
+		}
+
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			GLCallLocker.SpeedrunActions();
 		}
 
 		public string SubProgressText {

@@ -60,7 +60,6 @@ namespace Terraria.ModLoader
 			if (ModCompile.DeveloperMode) {
 				tML.Info("Developer mode enabled");
 				LogFirstChanceExceptions(true);
-				GLCallLocker.EnableWarnings();
 			}
 		}
 

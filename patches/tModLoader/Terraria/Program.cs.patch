@@ -60,7 +60,7 @@
  			}
  			catch
  			{
-@@ -227,9 +_,19 @@
+@@ -227,9 +_,20 @@
  				};
  			}
  			Program.LaunchParameters = Utils.ParseArguements(args);
@@ -77,6 +77,7 @@
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
 +			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
++			GLCallLocker.Init();
  			using (Main main = new Main())
  			{
  				try

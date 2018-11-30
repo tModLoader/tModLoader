@@ -99,7 +99,7 @@ namespace Terraria.ModLoader.IO
 		public static Task<Texture2D> RawToTexture2DAsync(GraphicsDevice graphicsDevice, BinaryReader r)
 		{
 			var rawData = ReadRaw(r);
-			return Task.Factory.StartNew(() =>
+			return GLCallLocker.InvokeAsync(() =>
 			{
 				var tex = new Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);
 				tex.SetData(rawData.Item3);
@@ -117,10 +117,10 @@ namespace Terraria.ModLoader.IO
 				ms.Position = 0;
 				stream = ms;
 			}
-			return Task.Factory.StartNew(() => Texture2D.FromStream(graphicsDevice, stream));
+			return GLCallLocker.InvokeAsync(() => Texture2D.FromStream(graphicsDevice, stream));
 #else
 			Texture2D.TextureDataFromStreamEXT(stream, out int width, out int height, out byte[] rawdata, -1, -1, false);
-			return Task.Factory.StartNew(() =>
+			return GLCallLocker.InvokeAsync(() =>
 			{
 				var tex = new Texture2D(graphicsDevice, width, height);
 				tex.SetData(rawdata);
