@@ -117,6 +117,7 @@ var searchData=
   ['disposewrapper',['DisposeWrapper',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#acb45aeb4185a051ba5ffc27071f112ac',1,'Terraria::ModLoader::IO::TmodFile::DisposeWrapper']]],
   ['dllname',['DllName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3abd4e5185e46221525287e41a1f6f8',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['doctorbones',['DoctorBones',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7019033032c2107b0d31d52268b988ce',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['dotnet45check',['DotNet45Check',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a95b39aa8044eeaa9302a781808289c47',1,'Terraria::ModLoader::ModLoader']]],
   ['downloadingfile',['downloadingFile',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6',1,'Terraria::ModLoader::ModNet']]],
   ['downloadinglength',['downloadingLength',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#aae814b95283be86b1b3d858effecfe30',1,'Terraria::ModLoader::ModNet']]],
   ['downloadingmod',['downloadingMod',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2',1,'Terraria::ModLoader::ModNet']]],
