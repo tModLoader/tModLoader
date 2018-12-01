@@ -123,11 +123,11 @@ namespace Terraria.ModLoader
 			if (referenceAssembliesPath != null)
 				return true;
 
-			referenceAssembliesPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client";
+			referenceAssembliesPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
 			if (Directory.Exists(referenceAssembliesPath))
 				return true;
 
-			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.0 Client Reference Assemblies");
+			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
 			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
 				return true;
 

@@ -112,6 +112,9 @@ namespace Terraria.ModLoader
 		
 		internal static void Load()
 		{
+			if (!DotNet45Check())
+				return;
+
 			try
 			{
 				MonoModHooks.Initialize();
@@ -161,8 +164,30 @@ namespace Terraria.ModLoader
 				foreach (var mod in responsibleMods)
 					DisableMod(mod);
 
-				DisplayLoadError(msg, e, false, responsibleMods.Count == 0);
+				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
+		}
+
+		private static bool DotNet45Check() {
+			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5))
+				return true;
+
+			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
+			if (Main.dedServ)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(msg);
+				Console.ResetColor();
+				Console.WriteLine("Press any key to exit...");
+				Console.ReadKey();
+				Environment.Exit(-1);
+			}
+			
+			Interface.updateMessage.SetMessage(msg);
+			Interface.updateMessage.SetGotoMenu(0);
+			Interface.updateMessage.SetURL("https://www.microsoft.com/net/download/thank-you/net472");
+			Main.menuMode = Interface.updateMessageID;
+			return false;
 		}
 
 		internal static void Reload()

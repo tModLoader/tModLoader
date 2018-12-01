@@ -142,7 +142,7 @@ namespace Terraria.ModLoader.UI
 		private void DownloadModCompile()
 		{
 			Main.PlaySound(SoundID.MenuOpen);
-			// Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/ModCompile.zip for releases
+			// TODO: Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/ModCompile.zip for releases
 			string url = "https://www.dropbox.com/s/cf9bdrw273whv97/ModCompileTest.zip?dl=1";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
@@ -152,12 +152,12 @@ namespace Terraria.ModLoader.UI
 		private void DirectDownloadRefAssemblies()
 		{
 			Main.PlaySound(SoundID.MenuOpen);
-			// Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/v4.0_Client.zip for releases
-			string url = "https://www.dropbox.com/s/5gg5pj8hxrz18ej/v4.0_ClientTest.zip?dl=1";
-			string folder = Path.Combine(ModCompile.modCompileDir, "v4.0 Client Reference Assemblies");
-			string file = Path.Combine(folder, "v4.0_Client.zip");
+			//TODO: Replace with centrally hosted link
+			string url = "https://www.dropbox.com/s/ddz854nqsckbn75/v4.5%20Reference%20Assemblies.zip?dl=1";
+			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
+			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			DownloadFile("v4.0 Client Reference Assemblies", url, file, () => DeleteFilesAndUnzip(file));
+			DownloadFile("v4.5 Reference Assemblies", url, file, () => DeleteFilesAndUnzip(file));
 		}
 
 		private void DeleteFilesAndUnzip(string zipFile, bool deleteFiles = false)

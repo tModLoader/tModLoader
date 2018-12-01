@@ -156,8 +156,8 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == loadModsID)
 			{
-				Main.MenuUI.SetState(loadMods);
 				Main.menuMode = 888;
+				Main.MenuUI.SetState(loadMods);
 			}
 			else if (Main.menuMode == buildModID)
 			{
