@@ -63,7 +63,7 @@ namespace ExampleMod.NPCs
 					OctopusArm arm = Main.projectile[proj].modProjectile as OctopusArm;
 					arm.octopus = npc.whoAmI;
 					arm.width = 16f;
-					arm.length = Projectiles.OctopusArm.minLength;
+					arm.length = OctopusArm.minLength;
 					arm.minAngle = (k - 0.5f) * (float)Math.PI / 3f;
 					arm.maxAngle = (k + 0.5f) * (float)Math.PI / 3f;
 					Main.projectile[proj].rotation = (arm.minAngle + arm.maxAngle) / 2f;

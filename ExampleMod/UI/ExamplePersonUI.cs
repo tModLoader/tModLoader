@@ -49,10 +49,10 @@ namespace ExampleMod.UI
 			base.Update(gameTime);
 
 			// talkNPC is the index of the NPC the player is currently talking to. By checking talkNPC, we can tell when the player switches to another NPC or closes the NPC chat dialog.
-			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != ExampleMod.instance.NPCType("Example Person"))
+			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != ExampleMod.Instance.NPCType("Example Person"))
 			{
 				// When that happens, we can set the state of our UserInterface to null, thereby closing this UIState. This will trigger OnDeactivate above.
-				ExampleMod.instance.examplePersonUserInterface.SetState(null);
+				ExampleMod.Instance.ExamplePersonUserInterface.SetState(null);
 			}
 		}
 
@@ -119,11 +119,11 @@ namespace ExampleMod.UI
 						// This is the main effect of this slot. Giving the Awesome prefix 90% of the time and the ReallyAwesome prefix the other 10% of the time. All for a constant 1 gold. Useless, but informative.
 						if (Main.rand.NextBool(10))
 						{
-							reforgeItem.Prefix(ExampleMod.instance.PrefixType("ReallyAwesome"));
+							reforgeItem.Prefix(ExampleMod.Instance.PrefixType("ReallyAwesome"));
 						}
 						else
 						{
-							reforgeItem.Prefix(ExampleMod.instance.PrefixType("Awesome"));
+							reforgeItem.Prefix(ExampleMod.Instance.PrefixType("Awesome"));
 						}
 						vanillaItemSlot.item = reforgeItem.Clone();
 						vanillaItemSlot.item.position.X = Main.LocalPlayer.position.X + (float)(Main.LocalPlayer.width / 2) - (float)(vanillaItemSlot.item.width / 2);

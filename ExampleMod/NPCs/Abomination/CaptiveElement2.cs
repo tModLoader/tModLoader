@@ -556,7 +556,7 @@ namespace ExampleMod.NPCs.Abomination
 		{
 			if (captiveType > 0)
 			{
-				index = NPCHeadLoader.GetBossHeadSlot(ExampleMod.captiveElement2Head + captiveType);
+				index = NPCHeadLoader.GetBossHeadSlot(ExampleMod.CaptiveElement2Head + captiveType);
 			}
 		}
 

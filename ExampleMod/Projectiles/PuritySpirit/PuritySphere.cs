@@ -135,7 +135,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				{
 					previous = projectile.oldPos[k - 1];
 				}
-				Color alpha = new Color(0, 190, 0) * ((PuritySphere.strikeTime - k) / (float)PuritySphere.strikeTime);
+				Color alpha = new Color(0, 190, 0) * ((strikeTime - k) / (float)strikeTime);
 				Vector2 drawPos = projectile.oldPos[k] + projectile.Size / 2f - Main.screenPosition;
 				for (int j = 0; j < 4; j++)
 				{

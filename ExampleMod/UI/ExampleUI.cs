@@ -75,7 +75,7 @@ namespace ExampleMod.UI
 			moneyDiplay.Height.Set(0, 1f);
 			coinCounterPanel.Append(moneyDiplay);
 
-			base.Append(coinCounterPanel);
+			Append(coinCounterPanel);
 
 			// As a recap, ExampleUI is a UIState, meaning it covers the whole screen. We attach coinCounterPanel to ExampleUI some distance from the top left corner.
 			// We then place playButton, closeButton, and moneyDiplay onto coinCounterPanel so we can easily place these UIElements relative to coinCounterPanel.
@@ -167,7 +167,7 @@ namespace ExampleMod.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			CalculatedStyle innerDimensions = base.GetInnerDimensions();
+			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 
 			float shopx = innerDimensions.X;
@@ -207,21 +207,21 @@ namespace ExampleMod.UI
 		{
 			if (item.type == ItemID.CopperCoin)
 			{
-				ExampleMod.instance.exampleUI.updateValue(item.stack);
+				ExampleMod.Instance.ExampleUI.updateValue(item.stack);
 				// We can cast mod to ExampleMod or just utilize ExampleMod.instance.
 				// (mod as ExampleMod).exampleUI.updateValue(item.stack);
 			}
 			else if (item.type == ItemID.SilverCoin)
 			{
-				ExampleMod.instance.exampleUI.updateValue(item.stack * 100);
+				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 100);
 			}
 			else if (item.type == ItemID.GoldCoin)
 			{
-				ExampleMod.instance.exampleUI.updateValue(item.stack * 10000);
+				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 10000);
 			}
 			else if (item.type == ItemID.PlatinumCoin)
 			{
-				ExampleMod.instance.exampleUI.updateValue(item.stack * 1000000);
+				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 1000000);
 			}
 			return base.OnPickup(item, player);
 		}

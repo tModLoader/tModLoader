@@ -1052,15 +1052,15 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		internal Particle(Vector2 pos, Vector2 vel)
 		{
-			this.position = pos;
-			this.velocity = vel;
-			this.strength = 0.75f;
+			position = pos;
+			velocity = vel;
+			strength = 0.75f;
 		}
 
 		internal void Update()
 		{
-			this.position += this.velocity * this.strength;
-			this.strength -= 0.01f;
+			position += velocity * strength;
+			strength -= 0.01f;
 		}
 	}
 

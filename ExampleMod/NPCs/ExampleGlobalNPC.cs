@@ -193,7 +193,7 @@ namespace ExampleMod.NPCs
 
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
 				shop.item[nextSlot].shopCustomPrice = new int?(3);
-				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyID;
+				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyId;
 				nextSlot++;
 			}
             else if (type == NPCID.Wizard && Main.expertMode)

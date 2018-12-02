@@ -24,11 +24,11 @@ namespace ExampleMod.UI
 		{
 			this.context = context;
 			this.scale = scale;
-			this.item = new Item();
+			item = new Item();
 			item.SetDefaults(0);
 
-			this.Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
-			this.Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
+			Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
+			Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

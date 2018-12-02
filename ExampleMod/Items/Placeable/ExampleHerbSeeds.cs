@@ -23,7 +23,7 @@ namespace ExampleMod.Items.Placeable
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType<Items.Placeable.ExampleBlock>(), 1);
+			recipe.AddIngredient(mod.ItemType<ExampleBlock>(), 1);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

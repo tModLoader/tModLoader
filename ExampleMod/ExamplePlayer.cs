@@ -77,7 +77,7 @@ namespace ExampleMod
 		public override void OnEnterWorld(Player player)
 		{
 			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
-			ExampleMod.instance.exampleUI.exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
+			ExampleMod.Instance.ExampleUI.exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
 		}
 
 		// In MP, other clients need accurate information about your player or else bugs happen.

@@ -198,7 +198,7 @@ namespace ExampleMod.NPCs
 				// remove the chat window...
 				Main.npcChatText = "";
 				// and start an instance of our UIState.
-				ExampleMod.instance.examplePersonUserInterface.SetState(new UI.ExamplePersonUI());
+				ExampleMod.Instance.ExamplePersonUserInterface.SetState(new UI.ExamplePersonUI());
 				// Note that even though we remove the chat window, Main.LocalPlayer.talkNPC will still be set correctly and we are still technically chatting with the npc.
 			}
 		}

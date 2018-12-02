@@ -31,7 +31,7 @@ namespace ExampleMod.Projectiles.Minions
 			for (int k = 0; k < 1000; k++)
 			{
 				Projectile otherProj = Main.projectile[k];
-				if (k != projectile.whoAmI && otherProj.active && otherProj.owner == projectile.owner && otherProj.type == projectile.type && System.Math.Abs(projectile.position.X - otherProj.position.X) + System.Math.Abs(projectile.position.Y - otherProj.position.Y) < spacing)
+				if (k != projectile.whoAmI && otherProj.active && otherProj.owner == projectile.owner && otherProj.type == projectile.type && Math.Abs(projectile.position.X - otherProj.position.X) + Math.Abs(projectile.position.Y - otherProj.position.Y) < spacing)
 				{
 					if (projectile.position.X < Main.projectile[k].position.X)
 					{

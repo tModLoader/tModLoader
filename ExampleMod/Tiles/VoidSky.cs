@@ -26,7 +26,7 @@ namespace ExampleMod.Tiles
 
 		public override Color OnTileColor(Color inColor)
 		{
-			float intensity = this.GetIntensity();
+			float intensity = GetIntensity();
 			return new Color(Vector4.Lerp(new Vector4(0.5f, 0.8f, 1f, 1f), inColor.ToVector4(), 1f - intensity));
 		}
 
@@ -34,7 +34,7 @@ namespace ExampleMod.Tiles
 		{
 			if (maxDepth >= 0f && minDepth < 0f)
 			{
-				float intensity = this.GetIntensity();
+				float intensity = GetIntensity();
 				spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * intensity);
 			}
 		}
@@ -46,22 +46,22 @@ namespace ExampleMod.Tiles
 
 		public override void Activate(Vector2 position, params object[] args)
 		{
-			this._isActive = true;
+			_isActive = true;
 		}
 
 		public override void Deactivate(params object[] args)
 		{
-			this._isActive = false;
+			_isActive = false;
 		}
 
 		public override void Reset()
 		{
-			this._isActive = false;
+			_isActive = false;
 		}
 
 		public override bool IsActive()
 		{
-			return this._isActive;
+			return _isActive;
 		}
 	}
 }
