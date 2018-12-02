@@ -7,13 +7,9 @@ using Terraria.UI.Chat;
 
 namespace ExampleMod.Items
 {
-	class ExampleDrawTooltips : ModItem
+	internal class ExampleDrawTooltips : ModItem
 	{
-		public override string Texture {
-			get {
-				return "Terraria/Item_3617";
-			}
-		}
+		public override string Texture => "Terraria/Item_3617";
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This item showcases various Draw Tooltip hooks");
@@ -28,7 +24,7 @@ namespace ExampleMod.Items
 		}
 
 		private Vector2 boxSize; // stores the size of our tooltip box
-		const int paddingForBox = 10;
+		private const int paddingForBox = 10;
 
 		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			// You can offset the entire tooltip by changing x and y

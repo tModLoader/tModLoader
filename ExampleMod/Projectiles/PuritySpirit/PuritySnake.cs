@@ -8,11 +8,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 {
 	public class PuritySnake : ModProjectile
 	{
-		public override string Texture {
-			get {
-				return "ExampleMod/Projectiles/ShadowArm";
-			}
-		}
+		public override string Texture => "ExampleMod/Projectiles/ShadowArm";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Void Trail");

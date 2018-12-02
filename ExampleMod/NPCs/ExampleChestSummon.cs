@@ -7,7 +7,7 @@ namespace ExampleMod.NPCs
 	// Example Soul of Light/Soul of Night style NPC summon
 	public class ExampleChestSummon : ModPlayer
 	{
-		public int LastChest = 0;
+		public int LastChest;
 
 		// This doesn't make sense, but this is around where this check happens in Vanilla Terraria.
 		public override void PreUpdateBuffs() {

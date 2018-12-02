@@ -7,9 +7,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 {
 	public class ExampleDamageAccessory : ModItem
 	{
-		public override string Texture {
-			get { return "Terraria/Item_" + ItemID.AnglerEarring; }
-		}
+		public override string Texture => "Terraria/Item_" + ItemID.AnglerEarring;
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("20% increased example damage" +

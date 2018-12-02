@@ -7,11 +7,9 @@ namespace ExampleMod.Items
 {
 	// Magic Mirror is one of the only vanilla items that does its action somewhere other than the start of its animation, which is why we use code in UseStyle NOT UseItem.
 	// It may prove a useful guide for ModItems with similar behaviors.
-	class ExampleMagicMirror : ExampleItem
+	internal class ExampleMagicMirror : ExampleItem
 	{
-		public override string Texture {
-			get { return "Terraria/Item_" + ItemID.IceMirror; }
-		}
+		public override string Texture => "Terraria/Item_" + ItemID.IceMirror;
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.IceMirror);

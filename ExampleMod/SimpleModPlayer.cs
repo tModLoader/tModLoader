@@ -17,14 +17,14 @@ namespace ExampleMod
 	// Below you will see the ModPlayer class, and below that will be another class called SimpleAccessory for the accessory both in the same file for your reading convenience. This accessory will give our effect to our ModPlayer. 
 
 	// This is the ModPlayer class. Make note of the classname, which is SimpleModPlayer, since we will be using this in the accessory item below.
-	class SimpleModPlayer : ModPlayer
+	public class SimpleModPlayer : ModPlayer
 	{
 		// Here we declare the frostBurnSummon variable which will represent whether this player has the effect or not.
-		public bool frostBurnSummon;
+		public bool FrostBurnSummon;
 
 		// ResetEffects is used to reset effects back to their default value. Terraria resets all effects every frame back to defaults so we will follow this design. (You might think to set a variable when an item is equipped and unassign the value when the item in unequipped, but Terraria is not designed that way.)
 		public override void ResetEffects() {
-			frostBurnSummon = false;
+			FrostBurnSummon = false;
 		}
 
 		// Here we use a "hook" to actually let our frostBurnSummon status take effect. This hook is called anytime a player owned projectile hits an enemy. 
@@ -32,7 +32,7 @@ namespace ExampleMod
 			// frostBurnSummon, as its name suggests, applies frostBurn to enemy NPC but only for Summon projectiles.
 			// In this if statement we check several conditions. We first check to make sure the projectile that hit the NPC is either a minion projectile or a projectile that minions shoot.
 			// We then check that frostBurnSummon is set to true. The last check for not noEnchantments is because some projectiles don't allow enchantments and we want to honor that restriction.
-			if ((proj.minion || ProjectileID.Sets.MinionShot[proj.type]) && frostBurnSummon && !proj.noEnchantments) {
+			if ((proj.minion || ProjectileID.Sets.MinionShot[proj.type]) && FrostBurnSummon && !proj.noEnchantments) {
 				// If all those checks pass, we apply FrostBurn for some random duration.
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(5, 15), false);
 			}
@@ -48,7 +48,7 @@ namespace ExampleMod
 	{
 		// Assigning multiple EquipType/Animation textures is easily done.
 		[AutoloadEquip(EquipType.Neck, EquipType.Balloon)]
-		class SimpleAccessory : ModItem
+		internal class SimpleAccessory : ModItem
 		{
 			public override void SetDefaults() {
 				item.width = 34;
@@ -60,7 +60,7 @@ namespace ExampleMod
 
 			public override void UpdateAccessory(Player player, bool hideVisual) {
 				// To assign the player the frostBurnSummon effect, we can't do player.frostBurnSummon = true because Player doesn't have frostBurnSummon. Be sure to remember to call the GetModPlayer method to retrieve the ModPlayer instance attached to the specified Player.
-				player.GetModPlayer<SimpleModPlayer>().frostBurnSummon = true;
+				player.GetModPlayer<SimpleModPlayer>().FrostBurnSummon = true;
 			}
 		}
 	}

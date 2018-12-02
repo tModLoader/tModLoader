@@ -50,7 +50,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.ai[0] > 0f) {
 				float offset = (projectile.ai[0] - 1f) / (modPlayer.elementShields - 1);
 				float rotation = modPlayer.elementShieldPos / 300f + offset;
-				rotation = (rotation % 1f) * 2f * (float)Math.PI;
+				rotation = rotation % 1f * 2f * (float)Math.PI;
 				projectile.position += 160f * new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 				projectile.rotation = -rotation;
 			}

@@ -29,8 +29,8 @@ namespace ExampleMod.Projectiles
 		// Also showcased in ExampleJavelinProjectile.cs
 		public float movementFactor // Change this value to alter how fast the spear moves
 		{
-			get { return projectile.ai[0]; }
-			set { projectile.ai[0] = value; }
+			get => projectile.ai[0];
+			set => projectile.ai[0] = value;
 		}
 
 		// It appears that for this AI, only the ai0 field is used!

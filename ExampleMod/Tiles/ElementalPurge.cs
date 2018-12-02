@@ -15,7 +15,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(1, 2);
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 18 };
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TEElementalPurge>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			ModTranslation name = CreateMapEntryName();

@@ -16,18 +16,20 @@ namespace ExampleMod.Dusts
 			if (!dust.noGravity) {
 				dust.velocity.Y += 0.05f;
 			}
-			if (!dust.noLight) {
-				float strength = dust.scale * 1.4f;
-				if (strength > 1f) {
-					strength = 1f;
-				}
-				Lighting.AddLight(dust.position, 0.1f * strength, 0.2f * strength, 0.7f * strength);
+
+			if (dust.noLight) {
+				return false;
 			}
+
+			float strength = dust.scale * 1.4f;
+			if (strength > 1f) {
+				strength = 1f;
+			}
+			Lighting.AddLight(dust.position, 0.1f * strength, 0.2f * strength, 0.7f * strength);
 			return false;
 		}
 
-		public override Color? GetAlpha(Dust dust, Color lightColor) {
-			return new Color(lightColor.R, lightColor.G, lightColor.B, 25);
-		}
+		public override Color? GetAlpha(Dust dust, Color lightColor) 
+			=> new Color(lightColor.R, lightColor.G, lightColor.B, 25);
 	}
 }

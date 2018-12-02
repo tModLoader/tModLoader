@@ -6,21 +6,17 @@ namespace ExampleMod.Commands
 {
 	public class AddTimeCommand : ModCommand
 	{
-		public override CommandType Type {
-			get { return CommandType.World; }
-		}
+		public override CommandType Type
+			=> CommandType.World;
 
-		public override string Command {
-			get { return "addTime"; }
-		}
+		public override string Command
+			=> "addTime";
 
-		public override string Usage {
-			get { return "/addTime numTicks"; }
-		}
+		public override string Usage
+			=> "/addTime numTicks";
 
-		public override string Description {
-			get { return "Add or rewind world time"; }
-		}
+		public override string Description
+			=> "Add or rewind world time";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
 			double fullTime = Main.time;

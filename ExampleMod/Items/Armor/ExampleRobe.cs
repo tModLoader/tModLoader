@@ -3,7 +3,7 @@
 namespace ExampleMod.Items.Armor
 {
 	[AutoloadEquip(EquipType.Body)]
-	class ExampleRobe : ModItem
+	internal class ExampleRobe : ModItem
 	{
 		public override void SetDefaults() {
 			item.width = 18;

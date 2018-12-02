@@ -15,7 +15,7 @@ namespace ExampleMod.Tiles
 			Main.tileTable[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);
-			TileObjectData.newTile.CoordinateHeights = new int[] { 18 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 18 };
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 			ModTranslation name = CreateMapEntryName();

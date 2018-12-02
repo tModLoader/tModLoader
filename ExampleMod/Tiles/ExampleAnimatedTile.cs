@@ -7,7 +7,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Tiles
 {
-	class ExampleAnimatedTileTile : ModTile
+	internal class ExampleAnimatedTileTile : ModTile
 	{
 		public override void SetDefaults() {
 			Main.tileLighted[Type] = true;
@@ -25,7 +25,7 @@ namespace ExampleMod.Tiles
 		}
 
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
-		readonly int animationFrameWidth = 18;
+		private readonly int animationFrameWidth = 18;
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			r = 0.93f;
@@ -129,7 +129,7 @@ namespace ExampleMod.Tiles
 		}
 	}
 
-	class ExampleAnimatedTileItem : ModItem
+	internal class ExampleAnimatedTileItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Red Firefly in a Bottle");

@@ -13,56 +13,36 @@ namespace ExampleMod.NPCs.Abomination
 	[AutoloadBossHead]
 	public class Abomination : ModNPC
 	{
-		private static int hellLayer {
-			get {
-				return Main.maxTilesY - 200;
-			}
-		}
+		private static int hellLayer => Main.maxTilesY - 200;
 
 		private const int sphereRadius = 300;
 
 		private float attackCool {
-			get {
-				return npc.ai[0];
-			}
-			set {
-				npc.ai[0] = value;
-			}
+			get => npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
 		private float moveCool {
-			get {
-				return npc.ai[1];
-			}
-			set {
-				npc.ai[1] = value;
-			}
+			get => npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
 		private float rotationSpeed {
-			get {
-				return npc.ai[2];
-			}
-			set {
-				npc.ai[2] = value;
-			}
+			get => npc.ai[2];
+			set => npc.ai[2] = value;
 		}
 
 		private float captiveRotation {
-			get {
-				return npc.ai[3];
-			}
-			set {
-				npc.ai[3] = value;
-			}
+			get => npc.ai[3];
+			set => npc.ai[3] = value;
 		}
 
 		private int moveTime = 300;
 		private int moveTimer = 60;
-		internal int laserTimer = 0;
+		internal int laserTimer;
 		internal int laser1 = -1;
 		internal int laser2 = -1;
-		private bool dontDamage = false;
+		private bool dontDamage;
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("The Abomination");

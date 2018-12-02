@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Projectiles
 {
 	// to investigate: Projectile.Damage, (8843)
-	class ExampleExplosive : ModProjectile
+	internal class ExampleExplosive : ModProjectile
 	{
 		public override void SetDefaults() {
 			// while the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.

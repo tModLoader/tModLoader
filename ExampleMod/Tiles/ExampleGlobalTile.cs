@@ -10,7 +10,7 @@ namespace ExampleMod.Tiles
 			// Get mod player
 			var modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 
-			if (modPlayer.ZoneExample && (type == TileID.Tombstones)) {
+			if (modPlayer.ZoneExample && type == TileID.Tombstones) {
 				return false;
 			}
 

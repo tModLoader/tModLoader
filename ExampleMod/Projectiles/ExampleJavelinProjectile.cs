@@ -99,14 +99,14 @@ namespace ExampleMod.Projectiles
 
 		// Are we sticking to a target?
 		public bool isStickingToTarget {
-			get { return projectile.ai[0] == 1f; }
-			set { projectile.ai[0] = value ? 1f : 0f; }
+			get => projectile.ai[0] == 1f;
+			set => projectile.ai[0] = value ? 1f : 0f;
 		}
 
 		// WhoAmI of the current target
 		public float targetWhoAmI {
-			get { return projectile.ai[1]; }
-			set { projectile.ai[1] = value; }
+			get => projectile.ai[1];
+			set => projectile.ai[1] = value;
 		}
 
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit,
@@ -223,8 +223,7 @@ namespace ExampleMod.Projectiles
 				// Every 30 ticks, the javelin will perform a hit effect
 				hitEffect = projectile.localAI[0] % 30f == 0f;
 				int projTargetIndex = (int)targetWhoAmI;
-				if (projectile.localAI[0] >= (float)(60 * aiFactor)// If it's time for this javelin to die, kill it
-					|| (projTargetIndex < 0 || projTargetIndex >= 200)) // If the index is past its limits, kill it
+				if (projectile.localAI[0] >= (float)(60 * aiFactor) || projTargetIndex < 0 || projTargetIndex >= 200) // If the index is past its limits, kill it
 				{
 					killProj = true;
 				}

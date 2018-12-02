@@ -68,7 +68,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (projectile.localAI[0] > 300f) {
 				nextPos = npc.Center;
 			}
-			else if ((int)projectile.localAI[0] % 100 == 0 || (Main.expertMode && (int)projectile.localAI[0] % 50 == 0)) {
+			else if ((int)projectile.localAI[0] % 100 == 0 || Main.expertMode && (int)projectile.localAI[0] % 50 == 0) {
 				int k = modNPC.targets[rand.Next(modNPC.targets.Count)];
 				nextPos = Main.player[k].Center;
 			}
@@ -130,11 +130,11 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			for (int k = Math.Max(0, (int)projectile.localAI[0] - 300); k < projectile.oldPos.Length; k++) {
 				if (projectile.oldPos[k] != Vector2.Zero) {
 					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition;
-					drawPos.X += (k / 5 * prime1) % 13 - 6;
-					drawPos.Y += (k / 5 * prime2) % 13 - 6;
+					drawPos.X += k / 5 * prime1 % 13 - 6;
+					drawPos.Y += k / 5 * prime2 % 13 - 6;
 					Rectangle frame = new Rectangle(0, 0, 80, 80);
 					frame.Y += 164 * (k / 60);
-					if ((k / 10) % 2 == 1) {
+					if (k / 10 % 2 == 1) {
 						frame.Y += 82;
 					}
 					spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, frame, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

@@ -10,11 +10,11 @@ namespace ExampleMod.UI
 	// We've added some code to allow the panel to be dragged around. 
 	// We've also added some code to ensure that the panel will bounce back into bounds if it is dragged outside or the screen resizes.
 	// UIPanel does not prevent the player from using items when the mouse is clicked, so we've added that as well.
-	class DragableUIPanel : UIPanel
+	internal class DragableUIPanel : UIPanel
 	{
 		// Stores the offset from the top left of the UIPanel while dragging.
 		private Vector2 offset;
-		public bool dragging = false;
+		public bool dragging;
 
 		public override void MouseDown(UIMouseEvent evt) {
 			base.MouseDown(evt);

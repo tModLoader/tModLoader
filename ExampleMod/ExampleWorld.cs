@@ -16,8 +16,8 @@ namespace ExampleMod
 	public class ExampleWorld : ModWorld
 	{
 		private const int saveVersion = 0;
-		public static bool downedAbomination = false;
-		public static bool downedPuritySpirit = false;
+		public static bool downedAbomination;
+		public static bool downedPuritySpirit;
 		public const int VolcanoProjectiles = 30;
 		public const float VolcanoAngleSpread = 170;
 		public const int DefaultVolcanoTremorTime = 200; // ~ 3 seconds
@@ -27,7 +27,7 @@ namespace ExampleMod
 		public int VolcanoCountdown;
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
-		public static int exampleTiles = 0;
+		public static int exampleTiles;
 
 		public override void Initialize() {
 			downedAbomination = false;
@@ -194,7 +194,7 @@ namespace ExampleMod
 		}
 
 		private void MakeWells() {
-			float widthScale = (Main.maxTilesX / 4200f);
+			float widthScale = Main.maxTilesX / 4200f;
 			int numberToGenerate = WorldGen.genRand.Next(1, (int)(2f * widthScale));
 			for (int k = 0; k < numberToGenerate; k++) {
 				bool success = false;
@@ -235,8 +235,7 @@ namespace ExampleMod
 			}
 		}
 
-		int[,] wellshape = new int[,]
-		{
+		private readonly int[,] _wellshape = {
 			{0,0,3,1,4,0,0 },
 			{0,3,1,1,1,4,0 },
 			{3,1,1,1,1,1,4 },
@@ -256,8 +255,7 @@ namespace ExampleMod
 			{0,1,5,5,5,1,0 },
 			{0,1,1,1,1,1,0 },
 		};
-		readonly int[,] wellshapeWall = new int[,]
-		{
+		private readonly int[,] _wellshapeWall = {
 			{0,0,0,0,0,0,0 },
 			{0,0,0,0,0,0,0 },
 			{0,0,0,0,0,0,0 },
@@ -277,8 +275,7 @@ namespace ExampleMod
 			{0,0,1,1,1,0,0 },
 			{0,0,1,1,1,0,0 },
 		};
-		readonly int[,] wellshapeWater = new int[,]
-		{
+		private readonly int[,] _wellshapeWater = {
 			{0,0,0,0,0,0,0 },
 			{0,0,0,0,0,0,0 },
 			{0,0,0,0,0,0,0 },
@@ -310,13 +307,13 @@ namespace ExampleMod
 				return false;
 			}
 
-			for (int y = 0; y < wellshape.GetLength(0); y++) {
-				for (int x = 0; x < wellshape.GetLength(1); x++) {
+			for (int y = 0; y < _wellshape.GetLength(0); y++) {
+				for (int x = 0; x < _wellshape.GetLength(1); x++) {
 					int k = i - 3 + x;
 					int l = j - 6 + y;
 					if (WorldGen.InWorld(k, l, 30)) {
 						Tile tile = Framing.GetTileSafely(k, l);
-						switch (wellshape[y, x]) {
+						switch (_wellshape[y, x]) {
 							case 1:
 								tile.type = TileID.RedBrick;
 								tile.active(true);
@@ -344,12 +341,12 @@ namespace ExampleMod
 								tile.active(true);
 								break;
 						}
-						switch (wellshapeWall[y, x]) {
+						switch (_wellshapeWall[y, x]) {
 							case 1:
 								tile.wall = WallID.RedBrick;
 								break;
 						}
-						switch (wellshapeWater[y, x]) {
+						switch (_wellshapeWater[y, x]) {
 							case 1:
 								tile.liquid = 255;
 								break;
@@ -376,7 +373,7 @@ namespace ExampleMod
 			Main.npc[num].homeless = true;
 
 			// Place some items in Ice Chests
-			int[] itemsToPlaceInIceChests = new int[] { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
+			int[] itemsToPlaceInIceChests = { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
 			int itemsToPlaceInIceChestsChoice = 0;
 			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
@@ -448,9 +445,9 @@ namespace ExampleMod
 							List<int> identities = new List<int>();
 							for (int i = 0; i < VolcanoProjectiles; i++) {
 								Vector2 spawn = baseSpawn;
-								spawn.X = spawn.X + i * 30 - (VolcanoProjectiles * 15);
+								spawn.X = spawn.X + i * 30 - VolcanoProjectiles * 15;
 								Vector2 velocity = baseVelocity;
-								velocity = baseVelocity.RotatedBy(MathHelper.ToRadians(-VolcanoAngleSpread / 2 + (VolcanoAngleSpread * i / (float)VolcanoProjectiles)));
+								velocity = baseVelocity.RotatedBy(MathHelper.ToRadians(-VolcanoAngleSpread / 2 + VolcanoAngleSpread * i / (float)VolcanoProjectiles));
 								velocity.X = velocity.X + 3 * Main.rand.NextFloat() - 1.5f;
 								int projectile = Projectile.NewProjectile(spawn.X, spawn.Y, velocity.X, velocity.Y, Main.rand.Next(ProjectileID.MolotovFire, ProjectileID.MolotovFire3 + 1), 10, 10f, Main.myPlayer, 0f, 0f);
 								Main.projectile[projectile].hostile = true;

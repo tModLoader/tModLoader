@@ -5,9 +5,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
-	class ExampleGlobalRecipe : GlobalRecipe
+	internal class ExampleGlobalRecipe : GlobalRecipe
 	{
-		readonly int slimeKillIndex = Item.NPCtoBanner(NPCID.BlueSlime);
+		private readonly int slimeKillIndex = Item.NPCtoBanner(NPCID.BlueSlime);
 
 		public override bool RecipeAvailable(Recipe recipe) {
 			if (recipe.createItem.createTile == TileID.Torches) {
@@ -16,7 +16,7 @@ namespace ExampleMod.Items
 			return true;
 		}
 
-		int[] slimeChoices = { NPCID.BlueSlime, NPCID.RainbowSlime, NPCID.SandSlime, NPCID.SlimeSpiked, NPCID.SpikedIceSlime, NPCID.SpikedJungleSlime, NPCID.UmbrellaSlime };
+		private int[] slimeChoices = { NPCID.BlueSlime, NPCID.RainbowSlime, NPCID.SandSlime, NPCID.SlimeSpiked, NPCID.SpikedIceSlime, NPCID.SpikedJungleSlime, NPCID.UmbrellaSlime };
 
 		public override void OnCraft(Item item, Recipe recipe) {
 			bool hasGel = false;

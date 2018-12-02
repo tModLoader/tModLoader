@@ -9,46 +9,26 @@ namespace ExampleMod.NPCs.Abomination
 	public class FreedElement : ModNPC
 	{
 		private int elementType {
-			get {
-				return (int)npc.ai[0];
-			}
-			set {
-				npc.ai[0] = value;
-			}
+			get => (int)npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
 		private int chargeTimer {
-			get {
-				return (int)npc.ai[1];
-			}
-			set {
-				npc.ai[1] = value;
-			}
+			get => (int)npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
 		private float chargeX {
-			get {
-				return npc.ai[2];
-			}
-			set {
-				npc.ai[2] = value;
-			}
+			get => npc.ai[2];
+			set => npc.ai[2] = value;
 		}
 
 		private float chargeY {
-			get {
-				return npc.ai[3];
-			}
-			set {
-				npc.ai[3] = value;
-			}
+			get => npc.ai[3];
+			set => npc.ai[3] = value;
 		}
 
-		public override string Texture {
-			get {
-				return "ExampleMod/NPCs/Abomination/CaptiveElement2";
-			}
-		}
+		public override string Texture => "ExampleMod/NPCs/Abomination/CaptiveElement2";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Freed Element");

@@ -8,8 +8,8 @@ namespace ExampleMod.NPCs.PuritySpirit
 {
 	public class PuritySpiritSky : CustomSky
 	{
-		private bool isActive = false;
-		private float intensity = 0f;
+		private bool isActive;
+		private float intensity;
 		private int puritySpiritIndex;
 
 		public override void Update(GameTime gameTime) {

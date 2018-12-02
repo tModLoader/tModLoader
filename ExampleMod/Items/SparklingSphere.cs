@@ -20,7 +20,7 @@ namespace ExampleMod.Items
 
 		public override void HoldStyle(Player player) {
 			Vector2 position = GetLightPosition(player);
-			if ((position.Y >= player.Center.Y) == (player.gravDir == 1)) {
+			if (position.Y >= player.Center.Y == (player.gravDir == 1)) {
 				player.itemLocation.X = player.Center.X + 6f * player.direction;
 				player.itemLocation.Y = player.position.Y + 21f + 23f * player.gravDir + player.mount.PlayerOffsetHitbox;
 			}
@@ -33,7 +33,7 @@ namespace ExampleMod.Items
 
 		public override bool HoldItemFrame(Player player) {
 			Vector2 position = GetLightPosition(player);
-			if ((position.Y >= player.Center.Y) == (player.gravDir == 1)) {
+			if (position.Y >= player.Center.Y == (player.gravDir == 1)) {
 				player.bodyFrame.Y = player.bodyFrame.Height * 3;
 			}
 			else {

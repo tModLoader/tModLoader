@@ -2,7 +2,7 @@
 
 namespace ExampleMod.Items.Placeable
 {
-	class ScoreBoard : ModItem
+	internal class ScoreBoard : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Scoreboard");

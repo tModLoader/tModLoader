@@ -28,11 +28,11 @@ namespace ExampleMod.Projectiles.Pets
 			projectile.tileCollide = false;
 		}
 
-		const int fadeInTicks = 30;
-		const int fullBrightTicks = 200;
-		const int fadeOutTicks = 30;
-		const int range = 500;
-		readonly int rangeHypoteneus = (int)Math.Sqrt(range * range + range * range);
+		private const int fadeInTicks = 30;
+		private const int fullBrightTicks = 200;
+		private const int fadeOutTicks = 30;
+		private const int range = 500;
+		private readonly int rangeHypoteneus = (int)Math.Sqrt(range * range + range * range);
 
 		public override void AI() {
 			Player player = Main.player[projectile.owner];
@@ -48,7 +48,7 @@ namespace ExampleMod.Projectiles.Pets
 				projectile.timeLeft = 2;
 			}
 			projectile.ai[1]++;
-			if (projectile.ai[1] > 1000 && ((int)projectile.ai[0] % 100 == 0)) {
+			if (projectile.ai[1] > 1000 && (int)projectile.ai[0] % 100 == 0) {
 				for (int i = 0; i < Main.npc.Length; i++) {
 					if (Main.npc[i].active && !Main.npc[i].friendly && player.Distance(Main.npc[i].Center) < rangeHypoteneus) {
 						Vector2 vectorToEnemy = Main.npc[i].Center - projectile.Center;
@@ -60,7 +60,7 @@ namespace ExampleMod.Projectiles.Pets
 				}
 			}
 			projectile.rotation += projectile.velocity.X / 20f;
-			Lighting.AddLight(projectile.Center, ((255 - projectile.alpha) * 0.9f) / 255f, ((255 - projectile.alpha) * 0.1f) / 255f, ((255 - projectile.alpha) * 0.3f) / 255f);
+			Lighting.AddLight(projectile.Center, (255 - projectile.alpha) * 0.9f / 255f, (255 - projectile.alpha) * 0.1f / 255f, (255 - projectile.alpha) * 0.3f / 255f);
 			if (projectile.velocity.Length() > 1f) {
 				projectile.velocity *= .98f;
 			}

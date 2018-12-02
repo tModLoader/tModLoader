@@ -5,22 +5,19 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
 {
-	class VolcanoCommand : ModCommand
+	internal class VolcanoCommand : ModCommand
 	{
-		public override CommandType Type {
-			get { return CommandType.Console; }
-		}
+		public override CommandType Type
+			=> CommandType.Console;
 
-		public override string Command {
-			get { return "volcano"; }
-		}
+		public override string Command
+			=> "volcano";
 
-		public override string Description {
-			get { return "Trigger a volcano"; }
-		}
+		public override string Description
+			=> "Trigger a volcano";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
-			string key = "Mods.ExampleMod.VolcanoWarning";
+			const string key = "Mods.ExampleMod.VolcanoWarning";
 			Color messageColor = Color.Orange;
 			NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 			ExampleWorld exampleWorld = mod.GetModWorld<ExampleWorld>();

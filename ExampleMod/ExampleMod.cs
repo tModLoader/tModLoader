@@ -163,7 +163,7 @@ namespace ExampleMod
 
 		public override void AddRecipeGroups() {
 			// Creates a new recipe group
-			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
+			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
@@ -192,47 +192,53 @@ namespace ExampleMod
 		}
 
 		public override void UpdateMusic(ref int music, ref MusicPriority priority) {
-			if (Main.myPlayer != -1 && !Main.gameMenu && Main.LocalPlayer.active) {
-				// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
-				if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
-					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-					priority = MusicPriority.BiomeLow;
-				}
-				if (Main.LocalPlayer.HasBuff(BuffType("CarMount"))) {
-					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-					priority = MusicPriority.Environment;
-				}
+			if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active) {
+				return;
 			}
+			// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
+				music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				priority = MusicPriority.BiomeLow;
+			}
+
+			if (!Main.LocalPlayer.HasBuff(BuffType("CarMount"))) {
+				return;
+			}
+
+			music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+			priority = MusicPriority.Environment;
 		}
 
 		public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {
-			if (ExampleWorld.exampleTiles > 0) {
-				float exampleStrength = ExampleWorld.exampleTiles / 200f;
-				exampleStrength = Math.Min(exampleStrength, 1f);
-
-				int sunR = backgroundColor.R;
-				int sunG = backgroundColor.G;
-				int sunB = backgroundColor.B;
-				// Remove some green and more red.
-				sunR -= (int)(180f * exampleStrength * (backgroundColor.R / 255f));
-				sunG -= (int)(90f * exampleStrength * (backgroundColor.G / 255f));
-				sunR = Utils.Clamp(sunR, 15, 255);
-				sunG = Utils.Clamp(sunG, 15, 255);
-				sunB = Utils.Clamp(sunB, 15, 255);
-				backgroundColor.R = (byte)sunR;
-				backgroundColor.G = (byte)sunG;
-				backgroundColor.B = (byte)sunB;
+			if (ExampleWorld.exampleTiles <= 0) {
+				return;
 			}
+
+			float exampleStrength = ExampleWorld.exampleTiles / 200f;
+			exampleStrength = Math.Min(exampleStrength, 1f);
+
+			int sunR = backgroundColor.R;
+			int sunG = backgroundColor.G;
+			int sunB = backgroundColor.B;
+			// Remove some green and more red.
+			sunR -= (int)(180f * exampleStrength * (backgroundColor.R / 255f));
+			sunG -= (int)(90f * exampleStrength * (backgroundColor.G / 255f));
+			sunR = Utils.Clamp(sunR, 15, 255);
+			sunG = Utils.Clamp(sunG, 15, 255);
+			sunB = Utils.Clamp(sunB, 15, 255);
+			backgroundColor.R = (byte)sunR;
+			backgroundColor.G = (byte)sunG;
+			backgroundColor.B = (byte)sunB;
 		}
 
-		const int ShakeLength = 5;
-		readonly int ShakeCount = 0;
-		readonly float previousRotation = 0;
-		readonly float targetRotation = 0;
-		readonly float previousOffsetX = 0;
-		readonly float previousOffsetY = 0;
-		readonly float targetOffsetX = 0;
-		readonly float targetOffsetY = 0;
+		//const int ShakeLength = 5;
+		//readonly int ShakeCount = 0;
+		//readonly float previousRotation = 0;
+		//readonly float targetRotation = 0;
+		//readonly float previousOffsetX = 0;
+		//readonly float previousOffsetY = 0;
+		//readonly float targetOffsetX = 0;
+		//readonly float targetOffsetY = 0;
 
 		// Volcano Tremor
 		/* TODO To be fixed later.
@@ -285,7 +291,7 @@ namespace ExampleMod
 		*/
 
 		public override void UpdateUI(GameTime gameTime) {
-			if (ExampleUI.visible) {
+			if (ExampleUI.Visible) {
 				_exampleUserInterface?.Update(gameTime);
 			}
 
@@ -298,7 +304,7 @@ namespace ExampleMod
 				layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
 					"ExampleMod: Coins Per Minute",
 					delegate {
-						if (ExampleUI.visible) {
+						if (ExampleUI.Visible) {
 							_exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
 						return true;
@@ -321,7 +327,7 @@ namespace ExampleMod
 			}
 		}
 
-		public static bool NoInvasion(NPCSpawnInfo spawnInfo) => !spawnInfo.invasion && ((!Main.pumpkinMoon && !Main.snowMoon) || spawnInfo.spawnTileY > Main.worldSurface || Main.dayTime) && (!Main.eclipse || spawnInfo.spawnTileY > Main.worldSurface || !Main.dayTime);
+		public static bool NoInvasion(NPCSpawnInfo spawnInfo) => !spawnInfo.invasion && (!Main.pumpkinMoon && !Main.snowMoon || spawnInfo.spawnTileY > Main.worldSurface || Main.dayTime) && (!Main.eclipse || spawnInfo.spawnTileY > Main.worldSurface || !Main.dayTime);
 
 		public static bool NoBiome(NPCSpawnInfo spawnInfo) {
 			Player player = spawnInfo.player;
@@ -369,8 +375,7 @@ namespace ExampleMod
 					}
 					break;
 				case ExampleModMessageType.PuritySpirit:
-					PuritySpirit spirit = Main.npc[reader.ReadInt32()].modNPC as PuritySpirit;
-					if (spirit != null && spirit.npc.active) {
+					if (Main.npc[reader.ReadInt32()].modNPC is PuritySpirit spirit && spirit.npc.active) {
 						spirit.HandlePacket(reader);
 					}
 					break;
@@ -418,7 +423,7 @@ namespace ExampleMod
 		}
 	}
 
-	enum ExampleModMessageType : byte
+	internal enum ExampleModMessageType : byte
 	{
 		SetTremorTime,
 		VolcanicRubbleMultiplayerFix,

@@ -9,7 +9,7 @@ namespace ExampleMod.Tiles
 {
 	// This example shows how to have a tile that is cut by weapons, like vines and grass.
 	// This example also shows how to spawn a projectile on death like Beehive and Boulder trap.
-	class ExampleCutTileTile : ModTile
+	internal class ExampleCutTileTile : ModTile
 	{
 		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
@@ -42,7 +42,7 @@ namespace ExampleMod.Tiles
 		}
 	}
 
-	class ExampleCutTileItem : ModItem
+	internal class ExampleCutTileItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Fragile Boulder Trap");

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
-	class ExampleHookItem : ModItem
+	internal class ExampleHookItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Hook");
@@ -36,7 +36,8 @@ namespace ExampleMod.Items
 			item.shoot = mod.ProjectileType("ExampleHookProjectile");
 		}
 	}
-	class ExampleHookProjectile : ModProjectile
+
+	internal class ExampleHookProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");

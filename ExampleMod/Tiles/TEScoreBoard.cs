@@ -55,7 +55,7 @@ namespace ExampleMod.Tiles
 		// Half the width in Tile Coordinates.
 		internal const int range = 50;
 		internal Dictionary<string, int> scores = new Dictionary<string, int>();
-		internal bool scoresChanged = false;
+		internal bool scoresChanged;
 		internal const int drawBorderWidth = 5;
 
 
@@ -172,8 +172,8 @@ namespace ExampleMod.Tiles
 
 		public override void RightClick(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int left = i - (tile.frameX / 18);
-			int top = j - (tile.frameY / 18);
+			int left = i - tile.frameX / 18;
+			int top = j - tile.frameY / 18;
 
 			int index = mod.GetTileEntity<TEScoreBoard>().Find(left, top);
 			if (index == -1) {
@@ -196,8 +196,8 @@ namespace ExampleMod.Tiles
 
 		public void MouseOverBoth(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int left = i - (tile.frameX % 36 / 18);
-			int top = j - (tile.frameY % 36 / 18);
+			int left = i - tile.frameX % 36 / 18;
+			int top = j - tile.frameY % 36 / 18;
 			Main.signBubble = true;
 			Main.signX = left * 16 + 16;
 			Main.signY = top * 16;

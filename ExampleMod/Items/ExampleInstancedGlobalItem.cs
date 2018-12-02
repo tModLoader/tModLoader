@@ -20,11 +20,7 @@ namespace ExampleMod.Items
 			awesome = 0;
 		}
 
-		public override bool InstancePerEntity {
-			get {
-				return true;
-			}
-		}
+		public override bool InstancePerEntity => true;
 
 		public override GlobalItem Clone(Item item, Item itemClone) {
 			ExampleInstancedGlobalItem myClone = (ExampleInstancedGlobalItem)base.Clone(item, itemClone);

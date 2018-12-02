@@ -10,46 +10,26 @@ namespace ExampleMod.NPCs.Abomination
 	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
-		private static int hellLayer {
-			get {
-				return Main.maxTilesY - 200;
-			}
-		}
+		private static int hellLayer => Main.maxTilesY - 200;
 
 		private int captiveType {
-			get {
-				return (int)npc.ai[0];
-			}
-			set {
-				npc.ai[0] = value;
-			}
+			get => (int)npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
 		private float attackCool {
-			get {
-				return npc.ai[1];
-			}
-			set {
-				npc.ai[1] = value;
-			}
+			get => npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
 		private int run {
-			get {
-				return (int)npc.ai[2];
-			}
-			set {
-				npc.ai[2] = value;
-			}
+			get => (int)npc.ai[2];
+			set => npc.ai[2] = value;
 		}
 
 		private int jungleAI {
-			get {
-				return (int)npc.ai[3];
-			}
-			set {
-				npc.ai[3] = value;
-			}
+			get => (int)npc.ai[3];
+			set => npc.ai[3] = value;
 		}
 
 		public override void SetStaticDefaults() {
@@ -228,7 +208,7 @@ namespace ExampleMod.NPCs.Abomination
 					}
 					attackCool = 150f + 100f * (float)npc.life / (float)npc.lifeMax + (float)Main.rand.Next(50);
 					attackCool *= (float)count / 5f;
-					if (captiveType != 3 || (jungleAI != -5 && jungleAI != 1)) {
+					if (captiveType != 3 || jungleAI != -5 && jungleAI != 1) {
 						int damage = npc.damage / 2;
 						if (Main.expertMode) {
 							damage = (int)(damage / Main.expertDamage);

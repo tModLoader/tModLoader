@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace ExampleMod.Items.Weapons
 {
-	class ExampleExplosive : ModItem
+	internal class ExampleExplosive : ModItem
 	{
 		// TODO, count as explosive for demolitionist spawn
 

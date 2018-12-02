@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	class ExampleLamp : ModItem
+	internal class ExampleLamp : ModItem
 	{
 		public override void SetDefaults() {
 			item.useStyle = 1;

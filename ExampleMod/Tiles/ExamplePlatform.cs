@@ -17,7 +17,7 @@ namespace ExampleMod.Tiles
 			Main.tileTable[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.Platforms[Type] = true;
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newTile.StyleHorizontal = true;

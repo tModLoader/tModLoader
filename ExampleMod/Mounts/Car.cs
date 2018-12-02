@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Mounts
@@ -50,17 +51,21 @@ namespace ExampleMod.Mounts
 			mountData.swimFrameCount = mountData.inAirFrameCount;
 			mountData.swimFrameDelay = mountData.inAirFrameDelay;
 			mountData.swimFrameStart = mountData.inAirFrameStart;
-			if (Main.netMode != 2) {
-				mountData.textureWidth = mountData.backTexture.Width + 20;
-				mountData.textureHeight = mountData.backTexture.Height;
+			if (Main.netMode == NetmodeID.Server) {
+				return;
 			}
+
+			mountData.textureWidth = mountData.backTexture.Width + 20;
+			mountData.textureHeight = mountData.backTexture.Height;
 		}
 
 		public override void UpdateEffects(Player player) {
-			if (Math.Abs(player.velocity.X) > 4f) {
-				Rectangle rect = player.getRect();
-				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod.DustType("Smoke"));
+			if (!(Math.Abs(player.velocity.X) > 4f)) {
+				return;
 			}
+
+			Rectangle rect = player.getRect();
+			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod.DustType("Smoke"));
 		}
 	}
 }

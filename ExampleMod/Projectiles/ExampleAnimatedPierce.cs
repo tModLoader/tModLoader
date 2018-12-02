@@ -36,7 +36,7 @@ namespace ExampleMod.Projectiles
 	Try the above by uncommenting out the respective bits of code in the projectile below.
 	*/
 
-	class ExampleAnimatedPierce : ModProjectile
+	internal class ExampleAnimatedPierce : ModProjectile
 	{
 		public override void SetStaticDefaults() {
 			Main.projFrames[projectile.type] = 4;
@@ -99,7 +99,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.ai[0] >= 60f) {
 				projectile.Kill();
 			}
-			projectile.direction = (projectile.spriteDirection = ((projectile.velocity.X > 0f) ? 1 : -1));
+			projectile.direction = projectile.spriteDirection = projectile.velocity.X > 0f ? 1 : -1;
 			projectile.rotation = projectile.velocity.ToRotation();
 			if (projectile.velocity.Y > 16f) {
 				projectile.velocity.Y = 16f;
@@ -121,7 +121,7 @@ namespace ExampleMod.Projectiles
 			int startY = frameHeight * projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)((projectile.spriteDirection == 1) ? (sourceRectangle.Width - 20) : 20);
+			origin.X = (float)(projectile.spriteDirection == 1 ? sourceRectangle.Width - 20 : 20);
 
 			Color drawColor = projectile.GetAlpha(lightColor);
 			Main.spriteBatch.Draw(texture,
@@ -132,11 +132,9 @@ namespace ExampleMod.Projectiles
 		}
 	}
 
-	class ExamplePierce : ModItem
+	internal class ExamplePierce : ModItem
 	{
-		public override string Texture {
-			get { return "Terraria/Item_" + ItemID.NebulaBlaze; }
-		}
+		public override string Texture => "Terraria/Item_" + ItemID.NebulaBlaze;
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.NebulaBlaze);

@@ -19,18 +19,18 @@ namespace ExampleMod.Projectiles
 		// The actual distance is stored in the ai0 field
 		// By making a property to handle this it makes our life easier, and the accessibility more readable
 		public float Distance {
-			get { return projectile.ai[0]; }
-			set { projectile.ai[0] = value; }
+			get => projectile.ai[0];
+			set => projectile.ai[0] = value;
 		}
 
 		// The actual charge value is stored in the localAI0 field
 		public float Charge {
-			get { return projectile.localAI[0]; }
-			set { projectile.localAI[0] = value; }
+			get => projectile.localAI[0];
+			set => projectile.localAI[0] = value;
 		}
 
 		// Are we at max charge? With c#6 you can simply use => which indicates this is a get only property
-		public bool AtMaxCharge { get { return Charge == MaxChargeValue; } }
+		public bool AtMaxCharge => Charge == MaxChargeValue;
 
 		public override void SetDefaults() {
 			projectile.width = 10;
@@ -142,7 +142,7 @@ namespace ExampleMod.Projectiles
 				dustVelocity = dustVelocity.RotatedBy(projectile.rotation - 1.57f, default(Vector2));
 				Vector2 spawnPos = projectile.Center + dustVelocity;
 				for (int k = 0; k < chargeFact + 1; k++) {
-					Vector2 spawn = spawnPos + ((float)Main.rand.NextDouble() * 6.28f).ToRotationVector2() * (12f - (chargeFact * 2));
+					Vector2 spawn = spawnPos + ((float)Main.rand.NextDouble() * 6.28f).ToRotationVector2() * (12f - chargeFact * 2);
 					Dust dust = Main.dust[Dust.NewDust(pos, 20, 20, 226, projectile.velocity.X / 2f,
 						projectile.velocity.Y / 2f, 0, default(Color), 1f)];
 					dust.velocity = Vector2.Normalize(spawnPos - spawn) * 1.5f * (10f - chargeFact * 2f) / 10f;

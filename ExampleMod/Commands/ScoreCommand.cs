@@ -6,24 +6,18 @@ namespace ExampleMod.Commands
 	//note this command is effectively broken in multiplayer due to the lack of netcode around ExamplePlayer.score
 	public class ScoreCommand : ModCommand
 	{
-		public override CommandType Type {
-			get { return CommandType.Chat; }
-		}
+		public override CommandType Type
+			=> CommandType.Chat;
 
-		public override string Command {
-			get { return "score"; }
-		}
+		public override string Command
+			=> "score";
 
-		public override string Usage {
-			get {
-				return "/score playerName <get|reset>\n" +
-				  "/score playerName <add|set> amount";
-			}
-		}
+		public override string Usage
+			=> "/score playerName <get|reset>" +
+			   "\n/score playerName <add|set> amount";
 
-		public override string Description {
-			get { return "Manipulate ExamplePlayer.score"; }
-		}
+		public override string Description
+			=> "Manipulate ExamplePlayer.score";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
 			int player;
@@ -49,8 +43,8 @@ namespace ExampleMod.Commands
 			if (args.Length < 3) {
 				throw new UsageException("Usage: /score playerName <add|set> amount");
 			}
-			int arg;
-			if (!int.TryParse(args[2], out arg)) {
+
+			if (!int.TryParse(args[2], out int arg)) {
 				throw new UsageException(args[2] + " is not an integer");
 			}
 			if (args[1] == "add") {

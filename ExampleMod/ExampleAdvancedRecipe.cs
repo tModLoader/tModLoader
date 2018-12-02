@@ -18,6 +18,7 @@ namespace ExampleMod
 		public ExampleAdvancedRecipe(Mod mod, int NeededNPC) : base(mod) {
 			NeededNPCType = NeededNPC;
 		}
+
 		//RecipeAvailable is our goal here, in here we check our custom requirements
 		//Also, RecipeAvailable is called on client, so we can use here Main.LocalPlayer without problems
 		public override bool RecipeAvailable() {
@@ -58,16 +59,14 @@ namespace ExampleMod
 			Tooltip.SetDefault("You need help with creating this!");
 		}
 
-		public override string Texture {
-			get {
-				return "ExampleMod/Items/ExampleItem";
-			}
-		}
+		public override string Texture => "ExampleMod/Items/ExampleItem";
+
 		public override void SetDefaults() {
 			item.width = 26;
 			item.height = 26;
 			item.rare = 1;
 		}
+
 		//Using our custom recipe type
 		public override void AddRecipes() {
 			ExampleAdvancedRecipe recipe = new ExampleAdvancedRecipe(mod, NPCID.Guide);

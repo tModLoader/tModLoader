@@ -18,28 +18,28 @@ namespace ExampleMod
 	public class ExamplePlayer : ModPlayer
 	{
 		private const int saveVersion = 0;
-		public int score = 0;
-		public bool eFlames = false;
-		public bool elementShield = false;
-		public int elementShields = 0;
-		private int elementShieldTimer = 0;
-		public int elementShieldPos = 0;
-		public int lockTime = 0;
+		public int score;
+		public bool eFlames;
+		public bool elementShield;
+		public int elementShields;
+		private int elementShieldTimer;
+		public int elementShieldPos;
+		public int lockTime;
 		public bool voidMonolith = false;
-		public int heroLives = 0;
-		public int reviveTime = 0;
-		public int constantDamage = 0;
-		public float percentDamage = 0f;
+		public int heroLives;
+		public int reviveTime;
+		public int constantDamage;
+		public float percentDamage;
 		public float defenseEffect = -1f;
-		public bool badHeal = false;
-		public int healHurt = 0;
-		public bool nullified = false;
-		public int purityDebuffCooldown = 0;
-		public bool purityMinion = false;
-		public bool examplePet = false;
-		public bool exampleLightPet = false;
-		public bool exampleShield = false;
-		public bool infinity = false;
+		public bool badHeal;
+		public int healHurt;
+		public bool nullified;
+		public int purityDebuffCooldown;
+		public bool purityMinion;
+		public bool examplePet;
+		public bool exampleLightPet;
+		public bool exampleShield;
+		public bool infinity;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
 		public bool blockyAccessory;
@@ -49,9 +49,9 @@ namespace ExampleMod
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 
 		private const int maxExampleLifeFruits = 10;
-		public int exampleLifeFruits = 0;
+		public int exampleLifeFruits;
 
-		public bool ZoneExample = false;
+		public bool ZoneExample;
 
 		public override void ResetEffects() {
 			eFlames = false;
@@ -75,7 +75,7 @@ namespace ExampleMod
 
 		public override void OnEnterWorld(Player player) {
 			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
-			ExampleMod.Instance.ExampleUI.exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
+			ExampleMod.Instance.ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
 		}
 
 		// In MP, other clients need accurate information about your player or else bugs happen.
@@ -154,7 +154,7 @@ namespace ExampleMod
 		}
 
 		public override void UpdateBiomes() {
-			ZoneExample = (ExampleWorld.exampleTiles > 50);
+			ZoneExample = ExampleWorld.exampleTiles > 50;
 		}
 
 		public override bool CustomBiomesMatch(Player other) {

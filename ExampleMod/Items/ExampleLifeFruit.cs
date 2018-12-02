@@ -8,11 +8,9 @@ namespace ExampleMod.Items
 	// Making an item like Life Fruit (That goes above 500) involves a lot of code, as there are many things to consider. (An alternate that approaches 500 can simply follow vanilla code, however.):
 	//    You can't make player.statLifeMax more than 500 (it won't save), so you'll have to maintain your extra life within your mod.
 	//    Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players. 
-	class ExampleLifeFruit : ModItem
+	internal class ExampleLifeFruit : ModItem
 	{
-		public override string Texture {
-			get { return "Terraria/Item_" + ItemID.LifeFruit; }
-		}
+		public override string Texture => "Terraria/Item_" + ItemID.LifeFruit;
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Permanently increases maximum life by 2\nUp to 10 can be used");

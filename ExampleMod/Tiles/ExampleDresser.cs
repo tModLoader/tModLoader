@@ -22,10 +22,10 @@ namespace ExampleMod.Tiles
 			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.Origin = new Point16(1, 1);
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16 };
 			TileObjectData.newTile.HookCheck = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.FindEmptyChest), -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(new Func<int, int, int, int, int, int>(Chest.AfterPlacement_Hook), -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[] { 127 };
+			TileObjectData.newTile.AnchorInvalidTiles = new[] { 127 };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);

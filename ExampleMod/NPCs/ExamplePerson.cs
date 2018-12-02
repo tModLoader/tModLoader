@@ -9,17 +9,9 @@ namespace ExampleMod.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
-		public override string Texture {
-			get {
-				return "ExampleMod/NPCs/ExamplePerson";
-			}
-		}
+		public override string Texture => "ExampleMod/NPCs/ExamplePerson";
 
-		public override string[] AltTextures {
-			get {
-				return new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
-			}
-		}
+		public override string[] AltTextures => new[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
 
 		public override bool Autoload(ref string name) {
 			name = "Example Person";
@@ -64,11 +56,13 @@ namespace ExampleMod.NPCs
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
 			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
-				if (player.active) {
-					for (int j = 0; j < player.inventory.Length; j++) {
-						if (player.inventory[j].type == mod.ItemType("ExampleItem") || player.inventory[j].type == mod.ItemType("ExampleBlock")) {
-							return true;
-						}
+				if (!player.active) {
+					continue;
+				}
+
+				foreach (Item item in player.inventory) {
+					if (item.type == mod.ItemType("ExampleItem") || item.type == mod.ItemType("ExampleBlock")) {
+						return true;
 					}
 				}
 			}

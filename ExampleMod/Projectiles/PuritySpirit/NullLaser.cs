@@ -115,7 +115,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		}
 
 		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit) {
-			if (Main.rand.NextBool(3) || (Main.expertMode && Main.rand.NextBool(3))) {
+			if (Main.rand.NextBool(3) || Main.expertMode && Main.rand.NextBool(3)) {
 				target.AddBuff(mod.BuffType("Nullified"), Main.rand.Next(240, 300));
 			}
 		}

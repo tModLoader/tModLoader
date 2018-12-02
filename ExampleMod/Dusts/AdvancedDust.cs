@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Dusts
 {
 	// This Dust will show off Dust.customData, using vanilla dust texture, and some neat movement.
-	class AdvancedDust : ModDust
+	internal class AdvancedDust : ModDust
 	{
 		/*
 			Spawning this dust is a little more involved because we need to assign a rotation, customData, and fix the position. 
@@ -42,9 +42,7 @@ namespace ExampleMod.Dusts
 			dust.scale -= 0.05f;
 
 			// Here we use the customData field. If customrData is the type we expect, Player, we do some special movement.
-			if (dust.customData != null && dust.customData is Player) {
-				Player player = (Player)dust.customData;
-
+			if (dust.customData != null && dust.customData is Player player) {
 				// Here we assign position to some offset from the player that was assigned. This offset scales with dust.scale. The scale and rotation cause the spiral movement we desired.
 				dust.position = player.Center + Vector2.UnitX.RotatedBy(dust.rotation, Vector2.Zero) * dust.scale * 50;
 			}

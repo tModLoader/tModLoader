@@ -22,11 +22,11 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorLeft = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new int[] { 124 };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124 };
 			TileObjectData.addAlternate(1);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorRight = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new int[] { 124 };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124 };
 			TileObjectData.addAlternate(2);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorWall = true;
@@ -67,7 +67,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)((ulong)i));
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(ulong)i);
 			Color color = new Color(100, 100, 100, 0);
 			int frameX = Main.tile[i, j].frameX;
 			int frameY = Main.tile[i, j].frameY;

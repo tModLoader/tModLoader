@@ -14,8 +14,8 @@ namespace ExampleMod.Items.ExampleDamageClass
 		// And crit and knockback is usually just added to
 		// As a modder, you could make separate variables for multipliers and simple addition bonuses
 		public float exampleDamage = 1f;
-		public float exampleKnockback = 0f;
-		public int exampleCrit = 0;
+		public float exampleKnockback;
+		public int exampleCrit;
 
 		public override void ResetEffects() {
 			ResetVariables();

@@ -6,11 +6,7 @@ namespace ExampleMod.Projectiles
 {
 	public class PixelBall : ElementBall
 	{
-		public override string Texture {
-			get {
-				return mod.Name + "/Projectiles/ElementBall";
-			}
-		}
+		public override string Texture => mod.Name + "/Projectiles/ElementBall";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Pixel Ball");

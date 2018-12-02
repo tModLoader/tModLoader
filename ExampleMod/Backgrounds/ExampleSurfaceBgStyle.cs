@@ -31,8 +31,8 @@ namespace ExampleMod.Backgrounds
 			return mod.GetBackgroundSlot("Backgrounds/ExampleBiomeSurfaceFar");
 		}
 
-		static int SurfaceFrameCounter = 0;
-		static int SurfaceFrame = 0;
+		private static int SurfaceFrameCounter;
+		private static int SurfaceFrame;
 		public override int ChooseMiddleTexture() {
 			if (++SurfaceFrameCounter > 12) {
 				SurfaceFrame = (SurfaceFrame + 1) % 4;

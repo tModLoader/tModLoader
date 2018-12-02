@@ -13,7 +13,7 @@ namespace ExampleMod.NPCs
 	/// The important bits are: Main.npcCatchable, npc.catchItem, and item.makeNPC
 	/// We will also show off adding an item to an existing RecipeGroup (see ExampleMod.AddRecipeGroups)
 	/// </summary>
-	class ExampleCritterNPC : ModNPC
+	internal class ExampleCritterNPC : ModNPC
 	{
 		public override bool Autoload(ref string name) {
 			IL.Terraria.Wiring.HitWireSingle += HookStatue;
@@ -192,7 +192,7 @@ namespace ExampleMod.NPCs
 		// TODO: Hooks for Collision_MoveSnailOnSlopes and npc.aiStyle = 67 problem
 	}
 
-	class ExampleCritterItem : ModItem
+	internal class ExampleCritterItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Lava Snail");

@@ -12,11 +12,7 @@ namespace ExampleMod.Projectiles
 	{
 		private const float increment = 16f;
 
-		private Vector2 target {
-			get {
-				return new Vector2(projectile.ai[0], projectile.ai[1]);
-			}
-		}
+		private Vector2 target => new Vector2(projectile.ai[0], projectile.ai[1]);
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[projectile.type] = 60;

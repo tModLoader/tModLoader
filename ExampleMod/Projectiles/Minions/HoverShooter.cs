@@ -131,10 +131,10 @@ namespace ExampleMod.Projectiles.Minions
 			SelectFrame();
 			CreateDust();
 			if (projectile.velocity.X > 0f) {
-				projectile.spriteDirection = (projectile.direction = -1);
+				projectile.spriteDirection = projectile.direction = -1;
 			}
 			else if (projectile.velocity.X < 0f) {
-				projectile.spriteDirection = (projectile.direction = 1);
+				projectile.spriteDirection = projectile.direction = 1;
 			}
 			if (projectile.ai[1] > 0f) {
 				projectile.ai[1] += 1f;
@@ -149,10 +149,10 @@ namespace ExampleMod.Projectiles.Minions
 			if (projectile.ai[0] == 0f) {
 				if (target) {
 					if ((targetPos - projectile.Center).X > 0f) {
-						projectile.spriteDirection = (projectile.direction = -1);
+						projectile.spriteDirection = projectile.direction = -1;
 					}
 					else if ((targetPos - projectile.Center).X < 0f) {
-						projectile.spriteDirection = (projectile.direction = 1);
+						projectile.spriteDirection = projectile.direction = 1;
 					}
 					if (projectile.ai[1] == 0f) {
 						projectile.ai[1] = 1f;

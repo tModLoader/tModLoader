@@ -6,9 +6,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.NPCs
 {
-	class ExampleWormHead : ExampleWorm
+	internal class ExampleWormHead : ExampleWorm
 	{
-		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerHead; } }
+		public override string Texture => "Terraria/NPC_" + NPCID.DiggerHead;
 
 		public override void SetDefaults() {
 			// Head is 10 defence, body 20, tail 30.
@@ -22,7 +22,7 @@ namespace ExampleMod.NPCs
 			head = true;
 		}
 
-		int attackCounter = 0;
+		private int attackCounter;
 		public override void SendExtraAI(BinaryWriter writer) {
 			writer.Write(attackCounter);
 		}
@@ -51,9 +51,9 @@ namespace ExampleMod.NPCs
 		}
 	}
 
-	class ExampleWormBody : ExampleWorm
+	internal class ExampleWormBody : ExampleWorm
 	{
-		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerBody; } }
+		public override string Texture => "Terraria/NPC_" + NPCID.DiggerBody;
 
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerBody);
@@ -62,9 +62,9 @@ namespace ExampleMod.NPCs
 		}
 	}
 
-	class ExampleWormTail : ExampleWorm
+	internal class ExampleWormTail : ExampleWorm
 	{
-		public override string Texture { get { return "Terraria/NPC_" + NPCID.DiggerTail; } }
+		public override string Texture => "Terraria/NPC_" + NPCID.DiggerTail;
 
 		public override void SetDefaults() {
 			npc.CloneDefaults(NPCID.DiggerTail);
@@ -154,12 +154,12 @@ namespace ExampleMod.NPCs
 					Main.npc[(int)npc.ai[0]].ai[2] = npc.ai[2] - 1f;
 					npc.netUpdate = true;
 				}
-				if (!head && (!Main.npc[(int)npc.ai[1]].active || (Main.npc[(int)npc.ai[1]].type != headType && Main.npc[(int)npc.ai[1]].type != bodyType))) {
+				if (!head && (!Main.npc[(int)npc.ai[1]].active || Main.npc[(int)npc.ai[1]].type != headType && Main.npc[(int)npc.ai[1]].type != bodyType)) {
 					npc.life = 0;
 					npc.HitEffect(0, 10.0);
 					npc.active = false;
 				}
-				if (!tail && (!Main.npc[(int)npc.ai[0]].active || (Main.npc[(int)npc.ai[0]].type != bodyType && Main.npc[(int)npc.ai[0]].type != tailType))) {
+				if (!tail && (!Main.npc[(int)npc.ai[0]].active || Main.npc[(int)npc.ai[0]].type != bodyType && Main.npc[(int)npc.ai[0]].type != tailType)) {
 					npc.life = 0;
 					npc.HitEffect(0, 10.0);
 					npc.active = false;
@@ -188,7 +188,7 @@ namespace ExampleMod.NPCs
 			if (!flag18) {
 				for (int num184 = num180; num184 < num181; num184++) {
 					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && ((Main.tile[num184, num185].nactive() && (Main.tileSolid[(int)Main.tile[num184, num185].type] || (Main.tileSolidTop[(int)Main.tile[num184, num185].type] && Main.tile[num184, num185].frameY == 0))) || Main.tile[num184, num185].liquid > 64)) {
+						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].nactive() && (Main.tileSolid[(int)Main.tile[num184, num185].type] || Main.tileSolidTop[(int)Main.tile[num184, num185].type] && Main.tile[num184, num185].frameY == 0) || Main.tile[num184, num185].liquid > 64)) {
 							Vector2 vector17;
 							vector17.X = (float)(num184 * 16);
 							vector17.Y = (float)(num185 * 16);
@@ -348,7 +348,7 @@ namespace ExampleMod.NPCs
 					}
 					bool flag21 = false;
 					if (npc.type == 87) {
-						if (((npc.velocity.X > 0f && num191 < 0f) || (npc.velocity.X < 0f && num191 > 0f) || (npc.velocity.Y > 0f && num192 < 0f) || (npc.velocity.Y < 0f && num192 > 0f)) && System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) > num189 / 2f && num193 < 300f) {
+						if ((npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f || npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f) && System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) > num189 / 2f && num193 < 300f) {
 							flag21 = true;
 							if (System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) < num188) {
 								npc.velocity *= 1.1f;
@@ -370,7 +370,7 @@ namespace ExampleMod.NPCs
 						}
 					}
 					if (!flag21) {
-						if ((npc.velocity.X > 0f && num191 > 0f) || (npc.velocity.X < 0f && num191 < 0f) || (npc.velocity.Y > 0f && num192 > 0f) || (npc.velocity.Y < 0f && num192 < 0f)) {
+						if (npc.velocity.X > 0f && num191 > 0f || npc.velocity.X < 0f && num191 < 0f || npc.velocity.Y > 0f && num192 > 0f || npc.velocity.Y < 0f && num192 < 0f) {
 							if (npc.velocity.X < num191) {
 								npc.velocity.X = npc.velocity.X + num189;
 							}
@@ -387,7 +387,7 @@ namespace ExampleMod.NPCs
 									npc.velocity.Y = npc.velocity.Y - num189;
 								}
 							}
-							if ((double)System.Math.Abs(num192) < (double)num188 * 0.2 && ((npc.velocity.X > 0f && num191 < 0f) || (npc.velocity.X < 0f && num191 > 0f))) {
+							if ((double)System.Math.Abs(num192) < (double)num188 * 0.2 && (npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f)) {
 								if (npc.velocity.Y > 0f) {
 									npc.velocity.Y = npc.velocity.Y + num189 * 2f;
 								}
@@ -395,7 +395,7 @@ namespace ExampleMod.NPCs
 									npc.velocity.Y = npc.velocity.Y - num189 * 2f;
 								}
 							}
-							if ((double)System.Math.Abs(num191) < (double)num188 * 0.2 && ((npc.velocity.Y > 0f && num192 < 0f) || (npc.velocity.Y < 0f && num192 > 0f))) {
+							if ((double)System.Math.Abs(num191) < (double)num188 * 0.2 && (npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f)) {
 								if (npc.velocity.X > 0f) {
 									npc.velocity.X = npc.velocity.X + num189 * 2f;
 								}
@@ -454,7 +454,7 @@ namespace ExampleMod.NPCs
 						}
 						npc.localAI[0] = 0f;
 					}
-					if (((npc.velocity.X > 0f && npc.oldVelocity.X < 0f) || (npc.velocity.X < 0f && npc.oldVelocity.X > 0f) || (npc.velocity.Y > 0f && npc.oldVelocity.Y < 0f) || (npc.velocity.Y < 0f && npc.oldVelocity.Y > 0f)) && !npc.justHit) {
+					if ((npc.velocity.X > 0f && npc.oldVelocity.X < 0f || npc.velocity.X < 0f && npc.oldVelocity.X > 0f || npc.velocity.Y > 0f && npc.oldVelocity.Y < 0f || npc.velocity.Y < 0f && npc.oldVelocity.Y > 0f) && !npc.justHit) {
 						npc.netUpdate = true;
 						return;
 					}

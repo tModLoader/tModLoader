@@ -7,14 +7,10 @@ namespace ExampleMod.NPCs
 {
 	public class ExampleGlobalNPC : GlobalNPC
 	{
-		public override bool InstancePerEntity {
-			get {
-				return true;
-			}
-		}
+		public override bool InstancePerEntity => true;
 
-		public bool eFlames = false;
-		public bool exampleJavelin = false;
+		public bool eFlames;
+		public bool exampleJavelin;
 
 		public override void ResetEffects(NPC npc) {
 			eFlames = false;
@@ -61,7 +57,7 @@ namespace ExampleMod.NPCs
 					Item.NewItem(npc.getRect(), mod.ItemType("BossItem"));
 				}
 			}
-			if (((npc.type == NPCID.Pumpking && Main.pumpkinMoon) || (npc.type == NPCID.IceQueen && Main.snowMoon)) && NPC.waveNumber > 10) {
+			if ((npc.type == NPCID.Pumpking && Main.pumpkinMoon || npc.type == NPCID.IceQueen && Main.snowMoon) && NPC.waveNumber > 10) {
 				int chance = NPC.waveNumber - 10;
 				if (Main.expertMode) {
 					chance++;
@@ -96,8 +92,8 @@ namespace ExampleMod.NPCs
 						if (tile.active() && tile.type == mod.TileType("ElementalPurge") && !NPC.AnyNPCs(mod.NPCType("PuritySpirit"))) {
 							i -= Main.tile[i, j].frameX / 18;
 							j -= Main.tile[i, j].frameY / 18;
-							i = (i * 16) + 16;
-							j = (j * 16) + 24 + 60;
+							i = i * 16 + 16;
+							j = j * 16 + 24 + 60;
 							for (int k = 0; k < 255; k++) {
 								Player player = Main.player[k];
 								if (player.active && player.position.X > i - NPC.sWidth / 2 && player.position.X + player.width < i + NPC.sWidth / 2 && player.position.Y > j - NPC.sHeight / 2 && player.position.Y < j + NPC.sHeight / 2) {

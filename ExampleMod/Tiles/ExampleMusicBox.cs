@@ -6,7 +6,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Tiles
 {
-	class ExampleMusicBox : ModTile
+	internal class ExampleMusicBox : ModTile
 	{
 		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;

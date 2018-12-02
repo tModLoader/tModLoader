@@ -5,25 +5,21 @@ namespace ExampleMod.Commands
 {
 	public class NpcTypeCommand : ModCommand
 	{
-		public override CommandType Type {
-			get { return CommandType.Chat; }
-		}
+		public override CommandType Type
+			=> CommandType.Chat;
 
-		public override string Command {
-			get { return "npcType"; }
-		}
+		public override string Command
+			=> "npcType";
 
-		public override string Usage {
-			get { return "/npcType modName npcName"; }
-		}
+		public override string Usage
+			=> "/npcType modName npcName";
 
-		public override string Description {
-			get { return "Find mod npc ids"; }
-		}
+		public override string Description
+			=> "Find mod npc ids";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
-			var mod = ModLoader.GetMod(args[0]);
-			var type = mod == null ? 0 : mod.NPCType(args[1]);
+			var theMod = ModLoader.GetMod(args[0]);
+			var type = theMod?.NPCType(args[1]) ?? 0;
 			caller.Reply(type.ToString(), Color.Yellow);
 		}
 	}

@@ -40,8 +40,6 @@ namespace ExampleMod.Items
 			player.QuickSpawnItem(mod.ItemType("PurityShield"));
 		}
 
-		public override int BossBagNPC {
-			get { return mod.NPCType("PuritySpirit"); }
-		}
+		public override int BossBagNPC => mod.NPCType("PuritySpirit");
 	}
 }

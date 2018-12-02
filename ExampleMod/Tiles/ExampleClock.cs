@@ -14,7 +14,7 @@ namespace ExampleMod.Tiles
 			Main.tileLavaDeath[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 5;
-			TileObjectData.newTile.CoordinateHeights = new int[]
+			TileObjectData.newTile.CoordinateHeights = new[]
 			{
 				16,
 				16,
@@ -54,7 +54,7 @@ namespace ExampleMod.Tiles
 				//Get the decimal points of time.
 				double deltaTime = time - intTime;
 				//multiply them by 60. Minutes, probably
-				deltaTime = ((int)(deltaTime * 60.0));
+				deltaTime = (int)(deltaTime * 60.0);
 				//This could easily be replaced by deltaTime.ToString()
 				string text2 = string.Concat(deltaTime);
 				if (deltaTime < 10.0) {

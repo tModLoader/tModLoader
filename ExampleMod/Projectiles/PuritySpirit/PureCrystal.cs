@@ -9,7 +9,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 {
 	public class PureCrystal : ModProjectile
 	{
-		private int timer = 0;
+		private int timer;
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Crystal of Cleansing");

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Projectiles
 {
 	// This projectiles merely flies towards a position and then dies. We use it to signify kill points for TEScoreBoard.
-	class ScorePoint : ModProjectile
+	internal class ScorePoint : ModProjectile
 	{
 		public override void SetDefaults() {
 			projectile.width = 8;
@@ -32,7 +32,7 @@ namespace ExampleMod.Projectiles
 			Vector2 targetDirection = new Vector2(target.X, target.Y) - projectile.Center;
 			projectile.velocity = Vector2.Normalize(targetDirection) * 5f;
 			// Using the player's index, which we passed into ai[1], we can differentiate kills by assigning a hue to the dust we spawn
-			float hue = ((int)(projectile.ai[1]) % 6) / 6f;
+			float hue = (int)projectile.ai[1] % 6 / 6f;
 			Dust.QuickDust(projectile.Center, Main.hslToRgb(hue, 1f, 0.5f));
 		}
 	}

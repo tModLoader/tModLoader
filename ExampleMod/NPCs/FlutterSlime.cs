@@ -37,41 +37,41 @@ namespace ExampleMod.NPCs
 
 		// These const ints are for the benefit of the programmer. Organization is key to making an AI that behaves properly without driving you crazy.
 		// Here I lay out what I will use each of the 4 npc.ai slots for.
-		const int AI_State_Slot = 0;
-		const int AI_Timer_Slot = 1;
-		const int AI_Flutter_Time_Slot = 2;
-		const int AI_Unused_Slot_3 = 3;
+		private const int AI_State_Slot = 0;
+		private const int AI_Timer_Slot = 1;
+		private const int AI_Flutter_Time_Slot = 2;
+		private const int AI_Unused_Slot_3 = 3;
 
 		// npc.localAI will also have 4 float variables available to use. With ModNPC, using just a local class member variable would have the same effect.
-		const int Local_AI_Unused_Slot_0 = 0;
-		const int Local_AI_Unused_Slot_1 = 1;
-		const int Local_AI_Unused_Slot_2 = 2;
-		const int Local_AI_Unused_Slot_3 = 3;
+		private const int Local_AI_Unused_Slot_0 = 0;
+		private const int Local_AI_Unused_Slot_1 = 1;
+		private const int Local_AI_Unused_Slot_2 = 2;
+		private const int Local_AI_Unused_Slot_3 = 3;
 
 		// Here I define some values I will use with the State slot. Using an ai slot as a means to store "state" can simplify things greatly. Think flowchart.
-		const int State_Asleep = 0;
-		const int State_Notice = 1;
-		const int State_Jump = 2;
-		const int State_Hover = 3;
-		const int State_Fall = 4;
+		private const int State_Asleep = 0;
+		private const int State_Notice = 1;
+		private const int State_Jump = 2;
+		private const int State_Hover = 3;
+		private const int State_Fall = 4;
 
 		// This is a property (https://msdn.microsoft.com/en-us/library/x9fsa0sw.aspx), it is very useful and helps keep out AI code clear of clutter.
 		// Without it, every instance of "AI_State" in the AI code below would be "npc.ai[AI_State_Slot]". 
 		// Also note that without the "AI_State_Slot" defined above, this would be "npc.ai[0]".
 		// This is all to just make beautiful, manageable, and clean code.
 		public float AI_State {
-			get { return npc.ai[AI_State_Slot]; }
-			set { npc.ai[AI_State_Slot] = value; }
+			get => npc.ai[AI_State_Slot];
+			set => npc.ai[AI_State_Slot] = value;
 		}
 
 		public float AI_Timer {
-			get { return npc.ai[AI_Timer_Slot]; }
-			set { npc.ai[AI_Timer_Slot] = value; }
+			get => npc.ai[AI_Timer_Slot];
+			set => npc.ai[AI_Timer_Slot] = value;
 		}
 
 		public float AI_FlutterTime {
-			get { return npc.ai[AI_Flutter_Time_Slot]; }
-			set { npc.ai[AI_Flutter_Time_Slot] = value; }
+			get => npc.ai[AI_Flutter_Time_Slot];
+			set => npc.ai[AI_Flutter_Time_Slot] = value;
 		}
 
 		// AdvancedFlutterSlime will need: float in water, diminishing aggo, spawn projectiles.
@@ -157,12 +157,12 @@ namespace ExampleMod.NPCs
 		}
 
 		// Our texture is 32x32 with 2 pixels of padding vertically, so 34 is the vertical spacing.  These are for my benefit and the numbers could easily be used directly in the code below, but this is how I keep code organized.
-		const int Frame_Asleep = 0;
-		const int Frame_Notice = 1;
-		const int Frame_Falling = 2;
-		const int Frame_Flutter_1 = 3;
-		const int Frame_Flutter_2 = 4;
-		const int Frame_Flutter_3 = 5;
+		private const int Frame_Asleep = 0;
+		private const int Frame_Notice = 1;
+		private const int Frame_Falling = 2;
+		private const int Frame_Flutter_1 = 3;
+		private const int Frame_Flutter_2 = 4;
+		private const int Frame_Flutter_3 = 5;
 
 		// Here in FindFrame, we want to set the animation frame our npc will use depending on what it is doing.
 		// We set npc.frame.Y to x * frameHeight where x is the xth frame in our spritesheet, counting from 0. For convenience, I have defined some consts above.

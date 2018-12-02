@@ -34,8 +34,6 @@ namespace ExampleMod.Items.Abomination
 			player.QuickSpawnItem(mod.ItemType("SixColorShield"));
 		}
 
-		public override int BossBagNPC {
-			get { return mod.NPCType("Abomination"); }
-		}
+		public override int BossBagNPC => mod.NPCType("Abomination");
 	}
 }

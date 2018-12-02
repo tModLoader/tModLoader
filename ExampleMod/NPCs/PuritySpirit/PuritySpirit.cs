@@ -74,73 +74,45 @@ namespace ExampleMod.NPCs.PuritySpirit
 			}
 		}
 
-		private float timeMultiplier {
-			get {
-				return 1f - (difficulty + difficultyGradient) * 0.2f;
-			}
-		}
+		private float timeMultiplier => 1f - (difficulty + difficultyGradient) * 0.2f;
 
 		private int stage {
-			get {
-				return (int)npc.ai[0];
-			}
-			set {
-				npc.ai[0] = value;
-			}
+			get => (int)npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
 		private float attackTimer {
-			get {
-				return npc.ai[1];
-			}
-			set {
-				npc.ai[1] = value;
-			}
+			get => npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
 		internal int attack {
-			get {
-				return (int)npc.ai[2];
-			}
-			private set {
-				npc.ai[2] = value;
-			}
+			get => (int)npc.ai[2];
+			private set => npc.ai[2] = value;
 		}
 
 		internal int attackProgress {
-			get {
-				return (int)npc.ai[3];
-			}
-			private set {
-				npc.ai[3] = value;
-			}
+			get => (int)npc.ai[3];
+			private set => npc.ai[3] = value;
 		}
 
 		private int portalFrame {
-			get {
-				return (int)npc.localAI[0];
-			}
-			set {
-				npc.localAI[0] = value;
-			}
+			get => (int)npc.localAI[0];
+			set => npc.localAI[0] = value;
 		}
 
 		private int shieldTimer {
-			get {
-				return (int)npc.localAI[1];
-			}
-			set {
-				npc.localAI[1] = value;
-			}
+			get => (int)npc.localAI[1];
+			set => npc.localAI[1] = value;
 		}
 
 		private IList<Particle> particles = new List<Particle>();
 		private readonly float[,] aura = new float[size, size];
 		internal const int dpsCap = 5000;
-		private int damageTotal = 0;
-		private bool saidRushMessage = false;
+		private int damageTotal;
+		private bool saidRushMessage;
 		public readonly IList<int> targets = new List<int>();
-		public int[] attackWeights = new int[] { 2000, 2000, 2000, 2000, 3000 };
+		public int[] attackWeights = new[] { 2000, 2000, 2000, 2000, 3000 };
 		public const int minAttackWeight = 1000;
 		public const int maxAttackWeight = 4000;
 
@@ -858,7 +830,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 	}
 
-	class Particle
+	internal class Particle
 	{
 		internal Vector2 position;
 		internal Vector2 velocity;
@@ -876,7 +848,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 	}
 
-	enum PuritySpiritMessageType : byte
+	internal enum PuritySpiritMessageType : byte
 	{
 		HeroPlayer,
 		TargetList,

@@ -6,11 +6,7 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleBehindTilesProjectile : ModProjectile
 	{
-		public override string Texture {
-			get {
-				return "Terraria/Projectile_3";
-			}
-		}
+		public override string Texture => "Terraria/Projectile_3";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Ghost Shuriken");
@@ -36,11 +32,7 @@ namespace ExampleMod.Projectiles
 	public class ExampleBehindTilesProjectileItem : ModItem
 	{
 		// Use this to use Vanilla textures. The number corresponds to the ItemID of the vanilla item.
-		public override string Texture {
-			get {
-				return "Terraria/Item_42";
-			}
-		}
+		public override string Texture => "Terraria/Item_42";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Ghost Shuriken");

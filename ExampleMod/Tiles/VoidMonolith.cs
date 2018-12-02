@@ -15,7 +15,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(1, 2);
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 18 };
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(75, 139, 166));
 			dustType = 1;
@@ -76,8 +76,8 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void HitWire(int i, int j) {
-			int x = i - (Main.tile[i, j].frameX / 18) % 2;
-			int y = j - (Main.tile[i, j].frameY / 18) % 3;
+			int x = i - Main.tile[i, j].frameX / 18 % 2;
+			int y = j - Main.tile[i, j].frameY / 18 % 3;
 			for (int l = x; l < x + 2; l++) {
 				for (int m = y; m < y + 3; m++) {
 					if (Main.tile[l, m] == null) {

@@ -14,12 +14,10 @@ namespace ExampleMod.Gores
 		}
 
 		public override bool Update(Gore gore) {
-			if (gore.position.Y < Main.worldSurface * 16.0 + 8.0) {
-				gore.alpha = 0;
-			}
-			else {
-				gore.alpha = 100;
-			}
+			gore.alpha = gore.position.Y < Main.worldSurface * 16.0 + 8.0 
+				? 0 
+				: 100;
+
 			int frameDuration = 4;
 			gore.frameCounter += 1;
 			if (gore.frame <= 4) {

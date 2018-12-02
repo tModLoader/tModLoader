@@ -5,25 +5,20 @@ namespace ExampleMod.Commands
 {
 	public class NpcCommand : ModCommand
 	{
-		public override CommandType Type {
-			get { return CommandType.World; }
-		}
+		public override CommandType Type
+			=> CommandType.World;
 
-		public override string Command {
-			get { return "npc"; }
-		}
+		public override string Command
+			=> "npc";
 
-		public override string Usage {
-			get { return "/npc type [x] [y] [number]\nx and y may be preceded by ~ to use position relative to player"; }
-		}
+		public override string Usage
+			=> "/npc type [x] [y] [number]\nx and y may be preceded by ~ to use position relative to player";
 
-		public override string Description {
-			get { return "Spawn an npc"; }
-		}
+		public override string Description
+			=> "Spawn an npc";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
-			int type;
-			if (!int.TryParse(args[0], out type)) {
+			if (!int.TryParse(args[0], out int type)) {
 				throw new UsageException(args[0] + " is not an integer");
 			}
 

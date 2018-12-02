@@ -35,13 +35,13 @@ namespace ExampleMod.Tiles
 			//TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
 			//TileObjectData.addBaseTile(out TileObjectData.StyleAlch);
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
-			TileObjectData.newTile.AnchorValidTiles = new int[]
+			TileObjectData.newTile.AnchorValidTiles = new[]
 			{
 				2, //TileID.Grass
 				109, // TileId.HallowedGrass
 				mod.TileType<ExampleBlock>()
 			};
-			TileObjectData.newTile.AnchorAlternateTiles = new int[]
+			TileObjectData.newTile.AnchorAlternateTiles = new[]
 			{
 				78, //ClayPot
 				TileID.PlanterBox

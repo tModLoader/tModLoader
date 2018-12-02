@@ -11,7 +11,7 @@ namespace ExampleMod.Tiles
 {
 	// This class shows off many things common to Lamp tiles in Terraria. The process for creating this example is detailed in: https://github.com/blushiemagic/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#examplelamp-tile
 	// If you can't figure out how to recreate a vanilla tile, see that guide for instructions on how to figure it out yourself.
-	class ExampleLamp : ModTile
+	internal class ExampleLamp : ModTile
 	{
 		public override void SetDefaults() {
 			// Main.tileFlame[Type] = true; This breaks it.
@@ -36,7 +36,7 @@ namespace ExampleMod.Tiles
 
 		public override void HitWire(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int topY = j - (tile.frameY / 18 % 3);
+			int topY = j - tile.frameY / 18 % 3;
 			short frameAdjustment = (short)(tile.frameX > 0 ? -18 : 18);
 			Main.tile[i, topY].frameX += frameAdjustment;
 			Main.tile[i, topY + 1].frameX += frameAdjustment;
@@ -107,7 +107,7 @@ namespace ExampleMod.Tiles
 			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			var flameTexture = mod.GetTexture("Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 
-			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)((ulong)i));
+			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(ulong)i);
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref num190, -10, 11) * 0.15f;

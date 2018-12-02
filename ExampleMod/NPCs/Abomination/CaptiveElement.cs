@@ -12,39 +12,23 @@ namespace ExampleMod.NPCs.Abomination
 	public class CaptiveElement : ModNPC
 	{
 		private int center {
-			get {
-				return (int)npc.ai[0];
-			}
-			set {
-				npc.ai[0] = value;
-			}
+			get => (int)npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
 		private int captiveType {
-			get {
-				return (int)npc.ai[1];
-			}
-			set {
-				npc.ai[1] = value;
-			}
+			get => (int)npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
 		private float attackCool {
-			get {
-				return npc.ai[2];
-			}
-			set {
-				npc.ai[2] = value;
-			}
+			get => npc.ai[2];
+			set => npc.ai[2] = value;
 		}
 
 		private int change {
-			get {
-				return (int)npc.ai[3];
-			}
-			set {
-				npc.ai[3] = value;
-			}
+			get => (int)npc.ai[3];
+			set => npc.ai[3] = value;
 		}
 
 		public override void SetStaticDefaults() {
@@ -153,7 +137,7 @@ namespace ExampleMod.NPCs.Abomination
 			if (modNPC != null) {
 				Vector2 center = Main.npc[modNPC.center].Center;
 				double angle = Main.npc[modNPC.center].ai[3] + 2.0 * Math.PI * modNPC.captiveType / 5.0;
-				npc.position = center + 300f * (new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle))) - npc.Size / 2f;
+				npc.position = center + 300f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) - npc.Size / 2f;
 			}
 		}
 

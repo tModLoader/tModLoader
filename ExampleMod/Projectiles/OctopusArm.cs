@@ -11,45 +11,29 @@ namespace ExampleMod.Projectiles
 	public class OctopusArm : ModProjectile
 	{
 		public float width {
-			get {
-				return projectile.ai[0];
-			}
-			set {
-				projectile.ai[0] = value;
-			}
+			get => projectile.ai[0];
+			set => projectile.ai[0] = value;
 		}
 
 		public float length {
-			get {
-				return projectile.ai[1];
-			}
-			set {
-				projectile.ai[1] = value;
-			}
+			get => projectile.ai[1];
+			set => projectile.ai[1] = value;
 		}
 
 		public float minAngle {
-			get {
-				return projectile.localAI[0];
-			}
-			set {
-				projectile.localAI[0] = value;
-			}
+			get => projectile.localAI[0];
+			set => projectile.localAI[0] = value;
 		}
 
 		public float maxAngle {
-			get {
-				return projectile.localAI[1];
-			}
-			set {
-				projectile.localAI[1] = value;
-			}
+			get => projectile.localAI[1];
+			set => projectile.localAI[1] = value;
 		}
 
-		public float angleSpeed = 0f;
-		public float lengthSpeed = 0f;
+		public float angleSpeed;
+		public float lengthSpeed;
 		public int octopus = -1;
-		private int netUpdateCounter = 0;
+		private int netUpdateCounter;
 		private const float maxAngleSpeed = 0.01f;
 		private const float angleBuffer = (float)Math.PI / 12f;
 		public const float minLength = 80f;

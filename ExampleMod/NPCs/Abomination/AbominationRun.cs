@@ -8,17 +8,9 @@ namespace ExampleMod.NPCs.Abomination
 	[AutoloadBossHead]
 	public class AbominationRun : ModNPC
 	{
-		public override string Texture {
-			get {
-				return "ExampleMod/NPCs/Abomination/Abomination";
-			}
-		}
+		public override string Texture => "ExampleMod/NPCs/Abomination/Abomination";
 
-		public override string HeadTexture {
-			get {
-				return "ExampleMod/NPCs/Abomination/Abomination_Head_Boss";
-			}
-		}
+		public override string HeadTexture => "ExampleMod/NPCs/Abomination/Abomination_Head_Boss";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("The Abomination");

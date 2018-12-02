@@ -72,7 +72,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		public override void FindFrame(int frameHeight) {
 			npc.frameCounter += 1.0;
 			npc.frameCounter %= 120.0;
-			npc.frame.Y = frameHeight * (((int)npc.frameCounter % 20) / 5);
+			npc.frame.Y = frameHeight * ((int)npc.frameCounter % 20 / 5);
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {

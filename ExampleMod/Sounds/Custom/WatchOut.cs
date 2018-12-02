@@ -14,7 +14,7 @@ namespace ExampleMod.Sounds.Custom
 
 			soundInstance.Volume = volume * .5f;
 			soundInstance.Pan = pan;
-			soundInstance.Pitch = (float)Main.rand.Next(-5, 6) * .05f;
+			soundInstance.Pitch = Main.rand.Next(-5, 6) * .05f;
 			return soundInstance;
 		}
 	}

@@ -28,7 +28,7 @@ namespace ExampleMod.NPCs
 				if (npc.position.X > npc.ai[0] - (float)num379 && npc.position.X < npc.ai[0] + (float)num379) {
 					flag34 = true;
 				}
-				else if ((npc.velocity.X < 0f && npc.direction > 0) || (npc.velocity.X > 0f && npc.direction < 0)) {
+				else if (npc.velocity.X < 0f && npc.direction > 0 || npc.velocity.X > 0f && npc.direction < 0) {
 					flag34 = true;
 				}
 				num379 += 24;
@@ -72,7 +72,7 @@ namespace ExampleMod.NPCs
 				if (Main.tile[num380, num404] == null) {
 					Main.tile[num380, num404] = new Tile();
 				}
-				if ((Main.tile[num380, num404].nactive() && Main.tileSolid[(int)Main.tile[num380, num404].type]) || Main.tile[num380, num404].liquid > 0) {
+				if (Main.tile[num380, num404].nactive() && Main.tileSolid[(int)Main.tile[num380, num404].type] || Main.tile[num380, num404].liquid > 0) {
 					if (num404 <= num381 + 1) {
 						flag37 = true;
 					}
@@ -91,7 +91,7 @@ namespace ExampleMod.NPCs
 				}
 			}
 			else {
-				if ((npc.directionY < 0 && npc.velocity.Y > 0f) || flag37) {
+				if (npc.directionY < 0 && npc.velocity.Y > 0f || flag37) {
 					npc.velocity.Y -= 0.2f;
 				}
 				if (npc.velocity.Y < -4f) {

@@ -14,8 +14,7 @@ namespace ExampleMod
 		{
 			ModRecipe recipe = new ModRecipe(mod); // make a new recipe for our mod
 			recipe.AddIngredient(null, modIngredient, ingredientStack); // add the ingredient, passing null for the mod means it will use our mod, we could also pass mod from the arguments
-			if (reqTile != null) // when a required tile is specified
-{
+			if (reqTile != null) { // when a required tile is specified
 				recipe.AddTile(null, reqTile); // we add it 
 			}
 
