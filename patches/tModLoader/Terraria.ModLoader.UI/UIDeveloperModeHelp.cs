@@ -136,8 +136,8 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadModCompile() {
 			Main.PlaySound(SoundID.MenuOpen);
-			// TODO: Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/ModCompile.zip for releases
-			string url = "https://www.dropbox.com/s/cf9bdrw273whv97/ModCompileTest.zip?dl=1";
+			// TODO: dynamic packaging zip ? (based on tml version)
+			const string url = "https://tmodloader.net/dl/ext/ModCompile.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			DownloadFile("ModCompile", url, file, () => DeleteFilesAndUnzip(file));
@@ -145,8 +145,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DirectDownloadRefAssemblies() {
 			Main.PlaySound(SoundID.MenuOpen);
-			//TODO: Replace with centrally hosted link
-			string url = "https://www.dropbox.com/s/ddz854nqsckbn75/v4.5%20Reference%20Assemblies.zip?dl=1";
+			const string url = "https://tmodloader.net/dl/ext/v45ReferenceAssemblies.zip";
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
