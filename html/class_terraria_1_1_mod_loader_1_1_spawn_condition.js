@@ -19,7 +19,7 @@ var class_terraria_1_1_mod_loader_1_1_spawn_condition =
     [ "chance", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853", null ],
     [ "Chance", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a3fb51d4a60714c1c14ae7ebc31d2fd73", null ],
     [ "children", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a2d268259618bb921ef9dd2c6c88e4d1b", null ],
-    [ "condition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb", null ],
+    [ "condition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aeae5c980c83029f51fac66278b614b1f", null ],
     [ "Corruption", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9d394efd00bab5997a0b623f6e71a003", null ],
     [ "CorruptWaterCritter", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a5ac32a7bd8a6c9c674d4e66805269aa2", null ],
     [ "CorruptWorm", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0225f3ae33e6145345d33f2d14bd579e", null ],

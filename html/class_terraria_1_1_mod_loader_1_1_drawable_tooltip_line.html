@@ -236,7 +236,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class serves as a way to store information about a line that will be drawn of tooltip for an item. You will create and manipulate objects of this class if you use the draw hooks for tooltips in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this. ">GlobalItem</a>. For examples, see ExampleSword </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00014">14</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00013">13</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a48ecc2f02582055544f37dc3a20f1a9b"></a>
 <div class="memitem">
@@ -292,18 +292,18 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00100">100</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00097">97</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
-<p>References <a class="el" href="_tooltip_line_8cs_source.html#l00027">Terraria.ModLoader.TooltipLine.isModifier</a>, <a class="el" href="_tooltip_line_8cs_source.html#l00031">Terraria.ModLoader.TooltipLine.isModifierBad</a>, <a class="el" href="_tooltip_line_8cs_source.html#l00035">Terraria.ModLoader.TooltipLine.overrideColor</a>, and <a class="el" href="_tooltip_line_8cs_source.html#l00023">Terraria.ModLoader.TooltipLine.text</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                                                                             : base(parent.mod, parent.Name, parent.text)</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6">isModifier</a> = parent.isModifier;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37">isModifierBad</a> = parent.isModifierBad;</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a3c1aa3fc5a7fd81e2a6150a1b1943dfc">overrideColor</a> = parent.overrideColor;</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7">oneDropLogo</a> = parent.oneDropLogo;</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8">text</a> = parent.text;</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">index</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">index</a>;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a11d4b0a9943ddecedb4cf874c7744ac8">OriginalX</a> = x;</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aba2e0f62ff4f151d050e43a7e1057739">OriginalY</a> = y;</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">color</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">color</a>;</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a11d4b0a9943ddecedb4cf874c7744ac8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a11d4b0a9943ddecedb4cf874c7744ac8">Terraria.ModLoader.DrawableTooltipLine.OriginalX</a></div><div class="ttdeci">int OriginalX</div><div class="ttdoc">The X position where the tooltip would be drawn that is not adjusted by mods. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00038">DrawableTooltipLine.cs:38</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a7b144755d23bcddbfc52210385710f37"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37">Terraria.ModLoader.DrawableTooltipLine.isModifierBad</a></div><div class="ttdeci">new readonly bool isModifierBad</div><div class="ttdoc">If isModifier is true, this determines whether the tooltip is colored green or red. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00031">DrawableTooltipLine.cs:31</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_aba2e0f62ff4f151d050e43a7e1057739"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aba2e0f62ff4f151d050e43a7e1057739">Terraria.ModLoader.DrawableTooltipLine.OriginalY</a></div><div class="ttdeci">int OriginalY</div><div class="ttdoc">The Y position where the tooltip would be drawn that is not adjusted by mods. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00048">DrawableTooltipLine.cs:48</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a3c1aa3fc5a7fd81e2a6150a1b1943dfc"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a3c1aa3fc5a7fd81e2a6150a1b1943dfc">Terraria.ModLoader.DrawableTooltipLine.overrideColor</a></div><div class="ttdeci">new Color overrideColor</div><div class="ttdoc">If the tooltip line&amp;#39;s color was overridden this will hold that color, it will be null otherwise ...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00067">DrawableTooltipLine.cs:67</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a78362ca6b9bc8bae8378b651a65322b8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8">Terraria.ModLoader.DrawableTooltipLine.text</a></div><div class="ttdeci">new readonly string text</div><div class="ttdoc">The text of this tooltip. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00019">DrawableTooltipLine.cs:19</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a6dd9e7ed10217a5f9a17f8b84a70e72f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">Terraria.ModLoader.DrawableTooltipLine.color</a></div><div class="ttdeci">Color color</div><div class="ttdoc">The color the tooltip would be drawn in </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00063">DrawableTooltipLine.cs:63</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a744e18254de99adea41f1c75e6ae3bf6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6">Terraria.ModLoader.DrawableTooltipLine.isModifier</a></div><div class="ttdeci">new readonly bool isModifier</div><div class="ttdoc">Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colore...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00027">DrawableTooltipLine.cs:27</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_ad64664af7c0989aa05d0a67425744dd7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7">Terraria.ModLoader.DrawableTooltipLine.oneDropLogo</a></div><div class="ttdeci">new readonly bool oneDropLogo</div><div class="ttdoc">Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00071">DrawableTooltipLine.cs:71</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a91f4dbe5ede1242c5cf5b7a9764ed832"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">Terraria.ModLoader.DrawableTooltipLine.index</a></div><div class="ttdeci">readonly int index</div><div class="ttdoc">The index of the tooltip in the array </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00023">DrawableTooltipLine.cs:23</a></div></div>
+<p>References <a class="el" href="_tooltip_line_8cs_source.html#l00025">Terraria.ModLoader.TooltipLine.isModifier</a>, <a class="el" href="_tooltip_line_8cs_source.html#l00029">Terraria.ModLoader.TooltipLine.isModifierBad</a>, <a class="el" href="_tooltip_line_8cs_source.html#l00033">Terraria.ModLoader.TooltipLine.overrideColor</a>, and <a class="el" href="_tooltip_line_8cs_source.html#l00021">Terraria.ModLoader.TooltipLine.text</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                                                                             : base(parent.mod, parent.Name, parent.text) {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6">isModifier</a> = parent.isModifier;</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37">isModifierBad</a> = parent.isModifierBad;</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a3c1aa3fc5a7fd81e2a6150a1b1943dfc">overrideColor</a> = parent.overrideColor;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7">oneDropLogo</a> = parent.oneDropLogo;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8">text</a> = parent.text;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">index</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">index</a>;</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a11d4b0a9943ddecedb4cf874c7744ac8">OriginalX</a> = x;</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aba2e0f62ff4f151d050e43a7e1057739">OriginalY</a> = y;</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">color</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">color</a>;</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a11d4b0a9943ddecedb4cf874c7744ac8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a11d4b0a9943ddecedb4cf874c7744ac8">Terraria.ModLoader.DrawableTooltipLine.OriginalX</a></div><div class="ttdeci">int OriginalX</div><div class="ttdoc">The X position where the tooltip would be drawn that is not adjusted by mods. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00036">DrawableTooltipLine.cs:36</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a7b144755d23bcddbfc52210385710f37"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37">Terraria.ModLoader.DrawableTooltipLine.isModifierBad</a></div><div class="ttdeci">new readonly bool isModifierBad</div><div class="ttdoc">If isModifier is true, this determines whether the tooltip is colored green or red. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00030">DrawableTooltipLine.cs:30</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_aba2e0f62ff4f151d050e43a7e1057739"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aba2e0f62ff4f151d050e43a7e1057739">Terraria.ModLoader.DrawableTooltipLine.OriginalY</a></div><div class="ttdeci">int OriginalY</div><div class="ttdoc">The Y position where the tooltip would be drawn that is not adjusted by mods. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00045">DrawableTooltipLine.cs:45</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a3c1aa3fc5a7fd81e2a6150a1b1943dfc"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a3c1aa3fc5a7fd81e2a6150a1b1943dfc">Terraria.ModLoader.DrawableTooltipLine.overrideColor</a></div><div class="ttdeci">new Color overrideColor</div><div class="ttdoc">If the tooltip line&amp;#39;s color was overridden this will hold that color, it will be null otherwise ...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00064">DrawableTooltipLine.cs:64</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a78362ca6b9bc8bae8378b651a65322b8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a78362ca6b9bc8bae8378b651a65322b8">Terraria.ModLoader.DrawableTooltipLine.text</a></div><div class="ttdeci">new readonly string text</div><div class="ttdoc">The text of this tooltip. </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00018">DrawableTooltipLine.cs:18</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a6dd9e7ed10217a5f9a17f8b84a70e72f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a6dd9e7ed10217a5f9a17f8b84a70e72f">Terraria.ModLoader.DrawableTooltipLine.color</a></div><div class="ttdeci">Color color</div><div class="ttdoc">The color the tooltip would be drawn in </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00060">DrawableTooltipLine.cs:60</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a744e18254de99adea41f1c75e6ae3bf6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6">Terraria.ModLoader.DrawableTooltipLine.isModifier</a></div><div class="ttdeci">new readonly bool isModifier</div><div class="ttdoc">Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colore...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00026">DrawableTooltipLine.cs:26</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_ad64664af7c0989aa05d0a67425744dd7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ad64664af7c0989aa05d0a67425744dd7">Terraria.ModLoader.DrawableTooltipLine.oneDropLogo</a></div><div class="ttdeci">new readonly bool oneDropLogo</div><div class="ttdoc">Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty...</div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00068">DrawableTooltipLine.cs:68</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line_html_a91f4dbe5ede1242c5cf5b7a9764ed832"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832">Terraria.ModLoader.DrawableTooltipLine.index</a></div><div class="ttdeci">readonly int index</div><div class="ttdoc">The index of the tooltip in the array </div><div class="ttdef"><b>Definition:</b> <a href="_drawable_tooltip_line_8cs_source.html#l00022">DrawableTooltipLine.cs:22</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -326,7 +326,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00033">33</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00032">32</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00043">43</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00041">41</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -364,7 +364,7 @@ Private Attributes</h2></td></tr>
 
 <p>The baseScale of this tooltip. When drawing the One Drop logo the scale is calculated by (baseScale.X + baseScale.Y) / 2 </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00087">87</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00084">84</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -380,7 +380,7 @@ Private Attributes</h2></td></tr>
 
 <p>The font this tooltip would be drawn with </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00075">75</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00072">72</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -396,7 +396,7 @@ Private Attributes</h2></td></tr>
 
 <p>The index of the tooltip in the array </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00023">23</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00022">22</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -412,7 +412,7 @@ Private Attributes</h2></td></tr>
 
 <p>Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00027">27</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00026">26</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -428,7 +428,7 @@ Private Attributes</h2></td></tr>
 
 <p>If isModifier is true, this determines whether the tooltip is colored green or red. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00031">31</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00030">30</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -442,7 +442,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00089">89</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00086">86</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -458,7 +458,7 @@ Private Attributes</h2></td></tr>
 
 <p>Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00071">71</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00068">68</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -474,7 +474,7 @@ Private Attributes</h2></td></tr>
 
 <p>The origin of this tooltip </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00083">83</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00080">80</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -490,7 +490,7 @@ Private Attributes</h2></td></tr>
 
 <p>The rotation this tooltip would be drawn in </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00079">79</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00076">76</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -504,7 +504,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00090">90</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00087">87</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -520,7 +520,7 @@ Private Attributes</h2></td></tr>
 
 <p>The text of this tooltip. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00019">19</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00018">18</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -536,7 +536,7 @@ Private Attributes</h2></td></tr>
 
 <p>The X position where the tooltip would be drawn. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00055">55</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00052">52</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ Private Attributes</h2></td></tr>
 
 <p>The Y position where the tooltip would be drawn. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00059">59</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00056">56</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -577,7 +577,7 @@ Private Attributes</h2></td></tr>
 
 <p>The color the tooltip would be drawn in </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00063">63</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00060">60</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -601,7 +601,7 @@ Private Attributes</h2></td></tr>
 
 <p>The X position where the tooltip would be drawn that is not adjusted by mods. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00038">38</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00036">36</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -625,7 +625,7 @@ Private Attributes</h2></td></tr>
 
 <p>The Y position where the tooltip would be drawn that is not adjusted by mods. </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00048">48</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00045">45</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>
@@ -649,7 +649,7 @@ Private Attributes</h2></td></tr>
 
 <p>If the tooltip line's color was overridden this will hold that color, it will be null otherwise </p>
 
-<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00067">67</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
+<p>Definition at line <a class="el" href="_drawable_tooltip_line_8cs_source.html#l00064">64</a> of file <a class="el" href="_drawable_tooltip_line_8cs_source.html">DrawableTooltipLine.cs</a>.</p>
 
 </div>
 </div>

@@ -36,7 +36,7 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#a18c67843a4f6b151c530c1165991ec87",
 "class_terraria_1_1_mod_loader_1_1_mod_net.html#ab82781355566bc2feb1334751ee47f67",
 "class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2d7b38e3d7eb90b24f7c295fac0719e7",
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d8be5388cea8c0fd0e3f482dac7e314",
+"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8",
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa0afb242594846f868272ffa7887860e",
 "class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad3e59f46ce2085f49c2f8943d4a53daa",
 "class_terraria_1_1_mod_loader_1_1_topo_sort.html",

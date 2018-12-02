@@ -118,8 +118,8 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "loaded", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a25dec7b693a6ac7c8e7690bf9447b179", null ],
     [ "nextTile", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a626159920dd6f528d488bda3483b9d60", null ],
     [ "TileCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03", null ],
-    [ "vanillaChairCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a398102e5d586ccc51bf7dbac4c7bef87", null ],
-    [ "vanillaDoorCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a3475331d8d31712fd1378835a92bbd4a", null ],
-    [ "vanillaTableCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae4d7b80736f9ce955f03451605ee92d8", null ],
-    [ "vanillaTorchCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#afeba5ca9f6d25d0a0eb1b1d4816587f2", null ]
+    [ "vanillaChairCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0c08775280baefdce0e340cd96a7ea61", null ],
+    [ "vanillaDoorCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#af08d0294b2e94ae04eed82ce689f35fc", null ],
+    [ "vanillaTableCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad5cf2f5eba733870652bca9def367bc6", null ],
+    [ "vanillaTorchCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2d47a0e5457d54b4a6c893c982dbb1ca", null ]
 ];

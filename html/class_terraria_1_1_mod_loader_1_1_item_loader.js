@@ -165,7 +165,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "HookModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a39360ea2329869fbb8d448ee35d69bd8", null ],
     [ "HookModifyTooltips", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ae5e1e9826bdf9c6f6f2902eb09cef4ff", null ],
     [ "HookNeedsSaving", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a48482fc3af9b37e35089a5188840a74c", null ],
-    [ "HookOnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_item_loader.html#acf2a186d1125700806fbe47f9083adaf", null ],
+    [ "HookOnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4b4ba7fff8d2e4fe70592445691398c6", null ],
     [ "HookOnConsumeItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b8247d5e52d1e38f7b2019fc7a24f1a", null ],
     [ "HookOnCraft", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ae29eaaaf026b187bbefa625658e2f278", null ],
     [ "HookOnHitNPC", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a644084e5d29884bc4f5829f3dc85d6aa", null ],

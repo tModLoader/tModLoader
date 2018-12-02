@@ -153,7 +153,7 @@ Static Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This serves as the central place from which mounts are stored and mount-related functions are carried out. </p>
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00012">12</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00011">11</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="afc42f4be821d79f888eaee667dc57faa"></a>
 <div class="memitem">
@@ -203,8 +203,8 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00126">126</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        {</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount._data))</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            {</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                mount._data.modMountData.AimAbility(player, mousePosition);</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            }</div><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00107">107</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                                                                         {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount._data)) {</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                mount._data.modMountData.AimAbility(player, mousePosition);</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            }</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a09e19c4faa1e5f105a6f282abaf9da6f"></a>
@@ -238,10 +238,10 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Null if not found, otherwise the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> associated with the mount.</dd></dl>
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00022">22</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00021">21</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_net_8cs_source.html#l00037">Terraria.ModLoader.ModNet.AllowVanillaClients</a>.</p>
-<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordflow">if</span> (mountDatas.ContainsKey(type))</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            {</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                <span class="keywordflow">return</span> mountDatas[type];</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            }</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div></div><!-- fragment -->
+<p>References <a class="el" href="_mod_net_8cs_source.html#l00036">Terraria.ModLoader.ModNet.AllowVanillaClients</a>.</p>
+<div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                                                      {</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordflow">if</span> (mountDatas.ContainsKey(type)) {</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                <span class="keywordflow">return</span> mountDatas[type];</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            }</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1058b451a06a8fe69dffba20d04365de"></a>
@@ -282,8 +282,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00065">65</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount))</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            {</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            }</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00058">58</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                                                                                  {</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount)) {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a33ba103c65f402daebf0ce44584a8fda"></a>
@@ -324,8 +324,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00073">73</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount))</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00064">64</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                                                                                  {</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(mount)) {</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aec26f3148666a7d5b23a9e98a91bfabc"></a>
@@ -376,8 +376,8 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00113">113</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(player.mount._data))</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            {</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            }</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00096">96</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                                                                           {</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">if</span> (IsModMountData(player.mount._data)) {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -399,7 +399,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00014">14</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mount_loader_8cs_source.html#l00013">13</a> of file <a class="el" href="_mount_loader_8cs_source.html">MountLoader.cs</a>.</p>
 
 </div>
 </div>

@@ -198,7 +198,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class serves as a place for you to define a new buff and how that buff behaves. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00013">13</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00006">6</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a0020216bc22da53455ef36f778e50804"></a>
 <div class="memitem">
@@ -234,10 +234,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to automatically load a buff instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b" title="Adds a type of buff to the game with the specified internal name and texture. ">Mod.AddBuff</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name and texture is initialized to the namespace and overriding class name with periods replaced with slashes. Use this method to either force or stop an autoload, and to change the default display name and texture path. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00069">69</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00638">Terraria.ModLoader.Mod.AutoloadBuff()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4909f71cd9595366084b1d6352bbeee7">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_buff_html_a4909f71cd9595366084b1d6352bbeee7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4909f71cd9595366084b1d6352bbeee7">Terraria.ModLoader.ModBuff.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod that added this ModBuff. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_buff_8cs_source.html#l00019">ModBuff.cs:19</a></div></div>
+<p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00541">Terraria.ModLoader.Mod.AutoloadBuff()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                                          {</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4909f71cd9595366084b1d6352bbeee7">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_buff_html_a4909f71cd9595366084b1d6352bbeee7"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4909f71cd9595366084b1d6352bbeee7">Terraria.ModLoader.ModBuff.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod that added this ModBuff. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_buff_8cs_source.html#l00011">ModBuff.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00049">Mod.cs:49</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
@@ -289,8 +289,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00104">104</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                                                        {</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a57b7b53ef4d85b6f87f784d1184b02f6"></a>
@@ -333,8 +333,8 @@ Properties</h2></td></tr>
 
 <p>Allows to you make special things happen when adding this buff to a player when the player already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00106">106</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                                                            {</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a89e918dc2fb97b897d3fdb396c4a1d71"></a>
@@ -377,8 +377,8 @@ Properties</h2></td></tr>
 
 <p>Allows to you make special things happen when adding this buff to an NPC when the NPC already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00114">114</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        {</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00097">97</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                                                      {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afea8807b0b4d89785177f30965821fe2"></a>
@@ -418,10 +418,10 @@ Main.lightPet[Type] = true; </li>
 </ul>
 </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00085">85</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00072">72</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00155">Terraria.ModLoader.Mod.LoadEffect()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00136">Terraria.ModLoader.Mod.LoadEffect()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                          {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -470,8 +470,8 @@ Main.lightPet[Type] = true; </li>
 
 <p>Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00078">78</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                                                     {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1f800c998911abec827d1fa11140ac16"></a>
@@ -508,8 +508,8 @@ Main.lightPet[Type] = true; </li>
 
 <p>Allows you to make this buff give certain effects to the given NPC. If you remove the buff from the NPC, make sure to decrement the buffIndex parameter by 1. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00099">99</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00084">84</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                                               {</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -525,7 +525,7 @@ Main.lightPet[Type] = true; </li>
 
 <p>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00064">64</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00052">52</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
 </div>
 </div>
@@ -541,7 +541,7 @@ Main.lightPet[Type] = true; </li>
 
 <p>If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode. Defaults to false.</p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00062">62</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00050">50</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
 </div>
 </div>
@@ -566,9 +566,9 @@ Main.lightPet[Type] = true; </li>
 
 <p>The translations of this buff's description. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00055">55</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00043">43</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00923">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00351">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00921">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00342">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -592,9 +592,9 @@ Main.lightPet[Type] = true; </li>
 
 <p>The translations of this buff's display name. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00046">46</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00035">35</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00923">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00351">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00921">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00342">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -618,9 +618,9 @@ Main.lightPet[Type] = true; </li>
 
 <p>The mod that added this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_buff.html" title="This class serves as a place for you to define a new buff and how that buff behaves. ">ModBuff</a>. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00019">19</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00011">11</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00923">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00638">Terraria.ModLoader.Mod.AutoloadBuff()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00921">Terraria.ModLoader.Mod.AddBuff()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00541">Terraria.ModLoader.Mod.AutoloadBuff()</a>.</p>
 
 </div>
 </div>
@@ -644,9 +644,9 @@ Main.lightPet[Type] = true; </li>
 
 <p>The internal name of this type of buff. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00028">28</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00019">19</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00923">Terraria.ModLoader.Mod.AddBuff()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00921">Terraria.ModLoader.Mod.AddBuff()</a>.</p>
 
 </div>
 </div>
@@ -670,9 +670,9 @@ Main.lightPet[Type] = true; </li>
 
 <p>The buff id of this buff. </p>
 
-<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_buff_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_buff_8cs_source.html">ModBuff.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00923">Terraria.ModLoader.Mod.AddBuff()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00155">Terraria.ModLoader.Mod.LoadEffect()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00351">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00921">Terraria.ModLoader.Mod.AddBuff()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00136">Terraria.ModLoader.Mod.LoadEffect()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00342">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
