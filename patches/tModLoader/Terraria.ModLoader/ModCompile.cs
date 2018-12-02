@@ -117,7 +117,7 @@ namespace Terraria.ModLoader
 				return true;
 			}
 
-			referenceAssembliesPath = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+			referenceAssembliesPath = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + @"Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
 			if (Directory.Exists(referenceAssembliesPath)) {
 				return true;
 			}
