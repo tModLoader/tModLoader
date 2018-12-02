@@ -6,13 +6,11 @@ namespace ExampleMod.Items
 {
 	public class ExampleQuestFish : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Upside-down Fish");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.questItem = true;
 			item.maxStack = 1;
 			item.width = 26;
@@ -21,18 +19,15 @@ namespace ExampleMod.Items
 			item.rare = ItemRarityID.Quest;
 		}
 
-		public override bool IsQuestFish()
-		{
+		public override bool IsQuestFish() {
 			return true;
 		}
 
-		public override bool IsAnglerQuestAvailable()
-		{
+		public override bool IsAnglerQuestAvailable() {
 			return Main.hardMode;
 		}
 
-		public override void AnglerQuestChat(ref string description, ref string catchLocation)
-		{
+		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
 			description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
 			catchLocation = "Caught anywhere while standing upside-down.";
 		}

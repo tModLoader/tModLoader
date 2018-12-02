@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -11,13 +11,11 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		private int timer = 0;
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Crystal of Cleansing");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 48;
 			projectile.height = 48;
 			projectile.penetrate = -1;
@@ -27,32 +25,26 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.netImportant = true;
 		}
 
-		public override void SendExtraAI(BinaryWriter writer)
-		{
+		public override void SendExtraAI(BinaryWriter writer) {
 			writer.Write(projectile.localAI[0]);
 			writer.Write(projectile.localAI[1]);
 		}
 
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
+		public override void ReceiveExtraAI(BinaryReader reader) {
 			projectile.localAI[0] = reader.ReadSingle();
 			projectile.localAI[1] = reader.ReadSingle();
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			NPC center = Main.npc[(int)projectile.ai[0]];
-			if (!center.active || center.type != mod.NPCType("PuritySpirit"))
-			{
+			if (!center.active || center.type != mod.NPCType("PuritySpirit")) {
 				projectile.Kill();
 			}
-			if (timer < 120)
-			{
+			if (timer < 120) {
 				projectile.alpha = (120 - timer) * 255 / 120;
 				timer++;
 			}
-			else
-			{
+			else {
 				projectile.alpha = 0;
 				projectile.hostile = true;
 			}
@@ -63,44 +55,35 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			projectile.Center = center.Center + projectile.localAI[0] * new Vector2((float)Math.Cos(projectile.ai[1]), (float)Math.Sin(projectile.ai[1]));
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
-		{
-			for (int k = 0; k < Player.maxBuffs; k++)
-			{
-				if (target.buffType[k] > 0 && target.buffTime[k] > 0 && BuffLoader.CanBeCleared(target.buffType[k]) && Main.rand.NextBool())
-				{
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
+			for (int k = 0; k < Player.maxBuffs; k++) {
+				if (target.buffType[k] > 0 && target.buffTime[k] > 0 && BuffLoader.CanBeCleared(target.buffType[k]) && Main.rand.NextBool()) {
 					target.DelBuff(k);
 					k--;
 				}
 			}
 		}
 
-		public override Color? GetAlpha(Color lightColor)
-		{
+		public override Color? GetAlpha(Color lightColor) {
 			return Color.White * ((255 - projectile.alpha) / 255f);
 		}
 
-		public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
+		public override void PostDraw(SpriteBatch spriteBatch, Color lightColor) {
 			//Vector2 drawPos = projectile.position - Main.screenPosition;
 			//spriteBatch.Draw(mod.GetTexture("Projectiles/PuritySpirit/PureCrystalShield"), drawPos, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-			if (!projectile.hostile)
-			{
+			if (!projectile.hostile) {
 				return;
 			}
 			Vector2 drawPos = projectile.Center - Main.screenPosition;
 			Vector2 drawCenter = new Vector2(24f, 24f);
-			for (int k = 2; k <= 24; k += 2)
-			{
+			for (int k = 2; k <= 24; k += 2) {
 				float scale = 2f * k / 48f;
 				spriteBatch.Draw(mod.GetTexture("Projectiles/PuritySpirit/PureCrystalRing"), drawPos, null, Color.White * ShieldTransparency(k), 0f, drawCenter, scale, SpriteEffects.None, 0f);
 			}
 		}
 
-		private float ShieldTransparency(int radius)
-		{
-			switch (radius)
-			{
+		private float ShieldTransparency(int radius) {
+			switch (radius) {
 				case 24:
 					return 0.5f;
 				case 22:

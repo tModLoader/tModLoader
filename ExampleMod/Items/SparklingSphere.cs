@@ -6,13 +6,11 @@ namespace ExampleMod.Items
 {
 	public class SparklingSphere : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Hold to watch magic happen!");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.holdStyle = 4;
 			item.width = 40;
 			item.height = 40;
@@ -20,59 +18,48 @@ namespace ExampleMod.Items
 			item.rare = 2;
 		}
 
-		public override void HoldStyle(Player player)
-		{
+		public override void HoldStyle(Player player) {
 			Vector2 position = GetLightPosition(player);
-			if ((position.Y >= player.Center.Y) == (player.gravDir == 1))
-			{
+			if ((position.Y >= player.Center.Y) == (player.gravDir == 1)) {
 				player.itemLocation.X = player.Center.X + 6f * player.direction;
 				player.itemLocation.Y = player.position.Y + 21f + 23f * player.gravDir + player.mount.PlayerOffsetHitbox;
 			}
-			else
-			{
+			else {
 				player.itemLocation.X = player.Center.X;
 				player.itemLocation.Y = player.position.Y + 21f - 3f * player.gravDir + player.mount.PlayerOffsetHitbox;
 			}
 			player.itemRotation = 0f;
 		}
 
-		public override bool HoldItemFrame(Player player)
-		{
+		public override bool HoldItemFrame(Player player) {
 			Vector2 position = GetLightPosition(player);
-			if ((position.Y >= player.Center.Y) == (player.gravDir == 1))
-			{
+			if ((position.Y >= player.Center.Y) == (player.gravDir == 1)) {
 				player.bodyFrame.Y = player.bodyFrame.Height * 3;
 			}
-			else
-			{
+			else {
 				player.bodyFrame.Y = player.bodyFrame.Height * 2;
 			}
 			return true;
 		}
 
-		public override void HoldItem(Player player)
-		{
+		public override void HoldItem(Player player) {
 			Vector2 position = GetLightPosition(player) - new Vector2(20f, 20f);
-			if (Main.rand.NextBool(10))
-			{
+			if (Main.rand.NextBool(10)) {
 				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
 			}
-			if (Main.rand.NextBool(3))
-			{
+			if (Main.rand.NextBool(3)) {
 				Dust.NewDust(position, 40, 40, mod.DustType("Sparkle"));
 			}
 		}
 
-		private Vector2 GetLightPosition(Player player)
-		{
+		private Vector2 GetLightPosition(Player player) {
 			Vector2 position = Main.screenPosition;
 			position.X += Main.mouseX;
 			position.Y += player.gravDir == 1 ? Main.mouseY : Main.screenHeight - Main.mouseY;
 			return position;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.SetResult(this);

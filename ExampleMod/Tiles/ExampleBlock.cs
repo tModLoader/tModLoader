@@ -6,8 +6,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleBlock : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileSolid[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
@@ -18,25 +17,21 @@ namespace ExampleMod.Tiles
 			SetModTree(new ExampleTree());
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
 		}
 
-		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-		{
+		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			r = 0.5f;
 			g = 0.5f;
 			b = 0.5f;
 		}
 
-		public override void ChangeWaterfallStyle(ref int style)
-		{
+		public override void ChangeWaterfallStyle(ref int style) {
 			style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
 		}
 
-		public override int SaplingGrowthType(ref int style)
-		{
+		public override int SaplingGrowthType(ref int style) {
 			style = 0;
 			return mod.TileType("ExampleSapling");
 		}

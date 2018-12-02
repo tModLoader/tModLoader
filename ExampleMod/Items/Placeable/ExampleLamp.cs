@@ -5,8 +5,7 @@ namespace ExampleMod.Items.Placeable
 {
 	class ExampleLamp : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = 1;
 			item.useTurn = true;
 			item.useAnimation = 15;
@@ -20,8 +19,7 @@ namespace ExampleMod.Items.Placeable
 			item.value = 500;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.WoodenChair);
 			recipe.AddIngredient(mod.ItemType<ExampleBlock>(), 10);

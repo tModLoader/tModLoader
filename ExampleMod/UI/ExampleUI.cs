@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
 using System;
-using Terraria.ID;
 using System.Linq;
+using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace ExampleMod.UI
 {
@@ -23,8 +22,7 @@ namespace ExampleMod.UI
 		// In OnInitialize, we place various UIElements onto our UIState (this class).
 		// UIState classes have width and height equal to the full screen, because of this, usually we first define a UIElement that will act as the container for our UI.
 		// We then place various other UIElement onto that container UIElement positioned relative to the container UIElement.
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			// Here we define our container UIElement. In DragableUIPanel.cs, you can see that DragableUIPanel is a UIPanel with a couple added features.
 			coinCounterPanel = new DragableUIPanel();
 			coinCounterPanel.SetPadding(0);
@@ -82,27 +80,23 @@ namespace ExampleMod.UI
 			// Since coinCounterPanel will move, this proper organization will move playButton, closeButton, and moneyDiplay properly when coinCounterPanel moves.
 		}
 
-		private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			moneyDiplay.ResetCoins();
 		}
 
-		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			visible = false;
 		}
 
-		private void ExampleButtonClicked(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ExampleButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
 			var examplePlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 			examplePlayer.nonStopParty = !examplePlayer.nonStopParty;
 			exampleButton.hoverText = "SendClientChanges Example: Non-Stop Party " + (examplePlayer.nonStopParty ? "On" : "Off");
 		}
 
-		public void updateValue(int pickedUp)
-		{
+		public void updateValue(int pickedUp) {
 			moneyDiplay.coins += pickedUp;
 			moneyDiplay.addCPM(pickedUp);
 		}
@@ -112,13 +106,11 @@ namespace ExampleMod.UI
 	{
 		public long coins;
 
-		public UIMoneyDisplay()
-		{
+		public UIMoneyDisplay() {
 			Width.Set(100, 0f);
 			Height.Set(40, 0f);
 
-			for (int i = 0; i < 60; i++)
-			{
+			for (int i = 0; i < 60; i++) {
 				coinBins[i] = -1;
 			}
 		}
@@ -136,37 +128,31 @@ namespace ExampleMod.UI
 		int[] coinBins = new int[60];
 		int coinBinsIndex;
 
-		public void addCPM(int coins)
-		{
+		public void addCPM(int coins) {
 			int second = DateTime.Now.Second;
-			if (second != coinBinsIndex)
-			{
+			if (second != coinBinsIndex) {
 				coinBinsIndex = second;
 				coinBins[coinBinsIndex] = 0;
 			}
 			coinBins[coinBinsIndex] += coins;
 		}
 
-		public int getCPM()
-		{
+		public int getCPM() {
 			int second = DateTime.Now.Second;
-			if (second != coinBinsIndex)
-			{
+			if (second != coinBinsIndex) {
 				coinBinsIndex = second;
 				coinBins[coinBinsIndex] = 0;
 			}
 
 			long sum = coinBins.Sum(a => a > -1 ? a : 0);
 			int count = coinBins.Count(a => a > -1);
-			if(count == 0)
-			{
+			if (count == 0) {
 				return 0;
 			}
 			return (int)((sum * 60f) / count);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 
@@ -174,16 +160,14 @@ namespace ExampleMod.UI
 			float shopy = innerDimensions.Y;
 
 			int[] coinsArray = Utils.CoinsSplit(coins);
-			for (int j = 0; j < 4; j++)
-			{
+			for (int j = 0; j < 4; j++) {
 				int num = (j == 0 && coinsArray[3 - j] > 99) ? -6 : 0;
 				spriteBatch.Draw(Main.itemTexture[74 - j], new Vector2(shopx + 11f + (float)(24 * j), shopy /*+ 75f*/), null, Color.White, 0f, Main.itemTexture[74 - j].Size() / 2f, 1f, SpriteEffects.None, 0f);
 				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontItemStack, coinsArray[3 - j].ToString(), shopx + (float)(24 * j) + (float)num, shopy/* + 75f*/, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
 			}
 
 			coinsArray = Utils.CoinsSplit(getCPM());
-			for (int j = 0; j < 4; j++)
-			{
+			for (int j = 0; j < 4; j++) {
 				int num = (j == 0 && coinsArray[3 - j] > 99) ? -6 : 0;
 				spriteBatch.Draw(Main.itemTexture[74 - j], new Vector2(shopx + 11f + (float)(24 * j), shopy + 25f), null, Color.White, 0f, Main.itemTexture[74 - j].Size() / 2f, 1f, SpriteEffects.None, 0f);
 				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontItemStack, coinsArray[3 - j].ToString(), shopx + (float)(24 * j) + (float)num, shopy + 25f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
@@ -191,11 +175,9 @@ namespace ExampleMod.UI
 			Utils.DrawBorderStringFourWay(spriteBatch, /*ExampleMod.exampleFont*/ Main.fontItemStack, "CPM", shopx + (float)(24 * 4), shopy + 25f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
 		}
 
-		internal void ResetCoins()
-		{
+		internal void ResetCoins() {
 			coins = 0;
-			for (int i = 0; i < 60; i++)
-			{
+			for (int i = 0; i < 60; i++) {
 				coinBins[i] = -1;
 			}
 		}
@@ -203,24 +185,19 @@ namespace ExampleMod.UI
 
 	public class MoneyCounterGlobalItem : GlobalItem
 	{
-		public override bool OnPickup(Item item, Player player)
-		{
-			if (item.type == ItemID.CopperCoin)
-			{
+		public override bool OnPickup(Item item, Player player) {
+			if (item.type == ItemID.CopperCoin) {
 				ExampleMod.Instance.ExampleUI.updateValue(item.stack);
 				// We can cast mod to ExampleMod or just utilize ExampleMod.instance.
 				// (mod as ExampleMod).exampleUI.updateValue(item.stack);
 			}
-			else if (item.type == ItemID.SilverCoin)
-			{
+			else if (item.type == ItemID.SilverCoin) {
 				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 100);
 			}
-			else if (item.type == ItemID.GoldCoin)
-			{
+			else if (item.type == ItemID.GoldCoin) {
 				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 10000);
 			}
-			else if (item.type == ItemID.PlatinumCoin)
-			{
+			else if (item.type == ItemID.PlatinumCoin) {
 				ExampleMod.Instance.ExampleUI.updateValue(item.stack * 1000000);
 			}
 			return base.OnPickup(item, player);

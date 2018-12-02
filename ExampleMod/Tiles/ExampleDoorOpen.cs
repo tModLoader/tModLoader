@@ -10,8 +10,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleDoorOpen : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolid[Type] = false;
 			Main.tileLavaDeath[Type] = true;
@@ -67,23 +66,19 @@ namespace ExampleMod.Tiles
 			closeDoorID = mod.TileType("ExampleDoorClosed");
 		}
 
-		public override bool HasSmartInteract()
-		{
+		public override bool HasSmartInteract() {
 			return true;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType("ExampleDoor"));
 		}
 
-		public override void MouseOver(int i, int j)
-		{
+		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;

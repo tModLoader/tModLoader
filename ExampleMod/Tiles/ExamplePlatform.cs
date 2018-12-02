@@ -8,8 +8,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExamplePlatform : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolidTop[Type] = true;
@@ -18,7 +17,7 @@ namespace ExampleMod.Tiles
 			Main.tileTable[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.Platforms[Type] = true;
-			TileObjectData.newTile.CoordinateHeights = new int[]{ 16 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -32,16 +31,14 @@ namespace ExampleMod.Tiles
 			dustType = mod.DustType("Sparkle");
 			drop = mod.ItemType("ExamplePlatform");
 			disableSmartCursor = true;
-			adjTiles = new int[]{ TileID.Platforms };
+			adjTiles = new int[] { TileID.Platforms };
 		}
 
-		public override void PostSetDefaults()
-		{
+		public override void PostSetDefaults() {
 			Main.tileNoSunLight[Type] = false;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
 		}
 	}

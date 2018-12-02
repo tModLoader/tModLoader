@@ -16,12 +16,11 @@ namespace ExampleMod.UI
 	class VanillaItemSlotWrapper : UIElement
 	{
 		internal Item item;
-		int context;
-		float scale;
-		internal Func<Item, bool> validItem; 
+		readonly int context;
+		readonly float scale;
+		internal Func<Item, bool> validItem;
 
-		public VanillaItemSlotWrapper(int context = ItemSlot.Context.BankItem, float scale = 1f)
-		{
+		public VanillaItemSlotWrapper(int context = ItemSlot.Context.BankItem, float scale = 1f) {
 			this.context = context;
 			this.scale = scale;
 			item = new Item();
@@ -31,17 +30,14 @@ namespace ExampleMod.UI
 			Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			float oldScale = Main.inventoryScale;
 			Main.inventoryScale = scale;
 			Rectangle rectangle = GetDimensions().ToRectangle();
 
-			if (ContainsPoint(Main.MouseScreen) && !PlayerInput.IgnoreMouseInterface)
-			{
+			if (ContainsPoint(Main.MouseScreen) && !PlayerInput.IgnoreMouseInterface) {
 				Main.LocalPlayer.mouseInterface = true;
-				if (validItem == null || validItem(Main.mouseItem))
-				{
+				if (validItem == null || validItem(Main.mouseItem)) {
 					// Handle handles all the click and hover actions based on the context.
 					ItemSlot.Handle(ref item, context);
 				}

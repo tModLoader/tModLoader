@@ -4,8 +4,7 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleHerbSeeds : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.autoReuse = true;
 			item.useTurn = true;
 			item.useStyle = 1;
@@ -20,8 +19,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType<Tiles.ExampleHerb>();
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType<ExampleBlock>(), 1);
 			recipe.SetResult(this);

@@ -5,50 +5,44 @@ namespace ExampleMod.Commands
 {
 	public class ItemCommand : ModCommand
 	{
-		public override CommandType Type
-		{
+		public override CommandType Type {
 			get { return CommandType.Chat; }
 		}
 
-		public override string Command
-		{
+		public override string Command {
 			get { return "item"; }
 		}
 
-		public override string Usage
-		{
+		public override string Usage {
 			get { return "/item <type|name> [stack]\nReplace spaces in item name with underscores"; }
 		}
 
-		public override string Description 
-		{
+		public override string Description {
 			get { return "Spawn an item"; }
 		}
 
-		public override void Action(CommandCaller caller, string input, string[] args)
-		{
+		public override void Action(CommandCaller caller, string input, string[] args) {
 			int type;
-			if (!int.TryParse(args[0], out type))
-			{
+			if (!int.TryParse(args[0], out type)) {
 				var name = args[0].Replace("_", " ");
 				var item = new Item();
-				for (var k = 0; k < ItemLoader.ItemCount; k++)
-				{
+				for (var k = 0; k < ItemLoader.ItemCount; k++) {
 					item.SetDefaults(k, true);
-					if (name == Lang.GetItemNameValue(k))
-					{
+					if (name == Lang.GetItemNameValue(k)) {
 						type = k;
 						break;
 					}
 				}
 
-				if (type == 0)
-					throw new UsageException("Unknown item: "+ name);
+				if (type == 0) {
+					throw new UsageException("Unknown item: " + name);
+				}
 			}
 
 			int stack = 1;
-			if (args.Length >= 2)
+			if (args.Length >= 2) {
 				stack = int.Parse(args[1]);
+			}
 
 			caller.Player.QuickSpawnItem(type, stack);
 		}

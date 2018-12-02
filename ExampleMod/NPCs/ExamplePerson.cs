@@ -1,9 +1,7 @@
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace ExampleMod.NPCs
 {
@@ -11,30 +9,24 @@ namespace ExampleMod.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
-		public override string Texture
-		{
-			get
-			{
+		public override string Texture {
+			get {
 				return "ExampleMod/NPCs/ExamplePerson";
 			}
 		}
 
-		public override string[] AltTextures
-		{
-			get
-			{
+		public override string[] AltTextures {
+			get {
 				return new string[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
 			}
 		}
 
-		public override bool Autoload(ref string name)
-		{
+		public override bool Autoload(ref string name) {
 			name = "Example Person";
 			return mod.Properties.Autoload;
 		}
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[npc.type] = 25;
@@ -47,8 +39,7 @@ namespace ExampleMod.NPCs
 			NPCID.Sets.HatOffsetY[npc.type] = 4;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			npc.townNPC = true;
 			npc.friendly = true;
 			npc.width = 18;
@@ -63,26 +54,19 @@ namespace ExampleMod.NPCs
 			animationType = NPCID.Guide;
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
-		{
+		public override void HitEffect(int hitDirection, double damage) {
 			int num = npc.life > 0 ? 1 : 5;
-			for (int k = 0; k < num; k++)
-			{
+			for (int k = 0; k < num; k++) {
 				Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Sparkle"));
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
-		{
-			for (int k = 0; k < 255; k++)
-			{
+		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
+			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
-				if (player.active)
-				{
-					for (int j = 0; j < player.inventory.Length; j++)
-					{
-						if (player.inventory[j].type == mod.ItemType("ExampleItem") || player.inventory[j].type == mod.ItemType("ExampleBlock"))
-						{
+				if (player.active) {
+					for (int j = 0; j < player.inventory.Length; j++) {
+						if (player.inventory[j].type == mod.ItemType("ExampleItem") || player.inventory[j].type == mod.ItemType("ExampleBlock")) {
 							return true;
 						}
 					}
@@ -91,20 +75,15 @@ namespace ExampleMod.NPCs
 			return false;
 		}
 
-		public override bool CheckConditions(int left, int right, int top, int bottom)
-		{
+		public override bool CheckConditions(int left, int right, int top, int bottom) {
 			int score = 0;
-			for (int x = left; x <= right; x++)
-			{
-				for (int y = top; y <= bottom; y++)
-				{
+			for (int x = left; x <= right; x++) {
+				for (int y = top; y <= bottom; y++) {
 					int type = Main.tile[x, y].type;
-					if (type == mod.TileType("ExampleBlock") || type == mod.TileType("ExampleChair") || type == mod.TileType("ExampleWorkbench") || type == mod.TileType("ExampleBed") || type == mod.TileType("ExampleDoorOpen") || type == mod.TileType("ExampleDoorClosed"))
-					{
+					if (type == mod.TileType("ExampleBlock") || type == mod.TileType("ExampleChair") || type == mod.TileType("ExampleWorkbench") || type == mod.TileType("ExampleBed") || type == mod.TileType("ExampleDoorOpen") || type == mod.TileType("ExampleDoorClosed")) {
 						score++;
 					}
-					if (Main.tile[x, y].wall == mod.WallType("ExampleWall"))
-					{
+					if (Main.tile[x, y].wall == mod.WallType("ExampleWall")) {
 						score++;
 					}
 				}
@@ -112,10 +91,8 @@ namespace ExampleMod.NPCs
 			return score >= (right - left) * (bottom - top) / 2;
 		}
 
-		public override string TownNPCName()
-		{
-			switch (WorldGen.genRand.Next(4))
-			{
+		public override string TownNPCName() {
+			switch (WorldGen.genRand.Next(4)) {
 				case 0:
 					return "Someone";
 				case 1:
@@ -127,8 +104,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override void FindFrame(int frameHeight)
-		{
+		public override void FindFrame(int frameHeight) {
 			/*npc.frame.Width = 40;
 			if (((int)Main.time / 10) % 2 == 0)
 			{
@@ -140,15 +116,12 @@ namespace ExampleMod.NPCs
 			}*/
 		}
 
-		public override string GetChat()
-		{
+		public override string GetChat() {
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.NextBool(4))
-			{
+			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
 				return "Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?";
 			}
-			switch (Main.rand.Next(3))
-			{
+			switch (Main.rand.Next(3)) {
 				case 0:
 					return "Sometimes I feel like I'm different from everyone else here.";
 				case 1:
@@ -179,20 +152,16 @@ namespace ExampleMod.NPCs
 		}
 		*/
 
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
+		public override void SetChatButtons(ref string button, ref string button2) {
 			button = Language.GetTextValue("LegacyInterface.28");
 			button2 = "Awesomeify";
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
-		{
-			if (firstButton)
-			{
+		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+			if (firstButton) {
 				shop = true;
 			}
-			else
-			{
+			else {
 				// If the 2nd button is pressed, open the inventory...
 				Main.playerInventory = true;
 				// remove the chat window...
@@ -203,8 +172,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot)
-		{
+		public override void SetupShop(Chest shop, ref int nextSlot) {
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleItem"));
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("EquipMaterial"));
@@ -225,70 +193,58 @@ namespace ExampleMod.NPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHamaxe"));
 			nextSlot++;
-			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce))
-			{
+			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHealingPotion"));
 				nextSlot++;
 			}
-			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample)
-			{
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
 				nextSlot++;
 			}
-			if (Main.moonPhase < 2)
-			{
+			if (Main.moonPhase < 2) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleSword"));
 				nextSlot++;
 			}
-			else if (Main.moonPhase < 4)
-			{
+			else if (Main.moonPhase < 4) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleGun"));
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleBullet"));
 				nextSlot++;
 			}
-			else if (Main.moonPhase < 6)
-			{
+			else if (Main.moonPhase < 6) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleStaff"));
 				nextSlot++;
 			}
-			else
-			{
+			else {
 			}
 			// Here is an example of how your npc can sell items from other mods.
 			var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
-			if (modSummonersAssociation != null)
-			{
+			if (modSummonersAssociation != null) {
 				shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 				nextSlot++;
 			}
 		}
 
-		public override void NPCLoot()
-		{
+		public override void NPCLoot() {
 			Item.NewItem(npc.getRect(), mod.ItemType<Items.Armor.ExampleCostume>());
 		}
 
-		public override void TownNPCAttackStrength(ref int damage, ref float knockback)
-		{
+		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
 			damage = 20;
 			knockback = 4f;
 		}
 
-		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
-		{
+		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown) {
 			cooldown = 30;
 			randExtraCooldown = 30;
 		}
 
-		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
-		{
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
 			projType = mod.ProjectileType("SparklingBall");
 			attackDelay = 1;
 		}
 
-		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
-		{
+		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
 			multiplier = 12f;
 			randomOffset = 2f;
 		}

@@ -13,8 +13,7 @@ namespace ExampleMod.Tiles
 	// If you can't figure out how to recreate a vanilla tile, see that guide for instructions on how to figure it out yourself.
 	class ExampleLamp : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// Main.tileFlame[Type] = true; This breaks it.
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
@@ -31,13 +30,11 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(253, 221, 3), Language.GetText("MapObject.FloorLamp"));
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType<Items.Placeable.ExampleLamp>());
 		}
 
-		public override void HitWire(int i, int j)
-		{
+		public override void HitWire(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			int topY = j - (tile.frameY / 18 % 3);
 			short frameAdjustment = (short)(tile.frameX > 0 ? -18 : 18);
@@ -50,19 +47,15 @@ namespace ExampleMod.Tiles
 			NetMessage.SendTileSquare(-1, i, topY + 1, 3, TileChangeType.None);
 		}
 
-		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
-		{
-			if (i % 2 == 1)
-			{
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
+			if (i % 2 == 1) {
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 		}
 
-		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-		{
+		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			Tile tile = Main.tile[i, j];
-			if (tile.frameX == 0)
-			{
+			if (tile.frameX == 0) {
 				// We can support different light colors for different styles here: switch (tile.frameY / 54)
 				r = 1f;
 				g = 0.75f;
@@ -70,29 +63,22 @@ namespace ExampleMod.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
-		{
-			if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)))
-			{
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+			if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4))) {
 				Tile tile = Main.tile[i, j];
 				short frameX = tile.frameX;
 				short frameY = tile.frameY;
-				if (Main.rand.NextBool(40) && frameX == 0)
-				{
+				if (Main.rand.NextBool(40) && frameX == 0) {
 					int style = frameY / 54;
-					if (frameY / 18 % 3 == 0)
-					{
+					if (frameY / 18 % 3 == 0) {
 						int dustChoice = -1;
-						if (style == 0)
-						{
+						if (style == 0) {
 							dustChoice = 21; // A purple dust.
 						}
 						// We can support different dust for different styles here
-						if (dustChoice != -1)
-						{
+						if (dustChoice != -1) {
 							int dust = Dust.NewDust(new Vector2(i * 16 + 4, j * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default(Color), 1f);
-							if (Main.rand.Next(3) != 0)
-							{
+							if (Main.rand.Next(3) != 0) {
 								Main.dust[dust].noGravity = true;
 							}
 							Main.dust[dust].velocity *= 0.3f;
@@ -103,14 +89,17 @@ namespace ExampleMod.Tiles
 			}
 		}
 
-		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
-		{
+		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 			SpriteEffects effects = SpriteEffects.None;
-			if (i % 2 == 1)
+			if (i % 2 == 1) {
 				effects = SpriteEffects.FlipHorizontally;
+			}
+
 			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
+			if (Main.drawToScreen) {
 				zero = Vector2.Zero;
+			}
+
 			Tile tile = Main.tile[i, j];
 			int width = 16;
 			int offsetY = 0;
@@ -120,8 +109,7 @@ namespace ExampleMod.Tiles
 
 			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)((ulong)i));
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
-			for (int c = 0; c < 7; c++)
-			{
+			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref num190, -10, 11) * 0.15f;
 				float shakeY = Utils.RandomInt(ref num190, -10, 1) * 0.35f;
 				Main.spriteBatch.Draw(flameTexture, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(tile.frameX, tile.frameY, width, height), new Color(100, 100, 100, 0), 0f, default(Vector2), 1f, effects, 0f);

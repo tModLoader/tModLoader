@@ -6,8 +6,7 @@ namespace ExampleMod.Items
 	public class ExampleDye : ModItem
 	{
 		//PlayerHooks.GetDyeTraderReward(this, list);
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			/*				
 			this.name = "Gel Dye";
 			this.width = 20;

@@ -4,8 +4,7 @@ namespace ExampleMod.Projectiles.Minions
 {
 	public abstract class Minion : ModProjectile
 	{
-		public override void AI()
-		{
+		public override void AI() {
 			CheckActive();
 			Behavior();
 		}

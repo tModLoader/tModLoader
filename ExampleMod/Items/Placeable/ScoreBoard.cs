@@ -4,14 +4,12 @@ namespace ExampleMod.Items.Placeable
 {
 	class ScoreBoard : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Scoreboard");
 			Tooltip.SetDefault("Compete for kills with friends.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = 1;
 			item.useTurn = true;
 			item.useAnimation = 15;

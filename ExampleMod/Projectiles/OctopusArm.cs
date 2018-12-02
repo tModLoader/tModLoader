@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -10,50 +10,38 @@ namespace ExampleMod.Projectiles
 	//imported from my tAPI mod because I'm lazy
 	public class OctopusArm : ModProjectile
 	{
-		public float width
-		{
-			get
-			{
+		public float width {
+			get {
 				return projectile.ai[0];
 			}
-			set
-			{
+			set {
 				projectile.ai[0] = value;
 			}
 		}
 
-		public float length
-		{
-			get
-			{
+		public float length {
+			get {
 				return projectile.ai[1];
 			}
-			set
-			{
+			set {
 				projectile.ai[1] = value;
 			}
 		}
 
-		public float minAngle
-		{
-			get
-			{
+		public float minAngle {
+			get {
 				return projectile.localAI[0];
 			}
-			set
-			{
+			set {
 				projectile.localAI[0] = value;
 			}
 		}
 
-		public float maxAngle
-		{
-			get
-			{
+		public float maxAngle {
+			get {
 				return projectile.localAI[1];
 			}
-			set
-			{
+			set {
 				projectile.localAI[1] = value;
 			}
 		}
@@ -68,8 +56,7 @@ namespace ExampleMod.Projectiles
 		private const float maxLength = 400f;
 		private const float maxLengthSpeed = 1f;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 1;
 			projectile.height = 1;
 			projectile.hostile = true;
@@ -79,11 +66,9 @@ namespace ExampleMod.Projectiles
 			projectile.ignoreWater = true;
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			NPC npc = Main.npc[octopus];
-			if (!npc.active || npc.type != mod.NPCType("Octopus"))
-			{
+			if (!npc.active || npc.type != mod.NPCType("Octopus")) {
 				return;
 			}
 			projectile.timeLeft = 2;
@@ -96,108 +81,83 @@ namespace ExampleMod.Projectiles
 			Angle min = new Angle(minAngle);
 			Angle max = new Angle(maxAngle);
 			Angle limit = new Angle((minAngle + maxAngle) / 2f);
-			if (limit.Between(min, max))
-			{
+			if (limit.Between(min, max)) {
 				limit = limit.Opposite();
 			}
 			Angle buffer = new Angle(angleBuffer);
-			if (angleToPlayer.Between(min - buffer, max + buffer))
-			{
-				if (currAngle.Between(max, limit))
-				{
+			if (angleToPlayer.Between(min - buffer, max + buffer)) {
+				if (currAngle.Between(max, limit)) {
 					angleSpeed -= maxAngleSpeed / 10f;
 				}
-				else if (currAngle.Between(limit, min))
-				{
+				else if (currAngle.Between(limit, min)) {
 					angleSpeed += maxAngleSpeed / 10f;
 				}
-				else if (currAngle.ClockwiseFrom(angleToPlayer))
-				{
+				else if (currAngle.ClockwiseFrom(angleToPlayer)) {
 					angleSpeed += maxAngleSpeed / 10f;
 				}
-				else
-				{
+				else {
 					angleSpeed -= maxAngleSpeed / 10f;
 				}
-				if (length > maxLength)
-				{
+				if (length > maxLength) {
 					lengthSpeed -= maxLengthSpeed / 10f;
 				}
-				else if (length < minLength)
-				{
+				else if (length < minLength) {
 					lengthSpeed += maxLengthSpeed / 10f;
 				}
-				else if (distance > length)
-				{
+				else if (distance > length) {
 					lengthSpeed += maxLengthSpeed / 10f;
 				}
-				else if (distance < length)
-				{
+				else if (distance < length) {
 					lengthSpeed -= maxLengthSpeed / 10f;
 				}
 			}
-			else
-			{
-				if (currAngle.Between(max, limit))
-				{
+			else {
+				if (currAngle.Between(max, limit)) {
 					angleSpeed -= maxAngleSpeed / 10f;
 				}
-				else if (currAngle.Between(limit, min))
-				{
+				else if (currAngle.Between(limit, min)) {
 					angleSpeed += maxAngleSpeed / 10f;
 				}
-				else if (angleSpeed > 0f)
-				{
+				else if (angleSpeed > 0f) {
 					angleSpeed += maxAngleSpeed / 20f;
 				}
-				else if (angleSpeed < 0f)
-				{
+				else if (angleSpeed < 0f) {
 					angleSpeed -= maxAngleSpeed / 20f;
 				}
-				else
-				{
+				else {
 					angleSpeed = maxAngleSpeed / 20f;
 				}
-				if (length > minLength)
-				{
+				if (length > minLength) {
 					lengthSpeed -= maxLengthSpeed / 10f;
 				}
-				else
-				{
+				else {
 					lengthSpeed += maxLengthSpeed / 10f;
 				}
 			}
-			if (angleSpeed > maxAngleSpeed)
-			{
+			if (angleSpeed > maxAngleSpeed) {
 				angleSpeed = maxAngleSpeed;
 			}
-			else if (angleSpeed < -maxAngleSpeed)
-			{
+			else if (angleSpeed < -maxAngleSpeed) {
 				angleSpeed = -maxAngleSpeed;
 			}
-			if (lengthSpeed > maxLengthSpeed)
-			{
+			if (lengthSpeed > maxLengthSpeed) {
 				lengthSpeed = maxLengthSpeed;
 			}
-			else if (lengthSpeed < -maxLengthSpeed)
-			{
+			else if (lengthSpeed < -maxLengthSpeed) {
 				lengthSpeed = -maxLengthSpeed;
 			}
 			projectile.rotation += angleSpeed;
 			length += lengthSpeed;
-			if (Main.netMode == 2)
-			{
+			if (Main.netMode == 2) {
 				netUpdateCounter++;
-				if (netUpdateCounter >= 300)
-				{
+				if (netUpdateCounter >= 300) {
 					projectile.netUpdate = true;
 					netUpdateCounter = 0;
 				}
 			}
 		}
 
-		public override void SendExtraAI(BinaryWriter writer)
-		{
+		public override void SendExtraAI(BinaryWriter writer) {
 			writer.Write(projectile.rotation);
 			writer.Write(minAngle);
 			writer.Write(maxAngle);
@@ -206,8 +166,7 @@ namespace ExampleMod.Projectiles
 			writer.Write((short)octopus);
 		}
 
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
+		public override void ReceiveExtraAI(BinaryReader reader) {
 			projectile.rotation = reader.ReadSingle();
 			minAngle = reader.ReadSingle();
 			maxAngle = reader.ReadSingle();
@@ -216,52 +175,42 @@ namespace ExampleMod.Projectiles
 			octopus = reader.ReadInt16();
 		}
 
-		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-		{
+		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 			float point = 0f;
 			return Collision.CheckAABBvLineCollision(new Vector2(targetHitbox.X, targetHitbox.Y), new Vector2(targetHitbox.Width, targetHitbox.Height), projectile.position, projectile.position + length * new Vector2((float)Math.Cos(projectile.rotation), (float)Math.Sin(projectile.rotation)), width, ref point);
 		}
 
-		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
-		{
+		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit) {
 			projectile.rotation %= 2f * (float)Math.PI;
-			if (projectile.rotation % (float)Math.PI == 0f)
-			{
+			if (projectile.rotation % (float)Math.PI == 0f) {
 				projectile.direction = -target.direction;
 			}
-			else if (projectile.rotation % (float)Math.PI / 2f == 0f)
-			{
+			else if (projectile.rotation % (float)Math.PI / 2f == 0f) {
 				projectile.direction = target.Center.X < projectile.position.X ? -1 : 1;
 			}
-			else
-			{
+			else {
 				float yOffset = target.Center.Y - projectile.position.Y;
 				float x = projectile.position.X + yOffset / (float)Math.Tan(projectile.rotation);
 				projectile.direction = target.Center.X < x ? -1 : 1;
 			}
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Texture2D unit = Main.projectileTexture[projectile.type];
 			int unitLength = unit.Width;
 			int numUnits = (int)Math.Ceiling(length / unitLength);
 			float increment = 0f;
-			if (numUnits > 1)
-			{
+			if (numUnits > 1) {
 				increment = (length - unitLength) / (numUnits - 1);
 			}
 			Vector2 direction = new Vector2((float)Math.Cos(projectile.rotation), (float)Math.Sin(projectile.rotation));
 			SpriteEffects effects = SpriteEffects.None;
-			if (projectile.spriteDirection == -1)
-			{
+			if (projectile.spriteDirection == -1) {
 				effects = SpriteEffects.FlipVertically;
 			}
-			for (int k = 1; k <= numUnits; k++)
-			{
+			for (int k = 1; k <= numUnits; k++) {
 				Texture2D image = unit;
-				if (k == numUnits)
-				{
+				if (k == numUnits) {
 					image = mod.GetTexture("Projectiles/OctopusArmTip");
 				}
 				Vector2 pos = projectile.position + direction * (increment * (k - 1) + unitLength / 2f);
@@ -271,8 +220,7 @@ namespace ExampleMod.Projectiles
 			return false;
 		}
 
-		public override void PostDraw(SpriteBatch sb, Color lightColor)
-		{
+		public override void PostDraw(SpriteBatch sb, Color lightColor) {
 			Main.instance.DrawNPC(octopus, false);
 		}
 	}

@@ -8,13 +8,11 @@ namespace ExampleMod.Items
 {
 	class ExampleHookItem : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Hook");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			/*
 				this.noUseGraphic = true;
 				this.damage = 0;
@@ -40,13 +38,11 @@ namespace ExampleMod.Items
 	}
 	class ExampleHookProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			/*	this.netImportant = true;
 				this.name = "Gem Hook";
 				this.width = 18;
@@ -61,13 +57,10 @@ namespace ExampleMod.Items
 		}
 
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
-		public override bool? CanUseGrapple(Player player)
-		{
+		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
-			for (int l = 0; l < 1000; l++)
-			{
-				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == projectile.type)
-				{
+			for (int l = 0; l < 1000; l++) {
+				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == projectile.type) {
 					hooksOut++;
 				}
 			}
@@ -110,36 +103,30 @@ namespace ExampleMod.Items
 		//}
 
 		// Amethyst Hook is 300, Static Hook is 600
-		public override float GrappleRange()
-		{
+		public override float GrappleRange() {
 			return 200f;
 		}
 
-		public override void NumGrappleHooks(Player player, ref int numHooks)
-		{
+		public override void NumGrappleHooks(Player player, ref int numHooks) {
 			numHooks = 2;
 		}
 
 		// default is 11, Lunar is 24
-		public override void GrappleRetreatSpeed(Player player, ref float speed)
-		{
+		public override void GrappleRetreatSpeed(Player player, ref float speed) {
 			speed = 14f;
 		}
 
-		public override void GrapplePullSpeed(Player player, ref float speed)
-		{
+		public override void GrapplePullSpeed(Player player, ref float speed) {
 			speed = 4;
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
 			Vector2 center = projectile.Center;
 			Vector2 distToProj = playerCenter - projectile.Center;
 			float projRotation = distToProj.ToRotation() - 1.57f;
 			float distance = distToProj.Length();
-			while (distance > 30f && !float.IsNaN(distance))
-			{
+			while (distance > 30f && !float.IsNaN(distance)) {
 				distToProj.Normalize();                 //get unit vector
 				distToProj *= 24f;                      //speed = 24
 				center += distToProj;                   //update draw position

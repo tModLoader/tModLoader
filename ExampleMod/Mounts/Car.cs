@@ -1,5 +1,5 @@
-using System;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -7,8 +7,7 @@ namespace ExampleMod.Mounts
 {
 	public class Car : ModMountData
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			mountData.spawnDust = mod.DustType("Smoke");
 			mountData.buff = mod.BuffType("CarMount");
 			mountData.heightBoost = 20;
@@ -24,8 +23,7 @@ namespace ExampleMod.Mounts
 			mountData.totalFrames = 4;
 			mountData.constantJump = true;
 			int[] array = new int[mountData.totalFrames];
-			for (int l = 0; l < array.Length; l++)
-			{
+			for (int l = 0; l < array.Length; l++) {
 				array[l] = 20;
 			}
 			mountData.playerYOffsets = array;
@@ -52,17 +50,14 @@ namespace ExampleMod.Mounts
 			mountData.swimFrameCount = mountData.inAirFrameCount;
 			mountData.swimFrameDelay = mountData.inAirFrameDelay;
 			mountData.swimFrameStart = mountData.inAirFrameStart;
-			if (Main.netMode != 2)
-			{
+			if (Main.netMode != 2) {
 				mountData.textureWidth = mountData.backTexture.Width + 20;
 				mountData.textureHeight = mountData.backTexture.Height;
 			}
 		}
 
-		public override void UpdateEffects(Player player)
-		{
-			if (Math.Abs(player.velocity.X) > 4f)
-			{
+		public override void UpdateEffects(Player player) {
+			if (Math.Abs(player.velocity.X) > 4f) {
 				Rectangle rect = player.getRect();
 				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod.DustType("Smoke"));
 			}

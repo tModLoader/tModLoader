@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
@@ -13,8 +11,7 @@ namespace ExampleMod.Tiles
 	// This example also shows how to spawn a projectile on death like Beehive and Boulder trap.
 	class ExampleCutTileTile : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileCut[Type] = true;
 
@@ -27,44 +24,37 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 		}
 
-		public override bool Dangersense(int i, int j, Player player)
-		{
+		public override bool Dangersense(int i, int j, Player player) {
 			return true;
 		}
 
-		public override bool CreateDust(int i, int j, ref int type)
-		{
+		public override bool CreateDust(int i, int j, ref int type) {
 			return false;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			//Projectile.NewProjectile((float)(k * 16) + 15.5f, (float)(num4 * 16 + 16), 0f, 0f, 99, 70, 10f, Main.myPlayer, 0f, 0f);
-			if (!WorldGen.gen && Main.netMode != 1)
-			{
+			if (!WorldGen.gen && Main.netMode != 1) {
 				Projectile.NewProjectile((i + 1.5f) * 16f, (j + 1.5f) * 16f, 0f, 0f, ProjectileID.Boulder, 70, 10f, Main.myPlayer, 0f, 0f);
 			}
-			
+
 			//Item.NewItem(i * 16, j * 16, 48, 48, mod.ItemType("ExampleCutTileItem"));
 		}
 	}
 
 	class ExampleCutTileItem : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Fragile Boulder Trap");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.DartTrap);
 			item.createTile = mod.TileType("ExampleCutTileTile");
 			item.value = 1000;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.StoneBlock, 10);
 			recipe.AddIngredient(ItemID.Rope, 10);

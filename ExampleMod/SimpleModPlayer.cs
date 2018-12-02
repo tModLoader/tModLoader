@@ -23,19 +23,16 @@ namespace ExampleMod
 		public bool frostBurnSummon;
 
 		// ResetEffects is used to reset effects back to their default value. Terraria resets all effects every frame back to defaults so we will follow this design. (You might think to set a variable when an item is equipped and unassign the value when the item in unequipped, but Terraria is not designed that way.)
-		public override void ResetEffects()
-		{
+		public override void ResetEffects() {
 			frostBurnSummon = false;
 		}
 
 		// Here we use a "hook" to actually let our frostBurnSummon status take effect. This hook is called anytime a player owned projectile hits an enemy. 
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
-		{
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit) {
 			// frostBurnSummon, as its name suggests, applies frostBurn to enemy NPC but only for Summon projectiles.
 			// In this if statement we check several conditions. We first check to make sure the projectile that hit the NPC is either a minion projectile or a projectile that minions shoot.
 			// We then check that frostBurnSummon is set to true. The last check for not noEnchantments is because some projectiles don't allow enchantments and we want to honor that restriction.
-			if ((proj.minion || ProjectileID.Sets.MinionShot[proj.type]) && frostBurnSummon && !proj.noEnchantments)
-			{
+			if ((proj.minion || ProjectileID.Sets.MinionShot[proj.type]) && frostBurnSummon && !proj.noEnchantments) {
 				// If all those checks pass, we apply FrostBurn for some random duration.
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(5, 15), false);
 			}
@@ -53,8 +50,7 @@ namespace ExampleMod
 		[AutoloadEquip(EquipType.Neck, EquipType.Balloon)]
 		class SimpleAccessory : ModItem
 		{
-			public override void SetDefaults()
-			{
+			public override void SetDefaults() {
 				item.width = 34;
 				item.height = 34;
 				item.accessory = true;
@@ -62,8 +58,7 @@ namespace ExampleMod
 				item.rare = 5;
 			}
 
-			public override void UpdateAccessory(Player player, bool hideVisual)
-			{
+			public override void UpdateAccessory(Player player, bool hideVisual) {
 				// To assign the player the frostBurnSummon effect, we can't do player.frostBurnSummon = true because Player doesn't have frostBurnSummon. Be sure to remember to call the GetModPlayer method to retrieve the ModPlayer instance attached to the specified Player.
 				player.GetModPlayer<SimpleModPlayer>().frostBurnSummon = true;
 			}

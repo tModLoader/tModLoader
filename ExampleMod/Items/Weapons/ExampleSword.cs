@@ -7,13 +7,11 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sword.");  //The (English) text shown below your weapon's name
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 50;           //The damage of your weapon
 			item.melee = true;          //Is your weapon a melee weapon?
 			item.width = 40;            //Weapon's texture's width
@@ -28,8 +26,7 @@ namespace ExampleMod.Items.Weapons
 			item.autoReuse = true;          //Whether the weapon can use automatically by pressing mousebutton
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddTile(mod.TileType("ExampleWorkbench"));
@@ -37,17 +34,14 @@ namespace ExampleMod.Items.Weapons
 			recipe.AddRecipe();
 		}
 
-		public override void MeleeEffects(Player player, Rectangle hitbox)
-		{
-			if (Main.rand.NextBool(3))
-			{
+		public override void MeleeEffects(Player player, Rectangle hitbox) {
+			if (Main.rand.NextBool(3)) {
 				//Emit dusts when swing the sword
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 			}
 		}
 
-		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
-		{
+		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit) {
 			// Add Onfire buff to the NPC for 1 second
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 60);

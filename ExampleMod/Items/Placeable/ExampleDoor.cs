@@ -5,13 +5,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleDoor : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded door.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 14;
 			item.height = 28;
 			item.maxStack = 99;
@@ -25,8 +23,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleDoorClosed");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.WoodenDoor);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);

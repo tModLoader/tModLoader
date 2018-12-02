@@ -7,13 +7,11 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleDualUseWeapon : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This weapon does something special with <right>.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 50;
 			item.melee = true;
 			item.width = 40;
@@ -30,8 +28,7 @@ namespace ExampleMod.Items.Weapons
 			item.shootSpeed = 5f;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddTile(mod.TileType("ExampleWorkbench"));
@@ -39,23 +36,19 @@ namespace ExampleMod.Items.Weapons
 			recipe.AddRecipe();
 		}
 
-		public override bool AltFunctionUse(Player player)
-		{
+		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
 
-		public override bool CanUseItem(Player player)
-		{
-			if (player.altFunctionUse == 2)
-			{
+		public override bool CanUseItem(Player player) {
+			if (player.altFunctionUse == 2) {
 				item.useStyle = 3;
 				item.useTime = 20;
 				item.useAnimation = 20;
 				item.damage = 50;
 				item.shoot = ProjectileID.Bee;
 			}
-			else
-			{
+			else {
 				item.useStyle = 1;
 				item.useTime = 40;
 				item.useAnimation = 40;
@@ -65,39 +58,31 @@ namespace ExampleMod.Items.Weapons
 			return base.CanUseItem(player);
 		}
 
-		public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
-		{
-			if (player.altFunctionUse == 2)
-			{
+		public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) {
+			if (player.altFunctionUse == 2) {
 				target.AddBuff(BuffID.Ichor, 60);
 			}
-			else
-			{
+			else {
 				target.AddBuff(BuffID.OnFire, 60);
 			}
 		}
 
-		public override void MeleeEffects(Player player, Rectangle hitbox)
-		{
-			if (Main.rand.NextBool(3))
-			{
-				if (player.altFunctionUse == 2)
-				{
+		public override void MeleeEffects(Player player, Rectangle hitbox) {
+			if (Main.rand.NextBool(3)) {
+				if (player.altFunctionUse == 2) {
 					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, 169, 0f, 0f, 100, default(Color), 2f);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity.X += player.direction * 2f;
 					Main.dust[dust].velocity.Y += 0.2f;
 				}
-				else
-				{
+				else {
 					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Fire, player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default(Color), 2.5f);
 					Main.dust[dust].noGravity = true;
 				}
 			}
 		}
 
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
+		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			// Fix the speedX and Y to point them horizontally.
 			speedX = new Vector2(speedX, speedY).Length() * (speedX > 0 ? 1 : -1);
 			speedY = 0;

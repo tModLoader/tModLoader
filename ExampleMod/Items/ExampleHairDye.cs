@@ -6,8 +6,7 @@ namespace ExampleMod.Items
 {
 	internal class ExampleHairDye : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;
 			item.maxStack = 99;

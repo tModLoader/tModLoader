@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,8 +15,7 @@ namespace ExampleMod.UI
 	{
 		VanillaItemSlotWrapper vanillaItemSlot;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f);
 			vanillaItemSlot.Left.Pixels = 50;
 			vanillaItemSlot.Top.Pixels = 270;
@@ -28,10 +26,8 @@ namespace ExampleMod.UI
 
 		// OnDeactivate is called when the UserInterface switches to a different state. In this mod, we switch between no state (null) and this state (ExamplePersonUI).
 		// Using OnDeactivate is useful for clearing out Item slots and returning them to the player, as we do here.
-		public override void OnDeactivate()
-		{
-			if (!vanillaItemSlot.item.IsAir)
-			{
+		public override void OnDeactivate() {
+			if (!vanillaItemSlot.item.IsAir) {
 				// QuickSpawnClonedItem will preserve mod data of the item. QuickSpawnItem will just spawn a fresh version of the item, losing the prefix.
 				Main.LocalPlayer.QuickSpawnClonedItem(vanillaItemSlot.item, vanillaItemSlot.item.stack);
 				// Now that we've spawned the item back onto the player, we reset the item by turning it into air.
@@ -43,22 +39,19 @@ namespace ExampleMod.UI
 
 		// Update is called on a UIState while it is the active state of the UserInterface.
 		// We use Update to handle automatically closing our UI when the player is no longer talking to our Example Person NPC.
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			// Don't delete this or the UIElements attached to this UIState will cease to function.
 			base.Update(gameTime);
 
 			// talkNPC is the index of the NPC the player is currently talking to. By checking talkNPC, we can tell when the player switches to another NPC or closes the NPC chat dialog.
-			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != ExampleMod.Instance.NPCType("Example Person"))
-			{
+			if (Main.LocalPlayer.talkNPC == -1 || Main.npc[Main.LocalPlayer.talkNPC].type != ExampleMod.Instance.NPCType("Example Person")) {
 				// When that happens, we can set the state of our UserInterface to null, thereby closing this UIState. This will trigger OnDeactivate above.
 				ExampleMod.Instance.ExamplePersonUserInterface.SetState(null);
 			}
 		}
 
 		bool tickPlayed = false;
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
 			// Here we have a lot of code. This code is mainly adapted from the vanilla code for the reforge option.
@@ -68,27 +61,22 @@ namespace ExampleMod.UI
 
 			int slotX = 50;
 			int slotY = 270;
-			if (!vanillaItemSlot.item.IsAir)
-			{
+			if (!vanillaItemSlot.item.IsAir) {
 				int awesomePrice = Item.buyPrice(0, 1, 0, 0);
 
 				string costText = Language.GetTextValue("LegacyInterface.46") + ": ";
 				string coinsText = "";
 				int[] coins = Utils.CoinsSplit(awesomePrice);
-				if (coins[3] > 0)
-				{
+				if (coins[3] > 0) {
 					coinsText = coinsText + "[c/" + Colors.AlphaDarken(Colors.CoinPlatinum).Hex3() + ":" + coins[3] + " " + Language.GetTextValue("LegacyInterface.15") + "] ";
 				}
-				if (coins[2] > 0)
-				{
+				if (coins[2] > 0) {
 					coinsText = coinsText + "[c/" + Colors.AlphaDarken(Colors.CoinGold).Hex3() + ":" + coins[2] + " " + Language.GetTextValue("LegacyInterface.16") + "] ";
 				}
-				if (coins[1] > 0)
-				{
+				if (coins[1] > 0) {
 					coinsText = coinsText + "[c/" + Colors.AlphaDarken(Colors.CoinSilver).Hex3() + ":" + coins[1] + " " + Language.GetTextValue("LegacyInterface.17") + "] ";
 				}
-				if (coins[0] > 0)
-				{
+				if (coins[0] > 0) {
 					coinsText = coinsText + "[c/" + Colors.AlphaDarken(Colors.CoinCopper).Hex3() + ":" + coins[0] + " " + Language.GetTextValue("LegacyInterface.18") + "] ";
 				}
 				ItemSlot.DrawSavings(Main.spriteBatch, slotX + 130, Main.instance.invBottom, true);
@@ -99,17 +87,14 @@ namespace ExampleMod.UI
 				bool hoveringOverReforgeButton = Main.mouseX > reforgeX - 15 && Main.mouseX < reforgeX + 15 && Main.mouseY > reforgeY - 15 && Main.mouseY < reforgeY + 15 && !PlayerInput.IgnoreMouseInterface;
 				Texture2D reforgeTexture = Main.reforgeTexture[hoveringOverReforgeButton ? 1 : 0];
 				Main.spriteBatch.Draw(reforgeTexture, new Vector2(reforgeX, reforgeY), null, Color.White, 0f, reforgeTexture.Size() / 2f, 0.8f, SpriteEffects.None, 0f);
-				if (hoveringOverReforgeButton)
-				{
+				if (hoveringOverReforgeButton) {
 					Main.hoverItemName = Language.GetTextValue("LegacyInterface.19");
-					if (!tickPlayed)
-					{
+					if (!tickPlayed) {
 						Main.PlaySound(12, -1, -1, 1, 1f, 0f);
 					}
 					tickPlayed = true;
 					Main.LocalPlayer.mouseInterface = true;
-					if (Main.mouseLeftRelease && Main.mouseLeft && Main.LocalPlayer.CanBuyItem(awesomePrice, -1) && ItemLoader.PreReforge(vanillaItemSlot.item))
-					{
+					if (Main.mouseLeftRelease && Main.mouseLeft && Main.LocalPlayer.CanBuyItem(awesomePrice, -1) && ItemLoader.PreReforge(vanillaItemSlot.item)) {
 						Main.LocalPlayer.BuyItem(awesomePrice, -1);
 						bool favorited = vanillaItemSlot.item.favorited;
 						int stack = vanillaItemSlot.item.stack;
@@ -117,12 +102,10 @@ namespace ExampleMod.UI
 						reforgeItem.netDefaults(vanillaItemSlot.item.netID);
 						reforgeItem = reforgeItem.CloneWithModdedDataFrom(vanillaItemSlot.item);
 						// This is the main effect of this slot. Giving the Awesome prefix 90% of the time and the ReallyAwesome prefix the other 10% of the time. All for a constant 1 gold. Useless, but informative.
-						if (Main.rand.NextBool(10))
-						{
+						if (Main.rand.NextBool(10)) {
 							reforgeItem.Prefix(ExampleMod.Instance.PrefixType("ReallyAwesome"));
 						}
-						else
-						{
+						else {
 							reforgeItem.Prefix(ExampleMod.Instance.PrefixType("Awesome"));
 						}
 						vanillaItemSlot.item = reforgeItem.Clone();
@@ -135,13 +118,11 @@ namespace ExampleMod.UI
 						Main.PlaySound(SoundID.Item37, -1, -1);
 					}
 				}
-				else
-				{
+				else {
 					tickPlayed = false;
 				}
 			}
-			else
-			{
+			else {
 				string message = "Place an item here to Awesomeify";
 				ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, message, new Vector2(slotX + 50, slotY), new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor), 0f, Vector2.Zero, Vector2.One, -1f, 2f);
 			}

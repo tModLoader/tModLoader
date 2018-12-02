@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -9,8 +8,7 @@ namespace ExampleMod.Projectiles
 	// This projectiles merely flies towards a position and then dies. We use it to signify kill points for TEScoreBoard.
 	class ScorePoint : ModProjectile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 8;
 			projectile.height = 8;
 			projectile.hostile = true;
@@ -22,14 +20,12 @@ namespace ExampleMod.Projectiles
 			projectile.extraUpdates = 2;
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			// Since projectiles have 2 ai slots, and I don't want to do manual syncing of an extra variable, here I use the HalfVector2 and ReinterpretCast.FloatAsUInt to get a Vector2 from 1 float variable instead of 2 like normal.
 			Vector2 target = new HalfVector2() { PackedValue = ReLogic.Utilities.ReinterpretCast.FloatAsUInt(projectile.ai[0]) }.ToVector2();
 
 			Rectangle targetRectangle = new Rectangle((int)target.X - 4, (int)target.Y - 4, 8, 8);
-			if (projectile.Hitbox.Intersects(targetRectangle))
-			{
+			if (projectile.Hitbox.Intersects(targetRectangle)) {
 				projectile.Kill();
 				return;
 			}

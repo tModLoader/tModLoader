@@ -1,15 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 // If you are using c# 6, you can use: "using static Terraria.Localization.GameCulture;" which would mean you could just write "DisplayName.AddTranslation(German, "");"
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
 	public class ExampleBlock : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded block.");
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 
@@ -32,8 +31,7 @@ namespace ExampleMod.Items.Placeable
 			Tooltip.AddTranslation(GameCulture.Polish, "Jest to modded blok");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 12;
 			item.height = 12;
 			item.maxStack = 999;
@@ -46,8 +44,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleBlock");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"));
 			recipe.SetResult(this, 10);
@@ -63,13 +60,10 @@ namespace ExampleMod.Items.Placeable
 			recipe.AddRecipe();
 		}
 
-		public override void ExtractinatorUse(ref int resultType, ref int resultStack)
-		{
-			if (Main.rand.NextBool(30))
-			{
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack) {
+			if (Main.rand.NextBool(30)) {
 				resultType = mod.ItemType("FoulOrb");
-				if (Main.rand.NextBool(5))
-				{
+				if (Main.rand.NextBool(5)) {
 					resultStack += Main.rand.Next(2);
 				}
 			}

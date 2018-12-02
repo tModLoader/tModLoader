@@ -6,14 +6,12 @@ namespace ExampleMod.Items
 {
 	public class PuritySpiritBag : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.maxStack = 999;
 			item.consumable = true;
 			item.width = 24;
@@ -22,33 +20,27 @@ namespace ExampleMod.Items
 			item.expert = true;
 		}
 
-		public override bool CanRightClick()
-		{
+		public override bool CanRightClick() {
 			return true;
 		}
 
-		public override void OpenBossBag(Player player)
-		{
+		public override void OpenBossBag(Player player) {
 			player.TryGettingDevArmor();
 			player.TryGettingDevArmor();
 			int choice = Main.rand.Next(7);
-			if (choice == 0)
-			{
+			if (choice == 0) {
 				player.QuickSpawnItem(mod.ItemType("PuritySpiritMask"));
 			}
-			else if (choice == 1)
-			{
+			else if (choice == 1) {
 				player.QuickSpawnItem(mod.ItemType("BunnyMask"));
 			}
-			if (choice != 1)
-			{
+			if (choice != 1) {
 				player.QuickSpawnItem(ItemID.Bunny);
 			}
 			player.QuickSpawnItem(mod.ItemType("PurityShield"));
 		}
 
-		public override int BossBagNPC
-		{
+		public override int BossBagNPC {
 			get { return mod.NPCType("PuritySpirit"); }
 		}
 	}

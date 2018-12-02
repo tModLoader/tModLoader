@@ -7,8 +7,7 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleJavelin : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// Alter any of these values as you see fit, but you should probably keep useStyle on 1, as well as the noUseGraphic and noMelee bools
 			item.shootSpeed = 10f;
 			item.damage = 45;

@@ -7,8 +7,7 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleYoyo : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Shoots out an example yoyo");
 
 			// These are all related to gamepad controls and don't seem to affect anything else
@@ -17,8 +16,7 @@ namespace ExampleMod.Items.Weapons
 			ItemID.Sets.GamepadSmartQuickReach[item.type] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = 5;
 			item.width = 24;
 			item.height = 24;
@@ -39,8 +37,7 @@ namespace ExampleMod.Items.Weapons
 			item.shoot = mod.ProjectileType<ExampleYoyoProjectile>();
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddIngredient(ItemID.WoodYoyo);
