@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.Localization;
@@ -24,11 +24,11 @@ namespace Terraria.ModLoader
 
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
 
-		private static void SplitName(string name, out string domain, out string subName)
-		{
+		private static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
-			if (slash < 0)
+			if (slash < 0) {
 				throw new MissingResourceException("Missing mod qualifier: " + name);
+			}
 
 			domain = name.Substring(0, slash);
 			subName = name.Substring(slash + 1);
@@ -38,14 +38,14 @@ namespace Terraria.ModLoader
 		/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static byte[] GetFileBytes(string name)
-		{
+		public static byte[] GetFileBytes(string name) {
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
+			if (mod == null) {
 				throw new MissingResourceException("Missing mod: " + name);
+			}
 
 			return mod.GetFileBytes(subName);
 		}
@@ -53,10 +53,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a file with the specified name exists.
 		/// </summary>
-		public static bool FileExists(string name)
-		{
-			if (!name.Contains('/'))
+		public static bool FileExists(string name) {
+			if (!name.Contains('/')) {
 				return false;
+			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -69,19 +69,21 @@ namespace Terraria.ModLoader
 		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Texture2D GetTexture(string name)
-		{
-			if (Main.dedServ)
+		public static Texture2D GetTexture(string name) {
+			if (Main.dedServ) {
 				return null;
+			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
-			if (modName == "Terraria")
+			if (modName == "Terraria") {
 				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+			}
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
+			if (mod == null) {
 				throw new MissingResourceException("Missing mod: " + name);
+			}
 
 			return mod.GetTexture(subName);
 		}
@@ -89,16 +91,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
-		public static bool TextureExists(string name)
-		{
-			if (!name.Contains('/'))
+		public static bool TextureExists(string name) {
+			if (!name.Contains('/')) {
 				return false;
+			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
-			if (modName == "Terraria")
+			if (modName == "Terraria") {
 				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
+			}
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
@@ -108,17 +111,18 @@ namespace Terraria.ModLoader
 		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static SoundEffect GetSound(string name)
-		{
-			if (Main.dedServ)
+		public static SoundEffect GetSound(string name) {
+			if (Main.dedServ) {
 				return null;
+			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
+			if (mod == null) {
 				throw new MissingResourceException("Missing mod: " + name);
+			}
 
 			return mod.GetSound(subName);
 		}
@@ -126,10 +130,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
-		public static bool SoundExists(string name)
-		{
-			if (!name.Contains('/'))
+		public static bool SoundExists(string name) {
+			if (!name.Contains('/')) {
 				return false;
+			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -142,8 +146,7 @@ namespace Terraria.ModLoader
 		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Music GetMusic(string name)
-		{
+		public static Music GetMusic(string name) {
 			if (Main.dedServ) { return null; }
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -155,8 +158,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
-		public static bool MusicExists(string name)
-		{
+		public static bool MusicExists(string name) {
 			if (!name.Contains('/')) { return false; }
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -164,28 +166,23 @@ namespace Terraria.ModLoader
 			return mod != null && mod.MusicExists(subName);
 		}
 
-		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value)
-		{
-			if (dict.ContainsKey(value.Key))
-			{
+		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
+			if (dict.ContainsKey(value.Key)) {
 				dict[value.Key].SetValue(value.Value);
 			}
-			else
-			{
+			else {
 				dict[value.Key] = value;
 			}
 			return dict[value.Key];
 		}
 
-		internal static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
-		{
+		internal static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey) {
 			string key = mod.Name + ": " + name;
 			modHotKeys[key] = new ModHotKey(mod, name, defaultKey);
 			return modHotKeys[key];
 		}
 
-		internal static void Load()
-		{
+		internal static void Load() {
 			CacheVanillaState();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
@@ -196,22 +193,23 @@ namespace Terraria.ModLoader
 				mod.Load();
 				mod.loading = false;
 			});
-			
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
-			
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
 			});
 
-			if (Main.dedServ)
+			if (Main.dedServ) {
 				ModNet.AssignNetIDs();
-			
+			}
+
 			Main.player[255] = new Player(false); // setup inventory is unnecessary 
-			
+
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
@@ -219,17 +217,14 @@ namespace Terraria.ModLoader
 			SetupRecipes();
 		}
 
-		private static void CacheVanillaState()
-		{
+		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 		}
 
 		internal static Mod LoadingMod { get; private set; }
-		private static void LoadModContent(Action<Mod> loadAction)
-		{
+		private static void LoadModContent(Action<Mod> loadAction) {
 			int num = 0;
-			foreach (var mod in ModLoader.Mods)
-			{
+			foreach (var mod in ModLoader.Mods) {
 				Interface.loadMods.SetCurrentMod(num++, mod.Name);
 				try {
 					LoadingMod = mod;
@@ -245,24 +240,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void SetupRecipes()
-		{
+		private static void SetupRecipes() {
 			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
-			for (int k = 0; k < Recipe.maxRecipes; k++)
+			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
-			
+			}
+
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
 		}
 
-		internal static void UnloadModContent()
-		{
+		internal static void UnloadModContent() {
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
 					mod.UnloadContent();
 					mod.File?.Close();
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
@@ -272,8 +267,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void Unload()
-		{
+		public static void Unload() {
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -298,8 +292,7 @@ namespace Terraria.ModLoader
 			WaterfallStyleLoader.Unload();
 			WorldHooks.Unload();
 			ResizeArrays(true);
-			for (int k = 0; k < Recipe.maxRecipes; k++)
-			{
+			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
 			}
 			Recipe.numRecipes = 0;
@@ -318,8 +311,7 @@ namespace Terraria.ModLoader
 			CleanupModReferences();
 		}
 
-		private static void ResizeArrays(bool unloading = false)
-		{
+		private static void ResizeArrays(bool unloading = false) {
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
@@ -342,74 +334,58 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
-			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values)
-			{
+			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
 		}
 
-		public static void RefreshModLanguage(GameCulture culture)
-		{
+		public static void RefreshModLanguage(GameCulture culture) {
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
-			foreach (ModItem item in ItemLoader.items)
-			{
+			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
 				Lang._itemNameCache[item.item.type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
-				if (text.Value != null)
-				{
+				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
 					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
-			foreach (ModPrefix prefix in ModPrefix.prefixes)
-			{
+			foreach (ModPrefix prefix in ModPrefix.prefixes) {
 				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
 				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
 			}
-			foreach (var keyValuePair in MapLoader.tileEntries)
-			{
-				foreach (MapEntry entry in keyValuePair.Value)
-				{
-					if (entry.translation != null)
-					{
+			foreach (var keyValuePair in MapLoader.tileEntries) {
+				foreach (MapEntry entry in keyValuePair.Value) {
+					if (entry.translation != null) {
 						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
 						SetLocalizedText(dict, text);
 					}
 				}
 			}
-			foreach (var keyValuePair in MapLoader.wallEntries)
-			{
-				foreach (MapEntry entry in keyValuePair.Value)
-				{
-					if (entry.translation != null)
-					{
+			foreach (var keyValuePair in MapLoader.wallEntries) {
+				foreach (MapEntry entry in keyValuePair.Value) {
+					if (entry.translation != null) {
 						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
 						SetLocalizedText(dict, text);
 					}
 				}
 			}
-			foreach (ModProjectile proj in ProjectileLoader.projectiles)
-			{
+			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
 				Lang._projectileNameCache[proj.projectile.type] = SetLocalizedText(dict, text);
 			}
-			foreach (ModNPC npc in NPCLoader.npcs)
-			{
+			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
 				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
 			}
-			foreach (ModBuff buff in BuffLoader.buffs)
-			{
+			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
 				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
-			foreach (Mod mod in ModLoader.Mods)
-			{
-				foreach (ModTranslation translation in mod.translations.Values)
-				{
+			foreach (Mod mod in ModLoader.Mods) {
+				foreach (ModTranslation translation in mod.translations.Values) {
 					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 					SetLocalizedText(dict, text);
 				}
@@ -417,19 +393,14 @@ namespace Terraria.ModLoader
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
-		private static void DisposeMusic()
-		{
-			for (int i = 0; i < Main.music.Length; i++)
-			{
+		private static void DisposeMusic() {
+			for (int i = 0; i < Main.music.Length; i++) {
 				MusicStreaming music = Main.music[i] as MusicStreaming;
-				if (music != null)
-				{
-					if (i < Main.maxMusic)
-					{
+				if (music != null) {
+					if (i < Main.maxMusic) {
 						Main.music[i] = Main.soundBank.GetCue("Music_" + i);
 					}
-					else
-					{
+					else {
 						Main.music[i] = null;
 					}
 					music.Stop(AudioStopOptions.Immediate);
@@ -442,11 +413,9 @@ namespace Terraria.ModLoader
 		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references
 		/// so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
 		/// </summary>
-		internal static void CleanupModReferences()
-		{
+		internal static void CleanupModReferences() {
 			// Clear references to ModPlayer instances
-			for (int i = 0; i < 256; i++)
-			{
+			for (int i = 0; i < 256; i++) {
 				Main.player[i] = new Player();
 			}
 
@@ -455,19 +424,16 @@ namespace Terraria.ModLoader
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			foreach (var npc in Main.npc)
-			{
+			foreach (var npc in Main.npc) {
 				npc.SetDefaults(0);
 			}
 
-			foreach (var item in Main.item)
-			{
+			foreach (var item in Main.item) {
 				item.SetDefaults(0);
 			}
 			ItemSlot.singleSlotArray[0]?.SetDefaults(0);
 
-			for (int i = 0; i < Main.chest.Length; i++)
-			{
+			for (int i = 0; i < Main.chest.Length; i++) {
 				Main.chest[i] = new Chest();
 			}
 		}

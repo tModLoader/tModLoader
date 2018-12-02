@@ -1,14 +1,13 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Specialized;
+using System.Net;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
-using System.Net;
-using System.Collections.Specialized;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -18,12 +17,11 @@ namespace Terraria.ModLoader.UI
 		public string displayname;
 		public string version;
 		public string author;
-		private Texture2D dividerTexture;
-		private UIText modName;
+		private readonly Texture2D dividerTexture;
+		private readonly UIText modName;
 		UITextPanel<string> button2;
 
-		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion, string modloaderversion)
-		{
+		public UIModManageItem(string displayname, string name, string version, string author, string downloads, string downloadsversion, string modloaderversion) {
 			this.displayname = displayname;
 			this.version = version;
 			this.author = author;
@@ -58,39 +56,33 @@ namespace Terraria.ModLoader.UI
 			base.Append(button2);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 		}
 
-		public override void MouseOver(UIMouseEvent evt)
-		{
+		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
 			this.BackgroundColor = new Color(73, 94, 171);
 			this.BorderColor = new Color(89, 116, 213);
 		}
 
-		public override void MouseOut(UIMouseEvent evt)
-		{
+		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		internal void Unpublish(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (ModLoader.modBrowserPassphrase == "")
-			{
+		internal void Unpublish(UIMouseEvent evt, UIElement listeningElement) {
+			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
 				return;
 			}
 			Main.PlaySound(12);
-			try
-			{
+			try {
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/unpublishmymod.php";
 				var values = new NameValueCollection
@@ -104,8 +96,7 @@ namespace Terraria.ModLoader.UI
 				string s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
 				UIModBrowser.LogModUnpublishInfo(s);
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}

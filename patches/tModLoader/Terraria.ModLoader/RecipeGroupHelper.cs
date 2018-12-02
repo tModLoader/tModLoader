@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using Terraria.ID;
-using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
 	internal static class RecipeGroupHelper
 	{
-		internal static void ResetRecipeGroups()
-		{
+		internal static void ResetRecipeGroups() {
 			RecipeGroup.recipeGroups.Clear();
 			RecipeGroup.recipeGroupIDs.Clear();
 			RecipeGroup.nextRecipeGroupIndex = 0;
 		}
 
-		internal static void AddOldVanillaGroups()
-		{
+		internal static void AddOldVanillaGroups() {
 			RecipeGroup rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.Wood), new int[]
 				{
 					ItemID.Wood,
@@ -64,16 +60,12 @@ namespace Terraria.ModLoader
 			RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
 		}
 
-		internal static void AddRecipeGroups()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
-				try
-				{
+		internal static void AddRecipeGroups() {
+			foreach (Mod mod in ModLoader.Mods) {
+				try {
 					mod.AddRecipeGroups();
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
@@ -81,14 +73,11 @@ namespace Terraria.ModLoader
 			FixRecipeGroupLookups();
 		}
 
-		internal static void FixRecipeGroupLookups()
-		{
-			for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++)
-			{
+		internal static void FixRecipeGroupLookups() {
+			for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++) {
 				RecipeGroup rec = RecipeGroup.recipeGroups[k];
 				rec.ValidItemsLookup = new bool[ItemLoader.ItemCount];
-				foreach (int type in rec.ValidItems)
-				{
+				foreach (int type in rec.ValidItems) {
 					rec.ValidItemsLookup[type] = true;
 				}
 			}

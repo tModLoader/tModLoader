@@ -13,22 +13,17 @@ namespace Terraria.ModLoader
 	{
 		internal static List<SpawnCondition> conditions = new List<SpawnCondition>();
 
-		internal static void Reset()
-		{
-			foreach (SpawnCondition cond in conditions)
-			{
+		internal static void Reset() {
+			foreach (SpawnCondition cond in conditions) {
 				cond.Reset();
 			}
 		}
 
-		internal static void DoChecks(NPCSpawnInfo info)
-		{
+		internal static void DoChecks(NPCSpawnInfo info) {
 			float weight = 1f;
-			foreach (SpawnCondition cond in conditions)
-			{
+			foreach (SpawnCondition cond in conditions) {
 				cond.Check(info, ref weight);
-				if (Math.Abs(weight) < 5E-6)
-				{
+				if (Math.Abs(weight) < 5E-6) {
 					break;
 				}
 			}
@@ -38,7 +33,7 @@ namespace Terraria.ModLoader
 	//todo: further documentation
 	public class SpawnCondition
 	{
-		private Func<NPCSpawnInfo, bool> condition;
+		private readonly Func<NPCSpawnInfo, bool> condition;
 		private List<SpawnCondition> children;
 		private float blockWeight;
 		internal Func<float> WeightFunc;
@@ -52,48 +47,39 @@ namespace Terraria.ModLoader
 		public float Chance => chance;
 		public bool Active => active;
 
-		internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
-		{
+		internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f) {
 			this.condition = condition;
 			this.children = new List<SpawnCondition>();
 			this.blockWeight = blockWeight;
 			NPCSpawnHelper.conditions.Add(this);
 		}
 
-		internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
-		{
+		internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f) {
 			this.condition = condition;
 			this.children = new List<SpawnCondition>();
 			this.blockWeight = blockWeight;
 			parent.children.Add(this);
 		}
 
-		internal void Reset()
-		{
+		internal void Reset() {
 			chance = 0f;
 			active = false;
-			foreach (SpawnCondition child in children)
-			{
+			foreach (SpawnCondition child in children) {
 				child.Reset();
 			}
 		}
 
-		internal void Check(NPCSpawnInfo info, ref float remainingWeight)
-		{
-			if (WeightFunc != null)
-			{
+		internal void Check(NPCSpawnInfo info, ref float remainingWeight) {
+			if (WeightFunc != null) {
 				blockWeight = WeightFunc();
 			}
 			active = true;
-			if (condition(info))
-			{
+			if (condition(info)) {
 				chance = remainingWeight * blockWeight;
 				float childWeight = chance;
-				foreach (SpawnCondition child in children)
-				{
+				foreach (SpawnCondition child in children) {
 					child.Check(info, ref childWeight);
-					if (Math.Abs(childWeight) < 5E-6)
-					{
+					if (Math.Abs(childWeight) < 5E-6) {
 						break;
 					}
 				}
@@ -196,8 +182,7 @@ namespace Terraria.ModLoader
 		public static readonly SpawnCondition Underworld;
 		public static readonly SpawnCondition Cavern;
 
-		static SpawnCondition()
-		{
+		static SpawnCondition() {
 			NebulaTower = new SpawnCondition((info) => info.player.ZoneTowerNebula);
 			VortexTower = new SpawnCondition((info) => info.player.ZoneTowerVortex);
 			StardustTower = new SpawnCondition((info) => info.player.ZoneTowerStardust);
@@ -267,15 +252,14 @@ namespace Terraria.ModLoader
 			UndergroundMimic = new SpawnCondition((info) => Main.hardMode && info.spawnTileY > Main.worldSurface, 1f / 70f);
 			OverworldMimic = new SpawnCondition((info) => Main.hardMode && GetTile(info).wall == WallID.DirtUnsafe, 0.05f);
 			Wraith = new SpawnCondition((info) => Main.hardMode && info.spawnTileY <= Main.worldSurface
-				&& !Main.dayTime, 0.05f);
-			Wraith.WeightFunc = () =>
-			{
-				float inverseChance = 0.95f;
-				if (Main.moonPhase == 4)
-				{
-					inverseChance *= 0.8f;
+				&& !Main.dayTime, 0.05f) {
+				WeightFunc = () => {
+					float inverseChance = 0.95f;
+					if (Main.moonPhase == 4) {
+						inverseChance *= 0.8f;
+					}
+					return 1f - inverseChance;
 				}
-				return 1f - inverseChance;
 			};
 			HoppinJack = new SpawnCondition((info) => Main.hardMode && Main.halloween
 				&& info.spawnTileY <= Main.worldSurface && !Main.dayTime, 0.1f);
@@ -325,15 +309,14 @@ namespace Terraria.ModLoader
 			AngryNimbus = new SpawnCondition(Overworld, (info) => !info.player.ZoneSnow && Main.hardMode
 				&& Main.cloudAlpha > 0f && NPC.CountNPCS(NPCID.AngryNimbus) < 2, 0.1f);
 			MartianProbe = new SpawnCondition(Overworld, (info) => MartianProbeHelper(info) && Main.hardMode
-				&& NPC.downedGolemBoss && !NPC.AnyNPCs(NPCID.MartianProbe), 1f / 400f);
-			MartianProbe.WeightFunc = () =>
-			{
-				float inverseChance = 399f / 400f;
-				if (!NPC.downedMartians)
-				{
-					inverseChance *= 0.99f;
+				&& NPC.downedGolemBoss && !NPC.AnyNPCs(NPCID.MartianProbe), 1f / 400f) {
+				WeightFunc = () => {
+					float inverseChance = 399f / 400f;
+					if (!NPC.downedMartians) {
+						inverseChance *= 0.99f;
+					}
+					return 1f - inverseChance;
 				}
-				return 1f - inverseChance;
 			};
 			OverworldDay = new SpawnCondition(Overworld, (info) => Main.dayTime);
 			OverworldDaySnowCritter = new SpawnCondition(OverworldDay, (info) => InnerThird(info)
@@ -351,63 +334,55 @@ namespace Terraria.ModLoader
 				&& !NPC.AnyNPCs(NPCID.KingSlime), 1f / 300f);
 			OverworldDayDesert = new SpawnCondition(OverworldDay, (info) => GetTile(info).type == TileID.Sand
 				&& !info.water, 0.2f);
-			GoblinScout = new SpawnCondition(OverworldDay, (info) => OuterThird(info), 1f / 15f);
-			GoblinScout.WeightFunc = () =>
-			{
-				float inverseChance = 14f / 15f;
-				if (!NPC.downedGoblins && WorldGen.shadowOrbSmashed)
-				{
-					return inverseChance *= (6f / 7f);
+			GoblinScout = new SpawnCondition(OverworldDay, (info) => OuterThird(info), 1f / 15f) {
+				WeightFunc = () => {
+					float inverseChance = 14f / 15f;
+					if (!NPC.downedGoblins && WorldGen.shadowOrbSmashed) {
+						return inverseChance *= (6f / 7f);
+					}
+					return 1f - inverseChance;
 				}
-				return 1f - inverseChance;
 			};
 			OverworldDayRain = new SpawnCondition(OverworldDay, (info) => Main.raining, 2f / 3f);
 			OverworldDaySlime = new SpawnCondition(OverworldDay, (info) => true);
 			OverworldNight = new SpawnCondition(Overworld, (info) => true);
 			OverworldFirefly = new SpawnCondition(OverworldNight, (info) => GetTile(info).type == TileID.Grass
-				|| GetTile(info).type == TileID.HallowedGrass, 0.1f);
-			OverworldFirefly.WeightFunc = () => 1f / (float)NPC.fireFlyChance;
+				|| GetTile(info).type == TileID.HallowedGrass, 0.1f) {
+				WeightFunc = () => 1f / (float)NPC.fireFlyChance
+			};
 			OverworldNightMonster = new SpawnCondition(OverworldNight, (info) => true);
 			Underground = new SpawnCondition((info) => info.spawnTileY <= Main.rockLayer);
 			Underworld = new SpawnCondition((info) => info.spawnTileY > Main.maxTilesY - 190);
 			Cavern = new SpawnCondition((info) => true);
 		}
 
-		private static Tile GetTile(NPCSpawnInfo info)
-		{
+		private static Tile GetTile(NPCSpawnInfo info) {
 			return Main.tile[info.spawnTileX, info.spawnTileY];
 		}
 
-		private static bool WaterSurface(NPCSpawnInfo info)
-		{
-			if (info.safeRangeX)
-			{
+		private static bool WaterSurface(NPCSpawnInfo info) {
+			if (info.safeRangeX) {
 				return false;
 			}
-			for (int k = info.spawnTileY - 1; k > info.spawnTileY - 50; k--)
-			{
+			for (int k = info.spawnTileY - 1; k > info.spawnTileY - 50; k--) {
 				if (Main.tile[info.spawnTileX, k].liquid == 0 && !WorldGen.SolidTile(info.spawnTileX, k)
-					&& !WorldGen.SolidTile(info.spawnTileX, k + 1) && !WorldGen.SolidTile(info.spawnTileX, k + 2))
-				{
+					&& !WorldGen.SolidTile(info.spawnTileX, k + 1) && !WorldGen.SolidTile(info.spawnTileX, k + 2)) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		private static bool MartianProbeHelper(NPCSpawnInfo info)
-		{
+		private static bool MartianProbeHelper(NPCSpawnInfo info) {
 			return (float)Math.Abs(info.spawnTileX - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f
 				&& !NPC.AnyDanger();
 		}
 
-		private static bool InnerThird(NPCSpawnInfo info)
-		{
+		private static bool InnerThird(NPCSpawnInfo info) {
 			return Math.Abs(info.spawnTileX - Main.spawnTileX) < Main.maxTilesX / 3;
 		}
 
-		private static bool OuterThird(NPCSpawnInfo info)
-		{
+		private static bool OuterThird(NPCSpawnInfo info) {
 			return Math.Abs(info.spawnTileX - Main.spawnTileX) > Main.maxTilesX / 3;
 		}
 	}

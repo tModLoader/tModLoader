@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Terraria.ModLoader.IO
 {
@@ -15,16 +14,13 @@ namespace Terraria.ModLoader.IO
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
-		public T Get<T>(string key)
-		{
+		public T Get<T>(string key) {
 			object tag = null;
 			dict.TryGetValue(key, out tag);
-			try
-			{
+			try {
 				return TagIO.Deserialize<T>(tag);
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				throw new IOException(
 					$"NBT Deserialization (type={typeof(T)}," +
 					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
@@ -32,23 +28,21 @@ namespace Terraria.ModLoader.IO
 		}
 
 		//if value is null, calls RemoveTag, also performs type checking
-		public void Set(string key, object value)
-		{
-			if (value == null)
-			{
+		public void Set(string key, object value) {
+			if (value == null) {
 				Remove(key);
 				return;
 			}
 
-			try
-			{
+			try {
 				dict.Add(key, TagIO.Serialize(value));
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				var valueInfo = "value=" + value;
-				if (value.GetType().ToString() != value.ToString())
+				if (value.GetType().ToString() != value.ToString()) {
 					valueInfo = "type=" + value.GetType() + "," + valueInfo;
+				}
+
 				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
 			}
 		}
@@ -76,46 +70,40 @@ namespace Terraria.ModLoader.IO
 		public bool GetBool(string key) => Get<bool>(key);
 
 		//type expansion helpers
-		public short GetAsShort(string key)
-		{
+		public short GetAsShort(string key) {
 			var o = Get<object>(key);
 			return o as short? ?? o as byte? ?? 0;
 		}
 
-		public int GetAsInt(string key)
-		{
+		public int GetAsInt(string key) {
 			var o = Get<object>(key);
 			return o as int? ?? o as short? ?? o as byte? ?? 0;
 		}
 
-		public long GetAsLong(string key)
-		{
+		public long GetAsLong(string key) {
 			var o = Get<object>(key);
 			return o as long? ?? o as int? ?? o as short? ?? o as byte? ?? 0;
 		}
 
-		public double GetAsDouble(string key)
-		{
+		public double GetAsDouble(string key) {
 			var o = Get<object>(key);
 			return o as double? ?? o as float? ?? 0;
 		}
 
-		public object Clone()
-		{
+		public object Clone() {
 			var copy = new TagCompound();
-			foreach (var entry in this)
+			foreach (var entry in this) {
 				copy.Set(entry.Key, TagIO.Clone(entry.Value));
+			}
 
 			return copy;
 		}
 
-		public override string ToString()
-		{
+		public override string ToString() {
 			return TagPrinter.Print(this);
 		}
 
-		public object this[string key]
-		{
+		public object this[string key] {
 			get { return Get<object>(key); }
 			set { Set(key, value); }
 		}

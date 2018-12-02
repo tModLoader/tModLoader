@@ -5,8 +5,7 @@
 		public override string SetName => "dinidini";
 		public override EquipType ItemEquipType => EquipType.Head;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 28;
 			item.height = 20;
@@ -18,8 +17,7 @@
 		public override string SetName => "dinidini";
 		public override EquipType ItemEquipType => EquipType.Body;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 28;
 			item.height = 24;
@@ -31,8 +29,7 @@
 		public override string SetName => "dinidini";
 		public override EquipType ItemEquipType => EquipType.Legs;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.width = 22;
 			item.height = 18;
@@ -44,8 +41,7 @@
 		public override string SetName => "dinidini";
 		public override EquipType ItemEquipType => EquipType.Wings;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.vanity = false;
 			item.width = 24;
@@ -53,8 +49,7 @@
 			item.accessory = true;
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.wingTimeMax = 150;
 		}
 	}

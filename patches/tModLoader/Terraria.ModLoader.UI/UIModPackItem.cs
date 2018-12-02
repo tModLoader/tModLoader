@@ -1,14 +1,12 @@
-﻿using System;
-using System.IO;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using System.Linq;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -40,8 +38,7 @@ namespace Terraria.ModLoader.UI
 		private readonly UIImageButton deleteButton;
 		private readonly string filename;
 
-		public UIModPackItem(string name, string[] mods)
-		{
+		public UIModPackItem(string name, string[] mods) {
 			this.filename = name;
 			this.mods = mods;
 			this.numMods = mods.Length;
@@ -49,21 +46,16 @@ namespace Terraria.ModLoader.UI
 			numModsEnabled = 0;
 			numModsDisabled = 0;
 			numModsMissing = 0;
-			for (int i = 0; i < mods.Length; i++)
-			{
-				if (UIModPacks.mods.Contains(mods[i]))
-				{
-					if (ModLoader.IsEnabled(mods[i]))
-					{
+			for (int i = 0; i < mods.Length; i++) {
+				if (UIModPacks.mods.Contains(mods[i])) {
+					if (ModLoader.IsEnabled(mods[i])) {
 						numModsEnabled++;
 					}
-					else
-					{
+					else {
 						numModsDisabled++;
 					}
 				}
-				else
-				{
+				else {
 					modMissing[i] = true;
 					numModsMissing++;
 				}
@@ -147,15 +139,13 @@ namespace Terraria.ModLoader.UI
 			base.Append(deleteButton);
 		}
 
-		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
-		{
+		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
 			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
 			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this.innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
 			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
 		}
 
-		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos)
-		{
+		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
 
 			string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", numMods, numModsEnabled, numModsDisabled, numModsMissing);
 			Color color = (numModsMissing > 0 ? Color.Red : (numModsDisabled > 0 ? Color.Yellow : Color.Green));
@@ -163,8 +153,7 @@ namespace Terraria.ModLoader.UI
 			Utils.DrawBorderString(spriteBatch, text, drawPos, color, 1f, 0f, 0f, -1);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
@@ -182,49 +171,41 @@ namespace Terraria.ModLoader.UI
 			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 
-		public override void MouseOver(UIMouseEvent evt)
-		{
+		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
 			this.BackgroundColor = new Color(73, 94, 171);
 			this.BorderColor = new Color(89, 116, 213);
 		}
 
-		public override void MouseOut(UIMouseEvent evt)
-		{
+		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
 			Directory.CreateDirectory(UIModPacks.ModListSaveDirectory);
 			string path = UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + modPackItem.filename + ".json";
-			if (File.Exists(path))
-			{
+			if (File.Exists(path)) {
 				File.Delete(path);
 			}
 			Main.menuMode = Interface.modPacksMenuID;// should reload
 		}
 
-		private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (string modname in modListItem.mods)
-			{
-				if (UIModPacks.mods.Contains(modname))
+			foreach (string modname in modListItem.mods) {
+				if (UIModPacks.mods.Contains(modname)) {
 					ModLoader.EnableMod(modname);
+				}
 			}
 			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
-			if (modListItem.numModsMissing > 0)
-			{
+			if (modListItem.numModsMissing > 0) {
 				string missing = "";
-				for (int i = 0; i < modListItem.mods.Length; i++)
-				{
-					if (modListItem.modMissing[i])
-					{
+				for (int i = 0; i < modListItem.mods.Length; i++) {
+					if (modListItem.modMissing[i]) {
 						missing += modListItem.mods[i] + "\n";
 					}
 				}
@@ -234,8 +215,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Interface.modBrowser.Activate();
 			Interface.modBrowser.filterTextBox.currentString = "";
@@ -250,27 +230,22 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modBrowserID;
 		}
 
-		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (var item in UIModPacks.mods)
-			{
+			foreach (var item in UIModPacks.mods) {
 				ModLoader.DisableMod(item);
 			}
-			foreach (string modname in modListItem.mods)
-			{
-				if (UIModPacks.mods.Contains(modname))
+			foreach (string modname in modListItem.mods) {
+				if (UIModPacks.mods.Contains(modname)) {
 					ModLoader.EnableMod(modname);
+				}
 			}
 			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 
-			if (modListItem.numModsMissing > 0)
-			{
+			if (modListItem.numModsMissing > 0) {
 				string missing = "";
-				for (int i = 0; i < modListItem.mods.Length; i++)
-				{
-					if (modListItem.modMissing[i])
-					{
+				for (int i = 0; i < modListItem.mods.Length; i++) {
+					if (modListItem.modMissing[i]) {
 						missing += modListItem.mods[i] + "\n";
 					}
 				}
@@ -280,13 +255,11 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Main.PlaySound(10, -1, -1, 1);
 			string message = "";
-			for (int i = 0; i < modListItem.mods.Length; i++)
-			{
+			for (int i = 0; i < modListItem.mods.Length; i++) {
 				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? Language.GetTextValue("tModLoader.ModPackDisabled") : "") + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
@@ -295,11 +268,9 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.infoMessageID;
 		}
 
-		public override int CompareTo(object obj)
-		{
+		public override int CompareTo(object obj) {
 			var item = obj as UIModPackItem;
-			if (item == null)
-			{
+			if (item == null) {
 				return base.CompareTo(obj);
 			}
 			return filename.CompareTo(item.filename);

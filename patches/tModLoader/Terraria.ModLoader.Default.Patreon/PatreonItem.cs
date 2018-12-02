@@ -17,8 +17,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override string Texture => $"ModLoader/Patreon.{SetName}_{EquipTypeSuffix}";
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			string displayName =
 				EquipTypeSuffix != null
 					? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
@@ -26,16 +25,13 @@ namespace Terraria.ModLoader.Default.Patreon
 			DisplayName.SetDefault(displayName);
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.rare = 9;
 			item.vanity = true;
 		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip"))
-			{
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
 				overrideColor = Color.Aquamarine
 			};
 			tooltips.Add(line);

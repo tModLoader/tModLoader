@@ -19,8 +19,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> bottomButton;
 		private bool allChecksSatisfied;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			UIElement area = new UIElement {
 				Width = new StyleDimension(0f, 0.5f),
 				Top = new StyleDimension(200f, 0f),
@@ -58,23 +57,21 @@ namespace Terraria.ModLoader.UI
 			Append(area);
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			backPanel.RemoveAllChildren();
 
 			int i = 0;
-			UIMessageBox AddMessageBox(bool check, string text)
-			{
-				var msgBox = new UIMessageBox(text);
-				msgBox.Width= new StyleDimension(0, 1f);
-				msgBox.Height= new StyleDimension(0, .2f);
-				msgBox.Top= new StyleDimension(0, (i++)/4f + 0.05f);
+			UIMessageBox AddMessageBox(bool check, string text) {
+				var msgBox = new UIMessageBox(text) {
+					Width = new StyleDimension(0, 1f),
+					Height = new StyleDimension(0, .2f),
+					Top = new StyleDimension(0, (i++) / 4f + 0.05f)
+				};
 				backPanel.Append(msgBox);
 				return msgBox;
 			}
 
-			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction)
-			{
+			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction) {
 				var button = new UITextPanel<string>(text) {
 					Top = new StyleDimension(-2, 0),
 					Left = new StyleDimension(-2, 0),
@@ -90,8 +87,9 @@ namespace Terraria.ModLoader.UI
 
 			bool dotNetCheck = ModCompile.DotNet46Check(out var dotNetMsg);
 			var dotNetMsgBox = AddMessageBox(dotNetCheck, Language.GetTextValue(dotNetMsg, $"{FrameworkVersion.Framework} {FrameworkVersion.Version}"));
-			if (!dotNetCheck)
+			if (!dotNetCheck) {
 				AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
+			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
 			var modCompileMsgBox = AddMessageBox(modCompileCheck, Language.GetTextValue(modCompileMsg));
@@ -124,23 +122,19 @@ namespace Terraria.ModLoader.UI
 				Language.GetTextValue("UI.Back"));
 		}
 
-		private void DevelopingWithVisualStudio()
-		{
+		private void DevelopingWithVisualStudio() {
 			Process.Start("https://github.com/blushiemagic/tModLoader/wiki/Developing-with-Visual-Studio");
 		}
 
-		private void OpenTutorial()
-		{
+		private void OpenTutorial() {
 			Process.Start("https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-Guide");
 		}
 
-		private void DownloadDotNet()
-		{
+		private void DownloadDotNet() {
 			Process.Start("https://www.microsoft.com/net/download/thank-you/net472");
 		}
 
-		private void DownloadModCompile()
-		{
+		private void DownloadModCompile() {
 			Main.PlaySound(SoundID.MenuOpen);
 			// TODO: Replace with https://github.com/blushiemagic/tModLoader/releases/download/v0.10.1.5/ModCompile.zip for releases
 			string url = "https://www.dropbox.com/s/cf9bdrw273whv97/ModCompileTest.zip?dl=1";
@@ -149,8 +143,7 @@ namespace Terraria.ModLoader.UI
 			DownloadFile("ModCompile", url, file, () => DeleteFilesAndUnzip(file));
 		}
 
-		private void DirectDownloadRefAssemblies()
-		{
+		private void DirectDownloadRefAssemblies() {
 			Main.PlaySound(SoundID.MenuOpen);
 			//TODO: Replace with centrally hosted link
 			string url = "https://www.dropbox.com/s/ddz854nqsckbn75/v4.5%20Reference%20Assemblies.zip?dl=1";
@@ -160,30 +153,31 @@ namespace Terraria.ModLoader.UI
 			DownloadFile("v4.5 Reference Assemblies", url, file, () => DeleteFilesAndUnzip(file));
 		}
 
-		private void DeleteFilesAndUnzip(string zipFile, bool deleteFiles = false)
-		{
+		private void DeleteFilesAndUnzip(string zipFile, bool deleteFiles = false) {
 			string folder = Path.GetDirectoryName(zipFile);
 			Directory.CreateDirectory(folder);
-			if (deleteFiles)
-				foreach (FileInfo file in new DirectoryInfo(folder).EnumerateFiles())
-				{
-					if (file.Name != Path.GetFileName(zipFile))
+			if (deleteFiles) {
+				foreach (FileInfo file in new DirectoryInfo(folder).EnumerateFiles()) {
+					if (file.Name != Path.GetFileName(zipFile)) {
 						file.Delete();
+					}
 				}
-			using (ZipFile zip = ZipFile.Read(zipFile))
+			}
+
+			using (ZipFile zip = ZipFile.Read(zipFile)) {
 				zip.ExtractAll(folder, ExtractExistingFileAction.OverwriteSilently);
+			}
+
 			File.Delete(zipFile);
 			Main.menuMode = Interface.developerModeHelpID;
 		}
 
-		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete)
-		{
+		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete) {
 			Interface.downloadFile.SetDownloading(name, url, file, downloadModCompileComplete);
 			Main.menuMode = Interface.downloadFileID;
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			if (allChecksSatisfied) {
 				Main.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;

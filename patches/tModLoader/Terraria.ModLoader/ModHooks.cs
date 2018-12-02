@@ -1,9 +1,9 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Xna.Framework;
 using Terraria.GameInput;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics;
 using Terraria.Localization;
 using Terraria.UI;
@@ -17,8 +17,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="music">The music.</param>
 		/// <param name="priority">The music priority.</param>
-		public virtual void UpdateMusic(ref int music, ref MusicPriority priority)
-		{
+		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) {
 			UpdateMusic(ref music);
 		}
 
@@ -27,16 +26,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="music"></param>
 		[Obsolete("This UpdateMusic method now obsolete, use the UpdateMusic with the MusicPriority parameter.")]
-		public virtual void UpdateMusic(ref int music)
-		{
+		public virtual void UpdateMusic(ref int music) {
 		}
 
 		/// <summary>
 		/// Called when a hotkey is pressed. Check against the name to verify particular hotkey that was pressed. (Using the ModHotKey is more recommended.)
 		/// </summary>
 		/// <param name="name">The display name of the hotkey.</param>
-		public virtual void HotKeyPressed(string name)
-		{
+		public virtual void HotKeyPressed(string name) {
 		}
 
 		/// <summary>
@@ -44,8 +41,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		/// <param name="whoAmI">The player the message is from.</param>
-		public virtual void HandlePacket(BinaryReader reader, int whoAmI)
-		{
+		public virtual void HandlePacket(BinaryReader reader, int whoAmI) {
 		}
 
 		/// <summary>
@@ -55,31 +51,27 @@ namespace Terraria.ModLoader
 		/// <param name="reader">The reader.</param>
 		/// <param name="playerNumber">The player number the message is from.</param>
 		/// <returns></returns>
-		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
-		{
+		public virtual bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
 			return false;
 		}
 
 		/// <summary>
 		/// Hijacks the send data method. Only use if you absolutely know what you are doing. If any hooks return true, the message is not sent.
 		/// </summary>
-		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
-		{
+		public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
 			return false;
 		}
 
 		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
-		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
-		{
+		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
 		}
 
 		/// <summary>
 		/// Ran every update and suitable for calling Update for UserInterface classes
 		/// </summary>
-		public virtual void UpdateUI(GameTime gameTime)
-		{
+		public virtual void UpdateUI(GameTime gameTime) {
 		}
 
 		/// <summary>
@@ -90,8 +82,7 @@ namespace Terraria.ModLoader
 		/// <para />
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// </summary>
-		public virtual void PreUpdateEntities()
-		{
+		public virtual void PreUpdateEntities() {
 		}
 
 		/// <summary>
@@ -100,8 +91,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="PreUpdateEntities" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateNPCGore" />.
 		/// </summary>
-		public virtual void MidUpdatePlayerNPC()
-		{
+		public virtual void MidUpdatePlayerNPC() {
 		}
 
 		/// <summary>
@@ -110,8 +100,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdatePlayerNPC" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateGoreProjectile" />.
 		/// </summary>
-		public virtual void MidUpdateNPCGore()
-		{
+		public virtual void MidUpdateNPCGore() {
 		}
 
 		/// <summary>
@@ -120,8 +109,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateNPCGore" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateProjectileItem" />.
 		/// </summary>
-		public virtual void MidUpdateGoreProjectile()
-		{
+		public virtual void MidUpdateGoreProjectile() {
 		}
 
 		/// <summary>
@@ -130,8 +118,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateGoreProjectile" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateItemDust" />.
 		/// </summary>
-		public virtual void MidUpdateProjectileItem()
-		{
+		public virtual void MidUpdateProjectileItem() {
 		}
 
 		/// <summary>
@@ -140,8 +127,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateProjectileItem" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateDustTime" />.
 		/// </summary>
-		public virtual void MidUpdateItemDust()
-		{
+		public virtual void MidUpdateItemDust() {
 		}
 
 		/// <summary>
@@ -150,8 +136,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateItemDust" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateTimeWorld" />.
 		/// </summary>
-		public virtual void MidUpdateDustTime()
-		{
+		public virtual void MidUpdateDustTime() {
 		}
 
 		/// <summary>
@@ -160,8 +145,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateDustTime" />.
 		/// If you are looking to hook a later part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
-		public virtual void MidUpdateTimeWorld()
-		{
+		public virtual void MidUpdateTimeWorld() {
 		}
 
 		/// <summary>
@@ -170,8 +154,7 @@ namespace Terraria.ModLoader
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateTimeWorld" />.
 		/// If you are looking to hook even after the Network is updated, see <see cref="PostUpdateEverything" />.
 		/// </summary>
-		public virtual void MidUpdateInvasionNet()
-		{
+		public virtual void MidUpdateInvasionNet() {
 		}
 
 		/// <summary>
@@ -179,16 +162,14 @@ namespace Terraria.ModLoader
 		/// <para />
 		/// If you are looking to hook an earlier part of the update process, see <see cref="MidUpdateInvasionNet" />.
 		/// </summary>
-		public virtual void PostUpdateEverything()
-		{
+		public virtual void PostUpdateEverything() {
 		}
 
 		/// <summary>
 		/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
 		/// </summary>
 		/// <param name="layers">The layers.</param>
-		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-		{
+		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		}
 
 		/// <summary>
@@ -196,16 +177,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tileColor">Tile lighting color</param>
 		/// <param name="backgroundColor">Background lighting color</param>
-		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
-		{
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {
 		}
 
 		/// <summary>
 		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
 		/// </summary>
 		/// <param name="scale">Brightness scale</param>
-		public virtual void ModifyLightingBrightness(ref float scale)
-		{
+		public virtual void ModifyLightingBrightness(ref float scale) {
 		}
 
 		/// <summary>
@@ -214,45 +193,38 @@ namespace Terraria.ModLoader
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
-		public virtual void PostDrawInterface(SpriteBatch spriteBatch)
-		{
+		public virtual void PostDrawInterface(SpriteBatch spriteBatch) {
 		}
 
 		/// <summary>
 		/// Called while the fullscreen map is active. Allows custom drawing to the map.
 		/// </summary>
 		/// <param name="mouseText">The mouse text.</param>
-		public virtual void PostDrawFullscreenMap(ref string mouseText)
-		{
+		public virtual void PostDrawFullscreenMap(ref string mouseText) {
 		}
 
 		/// <summary>
 		/// Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that.
 		/// </summary>
-		public virtual void PostUpdateInput()
-		{
+		public virtual void PostUpdateInput() {
 		}
 
 		/// <summary>
 		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
 		/// </summary>
-		public virtual void PreSaveAndQuit()
-		{
+		public virtual void PreSaveAndQuit() {
 		}
 	}
 
 	internal static class ModHooks
 	{
 		//in Terraria.Main.UpdateMusic before updating music boxes call ModHooks.UpdateMusic(ref this.newMusic);
-		internal static void UpdateMusic(ref int music, ref MusicPriority priority)
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void UpdateMusic(ref int music, ref MusicPriority priority) {
+			foreach (Mod mod in ModLoader.Mods) {
 				int modMusic = -1;
 				MusicPriority modPriority = MusicPriority.BiomeLow;
 				mod.UpdateMusic(ref modMusic, ref modPriority);
-				if (modMusic >= 0 && modPriority >= priority)
-				{
+				if (modMusic >= 0 && modPriority >= priority) {
 					music = modMusic;
 					priority = modPriority;
 				}
@@ -260,48 +232,40 @@ namespace Terraria.ModLoader
 		}
 
 		// Pretty much deprecated. 
-		internal static void HotKeyPressed()
-		{
-			foreach (var modHotkey in ModContent.modHotKeys)
-			{
-				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName])
-				{
+		internal static void HotKeyPressed() {
+			foreach (var modHotkey in ModContent.modHotKeys) {
+				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName]) {
 					modHotkey.Value.mod.HotKeyPressed(modHotkey.Value.name);
 				}
 			}
 		}
 
-		internal static void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.ModifyTransformMatrix(ref Transform);
 			}
 		}
 
-		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor)
-		{
-			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor) {
+			if (Main.gameMenu) {
+				return;
+			}
+
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
 		}
 
-		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2)
-		{
+		internal static void ModifyLightingBrightness(ref float negLight, ref float negLight2) {
 			float scale = 1f;
-			foreach (Mod mod in ModLoader.Mods)
-			{
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.ModifyLightingBrightness(ref scale);
 			}
-			if (Lighting.NotRetro)
-			{
+			if (Lighting.NotRetro) {
 				negLight *= scale;
 				negLight2 *= scale;
 			}
-			else
-			{
+			else {
 				negLight -= (scale - 1f) / 2.307692307692308f;
 				negLight2 -= (scale - 1f) / 0.75f;
 			}
@@ -309,135 +273,105 @@ namespace Terraria.ModLoader
 			negLight2 = Math.Max(negLight2, 0.001f);
 		}
 
-		internal static void PostDrawFullscreenMap(ref string mouseText)
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void PostDrawFullscreenMap(ref string mouseText) {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PostDrawFullscreenMap(ref mouseText);
 			}
 		}
 
-		internal static void UpdateUI(GameTime gameTime)
-		{
-			if (Main.gameMenu) return;
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void UpdateUI(GameTime gameTime) {
+			if (Main.gameMenu) {
+				return;
+			}
+
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.UpdateUI(gameTime);
 			}
 		}
 
-		public static void PreUpdateEntities()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void PreUpdateEntities() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PreUpdateEntities();
 			}
 		}
 
-		public static void MidUpdatePlayerNPC()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdatePlayerNPC() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdatePlayerNPC();
 			}
 		}
 
-		public static void MidUpdateNPCGore()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateNPCGore() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateNPCGore();
 			}
 		}
 
-		public static void MidUpdateGoreProjectile()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateGoreProjectile() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateGoreProjectile();
 			}
 		}
 
-		public static void MidUpdateProjectileItem()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateProjectileItem() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateProjectileItem();
 			}
 		}
 
-		public static void MidUpdateItemDust()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateItemDust() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateItemDust();
 			}
 		}
 
-		public static void MidUpdateDustTime()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateDustTime() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateDustTime();
 			}
 		}
 
-		public static void MidUpdateTimeWorld()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateTimeWorld() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateTimeWorld();
 			}
 		}
 
-		public static void MidUpdateInvasionNet()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void MidUpdateInvasionNet() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.MidUpdateInvasionNet();
 			}
 		}
 
-		public static void PostUpdateEverything()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		public static void PostUpdateEverything() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PostUpdateEverything();
 			}
 		}
 
-		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-		{
-			foreach (GameInterfaceLayer layer in layers)
-			{
+		internal static void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
+			foreach (GameInterfaceLayer layer in layers) {
 				layer.Active = true;
 			}
-			foreach (Mod mod in ModLoader.Mods)
-			{
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.ModifyInterfaceLayers(layers);
 			}
 		}
 
-		internal static void PostDrawInterface(SpriteBatch spriteBatch)
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void PostDrawInterface(SpriteBatch spriteBatch) {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PostDrawInterface(spriteBatch);
 			}
 		}
 
-		internal static void PostUpdateInput()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void PostUpdateInput() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PostUpdateInput();
 			}
 		}
 
-		internal static void PreSaveAndQuit()
-		{
-			foreach (Mod mod in ModLoader.Mods)
-			{
+		internal static void PreSaveAndQuit() {
+			foreach (Mod mod in ModLoader.Mods) {
 				mod.PreSaveAndQuit();
 			}
 		}

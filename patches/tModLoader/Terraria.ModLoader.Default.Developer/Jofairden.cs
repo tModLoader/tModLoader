@@ -22,94 +22,73 @@ namespace Terraria.ModLoader.Default.Developer
 		private int? _bodySlot;
 		private int? _legSlot;
 
-		public void ResetEffects()
-		{
+		public void ResetEffects() {
 			HasSetBonus = false;
 		}
 
-		public void UpdateDead()
-		{
+		public void UpdateDead() {
 			HasSetBonus = false;
 			_auraTime = 0;
 		}
 
-		public void UpdateEffects(Player player)
-		{
-			if (!HasAura)
-			{
-				if (ShaderStrength > 0f)
-				{
+		public void UpdateEffects(Player player) {
+			if (!HasAura) {
+				if (ShaderStrength > 0f) {
 					ShaderStrength -= 0.02f;
 				}
 			}
-			else
-			{
-				if (ShaderStrength <= 1f)
-				{
+			else {
+				if (ShaderStrength <= 1f) {
 					ShaderStrength += 0.02f;
 				}
-				else
-				{
+				else {
 					_auraTime--;
 				}
 			}
 
-			if (!HasSetBonus)
-			{
-				if (LayerStrength > 0)
-				{
+			if (!HasSetBonus) {
+				if (LayerStrength > 0) {
 					LayerStrength -= 0.02f;
 				}
 			}
-			else
-			{
-				if (LayerStrength <= 1)
-				{
+			else {
+				if (LayerStrength <= 1) {
 					LayerStrength += 0.02f;
 				}
 			}
 
-			if (ShaderStrength > 0f)
-			{
+			if (ShaderStrength > 0f) {
 				Lighting.AddLight(
 					player.Center,
 					Main.DiscoColor.ToVector3() * LayerStrength * ((float)Main.time % 2) * (float)Math.Abs(Math.Log10(Main.essScale * 0.75f)));
 			}
 		}
 
-		public void UpdateAura(Player player)
-		{
-			if (_lastLife <= -1)
-			{
+		public void UpdateAura(Player player) {
+			if (_lastLife <= -1) {
 				_lastLife = player.statLife;
 			}
 			int diff = _lastLife - player.statLife;
-			if (diff >= 0.1f * player.statLifeMax2)
-			{
+			if (diff >= 0.1f * player.statLifeMax2) {
 				_auraTime = 300 + diff;
 			}
 			_lastLife = player.statLife;
 		}
 
-		public void ModifyDrawLayers(Mod mod, Player player, List<PlayerLayer> layers)
-		{
+		public void ModifyDrawLayers(Mod mod, Player player, List<PlayerLayer> layers) {
 			_headSlot = _headSlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Head}", EquipType.Head);
 			_bodySlot = _bodySlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
 			_legSlot = _legSlot ?? mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
 
-			if (LayerStrength >= 0f)
-			{
+			if (LayerStrength >= 0f) {
 				int i;
 
-				if (player.head == _headSlot)
-				{
+				if (player.head == _headSlot) {
 					PowerRanger_Head.GlowLayer.visible = true;
 
 					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Head"));
-					if (i != -1)
-					{
-						if (ShaderStrength > 0f)
-						{
+					if (i != -1) {
+						if (ShaderStrength > 0f) {
 							PowerRanger_Head.ShaderLayer.visible = true;
 							layers.Insert(i - 1, PowerRanger_Head.ShaderLayer);
 						}
@@ -117,35 +96,28 @@ namespace Terraria.ModLoader.Default.Developer
 					}
 				}
 
-				if (player.body == _bodySlot)
-				{
-					if (ShaderStrength > 0f)
-					{
+				if (player.body == _bodySlot) {
+					if (ShaderStrength > 0f) {
 						PowerRanger_Body.ShaderLayer.visible = true;
 						i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Body"));
-						if (i != -1)
-						{
+						if (i != -1) {
 							layers.Insert(i - 1, PowerRanger_Body.ShaderLayer);
 						}
 					}
 
 					PowerRanger_Body.GlowLayer.visible = true;
 					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Arms"));
-					if (i != -1)
-					{
+					if (i != -1) {
 						layers.Insert(i + 1, PowerRanger_Body.GlowLayer);
 					}
 				}
 
-				if (player.legs == _legSlot)
-				{
+				if (player.legs == _legSlot) {
 					PowerRanger_Legs.GlowLayer.visible = true;
 
 					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Legs"));
-					if (i != -1)
-					{
-						if (ShaderStrength > 0f)
-						{
+					if (i != -1) {
+						if (ShaderStrength > 0f) {
 							PowerRanger_Legs.ShaderLayer.visible = true;
 							layers.Insert(i - 1, PowerRanger_Legs.ShaderLayer);
 						}
@@ -155,8 +127,7 @@ namespace Terraria.ModLoader.Default.Developer
 			}
 		}
 
-		public object Clone()
-		{
+		public object Clone() {
 			return MemberwiseClone();
 		}
 	}
@@ -179,14 +150,12 @@ namespace Terraria.ModLoader.Default.Developer
 
 		private static int? ShaderId;
 
-		public sealed override void SetStaticDefaults()
-		{
+		public sealed override void SetStaticDefaults() {
 			DisplayName.SetDefault($"Andromedon {EquipTypeSuffix}");
 			Tooltip.SetDefault("The power of the Andromedon flows within you");
 		}
 
-		protected static Vector2 GetDrawOffset(int i)
-		{
+		protected static Vector2 GetDrawOffset(int i) {
 			return new Vector2(0, ShaderDrawOffset).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 
 			//var halfDist = ShaderDrawOffset / 2;
@@ -194,15 +163,13 @@ namespace Terraria.ModLoader.Default.Developer
 			//return new Vector2(0, offY).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 		}
 
-		private static void BeginShaderBatch(SpriteBatch batch)
-		{
+		private static void BeginShaderBatch(SpriteBatch batch) {
 			batch.End();
 			RasterizerState rasterizerState = Main.LocalPlayer.gravDir == 1f ? RasterizerState.CullCounterClockwise : RasterizerState.CullClockwise;
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
 		}
 
-		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture)
-		{
+		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
 							  (int)(drawInfo.position.X + drawPlayer.width / 2f - drawPlayer.bodyFrame.Width / 2f - Main.screenPosition.X),
@@ -210,8 +177,7 @@ namespace Terraria.ModLoader.Default.Developer
 						  + drawPlayer.headPosition
 						  + drawInfo.headOrigin;
 
-			return new DrawDataInfo
-			{
+			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.bodyFrame,
 				Origin = drawInfo.headOrigin,
@@ -220,8 +186,7 @@ namespace Terraria.ModLoader.Default.Developer
 			};
 		}
 
-		public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture)
-		{
+		public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
 							  (int)(drawInfo.position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2f + drawPlayer.width / 2f),
@@ -229,8 +194,7 @@ namespace Terraria.ModLoader.Default.Developer
 						  + drawPlayer.bodyPosition
 						  + drawInfo.bodyOrigin;
 
-			return new DrawDataInfo
-			{
+			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.bodyFrame,
 				Origin = drawInfo.bodyOrigin,
@@ -239,8 +203,7 @@ namespace Terraria.ModLoader.Default.Developer
 			};
 		}
 
-		public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture)
-		{
+		public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
 							  (int)(drawInfo.position.X - Main.screenPosition.X - drawPlayer.legFrame.Width / 2f + drawPlayer.width / 2f),
@@ -248,8 +211,7 @@ namespace Terraria.ModLoader.Default.Developer
 						  + drawPlayer.legPosition
 						  + drawInfo.legOrigin;
 
-			return new DrawDataInfo
-			{
+			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.legFrame,
 				Origin = drawInfo.legOrigin,
@@ -258,12 +220,9 @@ namespace Terraria.ModLoader.Default.Developer
 			};
 		}
 
-		public static PlayerLayer CreateShaderLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc)
-		{
-			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) =>
-			{
-				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis)
-				{
+		public static PlayerLayer CreateShaderLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc) {
+			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) => {
+				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
 
@@ -271,13 +230,11 @@ namespace Terraria.ModLoader.Default.Developer
 				Player drawPlayer = drawInfo.drawPlayer;
 				DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(drawPlayer);
 				SpriteEffects effects = SpriteEffects.None;
-				if (drawPlayer.direction == -1)
-				{
+				if (drawPlayer.direction == -1) {
 					effects |= SpriteEffects.FlipHorizontally;
 				}
 
-				if (drawPlayer.gravDir == -1)
-				{
+				if (drawPlayer.gravDir == -1) {
 					effects |= SpriteEffects.FlipVertically;
 				}
 
@@ -297,8 +254,7 @@ namespace Terraria.ModLoader.Default.Developer
 				GameShaders.Armor.Apply(ShaderId.Value, drawPlayer, data);
 				var centerPos = data.position;
 
-				for (int i = 0; i < ShaderNumSegments; i++)
-				{
+				for (int i = 0; i < ShaderNumSegments; i++) {
 					data.position = centerPos + GetDrawOffset(i);
 					data.Draw(Main.spriteBatch);
 				}
@@ -307,12 +263,9 @@ namespace Terraria.ModLoader.Default.Developer
 			});
 		}
 
-		public static PlayerLayer CreateGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc)
-		{
-			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) =>
-			{
-				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis)
-				{
+		public static PlayerLayer CreateGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc) {
+			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) => {
+				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
 
@@ -321,13 +274,11 @@ namespace Terraria.ModLoader.Default.Developer
 				Player drawPlayer = drawInfo.drawPlayer;
 				DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(drawPlayer);
 				SpriteEffects effects = SpriteEffects.None;
-				if (drawPlayer.direction == -1)
-				{
+				if (drawPlayer.direction == -1) {
 					effects |= SpriteEffects.FlipHorizontally;
 				}
 
-				if (drawPlayer.gravDir == -1)
-				{
+				if (drawPlayer.gravDir == -1) {
 					effects |= SpriteEffects.FlipVertically;
 				}
 
@@ -342,8 +293,7 @@ namespace Terraria.ModLoader.Default.Developer
 					effects,
 					0);
 
-				if (devPlayer.AndromedonEffect.HasAura)
-				{
+				if (devPlayer.AndromedonEffect.HasAura) {
 					ShaderId = ShaderId ?? GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
 					data.shader = ShaderId.Value;
 				}
@@ -356,35 +306,30 @@ namespace Terraria.ModLoader.Default.Developer
 	{
 		public override EquipType ItemEquipType => EquipType.Head;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.Size = new Vector2(18, 20);
 		}
 
-		public override bool IsVanitySet(int head, int body, int legs)
-		{
+		public override bool IsVanitySet(int head, int body, int legs) {
 			return head == mod.GetEquipSlot($"{SetName}_{EquipType.Head}", EquipType.Head)
 				   && body == mod.GetEquipSlot($"{SetName}_{EquipType.Body}", EquipType.Body)
 				   && legs == mod.GetEquipSlot($"{SetName}_{EquipType.Legs}", EquipType.Legs);
 		}
 
-		public override void UpdateVanitySet(Player player)
-		{
+		public override void UpdateVanitySet(Player player) {
 			DeveloperPlayer.GetPlayer(player).AndromedonEffect.HasSetBonus = true;
 		}
 
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonHeadGlow", PlayerLayer.Head, drawInfo =>
-		{
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonHeadGlow", PlayerLayer.Head, drawInfo => {
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Head_Head_Glow");
 			return GetHeadDrawDataInfo(drawInfo, _glowTexture);
 		});
 
-		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonHeadShader", PlayerLayer.Body, drawInfo =>
-		{
+		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonHeadShader", PlayerLayer.Body, drawInfo => {
 			_shaderTexture = _shaderTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Head_Head_Shader");
 			return GetHeadDrawDataInfo(drawInfo, _shaderTexture);
 		});
@@ -394,8 +339,7 @@ namespace Terraria.ModLoader.Default.Developer
 	{
 		public override EquipType ItemEquipType => EquipType.Body;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.Size = new Vector2(34, 22);
 		}
@@ -403,14 +347,12 @@ namespace Terraria.ModLoader.Default.Developer
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonBodyGlow", PlayerLayer.Body, drawInfo =>
-		{
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonBodyGlow", PlayerLayer.Body, drawInfo => {
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Body_Body_Glow");
 			return GetBodyDrawDataInfo(drawInfo, _glowTexture);
 		});
 
-		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonBodyShader", PlayerLayer.Body, drawInfo =>
-		{
+		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonBodyShader", PlayerLayer.Body, drawInfo => {
 			_shaderTexture = _shaderTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Body_Body_Shader");
 			return GetBodyDrawDataInfo(drawInfo, _shaderTexture);
 		});
@@ -420,8 +362,7 @@ namespace Terraria.ModLoader.Default.Developer
 	{
 		public override EquipType ItemEquipType => EquipType.Legs;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 			item.Size = new Vector2(22, 18);
 		}
@@ -429,14 +370,12 @@ namespace Terraria.ModLoader.Default.Developer
 		private static Texture2D _glowTexture;
 		private static Texture2D _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonLegsGlow", PlayerLayer.Head, drawInfo =>
-		{
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonLegsGlow", PlayerLayer.Head, drawInfo => {
 			_glowTexture = _glowTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Legs_Legs_Glow");
 			return GetLegDrawDataInfo(drawInfo, _glowTexture);
 		});
 
-		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonLegsShader", PlayerLayer.Body, drawInfo =>
-		{
+		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonLegsShader", PlayerLayer.Body, drawInfo => {
 			_shaderTexture = _shaderTexture ?? ModLoaderMod.ReadTexture($"Developer.PowerRanger_Legs_Legs_Shader");
 			return GetLegDrawDataInfo(drawInfo, _shaderTexture);
 		});

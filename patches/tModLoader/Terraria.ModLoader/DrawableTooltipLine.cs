@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 
@@ -34,8 +33,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The X position where the tooltip would be drawn that is not adjusted by mods.
 		/// </summary>
-		public int OriginalX
-		{
+		public int OriginalX {
 			get { return _originalX; }
 			internal set { X = _originalX = value; }
 		}
@@ -44,8 +42,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The Y position where the tooltip would be drawn that is not adjusted by mods.
 		/// </summary>
-		public int OriginalY
-		{
+		public int OriginalY {
 			get { return _originalY; }
 			internal set { Y = _originalY = value; }
 		}
@@ -97,8 +94,7 @@ namespace Terraria.ModLoader
 		/// <param name="x">The X position where the tooltip would be drawn.</param>
 		/// <param name="y">The Y position where the tooltip would be drawn.</param>
 		/// <param name="color">The color the tooltip would be drawn in</param>
-		public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.mod, parent.Name, parent.text)
-		{
+		public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.mod, parent.Name, parent.text) {
 			isModifier = parent.isModifier;
 			isModifierBad = parent.isModifierBad;
 			overrideColor = parent.overrideColor;

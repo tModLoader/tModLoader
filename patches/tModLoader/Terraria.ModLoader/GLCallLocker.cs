@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
-using MonoMod.RuntimeDetour;
-using System.Diagnostics;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Terraria.ModLoader
@@ -73,7 +68,7 @@ namespace Terraria.ModLoader
 		// disables warning during mod loading
 		internal static bool ActionsAreSpeedrun;
 		internal static void SpeedrunActions() {
-	#if !WINDOWS
+#if !WINDOWS
 			var sw = new Stopwatch();
 			sw.Start();
 			
@@ -83,7 +78,7 @@ namespace Terraria.ModLoader
 				if (actionQueuedEvent.WaitOne(wait))
 					RunGLActions();
 			}
-	#endif
+#endif
 		}
 
 #if !WINDOWS

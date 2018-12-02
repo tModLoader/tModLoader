@@ -1,17 +1,16 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.ModLoader.IO;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -24,8 +23,7 @@ namespace Terraria.ModLoader.UI
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
@@ -52,8 +50,9 @@ namespace Terraria.ModLoader.UI
 			uIScrollbar.HAlign = 1f;
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true);
-			uIHeaderTextPanel.HAlign = 0.5f;
+			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true) {
+				HAlign = 0.5f
+			};
 			uIHeaderTextPanel.Top.Set(-35f, 0f);
 			uIHeaderTextPanel.SetPadding(15f);
 			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
@@ -99,78 +98,67 @@ namespace Terraria.ModLoader.UI
 			base.Append(uIElement);
 		}
 
-		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = Interface.managePublishedID;
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = 0;
 		}
 
-		private void OpenSources(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModCompile.ModSourcePath);
 			Process.Start(ModCompile.ModSourcePath);
 		}
 
-		private void BuildMods(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (modList.Count > 0)
-			{
+			if (modList.Count > 0) {
 				ModLoader.reloadAfterBuild = false;
 				ModLoader.buildAll = true;
 				Main.menuMode = Interface.buildAllModsID;
 			}
 		}
 
-		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (modList.Count > 0)
-			{
+			if (modList.Count > 0) {
 				ModLoader.reloadAfterBuild = true;
 				ModLoader.buildAll = true;
 				Main.menuMode = Interface.buildAllModsID;
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			uIPanel.Append(uiLoader);
 			modList.Clear();
 			items.Clear();
 			Populate();
 		}
 
-		internal void Populate()
-		{
-			if (SynchronizationContext.Current == null)
+		internal void Populate() {
+			if (SynchronizationContext.Current == null) {
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+			}
+
 			Task.Factory.StartNew(
-				delegate
-				{
+				delegate {
 					var modSources = ModCompile.FindModSources();
 					var modFiles = ModOrganizer.FindMods();
 					return Tuple.Create(modSources, modFiles);
 				})
-				.ContinueWith(task =>
-				{
+				.ContinueWith(task => {
 					var modSources = task.Result.Item1;
 					var modFiles = task.Result.Item2;
-					foreach (string sourcePath in modSources)
-					{
+					foreach (string sourcePath in modSources) {
 						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
 						items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
@@ -178,10 +166,12 @@ namespace Terraria.ModLoader.UI
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (!updateNeeded) return;
+			if (!updateNeeded) {
+				return;
+			}
+
 			updateNeeded = false;
 			uIPanel.RemoveChild(uiLoader);
 			modList.Clear();

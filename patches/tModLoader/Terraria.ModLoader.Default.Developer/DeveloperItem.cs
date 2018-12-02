@@ -16,8 +16,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override string Texture => $"ModLoader/Developer.{SetName}_{EquipTypeSuffix}";
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			string displayName =
 				EquipTypeSuffix != null
 				? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
@@ -25,16 +24,13 @@ namespace Terraria.ModLoader.Default.Developer
 			DisplayName.SetDefault(displayName);
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.rare = 11;
 			item.vanity = true;
 		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			var line = new TooltipLine(mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item")
-			{
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			var line = new TooltipLine(mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
 				overrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);

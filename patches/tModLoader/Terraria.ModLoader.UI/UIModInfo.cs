@@ -1,12 +1,11 @@
-using System.Diagnostics;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
+using System.IO;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.ModLoader.IO;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
@@ -24,8 +23,7 @@ namespace Terraria.ModLoader.UI
 		private string info = "";
 		private string modDisplayName = "";
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
@@ -52,8 +50,9 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uIScrollbar);
 
 			modInfo.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true);
-			uITextPanel.HAlign = 0.5f;
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
+				HAlign = 0.5f
+			};
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
@@ -104,88 +103,72 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		internal void SetModInfo(string text)
-		{
+		internal void SetModInfo(string text) {
 			info = text;
-			if (info.Equals(""))
-			{
+			if (info.Equals("")) {
 				info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
 		}
 
-		internal void SetModName(string text)
-		{
+		internal void SetModName(string text) {
 			modDisplayName = text;
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 		}
 
-		internal void SetURL(string url)
-		{
+		internal void SetURL(string url) {
 			this.url = url;
 		}
 
-		internal void SetMod(LocalMod mod)
-		{
+		internal void SetMod(LocalMod mod) {
 			localMod = mod;
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11);
 			Main.menuMode = gotoMenu;
 		}
 
-		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			Interface.extractMod.SetMod(localMod);
 			Interface.extractMod.SetGotoMenu(gotoMenu);
 			Main.menuMode = Interface.extractModID;
 		}
 
-		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuClose);
 			File.Delete(localMod.modFile.path);
 			Main.menuMode = this.gotoMenu;
 		}
 
-		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10);
 			Process.Start(url);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = this.gotoMenu;
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + modDisplayName, 0.8f, true);
 			modInfo.SetText(info);
-			if (url.Equals(""))
-			{
+			if (url.Equals("")) {
 				modHomepageButton.Remove();
 			}
-			else
-			{
+			else {
 				uIElement.Append(modHomepageButton);
 			}
-			if (localMod != null)
-			{
+			if (localMod != null) {
 				uIElement.Append(deleteButton);
 				uIElement.Append(extractButton);
 			}
-			else
-			{
+			else {
 				deleteButton.Remove();
 				extractButton.Remove();
 			}

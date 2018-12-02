@@ -11,33 +11,27 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public AndromedonEffect AndromedonEffect;
 
-		public override void Initialize()
-		{
+		public override void Initialize() {
 			AndromedonEffect = new AndromedonEffect();
 		}
 
-		public override void ResetEffects()
-		{
+		public override void ResetEffects() {
 			AndromedonEffect?.ResetEffects();
 		}
 
-		public override void UpdateDead()
-		{
+		public override void UpdateDead() {
 			AndromedonEffect?.UpdateDead();
 		}
 
-		public override void PostUpdate()
-		{
+		public override void PostUpdate() {
 			AndromedonEffect?.UpdateEffects(player);
 		}
 
-		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit)
-		{
+		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
 			AndromedonEffect?.UpdateAura(player);
 		}
 
-		public override void ModifyDrawLayers(List<PlayerLayer> layers)
-		{
+		public override void ModifyDrawLayers(List<PlayerLayer> layers) {
 			AndromedonEffect?.ModifyDrawLayers(mod, player, layers);
 		}
 	}

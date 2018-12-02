@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -20,39 +19,31 @@ namespace Terraria.ModLoader.UI
 		public Color TextColor { get; set; } = Color.White;
 		private Rectangle oldInnerDimensions;
 
-		public string Text
-		{
-			get
-			{
-				if (this._text != null)
-				{
+		public string Text {
+			get {
+				if (this._text != null) {
 					return this._text.ToString();
 				}
 				return "";
 			}
 		}
 
-		public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false)
-		{
+		public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) {
 			this.SetText(text, TextScaleMax, large);
 		}
 
-		public override void Recalculate()
-		{
+		public override void Recalculate() {
 			this.SetText(this._text, TextScaleMax, this.IsLarge);
 			base.Recalculate();
 		}
 
-		public void SetText(T text)
-		{
+		public void SetText(T text) {
 			this.SetText(text, TextScaleMax, this.IsLarge);
 		}
 
-		public virtual void SetText(T text, float textScaleMax, bool large)
-		{
+		public virtual void SetText(T text, float textScaleMax, bool large) {
 			var innerDimensionsRectangle = GetDimensions().ToRectangle();
-			if (text.ToString() != _text?.ToString() || oldInnerDimensions != innerDimensionsRectangle)
-			{
+			if (text.ToString() != _text?.ToString() || oldInnerDimensions != innerDimensionsRectangle) {
 				oldInnerDimensions = innerDimensionsRectangle;
 
 				TextScaleMax = textScaleMax;
@@ -64,14 +55,12 @@ namespace Terraria.ModLoader.UI
 
 				var availableSpace = new Vector2(innerDimensionsRectangle.Width, innerDimensionsRectangle.Height);
 
-				if (textSize.X > availableSpace.X || textSize.Y > availableSpace.Y)
-				{
+				if (textSize.X > availableSpace.X || textSize.Y > availableSpace.Y) {
 					float scale = (textSize.X / availableSpace.X > textSize.Y / availableSpace.Y) ? availableSpace.X / textSize.X : availableSpace.Y / textSize.Y;
 					TextScale = scale;
 					textSize = dynamicSpriteFont.MeasureString(text.ToString()) * TextScaleMax;
 				}
-				else
-				{
+				else {
 					TextScale = TextScaleMax;
 				}
 				innerDimensionsRectangle.Y += 8;
@@ -83,8 +72,7 @@ namespace Terraria.ModLoader.UI
 				textStrings = text.ToString().Split('\n');
 				// offset off left corner for centering
 				drawOffsets = new Vector2[textStrings.Length];
-				for (int i = 0; i < textStrings.Length; i++)
-				{
+				for (int i = 0; i < textStrings.Length; i++) {
 					Vector2 size = dynamicSpriteFont.MeasureString(textStrings[i]) * TextScale;
 					//size.Y = size.Y * 0.9f;
 					float x = (innerDimensionsRectangle.Width - size.X) * 0.5f;
@@ -96,18 +84,15 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			if (this.DrawPanel)
-			{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (this.DrawPanel) {
 				base.DrawSelf(spriteBatch);
 			}
 			var innerDimensions = base.GetDimensions().ToRectangle();
 			innerDimensions.Inflate(-4, 0);
 			innerDimensions.Y += 8;
 			innerDimensions.Height -= 8;
-			for (int i = 0; i < textStrings.Length; i++)
-			{
+			for (int i = 0; i < textStrings.Length; i++) {
 				//Vector2 pos = innerDimensions.Center.ToVector2() + drawOffsets[i];
 				Vector2 pos = innerDimensions.TopLeft() + drawOffsets[i];
 				Utils.DrawBorderString(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);

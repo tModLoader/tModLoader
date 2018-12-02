@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terraria.ModLoader
+﻿namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This enum dictates from low to high which music selections take priority. 

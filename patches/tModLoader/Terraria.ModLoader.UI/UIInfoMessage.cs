@@ -1,6 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -13,8 +12,7 @@ namespace Terraria.ModLoader.UI
 		private int gotoMenu = 0;
 		private UIState gotoState;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			UIElement area = new UIElement();
 			area.Width.Set(0f, 0.8f);
 			area.Top.Set(200f, 0f);
@@ -54,23 +52,21 @@ namespace Terraria.ModLoader.UI
 			Append(area);
 		}
 
-		internal void SetMessage(string text)
-		{
+		internal void SetMessage(string text) {
 			message.SetText(text);
 		}
 
-		internal void SetGotoMenu(int gotoMenu, UIState state = null)
-		{
+		internal void SetGotoMenu(int gotoMenu, UIState state = null) {
 			this.gotoMenu = gotoMenu;
 			this.gotoState = state;
 		}
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
-			if (gotoState != null)
+			if (gotoState != null) {
 				Main.MenuUI.SetState(gotoState);
+			}
 		}
 	}
 
@@ -82,8 +78,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> button2;
 		private string button2Text = "???";
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			UIElement area = new UIElement();
 			area.Width.Set(0f, 0.8f);
 			area.Top.Set(200f, 0f);
@@ -134,39 +129,32 @@ namespace Terraria.ModLoader.UI
 			Append(area);
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			button2.SetText(button2Text);
 		}
 
-		internal void SetMessage(string text)
-		{
+		internal void SetMessage(string text) {
 			message.SetText(text);
 		}
 
-		internal void SetAltMessage(string text)
-		{
+		internal void SetAltMessage(string text) {
 			button2Text = text;
 		}
 
-		internal void SetAltAction(Action action)
-		{
+		internal void SetAltAction(Action action) {
 			altAction = action;
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 		}
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
 		}
 
-		private void AltClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void AltClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			altAction?.Invoke();
 			Main.menuMode = this.gotoMenu;

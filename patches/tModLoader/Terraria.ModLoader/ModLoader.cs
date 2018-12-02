@@ -1,18 +1,18 @@
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using Terraria.Localization;
+using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
-using System.Security.Cryptography;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.ModLoader.Audio;
-using System.Diagnostics;
 
 namespace Terraria.ModLoader
 {
@@ -72,7 +72,7 @@ namespace Terraria.ModLoader
 			get => gog ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
 			set => steamID64 = value;
 		}
-		
+
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
@@ -91,40 +91,39 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the instance of the Mod with the specified name.
 		/// </summary>
-		public static Mod GetMod(string name)
-		{
+		public static Mod GetMod(string name) {
 			modsByName.TryGetValue(name, out Mod m);
 			return m;
 		}
 
 		public static Mod GetMod(int index) => index >= 0 && index < Mods.Length ? Mods[index] : null;
-		
+
 		[Obsolete("Use ModLoader.Mods", true)]
 		public static Mod[] LoadedMods => Mods;
 
 		[Obsolete("Use ModLoader.Mods.Length", true)]
 		public static int ModCount => Mods.Length;
-		
+
 		[Obsolete("Use Modloader.Mods.Select(m => m.Name)", true)]
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
-		
-		internal static void Load()
-		{
-			if (!DotNet45Check())
-				return;
 
-			try
-			{
+		internal static void Load() {
+			if (!DotNet45Check()) {
+				return;
+			}
+
+			try {
 				MonoModHooks.Initialize();
 				var modInstances = ModOrganizer.LoadMods();
-			
+
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
-				foreach (var mod in Mods)
+				foreach (var mod in Mods) {
 					modsByName[mod.Name] = mod;
+				}
 
 				ModContent.Load();
 
@@ -136,45 +135,53 @@ namespace Terraria.ModLoader
 					Main.menuMode = 0;
 				}
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				var responsibleMods = new List<string>();
-				if (e.Data.Contains("mod"))
+				if (e.Data.Contains("mod")) {
 					responsibleMods.Add((string)e.Data["mod"]);
-				if (e.Data.Contains("mods"))
+				}
+
+				if (e.Data.Contains("mods")) {
 					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
+				}
+
 				responsibleMods.Remove("ModLoader");
-				
-				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
+
+				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod)) {
 					responsibleMods.Add(stackMod);
+				}
 
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().SingleOrDefault(m => m.Name == responsibleMods[0]);
-					if (mod != null && mod.tModLoaderVersion != version)
+					if (mod != null && mod.tModLoaderVersion != version) {
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					}
 				}
-				if (responsibleMods.Count > 0)
+				if (responsibleMods.Count > 0) {
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
-				else
+				}
+				else {
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
+				}
 
 				Logging.tML.Error(msg, e);
 
-				foreach (var mod in responsibleMods)
+				foreach (var mod in responsibleMods) {
 					DisableMod(mod);
+				}
 
 				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
 		}
 
 		private static bool DotNet45Check() {
-			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5))
+			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5)) {
 				return true;
+			}
 
 			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
-			if (Main.dedServ)
-			{
+			if (Main.dedServ) {
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(msg);
 				Console.ResetColor();
@@ -182,7 +189,7 @@ namespace Terraria.ModLoader
 				Console.ReadKey();
 				Environment.Exit(-1);
 			}
-			
+
 			Interface.updateMessage.SetMessage(msg);
 			Interface.updateMessage.SetGotoMenu(0);
 			Interface.updateMessage.SetURL("https://www.microsoft.com/net/download/thank-you/net472");
@@ -190,52 +197,51 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal static void Reload()
-		{
-			try
-			{
+		internal static void Reload() {
+			try {
 				Unload();
-				
-				if (Main.dedServ)
+
+				if (Main.dedServ) {
 					Load();
-				else
+				}
+				else {
 					Main.menuMode = Interface.loadModsID;
+				}
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				var msg = Language.GetTextValue("tModLoader.UnloadError");
-				
-				if (e.Data.Contains("mod"))
+
+				if (e.Data.Contains("mod")) {
 					msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
+				}
 
 				Logging.tML.Fatal(msg, e);
 				DisplayLoadError(msg, e, true);
 			}
 		}
 
-		private static void Unload()
-		{
+		private static void Unload() {
 			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ)
+			if (Main.dedServ) {
 				Console.WriteLine("Unloading mods...");
-			
+			}
+
 			ModContent.UnloadModContent();
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-			
+
 			Thread.MemoryBarrier();
 			GC.Collect();
-			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
+			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target)) {
 				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
+			}
 		}
 
-		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
-		{
+		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false) {
 			msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
 
-			if (Main.dedServ)
-			{
+			if (Main.dedServ) {
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(msg);
 				Console.ResetColor();
@@ -249,24 +255,27 @@ namespace Terraria.ModLoader
 					Reload();
 				}
 			}
-			else
-			{
+			else {
 				Interface.errorMessage.SetMessage(msg);
 				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
-				if (!string.IsNullOrEmpty(e.HelpLink))
+				if (!string.IsNullOrEmpty(e.HelpLink)) {
 					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
-				if(!fatal)
+				}
+
+				if (!fatal) {
 					Interface.errorMessage.ShowSkipModsButton();
-				if(continueIsRetry)
+				}
+
+				if (continueIsRetry) {
 					Interface.errorMessage.ContinueIsRetry();
+				}
 
 				Main.menuMode = Interface.errorMessageID;
 			}
 		}
 
 		// TODO: This doesn't work on mono for some reason. Investigate.
-		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey)
-		{
+		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey) {
 			var f = new RSAPKCS1SignatureDeformatter();
 			var v = AsymmetricAlgorithm.Create("RSA");
 			f.SetHashAlgorithm("SHA1");
@@ -282,8 +291,7 @@ namespace Terraria.ModLoader
 		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
 		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-		internal static void SetModEnabled(string modName, bool active)
-		{
+		internal static void SetModEnabled(string modName, bool active) {
 			if (active) {
 				EnabledMods.Add(modName);
 				Logging.tML.InfoFormat("Enabling Mod: {0}", modName);
@@ -296,26 +304,22 @@ namespace Terraria.ModLoader
 			ModOrganizer.SaveEnabledMods();
 		}
 
-		internal static void BuildAllMods()
-		{
+		internal static void BuildAllMods() {
 			ThreadPool.QueueUserWorkItem(_ =>
 				PostBuildMenu(new ModCompile(Interface.buildMod).BuildAll()));
 		}
 
-		internal static void BuildMod()
-		{
+		internal static void BuildMod() {
 			Interface.buildMod.SetProgress(0, 1);
 			ThreadPool.QueueUserWorkItem(_ =>
 				PostBuildMenu(new ModCompile(Interface.buildMod).Build(modToBuild)));
 		}
 
-		private static void PostBuildMenu(bool success)
-		{
+		private static void PostBuildMenu(bool success) {
 			Main.menuMode = success ? (reloadAfterBuild ? Interface.reloadModsID : 0) : Interface.errorMessageID;
 		}
 
-		internal static void SaveConfiguration()
-		{
+		internal static void SaveConfiguration() {
 			Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
 			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
@@ -327,8 +331,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 		}
 
-		internal static void LoadConfiguration()
-		{
+		internal static void LoadConfiguration() {
 			Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
 			Main.Configuration.Get("SteamID64", ref steamID64);
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
@@ -343,36 +346,35 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>
-		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
-		{
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) {
 			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
-		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
-		{
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) {
 			return BuildGlobalHook(providers, Method(expr));
 		}
 
-		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
-		{
-			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
+		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method) {
+			if (!method.IsVirtual) {
+				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
+			}
+
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
 			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
 		}
 
-		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
-		{
+		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr) {
 			MethodInfo method;
-			try
-			{
+			try {
 				var convert = expr.Body as UnaryExpression;
 				var makeDelegate = convert.Operand as MethodCallExpression;
 				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
 				method = methodArg.Value as MethodInfo;
-				if (method == null) throw new NullReferenceException();
+				if (method == null) {
+					throw new NullReferenceException();
+				}
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
 			return method;
@@ -383,7 +385,7 @@ namespace Terraria.ModLoader
 		 */
 		[Obsolete("ModLoader.GetFileBytes is deprecated since v0.10.1.4, use ModContent.GetFileBytes instead.", true)]
 		public static byte[] GetFileBytes(string name) => ModContent.GetFileBytes(name);
-		
+
 		[Obsolete("ModLoader.FileExists is deprecated since v0.10.1.4, use ModContent.FileExists instead.", true)]
 		public static bool FileExists(string name) => ModContent.FileExists(name);
 

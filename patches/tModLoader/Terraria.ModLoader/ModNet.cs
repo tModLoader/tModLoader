@@ -21,8 +21,7 @@ namespace Terraria.ModLoader
 			public bool signed;
 			public string path;
 
-			public ModHeader(string name, Version version, byte[] hash, bool signed)
-			{
+			public ModHeader(string name, Version version, byte[] hash, bool signed) {
 				this.name = name;
 				this.version = version;
 				this.hash = hash;
@@ -54,22 +53,22 @@ namespace Terraria.ModLoader
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
 
-		internal static void AssignNetIDs()
-		{
+		internal static void AssignNetIDs() {
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
-			for (short i = 0; i < netMods.Length; i++)
+			for (short i = 0; i < netMods.Length; i++) {
 				netMods[i].netID = i;
+			}
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+{
 				AllowVanillaClients = false;
+			}
 		}
 
-		internal static void SyncMods(int clientIndex)
-		{
+		internal static void SyncMods(int clientIndex) {
 			var p = new ModPacket(MessageID.SyncMods);
 			p.Write(AllowVanillaClients);
 
@@ -77,8 +76,7 @@ namespace Terraria.ModLoader
 			AddNoSyncDeps(syncMods);
 
 			p.Write(syncMods.Count);
-			foreach (var mod in syncMods)
-			{
+			foreach (var mod in syncMods) {
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
@@ -88,8 +86,7 @@ namespace Terraria.ModLoader
 			p.Send(clientIndex);
 		}
 
-		private static void AddNoSyncDeps(List<Mod> syncMods)
-		{
+		private static void AddNoSyncDeps(List<Mod> syncMods) {
 			var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
 			while (queue.Count > 0) {
 				var depNames = ModOrganizer.dependencyCache[queue.Dequeue().Name];
@@ -100,18 +97,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void SyncClientMods(BinaryReader reader)
-		{
+		internal static void SyncClientMods(BinaryReader reader) {
 			SyncClientMods(reader, out var needsReload);
-			if (downloadQueue.Count > 0)
+			if (downloadQueue.Count > 0) {
 				DownloadNextMod();
-			else
+			}
+			else {
 				OnModsDownloaded(needsReload);
+			}
 		}
 
 		// This method is split so that the local variables aren't held by the GC when reloading
-		internal static void SyncClientMods(BinaryReader reader, out bool needsReload)
-		{
+		internal static void SyncClientMods(BinaryReader reader, out bool needsReload) {
 			AllowVanillaClients = reader.ReadBoolean();
 			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
@@ -124,56 +121,56 @@ namespace Terraria.ModLoader
 			var blockedList = new List<ModHeader>();
 
 			int n = reader.ReadInt32();
-			for (int i = 0; i < n; i++)
-			{
+			for (int i = 0; i < n; i++) {
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
 				syncSet.Add(header.name);
 
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
-				if (clientMod != null)
-				{
-					if (header.Matches(clientMod.File))
+				if (clientMod != null) {
+					if (header.Matches(clientMod.File)) {
 						continue;
+					}
 
 					header.path = clientMod.File.path;
 				}
-				else
-				{
+				else {
 					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
 					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
-					if (matching != null)
-					{
+					if (matching != null) {
 						matching.Enabled = true;
 						needsReload = true;
 						continue;
 					}
 
-					if (disabledVersions.Length > 0)
+					if (disabledVersions.Length > 0) {
 						header.path = disabledVersions[0].modFile.path;
+					}
 				}
 
-				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
+				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
 					downloadQueue.Enqueue(header);
-				else
+				}
+				else {
 					blockedList.Add(header);
+				}
 			}
 
-			foreach (var mod in clientMods)
-				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
-				{
+			foreach (var mod in clientMods) {
+				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
 					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
+			}
 
-			if (blockedList.Count > 0)
-			{
+			if (blockedList.Count > 0) {
 				var msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
 				msg += downloadModsFromServers
 					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
 					: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
 				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
-				foreach (var mod in blockedList)
+				foreach (var mod in blockedList) {
 					msg += "\n    " + mod;
+				}
 
 				Logging.tML.Warn(msg);
 				Interface.errorMessage.SetMessage(msg);
@@ -184,8 +181,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DownloadNextMod()
-		{
+		private static void DownloadNextMod() {
 			downloadingMod = downloadQueue.Dequeue();
 			downloadingFile = null;
 
@@ -195,8 +191,7 @@ namespace Terraria.ModLoader
 		}
 
 		private const int CHUNK_SIZE = 16384;
-		internal static void SendMod(string modName, int toClient)
-		{
+		internal static void SendMod(string modName, int toClient) {
 			var mod = ModLoader.GetMod(modName);
 			var path = mod.File.path;
 			var fs = new FileStream(path, FileMode.Open);
@@ -209,8 +204,7 @@ namespace Terraria.ModLoader
 
 			var buf = new byte[CHUNK_SIZE];
 			int count;
-			while ((count = fs.Read(buf, 0, buf.Length)) > 0)
-			{
+			while ((count = fs.Read(buf, 0, buf.Length)) > 0) {
 				var p = new ModPacket(MessageID.ModFile, CHUNK_SIZE + 3);
 				p.Write(buf, 0, count);
 				p.Send(toClient);
@@ -219,18 +213,15 @@ namespace Terraria.ModLoader
 			fs.Close();
 		}
 
-		internal static void ReceiveMod(BinaryReader reader)
-		{
-			if (downloadingMod == null)
+		internal static void ReceiveMod(BinaryReader reader) {
+			if (downloadingMod == null) {
 				return;
+			}
 
-			try
-			{
-				if (downloadingFile == null)
-				{
+			try {
+				if (downloadingFile == null) {
 					Interface.downloadMod.SetDownloading(reader.ReadString());
-					Interface.downloadMod.SetCancel(() =>
-					{
+					Interface.downloadMod.SetCancel(() => {
 						downloadingFile?.Close();
 						downloadingMod = null;
 						Netplay.disconnect = true;
@@ -247,31 +238,32 @@ namespace Terraria.ModLoader
 				downloadingFile.Write(bytes, 0, bytes.Length);
 				Interface.downloadMod.SetProgress(downloadingFile.Position, downloadingLength);
 
-				if (downloadingFile.Position == downloadingLength)
-				{
+				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
 					mod.Read();
 					mod.Close();
 
-					if (!downloadingMod.Matches(mod))
+					if (!downloadingMod.Matches(mod)) {
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
+					}
 
-					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
+					if (downloadingMod.signed && !mod.ValidModBrowserSignature) {
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
+					}
 
 					ModLoader.EnableMod(mod.name);
 
-					if (downloadQueue.Count > 0)
+					if (downloadQueue.Count > 0) {
 						DownloadNextMod();
-					else
+					}
+					else {
 						OnModsDownloaded(true);
+					}
 				}
 			}
-			catch (Exception e)
-			{
-				try
-				{
+			catch (Exception e) {
+				try {
 					downloadingFile?.Close();
 				}
 				catch { }
@@ -282,10 +274,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void OnModsDownloaded(bool needsReload)
-		{
-			if (needsReload)
-			{
+		private static void OnModsDownloaded(bool needsReload) {
+			if (needsReload) {
 				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
@@ -293,14 +283,14 @@ namespace Terraria.ModLoader
 
 			downloadingMod = null;
 			netMods = null;
-			foreach (var mod in ModLoader.Mods)
+			foreach (var mod in ModLoader.Mods) {
 				mod.netID = -1;
+			}
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
 
-		private static Action NetReload()
-		{
+		private static Action NetReload() {
 			// Main.ActivePlayerFileData gets cleared during reload
 			var path = Main.ActivePlayerFileData.Path;
 			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
@@ -316,12 +306,12 @@ namespace Terraria.ModLoader
 			};
 		}
 
-		internal static void SendNetIDs(int toClient)
-		{
+		internal static void SendNetIDs(int toClient) {
 			var p = new ModPacket(MessageID.ModPacket);
 			p.Write(netMods.Length);
-			foreach (var mod in netMods)
+			foreach (var mod in netMods) {
 				p.Write(mod.Name);
+			}
 
 			ItemLoader.WriteNetGlobalOrder(p);
 			WorldHooks.WriteNetWorldOrder(p);
@@ -329,18 +319,18 @@ namespace Terraria.ModLoader
 			p.Send(toClient);
 		}
 
-		private static void ReadNetIDs(BinaryReader reader)
-		{
+		private static void ReadNetIDs(BinaryReader reader) {
 			var mods = ModLoader.Mods;
 			var list = new List<Mod>();
 			var n = reader.ReadInt32();
-			for (short i = 0; i < n; i++)
-			{
+			for (short i = 0; i < n; i++) {
 				var name = reader.ReadString();
 				var mod = mods.SingleOrDefault(m => m.Name == name);
 				list.Add(mod);
 				if (mod != null) //nosync mod that doesn't exist on the client
+{
 					mod.netID = i;
+				}
 			}
 			netMods = list.ToArray();
 			SetupDiagnostics();
@@ -349,8 +339,7 @@ namespace Terraria.ModLoader
 			WorldHooks.ReadNetWorldOrder(reader);
 		}
 
-		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
-		{
+		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length) {
 			if (netMods == null) {
 				ReadNetIDs(reader);
 				return;
@@ -365,37 +354,30 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
-		{
-			if (netMods == null)
-			{
+		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
+			if (netMods == null) {
 				return false;
 			}
 
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in ModLoader.Mods)
-			{
-				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
-				{
+			foreach (var mod in ModLoader.Mods) {
+				if (mod.HijackGetData(ref messageType, ref reader, playerNumber)) {
 					hijacked = true;
 					biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
 				}
 				reader.BaseStream.Position = readerPos;
 			}
-			if (hijacked)
-			{
+			if (hijacked) {
 				reader.BaseStream.Position = biggestReaderPos;
 			}
 			return hijacked;
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
-		{
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.Mods)
-			{
+			foreach (Mod mod in ModLoader.Mods) {
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}
 			return hijacked;
@@ -409,19 +391,19 @@ namespace Terraria.ModLoader
 		public static int[] txMsgType;
 		public static int[] txDataType;
 
-		private static void SetupDiagnostics()
-		{
+		private static void SetupDiagnostics() {
 			rxMsgType = new int[netMods.Length];
 			rxDataType = new int[netMods.Length];
 			txMsgType = new int[netMods.Length];
 			txDataType = new int[netMods.Length];
 		}
 
-		internal static void ResetNetDiag()
-		{
-			if (netMods == null || Main.netMode == 2) return;
-			for (int i = 0; i < netMods.Length; i++)
-			{
+		internal static void ResetNetDiag() {
+			if (netMods == null || Main.netMode == 2) {
+				return;
+			}
+
+			for (int i = 0; i < netMods.Length; i++) {
 				rxMsgType[i] = 0;
 				rxDataType[i] = 0;
 				txMsgType[i] = 0;
@@ -429,21 +411,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void DrawModDiagnoseNet()
-		{
-			if (netMods == null) return;
+		internal static void DrawModDiagnoseNet() {
+			if (netMods == null) {
+				return;
+			}
+
 			float scale = 0.7f;
 
-			for (int j = -1; j < netMods.Length; j++)
-			{
+			for (int j = -1; j < netMods.Length; j++) {
 				int i = j + Main.maxMsg + 2;
 				int x = 200;
 				int y = 120;
 				int xAdjust = i / 50;
 				x += xAdjust * 400;
 				y += (i - xAdjust * 50) * 13;
-				if (j == -1)
-				{
+				if (j == -1) {
 					Main.spriteBatch.DrawString(Main.fontMouseText, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 					continue;
 				}

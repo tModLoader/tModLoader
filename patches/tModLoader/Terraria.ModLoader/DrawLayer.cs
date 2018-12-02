@@ -36,8 +36,7 @@ namespace Terraria.ModLoader
 		/// <param name="mod"></param>
 		/// <param name="name"></param>
 		/// <param name="layer"></param>
-		protected DrawLayer(string mod, string name, Action<InfoType> layer)
-		{
+		protected DrawLayer(string mod, string name, Action<InfoType> layer) {
 			this.mod = mod;
 			this.Name = name;
 			this.parent = null;
@@ -51,8 +50,7 @@ namespace Terraria.ModLoader
 		/// <param name="name"></param>
 		/// <param name="parent"></param>
 		/// <param name="layer"></param>
-		protected DrawLayer(string mod, string name, DrawLayer<InfoType> parent, Action<InfoType> layer)
-		{
+		protected DrawLayer(string mod, string name, DrawLayer<InfoType> parent, Action<InfoType> layer) {
 			this.mod = mod;
 			this.Name = name;
 			this.parent = parent;
@@ -65,17 +63,13 @@ namespace Terraria.ModLoader
 		/// <typeparam name="T"></typeparam>
 		/// <param name="layers"></param>
 		/// <returns></returns>
-		public bool ShouldDraw<T>(IList<T> layers) where T : DrawLayer<InfoType>
-		{
-			if (!this.visible)
-			{
+		public bool ShouldDraw<T>(IList<T> layers) where T : DrawLayer<InfoType> {
+			if (!this.visible) {
 				return false;
 			}
 			DrawLayer<InfoType> parentLayer = this.parent;
-			while (parentLayer != null)
-			{
-				if (!parentLayer.visible || !layers.Contains((T)parentLayer))
-				{
+			while (parentLayer != null) {
+				if (!parentLayer.visible || !layers.Contains((T)parentLayer)) {
 					return false;
 				}
 				parentLayer = parentLayer.parent;
@@ -87,8 +81,7 @@ namespace Terraria.ModLoader
 		/// Invokes this DrawLayer's layer action.
 		/// </summary>
 		/// <param name="drawInfo"></param>
-		public virtual void Draw(ref InfoType drawInfo)
-		{
+		public virtual void Draw(ref InfoType drawInfo) {
 			this.layer(drawInfo);
 		}
 	}
@@ -214,8 +207,7 @@ namespace Terraria.ModLoader
 		/// <param name="name"></param>
 		/// <param name="layer"></param>
 		public PlayerLayer(string mod, string name, Action<PlayerDrawInfo> layer)
-			: base(mod, name, layer)
-		{
+			: base(mod, name, layer) {
 		}
 
 		/// <summary>
@@ -226,12 +218,10 @@ namespace Terraria.ModLoader
 		/// <param name="parent"></param>
 		/// <param name="layer"></param>
 		public PlayerLayer(string mod, string name, PlayerLayer parent, Action<PlayerDrawInfo> layer)
-			: base(mod, name, parent, layer)
-		{
+			: base(mod, name, parent, layer) {
 		}
 
-		private static PlayerLayer CreateVanillaLayer(string name)
-		{
+		private static PlayerLayer CreateVanillaLayer(string name) {
 			return new PlayerLayer("Terraria", name, _ => { });
 		}
 	}
@@ -269,8 +259,7 @@ namespace Terraria.ModLoader
 		/// <param name="name"></param>
 		/// <param name="layer"></param>
 		public PlayerHeadLayer(string mod, string name, Action<PlayerHeadDrawInfo> layer)
-			: base(mod, name, layer)
-		{
+			: base(mod, name, layer) {
 		}
 
 		/// <summary>
@@ -281,12 +270,10 @@ namespace Terraria.ModLoader
 		/// <param name="parent"></param>
 		/// <param name="layer"></param>
 		public PlayerHeadLayer(string mod, string name, PlayerHeadLayer parent, Action<PlayerHeadDrawInfo> layer)
-			: base(mod, name, parent, layer)
-		{
+			: base(mod, name, parent, layer) {
 		}
 
-		private static PlayerHeadLayer CreateVanillaLayer(string name)
-		{
+		private static PlayerHeadLayer CreateVanillaLayer(string name) {
 			return new PlayerHeadLayer("Terraria", name, _ => { });
 		}
 	}

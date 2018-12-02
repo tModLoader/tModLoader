@@ -21,15 +21,15 @@ namespace Terraria.ModLoader.UI
 		private bool showSkipButton;
 
 		public UIErrorMessage() {
-			if (Main.dedServ)
+			if (Main.dedServ) {
 				return;
+			}
 
 			message = new UIMessageBox("");
 			continueButton = new UITextPanel<string>("", 0.7f, true);
 		}
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			area = new UIElement();
 			area.Width.Set(0f, 0.8f);
 			area.Top.Set(200f, 0f);
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.UI
 			message.Height.Set(-110f, 1f);
 			message.HAlign = 0.5f;
 			area.Append(message);
-			
+
 			continueButton.Width.Set(-10f, 0.5f);
 			continueButton.Height.Set(50f, 0f);
 			continueButton.Top.Set(-108f, 1f);
@@ -82,86 +82,84 @@ namespace Terraria.ModLoader.UI
 			Append(area);
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			Netplay.disconnect = true;
-			if (string.IsNullOrEmpty(webHelpURL))
+			if (string.IsNullOrEmpty(webHelpURL)) {
 				area.RemoveChild(webHelpButton);
-			else
+			}
+			else {
 				area.Append(webHelpButton);
-			if (showSkipButton)
+			}
+
+			if (showSkipButton) {
 				area.Append(skipLoadButton);
-			else
+			}
+			else {
 				area.RemoveChild(skipLoadButton);
-			if(gotoMenu < 0)
+			}
+
+			if (gotoMenu < 0) {
 				area.Append(exitAndDisableAllButton);
-			else
+			}
+			else {
 				area.RemoveChild(exitAndDisableAllButton);
+			}
 		}
 
-		internal void SetMessage(string text)
-		{
+		internal void SetMessage(string text) {
 			message.SetText(text);
 			SetWebHelpURL("");
 			showSkipButton = false;
 		}
 
-		internal void SetWebHelpURL(string text)
-		{
+		internal void SetWebHelpURL(string text) {
 			this.webHelpURL = text;
 		}
 
-		internal void ShowSkipModsButton(bool skip = true)
-		{
+		internal void ShowSkipModsButton(bool skip = true) {
 			this.showSkipButton = skip;
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 			continueButton.SetText(gotoMenu >= 0 ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("tModLoader.Exit"));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 		}
 
-		internal void ContinueIsRetry()
-		{
-			if(gotoMenu >= 0)
+		internal void ContinueIsRetry() {
+			if (gotoMenu >= 0) {
 				continueButton.SetText(Language.GetTextValue("tModLoader.Retry"));
+			}
 		}
 
-		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10);
-			if (gotoMenu < 0)
+			if (gotoMenu < 0) {
 				Environment.Exit(0);
+			}
 
 			Main.menuMode = gotoMenu;
 		}
 
-		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement) {
 			var enabledMods = new HashSet<string>(ModLoader.EnabledMods);
-			foreach (var mod in enabledMods)
-			{
+			foreach (var mod in enabledMods) {
 				ModLoader.DisableMod(mod);
 			}
 			Environment.Exit(0);
 		}
 
-		private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10);
 			Process.Start(Logging.LogPath);
 		}
 
-		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			Process.Start(webHelpURL);
 		}
 
-		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			ModLoader.skipLoad = true;
 			Main.menuMode = gotoMenu;
