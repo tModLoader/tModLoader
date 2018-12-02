@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.Size = new Vector2(32, 46);
+			item.Size = new Vector2(30, 32);
 		}
 	}
 	
@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.Size = new Vector2(26, 22);
+			item.Size = new Vector2(34, 24);
 		}
 	}
 	
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.Size = new Vector2(20, 12);
+			item.Size = new Vector2(22, 18);
 		}
 	}
 }

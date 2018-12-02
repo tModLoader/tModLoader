@@ -397,7 +397,7 @@ namespace Terraria.ModLoader.Default.Developer
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.Size = new Vector2(26, 22);
+			item.Size = new Vector2(34, 22);
 		}
 
 		private static Texture2D _glowTexture;
@@ -423,7 +423,7 @@ namespace Terraria.ModLoader.Default.Developer
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.Size = new Vector2(20, 12);
+			item.Size = new Vector2(22, 18);
 		}
 
 		private static Texture2D _glowTexture;
