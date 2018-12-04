@@ -15,7 +15,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -155,7 +155,9 @@
     <Compile Include="Items\ExampleLifeFruit.cs" />
     <Compile Include="Items\ExampleMagicMirror.cs" />
     <Compile Include="Items\Infinity.cs" />
+    <Compile Include="Items\Placeable\ExampleBar.cs" />
     <Compile Include="Items\Placeable\ExampleLamp.cs" />
+    <Compile Include="Items\Placeable\ExampleOre.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -272,6 +274,7 @@
     <Compile Include="Tiles\BossTrophy.cs" />
     <Compile Include="Tiles\ElementalPurge.cs" />
     <Compile Include="Tiles\ExampleAnimatedTile.cs" />
+    <Compile Include="Tiles\ExampleBar.cs" />
     <Compile Include="Tiles\ExampleBed.cs" />
     <Compile Include="Tiles\ExampleBlock.cs" />
     <Compile Include="Tiles\ExampleChair.cs" />
@@ -285,6 +288,7 @@
     <Compile Include="Tiles\ExampleLamp.cs" />
     <Compile Include="Tiles\ExampleMusicBox.cs" />
     <Compile Include="Tiles\ExampleHerb.cs" />
+    <Compile Include="Tiles\ExampleOre.cs" />
     <Compile Include="Tiles\ExamplePlatform.cs" />
     <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />
