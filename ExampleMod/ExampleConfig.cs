@@ -116,14 +116,14 @@ namespace ExampleMod
 		public override void PostAutoLoad()
 		{
 			ExampleMod.exampleClientConfig = this;
-			UI.ExampleUI.visible = ShowCoinUI;
+			UI.ExampleUI.Visible = ShowCoinUI;
 		}
 
 		public override void PostSave()
 		{
 			// Here we use the PostSave hook to initialize ExampleUI.visible with the new values.
 			// We maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
-			UI.ExampleUI.visible = ShowCoinUI;
+			UI.ExampleUI.Visible = ShowCoinUI;
 		}
 	}
 
