@@ -12,7 +12,7 @@ var searchData=
   ['vanilladoorcount',['vanillaDoorCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#af08d0294b2e94ae04eed82ce689f35fc',1,'Terraria::ModLoader::TileLoader']]],
   ['vanillaheadcount',['vanillaHeadCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a6addaaceb899fd7c27cac588f1c4bd68',1,'Terraria::ModLoader::NPCHeadLoader']]],
   ['vanillalongerexpertdebuff',['vanillaLongerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a850e02183031de3bf2127baefd090982',1,'Terraria::ModLoader::BuffLoader']]],
-  ['vanillaskeletoncount',['vanillaSkeletonCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2e732b46bdea10af7a0f81f3b395fec1',1,'Terraria::ModLoader::NPCLoader']]],
+  ['vanillaskeletoncount',['vanillaSkeletonCount',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac8258580b2fe062e674e876aa80fd2d3',1,'Terraria::ModLoader::NPCLoader']]],
   ['vanillasurfacebgstylecount',['vanillaSurfaceBgStyleCount',['../class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#af7027f7be3ce1e23f621cd5dc2eb7412',1,'Terraria::ModLoader::SurfaceBgStyleLoader']]],
   ['vanillatablecount',['vanillaTableCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad5cf2f5eba733870652bca9def367bc6',1,'Terraria::ModLoader::TileLoader']]],
   ['vanillatorchcount',['vanillaTorchCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2d47a0e5457d54b4a6c893c982dbb1ca',1,'Terraria::ModLoader::TileLoader']]],

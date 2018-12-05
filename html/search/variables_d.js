@@ -2,7 +2,7 @@ var searchData=
 [
   ['m_5frunactions',['m_RunActions',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#a0cab98f061abde6d78b99da3a81e951c',1,'Terraria::ModLoader::GLCallLocker']]],
   ['mac',['mac',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab',1,'Terraria::ModLoader::ModLoader']]],
-  ['makedefault',['makeDefault',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html#a52e83fe049f33a5dd302a6bcd2dfd6c4',1,'Terraria::ModLoader::IO::TagIO::ClassPayloadHandler']]],
+  ['makedefault',['makeDefault',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html#a6d65e0fec2b1b5fe56ff744ee0f6e31a',1,'Terraria::ModLoader::IO::TagIO::ClassPayloadHandler']]],
   ['manager',['manager',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#ae16d891175eb71f85380c27dad46a511',1,'Terraria::ModLoader::MonoModHooks']]],
   ['marble',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['martianmadness',['MartianMadness',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a6f2997aac758c10792fe3793b3ee0e60',1,'Terraria::ModLoader::SpawnCondition']]],

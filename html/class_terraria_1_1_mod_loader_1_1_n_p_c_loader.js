@@ -159,5 +159,5 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
     [ "nextNPC", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#affee1a015d6e55f8dd983ab60cb360f5", null ],
     [ "NPCCount", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ab7794fd3e56d4e5be2a789542c0ed331", null ],
     [ "shopToNPC", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae3a994c84a420c9a488e5380f59c24d6", null ],
-    [ "vanillaSkeletonCount", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2e732b46bdea10af7a0f81f3b395fec1", null ]
+    [ "vanillaSkeletonCount", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac8258580b2fe062e674e876aa80fd2d3", null ]
 ];

@@ -11,7 +11,7 @@ var searchData=
   ['dict',['dict',['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html#a107b97f0f2d649a56a5c25b6999c390f',1,'Terraria.ModLoader.EffectsTracker.KeyCache.dict()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c',1,'Terraria.ModLoader.IO.TagCompound.dict()']]],
   ['disablesmartcursor',['disableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a08ffa633e41dff9e482d868dd4886c5d',1,'Terraria::ModLoader::ModTile']]],
   ['disablesmartinteract',['disableSmartInteract',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#acdf5af4ff68ba6dc38abf06117476a8b',1,'Terraria::ModLoader::ModTile']]],
-  ['dispose',['dispose',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#aeaba9f0608e4958f3609ced993ceecd3',1,'Terraria::ModLoader::IO::TmodFile::DisposeWrapper']]],
+  ['dispose',['dispose',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#ac798d26e25ab78e8a0038c2e0f2747e0',1,'Terraria::ModLoader::IO::TmodFile::DisposeWrapper']]],
   ['doctorbones',['DoctorBones',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a7019033032c2107b0d31d52268b988ce',1,'Terraria::ModLoader::SpawnCondition']]],
   ['downloadingfile',['downloadingFile',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6',1,'Terraria::ModLoader::ModNet']]],
   ['downloadinglength',['downloadingLength',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#aae814b95283be86b1b3d858effecfe30',1,'Terraria::ModLoader::ModNet']]],
