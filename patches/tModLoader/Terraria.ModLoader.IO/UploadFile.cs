@@ -55,9 +55,9 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static void WriteValues(Stream requestStream, NameValueCollection values, string boundary) {
-			if (values == null) {
+			if (values == null)
 				return;
-			}
+
 			// Write the values
 			foreach (string name in values.Keys) {
 				var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);
@@ -70,9 +70,9 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static void WriteFiles(Stream requestStream, IEnumerable<UploadFile> files, string boundary) {
-			if (files == null) {
+			if (files == null)
 				return;
-			}
+
 			// Write the files
 			foreach (var file in files) {
 				var buffer = Encoding.ASCII.GetBytes(boundary + Environment.NewLine);

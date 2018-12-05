@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		internal const int downloadFileID = 10023;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
-		private static readonly UIModSources modSources = new UIModSources();
+		private static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
@@ -364,9 +364,8 @@ namespace Terraria.ModLoader
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
 								File.Delete(tempFile);
 							}
-							while (Console.KeyAvailable) {
+							while (Console.KeyAvailable)
 								Console.ReadKey(true);
-							}
 						}
 					}
 					catch (Exception e) {

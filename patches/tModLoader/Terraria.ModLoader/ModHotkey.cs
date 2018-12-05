@@ -33,10 +33,7 @@ namespace Terraria.ModLoader
 
 		public bool RetroCurrent {
 			get {
-				if (Main.drawingPlayerChat || Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1) {
-					return false;
-				}
-
+				if (Main.drawingPlayerChat || Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1) return false;
 				return Current;
 			}
 		}

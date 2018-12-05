@@ -25,11 +25,9 @@ namespace Terraria.ModLoader
 			}
 
 			public override void Reset() {
-				foreach (var k in dict.Keys.ToArray()) {
-					if (!keys.Contains(k)) {
+				foreach (var k in dict.Keys.ToArray())
+					if (!keys.Contains(k))
 						dict.Remove(k);
-					}
-				}
 			}
 		}
 
@@ -51,14 +49,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void RemoveModEffects() {
-			if (KeyCaches == null) {
+			if (KeyCaches == null)
 				return;
-			}
 
-			foreach (var kc in KeyCaches) {
+			foreach (var kc in KeyCaches)
 				kc.Reset();
-			}
-
 			KeyCaches = null;
 
 			// bless Vanilla making identical classes with no parent
@@ -72,11 +67,9 @@ namespace Terraria.ModLoader
 			shaderData.RemoveRange(vanillaShaderCount, shaderData.Count - vanillaShaderCount);
 
 			var shaderLookupLimit = (V)Convert.ChangeType(vanillaShaderCount, typeof(V));
-			foreach (var entry in shaderLookupDictionary.ToArray()) {
-				if (Comparer<V>.Default.Compare(entry.Value, shaderLookupLimit) > 0) {
+			foreach (var entry in shaderLookupDictionary.ToArray())
+				if (Comparer<V>.Default.Compare(entry.Value, shaderLookupLimit) > 0)
 					shaderLookupDictionary.Remove(entry.Key);
-				}
-			}
 		}
 	}
 }

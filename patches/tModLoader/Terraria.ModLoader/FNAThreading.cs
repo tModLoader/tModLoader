@@ -14,11 +14,13 @@ namespace Terraria.ModLoader
 				var handle = new ManualResetEvent(false);
 				Exception e = null;
 				actions.Enqueue(() => {
-					try { 
+					try {
 						d.Invoke(state);
-					} catch (Exception e2) {
+					}
+					catch (Exception e2) {
 						e = e2;
-					} finally {
+					}
+					finally {
 						handle.Set();
 					}
 				});
@@ -30,9 +32,10 @@ namespace Terraria.ModLoader
 
 			public override void Post(SendOrPostCallback d, object state) {
 				actions.Enqueue(() => {
-					try { 
+					try {
 						d.Invoke(state);
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						Logging.tML.Error("Posted event", e);
 					}
 				});

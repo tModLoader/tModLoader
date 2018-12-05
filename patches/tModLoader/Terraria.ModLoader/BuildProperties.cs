@@ -24,13 +24,11 @@ namespace Terraria.ModLoader
 
 			public static ModReference Parse(string spec) {
 				var split = spec.Split('@');
-				if (split.Length == 1) {
+				if (split.Length == 1)
 					return new ModReference(split[0], null);
-				}
 
-				if (split.Length > 2) {
+				if (split.Length > 2)
 					throw new Exception("Invalid mod reference: " + spec);
-				}
 
 				try {
 					return new ModReference(split[0], new Version(split[1]));
@@ -76,17 +74,15 @@ namespace Terraria.ModLoader
 
 		private static IEnumerable<string> ReadList(BinaryReader reader) {
 			var list = new List<string>();
-			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString()) {
+			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString())
 				list.Add(item);
-			}
 
 			return list;
 		}
 
 		private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
-			foreach (var item in list) {
+			foreach (var item in list)
 				writer.Write(item.ToString());
-			}
 
 			writer.Write("");
 		}
@@ -158,18 +154,15 @@ namespace Terraria.ModLoader
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
 						break;
 					case "side":
-						if (!Enum.TryParse(value, true, out properties.side)) {
+						if (!Enum.TryParse(value, true, out properties.side))
 							throw new Exception("side is not one of (Both, Client, Server, NoSync): " + value);
-						}
-
 						break;
 				}
 			}
 
 			var refs = properties.RefNames(true).ToList();
-			if (refs.Count != refs.Distinct().Count()) {
+			if (refs.Count != refs.Distinct().Count())
 				throw new Exception("Duplicate mod/weak reference");
-			}
 
 			//add (mod|weak)References that are not in sortBefore to sortAfter
 			properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))

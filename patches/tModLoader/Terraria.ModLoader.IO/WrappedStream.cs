@@ -6,8 +6,8 @@ namespace Terraria.ModLoader.IO
 	internal class EntryReadStream : Stream
 	{
 		private Stream _underlying;
-		private readonly int start;
-		private readonly int length;
+		private int start;
+		private int length;
 
 		public readonly string name;
 
@@ -17,9 +17,8 @@ namespace Terraria.ModLoader.IO
 			length = count;
 			this.name = name;
 
-			if (_underlying.Position != start) {
+			if (_underlying.Position != start)
 				_underlying.Position = start;
-			}
 		}
 
 		public override bool CanRead => _underlying.CanRead;
@@ -33,9 +32,8 @@ namespace Terraria.ModLoader.IO
 		public override long Position {
 			get => _underlying.Position - start;
 			set {
-				if (value < 0 || value > length) {
+				if (value < 0 || value > length)
 					throw new ArgumentOutOfRangeException($"Position {value} outside range (0-{length})");
-				}
 
 				_underlying.Position = value + start;
 			}
@@ -51,9 +49,8 @@ namespace Terraria.ModLoader.IO
 		public override long Seek(long offset, SeekOrigin origin) {
 			if (origin == SeekOrigin.Current) {
 				long target = Position + offset;
-				if (target < 0 || target > length) {
+				if (target < 0 || target > length)
 					throw new ArgumentOutOfRangeException($"Position {target} outside range (0-{length})");
-				}
 
 				return _underlying.Seek(offset, origin) - start;
 			}
@@ -70,9 +67,8 @@ namespace Terraria.ModLoader.IO
 
 		protected override void Dispose(bool disposing) {
 			base.Dispose(disposing);
-			if (disposing) {
+			if (disposing)
 				IsDisposed = true;
-			}
 		}
 	}
 }

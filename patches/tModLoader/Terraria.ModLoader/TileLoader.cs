@@ -85,9 +85,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
-			if (ModNet.AllowVanillaClients) {
-				throw new Exception("Adding tiles breaks vanilla client compatiblity");
-			}
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatiblity");
 
 			int reserveID = nextTile;
 			nextTile++;
@@ -1027,9 +1025,8 @@ namespace Terraria.ModLoader
 
 		public static void PlaceInWorld(int i, int j, Item item) {
 			int type = item.createTile;
-			if (type < 0) {
+			if (type < 0)
 				return;
-			}
 
 			foreach (var hook in HookPlaceInWorld) {
 				hook(i, j, item);

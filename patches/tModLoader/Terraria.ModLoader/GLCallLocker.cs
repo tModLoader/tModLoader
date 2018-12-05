@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 			}
 #endif
 		}
-		
+
 #if !WINDOWS
 		internal static void Init() {
 			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
@@ -59,7 +59,8 @@ namespace Terraria.ModLoader
 				actions.Add(() => {
 					try {
 						tcs.SetResult(task());
-					} catch (Exception ex) {
+					}
+					catch (Exception ex) {
 						tcs.SetException(ex);
 					}
 				});
@@ -76,10 +77,10 @@ namespace Terraria.ModLoader
 #if !WINDOWS
 			var sw = new Stopwatch();
 			sw.Start();
-			
+
 			// wait for actions to get tossed into the list and then execute them asap for 10ms before returning to the game loop
 			int wait;
-			while ((wait = (int)(10-sw.ElapsedMilliseconds)) > 0) {
+			while ((wait = (int)(10 - sw.ElapsedMilliseconds)) > 0) {
 				if (actionQueuedEvent.WaitOne(wait))
 					RunGLActions();
 			}
@@ -104,8 +105,7 @@ namespace Terraria.ModLoader
 		private static HashSet<string> pastStackTraces = new HashSet<string>();
 		private delegate void orig_ForceToMainThread(object self, Action action);
 		private delegate void hook_ForceToMainThread(orig_ForceToMainThread orig, object self, Action action);
-		private static void HookForceToMainThread(orig_ForceToMainThread orig, object self, Action action)
-		{
+		private static void HookForceToMainThread(orig_ForceToMainThread orig, object self, Action action) {
 			if (ModCompile.DeveloperMode && !ActionsAreSpeedrun && Thread.CurrentThread.ManagedThreadId != Main.mainThreadId) {
 				var stackTrace = new StackTrace(false); // line numbers not supported on mono yet
 				var s = stackTrace.ToString();

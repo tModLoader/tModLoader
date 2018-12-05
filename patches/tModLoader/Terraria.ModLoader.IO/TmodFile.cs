@@ -52,9 +52,8 @@ namespace Terraria.ModLoader.IO
 		private bool? validModBrowserSignature;
 		internal bool ValidModBrowserSignature {
 			get {
-				if (!validModBrowserSignature.HasValue) {
+				if (!validModBrowserSignature.HasValue)
 					validModBrowserSignature = ModLoader.IsSignedBy(this, ModLoader.modBrowserPublicKey);
-				}
 
 				return validModBrowserSignature.Value;
 			}
@@ -70,17 +69,14 @@ namespace Terraria.ModLoader.IO
 		public byte[] GetFile(string fileName) => GetBytes(fileName);
 
 		public byte[] GetBytes(string fileName) {
-			if (!files.TryGetValue(Sanitize(fileName), out var entry)) {
+			if (!files.TryGetValue(Sanitize(fileName), out var entry))
 				return null;
-			}
 
-			if (entry.cachedBytes != null && entry.compressedSize == entry.size) {
+			if (entry.cachedBytes != null && entry.compressedSize == entry.size)
 				return entry.cachedBytes;
-			}
 
-			using (var stream = GetStream(entry)) {
+			using (var stream = GetStream(entry))
 				return stream.ReadBytes(entry.size);
-			}
 		}
 
 		private EntryReadStream lastEntryReadStream;
@@ -90,28 +86,23 @@ namespace Terraria.ModLoader.IO
 				stream = new MemoryStream(entry.cachedBytes);
 			}
 			else {
-				if (fileStream == null) {
+				if (fileStream == null)
 					throw new IOException("File not open: " + path);
-				}
-
-				if (lastEntryReadStream != null && !lastEntryReadStream.IsDisposed) {
+				if (lastEntryReadStream != null && !lastEntryReadStream.IsDisposed)
 					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.name}");
-				}
 
 				stream = lastEntryReadStream = new EntryReadStream(fileStream, entry.offset, entry.compressedSize, entry.name);
 			}
 
-			if (entry.compressedSize != entry.size) {
+			if (entry.compressedSize != entry.size)
 				stream = new DeflateStream(stream, CompressionMode.Decompress);
-			}
 
 			return stream;
 		}
 
 		public Stream GetStream(string fileName) {
-			if (!files.TryGetValue(Sanitize(fileName), out var entry)) {
+			if (!files.TryGetValue(Sanitize(fileName), out var entry))
 				throw new KeyNotFoundException(fileName);
-			}
 
 			return GetStream(entry);
 		}
@@ -127,14 +118,12 @@ namespace Terraria.ModLoader.IO
 
 			if (size > MIN_COMPRESS_SIZE && ShouldCompress(fileName)) {
 				using (var ms = new MemoryStream(data.Length)) {
-					using (var ds = new DeflateStream(ms, CompressionMode.Compress)) {
+					using (var ds = new DeflateStream(ms, CompressionMode.Compress))
 						ds.Write(data, 0, data.Length);
-					}
 
 					var compressed = ms.ToArray();
-					if (compressed.Length < size) {
+					if (compressed.Length < size)
 						data = compressed;
-					}
 				}
 			}
 
@@ -155,9 +144,8 @@ namespace Terraria.ModLoader.IO
 
 		public delegate void EntryIterator(string name, int len, Func<Stream> getStream);
 		public void ForEach(EntryIterator iterator) {
-			foreach (var f in fileTable) {
+			foreach (var f in fileTable)
 				iterator(f.name, f.size, () => GetStream(f));
-			}
 		}
 
 		public int Count => fileTable.Length;
@@ -197,9 +185,8 @@ namespace Terraria.ModLoader.IO
 				writer.Write(fileTable.Length);
 
 				foreach (var f in fileTable) {
-					if (f.compressedSize != f.cachedBytes.Length) {
+					if (f.compressedSize != f.cachedBytes.Length)
 						throw new Exception($"compressedSize ({f.compressedSize}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.name}");
-					}
 
 					writer.Write(f.name);
 					writer.Write(f.size);
@@ -234,17 +221,15 @@ namespace Terraria.ModLoader.IO
 		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png");
 
 		internal void Read() {
-			if (fileStream != null) {
+			if (fileStream != null)
 				throw new Exception("File has already been read");
-			}
 
 			fileStream = File.OpenRead(path);
 			var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
 
 			// read header info
-			if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD") {
+			if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
 				throw new Exception("Magic Header != \"TMOD\"");
-			}
 
 			tModLoaderVersion = new Version(reader.ReadString());
 			hash = reader.ReadBytes(20);
@@ -255,9 +240,8 @@ namespace Terraria.ModLoader.IO
 			// verify integrity
 			long pos = fileStream.Position;
 			var verifyHash = SHA1.Create().ComputeHash(fileStream);
-			if (!verifyHash.SequenceEqual(hash)) {
+			if (!verifyHash.SequenceEqual(hash))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
-			}
 
 			fileStream.Position = pos;
 
@@ -287,9 +271,8 @@ namespace Terraria.ModLoader.IO
 			}
 
 			int fileStartPos = (int)fileStream.Position;
-			foreach (var f in fileTable) {
+			foreach (var f in fileTable)
 				f.offset += fileStartPos;
-			}
 		}
 
 		public void CacheFiles(ISet<string> skip = null) {
@@ -305,29 +288,26 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public void RemoveFromCache(IEnumerable<string> fileNames) {
-			foreach (var fileName in fileNames) {
+			foreach (var fileName in fileNames)
 				files[fileName].cachedBytes = null;
-			}
 		}
 
 		public void ResetCache() {
-			foreach (var f in fileTable) {
+			foreach (var f in fileTable)
 				f.cachedBytes = null;
-			}
 		}
 
 		private class DisposeWrapper : IDisposable
 		{
-			private readonly Action dispose;
+			private Action dispose;
 			public DisposeWrapper(Action dispose) {
 				this.dispose = dispose;
 			}
 			public void Dispose() => dispose?.Invoke();
 		}
 		public IDisposable EnsureOpen() {
-			if (fileStream != null) {
+			if (fileStream != null)
 				return new DisposeWrapper(null);
-			}
 
 			fileStream = File.OpenRead(path);
 			return new DisposeWrapper(Close);
@@ -350,9 +330,8 @@ namespace Terraria.ModLoader.IO
 				version = new Version(reader.ReadString());
 
 				int count = reader.ReadInt32();
-				for (int i = 0; i < count; i++) {
+				for (int i = 0; i < count; i++)
 					AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
-				}
 			}
 
 			// update buildVersion
@@ -370,13 +349,11 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public void VerifyCoreFiles() {
-			if (!HasFile("Info")) {
+			if (!HasFile("Info"))
 				throw new Exception("Missing Info file");
-			}
 
-			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll"))) {
+			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
 				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
-			}
 		}
 
 		public byte[] GetMainAssembly(bool? windows = null) {

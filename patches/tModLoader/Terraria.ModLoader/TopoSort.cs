@@ -17,9 +17,8 @@ namespace Terraria.ModLoader
 
 			public void Add(List<T> cycle) {
 				cycles.Add(cycle);
-				foreach (var e in cycle) {
+				foreach (var e in cycle)
 					set.Add(e);
-				}
 			}
 		}
 
@@ -29,49 +28,34 @@ namespace Terraria.ModLoader
 
 		public TopoSort(IEnumerable<T> elements, Func<T, IEnumerable<T>> dependencies = null, Func<T, IEnumerable<T>> dependents = null) {
 			list = elements.ToList().AsReadOnly();
-			if (dependencies != null) {
-				foreach (var t in list) {
-					foreach (var dependency in dependencies(t)) {
+			if (dependencies != null)
+				foreach (var t in list)
+					foreach (var dependency in dependencies(t))
 						AddEntry(dependency, t);
-					}
-				}
-			}
 
-			if (dependents != null) {
-				foreach (var t in list) {
-					foreach (var dependent in dependents(t)) {
+			if (dependents != null)
+				foreach (var t in list)
+					foreach (var dependent in dependents(t))
 						AddEntry(t, dependent);
-					}
-				}
-			}
 		}
 
 		public void AddEntry(T dependency, T dependent) {
 			List<T> list;
-			if (!dependencyDict.TryGetValue(dependent, out list)) {
-				dependencyDict[dependent] = list = new List<T>();
-			}
-
+			if (!dependencyDict.TryGetValue(dependent, out list)) dependencyDict[dependent] = list = new List<T>();
 			list.Add(dependency);
 
-			if (!dependentDict.TryGetValue(dependency, out list)) {
-				dependentDict[dependency] = list = new List<T>();
-			}
-
+			if (!dependentDict.TryGetValue(dependency, out list)) dependentDict[dependency] = list = new List<T>();
 			list.Add(dependent);
 		}
 
 		private static void BuildSet(T t, IDictionary<T, List<T>> dict, ISet<T> set) {
 			List<T> list;
-			if (!dict.TryGetValue(t, out list)) {
+			if (!dict.TryGetValue(t, out list))
 				return;
-			}
 
-			foreach (var entry in dict[t]) {
-				if (set.Add(entry)) {
+			foreach (var entry in dict[t])
+				if (set.Add(entry))
 					BuildSet(entry, dict, set);
-				}
-			}
 		}
 
 		public List<T> Dependencies(T t) {
@@ -103,16 +87,14 @@ namespace Terraria.ModLoader
 
 			Action<T> Visit = null;
 			Visit = t => {
-				if (sorted.Contains(t) || ex.set.Contains(t)) {
+				if (sorted.Contains(t) || ex.set.Contains(t))
 					return;
-				}
 
 				visiting.Push(t);
 				foreach (var dependency in Dependencies(t)) {
 					if (visiting.Contains(dependency)) {//walk down the visiting stack to extract the dependency cycle
-						var cycle = new List<T> {
-							dependency
-						};
+						var cycle = new List<T>();
+						cycle.Add(dependency);
 						cycle.AddRange(visiting.TakeWhile(entry => !EqualityComparer<T>.Default.Equals(entry, dependency)));
 						cycle.Add(dependency);
 						cycle.Reverse();//items at top of the stack (start of the list) are deepest in the dependency tree
@@ -126,13 +108,11 @@ namespace Terraria.ModLoader
 				sorted.Add(t);
 			};
 
-			foreach (var t in list) {
+			foreach (var t in list)
 				Visit(t);
-			}
 
-			if (ex.set.Count > 0) {
+			if (ex.set.Count > 0)
 				throw ex;
-			}
 
 			return sorted;
 		}

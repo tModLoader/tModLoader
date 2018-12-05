@@ -11,14 +11,11 @@ namespace Terraria.ModLoader
 		private Dictionary<int, string> translations;
 
 		internal ModTranslation(string key, bool defaultEmpty = false) {
-			if (key.Contains(" ")) {
+			if (key.Contains(" "))
 				throw new Exception("ModTranslation keys can't contain spaces.");
-			}
-
 			this.Key = key;
-			this.translations = new Dictionary<int, string> {
-				[fallback] = defaultEmpty ? null : key
-			};
+			this.translations = new Dictionary<int, string>();
+			this.translations[fallback] = defaultEmpty ? null : key;
 		}
 
 		public void SetDefault(string value) {

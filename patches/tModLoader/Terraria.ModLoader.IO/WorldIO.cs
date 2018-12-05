@@ -17,9 +17,8 @@ namespace Terraria.ModLoader.IO
 		//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
 		internal static void Save(string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".twld");
-			if (FileUtilities.Exists(path, isCloudSave)) {
+			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
-			}
 
 			var tag = new TagCompound {
 				["chests"] = SaveChests(),
@@ -42,9 +41,8 @@ namespace Terraria.ModLoader.IO
 		internal static void Load(string path, bool isCloudSave) {
 			customDataFail = null;
 			path = Path.ChangeExtension(path, ".twld");
-			if (!FileUtilities.Exists(path, isCloudSave)) {
+			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
-			}
 
 			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
@@ -80,15 +78,12 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			for (int k = 0; k < 1000; k++) {
 				var chest = Main.chest[k];
-				if (chest == null) {
+				if (chest == null)
 					continue;
-				}
 
 				var itemTagList = PlayerIO.SaveInventory(chest.item);
 				if (itemTagList == null) //doesn't need mod saving
-{
 					continue;
-				}
 
 				list.Add(new TagCompound {
 					["items"] = itemTagList,
@@ -104,13 +99,10 @@ namespace Terraria.ModLoader.IO
 				int x = tag.GetInt("x");
 				int y = tag.GetInt("y");
 				int chest = Chest.FindChest(x, y);
-				if (chest < 0) {
+				if (chest < 0)
 					chest = Chest.CreateChest(x, y);
-				}
-
-				if (chest >= 0) {
+				if (chest >= 0)
 					PlayerIO.LoadInventory(Main.chest[chest].item, tag.GetList<TagCompound>("items"));
-				}
 			}
 		}
 
@@ -181,9 +173,8 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveNPCKillCounts() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
-				if (NPC.killCount[type] <= 0) {
+				if (NPC.killCount[type] <= 0)
 					continue;
-				}
 
 				list.Add(new TagCompound {
 					["mod"] = NPCLoader.GetNPC(type).mod.Name,
@@ -208,9 +199,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static TagCompound SaveAnglerQuest() {
-			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount) {
+			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
 				return null;
-			}
 
 			int type = Main.anglerQuestItemNetIDs[Main.anglerQuest];
 			var modItem = ItemLoader.GetItem(type);
@@ -271,9 +261,8 @@ namespace Terraria.ModLoader.IO
 			var list = new List<TagCompound>();
 			foreach (var modWorld in WorldHooks.worlds) {
 				var data = modWorld.Save();
-				if (data == null) {
+				if (data == null)
 					continue;
-				}
 
 				list.Add(new TagCompound {
 					["mod"] = modWorld.mod.Name,
@@ -290,12 +279,10 @@ namespace Terraria.ModLoader.IO
 				var modWorld = mod?.GetModWorld(tag.GetString("name"));
 				if (modWorld != null) {
 					try {
-						if (tag.ContainsKey("legacyData")) {
+						if (tag.ContainsKey("legacyData"))
 							modWorld.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
-						}
-						else {
+						else
 							modWorld.Load(tag.GetCompound("data"));
-						}
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(mod,
@@ -309,9 +296,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void SendModData(BinaryWriter writer) {
-			foreach (var modWorld in WorldHooks.NetWorlds) {
+			foreach (var modWorld in WorldHooks.NetWorlds)
 				writer.SafeWrite(w => modWorld.NetSend(w));
-			}
 		}
 
 		public static void ReceiveModData(BinaryReader reader) {

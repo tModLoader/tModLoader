@@ -42,9 +42,8 @@ namespace Terraria.ModLoader.IO
 
 				var tileList = new List<TagCompound>();
 				for (int type = TileID.Count; type < hasTile.Length; type++) {
-					if (!hasTile[type]) {
+					if (!hasTile[type])
 						continue;
-					}
 
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound {
@@ -56,9 +55,8 @@ namespace Terraria.ModLoader.IO
 				}
 				var wallList = new List<TagCompound>();
 				for (int wall = WallID.Count; wall < hasWall.Length; wall++) {
-					if (!hasWall[wall]) {
+					if (!hasWall[wall])
 						continue;
-					}
 
 					var modWall = WallLoader.GetWall(wall);
 					wallList.Add(new TagCompound {
@@ -67,9 +65,8 @@ namespace Terraria.ModLoader.IO
 						["name"] = modWall.Name,
 					});
 				}
-				if (tileList.Count == 0 && wallList.Count == 0) {
+				if (tileList.Count == 0 && wallList.Count == 0)
 					return null;
-				}
 
 				return new TagCompound {
 					["tileMap"] = tileList,
@@ -80,9 +77,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadTiles(TagCompound tag) {
-			if (!tag.ContainsKey("data")) {
+			if (!tag.ContainsKey("data"))
 				return;
-			}
 
 			var tables = TileTables.Create();
 			foreach (var tileTag in tag.GetList<TagCompound>("tileMap")) {
@@ -106,9 +102,8 @@ namespace Terraria.ModLoader.IO
 				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
 			}
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
-			using (var reader = new BinaryReader(memoryStream)) {
+			using (var reader = new BinaryReader(memoryStream))
 				ReadTileData(reader, tables);
-			}
 		}
 
 		internal static void LoadLegacyTiles(BinaryReader reader) {
@@ -472,9 +467,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadContainers(TagCompound tag) {
-			if (tag.ContainsKey("data")) {
+			if (tag.ContainsKey("data"))
 				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
-			}
 
 			foreach (var frameTag in tag.GetList<TagCompound>("itemFrames")) {
 				TEItemFrame itemFrame = TileEntity.ByID[tag.GetInt("id")] as TEItemFrame;

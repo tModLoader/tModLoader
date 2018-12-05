@@ -49,10 +49,8 @@ namespace Terraria.ModLoader.Audio
 		public override void Pause() => instance.Pause();
 		public override void Play() => instance.Play();
 		public override void Resume() => instance.Resume();
-		public override void SetVariable(string name, float value)
-		{
-			switch (name)
-			{
+		public override void SetVariable(string name, float value) {
+			switch (name) {
 				case "Volume": instance.Volume = value; return;
 				case "Pitch": instance.Pitch = value; return;
 				case "Pan": instance.Pan = value; return;
@@ -61,27 +59,20 @@ namespace Terraria.ModLoader.Audio
 		}
 		public override void Stop(AudioStopOptions options) => instance.Stop();
 
-		public override void CheckBuffer()
-		{
-			if (instance.PendingBufferCount < bufferMin && IsPlaying)
-			{
+		public override void CheckBuffer() {
+			if (instance.PendingBufferCount < bufferMin && IsPlaying) {
 				SubmitBuffer(bufferCountPerSubmit);
 			}
 		}
 
-		internal void SubmitBuffer(int count)
-		{
-			if (stream == null)
-			{
+		internal void SubmitBuffer(int count) {
+			if (stream == null) {
 				instance.Stop();
 				return;
 			}
-			for (int i = 0; i < count; i++)
-			{
-				if (!SubmitSingle())
-				{
-					if (i == 0)
-					{
+			for (int i = 0; i < count; i++) {
+				if (!SubmitSingle()) {
+					if (i == 0) {
 						instance.Stop();
 					}
 					break;
@@ -89,12 +80,10 @@ namespace Terraria.ModLoader.Audio
 			}
 		}
 
-		private bool SubmitSingle()
-		{
+		private bool SubmitSingle() {
 			//byte[] buffer = new byte[DEFAULT_BYTESPERCHUNK];
 			int bytesReturned = stream.Read(buffer, 0, buffer.Length);
-			if (bytesReturned < DEFAULT_BYTESPERCHUNK)
-			{
+			if (bytesReturned < DEFAULT_BYTESPERCHUNK) {
 				ResetStreamPosition();
 				stream.Read(buffer, bytesReturned, buffer.Length - bytesReturned);
 			}
@@ -102,10 +91,8 @@ namespace Terraria.ModLoader.Audio
 			return true;
 		}
 
-		public void ResetStreamPosition()
-		{
-			if (stream != null)
-			{
+		public void ResetStreamPosition() {
+			if (stream != null) {
 				stream.Position = 0;
 				MP3Stream mp3 = stream as MP3Stream;
 				if (mp3 != null)
@@ -113,10 +100,8 @@ namespace Terraria.ModLoader.Audio
 			}
 		}
 
-		public void Dispose()
-		{
-			if (instance.State == SoundState.Playing)
-			{
+		public void Dispose() {
+			if (instance.State == SoundState.Playing) {
 				instance.Stop();
 			}
 
@@ -130,21 +115,18 @@ namespace Terraria.ModLoader.Audio
 
 	public class MusicStreamingWAV : MusicStreaming
 	{
-		public MusicStreamingWAV(string path)
-		{
+		public MusicStreamingWAV(string path) {
 			stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
 			Setup();
 		}
 
-		public MusicStreamingWAV(Stream stream)
-		{
+		public MusicStreamingWAV(Stream stream) {
 			this.stream = stream;
 			Setup();
 		}
 
 		// Parses the header and sets dataStart and instance
-		private void Setup()
-		{
+		private void Setup() {
 			BinaryReader reader = new BinaryReader(stream);
 			int chunkID = reader.ReadInt32();
 			int fileSize = reader.ReadInt32();
@@ -158,8 +140,7 @@ namespace Terraria.ModLoader.Audio
 			int fmtBlockAlign = reader.ReadInt16();
 			int bitDepth = reader.ReadInt16();
 
-			if (fmtSize == 18)
-			{
+			if (fmtSize == 18) {
 				// Read any extra values
 				int fmtExtraSize = reader.ReadInt16();
 				reader.ReadBytes(fmtExtraSize);
@@ -177,8 +158,7 @@ namespace Terraria.ModLoader.Audio
 
 	public class MusicStreamingMP3 : MusicStreaming
 	{
-		public MusicStreamingMP3(byte[] data)
-		{
+		public MusicStreamingMP3(byte[] data) {
 			MP3Stream stream = new MP3Stream(new MemoryStream(data));
 			instance = new DynamicSoundEffectInstance(stream.Frequency, (AudioChannels)stream.ChannelCount);
 			this.stream = stream;
@@ -192,28 +172,23 @@ namespace Terraria.ModLoader.Audio
 		byte[] data;
 		bool mp3 = false;
 
-		public MusicData(string cachePath)
-		{
+		public MusicData(string cachePath) {
 			this.cachePath = cachePath;
 		}
 
-		public MusicData(byte[] data, bool mp3)
-		{
+		public MusicData(byte[] data, bool mp3) {
 			this.data = data;
 			this.mp3 = mp3;
 		}
 
-		public Music GetInstance()
-		{
-			if (cachePath != null)
-			{
+		public Music GetInstance() {
+			if (cachePath != null) {
 				if (mp3)
 					throw new Exception("Cache and MP3 not implemented");
 				else
 					return new MusicStreamingWAV(cachePath);
 			}
-			else if (data != null)
-			{
+			else if (data != null) {
 				if (mp3)
 					return new MusicStreamingMP3(data);
 				else

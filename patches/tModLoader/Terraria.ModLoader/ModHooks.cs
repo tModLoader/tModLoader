@@ -247,10 +247,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ModifySunLight(ref Color tileColor, ref Color backgroundColor) {
-			if (Main.gameMenu) {
-				return;
-			}
-
+			if (Main.gameMenu) return;
 			foreach (Mod mod in ModLoader.Mods) {
 				mod.ModifySunLightColor(ref tileColor, ref backgroundColor);
 			}
@@ -280,10 +277,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UpdateUI(GameTime gameTime) {
-			if (Main.gameMenu) {
-				return;
-			}
-
+			if (Main.gameMenu) return;
 			foreach (Mod mod in ModLoader.Mods) {
 				mod.UpdateUI(gameTime);
 			}

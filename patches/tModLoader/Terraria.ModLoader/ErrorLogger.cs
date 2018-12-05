@@ -20,9 +20,9 @@ namespace Terraria.ModLoader
 		[Obsolete("Please use Terraria.ModLoader.Logging.LogDir instead", false)]
 		public static readonly string LogPath = Logging.LogDir;
 
-		private static readonly Object logExceptionLock = new Object();
+		private static Object logExceptionLock = new Object();
 
-		private static readonly Object logLock = new Object();
+		private static Object logLock = new Object();
 		/// <summary>
 		/// NOTE: Deprecated. Please use your own ILog instead, see ExampleMod for an example
 		/// You can use this method for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder.
@@ -96,9 +96,8 @@ namespace Terraria.ModLoader
 		[Obsolete("Please ue Terraria.ModLoader.Logging instead", false)]
 		public static void ClearLogs() {
 			lock (logLock) {
-				if (!Directory.Exists(Logging.LogDir)) {
+				if (!Directory.Exists(Logging.LogDir))
 					Directory.CreateDirectory(Logging.LogDir);
-				}
 
 				string[] files = new string[] {
 					LogPath + Path.DirectorySeparatorChar + "Logs.txt",

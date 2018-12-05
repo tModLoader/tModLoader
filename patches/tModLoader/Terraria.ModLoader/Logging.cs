@@ -34,17 +34,15 @@ namespace Terraria.ModLoader
 #endif
 
 		internal static void Init() {
-			if (Program.LaunchParameters.ContainsKey("-build")) {
+			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
-			}
 
 #if !WINDOWS
-			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new [] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
+			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
 #endif
 
-			if (!Directory.Exists(LogDir)) {
+			if (!Directory.Exists(LogDir))
 				Directory.CreateDirectory(LogDir);
-			}
 
 			ConfigureAppenders();
 
@@ -108,9 +106,8 @@ namespace Terraria.ModLoader
 				return $"{baseName}{n + 1}.log";
 			}
 
-			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime)) {
+			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime))
 				Archive(existingLog);
-			}
 
 			DeleteOldArchives();
 
@@ -119,10 +116,7 @@ namespace Terraria.ModLoader
 
 		private static bool CanOpen(string fileName) {
 			try {
-				using (new FileStream(fileName, FileMode.Append)) {
-					;
-				}
-
+				using (new FileStream(fileName, FileMode.Append)) ;
 				return true;
 			}
 			catch (IOException) {
@@ -136,9 +130,8 @@ namespace Terraria.ModLoader
 
 			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
 			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
-			if (existingLogs.Count > 0) {
+			if (existingLogs.Count > 0)
 				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
-			}
 
 			using (var zip = new ZipFile(Path.Combine(LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
 				zip.AddFile(logPath, "");
@@ -169,9 +162,8 @@ namespace Terraria.ModLoader
 
 		internal static void LogFirstChanceExceptions(bool enabled) {
 			if (enabled) {
-				if (FrameworkVersion.Framework == "Mono") {
+				if (FrameworkVersion.Framework == "Mono")
 					tML.Warn("First-chance exception reporting is not implemented on Mono");
-				}
 
 				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 			}
@@ -195,32 +187,28 @@ namespace Terraria.ModLoader
 		};
 
 		public static void IgnoreExceptionContents(string source) {
-			if (!ignoreContents.Contains(source)) {
+			if (!ignoreContents.Contains(source))
 				ignoreContents.Add(source);
-			}
 		}
 
 		private static Exception previousException;
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
 			if (args.Exception == previousException ||
 				args.Exception is ThreadAbortException ||
-				ignoreSources.Contains(args.Exception.Source)) {
+				ignoreSources.Contains(args.Exception.Source))
 				return;
-			}
 
 			var stackTrace = new StackTrace(true);
 			PrettifyStackTraceSources(stackTrace.GetFrames());
 			var traceString = stackTrace.ToString();
 
-			if (ignoreSources.Any(traceString.Contains)) {
+			if (ignoreSources.Any(traceString.Contains))
 				return;
-			}
 
 			traceString = traceString.Substring(traceString.IndexOf('\n'));
 			var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
-			if (!pastExceptions.Add(exString)) {
+			if (!pastExceptions.Add(exString))
 				return;
-			}
 
 			previousException = args.Exception;
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
@@ -244,19 +232,16 @@ namespace Terraria.ModLoader
 			// trim numbers and percentage to reduce log spam
 			var oldBase = statusRegex.Match(oldStatusText).Groups[1].Value;
 			var newBase = statusRegex.Match(newStatusText).Groups[1].Value;
-			if (newBase != oldBase && newBase.Length > 0) {
+			if (newBase != oldBase && newBase.Length > 0)
 				LogManager.GetLogger("StatusText").Info(newBase);
-			}
 		}
 
 		internal static void ServerConsoleLine(string msg) => ServerConsoleLine(msg, Level.Info);
 		internal static void ServerConsoleLine(string msg, Level level, Exception ex = null, ILog log = null) {
-			if (level == Level.Warn) {
+			if (level == Level.Warn)
 				Console.ForegroundColor = ConsoleColor.Yellow;
-			}
-			else if (level == Level.Error) {
+			else if (level == Level.Error)
 				Console.ForegroundColor = ConsoleColor.Red;
-			}
 
 			Console.WriteLine(msg);
 			Console.ResetColor();
@@ -267,9 +252,8 @@ namespace Terraria.ModLoader
 		private delegate Encoding orig_GetEncoding(string name);
 		private delegate Encoding hook_GetEncoding(orig_GetEncoding orig, string name);
 		private static Encoding HookGetEncoding(orig_GetEncoding orig, string name) {
-			if (name == "IBM437") {
+			if (name == "IBM437")
 				return null;
-			}
 
 			return orig(name);
 		}
@@ -283,33 +267,27 @@ namespace Terraria.ModLoader
 		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
 		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
 			orig(self, e, fNeedFileInfo);
-			if (fNeedFileInfo) {
+			if (fNeedFileInfo)
 				PrettifyStackTraceSources(self.GetFrames());
-			}
 		}
 
 		public static void PrettifyStackTraceSources(StackFrame[] frames) {
-			if (frames == null) {
+			if (frames == null)
 				return;
-			}
 
 			foreach (var frame in frames) {
 				string filename = frame.GetFileName();
 				var assembly = frame.GetMethod()?.DeclaringType?.Assembly;
-				if (filename == null || assembly == null) {
+				if (filename == null || assembly == null)
 					continue;
-				}
 
 				string trim;
-				if (AssemblyManager.GetAssemblyOwner(assembly, out var modName)) {
+				if (AssemblyManager.GetAssemblyOwner(assembly, out var modName))
 					trim = modName;
-				}
-				else if (assembly == TerrariaAssembly) {
+				else if (assembly == TerrariaAssembly)
 					trim = "tModLoader";
-				}
-				else {
+				else
 					continue;
-				}
 
 				int idx = filename.LastIndexOf(trim, StringComparison.InvariantCultureIgnoreCase);
 				if (idx > 0) {
@@ -320,9 +298,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void PrettifyStackTraceSources() {
-			if (f_strFileName == null) {
+			if (f_strFileName == null)
 				return;
-			}
 
 			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 		}

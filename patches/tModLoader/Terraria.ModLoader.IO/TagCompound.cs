@@ -39,10 +39,8 @@ namespace Terraria.ModLoader.IO
 			}
 			catch (IOException e) {
 				var valueInfo = "value=" + value;
-				if (value.GetType().ToString() != value.ToString()) {
+				if (value.GetType().ToString() != value.ToString())
 					valueInfo = "type=" + value.GetType() + "," + valueInfo;
-				}
-
 				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
 			}
 		}
@@ -92,9 +90,8 @@ namespace Terraria.ModLoader.IO
 
 		public object Clone() {
 			var copy = new TagCompound();
-			foreach (var entry in this) {
+			foreach (var entry in this)
 				copy.Set(entry.Key, TagIO.Clone(entry.Value));
-			}
 
 			return copy;
 		}

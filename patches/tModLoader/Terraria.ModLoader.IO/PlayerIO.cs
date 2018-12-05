@@ -16,9 +16,8 @@ namespace Terraria.ModLoader.IO
 		//add to end of Terraria.Player.SavePlayer
 		internal static void Save(Player player, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
-			if (FileUtilities.Exists(path, isCloudSave)) {
+			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
-			}
 
 			var tag = new TagCompound {
 				["armor"] = SaveInventory(player.armor),
@@ -36,17 +35,15 @@ namespace Terraria.ModLoader.IO
 
 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
 				TagIO.ToStream(tag, stream);
-				if (isCloudSave && SocialAPI.Cloud != null) {
+				if (isCloudSave && SocialAPI.Cloud != null)
 					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-				}
 			}
 		}
 		//add near end of Terraria.Player.LoadPlayer before accessory check
 		internal static void Load(Player player, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
-			if (!FileUtilities.Exists(path, isCloudSave)) {
+			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
-			}
 
 			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
@@ -81,18 +78,16 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void LoadInventory(Item[] inv, IList<TagCompound> list) {
-			foreach (var tag in list) {
+			foreach (var tag in list)
 				inv[tag.GetShort("slot")] = ItemIO.Load(tag);
-			}
 		}
 
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
 			foreach (var modPlayer in player.modPlayers) {
 				var data = modPlayer.Save();
-				if (data == null) {
+				if (data == null)
 					continue;
-				}
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.mod.Name,
@@ -109,12 +104,10 @@ namespace Terraria.ModLoader.IO
 				var modPlayer = mod == null ? null : player.GetModPlayer(mod, tag.GetString("name"));
 				if (modPlayer != null) {
 					try {
-						if (tag.ContainsKey("legacyData")) {
+						if (tag.ContainsKey("legacyData"))
 							modPlayer.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
-						}
-						else {
+						else
 							modPlayer.Load(tag.GetCompound("data"));
-						}
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(mod,
@@ -132,9 +125,8 @@ namespace Terraria.ModLoader.IO
 			byte vanillaIndex = 0;
 			for (int k = 0; k < Player.maxBuffs; k++) {
 				int buff = player.buffType[k];
-				if (buff == 0 || Main.buffNoSave[buff]) {
+				if (buff == 0 || Main.buffNoSave[buff])
 					continue;
-				}
 
 				if (BuffLoader.IsModBuff(buff)) {
 					var modBuff = BuffLoader.GetBuff(buff);
@@ -155,17 +147,15 @@ namespace Terraria.ModLoader.IO
 		internal static void LoadModBuffs(Player player, IList<TagCompound> list) {
 			//buffs list is guaranteed to be compacted
 			int buffCount = Player.maxBuffs;
-			while (buffCount > 0 && player.buffType[buffCount - 1] == 0) {
+			while (buffCount > 0 && player.buffType[buffCount - 1] == 0)
 				buffCount--;
-			}
 
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse()) {
 				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				int type = mod?.BuffType(tag.GetString("name")) ?? 0;
-				if (type == 0) {
+				if (type == 0)
 					continue;
-				}
 
 				int index = Math.Min(tag.GetByte("index"), buffCount);
 				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.maxBuffs - index - 1);
@@ -177,9 +167,8 @@ namespace Terraria.ModLoader.IO
 
 		private static void LoadLegacy(Player player, byte[] buffer) {
 			const int numFlagBytes = 2;
-			RijndaelManaged rijndaelManaged = new RijndaelManaged {
-				Padding = PaddingMode.None
-			};
+			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+			rijndaelManaged.Padding = PaddingMode.None;
 			using (MemoryStream stream = new MemoryStream(buffer)) {
 				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Read)) {
 					using (BinaryReader reader = new BinaryReader(cryptoStream)) {

@@ -109,9 +109,8 @@ namespace Terraria.ModLoader
 		/// ModNPC constructor.
 		/// </summary>
 		public ModNPC() {
-			npc = new NPC {
-				modNPC = this
-			};
+			npc = new NPC();
+			npc.modNPC = this;
 		}
 
 		/// <summary>
@@ -216,9 +215,8 @@ namespace Terraria.ModLoader
 				Main.npcAltTextures[npc.type][k] = ModContent.GetTexture(altTextures[k - 1]);
 			}
 
-			if (DisplayName.IsDefault()) {
+			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-			}
 		}
 
 		/// <summary>

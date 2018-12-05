@@ -236,9 +236,8 @@ namespace Terraria.ModLoader
 
 		internal static void SetSlot(Item item) {
 			IDictionary<EquipType, int> slots;
-			if (!idToSlot.TryGetValue(item.type, out slots)) {
+			if (!idToSlot.TryGetValue(item.type, out slots))
 				return;
-			}
 
 			foreach (var entry in slots) {
 				int slot = entry.Value;

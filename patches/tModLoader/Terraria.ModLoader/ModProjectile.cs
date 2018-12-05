@@ -85,9 +85,8 @@ namespace Terraria.ModLoader
 		public bool drawHeldProjInFrontOfHeldItemAndArms = false;
 
 		public ModProjectile() {
-			projectile = new Projectile {
-				modProjectile = this
-			};
+			projectile = new Projectile();
+			projectile.modProjectile = this;
 		}
 		/// <summary>
 		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or to change the default internal name.
@@ -161,9 +160,8 @@ namespace Terraria.ModLoader
 			if (projectile.aiStyle == 7) {
 				Main.projHook[projectile.type] = true;
 			}
-			if (DisplayName.IsDefault()) {
+			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-			}
 		}
 
 		/// <summary>

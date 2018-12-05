@@ -77,9 +77,8 @@ namespace Terraria.ModLoader
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
 		public virtual GlobalItem NewInstance(Item item) {
-			if (CloneNewInstances) {
+			if (CloneNewInstances)
 				return Clone();
-			}
 
 			var copy = (GlobalItem)Activator.CreateInstance(GetType());
 			copy.mod = mod;

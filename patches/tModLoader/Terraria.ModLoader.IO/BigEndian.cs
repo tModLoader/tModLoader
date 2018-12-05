@@ -9,9 +9,8 @@ namespace Terraria.ModLoader.IO
 		public BigEndianWriter(Stream output) : base(output) { }
 
 		private void WriteBigEndian(byte[] bytes) {
-			if (BitConverter.IsLittleEndian) {
+			if (BitConverter.IsLittleEndian)
 				bytes = bytes.Reverse().ToArray();
-			}
 
 			Write(bytes);
 		}

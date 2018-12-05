@@ -110,9 +110,8 @@ namespace Terraria.ModLoader
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
 
 		internal static void Load() {
-			if (!DotNet45Check()) {
+			if (!DotNet45Check())
 				return;
-			}
 
 			try {
 				MonoModHooks.Initialize();
@@ -121,9 +120,8 @@ namespace Terraria.ModLoader
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
-				foreach (var mod in Mods) {
+				foreach (var mod in Mods)
 					modsByName[mod.Name] = mod;
-				}
 
 				ModContent.Load();
 
@@ -137,48 +135,38 @@ namespace Terraria.ModLoader
 			}
 			catch (Exception e) {
 				var responsibleMods = new List<string>();
-				if (e.Data.Contains("mod")) {
+				if (e.Data.Contains("mod"))
 					responsibleMods.Add((string)e.Data["mod"]);
-				}
-
-				if (e.Data.Contains("mods")) {
+				if (e.Data.Contains("mods"))
 					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
-				}
-
 				responsibleMods.Remove("ModLoader");
 
-				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod)) {
+				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
 					responsibleMods.Add(stackMod);
-				}
 
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().SingleOrDefault(m => m.Name == responsibleMods[0]);
-					if (mod != null && mod.tModLoaderVersion != version) {
+					if (mod != null && mod.tModLoaderVersion != version)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
-					}
 				}
-				if (responsibleMods.Count > 0) {
+				if (responsibleMods.Count > 0)
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
-				}
-				else {
+				else
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
-				}
 
 				Logging.tML.Error(msg, e);
 
-				foreach (var mod in responsibleMods) {
+				foreach (var mod in responsibleMods)
 					DisableMod(mod);
-				}
 
 				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
 		}
 
 		private static bool DotNet45Check() {
-			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5)) {
+			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5))
 				return true;
-			}
 
 			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
 			if (Main.dedServ) {
@@ -201,19 +189,16 @@ namespace Terraria.ModLoader
 			try {
 				Unload();
 
-				if (Main.dedServ) {
+				if (Main.dedServ)
 					Load();
-				}
-				else {
+				else
 					Main.menuMode = Interface.loadModsID;
-				}
 			}
 			catch (Exception e) {
 				var msg = Language.GetTextValue("tModLoader.UnloadError");
 
-				if (e.Data.Contains("mod")) {
+				if (e.Data.Contains("mod"))
 					msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
-				}
 
 				Logging.tML.Fatal(msg, e);
 				DisplayLoadError(msg, e, true);
@@ -222,9 +207,8 @@ namespace Terraria.ModLoader
 
 		private static void Unload() {
 			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ) {
+			if (Main.dedServ)
 				Console.WriteLine("Unloading mods...");
-			}
 
 			ModContent.UnloadModContent();
 			Mods = new Mod[0];
@@ -233,9 +217,8 @@ namespace Terraria.ModLoader
 
 			Thread.MemoryBarrier();
 			GC.Collect();
-			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target)) {
+			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
 				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
-			}
 		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false) {
@@ -258,17 +241,12 @@ namespace Terraria.ModLoader
 			else {
 				Interface.errorMessage.SetMessage(msg);
 				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
-				if (!string.IsNullOrEmpty(e.HelpLink)) {
+				if (!string.IsNullOrEmpty(e.HelpLink))
 					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
-				}
-
-				if (!fatal) {
+				if (!fatal)
 					Interface.errorMessage.ShowSkipModsButton();
-				}
-
-				if (continueIsRetry) {
+				if (continueIsRetry)
 					Interface.errorMessage.ContinueIsRetry();
-				}
 
 				Main.menuMode = Interface.errorMessageID;
 			}
@@ -355,10 +333,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method) {
-			if (!method.IsVirtual) {
-				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-			}
-
+			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
 			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
 		}
@@ -370,9 +345,7 @@ namespace Terraria.ModLoader
 				var makeDelegate = convert.Operand as MethodCallExpression;
 				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
 				method = methodArg.Value as MethodInfo;
-				if (method == null) {
-					throw new NullReferenceException();
-				}
+				if (method == null) throw new NullReferenceException();
 			}
 			catch (Exception e) {
 				throw new ArgumentException("Invalid hook expression " + expr, e);

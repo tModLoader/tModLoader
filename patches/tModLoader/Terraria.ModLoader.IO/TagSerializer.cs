@@ -39,9 +39,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
-			if (serializers.TryGetValue(type, out serializer)) {
+			if (serializers.TryGetValue(type, out serializer))
 				return true;
-			}
 
 			if (typeof(TagSerializable).IsAssignableFrom(type)) {
 				var sType = typeof(TagSerializableSerializer<>).MakeGenericType(type);
@@ -57,20 +56,17 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static Type GetType(string name) {
-			if (typeNameCache.TryGetValue(name, out Type type)) {
+			if (typeNameCache.TryGetValue(name, out Type type))
 				return type;
-			}
 
 			type = Type.GetType(name);
-			if (type != null) {
+			if (type != null)
 				return typeNameCache[name] = type;
-			}
 
 			foreach (var mod in ModLoader.Mods) {
 				type = mod.Code?.GetType(name);
-				if (type != null) {
+				if (type != null)
 					return typeNameCache[name] = type;
-				}
 			}
 
 			return null;
