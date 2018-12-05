@@ -873,6 +873,16 @@
  							if (Main.musicFade[Main.curMusic] > 0.25f)
  							{
  								Main.musicFade[m] -= 0.005f;
+@@ -11924,6 +_,9 @@
+ 
+ 		protected override void Update(GameTime gameTime)
+ 		{
++#if !WINDOWS
++			FNAThreading.Update();
++#endif
+ 			if (!Main.IsEnginePreloaded)
+ 			{
+ 				Main.IsEnginePreloaded = true;
 @@ -11935,6 +_,8 @@
  			if (!this._isDrawingOrUpdating)
  			{

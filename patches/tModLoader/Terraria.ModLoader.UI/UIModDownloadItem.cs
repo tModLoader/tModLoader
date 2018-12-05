@@ -139,7 +139,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override bool PassFilters() {
+		public bool PassFilters() {
 			if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(mod)) {
 				return false;
 			}

@@ -30,15 +30,15 @@ namespace Terraria.ModLoader
 			}
 #endif
 		}
-
-		internal static void Init() {
+		
 #if !WINDOWS
+		internal static void Init() {
 			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
 			var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
 
 			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
-#endif
 		}
+#endif
 
 		internal static Task<T> InvokeAsync<T>(Func<T> task) {
 #if WINDOWS

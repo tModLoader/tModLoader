@@ -234,15 +234,4 @@
  		public virtual void ScrollWheel(UIScrollWheelEvent evt)
  		{
  			if (this.OnScrollWheel != null)
-@@ -460,5 +_,10 @@
- 		{
- 			return 0;
- 		}
-+
-+		public virtual bool PassFilters()
-+		{
-+			throw new NotImplementedException();
-+		}
- 	}
- }
 

@@ -258,7 +258,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override bool PassFilters() {
+		public bool PassFilters() {
 			if (Interface.modsMenu.filter.Length > 0) {
 				if (Interface.modsMenu.searchFilterMode == SearchFilter.Author) {
 					if (mod.properties.author.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
