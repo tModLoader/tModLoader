@@ -56,6 +56,10 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ErrorLogger.cs", "_error_logger_8cs.html", [
       [ "ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", "class_terraria_1_1_mod_loader_1_1_error_logger" ]
     ] ],
+    [ "FNAThreading.cs", "_f_n_a_threading_8cs.html", [
+      [ "FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading" ],
+      [ "SyncContext", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context" ]
+    ] ],
     [ "FrameworkVersion.cs", "_framework_version_8cs.html", null ],
     [ "GLCallLocker.cs", "_g_l_call_locker_8cs.html", [
       [ "GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker" ]

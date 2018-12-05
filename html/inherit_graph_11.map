@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html" title="Terraria.ModLoader.Assembly\lManager.LoadedMod" alt="" coords="6,5,202,46"/>
+<area shape="rect" id="node1" href="$class_synchronization_context.html" title="SynchronizationContext" alt="" coords="6,12,167,39"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html" title="Terraria.ModLoader.FNAThreading.\lSyncContext" alt="" coords="216,5,443,46"/>
 </map>

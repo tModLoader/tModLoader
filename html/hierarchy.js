@@ -39,6 +39,7 @@ var hierarchy =
       [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
     ] ],
     [ "Terraria.ModLoader.IO.TmodFile.FileEntry", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html", null ],
+    [ "Terraria.ModLoader.FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", null ],
     [ "Terraria.ModLoader.GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", null ],
     [ "Terraria.ModLoader.GlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_global_bg_style.html", null ],
     [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
@@ -136,6 +137,9 @@ var hierarchy =
     [ "Terraria.ModLoader.SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
     [ "Terraria.ModLoader.SpawnCondition", "class_terraria_1_1_mod_loader_1_1_spawn_condition.html", null ],
     [ "Terraria.ModLoader.SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", null ],
+    [ "SynchronizationContext", "class_synchronization_context.html", [
+      [ "Terraria.ModLoader.FNAThreading.SyncContext", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html", null ]
+    ] ],
     [ "Terraria.ModLoader.IO.TagIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html", null ],
     [ "Terraria.ModLoader.IO.TagPrinter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html", null ],
     [ "Terraria.ModLoader.IO.TagSerializable", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html", null ],
