@@ -331,7 +331,7 @@ namespace Terraria.ModLoader
 			}
 			if (ConfigManager.AnyModNeedsReload())
 			{
-				ModLoader.OnSuccessfulLoad = NetReload;
+				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
 			}
@@ -345,7 +345,7 @@ namespace Terraria.ModLoader
 			new ModPacket(MessageID.SyncMods).Send();
 		}
 
-		private static Action NetReload() {
+		internal static Action NetReload() {
 			// Main.ActivePlayerFileData gets cleared during reload
 			var path = Main.ActivePlayerFileData.Path;
 			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;

@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.Config
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.OnSuccessfulLoad == ModNet.NetReload)
+			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.OnSuccessfulLoad == ModNet.NetReload())
 			{
 				//path = Path.Combine(ServerModConfigPath, filename);
 				//if (!File.Exists(path))
