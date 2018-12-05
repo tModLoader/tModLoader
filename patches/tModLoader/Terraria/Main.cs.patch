@@ -20,9 +20,11 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
-@@ -77,7 +_,7 @@
+@@ -76,8 +_,9 @@
+ #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
++		public static int mainThreadId;
  
 -		public const int curRelease = 193;
 +		public const int curRelease = 194;
@@ -336,6 +338,17 @@
  			bool flag = Main.Configuration.Save(true);
  			return flag && PlayerInput.Save();
  		}
+@@ -2937,6 +_,10 @@
+ 				return;
+ 			}
+ 			Main.Configuration.Load();
++#if SERVER
++			ModLoader.ModLoader.LoadConfiguration();
++			return;
++#endif
+ 			Main.Configuration.Get<bool>("SmartCursorToggle", ref Main.cSmartCursorToggle);
+ 			Main.Configuration.Get<bool>("MapEnabled", ref Main.mapEnabled);
+ 			Main.Configuration.Get<int>("InvasionBarMode", ref Main.invasionProgressMode);
 @@ -3225,6 +_,7 @@
  					Main.cMapAlphaDown
  				};
@@ -444,17 +457,21 @@
  			WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
-@@ -4301,6 +_,9 @@
+@@ -4301,16 +_,21 @@
  					Console.WriteLine(Main.statusText);
  				}
  			}
 +			//run one tick to JIT all the game content now rather than when a player connects
 +			Logging.ServerConsoleLine("Running one update...");
++			Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +			Update(new GameTime());
  			try
  			{
  				Console.Clear();
-@@ -4310,7 +_,7 @@
++				Logging.ResetPastExceptions(); // "Running one update..." above.
+ 			}
+ 			catch
+ 			{
  			}
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
@@ -463,7 +480,7 @@
  			Console.WriteLine(Language.GetTextValue("CLI.HelpHint"));
  			Console.WriteLine("");
  			Console.Title = "Terraria Server: " + Main.worldName;
-@@ -4320,20 +_,11 @@
+@@ -4320,20 +_,12 @@
  				Main.startDedInput();
  			}
  			stopwatch.Start();
@@ -483,6 +500,7 @@
 -					num10 += totalMilliseconds - num9;
 -					stopwatch.Reset();
 -					stopwatch.Start();
++				ServerHangWatchdog.Checkin();
 +				{
  					if (Main.oldStatusText != Main.statusText)
  					{
@@ -562,6 +580,14 @@
  					}
  					else
  					{
+@@ -4556,6 +_,7 @@
+ 							try
+ 							{
+ 								Console.Clear();
++								Logging.ResetPastExceptions(); // "CLI.Clear_Command" above.
+ 								continue;
+ 							}
+ 							catch
 @@ -4776,7 +_,7 @@
  		public static void InitLifeBytes()
  		{
@@ -594,6 +620,36 @@
  			}
  			for (int num13 = 0; num13 < 1001; num13++)
  			{
+@@ -7368,6 +_,9 @@
+ #if CLIENT
+ 			this.ClientInitialize();
+ #endif
++#if SERVER
++			this.OpenSettings();
++#endif
+ 		}
+ 
+ 		private void ClientInitialize()
+@@ -7455,7 +_,8 @@
+ 		public T OurLoad<T>(string path)
+ 		{
+ 			T result;
+-			lock (Main.globalTextureLocker)
++			GLCallLocker.Enter(globalTextureLocker);
++			try
+ 			{
+ 				if (TexturePackSupport.Enabled && typeof(T) == this.t2d)
+ 				{
+@@ -7468,6 +_,9 @@
+ 					}
+ 				}
+ 				result = base.Content.Load<T>(path);
++			}
++			finally {
++				Monitor.Exit(globalTextureLocker);
+ 			}
+ 			return result;
+ 		}
 @@ -7490,7 +_,7 @@
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
@@ -603,6 +659,17 @@
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
  			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
+@@ -7511,6 +_,10 @@
+ 			this.LoadFonts();
+ 			Mount.Initialize();
+ 			Minecart.Initialize();
++
++			// move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
++			CaptureManager.Instance = new CaptureManager();
++			LiquidRenderer.Instance = new LiquidRenderer();
+ 		}
+ 
+ 		private void LoadFonts()
 @@ -8639,6 +_,8 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
@@ -882,7 +949,7 @@
  			}
  			if (Main.netMode == 1)
  			{
-@@ -12612,6 +_,7 @@
+@@ -12612,10 +_,12 @@
  				{
  					Main.player[Main.myPlayer].AdjTiles();
  				}
@@ -890,6 +957,11 @@
  				Main.gamePaused = true;
  				return;
  			}
+ 			Main.gamePaused = false;
++			ModHooks.PreUpdateEntities();
+ 			if (!Main.dedServ && (double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0 && Main.netMode != 2)
+ 			{
+ 				Star.UpdateStars();
 @@ -12624,6 +_,8 @@
  			PortalHelper.UpdatePortalPoints();
  			Main.tileSolid[379] = false;
@@ -899,6 +971,78 @@
  			int num12 = 0;
  			while (num12 < 255)
  			{
+@@ -12649,6 +_,7 @@
+ 				goto IL_1864;
+ 			}
+ 			Main._gameUpdateCount += 1u;
++			ModHooks.MidUpdatePlayerNPC();
+ 			if (Main.netMode != 1)
+ 			{
+ 				try
+@@ -12713,6 +_,7 @@
+ 				Main.npc[num14].UpdateNPC(num14);
+ 				goto IL_19A7;
+ 			}
++			ModHooks.MidUpdateNPCGore();
+ 			int num15 = 0;
+ 			while (num15 < 500)
+ 			{
+@@ -12738,6 +_,7 @@
+ 				Main.gore[num15].Update();
+ 				goto IL_19EE;
+ 			}
++			ModHooks.MidUpdateGoreProjectile();
+ 			LockOnHelper.SetUP();
+ 			int num16 = 0;
+ 			while (num16 < 1000)
+@@ -12767,6 +_,7 @@
+ 			}
+ 			Main.ProjectileUpdateLoopIndex = -1;
+ 			LockOnHelper.SetDOWN();
++			ModHooks.MidUpdateProjectileItem();
+ 			int num17 = 0;
+ 			while (num17 < 400)
+ 			{
+@@ -12792,6 +_,7 @@
+ 				Main.item[num17].UpdateItem(num17);
+ 				goto IL_1A9B;
+ 			}
++			ModHooks.MidUpdateItemDust();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
+@@ -12811,6 +_,7 @@
+ 			}
+ 			Dust.UpdateDust();
+ 			IL_1AF0:
++			ModHooks.MidUpdateDustTime();
+ 			if (Main.netMode != 2)
+ 			{
+ 				CombatText.UpdateCombatText();
+@@ -12831,6 +_,7 @@
+ 			}
+ 			Main.UpdateTime();
+ 			IL_1B1E:
++			ModHooks.MidUpdateTimeWorld();
+ 			Main.tileSolid[379] = true;
+ 			if (Main.netMode != 1)
+ 			{
+@@ -12851,6 +_,7 @@
+ 				Main.UpdateInvasion();
+ 			}
+ 			IL_1B52:
++			ModHooks.MidUpdateInvasionNet();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
+@@ -12880,6 +_,7 @@
+ 				Main.UpdateClient();
+ 			}
+ 			IL_1B9A:
++			ModHooks.PostUpdateEverything();
+ 			if (Main.ignoreErrors)
+ 			{
+ 				try
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()
@@ -962,7 +1106,13 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1)
  			{
  				if ((float)num + vector.X + 4f > (float)hackedScreenWidth)
-@@ -14617,22 +_,28 @@
+@@ -14612,27 +_,33 @@
+ 			{
+ 				Main.HoverItem.knockBack *= 1f + (1f - Main.player[Main.myPlayer].stealth) * 0.5f;
+ 			}
+-			int num3 = 20;
++			int num3 = 20 + Main.HoverItem.ToolTip?.Lines ?? 0;
+ 			int num4 = 1;
  			string[] array = new string[num3];
  			bool[] array2 = new bool[num3];
  			bool[] array3 = new bool[num3];
@@ -3640,6 +3790,14 @@
  				Main.InReforgeMenu = false;
  			}
  			Main.hoverItemName = "";
+@@ -40287,6 +_,7 @@
+ 					text2 = string.Format("{0:0,0}", Main.txDataType[j]);
+ 					Main.spriteBatch.DrawString(Main.fontMouseText, text2, new Vector2((float)num3, (float)num4), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+ 				}
++				ModNet.DrawModDiagnoseNet();
+ 			}
+ 		}
+ 
 @@ -40424,6 +_,11 @@
  							if (type == 439 || type == 370)
  							{
@@ -3834,6 +3992,34 @@
  							Main.spriteBatch.DrawString(Main.fontDeathText, array9[num94], new Vector2((float)(num3 + num101 + array5[num94]), (float)(num2 + num4 * num94 + num102) + origin.Y * array7[num94] + (float)array4[num94]), color10, 0f, origin, num103, SpriteEffects.None, 0f);
  						}
  						else
+@@ -46467,6 +_,27 @@
+ 				Vector2 origin2 = Main.fontMouseText.MeasureString(text6);
+ 				origin2.X *= 0.5f;
+ 				origin2.Y *= 0.5f;
++				if (Main.menuMode == 0 && !ModCompile.DeveloperMode)
++				{
++					origin2.Y *= 2;
++					var text = "Enable Developer Mode";
++					// measure and draw text from bottom right
++					var textSize = fontMouseText.MeasureString(text);
++					var pos = new Vector2(screenWidth - 10f + num107, screenHeight - 2f + num108);
++					var d_color = color11;
++					if (num106 == 4) // final draw
++					{
++						var rect = new Microsoft.Xna.Framework.Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
++						bool mouseover = rect.Contains(Main.mouseX, Main.mouseY);
++						d_color = mouseover ? highVersionColor : new Microsoft.Xna.Framework.Color(120, 120, 120, 76);
++						if (mouseover && Main.mouseLeftRelease && Main.mouseLeft)
++						{
++							Main.PlaySound(SoundID.MenuOpen);
++							Main.menuMode = Interface.developerModeHelpID;
++						}
++					}
++					Main.spriteBatch.DrawString(fontMouseText, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
++				}
+ 				Main.spriteBatch.DrawString(Main.fontMouseText, text6, new Vector2((float)Main.screenWidth - origin2.X + (float)num107 - 10f, (float)Main.screenHeight - origin2.Y + (float)num108 - 2f), color11, 0f, origin2, 1f, SpriteEffects.None, 0f);
+ 			}
+ 			for (int num109 = 0; num109 < 5; num109++)
 @@ -46498,10 +_,29 @@
  				{
  					num111 = 2;

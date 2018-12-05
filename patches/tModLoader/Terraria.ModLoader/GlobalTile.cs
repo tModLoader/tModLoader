@@ -1,7 +1,6 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+using System;
 
 namespace Terraria.ModLoader
 {
@@ -13,8 +12,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod to which this GlobalTile belongs to.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -22,8 +20,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of this GlobalTile instance.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -33,8 +30,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="array"></param>
 		/// <param name="type"></param>
-		public void AddToArray(ref int[] array, int type)
-		{
+		public void AddToArray(ref int[] array, int type) {
 			Array.Resize(ref array, array.Length + 1);
 			array[array.Length - 1] = type;
 		}
@@ -44,8 +40,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="soilType"></param>
 		/// <param name="tree"></param>
-		public void AddModTree(int soilType, ModTree tree)
-		{
+		public void AddModTree(int soilType, ModTree tree) {
 			TileLoader.trees[soilType] = tree;
 		}
 
@@ -54,8 +49,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="soilType"></param>
 		/// <param name="palmTree"></param>
-		public void AddModPalmTree(int soilType, ModPalmTree palmTree)
-		{
+		public void AddModPalmTree(int soilType, ModPalmTree palmTree) {
 			TileLoader.palmTrees[soilType] = palmTree;
 		}
 
@@ -64,8 +58,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="soilType"></param>
 		/// <param name="cactus"></param>
-		public void AddModCactus(int soilType, ModCactus cactus)
-		{
+		public void AddModCactus(int soilType, ModCactus cactus) {
 			TileLoader.cacti[soilType] = cactus;
 		}
 
@@ -74,16 +67,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
 		/// Allows you to modify the properties of any tile in the game. Most properties are stored as arrays throughout the Terraria code.
 		/// </summary>
-		public virtual void SetDefaults()
-		{
+		public virtual void SetDefaults() {
 		}
 
 		/// <summary>
@@ -93,8 +84,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual bool KillSound(int i, int j, int type)
-		{
+		public virtual bool KillSound(int i, int j, int type) {
 			return true;
 		}
 
@@ -106,8 +96,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="fail"></param>
 		/// <param name="num"></param>
-		public virtual void NumDust(int i, int j, int type, bool fail, ref int num)
-		{
+		public virtual void NumDust(int i, int j, int type, bool fail, ref int num) {
 		}
 
 		/// <summary>
@@ -118,8 +107,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="dustType"></param>
 		/// <returns></returns>
-		public virtual bool CreateDust(int i, int j, int type, ref int dustType)
-		{
+		public virtual bool CreateDust(int i, int j, int type, ref int dustType) {
 			return true;
 		}
 
@@ -132,15 +120,13 @@ namespace Terraria.ModLoader
 		/// <param name="wormChance"></param>
 		/// <param name="grassHopperChance"></param>
 		/// <param name="jungleGrubChance"></param>
-		public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
-		{
+		public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 		}
 
 		/// <summary>
 		/// Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default.
 		/// </summary>
-		public virtual bool Drop(int i, int j, int type)
-		{
+		public virtual bool Drop(int i, int j, int type) {
 			return true;
 		}
 
@@ -152,8 +138,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="blockDamaged"></param>
 		/// <returns></returns>
-		public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
-		{
+		public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged) {
 			return true;
 		}
 
@@ -166,8 +151,7 @@ namespace Terraria.ModLoader
 		/// <param name="fail"></param>
 		/// <param name="effectOnly"></param>
 		/// <param name="noItem"></param>
-		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
-		{
+		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
 		/// <summary>
@@ -177,8 +161,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual bool CanExplode(int i, int j, int type)
-		{
+		public virtual bool CanExplode(int i, int j, int type) {
 			return true;
 		}
 
@@ -189,8 +172,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <param name="closer"></param>
-		public virtual void NearbyEffects(int i, int j, int type, bool closer)
-		{
+		public virtual void NearbyEffects(int i, int j, int type, bool closer) {
 		}
 
 		/// <summary>
@@ -202,8 +184,7 @@ namespace Terraria.ModLoader
 		/// <param name="r"></param>
 		/// <param name="g"></param>
 		/// <param name="b"></param>
-		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
-		{
+		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
 		}
 
 		/// <summary>
@@ -214,8 +195,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public virtual bool Dangersense(int i, int j, int type, Player player)
-		{
+		public virtual bool Dangersense(int i, int j, int type, Player player) {
 			return false;
 		}
 
@@ -226,15 +206,13 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <param name="spriteEffects"></param>
-		public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
-		{
+		public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
 		}
 
 		/// <summary>
 		/// Allows animating tiles that were previously static. Loading a new texture for the tile is required first. Use Main.tileFrameCounter to count game frames and Main.tileFrame to change animation frames.
 		/// </summary>
-		public virtual void AnimateTile()
-		{
+		public virtual void AnimateTile() {
 		}
 
 		/// <summary>
@@ -245,8 +223,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="spriteBatch"></param>
 		/// <returns></returns>
-		public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
-		{
+		public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 			return true;
 		}
 
@@ -259,8 +236,7 @@ namespace Terraria.ModLoader
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
 		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
-		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
-		{
+		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
 		}
 
 		/// <summary>
@@ -270,8 +246,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <param name="spriteBatch"></param>
-		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
-		{
+		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 		}
 
 		/// <summary>
@@ -279,8 +254,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The i.</param>
 		/// <param name="j">The j.</param>
-		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch)
-		{
+		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 		}
 
 		/// <summary>
@@ -289,8 +263,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		public virtual void RandomUpdate(int i, int j, int type)
-		{
+		public virtual void RandomUpdate(int i, int j, int type) {
 		}
 
 		/// <summary>
@@ -302,8 +275,7 @@ namespace Terraria.ModLoader
 		/// <param name="resetFrame"></param>
 		/// <param name="noBreak"></param>
 		/// <returns></returns>
-		public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
-		{
+		public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
 			return true;
 		}
 
@@ -314,8 +286,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual bool CanPlace(int i, int j, int type)
-		{
+		public virtual bool CanPlace(int i, int j, int type) {
 			return true;
 		}
 
@@ -324,8 +295,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual int[] AdjTiles(int type)
-		{
+		public virtual int[] AdjTiles(int type) {
 			return new int[0];
 		}
 
@@ -335,8 +305,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		public virtual void RightClick(int i, int j, int type)
-		{
+		public virtual void RightClick(int i, int j, int type) {
 		}
 
 		/// <summary>
@@ -345,8 +314,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		public virtual void MouseOver(int i, int j, int type)
-		{
+		public virtual void MouseOver(int i, int j, int type) {
 		}
 
 		/// <summary>
@@ -355,8 +323,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		public virtual void MouseOverFar(int i, int j, int type)
-		{
+		public virtual void MouseOverFar(int i, int j, int type) {
 		}
 
 		/// <summary>
@@ -367,8 +334,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool AutoSelect(int i, int j, int type, Item item)
-		{
+		public virtual bool AutoSelect(int i, int j, int type, Item item) {
 			return false;
 		}
 
@@ -379,8 +345,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual bool PreHitWire(int i, int j, int type)
-		{
+		public virtual bool PreHitWire(int i, int j, int type) {
 			return true;
 		}
 
@@ -390,8 +355,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		public virtual void HitWire(int i, int j, int type)
-		{
+		public virtual void HitWire(int i, int j, int type) {
 		}
 
 		/// <summary>
@@ -401,8 +365,7 @@ namespace Terraria.ModLoader
 		/// <param name="j"></param>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public virtual bool Slope(int i, int j, int type)
-		{
+		public virtual bool Slope(int i, int j, int type) {
 			return true;
 		}
 
@@ -411,8 +374,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="player"></param>
-		public virtual void FloorVisuals(int type, Player player)
-		{
+		public virtual void FloorVisuals(int type, Player player) {
 		}
 
 		/// <summary>
@@ -420,8 +382,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="style"></param>
-		public virtual void ChangeWaterfallStyle(int type, ref int style)
-		{
+		public virtual void ChangeWaterfallStyle(int type, ref int style) {
 		}
 
 		/// <summary>
@@ -430,8 +391,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="style"></param>
 		/// <returns></returns>
-		public virtual int SaplingGrowthType(int type, ref int style)
-		{
+		public virtual int SaplingGrowthType(int type, ref int style) {
 			return -1;
 		}
 
@@ -441,8 +401,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="item"></param>
-		public virtual void PlaceInWorld(int i, int j, Item item)
-		{
+		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
 	}
 }

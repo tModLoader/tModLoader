@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.IO
 {
@@ -13,13 +13,12 @@ namespace Terraria.ModLoader.IO
 	{
 		public const int VERSION = 1;
 
-		public static bool ToRaw(Stream src, Stream dst)
-		{
-			using (var img = new Bitmap(src))
-			{
+		public static bool ToRaw(Stream src, Stream dst) {
+			using (var img = new Bitmap(src)) {
 				//XNA has a strange interaction where large size PNGs can be loaded, but not created via any other means
-				if (img.Width > 2048 || img.Height > 2048)
+				if (img.Width > 2048 || img.Height > 2048) {
 					return false;
+				}
 
 				var bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 				var rawdata = new int[img.Width * img.Height];
@@ -28,8 +27,7 @@ namespace Terraria.ModLoader.IO
 				w.Write(VERSION);
 				w.Write(img.Width);
 				w.Write(img.Height);
-				foreach (int c in rawdata)
-				{
+				foreach (int c in rawdata) {
 					//Bitmap is in ABGR
 					int a = c >> 24 & 0xFF;
 					int b = c >> 16 & 0xFF;
@@ -39,8 +37,7 @@ namespace Terraria.ModLoader.IO
 					//special note, mirror XNA behaviour of zeroing out textures with full alpha zero
 					//this means that an author doesn't have to set their fully transparent pixels to black
 					//if they want additive blending they need to use alpha 1/255
-					if (a == 0)
-					{
+					if (a == 0) {
 						w.Write(0);
 						continue;
 					}
@@ -56,10 +53,8 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static byte[] ToRawBytes(Stream src)
-		{
-			using (var ms = new MemoryStream())
-			{
+		public static byte[] ToRawBytes(Stream src) {
+			using (var ms = new MemoryStream()) {
 				return ToRaw(src, ms) ? ms.ToArray() : null;
 			}
 		}
@@ -67,47 +62,55 @@ namespace Terraria.ModLoader.IO
 		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, Stream src) =>
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
+		public static void RawToPng(Stream src, Stream dst) {
+			using (var img = RawToTexture2D(Main.instance.GraphicsDevice, src)) {
+				img.SaveAsPng(dst, img.Width, img.Height);
+			}
+		}
+
 		public static Tuple<int, int, byte[]> ReadRaw(Stream src) =>
 			ReadRaw(new BinaryReader(src, Encoding.UTF8));
 
-		public static Tuple<int, int, byte[]> ReadRaw(BinaryReader r)
-		{
+		public static Tuple<int, int, byte[]> ReadRaw(BinaryReader r) {
 			int v = r.ReadInt32();
-			if (v != VERSION)
+			if (v != VERSION) {
 				throw new Exception("Unknown RawImg Format Version: " + v);
+			}
 
 			int width = r.ReadInt32();
 			int height = r.ReadInt32();
 			var rawdata = r.ReadBytes(width * height * 4);
-			return new Tuple< int, int, byte[]> (width, height, rawdata);
+			return new Tuple<int, int, byte[]>(width, height, rawdata);
 		}
 
-		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r)
-		{
+		public static Texture2D RawToTexture2D(GraphicsDevice graphicsDevice, BinaryReader r) {
 			var rawData = ReadRaw(r);
 			var tex = new Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);
 			tex.SetData(rawData.Item3);
 			return tex;
 		}
 
-		public static Task<Texture2D> RawToTexture2DAsync(GraphicsDevice graphicsDevice, BinaryReader r)
-		{
+		public static Task<Texture2D> RawToTexture2DAsync(GraphicsDevice graphicsDevice, BinaryReader r) {
 			var rawData = ReadRaw(r);
-			return Task.Factory.StartNew(() =>
-			{
+			return GLCallLocker.InvokeAsync(() => {
 				var tex = new Texture2D(graphicsDevice, rawData.Item1, rawData.Item2);
 				tex.SetData(rawData.Item3);
 				return tex;
 			});
 		}
 
-		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream)
-		{
+		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream) {
 #if WINDOWS
-			return Task.Factory.StartNew(() => Texture2D.FromStream(graphicsDevice, stream));
+			if (!(stream is MemoryStream)) {
+				var ms = new MemoryStream((int)stream.Length);
+				stream.CopyTo(ms);
+				ms.Position = 0;
+				stream = ms;
+			}
+			return GLCallLocker.InvokeAsync(() => Texture2D.FromStream(graphicsDevice, stream));
 #else
 			Texture2D.TextureDataFromStreamEXT(stream, out int width, out int height, out byte[] rawdata, -1, -1, false);
-			return Task.Factory.StartNew(() =>
+			return GLCallLocker.InvokeAsync(() =>
 			{
 				var tex = new Texture2D(graphicsDevice, width, height);
 				tex.SetData(rawdata);

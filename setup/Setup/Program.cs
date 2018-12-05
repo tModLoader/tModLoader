@@ -18,6 +18,7 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
 		public static string LogDir => Path.Combine(baseDir, "logs");
 		public static string ReferencesDir => Path.Combine(baseDir, "references");
+		public static string TMLBinDir => Path.Combine(baseDir, "src", "tModLoader", "bin", "x86");
 
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
@@ -32,7 +33,11 @@ namespace Terraria.ModLoader.Setup
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, resArgs) => {
-				var name = new AssemblyName(resArgs.Name).Name;
+				var assemblyName = new AssemblyName(resArgs.Name);
+				var name = assemblyName.Name;
+				if (name == "Mono.Cecil" && assemblyName.Version < new Version(0, 10)) //multiple cecil versions need to be loaded separately
+					name += "_0.9.6.0";
+
 				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(ReferencesDir, name);
 			};
 

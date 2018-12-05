@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ID;
+using System;
+using System.Collections.Generic;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -16,8 +14,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod which has added this type of ModTile.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -25,8 +22,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of this type of tile.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -34,8 +30,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal ID of this type of tile.
 		/// </summary>
-		public ushort Type
-		{
+		public ushort Type {
 			get;
 			internal set;
 		}
@@ -125,8 +120,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
-		public void AddToArray(ref int[] array)
-		{
+		public void AddToArray(ref int[] array) {
 			Array.Resize(ref array, array.Length + 1);
 			array[array.Length - 1] = Type;
 		}
@@ -134,13 +128,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, LocalizedText name = null)
-		{
-			if (!MapLoader.initialized)
-			{
+		public void AddMapEntry(Color color, LocalizedText name = null) {
+			if (!MapLoader.initialized) {
 				MapEntry entry = new MapEntry(color, name);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
-				{
+				if (!MapLoader.tileEntries.Keys.Contains(Type)) {
 					MapLoader.tileEntries[Type] = new List<MapEntry>();
 				}
 				MapLoader.tileEntries[Type].Add(entry);
@@ -152,10 +143,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
 		/// <returns></returns>
-		public ModTranslation CreateMapEntryName(string key = null)
-		{
-			if (string.IsNullOrEmpty(key))
-			{
+		public ModTranslation CreateMapEntryName(string key = null) {
+			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
 			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
@@ -164,13 +153,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, ModTranslation name)
-		{
-			if (!MapLoader.initialized)
-			{
+		public void AddMapEntry(Color color, ModTranslation name) {
+			if (!MapLoader.initialized) {
 				MapEntry entry = new MapEntry(color, name);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
-				{
+				if (!MapLoader.tileEntries.Keys.Contains(Type)) {
 					MapLoader.tileEntries[Type] = new List<MapEntry>();
 				}
 				MapLoader.tileEntries[Type].Add(entry);
@@ -180,13 +166,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-		{
-			if (!MapLoader.initialized)
-			{
+		public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc) {
+			if (!MapLoader.initialized) {
 				MapEntry entry = new MapEntry(color, name, nameFunc);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
-				{
+				if (!MapLoader.tileEntries.Keys.Contains(Type)) {
 					MapLoader.tileEntries[Type] = new List<MapEntry>();
 				}
 				MapLoader.tileEntries[Type].Add(entry);
@@ -196,13 +179,10 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 		/// </summary>
-		public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
-		{
-			if (!MapLoader.initialized)
-			{
+		public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc) {
+			if (!MapLoader.initialized) {
 				MapEntry entry = new MapEntry(color, name, nameFunc);
-				if (!MapLoader.tileEntries.Keys.Contains(Type))
-				{
+				if (!MapLoader.tileEntries.Keys.Contains(Type)) {
 					MapLoader.tileEntries[Type] = new List<MapEntry>();
 				}
 				MapLoader.tileEntries[Type].Add(entry);
@@ -213,8 +193,7 @@ namespace Terraria.ModLoader
 		/// Allows this tile to grow the given modded tree.
 		/// </summary>
 		/// <param name="tree">The ModTree.</param>
-		public void SetModTree(ModTree tree)
-		{
+		public void SetModTree(ModTree tree) {
 			TileLoader.trees[Type] = tree;
 		}
 
@@ -222,8 +201,7 @@ namespace Terraria.ModLoader
 		/// Allows this tile to grow the given modded palm tree.
 		/// </summary>
 		/// <param name="palmTree">The ModPalmTree</param>
-		public void SetModPalmTree(ModPalmTree palmTree)
-		{
+		public void SetModPalmTree(ModPalmTree palmTree) {
 			TileLoader.palmTrees[Type] = palmTree;
 		}
 
@@ -231,8 +209,7 @@ namespace Terraria.ModLoader
 		/// Allows this tile to grow the given modded cactus.
 		/// </summary>
 		/// <param name="cactus">The ModCactus</param>
-		public void SetModCactus(ModCactus cactus)
-		{
+		public void SetModCactus(ModCactus cactus) {
 			TileLoader.cacti[Type] = cactus;
 		}
 
@@ -242,31 +219,27 @@ namespace Terraria.ModLoader
 		/// <param name="name">The internal name.</param>
 		/// <param name="texture">The texture path.</param>
 		/// <returns>Whether or not to autoload this tile.</returns>
-		public virtual bool Autoload(ref string name, ref string texture)
-		{
+		public virtual bool Autoload(ref string name, ref string texture) {
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
 		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.
 		/// </summary>
-		public virtual void SetDefaults()
-		{
+		public virtual void SetDefaults() {
 		}
 
 		/// <summary>
 		/// Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main.tileObsidianKill.
 		/// </summary>
-		public virtual void PostSetDefaults()
-		{
+		public virtual void PostSetDefaults() {
 		}
 
 		/// <summary>
 		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool HasSmartInteract()
-		{
+		public virtual bool HasSmartInteract() {
 			return false;
 		}
 
@@ -275,8 +248,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool KillSound(int i, int j)
-		{
+		public virtual bool KillSound(int i, int j) {
 			return true;
 		}
 
@@ -285,8 +257,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public virtual void NumDust(int i, int j, bool fail, ref int num) {
 		}
 
 		/// <summary>
@@ -294,8 +265,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CreateDust(int i, int j, ref int type)
-		{
+		public virtual bool CreateDust(int i, int j, ref int type) {
 			type = dustType;
 			return true;
 		}
@@ -305,8 +275,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
-		{
+		public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 		}
 
 		/// <summary>
@@ -314,8 +283,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Drop(int i, int j)
-		{
+		public virtual bool Drop(int i, int j) {
 			return true;
 		}
 
@@ -324,8 +292,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanKillTile(int i, int j, ref bool blockDamaged)
-		{
+		public virtual bool CanKillTile(int i, int j, ref bool blockDamaged) {
 			return true;
 		}
 
@@ -334,8 +301,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
-		{
+		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
 		/// <summary>
@@ -343,8 +309,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public virtual void KillMultiTile(int i, int j, int frameX, int frameY) {
 		}
 
 		/// <summary>
@@ -352,8 +317,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanExplode(int i, int j)
-		{
+		public virtual bool CanExplode(int i, int j) {
 			return true;
 		}
 
@@ -362,8 +326,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void NearbyEffects(int i, int j, bool closer)
-		{
+		public virtual void NearbyEffects(int i, int j, bool closer) {
 		}
 
 		/// <summary>
@@ -371,8 +334,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-		{
+		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 
 		/// <summary>
@@ -380,8 +342,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Dangersense(int i, int j, Player player)
-		{
+		public virtual bool Dangersense(int i, int j, Player player) {
 			return false;
 		}
 
@@ -390,8 +351,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
-		{
+		public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
 		}
 
 		/// <summary>
@@ -399,8 +359,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height)
-		{
+		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
 		}
 
 		/// <summary>
@@ -416,8 +375,7 @@ namespace Terraria.ModLoader
 		///}</code>
 		///	or, to mimic another tile, simply:
 		///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
-		public virtual void AnimateTile(ref int frame, ref int frameCounter)
-		{
+		public virtual void AnimateTile(ref int frame, ref int frameCounter) {
 		}
 
 		/// <summary>
@@ -429,8 +387,7 @@ namespace Terraria.ModLoader
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="frameXOffset">The offset to frameX.</param>
 		/// <param name="frameYOffset">The offset to frameY.</param>
-		public virtual void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
-		{
+		public virtual void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
 		}
 
 		/// <summary>
@@ -438,8 +395,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-		{
+		public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			return true;
 		}
 
@@ -449,8 +405,7 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
-		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
-		{
+		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
 		}
 
 		/// <summary>
@@ -458,8 +413,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
-		{
+		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
 		/// <summary>
@@ -467,8 +421,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The i.</param>
 		/// <param name="j">The j.</param>
-		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
-		{
+		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
 		/// <summary>
@@ -476,8 +429,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual ushort GetMapOption(int i, int j)
-		{
+		public virtual ushort GetMapOption(int i, int j) {
 			return 0;
 		}
 
@@ -486,8 +438,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void RandomUpdate(int i, int j)
-		{
+		public virtual void RandomUpdate(int i, int j) {
 		}
 
 		/// <summary>
@@ -495,8 +446,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
-		{
+		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
 			return true;
 		}
 
@@ -505,8 +455,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanPlace(int i, int j)
-		{
+		public virtual bool CanPlace(int i, int j) {
 			return true;
 		}
 
@@ -515,8 +464,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void RightClick(int i, int j)
-		{
+		public virtual void RightClick(int i, int j) {
 		}
 
 		/// <summary>
@@ -524,8 +472,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void MouseOver(int i, int j)
-		{
+		public virtual void MouseOver(int i, int j) {
 		}
 
 		/// <summary>
@@ -533,8 +480,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void MouseOverFar(int i, int j)
-		{
+		public virtual void MouseOverFar(int i, int j) {
 		}
 
 		/// <summary>
@@ -542,8 +488,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool AutoSelect(int i, int j, Item item)
-		{
+		public virtual bool AutoSelect(int i, int j, Item item) {
 			return false;
 		}
 
@@ -552,8 +497,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void HitWire(int i, int j)
-		{
+		public virtual void HitWire(int i, int j) {
 		}
 
 		/// <summary>
@@ -561,8 +505,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Slope(int i, int j)
-		{
+		public virtual bool Slope(int i, int j) {
 			return true;
 		}
 
@@ -570,15 +513,13 @@ namespace Terraria.ModLoader
 		/// Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice.
 		/// </summary>
 		/// <param name="player"></param>
-		public virtual void FloorVisuals(Player player)
-		{
+		public virtual void FloorVisuals(Player player) {
 		}
 
 		/// <summary>
 		/// Whether or not this tile creates dust when the player walks on it. Returns false by default.
 		/// </summary>
-		public virtual bool HasWalkDust()
-		{
+		public virtual bool HasWalkDust() {
 			return false;
 		}
 
@@ -588,16 +529,14 @@ namespace Terraria.ModLoader
 		/// <param name="dustType"></param>
 		/// <param name="makeDust"></param>
 		/// <param name="color"></param>
-		public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
-		{
+		public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color) {
 		}
 
 		/// <summary>
 		/// Allows you to change the style of waterfall that passes through or over this type of tile.
 		/// </summary>
 		/// <param name="style"></param>
-		public virtual void ChangeWaterfallStyle(ref int style)
-		{
+		public virtual void ChangeWaterfallStyle(ref int style) {
 		}
 
 		/// <summary>
@@ -605,8 +544,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="style"></param>
 		/// <returns></returns>
-		public virtual int SaplingGrowthType(ref int style)
-		{
+		public virtual int SaplingGrowthType(ref int style) {
 			return -1;
 		}
 
@@ -616,8 +554,7 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="item">The item used to place this tile.</param>
-		public virtual void PlaceInWorld(int i, int j, Item item)
-		{
+		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
 	}
 }

@@ -1,21 +1,19 @@
-using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Security;
-using System.Collections.Specialized;
-using System.Xml;
-using System.Text;
-using Terraria.ID;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using Terraria.Localization;
 using System.Reflection;
+using System.Text;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Graphics;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -45,13 +43,12 @@ namespace Terraria.ModLoader.UI
 		public bool update = false;
 		public bool updateIsDowngrade = false;
 		public LocalMod installed;
-		private float left;
+		private readonly float left;
 
 		private bool HasModIcon => modIconURL != null;
 		private float ModIconAdjust => modIconAppended ? 85f : 0f;
 
-		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, LocalMod installed)
-		{
+		public UIModDownloadItem(string displayname, string name, string version, string author, string modreferences, ModSide modside, string modIconURL, string download, int downloads, int hot, string timeStamp, bool update, bool updateIsDowngrade, LocalMod installed) {
 			this.displayname = displayname;
 			this.mod = name;
 			this.version = version;
@@ -92,8 +89,7 @@ namespace Terraria.ModLoader.UI
 			moreInfoButton.OnClick += RequestMoreinfo;
 			Append(moreInfoButton);
 
-			if (update || installed == null)
-			{
+			if (update || installed == null) {
 				updateButton = new UIAutoScaleTextTextPanel<string>(this.update ? (updateIsDowngrade ? Language.GetTextValue("tModLoader.MBDowngrade") : Language.GetTextValue("tModLoader.MBUpdate")) : Language.GetTextValue("tModLoader.MBDownload"), 1f,
 					false);
 				updateButton.CopyStyle(moreInfoButton);
@@ -104,15 +100,13 @@ namespace Terraria.ModLoader.UI
 				updateButton.OnClick += this.DownloadMod;
 				Append(updateButton);
 			}
-			if (modreferences.Length > 0)
-			{
+			if (modreferences.Length > 0) {
 				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modreferences.Split(',').Select(x => x.Trim()))));
 				modReferenceIcon.Left.Set(-149f, 1f);
 				modReferenceIcon.Top.Set(48f, 0f);
-				modReferenceIcon.OnClick += (s, e) =>
-				{
+				modReferenceIcon.OnClick += (s, e) => {
 					UIModDownloadItem modListItem = (UIModDownloadItem)e.Parent;
 					Interface.modBrowser.SpecialModPackFilter = modListItem.modreferences.Split(',').Select(x => x.Trim()).ToList();
 					Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
@@ -125,11 +119,9 @@ namespace Terraria.ModLoader.UI
 			OnDoubleClick += RequestMoreinfo;
 		}
 
-		public override int CompareTo(object obj)
-		{
+		public override int CompareTo(object obj) {
 			var item = obj as UIModDownloadItem;
-			switch (Interface.modBrowser.sortMode)
-			{
+			switch (Interface.modBrowser.sortMode) {
 				default:
 					return base.CompareTo(obj);
 				case ModBrowserSortMode.DisplayNameAtoZ:
@@ -147,36 +139,28 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override bool PassFilters()
-		{
-			if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(mod))
-			{
+		public override bool PassFilters() {
+			if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(mod)) {
 				return false;
 			}
-			if (Interface.modBrowser.filter.Length > 0)
-			{
-				if (Interface.modBrowser.searchFilterMode == SearchFilter.Author)
-				{
-					if (author.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
-					{
+			if (Interface.modBrowser.filter.Length > 0) {
+				if (Interface.modBrowser.searchFilterMode == SearchFilter.Author) {
+					if (author.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}
-				else
-				{
-					if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
-					{
+				else {
+					if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}
 			}
-			if (Interface.modBrowser.modSideFilterMode != ModSideFilter.All)
-			{
-				if ((int)modside != (int)Interface.modBrowser.modSideFilterMode - 1)
+			if (Interface.modBrowser.modSideFilterMode != ModSideFilter.All) {
+				if ((int)modside != (int)Interface.modBrowser.modSideFilterMode - 1) {
 					return false;
+				}
 			}
-			switch (Interface.modBrowser.updateFilterMode)
-			{
+			switch (Interface.modBrowser.updateFilterMode) {
 				default:
 				case UpdateFilter.All:
 					return true;
@@ -187,12 +171,10 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
-			if (HasModIcon && !modIconWanted)
-			{
+			if (HasModIcon && !modIconWanted) {
 				modIconWanted = true;
 			}
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
@@ -206,33 +188,26 @@ namespace Terraria.ModLoader.UI
 			this.DrawTimeText(spriteBatch, drawPos + new Vector2(0f, 2f), baseWidth); // x offset (padding) to do in method
 		}
 
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (modIconWanted && !modIconRequested)
-			{
+			if (modIconWanted && !modIconRequested) {
 				modIconRequested = true;
-				using (WebClient client = new WebClient())
-				{
+				using (WebClient client = new WebClient()) {
 					client.DownloadDataCompleted += IconDownloadComplete;
 					client.DownloadDataAsync(new Uri(modIconURL));
 				}
 			}
-			if (modIconReady)
-			{
+			if (modIconReady) {
 				modIconReady = false;
 				modIconAppended = true;
 				Append(modIcon);
 			}
 		}
 
-		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
-		{
-			try
-			{
+		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e) {
+			try {
 				byte[] data = e.Result;
-				using (MemoryStream buffer = new MemoryStream(data))
-				{
+				using (MemoryStream buffer = new MemoryStream(data)) {
 					var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
 					modIcon = new UIImage(iconTexture);
 					modIcon.Left.Set(0f, 0f);
@@ -241,8 +216,7 @@ namespace Terraria.ModLoader.UI
 					modIconWanted = false; // We got the icon, no longer wanted
 				}
 			}
-			catch (Exception)
-			{
+			catch (Exception) {
 				// country- wide imgur blocks, cannot load icon
 				modIconReady = false;
 				modIconWanted = false;
@@ -252,44 +226,36 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		protected override void DrawChildren(SpriteBatch spriteBatch)
-		{
+		protected override void DrawChildren(SpriteBatch spriteBatch) {
 			base.DrawChildren(spriteBatch);
 
 			// show authors on mod title hover, after everything else
 			// main.hoverItemName isn't drawn in UI
-			if (this.modName.IsMouseHovering)
-			{
+			if (this.modName.IsMouseHovering) {
 				string text = Language.GetTextValue("tModLoader.ModsByline", author);
 				float x = Main.fontMouseText.MeasureString(text).X;
 				Vector2 vector = Main.MouseScreen + new Vector2(16f);
-				if (vector.Y > (float)(Main.screenHeight - 30))
-				{
+				if (vector.Y > (float)(Main.screenHeight - 30)) {
 					vector.Y = (float)(Main.screenHeight - 30);
 				}
-				if (vector.X > (float)Main.screenWidth - x)
-				{
+				if (vector.X > (float)Main.screenWidth - x) {
 					vector.X = (float)(Main.screenWidth - x - 30);
 				}
 				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 		}
 
-		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
-		{
+		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
 			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
 			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this.innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
 			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
 		}
 
-		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos, int baseWidth)
-		{
-			if (timeStamp == "0000-00-00 00:00:00")
-			{
+		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos, int baseWidth) {
+			if (timeStamp == "0000-00-00 00:00:00") {
 				return;
 			}
-			try
-			{
+			try {
 				DateTime MyDateTime = DateTime.Parse(timeStamp); // parse date
 				string text = TimeHelper.HumanTimeSpanString(MyDateTime); // get time text
 				int textWidth = (int)Main.fontMouseText.MeasureString(text).X; // measure text width
@@ -297,65 +263,52 @@ namespace Terraria.ModLoader.UI
 				drawPos.X += diffWidth * 0.5f; // add difference as padding
 				Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
-			catch
-			{
+			catch {
 				return;
 			}
 		}
 
-		public override void MouseOver(UIMouseEvent evt)
-		{
+		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
 			this.BackgroundColor = new Color(73, 94, 171);
 			this.BorderColor = new Color(89, 116, 213);
 		}
 
-		public override void MouseOut(UIMouseEvent evt)
-		{
+		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			this.BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement)
-		{
+		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
-			try
-			{
+			try {
 				if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
 				{
 					ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
 				}
-				using (WebClient client = new WebClient())
-				{
+				using (WebClient client = new WebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
 					Interface.modBrowser.selectedItem = this;
 					Interface.downloadMod.SetDownloading(displayname);
 					Interface.downloadMod.SetCancel(client.CancelAsync);
-					client.DownloadProgressChanged += (s, e) =>
-					{
+					client.DownloadProgressChanged += (s, e) => {
 						Interface.downloadMod.SetProgress(e);
 					};
-					client.DownloadFileCompleted += (s, e) =>
-					{
+					client.DownloadFileCompleted += (s, e) => {
 						Main.menuMode = Interface.modBrowserID;
-						if (e.Error != null)
-						{
-							if (e.Cancelled)
-							{
+						if (e.Error != null) {
+							if (e.Cancelled) {
 							}
-							else
-							{
+							else {
 								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
-								if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
-								{
+								if (httpStatusCode == HttpStatusCode.ServiceUnavailable) {
 									Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBExceededBandwidth"));
 									Interface.errorMessage.SetGotoMenu(0);
 									Main.gameMenu = true;
 									Main.menuMode = Interface.errorMessageID;
 								}
-								else
-								{
+								else {
 									Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBUnknownMBError"));
 									Interface.errorMessage.SetGotoMenu(0);
 									Main.gameMenu = true;
@@ -363,16 +316,13 @@ namespace Terraria.ModLoader.UI
 								}
 							}
 						}
-						else if (!e.Cancelled)
-						{
+						else if (!e.Cancelled) {
 							// Downloaded OK
 							File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod", true);
-							if (!update)
-							{
+							if (!update) {
 								Interface.modBrowser.aNewModDownloaded = true;
 							}
-							else
-							{
+							else {
 								Interface.modBrowser.aModUpdated = true;
 							}
 							RemoveChild(updateButton);
@@ -385,43 +335,36 @@ namespace Terraria.ModLoader.UI
 				}
 				Main.menuMode = Interface.downloadModID;
 			}
-			catch (WebException e)
-			{
+			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
-		internal void RequestMoreinfo(UIMouseEvent evt, UIElement listeningElement)
-		{
+		internal void RequestMoreinfo(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			try
-			{
+			try {
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/moddescription.php";
 				var values = new NameValueCollection
 					{
 						{ "modname", mod },
 					};
-				using (WebClient client = new WebClient())
-				{
+				using (WebClient client = new WebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
 					client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(Moreinfo);
 					client.UploadValuesAsync(new Uri(url), "POST", values);
 				}
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
 
-		internal void Moreinfo(object sender, UploadValuesCompletedEventArgs e)
-		{
+		internal void Moreinfo(object sender, UploadValuesCompletedEventArgs e) {
 			string description = Language.GetTextValue("tModLoader.ModInfoProblemTryAgain");
 			string homepage = "";
-			if (!e.Cancelled)
-			{
+			if (!e.Cancelled) {
 				string response = Encoding.UTF8.GetString(e.Result);
 				JObject joResponse = JObject.Parse(response);
 				description = (string)joResponse["description"];
@@ -436,13 +379,10 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modInfoID;
 		}
 
-		private HttpStatusCode GetHttpStatusCode(System.Exception err)
-		{
-			if (err is WebException)
-			{
+		private HttpStatusCode GetHttpStatusCode(System.Exception err) {
+			if (err is WebException) {
 				WebException we = (WebException)err;
-				if (we.Response is HttpWebResponse)
-				{
+				if (we.Response is HttpWebResponse) {
 					HttpWebResponse response = (HttpWebResponse)we.Response;
 					return response.StatusCode;
 				}
@@ -460,39 +400,43 @@ namespace Terraria.ModLoader.UI
 		private const int MONTH = 30 * DAY;
 
 		// Note: Polish has different plural for numbers ending in 2,3,4. Too complicated to do though.
-		public static string HumanTimeSpanString(DateTime yourDate)
-		{
+		public static string HumanTimeSpanString(DateTime yourDate) {
 			var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
 			double delta = Math.Abs(ts.TotalSeconds);
 
-			if (delta < 1 * MINUTE)
+			if (delta < 1 * MINUTE) {
 				return ts.Seconds == 1 ? Language.GetTextValue("tModLoader.1SecondAgo") : Language.GetTextValue("tModLoader.XSecondsAgo", ts.Seconds);
+			}
 
-			if (delta < 2 * MINUTE)
+			if (delta < 2 * MINUTE) {
 				return Language.GetTextValue("tModLoader.1MinuteAgo");
+			}
 
-			if (delta < 45 * MINUTE)
+			if (delta < 45 * MINUTE) {
 				return Language.GetTextValue("tModLoader.XMinutesAgo", ts.Minutes);
+			}
 
-			if (delta < 90 * MINUTE)
+			if (delta < 90 * MINUTE) {
 				return Language.GetTextValue("tModLoader.1HourAgo");
+			}
 
-			if (delta < 24 * HOUR)
+			if (delta < 24 * HOUR) {
 				return Language.GetTextValue("tModLoader.XHoursAgo", ts.Hours);
+			}
 
-			if (delta < 48 * HOUR)
+			if (delta < 48 * HOUR) {
 				return Language.GetTextValue("tModLoader.1DayAgo");
+			}
 
-			if (delta < 30 * DAY)
+			if (delta < 30 * DAY) {
 				return Language.GetTextValue("tModLoader.XDaysAgo", ts.Days);
+			}
 
-			if (delta < 12 * MONTH)
-			{
+			if (delta < 12 * MONTH) {
 				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
 				return months <= 1 ? Language.GetTextValue("tModLoader.1MonthAgo") : Language.GetTextValue("tModLoader.XMonthsAgo", months);
 			}
-			else
-			{
+			else {
 				int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
 				return years <= 1 ? Language.GetTextValue("tModLoader.1YearAgo") : Language.GetTextValue("tModLoader.XYearsAgo", years);
 			}

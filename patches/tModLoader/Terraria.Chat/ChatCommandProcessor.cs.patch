@@ -12,7 +12,7 @@
  
  		public bool ProcessReceivedMessage(ChatMessage message, int clientId)
  		{
-+			if (CommandManager.HandleCommand(message.Text, new PlayerCommandCaller(Main.player[clientId])))
++			if (message.CommandId._name == "Say" && CommandManager.HandleCommand(message.Text, new PlayerCommandCaller(Main.player[clientId])))
 +				return true;
  			IChatCommand chatCommand;
  			if (this._commands.TryGetValue(message.CommandId, out chatCommand))

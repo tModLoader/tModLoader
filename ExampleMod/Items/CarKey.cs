@@ -5,13 +5,11 @@ namespace ExampleMod.Items
 {
 	public class CarKey : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded mount.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 30;
 			item.useTime = 20;
@@ -24,8 +22,7 @@ namespace ExampleMod.Items
 			item.mountType = mod.MountType("Car");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddTile(mod.TileType("ExampleWorkbench"));

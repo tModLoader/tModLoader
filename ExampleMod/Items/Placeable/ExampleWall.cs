@@ -4,13 +4,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleWall : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wall.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 12;
 			item.height = 12;
 			item.maxStack = 999;
@@ -23,8 +21,7 @@ namespace ExampleMod.Items.Placeable
 			item.createWall = mod.WallType("ExampleWall");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"));
 			recipe.SetResult(this, 4);

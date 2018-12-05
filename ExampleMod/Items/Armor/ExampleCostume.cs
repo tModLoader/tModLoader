@@ -20,14 +20,12 @@ namespace ExampleMod.Items.Armor
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
 	public class ExampleCostume : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Charm of Example");
 			Tooltip.SetDefault("Turns the holder into Blocky near town NPC");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 24;
 			item.height = 28;
 			item.accessory = true;
@@ -35,12 +33,10 @@ namespace ExampleMod.Items.Armor
 			item.rare = 5;
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+		public override void UpdateAccessory(Player player, bool hideVisual) {
 			ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
 			p.blockyAccessory = true;
-			if (hideVisual)
-			{
+			if (hideVisual) {
 				p.blockyHideVanity = true;
 			}
 		}
@@ -48,15 +44,12 @@ namespace ExampleMod.Items.Armor
 
 	public class BlockyHead : EquipTexture
 	{
-		public override bool DrawHead()
-		{
+		public override bool DrawHead() {
 			return false;
 		}
 
-		public override void UpdateVanity(Player player, EquipType type)
-		{
-			if (Main.rand.NextBool(20))
-			{
+		public override void UpdateVanity(Player player, EquipType type) {
+			if (Main.rand.NextBool(20)) {
 				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
 			}
 		}
@@ -64,16 +57,14 @@ namespace ExampleMod.Items.Armor
 
 	public class BlockyBody : EquipTexture
 	{
-		public override bool DrawBody()
-		{
+		public override bool DrawBody() {
 			return false;
 		}
 	}
 
 	public class BlockyLegs : EquipTexture
 	{
-		public override bool DrawLegs()
-		{
+		public override bool DrawLegs() {
 			return false;
 		}
 	}

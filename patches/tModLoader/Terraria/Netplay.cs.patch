@@ -75,6 +75,14 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
+@@ -119,6 +_,7 @@
+ 				Main.txMsgType[i] = 0;
+ 				Main.txDataType[i] = 0;
+ 			}
++			ModNet.ResetNetDiag();
+ 		}
+ 
+ 		public static void ResetSections()
 @@ -241,6 +_,7 @@
  
  		private static void ClientLoopSetup(RemoteAddress address)

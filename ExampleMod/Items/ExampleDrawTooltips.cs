@@ -1,29 +1,21 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 
 namespace ExampleMod.Items
 {
-	class ExampleDrawTooltips : ModItem
+	internal class ExampleDrawTooltips : ModItem
 	{
-		public override string Texture
-		{
-			get
-			{
-				return "Terraria/Item_3617";
-			}
-		}
+		public override string Texture => "Terraria/Item_3617";
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This item showcases various Draw Tooltip hooks");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 999;
@@ -32,10 +24,9 @@ namespace ExampleMod.Items
 		}
 
 		private Vector2 boxSize; // stores the size of our tooltip box
-		const int paddingForBox = 10;
+		private const int paddingForBox = 10;
 
-		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
-		{
+		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			// You can offset the entire tooltip by changing x and y
 			// You can actually have the entire tooltip draw somewhere else, x and y is where the tooltip starts drawing
 
@@ -58,10 +49,8 @@ namespace ExampleMod.Items
 			return true;
 		}
 
-		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
-		{
-			if (!line.oneDropLogo)
-			{
+		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) {
+			if (!line.oneDropLogo) {
 				// You are not allowed to change these, modders should use ModifyTooltips to modify them
 				//line.text = "you shall not pass...";
 				//line.oneDropLogo = false;
@@ -78,10 +67,10 @@ namespace ExampleMod.Items
 				// If our line text equals our item name, this is our tooltip line for the item name
 				// if (line.text == item.HoverName)
 				// What is more accurate to check is the layer name and mod
-				if (line.Name == "ItemName" && line.mod == "Terraria") 
-					// We check for Terraria so we modify the vanilla tooltip and not a modded one
-					// This could be important, in case some mod does a lot of custom work and removes the standard tooltip
-					// For tooltip layers, check the documentation for TooltipLine
+				if (line.Name == "ItemName" && line.mod == "Terraria")
+				// We check for Terraria so we modify the vanilla tooltip and not a modded one
+				// This could be important, in case some mod does a lot of custom work and removes the standard tooltip
+				// For tooltip layers, check the documentation for TooltipLine
 				{
 					// Our offset is half the width of our box, minus the padding of one side
 					float boxOffset = boxSize.X / 2 - paddingForBox;
@@ -100,8 +89,7 @@ namespace ExampleMod.Items
 					// yOffset affects the offset that is added every next line, so this will cause the line to come after the separator to be drawn slightly lower
 					yOffset = (int)sepHeight / 4;
 				}
-				else
-				{
+				else {
 					// Reset the offset for other lines
 					yOffset = 0;
 				}
@@ -109,8 +97,7 @@ namespace ExampleMod.Items
 			return true;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType<ExampleItem>());
 			recipe.SetResult(this);

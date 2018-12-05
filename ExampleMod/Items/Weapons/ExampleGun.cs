@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,13 +5,11 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleGun : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded gun.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 20;
 			item.ranged = true;
 			item.width = 40;
@@ -32,8 +28,7 @@ namespace ExampleMod.Items.Weapons
 			item.useAmmo = AmmoID.Bullet;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.AddTile(mod.TileType("ExampleWorkbench"));

@@ -66,7 +66,7 @@
 		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		// "BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		// "BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
+		// "BuildErrorDotNet46Required": ".NET Framework 4.5 must be installed to compile mods",
 		// "BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -86,7 +86,10 @@
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		// "OpenLogs": "Open Logs",
 		// "OpenWebHelp": "Open Web Help",
+		// "SkipToMainMenu": "Skip Loading Mods",
+		// "Retry": "Retry",
 		// "Exit": "Exit",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		// "ModInfoHeader": "Mod Info: ",
@@ -151,6 +154,7 @@
 		// "MBOfflineWithReason": "OFFLINE ({0})",
 		// "MBBusy": "Busy",
 		// "MBUnknown": "Unknown",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		// "MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
 		// "MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
 		// "MBFilterDependencies": "Dependencies",

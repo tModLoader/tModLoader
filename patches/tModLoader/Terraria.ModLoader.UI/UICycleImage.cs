@@ -7,32 +7,28 @@ namespace Terraria.ModLoader.UI
 {
 	public class UICycleImage : UIElement
 	{
-		private Texture2D texture;
-		private int _drawWidth;
-		private int _drawHeight;
-		private int padding;
-		private int textureOffsetX;
-		private int textureOffsetY;
-		private int states;
+		private readonly Texture2D texture;
+		private readonly int _drawWidth;
+		private readonly int _drawHeight;
+		private readonly int padding;
+		private readonly int textureOffsetX;
+		private readonly int textureOffsetY;
+		private readonly int states;
 
 		public event EventHandler OnStateChanged;
 
 		private int currentState = 0;
-		public int CurrentState
-		{
+		public int CurrentState {
 			get { return currentState; }
-			set
-			{
-				if (value != currentState)
-				{
+			set {
+				if (value != currentState) {
 					currentState = value;
 					OnStateChanged?.Invoke(this, EventArgs.Empty);
 				}
 			}
 		}
 
-		public UICycleImage(Texture2D texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2)
-		{
+		public UICycleImage(Texture2D texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
 			this.texture = texture;
 			this._drawWidth = width;
 			this._drawHeight = height;
@@ -44,28 +40,24 @@ namespace Terraria.ModLoader.UI
 			this.padding = padding;
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = base.GetDimensions();
 			Point point = new Point(textureOffsetX, textureOffsetY + ((padding + _drawHeight) * currentState));
 			Color color = base.IsMouseHovering ? Color.White : Color.Silver;
 			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, this._drawWidth, this._drawHeight)), color);
 		}
 
-		public override void Click(UIMouseEvent evt)
-		{
+		public override void Click(UIMouseEvent evt) {
 			CurrentState = (currentState + 1) % states;
 			base.Click(evt);
 		}
 
-		public override void RightClick(UIMouseEvent evt)
-		{
+		public override void RightClick(UIMouseEvent evt) {
 			CurrentState = (currentState + states - 1) % states;
 			base.RightClick(evt);
 		}
 
-		internal void setCurrentState(int sortMode)
-		{
+		internal void setCurrentState(int sortMode) {
 			CurrentState = sortMode;
 		}
 	}

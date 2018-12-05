@@ -64,7 +64,7 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Le nom de Mod {0} ne correspond pas au nom d'Assembly {1}",
 		"BuildErrorNamespaceFolderDontMatch": "L'Espace de Noms et le nom de dossier ne correspondent pas. L'Espace de Noms primaire doit correspondre au nom du dossier.",
 		"BuildErrorNoModClass": "Soyez certain d'avoir une classe Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 doit être installé pour compiler du C# 6.0",
+		"BuildErrorDotNet46Required": ".NET Framework 4.5 doit être installé pour compiler les mods",
 		"BuildErrorPDBWindowsOnly": "Les documents PDB ne peuvent être générés que pour Windows, sur Windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -84,7 +84,10 @@
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Ouvrir Registres",
 		"OpenWebHelp": "Ouvrir l'Aide Internet",
+		// "SkipToMainMenu": "Skip Loading Mods",
+		// "Retry": "Retry",
 		// "Exit": "Exit",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		"ModInfoHeader": "Détails: ",
@@ -149,6 +152,7 @@
 		"MBOfflineWithReason": "DÉCONNECTÉ ({0})",
 		"MBBusy": "Occupé",
 		"MBUnknown": "Inconnu",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		"MBClickToViewDependencyMods": "Cliquer pour voir les dépendances:\n{0}",
 		"MBModsNotFoundOnline": "Les Mods suivants n'ont pas été trouvés sur le navigateur: {0}",
 		"MBFilterDependencies": "Dépendances",

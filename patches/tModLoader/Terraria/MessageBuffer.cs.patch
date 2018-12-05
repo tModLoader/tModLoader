@@ -434,7 +434,7 @@
 +					ModLoader.Config.ConfigManager.HandleInGameChangeConfigPacket(reader, whoAmI);
 +					return;
 +				case MessageID.ModPacket:
-+					ModNet.HandleModPacket(reader, whoAmI);
++					ModNet.HandleModPacket(reader, whoAmI, length);
 +					return;
 +				case MessageID.SyncMods:
 +					if (Main.netMode == 1)

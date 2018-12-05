@@ -11,8 +11,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleSapling : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
@@ -21,10 +20,10 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
-			TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new int[]{ mod.TileType("ExampleBlock") };
+			TileObjectData.newTile.AnchorValidTiles = new[] { mod.TileType("ExampleBlock") };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
@@ -36,31 +35,25 @@ namespace ExampleMod.Tiles
 			name.SetDefault("Sapling");
 			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
-			adjTiles = new int[]{ TileID.Saplings };
+			adjTiles = new int[] { TileID.Saplings };
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
 		}
 
-		public override void RandomUpdate(int i, int j)
-		{
-			if (WorldGen.genRand.Next(20) == 0)
-			{
+		public override void RandomUpdate(int i, int j) {
+			if (WorldGen.genRand.Next(20) == 0) {
 				bool isPlayerNear = WorldGen.PlayerLOS(i, j);
 				bool success = WorldGen.GrowTree(i, j);
-				if (success && isPlayerNear)
-				{
+				if (success && isPlayerNear) {
 					WorldGen.TreeGrowFXCheck(i, j);
 				}
 			}
 		}
 
-		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects)
-		{
-			if (i % 2 == 1)
-			{
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects) {
+			if (i % 2 == 1) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 		}

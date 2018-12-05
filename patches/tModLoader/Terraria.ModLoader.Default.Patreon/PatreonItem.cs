@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
@@ -8,49 +8,32 @@ namespace Terraria.ModLoader.Default.Patreon
 	internal abstract class PatreonItem : ModItem
 	{
 		// Make sure the name and classname prefix match exactly.
-		public abstract string PatreonName { get; }
-		public abstract EquipType PatreonEquipType { get; }
+		public abstract string SetName { get; }
+		public abstract EquipType ItemEquipType { get; }
+		public virtual string SetSuffix => "'s";
 
-		// Returns the appropriate suffix for the item, by EquipType
-		private string GetEquipTypeSuffix()
-		{
-			switch (PatreonEquipType)
-			{
-				case EquipType.Head:
-					return "Head";
-				case EquipType.Body:
-					return "Body";
-				case EquipType.Legs:
-					return "Legs";
-				case EquipType.Wings:
-					return "Wings";
-			}
+		protected string EquipTypeSuffix
+			=> Enum.GetName(typeof(EquipType), ItemEquipType);
 
-			return null;
-		}
+		public override string Texture => $"ModLoader/Patreon.{SetName}_{EquipTypeSuffix}";
 
-		public override string Texture => $"ModLoader/Patreon.{PatreonName}_{GetEquipTypeSuffix()}";
-
-		public override void SetStaticDefaults()
-		{
-			string suffix = GetEquipTypeSuffix();
+		public override void SetStaticDefaults() {
 			string displayName =
-				suffix != null
-					? $"{PatreonName}'s {suffix}"
-					: "ITEM NAME ERROR"; // Should never happen, but who knows
+				EquipTypeSuffix != null
+					? $"{SetName}{SetSuffix} {EquipTypeSuffix}"
+					: "ITEM NAME ERROR";
 			DisplayName.SetDefault(displayName);
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.rare = 9;
 			item.vanity = true;
 		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip"));
-			line.overrideColor = Color.Aquamarine;
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
+				overrideColor = Color.Aquamarine
+			};
 			tooltips.Add(line);
 		}
 	}

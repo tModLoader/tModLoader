@@ -1,30 +1,20 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
-using Terraria.ModLoader.IO;
-using System.Net;
-using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
-using System.Collections.Specialized;
-using System.Linq;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIEnterPassphraseMenu : UIState
 	{
-		string registerURL = "http://javid.ddns.net/tModLoader/register.php";
+		readonly string registerURL = "http://javid.ddns.net/tModLoader/register.php";
 		public UITextPanel<string> uITextPanel;
 		internal UIInputTextField passcodeTextField;
 		private int gotoMenu = 0;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			UIElement uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
@@ -39,8 +29,9 @@ namespace Terraria.ModLoader.UI
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true);
-			uITextPanel.HAlign = 0.5f;
+			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true) {
+				HAlign = 0.5f
+			};
 			uITextPanel.Top.Set(-35f, 0f);
 			uITextPanel.SetPadding(15f);
 			uITextPanel.BackgroundColor = new Color(73, 94, 171);
@@ -73,9 +64,10 @@ namespace Terraria.ModLoader.UI
 			button3.OnClick += VisitRegisterWebpage;
 			uIElement.Append(button3);
 
-			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase"));
-			passcodeTextField.HAlign = 0.5f;
-			passcodeTextField.VAlign = 0.5f;
+			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase")) {
+				HAlign = 0.5f,
+				VAlign = 0.5f
+			};
 			passcodeTextField.Left.Set(-100, 0);
 			passcodeTextField.OnTextChange += new UIInputTextField.EventHandler(OnTextChange);
 			uIPanel.Append(passcodeTextField);
@@ -83,8 +75,7 @@ namespace Terraria.ModLoader.UI
 			base.Append(uIElement);
 		}
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			ModLoader.modBrowserPassphrase = passcodeTextField.currentString.Trim();
 			Main.SaveSettings();
@@ -96,24 +87,20 @@ namespace Terraria.ModLoader.UI
 #endif
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
 		}
 
-		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Process.Start(registerURL);
 		}
 
-		private void OnTextChange(object sender, EventArgs e)
-		{
+		private void OnTextChange(object sender, EventArgs e) {
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 		}
 	}

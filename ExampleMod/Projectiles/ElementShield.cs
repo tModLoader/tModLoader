@@ -1,5 +1,5 @@
-using System;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,14 +8,12 @@ namespace ExampleMod.Projectiles
 {
 	public class ElementShield : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Six-Color Shield");
 			Main.projFrames[projectile.type] = 6;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 48;
 			projectile.height = 48;
 			projectile.alpha = 75;
@@ -26,40 +24,33 @@ namespace ExampleMod.Projectiles
 			projectile.ignoreWater = true;
 		}
 
-		public override void AI()
-		{
-			if (projectile.localAI[0] == 0f)
-			{
-				if (projectile.ai[0] == 1)
-				{
+		public override void AI() {
+			if (projectile.localAI[0] == 0f) {
+				if (projectile.ai[0] == 1) {
 					projectile.coldDamage = true;
 				}
-				if (projectile.ai[0] == 3)
-				{
+				if (projectile.ai[0] == 3) {
 					projectile.damage = (int)(1.2f * projectile.damage);
 				}
 				projectile.Name = GetName();
 				projectile.localAI[0] = 1f;
 			}
 			Player player = Main.player[projectile.owner];
-			if (!player.active || player.dead)
-			{
+			if (!player.active || player.dead) {
 				projectile.Kill();
 				return;
 			}
 			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
-			if (modPlayer.elementShields <= projectile.ai[0])
-			{
+			if (modPlayer.elementShields <= projectile.ai[0]) {
 				projectile.Kill();
 				return;
 			}
 			projectile.timeLeft = 2;
 			projectile.Center = player.Center;
-			if (projectile.ai[0] > 0f)
-			{
+			if (projectile.ai[0] > 0f) {
 				float offset = (projectile.ai[0] - 1f) / (modPlayer.elementShields - 1);
 				float rotation = modPlayer.elementShieldPos / 300f + offset;
-				rotation = (rotation % 1f) * 2f * (float)Math.PI;
+				rotation = rotation % 1f * 2f * (float)Math.PI;
 				projectile.position += 160f * new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
 				projectile.rotation = -rotation;
 			}
@@ -70,39 +61,30 @@ namespace ExampleMod.Projectiles
 			projectile.alpha = 75 + (int)(50 * Math.Sin(projectile.ai[1] * 2f * (float)Math.PI / 300f));
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-		{
-			if (Main.rand.NextBool())
-			{
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+			if (Main.rand.NextBool()) {
 				int debuff = GetDebuff();
-				if (debuff > 0)
-				{
+				if (debuff > 0) {
 					target.AddBuff(debuff, GetDebuffTime());
 				}
 			}
 		}
 
-		public override void OnHitPvp(Player target, int damage, bool crit)
-		{
-			if (Main.rand.NextBool())
-			{
+		public override void OnHitPvp(Player target, int damage, bool crit) {
+			if (Main.rand.NextBool()) {
 				int debuff = GetDebuff();
-				if (debuff > 0)
-				{
+				if (debuff > 0) {
 					target.AddBuff(debuff, GetDebuffTime() / 2);
 				}
 			}
 		}
 
-		public override Color? GetAlpha(Color lightColor)
-		{
+		public override Color? GetAlpha(Color lightColor) {
 			return Color.White;
 		}
 
-		public string GetName()
-		{
-			switch ((int)projectile.ai[0])
-			{
+		public string GetName() {
+			switch ((int)projectile.ai[0]) {
 				case 0:
 					return "Fire Shield";
 				case 1:
@@ -120,13 +102,11 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		public void LightColor()
-		{
+		public void LightColor() {
 			float r = 0f;
 			float g = 0f;
 			float b = 0f;
-			switch ((int)projectile.ai[0])
-			{
+			switch ((int)projectile.ai[0]) {
 				case 0:
 					r = 1f;
 					g = 0.25f;
@@ -161,10 +141,8 @@ namespace ExampleMod.Projectiles
 			Lighting.AddLight(projectile.position, r, g, b);
 		}
 
-		public int GetDebuff()
-		{
-			switch ((int)projectile.ai[0])
-			{
+		public int GetDebuff() {
+			switch ((int)projectile.ai[0]) {
 				case 0:
 					return BuffID.OnFire;
 				case 1:
@@ -182,10 +160,8 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		public int GetDebuffTime()
-		{
-			switch ((int)projectile.ai[0])
-			{
+		public int GetDebuffTime() {
+			switch ((int)projectile.ai[0]) {
 				case 0:
 					return 600;
 				case 1:

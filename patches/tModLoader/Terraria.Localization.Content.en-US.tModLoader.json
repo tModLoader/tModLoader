@@ -5,6 +5,7 @@
 		"MenuModBrowser": "Mod Browser",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Sources",
+		"MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
@@ -20,6 +21,7 @@
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
 		"BetaModCantPublish": "This mod was built on beta version and can't be published",
 		"BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		"OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "Reload Required",
 		"ModReloadForced": "Reload Forced",
 		"ModsByline": "By: {0}",
@@ -46,6 +48,7 @@
 		"LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
 		"LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		"LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		"LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
 		"LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
@@ -65,7 +68,6 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
 		"BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		"BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		"BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -85,7 +87,10 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Open Logs",
 		"OpenWebHelp": "Open Web Help",
+		"SkipToMainMenu": "Skip Loading Mods",
+		"Retry": "Retry",
 		"Exit": "Exit",
+		"ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		"ModInfoHeader": "Mod Info: ",
@@ -150,6 +155,7 @@
 		"MBOfflineWithReason": "OFFLINE ({0})",
 		"MBBusy": "Busy",
 		"MBUnknown": "Unknown",
+		"MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		"MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
 		"MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
 		"MBFilterDependencies": "Dependencies",
@@ -226,6 +232,20 @@
 		"MSPublish": "Publish",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
+		// Developer Mode UI
+		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		"DMModCompileUpdate": "ModCompile folder out of date.",
+		"DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		"DMModCompileSatisfied": "ModCompile folder up of date.",
+		"DMDotNetSatisfied": "{0} is installed",
+		"DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		"DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		"DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		"DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		"DMVisualStudio": "Visual Studio",
+		"DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		"DMTutorial": "Tutorial",
+
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
 		"ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
@@ -279,5 +299,6 @@
 		"PatreonSetTooltip": "Thank you for your support!",
 		"WorldGenError": "A problem was encountered during world generation",
 		"WorldIODataException": "The game encountered a mod data problem for a world.",
+		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
 	}
 }

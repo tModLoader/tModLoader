@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
@@ -12,8 +10,7 @@ namespace Terraria.ModLoader.UI
 		private int gotoMenu = 0;
 		private string url;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			UIElement area = new UIElement();
 			area.Width.Set(0f, 0.8f);
 			area.Top.Set(200f, 0f);
@@ -42,29 +39,24 @@ namespace Terraria.ModLoader.UI
 			base.Append(area);
 		}
 
-		internal void SetMessage(string text)
-		{
+		internal void SetMessage(string text) {
 			message.SetText(text);
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 		}
 
-		internal void SetURL(string url)
-		{
+		internal void SetURL(string url) {
 			this.url = url;
 		}
 
-		private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Main.menuMode = this.gotoMenu;
 		}
 
-		private void OpenURL(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void OpenURL(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Process.Start(url);
 		}

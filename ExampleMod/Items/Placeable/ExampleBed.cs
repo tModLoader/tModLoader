@@ -5,13 +5,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleBed : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded bed.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 28;
 			item.height = 20;
 			item.maxStack = 99;
@@ -25,8 +23,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleBed");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Bed);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);

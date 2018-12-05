@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -29,10 +29,8 @@ namespace Terraria.ModLoader
 		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
 
-		static BuffLoader()
-		{
-			for (int k = 0; k < BuffID.Count; k++)
-			{
+		static BuffLoader() {
+			for (int k = 0; k < BuffID.Count; k++) {
 				vanillaCanBeCleared[k] = true;
 			}
 			vanillaLongerExpertDebuff[BuffID.Poisoned] = true;
@@ -61,9 +59,10 @@ namespace Terraria.ModLoader
 			vanillaCanBeCleared[BuffID.NoBuilding] = false;
 		}
 
-		internal static int ReserveBuffID()
-		{
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
+		internal static int ReserveBuffID() {
+			if (ModNet.AllowVanillaClients) {
+				throw new Exception("Adding buffs breaks vanilla client compatibility");
+			}
 
 			int reserveID = nextBuff;
 			nextBuff++;
@@ -75,13 +74,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
 		/// </summary>
-		public static ModBuff GetBuff(int type)
-		{
+		public static ModBuff GetBuff(int type) {
 			return type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
 		}
 
-		internal static void ResizeArrays()
-		{
+		internal static void ResizeArrays() {
 			Array.Resize(ref Main.pvpBuff, nextBuff);
 			Array.Resize(ref Main.persistentBuff, nextBuff);
 			Array.Resize(ref Main.vanityPet, nextBuff);
@@ -95,8 +92,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.buffTexture, nextBuff);
 			Array.Resize(ref Lang._buffNameCache, nextBuff);
 			Array.Resize(ref Lang._buffDescriptionCache, nextBuff);
-			for (int k = BuffID.Count; k < nextBuff; k++)
-			{
+			for (int k = BuffID.Count; k < nextBuff; k++) {
 				Lang._buffNameCache[k] = LocalizedText.Empty;
 				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
 			}
@@ -110,113 +106,87 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			buffs.Clear();
 			nextBuff = BuffID.Count;
 			globalBuffs.Clear();
 		}
 
-		internal static bool IsModBuff(int type)
-		{
+		internal static bool IsModBuff(int type) {
 			return type >= BuffID.Count;
 		}
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
-		public static void Update(int buff, Player player, ref int buffIndex)
-		{
+		public static void Update(int buff, Player player, ref int buffIndex) {
 			int originalIndex = buffIndex;
-			if (IsModBuff(buff))
-			{
+			if (IsModBuff(buff)) {
 				GetBuff(buff).Update(player, ref buffIndex);
 			}
-			foreach (var hook in HookUpdatePlayer)
-			{
-				if (buffIndex != originalIndex)
-				{
+			foreach (var hook in HookUpdatePlayer) {
+				if (buffIndex != originalIndex) {
 					break;
 				}
 				hook(buff, player, ref buffIndex);
 			}
 		}
 
-		public static void Update(int buff, NPC npc, ref int buffIndex)
-		{
-			if (IsModBuff(buff))
-			{
+		public static void Update(int buff, NPC npc, ref int buffIndex) {
+			if (IsModBuff(buff)) {
 				GetBuff(buff).Update(npc, ref buffIndex);
 			}
-			foreach (var hook in HookUpdateNPC)
-			{
+			foreach (var hook in HookUpdateNPC) {
 				hook(buff, npc, ref buffIndex);
 			}
 		}
 
-		public static bool ReApply(int buff, Player player, int time, int buffIndex)
-		{
-			foreach (var hook in HookReApplyPlayer)
-			{
-				if (hook(buff, player, time, buffIndex))
-				{
+		public static bool ReApply(int buff, Player player, int time, int buffIndex) {
+			foreach (var hook in HookReApplyPlayer) {
+				if (hook(buff, player, time, buffIndex)) {
 					return true;
 				}
 			}
-			if (IsModBuff(buff))
-			{
+			if (IsModBuff(buff)) {
 				return GetBuff(buff).ReApply(player, time, buffIndex);
 			}
 			return false;
 		}
 
-		public static bool ReApply(int buff, NPC npc, int time, int buffIndex)
-		{
-			foreach (var hook in HookReApplyNPC)
-			{
-				if (hook(buff, npc, time, buffIndex))
-				{
+		public static bool ReApply(int buff, NPC npc, int time, int buffIndex) {
+			foreach (var hook in HookReApplyNPC) {
+				if (hook(buff, npc, time, buffIndex)) {
 					return true;
 				}
 			}
-			if (IsModBuff(buff))
-			{
+			if (IsModBuff(buff)) {
 				return GetBuff(buff).ReApply(npc, time, buffIndex);
 			}
 			return false;
 		}
 
-		public static bool LongerExpertDebuff(int buff)
-		{
+		public static bool LongerExpertDebuff(int buff) {
 			return GetBuff(buff)?.longerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
 		}
 
-		public static bool CanBeCleared(int buff)
-		{
+		public static bool CanBeCleared(int buff) {
 			return GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
 		}
 
-		public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
-		{
-			if (IsModBuff(buff))
-			{
+		public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
+			if (IsModBuff(buff)) {
 				GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
 			}
-			foreach (var hook in HookModifyBuffTip)
-			{
+			foreach (var hook in HookModifyBuffTip) {
 				hook(buff, ref tip, ref rare);
 			}
 		}
 
-		public static void CustomBuffTipSize(string buffTip, List<Vector2> sizes)
-		{
-			foreach (var hook in HookCustomBuffTipSize)
-			{
+		public static void CustomBuffTipSize(string buffTip, List<Vector2> sizes) {
+			foreach (var hook in HookCustomBuffTipSize) {
 				hook(buffTip, sizes);
 			}
 		}
 
-		public static void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY)
-		{
-			foreach (var hook in HookDrawCustomBuffTip)
-			{
+		public static void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
+			foreach (var hook in HookDrawCustomBuffTip) {
 				hook(buffTip, spriteBatch, originX, originY);
 			}
 		}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -17,8 +16,7 @@ namespace Terraria.ModLoader.UI
 
 		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) { ".dll", ".pdb" };
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			loadProgress = new UILoadProgress();
 			loadProgress.Width.Set(0f, 0.8f);
 			loadProgress.MaxWidth.Set(600f, 0f);
@@ -29,117 +27,108 @@ namespace Terraria.ModLoader.UI
 			Append(loadProgress);
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			Main.menuMode = Interface.extractModID;
 			Task.Factory
 				.StartNew(() => {
-					Interface.extractMod.mod.modFile.Read(TmodFile.LoadedState.Streaming, updateFileCountOnly: true);
 					Interface.extractMod._Extract();
 				})
-				.ContinueWith(t =>
-				{
+				.ContinueWith(t => {
 					var exception = t?.Exception;
-					if (exception != null)
+					if (exception != null) {
 						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
-					else
+					}
+					else {
 						Main.menuMode = gotoMenu;
+					}
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		internal void SetMod(LocalMod mod)
-		{
+		internal void SetMod(LocalMod mod) {
 			this.mod = mod;
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
+		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
 		}
 
-		private Exception _Extract()
-		{
+		private Exception _Extract() {
 			StreamWriter log = null;
-			try
-			{
+			IDisposable modHandle = null;
+			try {
 				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
-				if (Directory.Exists(dir))
+				if (Directory.Exists(dir)) {
 					Directory.Delete(dir, true);
+				}
+
 				Directory.CreateDirectory(dir);
 
 				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) { AutoFlush = true };
 
-				if (mod.properties.hideCode)
+				if (mod.properties.hideCode) {
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
-				else if (!mod.properties.includeSource)
+				}
+				else if (!mod.properties.includeSource) {
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractNoSourceCodeMessage"));
-				if (mod.properties.hideResources)
+				}
+
+				if (mod.properties.hideResources) {
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideResourcesMessage"));
+				}
 
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
+				modHandle = mod.modFile.EnsureOpen();
+				mod.modFile.ForEach((name, len, getStream) => {
+					ContentConverters.Reverse(ref name, out var converter);
 
-				void WriteFile(string name, byte[] content)
-				{
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
 					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++ / (float)mod.modFile.FileCount);
+					loadProgress.SetProgress(i++ / (float)mod.modFile.Count);
+
+					if (name == "tModReader.txt") {
+						return;
+					}
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
 						: mod.properties.hideResources;
 
-					if (hidden)
+					if (hidden) {
 						log.Write("[hidden] ");
+					}
+
 					log.WriteLine(name);
-
-					if (!hidden)
-					{
-						if (name == "Info")
-							name = "build.txt";
-
-						var path = Path.Combine(dir, name);
-						Directory.CreateDirectory(Path.GetDirectoryName(path));
-						File.WriteAllBytes(path, content);
+					if (hidden) {
+						return;
 					}
-				}
 
-				mod.modFile.Read(TmodFile.LoadedState.Streaming, (name, len, reader) =>
-				{
-					byte[] data = reader.ReadBytes(len);
+					if (name == "Info") {
+						name = "build.txt";
+					}
 
-					// check if subject is rawimg, then read it as rawimg and convert back to png
-					if (name.EndsWith(".rawimg"))
-					{
-						using (var ms = new MemoryStream(data))
-						{
-							var img = ImageIO.RawToTexture2D(Main.instance.GraphicsDevice, ms);
-							using (var pngstream = new MemoryStream())
-							{
-								img.SaveAsPng(pngstream, img.Width, img.Height);
-								data = pngstream.ToArray();
-							}
+					var path = Path.Combine(dir, name);
+					Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+					using (var dst = File.OpenWrite(path))
+					using (var src = getStream()) {
+						if (converter != null) {
+							converter(src, dst);
 						}
-
-						name = Path.ChangeExtension(name, "png");
+						else {
+							src.CopyTo(dst);
+						}
 					}
-
-					WriteFile(name, data);
 				});
-
-				foreach (var entry in mod.modFile)
-					WriteFile(entry.Key, entry.Value);
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				log?.WriteLine(e);
 				return e;
 			}
-			finally
-			{
+			finally {
 				log?.Close();
-				mod?.modFile.UnloadAssets();
+				modHandle?.Dispose();
 			}
 			return null;
 		}

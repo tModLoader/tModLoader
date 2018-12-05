@@ -494,7 +494,7 @@
 -		private void TryGettingDevArmor()
 +		public void TryGettingDevArmor()
  		{
-+			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonArmor(this))
++			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
 +				return;
  			if (Main.rand.Next(20) != 0)
  			{
@@ -2685,7 +2685,7 @@
  						{
  							int num7 = 0;
  							if (Main.curMusic == 1)
-@@ -9691,154 +_,164 @@
+@@ -9691,166 +_,202 @@
  							}
  							if (Main.curMusic == 28)
  							{
@@ -2863,38 +2863,10 @@
  						}
 -					}
 -				}
--			}
--			if (this.dd2Accessory)
--			{
--				this.minionDamage += 0.1f;
--				this.maxTurrets++;
--			}
--			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
--			{
--				if (this.armor[m].wingSlot > 0)
--				{
--					if (!this.hideVisual[m] || (this.velocity.Y != 0f && !this.mount.Active))
--					{
--						this.wings = (int)this.armor[m].wingSlot;
--					}
--					this.wingsLogic = (int)this.armor[m].wingSlot;
--				}
--			}
--			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
--			{
--				int type4 = this.armor[n].type;
--				if (this.armor[n].wingSlot > 0)
--				{
--					this.wings = (int)this.armor[n].wingSlot;
 +						if (SoundLoader.itemToMusic.ContainsKey(item.type))
 +						{
 +							Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 +						}
-+					}
-+					if (this.dd2Accessory)
-+					{
-+						this.minionDamage += 0.1f;
-+						this.maxTurrets++;
 +					}
 +					if (item.wingSlot > 0)
 +					{
@@ -2917,13 +2889,18 @@
 +				if (item.wingSlot > 0)
 +				{
 +					this.wings = item.wingSlot;
- 				}
- 				if (type4 == 861 || type4 == 3110 || type4 == 485)
- 				{
-@@ -9851,6 +_,32 @@
- 					this.forceMerman = true;
- 				}
- 			}
++				}
++				if (type4 == 861 || type4 == 3110 || type4 == 485)
++				{
++					this.hideWolf = false;
++					this.forceWerewolf = true;
++				}
++				if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type4 == 861 || type4 == 3110 || type4 == 497))
++				{
++					this.hideMerman = false;
++					this.forceMerman = true;
++				}
++			}
 +		}
 +
 +		public void UpdateEquips(int i) //Noise for the Diff
@@ -2942,11 +2919,43 @@
 +			for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
 +			{
 +				VanillaUpdateAccessory(i, this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
-+			}
+ 			}
+ 			if (this.dd2Accessory)
+ 			{
+ 				this.minionDamage += 0.1f;
+ 				this.maxTurrets++;
+ 			}
+-			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+-			{
+-				if (this.armor[m].wingSlot > 0)
+-				{
+-					if (!this.hideVisual[m] || (this.velocity.Y != 0f && !this.mount.Active))
+-					{
+-						this.wings = (int)this.armor[m].wingSlot;
+-					}
+-					this.wingsLogic = (int)this.armor[m].wingSlot;
+-				}
+-			}
 +			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
 +			//wing loop merged into VanillaUpdateAccessory
-+			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
-+			{
+ 			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
+ 			{
+-				int type4 = this.armor[n].type;
+-				if (this.armor[n].wingSlot > 0)
+-				{
+-					this.wings = (int)this.armor[n].wingSlot;
+-				}
+-				if (type4 == 861 || type4 == 3110 || type4 == 485)
+-				{
+-					this.hideWolf = false;
+-					this.forceWerewolf = true;
+-				}
+-				if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type4 == 861 || type4 == 3110 || type4 == 497))
+-				{
+-					this.hideMerman = false;
+-					this.forceMerman = true;
+-				}
+-			}
 +				VanillaUpdateVanityAccessory(this.armor[n]);
 +			}
 +			PlayerHooks.UpdateVanityAccessories(this);

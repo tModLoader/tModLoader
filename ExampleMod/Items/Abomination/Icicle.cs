@@ -5,8 +5,7 @@ namespace ExampleMod.Items.Abomination
 {
 	public class Icicle : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;

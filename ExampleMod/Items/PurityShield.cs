@@ -6,14 +6,12 @@ namespace ExampleMod.Items
 {
 	public class PurityShield : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Shield of Purity");
 			Tooltip.SetDefault("WIP until bluemagic123 learns how to make mounts");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 32;
 			item.height = 32;
 			item.useTime = 20;

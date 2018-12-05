@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Terraria;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -26,17 +25,14 @@ namespace Terraria.ModLoader
 		internal static IDictionary<int, int> headToNPC = new Dictionary<int, int>();
 		internal static IDictionary<int, int> npcToBossHead = new Dictionary<int, int>();
 
-		internal static int ReserveHeadSlot()
-		{
+		internal static int ReserveHeadSlot() {
 			int reserve = nextHead;
 			nextHead++;
 			return reserve;
 		}
 
-		internal static int ReserveBossHeadSlot(string texture)
-		{
-			if (bossHeads.ContainsKey(texture))
-			{
+		internal static int ReserveBossHeadSlot(string texture) {
+			if (bossHeads.ContainsKey(texture)) {
 				return bossHeads[texture];
 			}
 			int reserve = nextBossHead;
@@ -49,14 +45,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="texture">Relative texture path</param>
 		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
-		public static int GetHeadSlot(string texture)
-		{
-			if (heads.ContainsKey(texture))
-			{
+		public static int GetHeadSlot(string texture) {
+			if (heads.ContainsKey(texture)) {
 				return heads[texture];
 			}
-			else
-			{
+			else {
 				return -1;
 			}
 		}
@@ -66,38 +59,30 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="texture"></param>
 		/// <returns></returns>
-		public static int GetBossHeadSlot(string texture)
-		{
-			if (bossHeads.ContainsKey(texture))
-			{
+		public static int GetBossHeadSlot(string texture) {
+			if (bossHeads.ContainsKey(texture)) {
 				return bossHeads[texture];
 			}
-			else
-			{
+			else {
 				return -1;
 			}
 		}
 
-		internal static void ResizeAndFillArrays()
-		{
+		internal static void ResizeAndFillArrays() {
 			Array.Resize(ref Main.npcHeadTexture, nextHead);
 			Array.Resize(ref Main.npcHeadBossTexture, nextBossHead);
-			foreach (string texture in heads.Keys)
-			{
+			foreach (string texture in heads.Keys) {
 				Main.npcHeadTexture[heads[texture]] = ModContent.GetTexture(texture);
 			}
-			foreach (string texture in bossHeads.Keys)
-			{
+			foreach (string texture in bossHeads.Keys) {
 				Main.npcHeadBossTexture[bossHeads[texture]] = ModContent.GetTexture(texture);
 			}
-			foreach (int npc in npcToBossHead.Keys)
-			{
+			foreach (int npc in npcToBossHead.Keys) {
 				NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];
 			}
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			nextHead = vanillaHeadCount;
 			nextBossHead = vanillaBossHeadCount;
 			heads.Clear();
@@ -107,19 +92,15 @@ namespace Terraria.ModLoader
 			npcToBossHead.Clear();
 		}
 		//in Terraria.NPC.TypeToNum replace final return with this
-		internal static int GetNPCHeadSlot(int type)
-		{
-			if (npcToHead.ContainsKey(type))
-			{
+		internal static int GetNPCHeadSlot(int type) {
+			if (npcToHead.ContainsKey(type)) {
 				return npcToHead[type];
 			}
 			return -1;
 		}
 		//in Terraria.NPC.NumToType replace final return with this
-		internal static int GetNPCFromHeadSlot(int slot)
-		{
-			if (headToNPC.ContainsKey(slot))
-			{
+		internal static int GetNPCFromHeadSlot(int slot) {
+			if (headToNPC.ContainsKey(slot)) {
 				return headToNPC[slot];
 			}
 			return -1;

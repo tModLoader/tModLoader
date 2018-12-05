@@ -15,29 +15,27 @@ namespace Terraria.ModLoader
 			public string mod;
 			public Version target;
 
-			public ModReference(string mod, Version target)
-			{
+			public ModReference(string mod, Version target) {
 				this.mod = mod;
 				this.target = target;
 			}
 
 			public override string ToString() => target == null ? mod : mod + '@' + target;
 
-			public static ModReference Parse(string spec)
-			{
+			public static ModReference Parse(string spec) {
 				var split = spec.Split('@');
-				if (split.Length == 1)
+				if (split.Length == 1) {
 					return new ModReference(split[0], null);
+				}
 
-				if (split.Length > 2)
+				if (split.Length > 2) {
 					throw new Exception("Invalid mod reference: " + spec);
+				}
 
-				try
-				{
+				try {
 					return new ModReference(split[0], new Version(split[1]));
 				}
-				catch
-				{
+				catch {
 					throw new Exception("Invalid mod reference: " + spec);
 				}
 			}
@@ -56,14 +54,14 @@ namespace Terraria.ModLoader
 		internal Version version = new Version(1, 0);
 		internal string displayName = "";
 		internal bool noCompile = false;
-		internal bool hideCode = false;
-		internal bool hideResources = false;
+		internal bool hideCode = true;
+		internal bool hideResources = true;
 		internal bool includeSource = false;
-		internal bool includePDB = false;
+		internal bool includePDB = true;
 		internal bool editAndContinue = false;
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
-		internal int languageVersion = 4;
+		internal Version buildVersion = ModLoader.version;
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;
@@ -76,51 +74,44 @@ namespace Terraria.ModLoader
 		private static IEnumerable<string> ReadList(string value)
 			=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
 
-		private static IEnumerable<string> ReadList(BinaryReader reader)
-		{
+		private static IEnumerable<string> ReadList(BinaryReader reader) {
 			var list = new List<string>();
-			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString())
+			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString()) {
 				list.Add(item);
+			}
 
 			return list;
 		}
 
-		private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer)
-		{
-			foreach (var item in list)
+		private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
+			foreach (var item in list) {
 				writer.Write(item.ToString());
+			}
 
 			writer.Write("");
 		}
 
-		internal static BuildProperties ReadBuildFile(string modDir)
-		{
+		internal static BuildProperties ReadBuildFile(string modDir) {
 			string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
 			string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
 			BuildProperties properties = new BuildProperties();
-			if (!File.Exists(propertiesFile))
-			{
+			if (!File.Exists(propertiesFile)) {
 				return properties;
 			}
-			if (File.Exists(descriptionfile))
-			{
+			if (File.Exists(descriptionfile)) {
 				properties.description = File.ReadAllText(descriptionfile);
 			}
-			foreach (string line in File.ReadAllLines(propertiesFile))
-			{
-				if (string.IsNullOrWhiteSpace(line))
-				{
+			foreach (string line in File.ReadAllLines(propertiesFile)) {
+				if (string.IsNullOrWhiteSpace(line)) {
 					continue;
 				}
 				int split = line.IndexOf('=');
 				string property = line.Substring(0, split).Trim();
 				string value = line.Substring(split + 1).Trim();
-				if (value.Length == 0)
-				{
+				if (value.Length == 0) {
 					continue;
 				}
-				switch (property)
-				{
+				switch (property) {
 					case "dllReferences":
 						properties.dllReferences = ReadList(value).ToArray();
 						break;
@@ -166,23 +157,19 @@ namespace Terraria.ModLoader
 					case "buildIgnore":
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
 						break;
-					case "languageVersion":
-						if (!int.TryParse(value, out properties.languageVersion))
-							throw new Exception("languageVersion not an int: " + value);
-
-						if (properties.languageVersion < 4 || properties.languageVersion > 6)
-							throw new Exception("languageVersion (" + properties.languageVersion + ") must be between 4 and 6");
-						break;
 					case "side":
-						if (!Enum.TryParse(value, true, out properties.side))
+						if (!Enum.TryParse(value, true, out properties.side)) {
 							throw new Exception("side is not one of (Both, Client, Server, NoSync): " + value);
+						}
+
 						break;
 				}
 			}
 
 			var refs = properties.RefNames(true).ToList();
-			if (refs.Count != refs.Distinct().Count())
+			if (refs.Count != refs.Distinct().Count()) {
 				throw new Exception("Duplicate mod/weak reference");
+			}
 
 			//add (mod|weak)References that are not in sortBefore to sortAfter
 			properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
@@ -191,91 +178,77 @@ namespace Terraria.ModLoader
 			return properties;
 		}
 
-		internal byte[] ToBytes()
-		{
+		internal byte[] ToBytes() {
 			byte[] data;
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream))
-				{
-					if (dllReferences.Length > 0)
-					{
+			using (MemoryStream memoryStream = new MemoryStream()) {
+				using (BinaryWriter writer = new BinaryWriter(memoryStream)) {
+					if (dllReferences.Length > 0) {
 						writer.Write("dllReferences");
 						WriteList(dllReferences, writer);
 					}
-					if (modReferences.Length > 0)
-					{
+					if (modReferences.Length > 0) {
 						writer.Write("modReferences");
 						WriteList(modReferences, writer);
 					}
-					if (weakReferences.Length > 0)
-					{
+					if (weakReferences.Length > 0) {
 						writer.Write("weakReferences");
 						WriteList(weakReferences, writer);
 					}
-					if (sortAfter.Length > 0)
-					{
+					if (sortAfter.Length > 0) {
 						writer.Write("sortAfter");
 						WriteList(sortAfter, writer);
 					}
-					if (sortBefore.Length > 0)
-					{
+					if (sortBefore.Length > 0) {
 						writer.Write("sortBefore");
 						WriteList(sortBefore, writer);
 					}
-					if (author.Length > 0)
-					{
+					if (author.Length > 0) {
 						writer.Write("author");
 						writer.Write(author);
 					}
 					writer.Write("version");
 					writer.Write(version.ToString());
-					if (displayName.Length > 0)
-					{
+					if (displayName.Length > 0) {
 						writer.Write("displayName");
 						writer.Write(displayName);
 					}
-					if (homepage.Length > 0)
-					{
+					if (homepage.Length > 0) {
 						writer.Write("homepage");
 						writer.Write(homepage);
 					}
-					if (description.Length > 0)
-					{
+					if (description.Length > 0) {
 						writer.Write("description");
 						writer.Write(description);
 					}
-					if (noCompile)
-					{
+					if (noCompile) {
 						writer.Write("noCompile");
 					}
-					if (!hideCode)
-					{
+					if (!hideCode) {
 						writer.Write("!hideCode");
 					}
-					if (!hideResources)
-					{
+					if (!hideResources) {
 						writer.Write("!hideResources");
 					}
-					if (includeSource)
-					{
+					if (includeSource) {
 						writer.Write("includeSource");
 					}
-					if (includePDB)
-					{
+					if (includePDB) {
 						writer.Write("includePDB");
 					}
-					if (editAndContinue)
-					{
+					if (editAndContinue) {
 						writer.Write("editAndContinue");
 					}
-					if (side != ModSide.Both)
-					{
+					if (side != ModSide.Both) {
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
-					if (ModLoader.beta)
+					if (ModLoader.beta > 0) {
 						writer.Write("beta");
+					}
+
+					writer.Write("buildVersion");
+					writer.Write(buildVersion.ToString());
+
 					writer.Write("");
 				}
 				data = memoryStream.ToArray();
@@ -283,108 +256,77 @@ namespace Terraria.ModLoader
 			return data;
 		}
 
-		internal static BuildProperties ReadModFile(TmodFile modFile)
-		{
+		internal static BuildProperties ReadModFile(TmodFile modFile) {
 			BuildProperties properties = new BuildProperties();
-			properties.hideCode = true;
-			properties.hideResources = true;
-			byte[] data = modFile.GetFile("Info");
-
-			if (data.Length == 0)
-				return properties;
-
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(data)))
-			{
-				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString())
-				{
-					if (tag == "dllReferences")
-					{
+			using (var reader = new BinaryReader(modFile.GetStream("Info"))) {
+				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString()) {
+					if (tag == "dllReferences") {
 						properties.dllReferences = ReadList(reader).ToArray();
 					}
-					if (tag == "modReferences")
-					{
+					if (tag == "modReferences") {
 						properties.modReferences = ReadList(reader).Select(ModReference.Parse).ToArray();
 					}
-					if (tag == "weakReferences")
-					{
+					if (tag == "weakReferences") {
 						properties.weakReferences = ReadList(reader).Select(ModReference.Parse).ToArray();
 					}
-					if (tag == "sortAfter")
-					{
+					if (tag == "sortAfter") {
 						properties.sortAfter = ReadList(reader).ToArray();
 					}
-					if (tag == "sortBefore")
-					{
+					if (tag == "sortBefore") {
 						properties.sortBefore = ReadList(reader).ToArray();
 					}
-					if (tag == "author")
-					{
+					if (tag == "author") {
 						properties.author = reader.ReadString();
 					}
-					if (tag == "version")
-					{
+					if (tag == "version") {
 						properties.version = new Version(reader.ReadString());
 					}
-					if (tag == "displayName")
-					{
+					if (tag == "displayName") {
 						properties.displayName = reader.ReadString();
 					}
-					if (tag == "homepage")
-					{
+					if (tag == "homepage") {
 						properties.homepage = reader.ReadString();
 					}
-					if (tag == "description")
-					{
+					if (tag == "description") {
 						properties.description = reader.ReadString();
 					}
-					if (tag == "noCompile")
-					{
+					if (tag == "noCompile") {
 						properties.noCompile = true;
 					}
-					if (tag == "!hideCode")
-					{
+					if (tag == "!hideCode") {
 						properties.hideCode = false;
 					}
-					if (tag == "!hideResources")
-					{
+					if (tag == "!hideResources") {
 						properties.hideResources = false;
 					}
-					if (tag == "includeSource")
-					{
+					if (tag == "includeSource") {
 						properties.includeSource = true;
 					}
-					if (tag == "includePDB")
-					{
+					if (tag == "includePDB") {
 						properties.includePDB = true;
 					}
-					if (tag == "editAndContinue")
-					{
+					if (tag == "editAndContinue") {
 						properties.editAndContinue = true;
 					}
-					if (tag == "beta")
-					{
-						properties.beta = true;
-					}
-					if (tag == "side")
-					{
+					if (tag == "side") {
 						properties.side = (ModSide)reader.ReadByte();
 					}
-					if (tag == "beta")
-					{
+					if (tag == "beta") {
 						properties.beta = true;
+					}
+					if (tag == "buildVersion") {
+						properties.buildVersion = new Version(reader.ReadString());
 					}
 				}
 			}
 			return properties;
 		}
 
-		internal bool ignoreFile(string resource)
-		{
+		internal bool ignoreFile(string resource) {
 			return this.buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
 		}
 
-		private bool FitsMask(string fileName, string fileMask)
-		{
+		private bool FitsMask(string fileName, string fileMask) {
 			string pattern =
 				'^' +
 				Regex.Escape(fileMask.Replace(".", "__DOT__")

@@ -15,10 +15,8 @@
 
 	public static class ModSideExtensions
 	{
-		public static string ToFriendlyString(this ModSide sortmode)
-		{
-			switch (sortmode)
-			{
+		public static string ToFriendlyString(this ModSide sortmode) {
+			switch (sortmode) {
 				case ModSide.Both:
 					return "Both";
 				case ModSide.Client:

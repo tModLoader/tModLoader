@@ -3,15 +3,13 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	public class ExampleDresser: ModItem
+	public class ExampleDresser : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded dresser.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 26;
 			item.height = 22;
 			item.maxStack = 99;
@@ -25,8 +23,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleDresser");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Dresser);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);

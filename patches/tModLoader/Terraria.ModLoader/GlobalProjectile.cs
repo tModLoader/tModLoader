@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+using System;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
@@ -14,8 +13,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod to which this GlobalProjectile belongs.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -23,8 +21,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of this GlobalProjectile instance.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -37,8 +34,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
@@ -70,10 +66,8 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile)
-		{
-			if (CloneNewInstances)
-			{
+		public virtual GlobalProjectile NewInstance(Projectile projectile) {
+			if (CloneNewInstances) {
 				return Clone();
 			}
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
@@ -88,8 +82,7 @@ namespace Terraria.ModLoader
 		/// Allows you to set the properties of any and every projectile that gets created.
 		/// </summary>
 		/// <param name="projectile"></param>
-		public virtual void SetDefaults(Projectile projectile)
-		{
+		public virtual void SetDefaults(Projectile projectile) {
 		}
 
 		/// <summary>
@@ -97,8 +90,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool PreAI(Projectile projectile)
-		{
+		public virtual bool PreAI(Projectile projectile) {
 			return true;
 		}
 
@@ -106,16 +98,14 @@ namespace Terraria.ModLoader
 		/// Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.
 		/// </summary>
 		/// <param name="projectile"></param>
-		public virtual void AI(Projectile projectile)
-		{
+		public virtual void AI(Projectile projectile) {
 		}
 
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.
 		/// </summary>
 		/// <param name="projectile"></param>
-		public virtual void PostAI(Projectile projectile)
-		{
+		public virtual void PostAI(Projectile projectile) {
 		}
 
 		/// <summary>
@@ -123,8 +113,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool ShouldUpdatePosition(Projectile projectile)
-		{
+		public virtual bool ShouldUpdatePosition(Projectile projectile) {
 			return true;
 		}
 
@@ -136,8 +125,7 @@ namespace Terraria.ModLoader
 		/// <param name="height"></param>
 		/// <param name="fallThrough"></param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough)
-		{
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
 			return true;
 		}
 
@@ -147,8 +135,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="oldVelocity"></param>
 		/// <returns></returns>
-		public virtual bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
-		{
+		public virtual bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
 			return true;
 		}
 
@@ -158,8 +145,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="timeLeft"></param>
 		/// <returns></returns>
-		public virtual bool PreKill(Projectile projectile, int timeLeft)
-		{
+		public virtual bool PreKill(Projectile projectile, int timeLeft) {
 			return true;
 		}
 
@@ -168,8 +154,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="timeLeft"></param>
-		public virtual void Kill(Projectile projectile, int timeLeft)
-		{
+		public virtual void Kill(Projectile projectile, int timeLeft) {
 		}
 
 		/// <summary>
@@ -177,8 +162,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool? CanCutTiles(Projectile projectile)
-		{
+		public virtual bool? CanCutTiles(Projectile projectile) {
 			return null;
 		}
 
@@ -186,8 +170,7 @@ namespace Terraria.ModLoader
 		/// Code ran when the projectile cuts tiles. Only runs if CanCutTiles() returns true. Useful when programming lasers and such.
 		/// </summary>
 		/// <param name="projectile"></param>
-		public virtual void CutTiles(Projectile projectile)
-		{
+		public virtual void CutTiles(Projectile projectile) {
 		}
 
 		/// <summary>
@@ -195,8 +178,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool CanDamage(Projectile projectile)
-		{
+		public virtual bool CanDamage(Projectile projectile) {
 			return true;
 		}
 
@@ -205,8 +187,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool MinionContactDamage(Projectile projectile)
-		{
+		public virtual bool MinionContactDamage(Projectile projectile) {
 			return false;
 		}
 
@@ -215,8 +196,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="hitbox"></param>
-		public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox)
-		{
+		public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox) {
 		}
 
 		/// <summary>
@@ -225,8 +205,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public virtual bool? CanHitNPC(Projectile projectile, NPC target)
-		{
+		public virtual bool? CanHitNPC(Projectile projectile, NPC target) {
 			return null;
 		}
 
@@ -239,8 +218,7 @@ namespace Terraria.ModLoader
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
 		/// <param name="hitDirection"></param>
-		public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-		{
+		public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
 		}
 
 		/// <summary>
@@ -251,8 +229,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
-		{
+		public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
 		}
 
 		/// <summary>
@@ -261,8 +238,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public virtual bool CanHitPvp(Projectile projectile, Player target)
-		{
+		public virtual bool CanHitPvp(Projectile projectile, Player target) {
 			return true;
 		}
 
@@ -273,8 +249,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
-		{
+		public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit) {
 		}
 
 		/// <summary>
@@ -284,8 +259,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
-		{
+		public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit) {
 		}
 
 		/// <summary>
@@ -294,8 +268,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public virtual bool CanHitPlayer(Projectile projectile, Player target)
-		{
+		public virtual bool CanHitPlayer(Projectile projectile, Player target) {
 			return true;
 		}
 
@@ -306,8 +279,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
-		{
+		public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit) {
 		}
 
 		/// <summary>
@@ -317,8 +289,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
-		{
+		public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit) {
 		}
 
 		/// <summary>
@@ -328,8 +299,7 @@ namespace Terraria.ModLoader
 		/// <param name="projHitbox"></param>
 		/// <param name="targetHitbox"></param>
 		/// <returns></returns>
-		public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
-		{
+		public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox) {
 			return null;
 		}
 
@@ -339,8 +309,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="lightColor"></param>
 		/// <returns></returns>
-		public virtual Color? GetAlpha(Projectile projectile, Color lightColor)
-		{
+		public virtual Color? GetAlpha(Projectile projectile, Color lightColor) {
 			return null;
 		}
 
@@ -350,8 +319,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="spriteBatch"></param>
 		/// <returns></returns>
-		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch)
-		{
+		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
 			return true;
 		}
 
@@ -362,8 +330,7 @@ namespace Terraria.ModLoader
 		/// <param name="spriteBatch"></param>
 		/// <param name="lightColor"></param>
 		/// <returns></returns>
-		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
-		{
+		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
 			return true;
 		}
 
@@ -373,8 +340,7 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="spriteBatch"></param>
 		/// <param name="lightColor"></param>
-		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor)
-		{
+		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
 		}
 
 		/// <summary>
@@ -386,52 +352,45 @@ namespace Terraria.ModLoader
 		/// <param name="drawCacheProjsBehindNPCs"></param>
 		/// <param name="drawCacheProjsBehindProjectiles"></param>
 		/// <param name="drawCacheProjsOverWiresUI"></param>
-		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
-		{
+		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
 		}
 
 		/// <summary>
 		/// Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.
 		/// </summary>
-		public virtual bool? CanUseGrapple(int type, Player player)
-		{
+		public virtual bool? CanUseGrapple(int type, Player player) {
 			return null;
 		}
 
 		/// <summary>
 		/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
 		/// </summary>
-		public virtual bool? SingleGrappleHook(int type, Player player)
-		{
+		public virtual bool? SingleGrappleHook(int type, Player player) {
 			return null;
 		}
 
 		/// <summary>
 		/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 		/// </summary>
-		public virtual void UseGrapple(Player player, ref int type)
-		{
+		public virtual void UseGrapple(Player player, ref int type) {
 		}
 
 		/// <summary>
 		/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
 		/// </summary>
-		public virtual void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks)
-		{
+		public virtual void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks) {
 		}
 
 		/// <summary>
 		/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.
 		/// </summary>
-		public virtual void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed)
-		{
+		public virtual void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed) {
 		}
 
 		/// <summary>
 		/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 		/// </summary>
-		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
-		{
+		public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
 		}
 	}
 }

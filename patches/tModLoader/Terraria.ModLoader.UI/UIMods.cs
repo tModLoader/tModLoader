@@ -1,21 +1,18 @@
-using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Newtonsoft.Json;
 using System.Reflection;
-using Terraria.Localization;
 using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
@@ -45,8 +42,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 
-		public override void OnInitialize()
-		{
+		public override void OnInitialize() {
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
@@ -79,14 +75,16 @@ namespace Terraria.ModLoader.UI
 
 			modList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true);
-			uIHeaderTexTPanel.HAlign = 0.5f;
+			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
+				HAlign = 0.5f
+			};
 			uIHeaderTexTPanel.Top.Set(-35f, 0f);
 			uIHeaderTexTPanel.SetPadding(15f);
 			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
 			uIElement.Append(uIHeaderTexTPanel);
-			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll"), 1f, false);
-			buttonEA.TextColor = Color.Green;
+			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll"), 1f, false) {
+				TextColor = Color.Green
+			};
 			buttonEA.Width.Set(-10f, 1f / 3f);
 			buttonEA.Height.Set(40f, 0f);
 			buttonEA.VAlign = 1f;
@@ -95,8 +93,9 @@ namespace Terraria.ModLoader.UI
 			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
 			buttonEA.OnClick += this.EnableAll;
 			uIElement.Append(buttonEA);
-			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"), 1f, false);
-			buttonDA.TextColor = Color.Red;
+			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"), 1f, false) {
+				TextColor = Color.Red
+			};
 			buttonDA.CopyStyle(buttonEA);
 			buttonDA.HAlign = 0.5f;
 			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
@@ -132,49 +131,39 @@ namespace Terraria.ModLoader.UI
 			upperMenuContainer.Top.Set(10f, 0f);
 
 			UICycleImage toggleImage;
-			for (int j = 0; j < 3; j++)
-			{
-				if (j == 0)
-				{
+			for (int j = 0; j < 3; j++) {
+				if (j == 0) {
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 					toggleImage.setCurrentState((int)sortMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.OnClick += (a, b) => {
 						sortMode = sortMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						sortMode = sortMode.PreviousEnum();
 						updateNeeded = true;
 					};
 				}
-				else if (j == 1)
-				{
+				else if (j == 1) {
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
 					toggleImage.setCurrentState((int)enabledFilterMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.OnClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.PreviousEnum();
 						updateNeeded = true;
 					};
 				}
-				else
-				{
+				else {
 					toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
 					toggleImage.setCurrentState((int)modSideFilterMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.OnClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.PreviousEnum();
 						updateNeeded = true;
 					};
@@ -202,13 +191,11 @@ namespace Terraria.ModLoader.UI
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
-			SearchFilterToggle.OnClick += (a, b) =>
-			{
+			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.OnRightClick += (a, b) =>
-			{
+			SearchFilterToggle.OnRightClick += (a, b) => {
 				searchFilterMode = searchFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
@@ -228,8 +215,7 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload())
@@ -240,72 +226,62 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = 0;
 		}
 
-		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (items.Count > 0)
+			if (items.Count > 0) {
 				ModLoader.Reload();
+			}
 		}
 
-		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Process.Start(ModLoader.ModPath);
 		}
 
-		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (!Interface.modsMenu.loading)
-			{
+		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement) {
+			if (!Interface.modsMenu.loading) {
 				Main.PlaySound(12, -1, -1, 1);
 				Main.menuMode = Interface.modPacksMenuID;
 			}
 		}
 
-		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
-			foreach (UIModItem modItem in items)
-			{
+			foreach (UIModItem modItem in items) {
 				modItem.Enable();
 			}
 		}
 
-		private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
-			foreach (UIModItem modItem in items)
-			{
+			foreach (UIModItem modItem in items) {
 				modItem.Disable();
 			}
 		}
 
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (needToRemoveLoading)
-			{
+			if (needToRemoveLoading) {
 				needToRemoveLoading = false;
 				uIPanel.RemoveChild(uiLoader);
 			}
-			if (!updateNeeded) return;
+			if (!updateNeeded) {
+				return;
+			}
+
 			updateNeeded = false;
 			filter = filterTextBox.currentString;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			for (int i = 0; i < this._categoryButtons.Count; i++)
-			{
-				if (this._categoryButtons[i].IsMouseHovering)
-				{
+			for (int i = 0; i < this._categoryButtons.Count; i++) {
+				if (this._categoryButtons[i].IsMouseHovering) {
 					string text;
-					switch (i)
-					{
+					switch (i) {
 						case 0:
 							text = sortMode.ToFriendlyString();
 							break;
@@ -324,12 +300,10 @@ namespace Terraria.ModLoader.UI
 					}
 					float x = Main.fontMouseText.MeasureString(text).X;
 					Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-					if (vector.Y > (float)(Main.screenHeight - 30))
-					{
+					if (vector.Y > (float)(Main.screenHeight - 30)) {
 						vector.Y = (float)(Main.screenHeight - 30);
 					}
-					if (vector.X > (float)Main.screenWidth - x)
-					{
+					if (vector.X > (float)Main.screenWidth - x) {
 						vector.X = (float)(Main.screenWidth - x - 30);
 					}
 					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
@@ -339,8 +313,7 @@ namespace Terraria.ModLoader.UI
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
@@ -350,17 +323,16 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
-		internal void Populate()
-		{
-			if (SynchronizationContext.Current == null)
+		internal void Populate() {
+			if (SynchronizationContext.Current == null) {
 				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+			}
+
 			Task.Factory
 				.StartNew(ModOrganizer.FindMods)
-				.ContinueWith(task =>
-				{
+				.ContinueWith(task => {
 					var mods = task.Result;
-					foreach (var mod in mods)
-					{
+					foreach (var mod in mods) {
 						UIModItem modItem = new UIModItem(mod);
 						items.Add(modItem);
 					}
@@ -373,10 +345,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class ModsMenuSortModesExtensions
 	{
-		public static string ToFriendlyString(this ModsMenuSortMode sortmode)
-		{
-			switch (sortmode)
-			{
+		public static string ToFriendlyString(this ModsMenuSortMode sortmode) {
+			switch (sortmode) {
 				case ModsMenuSortMode.RecentlyUpdated:
 					return Language.GetTextValue("tModLoader.ModsSortRecently");
 				case ModsMenuSortMode.DisplayNameAtoZ:
@@ -390,10 +360,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class EnabledFilterModesExtensions
 	{
-		public static string ToFriendlyString(this EnabledFilter updateFilterMode)
-		{
-			switch (updateFilterMode)
-			{
+		public static string ToFriendlyString(this EnabledFilter updateFilterMode) {
+			switch (updateFilterMode) {
 				case EnabledFilter.All:
 					return Language.GetTextValue("tModLoader.ModsShowAllMods");
 				case EnabledFilter.EnabledOnly:

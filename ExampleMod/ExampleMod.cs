@@ -1,38 +1,40 @@
+using ExampleMod.NPCs.PuritySpirit;
+using ExampleMod.Tiles;
+using ExampleMod.UI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
+using Terraria.GameContent.Dyes;
+using Terraria.GameContent.UI;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.NPCs.PuritySpirit;
-using ExampleMod.Tiles;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using ExampleMod.UI;
 using Terraria.UI;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
-using System;
 
 namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
-		internal static ExampleMod instance;
-		public const string captiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
-		public const string captiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
-		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
-		public static Effect exampleEffect;
-		private UserInterface exampleUserInterface;
-		internal UserInterface examplePersonUserInterface;
-		internal ExampleUI exampleUI;
+		public const string CaptiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
+		public const string CaptiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
+
 		public static ModHotKey RandomBuffHotKey;
-		public static int FaceCustomCurrencyID;
+		public static int FaceCustomCurrencyId;
 		internal static ExampleConfigClient exampleClientConfig;
 		internal static ExampleConfigServer exampleServerConfig;
+		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
+		public static Effect ExampleEffect;
+		internal static ExampleMod Instance;
+
+		private UserInterface _exampleUserInterface;
+
+		internal UserInterface ExamplePersonUserInterface;
+		internal ExampleUI ExampleUI;
 
 		// Your mod instance has a Logger field, use it.
 		// OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
@@ -40,8 +42,7 @@ namespace ExampleMod
 		// inside the references folder. You do not have to add this to build.txt as tML has it natively.
 		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
-		public ExampleMod()
-		{
+		public ExampleMod() {
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
 			//Properties = new ModProperties()
 			//{
@@ -52,29 +53,27 @@ namespace ExampleMod
 			//};
 		}
 
-		public override void Load()
-		{
-			instance = this;
+		public override void Load() {
+			Instance = this;
 			// Will show up in client.log under the ExampleMod name
-			Logger.InfoFormat("{0} example logging", this.Name);
-			// ErrorLogger.Log("blabla"); REPLACE THIS WITH ABOVE
+			Logger.InfoFormat("{0} example logging", Name);
+			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
+			// Replace that with above
 
 			// Adds boss head textures for the Abomination boss
-			for (int k = 1; k <= 4; k++)
-			{
-				AddBossHeadTexture(captiveElementHead + k);
-				AddBossHeadTexture(captiveElement2Head + k);
+			for (int k = 1; k <= 4; k++) {
+				AddBossHeadTexture(CaptiveElementHead + k);
+				AddBossHeadTexture(CaptiveElement2Head + k);
 			}
 
 			// Registers a new hotkey
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v%3dxnagamestudio.41) for special keys
 
 			// Registers a new custom currency
-			FaceCustomCurrencyID = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
+			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
 
 			// All code below runs only if we're not loading on a server
-			if (!Main.dedServ)
-			{
+			if (!Main.dedServ) {
 				// Add certain equip textures
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
 				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
@@ -104,22 +103,20 @@ namespace ExampleMod
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
 				// exampleFont = GetFont("Fonts/ExampleFont"); 
-				exampleEffect = GetEffect("Effects/ExampleEffect");
-				Ref<Effect> exampleEffectRef = new Ref<Effect>();
-				exampleEffectRef.Value = exampleEffect;
-				GameShaders.Armor.BindShader<ArmorShaderData>(ItemType<Items.ExampleDye>(), new ArmorShaderData(exampleEffectRef, "ExampleDyePass"));
-
+				GameShaders.Armor.BindShader(ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
+				GameShaders.Hair.BindShader(ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
 
+
 				// Custom UI
-				exampleUI = new ExampleUI();
-				exampleUI.Activate();
-				exampleUserInterface = new UserInterface();
-				exampleUserInterface.SetState(exampleUI);
+				ExampleUI = new ExampleUI();
+				ExampleUI.Activate();
+				_exampleUserInterface = new UserInterface();
+				_exampleUserInterface.SetState(ExampleUI);
 
 				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
 				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
-				examplePersonUserInterface = new UserInterface();
+				ExamplePersonUserInterface = new UserInterface();
 				// We will call .SetState later in ExamplePerson.OnChatButtonClicked
 			}
 
@@ -140,41 +137,35 @@ namespace ExampleMod
 			AddTranslation(text);
 		}
 
-		public override void Unload()
-		{
+		public override void Unload() {
 			// All code below runs only if we're not loading on a server
-			if (!Main.dedServ)
-			{
+			if (!Main.dedServ) {
 				// Main.music[MusicID.Dungeon] = Main.soundBank.GetCue("Music_" + MusicID.Dungeon);
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
-				GameShaders.Misc.Remove("ExampleMod:DeathAnimation");
 			}
 
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
-			exampleEffect = null;
+			ExampleEffect = null;
 
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
-			instance = null;
+			Instance = null;
 			RandomBuffHotKey = null;
 		}
 
-		public override void PostSetupContent()
-		{
+		public override void PostSetupContent() {
 			// Showcases mod support with Boss Checklist without referencing the mod
 			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
-			if (bossChecklist != null)
-			{
+			if (bossChecklist != null) {
 				bossChecklist.Call("AddBossWithInfo", "Abomination", 5.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Pletera has been defeated");
 				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ItemType<Items.Placeable.ElementalPurge>() + "]");
 			}
 		}
 
-		public override void AddRecipeGroups()
-		{
+		public override void AddRecipeGroups() {
 			// Creates a new recipe group
-			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new int[]
+			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Lang.GetItemNameValue(ItemType("ExampleItem")), new[]
 			{
 				ItemType("ExampleItem"),
 				ItemType("EquipMaterial"),
@@ -182,14 +173,17 @@ namespace ExampleMod
 			});
 			// Registers the new recipe group with the specified name
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", group);
+
+			// Modifying a vanilla recipe group. Now we can use Lava Snail to craft Snail Statue
+			RecipeGroup snailGroup = RecipeGroup.recipeGroups[RecipeGroup.recipeGroupIDs["Snails"]];
+			snailGroup.ValidItems.Add(ItemType<NPCs.ExampleCritterItem>());
 		}
 
 		// Learn how to do Recipes: https://github.com/blushiemagic/tModLoader/wiki/Basic-Recipes 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			// Here is an example of a recipe.
 			ModRecipe recipe = new ModRecipe(this);
-			recipe.AddIngredient(this.ItemType("ExampleItem"));
+			recipe.AddIngredient(ItemType("ExampleItem"));
 			recipe.SetResult(ItemID.Wood, 999);
 			recipe.AddRecipe();
 
@@ -199,57 +193,57 @@ namespace ExampleMod
 			RecipeHelper.ExampleRecipeEditing(this);
 		}
 
-		public override void UpdateMusic(ref int music, ref MusicPriority priority)
-		{
-			if (Main.myPlayer != -1 && !Main.gameMenu && Main.LocalPlayer.active)
-			{
-				// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
-				if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample)
-				{
-					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-					priority = MusicPriority.BiomeLow;
-				}
-				if (Main.LocalPlayer.HasBuff(BuffType("CarMount")))
-				{
-					music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-					priority = MusicPriority.Environment;
-				}
+		public override void UpdateMusic(ref int music, ref MusicPriority priority) {
+			if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active) {
+				return;
 			}
+			// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
+				music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				priority = MusicPriority.BiomeLow;
+			}
+
+			if (!Main.LocalPlayer.HasBuff(BuffType("CarMount"))) {
+				return;
+			}
+
+			music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+			priority = MusicPriority.Environment;
 		}
 
-		public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
-		{
-			if (ExampleWorld.exampleTiles > 0)
-			{
-				float exampleStrength = ExampleWorld.exampleTiles / 200f;
-				exampleStrength = Math.Min(exampleStrength, 1f);
-
-				int sunR = backgroundColor.R;
-				int sunG = backgroundColor.G;
-				int sunB = backgroundColor.B;
-				// Remove some green and more red.
-				sunR -= (int)(180f * exampleStrength * (backgroundColor.R / 255f));
-				sunG -= (int)(90f * exampleStrength * (backgroundColor.G / 255f));
-				sunR = Utils.Clamp(sunR, 15, 255);
-				sunG = Utils.Clamp(sunG, 15, 255);
-				sunB = Utils.Clamp(sunB, 15, 255);
-				backgroundColor.R = (byte)sunR;
-				backgroundColor.G = (byte)sunG;
-				backgroundColor.B = (byte)sunB;
+		public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {
+			if (ExampleWorld.exampleTiles <= 0) {
+				return;
 			}
+
+			float exampleStrength = ExampleWorld.exampleTiles / 200f;
+			exampleStrength = Math.Min(exampleStrength, 1f);
+
+			int sunR = backgroundColor.R;
+			int sunG = backgroundColor.G;
+			int sunB = backgroundColor.B;
+			// Remove some green and more red.
+			sunR -= (int)(180f * exampleStrength * (backgroundColor.R / 255f));
+			sunG -= (int)(90f * exampleStrength * (backgroundColor.G / 255f));
+			sunR = Utils.Clamp(sunR, 15, 255);
+			sunG = Utils.Clamp(sunG, 15, 255);
+			sunB = Utils.Clamp(sunB, 15, 255);
+			backgroundColor.R = (byte)sunR;
+			backgroundColor.G = (byte)sunG;
+			backgroundColor.B = (byte)sunB;
 		}
 
-		const int ShakeLength = 5;
-		int ShakeCount = 0;
-		float previousRotation = 0;
-		float targetRotation = 0;
-		float previousOffsetX = 0;
-		float previousOffsetY = 0;
-		float targetOffsetX = 0;
-		float targetOffsetY = 0;
+		//const int ShakeLength = 5;
+		//readonly int ShakeCount = 0;
+		//readonly float previousRotation = 0;
+		//readonly float targetRotation = 0;
+		//readonly float previousOffsetX = 0;
+		//readonly float previousOffsetY = 0;
+		//readonly float targetOffsetX = 0;
+		//readonly float targetOffsetY = 0;
 
 		// Volcano Tremor
-		/* To be fixed later.
+		/* TODO To be fixed later.
 		public override Matrix ModifyTransformMatrix(Matrix Transform)
 		{
 			if (!Main.gameMenu)
@@ -298,41 +292,36 @@ namespace ExampleMod
 		}
 		*/
 
-		public override void UpdateUI(GameTime gameTime)
-		{
-			if (exampleUserInterface != null && ExampleUI.visible)
-				exampleUserInterface.Update(gameTime);
-			if (examplePersonUserInterface != null)
-				examplePersonUserInterface.Update(gameTime);
+		public override void UpdateUI(GameTime gameTime) {
+			if (ExampleUI.Visible) {
+				_exampleUserInterface?.Update(gameTime);
+			}
+
+			ExamplePersonUserInterface?.Update(gameTime);
 		}
 
-		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-		{
-			int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
-			if (MouseTextIndex != -1)
-			{
-				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
+			int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+			if (mouseTextIndex != -1) {
+				layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
 					"ExampleMod: Coins Per Minute",
-					delegate
-					{
-						if (ExampleUI.visible)
-						{
-							exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
+					delegate {
+						if (ExampleUI.Visible) {
+							_exampleUserInterface.Draw(Main.spriteBatch, new GameTime());
 						}
 						return true;
 					},
 					InterfaceScaleType.UI)
 				);
 			}
-			int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-			if (InventoryIndex != -1)
-			{
-				layers.Insert(InventoryIndex + 1, new LegacyGameInterfaceLayer(
+
+			int inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+			if (inventoryIndex != -1) {
+				layers.Insert(inventoryIndex + 1, new LegacyGameInterfaceLayer(
 					"ExampleMod: Example Person UI",
-					delegate
-					{
+					delegate {
 						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
-						examplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
+						ExamplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)
@@ -340,53 +329,28 @@ namespace ExampleMod
 			}
 		}
 
-		//spawning helper methods imported from my tAPI mod
-		public static bool NoInvasion(NPCSpawnInfo spawnInfo)
-		{
-			return !spawnInfo.invasion && ((!Main.pumpkinMoon && !Main.snowMoon) || spawnInfo.spawnTileY > Main.worldSurface || Main.dayTime) && (!Main.eclipse || spawnInfo.spawnTileY > Main.worldSurface || !Main.dayTime);
-		}
+		public static bool NoInvasion(NPCSpawnInfo spawnInfo) => !spawnInfo.invasion && (!Main.pumpkinMoon && !Main.snowMoon || spawnInfo.spawnTileY > Main.worldSurface || Main.dayTime) && (!Main.eclipse || spawnInfo.spawnTileY > Main.worldSurface || !Main.dayTime);
 
-		public static bool NoBiome(NPCSpawnInfo spawnInfo)
-		{
+		public static bool NoBiome(NPCSpawnInfo spawnInfo) {
 			Player player = spawnInfo.player;
 			return !player.ZoneJungle && !player.ZoneDungeon && !player.ZoneCorrupt && !player.ZoneCrimson && !player.ZoneHoly && !player.ZoneSnow && !player.ZoneUndergroundDesert;
 		}
 
-		public static bool NoZoneAllowWater(NPCSpawnInfo spawnInfo)
-		{
-			return !spawnInfo.sky && !spawnInfo.player.ZoneMeteor && !spawnInfo.spiderCave;
-		}
+		public static bool NoZoneAllowWater(NPCSpawnInfo spawnInfo) => !spawnInfo.sky && !spawnInfo.player.ZoneMeteor && !spawnInfo.spiderCave;
 
-		public static bool NoZone(NPCSpawnInfo spawnInfo)
-		{
-			return NoZoneAllowWater(spawnInfo) && !spawnInfo.water;
-		}
+		public static bool NoZone(NPCSpawnInfo spawnInfo) => NoZoneAllowWater(spawnInfo) && !spawnInfo.water;
 
-		public static bool NormalSpawn(NPCSpawnInfo spawnInfo)
-		{
-			return !spawnInfo.playerInTown && NoInvasion(spawnInfo);
-		}
+		public static bool NormalSpawn(NPCSpawnInfo spawnInfo) => !spawnInfo.playerInTown && NoInvasion(spawnInfo);
 
-		public static bool NoZoneNormalSpawn(NPCSpawnInfo spawnInfo)
-		{
-			return NormalSpawn(spawnInfo) && NoZone(spawnInfo);
-		}
+		public static bool NoZoneNormalSpawn(NPCSpawnInfo spawnInfo) => NormalSpawn(spawnInfo) && NoZone(spawnInfo);
 
-		public static bool NoZoneNormalSpawnAllowWater(NPCSpawnInfo spawnInfo)
-		{
-			return NormalSpawn(spawnInfo) && NoZoneAllowWater(spawnInfo);
-		}
+		public static bool NoZoneNormalSpawnAllowWater(NPCSpawnInfo spawnInfo) => NormalSpawn(spawnInfo) && NoZoneAllowWater(spawnInfo);
 
-		public static bool NoBiomeNormalSpawn(NPCSpawnInfo spawnInfo)
-		{
-			return NormalSpawn(spawnInfo) && NoBiome(spawnInfo) && NoZone(spawnInfo);
-		}
+		public static bool NoBiomeNormalSpawn(NPCSpawnInfo spawnInfo) => NormalSpawn(spawnInfo) && NoBiome(spawnInfo) && NoZone(spawnInfo);
 
-		public override void HandlePacket(BinaryReader reader, int whoAmI)
-		{
+		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			ExampleModMessageType msgType = (ExampleModMessageType)reader.ReadByte();
-			switch (msgType)
-			{
+			switch (msgType) {
 				// This message sent by the server to initialize the Volcano Tremor on clients
 				case ExampleModMessageType.SetTremorTime:
 					int tremorTime = reader.ReadInt32();
@@ -396,57 +360,63 @@ namespace ExampleMod
 				// This message sent by the server to initialize the Volcano Rubble.
 				case ExampleModMessageType.VolcanicRubbleMultiplayerFix:
 					int numberProjectiles = reader.ReadInt32();
-					for (int i = 0; i < numberProjectiles; i++)
-					{
+					for (int i = 0; i < numberProjectiles; i++) {
 						int identity = reader.ReadInt32();
 						bool found = false;
-						for (int j = 0; j < 1000; j++)
-						{
-							if (Main.projectile[j].owner == 255 && Main.projectile[j].identity == identity && Main.projectile[j].active)
-							{
+						for (int j = 0; j < 1000; j++) {
+							if (Main.projectile[j].owner == 255 && Main.projectile[j].identity == identity && Main.projectile[j].active) {
 								Main.projectile[j].hostile = true;
 								//Main.projectile[j].name = "Volcanic Rubble";
 								found = true;
 								break;
 							}
 						}
-						if (!found)
-						{
+						if (!found) {
 							Logger.Error("Error: Projectile not found");
 						}
 					}
 					break;
 				case ExampleModMessageType.PuritySpirit:
-					PuritySpirit spirit = Main.npc[reader.ReadInt32()].modNPC as PuritySpirit;
-					if (spirit != null && spirit.npc.active)
-					{
+					if (Main.npc[reader.ReadInt32()].modNPC is PuritySpirit spirit && spirit.npc.active) {
 						spirit.HandlePacket(reader);
 					}
 					break;
 				case ExampleModMessageType.HeroLives:
 					Player player = Main.player[reader.ReadInt32()];
 					int lives = reader.ReadInt32();
-					player.GetModPlayer<ExamplePlayer>(this).heroLives = lives;
-					if (lives > 0)
-					{
+					player.GetModPlayer<ExamplePlayer>().heroLives = lives;
+					if (lives > 0) {
 						NetworkText text;
-						if (lives == 1)
-						{
+						if (lives == 1) {
 							text = NetworkText.FromKey("Mods.ExampleMod.LifeLeft", player.name);
 						}
-						else
-						{
+						else {
 							text = NetworkText.FromKey("Mods.ExampleMod.LivesLeft", player.name, lives);
 						}
 						NetMessage.BroadcastChatMessage(text, new Color(255, 25, 25));
 					}
 					break;
 				// This message syncs ExamplePlayer.exampleLifeFruits
-				case ExampleModMessageType.ExampleLifeFruits:
+				case ExampleModMessageType.ExamplePlayerSyncPlayer:
 					byte playernumber = reader.ReadByte();
-					Player lifeFruitsPlayer = Main.player[playernumber];
+					ExamplePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExamplePlayer>();
 					int exampleLifeFruits = reader.ReadInt32();
-					lifeFruitsPlayer.GetModPlayer<ExamplePlayer>().exampleLifeFruits = exampleLifeFruits;
+					examplePlayer.exampleLifeFruits = exampleLifeFruits;
+					examplePlayer.nonStopParty = reader.ReadBoolean();
+					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+					break;
+				case ExampleModMessageType.NonStopPartyChanged:
+					playernumber = reader.ReadByte();
+					examplePlayer = Main.player[playernumber].GetModPlayer<ExamplePlayer>();
+					examplePlayer.nonStopParty = reader.ReadBoolean();
+					// Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
+					if (Main.netMode == NetmodeID.Server) {
+						var packet = GetPacket();
+						packet.Write((byte)ExampleModMessageType.NonStopPartyChanged);
+						packet.Write(playernumber);
+						packet.Write(examplePlayer.nonStopParty);
+						packet.Send(-1, playernumber);
+					}
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
@@ -455,13 +425,14 @@ namespace ExampleMod
 		}
 	}
 
-	enum ExampleModMessageType : byte
+	internal enum ExampleModMessageType : byte
 	{
 		SetTremorTime,
 		VolcanicRubbleMultiplayerFix,
 		PuritySpirit,
 		HeroLives,
-		ExampleLifeFruits
+		ExamplePlayerSyncPlayer,
+		NonStopPartyChanged
 	}
 
 	/*public static class ExampleModExtensions

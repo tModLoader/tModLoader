@@ -1,32 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
 {
-	class VolcanoCommand : ModCommand
+	internal class VolcanoCommand : ModCommand
 	{
 		public override CommandType Type
-		{
-			get { return CommandType.Console; }
-		}
+			=> CommandType.Console;
 
 		public override string Command
-		{
-			get { return "volcano"; }
-		}
+			=> "volcano";
 
 		public override string Description
-		{
-			get { return "Trigger a volcano"; }
-		}
+			=> "Trigger a volcano";
 
-		public override void Action(CommandCaller caller, string input, string[] args)
-		{
-			string key = "Mods.ExampleMod.VolcanoWarning";
+		public override void Action(CommandCaller caller, string input, string[] args) {
+			const string key = "Mods.ExampleMod.VolcanoWarning";
 			Color messageColor = Color.Orange;
 			NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 			ExampleWorld exampleWorld = mod.GetModWorld<ExampleWorld>();

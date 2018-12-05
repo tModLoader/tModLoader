@@ -1,7 +1,6 @@
-using System;
+using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using System.Text;
-using Microsoft.Xna.Framework.Audio;
 
 namespace Terraria.ModLoader.IO
 {
@@ -9,60 +8,47 @@ namespace Terraria.ModLoader.IO
 	{
 		public static readonly string ModCachePath = Main.SavePath + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "Cache";
 
-		internal static bool WAVCacheAvailable(string wavCachePath)
-		{
-			if (File.Exists(ModCachePath + Path.DirectorySeparatorChar + wavCachePath))
-			{
+		internal static bool WAVCacheAvailable(string wavCachePath) {
+			if (File.Exists(ModCachePath + Path.DirectorySeparatorChar + wavCachePath)) {
 				return true;
 			}
 			return false;
 		}
 
-		internal static void SaveWavStream(MemoryStream output, string wavCachePath)
-		{
+		internal static void SaveWavStream(MemoryStream output, string wavCachePath) {
 			Directory.CreateDirectory(ModCachePath);
-			using (FileStream fileStream = File.Create(ModCachePath + Path.DirectorySeparatorChar + wavCachePath))
-			{
+			using (FileStream fileStream = File.Create(ModCachePath + Path.DirectorySeparatorChar + wavCachePath)) {
 				output.WriteTo(fileStream);
 			}
 		}
 
-		internal static Stream GetWavStream(string wavCachePath)
-		{
+		internal static Stream GetWavStream(string wavCachePath) {
 			return File.OpenRead(ModCachePath + Path.DirectorySeparatorChar + wavCachePath);
 		}
 
-		internal static void ClearCache(string modName)
-		{
+		internal static void ClearCache(string modName) {
 			var dir = Directory.CreateDirectory(ModCachePath);
-			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(modName) + "_*.wav"))
-			{
+			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(modName) + "_*.wav")) {
 				file.Delete();
 			}
 		}
 
-		internal static void DeleteIfOlder(string modFilename, string wavCacheFilename)
-		{
+		internal static void DeleteIfOlder(string modFilename, string wavCacheFilename) {
 			FileInfo modFile = new FileInfo(modFilename);
 			var dir = Directory.CreateDirectory(ModCachePath);
-			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(wavCacheFilename.Substring(0, wavCacheFilename.LastIndexOf('_'))) + "_*.wav"))
-			{
-				if (file.Name == wavCacheFilename)
-				{
-					if (file.LastWriteTime < modFile.LastWriteTime)
-					{
+			foreach (var file in dir.EnumerateFiles(Path.GetFileNameWithoutExtension(wavCacheFilename.Substring(0, wavCacheFilename.LastIndexOf('_'))) + "_*.wav")) {
+				if (file.Name == wavCacheFilename) {
+					if (file.LastWriteTime < modFile.LastWriteTime) {
 						file.Delete();
 					}
 				}
-				else
-				{
+				else {
 					file.Delete();
 				}
 			}
 		}
 
-		public static SoundEffect CacheMP3(string wavCacheFilename, Stream stream)
-		{
+		public static SoundEffect CacheMP3(string wavCacheFilename, Stream stream) {
 			ushort nChannels;
 			uint nSamplesPerSec;
 			uint nAvgBytesPerSec;
@@ -73,8 +59,7 @@ namespace Terraria.ModLoader.IO
 
 			using (MemoryStream output = new MemoryStream())
 			using (var input = new MP3Sharp.MP3Stream(stream))
-			using (var writer = new BinaryWriter(output, Encoding.UTF8))
-			{
+			using (var writer = new BinaryWriter(output, Encoding.UTF8)) {
 				output.Position = headerSize;
 				input.CopyTo(output);
 				uint wavDataLength = (uint)output.Length - headerSize;

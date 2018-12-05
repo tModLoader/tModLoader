@@ -1,0 +1,25 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UIPanel.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UIPanel.cs
+@@ -15,8 +_,8 @@
+ 		public Color BorderColor = Color.Black;
+ 		public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
+ 
+-		public UIPanel()
+-		{
++		public override void OnActivate() {
++			// moved from constructor to avoid texture loading on JIT thread
+ 			if (UIPanel._borderTexture == null)
+ 			{
+ 				UIPanel._borderTexture = TextureManager.Load("Images/UI/PanelBorder");
+@@ -25,6 +_,10 @@
+ 			{
+ 				UIPanel._backgroundTexture = TextureManager.Load("Images/UI/PanelBackground");
+ 			}
++		}
++
++		public UIPanel()
++		{
+ 			base.SetPadding((float)UIPanel.CORNER_SIZE);
+ 		}
+ 
+

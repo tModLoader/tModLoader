@@ -1,7 +1,6 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Map;
@@ -19,83 +18,68 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<ushort, ushort> entryToTile = new Dictionary<ushort, ushort>();
 		internal static readonly IDictionary<ushort, ushort> entryToWall = new Dictionary<ushort, ushort>();
 
-		internal static int modTileOptions(ushort type)
-		{
+		internal static int modTileOptions(ushort type) {
 			return tileEntries[type].Count;
 		}
 
-		internal static int modWallOptions(ushort type)
-		{
+		internal static int modWallOptions(ushort type) {
 			return wallEntries[type].Count;
 		}
 		//make Terraria.Map.MapHelper.colorLookup internal
 		//add internal modPosition field to Terraria.Map.MapHelper
 		//near end of Terraria.Map.MapHelper.Initialize set modPosition to num11 + 1
 		//in Terraria.Map.MapHelper.SaveMap add mod-type-check to darkness check
-		internal static void SetupModMap()
-		{
-			if (Main.dedServ)
-			{
+		internal static void SetupModMap() {
+			if (Main.dedServ) {
 				return;
 			}
 			Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
 			Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
 			IList<Color> colors = new List<Color>();
 			IList<LocalizedText> names = new List<LocalizedText>();
-			foreach (ushort type in tileEntries.Keys)
-			{
+			foreach (ushort type in tileEntries.Keys) {
 				MapHelper.tileLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
-				foreach (MapEntry entry in tileEntries[type])
-				{
+				foreach (MapEntry entry in tileEntries[type]) {
 					ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
 					entryToTile[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					if (entry.name != null)
-					{
+					if (entry.name != null) {
 						names.Add(entry.name);
 					}
-					else
-					{
+					else {
 						names.Add(Language.GetText(entry.translation.Key));
 					}
 				}
 			}
-			foreach (ushort type in wallEntries.Keys)
-			{
+			foreach (ushort type in wallEntries.Keys) {
 				MapHelper.wallLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
-				foreach (MapEntry entry in wallEntries[type])
-				{
+				foreach (MapEntry entry in wallEntries[type]) {
 					ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
 					entryToWall[mapType] = type;
 					nameFuncs[mapType] = entry.getName;
 					colors.Add(entry.color);
-					if (entry.name != null)
-					{
+					if (entry.name != null) {
 						names.Add(entry.name);
 					}
-					else
-					{
+					else {
 						names.Add(Language.GetText(entry.translation.Key));
 					}
 				}
 			}
 			Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
 			Lang._mapLegendCache.Resize(MapHelper.modPosition + names.Count);
-			for (int k = 0; k < colors.Count; k++)
-			{
+			for (int k = 0; k < colors.Count; k++) {
 				MapHelper.colorLookup[MapHelper.modPosition + k] = colors[k];
 				Lang._mapLegendCache[MapHelper.modPosition + k] = names[k];
 			}
 			initialized = true;
 		}
 
-		internal static void UnloadModMap()
-		{
+		internal static void UnloadModMap() {
 			tileEntries.Clear();
 			wallEntries.Clear();
-			if (Main.dedServ)
-			{
+			if (Main.dedServ) {
 				return;
 			}
 			nameFuncs.Clear();
@@ -109,24 +93,19 @@ namespace Terraria.ModLoader
 		}
 		//at end of Terraria.Map.MapHelper.CreateMapTile before returning call
 		//  MapLoader.ModMapOption(ref num16, i, j);
-		internal static void ModMapOption(ref int mapType, int i, int j)
-		{
-			if (entryToTile.ContainsKey((ushort)mapType))
-			{
+		internal static void ModMapOption(ref int mapType, int i, int j) {
+			if (entryToTile.ContainsKey((ushort)mapType)) {
 				ModTile tile = TileLoader.GetTile(entryToTile[(ushort)mapType]);
 				ushort option = tile.GetMapOption(i, j);
-				if (option < 0 || option >= modTileOptions(tile.Type))
-				{
+				if (option < 0 || option >= modTileOptions(tile.Type)) {
 					throw new ArgumentOutOfRangeException("Bad map option for tile " + tile.Name + " from mod " + tile.mod.Name);
 				}
 				mapType += option;
 			}
-			else if (entryToWall.ContainsKey((ushort)mapType))
-			{
+			else if (entryToWall.ContainsKey((ushort)mapType)) {
 				ModWall wall = WallLoader.GetWall(entryToWall[(ushort)mapType]);
 				ushort option = wall.GetMapOption(i, j);
-				if (option < 0 || option >= modWallOptions(wall.Type))
-				{
+				if (option < 0 || option >= modWallOptions(wall.Type)) {
 					throw new ArgumentOutOfRangeException("Bad map option for wall " + wall.Name + " from mod " + wall.mod.Name);
 				}
 				mapType += option;

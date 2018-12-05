@@ -65,7 +65,7 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
-		"BuildErrorDotNet45forCS6": "必须安装[.NET Framework 4.5]才能编译[C＃ 6.0]",
+		"BuildErrorDotNet46Required": "必须安装[.NET Framework 4.6]才能编译[C＃ 6.0]",
 		"BuildErrorPDBWindowsOnly": "仅在[windows]上支持生成[windows]的[PDB]文件.",
 		"BuildErrorEACWindowsOnly": "仅在Windows上支持编辑并继续.",
 		"BuildErrorEACLoadFailed": "无法启用编辑并继续: {0}",
@@ -85,7 +85,10 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整跟踪)",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
+		// "SkipToMainMenu": "Skip Loading Mods",
+		// "Retry": "Retry",
 		"Exit": "退出",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",
@@ -110,7 +113,7 @@
 		"ModPackDisabled": " - 禁用",
 		"ModPackLoadingSpecifiedModPack": "加载指定模组整合包: {0}",
 		"ModPackDoesNotExist": "模组整合包 {0} 不存在.",
-		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏. ({1})",
+		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏.",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
@@ -150,6 +153,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",

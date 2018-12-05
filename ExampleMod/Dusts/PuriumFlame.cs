@@ -6,8 +6,7 @@ namespace ExampleMod.Dusts
 {
 	public class PuriumFlame : ModDust
 	{
-		public override void OnSpawn(Dust dust)
-		{
+		public override void OnSpawn(Dust dust) {
 			dust.color = new Color(120, 255, 90);
 			dust.alpha = 1;
 			dust.scale = 1.1f;
@@ -16,18 +15,15 @@ namespace ExampleMod.Dusts
 			dust.noLight = true;
 		}
 
-		public override bool Update(Dust dust)
-		{
+		public override bool Update(Dust dust) {
 			dust.rotation += dust.velocity.X / 3f;
 			dust.position += dust.velocity;
 			int oldAlpha = dust.alpha;
 			dust.alpha = (int)(dust.alpha * 1.2);
-			if (dust.alpha == oldAlpha)
-			{
+			if (dust.alpha == oldAlpha) {
 				dust.alpha++;
 			}
-			if (dust.alpha >= 255)
-			{
+			if (dust.alpha >= 255) {
 				dust.alpha = 255;
 				dust.active = false;
 			}

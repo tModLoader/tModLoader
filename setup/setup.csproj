@@ -39,15 +39,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.Decompiler">
       <HintPath>lib\ICSharpCode.Decompiler.dll</HintPath>
@@ -65,21 +56,8 @@
       <HintPath>lib\ILSpy.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\references\Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod">
-      <HintPath>lib\MonoMod.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour.HookGen">
-      <HintPath>lib\MonoMod.RuntimeDetour.HookGen.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="XnaToFna">
-      <HintPath>lib\XnaToFna.exe</HintPath>
-      <Private>False</Private>
+    <Reference Include="Mono.Cecil_0.9.6.0">
+      <HintPath>lib\Mono.Cecil_0.9.6.0.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -174,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="HookGenWrapper\HookGenWrapper.csproj">
+      <Project>{a386559e-0850-47ad-8f5b-d1492fa27980}</Project>
+      <Name>HookGenWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

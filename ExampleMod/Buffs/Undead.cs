@@ -5,8 +5,7 @@ namespace ExampleMod.Buffs
 {
 	public class Undead : ModBuff
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Undead");
 			Description.SetDefault("Recovering harms you");
 			Main.debuff[Type] = true;
@@ -15,8 +14,7 @@ namespace ExampleMod.Buffs
 			longerExpertDebuff = true;
 		}
 
-		public override void Update(Player player, ref int buffIndex)
-		{
+		public override void Update(Player player, ref int buffIndex) {
 			player.GetModPlayer<ExamplePlayer>().badHeal = true;
 		}
 	}
