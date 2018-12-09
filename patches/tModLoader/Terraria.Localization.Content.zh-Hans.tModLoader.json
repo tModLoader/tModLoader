@@ -6,6 +6,7 @@
 		"MenuModBrowser": "模组浏览器",
 		"MenuMods": "模组管理",
 		"MenuModSources": "模组源码",
+		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -21,6 +22,7 @@
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"BetaModCantPublish": "该模组生成于测试版本,不能发布",
 		"BetaModCantPublishError": "你无法发布生成于tModLoader测试版本的模组",
+		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "需要重新加载",
 		"ModsByline": "作者: {0}",
 		"ModsMoreInfo": "更多信息",
@@ -46,6 +48,7 @@
 		"LoadErrorDisabled": "该模组已被自动禁用.",
 		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
 		"LoadErrorVersionMessage": "该模组检测出是生成于 tModLoader v{0}\n但是,你正在使用 {1}",
+		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		"LoadErrorDependencyMissing": "缺少模组: {0} 需求来源: {1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
@@ -65,7 +68,6 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
-		"BuildErrorDotNet46Required": "必须安装[.NET Framework 4.6]才能编译[C＃ 6.0]",
 		"BuildErrorPDBWindowsOnly": "仅在[windows]上支持生成[windows]的[PDB]文件.",
 		"BuildErrorEACWindowsOnly": "仅在Windows上支持编辑并继续.",
 		"BuildErrorEACLoadFailed": "无法启用编辑并继续: {0}",
@@ -230,6 +232,20 @@
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
 
+		// Developer Mode UI
+		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		// "DMModCompileUpdate": "ModCompile folder out of date.",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		// "DMModCompileSatisfied": "ModCompile folder up of date.",
+		// "DMDotNetSatisfied": "{0} is installed",
+		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		// "DMVisualStudio": "Visual Studio",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		// "DMTutorial": "Tutorial",
+
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
 		"ExtractHideCodeMessage": "该模组的作者选择将源码隐藏在[tModReader]中.",
@@ -283,5 +299,6 @@
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
+		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
 	}
 }

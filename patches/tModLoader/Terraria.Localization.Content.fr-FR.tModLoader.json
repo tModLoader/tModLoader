@@ -5,6 +5,7 @@
 		"MenuModBrowser": "Navigateur",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mods source",
+		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
@@ -20,6 +21,7 @@
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"BetaModCantPublish": "Ce Mod a été compilé en version Beta et ne peut pas être publié",
 		"BetaModCantPublishError": "Vous ne pouvez pas publier un Mod compilé en version Beta de tModLoader",
+		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "Relance requise",
 		"ModsByline": "Par: {0}",
 		"ModsMoreInfo": "Détails",
@@ -45,6 +47,7 @@
 		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
 		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "Il a été détecté que ce mod a été compilé pour la version de tModLoader {0}\nCependant, vous utilisez la version {1}",
+		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		"LoadErrorDependencyMissing": "Mod manquant: {0} requis par {1}",
 		"LoadErrorErrorReadingModFile": "Erreur durant la lecture de {0}",
 		"LoadErrorHashMismatchCorrupted": "Le hachage ne correspond pas, les données ont été modifiées ou corrompues",
@@ -64,7 +67,6 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "Le nom de Mod {0} ne correspond pas au nom d'Assembly {1}",
 		"BuildErrorNamespaceFolderDontMatch": "L'Espace de Noms et le nom de dossier ne correspondent pas. L'Espace de Noms primaire doit correspondre au nom du dossier.",
 		"BuildErrorNoModClass": "Soyez certain d'avoir une classe Mod.",
-		"BuildErrorDotNet46Required": ".NET Framework 4.5 doit être installé pour compiler les mods",
 		"BuildErrorPDBWindowsOnly": "Les documents PDB ne peuvent être générés que pour Windows, sur Windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -229,6 +231,20 @@
 		"MSPublish": "Publier",
 		"MSModSourcesCantHaveSpaces": "(Les noms de dossiers de Mods sources ne peuvent pas avoir d'espace)",
 
+		// Developer Mode UI
+		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		// "DMModCompileUpdate": "ModCompile folder out of date.",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		// "DMModCompileSatisfied": "ModCompile folder up of date.",
+		// "DMDotNetSatisfied": "{0} is installed",
+		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		// "DMVisualStudio": "Visual Studio",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		// "DMTutorial": "Tutorial",
+
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Une erreur est apparue en extrayant {0}",
 		"ExtractHideCodeMessage": "Le Moddeur a choisi de cacher son code source de tModReader.",
@@ -282,5 +298,6 @@
 		"PatreonSetTooltip": "Merci pour votre contribution!",
 		// "WorldGenError": "A problem was encountered during world generation",
 		// "WorldIODataException": "The game encountered a mod data problem for a world.",
+		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
 	}
 }
