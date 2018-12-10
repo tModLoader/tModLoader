@@ -49,6 +49,7 @@ copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%destinationFo
 copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Collections.Immutable.dll" /y
 copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.dll" /y
 copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.CSharp.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%destinationFolder%\tModLoader Windows %version%\ModCompile\Terraria.xml" /y
 
 copy ..\installer2\WindowsInstaller.jar "%destinationFolder%\tModLoader Windows %version%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%destinationFolder%\tModLoader Windows %version%\README.txt" /y
@@ -69,6 +70,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader M
 copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Game.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Graphics.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%destinationFolder%\tModLoader Mac %version%\ModCompile\Terraria.xml" /y
 :: References
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Mac %version%\MP3Sharp.dll" /y
 copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Mac %version%\Ionic.Zip.Reduced.dll" /y
@@ -94,6 +96,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader L
 copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Game.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Graphics.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%destinationFolder%\tModLoader Linux %version%\ModCompile\Terraria.xml" /y
 :: References
 copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
 copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Linux %version%\Ionic.Zip.Reduced.dll" /y

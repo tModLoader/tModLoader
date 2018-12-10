@@ -140,7 +140,14 @@ namespace Terraria.ModLoader.UI
 			const string url = "https://tmodloader.net/dl/ext/ModCompile.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
-			DownloadFile("ModCompile", url, file, () => DeleteFilesAndUnzip(file));
+			DownloadFile("ModCompile", url, file, () => {
+				DeleteFilesAndUnzip(file);
+				var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
+				string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "Terraria.xml");
+				string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
+				File.Copy(originalXMLFile, correctXMLFile, true);
+				File.Delete(originalXMLFile);
+			});
 		}
 
 		private void DirectDownloadRefAssemblies() {
