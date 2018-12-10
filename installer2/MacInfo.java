@@ -28,6 +28,9 @@ public class MacInfo
             "mono/config"
         };
         Installer.tryInstall(files, directory);
+        
+        new File(directory, "tModLoaderServer").setExecutable(true, false);
+        new File(directory, "tModLoaderServer.bin.osx").setExecutable(true, false);
     }
 
     private static File getInstallDir(String homeDir)
