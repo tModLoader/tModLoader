@@ -150,7 +150,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else {
-					if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+					if (displayname.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1 && mod.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}

@@ -266,7 +266,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else {
-					if (mod.DisplayName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+					if (mod.DisplayName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1 && mod.Name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}
