@@ -4,6 +4,8 @@ public class LinuxInfo
 {
     public static void main(String[] args)
     {
+        File directory = getInstallDir();
+        
         String[] files = new String[]
         {
             "Terraria.exe",
@@ -21,7 +23,11 @@ public class LinuxInfo
             "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
             "ModCompile/Microsoft.Xna.Framework.Xact.dll"
         };
-        Installer.tryInstall(files, getInstallDir());
+        Installer.tryInstall(files, directory);
+        
+        new File(directory, "tModLoaderServer").setExecutable(true, false);
+        new File(directory, "tModLoaderServer.bin.x86").setExecutable(true, false);
+        new File(directory, "tModLoaderServer.bin.x86_64").setExecutable(true, false);
     }
 
     private static File getInstallDir()
