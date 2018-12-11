@@ -100,6 +100,33 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Returns whether or not a texture with the specified name exists. texture will be populated with null if not found, and the texture if found.
+		/// </summary>
+		/// <param name="name">The texture name that is requested</param>
+		/// <param name="texture">The texture itself will be output to this</param>
+		/// <returns>True if the texture is found, false otherwise.</returns>
+		internal static bool TryGetTexture(string name, out Texture2D texture) {
+			if (Main.dedServ) {
+				texture = null;
+				return false;
+			}
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			if (modName == "Terraria") {
+				texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+				return true;
+			}
+
+			Mod mod = ModLoader.GetMod(modName);
+			if (mod == null)
+				throw new MissingResourceException("Missing mod: " + name);
+
+			texture = mod.GetTexture(subName);
+			return true;
+		}
+
+		/// <summary>
 		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>

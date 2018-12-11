@@ -60,6 +60,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
+		/// The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored.
+		/// </summary>
+		public virtual string GlowTexture => Texture + "_Glow";
+		/// <summary>
 		/// Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0.
 		/// </summary>
 		public int aiType = 0;
