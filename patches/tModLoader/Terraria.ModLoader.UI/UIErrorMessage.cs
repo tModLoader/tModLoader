@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 
@@ -10,73 +10,68 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIErrorMessage : UIState
 	{
-		private UIMessageBox message;
+		private UIMessageBox messageBox;
 		private UIElement area;
-		private int gotoMenu;
-		private UITextPanel<string> continueButton; // also Retry and Exit
+		private UITextPanel<string> continueButton; // label changes to retry/exit
 		private UITextPanel<string> exitAndDisableAllButton;
-		private string webHelpURL;
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
-		private bool showSkipButton;
-
-		public UIErrorMessage() {
-			if (Main.dedServ) {
-				return;
-			}
-
-			message = new UIMessageBox("");
-			continueButton = new UITextPanel<string>("", 0.7f, true);
-		}
+		
+		private string message;
+		private int gotoMenu;
+		private string webHelpURL;
+		private bool showRetry;
+		private bool showSkip;
 
 		public override void OnInitialize() {
-			area = new UIElement();
-			area.Width.Set(0f, 0.8f);
-			area.Top.Set(200f, 0f);
-			area.Height.Set(-210f, 1f);
-			area.HAlign = 0.5f;
-			message.Width.Set(0f, 1f);
-			message.Height.Set(-110f, 1f);
-			message.HAlign = 0.5f;
-			area.Append(message);
+			area = new UIElement {
+				Width = { Percent = 0.8f },
+				Top = { Pixels = 200 },
+				Height = { Pixels = -210, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			continueButton.Width.Set(-10f, 0.5f);
-			continueButton.Height.Set(50f, 0f);
-			continueButton.Top.Set(-108f, 1f);
-			continueButton.OnMouseOver += UICommon.FadedMouseOver;
-			continueButton.OnMouseOut += UICommon.FadedMouseOut;
+			messageBox = new UIMessageBox("") {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				HAlign = 0.5f
+			};
+			area.Append(messageBox);
+
+			continueButton = new UITextPanel<string>("", 0.7f, true) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 50 },
+				Top = { Pixels = -108, Percent = 1f }
+			};
+			continueButton.WithFadedMouseOver();
 			continueButton.OnClick += ContinueClick;
 			area.Append(continueButton);
 
-			UITextPanel<string> openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
+			var openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
 			openLogsButton.CopyStyle(continueButton);
 			openLogsButton.HAlign = 1f;
-			openLogsButton.OnMouseOver += UICommon.FadedMouseOver;
-			openLogsButton.OnMouseOut += UICommon.FadedMouseOut;
+			openLogsButton.WithFadedMouseOver();
 			openLogsButton.OnClick += OpenFile;
 			area.Append(openLogsButton);
 
 			webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
 			webHelpButton.CopyStyle(openLogsButton);
 			webHelpButton.Top.Set(-55f, 1f);
-			webHelpButton.OnMouseOver += UICommon.FadedMouseOver;
-			webHelpButton.OnMouseOut += UICommon.FadedMouseOut;
+			webHelpButton.WithFadedMouseOver();
 			webHelpButton.OnClick += VisitRegisterWebpage;
 			area.Append(webHelpButton);
 
 			skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
 			skipLoadButton.CopyStyle(continueButton);
 			skipLoadButton.Top.Set(-55f, 1f);
-			skipLoadButton.OnMouseOver += UICommon.FadedMouseOver;
-			skipLoadButton.OnMouseOut += UICommon.FadedMouseOut;
+			skipLoadButton.WithFadedMouseOver();
 			skipLoadButton.OnClick += SkipLoad;
 			area.Append(skipLoadButton);
 
 			exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
 			exitAndDisableAllButton.CopyStyle(skipLoadButton);
 			exitAndDisableAllButton.TextColor = Color.Red;
-			exitAndDisableAllButton.OnMouseOver += UICommon.FadedMouseOver;
-			exitAndDisableAllButton.OnMouseOut += UICommon.FadedMouseOut;
+			exitAndDisableAllButton.WithFadedMouseOver();
 			exitAndDisableAllButton.OnClick += ExitAndDisableAll;
 
 			Append(area);
@@ -84,83 +79,53 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			Netplay.disconnect = true;
-			if (string.IsNullOrEmpty(webHelpURL)) {
-				area.RemoveChild(webHelpButton);
-			}
-			else {
-				area.Append(webHelpButton);
-			}
-
-			if (showSkipButton) {
-				area.Append(skipLoadButton);
-			}
-			else {
-				area.RemoveChild(skipLoadButton);
-			}
-
-			if (gotoMenu < 0) {
-				area.Append(exitAndDisableAllButton);
-			}
-			else {
-				area.RemoveChild(exitAndDisableAllButton);
-			}
-		}
-
-		internal void SetMessage(string text) {
-			message.SetText(text);
-			SetWebHelpURL("");
-			showSkipButton = false;
-		}
-
-		internal void SetWebHelpURL(string text) {
-			this.webHelpURL = text;
-		}
-
-		internal void ShowSkipModsButton(bool skip = true) {
-			this.showSkipButton = skip;
-		}
-
-		internal void SetGotoMenu(int gotoMenu) {
-			this.gotoMenu = gotoMenu;
-			continueButton.SetText(gotoMenu >= 0 ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("tModLoader.Exit"));
+			
+			var continueKey = gotoMenu < 0 ? "Exit" : showRetry ? "Retry" : "Continue";
+			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
+			
+			area.AddOrRemoveChild(webHelpButton, string.IsNullOrEmpty(webHelpURL));
+			area.AddOrRemoveChild(skipLoadButton, showSkip);
+			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
 		}
 
-		internal void ContinueIsRetry() {
-			if (gotoMenu >= 0) {
-				continueButton.SetText(Language.GetTextValue("tModLoader.Retry"));
-			}
+		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool showRetry = false, bool showSkip = false) {
+			this.message = message;
+			this.gotoMenu = gotoMenu;
+			this.webHelpURL = webHelpURL;
+			this.showRetry = showRetry;
+			this.showSkip = showSkip;
+			Main.gameMenu = true;
+			Main.menuMode = Interface.errorMessageID;
 		}
 
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10);
-			if (gotoMenu < 0) {
+			if (gotoMenu < 0)
 				Environment.Exit(0);
-			}
 
 			Main.menuMode = gotoMenu;
 		}
 
 		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement) {
-			var enabledMods = new HashSet<string>(ModLoader.EnabledMods);
-			foreach (var mod in enabledMods) {
+			foreach (var mod in ModLoader.EnabledMods)
 				ModLoader.DisableMod(mod);
-			}
+
 			Environment.Exit(0);
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			Main.PlaySound(SoundID.MenuOpen);
 			Process.Start(Logging.LogPath);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(ID.SoundID.MenuOpen);
+			Main.PlaySound(SoundID.MenuOpen);
 			Process.Start(webHelpURL);
 		}
 
 		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(ID.SoundID.MenuOpen);
+			Main.PlaySound(SoundID.MenuOpen);
 			ModLoader.skipLoad = true;
 			Main.menuMode = gotoMenu;
 		}

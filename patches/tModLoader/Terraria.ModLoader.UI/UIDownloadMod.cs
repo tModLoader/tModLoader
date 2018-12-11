@@ -6,6 +6,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	//TODO: yet another progress UI, this time with cancel button
 	internal class UIDownloadMod : UIState
 	{
 		private UILoadProgress loadProgress;
@@ -13,24 +14,23 @@ namespace Terraria.ModLoader.UI
 		private Action cancelAction;
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress();
-			loadProgress.Width.Set(0f, 0.8f);
-			loadProgress.MaxWidth.Set(600f, 0f);
-			loadProgress.Height.Set(150f, 0f);
-			loadProgress.HAlign = 0.5f;
-			loadProgress.VAlign = 0.5f;
-			loadProgress.Top.Set(10f, 0f);
-			base.Append(loadProgress);
+			loadProgress = new UILoadProgress {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Height = { Pixels = 150 },
+				HAlign = 0.5f,
+				VAlign = 0.5f,
+				Top = { Pixels = 10 }
+			};
+			Append(loadProgress);
 
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
-				HAlign = 0.5f
-			};
-			cancel.Top.Set(170f, 0f);
-			cancel.OnMouseOver += UICommon.FadedMouseOver;
-			cancel.OnMouseOut += UICommon.FadedMouseOut;
+				HAlign = 0.5f,
+				Top = { Pixels = 170 }
+			}.WithFadedMouseOver();
 			cancel.OnClick += CancelClick;
-			base.Append(cancel);
+			Append(cancel);
 		}
 
 		public override void OnActivate() {

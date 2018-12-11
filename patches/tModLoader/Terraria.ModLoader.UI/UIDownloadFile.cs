@@ -9,6 +9,9 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	//TODO: downloads and web exceptions need logging
+	//TODO: merge all progress/download UIs
+	//TODO: of all the download UIs, this one has been refactored the best
 	internal class UIDownloadFile : UIState
 	{
 		private UILoadProgress loadProgress;
@@ -16,47 +19,42 @@ namespace Terraria.ModLoader.UI
 		private string url;
 		private string file;
 		private Action success;
-		private readonly Action failure;
+		private Action failure; //TODO unused?
 		private Action cancelAction;
 		private WebClient client;
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress();
-			loadProgress.Width.Set(0f, 0.8f);
-			loadProgress.MaxWidth.Set(600f, 0f);
-			loadProgress.Height.Set(150f, 0f);
-			loadProgress.HAlign = 0.5f;
-			loadProgress.VAlign = 0.5f;
-			loadProgress.Top.Set(10f, 0f);
-			base.Append(loadProgress);
+			loadProgress = new UILoadProgress {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Height = { Pixels = 150 },
+				HAlign = 0.5f,
+				VAlign = 0.5f,
+				Top = { Pixels = 10 }
+			};
+			Append(loadProgress);
 
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
-				HAlign = 0.5f
-			};
-			cancel.Top.Set(170f, 0f);
-			cancel.OnMouseOver += UICommon.FadedMouseOver;
-			cancel.OnMouseOut += UICommon.FadedMouseOut;
+				HAlign = 0.5f,
+				Top = { Pixels = 170 }
+			}.WithFadedMouseOver();
 			cancel.OnClick += CancelClick;
-			base.Append(cancel);
+			Append(cancel);
 		}
 
 		public override void OnActivate() {
 			loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", name));
 			loadProgress.SetProgress(0f);
-			if (!UIModBrowser.PlatformSupportsTls12) {
-				Interface.errorMessage.SetMessage("TLS 1.2 not supported on this computer."); // github releases
-				Interface.errorMessage.SetGotoMenu(0);
-				Main.gameMenu = true;
-				Main.menuMode = Interface.errorMessageID;
+			if (!UIModBrowser.PlatformSupportsTls12) { // Needed for downloads from Github
+				Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
 				return;
 			}
-			if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
-			{
-				ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
-			}
+			
+			ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
+			
 			client = new WebClient();
-			ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
+			ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => true);
 			SetCancel(client.CancelAsync);
 			client.DownloadProgressChanged += Client_DownloadProgressChanged;
 			client.DownloadFileCompleted += Client_DownloadFileCompleted;
@@ -64,40 +62,25 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e) {
-			if (e.Error != null) {
-				if (e.Cancelled) {
-					Main.menuMode = 0;
-				}
-				else {
-					// TODO: Think about what message to put here.
-					HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
-					if (httpStatusCode == HttpStatusCode.ServiceUnavailable) {
-						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBExceededBandwidth"));
-						Interface.errorMessage.SetGotoMenu(0);
-						Main.gameMenu = true;
-						Main.menuMode = Interface.errorMessageID;
-					}
-					else {
-						Interface.errorMessage.SetMessage(Language.GetTextValue("tModLoader.MBUnknownMBError"));
-						Interface.errorMessage.SetGotoMenu(0);
-						Main.gameMenu = true;
-						Main.menuMode = Interface.errorMessageID;
-					}
-				}
-				if (File.Exists(file)) {
-					File.Delete(file);
-				}
-			}
-			else if (!e.Cancelled) {
-				client.Dispose();
-				client = null;
+			client.Dispose();
+			client = null;
+
+			if (e.Error == null && !e.Cancelled) {
 				success();
+				return;
+			}
+
+			if (e.Cancelled) {
+				Main.menuMode = 0;
 			}
 			else {
-				if (File.Exists(file)) {
-					File.Delete(file);
-				}
+				// TODO: Think about what message to put here.
+				var errorKey = GetHttpStatusCode(e.Error) == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
+				Interface.errorMessage.Show(Language.GetTextValue("tModLoader."+errorKey), 0);
 			}
+
+			if (File.Exists(file))
+				File.Delete(file);
 		}
 
 		private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
@@ -125,15 +108,7 @@ namespace Terraria.ModLoader.UI
 			cancelAction?.Invoke();
 		}
 
-		private HttpStatusCode GetHttpStatusCode(System.Exception err) {
-			if (err is WebException) {
-				WebException we = (WebException)err;
-				if (we.Response is HttpWebResponse) {
-					HttpWebResponse response = (HttpWebResponse)we.Response;
-					return response.StatusCode;
-				}
-			}
-			return 0;
-		}
+		private HttpStatusCode GetHttpStatusCode(Exception err) =>
+			err is WebException we && we.Response is HttpWebResponse response ? response.StatusCode : 0;
 	}
 }

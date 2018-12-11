@@ -40,96 +40,98 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 
 		public override void OnInitialize() {
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+			uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIPanel.PaddingTop = 0f;
+			uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground,
+				PaddingTop = 0f
+			};
 			uIElement.Append(uIPanel);
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modList = new UIList();
-			modList.Width.Set(-25f, 1f);
-			modList.Height.Set(-50f, 1f);
-			modList.Top.Set(50f, 0f);
-			modList.ListPadding = 5f;
+			modList = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
+				ListPadding = 5f
+			};
 			uIPanel.Append(modList);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(-50f, 1f);
-			uIScrollbar.Top.Set(50f, 0f);
-			uIScrollbar.HAlign = 1f;
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
 			modList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
-				HAlign = 0.5f
-			};
-			uIHeaderTexTPanel.Top.Set(-35f, 0f);
-			uIHeaderTexTPanel.SetPadding(15f);
-			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
+			var uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTexTPanel);
-			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll"), 1f, false) {
-				TextColor = Color.Green
-			};
-			buttonEA.Width.Set(-10f, 1f / 3f);
-			buttonEA.Height.Set(40f, 0f);
-			buttonEA.VAlign = 1f;
-			buttonEA.Top.Set(-65f, 0f);
-			buttonEA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
-			buttonEA.OnClick += this.EnableAll;
+
+			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll")) {
+				TextColor = Color.Green,
+				Width = new StyleDimension(-10f, 1f / 3f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
+			buttonEA.OnClick += EnableAll;
 			uIElement.Append(buttonEA);
-			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"), 1f, false) {
-				TextColor = Color.Red
-			};
+
+			// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
+			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"));
 			buttonDA.CopyStyle(buttonEA);
+			buttonDA.TextColor = Color.Red;
 			buttonDA.HAlign = 0.5f;
-			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonDA.OnMouseOut += UICommon.FadedMouseOut;
-			buttonDA.OnClick += this.DisableAll;
+			buttonDA.WithFadedMouseOver();
+			buttonDA.OnClick += DisableAll;
 			uIElement.Append(buttonDA);
-			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"), 1f, false);
+
+			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
-			buttonRM.OnMouseOver += UICommon.FadedMouseOver;
-			buttonRM.OnMouseOut += UICommon.FadedMouseOut;
+			buttonDA.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
-			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
 			buttonB.CopyStyle(buttonEA);
-			buttonB.Top.Set(-20f, 0f);
-			buttonB.OnMouseOver += UICommon.FadedMouseOver;
-			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.Top.Pixels = -20;
+			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
+
 			uIElement.Append(buttonB);
-			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"));
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
-			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
-			buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
+			buttonOMF.WithFadedMouseOver();
 			buttonOMF.OnClick += OpenModsFolder;
 			uIElement.Append(buttonOMF);
 
-			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-			UIElement upperMenuContainer = new UIElement();
-			upperMenuContainer.Width.Set(0f, 1f);
-			upperMenuContainer.Height.Set(32f, 0f);
-			upperMenuContainer.Top.Set(10f, 0f);
+			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			var upperMenuContainer = new UIElement {
+				Width = { Percent = 1f },
+				Height = { Pixels = 32 },
+				Top = { Pixels = 10 }
+			};
 
 			UICycleImage toggleImage;
 			for (int j = 0; j < 3; j++) {
-				if (j == 0) {
+				if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 					toggleImage.setCurrentState((int)sortMode);
 					toggleImage.OnClick += (a, b) => {
@@ -165,28 +167,32 @@ namespace Terraria.ModLoader.UI
 						updateNeeded = true;
 					};
 				}
-				toggleImage.Left.Set((float)(j * 36 + 8), 0f);
+				toggleImage.Left.Pixels = j * 36 + 8;
 				_categoryButtons.Add(toggleImage);
 				upperMenuContainer.Append(toggleImage);
 			}
 
-			UIPanel filterTextBoxBackground = new UIPanel();
-			filterTextBoxBackground.Top.Set(0f, 0f);
-			filterTextBoxBackground.Left.Set(-170f, 1f);
-			filterTextBoxBackground.Width.Set(135f, 0f);
-			filterTextBoxBackground.Height.Set(40f, 0f);
-			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.SetText("");
+			var filterTextBoxBackground = new UIPanel {
+				Top = { Percent = 0f },
+				Left = { Pixels = -170, Percent = 1f },
+				Width = { Pixels = 135 },
+				Height = { Pixels = 40 }
+			};
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
-			filterTextBox.Top.Set(5f, 0f);
-			filterTextBox.Left.Set(-160f, 1f);
-			filterTextBox.Width.Set(160f, 0f);
-			filterTextBox.Height.Set(20f, 0f);
-			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
+				Top = { Pixels = 5 },
+				Left = { Pixels = -160, Percent = 1f },
+				Width = { Pixels = 160 },
+				Height = { Pixels = 20 }
+			};
+			filterTextBox.OnTextChange += (a, b) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 
-			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
+			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
+				Left = { Pixels = 545 }
+			};
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
@@ -196,15 +202,13 @@ namespace Terraria.ModLoader.UI
 				searchFilterMode = searchFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 
-			buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"), 1f, false);
+			buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"));
 			buttonMP.CopyStyle(buttonOMF);
 			buttonMP.HAlign = 1f;
-			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
-			buttonMP.OnMouseOut += UICommon.FadedMouseOut;
+			buttonMP.WithFadedMouseOver();
 			buttonMP.OnClick += GotoModPacksMenu;
 			uIElement.Append(buttonMP);
 
@@ -219,9 +223,8 @@ namespace Terraria.ModLoader.UI
 
 		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (items.Count > 0) {
+			if (items.Count > 0)
 				ModLoader.Reload();
-			}
 		}
 
 		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
@@ -257,12 +260,9 @@ namespace Terraria.ModLoader.UI
 				needToRemoveLoading = false;
 				uIPanel.RemoveChild(uiLoader);
 			}
-			if (!updateNeeded) {
-				return;
-			}
-
+			if (!updateNeeded) return;
 			updateNeeded = false;
-			filter = filterTextBox.currentString;
+			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
@@ -289,6 +289,7 @@ namespace Terraria.ModLoader.UI
 							text = "None";
 							break;
 					}
+					//TODO common pattern
 					float x = Main.fontMouseText.MeasureString(text).X;
 					Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
 					if (vector.Y > (float)(Main.screenHeight - 30)) {
@@ -314,10 +315,6 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Populate() {
-			if (SynchronizationContext.Current == null) {
-				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			}
-
 			Task.Factory
 				.StartNew(ModOrganizer.FindMods)
 				.ContinueWith(task => {

@@ -10,6 +10,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	//TODO common 'Item' code
 	internal class UIModPackItem : UIPanel
 	{
 		// Name -- > x in list disabled
@@ -61,82 +62,79 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
-			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
-			this.Height.Set(126f, 0f);
-			this.Width.Set(0f, 1f);
-			base.SetPadding(6f);
+			BorderColor = new Color(89, 116, 213) * 0.7f;
+			dividerTexture = TextureManager.Load("Images/UI/Divider");
+			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+			Height.Pixels = 126;
+			Width.Percent = 1f;
+			SetPadding(6f);
 
-			this.modName = new UIText(name, 1f, false);
-			this.modName.Left.Set(10f, 0f);
-			this.modName.Top.Set(5f, 0f);
-			base.Append(this.modName);
+			modName = new UIText(name) {
+				Left = { Pixels = 10 },
+				Top = { Pixels = 5 }
+			};
+			Append(modName);
 
-			UIAutoScaleTextTextPanel<string> viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList"), 1f, false);
-			viewListButton.Width.Set(100f, 0f);
-			viewListButton.Height.Set(40f, 0f);
-			viewListButton.Left.Set(407f, 0f);
-			viewListButton.Top.Set(40f, 0f);
+			var viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList")) {
+				Width = { Pixels = 100 },
+				Height = { Pixels = 40 },
+				Left = { Pixels = 407 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
 			viewListButton.PaddingTop -= 2f;
 			viewListButton.PaddingBottom -= 2f;
-			viewListButton.OnMouseOver += UICommon.FadedMouseOver;
-			viewListButton.OnMouseOut += UICommon.FadedMouseOut;
 			viewListButton.OnClick += ViewListInfo;
-			base.Append(viewListButton);
+			Append(viewListButton);
 
-			enableListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList"), 1f, false);
-			enableListButton.Width.Set(151f, 0f);
-			enableListButton.Height.Set(36f, 0f);
-			enableListButton.Left.Set(248f, 0f);
-			enableListButton.Top.Set(40f, 0f);
+			enableListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList")) {
+				Width = { Pixels = 151 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 248 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
 			enableListButton.PaddingTop -= 2f;
 			enableListButton.PaddingBottom -= 2f;
-			enableListButton.OnMouseOver += UICommon.FadedMouseOver;
-			enableListButton.OnMouseOut += UICommon.FadedMouseOut;
 			enableListButton.OnClick += EnableList;
-			base.Append(enableListButton);
+			Append(enableListButton);
 
-			enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList"), 1f, false);
-			enableListOnlyButton.Width.Set(190f, 0f);
-			enableListOnlyButton.Height.Set(36f, 0f);
-			enableListOnlyButton.Left.Set(50f, 0f);
-			enableListOnlyButton.Top.Set(40f, 0f);
+			enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList")) {
+				Width = { Pixels = 190 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 50 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
 			enableListOnlyButton.PaddingTop -= 2f;
 			enableListOnlyButton.PaddingBottom -= 2f;
-			enableListOnlyButton.OnMouseOver += UICommon.FadedMouseOver;
-			enableListOnlyButton.OnMouseOut += UICommon.FadedMouseOut;
 			enableListOnlyButton.OnClick += EnableListOnly;
-			base.Append(enableListOnlyButton);
+			Append(enableListOnlyButton);
 
-			viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser"), 1f, false);
-			viewInModBrowserButton.Width.Set(246f, 0f);
-			viewInModBrowserButton.Height.Set(36f, 0f);
-			viewInModBrowserButton.Left.Set(50f, 0f);
-			viewInModBrowserButton.Top.Set(80f, 0f);
+			viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser")) {
+				Width = { Pixels = 246 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 50 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
 			viewInModBrowserButton.PaddingTop -= 2f;
 			viewInModBrowserButton.PaddingBottom -= 2f;
-			viewInModBrowserButton.OnMouseOver += UICommon.FadedMouseOver;
-			viewInModBrowserButton.OnMouseOut += UICommon.FadedMouseOut;
 			viewInModBrowserButton.OnClick += ViewInModBrowser;
-			base.Append(viewInModBrowserButton);
+			Append(viewInModBrowserButton);
 
-			updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled"), 1f, false);
-			updateListWithEnabledButton.Width.Set(225f, 0f);
-			updateListWithEnabledButton.Height.Set(36f, 0f);
-			updateListWithEnabledButton.Left.Set(304f, 0f);
-			updateListWithEnabledButton.Top.Set(80f, 0f);
+			updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
 			updateListWithEnabledButton.PaddingTop -= 2f;
 			updateListWithEnabledButton.PaddingBottom -= 2f;
-			updateListWithEnabledButton.OnMouseOver += UICommon.FadedMouseOver;
-			updateListWithEnabledButton.OnMouseOut += UICommon.FadedMouseOut;
 			updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(filename);
 			Append(updateListWithEnabledButton);
 
-			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete"));
-			deleteButton.Top.Set(40f, 0f);
-			deleteButton.OnClick += this.DeleteButtonClick;
-			base.Append(deleteButton);
+			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete")) {
+				Top = { Pixels = 40 }
+			};
+			deleteButton.OnClick += DeleteButtonClick;
+			Append(deleteButton);
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
@@ -173,7 +171,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			this.BackgroundColor = new Color(73, 94, 171);
+			this.BackgroundColor = UICommon.defaultUIBlue;
 			this.BorderColor = new Color(89, 116, 213);
 		}
 
@@ -196,9 +194,8 @@ namespace Terraria.ModLoader.UI
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 			foreach (string modname in modListItem.mods) {
-				if (UIModPacks.mods.Contains(modname)) {
+				if (UIModPacks.mods.Contains(modname))
 					ModLoader.EnableMod(modname);
-				}
 			}
 			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
@@ -218,7 +215,7 @@ namespace Terraria.ModLoader.UI
 		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Interface.modBrowser.Activate();
-			Interface.modBrowser.filterTextBox.currentString = "";
+			Interface.modBrowser.filterTextBox.Text = "";
 			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
 			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
@@ -236,9 +233,8 @@ namespace Terraria.ModLoader.UI
 				ModLoader.DisableMod(item);
 			}
 			foreach (string modname in modListItem.mods) {
-				if (UIModPacks.mods.Contains(modname)) {
+				if (UIModPacks.mods.Contains(modname))
 					ModLoader.EnableMod(modname);
-				}
 			}
 			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 

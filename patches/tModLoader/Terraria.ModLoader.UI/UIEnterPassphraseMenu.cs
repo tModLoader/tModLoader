@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -12,72 +11,70 @@ namespace Terraria.ModLoader.UI
 		readonly string registerURL = "http://javid.ddns.net/tModLoader/register.php";
 		public UITextPanel<string> uITextPanel;
 		internal UIInputTextField passcodeTextField;
-		private int gotoMenu = 0;
+		private int gotoMenu;
 
 		public override void OnInitialize() {
-			UIElement uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+			var uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			UIPanel uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIPanel.PaddingTop = 0f;
+			var uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground,
+				PaddingTop = 0f
+			};
 			uIElement.Append(uIPanel);
 
 			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true) {
-				HAlign = 0.5f
-			};
-			uITextPanel.Top.Set(-35f, 0f);
-			uITextPanel.SetPadding(15f);
-			uITextPanel.BackgroundColor = new Color(73, 94, 171);
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15);
 			uIElement.Append(uITextPanel);
-
-			UITextPanel<string> button = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			button.Width.Set(-10f, 0.5f);
-			button.Height.Set(25f, 0f);
-			button.VAlign = 1f;
-			button.Top.Set(-65f, 0f);
-			button.OnMouseOver += UICommon.FadedMouseOver;
-			button.OnMouseOut += UICommon.FadedMouseOut;
+			
+			var button = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
 			button.OnClick += BackClick;
 			uIElement.Append(button);
 
-			UITextPanel<string> button2 = new UITextPanel<string>(Language.GetTextValue("UI.Submit"), 1f, false);
-			button2.CopyStyle(button);
-			button2.HAlign = 1f;
-			button2.OnMouseOver += UICommon.FadedMouseOver;
-			button2.OnMouseOut += UICommon.FadedMouseOut;
-			button2.OnClick += OKClick;
-			uIElement.Append(button2);
+			button = new UITextPanel<string>(Language.GetTextValue("UI.Submit"));
+			button.CopyStyle(button);
+			button.HAlign = 1f;
+			button.WithFadedMouseOver();
+			button.OnClick += OKClick;
+			uIElement.Append(button);
 
-			UITextPanel<string> button3 = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"), 1f, false);
-			button3.CopyStyle(button);
-			button3.Width.Set(0f, 1f);
-			button3.Top.Set(-20f, 0f);
-			button3.OnMouseOver += UICommon.FadedMouseOver;
-			button3.OnMouseOut += UICommon.FadedMouseOut;
-			button3.OnClick += VisitRegisterWebpage;
-			uIElement.Append(button3);
+			button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"));
+			button.CopyStyle(button);
+			button.Width.Percent = 1f;
+			button.Top.Pixels = -20;
+			button.WithFadedMouseOver();
+			button.OnClick += VisitRegisterWebpage;
+			uIElement.Append(button);
 
 			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase")) {
 				HAlign = 0.5f,
-				VAlign = 0.5f
+				VAlign = 0.5f,
+				Left = { Pixels = -100, Percent = 0 }
 			};
-			passcodeTextField.Left.Set(-100, 0);
-			passcodeTextField.OnTextChange += new UIInputTextField.EventHandler(OnTextChange);
+			passcodeTextField.OnTextChange += OnTextChange;
 			uIPanel.Append(passcodeTextField);
 
-			base.Append(uIElement);
+			Append(uIElement);
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modBrowserPassphrase = passcodeTextField.currentString.Trim();
+			ModLoader.modBrowserPassphrase = passcodeTextField.Text.Trim();
 			Main.SaveSettings();
 #if GOG
 			Main.menuMode = Interface.enterSteamIDMenuID;

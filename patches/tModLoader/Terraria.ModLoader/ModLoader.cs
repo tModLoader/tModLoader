@@ -239,16 +239,11 @@ namespace Terraria.ModLoader
 				}
 			}
 			else {
-				Interface.errorMessage.SetMessage(msg);
-				Interface.errorMessage.SetGotoMenu(fatal ? -1 : Interface.reloadModsID);
-				if (!string.IsNullOrEmpty(e.HelpLink))
-					Interface.errorMessage.SetWebHelpURL(e.HelpLink);
-				if (!fatal)
-					Interface.errorMessage.ShowSkipModsButton();
-				if (continueIsRetry)
-					Interface.errorMessage.ContinueIsRetry();
-
-				Main.menuMode = Interface.errorMessageID;
+				Interface.errorMessage.Show(msg,
+					gotoMenu: fatal ? -1 : Interface.reloadModsID,
+					webHelpURL: e.HelpLink,
+					showRetry: continueIsRetry,
+					showSkip: !fatal);
 			}
 		}
 

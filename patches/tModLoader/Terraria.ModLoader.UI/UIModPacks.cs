@@ -22,63 +22,62 @@ namespace Terraria.ModLoader.UI
 		internal static string[] mods;
 
 		public override void OnInitialize() {
-			UIElement uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+			var uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			scrollPanel = new UIPanel();
-			scrollPanel.Width.Set(0f, 1f);
-			scrollPanel.Height.Set(-65f, 1f);
-			scrollPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			scrollPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -65, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
+			};
 			uIElement.Append(scrollPanel);
 
-			modListList = new UIList();
-			modListList.Width.Set(-25f, 1f);
-			modListList.Height.Set(0f, 1f);
-			modListList.ListPadding = 5f;
+			modListList = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f },
+				ListPadding = 5f
+			};
 			scrollPanel.Append(modListList);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
-			uIScrollbar.HAlign = 1f;
+			var uIScrollbar = new UIScrollbar {
+				Height = { Percent = 1f },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			scrollPanel.Append(uIScrollbar);
 			modListList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true) {
-				HAlign = 0.5f
-			};
-			titleTextPanel.Top.Set(-35f, 0f);
-			titleTextPanel.SetPadding(15f);
-			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
+			var titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(titleTextPanel);
 
-			UIAutoScaleTextTextPanel<string> backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			backButton.Width.Set(-10f, 1f / 2f);
-			backButton.Height.Set(40f, 0f);
-			backButton.VAlign = 1f;
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = new StyleDimension(-10f, 1f / 2f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			UIAutoScaleTextTextPanel<string> saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"), 1f, false) {
-				TextColor = Color.Green
-			};
+			var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 			saveNewButton.CopyStyle(backButton);
+			saveNewButton.TextColor = Color.Green;
 			saveNewButton.HAlign = 1f;
-			saveNewButton.OnMouseOver += UICommon.FadedMouseOver;
-			saveNewButton.OnMouseOut += UICommon.FadedMouseOut;
+			saveNewButton.WithFadedMouseOver();
 			saveNewButton.OnClick += SaveNewModList;
 			uIElement.Append(saveNewButton);
 
-			base.Append(uIElement);
+			Append(uIElement);
 		}
 
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
@@ -116,10 +115,6 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			scrollPanel.Append(uiLoader);
 			modListList.Clear();
-			if (SynchronizationContext.Current == null) {
-				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			}
-
 			Task.Factory
 				.StartNew(delegate {
 					mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
@@ -143,9 +138,10 @@ namespace Terraria.ModLoader.UI
 							modListList.Add(modItem);
 						}
 						catch {
-							UIAutoScaleTextTextPanel<string> badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modListFilePath)));
-							badModPackMessage.Width.Set(0, 1);
-							badModPackMessage.Height.Set(50, 0);
+							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modListFilePath))) {
+								Width = { Percent = 1 },
+								Height = { Pixels = 50, Percent = 0 }
+							};
 							modListList.Add(badModPackMessage);
 						}
 					}

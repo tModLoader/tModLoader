@@ -34,17 +34,18 @@ namespace Terraria.ModLoader.UI
 			this._drawHeight = height;
 			this.textureOffsetX = textureOffsetX;
 			this.textureOffsetY = textureOffsetY;
-			this.Width.Set((float)width, 0f);
-			this.Height.Set((float)height, 0f);
+			this.Width.Pixels = width;
+			this.Height.Pixels = height;
 			this.states = states;
 			this.padding = padding;
 		}
 
+		// TODO could be cleaned up, perhaps a better Draw overload exists, also can we not just use the actual width of the element, or the Width set by the style rather than _drawWidth
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			CalculatedStyle dimensions = base.GetDimensions();
+			CalculatedStyle dimensions = GetDimensions();
 			Point point = new Point(textureOffsetX, textureOffsetY + ((padding + _drawHeight) * currentState));
-			Color color = base.IsMouseHovering ? Color.White : Color.Silver;
-			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, this._drawWidth, this._drawHeight)), color);
+			Color color = IsMouseHovering ? Color.White : Color.Silver;
+			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, _drawWidth, _drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, _drawWidth, _drawHeight)), color);
 		}
 
 		public override void Click(UIMouseEvent evt) {

@@ -162,11 +162,7 @@ namespace Terraria.ModLoader
 					msg += "\n    " + mod;
 
 				Logging.tML.Warn(msg);
-				Interface.errorMessage.SetMessage(msg);
-				Interface.errorMessage.SetGotoMenu(0);
-				Main.gameMenu = true;
-				Main.menuMode = Interface.errorMessageID;
-				return;
+				Interface.errorMessage.Show(msg, 0);
 			}
 		}
 

@@ -6,19 +6,21 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	// TODO: yet another progress UI?, otherwise it's fine, no cancel button in this one
 	internal class UIBuildMod : UIState, ModCompile.IBuildStatus
 	{
 		private UILoadProgress loadProgress;
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress();
-			loadProgress.Width.Set(0f, 0.8f);
-			loadProgress.MaxWidth.Set(600f, 0f);
-			loadProgress.Height.Set(150f, 0f);
-			loadProgress.HAlign = 0.5f;
-			loadProgress.VAlign = 0.5f;
-			loadProgress.Top.Set(10f, 0f);
-			base.Append(loadProgress);
+			loadProgress = new UILoadProgress {
+				Top = { Pixels = 10 },
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Height = { Pixels = 150 },
+				HAlign = 0.5f,
+				VAlign = 0.5f
+			};
+			Append(loadProgress);
 		}
 
 		public void SetProgress(int num, int max) {
@@ -39,13 +41,10 @@ namespace Terraria.ModLoader.UI
 			Logging.tML.Error(msg, e);
 
 			msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "") + "\n" + msg;
-			if (e != null) {
+			if (e != null)
 				msg += "\n" + e;
-			}
 
-			Interface.errorMessage.SetMessage(msg);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
-			Main.menuMode = Interface.errorMessageID;
+			Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
 		}
 
 		public void LogCompileErrors(string dllName, CompilerErrorCollection errors, string hint) {
@@ -53,20 +52,16 @@ namespace Terraria.ModLoader.UI
 			CompilerError displayError = null;
 			foreach (CompilerError error in errors) {
 				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, error, null);
-				if (error.IsWarning) {
+				if (error.IsWarning)
 					warnings++;
-				}
-				else if (displayError == null) {
+				else if (displayError == null)
 					displayError = error;
-				}
 			}
 			var msg = Language.GetTextValue("tModLoader.CompileError", dllName, errors.Count - warnings, warnings);
-			if (hint != null) {
+			if (hint != null)
 				msg += "\n" + hint;
-			}
 
-			Interface.errorMessage.SetMessage(msg + "\n\n" + displayError);
-			Interface.errorMessage.SetGotoMenu(Interface.modSourcesID);
+			Interface.errorMessage.Show(msg + "\n\n" + displayError, Interface.modSourcesID);
 		}
 	}
 }
