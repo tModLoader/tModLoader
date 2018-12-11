@@ -114,16 +114,21 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 			if (modName == "Terraria") {
-				texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
-				return true;
+				if (File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb")) {
+					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+					return true;
+				}
+				texture = null;
+				return false;
 			}
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null)
-				throw new MissingResourceException("Missing mod: " + name);
+			if (mod == null) {
+				texture = null;
+				return false;
+			}
 
-			texture = mod.GetTexture(subName);
-			return true;
+			return mod.textures.TryGetValue(subName, out texture);
 		}
 
 		/// <summary>

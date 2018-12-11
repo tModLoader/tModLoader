@@ -2413,6 +2413,17 @@
  						{
  							int num329 = (int)projectile.ai[1];
  							Vector2 center = projectile.Center;
+@@ -29605,6 +_,10 @@
+ 						if (projectile.type == 473)
+ 						{
+ 							Main.spriteBatch.Draw(Main.projectileTexture[projectile.type], new Vector2(projectile.position.X - Main.screenPosition.X + num149 + (float)num148, projectile.position.Y - Main.screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.projectileTexture[projectile.type].Width, Main.projectileTexture[projectile.type].Height)), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num149, (float)(projectile.height / 2 + num147)), projectile.scale, spriteEffects, 0f);
++						}
++						ModProjectile modProjectile = projectile.modProjectile;
++						if(modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture)) {
++							Main.spriteBatch.Draw(glowTexture, new Vector2(projectile.position.X - Main.screenPosition.X + num149 + (float)num148, projectile.position.Y - Main.screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.projectileTexture[projectile.type].Width, Main.projectileTexture[projectile.type].Height)), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num149, (float)(projectile.height / 2 + num147)), projectile.scale, spriteEffects, 0f);
+ 						}
+ 					}
+ 					if (projectile.type == 106)
 @@ -29753,6 +_,7 @@
  					}
  				}
