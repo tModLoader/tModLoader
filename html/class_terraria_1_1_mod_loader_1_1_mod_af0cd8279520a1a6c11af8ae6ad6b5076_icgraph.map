@@ -1,0 +1,7 @@
+<map id="Terraria.ModLoader.Mod.GetTexture" name="Terraria.ModLoader.Mod.GetTexture">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a556b4c3c23ea56d8047846905927a9fb" title="Returns whether or not a texture with the specified name exists. " alt="" coords="243,70,456,111"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a62fce9d3fcd8d1283f01b556b9238326" title="Adds an equipment texture of the specified type, internal name, and associated item to your mod..." alt="" coords="506,5,697,46"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should..." alt="" coords="506,70,697,111"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af" title="Automatically sets certain static defaults. Override this if you do not want the properties to be set..." alt="" coords="505,135,698,177"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203" title="Terraria.ModLoader.Mod.Load\lEffect" alt="" coords="747,135,941,177"/>
+</map>

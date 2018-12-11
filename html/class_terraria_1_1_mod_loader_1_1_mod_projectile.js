@@ -51,6 +51,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
     [ "drawOffsetX", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a78c1b4f954b67d23b6692c347ca73f28", null ],
     [ "drawOriginOffsetX", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aab3b3581937574767ef5f7833660d996", null ],
     [ "drawOriginOffsetY", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a80f950415f7742bed989ef840326fb1d", null ],
+    [ "GlowTexture", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5f4331c9f0cc0fefb578daec0cb106b7", null ],
     [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a70c635bc40995a07e6d09f099f8d655c", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab54cf738c24778cfec13031c9acd67a5", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa9e61a235b78bcd2c72e6e78278cd70e", null ],

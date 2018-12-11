@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a94b61e2a941fb78ded3f0e3eb6f5d707":[1,0,0,0,68,191],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a9592d69cbbbb3fdf6b3407298af537a6":[1,0,0,0,68,113],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a95f86d42e5fa03364dca33f83e50faed":[1,0,0,0,68,99],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a99e7986e0a5d78f8f582217e88c54b52":[1,0,0,0,68,152],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a5c6bbdd691ae3be35f01ca1da8d082ee":[1,0,0,0,72,4],
 "class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a68a56cda9344bb4250af31e9d48279c4":[1,0,0,0,72,0],
 "class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a7a999f3e7cdd6077050c719114785cc1":[1,0,0,0,72,5],
-"class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a81185c5e3280ba8404b1d63c0d538a7f":[1,0,0,0,72,9],
-"class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a8d10dc01c3f3243a24cba0b3d19a6970":[1,0,0,0,72,2]
+"class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a81185c5e3280ba8404b1d63c0d538a7f":[1,0,0,0,72,9]
 };
