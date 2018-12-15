@@ -79,7 +79,9 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			Netplay.disconnect = true;
-			
+
+			messageBox.SetText(message);
+
 			var continueKey = gotoMenu < 0 ? "Exit" : showRetry ? "Retry" : "Continue";
 			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
