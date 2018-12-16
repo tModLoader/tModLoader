@@ -1098,5 +1098,63 @@ namespace Terraria.ModLoader
 			if (netMethods == 1)
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 		}
+
+		private static HookList HookPostSellItem = AddHook<Action<NPC, Item>>(p => p.PostSellItem);
+
+		public static void PostSellItem(Player player, NPC npc, Item item)
+		{
+			foreach (int index in HookPostSellItem.arr)
+			{
+				player.modPlayers[index].PostSellItem(npc, item);
+			}
+		}
+
+		private delegate bool DelegateModifySellItem(NPC npc, ref Item item);
+		private static HookList HookModifySellItem = AddHook<DelegateModifySellItem>(p => p.ModifySellItem);
+
+		public static bool ModifySellItem(Player player, NPC npc, ref Item item)
+		{
+			foreach (int index in HookModifySellItem.arr)
+			{
+				if (!player.modPlayers[index].ModifySellItem(npc, ref item)) return false;
+			}
+			return true;
+		}
+
+		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item>>(p => p.PostBuyItem);
+
+		public static void PostBuyItem(Player player, NPC npc, Item item) {
+			foreach (int index in HookPostBuyItem.arr) {
+				player.modPlayers[index].PostBuyItem(npc, item);
+			}
+		}
+
+		private static HookList HookModifyBuyItem = AddHook<Func<NPC, Item, bool>>(p => p.ModifyBuyItem);
+
+		public static bool ModifyBuyItem(Player player, NPC npc, Item item) {
+			foreach (int index in HookPostBuyItem.arr) {
+				if (!player.modPlayers[index].ModifyBuyItem(npc, item)) return false;
+			}
+			return true;
+		}
+
+		private static HookList HookPostNurseHeal = AddHook<Action<NPC, int, int>>(p => p.PostNurseHeal);
+
+		public static void PostNurseHeal(Player player, NPC npc, int health, int price) {
+			foreach (int index in HookPostNurseHeal.arr) {
+				player.modPlayers[index].PostNurseHeal(npc, health, price);
+			}
+		}
+
+		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref int price, ref bool removeDebuffs);
+		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
+
+		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref int price, ref bool removeDebuffs) {
+			foreach (int index in HookModifyNurseHeal.arr) {
+				if (!p.modPlayers[index].ModifyNurseHeal(npc,
+					ref health, ref price, ref removeDebuffs)) return false;
+			}
+			return false;
+		}
 	}
 }
