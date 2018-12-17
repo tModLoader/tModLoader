@@ -91,9 +91,6 @@ namespace Terraria.ModLoader.UI
 					if (hidden)
 						return;
 
-					if (name == "Info")
-						name = "build.txt";
-
 					var path = Path.Combine(dir, name);
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
 

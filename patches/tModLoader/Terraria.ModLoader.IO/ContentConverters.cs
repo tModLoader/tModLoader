@@ -19,6 +19,11 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static bool Reverse(ref string resourceName, out Action<Stream, Stream> converter) {
+			if(resourceName == "Info") {
+				resourceName = "build.txt";
+				converter = BuildProperties.InfoToBuildTxt;
+				return true;
+			}
 			switch (Path.GetExtension(resourceName)) {
 				case ".rawimg":
 					resourceName = Path.ChangeExtension(resourceName, "png");
