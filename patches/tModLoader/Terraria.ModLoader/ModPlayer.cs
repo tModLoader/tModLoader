@@ -815,5 +815,57 @@ namespace Terraria.ModLoader
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
+
+		/// <summary>
+		/// Called whenever the player sells an item to an NPC.
+		/// </summary>
+		/// <param name="vendor"></param>
+		/// <param name="item"></param>
+		public virtual void PostSellItem(NPC customer, Item item)
+		{
+
+		}
+
+		/// <summary>
+		/// Return false to prevent a transaction. Called before the transaction.
+		/// </summary>
+		/// <param name="customer"></param>
+		/// <param name="item"></param>
+		/// <returns></returns>
+		public virtual bool ModifySellItem(NPC customer, ref Item item) => true;
+
+		/// <summary>
+		/// Called whenever the player buys an item from an NPC.
+		/// </summary>
+		/// <param name="vendor"></param>
+		/// <param name="item"></param>
+		public virtual void PostBuyItem(NPC vendor, Item item) {
+
+		}
+
+		/// <summary>
+		/// Return false to prevent a transaction. Called before the transaction.
+		/// </summary>
+		/// <param name="vendor"></param>
+		/// <param name="item"></param>
+		/// <returns></returns>
+		public virtual bool ModifyBuyItem(NPC vendor, Item item) => true;
+
+		/// <summary>
+		/// Called whenever the player heals themself with the Nurse NPC.
+		/// </summary>
+		/// <param name="nurse"></param>
+		public virtual void PostNurseHeal(NPC nurse, int health, int price) { }
+
+		/// <summary>
+		/// Return false to prevent the player from healing.
+		/// </summary>
+		/// <param name="nurse"></param>
+		/// <param name="health">How much health the player gains.</param>
+		/// <returns></returns>
+		public virtual bool ModifyNurseHeal(NPC nurse, ref int health, ref int price, ref bool removeDebuffs)
+			=> true;
+
+		// TODO: Do the buy hooks.
 	}
 }

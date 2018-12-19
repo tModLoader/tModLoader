@@ -17,22 +17,70 @@
  		private static bool[] canFavoriteAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
-@@ -558,10 +_,12 @@
+@@ -556,17 +_,21 @@
+ 						}
+ 					}
  				}
- 				else if (num == 3)
- 				{
+-				else if (num == 3)
+-				{
 -					Main.mouseItem.netDefaults(inv[slot].netID);
+-					if (inv[slot].buyOnce)
+-					{
+-						Main.mouseItem.Prefix((int)inv[slot].prefix);
++				else if (PlayerHooks.ModifyBuyItem(player, Main.npc[player.talkNPC], inv[slot])
++					&& num == 3)
++				{
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.stack = 1;
- 					if (inv[slot].buyOnce)
- 					{
--						Main.mouseItem.Prefix((int)inv[slot].prefix);
++					if (Main.mouseItem.buyOnce)
++					{
 +						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
 +						//Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
  					}
  					else
  					{
-@@ -620,7 +_,10 @@
+ 						Main.mouseItem.Prefix(-1);
+ 					}
++					Item item = Main.mouseItem.Clone();
+ 					Main.mouseItem.position = player.Center - new Vector2((float)Main.mouseItem.width, (float)Main.mouseItem.headSlot) / 2f;
+ 					ItemText.NewText(Main.mouseItem, Main.mouseItem.stack, false, false);
+ 					if (inv[slot].buyOnce && --inv[slot].stack <= 0)
+@@ -581,21 +_,27 @@
+ 					{
+ 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+ 					}
++					PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], item);
+ 				}
+ 				else if (num == 4)
+ 				{
+ 					Chest chest = Main.instance.shop[Main.npcShop];
+-					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
+-					{
+-						chest.AddShop(Main.mouseItem);
++					Item item = Main.mouseItem;
++					if (PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item)
++						&& player.SellItem(item.value, item.stack))
++					{
++						chest.AddShop(item);
+ 						Main.mouseItem.SetDefaults(0, false);
+ 						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
+-					}
+-					else if (Main.mouseItem.value == 0)
+-					{
+-						chest.AddShop(Main.mouseItem);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], item);
++					}
++					else if (PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item)
++						&& item.value == 0)
++					{
++						chest.AddShop(item);
+ 						Main.mouseItem.SetDefaults(0, false);
+ 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], item);
+ 					}
+ 					Recipe.FindRecipes();
+ 				}
+@@ -620,27 +_,35 @@
  			Player player = Main.player[Main.myPlayer];
  			if (inv[slot].type > 0)
  			{
@@ -44,6 +92,37 @@
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
  					if (inv[slot].type >= 71 && inv[slot].type <= 74)
+ 					{
+ 						return;
+ 					}
+-					if (player.SellItem(inv[slot].value, inv[slot].stack))
+-					{
+-						chest.AddShop(inv[slot]);
++					Item item = inv[slot];
++					if (player.SellItem(item.value, item.stack)
++						&& PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item))
++					{
++						chest.AddShop(item);
+ 						inv[slot].SetDefaults(0, false);
+ 						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
+ 						Recipe.FindRecipes();
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], item);
+ 						return;
+ 					}
+-					if (inv[slot].value == 0)
+-					{
+-						chest.AddShop(inv[slot]);
++					if (item.value == 0
++						&& PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item))
++					{
++						chest.AddShop(item);
+ 						inv[slot].SetDefaults(0, false);
+ 						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+ 						Recipe.FindRecipes();
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], item);
+ 						return;
+ 					}
+ 				}
 @@ -887,12 +_,15 @@
  			if (context == 0)
  			{
@@ -142,13 +221,24 @@
  					{
  						Utils.Swap<Item>(ref inv[slot], ref inv[slot - 10]);
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+@@ -1075,7 +_,9 @@
+ 					int num2 = Main.superFastStack + 1;
+ 					for (int j = 0; j < num2; j++)
+ 					{
+-						if ((Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
++						Item item = inv[slot].Clone();
++						if (PlayerHooks.ModifyBuyItem(player, Main.npc[player.talkNPC], item)
++							&& (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
+ 						{
+ 							if (j == 0)
+ 							{
 @@ -1083,10 +_,14 @@
  							}
  							if (Main.mouseItem.type == 0)
  							{
 -								Main.mouseItem.netDefaults(inv[slot].netID);
 +								// Main.mouseItem.netDefaults(inv[slot].netID);
-+								Main.mouseItem = inv[slot].Clone();
++								Main.mouseItem = item.Clone();
 +								Main.mouseItem.stack = 1;
 +								if (inv[slot].buyOnce)
 +									Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
@@ -159,6 +249,14 @@
  								}
  								Main.mouseItem.stack = 0;
  							}
+@@ -1103,6 +_,7 @@
+ 							{
+ 								inv[slot].SetDefaults(0, false);
+ 							}
++							Main.NewText("Text");
+ 						}
+ 					}
+ 				}
 @@ -1579,11 +_,15 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;

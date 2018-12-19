@@ -3621,15 +3621,50 @@
  						{
  							Main.npcChatCornerItem = 0;
  							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
-@@ -34943,7 +_,7 @@
- 										for (int l = 0; l < 22; l++)
+@@ -34918,11 +_,15 @@
+ 								Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+ 								if (num5 > 0)
+ 								{
+-									if (Main.player[Main.myPlayer].BuyItem(num5, -1))
++									int health = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
++									bool removeDebuffs = true;
++									if (PlayerHooks.ModifyNurseHeal(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC],
++											ref health, ref num5, ref removeDebuffs)
++										&& Main.player[Main.myPlayer].BuyItem(num5, -1))
+ 									{
+ 										AchievementsHelper.HandleNurseService(num5);
+ 										Main.PlaySound(SoundID.Item4, -1, -1);
+-										Main.player[Main.myPlayer].HealEffect(Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife, true);
++										Main.player[Main.myPlayer].HealEffect(health, true);
+ 										if ((double)Main.player[Main.myPlayer].statLife < (double)Main.player[Main.myPlayer].statLifeMax2 * 0.25)
  										{
- 											int num24 = Main.player[Main.myPlayer].buffType[l];
+ 											Main.npcChatText = Lang.dialog(227, false);
+@@ -34939,16 +_,17 @@
+ 										{
+ 											Main.npcChatText = Lang.dialog(230, false);
+ 										}
+-										Main.player[Main.myPlayer].statLife = Main.player[Main.myPlayer].statLifeMax2;
+-										for (int l = 0; l < 22; l++)
+-										{
+-											int num24 = Main.player[Main.myPlayer].buffType[l];
 -											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && num24 != 28 && num24 != 34 && num24 != 87 && num24 != 89 && num24 != 21 && num24 != 86 && num24 != 199)
-+											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num24))
- 											{
- 												Main.player[Main.myPlayer].DelBuff(l);
- 												l = -1;
+-											{
+-												Main.player[Main.myPlayer].DelBuff(l);
+-												l = -1;
++										Main.player[Main.myPlayer].statLife += health;
++										if (removeDebuffs) {
++											for (int l = 0; l < 22; l++) {
++												int num24 = Main.player[Main.myPlayer].buffType[l];
++												if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num24)) {
++													Main.player[Main.myPlayer].DelBuff(l);
++													l = -1;
++												}
+ 											}
+ 										}
++										PlayerHooks.PostNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], health, num5);
+ 										return;
+ 									}
+ 									int num25 = Main.rand.Next(3);
 @@ -35003,6 +_,9 @@
  					}
  					else if (Main.npcChatFocus3 && Main.player[Main.myPlayer].talkNPC >= 0)
