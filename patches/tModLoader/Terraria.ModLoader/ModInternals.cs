@@ -176,6 +176,9 @@ namespace Terraria.ModLoader
 			foreach (ModTile tile in tiles.Values) {
 				Main.tileTexture[tile.Type] = ModContent.GetTexture(tile.texture);
 				TileLoader.SetDefaults(tile);
+				if (ModContent.TextureExists(tile.GlowTexture)) {
+					tile.GlowTexture2d = ModContent.GetTexture(tile.GlowTexture);
+				}
 				if (TileID.Sets.HasOutlines[tile.Type]) {
 					Main.highlightMaskTexture[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
 				}

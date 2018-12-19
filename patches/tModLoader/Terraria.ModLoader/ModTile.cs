@@ -41,6 +41,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string HighlightTexture => texture + "_Highlight";
 		/// <summary>
+		/// The glow texture drawn in full brightness over the regular texture. Defaults to adding "_Glow" onto the main texture. If it does not exist it is ignored.
+		/// </summary>
+		public virtual string GlowTexture => texture + "_Glow";
+		internal Texture2D GlowTexture2d;
+		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
 		public int soundType = 0;

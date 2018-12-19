@@ -30,6 +30,7 @@ namespace ExampleMod.Tiles
 			mod.GetTileEntity<TEElementalPurge>().Kill(i, j);
 		}
 
+		/* This code is no longer needed as of 0.11 since Glow textures are automatically supported, but can be useful for modders to learn from as an example.
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
 			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
@@ -39,6 +40,7 @@ namespace ExampleMod.Tiles
 			int height = tile.frameY == 36 ? 18 : 16;
 			Main.spriteBatch.Draw(mod.GetTexture("Tiles/ElementalPurge_Glow"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.frameX, tile.frameY, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 		}
+		*/
 
 		public override bool AutoSelect(int i, int j, Item item) {
 			return item.type == ItemID.Bunny;

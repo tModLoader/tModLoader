@@ -2040,6 +2040,20 @@
  											{
  												Main.spriteBatch.Draw(Main.tileAltTexture[(int)type, (int)tile.color()], new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num8 - 16f) / 2f + (float)num183, (float)(i * 16 - (int)Main.screenPosition.Y + num11)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num9, y2, num8, num12)), color, 0f, default(Vector2), 1f, effects, 0f);
  											}
+@@ -19809,9 +_,10 @@
+ 									}
+ 								}
+ 							}
+-							if (Main.tileGlowMask[(int)tile.type] != 0)
+-							{
+-								Texture2D texture = Main.glowMaskTexture[(int)Main.tileGlowMask[(int)tile.type]];
++							Texture2D modGlowTexture = TileLoader.GetTile(tile.type)?.GlowTexture2d;
++							if (Main.tileGlowMask[(int)tile.type] != 0 || modGlowTexture != null)
++							{
++								Texture2D texture = modGlowTexture ?? Main.glowMaskTexture[(int)Main.tileGlowMask[(int)tile.type]];
+ 								double num293 = Main.time * 0.08;
+ 								Microsoft.Xna.Framework.Color color17 = Microsoft.Xna.Framework.Color.White;
+ 								if (tile.type == 350)
 @@ -19919,6 +_,7 @@
  						}
  					}
