@@ -474,6 +474,8 @@ namespace Terraria.ModLoader
 			tile.Name = name;
 			tile.Type = (ushort)TileLoader.ReserveTileID();
 			tile.texture = texture;
+			if (ModContent.TextureExists(tile.GlowTexture))
+				tile.GlowTextureID = Main.nextGlowMaskID++;
 
 			tiles[name] = tile;
 			TileLoader.tiles.Add(tile);

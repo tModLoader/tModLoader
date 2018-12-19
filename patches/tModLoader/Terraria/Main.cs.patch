@@ -162,6 +162,14 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background = 0;
+@@ -892,6 +_,7 @@
+ 		public static Texture2D[] BackPackTexture = new Texture2D[8];
+ 		public static Texture2D rainTexture;
+ 		public static Texture2D[] glowMaskTexture = new Texture2D[252];
++		internal static int nextGlowMaskID = GlowMaskID.Count;
+ 		public static Texture2D[] extraTexture = new Texture2D[91];
+ 		public static Texture2D[] highlightMaskTexture = new Texture2D[470];
+ 		public static Texture2D[] coinTexture = new Texture2D[4];
 @@ -1067,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;

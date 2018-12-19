@@ -287,6 +287,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static void Unload() {
+			Main.nextGlowMaskID = ID.GlowMaskID.Count;
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -331,6 +332,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			Array.Resize(ref Main.glowMaskTexture, Main.nextGlowMaskID);
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
