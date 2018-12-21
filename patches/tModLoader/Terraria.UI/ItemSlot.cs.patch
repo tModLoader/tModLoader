@@ -27,7 +27,7 @@
 -					if (inv[slot].buyOnce)
 -					{
 -						Main.mouseItem.Prefix((int)inv[slot].prefix);
-+				else if (PlayerHooks.ModifyBuyItem(player, Main.npc[player.talkNPC], inv[slot])
++				else if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv[slot])
 +					&& num == 3)
 +				{
 +					Main.mouseItem = inv[slot].Clone();
@@ -58,7 +58,7 @@
 -					{
 -						chest.AddShop(Main.mouseItem);
 +					Item item = Main.mouseItem;
-+					if (PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item)
++					if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], item)
 +						&& player.SellItem(item.value, item.stack))
 +					{
 +						chest.AddShop(item);
@@ -70,7 +70,7 @@
 -						chest.AddShop(Main.mouseItem);
 +						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], item);
 +					}
-+					else if (PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item)
++					else if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], item)
 +						&& item.value == 0)
 +					{
 +						chest.AddShop(item);
@@ -100,7 +100,7 @@
 -						chest.AddShop(inv[slot]);
 +					Item item = inv[slot];
 +					if (player.SellItem(item.value, item.stack)
-+						&& PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item))
++						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], item))
 +					{
 +						chest.AddShop(item);
  						inv[slot].SetDefaults(0, false);
@@ -113,7 +113,7 @@
 -					{
 -						chest.AddShop(inv[slot]);
 +					if (item.value == 0
-+						&& PlayerHooks.ModifySellItem(player, Main.npc[player.talkNPC], ref item))
++						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], item))
 +					{
 +						chest.AddShop(item);
  						inv[slot].SetDefaults(0, false);
@@ -227,7 +227,7 @@
  					{
 -						if ((Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
 +						Item item = inv[slot].Clone();
-+						if (PlayerHooks.ModifyBuyItem(player, Main.npc[player.talkNPC], item)
++						if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], item)
 +							&& (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
  						{
  							if (j == 0)

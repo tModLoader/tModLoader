@@ -832,7 +832,7 @@ namespace Terraria.ModLoader
 		/// <param name="customer"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool ModifySellItem(NPC customer, ref Item item) => true;
+		public virtual bool CanSellItem(NPC customer, Item item) => true;
 
 		/// <summary>
 		/// Called whenever the player buys an item from an NPC.
@@ -849,7 +849,7 @@ namespace Terraria.ModLoader
 		/// <param name="vendor"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool ModifyBuyItem(NPC vendor, Item item) => true;
+		public virtual bool CanBuyItem(NPC vendor, Item item) => true;
 
 		/// <summary>
 		/// Called whenever the player heals themself with the Nurse NPC.

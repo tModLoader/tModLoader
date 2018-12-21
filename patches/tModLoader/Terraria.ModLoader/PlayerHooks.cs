@@ -1109,14 +1109,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate bool DelegateModifySellItem(NPC npc, ref Item item);
-		private static HookList HookModifySellItem = AddHook<DelegateModifySellItem>(p => p.ModifySellItem);
+		private static HookList HookCanSellItem = AddHook<Func<NPC, Item, bool>>(p => p.CanSellItem);
 
-		public static bool ModifySellItem(Player player, NPC npc, ref Item item)
+		public static bool CanSellItem(Player player, NPC npc, Item item)
 		{
-			foreach (int index in HookModifySellItem.arr)
+			foreach (int index in HookCanSellItem.arr)
 			{
-				if (!player.modPlayers[index].ModifySellItem(npc, ref item)) return false;
+				if (!player.modPlayers[index].CanSellItem(npc, item)) return false;
 			}
 			return true;
 		}
@@ -1129,11 +1128,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyBuyItem = AddHook<Func<NPC, Item, bool>>(p => p.ModifyBuyItem);
+		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item, bool>>(p => p.CanBuyItem);
 
-		public static bool ModifyBuyItem(Player player, NPC npc, Item item) {
-			foreach (int index in HookPostBuyItem.arr) {
-				if (!player.modPlayers[index].ModifyBuyItem(npc, item)) return false;
+		public static bool CanBuyItem(Player player, NPC npc, Item item) {
+			foreach (int index in HookCanBuyItem.arr) {
+				if (!player.modPlayers[index].CanBuyItem(npc, item)) return false;
 			}
 			return true;
 		}
