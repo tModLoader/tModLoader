@@ -1099,40 +1099,40 @@ namespace Terraria.ModLoader
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 		}
 
-		private static HookList HookPostSellItem = AddHook<Action<NPC, Item>>(p => p.PostSellItem);
+		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
 
-		public static void PostSellItem(Player player, NPC npc, Item item)
+		public static void PostSellItem(Player player, NPC npc, Item[] chest, Item item)
 		{
 			foreach (int index in HookPostSellItem.arr)
 			{
-				player.modPlayers[index].PostSellItem(npc, item);
+				player.modPlayers[index].PostSellItem(npc, chest, item);
 			}
 		}
 
-		private static HookList HookCanSellItem = AddHook<Func<NPC, Item, bool>>(p => p.CanSellItem);
+		private static HookList HookCanSellItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanSellItem);
 
-		public static bool CanSellItem(Player player, NPC npc, Item item)
+		public static bool CanSellItem(Player player, NPC npc, Item[] chest, Item item)
 		{
 			foreach (int index in HookCanSellItem.arr)
 			{
-				if (!player.modPlayers[index].CanSellItem(npc, item)) return false;
+				if (!player.modPlayers[index].CanSellItem(npc, chest, item)) return false;
 			}
 			return true;
 		}
 
-		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item>>(p => p.PostBuyItem);
+		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
 
-		public static void PostBuyItem(Player player, NPC npc, Item item) {
+		public static void PostBuyItem(Player player, NPC npc, Item[] chest, Item item) {
 			foreach (int index in HookPostBuyItem.arr) {
-				player.modPlayers[index].PostBuyItem(npc, item);
+				player.modPlayers[index].PostBuyItem(npc, chest, item);
 			}
 		}
 
-		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item, bool>>(p => p.CanBuyItem);
+		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
 
-		public static bool CanBuyItem(Player player, NPC npc, Item item) {
+		public static bool CanBuyItem(Player player, NPC npc, Item[] chest, Item item) {
 			foreach (int index in HookCanBuyItem.arr) {
-				if (!player.modPlayers[index].CanBuyItem(npc, item)) return false;
+				if (!player.modPlayers[index].CanBuyItem(npc, chest, item)) return false;
 			}
 			return true;
 		}

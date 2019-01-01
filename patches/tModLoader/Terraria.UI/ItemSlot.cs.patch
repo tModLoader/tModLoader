@@ -27,7 +27,7 @@
 -					if (inv[slot].buyOnce)
 -					{
 -						Main.mouseItem.Prefix((int)inv[slot].prefix);
-+				else if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv[slot])
++				else if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot])
 +					&& num == 3)
 +				{
 +					Main.mouseItem = inv[slot].Clone();
@@ -43,13 +43,13 @@
  					{
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  					}
-+					PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], Main.mouseItem);
++					PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
  				}
  				else if (num == 4)
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
 -					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
-+					if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], Main.mouseItem)
++					if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem)
 +						&& player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
  					{
  						chest.AddShop(Main.mouseItem);
@@ -57,15 +57,15 @@
  						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
 -					}
 -					else if (Main.mouseItem.value == 0)
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], Main.mouseItem);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
 +					}
-+					else if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], Main.mouseItem)
++					else if (PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem)
 +						&& Main.mouseItem.value == 0)
  					{
  						chest.AddShop(Main.mouseItem);
  						Main.mouseItem.SetDefaults(0, false);
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], Main.mouseItem);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
  					}
  					Recipe.FindRecipes();
  				}
@@ -86,24 +86,24 @@
  					}
 -					if (player.SellItem(inv[slot].value, inv[slot].stack))
 +					if (player.SellItem(inv[slot].value, inv[slot].stack)
-+						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv[slot]))
++						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]))
  					{
  						chest.AddShop(inv[slot]);
  						inv[slot].SetDefaults(0, false);
  						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv[slot]);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]);
  						return;
  					}
 -					if (inv[slot].value == 0)
 +					if (inv[slot].value == 0
-+						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv[slot]))
++						&& PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]))
  					{
  						chest.AddShop(inv[slot]);
  						inv[slot].SetDefaults(0, false);
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv[slot]);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]);
  						return;
  					}
  				}
@@ -210,7 +210,7 @@
  					for (int j = 0; j < num2; j++)
  					{
 -						if ((Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
-+						if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv[slot])
++						if (PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot])
 +							&& (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0)
  						{
  							if (j == 0)
@@ -236,7 +236,7 @@
  							{
  								inv[slot].SetDefaults(0, false);
  							}
-+							PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], Main.mouseItem);
++							PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
  						}
  					}
  				}

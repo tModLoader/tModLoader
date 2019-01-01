@@ -821,7 +821,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="vendor"></param>
 		/// <param name="item"></param>
-		public virtual void PostSellItem(NPC customer, Item item)
+		public virtual void PostSellItem(NPC customer, Item[] shop, Item item)
 		{
 
 		}
@@ -832,14 +832,14 @@ namespace Terraria.ModLoader
 		/// <param name="customer"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool CanSellItem(NPC customer, Item item) => true;
+		public virtual bool CanSellItem(NPC customer, Item[] shop, Item item) => true;
 
 		/// <summary>
 		/// Called whenever the player buys an item from an NPC.
 		/// </summary>
 		/// <param name="vendor"></param>
 		/// <param name="item"></param>
-		public virtual void PostBuyItem(NPC vendor, Item item) {
+		public virtual void PostBuyItem(NPC vendor, Item[] shop, Item item) {
 
 		}
 
@@ -849,7 +849,7 @@ namespace Terraria.ModLoader
 		/// <param name="vendor"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool CanBuyItem(NPC vendor, Item item) => true;
+		public virtual bool CanBuyItem(NPC vendor, Item[] shop, Item item) => true;
 
 		/// <summary>
 		/// Called whenever the player heals themself with the Nurse NPC.
