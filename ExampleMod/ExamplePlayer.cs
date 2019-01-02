@@ -646,6 +646,9 @@ namespace ExampleMod
 			layers.Add(MiscEffects);
 		}
 
+		// We use CanBuyItem because it is called before any transaction.
+		// Sometimes the player can be buying multiple items at once,
+		// and will increase the inflation value by too much.
 		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
 			vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation += item.value * .02;
 			foreach (var shopItem in shop) {
