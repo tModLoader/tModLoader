@@ -1,3 +1,4 @@
+using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -643,6 +644,14 @@ namespace ExampleMod
 			layers.Insert(0, MiscEffectsBack);
 			MiscEffects.visible = true;
 			layers.Add(MiscEffects);
+		}
+
+		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
+			vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation += item.value * .02;
+			foreach (var shopItem in shop) {
+				shopItem.value += (int)vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation;
+			}
+			return base.CanBuyItem(vendor, shop, item);
 		}
 	}
 }

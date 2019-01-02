@@ -9,6 +9,8 @@ namespace ExampleMod.NPCs
 	{
 		public override bool InstancePerEntity => true;
 
+		public double inflation;
+
 		public bool eFlames;
 		public bool exampleJavelin;
 
