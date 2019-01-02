@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
@@ -28,12 +29,14 @@ namespace ExampleMod
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
 		public static int exampleTiles;
+		public static Dictionary<int, double> npcInflation;
 
 		public override void Initialize() {
 			downedAbomination = false;
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
+			npcInflation = new Dictionary<int, double>();
 		}
 
 		public override TagCompound Save() {
@@ -47,7 +50,9 @@ namespace ExampleMod
 			}
 
 			return new TagCompound {
-				{"downed", downed}
+				{"downed", downed},
+				{"inflationNPCs", npcInflation.Keys.ToList()},
+				{"inflationValues", npcInflation.Values.ToList()}
 			};
 		}
 
@@ -55,6 +60,9 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
+			var inflationNPCs = tag.GetList<int>("inflationNPCs");
+			var inflationValues = tag.GetList<double>("inflationValues");
+			npcInflation = inflationNPCs.Zip(inflationValues, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -74,6 +82,12 @@ namespace ExampleMod
 			flags[0] = downedAbomination;
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
+
+			writer.Write(npcInflation.Count);
+			foreach (var pair in npcInflation) {
+				writer.Write((short)pair.Key);
+				writer.Write(pair.Value);
+			}
 
 			/*
 			Remember that Bytes/BitsByte only have 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte:
@@ -117,6 +131,12 @@ namespace ExampleMod
 			// As mentioned in NetSend, BitBytes can contain 8 values. If you have more, be sure to read the additional data:
 			// BitsByte flags2 = reader.ReadByte();
 			// downed9thBoss = flags[0];
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++) {
+				int type = reader.ReadInt16();
+				if (npcInflation.ContainsKey(type)) npcInflation[type] = reader.ReadDouble();
+				else npcInflation.Add(type, reader.ReadDouble());
+			}
 		}
 
 		// We use this hook to add 3 steps to world generation at various points. 

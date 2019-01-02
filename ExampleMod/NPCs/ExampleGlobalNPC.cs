@@ -22,6 +22,7 @@ namespace ExampleMod.NPCs
 		public override void SetDefaults(NPC npc) {
 			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
 			npc.buffImmune[mod.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
+			if (npc.townNPC) inflation = 0;
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {
@@ -162,6 +163,8 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.ExampleHairDye>());
 				nextSlot++;
 			}
+			if (ExampleWorld.npcInflation.ContainsKey(type)) ExampleWorld.npcInflation[type] = inflation;
+			else ExampleWorld.npcInflation.Add(type, inflation);
 		}
 
 		// Make any NPC with a chat complain to the player if they have the stinky debuff.
@@ -175,7 +178,7 @@ namespace ExampleMod.NPCs
 						chat = "What's that horrid smell?!";
 						break;
 					default:
-						chat = "Get away from me, i'm not doing any business with you.";
+						chat = "Get away from me, I'm not doing any business with you.";
 						break;
 				}
 			}
