@@ -12,6 +12,7 @@ namespace ExampleMod.Items
 	{
 		public string originalOwner;
 		public byte awesome;
+		public bool outOfStock;
 
 		private static readonly string saveOriginalOwner;
 
@@ -60,6 +61,11 @@ namespace ExampleMod.Items
 					}
 				}*/
 			}
+			if (outOfStock) {
+				TooltipLine line = new TooltipLine(mod, "OutOfStock", "OUT OF STOCK!");
+				line.overrideColor = Color.DarkMagenta;
+				tooltips.Add(line);
+			}
 		}
 
 		public override void Load(Item item, TagCompound tag) {
@@ -85,11 +91,13 @@ namespace ExampleMod.Items
 		public override void NetSend(Item item, BinaryWriter writer) {
 			writer.Write(originalOwner);
 			writer.Write(awesome);
+			writer.Write(outOfStock);
 		}
 
 		public override void NetReceive(Item item, BinaryReader reader) {
 			originalOwner = reader.ReadString();
 			awesome = reader.ReadByte();
+			outOfStock = reader.ReadBoolean();
 		}
 	}
 }

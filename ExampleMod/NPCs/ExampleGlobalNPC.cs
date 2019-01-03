@@ -1,4 +1,6 @@
+using ExampleMod.Items;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +12,7 @@ namespace ExampleMod.NPCs
 		public override bool InstancePerEntity => true;
 
 		public double inflation;
+		public List<int> stock; // indexes are slots in shop, values are number of items left
 
 		public bool eFlames;
 		public bool exampleJavelin;
@@ -22,7 +25,10 @@ namespace ExampleMod.NPCs
 		public override void SetDefaults(NPC npc) {
 			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
 			npc.buffImmune[mod.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
-			if (npc.townNPC) inflation = 0;
+			if (npc.townNPC) {
+				inflation = 0;
+				stock = new List<int>();
+			}
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {
@@ -165,6 +171,22 @@ namespace ExampleMod.NPCs
 			}
 			if (ExampleWorld.npcInflation.ContainsKey(type)) ExampleWorld.npcInflation[type] = inflation;
 			else ExampleWorld.npcInflation.Add(type, inflation);
+			if (stock.Count != shop.item.Length) {
+				stock = new List<int>();
+				for (int i = 0; i < shop.item.Length; i++) {
+					var item = shop.item[i];
+					// This will add stock based on 1 gold -> 100-200 available items
+					stock.Add(Main.rand.Next(100, 200)
+						* (int)(item.shopCustomPrice.HasValue ? Item.buyPrice(0, 1) / item.shopCustomPrice : Item.buyPrice(0, 1) / item.value));
+				}
+			}
+			var outOfStock = new List<int>();
+			for (int i = 0; i < stock.Count; i++) {
+				if (stock[i].Equals(0)) outOfStock.Add(i);
+			}
+			for (int i = 0; i < outOfStock.Count; i++) {
+				shop.item[outOfStock[i]].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
+			}
 		}
 
 		// Make any NPC with a chat complain to the player if they have the stinky debuff.

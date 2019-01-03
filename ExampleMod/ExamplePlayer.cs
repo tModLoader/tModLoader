@@ -1,3 +1,4 @@
+using ExampleMod.Items;
 using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
 using Microsoft.Xna.Framework;
@@ -650,8 +651,11 @@ namespace ExampleMod
 		// Sometimes the player can be buying multiple items at once,
 		// and will increase the inflation value by too much.
 		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
+			if (item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock)
+				return false;
 			vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation += item.value * .02;
-			foreach (var shopItem in shop) {
+			for (int i = 0; i < shop.Length; i++) {
+				var shopItem = shop[i];
 				shopItem.value += (int)vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation;
 			}
 			return base.CanBuyItem(vendor, shop, item);
