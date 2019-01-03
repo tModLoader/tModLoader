@@ -13,6 +13,7 @@ namespace ExampleMod.NPCs
 
 		public double inflation;
 		public List<int> stock; // indexes are slots in shop, values are number of items left
+		public bool getNewStock;
 
 		public bool eFlames;
 		public bool exampleJavelin;
@@ -28,6 +29,7 @@ namespace ExampleMod.NPCs
 			if (npc.townNPC) {
 				inflation = 0;
 				stock = new List<int>();
+				getNewStock = false;
 			}
 		}
 
@@ -57,6 +59,7 @@ namespace ExampleMod.NPCs
 					damage = 2;
 				}
 			}
+			getNewStock = Main.rand.NextBool(200) && !Main.dayTime;
 		}
 
 		public override void NPCLoot(NPC npc) {
@@ -171,13 +174,20 @@ namespace ExampleMod.NPCs
 			}
 			if (ExampleWorld.npcInflation.ContainsKey(type)) ExampleWorld.npcInflation[type] = inflation;
 			else ExampleWorld.npcInflation.Add(type, inflation);
-			if (stock.Count != shop.item.Length) {
+			if (stock.Count != shop.item.Length || stock == null) {
 				stock = new List<int>();
 				for (int i = 0; i < shop.item.Length; i++) {
 					var item = shop.item[i];
 					// This will add stock based on 1 gold -> 100-200 available items
 					stock.Add(Main.rand.Next(100, 200)
 						* (int)(item.shopCustomPrice.HasValue ? Item.buyPrice(0, 1) / item.shopCustomPrice : Item.buyPrice(0, 1) / item.value));
+				}
+			}
+			if (getNewStock)
+			{
+				for (int i = 0; i < shop.item.Length; i++)
+				{
+					shop.item[i].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
 				}
 			}
 			var outOfStock = new List<int>();
