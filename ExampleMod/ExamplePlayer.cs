@@ -653,6 +653,7 @@ namespace ExampleMod
 		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
 			if (item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock)
 				return false;
+			else vendor.GetGlobalNPC<ExampleGlobalNPC>().stock[Array.FindIndex(shop, x => x.Equals(item))]--;
 			vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation += item.value * .02;
 			for (int i = 0; i < shop.Length; i++) {
 				var shopItem = shop[i];
