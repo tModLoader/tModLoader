@@ -471,7 +471,7 @@ namespace Terraria.ModLoader.IO
 				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
 
 			foreach (var frameTag in tag.GetList<TagCompound>("itemFrames")) {
-				TEItemFrame itemFrame = TileEntity.ByID[tag.GetInt("id")] as TEItemFrame;
+				TEItemFrame itemFrame = TileEntity.ByID[frameTag.GetInt("id")] as TEItemFrame;
 				ItemIO.Load(itemFrame.item, frameTag.GetCompound("item"));
 			}
 		}
