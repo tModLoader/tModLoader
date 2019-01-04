@@ -24,85 +24,84 @@ namespace Terraria.ModLoader.UI
 		private string modDisplayName = "";
 
 		public override void OnInitialize() {
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+			uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			UIPanel uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			var uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
+			};
 			uIElement.Append(uIPanel);
 
-			modInfo = new UIMessageBox("This is a test of mod info here.");
-			modInfo.Width.Set(-25f, 1f);
-			modInfo.Height.Set(0f, 1f);
+			modInfo = new UIMessageBox("This is a test of mod info here.") {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f }
+			};
 			uIPanel.Append(modInfo);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(-20, 1f);
-			uIScrollbar.VAlign = 0.5f;
-			uIScrollbar.HAlign = 1f;
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -20, Percent = 1f },
+				VAlign = 0.5f,
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
 			modInfo.SetScrollbar(uIScrollbar);
 			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
-				HAlign = 0.5f
-			};
-			uITextPanel.Top.Set(-35f, 0f);
-			uITextPanel.SetPadding(15f);
-			uITextPanel.BackgroundColor = new Color(73, 94, 171);
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(uITextPanel);
 
-			modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
-			modHomepageButton.Width.Set(0f, 1f);
-			modHomepageButton.Height.Set(40f, 0f);
-			modHomepageButton.VAlign = 1f;
-			modHomepageButton.Top.Set(-65f, 0f);
-			modHomepageButton.OnMouseOver += UICommon.FadedMouseOver;
-			modHomepageButton.OnMouseOut += UICommon.FadedMouseOut;
+			modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
+				Width = { Percent = 1f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
 			modHomepageButton.OnClick += VisitModHomePage;
 			uIElement.Append(modHomepageButton);
 
-			UIAutoScaleTextTextPanel<string> backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			backButton.Width.Set(-10f, 0.333f);
-			backButton.Height.Set(40f, 0f);
-			backButton.VAlign = 1f;
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = { Pixels = -10, Percent = 0.333f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
-			extractButton.Width.Set(-10f, 0.333f);
-			extractButton.Height.Set(40f, 0f);
-			extractButton.VAlign = 1f;
-			extractButton.HAlign = 0.5f;
-			extractButton.Top.Set(-20f, 0f);
-			extractButton.OnMouseOver += UICommon.FadedMouseOver;
-			extractButton.OnMouseOut += UICommon.FadedMouseOut;
+			extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract")) {
+				Width = { Pixels = -10, Percent = 0.333f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				HAlign = 0.5f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			extractButton.OnClick += ExtractClick;
 			uIElement.Append(extractButton);
 
-			deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
-			deleteButton.Width.Set(-10f, 0.333f);
-			deleteButton.Height.Set(40f, 0f);
-			deleteButton.VAlign = 1f;
-			deleteButton.HAlign = 1f;
-			deleteButton.Top.Set(-20f, 0f);
-			deleteButton.OnMouseOver += UICommon.FadedMouseOver;
-			deleteButton.OnMouseOut += UICommon.FadedMouseOut;
+			deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
+				Width = { Pixels = -10, Percent = 0.333f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				HAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			deleteButton.OnClick += DeleteClick;
 			uIElement.Append(deleteButton);
 
 			Append(uIElement);
 		}
 
+		// TODO use Show pattern
 		internal void SetModInfo(string text) {
 			info = text;
 			if (info.Equals("")) {
@@ -133,15 +132,13 @@ namespace Terraria.ModLoader.UI
 
 		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
-			Interface.extractMod.SetMod(localMod);
-			Interface.extractMod.SetGotoMenu(gotoMenu);
-			Main.menuMode = Interface.extractModID;
+			Interface.extractMod.Show(localMod, gotoMenu);
 		}
 
 		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuClose);
 			File.Delete(localMod.modFile.path);
-			Main.menuMode = this.gotoMenu;
+			Main.menuMode = gotoMenu;
 		}
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {

@@ -37,7 +37,7 @@ namespace ExampleMod.Projectiles.Minions
 			if (player.dead) {
 				modPlayer.purityMinion = false;
 			}
-			if (modPlayer.purityMinion) {
+			if (modPlayer.purityMinion) { // Make sure you are resetting this bool in ModPlayer.ResetEffects. See ExamplePlayer.ResetEffects
 				projectile.timeLeft = 2;
 			}
 		}

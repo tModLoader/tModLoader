@@ -20,37 +20,34 @@ namespace Terraria.ModLoader.UI
 		private bool allChecksSatisfied;
 
 		public override void OnInitialize() {
-			UIElement area = new UIElement {
-				Width = new StyleDimension(0f, 0.5f),
-				Top = new StyleDimension(200f, 0f),
-				Height = new StyleDimension(-240f, 1f),
+			var area = new UIElement {
+				Width = { Percent = 0.5f },
+				Top = { Pixels = 200 },
+				Height = { Pixels = -240, Percent = 1f },
 				HAlign = 0.5f
 			};
 
 			backPanel = new UIPanel {
-				Width = new StyleDimension(0f, 1f),
-				Height = new StyleDimension(-90f, 1f),
-				BackgroundColor = new Color(33, 43, 79) * 0.8f
+				Width = { Percent = 1f },
+				Height = { Pixels = -90, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
 			};
 			area.Append(backPanel);
 
-			UITextPanel<string> heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
+			var heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
 				HAlign = 0.5f,
-				Top = new StyleDimension(-45f, 0f),
-				BackgroundColor = new Color(73, 94, 171)
-			};
-			heading.SetPadding(15f);
+				Top = { Pixels = -45 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15);
 			area.Append(heading);
 
 			bottomButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, true) {
-				Width = new StyleDimension(0, 0.5f),
-				Height = new StyleDimension(50f, 0f),
+				Width = { Percent = 0.5f },
+				Height = { Pixels = 50 },
 				HAlign = 0.5f,
 				VAlign = 1f,
-				Top = new StyleDimension(-30f, 0f)
-			};
-			bottomButton.OnMouseOver += UICommon.FadedMouseOver;
-			bottomButton.OnMouseOut += UICommon.FadedMouseOut;
+				Top = { Pixels = -30 }
+			}.WithFadedMouseOver();
 			bottomButton.OnClick += BackClick;
 			area.Append(bottomButton);
 
@@ -61,11 +58,11 @@ namespace Terraria.ModLoader.UI
 			backPanel.RemoveAllChildren();
 
 			int i = 0;
-			UIMessageBox AddMessageBox(bool check, string text) {
+			UIMessageBox AddMessageBox(string text) {
 				var msgBox = new UIMessageBox(text) {
-					Width = new StyleDimension(0, 1f),
-					Height = new StyleDimension(0, .2f),
-					Top = new StyleDimension(0, (i++) / 4f + 0.05f)
+					Width = { Percent = 1f },
+					Height = { Percent = .2f },
+					Top = { Percent = (i++) / 4f + 0.05f },
 				};
 				backPanel.Append(msgBox);
 				return msgBox;
@@ -73,47 +70,44 @@ namespace Terraria.ModLoader.UI
 
 			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction) {
 				var button = new UITextPanel<string>(text) {
-					Top = new StyleDimension(-2, 0),
-					Left = new StyleDimension(-2, 0),
+					Top = { Pixels = -2 },
+					Left = { Pixels = -2 },
 					HAlign = 1,
 					VAlign = 1
-				};
-				button.OnMouseOver += UICommon.FadedMouseOver;
-				button.OnMouseOut += UICommon.FadedMouseOut;
+				}.WithFadedMouseOver();
 				button.OnClick += (evt, _) => clickAction();
 				elem.Append(button);
 				return button;
 			}
 
 			bool dotNetCheck = ModCompile.DotNet46Check(out var dotNetMsg);
-			var dotNetMsgBox = AddMessageBox(dotNetCheck, Language.GetTextValue(dotNetMsg, $"{FrameworkVersion.Framework} {FrameworkVersion.Version}"));
-			if (!dotNetCheck) {
+			var dotNetMsgBox = AddMessageBox(Language.GetTextValue(dotNetMsg, $"{FrameworkVersion.Framework} {FrameworkVersion.Version}"));
+			if (!dotNetCheck)
 				AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
-			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
-			var modCompileMsgBox = AddMessageBox(modCompileCheck, Language.GetTextValue(modCompileMsg));
+			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
 #if !DEBUG
 			if (!modCompileCheck)
 				AddButton(modCompileMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadModCompile);
 #endif
 
 			bool refAssemCheck = ModCompile.ReferenceAssembliesCheck(out var refAssemMsg);
-			var refAssemMsgBox = AddMessageBox(refAssemCheck, Language.GetTextValue(refAssemMsg));
+			var refAssemMsgBox = AddMessageBox(Language.GetTextValue(refAssemMsg));
 			if (!refAssemCheck) {
 				var vsButton = AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
 				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
-					Left = new StyleDimension(-1, 0f),
-					Top = new StyleDimension(-1, 0f),
+					Left = { Pixels = -1 },
+					Top = { Pixels = -1 },
 					VAlign = 1,
 				};
 				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
 				refAssemMsgBox.Append(refAssemDirectDlButton);
 			}
 
-			var tutorialMsgBox = AddMessageBox(true, Language.GetTextValue("tModLoader.DMTutorialWelcome"));
+			var tutorialMsgBox = AddMessageBox(Language.GetTextValue("tModLoader.DMTutorialWelcome"));
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);
 
 			allChecksSatisfied = dotNetCheck && modCompileCheck && refAssemCheck;
@@ -140,7 +134,14 @@ namespace Terraria.ModLoader.UI
 			const string url = "https://tmodloader.net/dl/ext/ModCompile.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
-			DownloadFile("ModCompile", url, file, () => DeleteFilesAndUnzip(file));
+			DownloadFile("ModCompile", url, file, () => {
+				Extract(file);
+				var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
+				string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "Terraria.xml");
+				string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
+				File.Copy(originalXMLFile, correctXMLFile, true);
+				File.Delete(originalXMLFile);
+			});
 		}
 
 		private void DirectDownloadRefAssemblies() {
@@ -149,23 +150,21 @@ namespace Terraria.ModLoader.UI
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			DownloadFile("v4.5 Reference Assemblies", url, file, () => DeleteFilesAndUnzip(file));
+			DownloadFile("v4.5 Reference Assemblies", url, file, () => Extract(file));
 		}
 
-		private void DeleteFilesAndUnzip(string zipFile, bool deleteFiles = false) {
+		private void Extract(string zipFile, bool deleteFiles = false) {
 			string folder = Path.GetDirectoryName(zipFile);
 			Directory.CreateDirectory(folder);
 			if (deleteFiles) {
 				foreach (FileInfo file in new DirectoryInfo(folder).EnumerateFiles()) {
-					if (file.Name != Path.GetFileName(zipFile)) {
+					if (file.Name != Path.GetFileName(zipFile))
 						file.Delete();
-					}
 				}
 			}
 
-			using (ZipFile zip = ZipFile.Read(zipFile)) {
+			using (var zip = ZipFile.Read(zipFile))
 				zip.ExtractAll(folder, ExtractExistingFileAction.OverwriteSilently);
-			}
 
 			File.Delete(zipFile);
 			Main.menuMode = Interface.developerModeHelpID;

@@ -7,6 +7,7 @@
 		"MenuModBrowser": "Browser delle Mod",
 		"MenuMods": "Mod",
 		"MenuModSources": "Fonti delle Mod",
+		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Lista delle Mod",
@@ -22,6 +23,7 @@
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
 		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
 		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		// "ModReloadRequired": "Reload Required",
 		// "ModsByline": "By: {0}",
 		"ModsMoreInfo": "Altre Informazioni",
@@ -47,6 +49,7 @@
 		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
 		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
 		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
@@ -66,7 +69,6 @@
 		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		// "BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		// "BuildErrorDotNet46Required": ".NET Framework 4.5 must be installed to compile mods",
 		// "BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
 		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
@@ -81,7 +83,7 @@
 		// "LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 		// "LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
 		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
-		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n\t\t{1}",
+		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		// "OpenLogs": "Open Logs",
@@ -231,6 +233,20 @@
 		"MSPublish": "Pubblica",
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 
+		// Developer Mode UI
+		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		// "DMModCompileUpdate": "ModCompile folder out of date.",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		// "DMModCompileSatisfied": "ModCompile folder up of date.",
+		// "DMDotNetSatisfied": "{0} is installed",
+		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		// "DMVisualStudio": "Visual Studio",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		// "DMTutorial": "Tutorial",
+
 		// Extract Mod
 		// "ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
 		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
@@ -284,5 +300,6 @@
 		// "PatreonSetTooltip": "Thank you for your support!",
 		// "WorldGenError": "A problem was encountered during world generation",
 		// "WorldIODataException": "The game encountered a mod data problem for a world.",
+		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
 	}
 }

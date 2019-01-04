@@ -27,10 +27,8 @@ namespace Terraria.ModLoader
 			var mods = new List<LocalMod>();
 
 			foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly)) {
-				if (Path.GetFileName(fileName) == "temporaryDownload.tmod") {
+				if (Path.GetFileName(fileName) == "temporaryDownload.tmod")
 					continue;
-				}
-
 				var lastModified = File.GetLastWriteTime(fileName);
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
 					try {
@@ -90,13 +88,11 @@ namespace Terraria.ModLoader
 
 		internal static string commandLineModPack = "";
 		private static void CommandLineModPackOverride() {
-			if (commandLineModPack == "") {
+			if (commandLineModPack == "")
 				return;
-			}
 
-			if (!commandLineModPack.EndsWith(".json")) {
+			if (!commandLineModPack.EndsWith(".json"))
 				commandLineModPack += ".json";
-			}
 
 			string filePath = Path.Combine(UIModPacks.ModListSaveDirectory, commandLineModPack);
 
@@ -122,21 +118,16 @@ namespace Terraria.ModLoader
 			var errors = new List<string>();
 			var erroredMods = new List<LocalMod>();
 			foreach (var mod in mods) {
-				if (mod.Name.Length == 0) {
+				if (mod.Name.Length == 0)
 					errors.Add(Language.GetTextValue("tModLoader.BuildErrorModNameEmpty"));
-				}
-				else if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase)) {
+				else if (mod.Name.Equals("Terraria", StringComparison.InvariantCultureIgnoreCase))
 					errors.Add(Language.GetTextValue("tModLoader.BuildErrorModNamedTerraria"));
-				}
-				else if (mod.Name.IndexOf('.') >= 0) {
+				else if (mod.Name.IndexOf('.') >= 0)
 					errors.Add(Language.GetTextValue("tModLoader.BuildErrorModNameHasPeriod"));
-				}
-				else if (!names.Add(mod.Name)) {
+				else if (!names.Add(mod.Name))
 					errors.Add(Language.GetTextValue("tModLoader.BuildErrorTwoModsSameName", mod.Name));
-				}
-				else {
+				else
 					continue;
-				}
 
 				erroredMods.Add(mod);
 			}
@@ -153,18 +144,15 @@ namespace Terraria.ModLoader
 			var errored = new HashSet<LocalMod>();
 			var errorLog = new StringBuilder();
 
-			foreach (var mod in mods) {
-				foreach (var depName in mod.properties.RefNames(includeWeak)) {
+			foreach (var mod in mods)
+				foreach (var depName in mod.properties.RefNames(includeWeak))
 					if (!nameMap.ContainsKey(depName)) {
 						errored.Add(mod);
 						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyMissing", depName, mod));
 					}
-				}
-			}
 
-			if (errored.Count > 0) {
+			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
-			}
 		}
 
 		internal static void EnsureTargetVersionsMet(ICollection<LocalMod> mods) {
@@ -172,18 +160,15 @@ namespace Terraria.ModLoader
 			var errored = new HashSet<LocalMod>();
 			var errorLog = new StringBuilder();
 
-			foreach (var mod in mods) {
-				foreach (var dep in mod.properties.Refs(true)) {
+			foreach (var mod in mods)
+				foreach (var dep in mod.properties.Refs(true))
 					if (nameMap.TryGetValue(dep.mod, out var inst) && inst.properties.version < dep.target) {
 						errored.Add(mod);
 						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
 					}
-				}
-			}
 
-			if (errored.Count > 0) {
+			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());
-			}
 		}
 
 		internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full) {
@@ -199,31 +184,26 @@ namespace Terraria.ModLoader
 
 					if (search.properties.side == ModSide.Both && stack.Count > 1) {
 						if (stack.Count > 2)//direct Both -> Both references are ignored
-{
 							chains.Add(stack.Reverse().ToList());
-						}
 					}
 					else {//recursively build the chain, all entries in stack should be unsynced
-						foreach (var dep in full.Dependencies(search)) {
+						foreach (var dep in full.Dependencies(search))
 							FindChains(dep, stack);
-						}
 					}
 
 					stack.Pop();
 				};
 				FindChains(mod, new Stack<LocalMod>());
 
-				if (chains.Count == 0) {
+				if (chains.Count == 0)
 					continue;
-				}
 
 				var syncedDependencies = synced.AllDependencies(mod);
-				foreach (var chain in chains) {
+				foreach (var chain in chains)
 					if (!syncedDependencies.Contains(chain.Last())) {
 						errored.Add(mod);
 						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + String.Join(" -> ", chain));
 					}
-				}
 			}
 
 			if (errored.Count > 0) {
@@ -249,9 +229,8 @@ namespace Terraria.ModLoader
 				var syncedList = syncedSort.Sort();
 
 				//preserve synced order
-				for (int i = 1; i < syncedList.Count; i++) {
+				for (int i = 1; i < syncedList.Count; i++)
 					fullSort.AddEntry(syncedList[i - 1], syncedList[i]);
-				}
 
 				return fullSort.Sort();
 			}

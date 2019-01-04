@@ -6,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 namespace Terraria.ModLoader.UI
 {
 	// UITextPanel except we scale and manipulate Text to preserve original dimensions.
+	// TODO: needs a code review, but potentially low priority
 	public class UIAutoScaleTextTextPanel<T> : UIPanel
 	{
 		private T _text = default(T);

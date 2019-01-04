@@ -36,19 +36,16 @@ namespace Terraria.ModLoader
 
 			public void LogError(string msg, Exception e = null) {
 				Console.WriteLine(msg);
-				if (e != null) {
+				if (e != null)
 					Console.WriteLine(e);
-				}
 			}
 
 			public void LogCompileErrors(string dllName, CompilerErrorCollection errors, string hint) {
-				if (hint != null) {
+				if (hint != null)
 					Console.WriteLine(hint);
-				}
 
-				foreach (CompilerError error in errors) {
+				foreach (CompilerError error in errors)
 					Console.WriteLine(error);
-				}
 			}
 		}
 
@@ -74,9 +71,8 @@ namespace Terraria.ModLoader
 		private static bool? developerMode;
 		public static bool DeveloperMode {
 			get {
-				if (!developerMode.HasValue) {
+				if (!developerMode.HasValue)
 					developerMode = Directory.Exists(ModSourcePath) && FindModSources().Length > 0 || File.Exists(modCompileVersionPath);
-				}
 
 				return developerMode.Value;
 			}
@@ -113,19 +109,16 @@ namespace Terraria.ModLoader
 
 		private static string referenceAssembliesPath;
 		internal static bool ReferenceAssembliesCheck() {
-			if (referenceAssembliesPath != null) {
+			if (referenceAssembliesPath != null)
 				return true;
-			}
 
 			referenceAssembliesPath = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + @"Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-			if (Directory.Exists(referenceAssembliesPath)) {
+			if (Directory.Exists(referenceAssembliesPath))
 				return true;
-			}
 
 			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
-			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any()) {
+			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
 				return true;
-			}
 
 			referenceAssembliesPath = null;
 			return false;
@@ -150,9 +143,8 @@ namespace Terraria.ModLoader
 			var modList = new List<LocalMod>();
 			foreach (var modFolder in FindModSources()) {
 				var mod = ReadProperties(modFolder);
-				if (mod == null) {
+				if (mod == null)
 					return false;
-				}
 
 				modList.Add(mod);
 			}
@@ -164,15 +156,13 @@ namespace Terraria.ModLoader
 			void Require(LocalMod mod) {
 				foreach (var dep in mod.properties.RefNames(true)) {
 					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
-					if (depMod != null && requiredFromInstall.Add(depMod)) {
+					if (depMod != null && requiredFromInstall.Add(depMod))
 						Require(depMod);
-					}
 				}
 			}
 
-			foreach (var mod in modList) {
+			foreach (var mod in modList)
 				Require(mod);
-			}
 
 			modList.AddRange(requiredFromInstall);
 
@@ -193,9 +183,8 @@ namespace Terraria.ModLoader
 			int num = 0;
 			foreach (var mod in modsToBuild) {
 				status.SetProgress(num++, modsToBuild.Count);
-				if (!Build(mod)) {
+				if (!Build(mod))
 					return false;
-				}
 			}
 
 			return true;
@@ -206,9 +195,8 @@ namespace Terraria.ModLoader
 			var lockFile = AcquireConsoleBuildLock();
 			try {
 				var modCompile = new ModCompile(new ConsoleBuildStatus());
-				if (!modCompile.Build(modFolder)) {
+				if (!modCompile.Build(modFolder))
 					Environment.Exit(1);
-				}
 			}
 			catch (Exception e) {
 				Console.WriteLine(e);
@@ -227,10 +215,7 @@ namespace Terraria.ModLoader
 		}
 
 		private BuildingMod ReadProperties(string modFolder) {
-			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) {
-				modFolder = modFolder.Substring(0, modFolder.Length - 1);
-			}
-
+			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
 			var modName = Path.GetFileName(modFolder);
 			status.SetStatus(Language.GetTextValue("tModLoader.ReadingProperties", modName));
 
@@ -273,14 +258,8 @@ namespace Terraria.ModLoader
 
 				if (winDLL == null || monoDLL == null) {
 					var missing = new List<string> { "All.dll" };
-					if (winDLL == null) {
-						missing.Add("Windows.dll");
-					}
-
-					if (monoDLL == null) {
-						missing.Add("Mono.dll");
-					}
-
+					if (winDLL == null) missing.Add("Windows.dll");
+					if (monoDLL == null) missing.Add("Mono.dll");
 					status.LogError(Language.GetTextValue("tModLoader.BuildErrorMissingDllFiles", string.Join(", ", missing)));
 					return false;
 				}
@@ -319,21 +298,18 @@ namespace Terraria.ModLoader
 					status.SetProgress(0, 2);
 					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
 				}
-				if (winDLL == null) {
+				if (winDLL == null)
 					return false;
-				}
 
 				status.SetStatus(Language.GetTextValue("tModLoader.CompilingMono", mod));
 				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
-				if (monoDLL == null) {
+				if (monoDLL == null)
 					return false;
-				}
 			}
 
-			if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL)) {
+			if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
 				return false;
-			}
 
 			status.SetStatus(Language.GetTextValue("tModLoader.Packaging", mod));
 			status.SetProgress(0, 1);
@@ -342,16 +318,12 @@ namespace Terraria.ModLoader
 
 			if (Equal(winDLL, monoDLL)) {
 				mod.modFile.AddFile("All.dll", winDLL);
-				if (winPDB != null) {
-					mod.modFile.AddFile("All.pdb", winPDB);
-				}
+				if (winPDB != null) mod.modFile.AddFile("All.pdb", winPDB);
 			}
 			else {
 				mod.modFile.AddFile("Windows.dll", winDLL);
 				mod.modFile.AddFile("Mono.dll", monoDLL);
-				if (winPDB != null) {
-					mod.modFile.AddFile("Windows.pdb", winPDB);
-				}
+				if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
 			}
 
 			foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
@@ -366,9 +338,8 @@ namespace Terraria.ModLoader
 						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
 						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
-						Path.GetFileName(resource) == "Thumbs.db") {
+						Path.GetFileName(resource) == "Thumbs.db")
 					continue;
-				}
 
 				AddResource(mod.modFile, relPath, resource);
 			}
@@ -385,9 +356,8 @@ namespace Terraria.ModLoader
 		private static void AddResource(TmodFile modFile, string relPath, string filePath) {
 			using (var src = File.OpenRead(filePath))
 			using (var dst = new MemoryStream()) {
-				if (!ContentConverters.Convert(ref relPath, src, dst)) {
+				if (!ContentConverters.Convert(ref relPath, src, dst))
 					src.CopyTo(dst);
-				}
 
 				modFile.AddFile(relPath, dst.ToArray());
 			}
@@ -424,15 +394,12 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool Equal(byte[] a, byte[] b) {
-			if (a.Length != b.Length) {
+			if (a.Length != b.Length)
 				return false;
-			}
 
-			for (int i = 0; i < a.Length; i++) {
-				if (a[i] != b[i]) {
+			for (int i = 0; i < a.Length; i++)
+				if (a[i] != b[i])
 					return false;
-				}
-			}
 
 			return true;
 		}
@@ -445,9 +412,8 @@ namespace Terraria.ModLoader
 
 		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
 			foreach (var refName in properties.RefNames(true)) {
-				if (mods.ContainsKey(refName)) {
+				if (mods.ContainsKey(refName))
 					continue;
-				}
 
 				LocalMod mod;
 				try {
@@ -466,9 +432,8 @@ namespace Terraria.ModLoader
 
 		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
 				ref byte[] dll, ref byte[] pdb) {
-			if (!LoadCompilationReferences()) {
+			if (!LoadCompilationReferences())
 				return;
-			}
 
 			bool generatePDB = mod.properties.includePDB && forWindows;
 			if (generatePDB && !windows) {
@@ -525,9 +490,8 @@ namespace Terraria.ModLoader
 
 				dll = File.ReadAllBytes(compileOptions.OutputAssembly);
 				dll = PostProcess(dll, forWindows);
-				if (generatePDB) {
+				if (generatePDB)
 					pdb = File.ReadAllBytes(Path.Combine(tempDir, mod + ".pdb"));
-				}
 			}
 			finally {
 				int numTries = 10;
@@ -550,9 +514,8 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			if (moduleReferences != null) {
+			if (moduleReferences != null)
 				return true;
-			}
 
 			moduleReferences = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
 				.Select(refName => Assembly.Load(refName).Location)
@@ -561,9 +524,8 @@ namespace Terraria.ModLoader
 			var referenceNames = new HashSet<string>(Directory.GetFiles(referenceAssembliesPath, "*.dll").Select(p => Path.GetFileName(p)));
 			for (int i = 0; i < moduleReferences.Count; i++) {
 				var refName = Path.GetFileName(moduleReferences[i]);
-				if (referenceNames.Contains(refName)) {
+				if (referenceNames.Contains(refName))
 					moduleReferences[i] = Path.Combine(referenceAssembliesPath, refName);
-				}
 			}
 			return true;
 		}
@@ -578,9 +540,8 @@ namespace Terraria.ModLoader
 				//extract embedded resource dlls
 				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
 					var path = Path.Combine(tempDir, Path.GetFileName(resName));
-					using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path)) {
+					using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path))
 						res.CopyTo(file);
-					}
 
 					refs.Add(path);
 				}
@@ -609,9 +570,8 @@ namespace Terraria.ModLoader
 				var asm = AssemblyDefinition.ReadAssembly(mainModulePath);
 				foreach (var res in asm.MainModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
 					var path = Path.Combine(tempDir, Path.GetFileName(res.Name));
-					using (Stream s = res.GetResourceStream(), file = File.Create(path)) {
+					using (Stream s = res.GetResourceStream(), file = File.Create(path))
 						s.CopyTo(file);
-					}
 
 					refs.Add(path);
 				}
@@ -637,10 +597,9 @@ namespace Terraria.ModLoader
 			var res = (CompilerResults)asm.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
 				.Invoke(null, new object[] { compileOptions, files });
 
-			if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation) {
+			if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation)
 				asm.GetType("Terraria.ModLoader.RoslynPdbFixer").GetMethod("Fix")
 					.Invoke(null, new object[] { compileOptions.OutputAssembly });
-			}
 
 			return res;
 		}
@@ -677,26 +636,20 @@ namespace Terraria.ModLoader
 		}
 
 		private static byte[] PostProcess(byte[] dll, bool forWindows) {
-			if (forWindows) {
+			if (forWindows)
 				return dll;
-			}
 
 			var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
 
 			// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
 			// Find all extension attributes and change their assembly references
 			AssemblyNameReference SystemCoreRef = null;
-			foreach (var module in asm.Modules) {
-				foreach (var type in module.Types) {
-					foreach (var met in type.Methods) {
-						foreach (var attr in met.CustomAttributes) {
-							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute") {
+			foreach (var module in asm.Modules)
+				foreach (var type in module.Types)
+					foreach (var met in type.Methods)
+						foreach (var attr in met.CustomAttributes)
+							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
 								attr.AttributeType.Scope = SystemCoreRef ?? (SystemCoreRef = GetOrAddSystemCore(module));
-							}
-						}
-					}
-				}
-			}
 
 			var ret = new MemoryStream();
 			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });

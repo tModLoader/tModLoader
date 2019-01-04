@@ -4,7 +4,7 @@ msbuild tModLoader.sln /t:clean /p:Configuration=MacRelease
 msbuild tModLoader.sln /t:clean /p:Configuration=MacServerRelease
 msbuild tModLoader.sln /t:clean /p:Configuration=LinuxRelease
 msbuild tModLoader.sln /t:clean /p:Configuration=LinuxServerRelease
-msbuild tModLoader.sln /p:Configuration=WindowsRelease /p:Platform="x86"
+msbuild tModLoader.sln /p:Configuration=WindowsRelease /p:Platform="x86" /p:GenerateDocumentation=true /p:DocumentationFile=Terraria.xml
 @IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
 msbuild tModLoader.sln /p:Configuration=WindowsServerRelease /p:Platform="x86"
 @IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)

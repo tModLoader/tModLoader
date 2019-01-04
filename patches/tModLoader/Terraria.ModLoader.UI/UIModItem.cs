@@ -15,11 +15,12 @@ using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
 {
+	//TODO common code with UIModDownloadItem etc
 	internal class UIModItem : UIPanel
 	{
 		private readonly LocalMod mod;
 		private readonly Texture2D dividerTexture;
-		private readonly int modIconAdjust;
+		private int modIconAdjust;
 		private readonly Texture2D innerPanelTexture;
 		private readonly UIText modName;
 		private readonly UIAutoScaleTextTextPanel<string> toggleModEnabledButton;
@@ -27,16 +28,16 @@ namespace Terraria.ModLoader.UI
 		readonly UIHoverImage keyImage;
 		private readonly UITextPanel<string> configButton;
 		private bool configChangesRequireReload;
-		private readonly bool loaded;
+		private bool loaded;
 
 		public UIModItem(LocalMod mod) {
 			this.mod = mod;
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
-			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
-			this.Height.Set(90f, 0f);
-			this.Width.Set(0f, 1f);
-			base.SetPadding(6f);
+			BorderColor = new Color(89, 116, 213) * 0.7f;
+			dividerTexture = TextureManager.Load("Images/UI/Divider");
+			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+			Height.Pixels = 90;
+			Width.Percent = 1f;
+			SetPadding(6f);
 			//base.OnClick += this.ToggleEnabled;
 			string text = mod.DisplayName + " v" + mod.modFile.version;
 			if (mod.tModLoaderVersion < new Version(0, 10)) {
@@ -47,46 +48,48 @@ namespace Terraria.ModLoader.UI
 				try {
 					Texture2D modIconTexture;
 					using (mod.modFile.EnsureOpen())
-					using (var s = mod.modFile.GetStream("icon.png")) {
+					using (var s = mod.modFile.GetStream("icon.png"))
 						modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, s);
-					}
 
 					if (modIconTexture.Width == 80 && modIconTexture.Height == 80) {
-						modIcon = new UIImage(modIconTexture);
-						modIcon.Left.Set(0f, 0f);
-						modIcon.Top.Set(0f, 0f);
+						modIcon = new UIImage(modIconTexture) {
+							Left = { Percent = 0f },
+							Top = { Percent = 0f }
+						};
 						Append(modIcon);
 						modIconAdjust += 85;
 					}
 				}
 				catch { }
 			}
-			this.modName = new UIText(text, 1f, false);
-			this.modName.Left.Set(modIconAdjust + 10f, 0f);
-			this.modName.Top.Set(5f, 0f);
-			base.Append(this.modName);
-			UIAutoScaleTextTextPanel<string> moreInfoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo"), 1f, false);
-			moreInfoButton.Width.Set(100f, 0f);
-			moreInfoButton.Height.Set(36f, 0f);
-			moreInfoButton.Left.Set(430f, 0f);
-			moreInfoButton.Top.Set(40f, 0f);
+			modName = new UIText(text) {
+				Left = new StyleDimension(modIconAdjust + 10f, 0f),
+				Top = { Pixels = 5 }
+			};
+			Append(modName);
+
+			var moreInfoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo")) {
+				Width = { Pixels = 100 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 430 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
 			moreInfoButton.PaddingTop -= 2f;
 			moreInfoButton.PaddingBottom -= 2f;
-			moreInfoButton.OnMouseOver += UICommon.FadedMouseOver;
-			moreInfoButton.OnMouseOut += UICommon.FadedMouseOut;
-			moreInfoButton.OnClick += this.Moreinfo;
-			base.Append(moreInfoButton);
-			toggleModEnabledButton = new UIAutoScaleTextTextPanel<string>(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
-			toggleModEnabledButton.Width.Set(100f, 0f);
-			toggleModEnabledButton.Height.Set(36f, 0f);
-			toggleModEnabledButton.Left.Set(moreInfoButton.Left.Pixels - toggleModEnabledButton.Width.Pixels - 5f, 0f);
-			toggleModEnabledButton.Top.Set(40f, 0f);
+			moreInfoButton.OnClick += Moreinfo;
+			Append(moreInfoButton);
+
+			toggleModEnabledButton = new UIAutoScaleTextTextPanel<string>(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable")) {
+				Width = { Pixels = 100 },
+				Height = { Pixels = 36 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
+			toggleModEnabledButton.Left.Pixels = moreInfoButton.Left.Pixels - toggleModEnabledButton.Width.Pixels - 5f;
 			toggleModEnabledButton.PaddingTop -= 2f;
 			toggleModEnabledButton.PaddingBottom -= 2f;
-			toggleModEnabledButton.OnMouseOver += UICommon.FadedMouseOver;
-			toggleModEnabledButton.OnMouseOut += UICommon.FadedMouseOut;
-			toggleModEnabledButton.OnClick += this.ToggleEnabled;
-			base.Append(toggleModEnabledButton);
+			toggleModEnabledButton.OnClick += ToggleEnabled;
+			Append(toggleModEnabledButton);
+			
 			Mod loadedMod = ModLoader.GetMod(mod.Name);
 			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) // and has config
 			{
@@ -106,22 +109,23 @@ namespace Terraria.ModLoader.UI
 					configChangesRequireReload = true;
 				}
 			}
+
 			var modRefs = mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (modRefs.Length > 0 && !mod.Enabled) {
-				string refs = String.Join(", ", mod.properties.modReferences);
-				Texture2D icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
+				string refs = string.Join(", ", mod.properties.modReferences);
+				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
 					Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
-				UIHoverImage modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs));
-				modReferenceIcon.Left.Set((configButton?.Left.Pixels ?? toggleModEnabledButton.Left.Pixels) - 24f, 0f);
-				modReferenceIcon.Top.Set(47f, 0f);
+				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
+					Left = new StyleDimension(toggleModEnabledButton.Left.Pixels - 24f, 0f),
+					Top = { Pixels = 47 }
+				};
 				modReferenceIcon.OnClick += (a, b) => {
 					var modList = ModOrganizer.FindMods();
 					var missing = new List<string>();
 					foreach (var modRef in modRefs) {
 						ModLoader.EnableMod(modRef);
-						if (!modList.Any(m => m.Name == modRef)) {
+						if (!modList.Any(m => m.Name == modRef))
 							missing.Add(modRef);
-						}
 					}
 
 					Main.menuMode = Interface.modsMenuID;
@@ -131,16 +135,18 @@ namespace Terraria.ModLoader.UI
 						Main.menuMode = Interface.infoMessageID;
 					}
 				};
-				base.Append(modReferenceIcon);
+				Append(modReferenceIcon);
 			}
 			if (mod.modFile.ValidModBrowserSignature) {
-				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser"));
-				keyImage.Left.Set(-20, 1f);
-				base.Append(keyImage);
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
+					Left = { Pixels = -20, Percent = 1f }
+				};
+				Append(keyImage);
 			}
 			if (mod.properties.beta) {
-				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish"));
-				keyImage.Left.Set(-10, 1f);
+				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish")) {
+					Left = { Pixels = -10, Percent = 1f }
+				};
 				Append(keyImage);
 			}
 			if (loadedMod != null) {
@@ -151,9 +157,10 @@ namespace Terraria.ModLoader.UI
 				for (int i = 0; i < values.Length; i++) {
 					if (values[i] > 0) {
 						Texture2D iconTexture = Main.instance.infoIconTexture[i];
-						keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i]));
-						keyImage.Left.Set(xOffset, 1f);
-						base.Append(keyImage);
+						keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
+							Left = { Pixels = xOffset, Percent = 1f }
+						};
+						Append(keyImage);
 						xOffset -= 18;
 					}
 				}
@@ -163,7 +170,7 @@ namespace Terraria.ModLoader.UI
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
 		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 			Mod loadedMod = ModLoader.GetMod(mod.Name);
-			Dictionary<string, ModTranslation> dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
+			var dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
 			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
 				.Concat(loadedMod.npcs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
@@ -178,9 +185,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
-			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
-			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this.innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
+			spriteBatch.Draw(innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, innerPanelTexture.Height)), Color.White);
+			spriteBatch.Draw(innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, innerPanelTexture.Height)), Color.White);
 		}
 
 		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
@@ -191,12 +198,12 @@ namespace Terraria.ModLoader.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
-			CalculatedStyle innerDimensions = base.GetInnerDimensions();
-			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + modIconAdjust, innerDimensions.Y + 30f);
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+			CalculatedStyle innerDimensions = GetInnerDimensions();
+			var drawPos = new Vector2(innerDimensions.X + 5f + modIconAdjust, innerDimensions.Y + 30f);
+			spriteBatch.Draw(dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + 10f + modIconAdjust, innerDimensions.Y + 45f);
-			this.DrawPanel(spriteBatch, drawPos, 85f);
-			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
+			DrawPanel(spriteBatch, drawPos, 85f);
+			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
 			if (mod.Enabled != loaded) {
 				drawPos += new Vector2(90f, 5f);
 				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
@@ -213,6 +220,7 @@ namespace Terraria.ModLoader.UI
 			// main.hoverItemName isn't drawn in UI
 			if (this.modName.IsMouseHovering && mod.properties.author.Length > 0) {
 				string text = Language.GetTextValue("tModLoader.ModsByline", mod.properties.author);
+				// TODO duplicate pattern
 				float x = Main.fontMouseText.MeasureString(text).X;
 				Vector2 vector = Main.MouseScreen + new Vector2(16f);
 				if (vector.Y > (float)(Main.screenHeight - 30)) {
@@ -227,32 +235,30 @@ namespace Terraria.ModLoader.UI
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			this.BackgroundColor = new Color(73, 94, 171);
-			this.BorderColor = new Color(89, 116, 213);
+			BackgroundColor = UICommon.defaultUIBlue;
+			BorderColor = new Color(89, 116, 213);
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
-			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
+			BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
 		internal void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
 			mod.Enabled = !mod.Enabled;
-			toggleModEnabledButton.SetText(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"), 1f, false);
+			toggleModEnabledButton.SetText(mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable"));
 		}
 
 		internal void Enable() {
-			if (!mod.Enabled) {
+			if (!mod.Enabled)
 				ToggleEnabled(null, null);
-			}
 		}
 
 		internal void Disable() {
-			if (mod.Enabled) {
+			if (mod.Enabled)
 				ToggleEnabled(null, null);
-			}
 		}
 
 		internal void Moreinfo(UIMouseEvent evt, UIElement listeningElement) {
@@ -288,7 +294,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override bool PassFilters() {
+		public bool PassFilters() {
 			if (Interface.modsMenu.filter.Length > 0) {
 				if (Interface.modsMenu.searchFilterMode == SearchFilter.Author) {
 					if (mod.properties.author.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
@@ -296,15 +302,14 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else {
-					if (mod.DisplayName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+					if (mod.DisplayName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1 && mod.Name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}
 			}
 			if (Interface.modsMenu.modSideFilterMode != ModSideFilter.All) {
-				if ((int)mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1) {
+				if ((int)mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1)
 					return false;
-				}
 			}
 			switch (Interface.modsMenu.enabledFilterMode) {
 				default:

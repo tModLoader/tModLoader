@@ -63,9 +63,8 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t => {
 					var tex = t.Result;
 					tex.Name = Name + "/" + path;
-					lock (textures) {
+					lock (textures)
 						textures[path] = tex;
-					}
 				}));
 			}
 			catch (Exception e) {
@@ -272,24 +271,20 @@ namespace Terraria.ModLoader
 			}
 			sounds.Clear();
 			effects.Clear();
-			foreach (var tex in textures.Values) {
+			foreach (var tex in textures.Values)
 				tex?.Dispose();
-			}
-
 			textures.Clear();
 			musics.Clear();
 			fonts.Clear();
 		}
 
 		internal void Autoload() {
-			if (Code == null) {
+			if (Code == null)
 				return;
-			}
 
 			Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
-			while (AsyncLoadQueue.Count > 0) {
+			while (AsyncLoadQueue.Count > 0)
 				AsyncLoadQueue.Dequeue().Wait();
-			}
 
 			AutoloadLocalization();
 			IList<Type> modGores = new List<Type>();
@@ -399,12 +394,10 @@ namespace Terraria.ModLoader
 			if (item.Autoload(ref name)) {
 				AddItem(name, item);
 				var autoloadEquip = type.GetAttribute<AutoloadEquip>();
-				if (autoloadEquip != null) {
-					foreach (var equip in autoloadEquip.equipTypes) {
+				if (autoloadEquip != null)
+					foreach (var equip in autoloadEquip.equipTypes)
 						AddEquipTexture(item, equip, item.Name, item.Texture + '_' + equip,
 							item.Texture + "_Arms", item.Texture + "_FemaleBody");
-					}
-				}
 			}
 		}
 
@@ -639,9 +632,8 @@ namespace Terraria.ModLoader
 			foreach (var texture in textures.Keys.Where(t => t.StartsWith("Gores/"))) {
 				ModGore modGore = null;
 				Type t;
-				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out t)) {
+				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out t))
 					modGore = (ModGore)Activator.CreateInstance(t);
-				}
 
 				AddGore(Name + '/' + texture, modGore);
 			}
@@ -663,9 +655,8 @@ namespace Terraria.ModLoader
 				}
 				ModSound modSound = null;
 				Type t;
-				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t)) {
+				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t))
 					modSound = (ModSound)Activator.CreateInstance(t);
-				}
 
 				AddSound(soundType, Name + '/' + sound, modSound);
 			}
@@ -690,9 +681,8 @@ namespace Terraria.ModLoader
 			var mc = (ModCommand)Activator.CreateInstance(type);
 			mc.mod = this;
 			var name = type.Name;
-			if (mc.Autoload(ref name)) {
+			if (mc.Autoload(ref name))
 				AddCommand(name, mc);
-			}
 		}
 
 		/// <summary>
@@ -709,10 +699,8 @@ namespace Terraria.ModLoader
 					string line;
 					while ((line = reader.ReadLine()) != null) {
 						int split = line.IndexOf('=');
-						if (split < 0) {
+						if (split < 0)
 							continue; // lines witout a = are ignored
-						}
-
 						string key = line.Substring(0, split).Trim().Replace(" ", "_");
 						string value = line.Substring(split + 1).Trim();
 						if (value.Length == 0) {
@@ -721,10 +709,8 @@ namespace Terraria.ModLoader
 						value = value.Replace("\\n", "\n");
 						// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
 						//string key = key;
-						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt)) {
+						if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
 							modTranslationDictionary[key] = mt = CreateTranslation(key);
-						}
-
 						mt.AddTranslation(culture, value);
 					}
 				}

@@ -39,13 +39,14 @@ namespace ExampleMod.Projectiles
 				projectile.Kill();
 			}
 			else {
+				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+				Main.PlaySound(SoundID.Item10, projectile.position);
 				if (projectile.velocity.X != oldVelocity.X) {
 					projectile.velocity.X = -oldVelocity.X;
 				}
 				if (projectile.velocity.Y != oldVelocity.Y) {
 					projectile.velocity.Y = -oldVelocity.Y;
 				}
-				Main.PlaySound(SoundID.Item10, projectile.position);
 			}
 			return false;
 		}
@@ -59,6 +60,13 @@ namespace ExampleMod.Projectiles
 				spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, null, color, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
 			}
 			return true;
+		}
+
+		public override void Kill(int timeLeft)
+		{
+			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
+			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			Main.PlaySound(SoundID.Item10, projectile.position);
 		}
 	}
 }

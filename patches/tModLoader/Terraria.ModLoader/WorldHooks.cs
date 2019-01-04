@@ -43,9 +43,8 @@ namespace Terraria.ModLoader
 		internal static void ReadNetWorldOrder(BinaryReader r) {
 			short n = r.ReadInt16();
 			NetWorlds = new ModWorld[n];
-			for (short i = 0; i < n; i++) {
+			for (short i = 0; i < n; i++)
 				NetWorlds[i] = ModNet.GetMod(r.ReadInt16()).GetModWorld(r.ReadString());
-			}
 		}
 
 		public static void PreWorldGen() {

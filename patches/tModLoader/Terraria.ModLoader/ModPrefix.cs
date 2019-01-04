@@ -23,13 +23,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static byte ReservePrefixID() {
-			if (ModNet.AllowVanillaClients) {
-				throw new Exception("Adding items breaks vanilla client compatiblity");
-			}
-
-			if (nextPrefix == 0) {
-				throw new Exception("Prefix ID limit has been broken");
-			}
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatiblity");
+			if (nextPrefix == 0) throw new Exception("Prefix ID limit has been broken");
 
 			byte reserveID = nextPrefix;
 			nextPrefix++;
@@ -74,15 +69,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories) {
 			WeightedRandom<byte> wr = new WeightedRandom<byte>();
-			foreach (PrefixCategory category in categories) {
-				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
+			foreach (PrefixCategory category in categories)
+				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item)))
 					wr.Add(modPrefix.Type, modPrefix.RollChance(item));
-				}
-			}
 
-			if (vanillaWeight > 0) {
+			if (vanillaWeight > 0)
 				wr.Add((byte)prefix, vanillaWeight);
-			}
 
 			prefix = wr.Get();
 		}
@@ -136,9 +128,8 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void AutoDefaults() {
-			if (DisplayName.IsDefault()) {
+			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-			}
 		}
 
 		/// <summary>

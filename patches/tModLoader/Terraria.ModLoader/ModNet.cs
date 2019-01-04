@@ -72,17 +72,14 @@ namespace Terraria.ModLoader
 
 		internal static void AssignNetIDs() {
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
-			for (short i = 0; i < netMods.Length; i++) {
+			for (short i = 0; i < netMods.Length; i++)
 				netMods[i].netID = i;
-			}
 		}
 
 		internal static void Unload() {
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
-{
 				AllowVanillaClients = false;
-			}
 		}
 
 		internal static void SyncMods(int clientIndex) {
@@ -134,12 +131,10 @@ namespace Terraria.ModLoader
 
 		internal static void SyncClientMods(BinaryReader reader) {
 			SyncClientMods(reader, out var needsReload);
-			if (downloadQueue.Count > 0) {
+			if (downloadQueue.Count > 0)
 				DownloadNextMod();
-			}
-			else {
+			else
 				OnModsDownloaded(needsReload);
-			}
 		}
 
 		// This method is split so that the local variables aren't held by the GC when reloading
@@ -169,9 +164,8 @@ namespace Terraria.ModLoader
 
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
 				if (clientMod != null) {
-					if (header.Matches(clientMod.File)) {
+					if (header.Matches(clientMod.File))
 						continue;
-					}
 
 					header.path = clientMod.File.path;
 				}
@@ -184,25 +178,21 @@ namespace Terraria.ModLoader
 						continue;
 					}
 
-					if (disabledVersions.Length > 0) {
+					if (disabledVersions.Length > 0)
 						header.path = disabledVersions[0].modFile.path;
-					}
 				}
 
-				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
+				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 					downloadQueue.Enqueue(header);
-				}
-				else {
+				else
 					blockedList.Add(header);
-				}
 			}
 
-			foreach (var mod in clientMods) {
+			foreach (var mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
 					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
-			}
 
 			if (blockedList.Count > 0) {
 				var msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
@@ -210,16 +200,11 @@ namespace Terraria.ModLoader
 					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
 					: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
 				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
-				foreach (var mod in blockedList) {
+				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
-				}
 
 				Logging.tML.Warn(msg);
-				Interface.errorMessage.SetMessage(msg);
-				Interface.errorMessage.SetGotoMenu(0);
-				Main.gameMenu = true;
-				Main.menuMode = Interface.errorMessageID;
-				return;
+				Interface.errorMessage.Show(msg, 0);
 			}
 		}
 
@@ -256,9 +241,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ReceiveMod(BinaryReader reader) {
-			if (downloadingMod == null) {
+			if (downloadingMod == null)
 				return;
-			}
 
 			try {
 				if (downloadingFile == null) {
@@ -286,22 +270,18 @@ namespace Terraria.ModLoader
 					mod.Read();
 					mod.Close();
 
-					if (!downloadingMod.Matches(mod)) {
+					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
-					}
 
-					if (downloadingMod.signed && !mod.ValidModBrowserSignature) {
+					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
-					}
 
 					ModLoader.EnableMod(mod.name);
 
-					if (downloadQueue.Count > 0) {
+					if (downloadQueue.Count > 0)
 						DownloadNextMod();
-					}
-					else {
+					else
 						OnModsDownloaded(true);
-					}
 				}
 			}
 			catch (Exception e) {
@@ -338,9 +318,8 @@ namespace Terraria.ModLoader
 
 			downloadingMod = null;
 			netMods = null;
-			foreach (var mod in ModLoader.Mods) {
+			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;
-			}
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
@@ -364,9 +343,8 @@ namespace Terraria.ModLoader
 		internal static void SendNetIDs(int toClient) {
 			var p = new ModPacket(MessageID.ModPacket);
 			p.Write(netMods.Length);
-			foreach (var mod in netMods) {
+			foreach (var mod in netMods)
 				p.Write(mod.Name);
-			}
 
 			ItemLoader.WriteNetGlobalOrder(p);
 			WorldHooks.WriteNetWorldOrder(p);
@@ -383,9 +361,7 @@ namespace Terraria.ModLoader
 				var mod = mods.SingleOrDefault(m => m.Name == name);
 				list.Add(mod);
 				if (mod != null) //nosync mod that doesn't exist on the client
-				{
 					mod.netID = i;
-				}
 			}
 			netMods = list.ToArray();
 			SetupDiagnostics();
@@ -454,10 +430,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResetNetDiag() {
-			if (netMods == null || Main.netMode == 2) {
-				return;
-			}
-
+			if (netMods == null || Main.netMode == 2) return;
 			for (int i = 0; i < netMods.Length; i++) {
 				rxMsgType[i] = 0;
 				rxDataType[i] = 0;
@@ -467,10 +440,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void DrawModDiagnoseNet() {
-			if (netMods == null) {
-				return;
-			}
-
+			if (netMods == null) return;
 			float scale = 0.7f;
 
 			for (int j = -1; j < netMods.Length; j++) {

@@ -41,9 +41,8 @@ namespace Terraria.ModLoader.Default
 
 				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
 				canRestore.Add((ushort)type);
-				if (type != 0) {
+				if (type != 0)
 					canRestoreFlag = true;
-				}
 			}
 			if (canRestoreFlag) {
 				RestoreTiles(canRestore);

@@ -534,10 +534,7 @@ namespace Terraria.ModLoader
 
 		public static float UseTimeMultiplier(Player player, Item item) {
 			float multiplier = 1f;
-			if (item.IsAir) {
-				return multiplier;
-			}
-
+			if (item.IsAir) return multiplier;
 			foreach (int index in HookUseTimeMultiplier.arr) {
 				multiplier *= player.modPlayers[index].UseTimeMultiplier(item);
 			}
@@ -552,10 +549,7 @@ namespace Terraria.ModLoader
 
 		public static float MeleeSpeedMultiplier(Player player, Item item) {
 			float multiplier = 1f;
-			if (item.IsAir) {
-				return multiplier;
-			}
-
+			if (item.IsAir) return multiplier;
 			foreach (int index in HookMeleeSpeedMultiplier.arr) {
 				multiplier *= player.modPlayers[index].MeleeSpeedMultiplier(item);
 			}
@@ -571,9 +565,8 @@ namespace Terraria.ModLoader
 		private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(p => p.GetHealLife);
 
 		public static void GetHealLife(Player player, Item item, bool quickHeal, ref int healValue) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
 
 			foreach (int index in HookGetHealLife.arr) {
 				player.modPlayers[index].GetHealLife(item, quickHeal, ref healValue);
@@ -584,9 +577,8 @@ namespace Terraria.ModLoader
 		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(p => p.GetHealMana);
 
 		public static void GetHealMana(Player player, Item item, bool quickHeal, ref int healValue) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
 
 			foreach (int index in HookGetHealMana.arr) {
 				player.modPlayers[index].GetHealMana(item, quickHeal, ref healValue);
@@ -597,9 +589,8 @@ namespace Terraria.ModLoader
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
 
 		public static void GetWeaponDamage(Player player, Item item, ref int damage) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
 
 			foreach (int index in HookGetWeaponDamage.arr) {
 				player.modPlayers[index].GetWeaponDamage(item, ref damage);
@@ -618,9 +609,8 @@ namespace Terraria.ModLoader
 		private static HookList HookGetWeaponKnockback = AddHook<DelegateGetWeaponKnockback>(p => p.GetWeaponKnockback);
 
 		public static void GetWeaponKnockback(Player player, Item item, ref float knockback) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
 
 			foreach (int index in HookGetWeaponKnockback.arr) {
 				player.modPlayers[index].GetWeaponKnockback(item, ref knockback);
@@ -631,10 +621,7 @@ namespace Terraria.ModLoader
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
 
 		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
-			if (item.IsAir) {
-				return;
-			}
-
+			if (item.IsAir) return;
 			foreach (int index in HookGetWeaponCrit.arr) {
 				player.modPlayers[index].GetWeaponCrit(item, ref crit);
 			}
@@ -654,9 +641,8 @@ namespace Terraria.ModLoader
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item>>(p => p.OnConsumeAmmo);
 
 		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
-			foreach (int index in HookOnConsumeAmmo.arr) {
+			foreach (int index in HookOnConsumeAmmo.arr)
 				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
-			}
 		}
 
 		private delegate bool DelegateShoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack);
@@ -1086,68 +1072,31 @@ namespace Terraria.ModLoader
 			var type = player.GetType();
 
 			int netCustomBiomeMethods = 0;
-			if (HasMethod(type, "CustomBiomesMatch", typeof(Player))) {
-				netCustomBiomeMethods++;
-			}
-
-			if (HasMethod(type, "CopyCustomBiomesTo", typeof(Player))) {
-				netCustomBiomeMethods++;
-			}
-
-			if (HasMethod(type, "SendCustomBiomes", typeof(BinaryWriter))) {
-				netCustomBiomeMethods++;
-			}
-
-			if (HasMethod(type, "ReceiveCustomBiomes", typeof(BinaryReader))) {
-				netCustomBiomeMethods++;
-			}
-
-			if (netCustomBiomeMethods > 0 && netCustomBiomeMethods < 4) {
+			if (HasMethod(type, "CustomBiomesMatch", typeof(Player))) netCustomBiomeMethods++;
+			if (HasMethod(type, "CopyCustomBiomesTo", typeof(Player))) netCustomBiomeMethods++;
+			if (HasMethod(type, "SendCustomBiomes", typeof(BinaryWriter))) netCustomBiomeMethods++;
+			if (HasMethod(type, "ReceiveCustomBiomes", typeof(BinaryReader))) netCustomBiomeMethods++;
+			if (netCustomBiomeMethods > 0 && netCustomBiomeMethods < 4)
 				throw new Exception(type + " must override all of (CustomBiomesMatch/CopyCustomBiomesTo/SendCustomBiomes/ReceiveCustomBiomes) or none");
-			}
 
 			int netClientMethods = 0;
-			if (HasMethod(type, "clientClone", typeof(ModPlayer))) {
-				netClientMethods++;
-			}
-
-			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) {
-				netClientMethods++;
-			}
-
-			if (HasMethod(type, "SendClientChanges", typeof(ModPlayer))) {
-				netClientMethods++;
-			}
-
-			if (netClientMethods > 0 && netClientMethods < 3) {
+			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;
+			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) netClientMethods++;
+			if (HasMethod(type, "SendClientChanges", typeof(ModPlayer))) netClientMethods++;
+			if (netClientMethods > 0 && netClientMethods < 3)
 				throw new Exception(type + " must override all of (clientClone/SyncPlayer/SendClientChanges) or none");
-			}
 
 			int saveMethods = 0;
-			if (HasMethod(type, "Save")) {
-				saveMethods++;
-			}
-
-			if (HasMethod(type, "Load", typeof(TagCompound))) {
-				saveMethods++;
-			}
-
-			if (saveMethods == 1) {
+			if (HasMethod(type, "Save")) saveMethods++;
+			if (HasMethod(type, "Load", typeof(TagCompound))) saveMethods++;
+			if (saveMethods == 1)
 				throw new Exception(type + " must override all of (Save/Load) or none");
-			}
 
 			int netMethods = 0;
-			if (HasMethod(type, "NetSend", typeof(BinaryWriter))) {
-				netMethods++;
-			}
-
-			if (HasMethod(type, "NetReceive", typeof(BinaryReader))) {
-				netMethods++;
-			}
-
-			if (netMethods == 1) {
+			if (HasMethod(type, "NetSend", typeof(BinaryWriter))) netMethods++;
+			if (HasMethod(type, "NetReceive", typeof(BinaryReader))) netMethods++;
+			if (netMethods == 1)
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
-			}
 		}
 	}
 }

@@ -24,78 +24,83 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage uiLoader;
 
 		public override void OnInitialize() {
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+			uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
+			};
 			uIElement.Append(uIPanel);
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modList = new UIList();
-			modList.Width.Set(-25f, 1f);
-			modList.Height.Set(0f, 1f);
-			modList.ListPadding = 5f;
+			modList = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f },
+				ListPadding = 5f
+			};
 			uIPanel.Append(modList);
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
-			uIScrollbar.HAlign = 1f;
+
+			var uIScrollbar = new UIScrollbar {
+				Height = { Percent = 1f },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 			modList.SetScrollbar(uIScrollbar);
-			UITextPanel<string> uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true) {
-				HAlign = 0.5f
-			};
-			uIHeaderTextPanel.Top.Set(-35f, 0f);
-			uIHeaderTextPanel.SetPadding(15f);
-			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
+
+			var uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModSources"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTextPanel);
-			UIAutoScaleTextTextPanel<string> buttonBA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll"), 1f, false);
-			buttonBA.Width.Set(-10f, 0.5f);
-			buttonBA.Height.Set(40f, 0f);
-			buttonBA.VAlign = 1f;
-			buttonBA.Top.Set(-65f, 0f);
-			buttonBA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonBA.OnMouseOut += UICommon.FadedMouseOut;
+
+			var buttonBA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			};
+			buttonBA.WithFadedMouseOver();
 			buttonBA.OnClick += BuildMods;
 			uIElement.Append(buttonBA);
-			UIAutoScaleTextTextPanel<string> buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"), 1f, false);
+
+			var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 1f;
-			buttonBRA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonBRA.OnMouseOut += UICommon.FadedMouseOut;
+			buttonBRA.WithFadedMouseOver();
 			buttonBRA.OnClick += BuildAndReload;
 			uIElement.Append(buttonBRA);
-			UIAutoScaleTextTextPanel<string> buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+
+			var buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
 			buttonB.CopyStyle(buttonBA);
 			buttonB.Width.Set(-10f, 1f / 3f);
-			buttonB.Top.Set(-20f, 0f);
-			buttonB.OnMouseOver += UICommon.FadedMouseOver;
-			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.Top.Pixels = -20;
+			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
-			UIAutoScaleTextTextPanel<string> buttonOS = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"), 1f, false);
+
+			var buttonOS = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"));
 			buttonOS.CopyStyle(buttonB);
 			buttonOS.HAlign = .5f;
-			buttonOS.OnMouseOver += UICommon.FadedMouseOver;
-			buttonOS.OnMouseOut += UICommon.FadedMouseOut;
+			buttonOS.WithFadedMouseOver();
 			buttonOS.OnClick += OpenSources;
 			uIElement.Append(buttonOS);
-			UIAutoScaleTextTextPanel<string> buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"), 1f, false);
+
+			var buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"));
 			buttonMP.CopyStyle(buttonB);
 			buttonMP.HAlign = 1f;
-			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
-			buttonMP.OnMouseOut += UICommon.FadedMouseOut;
+			buttonMP.WithFadedMouseOver();
 			buttonMP.OnClick += ManagePublished;
 			uIElement.Append(buttonMP);
-			base.Append(uIElement);
+			Append(uIElement);
 		}
 
 		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
@@ -145,10 +150,6 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Populate() {
-			if (SynchronizationContext.Current == null) {
-				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-			}
-
 			Task.Factory.StartNew(
 				delegate {
 					var modSources = ModCompile.FindModSources();
@@ -168,10 +169,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (!updateNeeded) {
-				return;
-			}
-
+			if (!updateNeeded) return;
 			updateNeeded = false;
 			uIPanel.RemoveChild(uiLoader);
 			modList.Clear();

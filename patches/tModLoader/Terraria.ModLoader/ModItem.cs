@@ -181,9 +181,8 @@ namespace Terraria.ModLoader
 				Main.itemFlameLoaded[item.type] = true;
 			}
 
-			if (DisplayName.IsDefault()) {
+			if (DisplayName.IsDefault())
 				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-			}
 		}
 
 		/// <summary>

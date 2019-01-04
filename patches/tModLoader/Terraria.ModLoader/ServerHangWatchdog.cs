@@ -13,9 +13,8 @@ namespace Terraria.ModLoader
 		internal static void Checkin() {
 			bool started = lastCheckin != null;
 			lastCheckin = new Ref<DateTime>(DateTime.Now);
-			if (!started) {
+			if (!started)
 				Start();
-			}
 		}
 
 		private static void Start() {
@@ -50,9 +49,8 @@ namespace Terraria.ModLoader
 						}
 						catch (Exception) {/*Whatever happens, do never stop to resume the target-thread regularly until the main-thread has exited safely.*/}
 					}
-				}) {
-					Name = "GetStackFallbackThread"
-				};
+				});
+				fallbackThread.Name = "GetStackFallbackThread";
 				try {
 					fallbackThread.Start();
 					fallbackThreadReady.WaitOne();

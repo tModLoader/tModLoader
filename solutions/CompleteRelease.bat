@@ -5,12 +5,12 @@
 :: Compile/Build exe 
 IF not "%1"=="beta" (
 	echo "Building Release"
-	set version=v0.10.1.5
+	set version=v0.11
 	call buildRelease.bat
 ) else (
 	:: call "CompleteRelease.bat beta" to build a beta. Be sure to update version.
 	echo "Building Beta"
-	set version=v0.10.1.5 ModConfig Beta 7
+	set version=v0.11 Beta 1
 	call buildBeta.bat
 )
 set destinationFolder=.\tModLoader %version% Release
@@ -29,91 +29,100 @@ cd ..\solutions
 mkdir "%destinationFolder%"
 
 :: Temp Folders
-mkdir "%destinationFolder%\tModLoader Windows %version%"
-mkdir "%destinationFolder%\tModLoader Mac %version%"
-mkdir "%destinationFolder%\tModLoader Linux %version%"
-mkdir "%destinationFolder%\tModLoader Windows %version%\ModCompile"
-mkdir "%destinationFolder%\tModLoader Mac %version%\ModCompile"
-mkdir "%destinationFolder%\tModLoader Mac %version%\mono"
-mkdir "%destinationFolder%\tModLoader Linux %version%\ModCompile"
+set win=%destinationFolder%\tModLoader Windows %version%
+set mac=%destinationFolder%\tModLoader Mac %version%
+set lnx=%destinationFolder%\tModLoader Linux %version%
+set winmc=%win% ModCompile
+set monomc=%destinationFolder%\tModLoader Mono %version% ModCompile
+
+mkdir "%win%"
+mkdir "%mac%"
+mkdir "%lnx%"
+mkdir "%winmc%"
+mkdir "%monomc%"
+mkdir "%mac%\mono"
 
 :: Windows release
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Windows %version%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%destinationFolder%\tModLoader Windows %version%\tModLoaderServer.exe" /y
-:: ModCompile
-copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Windows %version%\ModCompile\tModLoaderMac.exe" /y
-copy ..\references\FNA.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\FNA.dll" /y
-copy ..\references\Mono.Cecil.Pdb.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Mono.Cecil.Pdb.dll" /y
-copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\RoslynWrapper.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Reflection.Metadata.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\System.Collections.Immutable.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%destinationFolder%\tModLoader Windows %version%\ModCompile\Microsoft.CodeAnalysis.CSharp.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%win%\Terraria.exe" /y
+copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%win%\tModLoaderServer.exe" /y
+copy ..\installer2\WindowsInstaller.jar "%win%\tModLoaderInstaller.jar" /y
+copy ReleaseExtras\README_Windows.txt "%win%\README.txt" /y
+copy ReleaseExtras\start-tModLoaderServer.bat "%win%\start-tModLoaderServer.bat" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%\start-tModLoaderServer-steam-friends.bat" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%\start-tModLoaderServer-steam-private.bat" /y
 
-copy ..\installer2\WindowsInstaller.jar "%destinationFolder%\tModLoader Windows %version%\tModLoaderInstaller.jar" /y
-copy ReleaseExtras\README_Windows.txt "%destinationFolder%\tModLoader Windows %version%\README.txt" /y
-copy ReleaseExtras\start-tModLoaderServer.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer-steam-friends.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%destinationFolder%\tModLoader Windows %version%\start-tModLoaderServer-steam-private.bat" /y
+call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
 
-call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Windows %version%" -destination "%destinationFolder%\tModLoader Windows %version%.zip" -keep yes -force yes
+:: Windows ModCompile
+copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%winmc%\tModLoaderMac.exe" /y
+copy ..\references\FNA.dll "%winmc%\FNA.dll" /y
+copy ..\references\Mono.Cecil.Pdb.dll "%winmc%\Mono.Cecil.Pdb.dll" /y
+copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%winmc%\RoslynWrapper.dll" /y
+copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%winmc%\System.Reflection.Metadata.dll" /y
+copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%winmc%\System.Collections.Immutable.dll" /y
+copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%winmc%\Microsoft.CodeAnalysis.dll" /y
+copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%winmc%\Microsoft.CodeAnalysis.CSharp.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%winmc%\Terraria.xml" /y
+
+call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep yes -force yes
 
 :: Mac release
-copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Mac "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer" /y
-copy ReleaseExtras\tModLoaderServer.bin.osx "%destinationFolder%\tModLoader Mac %version%\tModLoaderServer.bin.osx" /y
-:: ModCompile
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Mac %version%\ModCompile\tModLoaderWindows.exe" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Game.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Graphics.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Mac %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
+copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%mac%\Terraria.exe" /y
+copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%mac%\tModLoaderServer.exe" /y
+copy ReleaseExtras\tModLoaderServer_Mac "%mac%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer.bin.osx "%mac%\tModLoaderServer.bin.osx" /y
+
 :: References
-copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Mac %version%\MP3Sharp.dll" /y
-copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Mac %version%\Ionic.Zip.Reduced.dll" /y
-copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Mac %version%\Mono.Cecil.dll" /y
+copy ..\references\MP3Sharp.dll "%mac%\MP3Sharp.dll" /y
+copy ..\references\Ionic.Zip.Reduced.dll "%mac%\Ionic.Zip.Reduced.dll" /y
+copy ..\references\Mono.Cecil.dll "%mac%\Mono.Cecil.dll" /y
 
-copy ..\installer2\MacInstaller.jar "%destinationFolder%\tModLoader Mac %version%\tModLoaderInstaller.jar" /y
-copy ReleaseExtras\README_Mac.txt "%destinationFolder%\tModLoader Mac %version%\README.txt" /y
-copy ReleaseExtras\Terraria.exe.config "%destinationFolder%\tModLoader Mac %version%\Terraria.exe.config" /y
+copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
+copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
+copy ReleaseExtras\Terraria.exe.config "%mac%\Terraria.exe.config" /y
 
-copy ReleaseExtras\macconfig "%destinationFolder%\tModLoader Mac %version%\mono\config" /y
+copy ReleaseExtras\macconfig "%mac%\mono\config" /y
 
-call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Mac %version%" -destination "%destinationFolder%\tModLoader Mac %version%.zip" -keep yes -force yes
+call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
 
 :: Linux release
-copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Linux "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer" /y
-copy ReleaseExtras\tModLoaderServer.bin.x86 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86" /y
-copy ReleaseExtras\tModLoaderServer.bin.x86_64 "%destinationFolder%\tModLoader Linux %version%\tModLoaderServer.bin.x86_64" /y
-:: ModCompile
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%destinationFolder%\tModLoader Linux %version%\ModCompile\tModLoaderWindows.exe" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Game.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Graphics.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%destinationFolder%\tModLoader Linux %version%\ModCompile\Microsoft.Xna.Framework.Xact.dll" /y
+copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%lnx%\Terraria.exe" /y
+copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
+copy ReleaseExtras\tModLoaderServer_Linux "%lnx%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoaderServer.bin.x86 "%lnx%\tModLoaderServer.bin.x86" /y
+copy ReleaseExtras\tModLoaderServer.bin.x86_64 "%lnx%\tModLoaderServer.bin.x86_64" /y
 :: References
-copy ..\references\MP3Sharp.dll "%destinationFolder%\tModLoader Linux %version%\MP3Sharp.dll" /y
-copy ..\references\Ionic.Zip.Reduced.dll "%destinationFolder%\tModLoader Linux %version%\Ionic.Zip.Reduced.dll" /y
-copy ..\references\Mono.Cecil.dll "%destinationFolder%\tModLoader Linux %version%\Mono.Cecil.dll" /y
+copy ..\references\MP3Sharp.dll "%lnx%\MP3Sharp.dll" /y
+copy ..\references\Ionic.Zip.Reduced.dll "%lnx%\Ionic.Zip.Reduced.dll" /y
+copy ..\references\Mono.Cecil.dll "%lnx%\Mono.Cecil.dll" /y
 
-copy ..\installer2\LinuxInstaller.jar "%destinationFolder%\tModLoader Linux %version%\tModLoaderInstaller.jar" /y
-copy ReleaseExtras\README_Linux.txt "%destinationFolder%\tModLoader Linux %version%\README.txt" /y
-copy ReleaseExtras\Terraria.exe.config "%destinationFolder%\tModLoader Linux %version%\Terraria.exe.config" /y
+copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
+copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
+copy ReleaseExtras\Terraria.exe.config "%lnx%\Terraria.exe.config" /y
 
-call zipjs.bat zipDirItems -source "%destinationFolder%\tModLoader Linux %version%" -destination "%destinationFolder%\tModLoader Linux %version%.zip" -keep yes -force yes
+call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
+
+:: Mono ModCompile
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%monomc%\tModLoaderWindows.exe" /y
+copy ReleaseExtras\Microsoft.Xna.Framework.dll "%monomc%\Microsoft.Xna.Framework.dll" /y
+copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%monomc%\Microsoft.Xna.Framework.Game.dll" /y
+copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%monomc%\Microsoft.Xna.Framework.Graphics.dll" /y
+copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%monomc%\Microsoft.Xna.Framework.Xact.dll" /y
+copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%monomc%\Terraria.xml" /y
+
+call zipjs.bat zipDirItems -source "%monomc%" -destination "%monomc%.zip" -keep yes -force yes
 
 :: CleanUp, Delete temp Folders
-rmdir "%destinationFolder%\tModLoader Windows %version%" /S /Q
-rmdir "%destinationFolder%\tModLoader Mac %version%" /S /Q
-rmdir "%destinationFolder%\tModLoader Linux %version%" /S /Q
+rmdir "%win%" /S /Q
+rmdir "%mac%" /S /Q
+rmdir "%lnx%" /S /Q
+rmdir "%winmc%" /S /Q
+rmdir "%monomc%" /S /Q
 
 :: Copy to public DropBox Folder
-::copy "%destinationFolder%\tModLoader Windows %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"
-::copy "%destinationFolder%\tModLoader Mac %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Mac %version%.zip"
-::copy "%destinationFolder%\tModLoader Linux %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Linux %version%.zip"
+::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"
+::copy "%mac%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Mac %version%.zip"
+::copy "%lnx%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Linux %version%.zip"
 
 :: ExampleMod.zip (TODO, other parts of ExampleMod release)
 rmdir ..\ExampleMod\bin /S /Q
@@ -125,6 +134,7 @@ echo(
 echo(
 echo(
 echo tModLoader %version% ready to release.
+echo Upload the 6 zip files to github.
 echo(
 echo(
 pause

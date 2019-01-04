@@ -11,10 +11,11 @@ namespace Terraria.ModLoader.UI
 		private float progress;
 
 		public UILoadProgress() {
-			text = new UIText("", 0.75f, true);
-			text.Top.Set(20f, 0f);
-			text.HAlign = 0.5f;
-			base.Append(text);
+			text = new UIText("", 0.75f, true) {
+				Top = { Pixels = 20 },
+				HAlign = 0.5f
+			};
+			Append(text);
 			progress = 0f;
 		}
 

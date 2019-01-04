@@ -8,6 +8,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	// TODO: yet another progress bar
 	internal class UIExtractMod : UIState
 	{
 		private UILoadProgress loadProgress;
@@ -17,39 +18,35 @@ namespace Terraria.ModLoader.UI
 		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) { ".dll", ".pdb" };
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress();
-			loadProgress.Width.Set(0f, 0.8f);
-			loadProgress.MaxWidth.Set(600f, 0f);
-			loadProgress.Height.Set(150f, 0f);
-			loadProgress.HAlign = 0.5f;
-			loadProgress.VAlign = 0.5f;
-			loadProgress.Top.Set(10f, 0f);
+			loadProgress = new UILoadProgress {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Height = { Pixels = 150 },
+				HAlign = 0.5f,
+				VAlign = 0.5f,
+				Top = { Pixels = 10 }
+			};
 			Append(loadProgress);
 		}
 
 		public override void OnActivate() {
 			Main.menuMode = Interface.extractModID;
-			Task.Factory
-				.StartNew(() => {
-					Interface.extractMod._Extract();
-				})
-				.ContinueWith(t => {
-					var exception = t?.Exception;
-					if (exception != null) {
-						Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
-					}
-					else {
-						Main.menuMode = gotoMenu;
-					}
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+			// I expect this will move out of Activate during progress UI merger
+			Task.Factory.StartNew(() => {
+				Interface.extractMod._Extract(); // Interface.extractMod is just `this`
+			}).ContinueWith(t => {
+				var exception = t?.Exception;//TODO can you even continue on an exceptional task?
+				if (exception != null)
+					Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
+				else
+					Main.menuMode = gotoMenu;
+			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		internal void SetMod(LocalMod mod) {
+		internal void Show(LocalMod mod, int gotoMenu) {
 			this.mod = mod;
-		}
-
-		internal void SetGotoMenu(int gotoMenu) {
 			this.gotoMenu = gotoMenu;
+			Main.menuMode = Interface.extractModID;
 		}
 
 		private Exception _Extract() {
@@ -57,24 +54,18 @@ namespace Terraria.ModLoader.UI
 			IDisposable modHandle = null;
 			try {
 				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
-				if (Directory.Exists(dir)) {
+				if (Directory.Exists(dir))
 					Directory.Delete(dir, true);
-				}
-
 				Directory.CreateDirectory(dir);
 
 				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) { AutoFlush = true };
 
-				if (mod.properties.hideCode) {
+				if (mod.properties.hideCode)
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
-				}
-				else if (!mod.properties.includeSource) {
+				else if (!mod.properties.includeSource)
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractNoSourceCodeMessage"));
-				}
-
-				if (mod.properties.hideResources) {
+				if (mod.properties.hideResources)
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideResourcesMessage"));
-				}
 
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
@@ -87,38 +78,28 @@ namespace Terraria.ModLoader.UI
 					loadProgress.SetText(name);
 					loadProgress.SetProgress(i++ / (float)mod.modFile.Count);
 
-					if (name == "tModReader.txt") {
+					if (name == "tModReader.txt")
 						return;
-					}
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
 						: mod.properties.hideResources;
 
-					if (hidden) {
+					if (hidden)
 						log.Write("[hidden] ");
-					}
-
 					log.WriteLine(name);
-					if (hidden) {
+					if (hidden)
 						return;
-					}
-
-					if (name == "Info") {
-						name = "build.txt";
-					}
 
 					var path = Path.Combine(dir, name);
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 					using (var dst = File.OpenWrite(path))
 					using (var src = getStream()) {
-						if (converter != null) {
+						if (converter != null)
 							converter(src, dst);
-						}
-						else {
+						else
 							src.CopyTo(dst);
-						}
 					}
 				});
 			}

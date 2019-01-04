@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
 		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-		private static readonly int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
+		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
 		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
@@ -76,9 +76,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveNPCID() {
-			if (ModNet.AllowVanillaClients) {
-				throw new Exception("Adding npcs breaks vanilla client compatiblity");
-			}
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatiblity");
 
 			int reserveID = nextNPC;
 			nextNPC++;
@@ -766,9 +764,8 @@ namespace Terraria.ModLoader
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo) {
 			NPCSpawnHelper.Reset();
 			NPCSpawnHelper.DoChecks(spawnInfo);
-			IDictionary<int, float> pool = new Dictionary<int, float> {
-				[0] = 1f
-			};
+			IDictionary<int, float> pool = new Dictionary<int, float>();
+			pool[0] = 1f;
 			foreach (ModNPC npc in npcs) {
 				float weight = npc.SpawnChance(spawnInfo);
 				if (weight > 0f) {

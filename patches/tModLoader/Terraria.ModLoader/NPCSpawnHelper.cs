@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 	//todo: further documentation
 	public class SpawnCondition
 	{
-		private readonly Func<NPCSpawnInfo, bool> condition;
+		private Func<NPCSpawnInfo, bool> condition;
 		private List<SpawnCondition> children;
 		private float blockWeight;
 		internal Func<float> WeightFunc;
@@ -252,14 +252,13 @@ namespace Terraria.ModLoader
 			UndergroundMimic = new SpawnCondition((info) => Main.hardMode && info.spawnTileY > Main.worldSurface, 1f / 70f);
 			OverworldMimic = new SpawnCondition((info) => Main.hardMode && GetTile(info).wall == WallID.DirtUnsafe, 0.05f);
 			Wraith = new SpawnCondition((info) => Main.hardMode && info.spawnTileY <= Main.worldSurface
-				&& !Main.dayTime, 0.05f) {
-				WeightFunc = () => {
-					float inverseChance = 0.95f;
-					if (Main.moonPhase == 4) {
-						inverseChance *= 0.8f;
-					}
-					return 1f - inverseChance;
+				&& !Main.dayTime, 0.05f);
+			Wraith.WeightFunc = () => {
+				float inverseChance = 0.95f;
+				if (Main.moonPhase == 4) {
+					inverseChance *= 0.8f;
 				}
+				return 1f - inverseChance;
 			};
 			HoppinJack = new SpawnCondition((info) => Main.hardMode && Main.halloween
 				&& info.spawnTileY <= Main.worldSurface && !Main.dayTime, 0.1f);
@@ -309,14 +308,13 @@ namespace Terraria.ModLoader
 			AngryNimbus = new SpawnCondition(Overworld, (info) => !info.player.ZoneSnow && Main.hardMode
 				&& Main.cloudAlpha > 0f && NPC.CountNPCS(NPCID.AngryNimbus) < 2, 0.1f);
 			MartianProbe = new SpawnCondition(Overworld, (info) => MartianProbeHelper(info) && Main.hardMode
-				&& NPC.downedGolemBoss && !NPC.AnyNPCs(NPCID.MartianProbe), 1f / 400f) {
-				WeightFunc = () => {
-					float inverseChance = 399f / 400f;
-					if (!NPC.downedMartians) {
-						inverseChance *= 0.99f;
-					}
-					return 1f - inverseChance;
+				&& NPC.downedGolemBoss && !NPC.AnyNPCs(NPCID.MartianProbe), 1f / 400f);
+			MartianProbe.WeightFunc = () => {
+				float inverseChance = 399f / 400f;
+				if (!NPC.downedMartians) {
+					inverseChance *= 0.99f;
 				}
+				return 1f - inverseChance;
 			};
 			OverworldDay = new SpawnCondition(Overworld, (info) => Main.dayTime);
 			OverworldDaySnowCritter = new SpawnCondition(OverworldDay, (info) => InnerThird(info)
@@ -334,22 +332,20 @@ namespace Terraria.ModLoader
 				&& !NPC.AnyNPCs(NPCID.KingSlime), 1f / 300f);
 			OverworldDayDesert = new SpawnCondition(OverworldDay, (info) => GetTile(info).type == TileID.Sand
 				&& !info.water, 0.2f);
-			GoblinScout = new SpawnCondition(OverworldDay, (info) => OuterThird(info), 1f / 15f) {
-				WeightFunc = () => {
-					float inverseChance = 14f / 15f;
-					if (!NPC.downedGoblins && WorldGen.shadowOrbSmashed) {
-						return inverseChance *= (6f / 7f);
-					}
-					return 1f - inverseChance;
+			GoblinScout = new SpawnCondition(OverworldDay, (info) => OuterThird(info), 1f / 15f);
+			GoblinScout.WeightFunc = () => {
+				float inverseChance = 14f / 15f;
+				if (!NPC.downedGoblins && WorldGen.shadowOrbSmashed) {
+					return inverseChance *= (6f / 7f);
 				}
+				return 1f - inverseChance;
 			};
 			OverworldDayRain = new SpawnCondition(OverworldDay, (info) => Main.raining, 2f / 3f);
 			OverworldDaySlime = new SpawnCondition(OverworldDay, (info) => true);
 			OverworldNight = new SpawnCondition(Overworld, (info) => true);
 			OverworldFirefly = new SpawnCondition(OverworldNight, (info) => GetTile(info).type == TileID.Grass
-				|| GetTile(info).type == TileID.HallowedGrass, 0.1f) {
-				WeightFunc = () => 1f / (float)NPC.fireFlyChance
-			};
+				|| GetTile(info).type == TileID.HallowedGrass, 0.1f);
+			OverworldFirefly.WeightFunc = () => 1f / (float)NPC.fireFlyChance;
 			OverworldNightMonster = new SpawnCondition(OverworldNight, (info) => true);
 			Underground = new SpawnCondition((info) => info.spawnTileY <= Main.rockLayer);
 			Underworld = new SpawnCondition((info) => info.spawnTileY > Main.maxTilesY - 190);

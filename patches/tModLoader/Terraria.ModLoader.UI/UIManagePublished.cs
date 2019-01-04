@@ -15,49 +15,55 @@ namespace Terraria.ModLoader.UI
 	internal class UIManagePublished : UIState
 	{
 		private UIList myPublishedMods;
-		public UITextPanel<string> uITextPanel;
+		public UITextPanel<string> textPanel;
 
 		public override void OnInitialize() {
-			UIElement uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
-			UIPanel uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIElement.Append(uIPanel);
-			myPublishedMods = new UIList();
-			myPublishedMods.Width.Set(-25f, 1f);
-			myPublishedMods.Height.Set(0f, 1f);
-			myPublishedMods.ListPadding = 5f;
-			uIPanel.Append(myPublishedMods);
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
-			uIScrollbar.HAlign = 1f;
-			uIPanel.Append(uIScrollbar);
-			myPublishedMods.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true) {
+			var area = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
 				HAlign = 0.5f
 			};
-			uITextPanel.Top.Set(-35f, 0f);
-			uITextPanel.SetPadding(15f);
-			uITextPanel.BackgroundColor = new Color(73, 94, 171);
-			uIElement.Append(uITextPanel);
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false) {
-				VAlign = 1f
+
+			var uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
 			};
-			backButton.Height.Set(25f, 0f);
-			backButton.Width.Set(-10f, 1f / 2f);
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			area.Append(uIPanel);
+
+			myPublishedMods = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f },
+				ListPadding = 5f
+			};
+			uIPanel.Append(myPublishedMods);
+
+			var uIScrollbar = new UIScrollbar {
+				Height = { Percent = 1f },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
+			uIPanel.Append(uIScrollbar);
+			myPublishedMods.SetScrollbar(uIScrollbar);
+
+			textPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15);
+			area.Append(textPanel);
+
+			var backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+				VAlign = 1f,
+				Height = { Pixels = 25 },
+				Width = new StyleDimension(-10f, 1f / 2f),
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
-			uIElement.Append(backButton);
-			base.Append(uIElement);
+			area.Append(backButton);
+
+			Append(area);
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -73,10 +79,10 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			myPublishedMods.Clear();
-			uITextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
+			textPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
 			string response = "";
 			try {
-				System.Net.ServicePointManager.Expect100Continue = false;
+				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/listmymods.php";
 				var values = new NameValueCollection
 				{
@@ -89,10 +95,10 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (WebException e) {
 				if (e.Status == WebExceptionStatus.Timeout) {
-					uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
+					textPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
 					return;
 				}
-				uITextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
+				textPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
 				return;
 			}
 			catch (Exception e) {
@@ -100,10 +106,10 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 			try {
-				JArray a = JArray.Parse(response);
+				var a = JArray.Parse(response);
 
 				foreach (JObject o in a.Children<JObject>()) {
-					UIModManageItem modItem = new UIModManageItem(
+					var modItem = new UIModManageItem(
 						(string)o["displayname"],
 						(string)o["name"],
 						(string)o["version"],
@@ -117,7 +123,6 @@ namespace Terraria.ModLoader.UI
 			}
 			catch (Exception e) {
 				UIModBrowser.LogModBrowserException(e);
-				return;
 			}
 		}
 	}

@@ -36,10 +36,7 @@ namespace Terraria.ModLoader.Exceptions
 	static class LevenshteinDistance
 	{
 		internal static string FolderAwareEditDistance(string source, string[] targets) {
-			if (targets.Length == 0) {
-				return null;
-			}
-
+			if (targets.Length == 0) return null;
 			var separator = '/';
 			var sourceParts = source.Split(separator);
 			var sourceFolders = sourceParts.Reverse().Skip(1).ToList();
@@ -59,12 +56,10 @@ namespace Terraria.ModLoader.Exceptions
 
 				int score = 0;
 				int folderDiff = reducedSourceFolders.Count - reducedTargetFolders.Count;
-				if (folderDiff > 0) {
+				if (folderDiff > 0)
 					score += folderDiff * missingFolderPenalty;
-				}
-				else if (folderDiff < 0) {
+				else if (folderDiff < 0)
 					score += -folderDiff * extraFolderPenalty;
-				}
 
 				if (reducedSourceFolders.Count > 0 && reducedSourceFolders.Count >= reducedTargetFolders.Count) {
 					foreach (var item in reducedTargetFolders) {

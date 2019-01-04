@@ -60,9 +60,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveBuffID() {
-			if (ModNet.AllowVanillaClients) {
-				throw new Exception("Adding buffs breaks vanilla client compatibility");
-			}
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
 
 			int reserveID = nextBuff;
 			nextBuff++;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Terraria.ModLoader.IO;
 
@@ -24,13 +25,11 @@ namespace Terraria.ModLoader
 
 			public static ModReference Parse(string spec) {
 				var split = spec.Split('@');
-				if (split.Length == 1) {
+				if (split.Length == 1)
 					return new ModReference(split[0], null);
-				}
 
-				if (split.Length > 2) {
+				if (split.Length > 2)
 					throw new Exception("Invalid mod reference: " + spec);
-				}
 
 				try {
 					return new ModReference(split[0], new Version(split[1]));
@@ -76,17 +75,15 @@ namespace Terraria.ModLoader
 
 		private static IEnumerable<string> ReadList(BinaryReader reader) {
 			var list = new List<string>();
-			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString()) {
+			for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString())
 				list.Add(item);
-			}
 
 			return list;
 		}
 
 		private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
-			foreach (var item in list) {
+			foreach (var item in list)
 				writer.Write(item.ToString());
-			}
 
 			writer.Write("");
 		}
@@ -122,10 +119,10 @@ namespace Terraria.ModLoader
 						properties.weakReferences = ReadList(value).Select(ModReference.Parse).ToArray();
 						break;
 					case "sortBefore":
-						properties.sortAfter = ReadList(value).ToArray();
+						properties.sortBefore = ReadList(value).ToArray();
 						break;
 					case "sortAfter":
-						properties.sortBefore = ReadList(value).ToArray();
+						properties.sortAfter = ReadList(value).ToArray();
 						break;
 					case "author":
 						properties.author = value;
@@ -158,18 +155,15 @@ namespace Terraria.ModLoader
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
 						break;
 					case "side":
-						if (!Enum.TryParse(value, true, out properties.side)) {
+						if (!Enum.TryParse(value, true, out properties.side))
 							throw new Exception("side is not one of (Both, Client, Server, NoSync): " + value);
-						}
-
 						break;
 				}
 			}
 
 			var refs = properties.RefNames(true).ToList();
-			if (refs.Count != refs.Distinct().Count()) {
+			if (refs.Count != refs.Distinct().Count())
 				throw new Exception("Duplicate mod/weak reference");
-			}
 
 			//add (mod|weak)References that are not in sortBefore to sortAfter
 			properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
@@ -257,8 +251,12 @@ namespace Terraria.ModLoader
 		}
 
 		internal static BuildProperties ReadModFile(TmodFile modFile) {
+			return ReadFromStream(modFile.GetStream("Info"));
+		}
+
+		internal static BuildProperties ReadFromStream(Stream stream) {
 			BuildProperties properties = new BuildProperties();
-			using (var reader = new BinaryReader(modFile.GetStream("Info"))) {
+			using (var reader = new BinaryReader(stream)) {
 				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString()) {
 					if (tag == "dllReferences") {
 						properties.dllReferences = ReadList(reader).ToArray();
@@ -320,6 +318,45 @@ namespace Terraria.ModLoader
 				}
 			}
 			return properties;
+		}
+
+		internal static void InfoToBuildTxt(Stream src, Stream dst) {
+			BuildProperties properties = ReadFromStream(src);
+			var sb = new StringBuilder();
+			if (properties.displayName.Length > 0)
+				sb.AppendLine($"displayName = {properties.displayName}");
+			if (properties.author.Length > 0)
+				sb.AppendLine($"author = {properties.author}");
+			sb.AppendLine($"version = {properties.version}");
+			if (properties.homepage.Length > 0)
+				sb.AppendLine($"homepage = {properties.homepage}");
+			if (properties.dllReferences.Length > 0)
+				sb.AppendLine($"dllReferences = {string.Join(", ", properties.dllReferences)}");
+			if (properties.modReferences.Length > 0)
+				sb.AppendLine($"modReferences = {string.Join(", ", properties.modReferences)}");
+			if (properties.weakReferences.Length > 0)
+				sb.AppendLine($"weakReferences = {string.Join(", ", properties.weakReferences)}");
+			if (properties.noCompile)
+				sb.AppendLine($"noCompile = true");
+			if (properties.hideCode)
+				sb.AppendLine($"hideCode = true");
+			if (properties.hideResources)
+				sb.AppendLine($"hideResources = true");
+			if (properties.includeSource)
+				sb.AppendLine($"includeSource = true");
+			if (properties.includePDB)
+				sb.AppendLine($"includePDB = true");
+			// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
+			// if (properties.buildIgnores.Length > 0)
+			//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");
+			if (properties.side != ModSide.Both)
+				sb.AppendLine($"side = {properties.side}");
+			if (properties.sortAfter.Length > 0)
+				sb.AppendLine($"sortAfter = {string.Join(", ", properties.sortAfter)}");
+			if (properties.sortBefore.Length > 0)
+				sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
+			var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+			dst.Write(bytes, 0, bytes.Length);
 		}
 
 		internal bool ignoreFile(string resource) {

@@ -36,28 +36,22 @@ namespace Terraria.ModLoader
 					ModNet.txDataType[netID] += len;
 				}
 			}
-			else if (toClient != -1) {
+			else if (toClient != -1)
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
-			}
-			else {
-				for (int i = 0; i < 256; i++) {
-					if (i != ignoreClient && Netplay.Clients[i].IsConnected() && NetMessage.buffer[i].broadcast) {
+			else
+				for (int i = 0; i < 256; i++)
+					if (i != ignoreClient && Netplay.Clients[i].IsConnected() && NetMessage.buffer[i].broadcast)
 						Netplay.Clients[i].Socket.AsyncSend(buf, 0, len, SendCallback);
-					}
-				}
-			}
 		}
 
 		private void SendCallback(object state) { }
 
 		private void Finish() {
-			if (buf != null) {
+			if (buf != null)
 				return;
-			}
 
-			if (OutStream.Position > ushort.MaxValue) {
+			if (OutStream.Position > ushort.MaxValue)
 				throw new Exception(Language.GetTextValue("tModLoader.MPPacketTooLarge", OutStream.Position, ushort.MaxValue));
-			}
 
 			len = (ushort)OutStream.Position;
 			Seek(0, SeekOrigin.Begin);

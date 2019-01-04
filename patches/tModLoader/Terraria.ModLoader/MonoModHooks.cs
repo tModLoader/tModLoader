@@ -19,9 +19,8 @@ namespace Terraria.ModLoader
 
 		private static bool isInitialized;
 		internal static void Initialize() {
-			if (isInitialized) {
+			if (isInitialized)
 				return;
-			}
 
 			HookEndpointManager.OnGenerateCecilModule += GenerateCecilModule;
 			HookEndpointManager.OnAdd += (m, d) => {
@@ -59,9 +58,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void NativeAccessCheck(Assembly asm) {
-			if (NativeDetouringGranted.Contains(asm)) {
+			if (NativeDetouringGranted.Contains(asm))
 				return;
-			}
 
 			throw new UnauthorizedAccessException(
 				$"Native detouring permissions not granted to {asm.GetName().Name}. \n" +
@@ -83,10 +81,8 @@ namespace Terraria.ModLoader
 		private static string StringRep(MethodBase m) {
 			var paramString = string.Join(", ", m.GetParameters().Select(p => {
 				var s = p.ParameterType.Name;
-				if (p.ParameterType.IsByRef) {
+				if (p.ParameterType.IsByRef)
 					s = p.IsOut ? "out " : "ref ";
-				}
-
 				return s;
 			}));
 			var owner = m.DeclaringType?.FullName ??
@@ -95,9 +91,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void RemoveAll(Mod mod) {
-			if (mod is ModLoaderMod) {
+			if (mod is ModLoaderMod)
 				return;
-			}
 
 			int hooks = 0, detours = 0, ndetours = 0;
 			bool OnHookUndo(object obj) {
@@ -117,17 +112,15 @@ namespace Terraria.ModLoader
 			Detour.OnUndo += OnDetourUndo;
 			NativeDetour.OnUndo += OnNativeDetourUndo;
 
-			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
+			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name))
 				manager.Unload(asm);
-			}
 
 			Hook.OnUndo -= OnHookUndo;
 			Detour.OnUndo -= OnDetourUndo;
 			NativeDetour.OnUndo -= OnNativeDetourUndo;
 
-			if (hooks > 0 || detours > 0 || ndetours > 0) {
+			if (hooks > 0 || detours > 0 || ndetours > 0)
 				Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {mod.Name}");
-			}
 		}
 
 		private static ModuleDefinition GenerateCecilModule(AssemblyName name) {
@@ -135,17 +128,15 @@ namespace Terraria.ModLoader
 			resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
 			if (resourceName != null) {
 				Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-				using (Stream stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName)) {
+				using (Stream stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName))
 					return ModuleDefinition.ReadModule(stream, new ReaderParameters(ReadingMode.Immediate));
-				}
 			}
 
 			var modAssemblyBytes = AssemblyManager.GetAssemblyBytes(name.Name);
 			if (modAssemblyBytes != null) {
 				Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-				using (MemoryStream stream = new MemoryStream(modAssemblyBytes)) {
+				using (MemoryStream stream = new MemoryStream(modAssemblyBytes))
 					return ModuleDefinition.ReadModule(stream, new ReaderParameters(ReadingMode.Immediate));
-				}
 			}
 
 			return null;

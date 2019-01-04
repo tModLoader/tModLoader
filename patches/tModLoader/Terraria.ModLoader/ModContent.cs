@@ -26,9 +26,8 @@ namespace Terraria.ModLoader
 
 		private static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
-			if (slash < 0) {
+			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);
-			}
 
 			domain = name.Substring(0, slash);
 			subName = name.Substring(slash + 1);
@@ -43,9 +42,8 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null) {
+			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
-			}
 
 			return mod.GetFileBytes(subName);
 		}
@@ -54,9 +52,8 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a file with the specified name exists.
 		/// </summary>
 		public static bool FileExists(string name) {
-			if (!name.Contains('/')) {
+			if (!name.Contains('/'))
 				return false;
-			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -70,20 +67,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Texture2D GetTexture(string name) {
-			if (Main.dedServ) {
+			if (Main.dedServ)
 				return null;
-			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
-			if (modName == "Terraria") {
+			if (modName == "Terraria")
 				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
-			}
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null) {
+			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
-			}
 
 			return mod.GetTexture(subName);
 		}
@@ -92,19 +86,49 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
 		public static bool TextureExists(string name) {
-			if (!name.Contains('/')) {
+			if (!name.Contains('/'))
+				return false;
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+
+			if (modName == "Terraria")
+				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
+
+			Mod mod = ModLoader.GetMod(modName);
+			return mod != null && mod.TextureExists(subName);
+		}
+
+		/// <summary>
+		/// Returns whether or not a texture with the specified name exists. texture will be populated with null if not found, and the texture if found.
+		/// </summary>
+		/// <param name="name">The texture name that is requested</param>
+		/// <param name="texture">The texture itself will be output to this</param>
+		/// <returns>True if the texture is found, false otherwise.</returns>
+		internal static bool TryGetTexture(string name, out Texture2D texture) {
+			if (Main.dedServ) {
+				texture = null;
 				return false;
 			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
-
 			if (modName == "Terraria") {
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
+				if (File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb")) {
+					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+					return true;
+				}
+				texture = null;
+				return false;
 			}
 
 			Mod mod = ModLoader.GetMod(modName);
-			return mod != null && mod.TextureExists(subName);
+			if (mod == null) {
+				texture = null;
+				return false;
+			}
+
+			return mod.textures.TryGetValue(subName, out texture);
 		}
 
 		/// <summary>
@@ -112,17 +136,15 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static SoundEffect GetSound(string name) {
-			if (Main.dedServ) {
+			if (Main.dedServ)
 				return null;
-			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null) {
+			if (mod == null)
 				throw new MissingResourceException("Missing mod: " + name);
-			}
 
 			return mod.GetSound(subName);
 		}
@@ -131,9 +153,8 @@ namespace Terraria.ModLoader
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
 		public static bool SoundExists(string name) {
-			if (!name.Contains('/')) {
+			if (!name.Contains('/'))
 				return false;
-			}
 
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -205,9 +226,8 @@ namespace Terraria.ModLoader
 				mod.PostSetupContent();
 			});
 
-			if (Main.dedServ) {
+			if (Main.dedServ)
 				ModNet.AssignNetIDs();
-			}
 
 			Main.player[255] = new Player(false); // setup inventory is unnecessary 
 
@@ -243,9 +263,8 @@ namespace Terraria.ModLoader
 
 		private static void SetupRecipes() {
 			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
-			for (int k = 0; k < Recipe.maxRecipes; k++) {
+			for (int k = 0; k < Recipe.maxRecipes; k++)
 				Main.recipe[k] = new Recipe();
-			}
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();

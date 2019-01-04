@@ -16,9 +16,8 @@ namespace Terraria.ModLoader.IO
 		public static bool ToRaw(Stream src, Stream dst) {
 			using (var img = new Bitmap(src)) {
 				//XNA has a strange interaction where large size PNGs can be loaded, but not created via any other means
-				if (img.Width > 2048 || img.Height > 2048) {
+				if (img.Width > 2048 || img.Height > 2048)
 					return false;
-				}
 
 				var bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 				var rawdata = new int[img.Width * img.Height];
@@ -63,9 +62,8 @@ namespace Terraria.ModLoader.IO
 			RawToTexture2D(graphicsDevice, new BinaryReader(src, Encoding.UTF8));
 
 		public static void RawToPng(Stream src, Stream dst) {
-			using (var img = RawToTexture2D(Main.instance.GraphicsDevice, src)) {
+			using (var img = RawToTexture2D(Main.instance.GraphicsDevice, src))
 				img.SaveAsPng(dst, img.Width, img.Height);
-			}
 		}
 
 		public static Tuple<int, int, byte[]> ReadRaw(Stream src) =>
@@ -73,9 +71,8 @@ namespace Terraria.ModLoader.IO
 
 		public static Tuple<int, int, byte[]> ReadRaw(BinaryReader r) {
 			int v = r.ReadInt32();
-			if (v != VERSION) {
+			if (v != VERSION)
 				throw new Exception("Unknown RawImg Format Version: " + v);
-			}
 
 			int width = r.ReadInt32();
 			int height = r.ReadInt32();
@@ -110,8 +107,7 @@ namespace Terraria.ModLoader.IO
 			return GLCallLocker.InvokeAsync(() => Texture2D.FromStream(graphicsDevice, stream));
 #else
 			Texture2D.TextureDataFromStreamEXT(stream, out int width, out int height, out byte[] rawdata, -1, -1, false);
-			return GLCallLocker.InvokeAsync(() =>
-			{
+			return GLCallLocker.InvokeAsync(() => {
 				var tex = new Texture2D(graphicsDevice, width, height);
 				tex.SetData(rawdata);
 				return tex;

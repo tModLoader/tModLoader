@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.UI
 		public bool withBackground = false;
 		public int frameTick = 0;
 		public int frame = 0;
-		private readonly float scale;
+		private float scale;
 		public const int maxFrames = 16;
 		public const int maxDelay = 5;
 		private readonly Texture2D backgroundTexture;
@@ -21,8 +21,8 @@ namespace Terraria.ModLoader.UI
 			backgroundTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.LoaderBG.png"));
 			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
 			this.scale = scale;
-			Width.Set(200f * scale, 0f);
-			Height.Set(200f * scale, 0f);
+			Width.Pixels = 200f * scale;
+			Height.Pixels = 200f * scale;
 			HAlign = left;
 			VAlign = top;
 		}
@@ -30,9 +30,8 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (++frameTick >= maxDelay) {
 				frameTick = 0;
-				if (++frame >= maxFrames) {
+				if (++frame >= maxFrames)
 					frame = 0;
-				}
 			}
 
 			CalculatedStyle dimensions = base.GetDimensions();

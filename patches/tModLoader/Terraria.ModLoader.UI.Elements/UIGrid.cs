@@ -7,6 +7,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.Elements
 {
+	//TODO: wow that's a lot of redundant this.
 	public class UIGrid : UIElement
 	{
 		public delegate bool ElementSearchMethod(UIElement element);

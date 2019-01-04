@@ -1,4 +1,4 @@
-//Chinese Translations made by 抗药又坚硬汉化组(SBMW GROUP).
+// Chinese Translations made by 抗药又坚硬汉化组(SBMW GROUP).
 {
 	"tModLoader": {
 		// Main Menu
@@ -6,6 +6,7 @@
 		"MenuModBrowser": "模组浏览器",
 		"MenuMods": "模组管理",
 		"MenuModSources": "模组源码",
+		"MenuEnableDeveloperMode": "启用开发者模式",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -21,6 +22,7 @@
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"BetaModCantPublish": "该模组生成于测试版本,不能发布",
 		"BetaModCantPublishError": "你无法发布生成于tModLoader测试版本的模组",
+		"OutdatedModCantPublishError": "你无法发布生成于tModLoader旧版本的模组",
 		"ModReloadRequired": "需要重新加载",
 		"ModsByline": "作者: {0}",
 		"ModsMoreInfo": "更多信息",
@@ -46,6 +48,7 @@
 		"LoadErrorDisabled": "该模组已被自动禁用.",
 		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
 		"LoadErrorVersionMessage": "该模组检测出是生成于 tModLoader v{0}\n但是,你正在使用 {1}",
+		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组.请下载最新版本的[.NET Framework]",
 		"LoadErrorDependencyMissing": "缺少模组: {0} 需求来源: {1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
@@ -65,7 +68,6 @@
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
-		"BuildErrorDotNet46Required": "必须安装[.NET Framework 4.6]才能编译[C＃ 6.0]",
 		"BuildErrorPDBWindowsOnly": "仅在[windows]上支持生成[windows]的[PDB]文件.",
 		"BuildErrorEACWindowsOnly": "仅在Windows上支持编辑并继续.",
 		"BuildErrorEACLoadFailed": "无法启用编辑并继续: {0}",
@@ -85,10 +87,10 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整跟踪)",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
-		// "SkipToMainMenu": "Skip Loading Mods",
-		// "Retry": "Retry",
+		"SkipToMainMenu": "跳过加载模组",
+		"Retry": "重试",
 		"Exit": "退出",
-		// "ExitAndDisableAll": "Exit and Disable All",
+		"ExitAndDisableAll": "退出并禁用全部模组",
 
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",
@@ -153,7 +155,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
-		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
+		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1. 检查你的网络连接.\n 2. 模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时\n 3. 双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4. 如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",
@@ -230,6 +232,20 @@
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
 
+		// Developer Mode UI
+		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
+		"DMModCompileUpdate": "[ModCompile]文件夹已过期.",
+		"DMModCompileDev": "使用tModLoader开发设置工具生成/更新[ModCompile]文件夹 (安装调试).",
+		"DMModCompileSatisfied": "[ModCompile]文件夹更新日期.",
+		"DMDotNetSatisfied": "已安装 {0}",
+		"DMDotNet46Required": "生成模组需要[.NET Framework 4.6]或更高版本.请下载最新版本的[.NET Framework]",
+		"DMReferenceAssembliesMissing": "找不到[.NET Framework]引用程序集.请安装[Visual Studio]以及[.NET 4.5 目标包].",
+		"DMReferenceAssembliesSatisfied": "请准备好编译[.NET 4.5 目标包]",
+		"DMReferenceAssembliesDownload": "点击下载目标包 (不推荐)",
+		"DMVisualStudio": "Visual Studio",
+		"DMTutorialWelcome": "欢迎使用tModLoader来制作模组.请查看Wiki以获取更多信息和教程.",
+		"DMTutorial": "教程",
+
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
 		"ExtractHideCodeMessage": "该模组的作者选择将源码隐藏在[tModReader]中.",
@@ -283,5 +299,6 @@
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
+		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组造成,否则请转到tModLoader Discord中的#support"
 	}
 }

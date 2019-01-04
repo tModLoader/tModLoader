@@ -16,9 +16,8 @@ namespace Terraria.ModLoader.Default
 				}
 				if (mc != null) {
 					caller.Reply(mc.Usage);
-					if (!string.IsNullOrEmpty(mc.Description)) {
+					if (!string.IsNullOrEmpty(mc.Description))
 						caller.Reply(mc.Description);
-					}
 				}
 				return;
 			}
@@ -26,9 +25,8 @@ namespace Terraria.ModLoader.Default
 			var help = CommandManager.GetHelp(caller.CommandType);
 			caller.Reply(caller.CommandType + " Commands:", Color.Yellow);
 
-			foreach (var entry in help) {
+			foreach (var entry in help)
 				caller.Reply(entry.Item1 + "   " + entry.Item2);
-			}
 
 			if (Main.netMode == 1) {
 				//send the command to the server

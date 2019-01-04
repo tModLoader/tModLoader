@@ -22,9 +22,8 @@ namespace Terraria.ModLoader.Default
 				var client = mods.Where(m => m.Side == ModSide.Client || m.Side == ModSide.NoSync).ToArray();
 				if (client.Length > 0) {
 					caller.Reply(Language.GetTextValue("tModLoader.CommandModListClientMods"), Color.Yellow);
-					foreach (var mod in client) {
+					foreach (var mod in client)
 						caller.Reply(mod.DisplayName);
-					}
 				}
 			}
 			else if (caller.CommandType == CommandType.Server) //server from a player
@@ -32,24 +31,20 @@ namespace Terraria.ModLoader.Default
 				var server = mods.Where(m => m.Side == ModSide.Server || m.Side == ModSide.NoSync).ToArray();
 				if (server.Length > 0) {
 					caller.Reply(Language.GetTextValue("tModLoader.CommandModListServerMods"), Color.Yellow);
-					foreach (var mod in server) {
+					foreach (var mod in server)
 						caller.Reply(mod.DisplayName);
-					}
 				}
 				caller.Reply(Language.GetTextValue("tModLoader.CommandModListSyncedMods"), Color.Yellow);
-				foreach (var mod in mods.Where(m => m.Side == ModSide.Both)) {
+				foreach (var mod in mods.Where(m => m.Side == ModSide.Both))
 					caller.Reply(mod.DisplayName);
-				}
 			}
 			else //console or singleplayer
 			{
-				if (caller.CommandType == CommandType.Chat) {
+				if (caller.CommandType == CommandType.Chat)
 					caller.Reply(Language.GetTextValue("tModLoader.CommandModListModlist"), Color.Yellow);
-				}
 
-				foreach (var mod in mods) {
+				foreach (var mod in mods)
 					caller.Reply(mod.DisplayName);
-				}
 			}
 		}
 	}

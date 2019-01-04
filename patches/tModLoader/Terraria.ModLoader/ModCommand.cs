@@ -71,13 +71,10 @@ namespace Terraria.ModLoader
 		public Player Player => Main.player[Main.myPlayer];
 
 		public void Reply(string text, Color color = default(Color)) {
-			if (color == default(Color)) {
+			if (color == default(Color))
 				color = Color.White;
-			}
-
-			foreach (var line in text.Split('\n')) {
+			foreach (var line in text.Split('\n'))
 				Main.NewText(line, color.R, color.G, color.B);
-			}
 		}
 	}
 
@@ -91,13 +88,10 @@ namespace Terraria.ModLoader
 		public Player Player { get; }
 
 		public void Reply(string text, Color color = default(Color)) {
-			if (color == default(Color)) {
+			if (color == default(Color))
 				color = Color.White;
-			}
-
-			foreach (var line in text.Split('\n')) {
+			foreach (var line in text.Split('\n'))
 				NetMessage.SendChatMessageToClient(NetworkText.FromLiteral(line), color, Player.whoAmI);
-			}
 		}
 	}
 
@@ -107,9 +101,8 @@ namespace Terraria.ModLoader
 		public Player Player => null;
 
 		public void Reply(string text, Color color = default(Color)) {
-			foreach (var line in text.Split('\n')) {
+			foreach (var line in text.Split('\n'))
 				Console.WriteLine(line);
-			}
 		}
 	}
 }
