@@ -96,15 +96,13 @@ namespace Terraria.ModLoader.Config.UI
 			previousConfigButton.VAlign = 1f;
 			previousConfigButton.Top.Set(-65f, 0f);
 			previousConfigButton.HAlign = 0f;
-			previousConfigButton.OnMouseOver += UICommon.FadedMouseOver;
-			previousConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			previousConfigButton.WithFadedMouseOver();
 			previousConfigButton.OnClick += PreviousConfig;
 			//uIElement.Append(previousConfigButton);
 
 			nextConfigButton = new UITextPanel<string>(">", 1f, false);
 			nextConfigButton.CopyStyle(previousConfigButton);
-			nextConfigButton.OnMouseOver += UICommon.FadedMouseOver;
-			nextConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			nextConfigButton.WithFadedMouseOver();
 			nextConfigButton.HAlign = 1f;
 			nextConfigButton.OnClick += NextConfig;
 			//uIElement.Append(nextConfigButton);
@@ -113,8 +111,7 @@ namespace Terraria.ModLoader.Config.UI
 			saveConfigButton.Width.Set(-10f, 1f / 4f);
 			saveConfigButton.Height.Set(25f, 0f);
 			saveConfigButton.Top.Set(-20f, 0f);
-			saveConfigButton.OnMouseOver += UICommon.FadedMouseOver;
-			saveConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			saveConfigButton.WithFadedMouseOver();
 			saveConfigButton.HAlign = 0.33f;
 			saveConfigButton.VAlign = 1f;
 			saveConfigButton.OnClick += SaveConfig;
@@ -123,15 +120,14 @@ namespace Terraria.ModLoader.Config.UI
 			backButton = new UITextPanel<string>("Back", 1f, false);
 			backButton.CopyStyle(saveConfigButton);
 			backButton.HAlign = 0;
+			backButton.WithFadedMouseOver();
 			backButton.OnMouseOver += (a, b) =>
 			{
-				UICommon.FadedMouseOver(a, b);
 				if (pendingChanges)
 					backButton.BackgroundColor = Color.Red;
 			};
 			backButton.OnMouseOut += (a, b) =>
 			{
-				UICommon.FadedMouseOut(a, b);
 				if (pendingChanges)
 					backButton.BackgroundColor = Color.Red * 0.7f;
 			};
@@ -140,8 +136,7 @@ namespace Terraria.ModLoader.Config.UI
 
 			revertConfigButton = new UITextPanel<string>("Revert Changes", 1f, false);
 			revertConfigButton.CopyStyle(saveConfigButton);
-			revertConfigButton.OnMouseOver += UICommon.FadedMouseOver;
-			revertConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			revertConfigButton.WithFadedMouseOver();
 			revertConfigButton.HAlign = 0.66f;
 			revertConfigButton.OnClick += RevertConfig;
 			//uIElement.Append(revertConfigButton);
@@ -149,8 +144,7 @@ namespace Terraria.ModLoader.Config.UI
 			//float scale = Math.Min(1f, 130f/Main.fontMouseText.MeasureString("Restore Defaults").X);
 			restoreDefaultsConfigButton = new UITextPanel<string>("Restore Defaults", 1f, false);
 			restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
-			restoreDefaultsConfigButton.OnMouseOver += UICommon.FadedMouseOver;
-			restoreDefaultsConfigButton.OnMouseOut += UICommon.FadedMouseOut;
+			restoreDefaultsConfigButton.WithFadedMouseOver();
 			restoreDefaultsConfigButton.HAlign = 1f;
 			restoreDefaultsConfigButton.OnClick += RestoreDefaults;
 			uIElement.Append(restoreDefaultsConfigButton);
@@ -724,8 +718,7 @@ namespace Terraria.ModLoader.Config.UI
 				//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
 				//Interface.modConfig.currentConfigList = capturedCurrent;
 			};
-			back.OnMouseOver += UICommon.FadedMouseOver;
-			back.OnMouseOut += UICommon.FadedMouseOut;
+			back.WithFadedMouseOver();
 			//var backContainer = GetContainer(back, i++);
 			//backContainer.Height.Pixels = 40;
 			uIPanel.Append(back);

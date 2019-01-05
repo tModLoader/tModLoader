@@ -100,8 +100,7 @@ namespace Terraria.ModLoader.UI
 				configButton.Top.Set(40f, 0f);
 				configButton.PaddingTop -= 2f;
 				configButton.PaddingBottom -= 2f;
-				configButton.OnMouseOver += UICommon.FadedMouseOver;
-				configButton.OnMouseOut += UICommon.FadedMouseOut;
+				configButton.WithFadedMouseOver();
 				configButton.OnClick += this.OpenConfig;
 				Append(configButton);
 				if (ConfigManager.ModNeedsReload(loadedMod))

@@ -64,8 +64,7 @@ namespace Terraria.ModLoader.Config.UI
 			buttonB.Height.Set(25f, 0f);
 			buttonB.VAlign = 1f;
 			buttonB.Top.Set(-20f, 0f);
-			buttonB.OnMouseOver += UICommon.FadedMouseOver;
-			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
 
@@ -127,8 +126,7 @@ namespace Terraria.ModLoader.Config.UI
 							Interface.modConfig.SetMod(item.Key, config);
 							Main.InGameUI.SetState(Interface.modConfig);
 						};
-						t.OnMouseOver += UICommon.FadedMouseOver;
-						t.OnMouseOut += UICommon.FadedMouseOut;
+						t.WithFadedMouseOver();
 						t.HAlign = 0.5f;
 						UIElement container = new UISortableElement(i++);
 						container.Width.Set(0f, 1f);
