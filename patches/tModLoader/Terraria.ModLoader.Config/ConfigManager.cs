@@ -294,15 +294,14 @@ namespace Terraria.ModLoader.Config
 			return Activator.CreateInstance(type);
 		}
 
-		// Gets an Attribute from a property or field. Attribute defined on Member has higest priority, 
+		// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, 
 		// followed by the containing data structure, followed by attribute defined on the Class. 
-		public static T GetCustomAttribute<T>(UI.PropertyFieldWrapper memberInfo, object item, object array) where T : System.Attribute
-		{
+		public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute {
 			// Class
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 			if (array != null)
 			{
-				attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute;
+				attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
 			}
 			// Member
 			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;

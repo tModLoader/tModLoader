@@ -128,7 +128,7 @@ namespace Terraria.ModLoader.Config.UI
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
-			if (labelAttribute != null)
+			if (labelAttribute != null) // Problem with Lists using ModConfig Label.
 			{
 				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}

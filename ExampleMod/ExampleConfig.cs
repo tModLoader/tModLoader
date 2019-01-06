@@ -27,13 +27,7 @@ namespace ExampleMod
 	public class ExampleConfigServer : ModConfig
 	{
 		// You MUST specify a MultiplayerSyncMode.
-		public override MultiplayerSyncMode Mode
-		{
-			get
-			{
-				return MultiplayerSyncMode.ServerDictates;
-			}
-		}
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.ServerDictates;
 
 		// We will use attributes to annotate our fields or properties so tModLoader can properly handle them.
 
@@ -99,13 +93,7 @@ namespace ExampleMod
 	/// </summary>
 	public class ExampleConfigClient : ModConfig
 	{
-		public override MultiplayerSyncMode Mode
-		{
-			get
-			{
-				return MultiplayerSyncMode.UniquePerPlayer;
-			}
-		}
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
 		[Label("Show the coin rate UI")]
 		public bool ShowCoinUI;
@@ -133,13 +121,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase")]
 	public class ModConfigShowcase : ModConfig
 	{
-		public override MultiplayerSyncMode Mode
-		{
-			get
-			{
-				return MultiplayerSyncMode.UniquePerPlayer;
-			}
-		}
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
 		[DefaultValue(typeof(Color), "73, 94, 171, 255")] // needs 4 comma separated bytes
 		public Color SomeColor;
