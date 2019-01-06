@@ -210,6 +210,8 @@
 
 		// Player and World Select
 		"MigratePlayersMessage": "Du hast keine Charaktere.\nWenn du deine Vanilla Charaktere im Tmodloader benutzen willst,\nkopiere sie von /Terraria/Players in /Terraria/ModLoader/Players.\n kopiere die .plr-Datei und den gleichnamigen Ordner.\n<Ordner öffnen>.\nBist du fertig drücke 'zurück'.",
+		// "MigratePlayersText": "Click here to migrate players...",
+		// "MigratePlayersException": "There was a problem while trying to migrate Player files",
 		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanilla Welten im Tmodloader benutzen möchtest,\nkannst du auf übernehmen klicken um sie automatisch zu übernehmen.\nAlternativ, kannst du sie von \n /Terraria/Worlds\nin\n/Terraria/ModLoader/Worlds manuell kopieren.\nKopiere dafür die .wld-Datei.\n<Ordner Öffnen>.\nNach dem kopieren der Welten klicke auf 'zurück'.",
 		"MigrateWorldsText": "KLicke hier um die Welten zu übernehmen...",
 		"MigratingWorldsText": "Übernehme Welten",
