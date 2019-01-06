@@ -285,7 +285,7 @@ namespace Terraria.ModLoader
 				return modList.Select(Instantiate).ToList();
 			}
 			catch (AggregateException ae) {
-				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]);
+				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]).ToArray();
 				throw;
 			}
 		}

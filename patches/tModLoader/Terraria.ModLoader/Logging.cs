@@ -184,6 +184,8 @@ namespace Terraria.ModLoader
 			"Terraria.ModLoader.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
+			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", //client disconnects from server
+			"System.Diagnostics.Process.Kill",//attempt to kill non-started process when joining server
 		};
 
 		public static void IgnoreExceptionContents(string source) {
@@ -202,7 +204,7 @@ namespace Terraria.ModLoader
 			PrettifyStackTraceSources(stackTrace.GetFrames());
 			var traceString = stackTrace.ToString();
 
-			if (ignoreSources.Any(traceString.Contains))
+			if (ignoreContents.Any(traceString.Contains))
 				return;
 
 			traceString = traceString.Substring(traceString.IndexOf('\n'));

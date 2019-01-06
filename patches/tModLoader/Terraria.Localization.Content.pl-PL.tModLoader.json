@@ -212,6 +212,8 @@
 		// Player and World Select
 		"MigratePlayersMessage": "Nie masz żadnych postaci.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .plr z folderu /Terraria/Players do /Terraria/ModLoader/Players.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigrateWorldsMessage": "Nie masz żadnych światów.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .wld z folderu /Terraria/Worlds do /Terraria/ModLoader/Worlds.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
+		// "MigrateWorldsText": "Click here to migrate worlds...",
+		// "MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "Te mody zmieniły się od ostatniego razu: ",
 		"Missing1Mod": "Brakujące mody: 1",
 		"MissingXMods": "Brakujące mody: {0}",
