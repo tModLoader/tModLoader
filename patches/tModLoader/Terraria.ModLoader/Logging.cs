@@ -204,7 +204,7 @@ namespace Terraria.ModLoader
 			PrettifyStackTraceSources(stackTrace.GetFrames());
 			var traceString = stackTrace.ToString();
 
-			if (ignoreSources.Any(traceString.Contains))
+			if (ignoreContents.Any(traceString.Contains))
 				return;
 
 			traceString = traceString.Substring(traceString.IndexOf('\n'));
