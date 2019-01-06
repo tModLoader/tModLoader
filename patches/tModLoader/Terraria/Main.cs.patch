@@ -36,10 +36,10 @@
  		public static string versionNumber = "v1.3.5.2";
  		public static string versionNumber2 = "v1.3.5.2";
 -		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Current.GetStoragePath("Terraria");
-+		public static string SavePath = 
++		public static string SavePath =
 +			Program.LaunchParameters.ContainsKey("-tmlsavedirectory") ? Program.LaunchParameters["-tmlsavedirectory"] :
-+			Program.LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader") : 
-+			Platform.Current.GetStoragePath("Terraria/ModLoader");
++			Program.LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader") :
++			Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
  		public static bool AnnouncementBoxDisabled = false;
  		public static int AnnouncementBoxRange = -1;
  		public static string AutogenSeedName;
