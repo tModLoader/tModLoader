@@ -209,8 +209,10 @@
 		"ModControls": "Mod Steuerung",
 
 		// Player and World Select
-		"MigratePlayersMessage": "DU hast keine Charaktere.\nWenn du deine Vanilla Charaktere im Tmodloader benutzen willst,\nkopiere sie von /Terraria/Players in /Terraria/ModLoader/Players.\n kopiere die .plr-Datei und den gleichnamigen Ordner.\n<Ordner öffnen>.\nBist du fertig drücke "zurück".",
-		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanillla Welten benutzen möchtest,\n kopiere sie bitte von /Terraria/Worlds in /Terraria/ModLoader/Worlds.\nkopiere die  .wld-Datei .\n<Ordner öffnen>.\nBist du fertig drücke"zurück".",
+		"MigratePlayersMessage": "DU hast keine Charaktere.\nWenn du deine Vanilla Charaktere im Tmodloader benutzen willst,\nkopiere sie von /Terraria/Players in /Terraria/ModLoader/Players.\n kopiere die .plr-Datei und den gleichnamigen Ordner.\n<Ordner öffnen>.\nBist du fertig drücke 'zurück'.",
+		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanilla Welten im Tmodloader benutzen möchtest,\nkannst du auf übernehmen klicken um sie automatisch zu übernehmen.\nAlternativ, kannst du sie von \n /Terraria/Worlds\nin\n/Terraria/ModLoader/Worlds manuell kopieren.\nKopiere dafür die .wld-Datei.\n<Ordner Öffnen>.\nNach dem kopieren der Welten klicke auf 'zurück'.",
+		"MigrateWorldsText": "KLicke hier um die Welten zu übernehmen...",
+		"MigratingWorldsText": "Übernehme Welten",
 		"ModsDifferentSinceLastPlay": "Diese Mods sind anders seid du das letzte mal gespielt hast:: ",
 		"Missing1Mod": " Eine Mod fehlt.",
 		"MissingXMods": "Es fehlen {0} Mods.",
