@@ -210,9 +210,9 @@
 
 		// Player and World Select
 		"MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
-		"MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n /Terraria/Worlds\nto\n/Terraria/ModLoader/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
-		"MigrateWorldsText": "Click here to migrate worlds...",
-		"MigratingWorldsText": "Migrating...",
+		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanilla Welten im Tmodloader benutzen möchtest,\nkannst du auf übernehmen klicken um sie automatisch zu übernehmen.\nAlternativ, kannst du sie von \n /Terraria/Worlds\nin\n/Terraria/ModLoader/Worlds manuell kopieren.\nKopiere dafür die .wld-Datei.\n<Ordner Öffnen>.\nNach dem kopieren der Welten klicke auf zurück.",
+		"MigrateWorldsText": "KLicke hier um die Welten zu übernehmen...",
+		"MigratingWorldsText": "Übernehme Welten",
 		"ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		"Missing1Mod": "Missing 1 mod.",
 		"MissingXMods": "Missing {0} mods.",
