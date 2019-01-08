@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Config.UI
 		//public override int NumberTicks => 0;
 		//public override float TickIncrement => 0;
 
-		public ArrayElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public ArrayElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
 		{
 			MaxHeight.Set(300, 0f);
 
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Config.UI
 			panel.Width.Set(-20f, 1f);
 			panel.Left.Set(20f, 0f);
 			panel.Top.Set(30f, 0f);
-			panel.Height.Set(-30, 1f);
+			panel.Height.Set(-34, 1f);
 			Append(panel);
 
 			dataList = new NestedUIList();
@@ -60,10 +60,10 @@ namespace Terraria.ModLoader.Config.UI
 
 			data = memberInfo.GetValue(item);
 
-			SetupList(ref sliderIDInPage);
+			SetupList();
 		}
 
-		private void SetupList(ref int sliderIDInPage)
+		private void SetupList()
 		{
 			Type itemType = memberInfo.Type.GetElementType();
 			dataList.Clear();
@@ -73,7 +73,7 @@ namespace Terraria.ModLoader.Config.UI
 			for (int i = 0; i < count; i++)
 			{
 				int index = i;
-				UIModConfig.WrapIt(dataList, ref top, memberInfo, item, ref sliderIDInPage, data, itemType, index);
+				UIModConfig.WrapIt(dataList, ref top, memberInfo, item, 0, data, itemType, index);
 			}
 			dataList.RecalculateChildren();
 			float h = dataList.GetTotalHeight();

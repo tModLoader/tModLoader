@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (increment) / (max - min);
 
-		public FloatElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<float> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public FloatElement(PropertyFieldWrapper memberInfo, object item, IList<float> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();

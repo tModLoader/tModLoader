@@ -78,7 +78,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		int height;
 		ColorObject c;
-		public ColorElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
+		public ColorElement(PropertyFieldWrapper memberInfo, object item, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			if (array != null)
 			{
@@ -92,9 +92,10 @@ namespace Terraria.ModLoader.Config.UI
 				c = new ColorObject(memberInfo, item);
 			}
 
+			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(c))
 			{
-				var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, ref i);
+				var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
 
 				if (array != null)
 				{

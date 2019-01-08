@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => valueStrings.Length;
 		public override float TickIncrement => 1f / (valueStrings.Length - 1);
 
-		public EnumElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage) : base(sliderIDInPage, memberInfo, item, null)
+		public EnumElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
 		{
 
 			valueStrings = Enum.GetNames(memberInfo.Type);

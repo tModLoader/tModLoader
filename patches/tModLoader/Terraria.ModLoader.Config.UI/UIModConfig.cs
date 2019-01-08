@@ -413,6 +413,13 @@ namespace Terraria.ModLoader.Config.UI
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
+			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(modConfigClone.GetType(), typeof(BackgroundColorAttribute));
+			if (backgroundColorAttribute != null) {
+				uIPanel.BackgroundColor = backgroundColorAttribute.color;
+			}
+
+			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(modConfigClone))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
@@ -420,11 +427,11 @@ namespace Terraria.ModLoader.Config.UI
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
-				WrapIt(mainConfigList, ref top, variable, modConfigClone, ref i);
+				WrapIt(mainConfigList, ref top, variable, modConfigClone, order++);
 			}
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array = null, Type arrayType = null, int index = -1)
 		{
 			int elementHeight = 0;
 			Type type = memberInfo.Type;
@@ -432,7 +439,7 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				type = arrayType;
 			}
-			int original = sliderIDInPage;
+			//int original = sliderIDInPage;
 			UIElement e = null;
 
 			// TODO: Vector2, other common structs?
@@ -440,12 +447,12 @@ namespace Terraria.ModLoader.Config.UI
 			if (customUI != null)
 			{
 				Type customUIType = customUI.t;
-				ConstructorInfo ctor = customUIType.GetConstructor(new[] { typeof(PropertyFieldWrapper), typeof(object), typeof(int).MakeByRefType(), typeof(IList), typeof(int) });
+				ConstructorInfo ctor = customUIType.GetConstructor(new[] { typeof(PropertyFieldWrapper), typeof(object), typeof(int), typeof(IList), typeof(int) });
 				if (ctor != null)
 				{
-					object[] arguments = new object[] { memberInfo, item, sliderIDInPage, array, index };
+					object[] arguments = new object[] { memberInfo, item, 0, array, index };
 					object instance = ctor.Invoke(arguments);
-					sliderIDInPage = (int)arguments[2];
+					//sliderIDInPage = (int)arguments[2];
 					e = instance as UIElement;
 					if (e != null)
 					{
@@ -465,35 +472,34 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			else if (type == typeof(ItemDefinition))
 			{
-				e = new ItemDefinitionElement(memberInfo, item, ref sliderIDInPage, (IList<ItemDefinition>)array, index);
+				e = new ItemDefinitionElement(memberInfo, item, (IList<ItemDefinition>)array, index);
 			}
 			else if (type == typeof(Color))
 			{
-				e = new ColorElement(memberInfo, item, ref sliderIDInPage, (IList<Color>)array, index);
+				e = new ColorElement(memberInfo, item, (IList<Color>)array, index);
 				//elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
 			}
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
 				e = new BooleanElement(memberInfo, item, (IList<bool>)array, index);
-				sliderIDInPage++;
 			}
 			else if (type == typeof(float))
 			{
-				e = new FloatElement(memberInfo, item, sliderIDInPage++, (IList<float>)array, index);
+				e = new FloatElement(memberInfo, item,  (IList<float>)array, index);
 			}
 			else if (type == typeof(byte))
 			{
-				e = new ByteElement(memberInfo, item, sliderIDInPage++, (IList<byte>)array, index);
+				e = new ByteElement(memberInfo, item,  (IList<byte>)array, index);
 			}
 			else if (type == typeof(uint))
 			{
-				e = new UIntElement(memberInfo, item, sliderIDInPage++, (IList<uint>)array, index);
+				e = new UIntElement(memberInfo, item,  (IList<uint>)array, index);
 			}
 			else if (type == typeof(int))
 			{
 				RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
 				if (rangeAttribute != null)
-					e = new IntRangeElement(memberInfo, item, sliderIDInPage++, (IList<int>)array, index);
+					e = new IntRangeElement(memberInfo, item,(IList<int>)array, index);
 				else
 					e = new IntInputElement(memberInfo, item, (IList<int>)array, index);
 			}
@@ -502,12 +508,11 @@ namespace Terraria.ModLoader.Config.UI
 				OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 				if (ost != null)
 				{
-					e = new StringOptionElement(memberInfo, item, sliderIDInPage++, (IList<string>)array, index);
+					e = new StringOptionElement(memberInfo, item, (IList<string>)array, index);
 				}
 				else
 				{
 					e = new StringInputElement(memberInfo, item, (IList<string>)array, index);
-					sliderIDInPage++;
 				}
 			}
 			else if (type.IsEnum)
@@ -518,31 +523,30 @@ namespace Terraria.ModLoader.Config.UI
 				}
 				else
 				{
-					e = new EnumElement(memberInfo, item, sliderIDInPage++);
+					e = new EnumElement(memberInfo, item);
 				}
 			}
 			else if (type.IsArray)
 			{
-				e = new ArrayElement(memberInfo, item, ref sliderIDInPage);
+				e = new ArrayElement(memberInfo, item);
 				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
 			{
-				e = new ListElement(memberInfo, item, ref sliderIDInPage);
+				e = new ListElement(memberInfo, item);
 				//elementHeight = 225;
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>))
 			{
-				e = new SetElement(memberInfo, item, ref sliderIDInPage);
+				e = new SetElement(memberInfo, item);
 			}
 			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				e = new DictionaryElement(memberInfo, item, ref sliderIDInPage);
+				e = new DictionaryElement(memberInfo, item);
 				//elementHeight = 300;
 			}
 			else if (type.IsClass)
 			{
-				sliderIDInPage++;
 				if (array != null)
 				{
 					object listItem = ((IList)array)[index];
@@ -552,7 +556,7 @@ namespace Terraria.ModLoader.Config.UI
 						JsonConvert.PopulateObject("{}", listItem, ConfigManager.serializerSettings);
 						((IList)array)[index] = listItem;
 					}
-					e = new ObjectElement(memberInfo, listItem, ref sliderIDInPage, (IList)array, index);
+					e = new ObjectElement(memberInfo, listItem, (IList)array, index);
 					//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 				}
 				else
@@ -604,7 +608,7 @@ namespace Terraria.ModLoader.Config.UI
 					}
 					else
 					{
-						e = new ObjectElement(memberInfo, subitem, ref sliderIDInPage);
+						e = new ObjectElement(memberInfo, subitem);
 						//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
 					}
 				}
@@ -629,7 +633,7 @@ namespace Terraria.ModLoader.Config.UI
 				e.Recalculate();
 				elementHeight = (int)e.GetOuterDimensions().Height;
 
-				var container = GetContainer(e, original);
+				var container = GetContainer(e, index == -1 ? order : index);
 				container.Height.Pixels = elementHeight;
 				UIList list = parent as UIList;
 				if (list != null)
@@ -731,6 +735,7 @@ namespace Terraria.ModLoader.Config.UI
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
+			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
@@ -738,7 +743,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
-				WrapIt(separateList, ref top, variable, subitem, ref i);
+				WrapIt(separateList, ref top, variable, subitem, order++);
 			}
 			Interface.modConfig.subPageStack.Pop();
 			return uIPanel;

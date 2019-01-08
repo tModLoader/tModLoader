@@ -115,7 +115,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<int> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, IList<int> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
@@ -188,7 +188,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public UIntElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<uint> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public UIntElement(PropertyFieldWrapper memberInfo, object item, IList<uint> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();
@@ -261,7 +261,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
-		public ByteElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<byte> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public ByteElement(PropertyFieldWrapper memberInfo, object item, IList<byte> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			this._GetValue = () => DefaultGetValue();

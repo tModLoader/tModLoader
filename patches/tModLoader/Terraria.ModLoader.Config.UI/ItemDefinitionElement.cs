@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		private float itemScale = 0.5f;
 
-		public ItemDefinitionElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList<ItemDefinition> array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		public ItemDefinitionElement(PropertyFieldWrapper memberInfo, object item, IList<ItemDefinition> array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
 		{
 			Height.Set(30f, 0f);
 

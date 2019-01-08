@@ -63,21 +63,21 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		private object data;
 		private Type setType;
-		private int sliderIDStart;
+		//private int sliderIDStart;
 		private NestedUIList dataList;
 
 		public List<ISetElementWrapper> dataWrapperList;
 
 		float scale = 1f;
 
-		public SetElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public SetElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
 		{
 			MaxHeight.Set(300, 0f);
 
 			drawLabel = false;
 
-			sliderIDStart = sliderIDInPage;
-			sliderIDInPage += 10000;
+			//sliderIDStart = sliderIDInPage;
+			//sliderIDInPage += 10000;
 
 			string name = memberInfo.Name;
 			if (labelAttribute != null)
@@ -129,14 +129,20 @@ namespace Terraria.ModLoader.Config.UI
 			sortedContainer.Height.Set(30f, 0f);
 			sortedContainer.Top.Set(-30f, 1f);
 			sortedContainer.HAlign = 0.5f;
-			text = new UIText("Click To Add");
+			text = new UIText(data == null ? "Click To Initialize" : "Click To Add");
 			text.Top.Pixels += 6;
 			text.Left.Pixels += 4;
 			text.OnClick += (a, b) =>
 			{
 				Main.PlaySound(21);
+				if (data == null) {
+					data = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(setType));
+					memberInfo.SetValue(item, data);
+					text.SetText("Click To Add");
+				}
+				else {
 
-				var addMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
+					var addMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
 
 				DefaultListValueAttribute defaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(memberInfo, null, null);
 				if (defaultListValueAttribute != null)
@@ -148,6 +154,7 @@ namespace Terraria.ModLoader.Config.UI
 				{
 					//((IList)data).Add(ConfigManager.AlternateCreateInstance(listType));
 					addMethod.Invoke(data, new object[] { ConfigManager.AlternateCreateInstance(setType) });
+				}
 				}
 
 				//try
@@ -204,7 +211,7 @@ namespace Terraria.ModLoader.Config.UI
 		private void SetupList()
 		{
 			Type itemType = memberInfo.Type.GetGenericArguments()[0];
-			int sliderID = sliderIDStart;
+			//int sliderID = sliderIDStart;
 			dataList.Clear();
 			var deleteButtonTexture = TextureManager.Load("Images/UI/ButtonDelete");
 			int top = 0;
@@ -212,38 +219,38 @@ namespace Terraria.ModLoader.Config.UI
 
 			Type genericType = typeof(SetElementWrapper<>).MakeGenericType(itemType);
 
-			var valuesEnumerator = ((IEnumerable)data).GetEnumerator();
+			if (data != null) {
+				var valuesEnumerator = ((IEnumerable)data).GetEnumerator();
 
-			int i = 0;
-			while (valuesEnumerator.MoveNext())
-			{
-				ISetElementWrapper proxy = (ISetElementWrapper)Activator.CreateInstance(genericType,
-					new object[] { valuesEnumerator.Current, (object)data });
-				dataWrapperList.Add(proxy);
+				int i = 0;
+				while (valuesEnumerator.MoveNext()) {
+					ISetElementWrapper proxy = (ISetElementWrapper)Activator.CreateInstance(genericType,
+						new object[] { valuesEnumerator.Current, (object)data });
+					dataWrapperList.Add(proxy);
 
-				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
-				int index = i;
-				var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, this, ref sliderID, dataWrapperList, genericType, i);
-				wrapped.Item2.Left.Pixels += 24;
-				wrapped.Item2.Width.Pixels -= 24;
+					var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
+					int index = i;
+					var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
+					wrapped.Item2.Left.Pixels += 24;
+					wrapped.Item2.Width.Pixels -= 24;
 
-				// Add delete button.
-				UIImageButton deleteButton = new UIImageButton(deleteButtonTexture);
-				deleteButton.VAlign = 0.5f;
+					// Add delete button.
+					UIImageButton deleteButton = new UIImageButton(deleteButtonTexture);
+					deleteButton.VAlign = 0.5f;
 
-				// fix delete.
-				object o = valuesEnumerator.Current; // needed for closure?
-				deleteButton.OnClick += (a, b) =>
-				{
-					var removeMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
-					removeMethod.Invoke(data, new object[] { o });
-					//((IDictionary)data).Remove(o);
-					SetupList();
-					Interface.modConfig.SetPendingChanges();
-				};
-				wrapped.Item1.Append(deleteButton);
+					// fix delete.
+					object o = valuesEnumerator.Current; // needed for closure?
+					deleteButton.OnClick += (a, b) => {
+						var removeMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
+						removeMethod.Invoke(data, new object[] { o });
+						//((IDictionary)data).Remove(o);
+						SetupList();
+						Interface.modConfig.SetPendingChanges();
+					};
+					wrapped.Item1.Append(deleteButton);
 
-				i++;
+					i++;
+				}
 			}
 			dataList.RecalculateChildren();
 			float h = dataList.GetTotalHeight();

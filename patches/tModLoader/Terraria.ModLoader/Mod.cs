@@ -183,6 +183,7 @@ namespace Terraria.ModLoader
 			if (Code == null)
 				return;
 
+			// TODO: Attribute to specify ordering of ModConfigs
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)

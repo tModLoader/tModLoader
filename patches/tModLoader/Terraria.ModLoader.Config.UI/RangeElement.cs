@@ -14,11 +14,9 @@ namespace Terraria.ModLoader.Config.UI
 		public abstract float TickIncrement { get; }
 		protected Func<float> _GetProportion;
 		protected Action<float> _SetProportion;
-		private int _sliderIDInPage;
 
-		public RangeElement(int sliderIDInPage, PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
+		public RangeElement(PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
-			this._sliderIDInPage = sliderIDInPage;
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
 		}
 
@@ -82,21 +80,27 @@ namespace Terraria.ModLoader.Config.UI
 			return 1f;
 		}
 
+		private static RangeElement rightLock;
+		private static RangeElement rightHover;
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			base.DrawSelf(spriteBatch);
 			float num = 6f;
 			int num2 = 0;
-			IngameOptions.rightHover = -1;
+			//IngameOptions.rightHover = -1;
+			rightHover = null;
 			if (!Main.mouseLeft)
 			{
-				IngameOptions.rightLock = -1;
+				//IngameOptions.rightLock = -1;
+				rightLock = null;
 			}
-			if (IngameOptions.rightLock == this._sliderIDInPage)
+			//if (IngameOptions.rightLock == this._sliderIDInPage)
+			if (rightLock == this)
 			{
 				num2 = 1;
 			}
-			else if (IngameOptions.rightLock != -1)
+			//else if (IngameOptions.rightLock != -1)
+			else if (rightLock != null)
 			{
 				num2 = 2;
 			}
@@ -120,17 +124,22 @@ namespace Terraria.ModLoader.Config.UI
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
 			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
-			if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
+			//if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
+			if (IngameOptions.inBar || rightLock == this)
 			{
-				IngameOptions.rightHover = this._sliderIDInPage;
-				if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
+				rightHover = this;
+				//IngameOptions.rightHover = this._sliderIDInPage;
+				if (PlayerInput.Triggers.Current.MouseLeft && rightLock == this)
+				//if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
 				{
 					this._SetProportion(obj);
 				}
 			}
-			if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
+			if (rightHover != null && rightLock == null)
+			//if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
 			{
-				IngameOptions.rightLock = IngameOptions.rightHover;
+				//IngameOptions.rightLock = IngameOptions.rightHover;
+				rightLock = rightHover;
 			}
 		}
 	}

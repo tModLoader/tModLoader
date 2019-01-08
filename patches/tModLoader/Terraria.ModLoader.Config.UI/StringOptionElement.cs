@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => options.Length;
 		public override float TickIncrement => 1f / (options.Length - 1);
 
-		public StringOptionElement(PropertyFieldWrapper memberInfo, object item, int sliderIDInPage, IList<string> array = null, int index = -1) : base(sliderIDInPage, memberInfo, item, (IList)array)
+		public StringOptionElement(PropertyFieldWrapper memberInfo, object item, IList<string> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
 			options = optionsAttribute.optionLabels;

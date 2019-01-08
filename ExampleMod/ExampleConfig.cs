@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 
@@ -115,29 +116,78 @@ namespace ExampleMod
 		}
 	}
 
-	/// <summary>
-	/// This config is just a showcase of various attributes and their effects in the UI window.
-	/// </summary>
-	[Label("ModConfig Showcase")]
-	public class ModConfigShowcase : ModConfig
+	[BackgroundColor(144, 252, 249)]
+	[Label("ModConfig Showcase A: Data Types")]
+	public class ModConfigShowcaseDataTypes : ModConfig
 	{
 		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
-		[DefaultValue(typeof(Color), "73, 94, 171, 255")] // needs 4 comma separated bytes
-		public Color SomeColor;
+		// Value Types
+		public bool SomeBool;
+		public int SomeInt;
+		public float SomeFloat;
+		public string SomeString;
+		public EquipType SomeEnum;
+		public byte SomeByte;
+		public uint SomeUInt;
 
-		[Label("Custom UI Element")]
-		[Tooltip("This UI Element is modder defined")]
-		[CustomModConfigItem(typeof(UIModConfigGradientItem))]
-		public Gradient gradient;
+		// Structs
+		public Color SomeColor; // Structs require special code. We've implemented Color
+		public Vector2 SomeVector2; // Other structs such as Vector2 aren't implemented yet.
 
-		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
-		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
-		public int LocalizedLabel;
+		// Data Structures (Reference Types)
+		private static int[] SomeArrayDefaults = new int[] { 25, 70, 12 };
+		public int[] SomeArray; // Arrays have a specific length and need a default value specified.
+		public List<int> SomeList;
+		public Dictionary<string, int> SomeDictionary;
+		public HashSet<string> SomeSet;
 
-		[Label("This is a float")]
-		public float SomeFLoat;
+		// Classes (Reference Types)
+		public ItemDefinition SomeClassA; //
+		public SimpleData SomeClassB; // Classes are automatically implemented in the UI.
+									  // CustomUI  
 
+		// Proper cloning of reference types is required because behind the scenes many instances of ModConfig classes exist.
+		public override ModConfig Clone()
+		{
+			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
+			var clone = (ModConfigShowcaseDataTypes)base.Clone();
+
+			// We use ?. and ?: here because many of these fields can be null.
+			// clone.SomeList = SomeList != null ? new List<int>(SomeList) : null;
+			clone.SomeArray = (int[])SomeArray.Clone();
+			clone.SomeList = SomeList?.ToList();
+			clone.SomeDictionary = SomeDictionary?.ToDictionary(i => i.Key, i => i.Value);
+			clone.SomeSet = SomeSet != null ? new HashSet<string>(SomeSet) : null;
+
+			clone.SomeClassA = SomeClassA == null ? null : new ItemDefinition(SomeClassA.mod, SomeClassA.name);
+			clone.SomeClassB = SomeClassB?.Clone();
+
+			return clone;
+		}
+
+		[OnDeserialized]
+		internal void OnDeserializedMethod(StreamingContext context)
+		{
+			SomeArray = SomeArray?.Length == SomeArrayDefaults.Length ? SomeArray : SomeArrayDefaults.ToArray();
+		}
+
+		public bool ShouldSerializeSomeArray()
+		{
+			return !SomeArray.SequenceEqual(SomeArrayDefaults);
+		}
+	}
+
+	[BackgroundColor(99, 180, 209)]
+	[Label("ModConfig Showcase B: Ranges")]
+	public class ModConfigShowcaseRanges : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+
+		// With no annotations on a float, a range from 0 to 1 with ticks of 0.01 is the default.
+		public float NormalFloat;
+
+		// We can specify range, increments, and even whether or not to draw guide ticks with annotations.
 		[Range(2f, 3f)]
 		[Increment(.25f)]
 		[DrawTicks]
@@ -152,94 +202,228 @@ namespace ExampleMod
 		[DefaultValue(2f)]
 		public float RangedFloat;
 
-		[JsonConverter(typeof(StringEnumConverter))]
-		public SampleEnum EnumExample1 { get; set; }
+		// With no annotations on an int, a range from 0 to 100 with ticks of 1 is the default. Without a Range attribute, there will be no slider.
+		public int NormalInt;
+
+		[Increment(5)]
+		[Range(60, 250)]
+		[DefaultValue(100)]
+		public int RangedInteger;
+
+		// We can annotate a List<int> and the range, ticks, and increment will be used by all elements of the List
+		[Range(10, 20)]
+		[Increment(2)]
+		[DrawTicks]
+		public List<int> ListOfInts;
+
+		[OnDeserialized]
+		internal void OnDeserializedMethod(StreamingContext context)
+		{
+			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here. Users can edit config files manually with values outside the RangeAttribute, so we fix here if necessary.
+			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
+		}
+
+		public override ModConfig Clone()
+		{
+			var clone = (ModConfigShowcaseRanges)base.Clone();
+			clone.ListOfInts = ListOfInts?.ToList();
+			return clone;
+		}
+	}
+
+	[BackgroundColor(154, 152, 181)]
+	[Label("ModConfig Showcase C: Labels")]
+	public class ModConfigShowcaseLabels : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+
+		// Without a Label attribute, config items will display as field identifiers. Using Label will make your Config appealing.
+		// Use Tooltip to convey additional information about the config item.
+		[Label("This is a float")]
+		[Tooltip("This text will show when hovered")]
+		public float SomeFloat;
+
+		// Using localization keys will help make your config readable in multiple languages. See ExampleMod/Localization/en-US.lang
+		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
+		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
+		public int LocalizedLabel;
+
+		// The color of the config entry can be customized. R, G, B
+		[BackgroundColor(255, 0, 255)]
+		public Pair pairExample;
+
+		// List elements also inherit BackgroundColor
+		[BackgroundColor(255, 0, 0)]
+		public List<Pair> ListOfPair;
+
+		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
+		[BackgroundColor(85, 107, 47)]
+		[Label("OverridenColor SimpleData")]
+		public SimpleData simpleDataExample2;
+	}
+
+	[BackgroundColor(164, 153, 190)]
+	[Label("ModConfig Showcase D: Default Values")]
+	public class ModConfigShowcaseDefaultValues : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+
+		// Using DefaultValue, we can specify a default value.
+		[DefaultValue(99)]
+		public int SimpleDefaultInt;
+
+
+		[DefaultValue(typeof(Color), "73, 94, 171, 255")] // needs 4 comma separated bytes. The Color struct has [TypeConverter(typeof(ColorConverter))] annotating it supplying a way to convert a text constant to a runtime default value.
+		public Color SomeColor;
 
 		[DefaultValue(SampleEnum.Strange)]
 		[DrawTicks]
 		public SampleEnum EnumExample2;
 
-		[Increment(5)]
-		[Range(60, 250)]
-		[DefaultValue(100)]
-		public int IntegerExample;
+		// Using StringEnumConverter, Enums are read and written as strings rather than the numerical value of the Enum. This makes the config file more readable, but prone to errors if a player manually modifies the config file.
+		[JsonConverter(typeof(StringEnumConverter))]
+		public SampleEnum EnumExample1 { get; set; }
+
+		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
+		[DefaultValue(new string[] { "Give Up", "Give Up" })]
+		public string[] ArrayOfString;
 
 		[DrawTicks]
 		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasor", "Squirtle" })]
 		[DefaultValue("Bulbasor")]
 		public string FavoritePokemon;
 
-		public string InputString;
-		public string InputString2;
+		// does TypeConverter work on a field and override a class annotation? Can we get a default value here?
+		// Can I get jsondefault value working?
+		// Can I get default value working and not saving when data is same but reference different?
+		[DefaultListValue(123)]
+		public List<int> ListOfInts;
 
-		public List<string> ListOfString;
+		public override ModConfig Clone()
+		{
+			var clone = (ModConfigShowcaseDefaultValues)base.Clone();
+			clone.ListOfInts = ListOfInts?.ToList();
+			return clone;
+		}
+	}
+
+	[BackgroundColor(148, 72, 188)]
+	[Label("ModConfig Showcase E: Subpages")]
+	public class ModConfigShowcaseSubpages : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
 		[SeparatePage]
 		public SubConfigExample subConfigExample;
 
-		[Range(10, 20)]
-		[Increment(2)]
-		[DrawTicks]
-		public List<int> ListOfInts;
+		public override ModConfig Clone()
+		{
+			var clone = (ModConfigShowcaseSubpages)base.Clone();
+			clone.subConfigExample = subConfigExample?.Clone();
+			return clone;
+		}
 
-		public Dictionary<int, float> IntFloatDictionary;
+		// TODO: Inner classes doesn't change anything, right?
+		public class SubConfigExample
+		{
+			public int boost;
+			public float percent;
+			public bool enabled;
+
+			[SeparatePage]
+			[BackgroundColor(50, 200, 100)]
+			public SubSubConfigExample SubA;
+
+			[SeparatePage]
+			[Label("Even More Sub")]
+			public SubSubConfigExample SubB;
+
+			public SubConfigExample() // TODO: Why is this here? Wouldn't SubA be null?
+			{
+			}
+
+			public SubConfigExample Clone()
+			{
+				var clone = (SubConfigExample)MemberwiseClone();
+				clone.SubA = SubA.Clone();
+				clone.SubB = SubB.Clone();
+				return clone;
+			}
+		}
+
+		public class SubSubConfigExample
+		{
+			public int whoa;
+
+			public SubSubConfigExample Clone()
+			{
+				return (SubSubConfigExample)MemberwiseClone();
+			}
+		}
+	}
+
+	// Separate Pages
+	// Default Values
+	// Ranges and Options, ticks
+	// Labels, Colors, and Tooltips
+
+
+	// Custom UI
+	// more JSON attributes
+	// Ignore, private, properties
+	// Show off CanChange, ReloadRequired, AcceptClientChanges
+
+
+	/// <summary>
+	/// This config is just a showcase of various attributes and their effects in the UI window.
+	/// </summary>
+	[Label("ModConfig Showcase F: Misc")]
+	public class ModConfigShowcaseMisc : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+
+		[Label("Custom UI Element")]
+		[Tooltip("This UI Element is modder defined")]
+		[CustomModConfigItem(typeof(UIModConfigGradientItem))]
+		public Gradient gradient;
+
 		public Dictionary<string, Pair> StringPairDictionary;
 		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary;
 
-		public HashSet<string> stringSet;
 		public HashSet<ItemDefinition> itemSet;
 
-		public ItemDefinition specialItem;
-
-		[BackgroundColor(255, 0, 0)]
-		public List<Pair> ListOfPair;
-
-		[BackgroundColor(255, 0, 255)]
-		public Pair pairExample;
-
+		[Label("ListOfPair2 label")]
+		public List<Pair> ListOfPair2;
 		public Pair pairExample2;
 
-		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
-		[DefaultValue(new string[] { "Give Up", "Give Up" })]
-		public string[] ArrayOfString;
-
-		[DefaultValue(new int[] { 4, 6, 12 })]
-		public int[] ArrayOfInts;
-
 		public SimpleData simpleDataExample;
-
-		[BackgroundColor(85, 107, 47)]
-		[Label("OverridenColor SimpleData")]
 		public SimpleData simpleDataExample2;
+
+
 
 		[Label("Really Complex Data")]
 		public ComplexData complexData;
 
 		[JsonExtensionData]
-		private IDictionary<string, JToken> _additionalData;
+		private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
 		[OnDeserialized]
 		internal void OnDeserializedMethod(StreamingContext context)
 		{
 			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
-			if (ListOfInts == null)
-				ListOfInts = new List<int>() { };
-			if (ListOfString == null)
-				ListOfString = new List<string>() { };
-			if (ListOfPair == null)
-				ListOfPair = new List<Pair>() { };
-			if (IntFloatDictionary == null)
-				IntFloatDictionary = new Dictionary<int, float>();
+			//if (gradient == null)
+			//	gradient = new Gradient();
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
 			if (JsonItemFloatDictionary == null)
 				JsonItemFloatDictionary = new Dictionary<ItemDefinition, float>();
-			stringSet = stringSet ?? new HashSet<string>();
 			itemSet = itemSet ?? new HashSet<ItemDefinition>();
-			//if (gradient == null)
-			//	gradient = new Gradient();
-			//if (simpleDataExample == null)
-			//	simpleDataExample = new SimpleData();
+			//if (ListOfPair == null)
+			//	ListOfPair = new List<Pair>() { };
+			//pairExample2
+
+			if (simpleDataExample == null)
+				simpleDataExample = new SimpleData();
 			if (simpleDataExample2 == null)
 			{
 				simpleDataExample2 = new SimpleData();
@@ -249,45 +433,47 @@ namespace ExampleMod
 			if (complexData == null)
 			{
 				complexData = new ComplexData();
-				complexData.ListOfInts = new List<int>();
+				//complexData.ListOfInts = new List<int>();
 			}
-			//ArrayOfInts = (int[])ArrayOfInts.Clone();
-			//ArrayOfString = (string[])ArrayOfString.Clone();
 
-			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here.
-			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
-
-			//string missingFieldExample = (string)_additionalData["missingFieldExample"];
+			// If you change ModConfig fields between versions, your users might notice their configuration is lost when they update their mod.
+			// We can use [JsonExtensionData] to capture un-de-serialized data and manually restore them to new fields.
+			// Imagine in a previous version of this mod, we had a field "OldListOfInts" and we want to preserve that data in "ListOfInts".
+			// To test this, insert the following into ExampleMod_ModConfigShowcase.json: "OldListOfInts": [ 99, 999],
+			/*if (_additionalData.TryGetValue("OldListOfInts", out var token))
+			{
+				var OldListOfInts = token.ToObject<List<int>>();
+				if (ListOfInts == null) ListOfInts = new List<int>();
+				ListOfInts.AddRange(OldListOfInts);
+			}*/
+			_additionalData.Clear(); // make sure to clear this or it'll crash.
 		}
 
 		public override ModConfig Clone()
 		{
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
-			var clone = (ModConfigShowcase)base.Clone();
-			clone.ListOfInts = new List<int>(ListOfInts);
-			clone.ListOfString = new List<string>(ListOfString);
-			clone.subConfigExample = subConfigExample == null ? null : subConfigExample.Clone();
-			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
+			var clone = (ModConfigShowcaseMisc)base.Clone();
+
+			// We use ?. and ?: here because many of these fields can be null.
+			// clone.ListOfInts = ListOfInts != null ? new List<int>(ListOfInts) : null;
 			clone.gradient = gradient == null ? null : gradient.Clone();
-			clone.pairExample = pairExample == null ? null : pairExample.Clone();
-			clone.specialItem = specialItem == null ? null : new ItemDefinition(specialItem.mod, specialItem.name);
-			clone.simpleDataExample2 = simpleDataExample2.Clone();
-			clone.ArrayOfInts = (int[])ArrayOfInts.Clone();
-			clone.ArrayOfString = (string[])ArrayOfString.Clone();
-			clone.ListOfPair = ListOfPair.ConvertAll(pair => pair.Clone());
-			clone.IntFloatDictionary = IntFloatDictionary.ToDictionary(i => i.Key, i => i.Value);
 			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
 			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new ItemDefinition(i.Key.mod, i.Key.name), i => i.Value);
-			clone.stringSet = new HashSet<string>(stringSet);
 			clone.itemSet = new HashSet<ItemDefinition>(itemSet);
+			clone.ListOfPair2 = ListOfPair2?.ConvertAll(pair => pair.Clone());
+			clone.pairExample2 = pairExample2 == null ? null : pairExample2.Clone();
+			clone.simpleDataExample = simpleDataExample == null ? null : simpleDataExample.Clone();
+			clone.simpleDataExample2 = simpleDataExample2 == null ? null : simpleDataExample2.Clone();
+			clone.complexData = complexData == null ? null : complexData.Clone();
 			return clone;
 		}
 
 		// ShouldSerialize is useful. Here we use it so ListOfInts doesn't show up as a useless empty entry in the config file. https://www.newtonsoft.com/json/help/html/ConditionalProperties.htm
-		public bool ShouldSerializeListOfInts()
-		{
-			return ListOfInts.Count > 0;
-		}
+		// It's up to you if the distinction between a null List and an empty List is important.
+		//public bool ShouldSerializeListOfInts()
+		//{
+		//	return ListOfInts?.Count > 0;
+		//}
 	}
 
 	public enum SampleEnum
@@ -318,6 +504,7 @@ namespace ExampleMod
 	}
 
 	[BackgroundColor(0, 255, 255)]
+	[Label("Pair label")]
 	public class Pair
 	{
 		public int boost;
@@ -352,43 +539,6 @@ namespace ExampleMod
 		}
 	}
 
-	public class SubConfigExample
-	{
-		public int boost;
-		public float percent;
-		public bool enabled;
-
-		[SeparatePage]
-		[BackgroundColor(50, 200, 100)]
-		public SubSubConfigExample SubA;
-
-		[SeparatePage]
-		[Label("Even More Sub")]
-		public SubSubConfigExample SubB;
-
-		public SubConfigExample()
-		{
-		}
-
-		public SubConfigExample Clone()
-		{
-			var clone = (SubConfigExample)MemberwiseClone();
-			clone.SubA = SubA.Clone();
-			clone.SubB = SubB.Clone();
-			return clone;
-		}
-	}
-
-	public class SubSubConfigExample
-	{
-		public int whoa;
-
-		public SubSubConfigExample Clone()
-		{
-			return (SubSubConfigExample)MemberwiseClone();
-		}
-	}
-
 	public class ComplexData
 	{
 		public List<int> ListOfInts;
@@ -401,11 +551,17 @@ namespace ExampleMod
 		[DefaultValue(2f)]
 		public float IncrementalFloat;
 
+		public ComplexData()
+		{
+			//ListOfInts = new List<int>();
+			nestedSimple = new SimpleData();
+		}
+
 		public ComplexData Clone()
 		{
 			var clone = (ComplexData)MemberwiseClone();
-			clone.ListOfInts = new List<int>(ListOfInts);
-			clone.nestedSimple = nestedSimple.Clone();
+			clone.ListOfInts = ListOfInts?.ToList();
+			clone.nestedSimple = nestedSimple?.Clone();
 			return clone;
 		}
 	}
@@ -413,7 +569,7 @@ namespace ExampleMod
 	class UIModConfigGradientItem : ConfigElement
 	{
 		//public UIModConfigVector2Item(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, ref int i, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
 		{
 			object subitem = memberInfo.GetValue(item);
 			if (subitem == null)
@@ -427,10 +583,11 @@ namespace ExampleMod
 
 			int height = 30;
 			IList<Vector2> array = (IList<Vector2>)array2;
-			//object subitem = memberInfo.GetValue(item);
+			//object subitem = memberInfo.GetValue(item
+			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
 			{
-				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, ref i);
+				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
 
 				if (array != null)
 				{

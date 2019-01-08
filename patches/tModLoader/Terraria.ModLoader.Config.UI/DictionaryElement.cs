@@ -100,19 +100,19 @@ namespace Terraria.ModLoader.Config.UI
 		private List<object> dataAsList;
 		internal Type keyType;
 		internal Type valueType;
-		private int sliderIDStart;
+		//private int sliderIDStart;
 		private NestedUIList dataList;
 		internal UIText save;
 		public List<IDictionaryElementWrapper> dataWrapperList;
 
 		float scale = 1f;
 
-		public DictionaryElement(PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage) : base(memberInfo, item, null)
+		public DictionaryElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
 		{
 			drawLabel = false;
 
-			sliderIDStart = sliderIDInPage;
-			sliderIDInPage += 10000;
+			//sliderIDStart = sliderIDInPage;
+			//sliderIDInPage += 10000;
 
 			string name = memberInfo.Name;
 			if (labelAttribute != null)
@@ -164,30 +164,36 @@ namespace Terraria.ModLoader.Config.UI
 			sortedContainer.Height.Set(30f, 0f);
 			sortedContainer.Top.Set(-30f, 1f);
 			sortedContainer.HAlign = 0.5f;
-			text = new UIText("Click To Add");
+			text = new UIText(data == null ? "Click To Initialize" : "Click To Add");
 			text.Top.Pixels += 6;
 			text.Left.Pixels += 4;
 			text.OnClick += (a, b) =>
 			{
 				Main.PlaySound(21);
 
-				//DefaultListValueAttribute defaultListValueAttribute = (DefaultListValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(DefaultListValueAttribute));
-				//if (defaultListValueAttribute != null)
-				//{
-				//	((IList)data).Add(defaultListValueAttribute.defaultValue);
-				//}
-				//else
-				//{
-				//((IList)data).Add(Activator.CreateInstance(listType));
-				//}
-
-				try
-				{
-					((IDictionary)data).Add(ConfigManager.AlternateCreateInstance(keyType), ConfigManager.AlternateCreateInstance(valueType));
+				if (data == null) {
+					data = Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
+					memberInfo.SetValue(item, data);
+					text.SetText("Click To Add");
 				}
-				catch (Exception e)
-				{
-					Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+				else {
+
+					//DefaultListValueAttribute defaultListValueAttribute = (DefaultListValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(DefaultListValueAttribute));
+					//if (defaultListValueAttribute != null)
+					//{
+					//	((IList)data).Add(defaultListValueAttribute.defaultValue);
+					//}
+					//else
+					//{
+					//((IList)data).Add(Activator.CreateInstance(listType));
+					//}
+
+					try {
+						((IDictionary)data).Add(ConfigManager.AlternateCreateInstance(keyType), ConfigManager.AlternateCreateInstance(valueType));
+					}
+					catch (Exception e) {
+						Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+					}
 				}
 
 				SetupList();
@@ -260,7 +266,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		private void SetupList()
 		{
-			int sliderID = sliderIDStart;
+			//int sliderID = sliderIDStart;
 			dataList.Clear();
 			var deleteButtonTexture = TextureManager.Load("Images/UI/ButtonDelete");
 			int top = 0;
@@ -294,65 +300,64 @@ namespace Terraria.ModLoader.Config.UI
 			//Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
 			Type genericType = typeof(DictionaryElementWrapper<,>).MakeGenericType(keyType, valueType);
 
+			if (data != null) {
+				var keys = ((IDictionary)data).Keys;
+				var values = ((IDictionary)data).Values;
+				var keysEnumerator = keys.GetEnumerator();
+				var valuesEnumerator = values.GetEnumerator();
+				int i = 0;
+				while (keysEnumerator.MoveNext()) {
 
-			var keys = ((IDictionary)data).Keys;
-			var values = ((IDictionary)data).Values;
-			var keysEnumerator = keys.GetEnumerator();
-			var valuesEnumerator = values.GetEnumerator();
-			int i = 0;
-			while (keysEnumerator.MoveNext())
-			{
+					valuesEnumerator.MoveNext();
+					//var wrapper = new UIModConfigDictionaryElementWrapper<typeof(keysEnumerator.Current), typeof(keysEnumerator.Current)>(keysEnumerator.Current, valuesEnumerator.Current, this);
+					//dynamic sampleObject = new ExpandoObject();
+					//sampleObject.key = keysEnumerator.Current;
+					//sampleObject.value = valuesEnumerator.Current;
+					//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(sampleObject);
 
-				valuesEnumerator.MoveNext();
-				//var wrapper = new UIModConfigDictionaryElementWrapper<typeof(keysEnumerator.Current), typeof(keysEnumerator.Current)>(keysEnumerator.Current, valuesEnumerator.Current, this);
-				//dynamic sampleObject = new ExpandoObject();
-				//sampleObject.key = keysEnumerator.Current;
-				//sampleObject.value = valuesEnumerator.Current;
-				//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(sampleObject);
+					IDictionaryElementWrapper proxy = (IDictionaryElementWrapper)Activator.CreateInstance(genericType,
+						new object[] { keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
+					dataWrapperList.Add(proxy);
+					//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };  
 
-				IDictionaryElementWrapper proxy = (IDictionaryElementWrapper)Activator.CreateInstance(genericType,
-					new object[] { keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
-				dataWrapperList.Add(proxy);
-				//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };  
+					//dataWrapperList.Add(wrapper);
+					//}
 
-				//dataWrapperList.Add(wrapper);
-				//}
+					//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(v);
 
-				//var wrapperwrapper = new UIModConfigDictionaryElementWrapperWrapper(v);
+					//	var keys = ((IDictionary)data).Keys.ToList();
+					//var values = ((IDictionary)data).Values.ToList();
+					//for (int i = 0; i < ((IDictionary)data).Count; i++)
+					//{
+					//((IDictionary)data).
+					//	int index = i;
+					//((IDictionary)data).
+					//Type tupleType = typeof(Tuple<,>);
+					//	var wrapper = new UIModConfigDictionaryElementWrapper(((IDictionary)data)[], , this);
+					Type itemType = memberInfo.Type.GetGenericArguments()[0];
+					var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
+					int index = i;
+					var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i); // TODO: Sometime key is below value for some reason. IntFloatDictionary.
+					//var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, wrapperwrapper, ref sliderID);
+					// save wrap, pre save check?
+					wrapped.Item2.Left.Pixels += 24;
+					wrapped.Item2.Width.Pixels -= 24;
 
-				//	var keys = ((IDictionary)data).Keys.ToList();
-				//var values = ((IDictionary)data).Values.ToList();
-				//for (int i = 0; i < ((IDictionary)data).Count; i++)
-				//{
-				//((IDictionary)data).
-				//	int index = i;
-				//((IDictionary)data).
-				//Type tupleType = typeof(Tuple<,>);
-				//	var wrapper = new UIModConfigDictionaryElementWrapper(((IDictionary)data)[], , this);
-				Type itemType = memberInfo.Type.GetGenericArguments()[0];
-				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
-				int index = i;
-				var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, this, ref sliderID, dataWrapperList, genericType, i);
-				//var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, wrapperwrapper, ref sliderID);
-				// save wrap, pre save check?
-				wrapped.Item2.Left.Pixels += 24;
-				wrapped.Item2.Width.Pixels -= 24;
+					// Add delete button.
+					UIImageButton deleteButton = new UIImageButton(deleteButtonTexture);
+					deleteButton.VAlign = 0.5f;
 
-				// Add delete button.
-				UIImageButton deleteButton = new UIImageButton(deleteButtonTexture);
-				deleteButton.VAlign = 0.5f;
+					// fix delete.
+					object o = keysEnumerator.Current;
+					deleteButton.OnClick += (a, b) => {
+						((IDictionary)data).Remove(o);
+						SetupList();
+						Interface.modConfig.SetPendingChanges();
+					};
+					wrapped.Item1.Append(deleteButton);
 
-				// fix delete.
-				object o = keysEnumerator.Current;
-				deleteButton.OnClick += (a, b) =>
-				{
-					((IDictionary)data).Remove(o);
-					SetupList();
-					Interface.modConfig.SetPendingChanges();
-				};
-				wrapped.Item1.Append(deleteButton);
-
-				i++;
+					i++;
+				}
 			}
 			dataList.RecalculateChildren();
 			float h = dataList.GetTotalHeight();

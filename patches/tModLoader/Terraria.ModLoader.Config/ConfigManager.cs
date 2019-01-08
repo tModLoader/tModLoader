@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -308,9 +310,9 @@ namespace Terraria.ModLoader.Config
 			return attribute;
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, ref int sliderIDInPage, object array = null, Type arrayType = null, int index = -1)
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array = null, Type arrayType = null, int index = -1) 
 		{
-			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, ref sliderIDInPage, array, arrayType, index);
+			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, array, arrayType, index);
 		}
 	}
 

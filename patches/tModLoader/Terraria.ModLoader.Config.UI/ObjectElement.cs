@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Config.UI
 		// Label:
 		//  Members
 		//  Members
-		public ObjectElement(PropertyFieldWrapper memberInfo, object item, ref int i, IList array = null, int index = -1) : base(memberInfo, item, array)
+		public ObjectElement(PropertyFieldWrapper memberInfo, object item, IList array = null, int index = -1) : base(memberInfo, item, array)
 		{
 			drawLabel = false;
 
@@ -47,6 +47,7 @@ namespace Terraria.ModLoader.Config.UI
 				dataList.Add(sortedContainer);
 			}
 
+			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(item))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
@@ -55,7 +56,7 @@ namespace Terraria.ModLoader.Config.UI
 					continue;
 
 				int top = 0;
-				var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, item, ref i);
+				var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, item, order++);
 				if (array != null)
 				{
 					//wrapped.Item1.Left.Pixels -= 20;

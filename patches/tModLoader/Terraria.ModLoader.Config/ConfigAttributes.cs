@@ -17,7 +17,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// This attribute hints that changing the value of the annotated property or field will put the config in a state that requires a reload. An overriden ModConfig.NeedsReload can further validate if more complex logic is needed.
+	/// This attribute hints that changing the value of the annotated property or field will put the config in a state that requires a reload. An overridden ModConfig.NeedsReload can further validate if more complex logic is needed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class ReloadRequiredAttribute : Attribute
@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// This attibute sets a label for the property, field, or class for use in the ModConfig UI. 
+	/// This attribute sets a label for the property, field, or class for use in the ModConfig UI. 
 	/// Starting the label with $ means the label should be interpreted as a Localization key.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Config
 	// TODO
 
 	/// <summary>
-	/// This attibute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
+	/// This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
 	/// Starting the tooltip with $ means the tooltip should be interpreted as a Localization key.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
