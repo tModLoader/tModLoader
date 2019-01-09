@@ -8,9 +8,9 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		private Func<float> _GetValue;
 		private Action<float> _SetValue;
-		float min = 0;
-		float max = 1;
-		float increment = 0.01f;
+		internal float min = 0;
+		internal float max = 1;
+		internal float increment = 0.01f;
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (increment) / (max - min);

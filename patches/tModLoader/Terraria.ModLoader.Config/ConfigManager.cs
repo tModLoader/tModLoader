@@ -312,6 +312,7 @@ namespace Terraria.ModLoader.Config
 
 		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array = null, Type arrayType = null, int index = -1) 
 		{
+			// public api for modders.
 			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, array, arrayType, index);
 		}
 	}

@@ -216,6 +216,11 @@ namespace ExampleMod
 		[DrawTicks]
 		public List<int> ListOfInts;
 
+		[Range(-20f, 20f)]
+		[Increment(5f)]
+		[DrawTicks]
+		public Vector2 RangedWithIncrementVector2;
+
 		[OnDeserialized]
 		internal void OnDeserializedMethod(StreamingContext context)
 		{

@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 			uIElement.Append(uIPanel);
 
 			message = new UITextPanel<string>("Notification: ");
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.Config.UI
 			headerTextPanel.HAlign = 0.5f;
 			headerTextPanel.Top.Set(-50f, 0f);
 			headerTextPanel.SetPadding(15f);
-			headerTextPanel.BackgroundColor = new Color(73, 94, 171);
+			headerTextPanel.BackgroundColor = UICommon.defaultUIBlue;
 			uIElement.Append(headerTextPanel);
 
 			previousConfigButton = new UITextPanel<string>("<", 1f, false);
@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.Config.UI
 			restoreDefaultsConfigButton.OnClick += RestoreDefaults;
 			uIElement.Append(restoreDefaultsConfigButton);
 
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 
 			Append(uIElement);
 		}
@@ -413,7 +413,7 @@ namespace Terraria.ModLoader.Config.UI
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 			var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(modConfigClone.GetType(), typeof(BackgroundColorAttribute));
 			if (backgroundColorAttribute != null) {
 				uIPanel.BackgroundColor = backgroundColorAttribute.color;
@@ -478,6 +478,9 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				e = new ColorElement(memberInfo, item, (IList<Color>)array, index);
 				//elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
+			}
+			else if (type == typeof(Vector2)) {
+				e = new Vector2Element(memberInfo, item, (IList<Vector2>)array, index);
 			}
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
@@ -660,7 +663,7 @@ namespace Terraria.ModLoader.Config.UI
 		{
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.CopyStyle(Interface.modConfig.uIPanel);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 
 			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
 			if (bca != null)
