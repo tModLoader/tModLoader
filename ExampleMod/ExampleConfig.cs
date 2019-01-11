@@ -16,7 +16,7 @@ using Terraria.ModLoader.Config.UI;
 
 namespace ExampleMod
 {
-	// This file contains 2 ModConfigs. One is set to MultiplayerSyncMode.ServerDictates and the other MultiplayerSyncMode.UniquePerPlayer
+	// This file contains 2 real ModConfigs (and also a bunch of fake ModConfigs showcasing various ideas). One is set to MultiplayerSyncMode.ServerDictates and the other MultiplayerSyncMode.UniquePerPlayer
 	// ModConfigs contain Public Fields and Properties that represent the choices available to the user. 
 	// Those Fields or Properties will be presented to users in the Config menu.
 	// DONT use static members anywhere in this class, tModLoader maintains several instances of ModConfig classes which will not work well with static properties or fields.
@@ -34,19 +34,19 @@ namespace ExampleMod
 
 		// First, we will learn about DefaultValue. You might assume "public bool BoolExample = true;" to work, 
 		// but because tModLoader is overwriting with JSON, that value will be overwritten when the mod loads.
-		// We must use the DefaultValue Attribute instead of setting the value normally:
+		// We must use the DefaultValue attribute instead of setting the value normally:
 		[DefaultValue(true)]
 		public bool UselessBoolExample;
 
 		// This is private. You'll notice that it doesn't show up in the config menu. Don't set something private.
 		private bool PrivateFieldBoolExample;
 
-		// This is ignored, it also shouldn't show up in the config menu
+		// This is ignored, it also shouldn't show up in the config menu despite being public.
 		[JsonIgnore]
 		public bool IgnoreExample;
 
 		// You'll notice this next one is a Property instead of a field. That works too.
-		// Here we see an attribute added by tModLoader: LabelAttribute. This one allows us to add a label so the user knows more about the setting they are changing.
+		// Here we see an attribute added by tModLoader: LabelAttribute. This one allows us to add a label so the user knows more about the setting they are changing. Without a label, the name of the field or property is displayed.
 		[Label("Disable Example Wings Item")]
 		// Similar to Label, this sets the tooltip. Tooltips are useful for slightly longer and more detailed explanations of config options.
 		[Tooltip("Prevents Loading the ExampleWings item. Requires a Reload")]
@@ -60,14 +60,6 @@ namespace ExampleMod
 		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
 		public bool DisableVolcanos { get; set; }
 
-		// While ReloadRequired is sufficient for most, some may require more logic in deciding if a reload is required. Here is an incomplete example
-		/*public override bool NeedsReload(ModConfig old)
-		{
-			bool defaultDecision = base.NeedsReload(old);
-			bool otherLogic = IntExample > (old as ExampleConfigServer).IntExample; // This is just a random example. Your logic depends on your mod.
-			return defaultDecision || otherLogic; // reload needed if either condition is met.
-		}*/
-
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
 		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.
@@ -76,6 +68,7 @@ namespace ExampleMod
 			ExampleMod.exampleServerConfig = this;
 		}
 
+		// AcceptClientChanges is called on the server when a Client player attempts to change ServerDictates settings in-game. By default, client changes are accepted. (As long as they don't necessitate a Reload)
 		// With more effort, a mod could implement more control over changing mod settings.
 		public override bool AcceptClientChanges(ModConfig currentConfig, int whoAmI, ref string message)
 		{
@@ -86,6 +79,14 @@ namespace ExampleMod
 			}
 			return true;
 		}
+
+		// While ReloadRequired is sufficient for most, some may require more logic in deciding if a reload is required. Here is an incomplete example
+		/*public override bool NeedsReload(ModConfig old)
+		{
+			bool defaultDecision = base.NeedsReload(old);
+			bool otherLogic = IntExample > (old as ExampleConfigServer).IntExample; // This is just a random example. Your logic depends on your mod.
+			return defaultDecision || otherLogic; // reload needed if either condition is met.
+		}*/
 	}
 
 	/// <summary>
@@ -131,9 +132,10 @@ namespace ExampleMod
 		public byte SomeByte;
 		public uint SomeUInt;
 
-		// Structs
-		public Color SomeColor; // Structs require special code. We've implemented Color
-		public Vector2 SomeVector2; // Other structs such as Vector2 aren't implemented yet.
+		// Structs - These require special code. We've implemented Color and Vector2 so far.
+		public Color SomeColor;
+		public Vector2 SomeVector2;
+		public Point SomePoint; // notice the not implemented message.
 
 		// Data Structures (Reference Types)
 		private static int[] SomeArrayDefaults = new int[] { 25, 70, 12 };
@@ -142,12 +144,12 @@ namespace ExampleMod
 		public Dictionary<string, int> SomeDictionary;
 		public HashSet<string> SomeSet;
 
-		// Classes (Reference Types)
-		public ItemDefinition SomeClassA; //
+		// Classes (Reference Types
+		public ItemDefinition SomeClassA; // ItemDefinition is a new class that can store the identity of a Item added by a mod or vanilla. Only the identity is preserved, not other mod data or stack. Has a unique UI
 		public SimpleData SomeClassB; // Classes are automatically implemented in the UI.
-									  // CustomUI  
+		// See ??? for an example of a class with a CustomUI.
 
-		// Proper cloning of reference types is required because behind the scenes many instances of ModConfig classes exist.
+		// Proper cloning of reference types is required because behind the scenes many instances of ModConfig classes co-exist.
 		public override ModConfig Clone()
 		{
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
@@ -169,14 +171,20 @@ namespace ExampleMod
 		[OnDeserialized]
 		internal void OnDeserializedMethod(StreamingContext context)
 		{
+			// constructors and field initializers don't work with the json deserialization process. We need to use a method annotated with [OnDeserialized] to handle default values. 
+			// tModLoader will crash if you don't initialize the Array. If you need dynamic size collection, use List
 			SomeArray = SomeArray?.Length == SomeArrayDefaults.Length ? SomeArray : SomeArrayDefaults.ToArray();
 		}
 
+		// ShouldSerialize{FieldNameHere}
 		public bool ShouldSerializeSomeArray()
 		{
+			// This allows an update to a mod to change array defaults. Without ignoring default values, default values will populate the json file and prevent updated defaults from being loaded without extra logic.
 			return !SomeArray.SequenceEqual(SomeArrayDefaults);
 		}
 	}
+
+	// The rest of this file are many other ModConfig classes that show off various UI capabilities. They have no effect on the mod and are purely teaching examples.
 
 	[BackgroundColor(99, 180, 209)]
 	[Label("ModConfig Showcase B: Ranges")]
@@ -225,6 +233,7 @@ namespace ExampleMod
 		internal void OnDeserializedMethod(StreamingContext context)
 		{
 			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here. Users can edit config files manually with values outside the RangeAttribute, so we fix here if necessary.
+			// Both enforcing ranges and not enforcing ranges have uses in mods.
 			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
 		}
 
@@ -277,7 +286,6 @@ namespace ExampleMod
 		[DefaultValue(99)]
 		public int SimpleDefaultInt;
 
-
 		[DefaultValue(typeof(Color), "73, 94, 171, 255")] // needs 4 comma separated bytes. The Color struct has [TypeConverter(typeof(ColorConverter))] annotating it supplying a way to convert a text constant to a runtime default value.
 		public Color SomeColor;
 
@@ -289,6 +297,7 @@ namespace ExampleMod
 		[JsonConverter(typeof(StringEnumConverter))]
 		public SampleEnum EnumExample1 { get; set; }
 
+		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
 		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
 		[DefaultValue(new string[] { "Give Up", "Give Up" })]
 		public string[] ArrayOfString;
@@ -301,6 +310,8 @@ namespace ExampleMod
 		// does TypeConverter work on a field and override a class annotation? Can we get a default value here?
 		// Can I get jsondefault value working?
 		// Can I get default value working and not saving when data is same but reference different?
+
+		// DefaultListValue provides the default value to be added when the user clicks add in the UI.
 		[DefaultListValue(123)]
 		public List<int> ListOfInts;
 
@@ -318,17 +329,39 @@ namespace ExampleMod
 	{
 		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
+		// Using SeparatePage, an object will be presented to the user as a button. That button will lead to a separate page where the usual UI will be presented. Useful for organization.
 		[SeparatePage]
+		public Gradient gradient;
+
+		// This example has multiple levels of subpages, check it out. In this example, the SubConfigExample class itself is annotated with [SeparatePage]
+		[Label("Sub Config Example - Click me")]
 		public SubConfigExample subConfigExample;
+
+		[SeparatePage]
+		public Dictionary<ItemDefinition, SubConfigExample> DictionaryofSubConfigExample;
+
+		// These 2 examples show how [SeparatePage] works on annotating both a field for a class and annotating a List of a class
+		[SeparatePage]
+		[Label("Subpage List Of Pairs")]
+		public List<Pair> SeparateListOfPairs;
+
+		[SeparatePage]
+		[Label("Special Pair")]
+		public Pair pair;
 
 		public override ModConfig Clone()
 		{
 			var clone = (ModConfigShowcaseSubpages)base.Clone();
+			clone.gradient = gradient?.Clone();
 			clone.subConfigExample = subConfigExample?.Clone();
+			clone.DictionaryofSubConfigExample = DictionaryofSubConfigExample?.ToDictionary(i => i.Key == null ? null : new ItemDefinition(i.Key.mod, i.Key.name), i => i.Value?.Clone());
+			clone.SeparateListOfPairs = SeparateListOfPairs?.ToList();
+			clone.pair = pair?.Clone();
 			return clone;
 		}
 
-		// TODO: Inner classes doesn't change anything, right?
+		// C# allows inner classes (used here), which might be useful for organization if you want.
+		[SeparatePage]
 		public class SubConfigExample
 		{
 			public int boost;
@@ -343,15 +376,11 @@ namespace ExampleMod
 			[Label("Even More Sub")]
 			public SubSubConfigExample SubB;
 
-			public SubConfigExample() // TODO: Why is this here? Wouldn't SubA be null?
-			{
-			}
-
 			public SubConfigExample Clone()
 			{
 				var clone = (SubConfigExample)MemberwiseClone();
-				clone.SubA = SubA.Clone();
-				clone.SubB = SubB.Clone();
+				clone.SubA = SubA?.Clone();
+				clone.SubB = SubB?.Clone();
 				return clone;
 			}
 		}
@@ -367,22 +396,75 @@ namespace ExampleMod
 		}
 	}
 
-	// Separate Pages
-	// Default Values
-	// Ranges and Options, ticks
-	// Labels, Colors, and Tooltips
+	[BackgroundColor(164, 153, 190)]
+	[Label("ModConfig Showcase F: Accessibility")]
+	public class ModConfigShowcaseAccessibility : ModConfig
+	{
+		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
 
+		// Private and Internal fields and properties will not be shown. 
+		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
+		// You should avoid private and internal values in 
+		private float Private = 144;
+		internal float Internal;
+
+		// Public fields are most common. Use public for most items.
+		public float Public;
+
+		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use PostAutoLoad in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
+		public static float Static;
+
+		// Get only properties will show up, but will be grayed out to show that they can't be changed. 
+		public float Getter => Main.rand.NextFloat(1f); // This is just an example, please don't do this.
+
+		// AutoProperies work the same as fields.
+		public float AutoProperty { get; set; }
+
+		// Properties work as well. The backing field will be ignored when writing the json out.
+		private float propertyBackingField;
+		public float Property
+		{
+			get { return propertyBackingField; }
+			set { propertyBackingField = value + 0.2f; } // + 0.2f is just to mess with the user.
+		}
+
+		// Using JsonIgnore on a public field means the field won't show up in the json or UI. Not really useful.
+		[JsonIgnore]
+		public float Ignore;
+
+		// Using Label overrides JsonIgnore for the UI. Use this to display info to the user if needed. The value won't be saved since it is derived from other fields.
+		// Useful for things like displaying sums or calculated relationships.
+		[JsonIgnore]
+		[Label("Ignore With Label")]
+		public float IgnoreWithLabelGetter => AutoProperty + Public;
+
+		// Reference type getters kind of work with the UI. You can experiment with this if you want.
+		[JsonIgnore]
+		[Label("Pair Getter")]
+		public Pair pair2 => pair;
+		public Pair pair;
+
+		// Set only properties will crash tModLoader.
+		// public float Setter { set { Public = value; } }
+
+		public ModConfigShowcaseAccessibility()
+		{
+			Internal = 0.2f;
+		}
+	}
 
 	// Custom UI
 	// more JSON attributes
-	// Ignore, private, properties
+	//[NonNull]
 	// Show off CanChange, ReloadRequired, AcceptClientChanges
-
+	// TODO: does List<List> work?? NOPE
+	//public List<List<int>> ListOfLists;
+	//clone.ListOfLists = ListOfLists?.Select(x => x?.ToList()).ToList();
 
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
-	[Label("ModConfig Showcase F: Misc")]
+	[Label("ModConfig Showcase G: Misc")]
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
@@ -404,8 +486,6 @@ namespace ExampleMod
 		public SimpleData simpleDataExample;
 		public SimpleData simpleDataExample2;
 
-
-
 		[Label("Really Complex Data")]
 		public ComplexData complexData;
 
@@ -416,30 +496,23 @@ namespace ExampleMod
 		internal void OnDeserializedMethod(StreamingContext context)
 		{
 			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
-			//if (gradient == null)
-			//	gradient = new Gradient();
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
 			if (JsonItemFloatDictionary == null)
 				JsonItemFloatDictionary = new Dictionary<ItemDefinition, float>();
 			itemSet = itemSet ?? new HashSet<ItemDefinition>();
-			//if (ListOfPair == null)
-			//	ListOfPair = new List<Pair>() { };
-			//pairExample2
-
-			if (simpleDataExample == null)
-				simpleDataExample = new SimpleData();
-			if (simpleDataExample2 == null)
+			simpleDataExample = simpleDataExample ?? new SimpleData();
+			if (simpleDataExample2 == null) // This won't auto initialize in UI if set to null via UI
 			{
 				simpleDataExample2 = new SimpleData();
 				simpleDataExample2.boost = 32;
 				simpleDataExample2.percent = 2f;
 			}
-			if (complexData == null)
-			{
-				complexData = new ComplexData();
-				//complexData.ListOfInts = new List<int>();
-			}
+
+			complexData = complexData ?? new ComplexData();
+			// It is possible for nestedSimple to be null
+			//complexData.nestedSimple = complexData.nestedSimple ?? new SimpleData();
+
 
 			// If you change ModConfig fields between versions, your users might notice their configuration is lost when they update their mod.
 			// We can use [JsonExtensionData] to capture un-de-serialized data and manually restore them to new fields.
@@ -462,7 +535,7 @@ namespace ExampleMod
 			// We use ?. and ?: here because many of these fields can be null.
 			// clone.ListOfInts = ListOfInts != null ? new List<int>(ListOfInts) : null;
 			clone.gradient = gradient == null ? null : gradient.Clone();
-			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value.Clone());
+			clone.StringPairDictionary = StringPairDictionary.ToDictionary(i => i.Key, i => i.Value?.Clone());
 			clone.JsonItemFloatDictionary = JsonItemFloatDictionary.ToDictionary(i => new ItemDefinition(i.Key.mod, i.Key.name), i => i.Value);
 			clone.itemSet = new HashSet<ItemDefinition>(itemSet);
 			clone.ListOfPair2 = ListOfPair2?.ConvertAll(pair => pair.Clone());
@@ -481,6 +554,7 @@ namespace ExampleMod
 		//}
 	}
 
+	// These are some classes and enums used in the ModConfig above.
 	public enum SampleEnum
 	{
 		Weird,
@@ -498,7 +572,7 @@ namespace ExampleMod
 		[DefaultValue(typeof(Color), "255, 0, 0, 255")]
 		public Color end;
 
-		public Gradient()
+		public Gradient() // TODO: do I need an empty constructor for some reason?
 		{
 		}
 
@@ -512,12 +586,18 @@ namespace ExampleMod
 	[Label("Pair label")]
 	public class Pair
 	{
-		public int boost;
 		public bool enabled;
+		public int boost;
 
 		public Pair Clone()
 		{
 			return (Pair)MemberwiseClone();
+		}
+
+		// If you override ToString, it will show up appended to the Label in the ModConfig UI.
+		public override string ToString()
+		{
+			return $"Boost: {(enabled ? "" + boost : "disabled")}";
 		}
 	}
 
@@ -559,7 +639,7 @@ namespace ExampleMod
 		public ComplexData()
 		{
 			//ListOfInts = new List<int>();
-			nestedSimple = new SimpleData();
+			//nestedSimple = new SimpleData();
 		}
 
 		public ComplexData Clone()
@@ -568,6 +648,13 @@ namespace ExampleMod
 			clone.ListOfInts = ListOfInts?.ToList();
 			clone.nestedSimple = nestedSimple?.Clone();
 			return clone;
+		}
+
+		[OnDeserialized]
+		internal void OnDeserializedMethod(StreamingContext context)
+		{
+			// NonNull annotation for UI and post Deserialize?
+			nestedSimple = nestedSimple ?? new SimpleData();
 		}
 	}
 
@@ -617,7 +704,6 @@ namespace ExampleMod
 					float percent = (float)i / steps;
 					spriteBatch.Draw(Main.magicPixel, new Rectangle(left + i, hitbox.Y, 1, 30), Color.Lerp(g.start, g.end, percent));
 				}
-
 
 				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 4, 30), g.start);
 				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + 3 * hitbox.Width / 4, hitbox.Y, hitbox.Width / 4, 30), g.end);

@@ -303,7 +303,8 @@ namespace Terraria.ModLoader.Config
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 			if (array != null)
 			{
-				attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
+				// item null?
+			//	attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
 			}
 			// Member
 			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;

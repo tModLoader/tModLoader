@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime)
 		{
 			Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
-			if (!ContainsPoint(MousePosition) && Main.mouseLeft)
+			if (!ContainsPoint(MousePosition) && Main.mouseLeft) // TODO: && focused maybe?
 			{
 				focused = false;
 				OnUnfocus?.Invoke(this, new EventArgs());

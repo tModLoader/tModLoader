@@ -442,7 +442,7 @@ namespace Terraria.ModLoader.Config.UI
 			//int original = sliderIDInPage;
 			UIElement e = null;
 
-			// TODO: Vector2, other common structs?
+			// TODO: Other common structs? -- Rectangle, Point
 			CustomModConfigItemAttribute customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
 			if (customUI != null)
 			{
@@ -550,71 +550,7 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			else if (type.IsClass)
 			{
-				if (array != null)
-				{
-					object listItem = ((IList)array)[index];
-					if (listItem == null)
-					{
-						listItem = Activator.CreateInstance(type);
-						JsonConvert.PopulateObject("{}", listItem, ConfigManager.serializerSettings);
-						((IList)array)[index] = listItem;
-					}
-					e = new ObjectElement(memberInfo, listItem, (IList)array, index);
-					//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
-				}
-				else
-				{
-					object subitem = memberInfo.GetValue(item);
-					if (subitem == null)
-					{
-						subitem = Activator.CreateInstance(type);
-						// Crashes JSONItem
-						JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings); // Seems to fail on all data structures?
-
-						//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-						//if (jsonDefaultValueAttribute != null)
-						//{
-						//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-						//}
-
-						memberInfo.SetValue(item, subitem);
-					}
-					SeparatePageAttribute att = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute));
-					if (att != null)
-					{
-						UIPanel separateListPanel = MakeSeparateListPanel(subitem, memberInfo);
-
-						string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
-						e = new UITextPanel<string>(name);
-						e.HAlign = 0.5f;
-						//e.Recalculate();
-						//elementHeight = (int)e.GetOuterDimensions().Height;
-						e.OnClick += (a, c) =>
-						{
-							Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-							Interface.modConfig.uIElement.Append(separateListPanel);
-							Interface.modConfig.configPanelStack.Push(separateListPanel);
-							//separateListPanel.SetScrollbar(Interface.modConfig.uIScrollbar);
-
-							//UIPanel panel = new UIPanel();
-							//panel.Width.Set(200, 0);
-							//panel.Height.Set(200, 0);
-							//panel.Left.Set(200, 0);
-							//panel.Top.Set(200, 0);
-							//Interface.modConfig.Append(panel);
-
-							//Interface.modConfig.subMenu.Enqueue(subitem);
-							//Interface.modConfig.DoMenuModeState();
-						};
-						//e = new UIText($"{memberInfo.Name} click for more ({type.Name}).");
-						//e.OnClick += (a, b) => { };
-					}
-					else
-					{
-						e = new ObjectElement(memberInfo, subitem);
-						//elementHeight = (int)(e as UIModConfigObjectItem).GetHeight();
-					}
-				}
+				e = new ObjectElement(memberInfo, item, (IList)array, index/*, ignoreSeparatePage: ignoreSeparatePage*/);
 			}
 			else if (type.IsValueType && !type.IsPrimitive)
 			{
@@ -659,15 +595,23 @@ namespace Terraria.ModLoader.Config.UI
 			return null;
 		}
 
-		private static UIPanel MakeSeparateListPanel(object subitem, PropertyFieldWrapper memberInfo)
+		internal static UIElement GetContainer(UIElement containee, int sortid)
 		{
+			UIElement container = new UISortableElement(sortid);
+			container.Width.Set(0f, 1f);
+			container.Height.Set(30f, 0f);
+			//container.HAlign = 1f;
+			container.Append(containee);
+			return container;
+		}
+
+		internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction) {
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 
 			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
-			if (bca != null)
-			{
+			if (bca != null) {
 				uIPanel.BackgroundColor = bca.color;
 			}
 
@@ -690,13 +634,15 @@ namespace Terraria.ModLoader.Config.UI
 			separateList.SetScrollbar(uIScrollbar);
 
 			string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
+			if (index != -1)
+				name = name + " #" + (index + 1);
 			Interface.modConfig.subPageStack.Push(name);
 			//UIPanel heading = new UIPanel();
 			//UIText headingText = new UIText(name);
 
 			name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
 
-			UITextPanel<string> heading = new UITextPanel<string>(name);
+			UITextPanel<string> heading = new UITextPanel<string>(name); // TODO: ToString as well. Separate label?
 			heading.HAlign = 0f;
 			//heading.Width.Set(-10, 0.5f);
 			//heading.Left.Set(60, 0f);
@@ -717,8 +663,7 @@ namespace Terraria.ModLoader.Config.UI
 			back.Top.Set(-6, 0);
 			//top += 40;
 			//var capturedCurrent = Interface.modConfig.currentConfigList;
-			back.OnClick += (a, c) =>
-			{
+			back.OnClick += (a, c) => {
 				Interface.modConfig.uIElement.RemoveChild(uIPanel);
 				Interface.modConfig.configPanelStack.Pop();
 				Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
@@ -738,28 +683,50 @@ namespace Terraria.ModLoader.Config.UI
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
-			int order = 0;
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
-			{
-				if (variable.isProperty && variable.Name == "Mode")
-					continue;
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
-					continue;
+			if (true) {
+				int order = 0;
+				bool hasToString = false;
+				if (array != null) {
+					var listType = memberInfo.Type.GetGenericArguments()[0];
+					hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
+				}
+				else {
+					hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
+				}
+				if (AbridgedTextDisplayFunction != null) {
+					var display = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper() { func = AbridgedTextDisplayFunction, }) { DrawPanel = true };
+					display.Recalculate();
+					var container = GetContainer(display, order++);
+					container.Height.Pixels = (int)display.GetOuterDimensions().Height;
+					separateList.Add(container);
+				}
+				//if (hasToString)
+				//	_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
+				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+						continue;
 
-				WrapIt(separateList, ref top, variable, subitem, order++);
+					WrapIt(separateList, ref top, variable, subitem, order++);
+				}
 			}
+			else {
+				//ignoreSeparatePage just to simplify ToString label--> had some issues.
+				//WrapIt(separateList, ref top, memberInfo, item, 1, ignoreSeparatePage: true);
+			}
+
 			Interface.modConfig.subPageStack.Pop();
 			return uIPanel;
 		}
 
-		internal static UIElement GetContainer(UIElement containee, int sortid)
-		{
-			UIElement container = new UISortableElement(sortid);
-			container.Width.Set(0f, 1f);
-			container.Height.Set(30f, 0f);
-			//container.HAlign = 1f;
-			container.Append(containee);
-			return container;
+		//private class UIDynamicText : UIText
+		//{
+
+		//}
+
+		internal static void SwitchToSubConfig(UIPanel separateListPanel) {
+			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
+			Interface.modConfig.uIElement.Append(separateListPanel);
+			Interface.modConfig.configPanelStack.Push(separateListPanel);
 		}
 
 		//public override void Recalculate()

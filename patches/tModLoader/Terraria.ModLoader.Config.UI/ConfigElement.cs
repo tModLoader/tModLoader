@@ -10,12 +10,15 @@ namespace Terraria.ModLoader.Config.UI
 {
 	public abstract class ConfigElement : UIElement
 	{
+		protected PropertyFieldWrapper memberInfo;
+		protected object item;
+		protected IList array;
+
 		private Color backgroundColor; // TODO inherit parent object color?
 		protected Func<string> _TextDisplayFunction;
 		protected Func<string> _TooltipFunction;
-		protected PropertyFieldWrapper memberInfo;
-		protected object item;
 		protected bool drawLabel = true;
+
 		protected LabelAttribute labelAttribute;
 		protected TooltipAttribute tooltipAttribute;
 		protected BackgroundColorAttribute backgroundColorAttribute;
@@ -28,6 +31,7 @@ namespace Terraria.ModLoader.Config.UI
 			Height.Set(30f, 0f);
 			this.memberInfo = memberInfo;
 			this.item = item;
+			this.array = array;
 			this.backgroundColor = UICommon.defaultUIBlue;
 			this._TextDisplayFunction = () => memberInfo.Name;
 			labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, item, array);
@@ -93,7 +97,6 @@ namespace Terraria.ModLoader.Config.UI
 			//	spriteBatch.Draw(texture, position, new Rectangle(0, 0, 2, texture.Height), color);
 			//	spriteBatch.Draw(texture, new Vector2(position.X + 2, position.Y), new Rectangle(2, 0, texture.Width - 4, texture.Height), color, 0f, Vector2.Zero, new Vector2((width - 4) / (texture.Width - 4), (height - 4) / (texture.Height - 4)), SpriteEffects.None, 0f);
 			//	spriteBatch.Draw(texture, new Vector2(position.X + width - 2, position.Y), new Rectangle(texture.Width - 2, 0, 2, texture.Height), color);
-
 
 			//width and height include border
 			spriteBatch.Draw(texture, position + new Vector2(0, 2), new Rectangle(0, 2, 1, 1), color, 0, Vector2.Zero, new Vector2(2, height - 4), SpriteEffects.None, 0f);

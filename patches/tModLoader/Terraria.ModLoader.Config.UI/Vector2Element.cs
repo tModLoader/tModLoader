@@ -111,7 +111,8 @@ namespace Terraria.ModLoader.Config.UI
 			position.Y += y * rectangle.Height;
 			var blipRectangle = new Rectangle((int)position.X - 2, (int)position.Y - 2, 4, 4);
 
-			spriteBatch.Draw(Main.magicPixel, blipRectangle, Color.Black);
+			if (x >= 0 && x <= 1 && y >= 0 && y <= 1)
+				spriteBatch.Draw(Main.magicPixel, blipRectangle, Color.Black);
 
 			if (IsMouseHovering && rectangle.Contains((Main.MouseScreen).ToPoint()) && Main.mouseLeft) {
 				float newPerc = (Main.mouseX - rectangle.X) / (float)rectangle.Width;

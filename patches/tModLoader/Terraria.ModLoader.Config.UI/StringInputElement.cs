@@ -24,25 +24,24 @@ namespace Terraria.ModLoader.Config.UI
 			}
 
 			UIPanel textBoxBackground = new UIPanel();
+			textBoxBackground.SetPadding(0);
 			UIFocusInputTextField uIInputTextField = new UIFocusInputTextField("Type here");
 			textBoxBackground.Top.Set(0f, 0f);
 			textBoxBackground.Left.Set(-190, 1f);
 			textBoxBackground.Width.Set(180, 0f);
 			textBoxBackground.Height.Set(30, 0f);
-			textBoxBackground.OnRightClick += (a, b) => uIInputTextField.SetText("");
-			textBoxBackground.OnClick += (a, b) => uIInputTextField.Click(a);
 			Append(textBoxBackground);
 
 			uIInputTextField.SetText(_GetValue());
-			uIInputTextField.Top.Set(6, 0f);
-			uIInputTextField.Left.Set(-180, 1f);
-			uIInputTextField.Width.Set(160, 0);
+			uIInputTextField.Top.Set(5, 0f);
+			uIInputTextField.Left.Set(10, 0f);
+			uIInputTextField.Width.Set(-20, 1f);
 			uIInputTextField.Height.Set(20, 0);
 			uIInputTextField.OnTextChange += (a, b) =>
 			{
 				_SetValue(uIInputTextField.currentString);
 			};
-			Append(uIInputTextField);
+			textBoxBackground.Append(uIInputTextField);
 		}
 
 		void DefaultSetValue(string text)

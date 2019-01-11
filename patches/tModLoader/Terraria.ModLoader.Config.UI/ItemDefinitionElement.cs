@@ -103,7 +103,7 @@ namespace Terraria.ModLoader.Config.UI
 			chooserPanel.Append(scrollbar);
 			//Append(chooserPanel);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
+			UIModConfigHoverImage upButton = new UIModConfigHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")), "Zoom in");
 			upButton.Recalculate();
 			upButton.Top.Set(-4f, 0f);
 			upButton.Left.Set(-24, 1f);
@@ -117,7 +117,7 @@ namespace Terraria.ModLoader.Config.UI
 			};
 			chooserPanel.Append(upButton);
 
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
+			UIModConfigHoverImage downButton = new UIModConfigHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")), "Zoom out");
 			downButton.Top.Set(8, 0f);
 			downButton.Left.Set(-24, 1f);
 			downButton.OnClick += (a, b) =>
