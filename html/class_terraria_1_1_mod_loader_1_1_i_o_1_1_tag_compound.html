@@ -198,8 +198,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adcd975500a22a06b82511ccec00b7800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f495453ae689b73237f1dc85d68fc2f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a3f495453ae689b73237f1dc85d68fc2f">RemoveTag</a> (string key)</td></tr>
 <tr class="separator:a3f495453ae689b73237f1dc85d68fc2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00abf9ec8a3d61f3d304421cc3f671f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a00abf9ec8a3d61f3d304421cc3f671f1">Set</a> (string key, object value)</td></tr>
-<tr class="separator:a00abf9ec8a3d61f3d304421cc3f671f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82aa5507cedd18a63053c653e5908681"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a82aa5507cedd18a63053c653e5908681">Set</a> (string key, object value, bool replace=false)</td></tr>
+<tr class="separator:a82aa5507cedd18a63053c653e5908681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c1094c41ca0000d3ebf63421cd4d941"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a0c1094c41ca0000d3ebf63421cd4d941">SetTag</a> (string key, object value)</td></tr>
 <tr class="separator:a0c1094c41ca0000d3ebf63421cd4d941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af590c6c7bdedea389a24b4b9ecf08d92"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af590c6c7bdedea389a24b4b9ecf08d92">ToString</a> ()</td></tr>
@@ -284,8 +284,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00113">113</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{ <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">dict</a>.Clear(); }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_html_aed7f2c801b5a4e3ac44d09279cf9747c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">Terraria.ModLoader.IO.TagCompound.dict</a></div><div class="ttdeci">Dictionary&lt; string, object &gt; dict</div><div class="ttdef"><b>Definition:</b> <a href="_tag_compound_8cs_source.html#l00016">TagCompound.cs:16</a></div></div>
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00118">118</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{ <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">dict</a>.Clear(); }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_html_aed7f2c801b5a4e3ac44d09279cf9747c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">Terraria.ModLoader.IO.TagCompound.dict</a></div><div class="ttdeci">Dictionary&lt; string, object &gt; dict</div><div class="ttdef"><b>Definition:</b> <a href="_tag_compound_8cs_source.html#l00016">TagCompound.cs:16</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -302,8 +302,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00091">91</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                              {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            var copy = <span class="keyword">new</span> TagCompound();</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">foreach</span> (var entry <span class="keywordflow">in</span> <span class="keyword">this</span>)</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                copy.Set(entry.Key, TagIO.Clone(entry.Value));</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> copy;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00096">96</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                              {</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            var copy = <span class="keyword">new</span> TagCompound();</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">foreach</span> (var entry <span class="keywordflow">in</span> <span class="keyword">this</span>)</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                copy.Set(entry.Key, TagIO.Clone(entry.Value));</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <span class="keywordflow">return</span> copy;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad91adb77a4aee9dea9f7eaaedb0d4864"></a>
@@ -386,8 +386,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00086">86</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                              {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">double</span>? ?? o as <span class="keywordtype">float</span>? ?? 0;</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00091">91</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                              {</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">double</span>? ?? o as <span class="keywordtype">float</span>? ?? 0;</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a07ec805232e4439f6d1dd6a94f2139b0"></a>
@@ -404,8 +404,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00076">76</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                        {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">int</span>? ?? o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00081">81</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                        {</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">int</span>? ?? o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a7d115b62ff57865ef4e8dc76a697c7c8"></a>
@@ -422,8 +422,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00081">81</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                          {</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">long</span>? ?? o as <span class="keywordtype">int</span>? ?? o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00086">86</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                          {</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">long</span>? ?? o as <span class="keywordtype">int</span>? ?? o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afffa513403fb42677d477f5b33019cf5"></a>
@@ -440,8 +440,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00071">71</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                            {</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00076">76</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                            {</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            var o = Get&lt;object&gt;(key);</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> o as <span class="keywordtype">short</span>? ?? o as byte? ?? 0;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a1290e4b50bd24212af9de7fbb5b3827f"></a>
@@ -828,7 +828,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a00abf9ec8a3d61f3d304421cc3f671f1"></a>
+<a class="anchor" id="a82aa5507cedd18a63053c653e5908681"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -842,7 +842,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>replace</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -855,7 +861,7 @@ Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00031">31</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
 
 <p>References <a class="el" href="_tag_i_o_8cs_source.html#l00182">Terraria.ModLoader.IO.TagIO.Serialize()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                                                  {</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">if</span> (value == null) {</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#adcd975500a22a06b82511ccec00b7800">Remove</a>(key);</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">dict</a>.Add(key, TagIO.Serialize(value));</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            }</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_i_o_exception.html">IOException</a> e) {</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                var valueInfo = <span class="stringliteral">&quot;value=&quot;</span> + value;</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">if</span> (value.GetType().ToString() != value.ToString())</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    valueInfo = <span class="stringliteral">&quot;type=&quot;</span> + value.GetType() + <span class="stringliteral">&quot;,&quot;</span> + valueInfo;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_i_o_exception.html">IOException</a>($<span class="stringliteral">&quot;NBT Serialization (key={key},{valueInfo})&quot;</span>, e);</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            }</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_html_aed7f2c801b5a4e3ac44d09279cf9747c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">Terraria.ModLoader.IO.TagCompound.dict</a></div><div class="ttdeci">Dictionary&lt; string, object &gt; dict</div><div class="ttdef"><b>Definition:</b> <a href="_tag_compound_8cs_source.html#l00016">TagCompound.cs:16</a></div></div>
+<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                                                                        {</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">if</span> (value == null) {</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#adcd975500a22a06b82511ccec00b7800">Remove</a>(key);</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordtype">object</span> serialized;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                serialized = TagIO.Serialize(value);</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            }</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_i_o_exception.html">IOException</a> e) {</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                var valueInfo = <span class="stringliteral">&quot;value=&quot;</span> + value;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span> (value.GetType().ToString() != value.ToString())</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    valueInfo = <span class="stringliteral">&quot;type=&quot;</span> + value.GetType() + <span class="stringliteral">&quot;,&quot;</span> + valueInfo;</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_i_o_exception.html">IOException</a>($<span class="stringliteral">&quot;NBT Serialization (key={key},{valueInfo})&quot;</span>, e);</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">if</span> (replace)</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">dict</a>[key] = serialized;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">else</span></div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">dict</a>.Add(key, serialized);</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_html_aed7f2c801b5a4e3ac44d09279cf9747c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aed7f2c801b5a4e3ac44d09279cf9747c">Terraria.ModLoader.IO.TagCompound.dict</a></div><div class="ttdeci">Dictionary&lt; string, object &gt; dict</div><div class="ttdef"><b>Definition:</b> <a href="_tag_compound_8cs_source.html#l00016">TagCompound.cs:16</a></div></div>
 <div class="ttc" id="class_i_o_exception_html"><div class="ttname"><a href="class_i_o_exception.html">IOException</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_html_adcd975500a22a06b82511ccec00b7800"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#adcd975500a22a06b82511ccec00b7800">Terraria.ModLoader.IO.TagCompound.Remove</a></div><div class="ttdeci">bool Remove(string key)</div></div>
 </div><!-- fragment -->
@@ -864,8 +870,8 @@ Private Attributes</h2></td></tr>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a00abf9ec8a3d61f3d304421cc3f671f1_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a00abf9ec8a3d61f3d304421cc3f671f1_cgraph" alt=""/></div>
-<map name="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a00abf9ec8a3d61f3d304421cc3f671f1_cgraph" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a00abf9ec8a3d61f3d304421cc3f671f1_cgraph">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a82aa5507cedd18a63053c653e5908681_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a82aa5507cedd18a63053c653e5908681_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a82aa5507cedd18a63053c653e5908681_cgraph" id="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound_a82aa5507cedd18a63053c653e5908681_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#aac8f664a8fac8710d509981fe2a1d6ba" title="Terraria.ModLoader.IO.Tag\lIO.Serialize" alt="" coords="232,5,411,46"/>
 </map>
 </div>
@@ -912,10 +918,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00099">99</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00104">104</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
 
 <p>References <a class="el" href="_tag_printer_8cs_source.html#l00104">Terraria.ModLoader.IO.TagPrinter.Print()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                          {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">return</span> TagPrinter.Print(<span class="keyword">this</span>);</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                          {</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> TagPrinter.Print(<span class="keyword">this</span>);</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
@@ -941,7 +947,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00114">114</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00119">119</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_item_i_o_8cs_source.html#l00053">Terraria.ModLoader.IO.ItemIO.Load()</a>.</p>
 
@@ -988,7 +994,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00103">103</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
+<p>Definition at line <a class="el" href="_tag_compound_8cs_source.html#l00108">108</a> of file <a class="el" href="_tag_compound_8cs_source.html">TagCompound.cs</a>.</p>
 
 </div>
 </div>
