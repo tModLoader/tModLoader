@@ -5,6 +5,8 @@ var searchData=
   ['backextra',['BackExtra',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5f09cad998384d4996e3be2382185536',1,'Terraria::ModLoader']]],
   ['backextraglow',['BackExtraGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a9f859b94f7cec1b90caccce652049c06',1,'Terraria::ModLoader']]],
   ['backglow',['BackGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a43b915321cec0be31d4fe4ca7cffda32',1,'Terraria::ModLoader']]],
+  ['backgroundcolorattribute',['BackgroundColorAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['backgroundcolorattribute',['BackgroundColorAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html#aade06b617c8f2aff897a20f21abb0c7f',1,'Terraria::ModLoader::Config::BackgroundColorAttribute']]],
   ['backgroundstyleloaders_2ecs',['BackgroundStyleLoaders.cs',['../_background_style_loaders_8cs.html',1,'']]],
   ['backgroundtextureloader',['BackgroundTextureLoader',['../class_terraria_1_1_mod_loader_1_1_background_texture_loader.html',1,'Terraria::ModLoader']]],
   ['backgroundtextureloader_2ecs',['BackgroundTextureLoader.cs',['../_background_texture_loader_8cs.html',1,'']]],

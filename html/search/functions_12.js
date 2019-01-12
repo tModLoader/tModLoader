@@ -12,6 +12,7 @@ var searchData=
   ['tobase64',['ToBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['tofile',['ToFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae427eeb2be582399fe629d359b36314d',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
+  ['tooltipattribute',['TooltipAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#ac2a735d6a148e2d1a3aac1e65cc2c262',1,'Terraria::ModLoader::Config::TooltipAttribute']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],
   ['toposort',['TopoSort',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#aa7e8ac5853d1618fe9992093b90b6b7c',1,'Terraria::ModLoader::TopoSort']]],
   ['toraw',['ToRaw',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a30b2585c00900aaed7dc23ac81cc8b6f',1,'Terraria::ModLoader::IO::ImageIO']]],

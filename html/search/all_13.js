@@ -1,8 +1,10 @@
 var searchData=
 [
+  ['config',['Config',['../namespace_terraria_1_1_mod_loader_1_1_config.html',1,'Terraria::ModLoader']]],
   ['exceptions',['Exceptions',['../namespace_terraria_1_1_mod_loader_1_1_exceptions.html',1,'Terraria::ModLoader']]],
   ['io',['IO',['../namespace_terraria_1_1_mod_loader_1_1_i_o.html',1,'Terraria::ModLoader']]],
   ['modloader',['ModLoader',['../namespace_terraria_1_1_mod_loader.html',1,'Terraria']]],
+  ['t',['t',['../class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html#ab419df1ed1e49bfac206c63a9bad2f5e',1,'Terraria::ModLoader::Config::CustomModConfigItemAttribute']]],
   ['tagcompound',['TagCompound',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html',1,'Terraria::ModLoader::IO']]],
   ['tagcompound_2ecs',['TagCompound.cs',['../_tag_compound_8cs.html',1,'']]],
   ['tagio',['TagIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html',1,'Terraria::ModLoader::IO']]],
@@ -12,7 +14,7 @@ var searchData=
   ['tagserializable',['TagSerializable',['../interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html',1,'Terraria::ModLoader::IO']]],
   ['tagserializable_2ecs',['TagSerializable.cs',['../_tag_serializable_8cs.html',1,'']]],
   ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a909b0d054a2e5c7b520c3146d58ce728',1,'Terraria::ModLoader::IO::TagSerializer']]],
-  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;']]],
+  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer']]],
   ['tagserializer_2ecs',['TagSerializer.cs',['../_tag_serializer_8cs.html',1,'']]],
   ['tagserializer_3c_20bool_2c_20byte_20_3e',['TagSerializer&lt; bool, byte &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['tagserializer_3c_20color_2c_20int_20_3e',['TagSerializer&lt; Color, int &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria::ModLoader::IO']]],
@@ -51,7 +53,9 @@ var searchData=
   ['tobase64',['ToBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a7c9b5f695fb59d3d21b0e38dcb040328',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['tofile',['ToFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae427eeb2be582399fe629d359b36314d',1,'Terraria::ModLoader::IO::TagIO']]],
   ['tofriendlystring',['ToFriendlyString',['../class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html#ac02f4ec543a08a039f6f46b1103dd008',1,'Terraria::ModLoader::ModSideExtensions']]],
-  ['tooltip',['Tooltip',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7',1,'Terraria::ModLoader::ModItem']]],
+  ['tooltip',['Tooltip',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7',1,'Terraria.ModLoader.ModItem.Tooltip()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a6ca5b581dc1c6d8eca060f5f18f9482c',1,'Terraria.ModLoader.Config.TooltipAttribute.Tooltip()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a0b1f71ee38337297fd4546dd92568310',1,'Terraria.ModLoader.Config.TooltipAttribute.tooltip()']]],
+  ['tooltipattribute',['TooltipAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['tooltipattribute',['TooltipAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#ac2a735d6a148e2d1a3aac1e65cc2c262',1,'Terraria::ModLoader::Config::TooltipAttribute']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html',1,'Terraria::ModLoader']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#adb1d300be37fc859dd86e9e8d044ed80',1,'Terraria::ModLoader::TooltipLine']]],
   ['tooltipline_2ecs',['TooltipLine.cs',['../_tooltip_line_8cs.html',1,'']]],
@@ -89,6 +93,7 @@ var searchData=
   ['txdatatype',['txDataType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a3bda8e7a332d021139160bac1000dcc2',1,'Terraria::ModLoader::ModNet']]],
   ['txmsgtype',['txMsgType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a92921858a896cc74668a40c8972b8ae3',1,'Terraria::ModLoader::ModNet']]],
   ['type',['Type',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#af506d060a25ec0e5101529788c65c530',1,'Terraria.ModLoader.EquipTexture.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4d3d217d6a87207370895ac84603efd5',1,'Terraria.ModLoader.ModBuff.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a5691c1b52fc3b7f9f6de2c8cf71fbe27',1,'Terraria.ModLoader.ModCommand.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_dust.html#a8c4d21a59e6d4fa71e9682a3479a01dd',1,'Terraria.ModLoader.ModDust.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a7dfae1ced2e211b0b9cce9ef57b6a228',1,'Terraria.ModLoader.ModMountData.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#af0eb64baeeba8a6f92dd2ad7a84fb240',1,'Terraria.ModLoader.ModPrefix.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a189b1352ed086ef81428385284fafc64',1,'Terraria.ModLoader.ModTile.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436',1,'Terraria.ModLoader.ModTileEntity.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#adfc54ec4ada24f4b3fb549b69cbc19b0',1,'Terraria.ModLoader.ModWall.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a1f4e85b702b3aeffc71f7ab3bc11f431',1,'Terraria.ModLoader.ModWaterStyle.Type()'],['../class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html#adcea85cd9eabd9f705e2ed7fe63c690f',1,'Terraria.ModLoader.ModWaterfallStyle.Type()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a849324c7dcec5eca5ad782f0bca19b68',1,'Terraria.ModLoader.IO.TagSerializer.Type()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a7fb0f0fe7741c799b95d674397c645ec',1,'Terraria.ModLoader.IO.TagSerializer.Type()']]],
+  ['typeconverter',['TypeConverter',['../class_type_converter.html',1,'']]],
   ['typeequals',['TypeEquals',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e',1,'Terraria::ModLoader::ModPlayer']]],
   ['typenamecache',['typeNameCache',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a6f0a3405fc0e483264d29f79b3c8bb53',1,'Terraria::ModLoader::IO::TagSerializer']]],
   ['typestring',['TypeString',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a33373cb4d0d2b5713beccfdcfd5f1fe3',1,'Terraria::ModLoader::IO::TagPrinter']]]

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['darkmummy',['DarkMummy',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ac33abc76db4fc12b65d16fdab03801c2',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['defaultvalue',['defaultValue',['../class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86',1,'Terraria::ModLoader::Config::DefaultListValueAttribute']]],
   ['defaultwatercritter',['DefaultWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ac1ee371f225f1f684c00e529d370c088',1,'Terraria::ModLoader::SpawnCondition']]],
   ['dependencies',['dependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a75c3e6abd05c040d8cf0965f81a84547',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['dependencydict',['dependencyDict',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a269c78e1b6e4d16501abda7b1bc1d9ef',1,'Terraria::ModLoader::TopoSort']]],

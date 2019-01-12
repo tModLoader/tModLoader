@@ -1,5 +1,6 @@
 var namespace_terraria_1_1_mod_loader =
 [
+    [ "Config", "namespace_terraria_1_1_mod_loader_1_1_config.html", "namespace_terraria_1_1_mod_loader_1_1_config" ],
     [ "Exceptions", "namespace_terraria_1_1_mod_loader_1_1_exceptions.html", "namespace_terraria_1_1_mod_loader_1_1_exceptions" ],
     [ "IO", "namespace_terraria_1_1_mod_loader_1_1_i_o.html", "namespace_terraria_1_1_mod_loader_1_1_i_o" ],
     [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", null ],

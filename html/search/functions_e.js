@@ -25,6 +25,7 @@ var searchData=
   ['openbossbag',['OpenBossBag',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6',1,'Terraria.ModLoader.ItemLoader.OpenBossBag()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c',1,'Terraria.ModLoader.ModItem.OpenBossBag()']]],
   ['opendoorid',['OpenDoorID',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9e16060039b7bb467e8e025ac42627d7',1,'Terraria::ModLoader::TileLoader']]],
   ['openvanillabag',['OpenVanillaBag',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f',1,'Terraria.ModLoader.GlobalItem.OpenVanillaBag()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332',1,'Terraria.ModLoader.ItemLoader.OpenVanillaBag()']]],
+  ['optionstringsattribute',['OptionStringsAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_option_strings_attribute.html#a253e572d3f0087652b9af381405f6c82',1,'Terraria::ModLoader::Config::OptionStringsAttribute']]],
   ['orig_5fforcetomainthread',['orig_ForceToMainThread',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#a7e75604775f65b55e4592fe500669f91',1,'Terraria::ModLoader::GLCallLocker']]],
   ['orig_5fgetencoding',['orig_GetEncoding',['../class_terraria_1_1_mod_loader_1_1_logging.html#a6af84d77d46c744da40f2cbac401f7ca',1,'Terraria::ModLoader::Logging']]],
   ['outerthird',['OuterThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8501b4122cdbb03edc3639f81be8bc22',1,'Terraria::ModLoader::SpawnCondition']]]

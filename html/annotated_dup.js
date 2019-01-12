@@ -14,5 +14,6 @@ var annotated_dup =
     [ "ISymbolWriter", "class_i_symbol_writer.html", null ],
     [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", null ],
     [ "SynchronizationContext", "class_synchronization_context.html", null ],
-    [ "TileEntity", "class_tile_entity.html", null ]
+    [ "TileEntity", "class_tile_entity.html", null ],
+    [ "TypeConverter", "class_type_converter.html", null ]
 ];

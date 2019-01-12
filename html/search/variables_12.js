@@ -6,6 +6,8 @@ var searchData=
   ['sb',['sb',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a2cd9a047c943b291d1f0dde908a63cfe',1,'Terraria::ModLoader::IO::TagPrinter']]],
   ['scale',['scale',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0d798e58bee16fffe307d17ebf89b7c4',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['serializers',['serializers',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a32e9ebd8e78a8cf48b7217700b4df093',1,'Terraria::ModLoader::IO::TagSerializer']]],
+  ['serializersettings',['serializerSettings',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#ac0003baa0dea9ca93c4deb761b725b8b',1,'Terraria::ModLoader::Config::ConfigManager']]],
+  ['servermodconfigpath',['ServerModConfigPath',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a0795131dd33fb7d52d569ee27cd51fda',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['set',['set',['../class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html#a4c3ee4543e5a5538162db9e7355e56e4',1,'Terraria::ModLoader::TopoSort::SortingException']]],
   ['shadow',['shadow',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a239fc65cac4eee399c8e26c0a2ce98b8',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['shieldacc',['ShieldAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#aa30b56c1ab7f1e63b5bde83f9dc8fd10',1,'Terraria::ModLoader::PlayerLayer']]],

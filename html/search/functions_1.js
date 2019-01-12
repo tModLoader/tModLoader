@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['backgroundcolorattribute',['BackgroundColorAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html#aade06b617c8f2aff897a20f21abb0c7f',1,'Terraria::ModLoader::Config::BackgroundColorAttribute']]],
   ['bigendianreader',['BigEndianReader',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html#a6411ffd184f7ea633ab182f639fb8887',1,'Terraria::ModLoader::IO::BigEndianReader']]],
   ['bigendianwriter',['BigEndianWriter',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a96c7e2a456848a92ed5980203558b85d',1,'Terraria::ModLoader::IO::BigEndianWriter']]],
   ['biomehaircolor',['BiomeHairColor',['../class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a39969f6b16e974379d8ff2d9d994d0b9',1,'Terraria::ModLoader::ModWaterStyle']]],

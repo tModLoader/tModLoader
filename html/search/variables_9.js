@@ -4,6 +4,7 @@ var searchData=
   ['ignorecontents',['ignoreContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f',1,'Terraria::ModLoader::Logging']]],
   ['ignoresources',['ignoreSources',['../class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308',1,'Terraria::ModLoader::Logging']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a177941f839c1b12fe3c27cd30d26eeae',1,'Terraria::ModLoader::ModContent']]],
+  ['increment',['increment',['../class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html#ad6e228163084eabb72870b97646cb874',1,'Terraria::ModLoader::Config::IncrementAttribute']]],
   ['indent',['indent',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#aee0f3a1ba8fc9b8a5d59fdb38b03602c',1,'Terraria::ModLoader::IO::TagPrinter']]],
   ['index',['index',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['indexes',['indexes',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb',1,'Terraria::ModLoader::PlayerHooks']]],
@@ -14,6 +15,7 @@ var searchData=
   ['ismodifier',['isModifier',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a744e18254de99adea41f1c75e6ae3bf6',1,'Terraria.ModLoader.DrawableTooltipLine.isModifier()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a5a998c87573cd4944c0966e7b3409588',1,'Terraria.ModLoader.TooltipLine.isModifier()']]],
   ['ismodifierbad',['isModifierBad',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a7b144755d23bcddbfc52210385710f37',1,'Terraria.ModLoader.DrawableTooltipLine.isModifierBad()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a7efdb3feea743c6755643e82c5e5ff3b',1,'Terraria.ModLoader.TooltipLine.isModifierBad()']]],
   ['isnetsynced',['IsNetSynced',['../class_terraria_1_1_mod_loader_1_1_mod.html#a85bbf627eb7bd116ac182667bc443770',1,'Terraria::ModLoader::Mod']]],
+  ['isunloaded',['IsUnloaded',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a39dff77bb9dd568ccce876c9b4423da6',1,'Terraria::ModLoader::Config::ItemDefinition']]],
   ['itemcount',['ItemCount',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364',1,'Terraria::ModLoader::ItemLoader']]],
   ['itemlocation',['itemLocation',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad6908bcfde8e7f3ad472d42f840d9427',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['items',['items',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a81185c5e3280ba8404b1d63c0d538a7f',1,'Terraria::ModLoader::RecipeFinder']]]
