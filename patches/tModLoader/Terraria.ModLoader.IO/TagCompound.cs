@@ -28,14 +28,15 @@ namespace Terraria.ModLoader.IO
 		}
 
 		//if value is null, calls RemoveTag, also performs type checking
-		public void Set(string key, object value) {
+		public void Set(string key, object value, bool replace = false) {
 			if (value == null) {
 				Remove(key);
 				return;
 			}
 
+			object serialized;
 			try {
-				dict.Add(key, TagIO.Serialize(value));
+				serialized = TagIO.Serialize(value);
 			}
 			catch (IOException e) {
 				var valueInfo = "value=" + value;
@@ -43,6 +44,10 @@ namespace Terraria.ModLoader.IO
 					valueInfo = "type=" + value.GetType() + "," + valueInfo;
 				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
 			}
+			if (replace)
+				dict[key] = serialized;
+			else
+				dict.Add(key, serialized);
 		}
 
 		public bool ContainsKey(string key) => dict.ContainsKey(key);
@@ -102,7 +107,7 @@ namespace Terraria.ModLoader.IO
 
 		public object this[string key] {
 			get { return Get<object>(key); }
-			set { Set(key, value); }
+			set { Set(key, value, true); }
 		}
 
 		//collection initialiser
