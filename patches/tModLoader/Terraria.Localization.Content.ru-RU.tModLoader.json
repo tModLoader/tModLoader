@@ -210,7 +210,11 @@
 
 		// Player and World Select
 		"MigratePlayersMessage": "В данный момент у вас нет персонажей.\nЕсли вы хотите перенести персонажей из оригинальной игры в tModLoader,\nто вам нужно скопировать файлы .plr и похоже наименованные папки из /Terraria/Players в /Terraria/ModLoader/Players.\nНажмите здесь чтобы открыть эти папки.\nНажмите Назад после того, как вы скопируете нужных персонажей.",
+		// "MigratePlayersText": "Click here to migrate players...",
+		// "MigratePlayersException": "There was a problem while trying to migrate Player files",
 		"MigrateWorldsMessage": "В данный момент у вас нет миров.\nЕсли вы хотите перенести миры из оригинальной игры в tModLoader,\nто вам нужно скопировать файлы с расширением .wld из /Terraria/Worlds в /Terraria/ModLoader/Worlds.\nНажмите здесь чтобы открыть эти папки.\nНажмите Назад после того, как вы скопируете нужные миры.",
+		// "MigrateWorldsText": "Click here to migrate worlds...",
+		// "MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "Следующие изменения произошли в вашем наборе модов с момента последней игры: ",
 		"Missing1Mod": "Отсутствует 1 мод.",
 		"MissingXMods": "Отсутствует(-ют) {0} мода(-ов).",

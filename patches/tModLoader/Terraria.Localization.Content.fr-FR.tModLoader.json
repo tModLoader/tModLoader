@@ -210,7 +210,11 @@
 
 		// Player and World Select
 		"MigratePlayersMessage": "Vous n'avez pas de personnages.\nSi vous voulez migrer vos personnages de Vanilla à tModLoader,\ncopiez les de /Terraria/Players à /Terraria/ModLoader/Players.\nCopiez le document .plr ainsi que le dossier de même nom.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les personnages voulus, retournez en arrière.",
+		// "MigratePlayersText": "Click here to migrate players...",
+		// "MigratePlayersException": "There was a problem while trying to migrate Player files",
 		"MigrateWorldsMessage": "Vous n'avez pas de mondes.\nSi vous voulez migrer vos mondes de Vanilla à tModLoader,\ncopiez les de /Terraria/Worlds à /Terraria/ModLoader/Worlds.\nCopiez le document .wld.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les mondes voulus, retournez en arrière.",
+		// "MigrateWorldsText": "Click here to migrate worlds...",
+		// "MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "Les Mods suivants sont différents depuis la dernière fois que vous avez joué: ",
 		"Missing1Mod": "1 Mod est manquant.",
 		"MissingXMods": "{0} Mods sont manquants.",

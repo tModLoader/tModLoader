@@ -221,7 +221,7 @@ namespace Terraria.ModLoader
 		internal static void SendMod(string modName, int toClient) {
 			var mod = ModLoader.GetMod(modName);
 			var path = mod.File.path;
-			var fs = new FileStream(path, FileMode.Open);
+			var fs = File.OpenRead(path);
 			{//send file length
 				var p = new ModPacket(MessageID.ModFile);
 				p.Write(mod.DisplayName);
@@ -247,14 +247,10 @@ namespace Terraria.ModLoader
 			try {
 				if (downloadingFile == null) {
 					Interface.downloadMod.SetDownloading(reader.ReadString());
-					Interface.downloadMod.SetCancel(() => {
-						downloadingFile?.Close();
-						downloadingMod = null;
-						Netplay.disconnect = true;
-						Main.menuMode = 0;
-					});
+					Interface.downloadMod.SetCancel(CancelDownload);
 					Main.menuMode = Interface.downloadModID;
 
+					ModLoader.GetMod(downloadingMod.name)?.File?.Close();
 					downloadingLength = reader.ReadInt64();
 					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 					return;
@@ -287,13 +283,28 @@ namespace Terraria.ModLoader
 			catch (Exception e) {
 				try {
 					downloadingFile?.Close();
+					File.Delete(downloadingMod.path);
 				}
 				catch { }
-
-				File.Delete(downloadingMod.path);
-				Logging.tML.Error(Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name), e);
+				
+				var msg = Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name);
+				Logging.tML.Error(msg, e);
+				Interface.errorMessage.Show(msg + e, 0);
+				
+				Netplay.disconnect = true;
 				downloadingMod = null;
 			}
+		}
+
+		private static void CancelDownload() {
+			try {
+				downloadingFile?.Close();
+				File.Delete(downloadingMod.path);
+			}
+			catch { }
+			downloadingMod = null;
+			Netplay.disconnect = true;
+			Main.menuMode = 0;
 		}
 
 		private static void OnModsDownloaded(bool needsReload) {

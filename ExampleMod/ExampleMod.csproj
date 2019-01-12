@@ -163,6 +163,7 @@
     <Compile Include="Items\Placeable\ExampleBar.cs" />
     <Compile Include="Items\Placeable\ExampleLamp.cs" />
     <Compile Include="Items\Placeable\ExampleOre.cs" />
+    <Compile Include="Items\Placeable\ExampleTrap.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />
     <Compile Include="Tiles\ExampleTorch.cs" />
+    <Compile Include="Tiles\ExampleTrap.cs" />
     <Compile Include="Tiles\ExampleTree.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
