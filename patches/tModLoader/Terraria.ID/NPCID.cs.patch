@@ -1,0 +1,17 @@
+--- src/Terraria\Terraria.ID\NPCID.cs
++++ src/tModLoader\Terraria.ID\NPCID.cs
+@@ -1,4 +_,5 @@
+ using Microsoft.Xna.Framework;
++using ReLogic.Reflection;
+ using System;
+ using System.Collections.Generic;
+ 
+@@ -1777,6 +_,7 @@
+ 		public const short DD2LightningBugT3 = 578;
+ 		public const short BartenderUnconscious = 579;
+ 		public const short Count = 580;
++		public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
+ 		private static readonly int[] NetIdMap = new int[]
+ 		{
+ 			81,
+

@@ -25,6 +25,8 @@ namespace ExampleMod
 
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyId;
+		internal static ExampleConfigClient exampleClientConfig;
+		internal static ExampleConfigServer exampleServerConfig;
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect ExampleEffect;
 		internal static ExampleMod Instance;

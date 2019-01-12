@@ -12,6 +12,12 @@ using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
+using Terraria.Audio;
+using Terraria.ModLoader.Audio;
+using Terraria.Localization;
+using log4net;
+using System.Linq;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader
 {
@@ -170,6 +176,42 @@ namespace Terraria.ModLoader
 
 		[Obsolete("Use LoadResource instead", true)]
 		public virtual void LoadResourceFromStream(string path, int len, BinaryReader reader) {
+		}
+
+		internal void AutoloadConfig()
+		{
+			if (Code == null)
+				return;
+
+			// TODO: Attribute to specify ordering of ModConfigs
+			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			{
+				if (type.IsAbstract)
+				{
+					continue;
+				}
+				if (type.IsSubclassOf(typeof(ModConfig)))
+				{
+					var mc = (ModConfig)Activator.CreateInstance(type);
+					// Skip loading UniquePerPlayer on Main.dedServ?
+					if (mc.Mode == MultiplayerSyncMode.ServerDictates && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerDictates ModConfigs. Server can, but won't be synced.
+						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerDictates but this Mods ModSide isn't Both or Server");
+					if (mc.Mode == MultiplayerSyncMode.UniquePerPlayer && Side == ModSide.Server) // Doesn't make sense. 
+						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is UniquePerPlayer but this Mods ModSide is Server");
+					mc.mod = this;
+					var name = type.Name;
+					if (mc.Autoload(ref name))
+						AddConfig(name, mc);
+				}
+			}
+		}
+
+		public void AddConfig(string name, ModConfig mc)
+		{
+			mc.Name = name;
+			mc.mod = this;
+
+			ConfigManager.Add(mc);
 		}
 
 		/// <summary>
@@ -1580,5 +1622,17 @@ namespace Terraria.ModLoader
 			p.netID = netID;
 			return p;
 		}
+
+		public ModConfig GetConfig(string name)
+		{
+			List<ModConfig> configs;
+			if (ConfigManager.Configs.TryGetValue(this, out configs))
+			{
+				return configs.Single(x => x.Name == name);
+			}
+			return null;
+		}
+
+		public T GetConfig<T>() where T : ModConfig => (T)GetConfig(typeof(T).Name);
 	}
 }

@@ -139,10 +139,33 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,182 @@
+@@ -368,6 +_,205 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ArrayElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\BooleanElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ColorElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ConfigElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\DictionaryElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\EnumElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\FloatElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\IntegerElements.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ItemDefinitionElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ListElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ObjectElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\PropertyFieldWrapper.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\RangeElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\SetElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\StringInputElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\StringOptionElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfig.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfigList.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\Vector2Element.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ItemDefinition.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ConfigAttributes.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ModConfig.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ConfigManager.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperItem.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\Jofairden.cs" />
@@ -367,12 +390,14 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,146 @@
+@@ -606,5 +_,149 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonDecrement.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonIncrement.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body_Shader.png" />
@@ -456,6 +481,7 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Head_Head.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonConfig.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonExclamation.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\LoaderBG.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\Loader.png" />
@@ -481,7 +507,6 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -514,4 +539,5 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
-+</Project>
+ </Project>
+

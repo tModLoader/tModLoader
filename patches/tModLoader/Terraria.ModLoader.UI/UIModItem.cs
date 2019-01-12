@@ -6,8 +6,12 @@ using System.Linq;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
-using Terraria.Localization;
 using Terraria.UI;
+using System.Linq;
+using Terraria.ID;
+using Terraria.Localization;
+using System.Reflection;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
 {
@@ -22,6 +26,8 @@ namespace Terraria.ModLoader.UI
 		private readonly UIAutoScaleTextTextPanel<string> toggleModEnabledButton;
 		private UIImage modIcon;
 		readonly UIHoverImage keyImage;
+		private readonly UITextPanel<string> configButton;
+		private bool configChangesRequireReload;
 		private bool loaded;
 
 		public UIModItem(LocalMod mod) {
@@ -83,6 +89,25 @@ namespace Terraria.ModLoader.UI
 			toggleModEnabledButton.PaddingBottom -= 2f;
 			toggleModEnabledButton.OnClick += ToggleEnabled;
 			Append(toggleModEnabledButton);
+			
+			Mod loadedMod = ModLoader.GetMod(mod.Name);
+			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) // and has config
+			{
+				configButton = new UITextPanel<string>("Config", 1f, false);
+				configButton.Width.Set(100f, 0f);
+				configButton.Height.Set(30f, 0f);
+				configButton.Left.Set(toggleModEnabledButton.Left.Pixels - configButton.Width.Pixels - 5f, 0f);
+				configButton.Top.Set(40f, 0f);
+				configButton.PaddingTop -= 2f;
+				configButton.PaddingBottom -= 2f;
+				configButton.WithFadedMouseOver();
+				configButton.OnClick += this.OpenConfig;
+				Append(configButton);
+				if (ConfigManager.ModNeedsReload(loadedMod))
+				{
+					configChangesRequireReload = true;
+				}
+			}
 
 			var modRefs = mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (modRefs.Length > 0 && !mod.Enabled) {
@@ -123,7 +148,6 @@ namespace Terraria.ModLoader.UI
 				};
 				Append(keyImage);
 			}
-			Mod loadedMod = ModLoader.GetMod(mod.Name);
 			if (loadedMod != null) {
 				loaded = true;
 				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
@@ -181,7 +205,7 @@ namespace Terraria.ModLoader.UI
 			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
 			if (mod.Enabled != loaded) {
 				drawPos += new Vector2(90f, 5f);
-				Utils.DrawBorderString(spriteBatch, Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
+				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
@@ -244,6 +268,13 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
 			Interface.modInfo.SetURL(mod.properties.homepage);
 			Main.menuMode = Interface.modInfoID;
+		}
+
+		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(SoundID.MenuOpen);
+			Interface.modConfig.SetMod(ModLoader.GetMod(mod.Name));
+			Main.menuMode = Interface.modConfigID;
 		}
 
 		public override int CompareTo(object obj) {

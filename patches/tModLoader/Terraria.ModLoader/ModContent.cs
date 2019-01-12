@@ -208,6 +208,7 @@ namespace Terraria.ModLoader
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(mod => {
+				mod.AutoloadConfig();
 				mod.loading = true;
 				mod.LoadResources();
 				mod.Autoload();
@@ -324,6 +325,7 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
+			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 
