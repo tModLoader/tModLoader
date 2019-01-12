@@ -227,7 +227,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_net_8cs_source.html#l00036">Terraria.ModLoader.ModNet.AllowVanillaClients</a>.</p>
+<p>References <a class="el" href="_mod_net_8cs_source.html#l00052">Terraria.ModLoader.ModNet.AllowVanillaClients</a>.</p>
 <div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                           {</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            categoryPrefixes = <span class="keyword">new</span> Dictionary&lt;PrefixCategory, IList&lt;ModPrefix&gt;&gt;();</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a> category <span class="keywordflow">in</span> Enum.GetValues(typeof(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a>))) {</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                categoryPrefixes[category] = <span class="keyword">new</span> List&lt;ModPrefix&gt;();</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            }</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a0e0175fdeec3ed0e547292cea0718e4f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">Terraria.ModLoader.PrefixCategory</a></div><div class="ttdeci">PrefixCategory</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00169">ModPrefix.cs:169</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -335,7 +335,7 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00126">126</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00413">Terraria.ModLoader.Mod.AutoloadPrefix()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                                                      {</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00049">Mod.cs:49</a></div></div>
+<div class="fragment"><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                                                      {</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00055">Mod.cs:55</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_prefix_html_a1f59660002baf9a3d01fccb884675e04"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a1f59660002baf9a3d01fccb884675e04">Terraria.ModLoader.ModPrefix.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_prefix_8cs_source.html#l00082">ModPrefix.cs:82</a></div></div>
 </div><!-- fragment -->
@@ -700,7 +700,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00124">124</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00368">Terraria.ModLoader.Mod.AddPrefix()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00410">Terraria.ModLoader.Mod.AddPrefix()</a>.</p>
 
 </div>
 </div>
@@ -769,7 +769,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00097">97</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00368">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00361">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00410">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00363">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>
@@ -793,7 +793,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00082">82</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00368">Terraria.ModLoader.Mod.AddPrefix()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00413">Terraria.ModLoader.Mod.AutoloadPrefix()</a>, and <a class="el" href="_item_i_o_8cs_source.html#l00018">Terraria.ModLoader.IO.ItemIO.Save()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00410">Terraria.ModLoader.Mod.AddPrefix()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00413">Terraria.ModLoader.Mod.AutoloadPrefix()</a>, and <a class="el" href="_item_i_o_8cs_source.html#l00018">Terraria.ModLoader.IO.ItemIO.Save()</a>.</p>
 
 </div>
 </div>
@@ -817,7 +817,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00087">87</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00368">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_item_i_o_8cs_source.html#l00018">Terraria.ModLoader.IO.ItemIO.Save()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00410">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_item_i_o_8cs_source.html#l00018">Terraria.ModLoader.IO.ItemIO.Save()</a>.</p>
 
 </div>
 </div>
@@ -841,7 +841,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_prefix_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_prefix_8cs_source.html">ModPrefix.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00368">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00361">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00410">Terraria.ModLoader.Mod.AddPrefix()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00363">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>.</p>
 
 </div>
 </div>

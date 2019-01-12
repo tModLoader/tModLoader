@@ -1,3 +1,4 @@
 <map id="Terraria.ModLoader.ModNet.OnModsDownloaded" name="Terraria.ModLoader.ModNet.OnModsDownloaded">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_packet.html#aaab37d44953c394019f0353398bebd9b" title="Sends all the information you&#39;ve written between client and server. If the toClient parameter is non&#45;..." alt="" coords="243,12,482,39"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="259,5,466,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_packet.html#aaab37d44953c394019f0353398bebd9b" title="Sends all the information you&#39;ve written between client and server. If the toClient parameter is non&#45;..." alt="" coords="243,71,482,97"/>
 </map>

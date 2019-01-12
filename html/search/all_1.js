@@ -11,6 +11,7 @@ var searchData=
   ['addbossheadtexture',['AddBossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a45e9a26a0b1883168c11b1199c6b542b',1,'Terraria::ModLoader::Mod']]],
   ['addbuff',['AddBuff',['../class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b',1,'Terraria::ModLoader::Mod']]],
   ['addcommand',['AddCommand',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5b184beb12e724540f0e0ca11fc2845f',1,'Terraria::ModLoader::Mod']]],
+  ['addconfig',['AddConfig',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad14287f83742a72083e3c6c9f298835f',1,'Terraria::ModLoader::Mod']]],
   ['adddependency',['AddDependency',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a24e61a2b53f289cf00c137bce61989d2',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['adddust',['AddDust',['../class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0',1,'Terraria::ModLoader::Mod']]],
   ['addentry',['AddEntry',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a07b9b152aa43dd0aeef78cad9f99b90b',1,'Terraria::ModLoader::TopoSort']]],

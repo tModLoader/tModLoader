@@ -24,6 +24,8 @@ var searchData=
   ['getcallername',['GetCallerName',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#af9b561c67bce6d2d89517863d011d65f',1,'Terraria::ModLoader::ErrorLogger']]],
   ['getchat',['GetChat',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6c91f67acd9fa2ca3438c641da5e0875',1,'Terraria.ModLoader.GlobalNPC.GetChat()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa63ef2a98431cd3ffe9f74e198141a28',1,'Terraria.ModLoader.ModNPC.GetChat()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a17a1702387104df6ae41300e4b7bfb7c',1,'Terraria.ModLoader.NPCLoader.GetChat()']]],
   ['getcompound',['GetCompound',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a753b1f987e208031a74ee33546612fb3',1,'Terraria::ModLoader::IO::TagCompound']]],
+  ['getconfig',['GetConfig',['../class_terraria_1_1_mod_loader_1_1_mod.html#ab3044a3e905fc9b9055b4e0dc4ed456d',1,'Terraria::ModLoader::Mod']]],
+  ['getconfig_3c_20t_20_3e',['GetConfig&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a320de525879045c215269b2ff604fe0f',1,'Terraria::ModLoader::Mod']]],
   ['getdebugheader',['GetDebugHeader',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a4c38d90043cced97275c40f8be4764d9',1,'Terraria::ModLoader::AssemblyManager::SymbolWriterProvider::HeaderCopyWriter']]],
   ['getdefault',['GetDefault',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a6554b7eb4b8939f411067b2676e35942',1,'Terraria::ModLoader::ModTranslation']]],
   ['getdouble',['GetDouble',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a8ea53a91bb4e9ff1a9558b4a76fc197d',1,'Terraria::ModLoader::IO::TagCompound']]],
