@@ -138,6 +138,7 @@ namespace Terraria.ModLoader
 
 				var ret = new MemoryStream();
 				asm.Write(ret, new WriterParameters { SymbolWriterProvider = SymbolWriterProvider.instance });
+				TerrariaCecilAssemblyResolver.instance.RegisterAssembly(asm);
 				return ret.ToArray();
 			}
 
@@ -326,6 +327,8 @@ namespace Terraria.ModLoader
 			private TerrariaCecilAssemblyResolver() {
 				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
 			}
+
+			public new void RegisterAssembly(AssemblyDefinition asm) => base.RegisterAssembly(asm);
 		}
 
 		internal class SymbolWriterProvider : ISymbolWriterProvider
