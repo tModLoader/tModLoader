@@ -439,7 +439,6 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				type = arrayType;
 			}
-			//int original = sliderIDInPage;
 			UIElement e = null;
 
 			// TODO: Other common structs? -- Rectangle, Point
@@ -452,7 +451,6 @@ namespace Terraria.ModLoader.Config.UI
 				{
 					object[] arguments = new object[] { memberInfo, item, 0, array, index };
 					object instance = ctor.Invoke(arguments);
-					//sliderIDInPage = (int)arguments[2];
 					e = instance as UIElement;
 					if (e != null)
 					{
@@ -580,12 +578,12 @@ namespace Terraria.ModLoader.Config.UI
 					list.Add(container);
 					float p = list.GetTotalHeight();
 				}
-				else
-				{
+				else { 
+					// Only Vector2 and Color use this I think, but modders can use the non-UIList approach for custom UI and layout.
 					container.Top.Pixels = top;
 					container.Width.Pixels = -20;
 					container.Left.Pixels = 20;
-					top += elementHeight + 4; // or use list and padding?
+					top += elementHeight + 4;
 					parent.Append(container);
 					parent.Height.Set(top, 0);
 				}

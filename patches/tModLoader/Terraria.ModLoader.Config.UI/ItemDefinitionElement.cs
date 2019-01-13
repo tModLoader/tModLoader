@@ -103,32 +103,25 @@ namespace Terraria.ModLoader.Config.UI
 			chooserPanel.Append(scrollbar);
 			//Append(chooserPanel);
 
-			UIModConfigHoverImage upButton = new UIModConfigHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")), "Zoom in");
-			upButton.Recalculate();
-			upButton.Top.Set(-4f, 0f);
-			upButton.Left.Set(-24, 1f);
-			upButton.OnClick += (a, b) =>
+			UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "Zoom in", "Zoom out");
+			upDownButton.Recalculate();
+			upDownButton.Top.Set(-4f, 0f);
+			upDownButton.Left.Set(-18, 1f);
+			upDownButton.OnClick += (a, b) =>
 			{
-				itemScale = Math.Min(1f, itemScale + 0.1f);
+				Rectangle r = b.GetDimensions().ToRectangle();
+				if (a.MousePosition.Y < r.Y + r.Height / 2) {
+					itemScale = Math.Min(1f, itemScale + 0.1f);
+				}
+				else {
+					itemScale = Math.Max(0.5f, itemScale - 0.1f);
+				}
 				foreach (var itemchoice in items)
 				{
 					itemchoice.SetScale(itemScale);
 				}
 			};
-			chooserPanel.Append(upButton);
-
-			UIModConfigHoverImage downButton = new UIModConfigHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")), "Zoom out");
-			downButton.Top.Set(8, 0f);
-			downButton.Left.Set(-24, 1f);
-			downButton.OnClick += (a, b) =>
-			{
-				itemScale = Math.Max(0.5f, itemScale - 0.1f);
-				foreach (var itemchoice in items)
-				{
-					itemchoice.SetScale(itemScale);
-				}
-			};
-			chooserPanel.Append(downButton);
+			chooserPanel.Append(upDownButton);
 		}
 
 		public override void Update(GameTime gameTime)

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
+using System.Reflection;
+using Terraria.Graphics;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -10,6 +12,19 @@ namespace Terraria.ModLoader.Config.UI
 {
 	public abstract class ConfigElement : UIElement
 	{
+		//static ConfigElement() {
+		//	if (Main.dedServ) return;
+		//}
+
+		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
+		protected Texture2D deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
+		protected Texture2D plusTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonPlus.png"));
+		//protected Texture2D upArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png"));
+		//protected Texture2D downArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png"));
+		protected Texture2D upDownTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonUpDown.png"));
+		protected Texture2D collapsedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonCollapsed.png"));
+		protected Texture2D expandedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonExpanded.png"));
+
 		protected PropertyFieldWrapper memberInfo;
 		protected object item;
 		protected IList array;
@@ -89,6 +104,11 @@ namespace Terraria.ModLoader.Config.UI
 				//}
 				//Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
+
+			//if (IsMouseHovering) {
+			//	Rectangle hitbox = GetInnerDimensions().ToRectangle();
+			//	Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Green * 0.6f);
+			//}
 		}
 
 		public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,25 +67,22 @@ namespace Terraria.ModLoader.Config.UI
 			uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(_GetValue().ToString());
 			textBoxBackground.Append(uIInputTextField);
 
-			UIImageButton upButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
-			upButton.Recalculate();
-			upButton.Top.Set(4f, 0f);
-			upButton.Left.Set(-30, 1f);
-			upButton.OnClick += (a, b) =>
+			UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "+" + increment, "-" + increment);
+			upDownButton.Recalculate();
+			upDownButton.Top.Set(4f, 0f);
+			upDownButton.Left.Set(-30, 1f);
+			upDownButton.OnClick += (a, b) =>
 			{
-				_SetValue(Math.Min(_GetValue() + increment, max));
+				Rectangle r = b.GetDimensions().ToRectangle();
+				if(a.MousePosition.Y < r.Y + r.Height / 2) {
+					_SetValue(Utils.Clamp(_GetValue() + increment, min, max));
+				}
+				else {
+					_SetValue(Utils.Clamp(_GetValue() - increment, min, max));
+				}
 				uIInputTextField.SetText(_GetValue().ToString());
 			};
-			textBoxBackground.Append(upButton);
-			UIImageButton downButton = new UIImageButton(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
-			downButton.Top.Set(16, 0f);
-			downButton.Left.Set(-30, 1f);
-			downButton.OnClick += (a, b) =>
-			{
-				_SetValue(Math.Max(_GetValue() - increment, min));
-				uIInputTextField.SetText(_GetValue().ToString());
-			};
-			textBoxBackground.Append(downButton);
+			textBoxBackground.Append(upDownButton);
 			Recalculate();
 		}
 
@@ -143,13 +141,6 @@ namespace Terraria.ModLoader.Config.UI
 			this._GetProportion = () => DefaultGetProportion();
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
-
-		//public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
-		//{
-		//	this._GetValue = _GetValue;
-		//	this._SetValue = _SetValue;
-		//	this._TextDisplayFunction = text;
-		//}
 
 		void DefaultSetValue(int value)
 		{
@@ -217,13 +208,6 @@ namespace Terraria.ModLoader.Config.UI
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
-		//public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
-		//{
-		//	this._GetValue = _GetValue;
-		//	this._SetValue = _SetValue;
-		//	this._TextDisplayFunction = text;
-		//}
-
 		void DefaultSetValue(uint value)
 		{
 			if (!memberInfo.CanWrite) return;
@@ -289,13 +273,6 @@ namespace Terraria.ModLoader.Config.UI
 			this._GetProportion = () => DefaultGetProportion();
 			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
-
-		//public UIModConfigIntItem(Func<int> _GetValue, Action<int> _SetValue, Func<string> text, int sliderIDInPage)
-		//{
-		//	this._GetValue = _GetValue;
-		//	this._SetValue = _SetValue;
-		//	this._TextDisplayFunction = text;
-		//}
 
 		void DefaultSetValue(byte value)
 		{

@@ -121,17 +121,17 @@ namespace Terraria.ModLoader.Config.UI
 			dataList.ListPadding = 5f;
 			Append(dataList);
 
-			string name = memberInfo.Name;
-			if (labelAttribute != null)
-			{
-				name = labelAttribute.Label;
-			}
+			//string name = memberInfo.Name;
+			//if (labelAttribute != null)
+			//{
+			//	name = labelAttribute.Label;
+			//}
 			if (array == null)
 			{
 				// drawLabel = false; TODO uncomment
 			}
 
-			initializeButton = new UIModConfigHoverImage(Graphics.TextureManager.Load("Images/UI/ButtonPlay"), "Initialize");
+			initializeButton = new UIModConfigHoverImage(playTexture, "Initialize");
 			initializeButton.Top.Pixels += 4;
 			initializeButton.Left.Pixels -= 3;
 			initializeButton.HAlign = 1f;
@@ -161,15 +161,15 @@ namespace Terraria.ModLoader.Config.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			expandButton = new UIModConfigHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")), "Expand");
-			expandButton.Top.Set(10, 0f); // 10, -25: 4, -52
+			expandButton = new UIModConfigHoverImage(expandedTexture, "Expand");
+			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-52, 1f);
 			expandButton.OnClick += (a, b) => {
 				expanded = !expanded;
 				pendingChanges = true;
 			};
 
-			deleteButton = new UIModConfigHoverImage(Graphics.TextureManager.Load("Images/UI/ButtonDelete"), "Clear");
+			deleteButton = new UIModConfigHoverImage(deleteTexture, "Clear");
 			deleteButton.Top.Set(4, 0f);
 			deleteButton.Left.Set(-25, 1f);
 			deleteButton.OnClick += (a, b) => { 
@@ -223,12 +223,12 @@ namespace Terraria.ModLoader.Config.UI
 					if (expanded) {
 						Append(dataList);
 						expandButton.HoverText = "Collapse";
-						expandButton.SetImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png")));
+						expandButton.SetImage(expandedTexture);
 					}
 					else {
 						RemoveChild(dataList);
 						expandButton.HoverText = "Expand";
-						expandButton.SetImage(Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png")));
+						expandButton.SetImage(collapsedTexture);
 					}
 				}
 				else {
@@ -277,13 +277,6 @@ namespace Terraria.ModLoader.Config.UI
 				Parent.Height.Set(h, 0f);
 			}
 		}
-
-		//protected override void DrawSelf(SpriteBatch spriteBatch)
-		//{
-		//	Rectangle hitbox = GetInnerDimensions().ToRectangle();
-		//	Main.spriteBatch.Draw(Main.magicPixel, hitbox, backgroundColor * 0.6f);
-		//	base.DrawSelf(spriteBatch);
-		//}
 	}
 
 	internal class UIModConfigHoverImage : UIImage
@@ -298,6 +291,30 @@ namespace Terraria.ModLoader.Config.UI
 			base.DrawSelf(spriteBatch);
 			if (IsMouseHovering) {
 				UIModConfig.tooltip = HoverText;
+			}
+		}
+	}
+
+	internal class UIModConfigHoverImageSplit : UIImage
+	{
+		internal string HoverTextUp;
+		internal string HoverTextDown;
+
+		public UIModConfigHoverImageSplit(Texture2D texture, string hoverTextUp, string hoverTextDown) : base(texture) {
+			HoverTextUp = hoverTextUp;
+			HoverTextDown = hoverTextDown;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+			Rectangle r = GetDimensions().ToRectangle();
+			if (IsMouseHovering) {
+				if (Main.mouseY < r.Y + r.Height / 2) {
+					UIModConfig.tooltip = HoverTextUp;
+				}
+				else {
+					UIModConfig.tooltip = HoverTextDown;
+				}
 			}
 		}
 	}

@@ -139,12 +139,13 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,205 @@
+@@ -368,6 +_,206 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ArrayElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\BooleanElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\CollectionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ColorElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ConfigElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\DictionaryElement.cs" />
@@ -390,14 +391,16 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,149 @@
+@@ -606,5 +_,151 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonDecrement.png" />
-+    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonIncrement.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonUpDown.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonCollapsed.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonExpanded.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonPlus.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body_Shader.png" />
@@ -507,6 +510,7 @@
 +  </ItemGroup>
 +  <ItemGroup />
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
 +  <PropertyGroup>
 +    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
 +
@@ -539,5 +543,4 @@
 +    <PreBuildEvent>
 +    </PreBuildEvent>
 +  </PropertyGroup>
- </Project>
-
++</Project>
