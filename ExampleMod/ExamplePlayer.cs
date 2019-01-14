@@ -592,7 +592,7 @@ namespace ExampleMod
 				return;
 			}
 			Player drawPlayer = drawInfo.drawPlayer;
-			Mod mod = ModLoader.GetMod("ExampleMod");
+			Mod mod = ModContent.GetMod("ExampleMod");
 			ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>();
 			if (modPlayer.reviveTime > 0) {
 				Texture2D texture = mod.GetTexture("NPCs/PuritySpirit/Revive");

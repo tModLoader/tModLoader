@@ -31,7 +31,7 @@
  		public const ulong WorldGeneratorVersion = 828928688129uL;
  		private const string versionStringBecauseTheyreTheSame = "v1.3.5.2";
  		public const int offLimitBorderTiles = 40;
-@@ -166,13 +_,16 @@
+@@ -166,13 +_,17 @@
  		public static Main instance;
  		public static string versionNumber = "v1.3.5.2";
  		public static string versionNumber2 = "v1.3.5.2";
@@ -39,6 +39,7 @@
 +		public static string SavePath =
 +			Program.LaunchParameters.ContainsKey("-tmlsavedirectory") ? Program.LaunchParameters["-tmlsavedirectory"] :
 +			Program.LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader") :
++			(ModLoader.ModLoader.beta_value > 0) ? Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoaderBeta") :
 +			Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
  		public static bool AnnouncementBoxDisabled = false;
  		public static int AnnouncementBoxRange = -1;

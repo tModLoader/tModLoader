@@ -5,7 +5,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleTree : ModTree
 	{
-		private Mod mod => ModLoader.GetMod("ExampleMod");
+		private Mod mod => ModContent.GetMod("ExampleMod");
 
 		public override int CreateDust() {
 			return mod.DustType("Sparkle");

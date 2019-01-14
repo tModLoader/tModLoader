@@ -18,7 +18,7 @@ namespace ExampleMod.Commands
 			=> "Find mod npc ids";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
-			var theMod = ModLoader.GetMod(args[0]);
+			var theMod = ModContent.GetMod(args[0]);
 			var type = theMod?.NPCType(args[1]) ?? 0;
 			caller.Reply(type.ToString(), Color.Yellow);
 		}
