@@ -310,6 +310,8 @@ Static Private Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="_mod_dust_8cs_source.html#l00057">57</a> of file <a class="el" href="_mod_dust_8cs_source.html">ModDust.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_dust_8cs_source.html#l00131">Terraria.ModLoader.ModDust.OnSpawn()</a>, and <a class="el" href="_mod_dust_8cs_source.html#l00018">Terraria.ModLoader.ModDust.updateType</a>.</p>
+
+<p>Referenced by <a class="el" href="_mod_content_8cs_source.html#l00182">Terraria.ModLoader.ModContent.MusicExists()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                {</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> type &gt;= DustID.Count &amp;&amp; type &lt; DustCount ? dusts[type - DustID.Count] : null;</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
@@ -319,6 +321,18 @@ Static Private Attributes</h2></td></tr>
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_cgraph" id="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#a4716ad247673f0cd67b5adbdbc6acf8f" title="Allows you to modify a dust&#39;s fields when it is created. " alt="" coords="248,5,443,46"/>
+</map>
+</div>
+</p>
+
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_dust_afe80059dd56be18b6eb1fd9ef940cb29_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_content.html#aacc7f6398f8596fbe86ea9a4776998d6" title="Returns whether or not a sound with the specified name exists. " alt="" coords="248,5,461,46"/>
 </map>
 </div>
 </p>
@@ -381,14 +395,15 @@ Static Private Attributes</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_mod_dust_8cs_source.html#l00057">Terraria.ModLoader.ModDust.GetDust()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                                               {</div><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_dust_a4716ad247673f0cd67b5adbdbc6acf8f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_dust_a4716ad247673f0cd67b5adbdbc6acf8f_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_dust_a4716ad247673f0cd67b5adbdbc6acf8f_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_dust_a4716ad247673f0cd67b5adbdbc6acf8f_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_dust.html#afe80059dd56be18b6eb1fd9ef940cb29" title="Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists..." alt="" coords="248,5,443,46"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_mod_content.html#aacc7f6398f8596fbe86ea9a4776998d6" title="Returns whether or not a sound with the specified name exists. " alt="" coords="491,5,704,46"/>
 </map>
 </div>
 </p>
@@ -422,11 +437,11 @@ Static Private Attributes</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_mod_internals_8cs_source.html#l00135">Terraria.ModLoader.Mod.LoadEffect()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                                          {</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_dust_ae40da1253a003b27d36c0e642ab35a1d_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_dust_ae40da1253a003b27d36c0e642ab35a1d_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_dust_ae40da1253a003b27d36c0e642ab35a1d_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_dust_ae40da1253a003b27d36c0e642ab35a1d_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203" title="Terraria.ModLoader.Mod.Load\lEffect" alt="" coords="248,5,443,46"/>
