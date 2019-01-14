@@ -22,14 +22,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
 		/// </summary>
-		public static int GetBackgroundSlot(string texture) {
-			if (backgrounds.ContainsKey(texture)) {
-				return backgrounds[texture];
-			}
-			else {
-				return -1;
-			}
-		}
+		public static int GetBackgroundSlot(string texture) => backgrounds.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
 			Array.Resize(ref Main.backgroundTexture, nextBackground);
