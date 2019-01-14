@@ -59,6 +59,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 			uIElement.Append(uIPanel);
 
+			// TODO: ModConfig Localization support
 			message = new UITextPanel<string>("Notification: ");
 			message.Width.Set(-80f, 1f);
 			message.Height.Set(20f, 0f);

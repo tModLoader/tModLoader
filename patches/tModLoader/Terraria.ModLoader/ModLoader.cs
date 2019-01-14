@@ -74,6 +74,7 @@ namespace Terraria.ModLoader
 			set => steamID64 = value;
 		}
 
+		internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static byte musicStreamMode;
@@ -298,6 +299,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
+			Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
@@ -310,11 +312,12 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("SteamID64", ref steamID64);
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
+			Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("MusicStreamMode", ref musicStreamMode);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
-			Main.Configuration.Get("AllowGreaterResolutions", ref removeForcedMinimumZoom);
+			Main.Configuration.Get("AllowGreaterResolutions", ref allowGreaterResolutions);
 		}
 
 		/// <summary>

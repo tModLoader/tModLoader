@@ -317,8 +317,11 @@ namespace Terraria.ModLoader.UI
 		public static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
+			if ((Interface.modBrowser.aModUpdated || Interface.modBrowser.aNewModDownloaded) && ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+				Main.menuMode = Interface.reloadModsID;
+			}
 			//TODO why do I have to read this, the only difference between these is Enable vs Reload
-			if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload) {
+			else if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload) {
 				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.ReloadModsReminder"));
 				Interface.advancedInfoMessage.SetGotoMenu(0);
 				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));

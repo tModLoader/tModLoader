@@ -100,6 +100,9 @@ namespace Terraria.ModLoader.UI
 				else {
 					Interface.modBrowser.aModUpdated = true;
 				}
+				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+					ModLoader.EnableMod(currentDownload.mod);
+				}
 
 				// Start next download
 				if (modsToDownload.Count != 0) {
