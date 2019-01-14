@@ -156,7 +156,7 @@ namespace ExampleMod
 
 		public override void PostSetupContent() {
 			// Showcases mod support with Boss Checklist without referencing the mod
-			Mod bossChecklist = ModContent.GetMod("BossChecklist");
+			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
 			if (bossChecklist != null) {
 				bossChecklist.Call("AddBossWithInfo", "Abomination", 5.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Pletera has been defeated");
 				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ItemType<Items.Placeable.ElementalPurge>() + "]");

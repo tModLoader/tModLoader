@@ -220,7 +220,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void BossHeadSlot(ref int index) {
 			if (captiveType > 0) {
-				index = ModContent.GetBossHeadSlot(ExampleMod.CaptiveElementHead + captiveType);
+				index = ModContent.GetModBossHeadSlot(ExampleMod.CaptiveElementHead + captiveType);
 			}
 		}
 

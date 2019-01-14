@@ -13,7 +13,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		private void UpdatePuritySpiritIndex() {
-			int puritySpiritType = ModContent.GetMod("ExampleMod").NPCType("PuritySpirit");
+			int puritySpiritType = ModLoader.GetMod("ExampleMod").NPCType("PuritySpirit");
 			if (puritySpiritIndex >= 0 && Main.npc[puritySpiritIndex].active && Main.npc[puritySpiritIndex].type == puritySpiritType) {
 				return;
 			}
