@@ -236,14 +236,14 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="slot"></param>
 		/// <returns></returns>
-		public static EquipTexture GetModEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
+		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
 
 		/// <summary>
 		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
 		/// </summary>
 		/// <param name="type">The type of the mount.</param>
 		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
-		public static ModMountData GetModMount(int type) => MountLoader.GetMount(type);
+		public static ModMountData GetModMountData(int type) => MountLoader.GetMount(type);
 
 		/// <summary>
 		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
