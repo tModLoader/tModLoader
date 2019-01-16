@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -162,7 +163,7 @@ namespace Terraria.ModLoader.UI
 				uIElement.Append(modHomepageButton);
 			}
 			if (localMod != null) {
-				uIElement.Append(deleteButton);
+				uIElement.AddOrRemoveChild(deleteButton, !ModLoader.Mods.Any(x=> x.Name == localMod.Name));
 				uIElement.Append(extractButton);
 			}
 			else {
