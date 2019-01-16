@@ -119,7 +119,7 @@ namespace Terraria.ModLoader.Config.UI
 					//if (config.Mode == MultiplayerSyncMode.UniquePerPlayer)
 					{
 						string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
-						UITextPanel<string> t = new UITextPanel<string>(item.Key.DisplayName + ": " + config.Name);
+						UITextPanel<string> t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
 						//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 						t.OnClick += (a, b) =>
 						{
