@@ -324,7 +324,7 @@ namespace Terraria.ModLoader.IO
 			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
 			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
 
-			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress))
+			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress, true))
 			using (var reader = new BinaryReader(deflateStream)) {
 				name = reader.ReadString();
 				version = new Version(reader.ReadString());
@@ -338,6 +338,11 @@ namespace Terraria.ModLoader.IO
 			var info = BuildProperties.ReadModFile(this);
 			info.buildVersion = tModLoaderVersion;
 			AddFile("Info", info.ToBytes());
+
+			// make a backup
+			fileStream.Seek(0, SeekOrigin.Begin);
+			using (var backupStream = File.OpenWrite(path+".bak"))
+				fileStream.CopyTo(backupStream);
 
 			// write to the new format (also updates the file offset table)
 			Save();
