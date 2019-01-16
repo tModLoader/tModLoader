@@ -131,7 +131,6 @@ namespace Terraria.ModLoader
 		}
 
 		internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
-		private static IList<string> moduleReferences;
 
 		private IBuildStatus status;
 		public ModCompile(IBuildStatus status) {
@@ -430,10 +429,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
-				ref byte[] dll, ref byte[] pdb) {
-			if (!LoadCompilationReferences())
+		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows, ref byte[] dll, ref byte[] pdb) {
+			if (!DeveloperModeReady(out string errorKey)) {
+				status.LogError(Language.GetTextValue(errorKey));
 				return;
+			}
 
 			bool generatePDB = mod.properties.includePDB && forWindows;
 			if (generatePDB && !windows) {
@@ -448,6 +448,10 @@ namespace Terraria.ModLoader
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences(tempDir, forWindows));
+
+			// add framework assemblies
+			refs.AddRange(Directory.GetFiles(referenceAssembliesPath, "*.dll", SearchOption.AllDirectories)
+				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
 
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
@@ -508,35 +512,24 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private bool LoadCompilationReferences() {
-			if (!DeveloperModeReady(out string errorKey)) {
-				status.LogError(Language.GetTextValue(errorKey));
-				return false;
-			}
+		private IEnumerable<string> GetTerrariaReferences(string tempDir, bool forWindows) {
+			var refs = new List<string>();
 
-			if (moduleReferences != null)
-				return true;
-
-			moduleReferences = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
-				.Select(refName => Assembly.Load(refName).Location)
-				.Where(loc => loc != "").ToList();
-
-			var referenceNames = new HashSet<string>(Directory.GetFiles(referenceAssembliesPath, "*.dll").Select(p => Path.GetFileName(p)));
-			for (int i = 0; i < moduleReferences.Count; i++) {
-				var refName = Path.GetFileName(moduleReferences[i]);
-				if (referenceNames.Contains(refName))
-					moduleReferences[i] = Path.Combine(referenceAssembliesPath, refName);
-			}
-			return true;
-		}
-
-		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool forWindows) {
-			var refs = new List<string>(moduleReferences);
+			var xnaLibs = forWindows ? new[] {
+					"Microsoft.Xna.Framework.dll",
+					"Microsoft.Xna.Framework.Game.dll",
+					"Microsoft.Xna.Framework.Graphics.dll",
+					"Microsoft.Xna.Framework.Xact.dll"
+				} : new[] { 
+					"FNA.dll" 
+				};
 
 			if (forWindows == windows) {
 				var terrariaModule = Assembly.GetExecutingAssembly();
 				refs.Add(terrariaModule.Location);
-
+				// find xna in the currently referenced assemblies (eg, via GAC)
+				refs.AddRange(terrariaModule.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaLibs.Contains(Path.GetFileName(loc))));
+				
 				//extract embedded resource dlls
 				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
 					var path = Path.Combine(tempDir, Path.GetFileName(resName));
@@ -547,24 +540,10 @@ namespace Terraria.ModLoader
 				}
 			}
 			else {
-				//remove framework references
-				refs.RemoveAll(path => {
-					var name = Path.GetFileName(path);
-					return name == "FNA.dll" || name.StartsWith("Microsoft.Xna.Framework");
-				});
-				//replace with ModCompile contents
 				var mainModulePath = Path.Combine(modCompileDir, forWindows ? "tModLoaderWindows.exe" : "tModLoaderMac.exe");
 				refs.Add(mainModulePath);
-
-				var frameworkNames = forWindows ? new[] {
-						"Microsoft.Xna.Framework.dll",
-						"Microsoft.Xna.Framework.Game.dll",
-						"Microsoft.Xna.Framework.Graphics.dll",
-						"Microsoft.Xna.Framework.Xact.dll"
-					} : new[] {
-						"FNA.dll"
-					};
-				refs.AddRange(frameworkNames.Select(f => Path.Combine(modCompileDir, f)));
+				// find xna in the ModCompile folder
+				refs.AddRange(xnaLibs.Select(f => Path.Combine(modCompileDir, f)));
 
 				//extract embedded resource dlls
 				var asm = AssemblyDefinition.ReadAssembly(mainModulePath);

@@ -14,8 +14,10 @@ namespace Terraria.ModLoader
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                 .WithOptimizationLevel(args.IncludeDebugInformation ? OptimizationLevel.Debug : OptimizationLevel.Release)
                 .WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default);
+            var parseOptions = new CSharpParseOptions(LanguageVersion.Latest);
+
             var refs = args.ReferencedAssemblies.Cast<string>().Select(s => MetadataReference.CreateFromFile(s));
-            var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), null, f, Encoding.UTF8));
+            var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
             var comp = CSharpCompilation.Create(name, src, refs, options);
 
             var res = comp.Emit(args.OutputAssembly, args.IncludeDebugInformation ? Path.ChangeExtension(args.OutputAssembly, "pdb") : null);
