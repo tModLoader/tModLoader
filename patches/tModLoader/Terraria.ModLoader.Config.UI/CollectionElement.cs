@@ -163,9 +163,11 @@ namespace Terraria.ModLoader.Config.UI
 				return;
 			pendingChanges = false;
 
-			RemoveChild(initializeButton);
-			RemoveChild(addButton);
-			RemoveChild(deleteButton);
+			if (CanAdd) {
+				RemoveChild(initializeButton);
+				RemoveChild(addButton);
+				RemoveChild(deleteButton);
+			}
 			RemoveChild(expandButton);
 			RemoveChild(upDownButton);
 			RemoveChild(dataListElement);
