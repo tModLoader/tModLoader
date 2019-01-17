@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void SetMessage(string text) {
-			messageBox.SetText(text);
+			message = text;
 		}
 
 		internal void SetGotoMenu(int gotoMenu, UIState state = null) {
@@ -148,7 +148,7 @@ namespace Terraria.ModLoader.UI
 
 		//TODO: use Show paradigm, and set all parameters together (see UIErrorMessage)
 		internal void SetMessage(string text) {
-			messageBox.SetText(text);
+			this.text = text;
 		}
 
 		internal void SetAltMessage(string text) {
