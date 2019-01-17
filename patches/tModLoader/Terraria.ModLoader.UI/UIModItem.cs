@@ -129,9 +129,7 @@ namespace Terraria.ModLoader.UI
 
 					Main.menuMode = Interface.modsMenuID;
 					if (missing.Any()) {
-						Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", String.Join(",", missing)));
-						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
-						Main.menuMode = Interface.infoMessageID;
+						Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", String.Join(",", missing)), Interface.modsMenuID);
 					}
 				};
 				Append(modReferenceIcon);

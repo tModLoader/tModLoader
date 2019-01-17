@@ -30,7 +30,7 @@
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);
-@@ -90,15 +_,86 @@
+@@ -90,15 +_,84 @@
  			{
  				base.Append(uIImageButton4);
  			}
@@ -85,9 +85,7 @@
 +					modListWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
 +					modListWarning.OnClick += (a, b) =>
 +					{
-+						Interface.infoMessage.SetMessage(fullWarning);
-+						Interface.infoMessage.SetGotoMenu(888, Main._characterSelectMenu);
-+						Main.menuMode = Interface.infoMessageID;
++						Interface.infoMessage.Show(fullWarning, 888, Main._characterSelectMenu);
 +					};
 +					Append(modListWarning);
 +				}

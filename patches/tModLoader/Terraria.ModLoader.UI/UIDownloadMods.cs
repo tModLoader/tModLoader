@@ -64,9 +64,7 @@ namespace Terraria.ModLoader.UI
 				Interface.modBrowser.ClearItems();
 				Main.menuMode = Interface.modBrowserID;
 				if (missingMods.Count > 0) {
-					Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)));
-					Interface.infoMessage.SetGotoMenu(Interface.modBrowserID);
-					Main.menuMode = Interface.infoMessageID;
+					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)), Interface.modBrowserID);
 				}
 			}
 		}
@@ -117,9 +115,7 @@ namespace Terraria.ModLoader.UI
 					Interface.modBrowser.ClearItems();
 					Main.menuMode = Interface.modBrowserID;
 					if (missingMods.Count > 0) {
-						Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)));
-						Interface.infoMessage.SetGotoMenu(Interface.modsMenuID);
-						Main.menuMode = Interface.infoMessageID;
+						Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)), Interface.modsMenuID);
 					}
 				}
 			}

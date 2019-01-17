@@ -26,7 +26,6 @@ namespace Terraria.ModLoader
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		internal const int advancedInfoMessageID = 10014;
 		internal const int enterPassphraseMenuID = 10015;
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
@@ -48,7 +47,6 @@ namespace Terraria.ModLoader
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
-		internal static UIAdvancedInfoMessage advancedInfoMessage = new UIAdvancedInfoMessage();
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
@@ -198,10 +196,6 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == infoMessageID) {
 				Main.MenuUI.SetState(infoMessage);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == advancedInfoMessageID) {
-				Main.MenuUI.SetState(advancedInfoMessage);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == enterPassphraseMenuID) {
