@@ -43,6 +43,7 @@ namespace ExampleMod
 		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
 		public ExampleMod() {
+			Instance = this;
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
 			//Properties = new ModProperties()
 			//{
@@ -54,7 +55,6 @@ namespace ExampleMod
 		}
 
 		public override void Load() {
-			Instance = this;
 			// Will show up in client.log under the ExampleMod name
 			Logger.InfoFormat("{0} example logging", Name);
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
