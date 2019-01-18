@@ -58,7 +58,7 @@
 		"UnloadError": "卸载时发生一个或多个错误,必须重新启动tModLoader以防止发生更多问题.",
 		"DefensiveUnload": "{0} 无法正常卸载.无论加载过程中是否有任何错误,模组作者都必须使用防御性编程(Defensive Programming)来确保卸载完成.",
 		"BuildError": "{0} 编译时发生错误",
-		"CompileError": "{0} 编译失败,出现 {1} 错误与 {2} 警告",
+		"CompileError": "{0} 编译失败,出现{1}个错误与{2}个警告",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
