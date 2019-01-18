@@ -152,16 +152,16 @@ namespace Terraria.ModLoader
 			var installedMods = ModOrganizer.FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
 
 			var requiredFromInstall = new HashSet<LocalMod>();
-			void Require(LocalMod mod) {
-				foreach (var dep in mod.properties.RefNames(true)) {
+			void Require(LocalMod mod, bool includeWeak) {
+				foreach (var dep in mod.properties.RefNames(includeWeak)) {
 					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
 					if (depMod != null && requiredFromInstall.Add(depMod))
-						Require(depMod);
+						Require(depMod, false);
 				}
 			}
 
 			foreach (var mod in modList)
-				Require(mod);
+				Require(mod, true);
 
 			modList.AddRange(requiredFromInstall);
 
@@ -405,15 +405,16 @@ namespace Terraria.ModLoader
 
 		private List<LocalMod> FindReferencedMods(BuildProperties properties) {
 			var mods = new Dictionary<string, LocalMod>();
-			FindReferencedMods(properties, mods);
+			FindReferencedMods(properties, mods, true);
 			return mods.Values.ToList();
 		}
 
-		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
+		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods, bool requireWeak) {
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
 					continue;
-
+				
+				bool isWeak = properties.weakReferences.Any(r => r.mod == refName);
 				LocalMod mod;
 				try {
 					var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
@@ -421,11 +422,15 @@ namespace Terraria.ModLoader
 					mod = new LocalMod(modFile);
 					modFile.Close();
 				}
+				catch (FileNotFoundException) when (isWeak && !requireWeak) { 
+					// don't recursively require weak deps, if the mod author needs to compile against them, they'll have them installed
+					continue;
+				}
 				catch (Exception ex) {
 					throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModReference", refName), ex);
 				}
 				mods[refName] = mod;
-				FindReferencedMods(mod.properties, mods);
+				FindReferencedMods(mod.properties, mods, false);
 			}
 		}
 
