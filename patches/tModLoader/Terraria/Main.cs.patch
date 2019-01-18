@@ -4362,26 +4362,28 @@
  								{
  									flag2 = false;
  								}
-@@ -56199,6 +_,19 @@
+@@ -56184,6 +_,8 @@
  
- 		private void DoDraw(GameTime gameTime)
+ 		protected override void Draw(GameTime gameTime)
  		{
 +			try
 +			{
-+				do_Draw(gameTime);
+ 			if (!this._isDrawingOrUpdating && Main.IsGraphicsDeviceAvailable)
+ 			{
+ 				this._isDrawingOrUpdating = true;
+@@ -56194,6 +_,12 @@
+ 					Main.OnPostDraw(gameTime);
+ 				}
+ 				this._isDrawingOrUpdating = false;
++			}
 +			}
 +			catch (Exception e)
 +			{
 +				Logging.Terraria.Error(e);
 +				throw;
-+			}
-+		}
-+
-+		protected void do_Draw(GameTime gameTime)
-+		{
- 			if (Main._drawCycleCounter == 0uL)
- 			{
- 				Main._tileFrameSeed = Utils.RandomNextSeed(Main._tileFrameSeed);
+ 			}
+ 		}
+ 
 @@ -56366,6 +_,7 @@
  							{
  								num6 = 0.5f;
