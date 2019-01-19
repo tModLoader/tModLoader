@@ -143,6 +143,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			ModCompile.UpdateReferencesFolder();
 			uIPanel.Append(uiLoader);
 			modList.Clear();
 			items.Clear();
