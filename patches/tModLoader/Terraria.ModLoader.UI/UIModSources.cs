@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(uIHeaderTextPanel);
 
 			var buttonBA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll")) {
-				Width = { Pixels = -10, Percent = 0.5f },
+				Width = { Pixels = -10, Percent = 1f / 3f },
 				Height = { Pixels = 40 },
 				VAlign = 1f,
 				Top = { Pixels = -65 }
@@ -74,14 +74,21 @@ namespace Terraria.ModLoader.UI
 
 			var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 			buttonBRA.CopyStyle(buttonBA);
-			buttonBRA.HAlign = 1f;
+			buttonBRA.HAlign = 0.5f;
 			buttonBRA.WithFadedMouseOver();
 			buttonBRA.OnClick += BuildAndReload;
 			uIElement.Append(buttonBRA);
 
+			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
+			buttonCreateMod.CopyStyle(buttonBA);
+			buttonCreateMod.HAlign = 1f;
+			buttonCreateMod.WithFadedMouseOver();
+			buttonCreateMod.OnClick += ButtonCreateMod_OnClick;
+			uIElement.Append(buttonCreateMod);
+
 			var buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
 			buttonB.CopyStyle(buttonBA);
-			buttonB.Width.Set(-10f, 1f / 3f);
+			//buttonB.Width.Set(-10f, 1f / 3f);
 			buttonB.Top.Pixels = -20;
 			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
@@ -101,6 +108,11 @@ namespace Terraria.ModLoader.UI
 			buttonMP.OnClick += ManagePublished;
 			uIElement.Append(buttonMP);
 			Append(uIElement);
+		}
+
+		private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(11);
+			Main.menuMode = Interface.createModID;
 		}
 
 		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {

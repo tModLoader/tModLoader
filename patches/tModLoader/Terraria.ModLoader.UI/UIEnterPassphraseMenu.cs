@@ -37,29 +37,29 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15);
 			uIElement.Append(uITextPanel);
 			
-			var button = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+			var buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 25 },
 				VAlign = 1f,
 				Top = { Pixels = -65 }
 			}.WithFadedMouseOver();
-			button.OnClick += BackClick;
-			uIElement.Append(button);
+			buttonBack.OnClick += BackClick;
+			uIElement.Append(buttonBack);
 
-			button = new UITextPanel<string>(Language.GetTextValue("UI.Submit"));
-			button.CopyStyle(button);
-			button.HAlign = 1f;
-			button.WithFadedMouseOver();
-			button.OnClick += OKClick;
-			uIElement.Append(button);
+			var buttonSubmit = new UITextPanel<string>(Language.GetTextValue("UI.Submit"));
+			buttonSubmit.CopyStyle(buttonBack);
+			buttonSubmit.HAlign = 1f;
+			buttonSubmit.WithFadedMouseOver();
+			buttonSubmit.OnClick += OKClick;
+			uIElement.Append(buttonSubmit);
 
-			button = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"));
-			button.CopyStyle(button);
-			button.Width.Percent = 1f;
-			button.Top.Pixels = -20;
-			button.WithFadedMouseOver();
-			button.OnClick += VisitRegisterWebpage;
-			uIElement.Append(button);
+			var buttonVisitWebsite = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"));
+			buttonVisitWebsite.CopyStyle(buttonBack);
+			buttonVisitWebsite.Width.Percent = 1f;
+			buttonVisitWebsite.Top.Pixels = -20;
+			buttonVisitWebsite.WithFadedMouseOver();
+			buttonVisitWebsite.OnClick += VisitRegisterWebpage;
+			uIElement.Append(buttonVisitWebsite);
 
 			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase")) {
 				HAlign = 0.5f,

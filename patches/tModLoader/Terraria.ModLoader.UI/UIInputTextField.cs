@@ -110,7 +110,7 @@ namespace Terraria.ModLoader.UI
 				if (!newString.Equals(currentString))
 				{
 					currentString = newString;
-					OnTextChange(this, new EventArgs());
+					OnTextChange?.Invoke(this, new EventArgs());
 				}
 				else
 				{
