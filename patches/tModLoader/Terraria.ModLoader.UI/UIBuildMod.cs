@@ -49,15 +49,18 @@ namespace Terraria.ModLoader.UI
 
 		public void LogCompileErrors(string dllName, CompilerErrorCollection errors, string hint) {
 			int warnings = 0;
-			CompilerError displayError = null;
+			string displayError = null;
 			foreach (CompilerError error in errors) {
-				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, error, null);
+				string errorFileName = error.FileName;
+				string errorString = $"{(errorFileName==null ? null : $"{errorFileName}({error.Line},{error.Column}) : ")}error {error.ErrorNumber}: {error.ErrorText}";
+
+				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, errorString, null);
 				if (error.IsWarning)
 					warnings++;
 				else if (displayError == null)
-					displayError = error;
+					displayError = errorString;
 			}
-			var msg = Language.GetTextValue("tModLoader.CompileError", dllName, errors.Count - warnings, warnings);
+			string msg = Language.GetTextValue("tModLoader.CompileError", dllName, errors.Count - warnings, warnings);
 			if (hint != null)
 				msg += "\n" + hint;
 
