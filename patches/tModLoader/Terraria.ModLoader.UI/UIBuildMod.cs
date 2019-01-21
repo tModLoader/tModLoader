@@ -51,6 +51,9 @@ namespace Terraria.ModLoader.UI
 			int warnings = 0;
 			CompilerError displayError = null;
 			foreach (CompilerError error in errors) {
+				if (error.FileName == null)
+					error.FileName = "";
+				
 				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, error, null);
 				if (error.IsWarning)
 					warnings++;
