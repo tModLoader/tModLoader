@@ -161,11 +161,18 @@ namespace Terraria.ModLoader
 			var errorLog = new StringBuilder();
 
 			foreach (var mod in mods)
-				foreach (var dep in mod.properties.Refs(true))
-					if (nameMap.TryGetValue(dep.mod, out var inst) && inst.properties.version < dep.target) {
+				foreach (var dep in mod.properties.Refs(true)) {
+					if (dep.target == null || !nameMap.TryGetValue(dep.mod, out var inst))
+						continue;
+					
+					if (inst.properties.version < dep.target) {
 						errored.Add(mod);
 						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
+					} else if (inst.properties.version.Major != dep.target.Major) {
+						errored.Add(mod);
+						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.properties.version));
 					}
+				}
 
 			if (errored.Count > 0)
 				throw new ModSortingException(errored, errorLog.ToString());

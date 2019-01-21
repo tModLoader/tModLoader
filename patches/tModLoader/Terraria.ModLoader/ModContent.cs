@@ -187,6 +187,101 @@ namespace Terraria.ModLoader
 			return mod != null && mod.MusicExists(subName);
 		}
 
+		/// <summary>
+		/// Gets the ModNPC instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the npc</param>
+		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
+		public static ModNPC GetModNPC(int type) => NPCLoader.GetNPC(type);
+
+		/// <summary>
+		/// Gets the index of the boss head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture"></param>
+		/// <returns></returns>
+		public static int GetModBossHeadSlot(string texture) => NPCHeadLoader.GetBossHeadSlot(texture);
+
+		/// <summary>
+		/// Gets the index of the head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture">Relative texture path</param>
+		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
+		public static int GetModHeadSlot(string texture) => NPCHeadLoader.GetHeadSlot(texture);
+
+		/// <summary>
+		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
+		/// </summary>
+		public static ModItem GetModItem(int type) => ItemLoader.GetItem(type);
+
+		/// <summary>
+		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
+		/// </summary>
+		public static ModDust GetModDust(int type) => ModDust.GetDust(type);
+
+		/// <summary>
+		/// Gets the ModProjectile instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the projectile</param>
+		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
+		public static ModProjectile GetModProjectile(int type) => ProjectileLoader.GetProjectile(type);
+
+		/// <summary>
+		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
+		/// </summary>
+		public static ModBuff GetModBuff(int type) => BuffLoader.GetBuff(type);
+
+		/// <summary>
+		/// Gets the equipment texture for the specified equipment type and ID.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="slot"></param>
+		/// <returns></returns>
+		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
+
+		/// <summary>
+		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
+		/// </summary>
+		/// <param name="type">The type of the mount.</param>
+		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
+		public static ModMountData GetModMountData(int type) => MountLoader.GetMount(type);
+
+		/// <summary>
+		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
+		/// </summary>
+		/// <param name="type">The type of the ModTile</param>
+		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
+		public static ModTile GetModTile(int type) => TileLoader.GetTile(type);
+
+		/// <summary>
+		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
+		/// </summary>
+		public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
+
+		/// <summary>
+		/// Returns the ModWaterStyle with the given ID.
+		/// </summary>
+		public static ModWaterStyle GetModWaterStyle(int style) => WaterStyleLoader.GetWaterStyle(style);
+
+		/// <summary>
+		/// Returns the ModWaterfallStyle with the given ID.
+		/// </summary>
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => WaterfallStyleLoader.GetWaterfallStyle(style);
+
+		/// <summary>
+		/// Returns the slot/ID of the background texture with the given name.
+		/// </summary>
+		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
+
+		/// <summary>
+		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// </summary>
+		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => SurfaceBgStyleLoader.GetSurfaceBgStyle(style);
+
+		/// <summary>
+		/// Returns the ModUgBgStyle object with the given ID.
+		/// </summary>
+		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
+
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
 			if (dict.ContainsKey(value.Key)) {
 				dict[value.Key].SetValue(value.Value);
@@ -208,6 +303,7 @@ namespace Terraria.ModLoader
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(mod => {
+				mod.AutoloadConfig();
 				mod.loading = true;
 				mod.LoadResources();
 				mod.Autoload();
@@ -286,7 +382,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void Unload() {
+		internal static void Unload() {
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -324,6 +420,7 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
+			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 

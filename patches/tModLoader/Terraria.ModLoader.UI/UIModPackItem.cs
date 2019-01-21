@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.UI
 
 			var viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList")) {
 				Width = { Pixels = 100 },
-				Height = { Pixels = 40 },
+				Height = { Pixels = 36 },
 				Left = { Pixels = 407 },
 				Top = { Pixels = 40 }
 			}.WithFadedMouseOver();
@@ -206,9 +206,7 @@ namespace Terraria.ModLoader.UI
 						missing += modListItem.mods[i] + "\n";
 					}
 				}
-				Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsMissing", missing));
-				Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.modPacksMenuID);
 			}
 		}
 
@@ -245,9 +243,7 @@ namespace Terraria.ModLoader.UI
 						missing += modListItem.mods[i] + "\n";
 					}
 				}
-				Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsMissing", missing));
-				Interface.infoMessage.SetGotoMenu(Interface.reloadModsID);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.reloadModsID);
 			}
 		}
 
@@ -259,9 +255,7 @@ namespace Terraria.ModLoader.UI
 				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? Language.GetTextValue("tModLoader.ModPackDisabled") : "") + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
-			Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsContained", message));
-			Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
-			Main.menuMode = Interface.infoMessageID;
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsContained", message), Interface.modPacksMenuID);
 		}
 
 		public override int CompareTo(object obj) {

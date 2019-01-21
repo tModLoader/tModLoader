@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Default
 		private static Texture2D mysteryTileTexture;
 		internal static ModLoaderMod Instance;
 
-		// If new types arrise (probably not), change the format:
+		// If new types arise (probably not), change the format:
 		// head, body, legs, wings, <new>
 		private static PatreonItem[][] PatronSets;
 		private static DeveloperItem[][] DeveloperSets;

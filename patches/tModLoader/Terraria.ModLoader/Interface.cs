@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -24,7 +26,6 @@ namespace Terraria.ModLoader
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		internal const int advancedInfoMessageID = 10014;
 		internal const int enterPassphraseMenuID = 10015;
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
@@ -34,6 +35,8 @@ namespace Terraria.ModLoader
 		internal const int uploadModID = 10021;
 		internal const int developerModeHelpID = 10022;
 		internal const int downloadFileID = 10023;
+		internal const int modConfigID = 10024;
+		internal const int createModID = 10025;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -45,7 +48,6 @@ namespace Terraria.ModLoader
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
-		internal static UIAdvancedInfoMessage advancedInfoMessage = new UIAdvancedInfoMessage();
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
@@ -54,6 +56,9 @@ namespace Terraria.ModLoader
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		internal static UIDownloadFile downloadFile = new UIDownloadFile();
+		internal static UIModConfig modConfig = new UIModConfig();
+		internal static UIModConfigList modConfigList = new UIModConfigList();
+		internal static UICreateMod createMod = new UICreateMod();
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
@@ -134,6 +139,10 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(modSources);
 				Main.menuMode = 888;
 			}
+			else if (Main.menuMode == createModID) {
+				Main.MenuUI.SetState(createMod);
+				Main.menuMode = 888;
+			}
 			else if (Main.menuMode == developerModeHelpID) {
 				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
@@ -195,10 +204,6 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(infoMessage);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == advancedInfoMessageID) {
-				Main.MenuUI.SetState(advancedInfoMessage);
-				Main.menuMode = 888;
-			}
 			else if (Main.menuMode == enterPassphraseMenuID) {
 				Main.MenuUI.SetState(enterPassphraseMenu);
 				Main.menuMode = 888;
@@ -222,7 +227,7 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 9;
+				numButtons = 10;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -239,6 +244,13 @@ namespace Terraria.ModLoader
 				if (selectedMenu == buttonIndex) {
 					Main.PlaySound(SoundID.MenuTick);
 					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
+				if (selectedMenu == buttonIndex) {
+					Main.PlaySound(SoundID.MenuTick);
+					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
 				buttonIndex++;
@@ -284,6 +296,11 @@ namespace Terraria.ModLoader
 					Main.menuMode = 11;
 					Main.PlaySound(11, -1, -1, 1);
 				}
+			}
+			else if (Main.menuMode == modConfigID)
+			{
+				Main.MenuUI.SetState(modConfig);
+				Main.menuMode = 888;
 			}
 		}
 

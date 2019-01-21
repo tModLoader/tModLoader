@@ -31,12 +31,15 @@
  		public const ulong WorldGeneratorVersion = 828928688129uL;
  		private const string versionStringBecauseTheyreTheSame = "v1.3.5.2";
  		public const int offLimitBorderTiles = 40;
-@@ -166,13 +_,13 @@
+@@ -166,13 +_,16 @@
  		public static Main instance;
  		public static string versionNumber = "v1.3.5.2";
  		public static string versionNumber2 = "v1.3.5.2";
 -		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Current.GetStoragePath("Terraria");
-+		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Current.GetStoragePath("Terraria/ModLoader");
++		public static string SavePath =
++			Program.LaunchParameters.ContainsKey("-tmlsavedirectory") ? Program.LaunchParameters["-tmlsavedirectory"] :
++			Program.LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader") :
++			Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
  		public static bool AnnouncementBoxDisabled = false;
  		public static int AnnouncementBoxRange = -1;
  		public static string AutogenSeedName;
@@ -4395,26 +4398,28 @@
  								{
  									flag2 = false;
  								}
-@@ -56199,6 +_,19 @@
+@@ -56184,6 +_,8 @@
  
- 		private void DoDraw(GameTime gameTime)
+ 		protected override void Draw(GameTime gameTime)
  		{
 +			try
 +			{
-+				do_Draw(gameTime);
+ 			if (!this._isDrawingOrUpdating && Main.IsGraphicsDeviceAvailable)
+ 			{
+ 				this._isDrawingOrUpdating = true;
+@@ -56194,6 +_,12 @@
+ 					Main.OnPostDraw(gameTime);
+ 				}
+ 				this._isDrawingOrUpdating = false;
++			}
 +			}
 +			catch (Exception e)
 +			{
 +				Logging.Terraria.Error(e);
 +				throw;
-+			}
-+		}
-+
-+		protected void do_Draw(GameTime gameTime)
-+		{
- 			if (Main._drawCycleCounter == 0uL)
- 			{
- 				Main._tileFrameSeed = Utils.RandomNextSeed(Main._tileFrameSeed);
+ 			}
+ 		}
+ 
 @@ -56366,6 +_,7 @@
  							{
  								num6 = 0.5f;

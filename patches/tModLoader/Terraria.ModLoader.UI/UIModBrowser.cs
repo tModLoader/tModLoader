@@ -317,20 +317,19 @@ namespace Terraria.ModLoader.UI
 		public static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
+			if ((Interface.modBrowser.aModUpdated || Interface.modBrowser.aNewModDownloaded) && ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+				Main.menuMode = Interface.reloadModsID;
+			}
 			//TODO why do I have to read this, the only difference between these is Enable vs Reload
-			if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload) {
-				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.ReloadModsReminder"));
-				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
-				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
-				Main.menuMode = Interface.advancedInfoMessageID;
+			else if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ReloadModsReminder"),
+					0, null, Language.GetTextValue("tModLoader.DontShowAgain"),
+					() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
 			}
 			else if (Interface.modBrowser.aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable) {
-				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.EnableModsReminder"));
-				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
-				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
-				Main.menuMode = Interface.advancedInfoMessageID;
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.EnableModsReminder"),
+					0, null, Language.GetTextValue("tModLoader.DontShowAgain"),
+					() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
 			}
 			Interface.modBrowser.aModUpdated = false;
 			Interface.modBrowser.aNewModDownloaded = false;

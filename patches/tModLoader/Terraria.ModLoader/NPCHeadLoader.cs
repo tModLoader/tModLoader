@@ -32,8 +32,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveBossHeadSlot(string texture) {
-			if (bossHeads.ContainsKey(texture)) {
-				return bossHeads[texture];
+			if (bossHeads.TryGetValue(texture, out int existing)) {
+				return existing;
 			}
 			int reserve = nextBossHead;
 			nextBossHead++;
@@ -45,28 +45,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="texture">Relative texture path</param>
 		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
-		public static int GetHeadSlot(string texture) {
-			if (heads.ContainsKey(texture)) {
-				return heads[texture];
-			}
-			else {
-				return -1;
-			}
-		}
+		public static int GetHeadSlot(string texture) => heads.TryGetValue(texture, out int slot) ? slot : -1;
 
 		/// <summary>
 		/// Gets the index of the boss head texture corresponding to the given texture path.
 		/// </summary>
 		/// <param name="texture"></param>
 		/// <returns></returns>
-		public static int GetBossHeadSlot(string texture) {
-			if (bossHeads.ContainsKey(texture)) {
-				return bossHeads[texture];
-			}
-			else {
-				return -1;
-			}
-		}
+		public static int GetBossHeadSlot(string texture) => bossHeads.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
 			Array.Resize(ref Main.npcHeadTexture, nextHead);
@@ -92,18 +78,9 @@ namespace Terraria.ModLoader
 			npcToBossHead.Clear();
 		}
 		//in Terraria.NPC.TypeToNum replace final return with this
-		internal static int GetNPCHeadSlot(int type) {
-			if (npcToHead.ContainsKey(type)) {
-				return npcToHead[type];
-			}
-			return -1;
-		}
+		internal static int GetNPCHeadSlot(int type) => npcToHead.TryGetValue(type, out int slot) ? slot : -1;
+
 		//in Terraria.NPC.NumToType replace final return with this
-		internal static int GetNPCFromHeadSlot(int slot) {
-			if (headToNPC.ContainsKey(slot)) {
-				return headToNPC[slot];
-			}
-			return -1;
-		}
+		internal static int GetNPCFromHeadSlot(int slot) => headToNPC.TryGetValue(slot, out int type) ? slot : -1;
 	}
 }

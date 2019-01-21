@@ -25,6 +25,8 @@ namespace ExampleMod
 
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyId;
+		internal static ExampleConfigClient exampleClientConfig;
+		internal static ExampleConfigServer exampleServerConfig;
 		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static Effect ExampleEffect;
 		internal static ExampleMod Instance;
@@ -41,6 +43,7 @@ namespace ExampleMod
 		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
 		public ExampleMod() {
+			Instance = this;
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
 			//Properties = new ModProperties()
 			//{
@@ -52,7 +55,6 @@ namespace ExampleMod
 		}
 
 		public override void Load() {
-			Instance = this;
 			// Will show up in client.log under the ExampleMod name
 			Logger.InfoFormat("{0} example logging", Name);
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");

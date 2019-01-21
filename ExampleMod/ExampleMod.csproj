@@ -53,6 +53,10 @@
     <Reference Include="MonoMod.Utils">
       <HintPath>..\references\MonoMod.Utils.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\ReLogic.dll</HintPath>
@@ -109,6 +113,7 @@
     <Compile Include="Dusts\Sparkle.cs" />
     <Compile Include="Dusts\SpectreDust.cs" />
     <Compile Include="ExampleAdvancedRecipe.cs" />
+    <Compile Include="ExampleConfig.cs" />
     <Compile Include="ExampleCustomCurrency.cs" />
     <Compile Include="ExampleMod.cs" />
     <Compile Include="ExamplePlayer.cs" />
@@ -158,6 +163,7 @@
     <Compile Include="Items\Placeable\ExampleBar.cs" />
     <Compile Include="Items\Placeable\ExampleLamp.cs" />
     <Compile Include="Items\Placeable\ExampleOre.cs" />
+    <Compile Include="Items\Placeable\ExampleTrap.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
@@ -293,6 +299,7 @@
     <Compile Include="Tiles\ExampleSapling.cs" />
     <Compile Include="Tiles\ExampleStatue.cs" />
     <Compile Include="Tiles\ExampleTorch.cs" />
+    <Compile Include="Tiles\ExampleTrap.cs" />
     <Compile Include="Tiles\ExampleTree.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />

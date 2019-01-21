@@ -129,14 +129,79 @@ namespace Terraria.ModLoader
 			infoKey = "tModLoader." + (ret ? "DMReferenceAssembliesSatisfied" : "DMReferenceAssembliesMissing");
 			return ret;
 		}
+		
+		private static readonly string modReferencesPath = Path.Combine(Main.SavePath, "references");
+		private static bool referencesUpdated = false;
+		internal static void UpdateReferencesFolder() {
+			if (referencesUpdated)
+				return;
+
+			if (!Directory.Exists(modReferencesPath))
+				Directory.CreateDirectory(modReferencesPath);
+
+			// this will extract all the embedded dlls, and grab a reference to the GAC assemblies
+			var libs = GetTerrariaReferences(null, windows).ToList();
+
+			// delete any extra references that no-longer exist
+			foreach (var file in Directory.GetFiles(modReferencesPath, "*.dll"))
+				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
+					File.Delete(file);
+
+			var tMLPath = libs[0];
+			libs.RemoveAt(0);
+
+			var tMLDir = Path.GetDirectoryName(tMLPath);
+#if CLIENT
+			var tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
+			if (tMLServerName == "Terraria.exe")
+				tMLServerName = "tModLoaderServer.exe";
+			var tMLServerPath = Path.Combine(tMLDir, tMLServerName);
+#else
+			var tMLServerPath = tMLPath;
+			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoaderServer", "tModLoader");
+			tMLPath = Path.Combine(tMLDir, tMLClientName);
+			if (!File.Exists(tMLPath))
+				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
+#endif
+			
+			string MakeRef(string path, string name = null) {
+				if (name == null)
+					name = Path.GetFileNameWithoutExtension(path);
+				if (Path.GetDirectoryName(path) == modReferencesPath)
+					path = "$(MSBuildThisFileDirectory)" + Path.GetFileName(path);
+				return $"    <Reference Include=\"{name}\">\n      <HintPath>{path}</HintPath>\n    </Reference>";
+			}
+			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
+			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
+
+			var tModLoaderTargets = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <PropertyGroup>
+    <TerrariaSteamPath>%tMLDir%</TerrariaSteamPath>
+    <tMLPath>%tMLPath%</tMLPath>
+    <tMLServerPath>%tMLServerPath%</tMLServerPath>
+  </PropertyGroup>
+  <ItemGroup>
+%references%
+  </ItemGroup>
+</Project>";
+			tModLoaderTargets = tModLoaderTargets
+				.Replace("%tMLDir%", tMLDir)
+				.Replace("%tMLPath%", tMLPath)
+				.Replace("%tMLServerPath%", tMLServerPath)
+				.Replace("%references%", string.Join("\n", referencesXMLList));
+			
+			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
+			referencesUpdated = true;
+		}
 
 		internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
-		private static IList<string> moduleReferences;
 
 		private IBuildStatus status;
 		public ModCompile(IBuildStatus status) {
 			this.status = status;
 			status.SetMod(null);
+			UpdateReferencesFolder();
 		}
 
 		internal bool BuildAll() {
@@ -153,16 +218,16 @@ namespace Terraria.ModLoader
 			var installedMods = ModOrganizer.FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
 
 			var requiredFromInstall = new HashSet<LocalMod>();
-			void Require(LocalMod mod) {
-				foreach (var dep in mod.properties.RefNames(true)) {
+			void Require(LocalMod mod, bool includeWeak) {
+				foreach (var dep in mod.properties.RefNames(includeWeak)) {
 					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
 					if (depMod != null && requiredFromInstall.Add(depMod))
-						Require(depMod);
+						Require(depMod, false);
 				}
 			}
 
 			foreach (var mod in modList)
-				Require(mod);
+				Require(mod, true);
 
 			modList.AddRange(requiredFromInstall);
 
@@ -406,15 +471,16 @@ namespace Terraria.ModLoader
 
 		private List<LocalMod> FindReferencedMods(BuildProperties properties) {
 			var mods = new Dictionary<string, LocalMod>();
-			FindReferencedMods(properties, mods);
+			FindReferencedMods(properties, mods, true);
 			return mods.Values.ToList();
 		}
 
-		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods) {
+		private void FindReferencedMods(BuildProperties properties, Dictionary<string, LocalMod> mods, bool requireWeak) {
 			foreach (var refName in properties.RefNames(true)) {
 				if (mods.ContainsKey(refName))
 					continue;
-
+				
+				bool isWeak = properties.weakReferences.Any(r => r.mod == refName);
 				LocalMod mod;
 				try {
 					var modFile = new TmodFile(Path.Combine(ModPath, refName + ".tmod"));
@@ -422,18 +488,23 @@ namespace Terraria.ModLoader
 					mod = new LocalMod(modFile);
 					modFile.Close();
 				}
+				catch (FileNotFoundException) when (isWeak && !requireWeak) { 
+					// don't recursively require weak deps, if the mod author needs to compile against them, they'll have them installed
+					continue;
+				}
 				catch (Exception ex) {
 					throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModReference", refName), ex);
 				}
 				mods[refName] = mod;
-				FindReferencedMods(mod.properties, mods);
+				FindReferencedMods(mod.properties, mods, false);
 			}
 		}
 
-		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows,
-				ref byte[] dll, ref byte[] pdb) {
-			if (!LoadCompilationReferences())
+		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows, ref byte[] dll, ref byte[] pdb) {
+			if (!DeveloperModeReady(out string errorKey)) {
+				status.LogError(Language.GetTextValue(errorKey));
 				return;
+			}
 
 			bool generatePDB = mod.properties.includePDB && forWindows;
 			if (generatePDB && !windows) {
@@ -448,6 +519,10 @@ namespace Terraria.ModLoader
 
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences(tempDir, forWindows));
+
+			// add framework assemblies
+			refs.AddRange(Directory.GetFiles(referenceAssembliesPath, "*.dll", SearchOption.AllDirectories)
+				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
 
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
@@ -508,38 +583,32 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private bool LoadCompilationReferences() {
-			if (!DeveloperModeReady(out string errorKey)) {
-				status.LogError(Language.GetTextValue(errorKey));
-				return false;
-			}
-
-			if (moduleReferences != null)
-				return true;
-
-			moduleReferences = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
-				.Select(refName => Assembly.Load(refName).Location)
-				.Where(loc => loc != "").ToList();
-
-			var referenceNames = new HashSet<string>(Directory.GetFiles(referenceAssembliesPath, "*.dll").Select(p => Path.GetFileName(p)));
-			for (int i = 0; i < moduleReferences.Count; i++) {
-				var refName = Path.GetFileName(moduleReferences[i]);
-				if (referenceNames.Contains(refName))
-					moduleReferences[i] = Path.Combine(referenceAssembliesPath, refName);
-			}
-			return true;
-		}
-
 		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool forWindows) {
-			var refs = new List<string>(moduleReferences);
+			var refs = new List<string>();
+
+			var xnaLibs = new[] {
+				"Microsoft.Xna.Framework.dll",
+				"Microsoft.Xna.Framework.Game.dll",
+				"Microsoft.Xna.Framework.Graphics.dll",
+				"Microsoft.Xna.Framework.Xact.dll",
+				"FNA.dll" 
+			};
 
 			if (forWindows == windows) {
 				var terrariaModule = Assembly.GetExecutingAssembly();
 				refs.Add(terrariaModule.Location);
+				// find xna in the currently referenced assemblies (eg, via GAC)
+				refs.AddRange(terrariaModule.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaLibs.Contains(Path.GetFileName(loc))));
+				
+				// avoid a double extract of the embedded dlls
+				if (referencesUpdated) {
+					refs.AddRange(Directory.GetFiles(modReferencesPath, "*.dll"));
+					return refs;
+				}
 
-				//extract embedded resource dlls
+				//extract embedded resource dlls to the references path rather than the tempDir
 				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
-					var path = Path.Combine(tempDir, Path.GetFileName(resName));
+					var path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
 					using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path))
 						res.CopyTo(file);
 
@@ -547,26 +616,12 @@ namespace Terraria.ModLoader
 				}
 			}
 			else {
-				//remove framework references
-				refs.RemoveAll(path => {
-					var name = Path.GetFileName(path);
-					return name == "FNA.dll" || name.StartsWith("Microsoft.Xna.Framework");
-				});
-				//replace with ModCompile contents
 				var mainModulePath = Path.Combine(modCompileDir, forWindows ? "tModLoaderWindows.exe" : "tModLoaderMac.exe");
 				refs.Add(mainModulePath);
+				// find xna in the ModCompile folder
+				refs.AddRange(xnaLibs.Select(f => Path.Combine(modCompileDir, f)).Where(File.Exists));
 
-				var frameworkNames = forWindows ? new[] {
-						"Microsoft.Xna.Framework.dll",
-						"Microsoft.Xna.Framework.Game.dll",
-						"Microsoft.Xna.Framework.Graphics.dll",
-						"Microsoft.Xna.Framework.Xact.dll"
-					} : new[] {
-						"FNA.dll"
-					};
-				refs.AddRange(frameworkNames.Select(f => Path.Combine(modCompileDir, f)));
-
-				//extract embedded resource dlls
+				//extract embedded resource dlls to a temporary folder
 				var asm = AssemblyDefinition.ReadAssembly(mainModulePath);
 				foreach (var res in asm.MainModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
 					var path = Path.Combine(tempDir, Path.GetFileName(res.Name));
@@ -584,8 +639,6 @@ namespace Terraria.ModLoader
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
 		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
-			var terrariaDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var modCompileDir = Path.Combine(terrariaDir, "ModCompile");
 			var asm = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
 
 			AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
@@ -605,7 +658,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static FileStream AcquireConsoleBuildLock() {
-			var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/ModCompile/buildlock";
+			var path = Path.Combine(modCompileDir, "buildlock");
 			bool first = true;
 			while (true) {
 				try {

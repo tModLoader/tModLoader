@@ -130,8 +130,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadModCompile() {
 			Main.PlaySound(SoundID.MenuOpen);
-			// TODO: dynamic packaging zip ? (based on tml version)
-			const string url = "https://tmodloader.net/dl/ext/ModCompile.zip";
+			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(ModLoader.windows ? "Windows" : "Mono")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			DownloadFile("ModCompile", url, file, () => {
@@ -146,7 +145,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DirectDownloadRefAssemblies() {
 			Main.PlaySound(SoundID.MenuOpen);
-			const string url = "https://tmodloader.net/dl/ext/v45ReferenceAssemblies.zip";
+			const string url = "https://tmodloader.net/dl/ext/v45ReferenceAssemblies.zip"; // This never changes, maybe put it on 0.11 release only and leave it out of other release uploads.
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);

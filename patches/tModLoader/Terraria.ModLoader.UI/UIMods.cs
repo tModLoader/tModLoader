@@ -11,6 +11,9 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
+using Newtonsoft.Json;
+using System.Reflection;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI
 {
@@ -218,6 +221,12 @@ namespace Terraria.ModLoader.UI
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
+			// To prevent entering the game with Configs that violate ReloadRequired
+			if (ConfigManager.AnyModNeedsReload())
+			{
+				Main.menuMode = Interface.reloadModsID;
+				return;
+			}
 			Main.menuMode = 0;
 		}
 
@@ -311,6 +320,7 @@ namespace Terraria.ModLoader.UI
 			items.Clear();
 			loading = true;
 			uIPanel.Append(uiLoader);
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
 		}
 

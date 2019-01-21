@@ -69,6 +69,7 @@ namespace ExampleMod.NPCs
 			return false;
 		}
 
+		// Example Person needs a house built out of ExampleMod tiles. You can delete this whole method in your townNPC for the regular house conditions.
 		public override bool CheckConditions(int left, int right, int top, int bottom) {
 			int score = 0;
 			for (int x = left; x <= right; x++) {
@@ -191,7 +192,7 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleHealingPotion"));
 				nextSlot++;
 			}
-			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
+			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !ExampleMod.exampleServerConfig.DisableExampleWings) {
 				shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWings"));
 				nextSlot++;
 			}

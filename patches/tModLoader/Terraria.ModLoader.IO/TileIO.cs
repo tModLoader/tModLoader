@@ -421,7 +421,8 @@ namespace Terraria.ModLoader.IO
 					//flags[0] |= 2; legacy
 					numFlags = 1;
 				}
-				tileEntity++;
+				if(!(entity.Value is ModTileEntity))
+					tileEntity++;
 			}
 			if (numFlags == 0) {
 				return null;
@@ -471,8 +472,10 @@ namespace Terraria.ModLoader.IO
 				ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
 
 			foreach (var frameTag in tag.GetList<TagCompound>("itemFrames")) {
-				TEItemFrame itemFrame = TileEntity.ByID[tag.GetInt("id")] as TEItemFrame;
-				ItemIO.Load(itemFrame.item, frameTag.GetCompound("item"));
+				if (TileEntity.ByID.TryGetValue(frameTag.GetInt("id"), out TileEntity tileEntity) && tileEntity is TEItemFrame itemFrame)
+					ItemIO.Load(itemFrame.item, frameTag.GetCompound("item"));
+				else
+					Logging.tML.Warn($"Due to a bug in previous versions of tModLoader, the following ItemFrame data has been lost: {frameTag.ToString()}");
 			}
 		}
 

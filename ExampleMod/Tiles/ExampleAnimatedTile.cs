@@ -110,7 +110,9 @@ namespace ExampleMod.Tiles
 		}*/
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
-			/*frameCounter++;
+			/*
+			// Spend 9 ticks on each of 6 frames, looping
+			frameCounter++;
 			if (frameCounter > 8)
 			{
 				frameCounter = 0;
@@ -119,7 +121,14 @@ namespace ExampleMod.Tiles
 				{
 					frame = 0;
 				}
-			}*/
+			}
+			// Or, more compactly:
+			if (++frameCounter >= 9)
+			{
+				frameCounter = 0;
+				frame = ++frame % 6;
+			}
+			*/
 			// Above code works, but since we are just mimicking another tile, we can just use the same value.
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
 		}

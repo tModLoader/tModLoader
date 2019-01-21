@@ -6,6 +6,12 @@ namespace ExampleMod.Items
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return !ExampleMod.exampleServerConfig.DisableExampleWings;
+			//return !mod.GetConfig<ExampleConfigServer>().DisableExampleWings;
+		}
+
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wing.");
 		}

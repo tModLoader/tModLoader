@@ -1,11 +1,12 @@
 --- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
 +++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
-@@ -9,13 +_,15 @@
+@@ -9,18 +_,22 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
 +using System.IO;
++using System.Threading.Tasks;
  
  namespace Terraria.GameContent.UI.States
  {
@@ -17,6 +18,12 @@
  		private UITextPanel<LocalizedText> _backPanel;
  		private UITextPanel<LocalizedText> _newPanel;
  		private UIPanel _containerPanel;
+ 		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
+ 		private bool skipDraw;
++		private static bool _currentlyMigratingFiles;
+ 
+ 		public override void OnInitialize()
+ 		{
 @@ -80,12 +_,7 @@
  		{
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
@@ -31,7 +38,7 @@
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
-@@ -142,6 +_,22 @@
+@@ -142,6 +_,68 @@
  			foreach (PlayerFileData current in list)
  			{
  				this._playerList.Add(new UICharacterListItem(current, num++));
@@ -41,9 +48,55 @@
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
 +				if (Directory.Exists(vanillaPlayersPath))
 +				{
++					var autoMigrateButton = new UIPanel();
++					autoMigrateButton.Width.Set(0, 1);
++					autoMigrateButton.Height.Set(50, 0);
++					var migrateText = new UIText(!_currentlyMigratingFiles
++						? Language.GetText("tModLoader.MigratePlayersText")
++						: Language.GetText("tModLoader.MigratingWorldsText")); // use the same as worlds intentional
++
++					autoMigrateButton.OnClick += (a, b) => {
++						if (!_currentlyMigratingFiles) {
++							_currentlyMigratingFiles = true;
++							migrateText.SetText(Language.GetText("tModLoader.MigratingWorldsText"));
++							Task.Factory.StartNew(() => {
++								var vanillaPlayerFiles = Directory.GetFiles(vanillaPlayersPath, "*.*")
++									.Where(s => s.EndsWith(".plr") || s.EndsWith(".tplr") || s.EndsWith(".bak"));
++
++								foreach (string file in vanillaPlayerFiles) {
++									File.Copy(file, Path.Combine(Main.PlayerPath, Path.GetFileName(file)));
++								}
++
++								// Copy map files
++								foreach (string mapDir in Directory.GetDirectories(vanillaPlayersPath)) {
++									var mapFiles = Directory.GetFiles(mapDir, "*.*")
++										.Where(s => s.EndsWith(".map") || s.EndsWith(".tmap"));
++
++									try {
++										foreach (string mapFile in mapFiles) {
++											string mapFileDir = Path.Combine(Main.PlayerPath, Directory.GetParent(mapFile).Name);
++											Directory.CreateDirectory(mapFileDir);
++											File.Copy(mapFile, Path.Combine(mapFileDir, Path.GetFileName(mapFile)));
++										}
++									}
++									catch (Exception e) {
++										Logging.tML.Error(Language.GetText("tModLoader.MigratePlayersException"), e);
++									}
++
++								}
++
++								_currentlyMigratingFiles = false;
++								Main.menuMode = 1;
++							}, TaskCreationOptions.PreferFairness);
++						}
++					};
++					autoMigrateButton.Append(migrateText);
++					_playerList.Add(autoMigrateButton);
++
 +					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
 +					noPlayersMessage.Width.Set(0, 1);
 +					noPlayersMessage.Height.Set(200, 0);
++					noPlayersMessage.MarginTop = 20f;
 +					noPlayersMessage.OnClick += (a, b) =>
 +					{
 +						System.Diagnostics.Process.Start(Main.PlayerPath);

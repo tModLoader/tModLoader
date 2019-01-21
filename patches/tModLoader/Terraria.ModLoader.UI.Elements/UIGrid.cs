@@ -126,7 +126,6 @@ namespace Terraria.ModLoader.UI.Elements
 				item.Left.Set(left, 0f);
 				left += outerDimensions.Width + this.ListPadding;
 				item.Top.Set(top, 0f);
-				item.Recalculate();
 			}
 			this._innerListHeight = top + maxRowHeight;
 		}
@@ -168,7 +167,30 @@ namespace Terraria.ModLoader.UI.Elements
 			if (this._scrollbar != null) {
 				this._innerList.Top.Set(-this._scrollbar.GetValue(), 0f);
 			}
-			this.Recalculate();
+		}
+	}
+
+	class NestedUIGrid : UIGrid
+	{
+		public NestedUIGrid()
+		{
+		}
+
+		public override void ScrollWheel(UIScrollWheelEvent evt)
+		{
+			if (this._scrollbar != null)
+			{
+				float oldpos = this._scrollbar.ViewPosition;
+				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
+				if (oldpos == _scrollbar.ViewPosition)
+				{
+					base.ScrollWheel(evt);
+				}
+			}
+			else
+			{
+				base.ScrollWheel(evt);
+			}
 		}
 	}
 }

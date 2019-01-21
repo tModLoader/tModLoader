@@ -8,6 +8,24 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -628,7 +_,7 @@
+ 						PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]
+ 					});
+ 			};
+-			for (int num8 = 600; num8 <= 650; num8++)
++			for (int num8 = 600; num8 <= 698; num8++)
+ 			{
+ 				UILinkPoint value11 = new UILinkPoint(num8, true, num8 + 10, num8 - 10, num8 - 1, num8 + 1);
+ 				cp8.LinkMap.Add(num8, value11);
+@@ -640,7 +_,7 @@
+ 				{
+ 					num24 = 100;
+ 				}
+-				for (int num25 = 0; num25 < 50; num25++)
++				for (int num25 = 0; num25 < 98; num25++)
+ 				{
+ 					cp8.LinkMap[600 + num25].Up = ((num25 % num24 == 0) ? -1 : (600 + num25 - 1));
+ 					if (cp8.LinkMap[600 + num25].Up == -1)
 @@ -1766,6 +_,13 @@
  				case 6:
  					UIVirtualKeyboard.Cancel();

@@ -280,6 +280,7 @@ namespace Terraria.ModLoader.UI
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
+		// TODO: Delete this. Use UIDownloadMods
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
 			try {
@@ -319,6 +320,9 @@ namespace Terraria.ModLoader.UI
 							}
 							else {
 								Interface.modBrowser.aModUpdated = true;
+							}
+							if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+								ModLoader.EnableMod(mod);
 							}
 							RemoveChild(updateButton);
 						}

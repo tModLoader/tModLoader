@@ -3,16 +3,10 @@
 
 @ECHO off
 :: Compile/Build exe 
-IF not "%1"=="beta" (
-	echo "Building Release"
-	set version=v0.11
-	call buildRelease.bat
-) else (
-	:: call "CompleteRelease.bat beta" to build a beta. Be sure to update version.
-	echo "Building Beta"
-	set version=v0.11 Beta 1
-	call buildBeta.bat
-)
+echo "Building Release"
+set version=v0.11 Beta 1
+call buildRelease.bat
+
 set destinationFolder=.\tModLoader %version% Release
 @IF %ERRORLEVEL% NEQ 0 (
 	pause
@@ -32,8 +26,8 @@ mkdir "%destinationFolder%"
 set win=%destinationFolder%\tModLoader Windows %version%
 set mac=%destinationFolder%\tModLoader Mac %version%
 set lnx=%destinationFolder%\tModLoader Linux %version%
-set winmc=%win% ModCompile
-set monomc=%destinationFolder%\tModLoader Mono %version% ModCompile
+set winmc=%destinationFolder%\ModCompile_Windows
+set monomc=%destinationFolder%\ModCompile_Mono
 
 mkdir "%win%"
 mkdir "%mac%"
@@ -41,6 +35,8 @@ mkdir "%lnx%"
 mkdir "%winmc%"
 mkdir "%monomc%"
 mkdir "%mac%\mono"
+
+:: TODO: Automatically create version string file. Or have setup.sln copy it to ReleaseExtras
 
 :: Windows release
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%win%\Terraria.exe" /y
@@ -63,6 +59,7 @@ copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%winmc%\Syst
 copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%winmc%\Microsoft.CodeAnalysis.dll" /y
 copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%winmc%\Microsoft.CodeAnalysis.CSharp.dll" /y
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%winmc%\Terraria.xml" /y
+copy ReleaseExtras\version "%winmc%\version" /y
 
 call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep yes -force yes
 
@@ -109,6 +106,7 @@ copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%monomc%\Microsoft.Xna.Fram
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%monomc%\Microsoft.Xna.Framework.Graphics.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%monomc%\Microsoft.Xna.Framework.Xact.dll" /y
 copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%monomc%\Terraria.xml" /y
+copy ReleaseExtras\version "%monomc%\version" /y
 
 call zipjs.bat zipDirItems -source "%monomc%" -destination "%monomc%.zip" -keep yes -force yes
 
@@ -127,6 +125,7 @@ rmdir "%monomc%" /S /Q
 :: ExampleMod.zip (TODO, other parts of ExampleMod release)
 rmdir ..\ExampleMod\bin /S /Q
 rmdir ..\ExampleMod\obj /S /Q
+:: TODO: ignore .vs folder
 call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
 ::copy "%destinationFolder%\ExampleMod %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
 

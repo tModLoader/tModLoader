@@ -45,7 +45,7 @@
  				if (useFullDumps)
  				{
  					CrashDump.WriteException(dumpOptions, Path.Combine(Main.SavePath, "Dumps"));
-@@ -205,8 +_,12 @@
+@@ -205,20 +_,34 @@
  #endif
  			try
  			{
@@ -60,23 +60,37 @@
  			}
  			catch
  			{
-@@ -227,9 +_,22 @@
+ 			}
+ 		}
+ 
++		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
++		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
++		// moving arg parsing to a separate function avoids this
+ 		public static void LaunchGame(string[] args, bool monoArgs = false)
+ 		{
+ 			if (monoArgs)
+ 			{
+ 				args = Utils.ConvertMonoArgsToDotNet(args);
+ 			}
++
++			LaunchParameters = Utils.ParseArguements(args);
++			LaunchGame_();
++		}
++
++		public static void LaunchGame_()
++		{
+ 			if (Platform.IsOSX)
+ 			{
+ 				Main.OnEngineLoad += delegate
+@@ -226,10 +_,13 @@
+ 					Main.instance.IsMouseVisible = false;
  				};
  			}
- 			Program.LaunchParameters = Utils.ParseArguements(args);
-+			// These need to be here since LoadParameters is too late since new Main() and its static initializers happens first.
-+			if (Program.LaunchParameters.ContainsKey("-savedirectory"))
-+			{
-+				Program.LaunchParameters["-savedirectory"] = Path.Combine(Program.LaunchParameters["-savedirectory"], "ModLoader");
-+			}
-+			if (Program.LaunchParameters.ContainsKey("-tmlsavedirectory"))
-+			{
-+				Program.LaunchParameters["-savedirectory"] = Program.LaunchParameters["-tmlsavedirectory"];
-+			}
+-			Program.LaunchParameters = Utils.ParseArguements(args);
++			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
-+			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
 +#if !WINDOWS
 +			FNAThreading.Init();
 +#endif

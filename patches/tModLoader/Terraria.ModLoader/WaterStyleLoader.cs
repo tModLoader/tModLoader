@@ -138,6 +138,9 @@ namespace Terraria.ModLoader
 			return reserve;
 		}
 
+		/// <summary>
+		/// Returns the ModWaterfallStyle with the given ID.
+		/// </summary>
 		public static ModWaterfallStyle GetWaterfallStyle(int style) {
 			if (style < vanillaWaterfallCount || style >= nextWaterfallStyle) {
 				return null;

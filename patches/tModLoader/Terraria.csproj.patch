@@ -55,7 +55,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -81,19 +_,61 @@
+@@ -81,19 +_,64 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -117,6 +117,9 @@
 +    <Reference Include="MonoMod.Utils">
 +      <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
 +    </Reference>
++    <Reference Include="System.ValueTuple">
++      <HintPath>..\..\references\System.ValueTuple.dll</HintPath>
++    </Reference>
 +    <Reference Include="System.Windows.Forms">
 +      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
 +    </Reference>
@@ -139,10 +142,34 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,182 @@
+@@ -368,6 +_,207 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ArrayElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\BooleanElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\CollectionElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ColorElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ConfigElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\DictionaryElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\EnumElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\FloatElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\IntegerElements.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ItemDefinitionElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ListElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ObjectElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\PropertyFieldWrapper.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\RangeElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\SetElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\StringInputElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\StringOptionElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfig.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfigList.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\Vector2Element.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ItemDefinition.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ConfigAttributes.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ModConfig.cs" />
++    <Compile Include="Terraria.ModLoader.Config\ConfigManager.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperItem.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\DeveloperPlayer.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Developer\Jofairden.cs" />
@@ -199,6 +226,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UICreateMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDeveloperModeHelp.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadFile.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDownloadMods.cs" />
@@ -330,28 +358,35 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,33 @@
+@@ -538,10 +_,40 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
-+    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
-     <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
 -    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
 -    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
-+    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
++    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
++      <LogicalName>Newtonsoft.Json.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>ReLogic.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++      <LogicalName>ReLogic.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
++      <LogicalName>ReLogic.dll</LogicalName>
 +    </EmbeddedResource>
-+    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))" />
++    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>Steamworks.NET.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>Terraria.Libraries.Steamworks.NET.OSX.Steamworks.NET.dll</LogicalName>
++      <LogicalName>Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>Terraria.Libraries.Steamworks.NET.Linux.Steamworks.NET.dll</LogicalName>
++      <LogicalName>Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
@@ -364,15 +399,20 @@
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
++    <EmbeddedResource Include="..\..\references\System.ValueTuple.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,146 @@
+@@ -606,5 +_,151 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonUpDown.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonCollapsed.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonExpanded.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonPlus.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Head_Head_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Arms_Shader.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Developer\PowerRanger_Body_Body_Shader.png" />
@@ -456,6 +496,7 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Head_Head.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\toplayz_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonConfig.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonExclamation.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\LoaderBG.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\Loader.png" />

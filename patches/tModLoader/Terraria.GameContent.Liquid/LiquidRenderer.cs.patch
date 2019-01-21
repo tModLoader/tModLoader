@@ -20,11 +20,13 @@
  						if (tile == null)
  						{
  							tile = new Tile();
-@@ -659,7 +_,6 @@
+@@ -659,7 +_,9 @@
  			array2[1] = 200;
  			array2[2] = 240;
  			LiquidRenderer.VISCOSITY_MASK = array2;
--			LiquidRenderer.Instance = new LiquidRenderer();
++#if SERVER //client initialization has been moved to LoadContent to prevent FNA deadlocks
+ 			LiquidRenderer.Instance = new LiquidRenderer();
++#endif
  		}
  	}
  }
