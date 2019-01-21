@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 
                 var loc = d.Location.GetLineSpan();
                 var pos = loc.StartLinePosition;
-                cRes.Errors.Add(new CompilerError(loc.Path, pos.Line, pos.Character, d.Id, d.GetMessage()));
+                cRes.Errors.Add(new CompilerError(loc.Path ?? "", pos.Line, pos.Character, d.Id, d.GetMessage()));
             }
 
             return cRes;
