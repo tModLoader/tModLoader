@@ -10,10 +10,8 @@ namespace ExampleMod.NPCs
 	public class ExampleGlobalNPC : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-
-		public double inflation;
+		
 		public List<int> stock; // indexes are slots in shop, values are number of items left
-		public bool getNewStock;
 
 		public bool eFlames;
 		public bool exampleJavelin;
@@ -26,11 +24,6 @@ namespace ExampleMod.NPCs
 		public override void SetDefaults(NPC npc) {
 			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
 			npc.buffImmune[mod.BuffType<Buffs.ExampleJavelin>()] = npc.buffImmune[BuffID.BoneJavelin];
-			if (npc.townNPC) {
-				inflation = 0;
-				stock = new List<int>();
-				getNewStock = false;
-			}
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {
@@ -59,7 +52,10 @@ namespace ExampleMod.NPCs
 					damage = 2;
 				}
 			}
-			getNewStock = Main.rand.NextBool(200) && !Main.dayTime;
+
+			// reset stock
+			if (npc.townNPC && Main.rand.NextBool(200) && !Main.dayTime)
+				stock = null;
 		}
 
 		public override void NPCLoot(NPC npc) {
@@ -172,30 +168,17 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.ExampleHairDye>());
 				nextSlot++;
 			}
-			if (ExampleWorld.npcInflation.ContainsKey(type)) ExampleWorld.npcInflation[type] = inflation;
-			else ExampleWorld.npcInflation.Add(type, inflation);
-			if (stock.Count != shop.item.Length || stock == null) {
+			
+			if (stock == null || stock.Count != shop.item.Length) {
+				// Add stock based on 1 gold -> 100-200 available items
 				stock = new List<int>();
-				for (int i = 0; i < shop.item.Length; i++) {
-					var item = shop.item[i];
-					// This will add stock based on 1 gold -> 100-200 available items
-					stock.Add(Main.rand.Next(100, 200)
-						* (int)(item.shopCustomPrice.HasValue ? Item.buyPrice(0, 1) / item.shopCustomPrice : Item.buyPrice(0, 1) / item.value));
+				foreach (var item in shop.item) {
+					stock.Add(Main.rand.Next(100, 200) * Item.buyPrice(0, 1) / (item.shopCustomPrice ?? item.value));
 				}
 			}
-			if (getNewStock)
-			{
-				for (int i = 0; i < shop.item.Length; i++)
-				{
-					shop.item[i].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
-				}
-			}
-			var outOfStock = new List<int>();
 			for (int i = 0; i < stock.Count; i++) {
-				if (stock[i].Equals(0)) outOfStock.Add(i);
-			}
-			for (int i = 0; i < outOfStock.Count; i++) {
-				shop.item[outOfStock[i]].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
+				if (stock[i] == 0)
+					shop.item[i].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
 			}
 		}
 
@@ -210,7 +193,7 @@ namespace ExampleMod.NPCs
 						chat = "What's that horrid smell?!";
 						break;
 					default:
-						chat = "Get away from me, I'm not doing any business with you.";
+						chat = "Get away from me, i'm not doing any business with you.";
 						break;
 				}
 			}

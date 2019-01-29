@@ -62,10 +62,10 @@ namespace ExampleMod.Items
 				}*/
 			}
 			if (outOfStock) {
-				TooltipLine line = new TooltipLine(mod, "OutOfStock", "OUT OF STOCK!");
-				line.overrideColor = Color.DarkMagenta;
-				tooltips.Add(line);
-      }
+				tooltips.Add(new TooltipLine(mod, "OutOfStock", "OUT OF STOCK!") {
+					overrideColor = Color.DarkMagenta
+				});
+			}
 			if (ExampleMod.exampleClientConfig.ShowModOriginTooltip)
 			{
 				foreach (TooltipLine line3 in tooltips)

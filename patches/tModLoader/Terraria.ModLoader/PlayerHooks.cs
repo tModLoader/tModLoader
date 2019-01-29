@@ -1101,21 +1101,18 @@ namespace Terraria.ModLoader
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
 
-		public static void PostSellItem(Player player, NPC npc, Item[] chest, Item item)
-		{
-			foreach (int index in HookPostSellItem.arr)
-			{
+		public static void PostSellItem(Player player, NPC npc, Item[] chest, Item item) {
+			foreach (int index in HookPostSellItem.arr) {
 				player.modPlayers[index].PostSellItem(npc, chest, item);
 			}
 		}
 
 		private static HookList HookCanSellItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanSellItem);
 
-		public static bool CanSellItem(Player player, NPC npc, Item[] chest, Item item)
-		{
-			foreach (int index in HookCanSellItem.arr)
-			{
-				if (!player.modPlayers[index].CanSellItem(npc, chest, item)) return false;
+		public static bool CanSellItem(Player player, NPC npc, Item[] chest, Item item) {
+			foreach (int index in HookCanSellItem.arr) {
+				if (!player.modPlayers[index].CanSellItem(npc, chest, item))
+					return false;
 			}
 			return true;
 		}
@@ -1132,7 +1129,8 @@ namespace Terraria.ModLoader
 
 		public static bool CanBuyItem(Player player, NPC npc, Item[] chest, Item item) {
 			foreach (int index in HookCanBuyItem.arr) {
-				if (!player.modPlayers[index].CanBuyItem(npc, chest, item)) return false;
+				if (!player.modPlayers[index].CanBuyItem(npc, chest, item))
+					return false;
 			}
 			return true;
 		}
@@ -1150,8 +1148,8 @@ namespace Terraria.ModLoader
 
 		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref int price, ref bool removeDebuffs) {
 			foreach (int index in HookModifyNurseHeal.arr) {
-				if (!p.modPlayers[index].ModifyNurseHeal(npc,
-					ref health, ref price, ref removeDebuffs)) return false;
+				if (!p.modPlayers[index].ModifyNurseHeal(npc, ref health, ref price, ref removeDebuffs))
+					return false;
 			}
 			return false;
 		}

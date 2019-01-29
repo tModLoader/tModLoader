@@ -646,20 +646,27 @@ namespace ExampleMod
 			MiscEffects.visible = true;
 			layers.Add(MiscEffects);
 		}
-
-		// We use CanBuyItem because it is called before any transaction.
-		// Sometimes the player can be buying multiple items at once,
-		// and will increase the inflation value by too much.
+		
 		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
-			if (item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock)
-				return false;
-			else vendor.GetGlobalNPC<ExampleGlobalNPC>().stock[Array.FindIndex(shop, x => x.Equals(item))]--;
-			vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation += item.value * .02;
-			for (int i = 0; i < shop.Length; i++) {
-				var shopItem = shop[i];
-				shopItem.value += (int)vendor.GetGlobalNPC<ExampleGlobalNPC>().inflation;
-			}
-			return base.CanBuyItem(vendor, shop, item);
+			return !item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock;
+		}
+
+		public override void PostBuyItem(NPC vendor, Item[] shop, Item item) {
+			int stock = --vendor.GetGlobalNPC<ExampleGlobalNPC>().stock[Array.IndexOf(shop, item)];
+			if (stock <= 0)
+				item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
+			
+			// TODO: ensure this actually works in multiplayer
+
+			ExampleWorld.npcInflation.TryGetValue(vendor.type, out var inflation);
+			// 2% inflation per gold spent
+			var newInflation = inflation + Item.buyPrice(0, 50) / (double) item.shopCustomPrice;
+			ExampleWorld.npcInflation[vendor.type] = newInflation;
+
+			var relativeInflation = (1+newInflation) / (1+inflation);
+			// sorry, rounding errors, but can't recover original prices until the shop is re-opened
+			foreach (var shopItem in shop)
+				shopItem.value = (int)(shopItem.value * relativeInflation);
 		}
 	}
 }

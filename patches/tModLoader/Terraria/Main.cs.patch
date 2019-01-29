@@ -3642,29 +3642,24 @@
  										if ((double)Main.player[Main.myPlayer].statLife < (double)Main.player[Main.myPlayer].statLifeMax2 * 0.25)
  										{
  											Main.npcChatText = Lang.dialog(227, false);
-@@ -34939,16 +_,20 @@
+@@ -34939,16 +_,19 @@
  										{
  											Main.npcChatText = Lang.dialog(230, false);
  										}
 -										Main.player[Main.myPlayer].statLife = Main.player[Main.myPlayer].statLifeMax2;
--										for (int l = 0; l < 22; l++)
 +										Main.player[Main.myPlayer].statLife += health;
-+										if (removeDebuffs)
++										if (removeDebuffs) { // no indent for better patching
+ 										for (int l = 0; l < 22; l++)
  										{
--											int num24 = Main.player[Main.myPlayer].buffType[l];
+ 											int num24 = Main.player[Main.myPlayer].buffType[l];
 -											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && num24 != 28 && num24 != 34 && num24 != 87 && num24 != 89 && num24 != 21 && num24 != 86 && num24 != 199)
-+											for (int l = 0; l < 22; l++)
++											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num24))
  											{
--												Main.player[Main.myPlayer].DelBuff(l);
--												l = -1;
-+												int num24 = Main.player[Main.myPlayer].buffType[l];
-+												if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num24))
-+												{
-+													Main.player[Main.myPlayer].DelBuff(l);
-+													l = -1;
-+												}
+ 												Main.player[Main.myPlayer].DelBuff(l);
+ 												l = -1;
  											}
  										}
++										}
 +										PlayerHooks.PostNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], health, num5);
  										return;
  									}

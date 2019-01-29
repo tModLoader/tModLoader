@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace ExampleMod
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
 		public static int exampleTiles;
-		public static Dictionary<int, double> npcInflation;
+		public static Dictionary<int, double> npcInflation; // NPC inflation is stored here rather than in GlobalNPC as an example of something that can't be reset by killing the NPC
 
 		public override void Initialize() {
 			downedAbomination = false;
@@ -50,9 +51,10 @@ namespace ExampleMod
 			}
 
 			return new TagCompound {
-				{"downed", downed},
-				{"inflationNPCs", npcInflation.Keys.ToList()},
-				{"inflationValues", npcInflation.Values.ToList()}
+				["downed"] = downed,
+				["npcInflation"] = npcInflation
+					.Select(e => new TagCompound { ["npc"] = GetNPCSaveKey(e.Key), ["value"] = e.Value })
+					.ToList(),
 			};
 		}
 
@@ -60,9 +62,34 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
-			var inflationNPCs = tag.GetList<int>("inflationNPCs");
-			var inflationValues = tag.GetList<double>("inflationValues");
-			npcInflation = inflationNPCs.Zip(inflationValues, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+
+			npcInflation.Clear();
+			foreach (var npcInfTag in tag.GetList<TagCompound>("npcInflation")) {
+				if (ReadNPCSaveKey(npcInfTag.GetString("npc"), out int type))
+					npcInflation.Add(type, tag.GetDouble("value"));
+			}
+		}
+
+		private static string GetNPCSaveKey(int type) {
+			var modNPC = ModContent.GetModNPC(type);
+			return modNPC != null ? modNPC.mod.Name + ":" + modNPC.Name : "Terraria:" + type;
+		}
+
+		private static bool ReadNPCSaveKey(string key, out int type) {
+			ModContent.SplitName(key, out var domain, out var name);
+			if (domain == "Terraria") {
+				type = int.Parse(name);
+				return true;
+			}
+			
+			var modNPC = ModLoader.GetMod(domain)?.GetNPC(name);
+			if (modNPC == null) {
+				type = 0;
+				return false;
+			}
+
+			type = modNPC.npc.type;
+			return true;
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -132,11 +159,8 @@ namespace ExampleMod
 			// BitsByte flags2 = reader.ReadByte();
 			// downed9thBoss = flags[0];
 			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++) {
-				int type = reader.ReadInt16();
-				if (npcInflation.ContainsKey(type)) npcInflation[type] = reader.ReadDouble();
-				else npcInflation.Add(type, reader.ReadDouble());
-			}
+			for (int i = 0; i < count; i++)
+				npcInflation[reader.ReadInt16()] = reader.ReadDouble();
 		}
 
 		// We use this hook to add 3 steps to world generation at various points. 
