@@ -169,16 +169,18 @@ namespace ExampleMod.NPCs
 				nextSlot++;
 			}
 			
-			if (stock == null || stock.Count != shop.item.Length) {
-				// Add stock based on 1 gold -> 100-200 available items
-				stock = new List<int>();
-				foreach (var item in shop.item) {
-					stock.Add(Main.rand.Next(100, 200) * Item.buyPrice(0, 1) / (item.shopCustomPrice ?? item.value));
+			if (mod.GetConfig<ExampleConfigServer>().EnableStockAndInflation) {
+				if ((stock == null || stock.Count != shop.item.Length)) {
+					// Add stock based on 1 gold -> 100-200 available items
+					stock = new List<int>();
+					foreach (var item in shop.item) {
+						stock.Add(Main.rand.Next(100, 200) * Item.buyPrice(0, 1) / (item.shopCustomPrice ?? item.value));
+					}
 				}
-			}
-			for (int i = 0; i < stock.Count; i++) {
-				if (stock[i] == 0)
-					shop.item[i].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
+				for (int i = 0; i < stock.Count; i++) {
+					if (stock[i] == 0)
+						shop.item[i].GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
+				}
 			}
 		}
 

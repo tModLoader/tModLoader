@@ -59,6 +59,11 @@ namespace ExampleMod
 		[Label("Disable Volcanos")]
 		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
 		public bool DisableVolcanos { get; set; }
+		
+		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
+		[Label("Enable Stock/Inflation")]
+		[Tooltip("Demonstrates CanBuyItem hooks")]
+		public bool EnableStockAndInflation { get; set; }
 
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.

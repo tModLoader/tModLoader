@@ -652,6 +652,9 @@ namespace ExampleMod
 		}
 
 		public override void PostBuyItem(NPC vendor, Item[] shop, Item item) {
+			if (!mod.GetConfig<ExampleConfigServer>().EnableStockAndInflation)
+				return;
+
 			int stock = --vendor.GetGlobalNPC<ExampleGlobalNPC>().stock[Array.IndexOf(shop, item)];
 			if (stock <= 0)
 				item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
