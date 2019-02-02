@@ -54,7 +54,7 @@ namespace ExampleMod.Tiles
 		public override void PlaceInWorld(int i, int j, Item item)
 		{
 			int style = Main.LocalPlayer.HeldItem.placeStyle;
-			Tile tile = Main.tile[Player.tileTargetX, Player.tileTargetY];
+			Tile tile = Main.tile[i, j];
 			tile.frameY = (short)(style * 18);
 			if (Main.LocalPlayer.direction == 1)
 			{

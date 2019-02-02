@@ -501,7 +501,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to control how hammers slope this tile. Return true to allow it to slope normally. Returns true by default.
+		/// Allows you to control how hammers slope this tile. Return true to allow it to slope normally. Returns true by default. Called on the local Client and Single Player.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -549,10 +549,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to do something when this tile is placed.
+		/// Allows you to do something when this tile is placed. Called on the local Client and Single Player.
 		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
+		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
 		/// <param name="item">The item used to place this tile.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}

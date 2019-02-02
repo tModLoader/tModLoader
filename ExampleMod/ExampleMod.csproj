@@ -302,6 +302,7 @@
     <Compile Include="Tiles\ExampleTrap.cs" />
     <Compile Include="Tiles\ExampleTree.cs" />
     <Compile Include="Tiles\ExampleWorkbench.cs" />
+    <Compile Include="Tiles\Minesweeper.cs" />
     <Compile Include="Tiles\MonsterBanner.cs" />
     <Compile Include="Tiles\TEElementalPurge.cs" />
     <Compile Include="Tiles\TEScoreBoard.cs" />
