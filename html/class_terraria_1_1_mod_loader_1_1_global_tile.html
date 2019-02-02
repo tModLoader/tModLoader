@@ -201,7 +201,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a843da6ae8cdcf34e2475962050bd1a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change how many dust particles are created when the tile at the given coordinates is hit.  <a href="#a843da6ae8cdcf34e2475962050bd1a5e">More...</a><br /></td></tr>
 <tr class="separator:a843da6ae8cdcf34e2475962050bd1a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a334487ffab101c1cc5cc490e18ba18a1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a334487ffab101c1cc5cc490e18ba18a1">PlaceInWorld</a> (int i, int j, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
-<tr class="memdesc:a334487ffab101c1cc5cc490e18ba18a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do something when this tile is placed.  <a href="#a334487ffab101c1cc5cc490e18ba18a1">More...</a><br /></td></tr>
+<tr class="memdesc:a334487ffab101c1cc5cc490e18ba18a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do something when this tile is placed. Called on the local Client and Single Player.  <a href="#a334487ffab101c1cc5cc490e18ba18a1">More...</a><br /></td></tr>
 <tr class="separator:a334487ffab101c1cc5cc490e18ba18a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a521c8134e6299b3d418b53c671c6f0fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a521c8134e6299b3d418b53c671c6f0fa">PostDraw</a> (int i, int j, int type, SpriteBatch spriteBatch)</td></tr>
 <tr class="memdesc:a521c8134e6299b3d418b53c671c6f0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust.  <a href="#a521c8134e6299b3d418b53c671c6f0fa">More...</a><br /></td></tr>
@@ -228,7 +228,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:adec30c147c382f5adec9e4534ead5022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not a tile will draw itself flipped in the world.  <a href="#adec30c147c382f5adec9e4534ead5022">More...</a><br /></td></tr>
 <tr class="separator:adec30c147c382f5adec9e4534ead5022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01d357fc71a23b11a8ae248edef1a881"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a01d357fc71a23b11a8ae248edef1a881">Slope</a> (int i, int j, int type)</td></tr>
-<tr class="memdesc:a01d357fc71a23b11a8ae248edef1a881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default.  <a href="#a01d357fc71a23b11a8ae248edef1a881">More...</a><br /></td></tr>
+<tr class="memdesc:a01d357fc71a23b11a8ae248edef1a881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player.  <a href="#a01d357fc71a23b11a8ae248edef1a881">More...</a><br /></td></tr>
 <tr class="separator:a01d357fc71a23b11a8ae248edef1a881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c6048173df5a36c232231ef18f49e41"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a7c6048173df5a36c232231ef18f49e41">SpecialDraw</a> (int i, int j, int type, SpriteBatch spriteBatch)</td></tr>
 <tr class="memdesc:a7c6048173df5a36c232231ef18f49e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw. Only called if coordinates are placed in Main.specX/Y during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.  <a href="#a7c6048173df5a36c232231ef18f49e41">More...</a><br /></td></tr>
@@ -1657,12 +1657,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to do something when this tile is placed. </p>
+<p>Allows you to do something when this tile is placed. Called on the local Client and Single Player. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">item</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates. Equal to Player.tileTargetX</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates. Equal to Player.tileTargetY</td></tr>
+    <tr><td class="paramname">item</td><td>The item used to place this tile.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2131,7 +2131,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. </p>
+<p>Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td></td></tr>
