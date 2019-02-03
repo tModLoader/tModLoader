@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -49,6 +50,7 @@ namespace ExampleMod
 		public bool blockyForceVanity;
 		public bool blockyPower;
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
+		public bool examplePersonGiftReceived;
 
 		private const int maxExampleLifeFruits = 10;
 		public int exampleLifeFruits;
@@ -129,6 +131,7 @@ namespace ExampleMod
 				{"score", score},
 				{"exampleLifeFruits", exampleLifeFruits},
 				{"nonStopParty", nonStopParty},
+				{nameof(examplePersonGiftReceived), examplePersonGiftReceived},
 			};
 			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
@@ -141,6 +144,7 @@ namespace ExampleMod
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
 			nonStopParty = tag.GetBool("nonStopParty");
+			examplePersonGiftReceived = tag.GetBool(nameof(examplePersonGiftReceived));
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -657,29 +661,30 @@ namespace ExampleMod
 			return base.ModifyNurseHeal(nurse, ref health, ref removeDebuffs, ref chatText);
 		}
 
-		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
-			return !item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock;
+		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
+		{
+			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
+			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
+			{
+				examplePersonGiftReceived = true;
+				foreach (var shopItem in shop)
+				{
+					if(!shopItem.IsAir && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == shopItem.type) ?? false))
+					{
+						shopItem.TurnToAir();
+					}
+				}
+			}
 		}
 
-		public override void PostBuyItem(NPC vendor, Item[] shop, Item item) {
-			if (!mod.GetConfig<ExampleConfigServer>().EnableStockAndInflation)
-				return;
-
-			int stock = --vendor.GetGlobalNPC<ExampleGlobalNPC>().stock[Array.IndexOf(shop, item)];
-			if (stock <= 0)
-				item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock = true;
-			
-			// TODO: ensure this actually works in multiplayer
-
-			ExampleWorld.npcInflation.TryGetValue(vendor.type, out var inflation);
-			// 2% inflation per gold spent
-			var newInflation = inflation + Item.buyPrice(0, 50) / (double) item.shopCustomPrice;
-			ExampleWorld.npcInflation[vendor.type] = newInflation;
-
-			var relativeInflation = (1+newInflation) / (1+inflation);
-			// sorry, rounding errors, but can't recover original prices until the shop is re-opened
-			foreach (var shopItem in shop)
-				shopItem.value = (int)(shopItem.value * relativeInflation);
+		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
+		{
+			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
+			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
+			{
+				examplePersonGiftReceived = false;
+				Main.NewText("You are returning your free gift? Come back in a second and I'll show you the free gifts again.");
+			}
 		}
 	}
 }

@@ -65,6 +65,21 @@ namespace ExampleMod
 		[Tooltip("Demonstrates CanBuyItem hooks")]
 		public bool EnableStockAndInflation { get; set; }
 
+		[Label("Example Person free gift list")]
+		[Tooltip("Each player can claim one free item from this list from Example Person")]
+		// TODO: Fix PostSave to make this simpler.
+		public List<ItemDefinition> ExamplePersonFreeGiftList { get; set; }
+
+		// Clone logic is required. See ModConfigShowcaseDataTypes.Clone for more info.
+		public override ModConfig Clone()
+		{
+			var clone = (ExampleConfigServer)base.Clone();
+
+			clone.ExamplePersonFreeGiftList = ExamplePersonFreeGiftList?.Select(item=> new ItemDefinition(item.mod, item.name)).ToList();
+
+			return clone;
+		}
+
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
 		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.

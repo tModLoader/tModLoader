@@ -218,6 +218,19 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 				nextSlot++;
 			}
+
+			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList != null)
+			{
+				foreach (var item in ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList)
+				{
+					if (item.IsUnloaded)
+						continue;
+					shop.item[nextSlot].SetDefaults(item.GetID());
+					shop.item[nextSlot].shopCustomPrice = 0;
+					nextSlot++;
+					// TODO: Have tModLoader handle index issues.
+				}	
+			}
 		}
 
 		public override void NPCLoot() {

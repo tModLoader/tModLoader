@@ -1,9 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
@@ -30,14 +28,12 @@ namespace ExampleMod
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
 		public static int exampleTiles;
-		public static Dictionary<int, double> npcInflation; // NPC inflation is stored here rather than in GlobalNPC as an example of something that can't be reset by killing the NPC
 
 		public override void Initialize() {
 			downedAbomination = false;
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
-			npcInflation = new Dictionary<int, double>();
 		}
 
 		public override TagCompound Save() {
@@ -52,9 +48,6 @@ namespace ExampleMod
 
 			return new TagCompound {
 				["downed"] = downed,
-				["npcInflation"] = npcInflation
-					.Select(e => new TagCompound { ["npc"] = GetNPCSaveKey(e.Key), ["value"] = e.Value })
-					.ToList(),
 			};
 		}
 
@@ -62,12 +55,6 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
-
-			npcInflation.Clear();
-			foreach (var npcInfTag in tag.GetList<TagCompound>("npcInflation")) {
-				if (ReadNPCSaveKey(npcInfTag.GetString("npc"), out int type))
-					npcInflation.Add(type, tag.GetDouble("value"));
-			}
 		}
 
 		private static string GetNPCSaveKey(int type) {
@@ -109,12 +96,6 @@ namespace ExampleMod
 			flags[0] = downedAbomination;
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
-
-			writer.Write(npcInflation.Count);
-			foreach (var pair in npcInflation) {
-				writer.Write((short)pair.Key);
-				writer.Write(pair.Value);
-			}
 
 			/*
 			Remember that Bytes/BitsByte only have 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte:
@@ -158,9 +139,6 @@ namespace ExampleMod
 			// As mentioned in NetSend, BitBytes can contain 8 values. If you have more, be sure to read the additional data:
 			// BitsByte flags2 = reader.ReadByte();
 			// downed9thBoss = flags[0];
-			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++)
-				npcInflation[reader.ReadInt16()] = reader.ReadDouble();
 		}
 
 		// We use this hook to add 3 steps to world generation at various points. 

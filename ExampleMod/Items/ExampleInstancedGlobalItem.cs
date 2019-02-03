@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -12,7 +13,7 @@ namespace ExampleMod.Items
 	{
 		public string originalOwner;
 		public byte awesome;
-		public bool outOfStock;
+		public bool examplePersonFreeGift;
 
 		private static readonly string saveOriginalOwner;
 
@@ -61,8 +62,8 @@ namespace ExampleMod.Items
 					}
 				}*/
 			}
-			if (outOfStock) {
-				tooltips.Add(new TooltipLine(mod, "OutOfStock", "OUT OF STOCK!") {
+			if (Main.npcShop > 0 && Main.instance.shop[Main.npcShop].item.Contains(item)) {
+				tooltips.Add(new TooltipLine(mod, "FreeGift", "This is a free gift from ExampleServerConfig") {
 					overrideColor = Color.DarkMagenta
 				});
 			}
@@ -101,13 +102,11 @@ namespace ExampleMod.Items
 		public override void NetSend(Item item, BinaryWriter writer) {
 			writer.Write(originalOwner);
 			writer.Write(awesome);
-			writer.Write(outOfStock);
 		}
 
 		public override void NetReceive(Item item, BinaryReader reader) {
 			originalOwner = reader.ReadString();
 			awesome = reader.ReadByte();
-			outOfStock = reader.ReadBoolean();
 		}
 	}
 }
