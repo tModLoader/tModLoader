@@ -1101,17 +1101,17 @@ namespace Terraria.ModLoader
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
 
-		public static void PostSellItem(Player player, NPC npc, Item[] chest, Item item) {
+		public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
 			foreach (int index in HookPostSellItem.arr) {
-				player.modPlayers[index].PostSellItem(npc, chest, item);
+				player.modPlayers[index].PostSellItem(npc, shopInventory, item);
 			}
 		}
 
 		private static HookList HookCanSellItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanSellItem);
 
-		public static bool CanSellItem(Player player, NPC npc, Item[] chest, Item item) {
+		public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
 			foreach (int index in HookCanSellItem.arr) {
-				if (!player.modPlayers[index].CanSellItem(npc, chest, item))
+				if (!player.modPlayers[index].CanSellItem(npc, shopInventory, item))
 					return false;
 			}
 			return true;
@@ -1119,17 +1119,17 @@ namespace Terraria.ModLoader
 
 		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
 
-		public static void PostBuyItem(Player player, NPC npc, Item[] chest, Item item) {
+		public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
 			foreach (int index in HookPostBuyItem.arr) {
-				player.modPlayers[index].PostBuyItem(npc, chest, item);
+				player.modPlayers[index].PostBuyItem(npc, shopInventory, item);
 			}
 		}
 
 		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
 
-		public static bool CanBuyItem(Player player, NPC npc, Item[] chest, Item item) {
+		public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
 			foreach (int index in HookCanBuyItem.arr) {
-				if (!player.modPlayers[index].CanBuyItem(npc, chest, item))
+				if (!player.modPlayers[index].CanBuyItem(npc, shopInventory, item))
 					return false;
 			}
 			return true;

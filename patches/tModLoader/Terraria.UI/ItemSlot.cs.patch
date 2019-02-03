@@ -36,7 +36,7 @@
  					}
  					else
  					{
-@@ -581,8 +_,9 @@
+@@ -581,21 +_,24 @@
  					{
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  					}
@@ -48,22 +48,24 @@
  				{
  					Chest chest = Main.instance.shop[Main.npcShop];
  					if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack))
-@@ -590,12 +_,14 @@
- 						chest.AddShop(Main.mouseItem);
+ 					{
+-						chest.AddShop(Main.mouseItem);
++						int soldItemIndex = chest.AddShop(Main.mouseItem);
  						Main.mouseItem.SetDefaults(0, false);
  						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  					else if (Main.mouseItem.value == 0)
  					{
- 						chest.AddShop(Main.mouseItem);
+-						chest.AddShop(Main.mouseItem);
++						int soldItemIndex = chest.AddShop(Main.mouseItem);
  						Main.mouseItem.SetDefaults(0, false);
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  					Recipe.FindRecipes();
  				}
-@@ -620,10 +_,13 @@
+@@ -620,27 +_,32 @@
  			Player player = Main.player[Main.myPlayer];
  			if (inv[slot].type > 0)
  			{
@@ -79,19 +81,24 @@
  					{
  						return;
  					}
-@@ -633,6 +_,7 @@
+ 					if (player.SellItem(inv[slot].value, inv[slot].stack))
+ 					{
+-						chest.AddShop(inv[slot]);
++						int soldItemIndex = chest.AddShop(inv[slot]);
  						inv[slot].SetDefaults(0, false);
  						Main.PlaySound(18, -1, -1, 1, 1f, 0f);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						return;
  					}
  					if (inv[slot].value == 0)
-@@ -641,6 +_,7 @@
+ 					{
+-						chest.AddShop(inv[slot]);
++						int soldItemIndex = chest.AddShop(inv[slot]);
  						inv[slot].SetDefaults(0, false);
  						Main.PlaySound(7, -1, -1, 1, 1f, 0f);
  						Recipe.FindRecipes();
-+						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]);
++						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						return;
  					}
  				}
