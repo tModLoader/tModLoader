@@ -1,3 +1,4 @@
+using ExampleMod.Items;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -217,6 +218,20 @@ namespace ExampleMod.NPCs
 			if (modSummonersAssociation != null) {
 				shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 				nextSlot++;
+			}
+
+			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList != null)
+			{
+				foreach (var item in ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList)
+				{
+					if (item.IsUnloaded)
+						continue;
+					shop.item[nextSlot].SetDefaults(item.GetID());
+					shop.item[nextSlot].shopCustomPrice = 0;
+					shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
+					nextSlot++;
+					// TODO: Have tModLoader handle index issues.
+				}	
 			}
 		}
 

@@ -296,6 +296,7 @@
 		"AprilFoolsJoke": "April Fools Joke",
 		"DefaultTownNPCName": "No-Name",
 		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
+		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",

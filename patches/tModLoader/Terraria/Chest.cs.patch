@@ -37,6 +37,37 @@
  			}
  			return num;
  		}
+@@ -531,12 +_,12 @@
+ 			}
+ 		}
+ 
+-		public void AddShop(Item newItem)
++		public int AddShop(Item newItem)
+ 		{
+ 			int i = 0;
+ 			while (i < 39)
+ 			{
+-				if (this.item[i] == null || this.item[i].type == 0)
++				if (this.item[i] == null || this.item[i].type == 0 || i == 38) // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
+ 				{
+ 					this.item[i] = newItem.Clone();
+ 					this.item[i].favorited = false;
+@@ -549,7 +_,6 @@
+ 					if (this.item[i].value < 1)
+ 					{
+ 						this.item[i].value = 1;
+-						return;
+ 					}
+ 					break;
+ 				}
+@@ -558,6 +_,7 @@
+ 					i++;
+ 				}
+ 			}
++			return i;
+ 		}
+ 
+ 		public static void SetupTravelShop()
 @@ -882,9 +_,11 @@
  								Main.travelShop[num2++] = 3641;
  								break;

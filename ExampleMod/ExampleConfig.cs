@@ -60,6 +60,21 @@ namespace ExampleMod
 		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
 		public bool DisableVolcanos { get; set; }
 
+		// Watch in action: https://gfycat.com/SickTerribleHoatzin
+		[Label("Example Person free gift list")]
+		[Tooltip("Each player can claim one free item from this list from Example Person\nSell the item back to Example Person to take a new item")] 
+		public List<ItemDefinition> ExamplePersonFreeGiftList { get; set; }
+
+		// Clone logic is required. See ModConfigShowcaseDataTypes.Clone for more info.
+		public override ModConfig Clone()
+		{
+			var clone = (ExampleConfigServer)base.Clone();
+
+			clone.ExamplePersonFreeGiftList = ExamplePersonFreeGiftList?.Select(item=> new ItemDefinition(item.mod, item.name)).ToList();
+
+			return clone;
+		}
+
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
 		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.

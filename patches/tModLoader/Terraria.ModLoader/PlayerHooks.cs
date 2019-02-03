@@ -1098,5 +1098,70 @@ namespace Terraria.ModLoader
 			if (netMethods == 1)
 				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
 		}
+
+		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
+
+		public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			foreach (int index in HookPostSellItem.arr) {
+				player.modPlayers[index].PostSellItem(npc, shopInventory, item);
+			}
+		}
+
+		private static HookList HookCanSellItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanSellItem);
+
+		// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
+		public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			foreach (int index in HookCanSellItem.arr) {
+				if (!player.modPlayers[index].CanSellItem(npc, shopInventory, item))
+					return false;
+			}
+			return true;
+		}
+
+		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
+
+		public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			foreach (int index in HookPostBuyItem.arr) {
+				player.modPlayers[index].PostBuyItem(npc, shopInventory, item);
+			}
+		}
+
+		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
+
+		public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			foreach (int index in HookCanBuyItem.arr) {
+				if (!player.modPlayers[index].CanBuyItem(npc, shopInventory, item))
+					return false;
+			}
+			return true;
+		}
+
+		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
+		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
+
+		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref bool removeDebuffs, ref string chat) {
+			foreach (int index in HookModifyNurseHeal.arr) {
+				if (!p.modPlayers[index].ModifyNurseHeal(npc, ref health, ref removeDebuffs, ref chat))
+					return false;
+			}
+			return true;
+		}
+
+		private delegate void DelegateModifyNursePrice(NPC npc, int health, bool removeDebuffs, ref int price);
+		private static HookList HookModifyNursePrice = AddHook<DelegateModifyNursePrice>(p => p.ModifyNursePrice);
+
+		public static void ModifyNursePrice(Player p, NPC npc, int health, bool removeDebuffs, ref int price) {
+			foreach (int index in HookModifyNursePrice.arr) {
+				p.modPlayers[index].ModifyNursePrice(npc, health, removeDebuffs, ref price);
+			}
+		}
+
+		private static HookList HookPostNurseHeal = AddHook<Action<NPC, int, bool, int>>(p => p.PostNurseHeal);
+
+		public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price) {
+			foreach (int index in HookPostNurseHeal.arr) {
+				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
+			}
+		}
 	}
 }

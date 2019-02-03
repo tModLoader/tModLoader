@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -12,6 +13,7 @@ namespace ExampleMod.Items
 	{
 		public string originalOwner;
 		public byte awesome;
+		public bool examplePersonFreeGift;
 
 		private static readonly string saveOriginalOwner;
 
@@ -26,6 +28,7 @@ namespace ExampleMod.Items
 			ExampleInstancedGlobalItem myClone = (ExampleInstancedGlobalItem)base.Clone(item, itemClone);
 			myClone.originalOwner = originalOwner;
 			myClone.awesome = awesome;
+			myClone.examplePersonFreeGift = examplePersonFreeGift;
 			return myClone;
 		}
 
@@ -60,6 +63,11 @@ namespace ExampleMod.Items
 					}
 				}*/
 			}
+			if (examplePersonFreeGift) {
+				tooltips.Add(new TooltipLine(mod, "FreeGift", "This is a free gift from ExampleServerConfig") {
+					overrideColor = Color.Magenta
+				});
+			}
 			if (ExampleMod.exampleClientConfig.ShowModOriginTooltip)
 			{
 				foreach (TooltipLine line3 in tooltips)
@@ -74,15 +82,17 @@ namespace ExampleMod.Items
 
 		public override void Load(Item item, TagCompound tag) {
 			originalOwner = tag.GetString("originalOwner");
+			examplePersonFreeGift = tag.GetBool(nameof(examplePersonFreeGift));
 		}
 
 		public override bool NeedsSaving(Item item) {
-			return originalOwner.Length > 0;
+			return originalOwner.Length > 0 || examplePersonFreeGift;
 		}
 
 		public override TagCompound Save(Item item) {
 			return new TagCompound {
-				{"originalOwner", originalOwner}
+				{"originalOwner", originalOwner},
+				{nameof(examplePersonFreeGift), examplePersonFreeGift},
 			};
 		}
 
@@ -95,11 +105,13 @@ namespace ExampleMod.Items
 		public override void NetSend(Item item, BinaryWriter writer) {
 			writer.Write(originalOwner);
 			writer.Write(awesome);
+			writer.Write(examplePersonFreeGift);
 		}
 
 		public override void NetReceive(Item item, BinaryReader reader) {
 			originalOwner = reader.ReadString();
 			awesome = reader.ReadByte();
+			examplePersonFreeGift = reader.ReadBoolean();
 		}
 	}
 }

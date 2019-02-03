@@ -30,12 +30,18 @@ namespace Terraria.ModLoader.Config.UI
 
 		private float itemScale = 0.5f;
 
-		public ItemDefinitionElement(PropertyFieldWrapper memberInfo, object item, IList<ItemDefinition> array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		public ItemDefinitionElement(PropertyFieldWrapper memberInfo, object item, IList<ItemDefinition> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			Height.Set(30f, 0f);
 
 			_GetValue = () => DefaultGetValue();
 			_SetValue = (ItemDefinition value) => DefaultSetValue(value);
+
+			if (array != null) {
+				_GetValue = () => array[index];
+				_SetValue = (ItemDefinition value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
+				_TextDisplayFunction = () => index + 1 + ": ";
+			}
 
 			//itemChoice = new UIModConfigItemDefinitionChoice(_GetValue()?.GetID() ?? 0, 0.5f);
 			itemChoice = new ItemDefinitionOptionElement(_GetValue(), 0.5f);

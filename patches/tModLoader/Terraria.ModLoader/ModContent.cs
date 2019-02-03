@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
 
-		private static void SplitName(string name, out string domain, out string subName) {
+		public static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
 			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);

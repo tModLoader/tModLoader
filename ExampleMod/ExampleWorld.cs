@@ -47,7 +47,7 @@ namespace ExampleMod
 			}
 
 			return new TagCompound {
-				{"downed", downed}
+				["downed"] = downed,
 			};
 		}
 

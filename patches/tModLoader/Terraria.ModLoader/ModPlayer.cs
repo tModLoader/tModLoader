@@ -815,5 +815,77 @@ namespace Terraria.ModLoader
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
+
+		/// <summary>
+		/// Called whenever the player sells an item to an NPC.
+		/// </summary>
+		/// <param name="vendor">The NPC vendor.</param>
+		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="item">The item the player just sold.</param>
+		public virtual void PostSellItem(NPC vendor, Item[] shopInventory, Item item) {
+		}
+
+		/// <summary>
+		/// Return false to prevent a transaction. Called before the transaction.
+		/// </summary>
+		/// <param name="vendor">The NPC vendor.</param>
+		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="item">The item the player is attempting to sell.</param>
+		/// <returns></returns>
+		public virtual bool CanSellItem(NPC vendor, Item[] shopInventory, Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Called whenever the player buys an item from an NPC.
+		/// </summary>
+		/// <param name="vendor">The NPC vendor.</param>
+		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="item">The item the player just purchased.</param>
+		public virtual void PostBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+		}
+
+		/// <summary>
+		/// Return false to prevent a transaction. Called before the transaction.
+		/// </summary>
+		/// <param name="vendor">The NPC vendor.</param>
+		/// <param name="shopInventory">The current inventory of the NPC shop.</param>
+		/// <param name="item">The item the player is attempting to buy.</param>
+		/// <returns></returns>
+		public virtual bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
+		/// </summary>
+		/// <param name="nurse">The Nurse NPC instance.</param>
+		/// <param name="health">How much health the player gains.</param>
+		/// <param name="removeDebuffs">If set to false, debuffs will not be healed.</param>
+		/// <param name="chatText">Set this to the Nurse chat text that will display if healing is prevented.</param>
+		/// <returns>True by default. False to prevent nurse services.</returns>
+		public virtual bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText) {
+			return true;
+		}
+
+		/// <summary>
+		/// Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See https://terraria.gamepedia.com/Nurse for the default pricing.
+		/// </summary>
+		/// <param name="nurse">The Nurse NPC instance.</param>
+		/// <param name="health">How much health the player gains.</param>
+		/// <param name="removeDebuffs">Whether or not debuffs will be healed.</param>
+		/// <param name="price"></param>
+		public virtual void ModifyNursePrice(NPC nurse, int health, bool removeDebuffs, ref int price) {
+		}
+
+		/// <summary>
+		/// Called on the Client after the player heals themselves with the Nurse NPC.
+		/// </summary>
+		/// <param name="nurse">The Nurse npc providing the heal.</param>
+		/// <param name="health">How much health the player gained.</param>
+		/// /// <param name="removeDebuffs">Whether or not debuffs were healed.</param>
+		/// <param name="price">The price the player paid in copper coins.</param>
+		public virtual void PostNurseHeal(NPC nurse, int health, bool removeDebuffs, int price) {
+		}
 	}
 }

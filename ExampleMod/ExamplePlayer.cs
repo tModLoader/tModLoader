@@ -1,9 +1,11 @@
+using ExampleMod.Items;
 using ExampleMod.NPCs.PuritySpirit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -47,6 +49,7 @@ namespace ExampleMod
 		public bool blockyForceVanity;
 		public bool blockyPower;
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
+		public bool examplePersonGiftReceived;
 
 		private const int maxExampleLifeFruits = 10;
 		public int exampleLifeFruits;
@@ -127,6 +130,7 @@ namespace ExampleMod
 				{"score", score},
 				{"exampleLifeFruits", exampleLifeFruits},
 				{"nonStopParty", nonStopParty},
+				{nameof(examplePersonGiftReceived), examplePersonGiftReceived},
 			};
 			//note that C# 6.0 supports indexer initializers
 			//return new TagCompound {
@@ -139,6 +143,7 @@ namespace ExampleMod
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
 			nonStopParty = tag.GetBool("nonStopParty");
+			examplePersonGiftReceived = tag.GetBool(nameof(examplePersonGiftReceived));
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -643,6 +648,43 @@ namespace ExampleMod
 			layers.Insert(0, MiscEffectsBack);
 			MiscEffects.visible = true;
 			layers.Add(MiscEffects);
+		}
+
+		public override bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText)
+		{
+			if(nurse.life != nurse.lifeMax)
+			{
+				chatText = "Sorry, I'm hurt, you'll have to wait. Ouch!";
+				return false;
+			}
+			return base.ModifyNurseHeal(nurse, ref health, ref removeDebuffs, ref chatText);
+		}
+
+		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
+		{
+			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
+			if (vendor.type == mod.NPCType("Example Person") && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
+			{
+				examplePersonGiftReceived = true;
+				foreach (var shopItem in shop)
+				{
+					if(!shopItem.IsAir && shopItem.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
+					{
+						shopItem.TurnToAir();
+					}
+				}
+			}
+		}
+
+		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
+		{
+			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
+			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
+			{
+				examplePersonGiftReceived = false;
+				item.TurnToAir();
+				Main.NewText("You are returning your free gift? Come back in a second and I'll show you the free gifts again.");
+			}
 		}
 	}
 }
