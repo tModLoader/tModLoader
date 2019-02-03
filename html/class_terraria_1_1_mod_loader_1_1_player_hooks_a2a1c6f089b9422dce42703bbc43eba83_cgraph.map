@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.PostBuyItem" name="Terraria.ModLoader.PlayerHooks.PostBuyItem">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ad2265d288014df8fdb4e13ba4dcac027" title="Called whenever the player buys an item from an NPC. " alt="" coords="230,5,434,46"/>
+</map>

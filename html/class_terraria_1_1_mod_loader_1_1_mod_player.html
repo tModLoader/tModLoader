@@ -144,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aee2d81b9b20a2b470790837e47ae12ef"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aee2d81b9b20a2b470790837e47ae12ef">CanBeHitByProjectile</a> (Projectile proj)</td></tr>
 <tr class="memdesc:aee2d81b9b20a2b470790837e47ae12ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the given hostile projectile can hit this player. Return false to block this player from being hit. Returns true by default.  <a href="#aee2d81b9b20a2b470790837e47ae12ef">More...</a><br /></td></tr>
 <tr class="separator:aee2d81b9b20a2b470790837e47ae12ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe56f8028f1b08008b42cfb2ec63eaff"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afe56f8028f1b08008b42cfb2ec63eaff">CanBuyItem</a> (NPC vendor, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] shopInventory, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:afe56f8028f1b08008b42cfb2ec63eaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return false to prevent a transaction. Called before the transaction.  <a href="#afe56f8028f1b08008b42cfb2ec63eaff">More...</a><br /></td></tr>
+<tr class="separator:afe56f8028f1b08008b42cfb2ec63eaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab04c85a24421eda597731c46fbc2f997"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab04c85a24421eda597731c46fbc2f997">CanHitNPC</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, NPC target)</td></tr>
 <tr class="memdesc:ab04c85a24421eda597731c46fbc2f997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.  <a href="#ab04c85a24421eda597731c46fbc2f997">More...</a><br /></td></tr>
 <tr class="separator:ab04c85a24421eda597731c46fbc2f997"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4d308298d0ec916701fc5864f2bce07"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ae4d308298d0ec916701fc5864f2bce07">CanHitPvpWithProj</a> (Projectile proj, Player target)</td></tr>
 <tr class="memdesc:ae4d308298d0ec916701fc5864f2bce07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.  <a href="#ae4d308298d0ec916701fc5864f2bce07">More...</a><br /></td></tr>
 <tr class="separator:ae4d308298d0ec916701fc5864f2bce07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af67512d11fa6101caf75c4e7acd7636f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af67512d11fa6101caf75c4e7acd7636f">CanSellItem</a> (NPC vendor, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] shopInventory, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:af67512d11fa6101caf75c4e7acd7636f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return false to prevent a transaction. Called before the transaction.  <a href="#af67512d11fa6101caf75c4e7acd7636f">More...</a><br /></td></tr>
+<tr class="separator:af67512d11fa6101caf75c4e7acd7636f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbe40ee2401b0018b096cc85c3ebb3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a0dbe40ee2401b0018b096cc85c3ebb3b">CatchFish</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> fishingRod, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)</td></tr>
 <tr class="memdesc:a0dbe40ee2401b0018b096cc85c3ebb3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).  <a href="#a0dbe40ee2401b0018b096cc85c3ebb3b">More...</a><br /></td></tr>
 <tr class="separator:a0dbe40ee2401b0018b096cc85c3ebb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,6 +255,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a87773cecdc388fd4df42596611cc2b7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a87773cecdc388fd4df42596611cc2b7b">ModifyHitPvpWithProj</a> (Projectile proj, Player target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a87773cecdc388fd4df42596611cc2b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a projectile created by this player does to an opponent player.  <a href="#a87773cecdc388fd4df42596611cc2b7b">More...</a><br /></td></tr>
 <tr class="separator:a87773cecdc388fd4df42596611cc2b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e6f26bb243335170ad46bb619e9edd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a74e6f26bb243335170ad46bb619e9edd">ModifyNurseHeal</a> (NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText)</td></tr>
+<tr class="memdesc:a74e6f26bb243335170ad46bb619e9edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.  <a href="#a74e6f26bb243335170ad46bb619e9edd">More...</a><br /></td></tr>
+<tr class="separator:a74e6f26bb243335170ad46bb619e9edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b1c79709291e66c69796bb6a3e75db3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a8b1c79709291e66c69796bb6a3e75db3">ModifyNursePrice</a> (NPC nurse, int health, bool removeDebuffs, ref int price)</td></tr>
+<tr class="memdesc:a8b1c79709291e66c69796bb6a3e75db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See <a href="https://terraria.gamepedia.com/Nurse">https://terraria.gamepedia.com/Nurse</a> for the default pricing.  <a href="#a8b1c79709291e66c69796bb6a3e75db3">More...</a><br /></td></tr>
+<tr class="separator:a8b1c79709291e66c69796bb6a3e75db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab90eb3f01a1df40684e1afdc6e5b9cbc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc">ModifyScreenPosition</a> ()</td></tr>
 <tr class="memdesc:ab90eb3f01a1df40684e1afdc6e5b9cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.  <a href="#ab90eb3f01a1df40684e1afdc6e5b9cbc">More...</a><br /></td></tr>
 <tr class="separator:ab90eb3f01a1df40684e1afdc6e5b9cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,15 +306,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a03d8b7abc65d7eff11f47c2c7f60b1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a6a03d8b7abc65d7eff11f47c2c7f60b1">PlayerDisconnect</a> (Player <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f">player</a>)</td></tr>
 <tr class="memdesc:a6a03d8b7abc65d7eff11f47c2c7f60b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a player disconnects.  <a href="#a6a03d8b7abc65d7eff11f47c2c7f60b1">More...</a><br /></td></tr>
 <tr class="separator:a6a03d8b7abc65d7eff11f47c2c7f60b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2265d288014df8fdb4e13ba4dcac027"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad2265d288014df8fdb4e13ba4dcac027">PostBuyItem</a> (NPC vendor, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] shopInventory, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:ad2265d288014df8fdb4e13ba4dcac027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player buys an item from an NPC.  <a href="#ad2265d288014df8fdb4e13ba4dcac027">More...</a><br /></td></tr>
+<tr class="separator:ad2265d288014df8fdb4e13ba4dcac027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229ce725992fed1702e8f48865dfd024"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a229ce725992fed1702e8f48865dfd024">PostHurt</a> (bool pvp, bool quiet, double damage, int hitDirection, bool crit)</td></tr>
 <tr class="memdesc:a229ce725992fed1702e8f48865dfd024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when the player takes damage.  <a href="#a229ce725992fed1702e8f48865dfd024">More...</a><br /></td></tr>
 <tr class="separator:a229ce725992fed1702e8f48865dfd024"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377f8c0e0cf75d64942715bc8c1d8984"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a377f8c0e0cf75d64942715bc8c1d8984">PostItemCheck</a> ()</td></tr>
 <tr class="memdesc:a377f8c0e0cf75d64942715bc8c1d8984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do anything after the update code for the player's held item is run. Hooks for the middle of the held item update code have more specific names in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item...">ModItem</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>.  <a href="#a377f8c0e0cf75d64942715bc8c1d8984">More...</a><br /></td></tr>
 <tr class="separator:a377f8c0e0cf75d64942715bc8c1d8984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45132e5966e1f6c5761833bd34c238e0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a45132e5966e1f6c5761833bd34c238e0">PostNurseHeal</a> (NPC nurse, int health, bool removeDebuffs, int price)</td></tr>
+<tr class="memdesc:a45132e5966e1f6c5761833bd34c238e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Client after the player heals themselves with the Nurse NPC.  <a href="#a45132e5966e1f6c5761833bd34c238e0">More...</a><br /></td></tr>
+<tr class="separator:a45132e5966e1f6c5761833bd34c238e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ea772956ff46506cbb6aea303a7d041"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041">PostSavePlayer</a> ()</td></tr>
 <tr class="memdesc:a5ea772956ff46506cbb6aea303a7d041"><td class="mdescLeft">&#160;</td><td class="mdescRight">PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa96288c452742dba5491807fbf69feea" title="Allows you to save custom data for this player. Returns null by default. ">ModPlayer.Save</a>). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.  <a href="#a5ea772956ff46506cbb6aea303a7d041">More...</a><br /></td></tr>
 <tr class="separator:a5ea772956ff46506cbb6aea303a7d041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329c7efd1a2ef1b568a22aaf0f1de3ff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a329c7efd1a2ef1b568a22aaf0f1de3ff">PostSellItem</a> (NPC vendor, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[] shopInventory, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:a329c7efd1a2ef1b568a22aaf0f1de3ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player sells an item to an NPC.  <a href="#a329c7efd1a2ef1b568a22aaf0f1de3ff">More...</a><br /></td></tr>
+<tr class="separator:a329c7efd1a2ef1b568a22aaf0f1de3ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e8c6d27d2f271598d295fc60f3fea6c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a1e8c6d27d2f271598d295fc60f3fea6c">PostUpdate</a> ()</td></tr>
 <tr class="memdesc:a1e8c6d27d2f271598d295fc60f3fea6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called at the very end of the Player.Update method. Final general update tasks can be placed here.  <a href="#a1e8c6d27d2f271598d295fc60f3fea6c">More...</a><br /></td></tr>
 <tr class="separator:a1e8c6d27d2f271598d295fc60f3fea6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -608,6 +629,73 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;                                                                  {</div><div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="afe56f8028f1b08008b42cfb2ec63eaff"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModPlayer.CanBuyItem </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>vendor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[]&#160;</td>
+          <td class="paramname"><em>shopInventory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return false to prevent a transaction. Called before the transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vendor</td><td>The NPC vendor.</td></tr>
+    <tr><td class="paramname">shopInventory</td><td>The current inventory of the NPC shop.</td></tr>
+    <tr><td class="paramname">item</td><td>The item the player is attempting to buy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00855">855</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01131">Terraria.ModLoader.PlayerHooks.CanBuyItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;                                                                                    {</div><div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_afe56f8028f1b08008b42cfb2ec63eaff_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_afe56f8028f1b08008b42cfb2ec63eaff_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_afe56f8028f1b08008b42cfb2ec63eaff_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_afe56f8028f1b08008b42cfb2ec63eaff_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa05fedcc6e03ca4712b36e0e51e45b0d" title="Terraria.ModLoader.Player\lHooks.CanBuyItem" alt="" coords="259,5,434,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="ab04c85a24421eda597731c46fbc2f997"></a>
 <div class="memitem">
 <div class="memproto">
@@ -790,6 +878,73 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00616">616</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;                                                                              {</div><div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af67512d11fa6101caf75c4e7acd7636f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModPlayer.CanSellItem </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>vendor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[]&#160;</td>
+          <td class="paramname"><em>shopInventory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return false to prevent a transaction. Called before the transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vendor</td><td>The NPC vendor.</td></tr>
+    <tr><td class="paramname">shopInventory</td><td>The current inventory of the NPC shop.</td></tr>
+    <tr><td class="paramname">item</td><td>The item the player is attempting to sell.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00835">835</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01113">Terraria.ModLoader.PlayerHooks.CanSellItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;                                                                                     {</div><div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_af67512d11fa6101caf75c4e7acd7636f_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_af67512d11fa6101caf75c4e7acd7636f_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_af67512d11fa6101caf75c4e7acd7636f_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_af67512d11fa6101caf75c4e7acd7636f_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa9580edb0a6333721fc0724179f3e6f4" title="Terraria.ModLoader.Player\lHooks.CanSellItem" alt="" coords="259,5,434,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a0dbe40ee2401b0018b096cc85c3ebb3b"></a>
@@ -1856,11 +2011,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00924">Terraria.ModLoader.PlayerHooks.ModifyDrawInfo()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;                                                                        {</div><div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a3cde8f8bdd569e9fe5aca8b7e30c7185_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a3cde8f8bdd569e9fe5aca8b7e30c7185_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_a3cde8f8bdd569e9fe5aca8b7e30c7185_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a3cde8f8bdd569e9fe5aca8b7e30c7185_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#aa9f4b92af68053999850d32e7234334e" title="Terraria.ModLoader.Player\lHooks.ModifyDrawInfo" alt="" coords="259,5,434,46"/>
@@ -2263,6 +2418,125 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00627">627</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;                                                                                                                {</div><div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a74e6f26bb243335170ad46bb619e9edd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModPlayer.ModifyNurseHeal </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>nurse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>health</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>removeDebuffs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref string&#160;</td>
+          <td class="paramname"><em>chatText</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nurse</td><td>The Nurse NPC instance.</td></tr>
+    <tr><td class="paramname">health</td><td>How much health the player gains.</td></tr>
+    <tr><td class="paramname">removeDebuffs</td><td>If set to false, debuffs will not be healed.</td></tr>
+    <tr><td class="paramname">chatText</td><td>Set this to the Nurse chat text that will display if healing is prevented.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True by default. False to prevent nurse services.</dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00867">867</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;                                                                                                                    {</div><div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8b1c79709291e66c69796bb6a3e75db3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.ModifyNursePrice </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>nurse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>health</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>removeDebuffs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>price</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See <a href="https://terraria.gamepedia.com/Nurse">https://terraria.gamepedia.com/Nurse</a> for the default pricing. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nurse</td><td>The Nurse NPC instance.</td></tr>
+    <tr><td class="paramname">health</td><td>How much health the player gains.</td></tr>
+    <tr><td class="paramname">removeDebuffs</td><td>Whether or not debuffs will be healed.</td></tr>
+    <tr><td class="paramname">price</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00878">878</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;                                                                                                       {</div><div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab90eb3f01a1df40684e1afdc6e5b9cbc"></a>
@@ -2948,6 +3222,72 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;                                                            {</div><div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="ad2265d288014df8fdb4e13ba4dcac027"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.PostBuyItem </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>vendor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[]&#160;</td>
+          <td class="paramname"><em>shopInventory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever the player buys an item from an NPC. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vendor</td><td>The NPC vendor.</td></tr>
+    <tr><td class="paramname">shopInventory</td><td>The current inventory of the NPC shop.</td></tr>
+    <tr><td class="paramname">item</td><td>The item the player just purchased.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00845">845</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01123">Terraria.ModLoader.PlayerHooks.PostBuyItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;                                                                                     {</div><div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_ad2265d288014df8fdb4e13ba4dcac027_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_ad2265d288014df8fdb4e13ba4dcac027_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_ad2265d288014df8fdb4e13ba4dcac027_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_ad2265d288014df8fdb4e13ba4dcac027_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a2a1c6f089b9422dce42703bbc43eba83" title="Terraria.ModLoader.Player\lHooks.PostBuyItem" alt="" coords="259,5,434,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a229ce725992fed1702e8f48865dfd024"></a>
 <div class="memitem">
 <div class="memproto">
@@ -3041,6 +3381,84 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                                            {</div><div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a45132e5966e1f6c5761833bd34c238e0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.PostNurseHeal </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>nurse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>health</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>removeDebuffs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>price</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called on the Client after the player heals themselves with the Nurse NPC. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nurse</td><td>The Nurse npc providing the heal.</td></tr>
+    <tr><td class="paramname">health</td><td>How much health the player gained.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>/// </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">removeDebuffs</td><td>Whether or not debuffs were healed.</td></tr>
+    <tr><td class="paramname">price</td><td>The price the player paid in copper coins.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00888">888</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01161">Terraria.ModLoader.PlayerHooks.PostNurseHeal()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;                                                                                                {</div><div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a45132e5966e1f6c5761833bd34c238e0_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a45132e5966e1f6c5761833bd34c238e0_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_a45132e5966e1f6c5761833bd34c238e0_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a45132e5966e1f6c5761833bd34c238e0_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a2bad42549eaee572bedb5096810b7c29" title="Terraria.ModLoader.Player\lHooks.PostNurseHeal" alt="" coords="259,5,434,46"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a5ea772956ff46506cbb6aea303a7d041"></a>
 <div class="memitem">
 <div class="memproto">
@@ -3066,6 +3484,72 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00139">139</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                                             {</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a329c7efd1a2ef1b568a22aaf0f1de3ff"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.PostSellItem </td>
+          <td>(</td>
+          <td class="paramtype">NPC&#160;</td>
+          <td class="paramname"><em>vendor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>[]&#160;</td>
+          <td class="paramname"><em>shopInventory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever the player sells an item to an NPC. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vendor</td><td>The NPC vendor.</td></tr>
+    <tr><td class="paramname">shopInventory</td><td>The current inventory of the NPC shop.</td></tr>
+    <tr><td class="paramname">item</td><td>The item the player just sold.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_player_8cs_source.html#l00825">825</a> of file <a class="el" href="_mod_player_8cs_source.html">ModPlayer.cs</a>.</p>
+
+<p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l01104">Terraria.ModLoader.PlayerHooks.PostSellItem()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;                                                                                      {</div><div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_a329c7efd1a2ef1b568a22aaf0f1de3ff_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_a329c7efd1a2ef1b568a22aaf0f1de3ff_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_mod_player_a329c7efd1a2ef1b568a22aaf0f1de3ff_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_a329c7efd1a2ef1b568a22aaf0f1de3ff_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a745e3f68b49c2d49c9389b5cea2ecf19" title="Terraria.ModLoader.Player\lHooks.PostSellItem" alt="" coords="259,5,434,46"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a1e8c6d27d2f271598d295fc60f3fea6c"></a>
@@ -3603,11 +4087,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00262">Terraria.ModLoader.PlayerHooks.ReceiveCustomBiomes()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                                                     {</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_ac9479ae814101a001a9a8b8486a34f09_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_ac9479ae814101a001a9a8b8486a34f09_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_ac9479ae814101a001a9a8b8486a34f09_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_ac9479ae814101a001a9a8b8486a34f09_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a8f2a717cebd8bc342596b7ac3c2d1669" title="Terraria.ModLoader.Player\lHooks.ReceiveCustomBiomes" alt="" coords="259,5,461,46"/>
@@ -3740,11 +4224,11 @@ Properties</h2></td></tr>
 
 <p>Referenced by <a class="el" href="_player_hooks_8cs_source.html#l00243">Terraria.ModLoader.PlayerHooks.SendCustomBiomes()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                                                                  {</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_mod_player_ad4d50f250fda2b3df2e45ef78c85013d_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_mod_player_ad4d50f250fda2b3df2e45ef78c85013d_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_mod_player_ad4d50f250fda2b3df2e45ef78c85013d_icgraph" id="class_terraria_1_1_mod_loader_1_1_mod_player_ad4d50f250fda2b3df2e45ef78c85013d_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#ae4993237f10af04a07dc1fddac22f7fb" title="Terraria.ModLoader.Player\lHooks.SendCustomBiomes" alt="" coords="259,5,443,46"/>
