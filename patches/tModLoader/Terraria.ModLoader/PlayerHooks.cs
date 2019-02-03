@@ -1135,23 +1135,32 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static HookList HookPostNurseHeal = AddHook<Action<NPC, int, int>>(p => p.PostNurseHeal);
+		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
+		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
-		public static void PostNurseHeal(Player player, NPC npc, int health, int price) {
-			foreach (int index in HookPostNurseHeal.arr) {
-				player.modPlayers[index].PostNurseHeal(npc, health, price);
+		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref bool removeDebuffs, ref string chat) {
+			foreach (int index in HookModifyNurseHeal.arr) {
+				if (!p.modPlayers[index].ModifyNurseHeal(npc, ref health, ref removeDebuffs, ref chat))
+					return false;
+			}
+			return true;
+		}
+
+		private delegate void DelegateModifyNursePrice(NPC npc, int health, bool removeDebuffs, ref int price);
+		private static HookList HookModifyNursePrice = AddHook<DelegateModifyNursePrice>(p => p.ModifyNursePrice);
+
+		public static void ModifyNursePrice(Player p, NPC npc, int health, bool removeDebuffs, ref int price) {
+			foreach (int index in HookModifyNursePrice.arr) {
+				p.modPlayers[index].ModifyNursePrice(npc, health, removeDebuffs, ref price);
 			}
 		}
 
-		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref int price, ref bool removeDebuffs);
-		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
+		private static HookList HookPostNurseHeal = AddHook<Action<NPC, int, bool, int>>(p => p.PostNurseHeal);
 
-		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref int price, ref bool removeDebuffs) {
-			foreach (int index in HookModifyNurseHeal.arr) {
-				if (!p.modPlayers[index].ModifyNurseHeal(npc, ref health, ref price, ref removeDebuffs))
-					return false;
+		public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price) {
+			foreach (int index in HookPostNurseHeal.arr) {
+				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
 			}
-			return false;
 		}
 	}
 }

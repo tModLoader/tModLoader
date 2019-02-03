@@ -646,7 +646,17 @@ namespace ExampleMod
 			MiscEffects.visible = true;
 			layers.Add(MiscEffects);
 		}
-		
+
+		public override bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText)
+		{
+			if(nurse.life != nurse.lifeMax)
+			{
+				chatText = "Sorry, I'm hurt, you'll have to wait. Ouch!";
+				return false;
+			}
+			return base.ModifyNurseHeal(nurse, ref health, ref removeDebuffs, ref chatText);
+		}
+
 		public override bool CanBuyItem(NPC vendor, Item[] shop, Item item) {
 			return !item.GetGlobalItem<ExampleInstancedGlobalItem>().outOfStock;
 		}

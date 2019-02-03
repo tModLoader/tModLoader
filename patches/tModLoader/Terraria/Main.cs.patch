@@ -3595,7 +3595,7 @@
  						}
  						Main.spriteBatch.Draw(Main.dustTexture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), color5, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  						if (dust.color != default(Microsoft.Xna.Framework.Color))
-@@ -34287,7 +_,7 @@
+@@ -34287,11 +_,15 @@
  			for (int j = 0; j < 22; j++)
  			{
  				int num6 = Main.player[Main.myPlayer].buffType[j];
@@ -3604,6 +3604,22 @@
  				{
  					num5 += 1000;
  				}
+ 			}
++			int health = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
++			bool removeDebuffs = true;
++			string reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
++			bool canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
+ 			if (Main.player[Main.myPlayer].sign > -1)
+ 			{
+ 				if (Main.editSign)
+@@ -34485,6 +_,7 @@
+ 						num17 = 1;
+ 					}
+ 				}
++				PlayerHooks.ModifyNursePrice(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC], health, removeDebuffs, ref num17);
+ 				if (num17 < 0)
+ 				{
+ 					num17 = 0;
 @@ -34584,6 +_,7 @@
  					focusText = Lang.inter[54].Value + " (" + text2 + ")";
  				}
@@ -3628,12 +3644,11 @@
  								Main.PlaySound(12, -1, -1, 1, 1f, 0f);
  								if (num5 > 0)
  								{
--									if (Main.player[Main.myPlayer].BuyItem(num5, -1))
-+									int health = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
-+									bool removeDebuffs = true;
-+									if (PlayerHooks.ModifyNurseHeal(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC],
-+											ref health, ref num5, ref removeDebuffs)
-+										&& Main.player[Main.myPlayer].BuyItem(num5, -1))
++									if (!canHeal) {
++										Main.npcChatText = reason;
++										return;
++									}
+ 									if (Main.player[Main.myPlayer].BuyItem(num5, -1))
  									{
  										AchievementsHelper.HandleNurseService(num5);
  										Main.PlaySound(SoundID.Item4, -1, -1);
@@ -3660,7 +3675,7 @@
  											}
  										}
 +										}
-+										PlayerHooks.PostNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], health, num5);
++										PlayerHooks.PostNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, num5);
  										return;
  									}
  									int num25 = Main.rand.Next(3);
