@@ -1,5 +1,4 @@
 using ExampleMod.Items;
-using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -664,12 +663,12 @@ namespace ExampleMod
 		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
 		{
 			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
-			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
+			if (vendor.type == mod.NPCType("Example Person") && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
 			{
 				examplePersonGiftReceived = true;
 				foreach (var shopItem in shop)
 				{
-					if(!shopItem.IsAir && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == shopItem.type) ?? false))
+					if(!shopItem.IsAir && shopItem.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
 					{
 						shopItem.TurnToAir();
 					}
@@ -683,6 +682,7 @@ namespace ExampleMod
 			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
 			{
 				examplePersonGiftReceived = false;
+				item.TurnToAir();
 				Main.NewText("You are returning your free gift? Come back in a second and I'll show you the free gifts again.");
 			}
 		}

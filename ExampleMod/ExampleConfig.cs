@@ -60,11 +60,6 @@ namespace ExampleMod
 		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
 		public bool DisableVolcanos { get; set; }
 		
-		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
-		[Label("Enable Stock/Inflation")]
-		[Tooltip("Demonstrates CanBuyItem hooks")]
-		public bool EnableStockAndInflation { get; set; }
-
 		[Label("Example Person free gift list")]
 		[Tooltip("Each player can claim one free item from this list from Example Person")]
 		// TODO: Fix PostSave to make this simpler.

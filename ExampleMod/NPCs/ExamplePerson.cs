@@ -1,3 +1,4 @@
+using ExampleMod.Items;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -227,6 +228,7 @@ namespace ExampleMod.NPCs
 						continue;
 					shop.item[nextSlot].SetDefaults(item.GetID());
 					shop.item[nextSlot].shopCustomPrice = 0;
+					shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 					nextSlot++;
 					// TODO: Have tModLoader handle index issues.
 				}	

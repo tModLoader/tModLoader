@@ -3607,15 +3607,17 @@
  			}
 +			int health = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
 +			bool removeDebuffs = true;
-+			string reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+			bool canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
++			string reason = "";
++			bool canHeal = true;
  			if (Main.player[Main.myPlayer].sign > -1)
  			{
  				if (Main.editSign)
-@@ -34485,6 +_,7 @@
+@@ -34485,6 +_,9 @@
  						num17 = 1;
  					}
  				}
++				reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
++				canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
 +				PlayerHooks.ModifyNursePrice(player[myPlayer], Main.npc[Main.player[Main.myPlayer].talkNPC], health, removeDebuffs, ref num17);
  				if (num17 < 0)
  				{

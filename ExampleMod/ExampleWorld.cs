@@ -57,28 +57,6 @@ namespace ExampleMod
 			downedPuritySpirit = downed.Contains("puritySpirit");
 		}
 
-		private static string GetNPCSaveKey(int type) {
-			var modNPC = ModContent.GetModNPC(type);
-			return modNPC != null ? modNPC.mod.Name + ":" + modNPC.Name : "Terraria:" + type;
-		}
-
-		private static bool ReadNPCSaveKey(string key, out int type) {
-			ModContent.SplitName(key, out var domain, out var name);
-			if (domain == "Terraria") {
-				type = int.Parse(name);
-				return true;
-			}
-			
-			var modNPC = ModLoader.GetMod(domain)?.GetNPC(name);
-			if (modNPC == null) {
-				type = 0;
-				return false;
-			}
-
-			type = modNPC.npc.type;
-			return true;
-		}
-
 		public override void LoadLegacy(BinaryReader reader) {
 			int loadVersion = reader.ReadInt32();
 			if (loadVersion == 0) {
