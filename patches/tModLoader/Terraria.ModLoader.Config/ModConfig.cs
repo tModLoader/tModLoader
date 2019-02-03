@@ -33,6 +33,7 @@ namespace Terraria.ModLoader.Config
 		}
 
 		// Called after changes have been made. Useful for informing the mod of changes to config.
+		// TODO: Make sure this is always called when new changes take effect, not just save?
 		public virtual void PostSave()
 		{
 		}

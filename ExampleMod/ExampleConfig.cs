@@ -59,10 +59,10 @@ namespace ExampleMod
 		[Label("Disable Volcanos")]
 		// Our game logic can handle toggling this setting in-game, so you'll notice we do NOT decorate this property with ReloadRequired
 		public bool DisableVolcanos { get; set; }
-		
+
+		// Watch in action: https://gfycat.com/SickTerribleHoatzin
 		[Label("Example Person free gift list")]
-		[Tooltip("Each player can claim one free item from this list from Example Person")]
-		// TODO: Fix PostSave to make this simpler.
+		[Tooltip("Each player can claim one free item from this list from Example Person\nSell the item back to Example Person to take a new item")] 
 		public List<ItemDefinition> ExamplePersonFreeGiftList { get; set; }
 
 		// Clone logic is required. See ModConfigShowcaseDataTypes.Clone for more info.
