@@ -285,20 +285,31 @@
  		}
  
  		public static void InitializeItemAnimations()
-@@ -2566,9 +_,10 @@
+@@ -2566,10 +_,20 @@
  					Main._renderTargetMaxSize = 2048;
  					break;
  				case GraphicsProfile.HiDef:
 -					Main.maxScreenW = 4096;
 -					Main.maxScreenH = 4096;
 -					Main._renderTargetMaxSize = 4096;
-+					int hiRes = ModLoader.ModLoader.allowGreaterResolutions ? 8192 : 4096;
-+					Main.maxScreenW = hiRes;
-+					Main.maxScreenH = hiRes;
-+					Main._renderTargetMaxSize = hiRes;
- 					Main.TrySupporting8K();
+-					Main.TrySupporting8K();
++					if(Main.Support4K) 
++					{
++						int hiRes = ModLoader.ModLoader.allowGreaterResolutions ? 8192 : 4096;
++						Main.maxScreenW = hiRes;
++						Main.maxScreenH = hiRes;
++						Main._renderTargetMaxSize = hiRes;
++						Main.TrySupporting8K();
++					}
++					else
++					{
++						Main.maxScreenW = 1920;
++						Main.maxScreenH = 1200;
++						Main._renderTargetMaxSize = 2048;
++					}
  					break;
  			}
+ 			try
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -653,11 +664,10 @@
  			}
  			return result;
  		}
-@@ -7480,17 +_,9 @@
- 			{
+@@ -7481,16 +_,9 @@
  				TexturePackSupport.Enabled = true;
  			}
--			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
+ 			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
 -			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
 -			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
 -			{
@@ -665,11 +675,10 @@
 -			}
 -			if (Main.Support4K && flag)
 -			{
--				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
++			if (GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef))
+ 				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
 -			}
 -			TexturePackSupport.FindTexturePack();
-+			GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
-+				SetGraphicsProfile(GraphicsProfile.HiDef);
 +			TexturePackSupport.FindTexturePacks();
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
