@@ -653,7 +653,17 @@
  			}
  			return result;
  		}
-@@ -7490,7 +_,7 @@
+@@ -7482,15 +_,17 @@
+ 			}
+ 			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
+ 			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
++			/* tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
+ 			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
+ 			{
+ 				flag = false;
+ 			}
++			*/
+ 			if (Main.Support4K && flag)
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
  			}
