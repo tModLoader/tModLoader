@@ -50,6 +50,7 @@ var hierarchy =
       [ "Terraria.ModLoader.TopoSort< T >.SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", null ],
       [ "Terraria.ModLoader.UsageException", "class_terraria_1_1_mod_loader_1_1_usage_exception.html", null ]
     ] ],
+    [ "Terraria.ModLoader.FileAssociationSupport.FileAssociation", "class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html", null ],
     [ "Terraria.ModLoader.IO.TmodFile.FileEntry", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html", null ],
     [ "Terraria.ModLoader.FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", null ],
     [ "Terraria.ModLoader.GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", null ],

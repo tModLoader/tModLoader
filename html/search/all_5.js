@@ -15,8 +15,8 @@ var searchData=
   ['entryiterator',['EntryIterator',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac607e17170d7ec82ebe6da28dddc6f34',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['environment',['Environment',['../namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a0ba29c6a1afacf586b03a26162c72274',1,'Terraria::ModLoader']]],
   ['equals',['Equals',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a832e1e661b161ffae815257ab6df3ee1',1,'Terraria::ModLoader::Config::ItemDefinition']]],
-  ['equiploader',['EquipLoader',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html',1,'Terraria::ModLoader']]],
   ['equiploader',['EquipLoader',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html#a6f29f0695eaea5f40fb00bc6ff462a44',1,'Terraria::ModLoader::EquipLoader']]],
+  ['equiploader',['EquipLoader',['../class_terraria_1_1_mod_loader_1_1_equip_loader.html',1,'Terraria::ModLoader']]],
   ['equiploader_2ecs',['EquipLoader.cs',['../_equip_loader_8cs.html',1,'']]],
   ['equiptexture',['EquipTexture',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html',1,'Terraria::ModLoader']]],
   ['equiptexture_2ecs',['EquipTexture.cs',['../_equip_texture_8cs.html',1,'']]],
@@ -27,6 +27,8 @@ var searchData=
   ['errorlogger_2ecs',['ErrorLogger.cs',['../_error_logger_8cs.html',1,'']]],
   ['event',['Event',['../namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9aa4ecfc70574394990cf17bd83df499f7',1,'Terraria::ModLoader']]],
   ['exception',['Exception',['../class_exception.html',1,'']]],
+  ['executablefilepath',['ExecutableFilePath',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#ac500557878758ca830142a40a8c51d16',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]],
+  ['extension',['Extension',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#a89ce5161cf2e92eb25ffdb2c105b9430',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]],
   ['extractinatoruse',['ExtractinatorUse',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0edc645e49d4ae2ddb75f4fa1df28391',1,'Terraria.ModLoader.GlobalItem.ExtractinatorUse()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a04bffce0cd26c5644210de489b393b41',1,'Terraria.ModLoader.ItemLoader.ExtractinatorUse()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c',1,'Terraria.ModLoader.ModItem.ExtractinatorUse()']]],
   ['eyecolor',['eyeColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a13e369f9cb1938e787e9e6edfba8c570',1,'Terraria.ModLoader.PlayerDrawInfo.eyeColor()'],['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a8fc513ac3ed50f889ead1f97188e47af',1,'Terraria.ModLoader.PlayerHeadDrawInfo.eyeColor()']]],
   ['eyewhitecolor',['eyeWhiteColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#abdd5176dbc5b36dbb28a9916130474a9',1,'Terraria.ModLoader.PlayerDrawInfo.eyeWhiteColor()'],['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a0ed7304fee5d009da6193bc234447003',1,'Terraria.ModLoader.PlayerHeadDrawInfo.eyeWhiteColor()']]]
