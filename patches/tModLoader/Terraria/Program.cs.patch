@@ -82,7 +82,7 @@
  			if (Platform.IsOSX)
  			{
  				Main.OnEngineLoad += delegate
-@@ -226,10 +_,13 @@
+@@ -226,10 +_,14 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
@@ -91,6 +91,7 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
++			FileAssociationSupport.UpdateFileAssociation();
 +#if !WINDOWS
 +			FNAThreading.Init();
 +#endif

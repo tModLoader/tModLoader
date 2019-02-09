@@ -105,7 +105,7 @@
 +				// legacy compatibility, mismatch isn't a problem here
 +				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.tModLoaderVersion < new Version(0, 11))
 +					return;
-+				
++
 +				TileObjectData.FixNewTile();
 +				throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.")
 +				{

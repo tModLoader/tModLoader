@@ -64,7 +64,7 @@
  			}
  		}
  
-@@ -156,6 +_,19 @@
+@@ -156,6 +_,23 @@
  			{
  				LanguageManager.Instance.SetLanguage(text);
  			}
@@ -79,6 +79,10 @@
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(text);
++			}
++
++			if ((text = TryParameter("-install")) != null) {
++				FileAssociationSupport.HandleFileAssociation(text);
 +			}
 +
  			string worldName;

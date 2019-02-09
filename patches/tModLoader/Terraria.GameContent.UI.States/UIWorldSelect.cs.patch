@@ -31,8 +31,8 @@
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
 +					autoMigrateButton.Height.Set(50, 0);
-+					var migrateText = new UIText(!_currentlyMigratingFiles 
-+						? Language.GetText("tModLoader.MigrateWorldsText") 
++					var migrateText = new UIText(!_currentlyMigratingFiles
++						? Language.GetText("tModLoader.MigrateWorldsText")
 +						: Language.GetText("tModLoader.MigratingWorldsText"));
 +
 +					autoMigrateButton.OnClick += (a, b) => {
