@@ -151,6 +151,17 @@ namespace Terraria.ModLoader.UI
 			base.Draw(spriteBatch);
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = this.gotoMenu;
+			if (modHomepageButton.IsMouseHovering) {
+				float x = Main.fontMouseText.MeasureString(url).X;
+				Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+				if (vector.Y > (float)(Main.screenHeight - 30)) {
+					vector.Y = (float)(Main.screenHeight - 30);
+				}
+				if (vector.X > (float)Main.screenWidth - x) {
+					vector.X = (float)(Main.screenWidth - x - 30);
+				}
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, url, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
 		}
 
 		public override void OnActivate() {

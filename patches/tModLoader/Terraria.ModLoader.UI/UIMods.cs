@@ -187,7 +187,7 @@ namespace Terraria.ModLoader.UI
 			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
 				Top = { Pixels = 5 },
 				Left = { Pixels = -160, Percent = 1f },
-				Width = { Pixels = 160 },
+				Width = { Pixels = 120 },
 				Height = { Pixels = 20 }
 			};
 			filterTextBox.OnTextChange += (a, b) => updateNeeded = true;
