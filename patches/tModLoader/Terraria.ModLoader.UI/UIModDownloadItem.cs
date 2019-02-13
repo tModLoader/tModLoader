@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -280,63 +281,12 @@ namespace Terraria.ModLoader.UI
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		// TODO: Delete this. Use UIDownloadMods
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
-			try {
-				if (UIModBrowser.PlatformSupportsTls12) // Needed for downloads from Github
-				{
-					ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
-				}
-				using (WebClient client = new WebClient()) {
-					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
-					Interface.modBrowser.selectedItem = this;
-					Interface.downloadMod.SetDownloading(displayname);
-					Interface.downloadMod.SetCancel(client.CancelAsync);
-					client.DownloadProgressChanged += (s, e) => {
-						Interface.downloadMod.SetProgress(e);
-					};
-					client.DownloadFileCompleted += (s, e) => {
-						Main.menuMode = Interface.modBrowserID;
-						if (e.Error != null) {
-							if (e.Cancelled) {
-							}
-							else {
-								// TODO yuck
-								HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
-								if (httpStatusCode == HttpStatusCode.ServiceUnavailable) {
-									Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBExceededBandwidth"), 0);
-								}
-								else {
-									Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBUnknownMBError"), 0);
-								}
-							}
-						}
-						else if (!e.Cancelled) {
-							// Downloaded OK
-							File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod", true);
-							if (!update) {
-								Interface.modBrowser.aNewModDownloaded = true;
-							}
-							else {
-								Interface.modBrowser.aModUpdated = true;
-							}
-							if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
-								ModLoader.EnableMod(mod);
-							}
-							RemoveChild(updateButton);
-						}
-						// Clean up: Delete temp
-						File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
-					};
-					client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
-					//client.DownloadFileAsync(new Uri(download), ModLoader.ModPath + Path.DirectorySeparatorChar + mod + ".tmod");
-				}
-				Main.menuMode = Interface.downloadModID;
-			}
-			catch (WebException e) {
-				UIModBrowser.LogModBrowserException(e);
-			}
+			Interface.downloadMods.SetDownloading("Mod");
+			Interface.downloadMods.SetModsToDownload(new List<string>() { mod }, new List<UIModDownloadItem>() { this });
+			Interface.modBrowser.updateNeeded = true;
+			Main.menuMode = Interface.downloadModsID;
 		}
 
 		internal void RequestMoreinfo(UIMouseEvent evt, UIElement listeningElement) {
