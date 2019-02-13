@@ -54,6 +54,7 @@
 		"LoadErrorErrorReadingModFile": "Błąd podczas ładowania pliku moda {0}",
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorDependencyVersionTooLow": "{0} wymaga {2} w wersji {1}, ale zainstalowana jest {3}",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
 		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -240,6 +241,7 @@
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+		// "MSCreateMod": "Create Mod",
 
 		// Developer Mode UI
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -296,6 +298,7 @@
 		// "AprilFoolsJoke": "April Fools Joke",
 		// "DefaultTownNPCName": "No-Name",
 		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Środkowy Przycisk",

@@ -53,6 +53,7 @@
 		"LoadErrorErrorReadingModFile": "Fehler beim Lesen der Mod-Datei {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash unpassend, data blob wurde verändert.",
 		"LoadErrorDependencyVersionTooLow": "{0} benötig Version {1} von {2}, aber Versionn {3} i",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Du hast ModNPC.banner oder ModNPC.banneritem definiert, aber nicht beide. Stelle sicher dass du beide definierst, überprüfe deine Rechtschreibung ,dass der Gegenstand existiert. Wenn du mod.ItemType() benutzt, melde das den {0} Entwicklern.",
 		"UnloadError": "Ein oder mehrere Fehler sind beim laden aufgetreten und Tmodloader muss neu gestartet werden um weitere Fehler zu verhindern.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -239,6 +240,7 @@
 		"MSManagePublished": "Verwalte veröffentlichung",
 		"MSPublish": "Veröffentlichen",
 		"MSModSourcesCantHaveSpaces": "(Mod Quellen ordner können keine Leerzeichen haben!)",
+		// "MSCreateMod": "Create Mod",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Extra Ordner sind für Mods benötigt. (Fehlender ModCompile Ordner)",
@@ -295,6 +297,7 @@
 		"AprilFoolsJoke": "Aprilscherz",
 		"DefaultTownNPCName": "Kein Name",
 		"DefaultTownNPCChat": "Mein Modder hat vergessen mir einen Dialog zu geben >:(.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Mittlere Maus",

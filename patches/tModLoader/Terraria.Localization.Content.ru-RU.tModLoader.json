@@ -53,6 +53,7 @@
 		"LoadErrorErrorReadingModFile": "Ошибка чтения файла мода {0}",
 		"LoadErrorHashMismatchCorrupted": "Хеш-сумма не совпадает, данные были изменены или повреждены",
 		"LoadErrorDependencyVersionTooLow": "{0} требует наличии версии {1} мода {2} но версия {3} установлена на данный момент",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы обозначили ModNPC.banner или ModNPC.bannerItem, но не остальное. Убедитесь, что вы обозначили оба параметра, проверьте на орфографические ошибки и если после этого предмет существует при использовании mod.ItemType(). Сообщите об этом разработчику {0}.",
 		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
 		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -239,6 +240,7 @@
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папки с исходниками модов не могут содержать пробелы в названии)",
+		// "MSCreateMod": "Create Mod",
 
 		// Developer Mode UI
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -295,6 +297,7 @@
 		"AprilFoolsJoke": "Первоапрельская шутка",
 		"DefaultTownNPCName": "Нет имени",
 		"DefaultTownNPCChat": "Мой моддер забыл прописать мне диалоги.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Средняя кнопка мыши",

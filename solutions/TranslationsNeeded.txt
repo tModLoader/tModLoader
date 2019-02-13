@@ -1,8 +1,8 @@
-zh-Hans 7
-ru-RU 53
-pt-BR 230
-pl-PL 141
-it-IT 214
-fr-FR 53
-es-ES 214
-de-DE 8
+zh-Hans 3
+ru-RU 56
+pt-BR 233
+pl-PL 144
+it-IT 217
+fr-FR 56
+es-ES 217
+de-DE 11

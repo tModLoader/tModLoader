@@ -53,6 +53,7 @@
 		"LoadErrorErrorReadingModFile": "Erreur durant la lecture de {0}",
 		"LoadErrorHashMismatchCorrupted": "Le hachage ne correspond pas, les données ont été modifiées ou corrompues",
 		"LoadErrorDependencyVersionTooLow": "{0} requiert la version {1} de {2} mais la version {3} est installée",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Vous avez un ModNPC.banner ou ModNPC.bannerItem, mais pas l'autre correspondant. Soyez certain d'avoir les deux, verifiez les noms, et que l'objet existe si vous utilisez mod.ItemType(). Reportez cette erreur aux développeurs de {0}.",
 		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
 		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -239,6 +240,7 @@
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",
 		"MSModSourcesCantHaveSpaces": "(Les noms de dossiers de Mods sources ne peuvent pas avoir d'espace)",
+		// "MSCreateMod": "Create Mod",
 
 		// Developer Mode UI
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -295,6 +297,7 @@
 		"AprilFoolsJoke": "Poisson D'Avril",
 		"DefaultTownNPCName": "Sans-Nom",
 		"DefaultTownNPCChat": "Mon Moddeur a oublié de me donner un message de dialogue.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Bouton central",

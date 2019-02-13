@@ -54,6 +54,7 @@
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {0} 开发者.",
 		"UnloadError": "卸载时发生一个或多个错误,必须重新启动tModLoader以防止发生更多问题.",
 		"DefensiveUnload": "{0} 无法正常卸载.无论加载过程中是否有任何错误,模组作者都必须使用防御性编程(Defensive Programming)来确保卸载完成.",
@@ -240,6 +241,7 @@
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
+		// "MSCreateMod": "Create Mod",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
@@ -296,6 +298,7 @@
 		"AprilFoolsJoke": "愚人节玩笑",
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "我的作者忘记给我一个聊天信息了.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",

@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.Append(uITextPanel);
 
 			messagePanel = new UITextPanel<string>(Language.GetTextValue("")) {
-				Width = { Pixels = -10, Percent = 1f },
+				Width = { Percent = 1f },
 				Height = { Pixels = 25 },
 				VAlign = 1f,
 				Top = { Pixels = -20 }
