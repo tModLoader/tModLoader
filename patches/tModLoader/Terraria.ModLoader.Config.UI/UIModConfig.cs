@@ -332,17 +332,7 @@ namespace Terraria.ModLoader.Config.UI
 			base.Draw(spriteBatch);
 			if (!string.IsNullOrEmpty(tooltip))
 			{
-				float x = Main.fontMouseText.MeasureString(tooltip).X;
-				Vector2 vector = vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-				if (vector.Y > (float)(Main.screenHeight - 30))
-				{
-					vector.Y = (float)(Main.screenHeight - 30);
-				}
-				if (vector.X > (float)(GetDimensions().Width + GetDimensions().X - x - 16))
-				{
-					vector.X = (float)(GetDimensions().Width + GetDimensions().X - x - 16);
-				}
-				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, tooltip, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+				UICommon.DrawHoverStringInBounds(spriteBatch, tooltip, GetDimensions().ToRectangle());
 			}
 		}
 

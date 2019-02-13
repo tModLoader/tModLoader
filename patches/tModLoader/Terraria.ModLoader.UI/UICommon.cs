@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.UI;
@@ -50,6 +52,16 @@ namespace Terraria.ModLoader.UI
 				elem.RemoveChild(child);
 			else if (!elem.HasChild(child)) 
 				elem.Append(child);
+		}
+
+		public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null) {
+			if (bounds == null)
+				bounds = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+			float x = Main.fontMouseText.MeasureString(text).X;
+			Vector2 vector = Main.MouseScreen + new Vector2(16f);
+			vector.X = Math.Min(vector.X, bounds.Value.Right - x - 16);
+			vector.Y = Math.Min(vector.Y, bounds.Value.Bottom - 30);
+			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 	}
 }

@@ -235,16 +235,7 @@ namespace Terraria.ModLoader.UI
 			// main.hoverItemName isn't drawn in UI
 			if (modName.IsMouseHovering) {
 				string text = Language.GetTextValue("tModLoader.ModsByline", author);
-				// duplicate pattern
-				float x = Main.fontMouseText.MeasureString(text).X;
-				Vector2 vector = Main.MouseScreen + new Vector2(16f);
-				if (vector.Y > (float)(Main.screenHeight - 30)) {
-					vector.Y = (float)(Main.screenHeight - 30);
-				}
-				if (vector.X > (float)Main.screenWidth - x) {
-					vector.X = (float)(Main.screenWidth - x - 30);
-				}
-				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+				UICommon.DrawHoverStringInBounds(spriteBatch, text);
 			}
 		}
 

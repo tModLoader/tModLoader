@@ -291,16 +291,7 @@ namespace Terraria.ModLoader.UI
 							text = "None";
 							break;
 					}
-					//TODO: seen this pattern a few times (UIHoverImage), extract to UICommon?
-					float x = Main.fontMouseText.MeasureString(text).X;
-					Vector2 vector = new Vector2(Main.mouseX, Main.mouseY) + new Vector2(16f);
-					if (vector.Y > Main.screenHeight - 30) {
-						vector.Y = Main.screenHeight - 30;
-					}
-					if (vector.X > Main.screenWidth - x) {
-						vector.X = Main.screenWidth - x - 30;
-					}
-					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					UICommon.DrawHoverStringInBounds(spriteBatch, text);
 					return;
 				}
 			}
