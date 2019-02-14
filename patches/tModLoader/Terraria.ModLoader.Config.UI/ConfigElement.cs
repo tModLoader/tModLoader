@@ -129,15 +129,22 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	/*
-	internal class FakeElement : ConfigElement
+	internal class HeaderElement : UIElement
 	{
-		public FakeElement(PropertyFieldWrapper memberInfo, object modConfig, IList array = null) : base(memberInfo, modConfig, (IList)array) {
+		string header;
+		public HeaderElement(string header) {
+			this.header = header;
+			Width.Set(0f, 1f);
+			Height.Set(30f, 0f);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
+			CalculatedStyle dimensions = base.GetDimensions();
+			float settingsWidth = dimensions.Width + 1f;
+			Vector2 position = new Vector2(dimensions.X, dimensions.Y) + new Vector2(8);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 2, (int)dimensions.Width - 20, 1), Color.LightGray);
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, header, position, Color.White, 0f, Vector2.Zero, new Vector2(1f), settingsWidth, 2f);
 		}
 	}
-	*/
 }

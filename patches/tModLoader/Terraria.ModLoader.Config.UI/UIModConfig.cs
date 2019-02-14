@@ -464,9 +464,9 @@ namespace Terraria.ModLoader.Config.UI
 				}
 			}
 			else if (item.GetType() == typeof(HeaderAttribute)) { 
-				e = new UITextPanel<string>($"{memberInfo.GetValue(item)}", 0.8f);
-				e.SetPadding(6);
-				//e = new FakeElement(memberInfo, item, (IList)array);
+				//e = new UIText($"{memberInfo.GetValue(item)}", .4f, true);
+				//e.SetPadding(6);
+				e = new HeaderElement((string)memberInfo.GetValue(item));
 			}
 			else if (type == typeof(ItemDefinition))
 			{
