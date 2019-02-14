@@ -378,6 +378,7 @@ namespace Terraria.ModLoader
 							else {
 								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod";
 								client.DownloadFile(downloadURL, tempFile);
+								ModLoader.GetMod(modname)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
 								File.Delete(tempFile);
 							}

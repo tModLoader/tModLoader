@@ -59,6 +59,11 @@ namespace Terraria.ModLoader
 		public static List<Mod> LoadMods() {
 			CommandLineModPackOverride();
 
+			// Alternate fix for updating enabled mods
+			//foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
+			//	File.Copy(fileName, Path.GetFileNameWithoutExtension(fileName), true);
+			//	File.Delete(fileName);
+			//}
 			Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 

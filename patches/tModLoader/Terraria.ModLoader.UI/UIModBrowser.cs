@@ -51,6 +51,7 @@ namespace Terraria.ModLoader.UI
 		private string updateURL;
 		public bool aModUpdated = false;
 		public bool aNewModDownloaded = false;
+		public bool anEnabledModDownloaded = false; // disregard user preference for mods that are enabled
 		private string _specialModPackFilterTitle;
 		internal string SpecialModPackFilterTitle {
 			get => _specialModPackFilterTitle;
@@ -308,7 +309,7 @@ namespace Terraria.ModLoader.UI
 		public static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
-			if ((Interface.modBrowser.aModUpdated || Interface.modBrowser.aNewModDownloaded) && ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+			if ((Interface.modBrowser.aModUpdated || Interface.modBrowser.aNewModDownloaded) && ModLoader.autoReloadAndEnableModsLeavingModBrowser || Interface.modBrowser.anEnabledModDownloaded) {
 				Main.menuMode = Interface.reloadModsID;
 			}
 			//TODO why do I have to read this, the only difference between these is Enable vs Reload
@@ -324,6 +325,7 @@ namespace Terraria.ModLoader.UI
 			}
 			Interface.modBrowser.aModUpdated = false;
 			Interface.modBrowser.aNewModDownloaded = false;
+			Interface.modBrowser.anEnabledModDownloaded = false;
 		}
 
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {

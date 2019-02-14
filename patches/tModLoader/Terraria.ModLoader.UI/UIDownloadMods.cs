@@ -90,6 +90,12 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (!e.Cancelled) {
 				// Downloaded OK
+				var mod = ModLoader.GetMod(currentDownload.mod);
+				if (mod != null) {
+					mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+					Interface.modBrowser.anEnabledModDownloaded = true;
+				}
+				//string destinationFileName = ModLoader.GetMod(currentDownload.mod) == null ? currentDownload.mod + ".tmod" : currentDownload.mod + ".tmod.update"; // if above fix has issues we can use this.
 				File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + currentDownload.mod + ".tmod", true);
 				File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 				if (!currentDownload.update) {
