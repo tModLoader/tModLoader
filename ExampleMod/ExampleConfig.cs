@@ -284,6 +284,13 @@ namespace ExampleMod
 		// List elements also inherit BackgroundColor
 		[BackgroundColor(255, 0, 0)]
 		public List<Pair> ListOfPair;
+		
+		// We can also add section headers, separating fields for organization
+		[Header("Headers Section")]
+		public int Header;
+		
+		[Header("$Mods.ExampleMod.Common.LocalizedHeader")]
+		public int LocalizedHeader;
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
 		[BackgroundColor(85, 107, 47)]
@@ -619,8 +626,11 @@ namespace ExampleMod
 	[BackgroundColor(255, 7, 7)]
 	public class SimpleData
 	{
+		[Header("Awesome")]
 		public int boost;
 		public float percent;
+		
+		[Header("Lame")]
 		public bool enabled;
 
 		[DrawTicks]

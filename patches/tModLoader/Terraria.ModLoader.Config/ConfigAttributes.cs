@@ -59,6 +59,20 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
+	/// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config.
+	/// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class HeaderAttribute : Attribute
+	{
+		readonly string header;
+		public HeaderAttribute(string header) {
+			this.header = header;
+		}
+		public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
+	}
+
+	/// <summary>
 	/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI. 
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]

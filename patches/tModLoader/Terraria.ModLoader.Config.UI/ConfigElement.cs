@@ -128,4 +128,16 @@ namespace Terraria.ModLoader.Config.UI
 			spriteBatch.Draw(texture, position + new Vector2(2, 2 + ((height - 4) / 2)), new Rectangle(2, 16, 1, 1), color, 0, Vector2.Zero, new Vector2(width - 4, (height - 4) / 2), SpriteEffects.None, 0f);
 		}
 	}
+
+	/*
+	internal class FakeElement : ConfigElement
+	{
+		public FakeElement(PropertyFieldWrapper memberInfo, object modConfig, IList array = null) : base(memberInfo, modConfig, (IList)array) {
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+		}
+	}
+	*/
 }

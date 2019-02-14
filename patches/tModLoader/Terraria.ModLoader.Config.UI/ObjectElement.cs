@@ -252,6 +252,11 @@ namespace Terraria.ModLoader.Config.UI
 							continue;
 
 						int top = 0;
+						HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+						if (header != null) {
+							var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+							UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
+						}
 						var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
 						if (array != null) {
 							//wrapped.Item1.Left.Pixels -= 20;

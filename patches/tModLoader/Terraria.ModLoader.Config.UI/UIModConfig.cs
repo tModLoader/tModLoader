@@ -417,7 +417,11 @@ namespace Terraria.ModLoader.Config.UI
 					continue;
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
-
+				HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+				if (header != null) {
+					var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+					WrapIt(mainConfigList, ref top, wrapper, header, order++);
+				}
 				WrapIt(mainConfigList, ref top, variable, modConfigClone, order++);
 			}
 		}
@@ -458,6 +462,11 @@ namespace Terraria.ModLoader.Config.UI
 				{
 					e = new UIText($"CustomUI for {memberInfo.Name} does not have the correct constructor.");
 				}
+			}
+			else if (item.GetType() == typeof(HeaderAttribute)) { 
+				e = new UITextPanel<string>($"{memberInfo.GetValue(item)}", 0.8f);
+				e.SetPadding(6);
+				//e = new FakeElement(memberInfo, item, (IList)array);
 			}
 			else if (type == typeof(ItemDefinition))
 			{
@@ -694,7 +703,11 @@ namespace Terraria.ModLoader.Config.UI
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
 					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 						continue;
-
+					HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+					if (header != null) {
+						var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+						WrapIt(separateList, ref top, wrapper, header, order++);
+					}
 					WrapIt(separateList, ref top, variable, subitem, order++);
 				}
 			}
