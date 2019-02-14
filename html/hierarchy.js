@@ -8,6 +8,7 @@ var hierarchy =
       [ "Terraria.ModLoader.Config.CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DrawTicksAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.HeaderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html", null ],
       [ "Terraria.ModLoader.Config.IncrementAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html", null ],
       [ "Terraria.ModLoader.Config.LabelAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html", null ],
       [ "Terraria.ModLoader.Config.OptionStringsAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_option_strings_attribute.html", null ],

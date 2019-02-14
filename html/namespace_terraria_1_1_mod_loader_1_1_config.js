@@ -5,6 +5,7 @@ var namespace_terraria_1_1_mod_loader_1_1_config =
     [ "CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute" ],
     [ "DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute" ],
     [ "DrawTicksAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html", null ],
+    [ "HeaderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute" ],
     [ "IncrementAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute" ],
     [ "ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition" ],
     [ "LabelAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute" ],
