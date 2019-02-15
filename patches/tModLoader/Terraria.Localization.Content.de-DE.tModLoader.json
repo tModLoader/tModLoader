@@ -204,6 +204,8 @@
 		"RemoveForcedMinimumZoomNo": "Lösche erzwungenes Zoom Maximum: Off",
 		"AllowGreaterResolutionsYes": "Erlaube höhere Resolutionen: On",
 		"AllowGreaterResolutionsNo": "Erlaube größere Resolutionen: Off",
+		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
+		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
 		"ClearMBCredentials": "Leere Mod Suche Anmeldedaten",
 		// "AutomaticallyEnableNewlyDownloadedModsYes": "Automatically enabled newly downloaded mods: On",
 		// "AutomaticallyEnableNewlyDownloadedModsNo": "Automatically enabled newly downloaded mods: Off",

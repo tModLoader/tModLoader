@@ -205,6 +205,8 @@
 		"RemoveForcedMinimumZoomNo": "禁用强制最小缩放：关闭",
 		"AllowGreaterResolutionsYes": "允许更高分辨率：开启",
 		"AllowGreaterResolutionsNo": "允许更高分辨率：关闭",
+		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
+		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
 		"ClearMBCredentials": "清空模组浏览器证书",
 		"AutomaticallyEnableNewlyDownloadedModsYes": "自动启用新下载的模组: 开启",
 		"AutomaticallyEnableNewlyDownloadedModsNo": "自动启用新下载的模组: 关闭",

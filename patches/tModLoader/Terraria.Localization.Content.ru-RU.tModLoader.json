@@ -204,6 +204,8 @@
 		"RemoveForcedMinimumZoomNo": "Отключить минимальный зум: Нет",
 		"AllowGreaterResolutionsYes": "Убрать лимиты разрешения экрана: Да",
 		"AllowGreaterResolutionsNo": "Убрать лимиты разрешения экрана: Нет",
+		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
+		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
 		// "AutomaticallyEnableNewlyDownloadedModsYes": "Automatically enabled newly downloaded mods: On",
 		// "AutomaticallyEnableNewlyDownloadedModsNo": "Automatically enabled newly downloaded mods: Off",

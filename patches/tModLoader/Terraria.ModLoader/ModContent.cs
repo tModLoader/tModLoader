@@ -302,6 +302,7 @@ namespace Terraria.ModLoader
 			CacheVanillaState();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			MemoryTracking.Start();
 			LoadModContent(mod => {
 				mod.AutoloadConfig();
 				mod.loading = true;
@@ -309,16 +310,19 @@ namespace Terraria.ModLoader
 				mod.Autoload();
 				mod.Load();
 				mod.loading = false;
+				MemoryTracking.Load(mod);
 			});
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
+			MemoryTracking.MidReset();
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
+				MemoryTracking.Finish(mod);
 			});
 
 			if (Main.dedServ)

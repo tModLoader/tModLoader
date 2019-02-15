@@ -63,11 +63,19 @@ namespace Terraria.ModLoader.UI
 
 			modList = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
-				Height = { Pixels = -50, Percent = 1f },
-				Top = { Pixels = 50 },
+				Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
+				Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
 				ListPadding = 5f
 			};
 			uIPanel.Append(modList);
+
+			if (ModLoader.showMemoryEstimates) {
+				var ramUsage = new UIMemoryBar() {
+					Top = { Pixels = 45 },
+				};
+				ramUsage.Width.Pixels = -25;
+				uIPanel.Append(ramUsage);
+			}
 
 			var uIScrollbar = new UIScrollbar {
 				Height = { Pixels = -50, Percent = 1f },

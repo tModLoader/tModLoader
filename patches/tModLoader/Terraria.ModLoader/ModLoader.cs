@@ -80,6 +80,7 @@ namespace Terraria.ModLoader
 		internal static byte musicStreamMode;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool allowGreaterResolutions;
+		internal static bool showMemoryEstimates;
 
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
@@ -305,6 +306,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
+			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 		}
 
 		internal static void LoadConfiguration() {
@@ -318,6 +320,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("MusicStreamMode", ref musicStreamMode);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 			Main.Configuration.Get("AllowGreaterResolutions", ref allowGreaterResolutions);
+			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		}
 
 		/// <summary>
