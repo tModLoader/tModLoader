@@ -102,6 +102,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ]
     ] ],
     [ "MapLoader.cs", "_map_loader_8cs.html", null ],
+    [ "MemoryTracking.cs", "_memory_tracking_8cs.html", null ],
     [ "Mod.cs", "_mod_8cs.html", [
       [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ]
     ] ],
