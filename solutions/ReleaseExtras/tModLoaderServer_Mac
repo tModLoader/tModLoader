@@ -14,5 +14,10 @@ if [ "$UNAME" == "Darwin" ]; then
 		export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
 	fi
 
-	./tModLoaderServer.bin.osx $@
+	KICKSTART=./tModLoaderServer.bin.osx
+	if [ ! -f KICKSTART ]; then
+		cp ./TerrariaServer.bin.osx $KICKSTART
+	fi
+	
+	$KICKSTART $@
 fi

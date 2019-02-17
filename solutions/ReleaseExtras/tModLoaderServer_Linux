@@ -39,6 +39,12 @@ else
 fi
 
 
+KICKSTART=./tModLoaderServer.bin.${ext}
+
+if [ ! -f KICKSTART ]; then
+    cp ./TerrariaServer.bin.${ext} $KICKSTART
+fi
+
 export MONO_IOMAP=all
-./${BASENAME}.bin.${ext} $@
+$KICKSTART $@
 

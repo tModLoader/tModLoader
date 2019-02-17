@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11 Beta 1
+set version=v0.11 Beta 2
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -67,12 +67,6 @@ call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep ye
 copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%mac%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%mac%\tModLoaderServer.exe" /y
 copy ReleaseExtras\tModLoaderServer_Mac "%mac%\tModLoaderServer" /y
-copy ReleaseExtras\tModLoaderServer.bin.osx "%mac%\tModLoaderServer.bin.osx" /y
-
-:: References
-copy ..\references\MP3Sharp.dll "%mac%\MP3Sharp.dll" /y
-copy ..\references\Ionic.Zip.Reduced.dll "%mac%\Ionic.Zip.Reduced.dll" /y
-copy ..\references\Mono.Cecil.dll "%mac%\Mono.Cecil.dll" /y
 
 copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
@@ -86,12 +80,6 @@ call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -f
 copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%lnx%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
 copy ReleaseExtras\tModLoaderServer_Linux "%lnx%\tModLoaderServer" /y
-copy ReleaseExtras\tModLoaderServer.bin.x86 "%lnx%\tModLoaderServer.bin.x86" /y
-copy ReleaseExtras\tModLoaderServer.bin.x86_64 "%lnx%\tModLoaderServer.bin.x86_64" /y
-:: References
-copy ..\references\MP3Sharp.dll "%lnx%\MP3Sharp.dll" /y
-copy ..\references\Ionic.Zip.Reduced.dll "%lnx%\Ionic.Zip.Reduced.dll" /y
-copy ..\references\Mono.Cecil.dll "%lnx%\Mono.Cecil.dll" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y

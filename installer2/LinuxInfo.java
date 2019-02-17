@@ -7,19 +7,9 @@ public class LinuxInfo
         String[] files = new String[]
         {
             "Terraria.exe",
-            "ModCompile/tModLoaderWindows.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
-            "tModLoaderServer.bin.x86",
-            "tModLoaderServer.bin.x86_64",
-            "MP3Sharp.dll",
-            "Ionic.Zip.Reduced.dll",
-            "Mono.Cecil.dll",
             "Terraria.exe.config",
-            "ModCompile/Microsoft.Xna.Framework.dll",
-            "ModCompile/Microsoft.Xna.Framework.Game.dll",
-            "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
-            "ModCompile/Microsoft.Xna.Framework.Xact.dll"
         };
         Installer.tryInstall(files, getInstallDir());
     }
