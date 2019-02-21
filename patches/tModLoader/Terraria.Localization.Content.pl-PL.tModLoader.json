@@ -249,7 +249,7 @@
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
 		// "DMModCompileUpdate": "ModCompile folder out of date.",
 		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
-		// "DMModCompileSatisfied": "ModCompile folder up of date.",
+		// "DMModCompileSatisfied": "ModCompile folder up to date.",
 		// "DMDotNetSatisfied": "{0} is installed",
 		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
 		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
