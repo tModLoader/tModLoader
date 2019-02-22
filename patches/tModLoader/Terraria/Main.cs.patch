@@ -65,6 +65,14 @@
  		public static bool[] hairLoaded = new bool[134];
  		public static bool[] wingsLoaded = new bool[40];
  		public static bool[] goreLoaded = new bool[1087];
+@@ -225,6 +_,7 @@
+ 		public static bool[] tileSetsLoaded = new bool[470];
+ 		public static bool[] wallLoaded = new bool[231];
+ 		public static bool[] NPCLoaded = new bool[580];
++		internal static int[] NPCTextureTime = new int[580];
+ 		public static bool[] armorHeadLoaded = new bool[216];
+ 		public static bool[] armorBodyLoaded = new bool[210];
+ 		public static bool[] armorLegsLoaded = new bool[161];
 @@ -324,7 +_,7 @@
  		public static float sunCircle;
  		public static int BlackFadeIn = 0;
@@ -591,6 +599,14 @@
  								continue;
  							}
  							catch
+@@ -4761,6 +_,7 @@
+ 			Main.instance = this;
+ #if CLIENT
+ 			Main.graphics = new GraphicsDeviceManager((Game)this);
++			Content = new Terraria.ModLoader.CustomContentManager(Content.ServiceProvider);
+ 			base.Content.RootDirectory = "Content";
+ #endif
+ 		}
 @@ -4776,7 +_,7 @@
  		public static void InitLifeBytes()
  		{
@@ -4334,8 +4350,15 @@
  		{
  			if (!Main.NPCLoaded[i] || Main.npcTexture[i] == null)
  			{
-@@ -54419,7 +_,7 @@
- 			}
+@@ -54416,10 +_,13 @@
+ 							i
+ 						}));
+ 				Main.NPCLoaded[i] = true;
+-			}
++				Main.NewText("Loading NPC " + NPCID.Search.GetName(i));
++				Logging.tML.Debug("Loading NPC " + NPCID.Search.GetName(i));
++			}
++			Main.NPCTextureTime[i] = 600; // This could be dynamically calculated.
  		}
  
 -		protected void LoadProjectile(int i)
@@ -4577,6 +4600,29 @@
  			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, this.Rasterizer, null, Main.UIScaleMatrix);
  			if (Main.gameMenu || Main.netMode == 2)
  			{
+@@ -57575,6 +_,22 @@
+ 						Main.magmaBGFrame = 0;
+ 					}
+ 				}
++
++				// Unload NPC Textures
++				for (int i = 0; i < NPCID.Count /*Main.NPCTextureTime.Length*/; i++) { // ModNPC doesn't work yet
++					if (NPCID.Sets.ExtraTextureCount[i] == 0 && Main.NPCTextureTime[i] > 0) {
++						Main.NPCTextureTime[i]--;
++						if (Main.NPCTextureTime[i] == 0) {
++							Main.npcTexture[i].Dispose();
++							Main.npcTexture[i] = null;
++							Main.NPCLoaded[i] = false;
++							string npcName = i >= NPCID.Count ? NPCLoader.GetNPC(i).Name : NPCID.Search.GetName(i);
++							Main.NewText($"UnLoading NPC {npcName}");
++							Logging.tML.Debug($"UnLoading NPC {npcName}");
++						}
++					}
++				}
++
+ 				try
+ 				{
+ 					this.CacheNPCDraws();
 @@ -57717,6 +_,7 @@
  				IL_4196:
  				TimeLogger.DetailedDrawReset();
