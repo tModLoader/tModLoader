@@ -157,7 +157,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
-		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
+		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时.\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",
@@ -213,7 +213,7 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "离开模组浏览器时自动启用并重新加载模组: 开启",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组: 关闭",
 		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使其生效.",
-		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用,记得启用并重新加载.",
+		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
 
