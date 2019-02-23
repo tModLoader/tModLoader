@@ -53,8 +53,8 @@
 		"LoadErrorDependencyMissing": "缺少模组: {0} 需求来源: {1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
-		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
-		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
+		"LoadErrorDependencyVersionTooLow": "{0} 需要 {1}+ 版本的 {2} ,但你安装的为 {3} 版本", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
+		"LoadErrorMajorVersionMismatch": "{0} 的目标是 {1} 版本的 {2} ,但你安装的为较新的版本 ({3}) ,它可能不兼容. {0} 必须更新.", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {0} 开发者.",
 		"UnloadError": "卸载时发生一个或多个错误,必须重新启动tModLoader以防止发生更多问题.",
 		"DefensiveUnload": "{0} 无法正常卸载.无论加载过程中是否有任何错误,模组作者都必须使用防御性编程(Defensive Programming)来确保卸载完成.",
@@ -157,7 +157,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
-		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
+		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时.\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",
@@ -205,15 +205,15 @@
 		"RemoveForcedMinimumZoomNo": "禁用强制最小缩放：关闭",
 		"AllowGreaterResolutionsYes": "允许更高分辨率：开启",
 		"AllowGreaterResolutionsNo": "允许更高分辨率：关闭",
-		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
-		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
+		"ShowMemoryEstimatesYes": "显示模组内存估算: 开启",
+		"ShowMemoryEstimatesNo": "显示模组内存估算: 关闭",
 		"ClearMBCredentials": "清空模组浏览器证书",
 		"AutomaticallyEnableNewlyDownloadedModsYes": "自动启用新下载的模组: 开启",
 		"AutomaticallyEnableNewlyDownloadedModsNo": "自动启用新下载的模组: 关闭",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "离开模组浏览器时自动启用并重新加载模组: 开启",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组: 关闭",
 		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使其生效.",
-		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用,记得启用并重新加载.",
+		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
 
@@ -243,13 +243,13 @@
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
-		// "MSCreateMod": "Create Mod",
+		"MSCreateMod": "创建模组",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
 		"DMModCompileUpdate": "[ModCompile]文件夹已过期.",
 		"DMModCompileDev": "使用tModLoader开发设置工具生成/更新[ModCompile]文件夹 (安装调试).",
-		"DMModCompileSatisfied": "[ModCompile]文件夹更新日期.",
+		"DMModCompileSatisfied": "[ModCompile]文件夹已最新.",
 		"DMDotNetSatisfied": "已安装 {0}",
 		"DMDotNet46Required": "生成模组需要[.NET Framework 4.6]或更高版本.请下载最新版本的[.NET Framework]",
 		"DMReferenceAssembliesMissing": "找不到[.NET Framework]引用程序集.请安装[Visual Studio]以及[.NET 4.5 目标包].",
@@ -299,8 +299,8 @@
 		"UnloadedItemItemNameTooltip": "物品: {0}",
 		"AprilFoolsJoke": "愚人节玩笑",
 		"DefaultTownNPCName": "无名氏",
-		"DefaultTownNPCChat": "我的作者忘记给我一个聊天信息了.",
-		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
+		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
+		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
@@ -313,6 +313,6 @@
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
-		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组造成,否则请转到tModLoader Discord中的#support"
+		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support"
 	}
 }
