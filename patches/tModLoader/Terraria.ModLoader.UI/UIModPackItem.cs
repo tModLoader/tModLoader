@@ -252,7 +252,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10, -1, -1, 1);
 			string message = "";
 			for (int i = 0; i < modListItem.mods.Length; i++) {
-				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? Language.GetTextValue("tModLoader.ModPackDisabled") : "") + "\n";
+				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? "" : Language.GetTextValue("tModLoader.ModPackDisabled")) + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsContained", message), Interface.modPacksMenuID);
