@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.UI
 			};
 			uIElement.Append(mainPanel);
 
-			var uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBCreateMod"), 0.8f, true) {
+			var uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
 				BackgroundColor = UICommon.defaultUIBlue
