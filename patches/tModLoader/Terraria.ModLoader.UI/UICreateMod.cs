@@ -137,8 +137,8 @@ namespace Terraria.ModLoader.UI
 				Directory.CreateDirectory(sourceFolder);
 
 				// TODO: Simple ModItem and PNG, verbatim line endings, localization.
-				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), $"displayName = {modDiplayName.currentString}{Environment.NewLine}author = {modAuthor.currentString}version = 0.1");
-				File.WriteAllText(Path.Combine(sourceFolder, "desciption.txt"), $"{modDiplayName.currentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.");
+				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), $"displayName = {modDiplayName.currentString}{Environment.NewLine}author = {modAuthor.currentString}{Environment.NewLine}version = 0.1");
+				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), $"{modDiplayName.currentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.");
 				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), $@"using Terraria.ModLoader;
 
 namespace {modNameTrimmed}
