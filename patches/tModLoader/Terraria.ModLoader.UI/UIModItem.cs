@@ -140,6 +140,15 @@ namespace Terraria.ModLoader.UI
 				};
 				Append(keyImage);
 			}
+			if (ModLoader.badUnloaders.Contains(mod.Name)) {
+				keyImage = new UIHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice,
+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonError.png")), "This mod did not fully unload during last unload.") {
+					Left = { Pixels = modIconAdjust + 4 },
+					Top = { Pixels = 3 }
+				};
+				Append(keyImage);
+				modName.Left.Pixels += 20;
+			}
 			if (mod.properties.beta) {
 				keyImage = new UIHoverImage(Main.itemTexture[ID.ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }

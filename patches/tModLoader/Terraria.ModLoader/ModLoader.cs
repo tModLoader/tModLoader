@@ -208,6 +208,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static List<string> badUnloaders = new List<string>();
 		private static void Unload() {
 			Logging.tML.Info("Unloading mods");
 			if (Main.dedServ)
@@ -220,8 +221,11 @@ namespace Terraria.ModLoader
 
 			Thread.MemoryBarrier();
 			GC.Collect();
-			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target))
+			badUnloaders.Clear();
+			foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target)) {
 				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
+				badUnloaders.Add(mod.Name);
+			}
 		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false) {
