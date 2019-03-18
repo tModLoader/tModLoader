@@ -165,6 +165,7 @@
     <Compile Include="Items\Placeable\ExampleOre.cs" />
     <Compile Include="Items\Placeable\ExampleTrap.cs" />
     <Compile Include="Items\Placeable\ScoreBoard.cs" />
+    <Compile Include="Items\Accessories\WaspNest.cs" />
     <Compile Include="Items\Weapons\ExampleExplosive.cs" />
     <Compile Include="Items\Weapons\ExampleJavelin.cs" />
     <Compile Include="Items\ExampleLightPet.cs" />

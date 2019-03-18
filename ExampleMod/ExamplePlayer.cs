@@ -42,6 +42,7 @@ namespace ExampleMod
 		public bool exampleLightPet;
 		public bool exampleShield;
 		public bool infinity;
+		public bool strongBeesUpgrade;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
 		public bool blockyAccessory;
@@ -70,6 +71,7 @@ namespace ExampleMod
 			exampleLightPet = false;
 			exampleShield = false;
 			infinity = false;
+			strongBeesUpgrade = false;
 			blockyAccessoryPrevious = blockyAccessory;
 			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 
