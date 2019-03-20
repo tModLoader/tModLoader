@@ -4195,6 +4195,29 @@
  				{
  					Main.spriteBatch.Draw(this.mapBG3Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Microsoft.Xna.Framework.Color.White);
  				}
+@@ -49654,8 +_,22 @@
+ 						Main.spriteBatch.Draw(this.mapBG1Texture, new Microsoft.Xna.Framework.Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Main.bgColor);
+ 					}
+ 				}
++				/* Map texture drawing replaced by an adaptive drawing below, as mod worlds sometimes aren't regular sizes.
+ 				Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)num23, (int)num24, (int)num25, (int)num26);
+ 				Main.spriteBatch.Draw(Main.mapTexture, destinationRectangle, Microsoft.Xna.Framework.Color.White);
++				*/
++				int x = (int)(num + Main.mapFullscreenScale * 10);
++				int y = (int)(num2 + Main.mapFullscreenScale * 10);
++				int width = (int)((Main.maxTilesX - 40) * Main.mapFullscreenScale);
++				int height = (int)((Main.maxTilesY - 40) * Main.mapFullscreenScale);
++				var destinationRectangle = new Microsoft.Xna.Framework.Rectangle(x, y, width, height);
++				Main.spriteBatch.Draw(Main.mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(40, 4, 848, 240), Microsoft.Xna.Framework.Color.White);
++				int edgeWidth = (int)(40 * Main.mapFullscreenScale * 5);
++				int edgeHeight = (int)(4 * Main.mapFullscreenScale * 5);
++				destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)x - edgeWidth, (int)y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
++				Main.spriteBatch.Draw(Main.mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(0, 0, 40, 248), Microsoft.Xna.Framework.Color.White);
++				destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)x + width, (int)y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
++				Main.spriteBatch.Draw(Main.mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(888, 0, 40, 248), Microsoft.Xna.Framework.Color.White);
+ 				if (num16 < 1f)
+ 				{
+ 					Main.spriteBatch.End();
 @@ -49771,7 +_,7 @@
  			float num35 = (float)Main.textureMaxHeight * num16;
  			float num36 = num;
