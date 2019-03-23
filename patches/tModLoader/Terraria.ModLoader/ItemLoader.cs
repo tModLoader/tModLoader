@@ -477,7 +477,7 @@ namespace Terraria.ModLoader
 			item.modItem?.OnConsumeAmmo(player);
 			ammo.modItem?.OnConsumeAmmo(player);
 
-			foreach (var g in HookConsumeAmmo.arr) {
+			foreach (var g in HookOnConsumeAmmo.arr) {
 				g.Instance(item).OnConsumeAmmo(item, player);
 				g.Instance(ammo).OnConsumeAmmo(ammo, player);
 			}
