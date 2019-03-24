@@ -12,7 +12,7 @@ var searchData=
   ['needhoney',['needHoney',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#ad54807819a74eb424d6d4f03c752be3d',1,'Terraria::ModLoader::RecipeFinder']]],
   ['needlava',['needLava',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a0e66a6823be3f265e1a7e20144ff7615',1,'Terraria::ModLoader::RecipeFinder']]],
   ['needsmodsaving',['NeedsModSaving',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aa991a5fac9a39cb28729b887d1c1bb3e',1,'Terraria::ModLoader::ItemLoader']]],
-  ['needsreload',['NeedsReload',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#abdbb8c9f89ef36e42c06a16eed2a99e8',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.NeedsReload()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#a12d06841f585cc2afd1a4846d755364f',1,'Terraria.ModLoader.Config.ModConfig.NeedsReload()']]],
+  ['needsreload',['NeedsReload',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#abdbb8c9f89ef36e42c06a16eed2a99e8',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.NeedsReload()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ab905bc1e570eded8e8c4daa4fb50d53e',1,'Terraria.ModLoader.Config.ModConfig.NeedsReload()']]],
   ['needssaving',['NeedsSaving',['../class_terraria_1_1_mod_loader_1_1_global_item.html#aa0cb13211b3a88c4b992bd00d06858eb',1,'Terraria::ModLoader::GlobalItem']]],
   ['needwater',['needWater',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a2e0cf16d72c5ecef87e2a86dcfe4acd2',1,'Terraria::ModLoader::RecipeFinder']]],
   ['netmodcount',['NetModCount',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#affbd35055e18fcf9c99a093c95b42665',1,'Terraria::ModLoader::ModNet']]],

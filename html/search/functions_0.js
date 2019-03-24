@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['acceptclientchanges',['AcceptClientChanges',['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#a19faf2989b24f5ba2acda77cf79b7b84',1,'Terraria::ModLoader::Config::ModConfig']]],
+  ['acceptclientchanges',['AcceptClientChanges',['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ad95681316cad05de293e30db467c3a73',1,'Terraria::ModLoader::Config::ModConfig']]],
   ['acceptrecipegroup',['AcceptRecipeGroup',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd',1,'Terraria::ModLoader::RecipeEditor']]],
   ['action',['Action',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2',1,'Terraria::ModLoader::ModCommand']]],
   ['add',['Add',['../class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html#a024b4496ab7adedaffc3ae0dc8866e68',1,'Terraria.ModLoader.TopoSort.SortingException.Add()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af8c8cae7796cb19d97997ef7d5ca8eec',1,'Terraria.ModLoader.IO.TagCompound.Add(string key, object value)'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#abee90c109bd3d85d885da676cd394891',1,'Terraria.ModLoader.IO.TagCompound.Add(KeyValuePair&lt; string, object &gt; entry)']]],

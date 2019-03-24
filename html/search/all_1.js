@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['acceptclientchanges',['AcceptClientChanges',['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#a19faf2989b24f5ba2acda77cf79b7b84',1,'Terraria::ModLoader::Config::ModConfig']]],
+  ['acceptclientchanges',['AcceptClientChanges',['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ad95681316cad05de293e30db467c3a73',1,'Terraria::ModLoader::Config::ModConfig']]],
   ['acceptrecipegroup',['AcceptRecipeGroup',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a1b3673f1c79d82b8571f2f98295fcfcd',1,'Terraria::ModLoader::RecipeEditor']]],
   ['accessory',['Accessory',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e',1,'Terraria::ModLoader']]],
   ['action',['Action',['../class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2',1,'Terraria::ModLoader::ModCommand']]],

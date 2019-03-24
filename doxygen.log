@@ -1158,7 +1158,10 @@ Generating call graph for function Terraria.ModLoader.TileLoader.AutoSelect
 Generating call graph for function Terraria.ModLoader.TileLoader.CanExplode
 Generating call graph for function Terraria.ModLoader.TileLoader.Dangersense
 Generating call graph for function Terraria.ModLoader.TileLoader.Drop
-Generating caller graph for function Terraria.ModLoader.TileLoader.GetTile
+Genera/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ModConfig.cs:52: warning: argument 'old' of command @param is not found in the argument list of Terraria.ModLoader.Config.ModConfig::NeedsReload(ModConfig pendingConfig)
+/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ModConfig.cs:56: warning: The following parameters of Terraria.ModLoader.Config.ModConfig.NeedsReload(ModConfig pendingConfig) are not documented:
+  parameter 'pendingConfig'
+ting caller graph for function Terraria.ModLoader.TileLoader.GetTile
 Generating call graph for function Terraria.ModLoader.TileLoader.IsModMusicBox
 Generating call graph for function Terraria.ModLoader.TileLoader.KillSound
 Generating call graph for function Terraria.ModLoader.TileLoader.SaplingGrowthType
@@ -2272,5 +2275,5 @@ Patching output file 147/150
 Patching output file 148/150
 Patching output file 149/150
 Patching output file 150/150
-lookup cache used 12231/131072 hits=110454 misses=12779
+lookup cache used 12235/131072 hits=110467 misses=12783
 finished...
