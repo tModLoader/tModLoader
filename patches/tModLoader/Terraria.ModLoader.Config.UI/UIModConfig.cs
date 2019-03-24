@@ -236,7 +236,7 @@ namespace Terraria.ModLoader.Config.UI
 
 					return;
 				}
-				if (modConfigClone.NeedsReload(modConfig))
+				if (modConfig.NeedsReload(modConfigClone))
 				{
 					Main.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);

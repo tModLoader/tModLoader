@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.Config
 				Configs.Add(config.mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
-			config.PostAutoLoad();
+			config.OnLoaded();
 
 			// Maintain a backup of LoadTime Configs.
 			List<ModConfig> configList2;
@@ -166,7 +166,7 @@ namespace Terraria.ModLoader.Config
 				var loadTimeConfigs = LoadTimeConfigs[mod];
 				for (int i = 0; i < configs.Count; i++)
 				{
-					if (configs[i].NeedsReload(loadTimeConfigs[i]))
+					if (loadTimeConfigs[i].NeedsReload(configs[i]))
 					{
 						return true;
 					}
@@ -233,12 +233,12 @@ namespace Terraria.ModLoader.Config
 				JsonConvert.PopulateObject(json, pending, serializerSettingsCompact);
 				bool success = true;
 				string message = "Accepted";
-				if (pending.NeedsReload(config))
+				if (config.NeedsReload(pending))
 				{
 					success = false;
 					message = "Can't save because changes would require a reload.";
 				}
-				if (!pending.AcceptClientChanges(config, whoAmI, ref message))
+				if (!config.AcceptClientChanges(pending, whoAmI, ref message))
 				{
 					success = false;
 				}

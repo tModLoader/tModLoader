@@ -78,14 +78,14 @@ namespace ExampleMod
 		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
 		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.
-		public override void PostAutoLoad()
+		public override void OnLoaded()
 		{
 			ExampleMod.exampleServerConfig = this;
 		}
 
 		// AcceptClientChanges is called on the server when a Client player attempts to change ServerDictates settings in-game. By default, client changes are accepted. (As long as they don't necessitate a Reload)
 		// With more effort, a mod could implement more control over changing mod settings.
-		public override bool AcceptClientChanges(ModConfig currentConfig, int whoAmI, ref string message)
+		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
 		{
 			if (Main.player[whoAmI].name == "jopojelly")
 			{
@@ -96,10 +96,10 @@ namespace ExampleMod
 		}
 
 		// While ReloadRequired is sufficient for most, some may require more logic in deciding if a reload is required. Here is an incomplete example
-		/*public override bool NeedsReload(ModConfig old)
+		/*public override bool NeedsReload(ModConfig pendingConfig)
 		{
-			bool defaultDecision = base.NeedsReload(old);
-			bool otherLogic = IntExample > (old as ExampleConfigServer).IntExample; // This is just a random example. Your logic depends on your mod.
+			bool defaultDecision = base.NeedsReload(pendingConfig);
+			bool otherLogic = IntExample > (pendingConfig as ExampleConfigServer).IntExample; // This is just a random example. Your logic depends on your mod.
 			return defaultDecision || otherLogic; // reload needed if either condition is met.
 		}*/
 	}
@@ -118,7 +118,7 @@ namespace ExampleMod
 		[Label("Show mod origin in tooltip")]
 		public bool ShowModOriginTooltip;
 
-		public override void PostAutoLoad()
+		public override void OnLoaded()
 		{
 			ExampleMod.exampleClientConfig = this;
 			UI.ExampleUI.Visible = ShowCoinUI;

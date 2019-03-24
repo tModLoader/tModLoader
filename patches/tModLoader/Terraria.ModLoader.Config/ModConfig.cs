@@ -26,10 +26,11 @@ namespace Terraria.ModLoader.Config
 		// TODO: Does non-autoloaded ModConfigs have a usecase?
 		public virtual bool Autoload(ref string name) => mod.Properties.Autoload;
 
-		// PostAutoLoad is called right after
-		public virtual void PostAutoLoad()
+		/// <summary>
+		/// This method is called when the ModConfig has been loaded for the first time. This happens before regular Autoloading and Mod.Load. You can use this hook to assign a static reference to this instance for easy access.
+		/// </summary>
+		public virtual void OnLoaded()
 		{
-			// TODO: is this name misleading?
 		}
 
 		// Called after changes have been made. Useful for informing the mod of changes to config.
@@ -39,7 +40,7 @@ namespace Terraria.ModLoader.Config
 		}
 
 		// Called on the Server for ServerDictates configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions.
-		public virtual bool AcceptClientChanges(ModConfig currentConfig, int whoAmI, ref string message)
+		public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
 		{
 			return true;
 		}
@@ -52,14 +53,14 @@ namespace Terraria.ModLoader.Config
 		/// </summary>
 		/// <param name="old">The other instance of ModConfig to compare against</param>
 		/// <returns></returns>
-		public virtual bool NeedsReload(ModConfig old)
+		public virtual bool NeedsReload(ModConfig pendingConfig)
 		{
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this))
 			{
 				ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 				if (reloadRequired != null)
 				{
-					if (!variable.GetValue(this).Equals(variable.GetValue(old)))
+					if (!variable.GetValue(this).Equals(variable.GetValue(pendingConfig)))
 					{
 						return true;
 					}
