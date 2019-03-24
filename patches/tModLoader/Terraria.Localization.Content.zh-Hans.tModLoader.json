@@ -314,5 +314,8 @@
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "伤害增加{0}%"
 	}
 }

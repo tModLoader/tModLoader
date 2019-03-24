@@ -313,5 +313,8 @@
 		// "WorldGenError": "A problem was encountered during world generation",
 		// "WorldIODataException": "The game encountered a mod data problem for a world.",
 		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "Aumenta un {0}% el daño"
 	}
 }

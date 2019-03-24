@@ -1164,11 +1164,13 @@
  				num4++;
  			}
  			else
-@@ -14641,9 +_,13 @@
+@@ -14640,10 +_,14 @@
+ 				if (Main.HoverItem.damage > 0 && (!Main.HoverItem.notAmmo || Main.HoverItem.useStyle > 0) && (Main.HoverItem.type < 71 || Main.HoverItem.type > 74 || Main.player[Main.myPlayer].HasItem(905)))
  				{
  					float num5 = 5E-06f;
- 					int damage = Main.HoverItem.damage;
+-					int damage = Main.HoverItem.damage;
 +					Player player = Main.player[Main.myPlayer];
++					float damage = player.allDamage * Main.HoverItem.damage;
  					if (Main.HoverItem.melee)
  					{
 -						array[num4] = string.Concat((int)(Main.player[Main.myPlayer].meleeDamage * (float)damage + num5));
@@ -1238,7 +1240,7 @@
  					else
  					{
 -						array[num4] = string.Concat(damage);
-+						int damage2 = damage;
++						int damage2 = (int)damage;
 +						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
 +						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
 +						array[num4] = string.Concat(damage2);

@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Armor
@@ -24,11 +25,14 @@ namespace ExampleMod.Items.Armor
 
 		public override void UpdateArmorSet(Player player) {
 			player.setBonus = "trollface.jpg";
-			player.meleeDamage *= 0.8f;
-			player.thrownDamage *= 0.8f;
-			player.rangedDamage *= 0.8f;
-			player.magicDamage *= 0.8f;
-			player.minionDamage *= 0.8f;
+			player.allDamage -= 0.2f;
+			/* Here are the individual weapon class bonuses.
+			player.meleeDamage -= 0.2f;
+			player.thrownDamage -= 0.2f;
+			player.rangedDamage -= 0.2f;
+			player.magicDamage -= 0.2f;
+			player.minionDamage -= 0.2f;
+			*/
 		}
 
 		public override void AddRecipes() {

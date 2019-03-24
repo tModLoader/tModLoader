@@ -313,5 +313,8 @@
 		"WorldGenError": "AEIn Problem ist beim Erstellen der Welt aufgetreten",
 		"WorldIODataException": "Das SPiel hat ein Mod-Datei Problem bei dieser Welt festgestellt.",
 		"ServerCrash": "Server crash: {0}\n{1}\n\nBItte checke server.log um festzustellen ob eine Mod daran schuld ist, ansonsten gehe in den #support Kanal im Tmodloader Discord!"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "Um {0}% erhöhter Schaden"
 	}
 }
