@@ -11,7 +11,13 @@ public class LinuxInfo
             "tModLoaderServer",
             "Terraria.exe.config",
         };
-        Installer.tryInstall(files, getInstallDir());
+        String[] filesToDelete = new String[]
+        {
+            "MP3Sharp.dll",
+            "Ionic.Zip.Reduced.dll",
+            "Mono.Cecil.dll"
+        };
+        Installer.tryInstall(files, filesToDelete, getInstallDir());
     }
 
     private static File getInstallDir()

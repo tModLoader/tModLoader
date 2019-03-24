@@ -18,7 +18,13 @@ public class MacInfo
             "Terraria.exe.config",
             "mono/config"
         };
-        Installer.tryInstall(files, directory);
+        String[] filesToDelete = new String[]
+        {
+            "MP3Sharp.dll",
+            "Ionic.Zip.Reduced.dll",
+            "Mono.Cecil.dll"
+        };
+        Installer.tryInstall(files, filesToDelete, directory);
     }
 
     private static File getInstallDir(String homeDir)

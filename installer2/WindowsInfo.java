@@ -26,7 +26,10 @@ public class WindowsInfo
             "start-tModLoaderServer-steam-friends.bat",
             "start-tModLoaderServer-steam-private.bat"
         };
-        Installer.tryInstall(files, directory);
+        String[] filesToDelete = new String[]
+        {
+        };
+        Installer.tryInstall(files, filesToDelete, directory);
     }
 
     private static File getInstallDir(String programFileDir)

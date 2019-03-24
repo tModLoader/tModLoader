@@ -2,7 +2,7 @@ Automatic Install:
 To install tModLoader, simply run the tModLoaderInstaller.jar file after extracting these file to a temporary folder. Java 1.7 or higher is required for the installer to run. The installer will make a window pop up, informing you of either success or failure.
 
 Manual Install:
-If the installer for some reason does not work, or if you do not want to install/upgrade Java, you may also do a manual install. Go to your Terraria's Steam folder; for most people, this will be "Library/Application Support/Steam/steamapps/common/Terraria/Terraria.app/Contents/MacOS". Then, copy all these files into that folder. You may wish to back-up your vanilla Terraria.exe first.
+If the installer for some reason does not work, or if you do not want to install/upgrade Java, you may also do a manual install. Go to your Terraria's Steam folder; for most people, this will be "Library/Application Support/Steam/steamapps/common/Terraria/Terraria.app/Contents/MacOS". Then, copy all these files into that folder. You may wish to back-up your vanilla Terraria.exe first. Additionally, if you are updating from 0.10.1.5 or earlier, you'll need to delete "MP3Sharp.dll", "Ionic.Zip.Reduced.dll", and "Mono.Cecil.dll" from that folder.
 
 To enter your hidden Library folder, in the Finder open the "Go" menu, then hold down the "Alt" key. The hidden Library will become visible. To enter the Terraria.app folder, right-click it then click on "Show Package Contents".
 
