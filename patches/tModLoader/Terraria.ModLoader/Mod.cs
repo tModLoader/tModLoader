@@ -193,11 +193,11 @@ namespace Terraria.ModLoader
 				if (type.IsSubclassOf(typeof(ModConfig)))
 				{
 					var mc = (ModConfig)Activator.CreateInstance(type);
-					// Skip loading UniquePerPlayer on Main.dedServ?
-					if (mc.Mode == MultiplayerSyncMode.ServerDictates && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerDictates ModConfigs. Server can, but won't be synced.
-						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerDictates but this Mods ModSide isn't Both or Server");
-					if (mc.Mode == MultiplayerSyncMode.UniquePerPlayer && Side == ModSide.Server) // Doesn't make sense. 
-						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is UniquePerPlayer but this Mods ModSide is Server");
+					// Skip loading ClientSide on Main.dedServ?
+					if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
+						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
+					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
+						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
 					mc.mod = this;
 					var name = type.Name;
 					if (mc.Autoload(ref name))

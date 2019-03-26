@@ -90,12 +90,12 @@ namespace Terraria.ModLoader
 			AddNoSyncDeps(syncMods);
 
 			p.Write(syncMods.Count);
-			foreach (var mod in syncMods) { // We only sync ServerDictates configs for ModSide.Both. ModSide.Server can have 
+			foreach (var mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
-				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == MultiplayerSyncMode.ServerDictates);
+				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == ConfigScope.ServerSide);
 				if (modConfigs == null)
 				//if (modConfigs.Equals(default(List<ModConfig>)))
 				{
@@ -107,10 +107,11 @@ namespace Terraria.ModLoader
 					p.Write(modConfigs.Count());
 					foreach (var config in modConfigs)
 					{
-						Console.WriteLine($"Sending Server Config {config.Name}: {JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact)}");
+						string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
+						Console.WriteLine($"Sending Server Config {config.Name}: {json}");
 
 						p.Write(config.Name);
-						p.Write(JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact));
+						p.Write(json);
 					}
 				}
 			}
@@ -315,16 +316,20 @@ namespace Terraria.ModLoader
 			}
 
 			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
-			foreach (var config in pendingConfigs)
+			foreach (var pendingConfig in pendingConfigs)
 			{
-				var configInstance = ConfigManager.GetConfig(ModLoader.GetMod(config.modname), config.configname);
-				JsonConvert.PopulateObject(config.json, configInstance, ConfigManager.serializerSettingsCompact);
+				var activeConfig = ConfigManager.GetConfig(pendingConfig);
+				JsonConvert.PopulateObject(pendingConfig.json, activeConfig, ConfigManager.serializerSettingsCompact);
 			}
 			if (ConfigManager.AnyModNeedsReload())
 			{
 				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
+			}
+			foreach (var pendingConfig in pendingConfigs) {
+				var activeConfig = ConfigManager.GetConfig(pendingConfig);
+				activeConfig.OnChanged();
 			}
 
 			downloadingMod = null;

@@ -14,11 +14,9 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	// TODO: In-game version of this UI.
 	// TODO: Dictionary
-	// TODO: Item/NPC UIElements w/special ui.	
+	// TODO: NPC UIElements w/special ui.	
 	// TODO: Revert individual button.	
-	// TODO: Initialize List if null.
 	// TODO: DefaultValue for new elements in Lists
 	internal class UIModConfig : UIState
 	{
@@ -42,7 +40,7 @@ namespace Terraria.ModLoader.Config.UI
 		// This is from ConfigManager.Configs
 		private ModConfig modConfig;
 		// the clone we modify. 
-		private ModConfig modConfigClone;
+		private ModConfig pendingConfig;
 
 		public override void OnInitialize()
 		{
@@ -155,10 +153,9 @@ namespace Terraria.ModLoader.Config.UI
 			Append(uIElement);
 		}
 
-
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuClose);
+			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modsMenuID;
 
 			//Main.menuMode = 1127;
@@ -173,10 +170,18 @@ namespace Terraria.ModLoader.Config.UI
 			//}
 		}
 
-		// TODO: with in-game version, disable MultiplayerSyncMode.ServerDictates configs (View Only maybe?)
+		internal void Unload() {
+			mainConfigList.Clear();
+			mod = null;
+			modConfigs = null;
+			modConfig = null;
+			pendingConfig = null;
+		}
+
+		// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
 		private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
+			Main.PlaySound(SoundID.MenuOpen);
 			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
@@ -186,14 +191,15 @@ namespace Terraria.ModLoader.Config.UI
 
 		private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
-			DiscardChanges();
+			Main.PlaySound(SoundID.MenuOpen);
+			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
 			//modConfigClone = modConfig.Clone();
 			DoMenuModeState();
 		}
 
+		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
 		private void DoMenuModeState()
 		{
 			if (Main.gameMenu)
@@ -202,41 +208,41 @@ namespace Terraria.ModLoader.Config.UI
 				Main.InGameUI.SetState(Interface.modConfig);
 		}
 
-		// TODO: With in-game version prevent save that would cause ReloadRequired to be true?
-		// Applies the changes to 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
+			// Main Menu: Save, leave reload for later
+			// MP with ServerSide: Send request to server
+			// SP or MP with ClientSide: Apply immediately if !NeedsReload
 			if (Main.gameMenu)
 			{
 				Main.PlaySound(SoundID.MenuOpen);
-				// save takes clone and saves to disk, but how can we know if we need to reload
-				ConfigManager.Save(modConfigClone);
-				ConfigManager.Load(modConfig); // Changes not taken effect?
-											   // Reload will be forced by Back Button in UIMods if needed
+				ConfigManager.Save(pendingConfig);
+				ConfigManager.Load(modConfig);
+				// modConfig.OnChanged(); delayed until ReloadRequired checked
+				// Reload will be forced by Back Button in UIMods if needed
 			}
 			else
 			{
-				// TODO: Server request.
-				if (modConfigClone.Mode == MultiplayerSyncMode.ServerDictates && Main.netMode == NetmodeID.MultiplayerClient)
+				// If we are in game...
+				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient)
 				{
+					// TODO: Too 
 					SetMessage("Asking server to accept changes...", Color.Yellow);
 
 					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-					requestChanges.Write(modConfigClone.mod.Name);
-					requestChanges.Write(modConfigClone.Name);
-					string json = JsonConvert.SerializeObject(modConfigClone, ConfigManager.serializerSettings);
+					requestChanges.Write(pendingConfig.mod.Name);
+					requestChanges.Write(pendingConfig.Name);
+					string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
 					requestChanges.Write(json);
 					requestChanges.Send();
 
 					//IngameFancyUI.Close();
 
-					// Make a packet with just this config and send to server.
-					// Server responds. On receive, Save and Load? No. Swap out pendingConfig<NetConfig> and PopulateObject
-					//                      -- if UI is open, update message and reload: DoMenuModeState();
-
 					return;
 				}
-				if (modConfig.NeedsReload(modConfigClone))
+				// SP or MP with ClientSide
+				ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.mod, modConfig.Name);
+				if (loadTimeConfig.NeedsReload(pendingConfig))
 				{
 					Main.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
@@ -245,11 +251,11 @@ namespace Terraria.ModLoader.Config.UI
 				else
 				{
 					Main.PlaySound(SoundID.MenuOpen);
-					ConfigManager.Save(modConfigClone);
+					ConfigManager.Save(pendingConfig);
 					ConfigManager.Load(modConfig);
+					modConfig.OnChanged();
 				}
 			}
-
 
 			//if (ConfigManager.ModNeedsReload(modConfig.mod))
 			//{
@@ -259,30 +265,23 @@ namespace Terraria.ModLoader.Config.UI
 			//{
 			DoMenuModeState();
 			//}
-
-			// RELOAD HERE!
 		}
 
 		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
-			//ConfigManager.Reset(modConfigClone);
-			//ConfigManager.Save(modConfigClone);
-			//ConfigManager.Load(modConfig);
+			Main.PlaySound(SoundID.MenuOpen);
 			pendingRevertDefaults = true;
 			DoMenuModeState();
 		}
 
 		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
+			Main.PlaySound(SoundID.MenuOpen);
 			DiscardChanges();
 		}
 
 		private void DiscardChanges()
 		{
-			// reclone, then reload this UI
-			//modConfigClone = modConfig.Clone();
 			DoMenuModeState();
 		}
 
@@ -351,7 +350,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (config != null)
 				{
 					modConfig = ConfigManager.Configs[mod].First(x => x == config);
-					// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == MultiplayerSyncMode.UniquePerPlayer).ToList();
+					// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
 				}
 				//modConfigClone = modConfig.Clone();
 
@@ -370,12 +369,12 @@ namespace Terraria.ModLoader.Config.UI
 			SetMessage("", Color.White);
 			string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
 			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + configDisplayName);
-			modConfigClone = modConfig.Clone();
+			pendingConfig = modConfig.Clone();
 			pendingChanges = pendingRevertDefaults;
 			if (pendingRevertDefaults)
 			{
 				pendingRevertDefaults = false;
-				ConfigManager.Reset(modConfigClone);
+				ConfigManager.Reset(pendingConfig);
 				pendingChangesUIUpdate = true;
 			}
 
@@ -405,13 +404,13 @@ namespace Terraria.ModLoader.Config.UI
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
 			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
-			var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(modConfigClone.GetType(), typeof(BackgroundColorAttribute));
+			var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
 			if (backgroundColorAttribute != null) {
 				uIPanel.BackgroundColor = backgroundColorAttribute.color;
 			}
 
 			int order = 0;
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(modConfigClone))
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig))
 			{
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;
@@ -422,7 +421,7 @@ namespace Terraria.ModLoader.Config.UI
 					var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
 					WrapIt(mainConfigList, ref top, wrapper, header, order++);
 				}
-				WrapIt(mainConfigList, ref top, variable, modConfigClone, order++);
+				WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
 			}
 		}
 

@@ -210,7 +210,7 @@ namespace Terraria.ModLoader.UI
 			drawPos = new Vector2(innerDimensions.X + 10f + modIconAdjust, innerDimensions.Y + 45f);
 			DrawPanel(spriteBatch, drawPos, 85f);
 			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
-			if (mod.Enabled != loaded) {
+			if (mod.Enabled != loaded || configChangesRequireReload) {
 				drawPos += new Vector2(90f, 5f);
 				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 			}

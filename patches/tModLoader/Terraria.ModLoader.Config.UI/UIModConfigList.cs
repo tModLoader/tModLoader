@@ -101,6 +101,10 @@ namespace Terraria.ModLoader.Config.UI
 		//	UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		//}
 
+		internal void Unload() {
+			modList?.Clear();
+		}
+
 		public override void OnActivate()
 		{
 			Main.clrInput();
@@ -116,7 +120,7 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				foreach (var config in item.Value)
 				{
-					//if (config.Mode == MultiplayerSyncMode.UniquePerPlayer)
+					//if (config.Mode == ConfigScope.ClientSide)
 					{
 						string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
 						UITextPanel<string> t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
@@ -135,7 +139,7 @@ namespace Terraria.ModLoader.Config.UI
 						container.Append(t);
 						modList.Add(container);
 
-						if (config.Mode == MultiplayerSyncMode.ServerDictates)
+						if (config.Mode == ConfigScope.ServerSide)
 						{
 							t.BackgroundColor = Color.Pink * 0.7f;
 							t.OnMouseOver += (a, b) => t.BackgroundColor = Color.Pink;

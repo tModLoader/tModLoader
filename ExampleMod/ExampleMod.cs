@@ -152,6 +152,8 @@ namespace ExampleMod
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			Instance = null;
 			RandomBuffHotKey = null;
+			exampleClientConfig = null;
+			exampleServerConfig = null;
 		}
 
 		public override void PostSetupContent() {

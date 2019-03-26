@@ -56,25 +56,34 @@
  		}
  
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
-@@ -242,6 +_,18 @@
+@@ -242,8 +_,27 @@
  			}
  			if (!Main.menuMultiplayer)
  			{
-+				ConfigManager.LoadAll();
++				ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 +				if (ConfigManager.AnyModNeedsReload())
 +				{
-+					ModLoader.ModLoader.OnSuccessfulLoad += () =>
-+					{
-+						Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
-+						Main.ActivePlayerFileData.SetAsActive();
-+						WorldGen.playWorld();
-+					};
++					ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
 +					ModLoader.ModLoader.Reload();
 +					return;
 +				}
++				ConfigManager.OnChangedAll();
  				WorldGen.playWorld();
  			}
++		}
++
++		internal static Action PlayReload() {
++			// Main.ActivePlayerFileData gets cleared during reload
++			var path = Main.ActivePlayerFileData.Path;
++			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
++			return () => {
++				// re-select the current player
++				Player.GetFileData(path, isCloudSave).SetAsActive();
++				WorldGen.playWorld();
++			};
  		}
+ 
+ 		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement)
 @@ -272,6 +_,10 @@
  		{
  			Platform.Current.Clipboard = this._data.SeedText;

@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Config
 {
 	public static class ConfigManager
 	{
-		// These are THE configs.
+		// These are THE active configs.
 		internal static readonly IDictionary<Mod, List<ModConfig>> Configs = new Dictionary<Mod, List<ModConfig>>();
 		// Configs should never violate reload required.
 		// Menu save should force reload
@@ -60,6 +60,7 @@ namespace Terraria.ModLoader.Config
 			configList.Add(config);
 
 			config.OnLoaded();
+			config.OnChanged();
 
 			// Maintain a backup of LoadTime Configs.
 			List<ModConfig> configList2;
@@ -68,14 +69,22 @@ namespace Terraria.ModLoader.Config
 			configList2.Add(config.Clone());
 		}
 
-		// This method for refreshing configs (ServerDictates mostly) after events that could change configs: Multiplayer play.
+		// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
 		internal static void LoadAll()
 		{
-			foreach (var item in ConfigManager.Configs)
+			foreach (var activeConfigs in ConfigManager.Configs)
 			{
-				foreach (var config in item.Value)
+				foreach (var activeConfig in activeConfigs.Value)
 				{
-					Load(config);
+					Load(activeConfig);
+				}
+			}
+		}
+
+		internal static void OnChangedAll() {
+			foreach (var activeConfigs in ConfigManager.Configs) {
+				foreach (var activeConfig in activeConfigs.Value) {
+					activeConfig.OnChanged();
 				}
 			}
 		}
@@ -84,7 +93,7 @@ namespace Terraria.ModLoader.Config
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == MultiplayerSyncMode.ServerDictates && ModLoader.OnSuccessfulLoad == ModNet.NetReload())
+			if (config.Mode == ConfigScope.ServerSide && Main.netMode == 1 /*ModLoader.OnSuccessfulLoad == ModNet.NetReload()*/)
 			{
 				//path = Path.Combine(ServerModConfigPath, filename);
 				//if (!File.Exists(path))
@@ -93,7 +102,6 @@ namespace Terraria.ModLoader.Config
 				//}
 				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
-				// TODO: [JsonExtensionData] example/test.
 				return;
 			}
 			string json = "{}";
@@ -107,10 +115,10 @@ namespace Terraria.ModLoader.Config
 			JsonConvert.PopulateObject(json, config, serializerSettings);
 		}
 
-		internal static void Reset(ModConfig config)
+		internal static void Reset(ModConfig pendingConfig)
 		{
 			string json = "{}";
-			JsonConvert.PopulateObject(json, config, serializerSettings);
+			JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 		}
 
 		internal static void Save(ModConfig config)
@@ -120,13 +128,15 @@ namespace Terraria.ModLoader.Config
 			string path = Path.Combine(ModConfigPath, filename);
 			string json = JsonConvert.SerializeObject(config, serializerSettings);
 			File.WriteAllText(path, json);
-			config.PostSave();
 		}
 
 		internal static void Unload()
 		{
 			Configs.Clear();
 			LoadTimeConfigs.Clear();
+
+			Interface.modConfig.Unload();
+			Interface.modConfigList.Unload();
 		}
 
 		// pending changes are stored (in a variable? dictionary?)?? when synced from server.
@@ -177,11 +187,20 @@ namespace Terraria.ModLoader.Config
 
 		// GetConfig...returns the config instance
 
+		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 		internal static ModConfig GetConfig(Mod mod, string config)
 		{
 			List<ModConfig> configs;
 			if (Configs.TryGetValue(mod, out configs))
 			{
+				return configs.Single(x => x.Name == config);
+			}
+			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		}
+
+		internal static ModConfig GetLoadTimeConfig(Mod mod, string config) {
+			List<ModConfig> configs;
+			if (LoadTimeConfigs.TryGetValue(mod, out configs)) {
 				return configs.Single(x => x.Name == config);
 			}
 			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
@@ -198,14 +217,15 @@ namespace Terraria.ModLoader.Config
 					string modname = reader.ReadString();
 					string configname = reader.ReadString();
 					string json = reader.ReadString();
-					ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
-					JsonConvert.PopulateObject(json, config, serializerSettingsCompact);
-					config.PostSave();
+					ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
+					JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
+					activeConfig.OnChanged();
 
 					Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
 					if (Main.InGameUI.CurrentState == Interface.modConfig)
 					{
 						Main.InGameUI.SetState(Interface.modConfig);
+						Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
 					}
 				}
 				else
@@ -229,16 +249,17 @@ namespace Terraria.ModLoader.Config
 				string configname = reader.ReadString();
 				string json = reader.ReadString();
 				ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
-				ModConfig pending = config.Clone();
-				JsonConvert.PopulateObject(json, pending, serializerSettingsCompact);
+				ModConfig loadTimeConfig = GetLoadTimeConfig(ModLoader.GetMod(modname), configname);
+				ModConfig pendingConfig = config.Clone();
+				JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 				bool success = true;
 				string message = "Accepted";
-				if (config.NeedsReload(pending))
+				if (loadTimeConfig.NeedsReload(pendingConfig))
 				{
 					success = false;
 					message = "Can't save because changes would require a reload.";
 				}
-				if (!config.AcceptClientChanges(pending, whoAmI, ref message))
+				if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message))
 				{
 					success = false;
 				}
@@ -246,7 +267,7 @@ namespace Terraria.ModLoader.Config
 				{
 					// Apply to Servers Config
 					JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
-					config.PostSave();
+					config.OnChanged();
 					// Send new config to all clients
 					var p = new ModPacket(MessageID.InGameChangeConfig);
 					p.Write(true);

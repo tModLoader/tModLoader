@@ -396,7 +396,7 @@
  		public const byte PlayerDeathV2 = 118;
  		public const byte CombatTextString = 119;
  		public const byte Count = 120;
-+		// Sent by Clients who wish to change MultiplayerSyncMode.ServerDictates ModConfigs. Clients send Modname, configname, and json string.
++		// Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, and json string.
 +		// Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
 +		// Client receives bool success, message, if success, additionally modname, configname, json and applies them locally.
 +		public const byte InGameChangeConfig = 249;

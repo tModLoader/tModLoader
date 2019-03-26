@@ -16,19 +16,19 @@ using Terraria.ModLoader.Config.UI;
 
 namespace ExampleMod
 {
-	// This file contains 2 real ModConfigs (and also a bunch of fake ModConfigs showcasing various ideas). One is set to MultiplayerSyncMode.ServerDictates and the other MultiplayerSyncMode.UniquePerPlayer
+	// This file contains 2 real ModConfigs (and also a bunch of fake ModConfigs showcasing various ideas). One is set to ConfigScope.ServerSide and the other ConfigScope.ClientSide
 	// ModConfigs contain Public Fields and Properties that represent the choices available to the user. 
 	// Those Fields or Properties will be presented to users in the Config menu.
 	// DONT use static members anywhere in this class, tModLoader maintains several instances of ModConfig classes which will not work well with static properties or fields.
 
 	/// <summary>
 	/// ExampleConfigServer has Server-wide effects. Things that happen on the server, on the world, or influence autoload go here
-	/// MultiplayerSyncMode.ServerDictates ModConfigs are SHARED from the server to all clients connecting in MP.
+	/// ConfigScope.ServerSide ModConfigs are SHARED from the server to all clients connecting in MP.
 	/// </summary>
 	public class ExampleConfigServer : ModConfig
 	{
-		// You MUST specify a MultiplayerSyncMode.
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.ServerDictates;
+		// You MUST specify a ConfigScope.
+		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 		// We will use attributes to annotate our fields or properties so tModLoader can properly handle them.
 
@@ -83,7 +83,7 @@ namespace ExampleMod
 			ExampleMod.exampleServerConfig = this;
 		}
 
-		// AcceptClientChanges is called on the server when a Client player attempts to change ServerDictates settings in-game. By default, client changes are accepted. (As long as they don't necessitate a Reload)
+		// AcceptClientChanges is called on the server when a Client player attempts to change ServerSide settings in-game. By default, client changes are accepted. (As long as they don't necessitate a Reload)
 		// With more effort, a mod could implement more control over changing mod settings.
 		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
 		{
@@ -110,7 +110,7 @@ namespace ExampleMod
 	/// </summary>
 	public class ExampleConfigClient : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Label("Show the coin rate UI")]
 		public bool ShowCoinUI;
@@ -121,12 +121,11 @@ namespace ExampleMod
 		public override void OnLoaded()
 		{
 			ExampleMod.exampleClientConfig = this;
-			UI.ExampleUI.Visible = ShowCoinUI;
 		}
 
-		public override void PostSave()
+		public override void OnChanged()
 		{
-			// Here we use the PostSave hook to initialize ExampleUI.visible with the new values.
+			// Here we use the OnChanged hook to initialize ExampleUI.visible with the new values.
 			// We maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
 			UI.ExampleUI.Visible = ShowCoinUI;
 		}
@@ -136,7 +135,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase A: Data Types")]
 	public class ModConfigShowcaseDataTypes : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Value Types
 		public bool SomeBool;
@@ -205,7 +204,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase B: Ranges")]
 	public class ModConfigShowcaseRanges : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// With no annotations on a float, a range from 0 to 1 with ticks of 0.01 is the default.
 		public float NormalFloat;
@@ -264,7 +263,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase C: Labels")]
 	public class ModConfigShowcaseLabels : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Without a Label attribute, config items will display as field identifiers. Using Label will make your Config appealing.
 		// Use Tooltip to convey additional information about the config item.
@@ -302,7 +301,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase D: Default Values")]
 	public class ModConfigShowcaseDefaultValues : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Using DefaultValue, we can specify a default value.
 		[DefaultValue(99)]
@@ -349,7 +348,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase E: Subpages")]
 	public class ModConfigShowcaseSubpages : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Using SeparatePage, an object will be presented to the user as a button. That button will lead to a separate page where the usual UI will be presented. Useful for organization.
 		[SeparatePage]
@@ -422,7 +421,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase F: Accessibility")]
 	public class ModConfigShowcaseAccessibility : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Private and Internal fields and properties will not be shown. 
 		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
@@ -489,7 +488,7 @@ namespace ExampleMod
 	[Label("ModConfig Showcase G: Misc")]
 	public class ModConfigShowcaseMisc : ModConfig
 	{
-		public override MultiplayerSyncMode Mode => MultiplayerSyncMode.UniquePerPlayer;
+		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Label("Custom UI Element")]
 		[Tooltip("This UI Element is modder defined")]
