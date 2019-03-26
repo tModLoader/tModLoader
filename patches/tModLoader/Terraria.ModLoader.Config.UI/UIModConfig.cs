@@ -176,6 +176,8 @@ namespace Terraria.ModLoader.Config.UI
 			modConfigs = null;
 			modConfig = null;
 			pendingConfig = null;
+			while(configPanelStack.Count > 1)
+				uIElement.RemoveChild(configPanelStack.Pop());
 		}
 
 		// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
