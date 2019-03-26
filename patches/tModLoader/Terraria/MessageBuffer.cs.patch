@@ -204,6 +204,15 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
+@@ -1495,7 +_,7 @@
+ 				case 28:
+ 					{
+ 						int num84 = (int)this.reader.ReadInt16();
+-						int num85 = (int)this.reader.ReadInt16();
++						int num85 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadInt32();
+ 						float num86 = this.reader.ReadSingle();
+ 						int num87 = (int)(this.reader.ReadByte() - 1);
+ 						byte b7 = this.reader.ReadByte();
 @@ -1631,6 +_,7 @@
  						Main.chest[num94].item[num95].netDefaults(type5);
  						Main.chest[num94].item[num95].Prefix(pre2);

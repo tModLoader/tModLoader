@@ -128,6 +128,19 @@
  							}
  							if (bb14[Projectile.maxAI])
  							{
+ 								writer.Write((short)projectile.projUUID);
+@@ -598,7 +_,10 @@
+ 						}
+ 					case 28:
+ 						writer.Write((short)number);
+-						writer.Write((short)number2);
++						if (ModNet.AllowVanillaClients)
++							writer.Write((short)number2);
++						else
++							writer.Write((int)number2);
+ 						writer.Write(number3);
+ 						writer.Write((byte)(number4 + 1f));
+ 						writer.Write((byte)number5);
 @@ -628,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);

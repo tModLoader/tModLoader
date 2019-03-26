@@ -171,7 +171,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		internal void Unload() {
-			mainConfigList.Clear();
+			mainConfigList?.Clear();
 			mod = null;
 			modConfigs = null;
 			modConfig = null;
