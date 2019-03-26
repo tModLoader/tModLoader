@@ -133,5 +133,13 @@ namespace ExampleMod.Items.Weapons
 			// By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
 			return true;
 		}*/
+
+		// How can I choose between several projectiles randomly?
+		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
+			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, mod.ProjectileType<Projectiles.ExampleBullet>() });
+			return true;
+		}*/
 	}
 }
