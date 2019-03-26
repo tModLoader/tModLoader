@@ -164,13 +164,14 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a3f317bf7aaa13002154b032c86f57898"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898">MultiplayerSyncMode</a> { <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898aff58b72a674ec9f1b630ae07898732ed">MultiplayerSyncMode.ServerDictates</a>, 
-<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898a307390b22ef93e77a748c1e635cc2885">MultiplayerSyncMode.UniquePerPlayer</a>
- }</td></tr>
-<tr class="separator:a3f317bf7aaa13002154b032c86f57898"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d21db79dbed48a11834c81269b9e073"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073">ConfigScope</a> { <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984">ConfigScope.ServerSide</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262">ConfigScope.ClientSide</a>
+ }<tr class="memdesc:a8d21db79dbed48a11834c81269b9e073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each ModConfig class has a different scope. Failure to use the correct mode will lead to bugs.  <a href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a8d21db79dbed48a11834c81269b9e073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="a3f317bf7aaa13002154b032c86f57898"></a>
+<a class="anchor" id="a8d21db79dbed48a11834c81269b9e073"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -178,7 +179,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898">Terraria.ModLoader.Config.MultiplayerSyncMode</a></td>
+          <td class="memname">enum <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073">Terraria.ModLoader.Config.ConfigScope</a></td>
         </tr>
       </table>
   </td>
@@ -187,16 +188,20 @@ Enumerations</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Each <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> class has a different scope. Failure to use the correct mode will lead to bugs. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a3f317bf7aaa13002154b032c86f57898aff58b72a674ec9f1b630ae07898732ed"></a>ServerDictates&#160;</td><td class="fielddoc">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984"></a>ServerSide&#160;</td><td class="fielddoc">
+<p>This config is shared between all clients and maintained by the server. Use this for game-play changes that should affect all players the same. ServerSide also covers single player as well. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a3f317bf7aaa13002154b032c86f57898a307390b22ef93e77a748c1e635cc2885"></a>UniquePerPlayer&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262"></a>ClientSide&#160;</td><td class="fielddoc">
+<p>This config is specific to the client. Use this for personalization options. </p>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00073">73</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898aff58b72a674ec9f1b630ae07898732ed">ServerDictates</a>,</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898a307390b22ef93e77a748c1e635cc2885">UniquePerPlayer</a>,</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// Player,</span></div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="comment">// World</span></div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_1_1_config_html_a3f317bf7aaa13002154b032c86f57898a307390b22ef93e77a748c1e635cc2885"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898a307390b22ef93e77a748c1e635cc2885">Terraria.ModLoader.Config.MultiplayerSyncMode.UniquePerPlayer</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_1_1_config_html_a3f317bf7aaa13002154b032c86f57898aff58b72a674ec9f1b630ae07898732ed"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader_1_1_config.html#a3f317bf7aaa13002154b032c86f57898aff58b72a674ec9f1b630ae07898732ed">Terraria.ModLoader.Config.MultiplayerSyncMode.ServerDictates</a></div></div>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00086">86</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    {</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984">ServerSide</a>,</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262">ClientSide</a>,</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">// PlayerSpecific,</span></div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="comment">// WorldSpecific</span></div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_1_1_config_html_a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262">Terraria.ModLoader.Config.ConfigScope.ClientSide</a></div><div class="ttdoc">This config is specific to the client. Use this for personalization options. </div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_1_1_config_html_a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984">Terraria.ModLoader.Config.ConfigScope.ServerSide</a></div><div class="ttdoc">This config is shared between all clients and maintained by the server. Use this for game-play change...</div></div>
 </div><!-- fragment -->
 </div>
 </div>
