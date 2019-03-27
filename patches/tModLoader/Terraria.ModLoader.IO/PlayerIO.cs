@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
@@ -12,6 +13,10 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class PlayerIO
 	{
+		internal static void WriteVanillaHairDye(short hairDye, BinaryWriter writer) {
+			writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
+		}
+
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
 		internal static void Save(Player player, string path, bool isCloudSave) {
@@ -28,6 +33,7 @@ namespace Terraria.ModLoader.IO
 				["bank"] = SaveInventory(player.bank.item),
 				["bank2"] = SaveInventory(player.bank2.item),
 				["bank3"] = SaveInventory(player.bank3.item),
+				["hairDye"] = SaveHairDye(player.hairDye),
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player),
 				["usedMods"] = SaveUsedMods(player)
@@ -60,6 +66,7 @@ namespace Terraria.ModLoader.IO
 			LoadInventory(player.bank.item, tag.GetList<TagCompound>("bank"));
 			LoadInventory(player.bank2.item, tag.GetList<TagCompound>("bank2"));
 			LoadInventory(player.bank3.item, tag.GetList<TagCompound>("bank3"));
+			LoadHairDye(player, tag.GetString("hairDye"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
@@ -80,6 +87,26 @@ namespace Terraria.ModLoader.IO
 		public static void LoadInventory(Item[] inv, IList<TagCompound> list) {
 			foreach (var tag in list)
 				inv[tag.GetShort("slot")] = ItemIO.Load(tag);
+		}
+
+		public static string SaveHairDye(short hairDye) {
+			if (hairDye < EffectsTracker.vanillaHairShaderCount)
+				return "";
+
+			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
+			var modItem = ItemLoader.GetItem(itemId);
+			return modItem.mod.Name + '/' + modItem.Name;
+		}
+
+		public static void LoadHairDye(Player player, string hairDyeItemName) {
+			if (hairDyeItemName == "")
+				return;
+
+			// no mystery hair dye at this stage
+			ModContent.SplitName(hairDyeItemName, out string modName, out string itemName);
+			var modItem = ModLoader.GetMod(modName)?.GetItem(itemName);
+			if (modItem != null)
+				player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.item.type);
 		}
 
 		internal static List<TagCompound> SaveModData(Player player) {

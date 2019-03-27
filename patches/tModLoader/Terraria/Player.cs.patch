@@ -5718,7 +5718,7 @@
  			{
  				return false;
  			}
-@@ -38543,7 +_,8 @@
+@@ -38543,13 +_,14 @@
  				{
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
  					{
@@ -5728,6 +5728,13 @@
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
  						binaryWriter.Write(player.difficulty);
+ 						binaryWriter.Write(playerFile.GetPlayTime().Ticks);
+ 						binaryWriter.Write(player.hair);
+-						binaryWriter.Write(player.hairDye);
++						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
+ 						BitsByte bb = 0;
+ 						for (int i = 0; i < 8; i++)
+ 						{
 @@ -38594,49 +_,49 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)

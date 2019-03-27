@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 
 		private static KeyCache[] KeyCaches;
 		private static int vanillaArmorShaderCount;
-		private static int vanillaHairShaderCount;
+		internal static int vanillaHairShaderCount;
 
 		internal static void CacheVanillaState() {
 			KeyCaches = new[] {
