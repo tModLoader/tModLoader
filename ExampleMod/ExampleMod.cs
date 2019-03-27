@@ -3,6 +3,7 @@ using ExampleMod.Tiles;
 using ExampleMod.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +28,9 @@ namespace ExampleMod
 		public static int FaceCustomCurrencyId;
 		internal static ExampleConfigClient exampleClientConfig;
 		internal static ExampleConfigServer exampleServerConfig;
-		// public static DynamicSpriteFont exampleFont; With the new fonts in 1.3.5, font files are pretty big now so we have removed this example. You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
-		public static Effect ExampleEffect;
+		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
+		// You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
+		public static DynamicSpriteFont exampleFont;
 		internal static ExampleMod Instance;
 
 		private UserInterface _exampleUserInterface;
@@ -102,11 +104,12 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-				// exampleFont = GetFont("Fonts/ExampleFont"); 
 				GameShaders.Armor.BindShader(ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
 				GameShaders.Hair.BindShader(ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
-
+				
+				if (FontExists("Fonts/ExampleFont"))
+					exampleFont = GetFont("Fonts/ExampleFont"); 
 
 				// Custom UI
 				ExampleUI = new ExampleUI();
@@ -147,8 +150,6 @@ namespace ExampleMod
 
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
-			ExampleEffect = null;
-
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			Instance = null;
 			RandomBuffHotKey = null;

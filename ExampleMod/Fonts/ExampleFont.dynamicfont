@@ -5,7 +5,7 @@
 		<!--
 		Modify this string to change the default font that will be imported.
 		-->
-		<FontName>Visitor TT1 BRK</FontName>
+		<FontName>Visitor TT1 (BRK)</FontName>
 		
 		<!--
 		Size is a float value, measured in points. Modify this value to change
