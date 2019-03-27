@@ -696,6 +696,15 @@
  		}
  
  		private void LoadFonts()
+@@ -8518,6 +_,8 @@
+ 
+ 		protected void UpdateAudio()
+ 		{
++			if (engine == null) //supress extra exceptions from audio engine failing to load
++				return;
+ #if !WINDOWS
+ 			if (Main.engine != null)
+ 			{
 @@ -8639,6 +_,8 @@
  					bool flag13 = false;
  					Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
@@ -4800,6 +4809,16 @@
  				}
  			}
  		}
+@@ -60261,6 +_,9 @@
+ 
+ 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
+ 		{
++			if (engine == null) //supress extra exceptions from audio engine failing to load
++				return null;
++
+ #if !WINDOWS
+ 			object audioLock = Main._audioLock;
+ 			lock (audioLock)
 @@ -60352,7 +_,11 @@
  							return result;
  						}

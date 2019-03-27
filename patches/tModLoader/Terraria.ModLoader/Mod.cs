@@ -141,11 +141,11 @@ namespace Terraria.ModLoader
 						LoadTexture(path, getStream(), extension == ".rawimg");
 					return true;
 				case ".wav":
-					if (!Main.dedServ)
+					if (!Main.dedServ && Main.engine != null)
 						LoadWav(path, getStream().ReadBytes(length));
 					return true;
 				case ".mp3":
-					if (!Main.dedServ)
+					if (!Main.dedServ && Main.engine != null)
 						LoadMP3(path, getStream().ReadBytes(length));
 					return true;
 				case ".xnb":
@@ -1396,6 +1396,9 @@ namespace Terraria.ModLoader
 		public void AddMusicBox(int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
 			if (!loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
+
+			if (Main.engine == null)
+				return;
 
 			if (musicSlot < Main.maxMusic) {
 				throw new ArgumentOutOfRangeException("Cannot assign music box to vanilla music ID " + musicSlot);

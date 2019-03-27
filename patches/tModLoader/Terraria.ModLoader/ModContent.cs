@@ -515,17 +515,12 @@ namespace Terraria.ModLoader
 
 		private static void DisposeMusic() {
 			for (int i = 0; i < Main.music.Length; i++) {
-				MusicStreaming music = Main.music[i] as MusicStreaming;
-				if (music != null) {
-					if (i < Main.maxMusic) {
-						Main.music[i] = Main.soundBank.GetCue("Music_" + i);
-					}
-					else {
-						Main.music[i] = null;
-					}
-					music.Stop(AudioStopOptions.Immediate);
-					music.Dispose();
-				}
+				if (!(Main.music[i] is MusicStreaming music)) 
+					continue;
+
+				Main.music[i] = i < Main.maxMusic ? Main.soundBank.GetCue("Music_" + i) : null;
+				music.Stop(AudioStopOptions.Immediate);
+				music.Dispose();
 			}
 		}
 
