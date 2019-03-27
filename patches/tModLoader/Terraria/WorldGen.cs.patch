@@ -152,6 +152,21 @@
  								return;
  							}
  						}
+@@ -2467,6 +_,14 @@
+ 			{
+ 				Main.anglerQuestFinished = true;
+ 			}
++
++			// Move rest of method to main thread to fix concurrent modification exceptions
++			Main.OnTick += FinishPlayWorld;
++		}
++
++		internal static void FinishPlayWorld() {
++			Main.OnTick -= FinishPlayWorld;
++
+ 			Main.player[Main.myPlayer].Spawn();
+ 			Main.player[Main.myPlayer].Update(Main.myPlayer);
+ 			Main.ActivePlayerFileData.StartPlayTimer();
 @@ -2505,6 +_,7 @@
  
  		public static void serverLoadWorldCallBack(object threadContext)
