@@ -320,7 +320,7 @@ namespace ExampleMod
 
 			int inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 			if (inventoryIndex != -1) {
-				layers.Insert(inventoryIndex + 1, new LegacyGameInterfaceLayer(
+				layers.Insert(inventoryIndex, new LegacyGameInterfaceLayer(
 					"ExampleMod: Example Person UI",
 					delegate {
 						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.

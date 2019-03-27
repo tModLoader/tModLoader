@@ -15,7 +15,7 @@ namespace ExampleMod.Items
 			this.value = Item.sellPrice(0, 1, 50, 0);
 			this.rare = 3;
 			*/
-			byte dye = item.dye;
+			short dye = item.dye;
 			item.CloneDefaults(ItemID.GelDye);
 			item.dye = dye;
 		}

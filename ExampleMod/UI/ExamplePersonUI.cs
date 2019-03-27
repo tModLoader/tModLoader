@@ -55,6 +55,9 @@ namespace ExampleMod.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
+			// This will hide the crafting menu similar to the reforge menu. For best results this UI is placed before "Vanilla: Inventory" to prevent 1 frame of the craft menu showing.
+			Main.HidePlayerCraftingMenu = true;
+
 			// Here we have a lot of code. This code is mainly adapted from the vanilla code for the reforge option.
 			// This code draws "Place an item here" when no item is in the slot and draws the reforge cost and a reforge button when an item is in the slot.
 			// This code could possibly be better as different UIElements that are added and removed, but that's not the main point of this example.

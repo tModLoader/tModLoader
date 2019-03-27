@@ -189,6 +189,14 @@
  		public static bool playerInventory = false;
  		public static int stackSplit;
  		public static int stackCounter = 0;
+@@ -1317,6 +_,7 @@
+ 		public static float temporaryGUIScaleSlider = -1f;
+ 		public static bool temporaryGUIScaleSliderUpdate = false;
+ 		public static bool InGuideCraftMenu = false;
++		public static bool HidePlayerCraftingMenu = false;
+ 		public static bool InReforgeMenu = false;
+ 		public static Item HoverItem = new Item();
+ 		private static int backSpaceCount = 0;
 @@ -1334,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -3859,6 +3867,23 @@
  								num74++;
  							}
  						}
+@@ -36762,7 +_,7 @@
+ 					ItemSlot.Draw(Main.spriteBatch, ref Main.guideItem, 7, new Vector2((float)num70, (float)num71), default(Microsoft.Xna.Framework.Color));
+ 				}
+ 			}
+-			if (!Main.InReforgeMenu)
++			if (!Main.InReforgeMenu && !Main.HidePlayerCraftingMenu)
+ 			{
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+@@ -37025,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			Main.HidePlayerCraftingMenu = false;
+ 			if (Main.recBigList)
+ 			{
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
 @@ -37350,6 +_,8 @@
  			r.Create();
  			if (Main.mouseItem.type > 0 || r.createItem.type > 0)
