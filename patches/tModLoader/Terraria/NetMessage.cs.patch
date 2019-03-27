@@ -128,7 +128,6 @@
  							}
  							if (bb14[Projectile.maxAI])
  							{
- 								writer.Write((short)projectile.projUUID);
 @@ -598,7 +_,10 @@
  						}
  					case 28:

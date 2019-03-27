@@ -3647,7 +3647,7 @@
 +				*/
 +				int hoveredSnippet;
 +				ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, snippets[i].ToArray(), new Vector2((float)(170 + (Main.screenWidth - 800) / 2), (float)(120 + i * 30)), 0, Vector2.Zero, Vector2.One, out hoveredSnippet, -1);
-+				if (hoveredSnippet > -1) 
++				if (hoveredSnippet > -1)
 +					hoveredTextSnippet = snippets[i][hoveredSnippet];
 +			}
 +			if (hoveredTextSnippet != null) {
