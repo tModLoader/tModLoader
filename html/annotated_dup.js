@@ -4,6 +4,7 @@ var annotated_dup =
     [ "Attribute", "class_attribute.html", null ],
     [ "BinaryReader", "class_binary_reader.html", null ],
     [ "BinaryWriter", "class_binary_writer.html", null ],
+    [ "ContentManager", "class_content_manager.html", null ],
     [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
     [ "Exception", "class_exception.html", null ],
     [ "ICloneable", "class_i_cloneable.html", null ],

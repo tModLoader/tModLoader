@@ -17,6 +17,7 @@ var searchData=
   ['tagserializer_3c_20vector3_2c_20tagcompound_20_3e',['TagSerializer&lt; Vector3, TagCompound &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['tileentity',['TileEntity',['../class_tile_entity.html',1,'']]],
   ['tileloader',['TileLoader',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html',1,'Terraria::ModLoader']]],
+  ['tmlcontentmanager',['TMLContentManager',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_t_m_l_content_manager.html',1,'Terraria::ModLoader::IO']]],
   ['tmodfile',['TmodFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html',1,'Terraria::ModLoader::IO']]],
   ['tooltipattribute',['TooltipAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html',1,'Terraria::ModLoader::Config']]],
   ['tooltipline',['TooltipLine',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html',1,'Terraria::ModLoader']]],

@@ -153,8 +153,6 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "ItemType", "class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2", null ],
     [ "ItemType< T >", "class_terraria_1_1_mod_loader_1_1_mod.html#a9c69a2521f46ffba1f4c1bb4bd831b11", null ],
     [ "Load", "class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75", null ],
-    [ "LoadEffect", "class_terraria_1_1_mod_loader_1_1_mod.html#af8570ef4fd7cef1b75ca0db296be6203", null ],
-    [ "LoadFont", "class_terraria_1_1_mod_loader_1_1_mod.html#aa6aabcd58da266cf2bd8137a20ef481d", null ],
     [ "LoadMP3", "class_terraria_1_1_mod_loader_1_1_mod.html#adb2b13233e458dfe2002327bbc5535b8", null ],
     [ "LoadResource", "class_terraria_1_1_mod_loader_1_1_mod.html#a06060e108c1ffa96c6893671cffe20d3", null ],
     [ "LoadResourceFromStream", "class_terraria_1_1_mod_loader_1_1_mod.html#a5f3343389eaa5fc6680de4f2ddc6e0c6", null ],

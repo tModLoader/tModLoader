@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="Terraria.ModLoader.IO.Tag\lSerializer\&lt; ushort, short \&gt;" alt="" coords="5,5,184,46"/>
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html" title="Terraria.ModLoader.IO.UShort\lTagSerializer" alt="" coords="232,5,429,46"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html" title="Terraria.ModLoader.IO.Tag\lSerializer\&lt; ulong, long \&gt;" alt="" coords="5,5,184,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html" title="Terraria.ModLoader.IO.ULong\lTagSerializer" alt="" coords="232,5,427,46"/>
 </map>

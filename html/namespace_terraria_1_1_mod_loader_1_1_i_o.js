@@ -15,6 +15,7 @@ var namespace_terraria_1_1_mod_loader_1_1_i_o =
     [ "TagPrinter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer" ],
     [ "TagSerializable", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable" ],
     [ "TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
+    [ "TMLContentManager", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_t_m_l_content_manager.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_t_m_l_content_manager" ],
     [ "TmodFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file" ],
     [ "UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer" ],
     [ "ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer" ],
