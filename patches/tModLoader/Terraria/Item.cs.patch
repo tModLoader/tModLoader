@@ -46,6 +46,15 @@
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
+@@ -34,7 +_,7 @@
+ 		public int spawnTime;
+ 		public int tileWand = -1;
+ 		public bool wornArmor;
+-		public byte dye;
++		public short dye;
+ 		public int fishingPole = 1;
+ 		public int bait;
+ 		public static int coinGrabRange = 350;
 @@ -247,9 +_,15 @@
  				}
  				if (num == -1 || num == -2 || num == -3)

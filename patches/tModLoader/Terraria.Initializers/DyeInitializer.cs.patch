@@ -19,4 +19,13 @@
  						else
  						{
  							color = new Color(28, 216, 94);
+@@ -465,7 +_,7 @@
+ 		{
+ 			for (int i = 0; i < Recipe.maxRecipes; i++)
+ 			{
+-				Main.recipe[i].createItem.dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
++				Main.recipe[i].createItem.dye = (short)GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 				Main.recipe[i].createItem.hairDye = GameShaders.Hair.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
+ 			}
+ 		}
 

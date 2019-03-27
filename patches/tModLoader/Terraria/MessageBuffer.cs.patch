@@ -86,6 +86,15 @@
  						NetMessage.SendData(6, -1, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
  						if (Netplay.Connection.State == 2)
  						{
+@@ -248,7 +_,7 @@
+ 							player2.hair = 0;
+ 						}
+ 						player2.name = this.reader.ReadString().Trim().Trim();
+-						player2.hairDye = this.reader.ReadByte();
++						player2.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadInt16();
+ 						BitsByte bitsByte = this.reader.ReadByte();
+ 						for (int num8 = 0; num8 < 8; num8++)
+ 						{
 @@ -394,6 +_,7 @@
  								player3.trashItem.netDefaults(type);
  								player3.trashItem.stack = stack;
