@@ -117,49 +117,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void LoadFont(string path, byte[] data) {
-			string fontFilenameNoExtension = Name + "_" + path.Replace('/', '_') + "_" + Version;
-			string fontFilename = fontFilenameNoExtension + ".xnb";
-			FontCacheIO.DeleteIfOlder(File.path, fontFilename);
-			if (!FontCacheIO.FontCacheAvailable(fontFilename)) {
-				FileUtilities.WriteAllBytes(FontCacheIO.FontCachePath + Path.DirectorySeparatorChar + fontFilename, data, false);
-			}
-			try {
-				fonts[path] = Main.instance.OurLoad<DynamicSpriteFont>("Fonts" + Path.DirectorySeparatorChar + "ModFonts" + Path.DirectorySeparatorChar + fontFilenameNoExtension);
-			}
-			catch (Exception e) {
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorFontFailedToLoad", path), e);
-			}
-		}
-
-		private void LoadEffect(string path, BinaryReader br) {
-			try {
-				char x = (char)br.ReadByte();//x
-				char n = (char)br.ReadByte();//n
-				char b = (char)br.ReadByte();//b
-				char w = (char)br.ReadByte();//w
-				byte xnbFormatVersion = br.ReadByte();//5
-				byte flags = br.ReadByte();//flags
-				UInt32 compressedDataSize = br.ReadUInt32();
-				if ((flags & 0x80) != 0) {
-					// TODO: figure out the compression used.
-					throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCannotLoadCompressedEffects"));
-					//UInt32 decompressedDataSize = br.ReadUInt32();
-				}
-				int typeReaderCount = br.ReadVarInt();
-				string typeReaderName = br.ReadString();
-				int typeReaderVersion = br.ReadInt32();
-				int sharedResourceCount = br.ReadVarInt();
-				int typeid = br.ReadVarInt();
-				UInt32 size = br.ReadUInt32();
-				byte[] effectBytecode = br.ReadBytes((int)size);
-				effects[path] = new Effect(Main.instance.GraphicsDevice, effectBytecode);
-			}
-			catch (Exception e) {
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorEffectFailedToLoad", path), e);
-			}
-		}
-
 		internal void SetupContent() {
 			foreach (ModItem item in items.Values) {
 				ItemLoader.SetDefaults(item.item, false);

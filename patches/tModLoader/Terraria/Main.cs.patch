@@ -591,6 +591,15 @@
  								continue;
  							}
  							catch
+@@ -4761,7 +_,7 @@
+ 			Main.instance = this;
+ #if CLIENT
+ 			Main.graphics = new GraphicsDeviceManager((Game)this);
+-			base.Content.RootDirectory = "Content";
++			base.Content = new TMLContentManager(Content.ServiceProvider, "Content");
+ #endif
+ 		}
+ 
 @@ -4776,7 +_,7 @@
  		public static void InitLifeBytes()
  		{
@@ -653,7 +662,7 @@
  			}
  			return result;
  		}
-@@ -7482,15 +_,17 @@
+@@ -7482,18 +_,20 @@
  			}
  			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
  			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
@@ -671,7 +680,11 @@
 +			TexturePackSupport.FindTexturePacks();
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
- 			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
+-			Main.ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++			Main.ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
+ 			Main.PixelShaderRef.Value = Main.ShaderContentManager.Load<Effect>("PixelShader");
+ 			Main.TileShaderRef.Value = Main.ShaderContentManager.Load<Effect>("TileShader");
+ 			Main.ScreenShaderRef.Value = Main.ShaderContentManager.Load<Effect>("ScreenShader");
 @@ -7511,6 +_,10 @@
  			this.LoadFonts();
  			Mount.Initialize();

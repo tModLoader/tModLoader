@@ -12,10 +12,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
-using Terraria.Audio;
-using Terraria.ModLoader.Audio;
-using Terraria.Localization;
-using log4net;
 using System.Linq;
 using Terraria.ModLoader.Config;
 
@@ -155,9 +151,9 @@ namespace Terraria.ModLoader
 				case ".xnb":
 					if (Main.dedServ) { }
 					else if (path.StartsWith("Fonts/"))
-						LoadFont(path, getStream().ReadBytes(length));
+						fonts[path] = Main.instance.OurLoad<DynamicSpriteFont>("tmod:"+Name+"/"+path);
 					else if (path.StartsWith("Effects/"))
-						LoadEffect(path, new BinaryReader(getStream()));
+						effects[path] = Main.ShaderContentManager.Load<Effect>("tmod:"+Name+"/"+path);
 					else
 						throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorUnknownXNBFileHint", path));
 					return true;
