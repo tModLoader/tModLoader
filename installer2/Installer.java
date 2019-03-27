@@ -1,6 +1,8 @@
 import java.io.*;
 import java.nio.file.*;
 import javax.swing.*;
+import java.util.*;
+import java.nio.file.attribute.PosixFilePermission;
 
 public class Installer
 {
@@ -57,6 +59,12 @@ public class Installer
                     parent.mkdirs();
                 }
                 copy(source, destination);
+                if(file == "tModLoaderServer"){
+                    // Alt: file.setExecutable(true, false);
+                    Set<PosixFilePermission> permissions = new HashSet<>();
+                    permissions.add(PosixFilePermission.OWNER_EXECUTE);
+                    Files.setPosixFilePermissions(destination.toPath(), permissions);
+                }
             }
             else
             {
