@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['cachedbytes',['cachedBytes',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a0c04ca4dcae4ebde29ee771d5b9bf8ab',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['canbecleared',['canBeCleared',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a06cda96a39a313d877913de116e69362',1,'Terraria::ModLoader::ModBuff']]],
   ['caneac',['CanEaC',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a420c97425854c66a58c03dd6a7a49f16',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['carpetshader',['carpetShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#abc87fa8a99aa707204ad643c64aa818b',1,'Terraria::ModLoader::PlayerDrawInfo']]],
@@ -18,7 +17,6 @@ var searchData=
   ['closedoorid',['closeDoorID',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6605bf06cc4adbfaa6a609cce58d7424',1,'Terraria::ModLoader::ModTile']]],
   ['color',['color',['../class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html#a07e8a296911fd5b2930badc88ac615a9',1,'Terraria::ModLoader::Config::BackgroundColorAttribute']]],
   ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7',1,'Terraria::ModLoader::ModLoader']]],
-  ['compressedsize',['compressedSize',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a9663dd5a84aa9c07fa55f6eef5933a5f',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['condition',['condition',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb',1,'Terraria::ModLoader::SpawnCondition']]],
   ['converters',['converters',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#ac55d1e872f6af7a2368055cc8e2b4b74',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['cooldownslot',['cooldownSlot',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab05ba7944840367c4d42838c561ce75b',1,'Terraria::ModLoader::ModProjectile']]],

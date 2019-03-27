@@ -3,7 +3,7 @@ var searchData=
   ['ocean',['Ocean',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae65bb31b4b0fd34318c4fb001c114a7e',1,'Terraria::ModLoader::SpawnCondition']]],
   ['oceanangler',['OceanAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a67d02405c628cbf19defe959d6a64167',1,'Terraria::ModLoader::SpawnCondition']]],
   ['oceanmonster',['OceanMonster',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aab7742d0a9a8c5db93d1f95b23be69e0',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['offset',['offset',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a09674dc6e4102bd6a63a6bba1435660d',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
+  ['offset',['Offset',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#add3d278a8c8809a0a59a6453f0f43cc9',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['old',['Old',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a80075f235592b2b6e8419f86db38a051',1,'Terraria::ModLoader::ModHotKey']]],
   ['oldhookexception',['OldHookException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html#a82660b139ed7f9db5ef74010301a3f87',1,'Terraria::ModLoader::Exceptions::OldHookException']]],
   ['oldhookexception',['OldHookException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html',1,'Terraria::ModLoader::Exceptions']]],

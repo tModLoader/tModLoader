@@ -10,6 +10,7 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
     [ "ContentConverters.cs", "_content_converters_8cs.html", [
       [ "ContentConverters", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_content_converters.html", null ]
     ] ],
+    [ "EntryReadStream.cs", "_entry_read_stream_8cs.html", null ],
     [ "ImageIO.cs", "_image_i_o_8cs.html", [
       [ "ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o" ]
     ] ],
@@ -59,6 +60,5 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
       [ "UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file" ]
     ] ],
     [ "WAVCacheIO.cs", "_w_a_v_cache_i_o_8cs.html", null ],
-    [ "WorldIO.cs", "_world_i_o_8cs.html", null ],
-    [ "WrappedStream.cs", "_wrapped_stream_8cs.html", null ]
+    [ "WorldIO.cs", "_world_i_o_8cs.html", null ]
 ];

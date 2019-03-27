@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.IO.TmodFile" name="Terraria.ModLoader.IO.TmodFile">
-<area shape="rect" id="node2" href="$class_i_enumerable.html" title="IEnumerable\&lt; string \&gt;" alt="" coords="238,8,389,35"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html" title="Terraria.ModLoader.IO.Tmod\lFile.FileEntry" alt="" coords="219,244,408,285"/>
+<area shape="rect" id="node2" href="$class_i_enumerable.html" title="IEnumerable\&lt; TmodFile.File\lEntry \&gt;" alt="" coords="204,537,391,578"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html" title="Terraria.ModLoader.IO.Tmod\lFile.FileEntry" alt="" coords="203,419,392,461"/>
 </map>

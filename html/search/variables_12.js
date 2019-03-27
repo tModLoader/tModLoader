@@ -18,7 +18,6 @@ var searchData=
   ['shoeshader',['shoeShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad69d452b4ac0982ad06f0e365eea7d91',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['shoptonpc',['shopToNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae3a994c84a420c9a488e5380f59c24d6',1,'Terraria::ModLoader::NPCLoader']]],
   ['signed',['signed',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#abd55455aead6a25074169d6c601d425f',1,'Terraria::ModLoader::ModNet::ModHeader']]],
-  ['size',['size',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a962a90c8ce91abad31aa050252c0353a',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['skin',['Skin',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af25eed4c94d182d5a7dd942c50b49918',1,'Terraria::ModLoader::PlayerLayer']]],
   ['skincolor',['skinColor',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['sky',['Sky',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc',1,'Terraria.ModLoader.SpawnCondition.Sky()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e',1,'Terraria.ModLoader.NPCSpawnInfo.sky()']]],

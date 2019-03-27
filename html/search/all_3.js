@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['cachedbytes',['cachedBytes',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a0c04ca4dcae4ebde29ee771d5b9bf8ab',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['cachefiles',['CacheFiles',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#abf280e4e58d3e7a656d8cb5b0e162b65',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['cachevanillastate',['CacheVanillaState',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a0c785b05972bd4f2d10b576dbb026051',1,'Terraria::ModLoader::ModContent']]],
   ['call',['Call',['../class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8',1,'Terraria::ModLoader::Mod']]],
@@ -88,8 +87,8 @@ var searchData=
   ['commandmanager',['CommandManager',['../class_terraria_1_1_mod_loader_1_1_command_manager.html',1,'Terraria::ModLoader']]],
   ['commandmanager_2ecs',['CommandManager.cs',['../_command_manager_8cs.html',1,'']]],
   ['commandtype',['CommandType',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558',1,'Terraria.ModLoader.CommandCaller.CommandType()'],['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26',1,'Terraria.ModLoader.CommandType()']]],
+  ['compressedlength',['CompressedLength',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a8b36920505983f974399492045321b6b',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7',1,'Terraria::ModLoader::ModLoader']]],
-  ['compressedsize',['compressedSize',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a9663dd5a84aa9c07fa55f6eef5933a5f',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['compute',['Compute',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#a82677a7066870dfd1bf639689ad5581e',1,'Terraria::ModLoader::Exceptions::LevenshteinDistance']]],
   ['condition',['condition',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb',1,'Terraria::ModLoader::SpawnCondition']]],
   ['configattributes_2ecs',['ConfigAttributes.cs',['../_config_attributes_8cs.html',1,'']]],
