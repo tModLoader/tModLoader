@@ -71,7 +71,8 @@ namespace Terraria.ModLoader.UI
 
 				int i = 0;
 				modHandle = mod.modFile.EnsureOpen();
-				mod.modFile.ForEach((name, len, getStream) => {
+				foreach (var entry in mod.modFile) {
+					var name = entry.Name;
 					ContentConverters.Reverse(ref name, out var converter);
 
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
@@ -79,7 +80,7 @@ namespace Terraria.ModLoader.UI
 					loadProgress.SetProgress(i++ / (float)mod.modFile.Count);
 
 					if (name == "tModReader.txt")
-						return;
+						continue;
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
@@ -89,19 +90,19 @@ namespace Terraria.ModLoader.UI
 						log.Write("[hidden] ");
 					log.WriteLine(name);
 					if (hidden)
-						return;
+						continue;
 
 					var path = Path.Combine(dir, name);
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 					using (var dst = File.OpenWrite(path))
-					using (var src = getStream()) {
+					using (var src = mod.modFile.GetStream(entry)) {
 						if (converter != null)
 							converter(src, dst);
 						else
 							src.CopyTo(dst);
 					}
-				});
+				};
 			}
 			catch (Exception e) {
 				log?.WriteLine(e);

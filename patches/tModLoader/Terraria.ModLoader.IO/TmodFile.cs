@@ -11,15 +11,29 @@ using Terraria.Localization;
 namespace Terraria.ModLoader.IO
 {
 	// warning class is not threadsafe
-	public class TmodFile : IEnumerable<string>
+	public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	{
-		private class FileEntry
+		public class FileEntry
 		{
-			public string name;
-			public int offset; // from the start of the file
-			public int size;
-			public int compressedSize;
-			public byte[] cachedBytes;
+			public string Name { get; }
+
+			// from the start of the file
+			public int Offset { get; internal set; }
+			public int Length { get; }
+			public int CompressedLength { get; }
+
+			// intended to be readonly, but unfortunately no ReadOnlySpan on .NET 4.5
+			internal byte[] cachedBytes;
+
+			internal FileEntry(string name, int offset, int length, int compressedLength, byte[] cachedBytes = null) {
+				Name = name;
+				Offset = offset;
+				Length = length;
+				CompressedLength = compressedLength;
+				this.cachedBytes = cachedBytes;
+			}
+
+			public bool IsCompressed => Length != CompressedLength;
 		}
 
 		public const uint MIN_COMPRESS_SIZE = 1 << 10;//1KB
@@ -68,43 +82,46 @@ namespace Terraria.ModLoader.IO
 		[Obsolete("Use GetStream or GetBytes instead", true)]
 		public byte[] GetFile(string fileName) => GetBytes(fileName);
 
-		public byte[] GetBytes(string fileName) {
-			if (!files.TryGetValue(Sanitize(fileName), out var entry))
-				return null;
-
-			if (entry.cachedBytes != null && entry.compressedSize == entry.size)
+		public byte[] GetBytes(FileEntry entry) {
+			if (entry.cachedBytes != null && !entry.IsCompressed)
 				return entry.cachedBytes;
 
 			using (var stream = GetStream(entry))
-				return stream.ReadBytes(entry.size);
+				return stream.ReadBytes(entry.Length);
 		}
 
+		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
+
 		private EntryReadStream lastEntryReadStream;
-		private Stream GetStream(FileEntry entry) {
+		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
 			Stream stream;
 			if (entry.cachedBytes != null) {
 				stream = new MemoryStream(entry.cachedBytes);
 			}
+			else if (newFileStream) {
+				stream = new EntryReadStream(File.OpenRead(path), entry, false);
+			}
 			else {
 				if (fileStream == null)
 					throw new IOException("File not open: " + path);
-				if (lastEntryReadStream != null && !lastEntryReadStream.IsDisposed)
-					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.name}");
-
-				stream = lastEntryReadStream = new EntryReadStream(fileStream, entry.offset, entry.compressedSize, entry.name);
+				
+				if (lastEntryReadStream != null && !lastEntryReadStream.IsClosed)
+					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.Name}");
+				
+				stream = lastEntryReadStream = new EntryReadStream(fileStream, entry, true);
 			}
 
-			if (entry.compressedSize != entry.size)
+			if (entry.IsCompressed)
 				stream = new DeflateStream(stream, CompressionMode.Decompress);
 
 			return stream;
 		}
 
-		public Stream GetStream(string fileName) {
+		public Stream GetStream(string fileName, bool newFileStream = false) {
 			if (!files.TryGetValue(Sanitize(fileName), out var entry))
 				throw new KeyNotFoundException(fileName);
 
-			return GetStream(entry);
+			return GetStream(entry, newFileStream);
 		}
 
 		/// <summary>
@@ -127,12 +144,7 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 
-			files[fileName] = new FileEntry {
-				name = fileName,
-				size = size,
-				compressedSize = data.Length,
-				cachedBytes = data,
-			};
+			files[fileName] = new FileEntry(fileName, -1, size, data.Length, data);
 
 			fileTable = null;
 		}
@@ -142,15 +154,13 @@ namespace Terraria.ModLoader.IO
 			fileTable = null;
 		}
 
-		public delegate void EntryIterator(string name, int len, Func<Stream> getStream);
-		public void ForEach(EntryIterator iterator) {
-			foreach (var f in fileTable)
-				iterator(f.name, f.size, () => GetStream(f));
-		}
-
 		public int Count => fileTable.Length;
-		public IEnumerator<string> GetEnumerator() => fileTable?.Select(s => s.name)?.GetEnumerator() ?? files.Keys.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public IEnumerator<FileEntry> GetEnumerator() {
+			foreach (var entry in fileTable)
+				yield return entry;
+		}
 
 		internal void Save() {
 			// invalidate the read handle
@@ -185,12 +195,12 @@ namespace Terraria.ModLoader.IO
 				writer.Write(fileTable.Length);
 
 				foreach (var f in fileTable) {
-					if (f.compressedSize != f.cachedBytes.Length)
-						throw new Exception($"compressedSize ({f.compressedSize}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.name}");
+					if (f.CompressedLength != f.cachedBytes.Length)
+						throw new Exception($"CompressedLength ({f.CompressedLength}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.Name}");
 
-					writer.Write(f.name);
-					writer.Write(f.size);
-					writer.Write(f.compressedSize);
+					writer.Write(f.Name);
+					writer.Write(f.Length);
+					writer.Write(f.CompressedLength);
 				}
 
 				// write compressed files and update offsets
@@ -198,8 +208,8 @@ namespace Terraria.ModLoader.IO
 				foreach (var f in fileTable) {
 					writer.Write(f.cachedBytes);
 
-					f.offset = offset;
-					offset += f.compressedSize;
+					f.Offset = offset;
+					offset += f.CompressedLength;
 				}
 
 				// update hash
@@ -258,32 +268,31 @@ namespace Terraria.ModLoader.IO
 			int offset = 0;
 			fileTable = new FileEntry[reader.ReadInt32()];
 			for (int i = 0; i < fileTable.Length; i++) {
-				var f = new FileEntry {
-					name = reader.ReadString(),
-					size = reader.ReadInt32(),
-					compressedSize = reader.ReadInt32(),
-					offset = offset
-				};
+				var f = new FileEntry(
+					reader.ReadString(),
+					offset,
+					reader.ReadInt32(),
+					reader.ReadInt32());
 				fileTable[i] = f;
-				files[f.name] = f;
+				files[f.Name] = f;
 
-				offset += f.compressedSize;
+				offset += f.CompressedLength;
 			}
 
 			int fileStartPos = (int)fileStream.Position;
 			foreach (var f in fileTable)
-				f.offset += fileStartPos;
+				f.Offset += fileStartPos;
 		}
 
 		public void CacheFiles(ISet<string> skip = null) {
-			fileStream.Seek(fileTable[0].offset, SeekOrigin.Begin);
+			fileStream.Seek(fileTable[0].Offset, SeekOrigin.Begin);
 			foreach (var f in fileTable) {
-				if (f.compressedSize > MAX_CACHE_SIZE || (skip?.Contains(f.name) ?? false)) {
-					fileStream.Seek(f.compressedSize, SeekOrigin.Current);
+				if (f.CompressedLength > MAX_CACHE_SIZE || (skip?.Contains(f.Name) ?? false)) {
+					fileStream.Seek(f.CompressedLength, SeekOrigin.Current);
 					continue;
 				}
 
-				f.cachedBytes = fileStream.ReadBytes(f.compressedSize);
+				f.cachedBytes = fileStream.ReadBytes(f.CompressedLength);
 			}
 		}
 

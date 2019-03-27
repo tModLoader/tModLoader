@@ -647,10 +647,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		private void AutoloadLocalization() {
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-			foreach (var translationFile in File.Where(name => Path.GetExtension(name) == ".lang")) {
+			foreach (var translationFile in File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
 				// .lang files need to be UTF8 encoded.
 				string translationFileContents = System.Text.Encoding.UTF8.GetString(File.GetBytes(translationFile));
-				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile));
+				GameCulture culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
 
 				using (StringReader reader = new StringReader(translationFileContents)) {
 					string line;

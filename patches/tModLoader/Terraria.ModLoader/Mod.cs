@@ -104,20 +104,17 @@ namespace Terraria.ModLoader
 
 			var skipCache = new HashSet<string>();
 			File.EnsureOpen();
-			File.ForEach((path, len, getStream) => {
-				// wrap with a message which updates the UI
+			foreach (var entry in File) {
+				Interface.loadMods.SubProgressText = entry.Name;
+
 				Stream _stream = null;
-				Stream _getStream() {
-					Interface.loadMods.SubProgressText = path;
-					return _stream = getStream();
-				};
+				Stream GetStream() => _stream = File.GetStream(entry);
 
-				if (LoadResource(path, len, _getStream))
-					skipCache.Add(path);
-
-				// cleanup for them because why not
+				if (LoadResource(entry.Name, entry.Length, GetStream))
+					skipCache.Add(entry.Name);
+				
 				_stream?.Dispose();
-			});
+			};
 			File.CacheFiles(skipCache);
 		}
 
