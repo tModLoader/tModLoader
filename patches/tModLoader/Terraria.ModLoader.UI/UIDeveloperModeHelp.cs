@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			bool dotNetCheck = ModCompile.DotNet46Check(out var dotNetMsg);
-			var dotNetMsgBox = AddMessageBox(Language.GetTextValue(dotNetMsg, $"{FrameworkVersion.Framework} {FrameworkVersion.Version}"));
+			var dotNetMsgBox = AddMessageBox(dotNetMsg);
 			if (!dotNetCheck)
 				AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
 

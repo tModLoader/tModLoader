@@ -83,29 +83,38 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static bool DeveloperModeReady(out string errorKey) {
-			return DotNet46Check(out errorKey) &&
-				ModCompileVersionCheck(out errorKey) &&
-				ReferenceAssembliesCheck(out errorKey);
+		internal static bool DeveloperModeReady(out string msg) {
+			return DotNet46Check(out msg) &&
+				ModCompileVersionCheck(out msg) &&
+				ReferenceAssembliesCheck(out msg);
 		}
 
-		internal static bool ModCompileVersionCheck(out string infoKey) {
-			if (File.Exists(modCompileVersionPath) && File.ReadAllText(modCompileVersionPath) == versionTag) {
-				infoKey = "tModLoader.DMModCompileSatisfied";
+		internal static bool ModCompileVersionCheck(out string msg) {
+			var modCompileVersion = File.Exists(modCompileVersionPath) ? File.ReadAllText(modCompileVersionPath) : "missing";
+			if (modCompileVersion == versionTag) {
+				msg = Language.GetTextValue("tModLoader.DMModCompileSatisfied");
 				return true;
 			}
 #if DEBUG
-			infoKey = "tModLoader.DMModCompileDev";
+			msg = Language.GetTextValue("tModLoader.DMModCompileDev", Path.GetFileName(Assembly.GetExecutingAssembly().Location));
 #else
-			infoKey = "tModLoader." + (Directory.Exists(modCompileDir) ? "DMModCompileUpdate" : "DMModCompileMissing");
+			if (!Directory.Exists(modCompileDir))
+				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
+			else
+				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", versionTag, modCompileVersion);
 #endif
 			return false;
 		}
 
-		internal static bool DotNet46Check(out string infoKey) {
-			bool ret = FrameworkVersion.Framework == ".NET Framework" && FrameworkVersion.Version > new Version(4, 6);
-			infoKey = "tModLoader." + (ret ? "DMDotNetSatisfied" : "DMDotNet46Required");
-			return ret;
+		internal static bool DotNet46Check(out string msg) {
+			if (FrameworkVersion.Framework == ".NET Framework" && FrameworkVersion.Version > new Version(4, 6)) {
+				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $"{FrameworkVersion.Framework} {FrameworkVersion.Version}");
+				return true;
+			}
+			else {
+				msg = Language.GetTextValue("tModLoader.DMDotNet46Required");
+				return false;
+			}
 		}
 
 		private static string referenceAssembliesPath;
@@ -500,8 +509,8 @@ namespace Terraria.ModLoader
 		}
 
 		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows, ref byte[] dll, ref byte[] pdb) {
-			if (!DeveloperModeReady(out string errorKey)) {
-				status.LogError(Language.GetTextValue(errorKey));
+			if (!DeveloperModeReady(out string msg)) {
+				status.LogError(msg);
 				return;
 			}
 
