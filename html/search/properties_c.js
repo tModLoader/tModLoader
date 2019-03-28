@@ -1,7 +1,7 @@
 var searchData=
 [
   ['payloadtype',['PayloadType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ad5e031f90059699836617594dba4223f',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
-  ['player',['Player',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897',1,'Terraria.ModLoader.CommandCaller.Player()'],['../class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f',1,'Terraria.ModLoader.ModPlayer.player()']]],
+  ['player',['player',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f',1,'Terraria.ModLoader.ModPlayer.player()'],['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897',1,'Terraria.ModLoader.CommandCaller.Player()']]],
   ['progid',['ProgId',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#ad6a53efbcc3b6373e8f0aa88db295a25',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]],
   ['projectile',['projectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a54aa9dc3ed825c44b6397211e40d83a0',1,'Terraria::ModLoader::ModProjectile']]],
   ['projonswing_5fobsolete',['ProjOnSwing_Obsolete',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ad580fc73425d033b40df11bd561981d4',1,'Terraria::ModLoader::ModItem']]],

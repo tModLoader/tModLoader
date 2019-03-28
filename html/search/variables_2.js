@@ -25,5 +25,6 @@ var searchData=
   ['boundcavenpc',['BoundCaveNPC',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aef2b5645c0220631057215a63bc220db',1,'Terraria::ModLoader::SpawnCondition']]],
   ['branchname',['branchName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380',1,'Terraria::ModLoader::ModLoader']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
-  ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]]
+  ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]],
+  ['bytesloaded',['bytesLoaded',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3733cc525ee326a3e05d1b926f15c3b',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]]
 ];

@@ -16,6 +16,7 @@ var class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod =
     [ "assemblies", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a4578233860c5e460831e47ab99de17d1", null ],
     [ "assembly", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9f3bd2fd1805a4dc012653846c800cf2", null ],
     [ "AssemblyName", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac302b5327050b9849dcf52e7b26e01cb", null ],
+    [ "bytesLoaded", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3733cc525ee326a3e05d1b926f15c3b", null ],
     [ "CanEaC", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a420c97425854c66a58c03dd6a7a49f16", null ],
     [ "dependencies", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a75c3e6abd05c040d8cf0965f81a84547", null ],
     [ "dependents", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a5c9de86a25361d7c4588740e88b2cf86", null ],
