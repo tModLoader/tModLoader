@@ -12,6 +12,7 @@ namespace Terraria.ModLoader.IO
 						resourceName = Path.ChangeExtension(resourceName, "rawimg");
 						return true;
 					}
+					src.Position = 0;
 					return false;
 				default:
 					return false;

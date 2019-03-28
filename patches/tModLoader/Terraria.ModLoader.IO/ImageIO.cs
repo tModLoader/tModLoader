@@ -15,9 +15,12 @@ namespace Terraria.ModLoader.IO
 
 		public static bool ToRaw(Stream src, Stream dst) {
 			using (var img = new Bitmap(src)) {
-				//XNA has a strange interaction where large size PNGs can be loaded, but not created via any other means
-				if (img.Width > 2048 || img.Height > 2048)
-					return false;
+				// now that the hi-def profile is always enabled, the max texture size is 4096
+				// if we get bug reports with old graphics cards forcing fallback to Reach and failing to load
+				// large textures, we can implement a slower path where the rawimg is converted to png before loading
+
+				//if (img.Width > 2048 || img.Height > 2048)
+				//	return false;
 
 				var bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 				var rawdata = new int[img.Width * img.Height];
