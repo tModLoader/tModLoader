@@ -38,6 +38,7 @@ namespace Terraria.ModLoader.IO
 
 		public const uint MIN_COMPRESS_SIZE = 1 << 10;//1KB
 		public const uint MAX_CACHE_SIZE = 1 << 17;//128KB
+		public const float COMPRESSION_TRADEOFF = 0.9f;
 
 		private static string Sanitize(string path) => path.Replace('\\', '/');
 
@@ -126,6 +127,7 @@ namespace Terraria.ModLoader.IO
 
 		/// <summary>
 		/// Adds a (fileName -> content) entry to the compressed payload
+		/// This method is not threadsafe with reads, but is threadsafe with multiple concurrent AddFile calls
 		/// </summary>
 		/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
 		/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
@@ -139,12 +141,13 @@ namespace Terraria.ModLoader.IO
 						ds.Write(data, 0, data.Length);
 
 					var compressed = ms.ToArray();
-					if (compressed.Length < size)
+					if (compressed.Length < size * COMPRESSION_TRADEOFF)
 						data = compressed;
 				}
 			}
 
-			files[fileName] = new FileEntry(fileName, -1, size, data.Length, data);
+			lock (files)
+				files[fileName] = new FileEntry(fileName, -1, size, data.Length, data);
 
 			fileTable = null;
 		}
@@ -228,7 +231,8 @@ namespace Terraria.ModLoader.IO
 			fileStream = null;
 		}
 
-		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png");
+		// Ignore file extensions which don't compress well under deflate to improve build time
+		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png") && !fileName.EndsWith(".mp3");
 
 		internal void Read() {
 			if (fileStream != null)

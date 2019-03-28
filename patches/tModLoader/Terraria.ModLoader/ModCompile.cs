@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
@@ -391,23 +392,11 @@ namespace Terraria.ModLoader
 				if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
 			}
 
-			foreach (var resource in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)) {
-				var relPath = resource.Substring(mod.path.Length + 1);
-				if (mod.properties.ignoreFile(relPath) ||
-						relPath == "build.txt" ||
-						relPath == ".gitattributes" ||
-						relPath == ".gitignore" ||
-						relPath.StartsWith(".git" + Path.DirectorySeparatorChar) ||
-						relPath.StartsWith(".vs" + Path.DirectorySeparatorChar) ||
-						relPath.StartsWith(".idea" + Path.DirectorySeparatorChar) ||
-						relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
-						relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
-						!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
-						Path.GetFileName(resource) == "Thumbs.db")
-					continue;
+			var resources = Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)
+				.Where(res => !IgnoreResource(mod, res))
+				.ToList();
 
-				AddResource(mod.modFile, relPath, resource);
-			}
+			Parallel.ForEach(resources, resource => AddResource(mod, resource));
 
 			WAVCacheIO.ClearCache(mod.Name);
 
@@ -418,13 +407,25 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private static void AddResource(TmodFile modFile, string relPath, string filePath) {
-			using (var src = File.OpenRead(filePath))
+		private bool IgnoreResource(BuildingMod mod, string resource) {
+			var relPath = resource.Substring(mod.path.Length + 1);
+			return mod.properties.ignoreFile(relPath) ||
+				relPath == "build.txt" ||
+				relPath[0] == '.' ||
+				relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
+				relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
+				!mod.properties.includeSource && sourceExtensions.Contains(Path.GetExtension(resource)) ||
+				Path.GetFileName(resource) == "Thumbs.db";
+		}
+
+		private void AddResource(BuildingMod mod, string resource) {
+			var relPath = resource.Substring(mod.path.Length + 1);
+			using (var src = File.OpenRead(resource))
 			using (var dst = new MemoryStream()) {
 				if (!ContentConverters.Convert(ref relPath, src, dst))
 					src.CopyTo(dst);
 
-				modFile.AddFile(relPath, dst.ToArray());
+				mod.modFile.AddFile(relPath, dst.ToArray());
 			}
 		}
 
