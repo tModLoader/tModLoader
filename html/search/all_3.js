@@ -89,6 +89,7 @@ var searchData=
   ['commandtype',['CommandType',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558',1,'Terraria.ModLoader.CommandCaller.CommandType()'],['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26',1,'Terraria.ModLoader.CommandType()']]],
   ['compressedlength',['CompressedLength',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html#a8b36920505983f974399492045321b6b',1,'Terraria::ModLoader::IO::TmodFile::FileEntry']]],
   ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7',1,'Terraria::ModLoader::ModLoader']]],
+  ['compression_5ftradeoff',['COMPRESSION_TRADEOFF',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#acef0899ce6b56ff6f92c4cab219ccb3c',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['compute',['Compute',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#a82677a7066870dfd1bf639689ad5581e',1,'Terraria::ModLoader::Exceptions::LevenshteinDistance']]],
   ['condition',['condition',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb',1,'Terraria::ModLoader::SpawnCondition']]],
   ['configattributes_2ecs',['ConfigAttributes.cs',['../_config_attributes_8cs.html',1,'']]],

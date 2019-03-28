@@ -17,6 +17,7 @@ var searchData=
   ['closedoorid',['closeDoorID',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6605bf06cc4adbfaa6a609cce58d7424',1,'Terraria::ModLoader::ModTile']]],
   ['color',['color',['../class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html#a07e8a296911fd5b2930badc88ac615a9',1,'Terraria::ModLoader::Config::BackgroundColorAttribute']]],
   ['compressedplatformrepresentation',['compressedPlatformRepresentation',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7',1,'Terraria::ModLoader::ModLoader']]],
+  ['compression_5ftradeoff',['COMPRESSION_TRADEOFF',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#acef0899ce6b56ff6f92c4cab219ccb3c',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['condition',['condition',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ab8b307adc6963ba98e55c5789cd1e1bb',1,'Terraria::ModLoader::SpawnCondition']]],
   ['converters',['converters',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#ac55d1e872f6af7a2368055cc8e2b4b74',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['cooldownslot',['cooldownSlot',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab05ba7944840367c4d42838c561ce75b',1,'Terraria::ModLoader::ModProjectile']]],

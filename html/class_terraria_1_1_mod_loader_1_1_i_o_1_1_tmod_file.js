@@ -21,6 +21,7 @@ var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file =
     [ "ShouldCompress", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a2ec207fbd9824fe9bb1a8d7a4907dd38", null ],
     [ "Upgrade", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#ac201fc7fdba4050c7385a3363fbd8ff9", null ],
     [ "VerifyCoreFiles", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a0724812265307c6137116dc14294fc1e", null ],
+    [ "COMPRESSION_TRADEOFF", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#acef0899ce6b56ff6f92c4cab219ccb3c", null ],
     [ "Count", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a0907688b8858325e42cf78a8989dd218", null ],
     [ "files", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a49e8d156c9a0d1074b98f8cb199679bc", null ],
     [ "fileStream", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a071f557fb3fab42345e42be4dec081b0", null ],
