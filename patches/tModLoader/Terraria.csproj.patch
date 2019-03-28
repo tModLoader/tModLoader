@@ -55,7 +55,7 @@
    </PropertyGroup>
    <Choose>
      <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -81,19 +_,64 @@
+@@ -81,19 +_,67 @@
        <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System" />
@@ -101,6 +101,9 @@
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
++    </Reference>
++    <Reference Include="NVorbis">
++      <HintPath>..\..\references\NVorbis.dll</HintPath>
 +    </Reference>
 +    <Reference Include="log4net">
 +      <HintPath>..\..\references\log4net.dll</HintPath>
@@ -360,7 +363,7 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,40 @@
+@@ -538,10 +_,41 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -391,6 +394,7 @@
 +      <LogicalName>Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
++    <EmbeddedResource Include="..\..\references\NVorbis.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
 +    <EmbeddedResource Include="..\..\references\TerrariaHooks.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">

@@ -139,6 +139,7 @@ namespace Terraria.ModLoader
 					return true;
 				case ".wav":
 				case ".mp3":
+				case ".ogg":
 					if (Main.dedServ || Main.engine == null) { }
 					else if (path.Contains("Music/"))
 						musics[path] = LoadMusic(path, extension);

@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using MP3Sharp;
+using NVorbis;
 
 namespace Terraria.ModLoader.Audio
 {
@@ -115,12 +116,16 @@ namespace Terraria.ModLoader.Audio
 		}
 
 		private void SubmitSingle() {
+			FillBuffer(buffer);
+			instance.SubmitBuffer(buffer);
+		}
+
+		protected virtual void FillBuffer(byte[] buffer) {
 			int read = stream.Read(buffer, 0, buffer.Length);
 			if (read < buffer.Length) {
 				Reset();
 				stream.Read(buffer, read, buffer.Length - read);
 			}
-			instance.SubmitBuffer(buffer);
 		}
 
 		public void Dispose() {
@@ -173,9 +178,10 @@ namespace Terraria.ModLoader.Audio
 
 	public class MusicStreamingMP3 : MusicStreaming
 	{
+		private Stream underlying;
+
 		public MusicStreamingMP3(string path) : base(path) {}
 
-		private Stream underlying;
 		protected override void PrepareStream() {
 			underlying = stream;
 
@@ -196,6 +202,54 @@ namespace Terraria.ModLoader.Audio
 				//mp3 is not designed to loop and creates static if you just reset the stream due to fourier encoding carryover
 				//if you're really smart, you can make a looping version and PR it
 				stream = new MP3Stream(underlying);
+			}
+		}
+	}
+	
+	public class MusicStreamingOGG : MusicStreaming
+	{
+		private VorbisReader reader;
+		private float[] floatBuf;
+
+		public MusicStreamingOGG(string path) : base(path) {}
+
+		protected override void PrepareStream() {
+			reader = new VorbisReader(stream, true);
+			sampleRate = reader.SampleRate;
+			channels = (AudioChannels)reader.Channels;
+		}
+
+		protected override void FillBuffer(byte[] buffer) {
+			if (floatBuf == null)
+				floatBuf = new float[buffer.Length/2];
+
+			int read = reader.ReadSamples(floatBuf, 0, floatBuf.Length);
+			if (read < floatBuf.Length) {
+				Reset();
+				reader.ReadSamples(floatBuf, read, floatBuf.Length - read);
+			}
+
+			Convert(floatBuf, buffer);
+		}
+
+		public override void Stop(AudioStopOptions options) {
+			base.Stop(options);
+			
+			reader.Dispose();
+			reader = null;
+			floatBuf = null;
+		}
+
+		public override void Reset() {
+			if (reader != null)
+				reader.DecodedPosition = 0;
+		}
+
+		public static void Convert(float[] floatBuf, byte[] buffer) {
+			for (int i = 0; i < floatBuf.Length; i++) {
+				short val = (short)(floatBuf[i] * short.MaxValue);
+				buffer[i * 2] = (byte)val;
+				buffer[i * 2 + 1] = (byte)(val >> 8);
 			}
 		}
 	}

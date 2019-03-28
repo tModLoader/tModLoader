@@ -232,7 +232,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		// Ignore file extensions which don't compress well under deflate to improve build time
-		private static bool ShouldCompress(string fileName) => !fileName.EndsWith(".png") && !fileName.EndsWith(".mp3");
+		private static bool ShouldCompress(string fileName) => 
+			!fileName.EndsWith(".png") && 
+			!fileName.EndsWith(".mp3") && 
+			!fileName.EndsWith(".ogg");
 
 		internal void Read() {
 			if (fileStream != null)

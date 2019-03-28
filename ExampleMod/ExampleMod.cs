@@ -86,7 +86,7 @@ namespace ExampleMod
 				// Main.music[MusicID.Dungeon] = GetMusic("Sounds/Music/DriveMusic");
 
 				// Register a new music box
-				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
+				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
 
 				// Change the vanilla loom texture
 				Main.instance.LoadTiles(TileID.Loom); // First load the tile texture
@@ -202,16 +202,15 @@ namespace ExampleMod
 			}
 			// Make sure your logic here goes from lowest priority to highest so your intended priority is maintained.
 			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample) {
-				music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				music = GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery");
 				priority = MusicPriority.BiomeLow;
 			}
 
-			if (!Main.LocalPlayer.HasBuff(BuffType("CarMount"))) {
-				return;
+			if (Main.LocalPlayer.HasBuff(BuffType("CarMount"))) {
+				music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
+				priority = MusicPriority.Environment;
 			}
 
-			music = GetSoundSlot(SoundType.Music, "Sounds/Music/DriveMusic");
-			priority = MusicPriority.Environment;
 		}
 
 		public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {

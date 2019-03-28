@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MP3Sharp;
+using NVorbis;
 using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
@@ -83,10 +84,18 @@ namespace Terraria.ModLoader
 						stream = new MemoryStream(stream.ReadBytes(length));
 					return SoundEffect.FromStream(stream);
 				case ".mp3":
-					var mp3Stream = new MP3Stream(stream);
+					using (var mp3Stream = new MP3Stream(stream))
 					using (var ms = new MemoryStream()) {
 						mp3Stream.CopyTo(ms);
 						return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, (AudioChannels)mp3Stream.ChannelCount);
+					}
+				case ".ogg":
+					using (var reader = new VorbisReader(stream, true)) {
+						var buffer = new byte[reader.TotalSamples * 2 * reader.Channels];
+						var floatBuf = new float[buffer.Length / 2];
+						reader.ReadSamples(floatBuf, 0, floatBuf.Length);
+						MusicStreamingOGG.Convert(floatBuf, buffer);
+						return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels);
 					}
 			}
 			throw new ResourceLoadException("Unknown sound extension "+extension);
@@ -97,6 +106,7 @@ namespace Terraria.ModLoader
 			switch (extension) {
 				case ".wav": return new MusicStreamingWAV(path);
 				case ".mp3": return new MusicStreamingMP3(path);
+				case ".ogg": return new MusicStreamingOGG(path);
 			}
 			throw new ResourceLoadException("Unknown music extension "+extension);
 		}
