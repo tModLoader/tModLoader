@@ -209,8 +209,10 @@ namespace Terraria.ModLoader
 
 			traceString = traceString.Substring(traceString.IndexOf('\n'));
 			var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
-			if (!pastExceptions.Add(exString))
-				return;
+			lock (pastExceptions) {
+				if (!pastExceptions.Add(exString))
+					return;
+			}
 
 			previousException = args.Exception;
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
