@@ -18,12 +18,13 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -332,6 +_,42 @@
+@@ -332,6 +_,43 @@
  			}
  		}
  
 +		// To allow mod hotkeys to load, need to reinitialize after load.
-+		public static void ReInitialize()
++		internal static bool reinitialize;
++		private static void ReInitialize()
 +		{
 +			PlayerInput.Profiles.Clear();
 +			PlayerInput.OriginalProfiles.Clear();
@@ -61,6 +62,16 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
+@@ -488,6 +_,9 @@
+ 
+ 		public static void UpdateInput()
+ 		{
++			if (reinitialize)
++				ReInitialize();
++
+ 			PlayerInput.Triggers.Reset();
+ 			PlayerInput.ScrollWheelValueOld = PlayerInput.ScrollWheelValue;
+ 			PlayerInput.ScrollWheelValue = 0;
 @@ -521,6 +_,10 @@
  			PlayerInput.UpdateMainMouse();
  			Main.mouseLeft = PlayerInput.Triggers.Current.MouseLeft;

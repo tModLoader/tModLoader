@@ -331,7 +331,7 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
-			PlayerInput.ReInitialize();
+			PlayerInput.reinitialize = true;
 			SetupRecipes();
 		}
 
