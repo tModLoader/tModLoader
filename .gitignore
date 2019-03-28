@@ -20,3 +20,4 @@ solutions/**/*.zip
 /test/Test Local/*.json
 /test/Test Local/Mods
 /test/Test Local/Mod Configs
+/ExampleMod/Fonts/ExampleFont.xnb
