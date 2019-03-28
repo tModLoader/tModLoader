@@ -18,7 +18,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -332,6 +_,43 @@
+@@ -332,6 +_,44 @@
  			}
  		}
  
@@ -57,6 +57,7 @@
 +			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
 +			PlayerInput.Triggers.Initialize(); // Populates triggers with known hotkeys
 +			PlayerInput.Load(); // Loads the JSON into the Profiles above
++			reinitialize = false;
 +		}
 +
  		public static void Initialize()

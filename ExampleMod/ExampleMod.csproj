@@ -67,11 +67,12 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Terraria">
-      <HintPath>..\src\tModLoader\bin\x86\WindowsDebug\Terraria.exe</HintPath>
-    </Reference>
     <Reference Include="TerrariaHooks.Windows">
       <HintPath>..\references\TerrariaHooks.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="tModLoaderDebug, Version=1.3.5.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Terraria\tModLoaderDebug.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,7 @@
     <Compile Include="Items\Weapons\ExampleSpear.cs" />
     <Compile Include="Items\Weapons\ExampleStaff.cs" />
     <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
+    <Compile Include="Items\Weapons\ExampleStaff2.cs" />
     <Compile Include="Items\Weapons\ExampleSword.cs" />
     <Compile Include="Items\Weapons\ExampleYoyo.cs" />
     <Compile Include="Items\Weapons\PurityTotem.cs" />
@@ -329,7 +331,6 @@
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
-"%25TERRARIASTEAMDIR%25\tModLoaderServerDebug.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
