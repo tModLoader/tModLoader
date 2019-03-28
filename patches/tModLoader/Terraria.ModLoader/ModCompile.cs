@@ -398,8 +398,6 @@ namespace Terraria.ModLoader
 
 			Parallel.ForEach(resources, resource => AddResource(mod, resource));
 
-			WAVCacheIO.ClearCache(mod.Name);
-
 			GetMod(mod.Name)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 			mod.modFile.Save();
 			mod.modFile.Close();

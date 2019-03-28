@@ -878,29 +878,21 @@
  						if (m == 28)
  						{
  							if (Main.cloudAlpha > 0f && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0 + (double)(Main.screenHeight / 2) && !Main.player[Main.myPlayer].ZoneSnow)
-@@ -9389,7 +_,11 @@
+@@ -9389,7 +_,7 @@
  								}
  								else if (!Main.music[m].IsPlaying)
  								{
 -									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+									MusicStreaming streaming = Main.music[m] as MusicStreaming;
-+									if (Main.music[m] is MusicCue)
-+										Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+									if (streaming != null)
-+										streaming.ResetStreamPosition();
++									Main.music[m].Reset();
  									Main.music[m].Play();
  									Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.ambientVolume);
  								}
-@@ -9436,7 +_,11 @@
+@@ -9436,7 +_,7 @@
  						{
  							if (!Main.music[m].IsPlaying)
  							{
 -								Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+								MusicStreaming streaming = Main.music[m] as MusicStreaming;
-+								if (Main.music[m] is MusicCue)
-+									Main.music[m] = Main.soundBank.GetCue("Music_" + m);
-+								if (streaming != null)
-+									streaming.ResetStreamPosition();
++								Main.music[m].Reset();
  								Main.music[m].Play();
  								Main.music[m].SetVariable("Volume", Main.musicFade[m] * Main.musicVolume * num8);
  							}

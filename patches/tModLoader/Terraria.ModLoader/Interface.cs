@@ -253,12 +253,12 @@ namespace Terraria.ModLoader
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
-				buttonIndex++;
+				/*buttonIndex++;
 				buttonNames[buttonIndex] = (ModLoader.musicStreamMode == 0 ? Language.GetTextValue("tModLoader.MusicStreamModeConvert") : Language.GetTextValue("tModLoader.MusicStreamModeStream"));
 				if (selectedMenu == buttonIndex) {
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
-				}
+				}*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));

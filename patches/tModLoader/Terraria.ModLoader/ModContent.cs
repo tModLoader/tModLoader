@@ -514,14 +514,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void DisposeMusic() {
-			for (int i = 0; i < Main.music.Length; i++) {
-				if (!(Main.music[i] is MusicStreaming music)) 
-					continue;
-
-				Main.music[i] = i < Main.maxMusic ? Main.soundBank.GetCue("Music_" + i) : null;
-				music.Stop(AudioStopOptions.Immediate);
+			foreach (var music in Main.music.OfType<MusicStreaming>())
 				music.Dispose();
-			}
 		}
 
 		/// <summary>
@@ -551,6 +545,14 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < Main.chest.Length; i++) {
 				Main.chest[i] = new Chest();
 			}
+		}
+
+		public static Stream OpenRead(string assetName, bool newFileStream = false) {
+			if (!assetName.StartsWith("tmod:"))
+				return File.OpenRead(assetName);
+
+			SplitName(assetName.Substring(5).Replace('\\', '/'), out var modName, out var entryPath);
+			return ModLoader.GetMod(modName).GetFileSteam(entryPath, newFileStream);
 		}
 	}
 }

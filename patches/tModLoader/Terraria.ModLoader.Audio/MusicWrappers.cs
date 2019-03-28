@@ -8,9 +8,9 @@ namespace Terraria.ModLoader.Audio
 	public abstract class Music
 	{
 		public static implicit operator Music(Cue cue) { return new MusicCue() { cue = cue }; }
-		public abstract bool IsDisposed { get; }
 		public abstract bool IsPaused { get; }
 		public abstract bool IsPlaying { get; }
+		public abstract void Reset();
 		public abstract void Pause();
 		public abstract void Play();
 		public abstract void Resume();
@@ -23,32 +23,53 @@ namespace Terraria.ModLoader.Audio
 	{
 		internal Cue cue;
 		//public static implicit operator Cue(MusicCue musicCue){return musicCue.cue;}
-		public override bool IsDisposed { get { return cue.IsDisposed; } }
-		public override bool IsPaused { get { return cue.IsPaused; } }
-		public override bool IsPlaying { get { return cue.IsPlaying; } }
-		public override void Pause() { cue.Pause(); }
-		public override void Play() { cue.Play(); }
-		public override void Resume() { cue.Resume(); }
-		public override void Stop(AudioStopOptions options) { cue.Stop(options); }
-		public override void SetVariable(string name, float value) { cue.SetVariable(name, value); }
+		public override bool IsPaused => cue.IsPaused;
+		public override bool IsPlaying => cue.IsPlaying;
+		public override void Pause() => cue.Pause();
+		public override void Play() => cue.Play();
+		public override void Resume() => cue.Resume();
+		public override void Stop(AudioStopOptions options) => cue.Stop(options);
+		public override void SetVariable(string name, float value) => cue.SetVariable(name, value);
+		
+		public override void Reset() {
+			cue = Main.soundBank.GetCue(cue.Name);
+		}
 	}
 
 	public abstract class MusicStreaming : Music, IDisposable
 	{
-		private const int bufferMin = 3;
-		private const int bufferCountPerSubmit = 3;
-		internal const int DEFAULT_BYTESPERCHUNK = 4096;
-		internal static byte[] buffer = new byte[DEFAULT_BYTESPERCHUNK];
-		internal DynamicSoundEffectInstance instance;
-		internal Stream stream;
-		internal long dataStart;
+		// to play a 44.1kHz dual channel signal, we'd need to submit 735 samples per frame
+		// at 4 bytes per sample = 2940bytes.
+		// increasing the buffer size to 4096 and submitting 2 buffers at a time means we
+		// need to submit 21.5 times per second, or roughly every 3 frames at 60fps
+		private const int bufferLength = 4096;
+		private const int bufferCountPerSubmit = 2;
 
-		public override bool IsDisposed => instance.IsDisposed;
-		public override bool IsPaused => instance.State == SoundState.Paused;
-		public override bool IsPlaying => instance.State != SoundState.Stopped;
+		// with a 4 buffer minimum, we have roughly 1/10th of a second of stutter before the music drops
+		private const int bufferMin = 4;
+		
+		private string path;
+
+		private DynamicSoundEffectInstance instance;
+		protected Stream stream;
+		private byte[] buffer;
+		
+		protected int sampleRate;
+		protected AudioChannels channels;
+
+		public MusicStreaming(string path) {
+			this.path = path;
+		}
+		
+		public override bool IsPaused => instance != null && instance.State == SoundState.Paused;
+		public override bool IsPlaying => instance != null && instance.State != SoundState.Stopped;
 		public override void Pause() => instance.Pause();
-		public override void Play() => instance.Play();
 		public override void Resume() => instance.Resume();
+		public override void Play() {
+			EnsureLoaded();
+			instance.Play();
+		}
+
 		public override void SetVariable(string name, float value) {
 			switch (name) {
 				case "Volume": instance.Volume = value; return;
@@ -57,85 +78,78 @@ namespace Terraria.ModLoader.Audio
 				default: throw new Exception("Invalid field: '" + name + "'");
 			}
 		}
-		public override void Stop(AudioStopOptions options) => instance.Stop();
 
-		public override void CheckBuffer() {
-			if (instance.PendingBufferCount < bufferMin && IsPlaying) {
-				SubmitBuffer(bufferCountPerSubmit);
-			}
-		}
-
-		internal void SubmitBuffer(int count) {
-			if (stream == null) {
-				instance.Stop();
+		private void EnsureLoaded() {
+			if (instance != null)
 				return;
-			}
-			for (int i = 0; i < count; i++) {
-				if (!SubmitSingle()) {
-					if (i == 0) {
-						instance.Stop();
-					}
-					break;
-				}
-			}
+			
+			stream = ModContent.OpenRead(path, true);
+			PrepareStream();
+
+			instance = new DynamicSoundEffectInstance(sampleRate, channels);
+			buffer = new byte[bufferLength]; // could use a buffer pool but swapping music isn't likely to thrash the GC too much
+
+			CheckBuffer();
 		}
 
-		private bool SubmitSingle() {
-			//byte[] buffer = new byte[DEFAULT_BYTESPERCHUNK];
-			int bytesReturned = stream.Read(buffer, 0, buffer.Length);
-			if (bytesReturned < DEFAULT_BYTESPERCHUNK) {
-				ResetStreamPosition();
-				stream.Read(buffer, bytesReturned, buffer.Length - bytesReturned);
-			}
-			instance.SubmitBuffer(buffer);
-			return true;
-		}
+		protected abstract void PrepareStream();
 
-		public void ResetStreamPosition() {
-			if (stream != null) {
-				stream.Position = 0;
-				MP3Stream mp3 = stream as MP3Stream;
-				if (mp3 != null)
-					mp3.IsEOF = false;
-			}
-		}
-
-		public void Dispose() {
-			if (instance.State == SoundState.Playing) {
-				instance.Stop();
-			}
+		public override void Stop(AudioStopOptions options) {
+			instance.Stop();
 
 			instance.Dispose();
 			instance = null;
 
-			stream.Close();
+			stream.Dispose();
 			stream = null;
+
+			buffer = null;
+		}
+
+		public override void CheckBuffer() {
+			if (!IsPlaying || instance.PendingBufferCount >= bufferMin)
+				return;
+
+			for (int i = 0; i < bufferCountPerSubmit; i++)
+				SubmitSingle();
+		}
+
+		private void SubmitSingle() {
+			int read = stream.Read(buffer, 0, buffer.Length);
+			if (read < buffer.Length) {
+				Reset();
+				stream.Read(buffer, read, buffer.Length - read);
+			}
+			instance.SubmitBuffer(buffer);
+		}
+
+		public void Dispose() {
+			if (instance != null)
+				Stop(AudioStopOptions.Immediate);
 		}
 	}
 
 	public class MusicStreamingWAV : MusicStreaming
 	{
-		public MusicStreamingWAV(string path) {
-			stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-			Setup();
-		}
+		private long dataStart = -1;
 
-		public MusicStreamingWAV(Stream stream) {
-			this.stream = stream;
-			Setup();
-		}
+		public MusicStreamingWAV(string path) : base(path) {}
+		
+		protected override void PrepareStream() {
+			if (dataStart >= 0) {
+				stream.Position = dataStart;
+				return;
+			}
 
-		// Parses the header and sets dataStart and instance
-		private void Setup() {
-			BinaryReader reader = new BinaryReader(stream);
+			var reader = new BinaryReader(stream);
 			int chunkID = reader.ReadInt32();
 			int fileSize = reader.ReadInt32();
 			int riffType = reader.ReadInt32();
 			int fmtID = reader.ReadInt32();
 			int fmtSize = reader.ReadInt32();
 			int fmtCode = reader.ReadInt16();
-			int channels = reader.ReadInt16();
-			int sampleRate = reader.ReadInt32();
+			channels = (AudioChannels)reader.ReadInt16();
+			sampleRate = reader.ReadInt32();
 			int fmtAvgBPS = reader.ReadInt32();
 			int fmtBlockAlign = reader.ReadInt16();
 			int bitDepth = reader.ReadInt16();
@@ -148,53 +162,41 @@ namespace Terraria.ModLoader.Audio
 
 			int dataID = reader.ReadInt32();
 			int dataSize = reader.ReadInt32();
+			dataStart = stream.Position;
+		}
 
-			dataStart = reader.BaseStream.Position;
-			stream.Position = dataStart;
-
-			instance = new DynamicSoundEffectInstance(sampleRate, (AudioChannels)channels);
+		public override void Reset() {
+			if (stream != null)
+				stream.Position = dataStart;
 		}
 	}
 
 	public class MusicStreamingMP3 : MusicStreaming
 	{
-		public MusicStreamingMP3(byte[] data) {
-			MP3Stream stream = new MP3Stream(new MemoryStream(data));
-			instance = new DynamicSoundEffectInstance(stream.Frequency, (AudioChannels)stream.ChannelCount);
-			this.stream = stream;
-		}
-	}
+		public MusicStreamingMP3(string path) : base(path) {}
 
-	// byte array pointing to mp3 data or wav data
-	public class MusicData
-	{
-		string cachePath;
-		byte[] data;
-		bool mp3 = false;
+		private Stream underlying;
+		protected override void PrepareStream() {
+			underlying = stream;
 
-		public MusicData(string cachePath) {
-			this.cachePath = cachePath;
+			var mp3Stream = new MP3Stream(stream);
+			sampleRate = mp3Stream.Frequency;
+			channels = (AudioChannels)mp3Stream.ChannelCount;
+			stream = mp3Stream;
 		}
 
-		public MusicData(byte[] data, bool mp3) {
-			this.data = data;
-			this.mp3 = mp3;
+		public override void Stop(AudioStopOptions options) {
+			base.Stop(options);
+			underlying = null;
 		}
 
-		public Music GetInstance() {
-			if (cachePath != null) {
-				if (mp3)
-					throw new Exception("Cache and MP3 not implemented");
-				else
-					return new MusicStreamingWAV(cachePath);
+		public override void Reset() {
+			if (stream != null) {
+				underlying.Position = 0;
+				//mp3 is not designed to loop and creates static if you just reset the stream due to fourier encoding carryover
+				//if you're really smart, you can make a looping version and PR it
+				stream = new MP3Stream(underlying);
 			}
-			else if (data != null) {
-				if (mp3)
-					return new MusicStreamingMP3(data);
-				else
-					return new MusicStreamingWAV(new MemoryStream(data));
-			}
-			throw new Exception("Error, MusicWrapper neither cache nor data supplied.");
 		}
 	}
 }

@@ -68,7 +68,9 @@ namespace Terraria.ModLoader.IO
 				throw new IOException($"Stream did not contain enough bytes ({pos}) < ({buf.Length})");
 		}
 
-		public static byte[] ReadBytes(this Stream stream, int len) {
+		public static byte[] ReadBytes(this Stream stream, int len) => ReadBytes(stream, (long)len);
+
+		public static byte[] ReadBytes(this Stream stream, long len) {
 			var buf = new byte[len];
 			stream.ReadBytes(buf);
 			return buf;

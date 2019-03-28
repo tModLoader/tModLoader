@@ -77,7 +77,6 @@ namespace Terraria.ModLoader
 		internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
-		internal static byte musicStreamMode;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool allowGreaterResolutions;
 		internal static bool showMemoryEstimates;
@@ -308,7 +307,6 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
-			Main.Configuration.Put("MusicStreamMode", musicStreamMode);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
@@ -322,7 +320,6 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
-			Main.Configuration.Get("MusicStreamMode", ref musicStreamMode);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 			Main.Configuration.Get("AllowGreaterResolutions", ref allowGreaterResolutions);
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);

@@ -138,12 +138,12 @@ namespace Terraria.ModLoader
 						LoadTexture(path, getStream(), extension == ".rawimg");
 					return true;
 				case ".wav":
-					if (!Main.dedServ && Main.engine != null)
-						LoadWav(path, getStream().ReadBytes(length));
-					return true;
 				case ".mp3":
-					if (!Main.dedServ && Main.engine != null)
-						LoadMP3(path, getStream().ReadBytes(length));
+					if (Main.dedServ || Main.engine == null) { }
+					else if (path.Contains("Music/"))
+						musics[path] = LoadMusic(path, extension);
+					else
+						sounds[path] = LoadSound(getStream(), length, extension);
 					return true;
 				case ".xnb":
 					if (Main.dedServ) { }
@@ -1480,7 +1480,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public Stream GetFileSteam(string name) => File?.GetStream(name);
+		public Stream GetFileSteam(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used here.
@@ -1547,10 +1547,10 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		/// <exception cref="MissingResourceException"></exception>
 		public Music GetMusic(string name) {
-			if (!musics.TryGetValue(name, out var sound))
+			if (!musics.TryGetValue(name, out var music))
 				throw new MissingResourceException(name);
 
-			return sound.GetInstance();
+			return music;
 		}
 
 		/// <summary>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using MP3Sharp;
 using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
@@ -23,7 +24,7 @@ namespace Terraria.ModLoader
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-		internal readonly IDictionary<string, MusicData> musics = new Dictionary<string, MusicData>();
+		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
@@ -75,46 +76,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void LoadWav(string path, byte[] bytes) {
-			try {
-				if (path.StartsWith("Sounds/Music/")) {
-					musics[path] = new MusicData(bytes, false);
-				}
-				else {
-					//SoundEffect.FromStream needs a stream with a length
-					sounds[path] = SoundEffect.FromStream(new MemoryStream(bytes));
-				}
+		private SoundEffect LoadSound(Stream stream, int length, string extension) {
+			switch (extension) {
+				case ".wav": 
+					if (!stream.CanSeek)
+						stream = new MemoryStream(stream.ReadBytes(length));
+					return SoundEffect.FromStream(stream);
+				case ".mp3":
+					var mp3Stream = new MP3Stream(stream);
+					using (var ms = new MemoryStream()) {
+						mp3Stream.CopyTo(ms);
+						return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, (AudioChannels)mp3Stream.ChannelCount);
+					}
 			}
-			catch (Exception e) {
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorWavSoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
-			}
+			throw new ResourceLoadException("Unknown sound extension "+extension);
 		}
 
-		private void LoadMP3(string path, byte[] bytes) {
-			string wavCacheFilename = this.Name + "_" + path.Replace('/', '_') + "_" + Version + ".wav";
-			WAVCacheIO.DeleteIfOlder(File.path, wavCacheFilename);
-			try {
-				if (path.StartsWith("Sounds/Music/")) {
-					if (ModLoader.musicStreamMode != 1) {//no cache
-						musics[path] = new MusicData(bytes, true);
-						return;
-					}
-
-					if (!WAVCacheIO.WAVCacheAvailable(wavCacheFilename)) {
-						WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
-					}
-
-					musics[path] = new MusicData(Path.Combine(WAVCacheIO.ModCachePath, wavCacheFilename));
-					return;
-				}
-
-				sounds[path] = WAVCacheIO.WAVCacheAvailable(wavCacheFilename) ?
-					SoundEffect.FromStream(WAVCacheIO.GetWavStream(wavCacheFilename)) :
-					WAVCacheIO.CacheMP3(wavCacheFilename, new MemoryStream(bytes));
+		private Music LoadMusic(string path, string extension) {
+			path = "tmod:"+Name+'/'+path+extension;
+			switch (extension) {
+				case ".wav": return new MusicStreamingWAV(path);
+				case ".mp3": return new MusicStreamingMP3(path);
 			}
-			catch (Exception e) {
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorMP3SoundFailedToLoad", path) + (Main.engine == null ? "\n" + Language.GetTextValue("tModLoader.LoadErrorSoundFailedToLoadAudioDeviceHint") : ""), e);
-			}
+			throw new ResourceLoadException("Unknown music extension "+extension);
 		}
 
 		internal void SetupContent() {
