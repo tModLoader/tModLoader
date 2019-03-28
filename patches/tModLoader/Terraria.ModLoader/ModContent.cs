@@ -302,28 +302,26 @@ namespace Terraria.ModLoader
 			CacheVanillaState();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
-			MemoryTracking.Start();
 			LoadModContent(mod => {
-				mod.AutoloadConfig();
 				mod.loading = true;
+				mod.AutoloadConfig();
 				mod.LoadResources();
 				mod.Autoload();
 				mod.Load();
 				mod.loading = false;
-				MemoryTracking.Load(mod);
 			});
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			MemoryTracking.MidReset();
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
-				MemoryTracking.Finish(mod);
 			});
+			
+			MemoryTracking.Finish();
 
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
@@ -343,6 +341,7 @@ namespace Terraria.ModLoader
 
 		internal static Mod LoadingMod { get; private set; }
 		private static void LoadModContent(Action<Mod> loadAction) {
+			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				Interface.loadMods.SetCurrentMod(num++, mod.Name);
@@ -356,6 +355,7 @@ namespace Terraria.ModLoader
 				}
 				finally {
 					LoadingMod = null;
+					MemoryTracking.Update(mod.Name);
 				}
 			}
 		}

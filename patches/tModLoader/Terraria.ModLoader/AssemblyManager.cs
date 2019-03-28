@@ -30,6 +30,7 @@ namespace Terraria.ModLoader
 
 			public Assembly assembly;
 			public List<Assembly> assemblies = new List<Assembly>();
+			public long bytesLoaded = 0;
 
 			private int loadIndex;
 			private bool eacEnabled;
@@ -167,6 +168,7 @@ namespace Terraria.ModLoader
 				loadedAssemblies[asm.GetName().Name] = asm;
 				assemblyBinaries[asm.GetName().Name] = code;
 				hostModForAssembly[asm] = this;
+				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
 				return asm;
 			}
 		}
@@ -252,6 +254,9 @@ namespace Terraria.ModLoader
 				e.Data["mod"] = mod.Name;
 				throw;
 			}
+			finally {
+				MemoryTracking.Update(mod.Name).code += mod.bytesLoaded;
+			}
 		}
 
 		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
@@ -280,9 +285,10 @@ namespace Terraria.ModLoader
 					Interface.loadMods.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
 				});
-
-				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
+				
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
+				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
+				MemoryTracking.Checkpoint();
 				return modList.Select(Instantiate).ToList();
 			}
 			catch (AggregateException ae) {

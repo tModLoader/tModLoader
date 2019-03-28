@@ -326,9 +326,7 @@ namespace Terraria.ModLoader.IO
 			fileStream?.Close();
 			fileStream = null;
 		}
-
-		// load Code and Info files into the cache
-		// unfortunately this will recompress files individually which were previously decompressed, but that'll have to do
+		
 		private void Upgrade() {
 			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
 			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));

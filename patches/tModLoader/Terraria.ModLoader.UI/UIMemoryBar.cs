@@ -18,21 +18,20 @@ namespace Terraria.ModLoader.UI
 		private class MemoryBarItem
 		{
 			internal string tooltip;
-			internal float portion;
+			internal long memory;
 			internal Color drawColor;
 
-			public MemoryBarItem(string tooltip, float portion, Color drawColor) {
+			public MemoryBarItem(string tooltip, long memory, Color drawColor) {
 				this.tooltip = tooltip;
-				this.portion = portion;
+				this.memory = memory;
 				this.drawColor = drawColor;
 			}
 		}
 
 		private readonly Texture2D innerPanelTexture;
 		internal static bool recalculateMemoryNeeded = true;
-		private float hueCycle = 0.2f;
-		private const float hueCycleOffset = 0.36f;
 		private List<MemoryBarItem> memoryBarItems;
+		private long maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
 
 		public UIMemoryBar() {
 			Width.Set(0f, 1f);
@@ -59,7 +58,7 @@ namespace Terraria.ModLoader.UI
 			int width = 0;
 			for (int i = 0; i < memoryBarItems.Count; i++) {
 				var memoryBarData = memoryBarItems[i];
-				width = (int)(rectangle.Width * memoryBarData.portion);
+				width = (int)(rectangle.Width * (memoryBarData.memory / (float)maxMemory));
 				if(i == memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
 					width = rectangle.Right - xOffset - rectangle.X;
 				}
@@ -85,61 +84,59 @@ namespace Terraria.ModLoader.UI
 			return;
 		}
 
-		private Color NextColor() {
-			hueCycle = (hueCycle + hueCycleOffset) % 1f;
-			return Main.hslToRgb(hueCycle, .5f, .5f);
-		}
+		private Color[] colors = {
+			new Color(232, 76, 61),//red
+			new Color(155, 88, 181),//purple
+			new Color(27, 188, 155),//aqua
+			new Color(243, 156, 17),//orange
+			new Color(45, 204, 112),//green
+			new Color(241, 196, 15),//yellow
+		};
 
 		private void RecalculateMemory() {
-			hueCycle = 0.2f;
 			memoryBarItems.Clear();
-			Rectangle rectangle = GetInnerDimensions().ToRectangle();
-
-			int x = 0;
-			int width;
-			float portion;
+			
 #if WINDOWS
-			long maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
+			maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
 			long availableMemory = maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
 #else
 			long maxMemory = GetTotalMemory();
 			long availableMemory = GetAvailableMemory();
 #endif
-			Process currentProcess = Process.GetCurrentProcess();
-			long meminuse = currentProcess.WorkingSet64;
 
-			long runningSumMemory = 0;
-			long modTotalMemory = 0;
-
-			foreach (var item in MemoryTracking.modMemoryUsageEstimate.OrderBy(v => -v.Value.total)) {
-				if (item.Key == "tModLoader") continue;
-				modTotalMemory = item.Value.total;
-				if (modTotalMemory < 0)
+			long totalModMemory = 0;
+			int i = 0;
+			foreach (var entry in MemoryTracking.modMemoryUsageEstimates.OrderBy(v => -v.Value.total)) {
+				var modName = entry.Key;
+				var usage = entry.Value;
+				if (usage.total <= 0 || modName == "tModLoader")
 					continue;
-				width = (int)((float)modTotalMemory / maxMemory * rectangle.Width);
-				runningSumMemory += modTotalMemory;
-				x += width;
-				portion = (float)modTotalMemory / maxMemory;
+				
+				totalModMemory += usage.total;
 				var sb = new StringBuilder();
-				if (modTotalMemory > 0)
-					sb.Append($"\nEstimate last load RAM usage: {SizeSuffix(modTotalMemory)}");
-				if (item.Value.autoload + item.Value.setupContent > 0)
-					sb.Append($"\n Managed: {SizeSuffix(item.Value.autoload + item.Value.setupContent)}");
-				if (item.Value.sounds > 0)
-					sb.Append($"\n Sounds: {SizeSuffix(item.Value.sounds)}");
-				if (item.Value.textures > 0)
-					sb.Append($"\n Textures: {SizeSuffix(item.Value.textures)}");
-				memoryBarItems.Add(new MemoryBarItem(item.Key + sb.ToString(), portion, NextColor()));
+				sb.Append(ModLoader.GetMod(modName).DisplayName);
+				sb.Append($"\nEstimate last load RAM usage: {SizeSuffix(usage.total)}");
+				if (usage.managed > 0)
+					sb.Append($"\n Managed: {SizeSuffix(usage.managed)}");
+				if (usage.managed > 0)
+					sb.Append($"\n Code: {SizeSuffix(usage.code)}");
+				if (usage.sounds > 0)
+					sb.Append($"\n Sounds: {SizeSuffix(usage.sounds)}");
+				if (usage.textures > 0)
+					sb.Append($"\n Textures: {SizeSuffix(usage.textures)}");
+				memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, colors[i++ % colors.Length]));
 			}
-			modTotalMemory = meminuse - runningSumMemory;
-			width = (int)(((float)modTotalMemory / maxMemory) * rectangle.Width);
-			runningSumMemory += modTotalMemory;
-			portion = (float)modTotalMemory / maxMemory;
-			x += width;
-			memoryBarItems.Add(new MemoryBarItem($"Terraria + misc: {SizeSuffix(modTotalMemory)}\n Total: {SizeSuffix(meminuse)}", portion, NextColor()));
-
-			portion = (float)(availableMemory - meminuse) / maxMemory;
-			memoryBarItems.Add(new MemoryBarItem($"Available Memory: {SizeSuffix(availableMemory)}\n Total: {SizeSuffix(availableMemory - meminuse)}", portion, Color.Gray));
+			
+			long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
+			var nonModMemory = allocatedMemory - totalModMemory;
+			memoryBarItems.Add(new MemoryBarItem(
+				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}", 
+				nonModMemory, Color.DeepSkyBlue));
+			
+			var remainingMemory = availableMemory - allocatedMemory;
+			memoryBarItems.Add(new MemoryBarItem(
+				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}", 
+				remainingMemory, Color.Gray));
 
 			//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
 			//memoryBarItems.Add(new MemoryBarData($"Other programs: {SizeSuffix(maxMemory - availableMemory - meminuse)}", portion, Color.Black));

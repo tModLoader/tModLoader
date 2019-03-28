@@ -218,7 +218,8 @@ namespace Terraria.ModLoader
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-
+			
+			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
 			GC.Collect();
 			badUnloaders.Clear();
