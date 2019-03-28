@@ -61,8 +61,12 @@ namespace Terraria.ModLoader
 				var texTask = rawimg
 					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, new BinaryReader(stream))
 					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, stream);
-
+				
 				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t => {
+					if (t.Exception != null)
+						throw new ResourceLoadException(
+							Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), t.Exception);
+
 					var tex = t.Result;
 					tex.Name = Name + "/" + path;
 					lock (textures)
