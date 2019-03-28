@@ -52,7 +52,7 @@
  		public float meleeDamage;
  		public float rangedDamage;
  		public float thrownDamage;
-@@ -867,12 +_,32 @@
+@@ -867,8 +_,28 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
  		public bool oldAdjLava;
@@ -83,11 +83,6 @@
  		public static int defaultItemGrabRange = 38;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
--		public byte hairDye;
-+		public short hairDye;
- 		public Color hairDyeColor;
- 		public float hairDyeVar;
- 		public Color hairColor;
 @@ -1644,6 +_,7 @@
  				if (item.stack > 0)
  				{
@@ -5108,7 +5103,7 @@
  											if (Main.netMode != 0)
  											{
  												NetMessage.SendPlayerHurt(num333, playerDeathReason, num334, this.direction, flag30, true, -1, -1, -1);
-@@ -36459,32 +_,38 @@
+@@ -36459,9 +_,13 @@
  			}
  			if (this.itemTime == 0 && this.itemAnimation > 0)
  			{
@@ -5122,10 +5117,8 @@
 +					this.itemTime = (int)(item.useTime / PlayerHooks.TotalUseTimeMultiplier(this, item));
  					if (this.whoAmI == Main.myPlayer)
  					{
--						this.hairDye = (byte)item.hairDye;
-+						this.hairDye = item.hairDye;
- 						NetMessage.SendData(4, -1, -1, null, this.whoAmI, 0f, 0f, 0f, 0, 0, 0);
- 					}
+ 						this.hairDye = (byte)item.hairDye;
+@@ -36470,21 +_,23 @@
  				}
  				if (item.healLife > 0)
  				{

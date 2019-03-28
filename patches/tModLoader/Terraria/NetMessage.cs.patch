@@ -51,18 +51,6 @@
  						}
  						break;
  					case 3:
-@@ -89,7 +_,10 @@
- 							writer.Write((byte)player.skinVariant);
- 							writer.Write((byte)player.hair);
- 							writer.Write(player.name);
--							writer.Write(player.hairDye);
-+							if (ModNet.AllowVanillaClients)
-+								writer.Write((byte)player.hairDye);
-+							else
-+								writer.Write(player.hairDye);
- 							BitsByte bb = 0;
- 							for (int i = 0; i < 8; i++)
- 							{
 @@ -178,6 +_,7 @@
  							writer.Write((short)num2);
  							writer.Write((byte)number3);

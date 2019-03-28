@@ -2498,7 +2498,7 @@
  			int shaderId = 0;
  			int skinVariant = drawPlayer.skinVariant;
  			short num = (short)drawPlayer.hairDye;
-@@ -30538,12 +_,13 @@
+@@ -30538,10 +_,11 @@
  			{
  				num = 1;
  			}
@@ -2507,14 +2507,10 @@
  			{
  				int num2 = i % 10;
 -				if (drawPlayer.dye[num2] != null && drawPlayer.armor[i].type > 0 && drawPlayer.armor[i].stack > 0 && drawPlayer.armor[i].faceSlot > 0 && drawPlayer.armor[i].faceSlot < 9)
--				{
--					byte arg_81_0 = drawPlayer.dye[num2].dye;
 +				if (drawPlayer.dye[num2] != null && drawPlayer.armor[i].type > 0 && drawPlayer.armor[i].stack > 0 && drawPlayer.armor[i].faceSlot > 0)
-+				{
-+					//byte arg_81_0 = drawPlayer.dye[num2].dye;
+ 				{
+ 					byte arg_81_0 = drawPlayer.dye[num2].dye;
  				}
- 			}
- 			if (drawPlayer.face > 0 && drawPlayer.face < 9)
 @@ -30554,18 +_,26 @@
  			{
  				shaderId = (int)drawPlayer.dye[0].dye;

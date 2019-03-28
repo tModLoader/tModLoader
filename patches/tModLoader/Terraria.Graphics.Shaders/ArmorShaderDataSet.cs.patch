@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
 +++ src/tModLoader\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
-@@ -6,12 +_,16 @@
+@@ -6,9 +_,9 @@
  {
  	public class ArmorShaderDataSet
  	{
@@ -13,11 +13,4 @@
  
  		public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData
  		{
-+			if (this._shaderDataCount == short.MaxValue)
-+			{
-+				throw new Exception("Too many shaders bound.");
-+			}
- 			this._shaderLookupDictionary[itemId] = ++this._shaderDataCount;
- 			this._shaderData.Add(shaderData);
- 			return shaderData;
 
