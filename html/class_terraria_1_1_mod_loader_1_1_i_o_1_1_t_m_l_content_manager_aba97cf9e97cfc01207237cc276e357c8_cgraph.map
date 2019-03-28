@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.IO.TMLContentManager.OpenStream" name="Terraria.ModLoader.IO.TMLContentManager.OpenStream">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a428f602575e5049d20ae8d96eca31684" title="Retrieve contents of files within the tmod file " alt="" coords="295,5,483,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="286,70,493,111"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a84557c47d63f1cce2545d8903ff3fcfe" title="Terraria.ModLoader.ModContent.\lSplitName" alt="" coords="283,135,496,177"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a7d35872c47802050843cea0404e40112" title="Terraria.ModLoader.ModContent.\lOpenRead" alt="" coords="283,38,496,79"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ad9cc32329dd984bbfbe1b570a7fe8f6b" title="Retrieve contents of files within the tmod file " alt="" coords="554,5,742,46"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="545,70,751,111"/>
 </map>

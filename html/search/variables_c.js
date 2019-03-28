@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['label',['Label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()']]],
+  ['label',['label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()']]],
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
   ['lastentryreadstream',['lastEntryReadStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a9f0e1d64f782f5f7502748faaf88a9c7',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],

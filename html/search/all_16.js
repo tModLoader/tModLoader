@@ -16,7 +16,6 @@ var searchData=
   ['waterstyleloader',['WaterStyleLoader',['../class_terraria_1_1_mod_loader_1_1_water_style_loader.html',1,'Terraria::ModLoader']]],
   ['waterstyleloader_2ecs',['WaterStyleLoader.cs',['../_water_style_loader_8cs.html',1,'']]],
   ['watersurface',['WaterSurface',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad04077a5e04bb5aeae4af21ba347e6c9',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['wavcacheio_2ecs',['WAVCacheIO.cs',['../_w_a_v_cache_i_o_8cs.html',1,'']]],
   ['weakdependencies',['weakDependencies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ae643996c2853e9920e00158a40170f55',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['weakdepname',['WeakDepName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a02b7417ef7a92de374f735302631561f',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['weakmodreferences',['weakModReferences',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3',1,'Terraria::ModLoader::ModLoader']]],

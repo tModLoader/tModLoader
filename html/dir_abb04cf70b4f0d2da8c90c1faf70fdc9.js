@@ -59,6 +59,5 @@ var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
     [ "UploadFile.cs", "_upload_file_8cs.html", [
       [ "UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file" ]
     ] ],
-    [ "WAVCacheIO.cs", "_w_a_v_cache_i_o_8cs.html", null ],
     [ "WorldIO.cs", "_world_i_o_8cs.html", null ]
 ];
