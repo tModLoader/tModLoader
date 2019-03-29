@@ -106,7 +106,7 @@ namespace Terraria.ModLoader
 		[Obsolete("Use ModLoader.Mods.Length", true)]
 		public static int ModCount => Mods.Length;
 
-		[Obsolete("Use Modloader.Mods.Select(m => m.Name)", true)]
+		[Obsolete("Use ModLoader.Mods.Select(m => m.Name)", true)]
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
