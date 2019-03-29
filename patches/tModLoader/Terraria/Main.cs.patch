@@ -2077,14 +2077,17 @@
  											{
  												Main.spriteBatch.Draw(Main.tileAltTexture[(int)type, (int)tile.color()], new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num8 - 16f) / 2f + (float)num183, (float)(i * 16 - (int)Main.screenPosition.Y + num11)) + zero, new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle((int)num9, y2, num8, num12)), color, 0f, default(Vector2), 1f, effects, 0f);
  											}
-@@ -19919,6 +_,7 @@
- 						}
- 					}
- 					IL_CEBF:
-+					TileLoader.PostDraw(j, i, type, Main.spriteBatch); // TODO, is this the right spot?
- 					;
- 				}
- 			}
+@@ -19897,8 +_,8 @@
+ 								int num299 = 0;
+ 								int num300 = 0;
+ 								Main.spriteBatch.Draw(texture2D2, new Vector2((float)(j * 16 - (int)Main.screenPosition.X) - ((float)num8 - 16f) / 2f + (float)num299, (float)(i * 16 - (int)Main.screenPosition.Y + num11 + num300)) + zero, new Microsoft.Xna.Framework.Rectangle?(empty2), transparent, 0f, default(Vector2), 1f, effects, 0f);
+-								goto IL_CEBF;
+-							}
++							}
++							TileLoader.PostDraw(j, i, type, Main.spriteBatch);
+ 							goto IL_CEBF;
+ 							IL_1ABF:
+ 							num49 = (int)(num9 / 36);
 @@ -20117,6 +_,7 @@
  				{
  					if (type4 == 5 && frameY >= 198 && frameX >= 22)
