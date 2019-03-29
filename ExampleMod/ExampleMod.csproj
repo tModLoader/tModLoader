@@ -1,336 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\references\tModLoader.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7773BDD8-037E-46DB-B842-B0EE41E74873}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <NoStandardLibraries>false</NoStandardLibraries>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExampleMod</RootNamespace>
     <AssemblyName>ExampleMod</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' Or '$(Configuration)|$(Platform)' == 'ServerDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>ExampleMod</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\references\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\references\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\references\MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>..\references\MonoMod.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\references\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="ReLogic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\references\ReLogic.dll</HintPath>
-    </Reference>
+    <Compile Include="**\*.cs" Exclude="obj\**\*.*" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="TerrariaHooks.Windows">
-      <HintPath>..\references\TerrariaHooks.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="tModLoaderDebug, Version=1.3.5.1, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Terraria\tModLoaderDebug.exe</HintPath>
-    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Angle.cs" />
-    <Compile Include="Backgrounds\ExampleSurfaceBgStyle.cs" />
-    <Compile Include="Backgrounds\ExampleUgBgStyle.cs" />
-    <Compile Include="Buffs\Blocky.cs" />
-    <Compile Include="Buffs\CarMount.cs" />
-    <Compile Include="Buffs\EtherealFlames.cs" />
-    <Compile Include="Buffs\ExampleJavelin.cs" />
-    <Compile Include="Buffs\ExampleLightPet.cs" />
-    <Compile Include="Buffs\ExamplePet.cs" />
-    <Compile Include="Buffs\HeroOne.cs" />
-    <Compile Include="Buffs\HeroThree.cs" />
-    <Compile Include="Buffs\HeroTwo.cs" />
-    <Compile Include="Buffs\Nullified.cs" />
-    <Compile Include="Buffs\PurityWisp.cs" />
-    <Compile Include="Buffs\Undead.cs" />
-    <Compile Include="Buffs\Undead2.cs" />
-    <Compile Include="Commands\LagCommand.cs" />
-    <Compile Include="Commands\AddTimeCommand.cs" />
-    <Compile Include="Commands\CoinCommand.cs" />
-    <Compile Include="Commands\ItemCommand.cs" />
-    <Compile Include="Commands\NpcCommand.cs" />
-    <Compile Include="Commands\NpcTypeCommand.cs" />
-    <Compile Include="Commands\ScoreCommand.cs" />
-    <Compile Include="Commands\SoundCommand.cs" />
-    <Compile Include="Commands\VolcanoCommand.cs" />
-    <Compile Include="Dusts\AdvancedDust.cs" />
-    <Compile Include="Dusts\Bubble.cs" />
-    <Compile Include="Dusts\EtherealFlame.cs" />
-    <Compile Include="Dusts\ExampleSolution.cs" />
-    <Compile Include="Dusts\ExampleWaterSplash.cs" />
-    <Compile Include="Dusts\Flame.cs" />
-    <Compile Include="Dusts\Negative.cs" />
-    <Compile Include="Dusts\Pixel.cs" />
-    <Compile Include="Dusts\PixelHurt.cs" />
-    <Compile Include="Dusts\PuriumFlame.cs" />
-    <Compile Include="Dusts\Smoke.cs" />
-    <Compile Include="Dusts\Sparkle.cs" />
-    <Compile Include="Dusts\SpectreDust.cs" />
-    <Compile Include="ExampleAdvancedRecipe.cs" />
-    <Compile Include="ExampleConfig.cs" />
-    <Compile Include="ExampleCustomCurrency.cs" />
-    <Compile Include="ExampleMod.cs" />
-    <Compile Include="ExamplePlayer.cs" />
-    <Compile Include="ExampleWorld.cs" />
-    <Compile Include="Gores\ExampleDroplet.cs" />
-    <Compile Include="Gores\ExampleTreeFX.cs" />
-    <Compile Include="Items\Abomination\AbominationBag.cs" />
-    <Compile Include="Items\Abomination\Bubble.cs" />
-    <Compile Include="Items\Abomination\ElementResidue.cs" />
-    <Compile Include="Items\Abomination\FoulOrb.cs" />
-    <Compile Include="Items\Abomination\Icicle.cs" />
-    <Compile Include="Items\Abomination\MoltenDrill.cs" />
-    <Compile Include="Items\Abomination\ScytheBlade.cs" />
-    <Compile Include="Items\Abomination\SixColorShield.cs" />
-    <Compile Include="Items\Armor\AbominationMask.cs" />
-    <Compile Include="Items\Armor\BunnyMask.cs" />
-    <Compile Include="Items\Armor\ExampleBreastplate.cs" />
-    <Compile Include="Items\Armor\ExampleCostume.cs" />
-    <Compile Include="Items\Armor\ExampleHelmet.cs" />
-    <Compile Include="Items\Armor\ExampleHood.cs" />
-    <Compile Include="Items\Armor\ExampleLeggings.cs" />
-    <Compile Include="Items\Armor\ExampleRobe.cs" />
-    <Compile Include="Items\Armor\PuritySpiritMask.cs" />
-    <Compile Include="Items\Banners\OctopusBanner.cs" />
-    <Compile Include="Items\Banners\SarcophagusBanner.cs" />
-    <Compile Include="Items\BossBags.cs" />
-    <Compile Include="Items\BossItem.cs" />
-    <Compile Include="Items\CarKey.cs" />
-    <Compile Include="Items\CopperShortsword.cs" />
-    <Compile Include="Items\EquipMaterial.cs" />
-    <Compile Include="Items\ExampleDamageClass\ExampleDamageAccessory.cs" />
-    <Compile Include="Items\ExampleDamageClass\ExampleDamageItem.cs" />
-    <Compile Include="Items\ExampleDamageClass\ExampleDamagePlayer.cs" />
-    <Compile Include="Items\ExampleDamageClass\Mundane.cs" />
-    <Compile Include="Items\ExampleDrawTooltips.cs" />
-    <Compile Include="Items\ExampleDye.cs" />
-    <Compile Include="Items\ExampleGlobalRecipe.cs" />
-    <Compile Include="Items\ExampleHairDye.cs" />
-    <Compile Include="Items\ExampleHamaxe.cs" />
-    <Compile Include="Items\ExampleHealingPotion.cs" />
-    <Compile Include="Items\ExampleHook.cs" />
-    <Compile Include="Items\ExampleInstancedGlobalItem.cs" />
-    <Compile Include="Items\ExampleItem.cs" />
-    <Compile Include="Items\ExampleLifeFruit.cs" />
-    <Compile Include="Items\ExampleMagicMirror.cs" />
-    <Compile Include="Items\Infinity.cs" />
-    <Compile Include="Items\Placeable\ExampleBar.cs" />
-    <Compile Include="Items\Placeable\ExampleLamp.cs" />
-    <Compile Include="Items\Placeable\ExampleOre.cs" />
-    <Compile Include="Items\Placeable\ExampleTrap.cs" />
-    <Compile Include="Items\Placeable\ScoreBoard.cs" />
-    <Compile Include="Items\Accessories\WaspNest.cs" />
-    <Compile Include="Items\Weapons\ExampleExplosive.cs" />
-    <Compile Include="Items\Weapons\ExampleJavelin.cs" />
-    <Compile Include="Items\ExampleLightPet.cs" />
-    <Compile Include="Items\ExamplePet.cs" />
-    <Compile Include="Items\ExamplePickaxe.cs" />
-    <Compile Include="Items\ExampleQuestFish.cs" />
-    <Compile Include="Items\ExampleShield.cs" />
-    <Compile Include="Items\ExampleSolution.cs" />
-    <Compile Include="Items\ExampleSoul.cs" />
-    <Compile Include="Items\ExampleWings.cs" />
-    <Compile Include="Items\ExplorerBag.cs" />
-    <Compile Include="Items\Face.cs" />
-    <Compile Include="Items\Fertilizer.cs" />
-    <Compile Include="Items\Placeable\AbominationTrophy.cs" />
-    <Compile Include="Items\Placeable\BunnyTrophy.cs" />
-    <Compile Include="Items\Placeable\ElementalPurge.cs" />
-    <Compile Include="Items\Placeable\ExampleBed.cs" />
-    <Compile Include="Items\Placeable\ExampleBlock.cs" />
-    <Compile Include="Items\Placeable\ExampleChair.cs" />
-    <Compile Include="Items\Placeable\ExampleChest.cs" />
-    <Compile Include="Items\Placeable\ExampleClock.cs" />
-    <Compile Include="Items\Placeable\ExampleDoor.cs" />
-    <Compile Include="Items\Placeable\ExampleDresser.cs" />
-    <Compile Include="Items\Placeable\ExampleMusicBox.cs" />
-    <Compile Include="Items\Placeable\ExamplePlatform.cs" />
-    <Compile Include="Items\Placeable\ExampleHerbSeeds.cs" />
-    <Compile Include="Items\Placeable\ExampleTorch.cs" />
-    <Compile Include="Items\Placeable\ExampleWall.cs" />
-    <Compile Include="Items\Placeable\ExampleWorkbench.cs" />
-    <Compile Include="Items\Placeable\PuritySpiritTrophy.cs" />
-    <Compile Include="Items\Placeable\TreeTrophy.cs" />
-    <Compile Include="Items\Placeable\VoidMonolith.cs" />
-    <Compile Include="Items\PlanteraItem.cs" />
-    <Compile Include="Items\Potion.cs" />
-    <Compile Include="Items\PurityShield.cs" />
-    <Compile Include="Items\PuritySpiritBag.cs" />
-    <Compile Include="Items\SparklingSphere.cs" />
-    <Compile Include="Items\Weapons\ExampleBullet.cs" />
-    <Compile Include="Items\Weapons\ExampleCloneItem.cs" />
-    <Compile Include="Items\Weapons\ExampleGun.cs" />
-    <Compile Include="Items\Weapons\ExampleLaserWeapon.cs" />
-    <Compile Include="Items\Weapons\ExampleSpear.cs" />
-    <Compile Include="Items\Weapons\ExampleStaff.cs" />
-    <Compile Include="Items\Weapons\ExampleDualUseWeapon.cs" />
-    <Compile Include="Items\Weapons\ExampleStaff2.cs" />
-    <Compile Include="Items\Weapons\ExampleSword.cs" />
-    <Compile Include="Items\Weapons\ExampleYoyo.cs" />
-    <Compile Include="Items\Weapons\PurityTotem.cs" />
-    <Compile Include="Items\Weapons\SpectreGun.cs" />
-    <Compile Include="Items\Weapons\Wisp.cs" />
-    <Compile Include="Mounts\Car.cs" />
-    <Compile Include="NPCs\Abomination\Abomination.cs" />
-    <Compile Include="NPCs\Abomination\AbominationRun.cs" />
-    <Compile Include="NPCs\Abomination\CaptiveElement.cs" />
-    <Compile Include="NPCs\Abomination\CaptiveElement2.cs" />
-    <Compile Include="NPCs\Abomination\FreedElement.cs" />
-    <Compile Include="NPCs\DeathAnimation.cs" />
-    <Compile Include="NPCs\ExampleChestSummon.cs" />
-    <Compile Include="NPCs\ExampleCritter.cs" />
-    <Compile Include="NPCs\ExampleGlobalNPC.cs" />
-    <Compile Include="NPCs\ExamplePerson.cs" />
-    <Compile Include="NPCs\Fish.cs" />
-    <Compile Include="NPCs\FlutterSlime.cs" />
-    <Compile Include="NPCs\Hover.cs" />
-    <Compile Include="NPCs\Octopus.cs" />
-    <Compile Include="NPCs\FallenSoul.cs" />
-    <Compile Include="NPCs\PartyZombie.cs" />
-    <Compile Include="NPCs\PuritySpirit\PurityShield.cs" />
-    <Compile Include="NPCs\PuritySpirit\PuritySpirit.cs" />
-    <Compile Include="NPCs\PuritySpirit\PuritySpiritScreenShaderData.cs" />
-    <Compile Include="NPCs\PuritySpirit\PuritySpiritSky.cs" />
-    <Compile Include="NPCs\Sarcophagus.cs" />
-    <Compile Include="NPCs\Worm.cs" />
-    <Compile Include="Prefixes\AwesomePrefix.cs" />
-    <Compile Include="Projectiles\ElementBall.cs" />
-    <Compile Include="Projectiles\ElementLaser.cs" />
-    <Compile Include="Projectiles\ElementShield.cs" />
-    <Compile Include="Projectiles\ExampleAnimatedPierce.cs" />
-    <Compile Include="Projectiles\ExampleBehindTilesProjectile.cs" />
-    <Compile Include="Projectiles\ExampleBullet.cs" />
-    <Compile Include="Projectiles\ExampleCloneProjectile.cs" />
-    <Compile Include="Projectiles\ExampleExplosive.cs" />
-    <Compile Include="Projectiles\ExampleJavelinProjectile.cs" />
-    <Compile Include="Projectiles\ExampleLaser.cs" />
-    <Compile Include="Projectiles\ExampleSolution.cs" />
-    <Compile Include="Projectiles\ExampleSpearProjectile.cs" />
-    <Compile Include="Projectiles\ExampleYoyoProjectile.cs" />
-    <Compile Include="Projectiles\HealProj.cs" />
-    <Compile Include="Projectiles\Minions\HoverShooter.cs" />
-    <Compile Include="Projectiles\Minions\Minion.cs" />
-    <Compile Include="Projectiles\Minions\PurityBolt.cs" />
-    <Compile Include="Projectiles\Minions\PurityWisp.cs" />
-    <Compile Include="Projectiles\MoltenDrill.cs" />
-    <Compile Include="Projectiles\OctopusArm.cs" />
-    <Compile Include="Projectiles\Pets\ExampleLightPet.cs" />
-    <Compile Include="Projectiles\Pets\ExamplePet.cs" />
-    <Compile Include="Projectiles\PixelBall.cs" />
-    <Compile Include="Projectiles\PuritySpirit\NegativeWall.cs" />
-    <Compile Include="Projectiles\PuritySpirit\NullLaser.cs" />
-    <Compile Include="Projectiles\PuritySpirit\PureCrystal.cs" />
-    <Compile Include="Projectiles\PuritySpirit\PurityBeam.cs" />
-    <Compile Include="Projectiles\PuritySpirit\PuritySnake.cs" />
-    <Compile Include="Projectiles\PuritySpirit\PuritySphere.cs" />
-    <Compile Include="Projectiles\PuritySpirit\VoidWorld.cs" />
-    <Compile Include="Projectiles\ScorePoint.cs" />
-    <Compile Include="Projectiles\ShadowArm.cs" />
-    <Compile Include="Projectiles\SparklingBall.cs" />
-    <Compile Include="Projectiles\Wisp.cs" />
-    <Compile Include="RecipeHelper.cs" />
-    <Compile Include="SimpleModPlayer.cs" />
-    <Compile Include="Sounds\Custom\WatchOut.cs" />
-    <Compile Include="Sounds\Item\Wooo.cs" />
-    <Compile Include="Tiles\AnimatedLoom.cs" />
-    <Compile Include="Tiles\BossTrophy.cs" />
-    <Compile Include="Tiles\ElementalPurge.cs" />
-    <Compile Include="Tiles\ExampleAnimatedTile.cs" />
-    <Compile Include="Tiles\ExampleBar.cs" />
-    <Compile Include="Tiles\ExampleBed.cs" />
-    <Compile Include="Tiles\ExampleBlock.cs" />
-    <Compile Include="Tiles\ExampleChair.cs" />
-    <Compile Include="Tiles\ExampleChest.cs" />
-    <Compile Include="Tiles\ExampleClock.cs" />
-    <Compile Include="Tiles\ExampleCutTile.cs" />
-    <Compile Include="Tiles\ExampleDoorClosed.cs" />
-    <Compile Include="Tiles\ExampleDoorOpen.cs" />
-    <Compile Include="Tiles\ExampleDresser.cs" />
-    <Compile Include="Tiles\ExampleGlobalTile.cs" />
-    <Compile Include="Tiles\ExampleLamp.cs" />
-    <Compile Include="Tiles\ExampleMusicBox.cs" />
-    <Compile Include="Tiles\ExampleHerb.cs" />
-    <Compile Include="Tiles\ExampleOre.cs" />
-    <Compile Include="Tiles\ExamplePlatform.cs" />
-    <Compile Include="Tiles\ExampleSapling.cs" />
-    <Compile Include="Tiles\ExampleStatue.cs" />
-    <Compile Include="Tiles\ExampleTorch.cs" />
-    <Compile Include="Tiles\ExampleTrap.cs" />
-    <Compile Include="Tiles\ExampleTree.cs" />
-    <Compile Include="Tiles\ExampleWorkbench.cs" />
-    <Compile Include="Tiles\Minesweeper.cs" />
-    <Compile Include="Tiles\MonsterBanner.cs" />
-    <Compile Include="Tiles\TEElementalPurge.cs" />
-    <Compile Include="Tiles\TEScoreBoard.cs" />
-    <Compile Include="Tiles\VoidMonolith.cs" />
-    <Compile Include="Tiles\VoidSky.cs" />
-    <Compile Include="UI\DragableUIPanel.cs" />
-    <Compile Include="UI\ExamplePersonUI.cs" />
-    <Compile Include="UI\ExampleUI.cs" />
-    <Compile Include="UI\UIHoverImageButton.cs" />
-    <Compile Include="UI\VanillaItemSlotWrapper.cs" />
-    <Compile Include="Walls\ExampleWall.cs" />
-    <Compile Include="Waters\ExampleWaterfallStyle.cs" />
-    <Compile Include="Waters\ExampleWaterStyle.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="build.txt" />
-    <Content Include="description.txt" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-  <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true" />
-  </ProjectExtensions>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"$(tMLServerPath)" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
