@@ -204,7 +204,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a334487ffab101c1cc5cc490e18ba18a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do something when this tile is placed. Called on the local Client and Single Player.  <a href="#a334487ffab101c1cc5cc490e18ba18a1">More...</a><br /></td></tr>
 <tr class="separator:a334487ffab101c1cc5cc490e18ba18a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a521c8134e6299b3d418b53c671c6f0fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a521c8134e6299b3d418b53c671c6f0fa">PostDraw</a> (int i, int j, int type, SpriteBatch spriteBatch)</td></tr>
-<tr class="memdesc:a521c8134e6299b3d418b53c671c6f0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust.  <a href="#a521c8134e6299b3d418b53c671c6f0fa">More...</a><br /></td></tr>
+<tr class="memdesc:a521c8134e6299b3d418b53c671c6f0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35" title="Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebat...">ModWorld.PostDrawTiles</a>.  <a href="#a521c8134e6299b3d418b53c671c6f0fa">More...</a><br /></td></tr>
 <tr class="separator:a521c8134e6299b3d418b53c671c6f0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d68e956180722856b3e2883f8b6eb56"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a4d68e956180722856b3e2883f8b6eb56">PreDraw</a> (int i, int j, int type, SpriteBatch spriteBatch)</td></tr>
 <tr class="memdesc:a4d68e956180722856b3e2883f8b6eb56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind the tile at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.  <a href="#a4d68e956180722856b3e2883f8b6eb56">More...</a><br /></td></tr>
@@ -1715,7 +1715,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. </p>
+<p>Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_world.html#ab3310e15636ae38f138979d54dbe4b35" title="Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebat...">ModWorld.PostDrawTiles</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td></td></tr>
