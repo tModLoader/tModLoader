@@ -746,6 +746,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// This is essentially the same as Mod.AddRecipes or ModItem.AddRecipes. Use whichever method makes organizational sense for your mod.
+		/// </summary>
+		public virtual void AddRecipes() {
+		}
+
+		/// <summary>
 		/// Allows you to make anything happen when the player crafts the given item using the given recipe.
 		/// </summary>
 		public virtual void OnCraft(Item item, Recipe recipe) {
