@@ -63,7 +63,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveItemID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatibility");
 
 			int reserveID = nextItem;
 			nextItem++;
