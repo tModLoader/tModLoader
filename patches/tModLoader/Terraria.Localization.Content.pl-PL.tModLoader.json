@@ -247,8 +247,8 @@
 
 		// Developer Mode UI
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
-		// "DMModCompileUpdate": "ModCompile folder out of date.",
-		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).",
+		// "DMModCompileUpdate": "ModCompile folder version mismatch. Terraria: {0}, ModCompile: {1}",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
 		// "DMModCompileSatisfied": "ModCompile folder up to date.",
 		// "DMDotNetSatisfied": "{0} is installed",
 		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
