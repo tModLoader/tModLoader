@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
@@ -77,14 +78,14 @@ var NAVTREEINDEX13 =
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897":[1,0,0,0,8,2],
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[1,0,0,0,2,13],
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[1,0,0,0,2,13,0],
-"namespace_terraria.html":[0,0,0],
 "namespace_terraria.html":[1,0,0],
+"namespace_terraria.html":[0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[1,0,0,0],
 "namespace_terraria_1_1_mod_loader.html":[0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[0,0,0,0,0],
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[1,0,0,0,0],
-"namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[0,0,0,0,1],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[1,0,0,0,1],
+"namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[0,0,0,0,1],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[0,0,0,0,2],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[1,0,0,0,2],
 "namespacemembers.html":[0,1,0],

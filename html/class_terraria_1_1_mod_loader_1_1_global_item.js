@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_global_item =
 [
+    [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_global_item.html#abc77f531e657c7561587879fe5608273", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_global_item.html#a4fe938660707d4f0eed5068d4370078c", null ],
     [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_global_item.html#acdefaa97bddfa20a0fbdab7addd2e572", null ],
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab238d32d92b35a9d9d05be16853f7460", null ],

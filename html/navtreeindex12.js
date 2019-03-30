@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af623c345670fa0302e6e9526c11dee40":[1,0,0,0,76,45],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af7a5afe818518bf8156c1dd1bff041e4":[1,0,0,0,76,23],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afd6319262926a061727405025ece1a7c":[1,0,0,0,76,8],
 "class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853":[1,0,0,0,76,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "functions_c.html":[1,3,0,3],
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
-"functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0]
+"functions_f.html":[1,3,0,6]
 };
