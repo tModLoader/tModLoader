@@ -19,7 +19,7 @@ else
 	else
 		ext=x86
 	fi
-	for arg in "$@"
+	for arg in "$@" 
 	do
 		case "$arg" in
 		-x86)	ext=x86
@@ -30,10 +30,10 @@ else
 	done
 fi
 
-KICKSTART=./tModLoaderServer.bin.${ext}
+KICKSTART=./tModLoader.bin.${ext}
 
 if [ ! -f KICKSTART ]; then
-    cp ./TerrariaServer.bin.${ext} $KICKSTART
+    cp ./Terraria.bin.${ext} $KICKSTART
 fi
 
 export MONO_IOMAP=all
