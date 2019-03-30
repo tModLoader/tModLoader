@@ -59,7 +59,7 @@ public class Installer
                     parent.mkdirs();
                 }
                 copy(source, destination);
-                if(file == "tModLoaderServer"){
+                if(file == "tModLoaderServer" || file == "Terraria"){
                     // Alt: file.setExecutable(true, false);
                     Set<PosixFilePermission> permissions = new HashSet<>();
                     permissions.add(PosixFilePermission.OWNER_EXECUTE);
