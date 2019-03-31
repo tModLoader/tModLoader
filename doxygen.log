@@ -793,7 +793,7 @@ Generating call graph for function Terraria.ModLoader.Mod.AutoloadTile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadTileEntity
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadUgBgStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWall
-Generating call graph for function Terrari/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1484: warning: The following parameters of Terraria.ModLoader.Mod.GetFileSteam(string name, bool newFileStream=false) are not documented:
+Generating call graph for function Terrari/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1485: warning: The following parameters of Terraria.ModLoader.Mod.GetFileSteam(string name, bool newFileStream=false) are not documented:
   parameter 'newFileStream'
 a.ModLoader.Mod.AutoloadWaterfallStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWaterStyle
