@@ -10,11 +10,14 @@ namespace Terraria.ModLoader
         /// Mono.Cecil can parse the roslyn debug info, and then output a compatible pdb file and binary using the windows API
         /// </summary>
         public static void Fix(string dll) {
-            var asm = AssemblyDefinition.ReadAssembly(dll);
-            asm.MainModule.ReadSymbols();
-            var fstream = File.Create(dll);
-            asm.Write(fstream, new WriterParameters { WriteSymbols = true });
-            fstream.Close();
+			AssemblyDefinition asm = AssemblyDefinition.ReadAssembly(dll, new ReaderParameters { 
+				InMemory = true, 
+				ReadSymbols = true
+			});
+
+			using (var stream = File.Create(dll)) {
+				asm.Write(stream, new WriterParameters { WriteSymbols = true });
+			}
         }
     }
 }

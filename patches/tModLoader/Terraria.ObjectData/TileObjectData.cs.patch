@@ -1,6 +1,13 @@
 --- src/Terraria\Terraria.ObjectData\TileObjectData.cs
 +++ src/tModLoader\Terraria.ObjectData\TileObjectData.cs
-@@ -9,7 +_,7 @@
+@@ -3,13 +_,14 @@
+ using Terraria.DataStructures;
+ using Terraria.Enums;
+ using Terraria.GameContent.Tile_Entities;
++using Terraria.ModLoader;
+ using Terraria.Modules;
+ 
+ namespace Terraria.ObjectData
  {
  	public class TileObjectData
  	{
@@ -88,6 +95,26 @@
  		{
  			get
  			{
+@@ -1521,6 +_,19 @@
+ 					this.WaterPlacement = LiquidPlacement.NotAllowed;
+ 				}
+ 			}
++			// Detect modder mistake: IndexOutOfRangeException
++			if (Height != _tileObjectCoords.heights.Length)
++			{
++				// legacy compatibility, mismatch isn't a problem here
++				if (Height < _tileObjectCoords.heights.Length && ModContent.LoadingMod.tModLoaderVersion < new Version(0, 11))
++					return;
++
++				TileObjectData.FixNewTile();
++				throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.")
++				{
++					HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-Tile"
++				};
++			}
+ 		}
+ 
+ 		private void WriteCheck()
 @@ -1531,7 +_,7 @@
  			}
  		}

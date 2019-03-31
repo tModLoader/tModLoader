@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Terraria.Chat;
-using Terraria.GameContent.NetModules;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -57,13 +55,11 @@ namespace Terraria.ModLoader
 
 		public UsageException() { }
 
-		public UsageException(string msg)
-		{
+		public UsageException(string msg) {
 			this.msg = msg;
 		}
 
-		public UsageException(string msg, Color color)
-		{
+		public UsageException(string msg, Color color) {
 			this.msg = msg;
 			this.color = color;
 		}
@@ -74,8 +70,7 @@ namespace Terraria.ModLoader
 		public CommandType CommandType => CommandType.Chat;
 		public Player Player => Main.player[Main.myPlayer];
 
-		public void Reply(string text, Color color = default(Color))
-		{
+		public void Reply(string text, Color color = default(Color)) {
 			if (color == default(Color))
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
@@ -85,16 +80,14 @@ namespace Terraria.ModLoader
 
 	internal class PlayerCommandCaller : CommandCaller
 	{
-		public PlayerCommandCaller(Player player)
-		{
+		public PlayerCommandCaller(Player player) {
 			Player = player;
 		}
 		public CommandType CommandType => CommandType.Server;
 
 		public Player Player { get; }
 
-		public void Reply(string text, Color color = default(Color))
-		{
+		public void Reply(string text, Color color = default(Color)) {
 			if (color == default(Color))
 				color = Color.White;
 			foreach (var line in text.Split('\n'))
@@ -107,8 +100,7 @@ namespace Terraria.ModLoader
 		public CommandType CommandType => CommandType.Console;
 		public Player Player => null;
 
-		public void Reply(string text, Color color = default(Color))
-		{
+		public void Reply(string text, Color color = default(Color)) {
 			foreach (var line in text.Split('\n'))
 				Console.WriteLine(line);
 		}

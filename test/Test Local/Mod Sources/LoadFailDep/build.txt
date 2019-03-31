@@ -1,0 +1,4 @@
+author = Chicken Bones
+version = 0.1
+displayName = Load Fail Dependent
+modReferences = LoadFail

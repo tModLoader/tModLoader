@@ -11,13 +11,11 @@ namespace Terraria.ModLoader.IO
 		private string indent = "";
 		private StringBuilder sb = new StringBuilder();
 
-		public override string ToString()
-		{
+		public override string ToString() {
 			return sb.ToString();
 		}
 
-		private string TypeString(Type type)
-		{
+		private string TypeString(Type type) {
 			if (type == typeof(byte)) return "byte";
 			if (type == typeof(short)) return "short";
 			if (type == typeof(int)) return "int";
@@ -32,13 +30,11 @@ namespace Terraria.ModLoader.IO
 			throw new ArgumentException("Unknown Type: " + type);
 		}
 
-		private void WriteList<T>(char start, char end, bool multiline, IEnumerable<T> list, Action<T> write)
-		{
+		private void WriteList<T>(char start, char end, bool multiline, IEnumerable<T> list, Action<T> write) {
 			sb.Append(start);
 			indent += "  ";
 			var first = true;
-			foreach (var entry in list)
-			{
+			foreach (var entry in list) {
 				if (first) first = false;
 				else sb.Append(multiline ? "," : ", ");
 
@@ -50,10 +46,8 @@ namespace Terraria.ModLoader.IO
 			sb.Append(end);
 		}
 
-		private void WriteEntry(KeyValuePair<string, object> entry)
-		{
-			if (entry.Value == null)
-			{
+		private void WriteEntry(KeyValuePair<string, object> entry) {
+			if (entry.Value == null) {
 				sb.Append('"').Append(entry.Key).Append("\" = null");
 				return;
 			}
@@ -70,8 +64,7 @@ namespace Terraria.ModLoader.IO
 			WriteValue(entry.Value);
 		}
 
-		private void WriteValue(object elem)
-		{
+		private void WriteValue(object elem) {
 			if (elem is byte)
 				sb.Append((byte)elem);
 			else if (elem is short)
@@ -90,19 +83,16 @@ namespace Terraria.ModLoader.IO
 				sb.Append('[').Append(string.Join(", ", (byte[])elem)).Append(']');
 			else if (elem is int[])
 				sb.Append('[').Append(string.Join(", ", (int[])elem)).Append(']');
-			else if (elem is TagCompound)
-			{
+			else if (elem is TagCompound) {
 				var tag = (TagCompound)elem;
 				WriteList('{', '}', true, tag, WriteEntry);
 			}
-			else if (elem is IList)
-			{
+			else if (elem is IList) {
 				var type = elem.GetType().GetGenericArguments()[0];
 				WriteList('[', ']',
 					type == typeof(string) || type == typeof(TagCompound) || typeof(IList).IsAssignableFrom(type),
 					((IList)elem).Cast<object>(),
-					o =>
-					{
+					o => {
 						if (type == typeof(IList)) //lists of lists need their subtype printed
 							sb.Append(TypeString(o.GetType().GetGenericArguments()[0])).Append(' ');
 
@@ -111,15 +101,13 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static string Print(TagCompound tag)
-		{
+		public static string Print(TagCompound tag) {
 			var printer = new TagPrinter();
 			printer.WriteValue(tag);
 			return printer.ToString();
 		}
 
-		public static string Print(KeyValuePair<string, object> entry)
-		{
+		public static string Print(KeyValuePair<string, object> entry) {
 			var printer = new TagPrinter();
 			printer.WriteEntry(entry);
 			return printer.ToString();

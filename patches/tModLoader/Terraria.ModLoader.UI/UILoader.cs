@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
+using System.Reflection;
 using Terraria.UI;
 
 
@@ -22,21 +17,18 @@ namespace Terraria.ModLoader.UI
 		private readonly Texture2D backgroundTexture;
 		private readonly Texture2D loaderTexture;
 
-		public UILoaderAnimatedImage(float left, float top, float scale = 1f)
-		{
+		public UILoaderAnimatedImage(float left, float top, float scale = 1f) {
 			backgroundTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.LoaderBG.png"));
 			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
 			this.scale = scale;
-			Width.Set(200f * scale, 0f);
-			Height.Set(200f * scale, 0f);
+			Width.Pixels = 200f * scale;
+			Height.Pixels = 200f * scale;
 			HAlign = left;
 			VAlign = top;
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			if (++frameTick >= maxDelay)
-			{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (++frameTick >= maxDelay) {
 				frameTick = 0;
 				if (++frame >= maxFrames)
 					frame = 0;
@@ -44,8 +36,7 @@ namespace Terraria.ModLoader.UI
 
 			CalculatedStyle dimensions = base.GetDimensions();
 			// Draw BG
-			if (withBackground)
-			{
+			if (withBackground) {
 				spriteBatch.Draw(
 					backgroundTexture,
 					new Vector2((int)dimensions.X, (int)dimensions.Y),

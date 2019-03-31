@@ -4,13 +4,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExamplePlatform : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded platform.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 8;
 			item.height = 10;
 			item.maxStack = 999;
@@ -23,12 +21,11 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExamplePlatform");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleBlock");
+			recipe.AddIngredient(mod.ItemType("ExampleBlock"));
 			recipe.SetResult(this, 2);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.AddRecipe();
 		}
 	}

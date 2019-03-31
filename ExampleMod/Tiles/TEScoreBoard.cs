@@ -1,41 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
-using System.IO;
 using Terraria.ModLoader.IO;
-using System.Linq;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
+using Terraria.ObjectData;
 
 namespace ExampleMod.Tiles
 {
 	public class ScoreBoardGlobalNPC : GlobalNPC
 	{
-		public override void NPCLoot(NPC npc)
-		{
-			if (npc.lastInteraction == 255)
-			{
+		public override void NPCLoot(NPC npc) {
+			if (npc.lastInteraction == 255) {
 				//Main.NewText("Accidental Death, score unchanged");
 				return;
 			}
 			int TEScoreBoardType = mod.TileEntityType<TEScoreBoard>();
-			foreach (TileEntity current in TileEntity.ByID.Values)
-			{
-				if (current.type == TEScoreBoardType)
-				{
+			foreach (TileEntity current in TileEntity.ByID.Values) {
+				if (current.type == TEScoreBoardType) {
 					//QuickBox is a neat tool for visualizing things while modding.
 					//Dust.QuickBox(npc.position, npc.position + new Vector2(npc.width, npc.height), 1, Color.White, null);
 					var scoreboard = current as TEScoreBoard;
-					if (scoreboard.GetPlayArea().Intersects(npc.getRect()))
-					{
+					if (scoreboard.GetPlayArea().Intersects(npc.getRect())) {
 						Player scoringPlayer = Main.player[npc.lastInteraction];
 						int score = 0;
 						// Using HalfVector2 and ReinterpretCast.UIntAsFloat is a way to pack a Vector2 into a single float variable.
@@ -43,13 +35,11 @@ namespace ExampleMod.Tiles
 						Projectile.NewProjectile(npc.Center, Vector2.Zero, mod.ProjectileType<Projectiles.ScorePoint>(), 0, 0, Main.myPlayer, ReLogic.Utilities.ReinterpretCast.UIntAsFloat(halfVector.PackedValue), npc.lastInteraction);
 						scoreboard.scores.TryGetValue(scoringPlayer.name, out score);
 						scoreboard.scores[scoringPlayer.name] = score + 1;
-						if (Main.dedServ)
-						{
+						if (Main.dedServ) {
 							NetworkText text = NetworkText.FromFormattable("{0}: {1}", scoringPlayer.name, scoreboard.scores[scoringPlayer.name]);
 							NetMessage.BroadcastChatMessage(text, Color.White);
 						}
-						else
-						{
+						else {
 							Main.NewText(scoringPlayer.name + ": " + scoreboard.scores[scoringPlayer.name]);
 						}
 						scoreboard.scoresChanged = true;
@@ -65,52 +55,44 @@ namespace ExampleMod.Tiles
 		// Half the width in Tile Coordinates.
 		internal const int range = 50;
 		internal Dictionary<string, int> scores = new Dictionary<string, int>();
-		internal bool scoresChanged = false;
+		internal bool scoresChanged;
 		internal const int drawBorderWidth = 5;
 
 
 		/// <summary>
 		/// Returns a rectangle representing the play area in World coordinates.
 		/// </summary>
-		public Rectangle GetPlayArea()
-		{
+		public Rectangle GetPlayArea() {
 			return new Rectangle((Position.X + 1) * 16 - range * 16, (Position.Y + 1) * 16 - range * 16, range * 16 * 2, range * 16 * 2);
 		}
 
-		public override void Update()
-		{
-			if (scoresChanged)
-			{
+		public override void Update() {
+			if (scoresChanged) {
 				// Sending 86 aka, TileEntitySharing, triggers NetSend. Think of it like manually calling sync.
 				NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, Position.X, Position.Y);
 				scoresChanged = false;
 			}
 		}
 
-		public override void NetReceive(BinaryReader reader, bool lightReceive)
-		{
+		public override void NetReceive(BinaryReader reader, bool lightReceive) {
 			scores.Clear();
 			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++)
-			{
+			for (int i = 0; i < count; i++) {
 				string name = reader.ReadString();
 				int score = reader.ReadInt32();
 				scores[name] = score;
 			}
 		}
 
-		public override void NetSend(BinaryWriter writer, bool lightSend)
-		{
+		public override void NetSend(BinaryWriter writer, bool lightSend) {
 			writer.Write(scores.Keys.Count);
-			foreach (var item in scores)
-			{
+			foreach (var item in scores) {
 				writer.Write(item.Key);
 				writer.Write(item.Value);
 			}
 		}
 
-		public override TagCompound Save()
-		{
+		public override TagCompound Save() {
 			return new TagCompound
 			{
 				{"scoreNames", scores.Keys.ToList()},
@@ -118,24 +100,20 @@ namespace ExampleMod.Tiles
 			};
 		}
 
-		public override void Load(TagCompound tag)
-		{
+		public override void Load(TagCompound tag) {
 			var names = tag.Get<List<string>>("scoreNames");
 			var values = tag.Get<List<int>>("scoreValues");
 			scores = names.Zip(values, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
 
-		public override bool ValidTile(int i, int j)
-		{
+		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			return tile.active() && tile.type == mod.TileType<ScoreBoard>() && tile.frameX == 0 && tile.frameY == 0;
 		}
 
-		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
-		{
+		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction) {
 			//Main.NewText("i " + i + " j " + j + " t " + type + " s " + style + " d " + direction);
-			if (Main.netMode == 1)
-			{
+			if (Main.netMode == 1) {
 				NetMessage.SendTileSquare(Main.myPlayer, i, j, 3);
 				NetMessage.SendData(87, -1, -1, null, i, j, Type, 0f, 0, 0, 0);
 				return -1;
@@ -147,8 +125,7 @@ namespace ExampleMod.Tiles
 	public class ScoreBoard : ModTile
 	{
 		// TODO, outline sprites.
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 
@@ -188,46 +165,39 @@ namespace ExampleMod.Tiles
 									   //TODO	Main.highlightMaskTexture[Type] = mod.GetTexture("Tiles/ScoreBoard_Outline");
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType<Items.Placeable.ScoreBoard>());
 			mod.GetTileEntity<TEScoreBoard>().Kill(i, j);
 		}
 
-		public override void RightClick(int i, int j)
-		{
+		public override void RightClick(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int left = i - (tile.frameX / 18);
-			int top = j - (tile.frameY / 18);
+			int left = i - tile.frameX / 18;
+			int top = j - tile.frameY / 18;
 
 			int index = mod.GetTileEntity<TEScoreBoard>().Find(left, top);
-			if (index == -1)
-			{
+			if (index == -1) {
 				return;
 			}
 			Main.NewText("Scores:");
 			TEScoreBoard tEScoreBoard = (TEScoreBoard)TileEntity.ByID[index];
-			foreach (var item in tEScoreBoard.scores)
-			{
+			foreach (var item in tEScoreBoard.scores) {
 				Main.NewText(item.Key + ": " + item.Value);
 			}
 		}
 
-		public override void MouseOver(int i, int j)
-		{
+		public override void MouseOver(int i, int j) {
 			MouseOverBoth(i, j);
 		}
 
-		public override void MouseOverFar(int i, int j)
-		{
+		public override void MouseOverFar(int i, int j) {
 			MouseOverBoth(i, j);
 		}
 
-		public void MouseOverBoth(int i, int j)
-		{
+		public void MouseOverBoth(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int left = i - (tile.frameX % 36 / 18);
-			int top = j - (tile.frameY % 36 / 18);
+			int left = i - tile.frameX % 36 / 18;
+			int top = j - tile.frameY % 36 / 18;
 			Main.signBubble = true;
 			Main.signX = left * 16 + 16;
 			Main.signY = top * 16;

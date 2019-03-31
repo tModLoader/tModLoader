@@ -1,5 +1,4 @@
-﻿using System;
-using ExampleMod.Projectiles;
+﻿using ExampleMod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,13 +7,11 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleSpear : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("An example spear");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 40;
 			item.useStyle = 5;
 			item.useAnimation = 18;
@@ -36,10 +33,9 @@ namespace ExampleMod.Items.Weapons
 			item.shoot = mod.ProjectileType<ExampleSpearProjectile>();
 		}
 
-		public override bool CanUseItem(Player player)
-		{
+		public override bool CanUseItem(Player player) {
 			// Ensures no more than one spear can be thrown out, use this when using autoReuse
-			return player.ownedProjectileCounts[item.shoot] < 1; 
+			return player.ownedProjectileCounts[item.shoot] < 1;
 		}
 	}
 }

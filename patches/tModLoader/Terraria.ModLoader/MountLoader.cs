@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using Terraria;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -19,17 +18,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="type">The type of the mount.</param>
 		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
-		public static ModMountData GetMount(int type)
-		{
-			if (mountDatas.ContainsKey(type))
-			{
+		public static ModMountData GetMount(int type) {
+			if (mountDatas.ContainsKey(type)) {
 				return mountDatas[type];
 			}
 			return null;
 		}
 
-		internal static int ReserveMountID()
-		{
+		internal static int ReserveMountID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding mounts breaks vanilla client compatiblity");
 
 			int reserveID = nextMount;
@@ -37,69 +33,54 @@ namespace Terraria.ModLoader
 			return reserveID;
 		}
 
-		internal static void ResizeArrays()
-		{
+		internal static void ResizeArrays() {
 			Array.Resize(ref MountID.Sets.Cart, nextMount);
 			Array.Resize(ref Mount.mounts, nextMount);
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			mountDatas.Clear();
 			nextMount = MountID.Count;
 		}
 
-		internal static bool IsModMountData(Mount.MountData mountData)
-		{
+		internal static bool IsModMountData(Mount.MountData mountData) {
 			return mountData.modMountData != null;
 		}
 
-		internal static void SetupMount(Mount.MountData mount)
-		{
-			if (IsModMountData(mount))
-			{
+		internal static void SetupMount(Mount.MountData mount) {
+			if (IsModMountData(mount)) {
 				GetMount(mount.modMountData.Type).SetupMount(mount);
 			}
 		}
 
-		public static void JumpHeight(Mount.MountData mount, ref int jumpHeight, float xVelocity)
-		{
-			if (IsModMountData(mount))
-			{
+		public static void JumpHeight(Mount.MountData mount, ref int jumpHeight, float xVelocity) {
+			if (IsModMountData(mount)) {
 				mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);
 			}
 		}
 
-		public static void JumpSpeed(Mount.MountData mount, ref float jumpSpeed, float xVelocity)
-		{
-			if (IsModMountData(mount))
-			{
+		public static void JumpSpeed(Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
+			if (IsModMountData(mount)) {
 				mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);
 			}
 		}
 
-		internal static void UpdateEffects(Player mountedPlayer)
-		{
-			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))
-			{
+		internal static void UpdateEffects(Player mountedPlayer) {
+			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type])) {
 				GetMount(mountedPlayer.mount.Type).UpdateEffects(mountedPlayer);
 			}
 		}
 
-		internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
-		{
-			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type]))
-			{
+		internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+			if (IsModMountData(Mount.mounts[mountedPlayer.mount.Type])) {
 				return GetMount(mountedPlayer.mount.Type).UpdateFrame(mountedPlayer, state, velocity);
 			}
 			return true;
 		}
 
 		//todo: this is never called, why is this in here?
-		internal static bool CustomBodyFrame(Mount.MountData mount)
-		{
-			if (IsModMountData(mount) && mount.modMountData.CustomBodyFrame())
-			{
+		internal static bool CustomBodyFrame(Mount.MountData mount) {
+			if (IsModMountData(mount) && mount.modMountData.CustomBodyFrame()) {
 				return true;
 			}
 			return false;
@@ -110,10 +91,8 @@ namespace Terraria.ModLoader
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
 		/// <param name="toggleOn">Does nothing yet</param>
-		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
-		{
-			if (IsModMountData(player.mount._data))
-			{
+		public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn) {
+			if (IsModMountData(player.mount._data)) {
 				player.mount._data.modMountData.UseAbility(player, mousePosition, toggleOn);
 			}
 		}
@@ -123,10 +102,8 @@ namespace Terraria.ModLoader
 		/// <param name="mount"></param>
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
-		public static void AimAbility(Mount mount, Player player, Vector2 mousePosition)
-		{
-			if (IsModMountData(mount._data))
-			{
+		public static void AimAbility(Mount mount, Player player, Vector2 mousePosition) {
+			if (IsModMountData(mount._data)) {
 				mount._data.modMountData.AimAbility(player, mousePosition);
 			}
 		}

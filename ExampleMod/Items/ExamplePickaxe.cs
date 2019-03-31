@@ -7,13 +7,11 @@ namespace ExampleMod.Items
 {
 	public class ExamplePickaxe : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded pickaxe.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 20;
 			item.melee = true;
 			item.width = 40;
@@ -29,19 +27,16 @@ namespace ExampleMod.Items
 			item.autoReuse = true;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem", 10);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
 
-		public override void MeleeEffects(Player player, Rectangle hitbox)
-		{
-			if (Main.rand.Next(10) == 0)
-			{
+		public override void MeleeEffects(Player player, Rectangle hitbox) {
+			if (Main.rand.NextBool(10)) {
 				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, mod.DustType("Sparkle"));
 			}
 		}

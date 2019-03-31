@@ -11,8 +11,7 @@ namespace ExampleMod.Tiles
 	// TODO: Smart Cursor Outlines and tModLoader support
 	public class ExampleDoorClosed : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileBlockLight[Type] = true;
 			Main.tileSolid[Type] = true;
@@ -28,7 +27,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
 			TileObjectData.newTile.LavaDeath = true;
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
@@ -48,23 +47,19 @@ namespace ExampleMod.Tiles
 			openDoorID = mod.TileType("ExampleDoorOpen");
 		}
 
-		public override bool HasSmartInteract()
-		{
+		public override bool HasSmartInteract() {
 			return true;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType("ExampleDoor"));
 		}
 
-		public override void MouseOver(int i, int j)
-		{
+		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;

@@ -6,14 +6,12 @@ namespace ExampleMod.Items
 {
 	public class ExampleLightPet : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 0;
 			item.useStyle = 1;
 			item.shoot = mod.ProjectileType("ExampleLightPet");
@@ -28,8 +26,7 @@ namespace ExampleMod.Items
 			item.buffType = mod.BuffType("ExampleLightPet");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Firefly, 10);
 			recipe.AddTile(TileID.Furnaces);
@@ -37,10 +34,8 @@ namespace ExampleMod.Items
 			recipe.AddRecipe();
 		}
 
-		public override void UseStyle(Player player)
-		{
-			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
-			{
+		public override void UseStyle(Player player) {
+			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
 				player.AddBuff(item.buffType, 3600, true);
 			}
 		}

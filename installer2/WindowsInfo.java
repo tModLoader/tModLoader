@@ -21,19 +21,15 @@ public class WindowsInfo
         String[] files = new String[]
         {
             "Terraria.exe",
-            "ModCompile/tModLoaderMac.exe",
             "tModLoaderServer.exe",
-            "ModCompile/FNA.dll",
-            "ModCompile/Microsoft.CodeAnalysis.dll",
-            "ModCompile/Microsoft.CodeAnalysis.CSharp.dll",
-            "ModCompile/Mono.Cecil.Pdb.dll",
-            "ModCompile/System.Reflection.Metadata.dll",
-            "ModCompile/RoslynWrapper.dll",
             "start-tModLoaderServer.bat",
             "start-tModLoaderServer-steam-friends.bat",
             "start-tModLoaderServer-steam-private.bat"
         };
-        Installer.tryInstall(files, directory);
+        String[] filesToDelete = new String[]
+        {
+        };
+        Installer.tryInstall(files, filesToDelete, directory);
     }
 
     private static File getInstallDir(String programFileDir)

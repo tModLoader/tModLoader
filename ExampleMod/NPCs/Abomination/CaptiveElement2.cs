@@ -1,5 +1,5 @@
-using System;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,70 +10,34 @@ namespace ExampleMod.NPCs.Abomination
 	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
-		private static int hellLayer
-		{
-			get
-			{
-				return Main.maxTilesY - 200;
-			}
+		private static int hellLayer => Main.maxTilesY - 200;
+
+		private int captiveType {
+			get => (int)npc.ai[0];
+			set => npc.ai[0] = value;
 		}
 
-		private int captiveType
-		{
-			get
-			{
-				return (int)npc.ai[0];
-			}
-			set
-			{
-				npc.ai[0] = value;
-			}
+		private float attackCool {
+			get => npc.ai[1];
+			set => npc.ai[1] = value;
 		}
 
-		private float attackCool
-		{
-			get
-			{
-				return npc.ai[1];
-			}
-			set
-			{
-				npc.ai[1] = value;
-			}
+		private int run {
+			get => (int)npc.ai[2];
+			set => npc.ai[2] = value;
 		}
 
-		private int run
-		{
-			get
-			{
-				return (int)npc.ai[2];
-			}
-			set
-			{
-				npc.ai[2] = value;
-			}
+		private int jungleAI {
+			get => (int)npc.ai[3];
+			set => npc.ai[3] = value;
 		}
 
-		private int jungleAI
-		{
-			get
-			{
-				return (int)npc.ai[3];
-			}
-			set
-			{
-				npc.ai[3] = value;
-			}
-		}
-
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Captive Element");
 			Main.npcFrameCount[npc.type] = 5;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			npc.aiStyle = -1;
 			npc.lifeMax = 15000;
 			npc.damage = 100;
@@ -93,119 +57,92 @@ namespace ExampleMod.NPCs.Abomination
 			bossBag = mod.ItemType("AbominationBag");
 		}
 
-		public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
-		{
+		public override void ScaleExpertStats(int numPlayers, float bossLifeScale) {
 			npc.lifeMax = (int)(npc.lifeMax * 0.6f * bossLifeScale);
 			npc.damage = (int)(npc.damage * 0.6f);
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			Player player = Main.player[npc.target];
-			if (npc.localAI[0] == 0f)
-			{
-				if (GetDebuff() >= 0f)
-				{
+			if (npc.localAI[0] == 0f) {
+				if (GetDebuff() >= 0f) {
 					npc.buffImmune[GetDebuff()] = true;
 				}
-				if (captiveType == 3)
-				{
+				if (captiveType == 3) {
 					npc.buffImmune[20] = true;
 					npc.ai[3] = 1f;
 				}
-				if (captiveType == 0)
-				{
+				if (captiveType == 0) {
 					npc.coldDamage = true;
 				}
-				if (captiveType == 1)
-				{
+				if (captiveType == 1) {
 					npc.alpha = 100;
 				}
-				if (Main.expertMode)
-				{
+				if (Main.expertMode) {
 					npc.damage = 60;
 				}
-				if (captiveType == 2)
-				{
+				if (captiveType == 2) {
 					npc.damage += 20;
 				}
 				npc.localAI[0] = 1f;
 				Main.PlaySound(SoundID.NPCDeath7, npc.position);
 			}
 			//run away
-			if ((!player.active || player.dead || player.position.Y + player.height < hellLayer * 16) && run < 2)
-			{
+			if ((!player.active || player.dead || player.position.Y + player.height < hellLayer * 16) && run < 2) {
 				npc.TargetClosest(false);
 				player = Main.player[npc.target];
-				if (!player.active || player.dead || player.position.Y + player.height < hellLayer * 16)
-				{
+				if (!player.active || player.dead || player.position.Y + player.height < hellLayer * 16) {
 					run = 1;
 				}
-				else
-				{
+				else {
 					run = 0;
 				}
 			}
-			if (run > 0)
-			{
+			if (run > 0) {
 				bool flag = true;
-				if (run == 1)
-				{
-					for (int k = 0; k < 200; k++)
-					{
-						if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2") && Main.npc[k].ai[2] == 0f)
-						{
+				if (run == 1) {
+					for (int k = 0; k < 200; k++) {
+						if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2") && Main.npc[k].ai[2] == 0f) {
 							flag = false;
 							break;
 						}
 					}
 				}
-				if (flag)
-				{
+				if (flag) {
 					run = 2;
 					npc.velocity = new Vector2(0f, 10f);
 					npc.rotation = 0.5f * (float)Math.PI;
 					CreateDust();
-					if (npc.timeLeft > 10)
-					{
+					if (npc.timeLeft > 10) {
 						npc.timeLeft = 10;
 					}
 					npc.netUpdate = true;
 					return;
 				}
 			}
-			if (run < 2 && npc.timeLeft < 750)
-			{
+			if (run < 2 && npc.timeLeft < 750) {
 				npc.timeLeft = 750;
 			}
 			//move
 			int count = 0;
-			for (int k = 0; k < 200; k++)
-			{
-				if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2"))
-				{
+			for (int k = 0; k < 200; k++) {
+				if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2")) {
 					count++;
 				}
 			}
-			if (captiveType != 1 && captiveType != 4)
-			{
+			if (captiveType != 1 && captiveType != 4) {
 				Vector2 moveTo = player.Center;
-				if (captiveType == 0)
-				{
+				if (captiveType == 0) {
 					moveTo.Y -= 320f;
 				}
-				if (captiveType == 2)
-				{
+				if (captiveType == 2) {
 					moveTo.Y += 320f;
 				}
-				if (captiveType == 3)
-				{
-					if (jungleAI < 0)
-					{
+				if (captiveType == 3) {
+					if (jungleAI < 0) {
 						moveTo.X -= 320f;
 					}
-					else
-					{
+					else {
 						moveTo.X += 320f;
 					}
 				}
@@ -213,90 +150,71 @@ namespace ExampleMod.NPCs.Abomination
 				float maxX = moveTo.X + 50f;
 				float minY = moveTo.Y;
 				float maxY = moveTo.Y;
-				if (captiveType == 0)
-				{
+				if (captiveType == 0) {
 					minY -= 50f;
 				}
-				if (captiveType == 2)
-				{
+				if (captiveType == 2) {
 					maxY += 50f;
 				}
-				if (captiveType == 3)
-				{
+				if (captiveType == 3) {
 					minY -= 240f;
 					maxY += 240f;
 				}
-				if (npc.Center.X >= minX && npc.Center.X <= maxX && npc.Center.Y >= minY && npc.Center.Y <= maxY)
-				{
+				if (npc.Center.X >= minX && npc.Center.X <= maxX && npc.Center.Y >= minY && npc.Center.Y <= maxY) {
 					npc.velocity *= 0.98f;
 				}
-				else
-				{
+				else {
 					Vector2 move = moveTo - npc.Center;
 					float magnitude = (float)Math.Sqrt(move.X * move.X + move.Y * move.Y);
 					float speed = 10f;
-					if (captiveType == 3 && (jungleAI == -5 || jungleAI == 1))
-					{
+					if (captiveType == 3 && (jungleAI == -5 || jungleAI == 1)) {
 						speed = 8f;
 					}
-					if (magnitude > speed)
-					{
+					if (magnitude > speed) {
 						move *= speed / magnitude;
 					}
 					float inertia = 10f;
-					if (speed == 8f)
-					{
+					if (speed == 8f) {
 						inertia = 20f;
 					}
 					npc.velocity = (inertia * npc.velocity + move) / (inertia + 1);
 					magnitude = (float)Math.Sqrt(npc.velocity.X * npc.velocity.X + npc.velocity.Y + npc.velocity.Y);
-					if (magnitude > speed)
-					{
+					if (magnitude > speed) {
 						npc.velocity *= speed / magnitude;
 					}
 				}
 			}
-			if (captiveType == 1)
-			{
+			if (captiveType == 1) {
 				Vector2 move = player.Center - npc.Center;
 				float magnitude = (float)Math.Sqrt(move.X * move.X + move.Y * move.Y);
-				if (magnitude > 3.5f)
-				{
+				if (magnitude > 3.5f) {
 					move *= 3.5f / magnitude;
 				}
 				npc.velocity = move;
 			}
 			//look and shoot
-			if (captiveType != 4)
-			{
+			if (captiveType != 4) {
 				LookToPlayer();
 				attackCool -= 1f;
-				if (attackCool <= 0f && Main.netMode != 1)
-				{
-					if (captiveType == 3)
-					{
+				if (attackCool <= 0f && Main.netMode != 1) {
+					if (captiveType == 3) {
 						jungleAI++;
-						if (jungleAI == 0)
-						{
+						if (jungleAI == 0) {
 							jungleAI = 1;
 						}
-						if (jungleAI == 6)
-						{
+						if (jungleAI == 6) {
 							jungleAI = -5;
 						}
 					}
 					attackCool = 150f + 100f * (float)npc.life / (float)npc.lifeMax + (float)Main.rand.Next(50);
 					attackCool *= (float)count / 5f;
-					if (captiveType != 3 || (jungleAI != -5 && jungleAI != 1))
-					{
+					if (captiveType != 3 || jungleAI != -5 && jungleAI != 1) {
 						int damage = npc.damage / 2;
-						if (Main.expertMode)
-						{
+						if (Main.expertMode) {
 							damage = (int)(damage / Main.expertDamage);
 						}
 						float speed = 5f;
-						if (captiveType != 1)
-						{
+						if (captiveType != 1) {
 							speed = Main.expertMode ? 9f : 7f;
 						}
 						Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5f * (float)Math.Cos(npc.rotation), speed * (float)Math.Sin(npc.rotation), mod.ProjectileType("PixelBall"), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
@@ -305,11 +223,9 @@ namespace ExampleMod.NPCs.Abomination
 					npc.netUpdate = true;
 				}
 			}
-			else
-			{
+			else {
 				attackCool -= 1f;
-				if (attackCool <= 0f)
-				{
+				if (attackCool <= 0f) {
 					attackCool = 80f + 40f * (float)npc.life / (float)npc.lifeMax;
 					attackCool *= (float)count / 5f;
 					npc.TargetClosest(false);
@@ -318,8 +234,7 @@ namespace ExampleMod.NPCs.Abomination
 					npc.velocity = speed * new Vector2((float)Math.Cos(npc.rotation), (float)Math.Sin(npc.rotation));
 					npc.netUpdate = true;
 				}
-				else
-				{
+				else {
 					LookInDirection(npc.velocity);
 					npc.velocity *= 0.995f;
 				}
@@ -327,15 +242,12 @@ namespace ExampleMod.NPCs.Abomination
 			CreateDust();
 		}
 
-		private void CreateDust()
-		{
+		private void CreateDust() {
 			Color? color = GetColor();
-			if (color.HasValue)
-			{
+			if (color.HasValue) {
 				Vector2 unit = new Vector2((float)Math.Cos(npc.rotation), (float)Math.Sin(npc.rotation));
 				Vector2 center = npc.Center;
-				for (int k = 0; k < 4; k++)
-				{
+				for (int k = 0; k < 4; k++) {
 					int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
 					Vector2 offset = Main.dust[dust].position - center;
 					offset.X = (offset.X - (float)npc.width / 2f) / 2f;
@@ -347,52 +259,40 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		private void LookToPlayer()
-		{
+		private void LookToPlayer() {
 			Vector2 look = Main.player[npc.target].Center - npc.Center;
 			LookInDirection(look);
 		}
 
-		private void LookInDirection(Vector2 look)
-		{
+		private void LookInDirection(Vector2 look) {
 			float angle = 0.5f * (float)Math.PI;
-			if (look.X != 0f)
-			{
+			if (look.X != 0f) {
 				angle = (float)Math.Atan(look.Y / look.X);
 			}
-			else if (look.Y < 0f)
-			{
+			else if (look.Y < 0f) {
 				angle += (float)Math.PI;
 			}
-			if (look.X < 0f)
-			{
+			if (look.X < 0f) {
 				angle += (float)Math.PI;
 			}
 			npc.rotation = angle;
 		}
 
-		public override void FindFrame(int frameHeight)
-		{
+		public override void FindFrame(int frameHeight) {
 			npc.frame.Y = captiveType * frameHeight;
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
-		{
-			if (npc.life <= 0)
-			{
-				if (Main.expertMode)
-				{
+		public override void HitEffect(int hitDirection, double damage) {
+			if (npc.life <= 0) {
+				if (Main.expertMode) {
 					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height * 3 / 4, mod.NPCType("FreedElement"));
 					Main.npc[next].ai[0] = captiveType;
 					Main.npc[next].netUpdate = true;
 				}
-				else
-				{
+				else {
 					Color? color = GetColor();
-					if (color.HasValue)
-					{
-						for (int k = 0; k < 75; k++)
-						{
+					if (color.HasValue) {
+						for (int k = 0; k < 75; k++) {
 							Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("PixelHurt"), 0f, 0f, 0, color.Value);
 						}
 					}
@@ -400,12 +300,9 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		public override bool PreNPCLoot()
-		{
-			for (int k = 0; k < 200; k++)
-			{
-				if (Main.npc[k].active && k != npc.whoAmI && Main.npc[k].type == npc.type)
-				{
+		public override bool PreNPCLoot() {
+			for (int k = 0; k < 200; k++) {
+				if (Main.npc[k].active && k != npc.whoAmI && Main.npc[k].type == npc.type) {
 					return false;
 				}
 			}
@@ -413,92 +310,73 @@ namespace ExampleMod.NPCs.Abomination
 			return true;
 		}
 
-		public override void NPCLoot()
-		{
-			if (Main.netMode != 1)
-			{
+		public override void NPCLoot() {
+			if (Main.netMode != 1) {
 				int centerX = (int)(npc.position.X + (float)(npc.width / 2)) / 16;
 				int centerY = (int)(npc.position.Y + (float)(npc.height / 2)) / 16;
 				int halfLength = npc.width / 2 / 16 + 1;
-				for (int x = centerX - halfLength; x <= centerX + halfLength; x++)
-				{
-					for (int y = centerY - halfLength; y <= centerY + halfLength; y++)
-					{
-						if ((x == centerX - halfLength || x == centerX + halfLength || y == centerY - halfLength || y == centerY + halfLength) && !Main.tile[x, y].active())
-						{
+				for (int x = centerX - halfLength; x <= centerX + halfLength; x++) {
+					for (int y = centerY - halfLength; y <= centerY + halfLength; y++) {
+						if ((x == centerX - halfLength || x == centerX + halfLength || y == centerY - halfLength || y == centerY + halfLength) && !Main.tile[x, y].active()) {
 							Main.tile[x, y].type = TileID.HellstoneBrick;
 							Main.tile[x, y].active(true);
 						}
 						Main.tile[x, y].lava(false);
 						Main.tile[x, y].liquid = 0;
-						if (Main.netMode == 2)
-						{
+						if (Main.netMode == 2) {
 							NetMessage.SendTileSquare(-1, x, y, 1);
 						}
-						else
-						{
+						else {
 							WorldGen.SquareTileFrame(x, y, true);
 						}
 					}
 				}
 			}
-			if (Main.rand.Next(10) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationTrophy"));
+			if (Main.rand.NextBool(10)) {
+				Item.NewItem(npc.getRect(), mod.ItemType("AbominationTrophy"));
 			}
-			if (Main.expertMode)
-			{
+			if (Main.expertMode) {
 				npc.DropBossBags();
 			}
-			else
-			{
-				if (Main.rand.Next(7) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("AbominationMask"));
+			else {
+				if (Main.rand.NextBool(7)) {
+					Item.NewItem(npc.getRect(), mod.ItemType("AbominationMask"));
 				}
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoltenDrill"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ElementResidue"));
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PurityTotem"));
+				Item.NewItem(npc.getRect(), mod.ItemType("MoltenDrill"));
+				Item.NewItem(npc.getRect(), mod.ItemType("ElementResidue"));
+				Item.NewItem(npc.getRect(), mod.ItemType("PurityTotem"));
 			}
-			if (!ExampleWorld.downedAbomination)
-			{
+			if (!ExampleWorld.downedAbomination) {
 				ExampleWorld.downedAbomination = true;
-				if (Main.netMode == NetmodeID.Server)
+				if (Main.netMode == NetmodeID.Server) {
 					NetMessage.SendData(MessageID.WorldData); // Immediately inform clients of new world state.
+				}
 			}
 		}
 
-		public override void BossLoot(ref string name, ref int potionType)
-		{
+		public override void BossLoot(ref string name, ref int potionType) {
 			name = "The Abomination";
 			potionType = ItemID.GreaterHealingPotion;
 		}
 
-		public override bool CanHitPlayer(Player target, ref int cooldownSlot)
-		{
-			if (captiveType == 2 && Main.expertMode)
-			{
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+			if (captiveType == 2 && Main.expertMode) {
 				cooldownSlot = 1;
 			}
 			return true;
 		}
 
-		public override void OnHitPlayer(Player player, int dmgDealt, bool crit)
-		{
-			if (Main.expertMode || Main.rand.Next(2) == 0)
-			{
+		public override void OnHitPlayer(Player player, int dmgDealt, bool crit) {
+			if (Main.expertMode || Main.rand.NextBool()) {
 				int debuff = GetDebuff();
-				if (debuff >= 0)
-				{
+				if (debuff >= 0) {
 					player.AddBuff(debuff, GetDebuffTime(), true);
 				}
 			}
 		}
 
-		public int GetDebuff()
-		{
-			switch (captiveType)
-			{
+		public int GetDebuff() {
+			switch (captiveType) {
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
@@ -512,11 +390,9 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		public int GetDebuffTime()
-		{
+		public int GetDebuffTime() {
 			int time;
-			switch (captiveType)
-			{
+			switch (captiveType) {
 				case 0:
 					time = 400;
 					break;
@@ -535,10 +411,8 @@ namespace ExampleMod.NPCs.Abomination
 			return time;
 		}
 
-		public Color? GetColor()
-		{
-			switch (captiveType)
-			{
+		public Color? GetColor() {
+			switch (captiveType) {
 				case 0:
 					return new Color(0, 230, 230);
 				case 1:
@@ -552,16 +426,13 @@ namespace ExampleMod.NPCs.Abomination
 			}
 		}
 
-		public override void BossHeadSlot(ref int index)
-		{
-			if (captiveType > 0)
-			{
-				index = NPCHeadLoader.GetBossHeadSlot(ExampleMod.captiveElement2Head + captiveType);
+		public override void BossHeadSlot(ref int index) {
+			if (captiveType > 0) {
+				index = ModContent.GetModBossHeadSlot(ExampleMod.CaptiveElement2Head + captiveType);
 			}
 		}
 
-		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
-		{
+		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) {
 			scale = 1.5f;
 			return null;
 		}

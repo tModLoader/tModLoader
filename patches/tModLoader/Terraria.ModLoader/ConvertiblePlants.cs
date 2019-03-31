@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -12,8 +11,7 @@ namespace Terraria.ModLoader
 		/// Return the type of dust created when this tree is destroyed. Returns 7 by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int CreateDust()
-		{
+		public virtual int CreateDust() {
 			return 7;
 		}
 
@@ -21,8 +19,7 @@ namespace Terraria.ModLoader
 		/// Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int GrowthFXGore()
-		{
+		public virtual int GrowthFXGore() {
 			return -1;
 		}
 
@@ -30,8 +27,7 @@ namespace Terraria.ModLoader
 		/// Whether or not this tree can drop acorns. Returns true by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual bool CanDropAcorn()
-		{
+		public virtual bool CanDropAcorn() {
 			return true;
 		}
 
@@ -81,8 +77,7 @@ namespace Terraria.ModLoader
 		/// Return the type of dust created when this palm tree is destroyed. Returns 215 by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int CreateDust()
-		{
+		public virtual int CreateDust() {
 			return 215;
 		}
 
@@ -90,8 +85,7 @@ namespace Terraria.ModLoader
 		/// Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int GrowthFXGore()
-		{
+		public virtual int GrowthFXGore() {
 			return -1;
 		}
 

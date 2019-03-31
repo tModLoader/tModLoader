@@ -7,8 +7,7 @@ namespace Terraria.ModLoader.Exceptions
 	{
 		public ICollection<LocalMod> errored;
 
-		public ModSortingException(ICollection<LocalMod> errored, string message) : base(message)
-		{
+		public ModSortingException(ICollection<LocalMod> errored, string message) : base(message) {
 			this.errored = errored;
 		}
 	}

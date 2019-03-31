@@ -80,7 +80,7 @@
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(Language.GetTextValue("tModLoader.WorldGenError"), e);
 +			}
 +		}
 +
@@ -89,7 +89,7 @@
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  			WorldGen.clearWorld();
  			WorldGen.generateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
-@@ -2367,11 +_,24 @@
+@@ -2367,11 +_,25 @@
  		public static void SaveAndQuit(Action callback = null)
  		{
  			Main.PlaySound(11, -1, -1, 1, 1f, 0f);
@@ -101,11 +101,12 @@
  		{
 +			try
 +			{
++				Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
 +				do_playWorldCallBack(threadContext);
 +			}
 +			catch (Exception e)
 +			{
-+				ErrorLogger.LogException(e);
++				Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerLoadWorldFail"), e);
 +			}
 +		}
 +
@@ -151,6 +152,29 @@
  								return;
  							}
  						}
+@@ -2467,6 +_,14 @@
+ 			{
+ 				Main.anglerQuestFinished = true;
+ 			}
++
++			// Move rest of method to main thread to fix concurrent modification exceptions
++			Main.OnTick += FinishPlayWorld;
++		}
++
++		internal static void FinishPlayWorld() {
++			Main.OnTick -= FinishPlayWorld;
++
+ 			Main.player[Main.myPlayer].Spawn();
+ 			Main.player[Main.myPlayer].Update(Main.myPlayer);
+ 			Main.ActivePlayerFileData.StartPlayTimer();
+@@ -2505,6 +_,7 @@
+ 
+ 		public static void serverLoadWorldCallBack(object threadContext)
+ 		{
++			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 			WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
+ 			if (WorldGen.loadFailed || !WorldGen.loadSuccess)
 @@ -2771,6 +_,7 @@
  				Main.liquidBuffer[num10] = new LiquidBuffer();
  			}
@@ -159,7 +183,12 @@
  			WorldGen.worldCleared = true;
  		}
  
-@@ -4570,13 +_,13 @@
+@@ -4566,17 +_,18 @@
+ 
+ 		public static void generateWorld(int seed, GenerationProgress customProgressObject = null)
+ 		{
++			Logging.Terraria.InfoFormat("Generating World: {0}", Main.ActiveWorldFileData.Name);
+ 			WorldGen._lastSeed = seed;
  			WorldGen._generator = new WorldGenerator(seed);
  			Main.rand = new UnifiedRandom(seed);
  			MicroBiome.ResetAll();

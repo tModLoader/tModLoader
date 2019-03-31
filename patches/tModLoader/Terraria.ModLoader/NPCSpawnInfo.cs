@@ -1,6 +1,3 @@
-using System;
-using Terraria;
-
 namespace Terraria.ModLoader
 {
 	/// <summary>

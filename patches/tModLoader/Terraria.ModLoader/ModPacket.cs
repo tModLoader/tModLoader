@@ -14,9 +14,9 @@ namespace Terraria.ModLoader
 	{
 		private byte[] buf;
 		private ushort len;
+		internal short netID = -1;
 
-		internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity))
-		{
+		internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity)) {
 			Write((ushort)0);
 			Write(messageID);
 		}
@@ -24,12 +24,18 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sends all the information you've written between client and server. If the toClient parameter is non-negative, this packet will only be sent to the specified client. If the ignoreClient parameter is non-negative, this packet will not be sent to the specified client.
 		/// </summary>
-		public void Send(int toClient = -1, int ignoreClient = -1)
-		{
+		public void Send(int toClient = -1, int ignoreClient = -1) {
 			Finish();
 
-			if (Main.netMode == 1)
+			if (Main.netMode == 1) {
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
+				Main.txMsg++;
+				Main.txData += len;
+				if (netID > 0) {
+					ModNet.txMsgType[netID]++;
+					ModNet.txDataType[netID] += len;
+				}
+			}
 			else if (toClient != -1)
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
 			else
@@ -40,8 +46,7 @@ namespace Terraria.ModLoader
 
 		private void SendCallback(object state) { }
 
-		private void Finish()
-		{
+		private void Finish() {
 			if (buf != null)
 				return;
 

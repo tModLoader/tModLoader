@@ -1,4 +1,4 @@
-//Chinese Translations made by 抗药又坚硬汉化组(SBMW GROUP).
+// Chinese Translations made by 抗药又坚硬汉化组(SBMW GROUP).
 {
 	"tModLoader": {
 		// Main Menu
@@ -6,6 +6,7 @@
 		"MenuModBrowser": "模组浏览器",
 		"MenuMods": "模组管理",
 		"MenuModSources": "模组源码",
+		"MenuEnableDeveloperMode": "启用开发者模式",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -21,7 +22,9 @@
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"BetaModCantPublish": "该模组生成于测试版本,不能发布",
 		"BetaModCantPublishError": "你无法发布生成于tModLoader测试版本的模组",
+		"OutdatedModCantPublishError": "你无法发布生成于tModLoader旧版本的模组",
 		"ModReloadRequired": "需要重新加载",
+		"ModReloadForced": "强制重新加载",
 		"ModsByline": "作者: {0}",
 		"ModsMoreInfo": "更多信息",
 		"ModsOriginatedFromModBrowser": "该模组来源于模组浏览器",
@@ -41,28 +44,35 @@
 		"ModsXBuffs": "{0}个Buff",
 		"ModsXMounts": "{0}个坐骑",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
-		"LoadErrorRecipes": "该模组添加合成配方时发生错误 {0}",
-		"LoadErrorDisabledSeeBelowForError": "该模组已被自动禁用,请参阅下面的实际错误:",
+		"LoadErrorDisabled": "该模组已被自动禁用.",
+		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
 		"LoadErrorVersionMessage": "该模组检测出是生成于 tModLoader v{0}\n但是,你正在使用 {1}",
-		"LoadErrorDependencyMissing": "缺少依赖: {0} 要求对象: {1}",
+		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组.请下载最新版本的[.NET Framework]",
+		"LoadErrorDependencyMissing": "缺少模组: {0} 需求来源: {1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "散列不匹配,数据[blob]已被修改或损坏",
-		"LoadErrorDependencyVersionTooLow": "{0} 需要 v{1}+ 版本的 {2} ,但你已安装 v{3} 版本",
+		"LoadErrorDependencyVersionTooLow": "{0} 需要 {1}+ 版本的 {2} ,但你安装的为 {3} 版本", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
+		"LoadErrorMajorVersionMismatch": "{0} 的目标是 {1} 版本的 {2} ,但你安装的为较新的版本 ({3}) ,它可能不兼容. {0} 必须更新.", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}.你已设置[ModNPC.banner]或[ModNPC.bannerItem],而不是其他.请确保两者都已设置,检查你的拼写,如果你正在使用[mod.ItemType()],则该项目存在.将此错误报告发送给 {0} 开发者.",
+		"UnloadError": "卸载时发生一个或多个错误,必须重新启动tModLoader以防止发生更多问题.",
+		"DefensiveUnload": "{0} 无法正常卸载.无论加载过程中是否有任何错误,模组作者都必须使用防御性编程(Defensive Programming)来确保卸载完成.",
+		"BuildError": "{0} 编译时发生错误",
+		"CompileError": "{0} 编译失败,出现{1}个错误与{2}个警告",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有句号",
 		"BuildErrorTwoModsSameName": "两个模组共享相同的内部名称 {0}",
-		"BuildErrorCompilingError": "该模组编译时发生错误.",
 		"BuildErrorModCompileFolderHint": "你很可能没有正确地安装,请确保你已安装[ModCompile]文件夹.",
-		"BuildErrorMissingDllFilesFor": "缺少dll文件 {0}",
+		"BuildErrorModReference": "读取模组引用 {0} 失败",
+		"BuildErrorMissingDllFiles": "缺少用于[noCompile]的dll文件: {0}\n\n必须具有[All.dll]或[Windows.dll]和Mono.dll]\n[All.dll]必须无[Microsoft.Xna.Framework]或[FNA]的任何引用\n[Windows.dll]必须引用Windows[Terraria.exe]和[Microsoft.Xna.Framework.dll]\n[Mono.dll]必须引用非Windows[Terraria.exe]和[FNA.dll]",
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配.顶级命名空间必须与文件夹名匹配.",
 		"BuildErrorNoModClass": "请确保只有一个类以扩展模组.",
-		"BuildErrorDotNet45forCS6": "必须安装[.NET Framework 4.5]才能编译[C＃ 6.0]",
 		"BuildErrorPDBWindowsOnly": "仅在[windows]上支持生成[windows]的[PDB]文件.",
+		"BuildErrorEACWindowsOnly": "仅在Windows上支持编辑并继续.",
+		"BuildErrorEACLoadFailed": "无法启用编辑并继续: {0}",
 		"BuildErrorFailedLoadBuildTxt": "加载失败 {0}",
 		"LoadErrorTextureFailedToLoad": "在 {0} 的纹理文件加载失败",
 		"LoadErrorWavSoundFailedToLoad": "在 {0} 的[vav]音频文件加载失败",
@@ -73,12 +83,16 @@
 		"LoadErrorUnknownXNBFileHint": "未知[xnb]文件 {0}.也许它应该是字体或效果",
 		"LoadErrorCannotLoadCompressedEffects": "无法加载已压缩的效果.",
 		"LoadErrorAddItemOnlyInLoad": "添加的项目只能从[Mod.Load]或[Mod.Autoload]中调用",
-		"LoadError2ModItemSameName": "你正在尝试添加两个具有相同名称的模组项目: {0}.也许两个类共享类名,但在不同的命名空间中自动加载,或你已用两个相同名称手动调用添加的项目.",
+		"LoadError2ModItemSameName": "你正在尝试添加两个具有相同名称的模组项目: {0}.也许两个类共享类名,但在不同的命名空间中自动加载,或者你已用两个相同名称手动调用添加的项目.",
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能:(是否拼写或文件夹放置错误?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
-		"RuntimeErrorSeeLogsTxtForFullTrace": "(完整跟踪请查阅[Logs.txt])",
+		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整跟踪)",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
+		"SkipToMainMenu": "跳过加载模组",
+		"Retry": "重试",
+		"Exit": "退出",
+		"ExitAndDisableAll": "退出并禁用全部模组",
 
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",
@@ -94,7 +108,7 @@
 		"ModPackViewList": "查看列表",
 		"ModPackEnableThisList": "启用该列表",
 		"ModPackEnableOnlyThisList": "仅启用该列表",
-		"ModPackUpdateListWithEnabled": "将已启用模组更新至该列表",
+		"ModPackUpdateListWithEnabled": "将已启用的模组更新至该列表",
 		"ModPackViewModsInModBrowser": "在模组浏览器中查看",
 		"ModPackModsAvailableStatus": "总共{0}个,已启用{1}个,已禁用{2}个,缺少{3}个",
 		"ModPackModsMissing": "未找到下列模组:\n{0}",
@@ -103,7 +117,7 @@
 		"ModPackDisabled": " - 禁用",
 		"ModPackLoadingSpecifiedModPack": "加载指定模组整合包: {0}",
 		"ModPackDoesNotExist": "模组整合包 {0} 不存在.",
-		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏. ({1})",
+		"ModPackMalformed": "模组整合包 {0} 正常读取失败,它可能已损坏.",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
@@ -143,6 +157,7 @@
 		"MBOfflineWithReason": "- 离线({0})",
 		"MBBusy": "繁忙",
 		"MBUnknown": "未知",
+		"MBOfflineTroubleshooting": "无法访问模组浏览器,这可能是由于许多原因造成的.\n 1.检查你的网络连接.\n 2.模组浏览器可能只是处于离线状态.如果之前可连接,请等待几个小时.\n 3.双击此信息以打开模组浏览器网站.你可以使用它来手动下载模组.如果网站一切正常,你应该检查你的防火墙以允许Terraria.exe通过,或尝试禁用你的VPN(如果正在使用).\n 4.如果该网站仍不起作用,那么你的政府,互联网提供商,路由器,或网络过滤器可能会阻止模组浏览器的服务器.如果是这种情况,你需要自己解决.",
 		"MBClickToViewDependencyMods": "点击查看依赖模组:\n{0}",
 		"MBModsNotFoundOnline": "在模组浏览器中未找到下列模组: {0}",
 		"MBFilterDependencies": "依赖",
@@ -150,6 +165,7 @@
 		"MBExceededBandwidth": "模组浏览器的服务器已超过每日的带宽分配,请前往该模组的主页进行备用下载,或稍后重试.",
 		"MBUnknownMBError": "未知模组浏览器错误.请稍后重试",
 		"MBNoModsFound": "未找到模组",
+		"MBBrowserError": "模组浏览器发生错误.",
 		"1SecondAgo": "1秒前",
 		"XSecondsAgo": "{0}秒前",
 		"1MinuteAgo": "1分钟前",
@@ -189,15 +205,25 @@
 		"RemoveForcedMinimumZoomNo": "禁用强制最小缩放：关闭",
 		"AllowGreaterResolutionsYes": "允许更高分辨率：开启",
 		"AllowGreaterResolutionsNo": "允许更高分辨率：关闭",
+		"ShowMemoryEstimatesYes": "显示模组内存估算: 开启",
+		"ShowMemoryEstimatesNo": "显示模组内存估算: 关闭",
 		"ClearMBCredentials": "清空模组浏览器证书",
-		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使它们生效.",
-		"EnableModsReminder": "你刚下载的模组目前已禁用,如果需要使用它们,记得启用并重新加载.",
+		"AutomaticallyEnableNewlyDownloadedModsYes": "自动启用新下载的模组: 开启",
+		"AutomaticallyEnableNewlyDownloadedModsNo": "自动启用新下载的模组: 关闭",
+		"AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "离开模组浏览器时自动启用并重新加载模组: 开启",
+		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组: 关闭",
+		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使其生效.",
+		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
 
 		// Player and World Select
 		"MigratePlayersMessage": "你没有人物存档.\n如果你想将你的人物存档从原版转移到tModLoader,\n请将它们从“/Terraria/Players”复制到“/Terraria/ModLoader/Players”.\n复制[.plr]文件及同名文件夹.\n点击[这里]打开这些文件夹.\n复制完你所需的人物存档后,按[返回].",
+		"MigratePlayersText": "点击[这里]转移人物存档...",
+		"MigratePlayersException": "尝试转移人物存档时发生错误",
 		"MigrateWorldsMessage": "你没有地图存档.\n如果你想将你的地图存档从原版转移到tModLoader,\n请将它们从“/Terraria/Worlds”复制到“/Terraria/ModLoader/Worlds”.\n复制[.wld]文件.\n点击[这里]打开这些文件夹.\n复制完你所需的地图存档后,按[返回].",
+		"MigrateWorldsText": "点击[这里]转移地图...",
+		"MigratingWorldsText": "转移中...",
 		"ModsDifferentSinceLastPlay": "下列模组与上次启用的模组有所不同: ",
 		"Missing1Mod": "缺少1个模组.",
 		"MissingXMods": "缺少{0}个模组.",
@@ -205,6 +231,8 @@
 		"New1Mod": "新增1个模组.",
 		"NewXMods": "新增{0}个模组.",
 		"NewModsListing": "新增模组:\n{0}",
+		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
+		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
 
 		// Mod Sources
 		"MSBuild": "生成",
@@ -215,6 +243,21 @@
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
+		"MSCreateMod": "创建模组",
+
+		// Developer Mode UI
+		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
+		"DMModCompileUpdate": "[ModCompile]文件夹已过期.",
+		"DMModCompileDev": "使用tModLoader开发设置工具生成/更新[ModCompile]文件夹 (安装调试).",
+		"DMModCompileSatisfied": "[ModCompile]文件夹已最新.",
+		"DMDotNetSatisfied": "已安装 {0}",
+		"DMDotNet46Required": "生成模组需要[.NET Framework 4.6]或更高版本.请下载最新版本的[.NET Framework]",
+		"DMReferenceAssembliesMissing": "找不到[.NET Framework]引用程序集.请安装[Visual Studio]以及[.NET 4.5 目标包].",
+		"DMReferenceAssembliesSatisfied": "请准备好编译[.NET 4.5 目标包]",
+		"DMReferenceAssembliesDownload": "点击下载目标包 (不推荐)",
+		"DMVisualStudio": "Visual Studio",
+		"DMTutorialWelcome": "欢迎使用tModLoader来制作模组.请查看Wiki以获取更多信息和教程.",
+		"DMTutorial": "教程",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
@@ -230,20 +273,20 @@
 		"CommandModListClientMods": "客户端模组:",
 		"CommandModListModlist": "模组列表:",
 
+		// Mod Building
+		"Building": "生成中: {0}",
+		"ReadingProperties": "读取中: {0}",
+		"CompilingWindows": "编译Windows版 {0}...",
+		"CompilingMono": "编译Mono版 {0}...",
+		"LoadingEAC": "加载预编译的[Windows.dll]以支持编辑并继续",
+		"Packaging": "合包中: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "读取中：",
-		"MSCompilingWindows": "编译Windows版 {0}...",
-		"MSCompilingMono": "编译Mono版 {0}...",
-		// There should be ModName after ':'
-		"MSBuilding": "生成中：",
 		"MSFinding": "查找模组...",
-		// There should be ModName after ':'
+		"MSInstantiating": "初始化...",
+		"MSSandboxing": "增容中: {0}",
 		"MSIntializing": "初始化：",
-		// There should be ModName after ':'
 		"MSLoading": "加载中：",
 		"MSFinishingResourceLoading": "资源加载完成",
-		"MSCompatibilizing": "增容中: {0}",
-		"MSReading": "读取中: {0}",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
 		"AddingModContent": "添加模组内容...",
@@ -256,7 +299,8 @@
 		"UnloadedItemItemNameTooltip": "物品: {0}",
 		"AprilFoolsJoke": "愚人节玩笑",
 		"DefaultTownNPCName": "无名氏",
-		"DefaultTownNPCChat": "我的作者忘记给我一个聊天信息了.",
+		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
+		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
@@ -266,6 +310,12 @@
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
-		"PatreonSetTooltip": "感谢您的支持!"
+		"PatreonSetTooltip": "感谢您的支持!",
+		"WorldGenError": "生成世界时遇到问题",
+		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
+		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "伤害增加{0}%"
 	}
 }

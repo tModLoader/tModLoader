@@ -1,9 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -18,8 +23,7 @@ namespace Terraria.ModLoader
 			public bool signed;
 			public string path;
 
-			public ModHeader(string name, Version version, byte[] hash, bool signed)
-			{
+			public ModHeader(string name, Version version, byte[] hash, bool signed) {
 				this.name = name;
 				this.version = version;
 				this.hash = hash;
@@ -29,6 +33,20 @@ namespace Terraria.ModLoader
 
 			public bool Matches(TmodFile mod) => name == mod.name && version == mod.version && hash.SequenceEqual(mod.hash);
 			public override string ToString() => name + " v" + version;
+		}
+
+		internal class NetConfig
+		{
+			public string modname;
+			public string configname;
+			public string json;
+
+			public NetConfig(string modname, string configname, string json)
+			{
+				this.modname = modname;
+				this.configname = configname;
+				this.json = json;
+			}
 		}
 
 		public static bool AllowVanillaClients { get; internal set; }
@@ -44,73 +62,118 @@ namespace Terraria.ModLoader
 		public static Mod GetMod(int netID) =>
 			netID >= 0 && netID < netMods.Length ? netMods[netID] : null;
 
+		public static int NetModCount => netMods.Length;
+
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
+		internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
 		private static ModHeader downloadingMod;
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
 
-		internal static void AssignNetIDs()
-		{
-			netMods = ModLoader.LoadedMods.Where(mod => mod.Side != ModSide.Server).ToArray();
+		internal static void AssignNetIDs() {
+			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
 				netMods[i].netID = i;
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			netMods = null;
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+				AllowVanillaClients = false;
 		}
 
-		internal static void SyncMods(int clientIndex)
-		{
+		internal static void SyncMods(int clientIndex) {
 			var p = new ModPacket(MessageID.SyncMods);
 			p.Write(AllowVanillaClients);
 
-			var syncMods = ModLoader.LoadedMods.Where(mod => mod.Side == ModSide.Both).ToArray();
-			p.Write(syncMods.Length);
-			foreach (var mod in syncMods)
-			{
+			var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
+			AddNoSyncDeps(syncMods);
+
+			p.Write(syncMods.Count);
+			foreach (var mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
+				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == ConfigScope.ServerSide);
+				if (modConfigs == null)
+				//if (modConfigs.Equals(default(List<ModConfig>)))
+				{
+					p.Write(0);
+					Console.WriteLine($"No configs for {mod.Name}");
+				}
+				else
+				{
+					p.Write(modConfigs.Count());
+					foreach (var config in modConfigs)
+					{
+						string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
+						Console.WriteLine($"Sending Server Config {config.Name}: {json}");
+
+						p.Write(config.Name);
+						p.Write(json);
+					}
+				}
 			}
 
 			p.Send(clientIndex);
 		}
 
-		internal static void SyncClientMods(BinaryReader reader)
-		{
+		private static void AddNoSyncDeps(List<Mod> syncMods) {
+			var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
+			while (queue.Count > 0) {
+				var depNames = ModOrganizer.dependencyCache[queue.Dequeue().Name];
+				foreach (var dep in depNames.Select(ModLoader.GetMod).Where(m => m.Side == ModSide.NoSync && !syncMods.Contains(m))) {
+					syncMods.Add(dep);
+					queue.Enqueue(dep);
+				}
+			}
+		}
+
+		internal static void SyncClientMods(BinaryReader reader) {
+			SyncClientMods(reader, out var needsReload);
+			if (downloadQueue.Count > 0)
+				DownloadNextMod();
+			else
+				OnModsDownloaded(needsReload);
+		}
+
+		// This method is split so that the local variables aren't held by the GC when reloading
+		internal static void SyncClientMods(BinaryReader reader, out bool needsReload) {
 			AllowVanillaClients = reader.ReadBoolean();
+			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
-			var clientMods = ModLoader.LoadedMods;
-			var modFiles = ModLoader.FindMods();
-			var needsReload = false;
+			var clientMods = ModLoader.Mods;
+			var modFiles = ModOrganizer.FindMods();
+			needsReload = false;
 			downloadQueue.Clear();
+			pendingConfigs.Clear();
 			var syncSet = new HashSet<string>();
 			var blockedList = new List<ModHeader>();
 
 			int n = reader.ReadInt32();
-			for (int i = 0; i < n; i++)
-			{
+			for (int i = 0; i < n; i++) {
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
 				syncSet.Add(header.name);
 
-				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
-				if (clientMod != null)
+				int configCount = reader.ReadInt32();
+				for (int c = 0; c < configCount; c++)
 				{
+					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
+				}
+
+				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
+				if (clientMod != null) {
 					if (header.Matches(clientMod.File))
 						continue;
 
 					header.path = clientMod.File.path;
 				}
-				else
-				{
+				else {
 					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
 					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
-					if (matching != null)
-					{
+					if (matching != null) {
 						matching.Enabled = true;
 						needsReload = true;
 						continue;
@@ -127,14 +190,12 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var mod in clientMods)
-				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name))
-				{
+				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
 					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
 
-			if (blockedList.Count > 0)
-			{
+			if (blockedList.Count > 0) {
 				var msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
 				msg += downloadModsFromServers
 					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
@@ -143,18 +204,12 @@ namespace Terraria.ModLoader
 				foreach (var mod in blockedList)
 					msg += "\n    " + mod;
 
-				ErrorLogger.LogMissingMods(msg);
-				return;
+				Logging.tML.Warn(msg);
+				Interface.errorMessage.Show(msg, 0);
 			}
-
-			if (downloadQueue.Count > 0)
-				DownloadNextMod();
-			else
-				OnModsDownloaded(needsReload);
 		}
 
-		private static void DownloadNextMod()
-		{
+		private static void DownloadNextMod() {
 			downloadingMod = downloadQueue.Dequeue();
 			downloadingFile = null;
 
@@ -164,11 +219,10 @@ namespace Terraria.ModLoader
 		}
 
 		private const int CHUNK_SIZE = 16384;
-		internal static void SendMod(string modName, int toClient)
-		{
+		internal static void SendMod(string modName, int toClient) {
 			var mod = ModLoader.GetMod(modName);
 			var path = mod.File.path;
-			var fs = new FileStream(path, FileMode.Open);
+			var fs = File.OpenRead(path);
 			{//send file length
 				var p = new ModPacket(MessageID.ModFile);
 				p.Write(mod.DisplayName);
@@ -178,8 +232,7 @@ namespace Terraria.ModLoader
 
 			var buf = new byte[CHUNK_SIZE];
 			int count;
-			while ((count = fs.Read(buf, 0, buf.Length)) > 0)
-			{
+			while ((count = fs.Read(buf, 0, buf.Length)) > 0) {
 				var p = new ModPacket(MessageID.ModFile, CHUNK_SIZE + 3);
 				p.Write(buf, 0, count);
 				p.Send(toClient);
@@ -188,25 +241,17 @@ namespace Terraria.ModLoader
 			fs.Close();
 		}
 
-		internal static void ReceiveMod(BinaryReader reader)
-		{
+		internal static void ReceiveMod(BinaryReader reader) {
 			if (downloadingMod == null)
 				return;
 
-			try
-			{
-				if (downloadingFile == null)
-				{
+			try {
+				if (downloadingFile == null) {
 					Interface.downloadMod.SetDownloading(reader.ReadString());
-					Interface.downloadMod.SetCancel(() =>
-					{
-						downloadingFile?.Close();
-						downloadingMod = null;
-						Netplay.disconnect = true;
-						Main.menuMode = 0;
-					});
+					Interface.downloadMod.SetCancel(CancelDownload);
 					Main.menuMode = Interface.downloadModID;
 
+					ModLoader.GetMod(downloadingMod.name)?.File?.Close();
 					downloadingLength = reader.ReadInt64();
 					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 					return;
@@ -216,11 +261,11 @@ namespace Terraria.ModLoader
 				downloadingFile.Write(bytes, 0, bytes.Length);
 				Interface.downloadMod.SetProgress(downloadingFile.Position, downloadingLength);
 
-				if (downloadingFile.Position == downloadingLength)
-				{
+				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read(TmodFile.LoadedState.Info);
+					mod.Read();
+					mod.Close();
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
@@ -236,53 +281,83 @@ namespace Terraria.ModLoader
 						OnModsDownloaded(true);
 				}
 			}
-			catch (Exception e)
-			{
-				try
-				{
+			catch (Exception e) {
+				try {
 					downloadingFile?.Close();
+					File.Delete(downloadingMod.path);
 				}
 				catch { }
-
-				File.Delete(downloadingMod.path);
-				ErrorLogger.LogException(e, Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name));
+				
+				var msg = Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name);
+				Logging.tML.Error(msg, e);
+				Interface.errorMessage.Show(msg + e, 0);
+				
+				Netplay.disconnect = true;
 				downloadingMod = null;
 			}
 		}
 
-		private static void OnModsDownloaded(bool needsReload)
-		{
-			if (needsReload)
-			{
-				ModLoader.PostLoad = NetReload;
+		private static void CancelDownload() {
+			try {
+				downloadingFile?.Close();
+				File.Delete(downloadingMod.path);
+			}
+			catch { }
+			downloadingMod = null;
+			Netplay.disconnect = true;
+			Main.menuMode = 0;
+		}
+
+		private static void OnModsDownloaded(bool needsReload) {
+			if (needsReload) {
+				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
 			}
 
+			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
+			foreach (var pendingConfig in pendingConfigs)
+			{
+				var activeConfig = ConfigManager.GetConfig(pendingConfig);
+				JsonConvert.PopulateObject(pendingConfig.json, activeConfig, ConfigManager.serializerSettingsCompact);
+			}
+			if (ConfigManager.AnyModNeedsReload())
+			{
+				ModLoader.OnSuccessfulLoad = NetReload();
+				ModLoader.Reload();
+				return;
+			}
+			foreach (var pendingConfig in pendingConfigs) {
+				var activeConfig = ConfigManager.GetConfig(pendingConfig);
+				activeConfig.OnChanged();
+			}
+
 			downloadingMod = null;
 			netMods = null;
-			foreach (var mod in ModLoader.LoadedMods)
+			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;
 
 			new ModPacket(MessageID.SyncMods).Send();
 		}
 
-		private static void NetReload()
-		{
-			Main.ActivePlayerFileData = Player.GetFileData(Main.ActivePlayerFileData.Path, Main.ActivePlayerFileData.IsCloudSave);
-			Main.ActivePlayerFileData.SetAsActive();
-			//from Netplay.ClientLoopSetup
-			Main.player[Main.myPlayer].hostile = false;
-			Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
+		internal static Action NetReload() {
+			// Main.ActivePlayerFileData gets cleared during reload
+			var path = Main.ActivePlayerFileData.Path;
+			var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
+			return () => {
+				// re-select the current player
+				Player.GetFileData(path, isCloudSave).SetAsActive();
+				//from Netplay.ClientLoopSetup
+				Main.player[Main.myPlayer].hostile = false;
+				Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
 
-			Main.menuMode = 10;
-			OnModsDownloaded(false);
+				Main.menuMode = 10;
+				OnModsDownloaded(false);
+			};
 		}
 
-		internal static void SendNetIDs(int toClient)
-		{
+		internal static void SendNetIDs(int toClient) {
 			var p = new ModPacket(MessageID.ModPacket);
-			p.Write((short)-1);
 			p.Write(netMods.Length);
 			foreach (var mod in netMods)
 				p.Write(mod.Name);
@@ -293,13 +368,11 @@ namespace Terraria.ModLoader
 			p.Send(toClient);
 		}
 
-		private static void ReadNetIDs(BinaryReader reader)
-		{
-			var mods = ModLoader.LoadedMods;
+		private static void ReadNetIDs(BinaryReader reader) {
+			var mods = ModLoader.Mods;
 			var list = new List<Mod>();
 			var n = reader.ReadInt32();
-			for (short i = 0; i < n; i++)
-			{
+			for (short i = 0; i < n; i++) {
 				var name = reader.ReadString();
 				var mod = mods.SingleOrDefault(m => m.Name == name);
 				list.Add(mod);
@@ -307,54 +380,106 @@ namespace Terraria.ModLoader
 					mod.netID = i;
 			}
 			netMods = list.ToArray();
+			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			WorldHooks.ReadNetWorldOrder(reader);
 		}
 
-		internal static void HandleModPacket(BinaryReader reader, int whoAmI)
-		{
-			var id = reader.ReadInt16();
-			if (id < 0)
+		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length) {
+			if (netMods == null) {
 				ReadNetIDs(reader);
-			else
-				GetMod(id)?.HandlePacket(reader, whoAmI);
+				return;
+			}
+
+			var id = NetModCount < 256 ? reader.ReadByte() : reader.ReadInt16();
+			GetMod(id)?.HandlePacket(reader, whoAmI);
+
+			if (Main.netMode == 1) {
+				rxMsgType[id]++;
+				rxDataType[id] += length;
+			}
 		}
 
-		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
-		{
-			if (netMods == null)
-			{
+		internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
+			if (netMods == null) {
 				return false;
 			}
 
 			bool hijacked = false;
 			long readerPos = reader.BaseStream.Position;
 			long biggestReaderPos = readerPos;
-			foreach (var mod in ModLoader.LoadedMods)
-			{
-				if (mod.HijackGetData(ref messageType, ref reader, playerNumber))
-				{
+			foreach (var mod in ModLoader.Mods) {
+				if (mod.HijackGetData(ref messageType, ref reader, playerNumber)) {
 					hijacked = true;
 					biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
 				}
 				reader.BaseStream.Position = readerPos;
 			}
-			if (hijacked)
-			{
+			if (hijacked) {
 				reader.BaseStream.Position = biggestReaderPos;
 			}
 			return hijacked;
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
-		{
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
 			bool hijacked = false;
-			foreach (Mod mod in ModLoader.LoadedMods)
-			{
+			foreach (Mod mod in ModLoader.Mods) {
 				hijacked |= mod.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 			}
 			return hijacked;
+		}
+
+		// Mirror of Main class network diagnostic fields, but mod specific.
+		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModWorld/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
+		// Currently we only update these on client
+		public static int[] rxMsgType;
+		public static int[] rxDataType;
+		public static int[] txMsgType;
+		public static int[] txDataType;
+
+		private static void SetupDiagnostics() {
+			rxMsgType = new int[netMods.Length];
+			rxDataType = new int[netMods.Length];
+			txMsgType = new int[netMods.Length];
+			txDataType = new int[netMods.Length];
+		}
+
+		internal static void ResetNetDiag() {
+			if (netMods == null || Main.netMode == 2) return;
+			for (int i = 0; i < netMods.Length; i++) {
+				rxMsgType[i] = 0;
+				rxDataType[i] = 0;
+				txMsgType[i] = 0;
+				txDataType[i] = 0;
+			}
+		}
+
+		internal static void DrawModDiagnoseNet() {
+			if (netMods == null) return;
+			float scale = 0.7f;
+
+			for (int j = -1; j < netMods.Length; j++) {
+				int i = j + Main.maxMsg + 2;
+				int x = 200;
+				int y = 120;
+				int xAdjust = i / 50;
+				x += xAdjust * 400;
+				y += (i - xAdjust * 50) * 13;
+				if (j == -1) {
+					Main.spriteBatch.DrawString(Main.fontMouseText, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+					continue;
+				}
+				Main.spriteBatch.DrawString(Main.fontMouseText, netMods[j].Name, new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 120;
+				Main.spriteBatch.DrawString(Main.fontMouseText, rxMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 30;
+				Main.spriteBatch.DrawString(Main.fontMouseText, rxDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 80;
+				Main.spriteBatch.DrawString(Main.fontMouseText, txMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				x += 30;
+				Main.spriteBatch.DrawString(Main.fontMouseText, txDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+			}
 		}
 	}
 }

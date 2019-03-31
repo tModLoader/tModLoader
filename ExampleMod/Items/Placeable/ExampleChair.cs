@@ -5,13 +5,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleChair : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded chair.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 12;
 			item.height = 30;
 			item.maxStack = 99;
@@ -25,12 +23,11 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleChair");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.WoodenChair);
-			recipe.AddIngredient(null, "ExampleBlock", 10);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

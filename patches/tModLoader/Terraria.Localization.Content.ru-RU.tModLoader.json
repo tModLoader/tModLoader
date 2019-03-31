@@ -5,6 +5,7 @@
 		"MenuModBrowser": "Браузер модов",
 		"MenuMods": "Моды",
 		"MenuModSources": "Исходники модов",
+		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",
@@ -14,13 +15,15 @@
 		"ModsOpenModsFolder": "Открыть папку модов",
 		"ModsModPacks": "Сборки модов",
 		"ModsDisable": "Выключить",
-		"ModsEnable": "Включить", 
+		"ModsEnable": "Включить",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
 		"BetaModCantPublish": "Этот мод был собран на бета версии и не может быть опубликован",
 		"BetaModCantPublishError": "Вы не можете опубликовать мод, который был создан в Бета версии tModLoader",
+		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "Требуется перезагрузка",
+		// "ModReloadForced": "Reload Forced",
 		"ModsByline": "От: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
@@ -40,28 +43,35 @@
 		"ModsXBuffs": "{0} бафф(а/ов)",
 		"ModsXMounts": "{0} ездовой(-го/-ых) питомец(а/ов)",
 
-		// Mod Loading Errors
+		// Mod Errors
 		"LoadError": "Произошла ошибка при загрузке {0}",
-		"LoadErrorRecipes": "Произошла ошибка при добавлении рецептов для {0}",
-		"LoadErrorDisabledSeeBelowForError": "Этот мод был автоматически отключен. Смотрите ниже для самой ошибки:",
+		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "Было обнаружено, что этот мод был собран для tModLoader версии v{0}\nОднако, Вы используете версию v{1}",
+		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		"LoadErrorDependencyMissing": "Отсутствует мод: {0} который необходим для корректной работы {1}",
 		"LoadErrorErrorReadingModFile": "Ошибка чтения файла мода {0}",
 		"LoadErrorHashMismatchCorrupted": "Хеш-сумма не совпадает, данные были изменены или повреждены",
 		"LoadErrorDependencyVersionTooLow": "{0} требует наличии версии {1} мода {2} но версия {3} установлена на данный момент",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы обозначили ModNPC.banner или ModNPC.bannerItem, но не остальное. Убедитесь, что вы обозначили оба параметра, проверьте на орфографические ошибки и если после этого предмет существует при использовании mod.ItemType(). Сообщите об этом разработчику {0}.",
+		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		// "BuildError": "An error ocurred while building {0}",
+		// "CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		"BuildErrorModNameEmpty": "Мод должен иметь хоть какое либо название",
 		"BuildErrorModNamedTerraria": "Мод не может быть назван Terraria",
 		"BuildErrorModNameHasPeriod": "Внутреннее имя мода не может содержать точки",
 		"BuildErrorTwoModsSameName": "Два мода имеют одно и то же имя - {0}",
-		"BuildErrorCompilingError": "Произошла ошибка при компиляции мода",
 		"BuildErrorModCompileFolderHint": "Очень вероятно, что tModLoader был установлен неправильно. Удостоверьтесь, что папка ModCompile присутствует в корне игры.",
-		"BuildErrorMissingDllFilesFor": "Отсутствуют dll файлы для {0}",
+		// "BuildErrorModReference": "Failed to read mod reference {0}",
+		// "BuildErrorMissingDllFiles": "Missing dll files for noCompile: {0}\n\nMust have either All.dll or both of Windows.dll and Mono.dll\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nWindows.dll must reference the windows Terraria.exe and Microsoft.Xna.Framework.dll\nMono.dll must reference a non-windows Terraria.exe and FNA.dll",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Название мода {0} не совпадает с названием сборки {1}",
 		"BuildErrorNamespaceFolderDontMatch": "Имя пространства имен и папки мода не совпадают. Корневое пространство имен имен должно быть названо как папка мода.",
 		"BuildErrorNoModClass": "Удостоверьтесь, что у вас есть ровно один класс, происходящий от Mod.",
-		"BuildErrorDotNet45forCS6": ".NET Framework 4.5 должен быть установлен на вашем компьютере для компиляции C# 6.0",
 		"BuildErrorPDBWindowsOnly": "PDB файлы могут быть созданы только на Windows, для Windows.",
+		// "BuildErrorEACWindowsOnly": "Edit and continue is only supported on windows.",
+		// "BuildErrorEACLoadFailed": "Failed to enable edit and continue: {0}",
 		"BuildErrorFailedLoadBuildTxt": "Не удалось загрузить {0}",
 		"LoadErrorTextureFailedToLoad": "Не удалось загрузить файл с текстурой из {0}",
 		"LoadErrorWavSoundFailedToLoad": "Не удалось загрузить звуковой файл wav из {0}",
@@ -75,9 +85,13 @@
 		"LoadError2ModItemSameName": "Вы попытались добавить 2 ModItem'а с одинаковым именем: {0}. Либо у двух ваших классов одинаковое имя, но они находятся в разных пространствах имен во время автозагрузки, либо вы вручную вызвали AddItem для двух предметов с одним именем.",
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nПредполагаемый файл: (Была ли ошибка в написании или расположении в папках?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Бесшумно пойманное исключение: ",
-		"RuntimeErrorSeeLogsTxtForFullTrace": "(полный стэк-трейс исключения может быть найден в файле Logs.txt)",
+		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"OpenLogs": "Открыть логи",
 		"OpenWebHelp": "Открыть веб помощь",
+		// "SkipToMainMenu": "Skip Loading Mods",
+		// "Retry": "Retry",
+		// "Exit": "Exit",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		"ModInfoHeader": "Описание мода: ",
@@ -142,6 +156,7 @@
 		"MBOfflineWithReason": "ОФФЛАЙН ({0})",
 		"MBBusy": "Занят",
 		"MBUnknown": "Неизвестно",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		"MBClickToViewDependencyMods": "Нажмите чтобы увидеть требуемые моды:\n{0}",
 		"MBModsNotFoundOnline": "Следующие моды не были найдены в браузере модов: {0}",
 		"MBFilterDependencies": "Зависимости",
@@ -149,8 +164,9 @@
 		"MBExceededBandwidth": "Сервер Браузера мода достиг своего дневного лимита на скачивание. Пожалуйста, посетите домашнюю страницу мода, чтобы найти альтернативные способы загрузки, либо попробуйте снова чуть позже.",
 		"MBUnknownMBError": "Неизвестная ошибка Браузера модов. Попробуйте снова чуть позже.",
 		"MBNoModsFound": "Моды не обнаружены",
-		"XSecondsAgo": "{0} секунд(ы) назад",	//Programmable grammatical declension would be nice.
+		// "MBBrowserError": "The mod browser encountered an error.",
 		"1SecondAgo": "1 секунду назад",
+		"XSecondsAgo": "{0} секунд(ы) назад",	//Programmable grammatical declension would be nice.
 		"1MinuteAgo": "1 минуту назад",
 		"XMinutesAgo": "{0} минут(ы) назад",
 		"1HourAgo": "1 час назад",
@@ -188,7 +204,13 @@
 		"RemoveForcedMinimumZoomNo": "Отключить минимальный зум: Нет",
 		"AllowGreaterResolutionsYes": "Убрать лимиты разрешения экрана: Да",
 		"AllowGreaterResolutionsNo": "Убрать лимиты разрешения экрана: Нет",
+		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
+		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
 		"ClearMBCredentials": "Очистить данные Браузера модов",
+		// "AutomaticallyEnableNewlyDownloadedModsYes": "Automatically enabled newly downloaded mods: On",
+		// "AutomaticallyEnableNewlyDownloadedModsNo": "Automatically enabled newly downloaded mods: Off",
+		// "AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "Automatically enable and reload mods when leaving Mod Browser: On",
+		// "AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatically enable and reload mods when leaving Mod Browser: Off",
 		"ReloadModsReminder": "Вы обновили мод. Не забудьте перезагрузить моды, чтобы изменения вступили в силу.",
 		"EnableModsReminder": "Ваши недавно скачанные моды в данный момент выключены. Не забудьте включить их и выполнить перезагрузку, если вы планируете использовать их.",
 		"DontShowAgain": "Не показывать это снова",
@@ -196,7 +218,11 @@
 
 		// Player and World Select
 		"MigratePlayersMessage": "В данный момент у вас нет персонажей.\nЕсли вы хотите перенести персонажей из оригинальной игры в tModLoader,\nто вам нужно скопировать файлы .plr и похоже наименованные папки из /Terraria/Players в /Terraria/ModLoader/Players.\nНажмите здесь чтобы открыть эти папки.\nНажмите Назад после того, как вы скопируете нужных персонажей.",
+		// "MigratePlayersText": "Click here to migrate players...",
+		// "MigratePlayersException": "There was a problem while trying to migrate Player files",
 		"MigrateWorldsMessage": "В данный момент у вас нет миров.\nЕсли вы хотите перенести миры из оригинальной игры в tModLoader,\nто вам нужно скопировать файлы с расширением .wld из /Terraria/Worlds в /Terraria/ModLoader/Worlds.\nНажмите здесь чтобы открыть эти папки.\nНажмите Назад после того, как вы скопируете нужные миры.",
+		// "MigrateWorldsText": "Click here to migrate worlds...",
+		// "MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "Следующие изменения произошли в вашем наборе модов с момента последней игры: ",
 		"Missing1Mod": "Отсутствует 1 мод.",
 		"MissingXMods": "Отсутствует(-ют) {0} мода(-ов).",
@@ -204,6 +230,8 @@
 		"New1Mod": "1 новый мод.",
 		"NewXMods": "{0} новых мода(-ов).",
 		"NewModsListing": "Новые моды:\n{0}",
+		// "PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		// "PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -214,6 +242,21 @@
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папки с исходниками модов не могут содержать пробелы в названии)",
+		// "MSCreateMod": "Create Mod",
+
+		// Developer Mode UI
+		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		// "DMModCompileUpdate": "ModCompile folder version mismatch. Terraria: {0}, ModCompile: {1}",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
+		// "DMModCompileSatisfied": "ModCompile folder up to date.",
+		// "DMDotNetSatisfied": "{0} is installed",
+		// "DMDotNet46Required": ".NET Framework 4.6 or newer is required to build mods. Please download the latest .NET Framework",
+		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		// "DMVisualStudio": "Visual Studio",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		// "DMTutorial": "Tutorial",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Произошла ошибка при извлечении мода {0}",
@@ -229,20 +272,20 @@
 		"CommandModListClientMods": "Клиентосторонние моды:",
 		"CommandModListModlist": "Список модов:",
 
+		// Mod Building
+		// "Building": "Building: {0}",
+		// "ReadingProperties": "Reading properties: {0}",
+		// "CompilingWindows": "Compiling {0} for Windows...",
+		// "CompilingMono": "Compiling {0} for Mono...",
+		// "LoadingEAC": "Loading pre-compiled Windows.dll with edit and continue support",
+		// "Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "Чтение настроек мода:",
-		"MSCompilingWindows": "Компиляция мода {0} для Windows",
-		"MSCompilingMono": "Компиляция мода {0} для Mono",
-		// There should be ModName after ':'
-		"MSBuilding": "Сборка мода: ",
 		"MSFinding": "Поиск файлов",
-		// There should be ModName after ':'
+		// "MSInstantiating": "Instantiating Mods...",
+		"MSSandboxing": "Настройка совместимости: {0}",
 		"MSIntializing": "Инициализация мода: ",
-		// There should be ModName after ':'
 		"MSLoading": "Загрузка мода: ",
 		"MSFinishingResourceLoading": "Завершается загрузка ресурсов",
-		"MSCompatibilizing": "Настройка совместимости: {0}",
-		"MSReading": "Чтение: {0}",
 		"MSSettingUp": "Настройка...",
 		"MSAddingRecipes": "Добавление рецептов...",
 		"AddingModContent": "Добавление контента модов...",
@@ -256,6 +299,7 @@
 		"AprilFoolsJoke": "Первоапрельская шутка",
 		"DefaultTownNPCName": "Нет имени",
 		"DefaultTownNPCChat": "Мой моддер забыл прописать мне диалоги.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Средняя кнопка мыши",
@@ -265,6 +309,12 @@
 		// Misc
 		"OK": "ОК",
 		"Continue": "Продолжить",
-		"PatreonSetTooltip": "Спасибо за вашу поддержку!"
+		"PatreonSetTooltip": "Спасибо за вашу поддержку!",
+		// "WorldGenError": "A problem was encountered during world generation",
+		// "WorldIODataException": "The game encountered a mod data problem for a world.",
+		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "Увеличивает урон на {0} %"
 	}
 }

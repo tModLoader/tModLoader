@@ -15,8 +15,7 @@ namespace Terraria.ModLoader
 		internal readonly string displayName; // display name: "Example Mod: Random Buff" -- unique AKA _keyName
 		internal readonly string defaultKey; // from mod.Load
 
-		internal ModHotKey(Mod mod, string name, string defaultKey)
-		{
+		internal ModHotKey(Mod mod, string name, string defaultKey) {
 			this.mod = mod;
 			this.name = name;
 			this.defaultKey = defaultKey;
@@ -28,15 +27,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="mode">The InputMode. Choose between InputMode.Keyboard and InputMode.XBoxGamepad</param>
 		/// <returns></returns>
-		public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard)
-		{
+		public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard) {
 			return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[displayName];
 		}
 
-		public bool RetroCurrent
-		{
-			get
-			{
+		public bool RetroCurrent {
+			get {
 				if (Main.drawingPlayerChat || Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1) return false;
 				return Current;
 			}

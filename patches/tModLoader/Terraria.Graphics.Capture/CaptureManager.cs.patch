@@ -1,0 +1,15 @@
+--- src/Terraria\Terraria.Graphics.Capture\CaptureManager.cs
++++ src/tModLoader\Terraria.Graphics.Capture\CaptureManager.cs
+@@ -6,7 +_,11 @@
+ {
+ 	public class CaptureManager
+ 	{
++#if SERVER
+ 		public static CaptureManager Instance = new CaptureManager();
++#else //client initialization has been moved to LoadContent to prevent FNA deadlocks
++		public static CaptureManager Instance;
++#endif
+ 		private CaptureInterface _interface;
+ 		private CaptureCamera _camera;
+ 
+

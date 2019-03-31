@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -11,8 +10,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod that added this underground background style.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -20,8 +18,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal name of this underground background style.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -29,8 +26,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
-		public int Slot
-		{
+		public int Slot {
 			get;
 			internal set;
 		}
@@ -38,16 +34,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to automatically add a ModUgBgStyle instead of using Mod.AddUgBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModUgBgStyle.
 		/// </summary>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
 		/// </summary>
-		public virtual bool ChooseBgStyle()
-		{
+		public virtual bool ChooseBgStyle() {
 			return false;
 		}
 
@@ -65,8 +59,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod that added this surface background style.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -74,8 +67,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal name of this surface background style.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -83,8 +75,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this surface background style.
 		/// </summary>
-		public int Slot
-		{
+		public int Slot {
 			get;
 			internal set;
 		}
@@ -92,16 +83,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to automatically add a ModSurfaceBgStyle instead of using Mod.AddSurfaceBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModSurfaceBgStyle.
 		/// </summary>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
 		/// </summary>
-		public virtual bool ChooseBgStyle()
-		{
+		public virtual bool ChooseBgStyle() {
 			return false;
 		}
 
@@ -113,24 +102,21 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine which texture is drawn in the very back of the background. Mod.GetBackgroundSlot may be useful here, as well as for the other texture-choosing hooks.
 		/// </summary>
-		public virtual int ChooseFarTexture()
-		{
+		public virtual int ChooseFarTexture() {
 			return -1;
 		}
 
 		/// <summary>
 		/// Allows you to determine which texture is drawn in the middle of the background.
 		/// </summary>
-		public virtual int ChooseMiddleTexture()
-		{
+		public virtual int ChooseMiddleTexture() {
 			return -1;
 		}
 
 		/// <summary>
 		/// Gives you complete freedom over how the closest part of the background is drawn. Return true for ChooseCloseTexture to have an effect; return false to disable tModLoader's own code for drawing the close background.
 		/// </summary>
-		public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch)
-		{
+		public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch) {
 			return true;
 		}
 
@@ -142,8 +128,7 @@ namespace Terraria.ModLoader
 		/// <param name="a">a?</param>
 		/// <param name="b">b?</param>
 		/// <returns></returns>
-		public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
-		{
+		public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
 			return -1;
 		}
 	}
@@ -156,8 +141,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// That mod that added this global background style.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -165,8 +149,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal name of this global background style.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -174,37 +157,32 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to automatically add a GlobalBgStyle instead of using Mod.AddGlobalBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of GlobalBgStyle.
 		/// </summary>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.
 		/// </summary>
-		public virtual void ChooseUgBgStyle(ref int style)
-		{
+		public virtual void ChooseUgBgStyle(ref int style) {
 		}
 
 		/// <summary>
 		/// Allows you to change which surface background style is being used.
 		/// </summary>
-		public virtual void ChooseSurfaceBgStyle(ref int style)
-		{
+		public virtual void ChooseSurfaceBgStyle(ref int style) {
 		}
 
 		/// <summary>
 		/// Allows you to change which textures make up the underground background by assigning their background slots/IDs to the given array. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
 		/// </summary>
-		public virtual void FillUgTextureArray(int style, int[] textureSlots)
-		{
+		public virtual void FillUgTextureArray(int style, int[] textureSlots) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the transparency of all background styles that exist. The style parameter is the current style that is being used.
 		/// </summary>
-		public virtual void ModifyFarSurfaceFades(int style, float[] fades, float transitionSpeed)
-		{
+		public virtual void ModifyFarSurfaceFades(int style, float[] fades, float transitionSpeed) {
 		}
 	}
 }

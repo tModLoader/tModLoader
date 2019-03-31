@@ -1,4 +1,7 @@
-﻿using System;
+﻿using log4net;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,8 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -28,16 +29,17 @@ namespace Terraria.ModLoader
 			public readonly ISet<string> weakDependencies = new HashSet<string>();
 
 			public Assembly assembly;
+			public List<Assembly> assemblies = new List<Assembly>();
+			public long bytesLoaded = 0;
 
 			private int loadIndex;
 			private bool eacEnabled;
 
 			private bool _needsReload = true;
-			private bool NeedsReload
-			{
+
+			private bool NeedsReload {
 				get { return _needsReload; }
-				set
-				{
+				set {
 					if (value && !_needsReload) loadIndex++;
 					_needsReload = value;
 				}
@@ -47,8 +49,7 @@ namespace Terraria.ModLoader
 			private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
 			private string WeakDepName(string depName) => eacEnabled ? depName : depName + "_0";
 
-			public void SetMod(LocalMod mod)
-			{
+			public void SetMod(LocalMod mod) {
 				if (modFile == null ||
 					modFile.version != mod.modFile.version ||
 					!modFile.hash.SequenceEqual(mod.modFile.hash))
@@ -58,8 +59,7 @@ namespace Terraria.ModLoader
 				properties = mod.properties;
 			}
 
-			private void SetNeedsReload()
-			{
+			private void SetNeedsReload() {
 				NeedsReload = true;
 				eacEnabled = false;
 
@@ -67,8 +67,7 @@ namespace Terraria.ModLoader
 					dep.SetNeedsReload();
 			}
 
-			public void AddDependency(LoadedMod dep)
-			{
+			public void AddDependency(LoadedMod dep) {
 				dependencies.Add(dep);
 				dep.dependents.Add(this);
 			}
@@ -76,8 +75,7 @@ namespace Terraria.ModLoader
 			public bool CanEaC => eacEnabled ||
 				!loadedAssemblies.ContainsKey(modFile.name) && dependencies.All(dep => dep.CanEaC);
 
-			public void EnableEaC()
-			{
+			public void EnableEaC() {
 				if (eacEnabled)
 					return;
 
@@ -89,8 +87,7 @@ namespace Terraria.ModLoader
 					dep.EnableEaC();
 			}
 
-			private void SetNeedsReloadUnlessEaC()
-			{
+			private void SetNeedsReloadUnlessEaC() {
 				if (!eacEnabled)
 					NeedsReload = true;
 
@@ -98,10 +95,8 @@ namespace Terraria.ModLoader
 					dep.SetNeedsReloadUnlessEaC();
 			}
 
-			public void UpdateWeakRefs()
-			{
-				foreach (var loaded in dependencies.Where(dep => weakDependencies.Remove(dep.Name)))
-				{
+			public void UpdateWeakRefs() {
+				foreach (var loaded in dependencies.Where(dep => weakDependencies.Remove(dep.Name))) {
 					if (eacEnabled && !loaded.eacEnabled)
 						loaded.EnableEaC();
 					else if (loaded.AssemblyName != WeakDepName(loaded.Name))
@@ -109,30 +104,26 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			public void LoadAssemblies()
-			{
+			public void LoadAssemblies() {
 				if (!NeedsReload)
 					return;
 
-				try
-				{
-					modFile.Read(TmodFile.LoadedState.Code);
+				try {
+					using (modFile.EnsureOpen()) {
+						foreach (var dll in properties.dllReferences)
+							LoadAssembly(EncapsulateReferences(modFile.GetBytes("lib/" + dll + ".dll")));
 
-					foreach (var dll in properties.dllReferences)
-						LoadAssembly(EncapsulateReferences(modFile.GetFile("lib/" + dll + ".dll")));
-
-					assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
-					NeedsReload = false;
+						assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
+						NeedsReload = false;
+					}
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					e.Data["mod"] = Name;
 					throw;
 				}
 			}
 
-			private byte[] EncapsulateReferences(byte[] code)
-			{
+			private byte[] EncapsulateReferences(byte[] code) {
 				if (eacEnabled)
 					return code;
 
@@ -148,11 +139,11 @@ namespace Terraria.ModLoader
 
 				var ret = new MemoryStream();
 				asm.Write(ret, new WriterParameters { SymbolWriterProvider = SymbolWriterProvider.instance });
+				TerrariaCecilAssemblyResolver.instance.RegisterAssembly(asm);
 				return ret.ToArray();
 			}
 
-			private string EncapsulateName(string name)
-			{
+			private string EncapsulateName(string name) {
 				if (name == Name)
 					return AssemblyName;
 
@@ -162,8 +153,7 @@ namespace Terraria.ModLoader
 				if (weakDependencies.Contains(name))
 					return WeakDepName(name);
 
-				foreach (var dep in dependencies)
-				{
+				foreach (var dep in dependencies) {
 					var _name = dep.EncapsulateName(name);
 					if (_name != name)
 						return _name;
@@ -171,15 +161,35 @@ namespace Terraria.ModLoader
 
 				return name;
 			}
+
+			private Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
+				var asm = Assembly.Load(code, pdb);
+				assemblies.Add(asm);
+				loadedAssemblies[asm.GetName().Name] = asm;
+				assemblyBinaries[asm.GetName().Name] = code;
+				hostModForAssembly[asm] = this;
+				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
+				return asm;
+			}
+		}
+
+		internal static void AssemblyResolveEarly(ResolveEventHandler handler) {
+			var f = typeof(AppDomain).GetField(ModLoader.windows ? "_AssemblyResolve" : "AssemblyResolve", BindingFlags.Instance | BindingFlags.NonPublic);
+			var a = (ResolveEventHandler)f.GetValue(AppDomain.CurrentDomain);
+			f.SetValue(AppDomain.CurrentDomain, null);
+
+			AppDomain.CurrentDomain.AssemblyResolve += handler;
+			AppDomain.CurrentDomain.AssemblyResolve += a;
 		}
 
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
 
-		static AssemblyManager()
-		{
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-			{
+		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
+		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
+
+		static AssemblyManager() {
+			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
 				string name = new AssemblyName(args.Name).Name;
 
 				if (name == "Terraria")
@@ -189,12 +199,25 @@ namespace Terraria.ModLoader
 				loadedAssemblies.TryGetValue(name, out a);
 				return a;
 			};
+
+			// allow mods which reference embedded assemblies to reference a different version and be safely upgraded
+			AssemblyResolveEarly((sender, args) => {
+				var name = new AssemblyName(args.Name);
+				if (Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), s => s.EndsWith(name.Name + ".dll")) == null)
+					return null;
+
+				var existing = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == name.Name);
+				if (existing != null) {
+					Logging.tML.Warn($"Upgraded Reference {name.Name} -> Version={name.Version} -> {existing.GetName().Version}");
+					return existing;
+				}
+
+				return null;
+			});
 		}
 
-		private static void RecalculateReferences()
-		{
-			foreach (var mod in loadedMods.Values)
-			{
+		private static void RecalculateReferences() {
+			foreach (var mod in loadedMods.Values) {
 				mod.dependencies.Clear();
 				mod.dependents.Clear();
 			}
@@ -210,43 +233,35 @@ namespace Terraria.ModLoader
 				mod.UpdateWeakRefs();
 		}
 
-		private static Assembly LoadAssembly(byte[] code, byte[] pdb = null)
-		{
-			var asm = Assembly.Load(code, pdb);
-			loadedAssemblies[asm.GetName().Name] = asm;
-			return asm;
-		}
-
-		private static Mod Instantiate(LoadedMod mod)
-		{
-			try
-			{
+		private static Mod Instantiate(LoadedMod mod) {
+			try {
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
-					throw new Exception("It looks like this mod doesn't have a class extending Mod. Mods need a Mod class to function.")
-					{
+					throw new Exception(mod.Name + " does not have a class extending Mod. Mods need a Mod class to function.") {
 						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
 					};
 
 				var m = (Mod)Activator.CreateInstance(modType);
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
+				m.Logger = LogManager.GetLogger(m.Name);
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
+				m.tModLoaderVersion = mod.properties.buildVersion;
 				return m;
 			}
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				e.Data["mod"] = mod.Name;
 				throw;
 			}
+			finally {
+				MemoryTracking.Update(mod.Name).code += mod.bytesLoaded;
+			}
 		}
 
-		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad)
-		{
+		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
 			var modList = new List<LoadedMod>();
-			foreach (var loading in modsToLoad)
-			{
+			foreach (var loading in modsToLoad) {
 				if (!loadedMods.TryGetValue(loading.Name, out LoadedMod mod))
 					mod = loadedMods[loading.Name] = new LoadedMod();
 
@@ -256,55 +271,70 @@ namespace Terraria.ModLoader
 
 			RecalculateReferences();
 
-			if (Debugger.IsAttached)
-			{
-				ModLoader.isModder = true;
+			if (Debugger.IsAttached) {
+				ModCompile.DeveloperMode = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}
-			if (ModLoader.alwaysLogExceptions)
-				ModCompile.ActivateExceptionReporting();
 
-			try
-			{
+			try {
 				//load all the assemblies in parallel.
+				Interface.loadMods.SetLoadStage("tModLoader.MSSandboxing", modsToLoad.Count);
 				int i = 0;
-				Parallel.ForEach(modList, mod =>
-				{
-					Interface.loadMods.SetProgressCompatibility(mod.Name, i++, modsToLoad.Count);
+				Parallel.ForEach(modList, mod => {
+					Interface.loadMods.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
 				});
-
+				
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
+				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
+				MemoryTracking.Checkpoint();
 				return modList.Select(Instantiate).ToList();
 			}
-			catch (AggregateException ae)
-			{
-				ErrorLogger.LogMulti(ae.InnerExceptions.Select(e => new Action(() =>
-				{
-					var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-					ModLoader.DisableMod(mod.Name);
-					ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-				})));
-				return null;
+			catch (AggregateException ae) {
+				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]).ToArray();
+				throw;
 			}
-			catch (Exception e)
-			{
-				var mod = modList.Single(m => m.Name == (string)e.Data["mod"]);
-				ModLoader.DisableMod(mod.Name);
-				ErrorLogger.LogLoadingError(mod.Name, mod.modFile.tModLoaderVersion, e);
-				return null;
+		}
+
+		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
+
+		internal static byte[] GetAssemblyBytes(string name) {
+			assemblyBinaries.TryGetValue(name, out var code);
+			return code;
+		}
+
+		public static bool GetAssemblyOwner(Assembly assembly, out string modName) {
+			if (hostModForAssembly.TryGetValue(assembly, out var mod)) {
+				modName = mod.Name;
+				return true;
 			}
+
+			modName = null;
+			return false;
+		}
+
+		internal static bool FirstModInStackTrace(StackTrace stack, out string modName) {
+			for (int i = 0; i < stack.FrameCount; i++) {
+				StackFrame frame = stack.GetFrame(i);
+				var assembly = frame.GetMethod()?.DeclaringType?.Assembly;
+				if (assembly != null && GetAssemblyOwner(assembly, out modName))
+					return true;
+			}
+
+			modName = null;
+			return false;
 		}
 
 		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
 		{
 			public static readonly TerrariaCecilAssemblyResolver instance = new TerrariaCecilAssemblyResolver();
 
-			private TerrariaCecilAssemblyResolver()
-			{
+			private TerrariaCecilAssemblyResolver() {
 				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
 			}
+
+			public new void RegisterAssembly(AssemblyDefinition asm) => base.RegisterAssembly(asm);
 		}
 
 		internal class SymbolWriterProvider : ISymbolWriterProvider
@@ -315,26 +345,15 @@ namespace Terraria.ModLoader
 			{
 				private ModuleDefinition module;
 
-				public HeaderCopyWriter(ModuleDefinition module)
-				{
+				public HeaderCopyWriter(ModuleDefinition module) {
 					this.module = module;
 				}
 
-				public bool GetDebugHeader(out ImageDebugDirectory directory, out byte[] header)
-				{
-					if (!module.HasDebugHeader)
-					{
-						directory = new ImageDebugDirectory();
-						header = null;
-						return false;
-					}
+				public ImageDebugHeader GetDebugHeader() => module.GetDebugHeader();
 
-					directory = module.GetDebugHeader(out header);
-					return true;
-				}
+				public ISymbolReaderProvider GetReaderProvider() => throw new NotImplementedException();
+				public void Write(MethodDebugInformation info) => throw new NotImplementedException();
 
-				public void Write(Mono.Cecil.Cil.MethodBody body) { }
-				public void Write(MethodSymbols symbols) { }
 				public void Dispose() { }
 			}
 

@@ -3,6 +3,7 @@
 //using System.Linq;
 //using System.Text;
 
+//TODO delete?
 //namespace Terraria.ModLoader.UI
 //{
 //	internal static class UIModControls

@@ -13,21 +13,18 @@ public class MacInfo
         String[] files = new String[]
         {
             "Terraria.exe",
-            "ModCompile/tModLoaderWindows.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
-            "tModLoaderServer.bin.osx",
-            "MP3Sharp.dll",
-            "Ionic.Zip.Reduced.dll",
-            "Mono.Cecil.dll",
             "Terraria.exe.config",
-            "ModCompile/Microsoft.Xna.Framework.dll",
-            "ModCompile/Microsoft.Xna.Framework.Game.dll",
-            "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
-            "ModCompile/Microsoft.Xna.Framework.Xact.dll",
             "mono/config"
         };
-        Installer.tryInstall(files, directory);
+        String[] filesToDelete = new String[]
+        {
+            "MP3Sharp.dll",
+            "Ionic.Zip.Reduced.dll",
+            "Mono.Cecil.dll"
+        };
+        Installer.tryInstall(files, filesToDelete, directory);
     }
 
     private static File getInstallDir(String homeDir)

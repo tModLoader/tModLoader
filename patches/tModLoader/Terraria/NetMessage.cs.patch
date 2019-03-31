@@ -1,5 +1,11 @@
 --- src/Terraria\Terraria\NetMessage.cs
 +++ src/tModLoader\Terraria\NetMessage.cs
+@@ -1,4 +_,5 @@
+ using Ionic.Zlib;
++using log4net.Core;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics.PackedVector;
+ using System;
 @@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.IO;
@@ -29,7 +35,7 @@
  			}
  			lock (NetMessage.buffer[num])
  			{
-@@ -70,7 +_,7 @@
+@@ -70,13 +_,13 @@
  				switch (msgType)
  				{
  					case 1:
@@ -38,6 +44,13 @@
  						break;
  					case 2:
  						text.Serialize(writer);
+ 						if (Main.dedServ)
+ 						{
+-							Console.WriteLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
++							Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
+ 						}
+ 						break;
+ 					case 3:
 @@ -178,6 +_,7 @@
  							writer.Write((short)num2);
  							writer.Write((byte)number3);
@@ -103,18 +116,30 @@
  							writer.Write(bb14);
  							for (int num12 = 0; num12 < Projectile.maxAI; num12++)
  							{
-@@ -589,6 +_,11 @@
- 								{
+@@ -590,6 +_,11 @@
  									writer.Write(projectile.ai[num12]);
  								}
-+							}
+ 							}
 +							if (bb14[Projectile.maxAI + 1])
 +							{
 +								writer.Write((byte)extraAI.Length);
 +								writer.Write(extraAI);
- 							}
++							}
  							if (bb14[Projectile.maxAI])
  							{
+ 								writer.Write((short)projectile.projUUID);
+@@ -598,7 +_,10 @@
+ 						}
+ 					case 28:
+ 						writer.Write((short)number);
+-						writer.Write((short)number2);
++						if (ModNet.AllowVanillaClients)
++							writer.Write((short)number2);
++						else
++							writer.Write((int)number2);
+ 						writer.Write(number3);
+ 						writer.Write((byte)(number4 + 1f));
+ 						writer.Write((byte)number5);
 @@ -628,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
@@ -195,10 +220,10 @@
  				int num20 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;
 -				writer.Write((short)num20);
-+				// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile 
++				// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile
 +				// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
-+				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size. 
-+				writer.Write((ushort)num20); 
++				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
++				writer.Write((ushort)num20);
  				writer.BaseStream.Position = (long)num20;
  				if (Main.netMode == 1)
  				{
@@ -266,6 +291,24 @@
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
+@@ -2094,7 +_,7 @@
+ #if SERVER
+ 					if (num < NetMessage.buffer.Length - 100)
+ 					{
+-						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
++						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
+ 					}
+ #endif
+ 					i = 0;
+@@ -2362,7 +_,7 @@
+ 			}
+ 			if (!flag)
+ 			{
+-				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
++				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
+ 				WorldFile.saveWorld();
+ 				Netplay.disconnect = true;
+ 			}
 @@ -2405,6 +_,7 @@
  				{
  					NetMessage.SendData(5, toWho, fromWho, null, plr, (float)(58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m), (float)Main.player[plr].miscDyes[m].prefix, 0f, 0, 0, 0);
@@ -274,4 +317,22 @@
  				if (!Netplay.Clients[plr].IsAnnouncementCompleted)
  				{
  					Netplay.Clients[plr].IsAnnouncementCompleted = true;
+@@ -2414,7 +_,7 @@
+ 							}), new Color(255, 240, 20), plr);
+ 					if (Main.dedServ)
+ 					{
+-						Console.WriteLine(Lang.mp[19].Format(Main.player[plr].name));
++						Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
+ 						return;
+ 					}
+ 				}
+@@ -2432,7 +_,7 @@
+ 							}), new Color(255, 240, 20), plr);
+ 					if (Main.dedServ)
+ 					{
+-						Console.WriteLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
++						Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
+ 					}
+ 					Netplay.Clients[plr].Name = "Anonymous";
+ 				}
 

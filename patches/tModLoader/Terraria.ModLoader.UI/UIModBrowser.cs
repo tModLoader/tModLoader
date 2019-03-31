@@ -1,24 +1,21 @@
-using System;
-using System.IO;
-using System.Xml;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
-using Terraria.ModLoader.IO;
-using System.Net;
 using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Net.Security;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.UI.Gamepad;
-using Newtonsoft.Json.Linq;
 using Terraria.Localization;
+using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
@@ -54,30 +51,25 @@ namespace Terraria.ModLoader.UI
 		private string updateURL;
 		public bool aModUpdated = false;
 		public bool aNewModDownloaded = false;
+		public bool anEnabledModDownloaded = false; // disregard user preference for mods that are enabled
 		private string _specialModPackFilterTitle;
-		internal string SpecialModPackFilterTitle
-		{
-			get { return _specialModPackFilterTitle; }
-			set
-			{
+		internal string SpecialModPackFilterTitle {
+			get => _specialModPackFilterTitle;
+			set {
 				clearButton.SetText(Language.GetTextValue("tModLoader.MBClearSpecialFilter", value));
 				_specialModPackFilterTitle = value;
 			}
 		}
 		private List<string> _specialModPackFilter;
-		public List<string> SpecialModPackFilter
-		{
-			get { return _specialModPackFilter; }
-			set
-			{
-				if (_specialModPackFilter != null && value == null)
-				{
-					uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+		public List<string> SpecialModPackFilter {
+			get => _specialModPackFilter;
+			set {
+				if (_specialModPackFilter != null && value == null) {
+					uIPanel.BackgroundColor = UICommon.mainPanelBackground;
 					uIElement.RemoveChild(clearButton);
 					uIElement.RemoveChild(downloadAllButton);
 				}
-				else if (_specialModPackFilter == null && value != null)
-				{
+				else if (_specialModPackFilter == null && value != null) {
 					uIPanel.BackgroundColor = Color.Purple * 0.7f;
 					uIElement.Append(clearButton);
 					uIElement.Append(downloadAllButton);
@@ -86,111 +78,107 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override void OnInitialize()
-		{
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+		public override void OnInitialize() {
+			uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIPanel.PaddingTop = 0f;
+			uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground,
+				PaddingTop = 0f
+			};
 			uIElement.Append(uIPanel);
 
 			uILoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modList = new UIList();
-			modList.Width.Set(-25f, 1f);
-			modList.Height.Set(-50f, 1f);
-			modList.Top.Set(50f, 0f);
-			modList.ListPadding = 5f;
+			modList = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
+				ListPadding = 5f
+			};
 			uIPanel.Append(modList);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(-50f, 1f);
-			uIScrollbar.Top.Set(50f, 0f);
-			uIScrollbar.HAlign = 1f;
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
-			uINoModsFoundText = new UIText(Language.GetTextValue("tModLoader.MBNoModsFound"), 1f, false);
-			uINoModsFoundText.HAlign = 0.5f;
-			uINoModsFoundText.SetPadding(15f);
+			uINoModsFoundText = new UIText(Language.GetTextValue("tModLoader.MBNoModsFound")) {
+				HAlign = 0.5f
+			}.WithPadding(15f);
 
 			modList.SetScrollbar(uIScrollbar);
-			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true);
-			uIHeaderTextPanel.HAlign = 0.5f;
-			uIHeaderTextPanel.Top.Set(-35f, 0f);
-			uIHeaderTextPanel.SetPadding(15f);
-			uIHeaderTextPanel.BackgroundColor = new Color(73, 94, 171);
+			uIHeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTextPanel);
 
-			reloadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBGettingData"), 1f, false);
-			reloadButton.Width.Set(-10f, 0.5f);
-			reloadButton.Height.Set(25f, 0f);
-			reloadButton.VAlign = 1f;
-			reloadButton.Top.Set(-65f, 0f);
-			reloadButton.OnMouseOver += UICommon.FadedMouseOver;
-			reloadButton.OnMouseOut += UICommon.FadedMouseOut;
+			reloadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBGettingData")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
 			reloadButton.OnClick += ReloadList;
 			uIElement.Append(reloadButton);
 
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			backButton.Width.Set(-10f, 0.5f);
-			backButton.Height.Set(25f, 0f);
-			backButton.VAlign = 1f;
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			var backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			clearButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBClearSpecialFilter", "??"), 1f, false);
-			clearButton.Width.Set(-10f, 0.5f);
-			clearButton.Height.Set(25f, 0f);
-			clearButton.HAlign = 1f;
-			clearButton.VAlign = 1f;
-			clearButton.Top.Set(-65f, 0f);
-			clearButton.BackgroundColor = Color.Purple * 0.7f;
-			clearButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Purple, s, e);
-			clearButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Purple * 0.7f, s, e);
-			clearButton.OnClick += (s, e) =>
-			{
+			clearButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBClearSpecialFilter", "??")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				HAlign = 1f,
+				VAlign = 1f,
+				Top = { Pixels = -65 },
+				BackgroundColor = Color.Purple * 0.7f
+			}.WithFadedMouseOver(Color.Purple, Color.Purple * 0.7f);
+			clearButton.OnClick += (s, e) => {
+				// TODO: isn't `Interface.modBrowser` redundant
 				Interface.modBrowser.SpecialModPackFilter = null;
 				Interface.modBrowser.SpecialModPackFilterTitle = null;
 				Interface.modBrowser.updateNeeded = true;
 				Main.PlaySound(SoundID.MenuTick);
 			};
 
-			downloadAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBDownloadAll"), 1f, false);
-			downloadAllButton.Width.Set(-10f, 0.5f);
-			downloadAllButton.Height.Set(25f, 0f);
-			downloadAllButton.HAlign = 1f;
-			downloadAllButton.VAlign = 1f;
-			downloadAllButton.Top.Set(-20f, 0f);
-			downloadAllButton.BackgroundColor = Color.Azure * 0.7f;
-			downloadAllButton.OnMouseOver += (s, e) => UICommon.CustomFadedMouseOver(Color.Azure, s, e);
-			downloadAllButton.OnMouseOut += (s, e) => UICommon.CustomFadedMouseOut(Color.Azure * 0.7f, s, e);
+			downloadAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBDownloadAll")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				HAlign = 1f,
+				VAlign = 1f,
+				Top = { Pixels = -20 },
+				BackgroundColor = Color.Azure * 0.7f
+			}.WithFadedMouseOver(Color.Azure, Color.Azure * 0.7f);
 			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
 
-			updateAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUpdateAll"), 1f, false);
-			updateAllButton.Width.Set(-10f, 0.5f);
-			updateAllButton.Height.Set(25f, 0f);
-			updateAllButton.HAlign = 1f;
-			updateAllButton.VAlign = 1f;
-			updateAllButton.Top.Set(-20f, 0f);
-			updateAllButton.BackgroundColor = Color.Orange * 0.7f;
-			updateAllButton.OnMouseOver += UICommon.FadedMouseOver;
-			updateAllButton.OnMouseOut += UICommon.FadedMouseOut;
-			updateAllButton.OnClick += (s, e) =>
-			{
-				if (!loading)
-				{
+			updateAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUpdateAll")) {
+				Width = { Pixels = -10, Percent = 0.5f },
+				Height = { Pixels = 25 },
+				HAlign = 1f,
+				VAlign = 1f,
+				Top = { Pixels = -20 },
+				BackgroundColor = Color.Orange * 0.7f
+			}.WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
+			updateAllButton.OnClick += (s, e) => {
+				//TODO: move all click events to separate methods, behavior buried in layout is hard to find
+				if (!loading) {
 					var updatableMods = items.Where(x => x.update && !x.updateIsDowngrade).Select(x => x.mod).ToList();
 					DownloadMods(updatableMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
 				}
@@ -198,104 +186,96 @@ namespace Terraria.ModLoader.UI
 
 			Append(uIElement);
 
-			UIElement upperMenuContainer = new UIElement();
-			upperMenuContainer.Width.Set(0f, 1f);
-			upperMenuContainer.Height.Set(32f, 0f);
-			upperMenuContainer.Top.Set(10f, 0f);
-			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			var upperMenuContainer = new UIElement {
+				Width = { Percent = 1f },
+				Height = { Pixels = 32 },
+				Top = { Pixels = 10 }
+			};
+			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
 
+			//TODO: lots of duplication in these buttons
 			SortModeFilterToggle = new UICycleImage(texture, 6, 32, 32, 0, 0);
 			SortModeFilterToggle.setCurrentState((int)sortMode);
-			SortModeFilterToggle.OnClick += (a, b) =>
-			{
+			SortModeFilterToggle.OnClick += (a, b) => {
 				sortMode = sortMode.NextEnum();
 				updateNeeded = true;
 			};
-			SortModeFilterToggle.OnRightClick += (a, b) =>
-			{
+			SortModeFilterToggle.OnRightClick += (a, b) => {
 				sortMode = sortMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			SortModeFilterToggle.Left.Set((float)(0 * 36 + 8), 0f);
+			SortModeFilterToggle.Left.Pixels = 0 * 36 + 8;
 			_categoryButtons.Add(SortModeFilterToggle);
 			upperMenuContainer.Append(SortModeFilterToggle);
 
 			UpdateFilterToggle = new UICycleImage(texture, 3, 32, 32, 34, 0);
 			UpdateFilterToggle.setCurrentState((int)updateFilterMode);
-			UpdateFilterToggle.OnClick += (a, b) =>
-			{
+			UpdateFilterToggle.OnClick += (a, b) => {
 				updateFilterMode = updateFilterMode.NextEnum();
 				updateNeeded = true;
 			};
-			UpdateFilterToggle.OnRightClick += (a, b) =>
-			{
+			UpdateFilterToggle.OnRightClick += (a, b) => {
 				updateFilterMode = updateFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			UpdateFilterToggle.Left.Set((float)(1 * 36 + 8), 0f);
+			UpdateFilterToggle.Left.Pixels = 1 * 36 + 8;
 			_categoryButtons.Add(UpdateFilterToggle);
 			upperMenuContainer.Append(UpdateFilterToggle);
 
 			ModSideFilterToggle = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
 			ModSideFilterToggle.setCurrentState((int)modSideFilterMode);
-			ModSideFilterToggle.OnClick += (a, b) =>
-			{
+			ModSideFilterToggle.OnClick += (a, b) => {
 				modSideFilterMode = modSideFilterMode.NextEnum();
 				updateNeeded = true;
 			};
-			ModSideFilterToggle.OnRightClick += (a, b) =>
-			{
+			ModSideFilterToggle.OnRightClick += (a, b) => {
 				modSideFilterMode = modSideFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			ModSideFilterToggle.Left.Set((float)(2 * 36 + 8), 0f);
+			ModSideFilterToggle.Left.Pixels = 2 * 36 + 8;
 			_categoryButtons.Add(ModSideFilterToggle);
 			upperMenuContainer.Append(ModSideFilterToggle);
 
-			UIPanel filterTextBoxBackground = new UIPanel();
-			filterTextBoxBackground.Top.Set(0f, 0f);
-			filterTextBoxBackground.Left.Set(-170, 1f);
-			filterTextBoxBackground.Width.Set(135f, 0f);
-			filterTextBoxBackground.Height.Set(40f, 0f);
-			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.SetText("");
+			var filterTextBoxBackground = new UIPanel {
+				Top = { Percent = 0f },
+				Left = { Pixels = -170, Percent = 1f },
+				Width = { Pixels = 135 },
+				Height = { Pixels = 40 }
+			};
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
-			filterTextBox.Top.Set(5, 0f);
-			filterTextBox.Left.Set(-160, 1f);
-			filterTextBox.Width.Set(100f, 0f);
-			filterTextBox.Height.Set(10f, 0f);
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
+				Top = { Pixels = 5 },
+				Left = { Pixels = -160, Percent = 1f },
+				Width = { Pixels = 100 },
+				Height = { Pixels = 10 }
+			};
 			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
 			SearchFilterToggle.setCurrentState((int)searchFilterMode);
-			SearchFilterToggle.OnClick += (a, b) =>
-			{
+			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.OnRightClick += (a, b) =>
-			{
+			SearchFilterToggle.OnRightClick += (a, b) => {
 				searchFilterMode = searchFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.Left.Set(545f, 0f);
+			SearchFilterToggle.Left.Pixels = 545f;
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 			uIPanel.Append(upperMenuContainer);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			for (int i = 0; i < this._categoryButtons.Count; i++)
-			{
-				if (this._categoryButtons[i].IsMouseHovering)
-				{
+			for (int i = 0; i < _categoryButtons.Count; i++) {
+				if (_categoryButtons[i].IsMouseHovering) {
 					string text;
-					switch (i)
-					{
+					switch (i) {
 						case 0:
 							text = sortMode.ToFriendlyString();
 							break;
@@ -312,22 +292,11 @@ namespace Terraria.ModLoader.UI
 							text = "None";
 							break;
 					}
-					float x = Main.fontMouseText.MeasureString(text).X;
-					Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-					if (vector.Y > (float)(Main.screenHeight - 30))
-					{
-						vector.Y = (float)(Main.screenHeight - 30);
-					}
-					if (vector.X > (float)Main.screenWidth - x)
-					{
-						vector.X = (float)(Main.screenWidth - x - 30);
-					}
-					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					UICommon.DrawHoverStringInBounds(spriteBatch, text);
 					return;
 				}
 			}
-			if (updateAvailable)
-			{
+			if (updateAvailable) {
 				updateAvailable = false;
 				Interface.updateMessage.SetMessage(updateText);
 				Interface.updateMessage.SetGotoMenu(Interface.modBrowserID);
@@ -337,46 +306,41 @@ namespace Terraria.ModLoader.UI
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 		}
 
-		public static void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		public static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
-			if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload)
-			{
-				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.ReloadModsReminder"));
-				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
-				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
-				Main.menuMode = Interface.advancedInfoMessageID;
+			if ((Interface.modBrowser.aModUpdated || Interface.modBrowser.aNewModDownloaded) && ModLoader.autoReloadAndEnableModsLeavingModBrowser || Interface.modBrowser.anEnabledModDownloaded) {
+				Main.menuMode = Interface.reloadModsID;
 			}
-			else if (Interface.modBrowser.aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable)
-			{
-				Interface.advancedInfoMessage.SetMessage(Language.GetTextValue("tModLoader.EnableModsReminder"));
-				Interface.advancedInfoMessage.SetGotoMenu(0);
-				Interface.advancedInfoMessage.SetAltMessage(Language.GetTextValue("tModLoader.DontShowAgain"));
-				Interface.advancedInfoMessage.SetAltAction(() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
-				Main.menuMode = Interface.advancedInfoMessageID;
+			//TODO why do I have to read this, the only difference between these is Enable vs Reload
+			else if (Interface.modBrowser.aModUpdated && !ModLoader.dontRemindModBrowserUpdateReload) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ReloadModsReminder"),
+					0, null, Language.GetTextValue("tModLoader.DontShowAgain"),
+					() => { ModLoader.dontRemindModBrowserUpdateReload = true; Main.SaveSettings(); });
+			}
+			else if (Interface.modBrowser.aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.EnableModsReminder"),
+					0, null, Language.GetTextValue("tModLoader.DontShowAgain"),
+					() => { ModLoader.dontRemindModBrowserDownloadEnable = true; Main.SaveSettings(); });
 			}
 			Interface.modBrowser.aModUpdated = false;
 			Interface.modBrowser.aNewModDownloaded = false;
+			Interface.modBrowser.anEnabledModDownloaded = false;
 		}
 
-		private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (!loading)
-			{
+		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
+			if (!loading) {
 				Main.PlaySound(SoundID.MenuOpen);
 				PopulateModBrowser();
 			}
 		}
 
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			if (!updateNeeded) return;
 			updateNeeded = false;
 			if (!loading) uIPanel.RemoveChild(uILoader);
-			filter = filterTextBox.currentString;
+			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
 			bool hasNoModsFoundNotif = modList.HasChild(uINoModsFoundText);
@@ -385,27 +349,23 @@ namespace Terraria.ModLoader.UI
 			else if (hasNoModsFoundNotif)
 				modList.RemoveChild(uINoModsFoundText);
 			uIElement.RemoveChild(updateAllButton);
-			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0)
-			{
+			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0) {
 				uIElement.Append(updateAllButton);
 			}
 
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			Main.clrInput();
 			if (!loading && items.Count <= 0)
 				PopulateModBrowser();
 		}
 
-		internal void ClearItems()
-		{
+		internal void ClearItems() {
 			items.Clear();
 		}
 
-		private void PopulateModBrowser()
-		{
+		private void PopulateModBrowser() {
 			loading = true;
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
@@ -415,8 +375,7 @@ namespace Terraria.ModLoader.UI
 			modList.Clear();
 			items.Clear();
 			modList.Deactivate();
-			try
-			{
+			try {
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/listmods.php";
 				var values = new NameValueCollection
@@ -424,25 +383,21 @@ namespace Terraria.ModLoader.UI
 						{ "modloaderversion", ModLoader.versionedName },
 						{ "platform", ModLoader.compressedPlatformRepresentation },
 					};
-				using (WebClient client = new WebClient())
-				{
+				using (WebClient client = new WebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => { return true; });
 					client.UploadValuesCompleted += new UploadValuesCompletedEventHandler(UploadComplete);
 					client.UploadValuesAsync(new Uri(url), "POST", values);
 				}
 			}
-			catch (WebException e)
-			{
-				if (e.Status == WebExceptionStatus.Timeout)
-				{
+			catch (WebException e) {
+				ShowOfflineTroubleshootingMessage();
+				if (e.Status == WebExceptionStatus.Timeout) {
 					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
 					return;
 				}
-				if (e.Status == WebExceptionStatus.ProtocolError)
-				{
+				if (e.Status == WebExceptionStatus.ProtocolError) {
 					var resp = (HttpWebResponse)e.Response;
-					if (resp.StatusCode == HttpStatusCode.NotFound)
-					{
+					if (resp.StatusCode == HttpStatusCode.NotFound) {
 						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
 						return;
 					}
@@ -450,46 +405,36 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 			}
-			catch (Exception e)
-			{
-				ErrorLogger.LogModBrowserException(e);
+			catch (Exception e) {
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
 
-		public void UploadComplete(object sender, UploadValuesCompletedEventArgs e)
-		{
-			if (e.Error != null)
-			{
-				if (e.Cancelled)
-				{
+		public void UploadComplete(object sender, UploadValuesCompletedEventArgs e) {
+			if (e.Error != null) {
+				ShowOfflineTroubleshootingMessage();
+				if (e.Cancelled) {
 				}
-				else
-				{
+				else {
 					HttpStatusCode httpStatusCode = GetHttpStatusCode(e.Error);
-					if (httpStatusCode == HttpStatusCode.ServiceUnavailable)
-					{
+					if (httpStatusCode == HttpStatusCode.ServiceUnavailable) {
 						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")));
 					}
-					else
-					{
+					else {
 						SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBUnknown")));
 					}
 				}
 				loading = false;
 				reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 			}
-			else if (!e.Cancelled)
-			{
+			else if (!e.Cancelled) {
 				reloadButton.SetText(Language.GetTextValue("tModLoader.MBPopulatingBrowser"));
 				byte[] result = e.Result;
 				string response = Encoding.UTF8.GetString(result);
-				if (SynchronizationContext.Current == null)
-					SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 				Task.Factory
-					.StartNew(ModLoader.FindMods)
-					.ContinueWith(task =>
-					{
+					.StartNew(ModOrganizer.FindMods)
+					.ContinueWith(task => {
 						PopulateFromJSON(task.Result, response);
 						loading = false;
 						reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
@@ -497,14 +442,10 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		internal static bool PlatformSupportsTls12
-		{
-			get
-			{
-				foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType)))
-				{
-					if (protocol.GetHashCode() == 3072)
-					{
+		internal static bool PlatformSupportsTls12 {
+			get {
+				foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType))) {
+					if (protocol.GetHashCode() == 3072) {
 						return true;
 					}
 				}
@@ -512,41 +453,35 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void PopulateFromJSON(LocalMod[] installedMods, string json)
-		{
+		private void PopulateFromJSON(LocalMod[] installedMods, string json) {
 			string tls = PlatformSupportsTls12 ? "&tls12=y" : "";
-			try
-			{
+			try {
 				JObject jsonObject;
-				try
-				{
+				try {
 					jsonObject = JObject.Parse(json);
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					throw new Exception("Bad JSON: " + json, e);
 				}
 				JObject updateObject = (JObject)jsonObject["update"];
-				if (updateObject != null)
-				{
+				if (updateObject != null) {
 					updateAvailable = true;
 					updateText = (string)updateObject["message"];
 					updateURL = (string)updateObject["url"];
 				}
 				JArray modlist = (JArray)jsonObject["modlist"];
-				foreach (JObject mod in modlist.Children<JObject>())
-				{
+				foreach (JObject mod in modlist.Children<JObject>()) {
 					string displayname = (string)mod["displayname"];
 					//reloadButton.SetText("Adding " + displayname + "...");
 					string name = (string)mod["name"];
 					string version = (string)mod["version"];
 					string author = (string)mod["author"];
-					string download = (string)mod["download"] + tls;
+					string download = ((string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod") + tls;
 					int downloads = (int)mod["downloads"];
 					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 					string timeStamp = (string)mod["updateTimeStamp"];
 					//string[] modreferences = ((string)mod["modreferences"]).Split(',');
-					string modreferences = (string)mod["modreferences"];
+					string modreferences = ((string)mod["modreferences"] ?? "");
 					ModSide modside = ModSide.Both; // TODO: add filter option for modside.
 					string modIconURL = (string)mod["iconurl"];
 					string modsideString = (string)mod["modside"];
@@ -557,8 +492,7 @@ namespace Terraria.ModLoader.UI
 					bool update = false;
 					bool updateIsDowngrade = false;
 					var installed = installedMods.FirstOrDefault(m => m.Name == name);
-					if (installed != null)
-					{
+					if (installed != null) {
 						//exists = true;
 						var cVersion = new Version(version.Substring(1));
 						if (cVersion > installed.modFile.version)
@@ -571,15 +505,13 @@ namespace Terraria.ModLoader.UI
 				}
 				updateNeeded = true;
 			}
-			catch (Exception e)
-			{
-				ErrorLogger.LogModBrowserException(e);
+			catch (Exception e) {
+				UIModBrowser.LogModBrowserException(e);
 				return;
 			}
 		}
 
-		private void DownloadMods(List<string> specialModPackFilter, string SpecialModPackFilterTitle)
-		{
+		private void DownloadMods(List<string> specialModPackFilter, string SpecialModPackFilterTitle) {
 			Main.PlaySound(SoundID.MenuTick);
 			Interface.downloadMods.SetDownloading(SpecialModPackFilterTitle);
 			Interface.downloadMods.SetModsToDownload(specialModPackFilter, items);
@@ -587,10 +519,22 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.downloadModsID;
 		}
 
-		private void SetHeading(string heading)
-		{
+		private void SetHeading(string heading) {
 			uIHeaderTextPanel.SetText(heading, 0.8f, true);
 			uIHeaderTextPanel.Recalculate();
+		}
+
+		private void ShowOfflineTroubleshootingMessage() {
+			var message = new UIMessageBox(Language.GetTextValue("tModLoader.MBOfflineTroubleshooting")) {
+				Width = { Percent = 1 },
+				Height = { Pixels = 400, Percent = 0 }
+			};
+			message.OnDoubleClick += (a, b) => {
+				System.Diagnostics.Process.Start("http://javid.ddns.net/tModLoader/DirectModDownloadListing.php");
+			};
+			modList.Add(message);
+			message.SetScrollbar(new UIScrollbar());
+			uIPanel.RemoveChild(uILoader);
 		}
 
 		//unused
@@ -608,27 +552,38 @@ namespace Terraria.ModLoader.UI
 		//	return urlData;
 		//}
 
-		private HttpStatusCode GetHttpStatusCode(System.Exception err)
-		{
-			if (err is WebException)
-			{
+		private HttpStatusCode GetHttpStatusCode(System.Exception err) {
+			if (err is WebException) {
 				WebException we = (WebException)err;
-				if (we.Response is HttpWebResponse)
-				{
+				if (we.Response is HttpWebResponse) {
 					HttpWebResponse response = (HttpWebResponse)we.Response;
 					return response.StatusCode;
 				}
 			}
 			return 0;
 		}
+
+		internal static void LogModBrowserException(Exception e) {
+			string errorMessage = Language.GetTextValue("tModLoader.MBBrowserError") + "\n\n" + e.Message + "\n" + e.StackTrace;
+			Logging.tML.Error(errorMessage);
+			Interface.errorMessage.Show(errorMessage, 0);
+		}
+
+		internal static void LogModPublishInfo(string message) {
+			Logging.tML.Info(message);
+			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBServerResponse", message), Interface.modSourcesID);
+		}
+
+		internal static void LogModUnpublishInfo(string message) {
+			Logging.tML.Info(message);
+			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBServerResponse", message), Interface.managePublishedID);
+		}
 	}
 
 	public static class ModBrowserSortModesExtensions
 	{
-		public static string ToFriendlyString(this ModBrowserSortMode sortmode)
-		{
-			switch (sortmode)
-			{
+		public static string ToFriendlyString(this ModBrowserSortMode sortmode) {
+			switch (sortmode) {
 				case ModBrowserSortMode.DisplayNameAtoZ:
 					return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 				case ModBrowserSortMode.DisplayNameZtoA:
@@ -648,10 +603,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class UpdateFilterModesExtensions
 	{
-		public static string ToFriendlyString(this UpdateFilter updateFilterMode)
-		{
-			switch (updateFilterMode)
-			{
+		public static string ToFriendlyString(this UpdateFilter updateFilterMode) {
+			switch (updateFilterMode) {
 				case UpdateFilter.All:
 					return Language.GetTextValue("tModLoader.MBShowAllMods");
 				case UpdateFilter.Available:
@@ -665,10 +618,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class ModSideFilterModesExtensions
 	{
-		public static string ToFriendlyString(this ModSideFilter modSideFilterMode)
-		{
-			switch (modSideFilterMode)
-			{
+		public static string ToFriendlyString(this ModSideFilter modSideFilterMode) {
+			switch (modSideFilterMode) {
 				case ModSideFilter.All:
 					return Language.GetTextValue("tModLoader.MBShowMSAll");
 				case ModSideFilter.Both:
@@ -686,10 +637,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class SearchFilterModesExtensions
 	{
-		public static string ToFriendlyString(this SearchFilter searchFilterMode)
-		{
-			switch (searchFilterMode)
-			{
+		public static string ToFriendlyString(this SearchFilter searchFilterMode) {
+			switch (searchFilterMode) {
 				case SearchFilter.Name:
 					return Language.GetTextValue("tModLoader.ModsSearchByModName");
 				case SearchFilter.Author:

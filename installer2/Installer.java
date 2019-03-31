@@ -1,16 +1,18 @@
 import java.io.*;
 import java.nio.file.*;
 import javax.swing.*;
+import java.util.*;
+import java.nio.file.attribute.PosixFilePermission;
 
 public class Installer
 {
     private static final String TERRARIA_VERSION = "v1.3.5.3";
 
-    public static void tryInstall(String[] files, File directory)
+    public static void tryInstall(String[] files, String[] filesToDelete, File directory)
     {
         try
         {
-            install(files, directory);
+            install(files, filesToDelete, directory);
         }
         catch (IOException e)
         {
@@ -18,7 +20,7 @@ public class Installer
         }
     }
 
-    private static void install(String[] files, File directory) throws IOException
+    private static void install(String[] files, String[] filesToDelete, File directory) throws IOException
     {
         if (directory == null || !directory.exists())
         {
@@ -32,9 +34,17 @@ public class Installer
             messageBox("Could not find your Terraria.exe file!", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (!terrariaBackup.exists())
+        if (!terrariaBackup.exists()) // TODO: check hash to prevent double install overwrite issue
         {
             copy(terraria, terrariaBackup);
+        }
+        for (String file : filesToDelete)
+        {
+            File source = new File(directory, file);
+            if (source.exists())
+            {
+                source.delete();
+            }
         }
         String badFiles = "\n";
         for (String file : files)
@@ -49,6 +59,12 @@ public class Installer
                     parent.mkdirs();
                 }
                 copy(source, destination);
+                if(file == "tModLoaderServer"){
+                    // Alt: file.setExecutable(true, false);
+                    Set<PosixFilePermission> permissions = new HashSet<>();
+                    permissions.add(PosixFilePermission.OWNER_EXECUTE);
+                    Files.setPosixFilePermissions(destination.toPath(), permissions);
+                }
             }
             else
             {

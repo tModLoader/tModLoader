@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 
@@ -27,8 +26,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool needHoney;
 
-		public RecipeFinder()
-		{
+		public RecipeFinder() {
 		}
 
 		/// <summary>
@@ -36,10 +34,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="itemID">The item ID of the ingredient to add.</param>
 		/// <param name="stack">The stack of the ingredient to add.</param>
-		public void AddIngredient(int itemID, int stack = 1)
-		{
-			if (itemID <= 0 || itemID >= ItemLoader.ItemCount)
-			{
+		public void AddIngredient(int itemID, int stack = 1) {
+			if (itemID <= 0 || itemID >= ItemLoader.ItemCount) {
 				throw new RecipeException("No item has ID " + itemID);
 			}
 			Item item = new Item();
@@ -53,10 +49,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name of the recipegroup to accept.</param>
 		/// <param name="stack">The stack of the recipegroup to accept.</param>
-		public void AddRecipeGroup(string name, int stack = 1)
-		{
-			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
-			{
+		public void AddRecipeGroup(string name, int stack = 1) {
+			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name)) {
 				throw new RecipeException("No recipe group is named " + name);
 			}
 			int id = RecipeGroup.recipeGroupIDs[name];
@@ -70,10 +64,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="itemID">The item ID of the item to set as result.</param>
 		/// <param name="stack">The stack of the item to set as result.</param>
-		public void SetResult(int itemID, int stack = 1)
-		{
-			if (itemID <= 0 || itemID >= ItemLoader.ItemCount)
-			{
+		public void SetResult(int itemID, int stack = 1) {
+			if (itemID <= 0 || itemID >= ItemLoader.ItemCount) {
 				throw new RecipeException("No item has ID " + itemID);
 			}
 			result.SetDefaults(itemID, false);
@@ -84,10 +76,8 @@ namespace Terraria.ModLoader
 		/// Adds a required crafting station with the given tile type to the search criteria.
 		/// </summary>
 		/// <param name="tileID">The tile ID of the tile to add.</param>
-		public void AddTile(int tileID)
-		{
-			if (tileID < 0 || tileID >= TileLoader.TileCount)
-			{
+		public void AddTile(int tileID) {
+			if (tileID < 0 || tileID >= TileLoader.TileCount) {
 				throw new RecipeException("No tile has ID " + tileID);
 			}
 			tiles.Add(tileID);
@@ -97,111 +87,87 @@ namespace Terraria.ModLoader
 		/// Searches for a recipe that matches the search criteria exactly, then returns it. That means the recipe will have exactly the same ingredients, tiles, liquid requirements, recipe groups, and result; even the stack sizes will match. If no recipe with an exact match is found, this will return null.
 		/// </summary>
 		/// <returns>The recipe found matching the finder's criteria.</returns>
-		public Recipe FindExactRecipe()
-		{
-			for (int k = 0; k < Recipe.numRecipes; k++)
-			{
+		public Recipe FindExactRecipe() {
+			for (int k = 0; k < Recipe.numRecipes; k++) {
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++)
-				{
+				for (int i = 0; i < Recipe.maxRequirements; i++) {
 					Item item = recipe.requiredItem[i];
-					if (item.type == 0)
-					{
+					if (item.type == 0) {
 						break;
 					}
 					bool itemMatched = false;
-					for (int j = 0; j < checkItems.Count; j++)
-					{
-						if (item.type == checkItems[j].type && item.stack == checkItems[j].stack)
-						{
+					for (int j = 0; j < checkItems.Count; j++) {
+						if (item.type == checkItems[j].type && item.stack == checkItems[j].stack) {
 							itemMatched = true;
 							checkItems.RemoveAt(j);
 							break;
 						}
 					}
-					if (!itemMatched)
-					{
+					if (!itemMatched) {
 						matches = false;
 						break;
 					}
 				}
-				if (checkItems.Count > 0)
-				{
+				if (checkItems.Count > 0) {
 					matches = false;
 				}
 				List<int> checkGroups = new List<int>(groups);
 				List<int> acceptedGroups = GetAcceptedGroups(recipe);
-				for (int i = 0; i < acceptedGroups.Count; i++)
-				{
+				for (int i = 0; i < acceptedGroups.Count; i++) {
 					int group = acceptedGroups[i];
 					bool groupMatched = false;
-					for (int j = 0; j < checkGroups.Count; j++)
-					{
-						if (group == checkGroups[j])
-						{
+					for (int j = 0; j < checkGroups.Count; j++) {
+						if (group == checkGroups[j]) {
 							groupMatched = true;
 							checkGroups.RemoveAt(j);
 							break;
 						}
 					}
-					if (!groupMatched)
-					{
+					if (!groupMatched) {
 						matches = false;
 						break;
 					}
 				}
-				if (checkGroups.Count > 0)
-				{
+				if (checkGroups.Count > 0) {
 					matches = false;
 				}
-				if (result.type != recipe.createItem.type || result.stack != recipe.createItem.stack)
-				{
+				if (result.type != recipe.createItem.type || result.stack != recipe.createItem.stack) {
 					matches = false;
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++)
-				{
+				for (int i = 0; i < Recipe.maxRequirements; i++) {
 					int tile = recipe.requiredTile[i];
-					if (tile == -1)
-					{
+					if (tile == -1) {
 						break;
 					}
 					bool tileMatched = false;
-					for (int j = 0; j < checkTiles.Count; j++)
-					{
-						if (tile == checkTiles[j])
-						{
+					for (int j = 0; j < checkTiles.Count; j++) {
+						if (tile == checkTiles[j]) {
 							tileMatched = true;
 							checkTiles.RemoveAt(j);
 							break;
 						}
 					}
-					if (!tileMatched)
-					{
+					if (!tileMatched) {
 						matches = false;
 						break;
 					}
 				}
-				if (checkTiles.Count > 0)
-				{
+				if (checkTiles.Count > 0) {
 					matches = false;
 				}
-				if (needWater != recipe.needWater)
-				{
+				if (needWater != recipe.needWater) {
 					matches = false;
 				}
-				else if (needLava != recipe.needLava)
-				{
+				else if (needLava != recipe.needLava) {
 					matches = false;
 				}
-				else if (needHoney != recipe.needHoney)
-				{
+				else if (needHoney != recipe.needHoney) {
 					matches = false;
 				}
-				if (matches)
-				{
+				if (matches) {
 					return recipe;
 				}
 			}
@@ -212,125 +178,96 @@ namespace Terraria.ModLoader
 		/// Searches for all recipes that include the search criteria, then returns them in a list. In terms of ingredients, it will search for recipes that include all the search criteria ingredients, with stack sizes greater than or equal to the search criteria. It will also make sure the recipes include all search criteria recipe groups and tiles. If the search criteria includes a result, the recipes will also have the same result with a stack size greater than or equal to the search criteria. Finally, if needWater, needLava, or needHoney are set to true, the found recipes will also have them set to true.
 		/// </summary>
 		/// <returns>A list containing found recipes matching the finder's criteria.</returns>
-		public List<Recipe> SearchRecipes()
-		{
+		public List<Recipe> SearchRecipes() {
 			List<Recipe> recipes = new List<Recipe>();
-			for (int k = 0; k < Recipe.numRecipes; k++)
-			{
+			for (int k = 0; k < Recipe.numRecipes; k++) {
 				Recipe recipe = Main.recipe[k];
 				bool matches = true;
 				List<Item> checkItems = new List<Item>(items);
-				for (int i = 0; i < Recipe.maxRequirements; i++)
-				{
+				for (int i = 0; i < Recipe.maxRequirements; i++) {
 					Item item = recipe.requiredItem[i];
-					if (item.type == 0)
-					{
+					if (item.type == 0) {
 						break;
 					}
-					for (int j = 0; j < checkItems.Count; j++)
-					{
-						if (item.type == checkItems[j].type && item.stack >= checkItems[j].stack)
-						{
+					for (int j = 0; j < checkItems.Count; j++) {
+						if (item.type == checkItems[j].type && item.stack >= checkItems[j].stack) {
 							checkItems.RemoveAt(j);
 							break;
 						}
 					}
 				}
-				if (checkItems.Count > 0)
-				{
+				if (checkItems.Count > 0) {
 					matches = false;
 				}
 				List<int> checkGroups = new List<int>(groups);
 				List<int> acceptedGroups = GetAcceptedGroups(recipe);
-				for (int i = 0; i < acceptedGroups.Count; i++)
-				{
+				for (int i = 0; i < acceptedGroups.Count; i++) {
 					int group = acceptedGroups[i];
-					for (int j = 0; j < checkGroups.Count; j++)
-					{
-						if (group == checkGroups[j])
-						{
+					for (int j = 0; j < checkGroups.Count; j++) {
+						if (group == checkGroups[j]) {
 							checkGroups.RemoveAt(j);
 							break;
 						}
 					}
 				}
-				if (checkGroups.Count > 0)
-				{
+				if (checkGroups.Count > 0) {
 					matches = false;
 				}
-				if (result.type != 0)
-				{
-					if (result.type != recipe.createItem.type)
-					{
+				if (result.type != 0) {
+					if (result.type != recipe.createItem.type) {
 						matches = false;
 					}
-					else if (result.stack > recipe.createItem.stack)
-					{
+					else if (result.stack > recipe.createItem.stack) {
 						matches = false;
 					}
 				}
 				List<int> checkTiles = new List<int>(tiles);
-				for (int i = 0; i < Recipe.maxRequirements; i++)
-				{
+				for (int i = 0; i < Recipe.maxRequirements; i++) {
 					int tile = recipe.requiredTile[i];
-					if (tile == -1)
-					{
+					if (tile == -1) {
 						break;
 					}
-					for (int j = 0; j < checkTiles.Count; j++)
-					{
-						if (tile == checkTiles[j])
-						{
+					for (int j = 0; j < checkTiles.Count; j++) {
+						if (tile == checkTiles[j]) {
 							checkTiles.RemoveAt(j);
 							break;
 						}
 					}
 				}
-				if (checkTiles.Count > 0)
-				{
+				if (checkTiles.Count > 0) {
 					matches = false;
 				}
-				if (needWater && !recipe.needWater)
-				{
+				if (needWater && !recipe.needWater) {
 					matches = false;
 				}
-				else if (needLava && !recipe.needLava)
-				{
+				else if (needLava && !recipe.needLava) {
 					matches = false;
 				}
-				else if (needHoney && !recipe.needHoney)
-				{
+				else if (needHoney && !recipe.needHoney) {
 					matches = false;
 				}
-				if (matches)
-				{
+				if (matches) {
 					recipes.Add(recipe);
 				}
 			}
 			return recipes;
 		}
 
-		private static List<int> GetAcceptedGroups(Recipe recipe)
-		{
+		private static List<int> GetAcceptedGroups(Recipe recipe) {
 			List<int> acceptedGroups = new List<int>(recipe.acceptedGroups);
-			if (recipe.anyWood)
-			{
+			if (recipe.anyWood) {
 				acceptedGroups.Add(RecipeGroupID.Wood);
 			}
-			if (recipe.anyIronBar)
-			{
+			if (recipe.anyIronBar) {
 				acceptedGroups.Add(RecipeGroupID.IronBar);
 			}
-			if (recipe.anySand)
-			{
+			if (recipe.anySand) {
 				acceptedGroups.Add(RecipeGroupID.Sand);
 			}
-			if (recipe.anyPressurePlate)
-			{
+			if (recipe.anyPressurePlate) {
 				acceptedGroups.Add(RecipeGroupID.PressurePlate);
 			}
-			if (recipe.anyFragment)
-			{
+			if (recipe.anyFragment) {
 				acceptedGroups.Add(RecipeGroupID.Fragment);
 			}
 			return acceptedGroups;

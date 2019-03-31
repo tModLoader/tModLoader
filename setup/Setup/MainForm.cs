@@ -116,6 +116,10 @@ namespace Terraria.ModLoader.Setup
 			RunTask(new FormatTask(this));
 		}
 
+		private void menuItemHookGen_Click(object sender, EventArgs e) {
+			RunTask(new HookGenTask(this));
+		}
+
 		private void buttonTask_Click(object sender, EventArgs e)
 		{
 			RunTask(taskButtons[(Button)sender]());

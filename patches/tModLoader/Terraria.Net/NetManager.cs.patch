@@ -1,0 +1,22 @@
+--- src/Terraria\Terraria.Net\NetManager.cs
++++ src/tModLoader\Terraria.Net\NetManager.cs
+@@ -1,7 +_,9 @@
++using log4net.Core;
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net.Sockets;
+ 
+ namespace Terraria.Net
+@@ -84,7 +_,7 @@
+ 			}
+ 			catch
+ 			{
+-				Console.WriteLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")));
++				Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
+ 			}
+ 		}
+ 
+

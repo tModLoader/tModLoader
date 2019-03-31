@@ -14,7 +14,6 @@ BASENAME=`basename "$0"`
 if [ "$UNAME" == "Darwin" ]; then
 	ext=osx
 else
-	ext=x86
 	if [ "$ARCH" == "x86_64" ]; then
 		ext=x86_64
 	else
@@ -27,18 +26,16 @@ else
 			;;
 		-x64)	ext=x86_64
 			;;
-		-autoarch)
-			if [ "$ARCH" == "x86_64" ]; then
-				ext=x86_64
-			else
-				ext=x86
-			fi
-			;;
 		esac
 	done
 fi
 
+KICKSTART=./tModLoaderServer.bin.${ext}
+
+if [ ! -f KICKSTART ]; then
+    cp ./TerrariaServer.bin.${ext} $KICKSTART
+fi
 
 export MONO_IOMAP=all
-./${BASENAME}.bin.${ext} $@
+$KICKSTART $@
 
