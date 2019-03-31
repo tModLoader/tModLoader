@@ -87,7 +87,6 @@ namespace Terraria.ModLoader.Setup
 			CreateParentDirectory(to);
 			File.Copy(from, to, true);
 		}
-				
 
 		protected readonly ITaskInterface taskInterface;
 		protected int progress;

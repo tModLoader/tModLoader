@@ -13,15 +13,21 @@ namespace Terraria.ModLoader.Setup
 						"Patch mode will be reset from fuzzy to offset.\r\n",
 						"Strict Patch Mode", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK)
 					return false;
-
-				Settings.Default.PatchMode = 1;
-				Settings.Default.Save();
 			}
 
 			return MessageBox.Show(
 					"Any changes in /src will be lost.\r\n",
 					"Ready for Setup", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
 				== DialogResult.OK;
+		}
+
+		public override void Run() {
+			if (Settings.Default.PatchMode == 2) {
+				Settings.Default.PatchMode = 1;
+				Settings.Default.Save();
+			}
+
+			base.Run();
 		}
 	}
 }

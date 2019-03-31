@@ -15,10 +15,10 @@ namespace Terraria.ModLoader.Setup
 	public class PatchTask : Task
 	{
 		public readonly string baseDir;
-		public readonly string srcDir;
+		public readonly string patchedDir;
 		public readonly string patchDir;
 		public readonly ProgramSetting<DateTime> cutoff;
-		public readonly Patcher.Mode mode;
+		private Patcher.Mode mode;
 		private int warnings;
 		private int failures;
 		private int fuzzy;
@@ -27,74 +27,71 @@ namespace Terraria.ModLoader.Setup
 		private readonly ConcurrentBag<PatchedFile> results = new ConcurrentBag<PatchedFile>();
 
 		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
-		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
+		public string FullPatchedDir => Path.Combine(Program.baseDir, patchedDir);
 		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
 		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
-			this.srcDir = srcDir;
+			this.patchedDir = srcDir;
 			this.patchDir = patchDir;
 			this.cutoff = cutoff;
-			this.mode = (Patcher.Mode) Settings.Default.PatchMode;
 		}
 
 		public override bool StartupWarning()
 		{
 			return MessageBox.Show(
-					"Any changes in /" + srcDir + " that have not been converted to patches will be lost.",
+					"Any changes in /" + patchedDir + " that have not been converted to patches will be lost.",
 					"Possible loss of data", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
 				== DialogResult.OK;
 		}
 
 		public override void Run()
 		{
+			mode = (Patcher.Mode) Settings.Default.PatchMode;
 			taskInterface.SetStatus("Deleting Old Src");
 
-			if (Directory.Exists(FullSrcDir))
-				Directory.Delete(FullSrcDir, true);
+			if (Directory.Exists(FullPatchedDir))
+				Directory.Delete(FullPatchedDir, true);
 
 			var baseFiles = Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories);
 			var patchFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories);
 
+			var noCopy = new HashSet<string>();
 			var removedFileList = Path.Combine(FullPatchDir, DiffTask.RemovedFileList);
-			var removedFiles = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
+			if(File.Exists(removedFileList))
+				foreach (var line in File.ReadAllLines(removedFileList))
+					noCopy.Add(line);
 
-			var copyItems = new List<WorkItem>();
-			var patchItems = new List<WorkItem>();
-			var formatItems = new List<WorkItem>();
-			
+			var items = new List<WorkItem>();
+			foreach (var file in patchFiles) {
+				var relPath = RelPath(FullPatchDir, file);
+				if (relPath.EndsWith(".patch")) {
+					items.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
+					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
+				}
+				else if (relPath != DiffTask.RemovedFileList) {
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullPatchedDir, relPath))));
+				}
+			}
+
 			foreach (var file in baseFiles)
 			{
 				var relPath = RelPath(FullBaseDir, file);
-				if (DiffTask.excluded.Any(relPath.StartsWith) || removedFiles.Contains(relPath))
+				if (DiffTask.excluded.Any(relPath.StartsWith) || noCopy.Contains(relPath))
 					continue;
 
-				var srcPath = Path.Combine(FullSrcDir, relPath);
-				copyItems.Add(new WorkItem("Copying: " + relPath, () => Copy(file, srcPath)));
-
-				/*if (format != null && file.EndsWith(".cs"))
-					formatItems.Add(new WorkItem("Formatting: " + relPath,
-						() => FormatTask.Format(srcPath, format, taskInterface.CancellationToken())));*/
+				var srcPath = Path.Combine(FullPatchedDir, relPath);
+				items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, srcPath)));
 			}
-
-			foreach (var file in patchFiles) {
-				var relPath = RelPath(FullPatchDir, file);
-				if (relPath.EndsWith(".patch"))
-					patchItems.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
-				else if (relPath != DiffTask.RemovedFileList)
-					copyItems.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullSrcDir, relPath))));
-			}
-
-			taskInterface.SetMaxProgress(copyItems.Count + formatItems.Count + patchItems.Count);
-			ExecuteParallel(copyItems, false);
-			ExecuteParallel(formatItems, false);
-
+			
 			try
 			{
 				CreateDirectory(Program.LogDir);
 				logFile = new StreamWriter(Path.Combine(Program.LogDir, "patch.log"));
-				ExecuteParallel(patchItems, false);
+
+				taskInterface.SetMaxProgress(items.Count);
+				ExecuteParallel(items);
 			}
 			finally {
 				logFile?.Close();
@@ -125,21 +122,31 @@ namespace Terraria.ModLoader.Setup
 
 		private void Patch(string patchPath)
 		{
-			var patchFile = PatchFile.FromText(File.ReadAllText(patchPath));
-			//use srcFile because the base file is already copied and there may have been formatting applied
-			var srcFile = Path.Combine(Program.baseDir, patchFile.patchedPath);
-			var name = RelPath(FullSrcDir, srcFile);
+			var pf = new PatchedFile {
+				patchFilePath = patchPath,
+				patchFile = PatchFile.FromText(File.ReadAllText(patchPath)),
+				rootDir = Program.baseDir
+			};
+			pf.title = RelPath(FullBaseDir, pf.BasePath);
 
-			if (!File.Exists(srcFile))
+			if (!File.Exists(pf.BasePath))
 			{
-				Log("MISSING file " + patchFile.patchedPath + Environment.NewLine);
+				Log($"MISSING file {pf.patchFile.basePath}\n");
 				failures++;
 				return;
 			}
 
-			var unpatchedLines = File.ReadAllLines(srcFile);
-			var patcher = new Patcher(patchFile.patches, unpatchedLines);
+			pf.original = File.ReadAllLines(pf.BasePath);
+
+			var patcher = new Patcher(pf.patchFile.patches, pf.original);
 			patcher.Patch(mode);
+
+			pf.patched = patcher.ResultLines;
+			pf.results = patcher.Results.ToList();
+			results.Add(pf);
+			
+			CreateParentDirectory(pf.PatchedPath);
+			File.WriteAllLines(pf.PatchedPath, pf.patched);
 
 			int exact = 0, offset = 0;
 			foreach (var result in patcher.Results) {
@@ -155,24 +162,12 @@ namespace Terraria.ModLoader.Setup
 			}
 			
 			var log = new StringBuilder();
-			log.AppendLine($"exact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}\t{name}");
+			log.AppendLine($"{pf.title},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
 
 			foreach (var res in patcher.Results)
 				log.AppendLine(res.Summary());
 
 			Log(log.ToString());
-
-			var patchedFile = new PatchedFile {
-				title = name,
-				rootDir = Program.baseDir,
-				patchFile = patchFile,
-				patchFilePath = patchPath,
-				original = unpatchedLines,
-				patched = patcher.ResultLines,
-				results = patcher.Results.ToList(),
-			};
-			
-			results.Add(patchedFile);
 		}
 
 		private void Log(string text)
