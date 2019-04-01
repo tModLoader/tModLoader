@@ -1516,6 +1516,9 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture.</param>
 		/// <exception cref="Terraria.ModLoader.Exceptions.ModNameException">Texture already exist: " + name</exception>
 		public void AddTexture(string name, Texture2D texture) {
+			if (Main.dedServ)
+				return;
+
 			if (TextureExists(name))
 				throw new Exception("Texture already exist: " + name);
 
