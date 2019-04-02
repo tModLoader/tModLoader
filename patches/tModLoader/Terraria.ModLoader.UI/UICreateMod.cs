@@ -69,6 +69,7 @@ namespace Terraria.ModLoader.UI
 			modName.OnTextChange += (a, b) => { modName.SetText(modName.currentString.Replace(" ", "")); };
 			modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
 			modAuthor = createAndAppendTextInputWithLabel("Mod Author", "Type here");
+			// TODO: OnTab
 			// TODO: Starting Item checkbox
 
 			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint) {
@@ -122,8 +123,11 @@ namespace Terraria.ModLoader.UI
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			string modNameTrimmed = modName.currentString.Trim();
+			string sourceFolder = ModCompile.ModSourcePath + Path.DirectorySeparatorChar + modNameTrimmed;
 			var provider = CodeDomProvider.CreateProvider("C#");
-			if (!provider.IsValidIdentifier(modNameTrimmed))
+			if(Directory.Exists(sourceFolder))
+				messagePanel.SetText("Folder already exists");
+			else if (!provider.IsValidIdentifier(modNameTrimmed))
 				messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
 			else if (string.IsNullOrWhiteSpace(modDiplayName.currentString))
 				messagePanel.SetText("DisplayName can't be empty");
@@ -134,7 +138,6 @@ namespace Terraria.ModLoader.UI
 			else {
 				Main.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
-				string sourceFolder = ModCompile.ModSourcePath + Path.DirectorySeparatorChar + modNameTrimmed;
 				Directory.CreateDirectory(sourceFolder);
 
 				// TODO: Simple ModItem and PNG, verbatim line endings, localization.
