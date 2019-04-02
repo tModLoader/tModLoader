@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
-		/// The file names of this NPC's alternate texture files, if any. This will be used in the givene AutoStaticDefaults.
+		/// The file names of this NPC's alternate texture files, if any. This will be used in the given AutoStaticDefaults.
 		/// </summary>
 		public virtual string[] AltTextures => new string[0];
 		/// <summary>

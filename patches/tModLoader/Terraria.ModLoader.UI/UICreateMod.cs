@@ -66,6 +66,7 @@ namespace Terraria.ModLoader.UI
 
 			float top = 16;
 			modName = createAndAppendTextInputWithLabel("ModName (no spaces)", "Type here");
+			modName.OnTextChange += (a, b) => { modName.SetText(modName.currentString.Replace(" ", "")); };
 			modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
 			modAuthor = createAndAppendTextInputWithLabel("Mod Author", "Type here");
 			// TODO: Starting Item checkbox
