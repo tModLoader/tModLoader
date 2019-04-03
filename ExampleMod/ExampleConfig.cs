@@ -75,9 +75,9 @@ namespace ExampleMod
 			return clone;
 		}
 
-		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
+		// Here I use OnLoaded to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
-		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.
+		// Note that OnLoaded happens before AutoLoad and Mod.Load.
 		public override void OnLoaded()
 		{
 			ExampleMod.exampleServerConfig = this;
@@ -435,7 +435,7 @@ namespace ExampleMod
 		// Public fields are most common. Use public for most items.
 		public float Public;
 
-		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use PostAutoLoad in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
+		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use OnLoaded in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
 		public static float Static;
 
 		// Get only properties will show up, but will be grayed out to show that they can't be changed. 
