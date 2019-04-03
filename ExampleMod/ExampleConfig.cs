@@ -287,9 +287,12 @@ namespace ExampleMod
 		// We can also add section headers, separating fields for organization
 		[Header("Headers Section")]
 		public int Header;
-		
+
 		[Header("$Mods.ExampleMod.Common.LocalizedHeader")]
 		public int LocalizedHeader;
+
+		[Header("[i:19][c/00FF00:Green Text]")]
+		public int CoolHeader;
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
 		[BackgroundColor(85, 107, 47)]
@@ -467,6 +470,36 @@ namespace ExampleMod
 
 		// Set only properties will crash tModLoader.
 		// public float Setter { set { Public = value; } }
+
+		// The following shows how you can use properties to implement a preset system
+		public bool PresetA
+		{
+			get => Data1 == 23 && Data2 == 63;
+			set
+			{
+				if (value)
+				{
+					Data1 = 23;
+					Data2 = 63;
+				}
+			}
+		}
+
+		public bool PresetB
+		{
+			get => Data1 == 93 && Data2 == 13;
+			set
+			{
+				if (value)
+				{
+					Data1 = 93;
+					Data2 = 13;
+				}
+			}
+		}
+
+		public int Data1 { get; set; }
+		public int Data2 { get; set; }
 
 		public ModConfigShowcaseAccessibility()
 		{
