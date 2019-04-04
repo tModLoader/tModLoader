@@ -149,6 +149,15 @@ namespace Terraria.ModLoader
 			if (!Directory.Exists(modReferencesPath))
 				Directory.CreateDirectory(modReferencesPath);
 
+			var tMLPath = Assembly.GetExecutingAssembly().Location;
+			var touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
+			var touchFile = Path.Combine(modReferencesPath, "touch");
+			var lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
+			if (touchStamp == lastTouch) {
+				referencesUpdated = true;
+				return;
+			}
+
 			// this will extract all the embedded dlls, and grab a reference to the GAC assemblies
 			var libs = GetTerrariaReferences(null, windows).ToList();
 
@@ -156,8 +165,8 @@ namespace Terraria.ModLoader
 			foreach (var file in Directory.GetFiles(modReferencesPath, "*.dll"))
 				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
 					File.Delete(file);
-
-			var tMLPath = libs[0];
+			
+			// replace tML lib with inferred paths based on names 
 			libs.RemoveAt(0);
 
 			var tMLDir = Path.GetDirectoryName(tMLPath);
@@ -202,6 +211,7 @@ namespace Terraria.ModLoader
 				.Replace("%references%", string.Join("\n", referencesXMLList));
 			
 			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
+			File.WriteAllText(touchFile, touchStamp);
 			referencesUpdated = true;
 		}
 
