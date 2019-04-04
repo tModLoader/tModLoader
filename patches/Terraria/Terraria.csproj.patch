@@ -1,6 +1,6 @@
 --- src/merged\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -530,63 +_,63 @@
+@@ -531,63 +_,63 @@
      </EmbeddedResource>
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />

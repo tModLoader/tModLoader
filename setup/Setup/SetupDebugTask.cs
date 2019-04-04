@@ -35,12 +35,14 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus("Updating ModCompile version");
 			UpdateModCompileVersion(modCompile);
 
-			taskInterface.SetStatus("Generating Debug Configuration");
-			File.WriteAllText(Path.Combine(baseDir, "src/tModLoader/Terraria.csproj.user"), DebugConfig);
+			taskInterface.SetStatus("Generating launchSettings.json");
+			var launchSettingsPath = Path.Combine(baseDir, "src/tModLoader/Properties/launchSettings.json");
+			CreateParentDirectory(launchSettingsPath);
+			File.WriteAllText(launchSettingsPath, DebugConfig);
 
 			taskInterface.SetStatus("Compiling tModLoaderMac.exe");
 			compileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
-				"tModLoader.sln /p:Configuration=MacRelease /p:Platform=\"x86\"",
+				"tModLoader.sln /p:Configuration=MacRelease",
 				null, null, null, taskInterface.CancellationToken()
 			) != 0;
 		}
@@ -77,18 +79,19 @@ namespace Terraria.ModLoader.Setup
 				"Build Failed tModLoaderMac.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-		private static string DebugConfig => @"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""4.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <PropertyGroup Condition=""'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'"">
-    <StartAction>Program</StartAction>
-    <StartProgram>%steamdir%\tModLoaderDebug.exe</StartProgram>
-    <StartWorkingDirectory>%steamdir%</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition=""'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86'"">
-    <StartAction>Program</StartAction>
-    <StartProgram>%steamdir%\tModLoaderServerDebug.exe</StartProgram>
-    <StartWorkingDirectory>%steamdir%</StartWorkingDirectory>
-  </PropertyGroup>
-</Project>".Replace("%steamdir%", SteamDir);
+		private static string DebugConfig => @"{
+  ""profiles"": {
+    ""Terraria"": {
+      ""commandName"": ""Executable"",
+      ""executablePath"": ""%steamdir%/tModLoaderDebug.exe"",
+      ""workingDirectory"": ""%steamdir%""
+    },
+    ""TerrariaServer"": {
+      ""commandName"": ""Executable"",
+      ""executablePath"": ""%steamdir%/tModLoaderServerDebug.exe"",
+      ""workingDirectory"": ""%steamdir%""
+    }
+  }
+}".Replace("%steamdir%", SteamDir.Replace('\\', '/'));
 	}
 }

@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.csproj
 +++ src/merged\Terraria.csproj
-@@ -1,47 +_,77 @@
+@@ -1,48 +_,79 @@
  <?xml version="1.0" encoding="utf-8"?>
 -<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 +<Project Sdk="Microsoft.NET.Sdk">
@@ -10,12 +10,14 @@
 -    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
 +    <AssemblyName>Terraria</AssemblyName>
 +    <TargetFramework>net40</TargetFramework>
++    <Version>1.3.5.1</Version>
++    <Company>Re-Logic</Company>
++    <Copyright>Copyright © Re-Logic 2017</Copyright>
 +    <RootNamespace />
 +    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
 +    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <LangVersion>latest</LangVersion>
 +    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
      <OutputType>WinExe</OutputType>
 -    <AssemblyName>Terraria</AssemblyName>
 -    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -100,13 +102,14 @@
    </ItemGroup>
    <ItemGroup>
      <Compile Include="Extensions\EnumerationExtensions.cs" />
+-    <Compile Include="Properties\AssemblyInfo.cs" />
 +    <Compile Include="NATUPNPLib\IStaticPortMapping.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
 +    <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
 +    <Compile Include="NATUPNPLib\IUPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
 +    <Compile Include="NATUPNPLib\UPnPNAT.cs" Condition="$(DefineConstants.Contains('SERVER'))" />
-     <Compile Include="Properties\AssemblyInfo.cs" />
      <Compile Include="Terraria.Achievements\Achievement.cs" />
      <Compile Include="Terraria.Achievements\AchievementCategory.cs" />
+     <Compile Include="Terraria.Achievements\AchievementCondition.cs" />
 @@ -388,7 +_,7 @@
      <Compile Include="Terraria.UI\UIState.cs" />
      <Compile Include="Terraria.UI\UserInterface.cs" />
