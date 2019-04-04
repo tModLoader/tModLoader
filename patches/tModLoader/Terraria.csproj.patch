@@ -470,11 +470,11 @@
 +        <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
 +    </PropertyGroup>
 +    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
-+    <Exec Command="$(SolutionDir)largeaddresstool\editbin $(EditBinOpts)" />
++    <Exec Command="&quot;$(SolutionDir)largeaddresstool\editbin&quot; $(EditBinOpts)" />
 +  </Target>
 +  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-+    <Exec Command="$(ProjectDir)..\..\setup\bin\setup --steamdir" ConsoleToMsBuild="true">
++    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
 +      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
 +    </Exec>
 +    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\$(OutputName).exe" />
@@ -482,7 +482,7 @@
 +  </Target>
 +  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
 +    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
-+    <Exec Command="$(ProjectDir)..\..\setup\bin\setup --steamdir" ConsoleToMsBuild="true">
++    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
 +      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
 +    </Exec>
 +    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\ModCompile\tModLoaderMac.exe" />
