@@ -382,7 +382,7 @@ namespace Terraria.ModLoader.IO
 
 		public byte[] GetMainPDB(bool? windows = null) {
 			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
-			return HasFile("All.pdb") ? GetBytes("All.pdb") : isWindows ? GetBytes("Windows.pdb") : GetBytes("Mono.pdb");
+			return HasFile("All.pdb") ? GetBytes("All.pdb") : isWindows ? GetBytes("Windows.pdb") : GetBytes("Mono.mdb");
 		}
 	}
 }

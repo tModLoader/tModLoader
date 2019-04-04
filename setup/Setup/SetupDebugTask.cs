@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Setup
 
 			var modCompile = Path.Combine(SteamDir, "ModCompile");
 
-			var references = new[] {"FNA.dll", "Mono.Cecil.Pdb.dll" };
+			var references = new[] {"FNA.dll", "Mono.Cecil.Pdb.dll", "Mono.Cecil.Mdb.dll" };
 			foreach (var dll in references)
 				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
 

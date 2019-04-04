@@ -40,7 +40,7 @@
      <Reference Include="Steamworks.NET">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\Steamworks.NET.Windows.dll</HintPath>
        <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\Steamworks.NET.OSX.dll</HintPath>
-@@ -57,11 +_,35 @@
+@@ -57,11 +_,38 @@
      </Reference>
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
@@ -54,6 +54,9 @@
 +    </Reference>
 +    <Reference Include="Mono.Cecil">
 +      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
++    </Reference>
++    <Reference Include="Mono.Cecil.Mdb" Condition="$(DefineConstants.Contains('MONO'))">
++      <HintPath>..\..\references\Mono.Cecil.Mdb.dll</HintPath>
 +    </Reference>
 +    <Reference Include="MP3Sharp">
 +      <HintPath>..\..\references\MP3Sharp.dll</HintPath>
@@ -94,7 +97,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,209 @@
+@@ -339,6 +_,210 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -240,6 +243,7 @@
 +    <Compile Include="Terraria.ModLoader\MapEntry.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLegend.cs" />
 +    <Compile Include="Terraria.ModLoader\MapLoader.cs" />
++    <Compile Include="Terraria.ModLoader\MdbManager.cs" Condition="$(DefineConstants.Contains('MONO'))" />
 +    <Compile Include="Terraria.ModLoader\MemoryTracking.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
 +    <Compile Include="Terraria.ModLoader\ModInternals.cs" />
@@ -325,7 +329,7 @@
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -529,6 +_,19 @@
+@@ -529,6 +_,20 @@
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
@@ -339,6 +343,7 @@
 +    <EmbeddedResource Include="..\..\references\NVorbis.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
++    <EmbeddedResource Include="..\..\references\Mono.Cecil.Mdb.dll" Condition="$(DefineConstants.Contains('MONO'))"/>
 +    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
 +    <EmbeddedResource Include="..\..\references\System.ValueTuple.dll" />
