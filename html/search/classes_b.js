@@ -1,6 +1,7 @@
 var searchData=
 [
   ['maplegend',['MapLegend',['../class_terraria_1_1_mod_loader_1_1_map_legend.html',1,'Terraria::ModLoader']]],
+  ['mdbmoduleentry',['MdbModuleEntry',['../class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry.html',1,'Terraria::ModLoader::MdbManager']]],
   ['missingresourceexception',['MissingResourceException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html',1,'Terraria::ModLoader::Exceptions']]],
   ['mod',['Mod',['../class_terraria_1_1_mod_loader_1_1_mod.html',1,'Terraria::ModLoader']]],
   ['modbuff',['ModBuff',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html',1,'Terraria::ModLoader']]],

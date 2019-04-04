@@ -2,7 +2,8 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
 [
     [ "AssemblyManager.cs", "_assembly_manager_8cs.html", [
       [ "HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer" ],
-      [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ]
+      [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ],
+      [ "TerrariaCecilAssemblyResolver", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver" ]
     ] ],
     [ "AutoloadEquip.cs", "_autoload_equip_8cs.html", [
       [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ]
@@ -102,6 +103,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ]
     ] ],
     [ "MapLoader.cs", "_map_loader_8cs.html", null ],
+    [ "MdbManager.cs", "_mdb_manager_8cs.html", [
+      [ "MdbModuleEntry", "class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry.html", "class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry" ]
+    ] ],
     [ "MemoryTracking.cs", "_memory_tracking_8cs.html", null ],
     [ "Mod.cs", "_mod_8cs.html", [
       [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", "class_terraria_1_1_mod_loader_1_1_mod" ]

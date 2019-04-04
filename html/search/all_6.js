@@ -2,12 +2,12 @@ var searchData=
 [
   ['f_5factions',['f_actions',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#af4e0db1ed7f3542d851446ae31bd851f',1,'Terraria::ModLoader::GLCallLocker']]],
   ['f_5fgldevice',['f_GLDevice',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#af0856079ff6e7d08d9d61da9bfe6b5dc',1,'Terraria::ModLoader::GLCallLocker']]],
-  ['f_5fstrfilename',['f_strFileName',['../class_terraria_1_1_mod_loader_1_1_logging.html#ae6a1f763e931c7194b404a9ee056da28',1,'Terraria::ModLoader::Logging']]],
   ['face',['Face',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a120f8e2dd0b4a1ba42d7de43cd16e069',1,'Terraria.ModLoader.PlayerLayer.Face()'],['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a8af5861002f3c157f9ba842bba10aa3f',1,'Terraria.ModLoader.Face()']]],
   ['faceacc',['FaceAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a3b32234508897b5f267182bd5b2e8f2b',1,'Terraria.ModLoader.PlayerLayer.FaceAcc()'],['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#ad9bc1b2e4499a7498d1a0e49c3ca9a33',1,'Terraria.ModLoader.PlayerHeadLayer.FaceAcc()']]],
   ['facecolor',['faceColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a33a8e0380f2ed15277be1e2369325fc3',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['faceshader',['faceShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a0c3f1e77b79c1bac10a6150b646042f2',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['fallback',['fallback',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a64afcfcd8b9bcbaa786351f8267accf0',1,'Terraria::ModLoader::ModTranslation']]],
+  ['fallbackresolve',['FallbackResolve',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver.html#adee88c551068dbc68842dcaffba8853a',1,'Terraria::ModLoader::AssemblyManager::TerrariaCecilAssemblyResolver']]],
   ['file',['File',['../class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a',1,'Terraria::ModLoader::Mod']]],
   ['fileassociation',['FileAssociation',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html',1,'Terraria::ModLoader::FileAssociationSupport']]],
   ['fileassociation_2ecs',['FileAssociation.cs',['../_file_association_8cs.html',1,'']]],

@@ -35,7 +35,9 @@ var hierarchy =
     [ "ContentManager", "class_content_manager.html", [
       [ "Terraria.ModLoader.IO.TMLContentManager", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_t_m_l_content_manager.html", null ]
     ] ],
-    [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", null ],
+    [ "DefaultAssemblyResolver", "class_default_assembly_resolver.html", [
+      [ "Terraria.ModLoader.AssemblyManager.TerrariaCecilAssemblyResolver", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver.html", null ]
+    ] ],
     [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
     [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
       [ "Terraria.ModLoader.PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", null ]
@@ -103,6 +105,7 @@ var hierarchy =
     [ "Terraria.ModLoader.AssemblyManager.LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", null ],
     [ "Terraria.ModLoader.Logging", "class_terraria_1_1_mod_loader_1_1_logging.html", null ],
     [ "Terraria.ModLoader.MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", null ],
+    [ "Terraria.ModLoader.MdbManager.MdbModuleEntry", "class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry.html", null ],
     [ "Terraria.ModLoader.Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", null ],
     [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],
     [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
