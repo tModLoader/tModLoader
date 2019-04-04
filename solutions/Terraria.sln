@@ -1,40 +1,43 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "..\src\Terraria\Terraria.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\Terraria\Terraria.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		LinuxRelease|x86 = LinuxRelease|x86
-		LinuxServerRelease|x86 = LinuxServerRelease|x86
-		MacRelease|x86 = MacRelease|x86
-		MacServerRelease|x86 = MacServerRelease|x86
-		WindowsDebug|x86 = WindowsDebug|x86
-		WindowsRelease|x86 = WindowsRelease|x86
-		WindowsServerDebug|x86 = WindowsServerDebug|x86
-		WindowsServerRelease|x86 = WindowsServerRelease|x86
+		LinuxRelease|Auto = LinuxRelease|Auto
+		LinuxServerRelease|Auto = LinuxServerRelease|Auto
+		MacRelease|Auto = MacRelease|Auto
+		MacServerRelease|Auto = MacServerRelease|Auto
+		WindowsDebug|Auto = WindowsDebug|Auto
+		WindowsRelease|Auto = WindowsRelease|Auto
+		WindowsServerDebug|Auto = WindowsServerDebug|Auto
+		WindowsServerRelease|Auto = WindowsServerRelease|Auto
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|x86.ActiveCfg = LinuxRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|x86.Build.0 = LinuxRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|x86.ActiveCfg = LinuxServerRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|x86.Build.0 = LinuxServerRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|x86.ActiveCfg = MacRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|x86.Build.0 = MacRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|x86.ActiveCfg = MacServerRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|x86.Build.0 = MacServerRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|x86.ActiveCfg = WindowsDebug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|x86.Build.0 = WindowsDebug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|x86.ActiveCfg = WindowsRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|x86.Build.0 = WindowsRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|x86.ActiveCfg = WindowsServerDebug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|x86.Build.0 = WindowsServerDebug|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|x86.ActiveCfg = WindowsServerRelease|x86
-		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|x86.Build.0 = WindowsServerRelease|x86
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Auto.ActiveCfg = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxRelease|Auto.Build.0 = LinuxRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Auto.ActiveCfg = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.LinuxServerRelease|Auto.Build.0 = LinuxServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Auto.ActiveCfg = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacRelease|Auto.Build.0 = MacRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Auto.ActiveCfg = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.MacServerRelease|Auto.Build.0 = MacServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Auto.ActiveCfg = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsDebug|Auto.Build.0 = WindowsDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Auto.ActiveCfg = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsRelease|Auto.Build.0 = WindowsRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Auto.ActiveCfg = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerDebug|Auto.Build.0 = WindowsServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Auto.ActiveCfg = WindowsServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.WindowsServerRelease|Auto.Build.0 = WindowsServerRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DE165EE-78BB-462F-BF7A-69CA101A2731}
 	EndGlobalSection
 EndGlobal

@@ -1,100 +1,56 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -17,34 +_,54 @@
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsRelease|x86'">
-     <OutputPath>bin\x86\WindowsRelease\</OutputPath>
-     <DefineConstants>CLIENT; WINDOWS</DefineConstants>
-+    <PlatformTarget>x86</PlatformTarget>
-+    <PdbFile>tModLoader</PdbFile>
+@@ -13,10 +_,12 @@
+     <OutputType>WinExe</OutputType>
+     <PlatformTarget>AnyCPU</PlatformTarget>
+     <Optimize>true</Optimize>
++    <OutputName>tModLoader</OutputName>
    </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerRelease|x86'">
-     <OutputPath>bin\x86\WindowsServerRelease\</OutputPath>
-     <DefineConstants>SERVER; WINDOWS</DefineConstants>
-+    <PlatformTarget>x86</PlatformTarget>
-+    <PdbFile>tModLoaderServer</PdbFile>
+   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+     <OutputType>Exe</OutputType>
+     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
++    <OutputName>$(OutputName)Server</OutputName>
    </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsDebug|x86'">
-     <OutputPath>bin\x86\WindowsDebug\</OutputPath>
-     <DefineConstants>DEBUG;CLIENT; WINDOWS</DefineConstants>
-+    <PlatformTarget>x86</PlatformTarget>
-+    <PdbFile>tModLoaderDebug</PdbFile>
-+    <LangVersion>default</LangVersion>
+   <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
+     <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
+@@ -24,6 +_,7 @@
+   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+     <Optimize>false</Optimize>
+     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
    </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WindowsServerDebug|x86' ">
-     <DefineConstants>DEBUG;SERVER; WINDOWS</DefineConstants>
-     <OutputPath>bin\x86\WindowsServerDebug\</OutputPath>
-+    <PlatformTarget>x86</PlatformTarget>
-+    <PdbFile>tModLoaderServerDebug</PdbFile>
+   <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
+     <PlatformTarget>x86</PlatformTarget>
+@@ -36,6 +_,10 @@
+   <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
+     <DefineConstants>$(DefineConstants);LINUX;MONO</DefineConstants>
    </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacRelease|x86'">
-     <OutputPath>bin\x86\MacRelease\</OutputPath>
-     <DefineConstants>CLIENT; MAC</DefineConstants>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
-+    <PdbFile>tModLoader</PdbFile>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MacServerRelease|x86'">
-     <OutputPath>bin\x86\MacServerRelease\</OutputPath>
-     <DefineConstants>SERVER; MAC</DefineConstants>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
-+    <PdbFile>tModLoaderServer</PdbFile>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxRelease|x86'">
-     <OutputPath>bin\x86\LinuxRelease\</OutputPath>
-     <DefineConstants>CLIENT; LINUX</DefineConstants>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
-+    <PdbFile>tModLoader</PdbFile>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LinuxServerRelease|x86'">
-     <OutputPath>bin\x86\LinuxServerRelease\</OutputPath>
-     <DefineConstants>SERVER; LINUX</DefineConstants>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
-+    <PdbFile>tModLoaderServer</PdbFile>
-+  </PropertyGroup>
 +  <PropertyGroup>
++    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
-   </PropertyGroup>
-   <Choose>
-     <When Condition="$(DefineConstants.Contains('DEBUG'))">
-@@ -81,19 +_,67 @@
-       <HintPath>Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll</HintPath>
-     </Reference>
++  </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="!$(DefineConstants.Contains('MONO'))" />
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="!$(DefineConstants.Contains('MONO'))" />
+@@ -43,6 +_,7 @@
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="!$(DefineConstants.Contains('MONO'))" />
+     <Reference Include="Newtonsoft.Json" />
      <Reference Include="System" />
--    <Reference Include="Steamworks.NET">
 +    <Reference Include="System.XML" />
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <SpecificVersion>False</SpecificVersion>
-       <HintPath>Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
-     </Reference>
--    <Reference Include="ReLogic">
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('MAC'))">
-+      <SpecificVersion>False</SpecificVersion>
-+      <HintPath>..\..\references\Steamworks.NET.OSX.dll</HintPath>
-+    </Reference>
-+    <Reference Include="Steamworks.NET, Version=7.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <SpecificVersion>False</SpecificVersion>
-+      <HintPath>..\..\references\Steamworks.NET.Linux.dll</HintPath>
-+    </Reference>
-+    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('WINDOWS'))">
-       <HintPath>Terraria.Libraries\ReLogic\ReLogic.dll</HintPath>
-+    </Reference>
-+    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('MAC'))">
-+      <HintPath>..\..\references\ReLogicMac.dll</HintPath>
-+    </Reference>
-+    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <HintPath>..\..\references\ReLogicLinux.dll</HintPath>
+     <Reference Include="Steamworks.NET">
+       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\Steamworks.NET.Windows.dll</HintPath>
+       <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\Steamworks.NET.OSX.dll</HintPath>
+@@ -55,11 +_,35 @@
      </Reference>
      <Reference Include="System.Core" />
-     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('WINDOWS'))" />
      <Reference Include="System.Drawing" />
 -    <Reference Include="Ionic.Zip.CF">
 -      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
--    </Reference>
--    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="Ionic.Zip.Reduced">
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
-+    </Reference>
-+    <Reference Include="FNA" Condition="!$(DefineConstants.Contains('WINDOWS'))">
-+      <HintPath>..\..\references\FNA.dll</HintPath>
+     </Reference>
+     <Reference Include="FNA" Condition="$(DefineConstants.Contains('MONO'))">
+       <HintPath>..\..\references\FNA.dll</HintPath>
 +    </Reference>
 +    <Reference Include="Mono.Cecil">
 +      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
@@ -111,7 +67,7 @@
 +    <Reference Include="TerrariaHooks" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <HintPath>..\..\references\TerrariaHooks.Windows.dll</HintPath>
 +    </Reference>
-+    <Reference Include="TerrariaHooks" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++    <Reference Include="TerrariaHooks" Condition="$(DefineConstants.Contains('MONO'))">
 +      <HintPath>..\..\references\TerrariaHooks.Mono.dll</HintPath>
 +    </Reference>
 +    <Reference Include="MonoMod.RuntimeDetour">
@@ -119,17 +75,10 @@
 +    </Reference>
 +    <Reference Include="MonoMod.Utils">
 +      <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
-+    </Reference>
-+    <Reference Include="System.ValueTuple">
-+      <HintPath>..\..\references\System.ValueTuple.dll</HintPath>
-+    </Reference>
-+    <Reference Include="System.Windows.Forms">
-+      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
-+    </Reference>
-     <Reference Include="WindowsBase" />
-   </ItemGroup>
-   <ItemGroup>
-@@ -326,9 +_,15 @@
+     </Reference>
+     <Reference Include="System.Windows.Forms">
+       <HintPath Condition="$(DefineConstants.Contains('MONO'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
+@@ -296,9 +_,15 @@
      <Compile Include="Terraria.ID\GoreID.cs" />
      <Compile Include="Terraria.ID\InvasionID.cs" />
      <Compile Include="Terraria.ID\ItemAlternativeFunctionID.cs" />
@@ -145,7 +94,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -368,6 +_,209 @@
+@@ -338,6 +_,209 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -275,7 +224,7 @@
 +    <Compile Include="Terraria.ModLoader\EquipType.cs" />
 +    <Compile Include="Terraria.ModLoader\ErrorLogger.cs" />
 +    <Compile Include="Terraria.ModLoader\FileAssociation.cs" />
-+    <Compile Include="Terraria.ModLoader\FNAThreading.cs" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
++    <Compile Include="Terraria.ModLoader\FNAThreading.cs" Condition="$(DefineConstants.Contains('MONO'))" />
 +    <Compile Include="Terraria.ModLoader\GLCallLocker.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalBuff.cs" />
 +    <Compile Include="Terraria.ModLoader\GlobalItem.cs" />
@@ -355,7 +304,7 @@
      <Compile Include="Terraria.Modules\AnchorDataModule.cs" />
      <Compile Include="Terraria.Modules\AnchorTypesModule.cs" />
      <Compile Include="Terraria.Modules\LiquidDeathModule.cs" />
-@@ -495,6 +_,7 @@
+@@ -465,6 +_,7 @@
      <Compile Include="Terraria\IngameOptions.cs" />
      <Compile Include="Terraria\Item.cs" />
      <Compile Include="Terraria\ItemText.cs" />
@@ -363,53 +312,40 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -538,10 +_,41 @@
+@@ -508,8 +_,10 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
 -    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
--    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" />
--    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" />
 +    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
 +    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
 +      <LogicalName>Newtonsoft.Json.dll</LogicalName>
 +    </EmbeddedResource>
-+    <EmbeddedResource Include="Terraria.Libraries\ReLogic\ReLogic.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>ReLogic.dll</LogicalName>
+     <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
+       <LogicalName>ReLogic.dll</LogicalName>
+     </EmbeddedResource>
+@@ -528,6 +_,19 @@
+     <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
+       <LogicalName>Steamworks.NET.dll</LogicalName>
+     </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>ReLogic.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>ReLogic.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="Terraria.Libraries\Steamworks.NET.Windows\Steamworks.NET.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
++    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="$(DefineConstants.Contains('MONO'))">
++      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\NVorbis.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
-+    <EmbeddedResource Include="..\..\references\TerrariaHooks.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>TerrariaHooks.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\TerrariaHooks.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>TerrariaHooks.dll</LogicalName>
-+    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
 +    <EmbeddedResource Include="..\..\references\System.ValueTuple.dll" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -606,5 +_,151 @@
+@@ -592,4 +_,142 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -526,39 +462,30 @@
 +    <EmbeddedResource Include="Terraria.Localization.Content.it-IT.tModLoader.json" />
 +    <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.tModLoader.json" />
 +  </ItemGroup>
-+  <ItemGroup />
-   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
--</Project>
-+  <PropertyGroup>
-+    <PostBuildEvent>SET CONFIGNAME=$(ConfigurationName)
-+
-+SET EDITBINOPTS=/largeaddressaware
-+IF NOT %25CONFIGNAME:Debug=%25==%25CONFIGNAME%25 SET EDITBINOPTS=%25EDITBINOPTS%25 /stack:0x800000
-+"$(SolutionDir)"largeaddresstool\editbin %25EDITBINOPTS%25 "$(TargetPath)"
-+
-+SET RELEASEFILE=""
-+
-+IF $(ConfigurationName) == MacRelease SET RELEASEFILE=ModCompile/tModLoaderMac
-+IF $(ConfigurationName) == WindowsServerDebug SET RELEASEFILE=tModLoaderServerDebug
-+IF $(ConfigurationName) == WindowsServerRelease SET RELEASEFILE=tModLoaderServer
-+IF $(ConfigurationName) == WindowsDebug SET RELEASEFILE=tModLoaderDebug
-+IF $(ConfigurationName) == WindowsRelease SET RELEASEFILE=tModLoader
-+
-+for /f "tokens=* delims=" %25%25i in ('"$(ProjectDir)..\..\setup\bin\setup" --steamdir') do set TERRARIASTEAMDIR=%25%25i
-+
-+IF NOT %25RELEASEFILE%25=="" (
-+
-+mkdir "%25TERRARIASTEAMDIR%25\ModCompile\"
-+copy "$(TargetDir)$(TargetName)$(TargetExt)" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25$(TargetExt)"
-+
-+IF NOT %25RELEASEFILE:Debug=%25==%25RELEASEFILE%25 (
-+	copy "$(TargetDir)%25RELEASEFILE%25.pdb" "%25TERRARIASTEAMDIR%25\%25RELEASEFILE%25.pdb"
-+)
-+
-+)</PostBuildEvent>
-+  </PropertyGroup>
-+  <PropertyGroup>
-+    <PreBuildEvent>
-+    </PreBuildEvent>
-+  </PropertyGroup>
-+</Project>
++  <Target Name="EditBin" AfterTargets="Build">
++    <PropertyGroup>
++        <EditBinOpts>/largeaddressaware</EditBinOpts>
++    </PropertyGroup>
++    <PropertyGroup Condition="$(DefineConstants.Contains('DEBUG'))">
++        <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
++    </PropertyGroup>
++    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
++    <Exec Command="$(SolutionDir)largeaddresstool\editbin $(EditBinOpts)" />
++  </Target>
++  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
++    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
++    <Exec Command="$(ProjectDir)..\..\setup\bin\setup --steamdir" ConsoleToMsBuild="true">
++      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
++    </Exec>
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(SteamDir)" />
++  </Target>
++  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
++    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
++    <Exec Command="$(ProjectDir)..\..\setup\bin\setup --steamdir" ConsoleToMsBuild="true">
++      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
++    </Exec>
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\ModCompile\tModLoaderMac.exe" />
++  </Target>
+ </Project>
+
