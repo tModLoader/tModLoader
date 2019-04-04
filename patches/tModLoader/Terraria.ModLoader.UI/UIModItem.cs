@@ -7,10 +7,8 @@ using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.UI;
-using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
-using System.Reflection;
 using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI

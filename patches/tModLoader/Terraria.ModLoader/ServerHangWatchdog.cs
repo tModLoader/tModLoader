@@ -39,6 +39,8 @@ namespace Terraria.ModLoader
 		}
 
 		//https://stackoverflow.com/questions/285031/how-to-get-non-current-threads-stacktrace
+		
+		#pragma warning disable CS0618 // Type or member is obsolete
 		private static StackTrace GetStackTrace(Thread targetThread) {
 			using (ManualResetEvent fallbackThreadReady = new ManualResetEvent(false), exitedSafely = new ManualResetEvent(false)) {
 				Thread fallbackThread = new Thread(delegate () {
