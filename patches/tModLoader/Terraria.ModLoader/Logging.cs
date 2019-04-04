@@ -328,7 +328,7 @@ namespace Terraria.ModLoader
 
 		private static void PrettifyStackTraceSources() {
 #if WINDOWS
-			if (f_strFileName == null)
+			if (f_fileName == null)
 				return;
 
 			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
