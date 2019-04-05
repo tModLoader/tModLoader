@@ -355,7 +355,9 @@ namespace Terraria.ModLoader.IO
 
 			// make a backup
 			fileStream.Seek(0, SeekOrigin.Begin);
-			using (var backupStream = File.OpenWrite(path+".bak"))
+			var backupFolder = Path.Combine(Path.GetDirectoryName(path), "UpgradeBackup");
+			Directory.CreateDirectory(backupFolder);
+			using (var backupStream = File.OpenWrite(Path.Combine(backupFolder, Path.GetFileName(path))))
 				fileStream.CopyTo(backupStream);
 
 			// write to the new format (also updates the file offset table)
