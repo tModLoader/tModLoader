@@ -80,6 +80,7 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool allowGreaterResolutions;
 		internal static bool showMemoryEstimates;
+		internal static bool ignoreForcedHiDef; // Beta 4 test
 
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
@@ -310,6 +311,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
+			Main.Configuration.Put("IgnoreForcedHiDef", ignoreForcedHiDef);
 		}
 
 		internal static void LoadConfiguration() {

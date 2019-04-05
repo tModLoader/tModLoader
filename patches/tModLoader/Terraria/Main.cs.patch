@@ -670,16 +670,22 @@
  			}
  			return result;
  		}
-@@ -7482,18 +_,20 @@
+@@ -7482,18 +_,22 @@
  			}
  			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
  			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
-+			/* tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
- 			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
- 			{
- 				flag = false;
- 			}
-+			*/
+-			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
+-			{
+-				flag = false;
+-			}
++			Main.Configuration.Get("IgnoreForcedHiDef", ref ModLoader.ModLoader.ignoreForcedHiDef);
++			// tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
++			if (ModLoader.ModLoader.ignoreForcedHiDef)
++				if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
++				{
++					flag = false;
++				}
++			//
  			if (Main.Support4K && flag)
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
