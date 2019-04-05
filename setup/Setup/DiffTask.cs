@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiffPatch;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace Terraria.ModLoader.Setup
 {
 	public class DiffTask : Task
 	{
-		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json" };
-		public static string[] excluded = { "bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar };
+		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json" };
+		private static bool IsDiffable(string relPath) => extensions.Any(relPath.EndsWith);
+
 		public static readonly string RemovedFileList = "removed_files.list";
 		public static readonly Regex HunkOffsetRegex = new Regex(@"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@", RegexOptions.Compiled);
-
-
+		
 		public readonly string baseDir;
 		public readonly string patchedDir;
 		public readonly string patchDir;
@@ -31,76 +32,55 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			var patchFiles = new HashSet<string>(
-				Directory.EnumerateFiles(patchDir, "*", SearchOption.AllDirectories)
-				.Select(file => RelPath(patchDir, file)));
-			var oldFiles = new HashSet<string>(
-				Directory.EnumerateFiles(baseDir, "*", SearchOption.AllDirectories)
-				.Select(file => RelPath(baseDir, file))
-				.Where(relPath => !relPath.EndsWith(".patch") && !excluded.Any(relPath.StartsWith)));
-
 			var items = new List<WorkItem>();
-
-			foreach (var file in Directory.EnumerateFiles(patchedDir, "*", SearchOption.AllDirectories))
+			
+			foreach (var (file, relPath) in PatchTask.EnumerateSrcFiles(patchedDir))
 			{
-				var relPath = RelPath(patchedDir, file);
-				oldFiles.Remove(relPath);
-				if (!extensions.Any(relPath.EndsWith))
+				if (File.GetLastWriteTime(file) < cutoff.Get())
 					continue;
 
-				patchFiles.Remove(relPath);
-				patchFiles.Remove(relPath + ".patch");
-
-				if (excluded.Any(relPath.StartsWith) || File.GetLastWriteTime(file) < cutoff.Get())
-					continue;
-
-				items.Add(File.Exists(Path.Combine(baseDir, relPath))
-					? new WorkItem("Creating Diff: " + relPath, () => Diff(relPath))
-					: new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchDir, relPath))));
+				if (!File.Exists(Path.Combine(baseDir, relPath)))
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchDir, relPath))));
+				else if (IsDiffable(relPath))
+					items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
 			}
 
 			ExecuteParallel(items);
 
 			taskInterface.SetStatus("Deleting Unnessesary Patches");
-			foreach (var file in patchFiles)
-				File.Delete(Path.Combine(patchDir, file));
+			foreach (var (file, relPath) in EnumerateFiles(patchDir)) {
+				var targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
+				if (!File.Exists(Path.Combine(patchedDir, targetPath)))
+					DeleteFile(file);
+			}
+
+			DeleteEmptyDirs(patchDir);
 
 			taskInterface.SetStatus("Noting Removed Files");
+			var removedFiles = PatchTask.EnumerateSrcFiles(baseDir)
+				.Where(f => !File.Exists(Path.Combine(patchedDir, f.relPath)))
+				.Select(f => f.relPath)
+				.ToArray();
+
 			var removedFileList = Path.Combine(patchDir, RemovedFileList);
-			if (oldFiles.Count > 0)
-				File.WriteAllText(removedFileList, string.Join("\r\n", oldFiles));
-			else if (File.Exists(removedFileList))
-				File.Delete(removedFileList);
+			if (removedFiles.Length > 0)
+				File.WriteAllLines(removedFileList, removedFiles);
+			else
+				DeleteFile(removedFileList);
 
 			cutoff.Set(DateTime.Now);
 		}
 
 		private void Diff(string relPath)
 		{
-			var srcFile = Path.Combine(patchedDir, relPath);
-			var baseFile = Path.Combine(baseDir, relPath);
-
-			/*string temp = null;
-			if (srcFile.EndsWith(".cs") && format != null)
-			{
-				temp = Path.GetTempPath() + Guid.NewGuid() + ".cs";
-				File.WriteAllText(temp, FormatTask.FormatCode(File.ReadAllText(baseFile), format, taskInterface.CancellationToken()));
-				baseFile = temp;
-			}*/
-
-			var patch = CallDiff(baseFile, srcFile, Path.Combine(baseDir, relPath), Path.Combine(patchedDir, relPath));
-
-			/*if (temp != null)
-				File.Delete(temp);*/
-
-			var patchFile = Path.Combine(patchDir, relPath + ".patch");
-			if (patch.Trim() != "") {
-				CreateParentDirectory(patchFile);
-				File.WriteAllText(patchFile, StripDestHunkOffsets(patch));
+			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(), Path.Combine(baseDir, relPath), Path.Combine(patchedDir, relPath));
+			var patchPath = Path.Combine(patchDir, relPath + ".patch");
+			if (!patchFile.IsEmpty) {
+				CreateParentDirectory(patchPath);
+				File.WriteAllText(patchPath, patchFile.ToString(true));
 			}
-			else if (File.Exists(patchFile))
-				File.Delete(patchFile);
-
+			else
+				DeleteFile(patchPath);
 		}
 
 		private static string StripDestHunkOffsets(string patchText) {

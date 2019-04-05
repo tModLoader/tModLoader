@@ -106,7 +106,6 @@ namespace Terraria.ModLoader.Setup
 		public override void Run()
 		{
 			taskInterface.SetStatus("Deleting Old Src");
-
 			if (Directory.Exists(srcDir))
 				Directory.Delete(srcDir, true);
 			

@@ -139,8 +139,7 @@ namespace Terraria.ModLoader.Setup
 			var errorLogFile = Path.Combine(Program.logsDir, "error.log");
 			try
 			{
-				if (File.Exists(errorLogFile))
-					File.Delete(errorLogFile);
+				Task.DeleteFile(errorLogFile);
 
 				if (!task.ConfigurationDialog())
 					return;

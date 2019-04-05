@@ -83,9 +83,30 @@ namespace Terraria.ModLoader.Setup
 			CreateDirectory(Path.GetDirectoryName(path));
 		}
 
+		public static void DeleteFile(string path) {
+			if (File.Exists(path))
+				File.Delete(path);
+		}
+
 		public static void Copy(string from, string to) {
 			CreateParentDirectory(to);
 			File.Copy(from, to, true);
+		}
+
+		public static IEnumerable<(string file, string relPath)> EnumerateFiles(string dir) =>
+			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
+			.Select(path => (file: path, relPath: RelPath(dir, path)));
+
+		public static bool DeleteEmptyDirs(string dir) {
+			bool allEmpty = true;
+			foreach (var subDir in Directory.EnumerateDirectories(dir))
+				allEmpty &= DeleteEmptyDirs(subDir);
+			
+			if (!allEmpty || Directory.EnumerateFiles(dir).Any())
+				return false;
+
+			Directory.Delete(dir);
+			return true;
 		}
 
 		protected readonly ITaskInterface taskInterface;

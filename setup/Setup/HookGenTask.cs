@@ -16,8 +16,7 @@ namespace Terraria.ModLoader.Setup
 				throw new FileNotFoundException(Program.TerrariaPath);
 
 			var outputPath = Path.Combine(Program.referencesDir, "TerrariaHooks.Windows.dll");
-			if (File.Exists(outputPath))
-				File.Delete(outputPath);
+			DeleteFile(outputPath);
 
 			taskInterface.SetStatus($"Hooking: Terraria.exe -> TerrariaHooks.dll");
 			HookGen(Program.TerrariaPath, outputPath, Program.referencesDir);
@@ -25,13 +24,12 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus($"XnaToFna: TerrariaHooks.Windows.dll -> TerrariaHooks.Mono.dll");
 
 			var monoPath = Path.Combine(Program.referencesDir, "TerrariaHooks.Mono.dll");
-			if (File.Exists(monoPath))
-				File.Delete(monoPath);
+			DeleteFile(monoPath);
 
-			File.Copy(outputPath, monoPath);
+			Copy(outputPath, monoPath);
 			XnaToFna(monoPath, Program.referencesDir);
 
-			File.Delete(Path.ChangeExtension(monoPath, "pdb"));
+			DeleteFile(Path.ChangeExtension(monoPath, "pdb"));
 		}
 
 		public static void HookGen(string inputPath, string outputPath, string refsDir) {

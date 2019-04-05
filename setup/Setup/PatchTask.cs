@@ -14,6 +14,10 @@ namespace Terraria.ModLoader.Setup
 {
 	public class PatchTask : Task
 	{
+		private static string[] nonSourceDirs = { "bin", "obj" };
+		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
+			EnumerateFiles(dir).Where(f => !nonSourceDirs.Contains(Path.GetPathRoot(f.relPath)));
+
 		public readonly string baseDir;
 		public readonly string patchedDir;
 		public readonly string patchDir;
@@ -24,7 +28,7 @@ namespace Terraria.ModLoader.Setup
 		private int fuzzy;
 		private StreamWriter logFile;
 
-		private readonly ConcurrentBag<PatchedFile> results = new ConcurrentBag<PatchedFile>();
+		private readonly ConcurrentBag<FilePatcher> results = new ConcurrentBag<FilePatcher>();
 
 		public PatchTask(ITaskInterface taskInterface, string baseDir, string patchedDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
@@ -45,23 +49,16 @@ namespace Terraria.ModLoader.Setup
 		public override void Run()
 		{
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
-			taskInterface.SetStatus("Deleting Old Src");
 
+			taskInterface.SetStatus("Deleting Old Src");
 			if (Directory.Exists(patchedDir))
 				Directory.Delete(patchedDir, true);
-
-			var baseFiles = Directory.EnumerateFiles(baseDir, "*", SearchOption.AllDirectories);
-			var patchFiles = Directory.EnumerateFiles(patchDir, "*", SearchOption.AllDirectories);
-
-			var noCopy = new HashSet<string>();
+			
 			var removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
-			if(File.Exists(removedFileList))
-				foreach (var line in File.ReadAllLines(removedFileList))
-					noCopy.Add(line);
+			var noCopy = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
 
 			var items = new List<WorkItem>();
-			foreach (var file in patchFiles) {
-				var relPath = RelPath(patchDir, file);
+			foreach (var (file, relPath) in EnumerateFiles(patchDir)) {
 				if (relPath.EndsWith(".patch")) {
 					items.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
 					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
@@ -71,15 +68,9 @@ namespace Terraria.ModLoader.Setup
 				}
 			}
 
-			foreach (var file in baseFiles)
-			{
-				var relPath = RelPath(baseDir, file);
-				if (DiffTask.excluded.Any(relPath.StartsWith) || noCopy.Contains(relPath))
-					continue;
-
-				var srcPath = Path.Combine(patchedDir, relPath);
-				items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, srcPath)));
-			}
+			foreach (var (file, relPath) in EnumerateSrcFiles(baseDir))
+				if (!noCopy.Contains(relPath))
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchedDir, relPath))));
 			
 			try
 			{
@@ -97,8 +88,10 @@ namespace Terraria.ModLoader.Setup
 
 			if (fuzzy > 0)
 				taskInterface.Invoke(new Action(() => {
-					var w = new ReviewWindow(results);
-					w.AutoHeaders = true;
+					var w = new ReviewWindow(results) {
+						AutoHeaders = true,
+						ItemLabeller = GetTitle
+					};
 					ElementHost.EnableModelessKeyboardInterop(w);
 					w.ShowDialog();
 				}));
@@ -118,34 +111,14 @@ namespace Terraria.ModLoader.Setup
 
 		private void Patch(string patchPath)
 		{
-			var pf = new PatchedFile {
-				patchFilePath = patchPath,
-				patchFile = PatchFile.FromText(File.ReadAllText(patchPath)),
-				rootDir = ""
-			};
-			pf.title = RelPath(baseDir, pf.BasePath);
-
-			if (!File.Exists(pf.BasePath))
-			{
-				Log($"MISSING file {pf.patchFile.basePath}\n");
-				failures++;
-				return;
-			}
-
-			pf.original = File.ReadAllLines(pf.BasePath);
-
-			var patcher = new Patcher(pf.patchFile.patches, pf.original);
+			var patcher = FilePatcher.FromPatchFile(patchPath);
 			patcher.Patch(mode);
-
-			pf.patched = patcher.ResultLines;
-			pf.results = patcher.Results.ToList();
-			results.Add(pf);
-			
-			CreateParentDirectory(pf.PatchedPath);
-			File.WriteAllLines(pf.PatchedPath, pf.patched);
+			results.Add(patcher);
+			CreateParentDirectory(patcher.PatchedPath);
+			patcher.Save();
 
 			int exact = 0, offset = 0;
-			foreach (var result in patcher.Results) {
+			foreach (var result in patcher.results) {
 				if (!result.success) {
 					failures++;
 					continue;
@@ -158,13 +131,15 @@ namespace Terraria.ModLoader.Setup
 			}
 			
 			var log = new StringBuilder();
-			log.AppendLine($"{pf.title},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
+			log.AppendLine($"{GetTitle(patcher)},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
 
-			foreach (var res in patcher.Results)
+			foreach (var res in patcher.results)
 				log.AppendLine(res.Summary());
 
 			Log(log.ToString());
 		}
+
+		private string GetTitle(FilePatcher patcher) => RelPath(baseDir, patcher.patchFile.basePath);
 
 		private void Log(string text)
 		{
