@@ -328,6 +328,12 @@ namespace Terraria.ModLoader
 		private bool Build(BuildingMod mod) {
 			status.SetMod(mod.Name);
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
+			
+			if (Program.LaunchParameters.ContainsKey("-eac") && !windows) {
+				status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACWindowsOnly"));
+				return false;
+			}
+
 			byte[] winDLL = null;
 			byte[] monoDLL = null;
 			byte[] pdb = null;
@@ -352,14 +358,8 @@ namespace Terraria.ModLoader
 					return false;
 				}
 
-				if (Program.LaunchParameters.ContainsKey("-eac") && pdb != null) {
-					if (!windows) {
-						status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACWindowsOnly"));
-						return false;
-					}
-
+				if (Program.LaunchParameters.ContainsKey("-eac") && pdb != null)
 					mod.properties.editAndContinue = true;
-				}
 			}
 			else {
 				List<LocalMod> refMods;
@@ -372,11 +372,6 @@ namespace Terraria.ModLoader
 				}
 
 				if (Program.LaunchParameters.ContainsKey("-eac")) {
-					if (!windows) {
-						status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACWindowsOnly"));
-						return false;
-					}
-
 					var winPath = Program.LaunchParameters["-eac"];
 					try {
 						status.SetStatus(Language.GetTextValue("tModLoader.LoadingEAC"));
@@ -709,7 +704,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void PostProcess(string path, bool forWindows) {
-			//if (forWindows)
+			if (forWindows)
 				return;
 
 			var asm = AssemblyDefinition.ReadAssembly(path, new ReaderParameters {
@@ -744,6 +739,9 @@ namespace Terraria.ModLoader
 							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
 								attr.AttributeType.Scope = GetOrAddSystemCore(module);
 			
+			// note, mdb files don't actually use the debug header, so this may be completely redundant
+			// it appears that we haven't disturbed the mdb matching mechanism or any of the method tokens
+			// if bugs appear in the future, we'll need to read and write the mdb like in RoslynWrapper.Cecilize
 			asm.Write(new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
 			asm.Dispose();
 		}

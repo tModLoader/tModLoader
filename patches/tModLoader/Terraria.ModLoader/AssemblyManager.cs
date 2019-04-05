@@ -282,11 +282,13 @@ namespace Terraria.ModLoader
 
 			RecalculateReferences();
 
-			/*if (Debugger.IsAttached) {
+#if !MONO	//as far as we know, mono doesn't support edit and continue anyway
+			if (Debugger.IsAttached) {
 				ModCompile.DeveloperMode = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
-			}*/
+			}
+#endif
 
 			try {
 				//load all the assemblies in parallel.
