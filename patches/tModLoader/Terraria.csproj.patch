@@ -478,7 +478,7 @@
 +    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
 +    <Exec Command="&quot;$(SolutionDir)largeaddresstool\editbin&quot; $(EditBinOpts) &quot;$(TargetPath)&quot;" />
 +	<Message Text="Checking headers with dumpbin." Importance="high" />
-+	<Exec Command="&quot;$(SolutionDir)largeaddresstool\dumpbin&quot; $(DumpBin) &quot;$(TargetPath)&quot;" />
++	<Exec Command="&quot;$(SolutionDir)largeaddresstool\dumpbin&quot; $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
 +  </Target>
 +  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
