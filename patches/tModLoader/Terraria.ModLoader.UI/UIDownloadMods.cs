@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -84,50 +86,76 @@ namespace Terraria.ModLoader.UI
 				}
 				else {
 					var errorKey = GetHttpStatusCode(e.Error) == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
-					Interface.errorMessage.Show(Language.GetTextValue("tModLoader."+errorKey), 0);
+					Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
 				}
-				File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
 			}
 			else if (!e.Cancelled) {
 				// Downloaded OK
-				var mod = ModLoader.GetMod(currentDownload.mod);
-				if (mod != null) {
-					mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
-					Interface.modBrowser.anEnabledModDownloaded = true;
-				}
-				//string destinationFileName = ModLoader.GetMod(currentDownload.mod) == null ? currentDownload.mod + ".tmod" : currentDownload.mod + ".tmod.update"; // if above fix has issues we can use this.
-				File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + currentDownload.mod + ".tmod", true);
-				File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
-				if (!currentDownload.update) {
-					Interface.modBrowser.aNewModDownloaded = true;
-				}
-				else {
-					Interface.modBrowser.aModUpdated = true;
-				}
-				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
-					ModLoader.EnableMod(currentDownload.mod);
-				}
-
-				// Start next download
-				if (modsToDownload.Count != 0) {
-					currentDownload = modsToDownload.Dequeue();
-					loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
-					loadProgress.SetProgress(0f);
-					client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
-				}
-				else {
-					client.Dispose();
-					client = null;
-					Interface.modBrowser.ClearItems();
-					Main.menuMode = Interface.modBrowserID;
-					if (missingMods.Count > 0) {
-						Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)), Interface.modsMenuID);
+				loadProgress.SetText(Language.GetTextValue("tModLoader.MBInstallingMod", $"{currentDownload.displayname}"));
+				Task.Factory.StartNew(() => {
+					var mod = ModLoader.GetMod(currentDownload.mod);
+					if (mod != null) {
+						Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{mod.Name}: {mod.DisplayName}"));
+						mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+						Interface.modBrowser.anEnabledModDownloaded = true;
 					}
-				}
+					try {
+						//string destinationFileName = ModLoader.GetMod(currentDownload.mod) == null ? currentDownload.mod + ".tmod" : currentDownload.mod + ".tmod.update"; // if above fix has issues we can use this.
+						File.Copy(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod", ModLoader.ModPath + Path.DirectorySeparatorChar + currentDownload.mod + ".tmod", true);
+						File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
+					}
+					catch (Exception exc) {
+						Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", "temporaryDownload.tmod"), exc);
+					}
+					finally {
+						if (!currentDownload.update) {
+							Interface.modBrowser.aNewModDownloaded = true;
+						}
+						else {
+							Interface.modBrowser.aModUpdated = true;
+						}
+						if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+							ModLoader.EnableMod(currentDownload.mod);
+						}
+					}
+				}, TaskCreationOptions.PreferFairness | TaskCreationOptions.LongRunning)
+				.ContinueWith(task => {
+					// Start next download
+					if (modsToDownload.Count != 0) {
+						currentDownload = modsToDownload.Dequeue();
+						loadProgress.SetText(Language.GetTextValue("tModLoader.MBDownloadingMod", $"{name}: {currentDownload.displayname}"));
+						loadProgress.SetProgress(0f);
+						client.DownloadFileAsync(new Uri(currentDownload.download), ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
+					}
+					else {
+						Logging.tML.Info(Language.GetTextValue("tModLoader.MBDownloadFinished"));
+						client.Dispose();
+						client = null;
+						Interface.modBrowser.RemoveItem(currentDownload);
+						Interface.modBrowser.updateNeeded = true;
+						Main.menuMode = Interface.modBrowserID;
+						if (missingMods.Count > 0) {
+							Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", String.Join(",", missingMods)), Interface.modsMenuID);
+						}
+					}
+				}, CancellationToken.None,
+				TaskContinuationOptions.ExecuteSynchronously,
+				TaskScheduler.FromCurrentSynchronizationContext());
+
+				return;
 			}
-			else {
+
+			Task.Factory.StartNew(() => {
 				File.Delete(ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod");
-			}
+			}, TaskCreationOptions.PreferFairness)
+			.ContinueWith(task => {
+				if (task.Status != TaskStatus.RanToCompletion
+					&& task.Exception != null) {
+					Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", "temporaryDownload.tmod"), task.Exception);
+				}
+			}, CancellationToken.None,
+			TaskContinuationOptions.ExecuteSynchronously,
+			TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
@@ -144,7 +172,6 @@ namespace Terraria.ModLoader.UI
 
 		internal void SetProgress(DownloadProgressChangedEventArgs e) => SetProgress(e.BytesReceived, e.TotalBytesToReceive);
 		internal void SetProgress(long count, long len) {
-			//loadProgress?.SetText("Downloading: " + name + " -- " + count+"/" + len);
 			loadProgress?.SetProgress((float)count / len);
 		}
 

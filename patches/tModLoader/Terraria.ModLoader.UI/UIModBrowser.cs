@@ -361,6 +361,10 @@ namespace Terraria.ModLoader.UI
 				PopulateModBrowser();
 		}
 
+		internal bool RemoveItem(UIModDownloadItem item) {
+			return items.Remove(item);
+		}
+
 		internal void ClearItems() {
 			items.Clear();
 		}
@@ -406,7 +410,7 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			catch (Exception e) {
-				UIModBrowser.LogModBrowserException(e);
+				LogModBrowserException(e);
 				return;
 			}
 		}

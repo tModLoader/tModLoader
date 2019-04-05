@@ -134,6 +134,10 @@
 		"MBDownload": "Pobierz",
 		// "MBDownloadAll": "Download All",
 		"MBDownloadingMod": "Pobieranie: {0}",
+		// "MBInstallingMod": "Installing: {0}",
+		// "MBDownloadFileProblem": "Failed to handle {0}",
+		// "MBReleaseFileHandle": "Releasing file handle for {0}",
+		// "MBDownloadFinished": "Downloading mods finished, returning to browser",
 		"MBUploadingMod": "Wysyłanie: {0}",
 		"MBDowngrade": "Zdezaktualizuj",
 		"MBUpdate": "Zaktualizuj",
@@ -256,7 +260,7 @@
 		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
 		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
 		// "DMVisualStudio": "Visual Studio",
-		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorals.",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorials.",
 		// "DMTutorial": "Tutorial",
 
 		// Extract Mod
