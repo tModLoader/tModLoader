@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.UI;
 
@@ -28,7 +29,7 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private readonly Texture2D innerPanelTexture;
+		private UIPanel _hoverPanel;
 		internal static bool recalculateMemoryNeeded = true;
 		private List<MemoryBarItem> memoryBarItems;
 		private long maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
@@ -36,12 +37,12 @@ namespace Terraria.ModLoader.UI
 		public UIMemoryBar() {
 			Width.Set(0f, 1f);
 			Height.Set(20f, 0f);
-			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 			memoryBarItems = new List<MemoryBarItem>();
 		}
 
 		public override void OnActivate() {
 			base.OnActivate();
+			// moved from constructor to avoid texture loading on JIT thread
 			recalculateMemoryNeeded = true;
 			ThreadPool.QueueUserWorkItem(_ => {
 				RecalculateMemory();
@@ -56,6 +57,10 @@ namespace Terraria.ModLoader.UI
 			var mouse = new Point(Main.mouseX, Main.mouseY);
 			int xOffset = 0;
 			int width = 0;
+			bool drawHover = false;
+			Rectangle hoverRect = Rectangle.Empty;
+			MemoryBarItem hoverData = null;
+
 			for (int i = 0; i < memoryBarItems.Count; i++) {
 				var memoryBarData = memoryBarItems[i];
 				width = (int)(rectangle.Width * (memoryBarData.memory / (float)maxMemory));
@@ -65,23 +70,31 @@ namespace Terraria.ModLoader.UI
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
 				xOffset += width;
 				Main.spriteBatch.Draw(Main.magicPixel, drawArea, memoryBarData.drawColor);
-				if (drawArea.Contains(mouse)) {
+
+				if (!drawHover && drawArea.Contains(mouse)) {
 					Vector2 stringSize = Main.fontMouseText.MeasureString(memoryBarData.tooltip);
 					float x = stringSize.X;
 					Vector2 vector = Main.MouseScreen + new Vector2(16f);
-					if (vector.Y > Main.screenHeight - 30) {
-						vector.Y = Main.screenHeight - 30;
-					}
-					if (vector.X > Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40) {
-						vector.X = Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40;
-					}
+					vector.Y = Math.Min(vector.Y, Main.screenHeight - 30);
+					vector.X = Math.Min(vector.X, Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40);
 					var r = new Rectangle((int)vector.X, (int)vector.Y, (int)x, (int)stringSize.Y);
 					r.Inflate(5, 5);
-					Main.spriteBatch.Draw(Main.magicPixel, r, UICommon.defaultUIBlue);
-					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, memoryBarData.tooltip, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					drawHover = true;
+					hoverRect = r;
+					hoverData = memoryBarData;
 				}
 			}
-			return;
+
+			if (drawHover && hoverData != null) {
+				_hoverPanel.Parent = Parent;
+				_hoverPanel.Width.Set(hoverRect.Width + 5, 0);
+				_hoverPanel.Height.Set(hoverRect.Height + 5, 0);
+				_hoverPanel.Top.Set(Math.Abs(Parent.GetDimensions().Y - hoverRect.Y) - 10, 0);
+				_hoverPanel.Left.Set(Math.Abs(Parent.GetDimensions().X - hoverRect.X) - 20, 0);
+				_hoverPanel.Recalculate();
+				_hoverPanel.Draw(spriteBatch);
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverData.tooltip, hoverRect.X, hoverRect.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
 		}
 
 		private Color[] colors = {
@@ -95,6 +108,8 @@ namespace Terraria.ModLoader.UI
 
 		private void RecalculateMemory() {
 			memoryBarItems.Clear();
+			_hoverPanel = new UIPanel();
+			_hoverPanel.Activate();
 			
 #if WINDOWS
 			maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
