@@ -351,6 +351,15 @@ namespace Terraria.ModLoader
 					status.LogError(Language.GetTextValue("tModLoader.BuildErrorMissingDllFiles", string.Join(", ", missing)));
 					return false;
 				}
+
+				if (Program.LaunchParameters.ContainsKey("-eac") && pdb != null) {
+					if (!windows) {
+						status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACWindowsOnly"));
+						return false;
+					}
+
+					mod.properties.editAndContinue = true;
+				}
 			}
 			else {
 				List<LocalMod> refMods;
