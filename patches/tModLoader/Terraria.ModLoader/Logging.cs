@@ -15,6 +15,9 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using MonoMod.Utils;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -33,11 +36,12 @@ namespace Terraria.ModLoader
 		internal const string side = "server";
 #endif
 
-		internal static void Init() {
+		internal static void Init()
+		{
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
-#if !WINDOWS
+#if MONO
 			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
 #endif
 
@@ -262,11 +266,13 @@ namespace Terraria.ModLoader
 			return orig(name);
 		}
 
-		private static readonly FieldInfo f_strFileName =
-			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic);
+		internal static readonly FieldInfo f_fileName =
+			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
+			typeof(StackFrame).GetField("fileName", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
+#if WINDOWS
 		private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
 		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
 		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
@@ -274,7 +280,26 @@ namespace Terraria.ModLoader
 			if (fNeedFileInfo)
 				PrettifyStackTraceSources(self.GetFrames());
 		}
-
+#else
+		private static readonly Regex trimParamTypes = new Regex(@"([([,] ?)(?:[\w.+]+[.+])", RegexOptions.Compiled);
+		private static readonly Regex dropOffset = new Regex(@" \[.+?\](?![^:]+:-1)", RegexOptions.Compiled);
+		private static readonly Regex dropGenericTicks = new Regex(@"`\d+", RegexOptions.Compiled);
+		
+		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
+		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
+		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)
+		{
+			var stackTrace = new StackTrace(self, true);
+			MdbManager.Symbolize(stackTrace.GetFrames());
+			PrettifyStackTraceSources(stackTrace.GetFrames());
+			var s = stackTrace.ToString();
+			s = trimParamTypes.Replace(s, "$1");
+			s = dropGenericTicks.Replace(s, "");
+			s = dropOffset.Replace(s, "");
+			s = s.Replace(":-1", "");
+			return s;
+		}
+#endif
 		public static void PrettifyStackTraceSources(StackFrame[] frames) {
 			if (frames == null)
 				return;
@@ -296,16 +321,20 @@ namespace Terraria.ModLoader
 				int idx = filename.LastIndexOf(trim, StringComparison.InvariantCultureIgnoreCase);
 				if (idx > 0) {
 					filename = filename.Substring(idx);
-					f_strFileName.SetValue(frame, filename);
+					f_fileName.SetValue(frame, filename);
 				}
 			}
 		}
 
 		private static void PrettifyStackTraceSources() {
-			if (f_strFileName == null)
+#if WINDOWS
+			if (f_fileName == null)
 				return;
 
 			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
+#else
+			new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
+#endif
 		}
 	}
 }

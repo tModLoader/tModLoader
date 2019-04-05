@@ -9,6 +9,7 @@ public class LinuxInfo
             "Terraria.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
+            "Terraria",
             "Terraria.exe.config",
         };
         String[] filesToDelete = new String[]

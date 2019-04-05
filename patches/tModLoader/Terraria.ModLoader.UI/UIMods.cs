@@ -5,14 +5,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Newtonsoft.Json;
-using System.Reflection;
 using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI

@@ -14,7 +14,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader
 {
 	//todo: further documentation
-	internal class AssemblyManager
+	internal static class AssemblyManager
 	{
 		private class LoadedMod
 		{
@@ -127,11 +127,13 @@ namespace Terraria.ModLoader
 				if (eacEnabled)
 					return code;
 
-				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = TerrariaCecilAssemblyResolver.instance });
+				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = CecilAssemblyResolver });
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
+#if !MONO
 				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
 				asm.MainModule.Mvid = Guid.NewGuid();
+#endif
 
 				foreach (var mod in asm.Modules)
 					foreach (var asmRef in mod.AssemblyReferences)
@@ -139,7 +141,7 @@ namespace Terraria.ModLoader
 
 				var ret = new MemoryStream();
 				asm.Write(ret, new WriterParameters { SymbolWriterProvider = SymbolWriterProvider.instance });
-				TerrariaCecilAssemblyResolver.instance.RegisterAssembly(asm);
+				cecilAssemblyResolver.RegisterAssembly(asm);
 				return ret.ToArray();
 			}
 
@@ -169,6 +171,12 @@ namespace Terraria.ModLoader
 				assemblyBinaries[asm.GetName().Name] = code;
 				hostModForAssembly[asm] = this;
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
+#if MONO
+				if (pdb != null) {
+					var cecilAssemblyDef = cecilAssemblyResolver.Resolve(asm.GetName().ToReference());
+					MdbManager.RegisterMdb(cecilAssemblyDef.MainModule, pdb);
+				}
+#endif
 				return asm;
 			}
 		}
@@ -187,6 +195,9 @@ namespace Terraria.ModLoader
 
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
+
+		private static TerrariaCecilAssemblyResolver cecilAssemblyResolver = new TerrariaCecilAssemblyResolver();
+		public static IAssemblyResolver CecilAssemblyResolver => cecilAssemblyResolver;
 
 		static AssemblyManager() {
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
@@ -271,11 +282,11 @@ namespace Terraria.ModLoader
 
 			RecalculateReferences();
 
-			if (Debugger.IsAttached) {
+			/*if (Debugger.IsAttached) {
 				ModCompile.DeveloperMode = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
-			}
+			}*/
 
 			try {
 				//load all the assemblies in parallel.
@@ -326,15 +337,51 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
-		{
-			public static readonly TerrariaCecilAssemblyResolver instance = new TerrariaCecilAssemblyResolver();
+		internal static AssemblyNameReference ToReference(this AssemblyName name) =>
+			new AssemblyNameReference(name.Name, name.Version);
 
-			private TerrariaCecilAssemblyResolver() {
+		private class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
+		{
+			public TerrariaCecilAssemblyResolver() {
 				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
 			}
 
 			public new void RegisterAssembly(AssemblyDefinition asm) => base.RegisterAssembly(asm);
+
+			public override AssemblyDefinition Resolve(AssemblyNameReference name)
+			{
+				try {
+					return base.Resolve(name);
+				}
+				catch (AssemblyResolutionException) {
+					var asm = FallbackResolve(name);
+					if (asm == null)
+						throw new AssemblyResolutionException(name);
+					
+					RegisterAssembly(asm);
+					return asm;
+				}
+			}
+
+			private AssemblyDefinition FallbackResolve(AssemblyNameReference name)
+			{
+				string resourceName = name.Name + ".dll";
+				resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
+				if (resourceName != null) {
+					Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
+					using (var stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName))
+						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
+				}
+
+				var modAssemblyBytes = GetAssemblyBytes(name.Name);
+				if (modAssemblyBytes != null) {
+					Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
+					using (var stream = new MemoryStream(modAssemblyBytes))
+						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
+				}
+
+				return null;
+			}
 		}
 
 		internal class SymbolWriterProvider : ISymbolWriterProvider

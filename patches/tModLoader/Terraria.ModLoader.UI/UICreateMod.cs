@@ -66,8 +66,10 @@ namespace Terraria.ModLoader.UI
 
 			float top = 16;
 			modName = createAndAppendTextInputWithLabel("ModName (no spaces)", "Type here");
+			modName.OnTextChange += (a, b) => { modName.SetText(modName.currentString.Replace(" ", "")); };
 			modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
 			modAuthor = createAndAppendTextInputWithLabel("Mod Author", "Type here");
+			// TODO: OnTab
 			// TODO: Starting Item checkbox
 
 			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint) {
@@ -121,8 +123,11 @@ namespace Terraria.ModLoader.UI
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			string modNameTrimmed = modName.currentString.Trim();
+			string sourceFolder = ModCompile.ModSourcePath + Path.DirectorySeparatorChar + modNameTrimmed;
 			var provider = CodeDomProvider.CreateProvider("C#");
-			if (!provider.IsValidIdentifier(modNameTrimmed))
+			if(Directory.Exists(sourceFolder))
+				messagePanel.SetText("Folder already exists");
+			else if (!provider.IsValidIdentifier(modNameTrimmed))
 				messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
 			else if (string.IsNullOrWhiteSpace(modDiplayName.currentString))
 				messagePanel.SetText("DisplayName can't be empty");
@@ -133,7 +138,6 @@ namespace Terraria.ModLoader.UI
 			else {
 				Main.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
-				string sourceFolder = ModCompile.ModSourcePath + Path.DirectorySeparatorChar + modNameTrimmed;
 				Directory.CreateDirectory(sourceFolder);
 
 				// TODO: Simple ModItem and PNG, verbatim line endings, localization.
@@ -151,64 +155,37 @@ namespace {modNameTrimmed}
 	}}
 }}");
 				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""14.0"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <Import Project=""$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props"" Condition=""Exists('$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props')"" />
+<Project Sdk=""Microsoft.NET.Sdk"">
   <Import Project=""..\..\references\tModLoader.targets"" />
   <PropertyGroup>
-    <Configuration Condition="" '$(Configuration)' == '' "">Debug</Configuration>
-    <Platform Condition="" '$(Platform)' == '' "">AnyCPU</Platform>
-    <ProjectGuid>{{8298EAB6-0586-4BDA-9483-83624B66B13A}}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>{modNameTrimmed}</RootNamespace>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFramework>net45</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' Or '$(Configuration)|$(Platform)' == 'ServerDebug|AnyCPU' "">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  <PropertyGroup Condition=""'$(Configuration)'=='Debug'"">
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include=""**\*.cs"" Exclude=""obj\**\*.*"" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include=""System"" />
-  </ItemGroup>
-  <Import Project=""$(MSBuildToolsPath)\Microsoft.CSharp.targets"" />
-  <PropertyGroup>
-    <PostBuildEvent>""$(tMLServerPath)"" -build ""$(ProjectDir)\"" -eac ""$(TargetPath)""</PostBuildEvent>
-  </PropertyGroup>
+  <Target Name=""BuildMod"" AfterTargets=""Build"">
+    <Exec Command=""&quot;$(tMLServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath)"" />
+  </Target>
 </Project>");
-				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj.user"), $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <Import Project=""..\..\references\tModLoader.targets"" />
-  <PropertyGroup Condition=""'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"">
-    <StartAction>Program</StartAction>
-    <StartProgram>$(tMLPath)</StartProgram>
-    <StartWorkingDirectory>$(TerrariaSteamPath)</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition=""'$(Configuration)|$(Platform)' == 'ServerDebug|AnyCPU'"">
-    <StartAction>Program</StartAction>
-    <StartProgram>$(tMLServerPath)</StartProgram>
-    <StartWorkingDirectory>$(TerrariaSteamPath)</StartWorkingDirectory>
-  </PropertyGroup>
-</Project>
-");
+				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";
+				Directory.CreateDirectory(propertiesFolder);
+				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), $@"{{
+  ""profiles"": {{
+    ""Terraria"": {{
+      ""commandName"": ""Executable"",
+      ""executablePath"": ""$(tMLPath)"",
+      ""workingDirectory"": ""$(TerrariaSteamPath)""
+    }},
+    ""TerrariaServer"": {{
+      ""commandName"": ""Executable"",
+      ""executablePath"": ""$(tMLServerPath)"",
+      ""workingDirectory"": ""$(TerrariaSteamPath)""
+    }}
+  }}
+}}");
 			}
 		}
 	}

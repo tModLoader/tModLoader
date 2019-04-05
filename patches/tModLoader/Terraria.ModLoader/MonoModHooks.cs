@@ -123,23 +123,6 @@ namespace Terraria.ModLoader
 				Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {mod.Name}");
 		}
 
-		private static ModuleDefinition GenerateCecilModule(AssemblyName name) {
-			string resourceName = name.Name + ".dll";
-			resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
-			if (resourceName != null) {
-				Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-				using (Stream stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName))
-					return ModuleDefinition.ReadModule(stream, new ReaderParameters(ReadingMode.Immediate));
-			}
-
-			var modAssemblyBytes = AssemblyManager.GetAssemblyBytes(name.Name);
-			if (modAssemblyBytes != null) {
-				Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-				using (MemoryStream stream = new MemoryStream(modAssemblyBytes))
-					return ModuleDefinition.ReadModule(stream, new ReaderParameters(ReadingMode.Immediate));
-			}
-
-			return null;
-		}
+		private static ModuleDefinition GenerateCecilModule(AssemblyName name) => AssemblyManager.CecilAssemblyResolver.Resolve(name.ToReference()).MainModule;
 	}
 }

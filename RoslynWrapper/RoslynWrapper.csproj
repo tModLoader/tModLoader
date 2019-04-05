@@ -43,6 +43,9 @@
     <Reference Include="Mono.Cecil">
       <HintPath>..\references\Mono.Cecil.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\references\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil.Pdb">
       <HintPath>..\references\Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
@@ -118,7 +121,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RoslynPdbFixer.cs" />
     <Compile Include="RoslynWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,10 +10,6 @@ namespace Terraria.ModLoader.Default
 {
 	internal class ModLoaderMod : Mod
 	{
-		private static bool texturesLoaded;
-		private static Texture2D mysteryItemTexture;
-		private static Texture2D startBagTexture;
-		private static Texture2D mysteryTileTexture;
 		internal static ModLoaderMod Instance;
 
 		// If new types arise (probably not), change the format:
@@ -33,10 +29,11 @@ namespace Terraria.ModLoader.Default
 
 		public override void Load() {
 			Instance = this;
-			LoadTextures();
-			AddTexture("MysteryItem", mysteryItemTexture);
-			AddTexture("StartBag", startBagTexture);
-			AddTexture("MysteryTile", mysteryTileTexture);
+			if (!Main.dedServ) {
+				AddTexture("MysteryItem", ReadTexture("MysteryItem"));
+				AddTexture("StartBag", ReadTexture("StartBag"));
+				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
+			}
 			AddItem("MysteryItem", new MysteryItem());
 			AddGlobalItem("MysteryGlobalItem", new MysteryGlobalItem());
 			AddItem("StartBag", new StartBag());
@@ -103,17 +100,6 @@ namespace Terraria.ModLoader.Default
 			AddItem($"{name}_{equipType}", item);
 			// AddEquipTexture adds the arms and female body assets automatically, if EquipType is Body
 			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
-		}
-
-		private static void LoadTextures() {
-			if (Main.dedServ) {
-				return;
-			}
-
-			mysteryItemTexture = ReadTexture("MysteryItem");
-			startBagTexture = ReadTexture("StartBag");
-			mysteryTileTexture = ReadTexture("MysteryTile");
-			texturesLoaded = true;
 		}
 
 		internal static Texture2D ReadTexture(string file) {

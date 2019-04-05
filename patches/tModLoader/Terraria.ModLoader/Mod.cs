@@ -140,7 +140,8 @@ namespace Terraria.ModLoader
 				case ".wav":
 				case ".mp3":
 				case ".ogg":
-					if (Main.dedServ || Main.engine == null) { }
+					//Main.engine == null would be more sensible, but only the waveBank fails on Linux when there is no audio hardware
+					if (Main.dedServ || Main.waveBank == null) { }
 					else if (path.Contains("Music/"))
 						musics[path] = LoadMusic(path, extension);
 					else
@@ -1395,7 +1396,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("AddMusicBox can only be called from Mod.Load or Mod.Autoload");
 
-			if (Main.engine == null)
+			if (Main.waveBank == null)
 				return;
 
 			if (musicSlot < Main.maxMusic) {
@@ -1515,6 +1516,9 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture.</param>
 		/// <exception cref="Terraria.ModLoader.Exceptions.ModNameException">Texture already exist: " + name</exception>
 		public void AddTexture(string name, Texture2D texture) {
+			if (Main.dedServ)
+				return;
+
 			if (TextureExists(name))
 				throw new Exception("Texture already exist: " + name);
 

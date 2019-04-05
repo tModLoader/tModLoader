@@ -149,6 +149,15 @@ namespace Terraria.ModLoader
 			if (!Directory.Exists(modReferencesPath))
 				Directory.CreateDirectory(modReferencesPath);
 
+			var tMLPath = Assembly.GetExecutingAssembly().Location;
+			var touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
+			var touchFile = Path.Combine(modReferencesPath, "touch");
+			var lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
+			if (touchStamp == lastTouch) {
+				referencesUpdated = true;
+				return;
+			}
+
 			// this will extract all the embedded dlls, and grab a reference to the GAC assemblies
 			var libs = GetTerrariaReferences(null, windows).ToList();
 
@@ -156,8 +165,8 @@ namespace Terraria.ModLoader
 			foreach (var file in Directory.GetFiles(modReferencesPath, "*.dll"))
 				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
 					File.Delete(file);
-
-			var tMLPath = libs[0];
+			
+			// replace tML lib with inferred paths based on names 
 			libs.RemoveAt(0);
 
 			var tMLDir = Path.GetDirectoryName(tMLPath);
@@ -202,6 +211,7 @@ namespace Terraria.ModLoader
 				.Replace("%references%", string.Join("\n", referencesXMLList));
 			
 			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
+			File.WriteAllText(touchFile, touchStamp);
 			referencesUpdated = true;
 		}
 
@@ -320,15 +330,18 @@ namespace Terraria.ModLoader
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 			byte[] winDLL = null;
 			byte[] monoDLL = null;
-			byte[] winPDB = null;
+			byte[] pdb = null;
+			byte[] mdb = null;
 			if (mod.properties.noCompile) {
 				winDLL = monoDLL = ReadIfExists(Path.Combine(mod.path, "All.dll"));
-				winPDB = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
+				pdb = ReadIfExists(Path.Combine(mod.path, "All.pdb"));
+				mdb = ReadIfExists(Path.Combine(mod.path, "All.mdb")) ?? ReadIfExists(Path.Combine(mod.path, "All.dll.mdb"));
 
 				if (winDLL == null) {
 					winDLL = ReadIfExists(Path.Combine(mod.path, "Windows.dll"));
 					monoDLL = ReadIfExists(Path.Combine(mod.path, "Mono.dll"));
-					winPDB = ReadIfExists(Path.Combine(mod.path, "Windows.pdb"));
+					pdb = ReadIfExists(Path.Combine(mod.path, "Windows.pdb"));
+					mdb = ReadIfExists(Path.Combine(mod.path, "Mono.mdb")) ?? ReadIfExists(Path.Combine(mod.path, "Mono.dll.mdb"));
 				}
 
 				if (winDLL == null || monoDLL == null) {
@@ -358,9 +371,8 @@ namespace Terraria.ModLoader
 					var winPath = Program.LaunchParameters["-eac"];
 					try {
 						status.SetStatus(Language.GetTextValue("tModLoader.LoadingEAC"));
-						var pdbPath = Path.ChangeExtension(winPath, "pdb");
 						winDLL = File.ReadAllBytes(winPath);
-						winPDB = File.ReadAllBytes(pdbPath);
+						pdb = File.ReadAllBytes(Path.ChangeExtension(winPath, "pdb"));
 						mod.properties.editAndContinue = true;
 					}
 					catch (Exception e) {
@@ -371,14 +383,14 @@ namespace Terraria.ModLoader
 				else {
 					status.SetStatus(Language.GetTextValue("tModLoader.CompilingWindows", mod));
 					status.SetProgress(0, 2);
-					CompileMod(mod, refMods, true, ref winDLL, ref winPDB);
+					CompileMod(mod, refMods, true, ref winDLL, ref pdb);
 				}
 				if (winDLL == null)
 					return false;
 
 				status.SetStatus(Language.GetTextValue("tModLoader.CompilingMono", mod));
 				status.SetProgress(1, 2);
-				CompileMod(mod, refMods, false, ref monoDLL, ref winPDB);//the pdb reference won't actually be written to
+				CompileMod(mod, refMods, false, ref monoDLL, ref mdb);
 				if (monoDLL == null)
 					return false;
 			}
@@ -393,12 +405,14 @@ namespace Terraria.ModLoader
 
 			if (Equal(winDLL, monoDLL)) {
 				mod.modFile.AddFile("All.dll", winDLL);
-				if (winPDB != null) mod.modFile.AddFile("All.pdb", winPDB);
+				if (pdb != null) mod.modFile.AddFile("All.pdb", pdb);
+				if (mdb != null) mod.modFile.AddFile("All.mdb", mdb);
 			}
 			else {
 				mod.modFile.AddFile("Windows.dll", winDLL);
 				mod.modFile.AddFile("Mono.dll", monoDLL);
-				if (winPDB != null) mod.modFile.AddFile("Windows.pdb", winPDB);
+				if (pdb != null) mod.modFile.AddFile("Windows.pdb", pdb);
+				if (mdb != null) mod.modFile.AddFile("Mono.mdb", mdb);
 			}
 
 			var resources = Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)
@@ -514,12 +528,6 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-			bool generatePDB = mod.properties.includePDB && forWindows;
-			if (generatePDB && !windows) {
-				Console.WriteLine(Language.GetTextValue("tModLoader.BuildErrorPDBWindowsOnly"));
-				generatePDB = false;
-			}
-
 			//collect all dll references
 			var tempDir = Path.Combine(ModPath, "compile_temp");
 			Directory.CreateDirectory(tempDir);
@@ -555,7 +563,7 @@ namespace Terraria.ModLoader
 				GenerateExecutable = false,
 				GenerateInMemory = false,
 				TempFiles = new TempFileCollection(tempDir, true),
-				IncludeDebugInformation = generatePDB,
+				IncludeDebugInformation = mod.properties.includePDB,
 				CompilerOptions = "/optimize"
 			};
 
@@ -563,7 +571,6 @@ namespace Terraria.ModLoader
 			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
 
 			try {
-
 				var results = RoslynCompile(compileOptions, files);
 				if (results.Errors.HasErrors) {
 					status.LogCompileErrors(mod.Name + (forWindows ? "/Windows.dll" : "/Mono.dll"), results.Errors,
@@ -571,10 +578,13 @@ namespace Terraria.ModLoader
 					return;
 				}
 
+				PostProcess(compileOptions.OutputAssembly, forWindows);
+				if (mod.properties.includePDB)
+					CecilizePdb(compileOptions.OutputAssembly, !forWindows);
+
 				dll = File.ReadAllBytes(compileOptions.OutputAssembly);
-				dll = PostProcess(dll, forWindows);
-				if (generatePDB)
-					pdb = File.ReadAllBytes(Path.Combine(tempDir, mod + ".pdb"));
+				if (mod.properties.includePDB)
+					pdb = File.ReadAllBytes(Path.ChangeExtension(compileOptions.OutputAssembly, forWindows ? "pdb" : "dll.mdb"));
 			}
 			finally {
 				int numTries = 10;
@@ -642,27 +652,35 @@ namespace Terraria.ModLoader
 
 			return refs;
 		}
-
+		
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
+		private static Assembly roslynWrapper;
 		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
-			var asm = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
+			if (roslynWrapper == null) {
+				// ensure the AssemblyManager is loaded for its assembly upgrading hook
+				AssemblyManager.GetAssemblyBytes("");
 
-			AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
-				var name = new AssemblyName(args.Name).Name;
-				var f = Path.Combine(modCompileDir, name + ".dll");
-				return File.Exists(f) ? Assembly.LoadFile(f) : null;
-			};
+				AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
+					var name = new AssemblyName(args.Name).Name;
+					var f = Path.Combine(modCompileDir, name + ".dll");
+					return File.Exists(f) ? Assembly.LoadFile(f) : null;
+				};
 
-			var res = (CompilerResults)asm.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
+				roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
+			}
+
+			return (CompilerResults)roslynWrapper.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
 				.Invoke(null, new object[] { compileOptions, files });
-
-			if (!res.Errors.HasErrors && compileOptions.IncludeDebugInformation)
-				asm.GetType("Terraria.ModLoader.RoslynPdbFixer").GetMethod("Fix")
-					.Invoke(null, new object[] { compileOptions.OutputAssembly });
-
-			return res;
+		}
+		/// <summary>
+		/// Roslyn outputs pdb files that are incompatible with cecil modified assemblies (which we use for reload support)
+		/// Mono.Cecil can parse the roslyn debug info, and then output a compatible pdb file and binary using the windows API
+		/// </summary>
+		private static void CecilizePdb(string assemblyPath, bool mdb) {
+			roslynWrapper.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("CecilizePdb")
+				.Invoke(null, new object[] { assemblyPath, mdb });
 		}
 
 		private static FileStream AcquireConsoleBuildLock() {
@@ -681,40 +699,44 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module) {
-			var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
-			if (assemblyRef == null) {
-				//System.Linq.Enumerable is in System.Core
-				var name = Assembly.GetAssembly(typeof(Enumerable)).GetName();
-				assemblyRef = new AssemblyNameReference(name.Name, name.Version) {
-					Culture = name.CultureInfo.Name,
-					PublicKeyToken = name.GetPublicKeyToken(),
-					HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
-				};
-				module.AssemblyReferences.Add(assemblyRef);
+		private static void PostProcess(string path, bool forWindows) {
+			//if (forWindows)
+				return;
+
+			var asm = AssemblyDefinition.ReadAssembly(path, new ReaderParameters {
+				ReadWrite = true,
+			});
+			
+			AssemblyNameReference SystemCoreRef = null;
+			AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module) {
+				if (SystemCoreRef != null)
+					return SystemCoreRef;
+
+				var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
+				if (assemblyRef == null) {
+					//System.Linq.Enumerable is in System.Core
+					var name = Assembly.GetAssembly(typeof(Enumerable)).GetName();
+					assemblyRef = new AssemblyNameReference(name.Name, name.Version) {
+						Culture = name.CultureInfo.Name,
+						PublicKeyToken = name.GetPublicKeyToken(),
+						HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
+					};
+					module.AssemblyReferences.Add(assemblyRef);
+				}
+				return assemblyRef;
 			}
-			return assemblyRef;
-		}
-
-		private static byte[] PostProcess(byte[] dll, bool forWindows) {
-			if (forWindows)
-				return dll;
-
-			var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(dll));
 
 			// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
 			// Find all extension attributes and change their assembly references
-			AssemblyNameReference SystemCoreRef = null;
 			foreach (var module in asm.Modules)
 				foreach (var type in module.Types)
 					foreach (var met in type.Methods)
 						foreach (var attr in met.CustomAttributes)
 							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-								attr.AttributeType.Scope = SystemCoreRef ?? (SystemCoreRef = GetOrAddSystemCore(module));
-
-			var ret = new MemoryStream();
-			asm.Write(ret, new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
-			return ret.ToArray();
+								attr.AttributeType.Scope = GetOrAddSystemCore(module);
+			
+			asm.Write(new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
+			asm.Dispose();
 		}
 	}
 }

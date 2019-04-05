@@ -15,6 +15,7 @@ public class MacInfo
             "Terraria.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
+            "Terraria",
             "Terraria.exe.config",
             "mono/config"
         };

@@ -19,6 +19,7 @@
   <PropertyGroup>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

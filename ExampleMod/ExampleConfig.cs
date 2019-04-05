@@ -75,9 +75,9 @@ namespace ExampleMod
 			return clone;
 		}
 
-		// Here I use PostAutoLoad to assign a static variable in ExampleMod to make it a little easier to access config values.
+		// Here I use OnLoaded to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
-		// Note that PostAutoLoad happens before AutoLoad and Mod.Load.
+		// Note that OnLoaded happens before AutoLoad and Mod.Load.
 		public override void OnLoaded()
 		{
 			ExampleMod.exampleServerConfig = this;
@@ -287,9 +287,12 @@ namespace ExampleMod
 		// We can also add section headers, separating fields for organization
 		[Header("Headers Section")]
 		public int Header;
-		
+
 		[Header("$Mods.ExampleMod.Common.LocalizedHeader")]
 		public int LocalizedHeader;
+
+		[Header("[i:19][c/00FF00:Green Text]")]
+		public int CoolHeader;
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
 		[BackgroundColor(85, 107, 47)]
@@ -432,7 +435,7 @@ namespace ExampleMod
 		// Public fields are most common. Use public for most items.
 		public float Public;
 
-		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use PostAutoLoad in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
+		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use OnLoaded in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
 		public static float Static;
 
 		// Get only properties will show up, but will be grayed out to show that they can't be changed. 
@@ -467,6 +470,36 @@ namespace ExampleMod
 
 		// Set only properties will crash tModLoader.
 		// public float Setter { set { Public = value; } }
+
+		// The following shows how you can use properties to implement a preset system
+		public bool PresetA
+		{
+			get => Data1 == 23 && Data2 == 63;
+			set
+			{
+				if (value)
+				{
+					Data1 = 23;
+					Data2 = 63;
+				}
+			}
+		}
+
+		public bool PresetB
+		{
+			get => Data1 == 93 && Data2 == 13;
+			set
+			{
+				if (value)
+				{
+					Data1 = 93;
+					Data2 = 13;
+				}
+			}
+		}
+
+		public int Data1 { get; set; }
+		public int Data2 { get; set; }
 
 		public ModConfigShowcaseAccessibility()
 		{

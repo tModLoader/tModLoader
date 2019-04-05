@@ -708,7 +708,7 @@
  
  		protected void UpdateAudio()
  		{
-+			if (engine == null) //supress extra exceptions from audio engine failing to load
++			if (waveBank == null) //supress extra exceptions from audio engine failing to load
 +				return;
  #if !WINDOWS
  			if (Main.engine != null)
@@ -4836,7 +4836,7 @@
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
  		{
-+			if (engine == null) //supress extra exceptions from audio engine failing to load
++			if (waveBank == null) //supress extra exceptions from audio engine failing to load
 +				return null;
 +
  #if !WINDOWS
