@@ -16,19 +16,15 @@ namespace Terraria.ModLoader.Setup
 
 
 		public readonly string baseDir;
-		public readonly string srcDir;
+		public readonly string patchedDir;
 		public readonly string patchDir;
 		public readonly ProgramSetting<DateTime> cutoff;
-
-		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
-		public string FullSrcDir => Path.Combine(Program.baseDir, srcDir);
-		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
 
 		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
 			ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
-			this.srcDir = srcDir;
+			this.patchedDir = srcDir;
 			this.patchDir = patchDir;
 			this.cutoff = cutoff;
 		}
@@ -36,18 +32,18 @@ namespace Terraria.ModLoader.Setup
 		public override void Run()
 		{
 			var patchFiles = new HashSet<string>(
-				Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories)
-				.Select(file => RelPath(FullPatchDir, file)));
+				Directory.EnumerateFiles(patchDir, "*", SearchOption.AllDirectories)
+				.Select(file => RelPath(patchDir, file)));
 			var oldFiles = new HashSet<string>(
-				Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories)
-				.Select(file => RelPath(FullBaseDir, file))
+				Directory.EnumerateFiles(baseDir, "*", SearchOption.AllDirectories)
+				.Select(file => RelPath(baseDir, file))
 				.Where(relPath => !relPath.EndsWith(".patch") && !excluded.Any(relPath.StartsWith)));
 
 			var items = new List<WorkItem>();
 
-			foreach (var file in Directory.EnumerateFiles(FullSrcDir, "*", SearchOption.AllDirectories))
+			foreach (var file in Directory.EnumerateFiles(patchedDir, "*", SearchOption.AllDirectories))
 			{
-				var relPath = RelPath(FullSrcDir, file);
+				var relPath = RelPath(patchedDir, file);
 				oldFiles.Remove(relPath);
 				if (!extensions.Any(relPath.EndsWith))
 					continue;
@@ -58,19 +54,19 @@ namespace Terraria.ModLoader.Setup
 				if (excluded.Any(relPath.StartsWith) || File.GetLastWriteTime(file) < cutoff.Get())
 					continue;
 
-				items.Add(File.Exists(Path.Combine(FullBaseDir, relPath))
+				items.Add(File.Exists(Path.Combine(baseDir, relPath))
 					? new WorkItem("Creating Diff: " + relPath, () => Diff(relPath))
-					: new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullPatchDir, relPath))));
+					: new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchDir, relPath))));
 			}
 
 			ExecuteParallel(items);
 
 			taskInterface.SetStatus("Deleting Unnessesary Patches");
 			foreach (var file in patchFiles)
-				File.Delete(Path.Combine(FullPatchDir, file));
+				File.Delete(Path.Combine(patchDir, file));
 
 			taskInterface.SetStatus("Noting Removed Files");
-			var removedFileList = Path.Combine(FullPatchDir, RemovedFileList);
+			var removedFileList = Path.Combine(patchDir, RemovedFileList);
 			if (oldFiles.Count > 0)
 				File.WriteAllText(removedFileList, string.Join("\r\n", oldFiles));
 			else if (File.Exists(removedFileList))
@@ -81,8 +77,8 @@ namespace Terraria.ModLoader.Setup
 
 		private void Diff(string relPath)
 		{
-			var srcFile = Path.Combine(FullSrcDir, relPath);
-			var baseFile = Path.Combine(FullBaseDir, relPath);
+			var srcFile = Path.Combine(patchedDir, relPath);
+			var baseFile = Path.Combine(baseDir, relPath);
 
 			/*string temp = null;
 			if (srcFile.EndsWith(".cs") && format != null)
@@ -92,12 +88,12 @@ namespace Terraria.ModLoader.Setup
 				baseFile = temp;
 			}*/
 
-			var patch = CallDiff(baseFile, srcFile, Path.Combine(baseDir, relPath), Path.Combine(srcDir, relPath));
+			var patch = CallDiff(baseFile, srcFile, Path.Combine(baseDir, relPath), Path.Combine(patchedDir, relPath));
 
 			/*if (temp != null)
 				File.Delete(temp);*/
 
-			var patchFile = Path.Combine(FullPatchDir, relPath + ".patch");
+			var patchFile = Path.Combine(patchDir, relPath + ".patch");
 			if (patch.Trim() != "") {
 				CreateParentDirectory(patchFile);
 				File.WriteAllText(patchFile, StripDestHunkOffsets(patch));

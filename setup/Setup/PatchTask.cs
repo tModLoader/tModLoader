@@ -26,14 +26,10 @@ namespace Terraria.ModLoader.Setup
 
 		private readonly ConcurrentBag<PatchedFile> results = new ConcurrentBag<PatchedFile>();
 
-		public string FullBaseDir => Path.Combine(Program.baseDir, baseDir);
-		public string FullPatchedDir => Path.Combine(Program.baseDir, patchedDir);
-		public string FullPatchDir => Path.Combine(Program.baseDir, patchDir);
-
-		public PatchTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
+		public PatchTask(ITaskInterface taskInterface, string baseDir, string patchedDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
 			this.baseDir = baseDir;
-			this.patchedDir = srcDir;
+			this.patchedDir = patchedDir;
 			this.patchDir = patchDir;
 			this.cutoff = cutoff;
 		}
@@ -51,44 +47,44 @@ namespace Terraria.ModLoader.Setup
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 			taskInterface.SetStatus("Deleting Old Src");
 
-			if (Directory.Exists(FullPatchedDir))
-				Directory.Delete(FullPatchedDir, true);
+			if (Directory.Exists(patchedDir))
+				Directory.Delete(patchedDir, true);
 
-			var baseFiles = Directory.EnumerateFiles(FullBaseDir, "*", SearchOption.AllDirectories);
-			var patchFiles = Directory.EnumerateFiles(FullPatchDir, "*", SearchOption.AllDirectories);
+			var baseFiles = Directory.EnumerateFiles(baseDir, "*", SearchOption.AllDirectories);
+			var patchFiles = Directory.EnumerateFiles(patchDir, "*", SearchOption.AllDirectories);
 
 			var noCopy = new HashSet<string>();
-			var removedFileList = Path.Combine(FullPatchDir, DiffTask.RemovedFileList);
+			var removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
 			if(File.Exists(removedFileList))
 				foreach (var line in File.ReadAllLines(removedFileList))
 					noCopy.Add(line);
 
 			var items = new List<WorkItem>();
 			foreach (var file in patchFiles) {
-				var relPath = RelPath(FullPatchDir, file);
+				var relPath = RelPath(patchDir, file);
 				if (relPath.EndsWith(".patch")) {
 					items.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
 					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
 				}
 				else if (relPath != DiffTask.RemovedFileList) {
-					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(FullPatchedDir, relPath))));
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchedDir, relPath))));
 				}
 			}
 
 			foreach (var file in baseFiles)
 			{
-				var relPath = RelPath(FullBaseDir, file);
+				var relPath = RelPath(baseDir, file);
 				if (DiffTask.excluded.Any(relPath.StartsWith) || noCopy.Contains(relPath))
 					continue;
 
-				var srcPath = Path.Combine(FullPatchedDir, relPath);
+				var srcPath = Path.Combine(patchedDir, relPath);
 				items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, srcPath)));
 			}
 			
 			try
 			{
-				CreateDirectory(Program.LogDir);
-				logFile = new StreamWriter(Path.Combine(Program.LogDir, "patch.log"));
+				CreateDirectory(Program.logsDir);
+				logFile = new StreamWriter(Path.Combine(Program.logsDir, "patch.log"));
 
 				taskInterface.SetMaxProgress(items.Count);
 				ExecuteParallel(items);
@@ -125,9 +121,9 @@ namespace Terraria.ModLoader.Setup
 			var pf = new PatchedFile {
 				patchFilePath = patchPath,
 				patchFile = PatchFile.FromText(File.ReadAllText(patchPath)),
-				rootDir = Program.baseDir
+				rootDir = ""
 			};
-			pf.title = RelPath(FullBaseDir, pf.BasePath);
+			pf.title = RelPath(baseDir, pf.BasePath);
 
 			if (!File.Exists(pf.BasePath))
 			{

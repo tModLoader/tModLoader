@@ -12,13 +12,11 @@ namespace Terraria.ModLoader.Setup
 {
 	static class Program
 	{
-		public static string baseDir;
 		public static readonly string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static readonly string libDir = Path.Combine(appDir, "..", "lib");
 		public static readonly string toolsDir = Path.Combine(appDir, "..", "tools");
-		public static string LogDir => Path.Combine(baseDir, "logs");
-		public static string ReferencesDir => Path.Combine(baseDir, "references");
-		public static string TMLBinDir => Path.Combine(baseDir, "src", "tModLoader", "bin", "x86");
+		public static readonly string logsDir = Path.Combine("setup", "logs");
+		public static readonly string referencesDir = "references";
 
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
@@ -38,17 +36,13 @@ namespace Terraria.ModLoader.Setup
 				if (name == "Mono.Cecil" && assemblyName.Version < new Version(0, 10)) //multiple cecil versions need to be loaded separately
 					name += "_0.9.6.0";
 
-				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(ReferencesDir, name);
+				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(referencesDir, name);
 			};
 
 			if (args.Length == 1 && args[0] == "--steamdir") {
 				Console.WriteLine(SteamDir);
 				return;
 			}
-
-			LoadBaseDir(args);
-			if (baseDir == null)
-				return;
 
 			Application.Run(new MainForm());
 		}
@@ -58,23 +52,6 @@ namespace Terraria.ModLoader.Setup
 			var path = Path.Combine(libDir, name);
 			path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
 			return path != null ? Assembly.LoadFrom(path) : null;
-		}
-
-		private static void LoadBaseDir(string[] args) {
-			if (args.Length > 0 && Directory.Exists(args[0])) {
-				baseDir = args[0];
-				return;
-			}
-
-			var dialog = new FolderBrowserDialog {
-				SelectedPath = Directory.GetCurrentDirectory(),
-				Description = "Select tModLoader root directory"
-			};
-
-			if (dialog.ShowDialog() != DialogResult.OK)
-				return;
-
-			baseDir = dialog.SelectedPath;
 		}
 
 		public static int RunCmd(string dir, string cmd, string args, 
@@ -130,7 +107,7 @@ namespace Terraria.ModLoader.Setup
 		 public static bool SelectTerrariaDialog() {
 			while (true) {
 				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : baseDir),
+					InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : "."),
 					Filter = "Terraria|Terraria.exe",
 					Title = "Select Terraria.exe"
 				};

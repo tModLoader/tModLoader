@@ -26,20 +26,20 @@ namespace Terraria.ModLoader.Setup
 
 			var references = new[] {"FNA.dll", "Mono.Cecil.Pdb.dll" };
 			foreach (var dll in references)
-				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
+				Copy(Path.Combine(referencesDir, dll), Path.Combine(modCompile, dll));
 
 			var roslynRefs = new[] {"RoslynWrapper.dll", "System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll"};
 			foreach (var dll in roslynRefs)
-				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
+				Copy("RoslynWrapper/bin/Release/"+dll, Path.Combine(modCompile, dll));
 
 			taskInterface.SetStatus("Updating ModCompile version");
 			UpdateModCompileVersion(modCompile);
 
 			taskInterface.SetStatus("Generating Debug Configuration");
-			File.WriteAllText(Path.Combine(baseDir, "src/tModLoader/Terraria.csproj.user"), DebugConfig);
+			File.WriteAllText("src/tModLoader/Terraria.csproj.user", DebugConfig);
 
 			taskInterface.SetStatus("Compiling tModLoaderMac.exe");
-			compileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
+			compileFailed = RunCmd("solutions", "msbuild",
 				"tModLoader.sln /p:Configuration=MacRelease /p:Platform=\"x86\"",
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Setup
 
 		private void UpdateModCompileVersion(string modCompileDir)
 		{
-			var modLoaderCsPath = Path.Combine(baseDir, "src", "tModLoader", "Terraria.ModLoader", "ModLoader.cs");
+			var modLoaderCsPath = Path.Combine("src", "tModLoader", "Terraria.ModLoader", "ModLoader.cs");
 			var r = new Regex(@"new Version\((.+?)\).+?string branchName.+?""(.*?)"".+?int beta.+?(\d+?)", RegexOptions.Singleline);
 			var match = r.Match(File.ReadAllText(modLoaderCsPath));
 

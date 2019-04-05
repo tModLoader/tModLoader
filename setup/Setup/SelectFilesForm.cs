@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Setup
 
 		public string GetDirectory() {
 			var dir = GetPaths()[0];
-			return Directory.Exists(dir) ? dir : File.Exists(dir) ? Path.GetDirectoryName(dir) : Program.baseDir;
+			return Directory.Exists(dir) ? dir : File.Exists(dir) ? Path.GetDirectoryName(dir) : ".";
 		}
 
 		private void ValidatePaths() {

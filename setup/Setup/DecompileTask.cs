@@ -89,8 +89,6 @@ namespace Terraria.ModLoader.Setup
 			CSharpFormattingOptions = FormattingOptionsFactory.CreateAllman()
 		};
 
-		public string FullSrcDir => Path.Combine(baseDir, srcDir);
-
 		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface)
 		{
 			this.srcDir = srcDir;
@@ -109,8 +107,8 @@ namespace Terraria.ModLoader.Setup
 		{
 			taskInterface.SetStatus("Deleting Old Src");
 
-			if (Directory.Exists(FullSrcDir))
-				Directory.Delete(FullSrcDir, true);
+			if (Directory.Exists(srcDir))
+				Directory.Delete(srcDir, true);
 			
 			var items = new List<WorkItem>();
 			var files = new HashSet<string>();
@@ -225,7 +223,7 @@ namespace Terraria.ModLoader.Setup
 		{
 			return new WorkItem("Extracting: " + name, () =>
 			{
-				var path = Path.Combine(FullSrcDir, name);
+				var path = Path.Combine(srcDir, name);
 				CreateParentDirectory(path);
 
 				var s = res.TryOpenStream();
@@ -250,7 +248,7 @@ namespace Terraria.ModLoader.Setup
 		{
 			return new WorkItem("Decompiling: " + src.Key, () =>
 			{
-				var path = Path.Combine(FullSrcDir, src.Key);
+				var path = Path.Combine(srcDir, src.Key);
 				CreateParentDirectory(path);
 
 				using (var w = new StreamWriter(path))
@@ -266,7 +264,7 @@ namespace Terraria.ModLoader.Setup
 		{
 			return new WorkItem("Decompiling: AssemblyInfo.cs", () =>
 			{
-				var path = Path.Combine(FullSrcDir, Path.Combine("Properties", "AssemblyInfo.cs"));
+				var path = Path.Combine(srcDir, "Properties/AssemblyInfo.cs");
 				CreateParentDirectory(path);
 
 				using (var w = new StreamWriter(path))
@@ -289,7 +287,7 @@ namespace Terraria.ModLoader.Setup
 				//flatten the file list
 				var files = sources.Select(src => Tuple.Create("Compile", src.Key))
 					.Concat(resources.Select(res => Tuple.Create("EmbeddedResource", res.Item1)))
-					.Concat(new[] {Tuple.Create("Compile", Path.Combine("Properties", "AssemblyInfo.cs"))});
+					.Concat(new[] {Tuple.Create("Compile", "Properties/AssemblyInfo.cs")});
 
 				//sort the assembly references
 				var refs = module.AssemblyReferences.OrderBy(r => r.Name).ToArray();
@@ -299,7 +297,7 @@ namespace Terraria.ModLoader.Setup
 
 				projectDecompiler.ProjectGuid = guid;
 
-				var path = Path.Combine(FullSrcDir, name);
+				var path = Path.Combine(srcDir, name);
 				CreateParentDirectory(path);
 
 				using (var w = new StreamWriter(path))
@@ -316,7 +314,7 @@ namespace Terraria.ModLoader.Setup
 			var name = Path.GetFileNameWithoutExtension(module.Name) + ".csproj.user";
 			return new WorkItem("Writing: " + name, () =>
 			{
-				var path = Path.Combine(FullSrcDir, name);
+				var path = Path.Combine(srcDir, name);
 				CreateParentDirectory(path);
 
 				using (var w = new StreamWriter(path))

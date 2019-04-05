@@ -136,7 +136,7 @@ namespace Terraria.ModLoader.Setup
 
 		private void RunTaskThread(Task task)
 		{
-			var errorLogFile = Path.Combine(Program.LogDir, "error.log");
+			var errorLogFile = Path.Combine(Program.logsDir, "error.log");
 			try
 			{
 				if (File.Exists(errorLogFile))
@@ -183,7 +183,7 @@ namespace Terraria.ModLoader.Setup
 					labelStatus.Text = "Error: " + e.Message.Trim();
 				}));
 
-				Task.CreateDirectory(Program.LogDir);
+				Task.CreateDirectory(Program.logsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally

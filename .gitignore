@@ -1,5 +1,5 @@
 /src
-/logs
+/setup/logs
 **/bin/
 **/obj/
 **/packages/
