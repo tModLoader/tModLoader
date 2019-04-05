@@ -350,7 +350,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -593,4 +_,142 @@
+@@ -593,4 +_,145 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -470,12 +470,15 @@
 +  <Target Name="EditBin" AfterTargets="Build">
 +    <PropertyGroup>
 +        <EditBinOpts>/largeaddressaware</EditBinOpts>
++		<DumpBin>/headers</DumpBin>
 +    </PropertyGroup>
 +    <PropertyGroup Condition="$(DefineConstants.Contains('DEBUG'))">
 +        <EditBinOpts>$(EditBinOpts) /stack:0x800000</EditBinOpts>
 +    </PropertyGroup>
 +    <Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
-+    <Exec Command="&quot;$(SolutionDir)largeaddresstool\editbin&quot; $(EditBinOpts)" />
++    <Exec Command="&quot;$(SolutionDir)largeaddresstool\editbin&quot; $(EditBinOpts) &quot;$(TargetPath)&quot;" />
++	<Message Text="Checking headers with dumpbin." Importance="high" />
++	<Exec Command="&quot;$(SolutionDir)largeaddresstool\dumpbin&quot; $(DumpBin) &quot;$(TargetPath)&quot;" />
 +  </Target>
 +  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
