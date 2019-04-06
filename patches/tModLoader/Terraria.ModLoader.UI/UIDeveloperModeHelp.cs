@@ -1,5 +1,4 @@
 ﻿using Ionic.Zip;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
@@ -138,12 +137,20 @@ namespace Terraria.ModLoader.UI
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			DownloadFile("ModCompile", url, file, () => {
-				Extract(file);
-				var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
-				string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "Terraria.xml");
-				string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
-				File.Copy(originalXMLFile, correctXMLFile, true);
-				File.Delete(originalXMLFile);
+				try {
+					Extract(file);
+					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
+					string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "Terraria.xml");
+					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
+					File.Copy(originalXMLFile, correctXMLFile, true);
+					File.Delete(originalXMLFile);
+				}
+				catch (Exception e) {
+					Logging.tML.Error("Problem during extracting of mod compile files", e);
+				}
+				finally {
+					Main.menuMode = Interface.developerModeHelpID;
+				}
 			});
 		}
 
@@ -153,7 +160,17 @@ namespace Terraria.ModLoader.UI
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			DownloadFile("v4.5 Reference Assemblies", url, file, () => Extract(file));
+			DownloadFile("v4.5 Reference Assemblies", url, file, () => {
+				try {
+					Extract(file);
+				}
+				catch (Exception e) {
+					Logging.tML.Error("Problem during extracting of reference assembly files", e);
+				}
+				finally {
+					Main.menuMode = Interface.developerModeHelpID;
+				}
+			});
 		}
 
 		private void Extract(string zipFile, bool deleteFiles = false) {
@@ -170,11 +187,12 @@ namespace Terraria.ModLoader.UI
 				zip.ExtractAll(folder, ExtractExistingFileAction.OverwriteSilently);
 
 			File.Delete(zipFile);
-			Main.menuMode = Interface.developerModeHelpID;
 		}
 
 		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete) {
-			Interface.downloadFile.SetDownloading(name, url, file, downloadModCompileComplete);
+			Interface.downloadFile.SetDownloading(name, url, file, downloadModCompileComplete, () => {
+				Main.menuMode = Interface.developerModeHelpID;
+			});
 			Main.menuMode = Interface.downloadFileID;
 		}
 

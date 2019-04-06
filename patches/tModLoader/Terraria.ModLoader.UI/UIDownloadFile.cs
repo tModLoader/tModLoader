@@ -2,6 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -18,10 +20,10 @@ namespace Terraria.ModLoader.UI
 		private string name;
 		private string url;
 		private string file;
-		private Action success;
-		private Action failure; //TODO unused?
+		private Action successAction;
 		private Action cancelAction;
 		private WebClient client;
+		private CancellationTokenSource cts;
 
 		public override void OnInitialize() {
 			loadProgress = new UILoadProgress {
@@ -53,25 +55,32 @@ namespace Terraria.ModLoader.UI
 			
 			ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; // SecurityProtocolType.Tls12
 			
+			cts = new CancellationTokenSource();
+			cts.Token.Register(() => {
+				// TODO throws a bunch of SSL exceptions
+				client?.CancelAsync();
+			});
 			client = new WebClient();
-			ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((sender, certificate, chain, policyErrors) => true);
-			SetCancel(client.CancelAsync);
+			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
 			client.DownloadProgressChanged += Client_DownloadProgressChanged;
 			client.DownloadFileCompleted += Client_DownloadFileCompleted;
 			client.DownloadFileAsync(new Uri(url), file);
 		}
 
-		private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e) {
-			client.Dispose();
+		public override void OnDeactivate() {
+			client?.Dispose();
 			client = null;
+		}
 
+		private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e) {
 			if (e.Error == null && !e.Cancelled) {
-				success();
+				Task.Factory.StartNew(successAction);
 				return;
 			}
 
 			if (e.Cancelled) {
-				Main.menuMode = 0;
+				Logging.tML.Debug("Client file download cancelled.");
+				Task.Factory.StartNew(cancelAction);
 			}
 			else {
 				// TODO: Think about what message to put here.
@@ -79,23 +88,26 @@ namespace Terraria.ModLoader.UI
 				Interface.errorMessage.Show(Language.GetTextValue("tModLoader."+errorKey), 0);
 			}
 
-			if (File.Exists(file))
-				File.Delete(file);
+			if (File.Exists(file)) {
+				try {
+					File.Delete(file);
+				}
+				catch (Exception exc) {
+					Logging.tML.Error($"Problem deleting file: {file}", exc);
+				}
+			}
 		}
 
 		private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
 			SetProgress(e);
 		}
 
-		internal void SetDownloading(string name, string url, string file, Action success) {
+		internal void SetDownloading(string name, string url, string file, Action success, Action cancel = null) {
 			this.name = name;
 			this.url = url;
 			this.file = file;
-			this.success = success;
-		}
-
-		public void SetCancel(Action cancelAction) {
-			this.cancelAction = cancelAction;
+			successAction = success;
+			cancelAction = cancel ?? delegate { Main.menuMode = 0; };
 		}
 
 		internal void SetProgress(DownloadProgressChangedEventArgs e) => SetProgress(e.BytesReceived, e.TotalBytesToReceive);
@@ -105,7 +117,7 @@ namespace Terraria.ModLoader.UI
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			cancelAction?.Invoke();
+			cts.Cancel(false);
 		}
 
 		private HttpStatusCode GetHttpStatusCode(Exception err) =>
