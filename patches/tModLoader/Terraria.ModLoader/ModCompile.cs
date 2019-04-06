@@ -122,16 +122,27 @@ namespace Terraria.ModLoader
 			if (referenceAssembliesPath != null)
 				return true;
 
-			referenceAssembliesPath = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + @"Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-			if (Directory.Exists(referenceAssembliesPath))
-				return true;
+			// TODO add Unix support
+#if WINDOWS
+			try {
+				referenceAssembliesPath = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + @"Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+				if (Directory.Exists(referenceAssembliesPath))
+					return true;
 
-			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
-			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
-				return true;
-
+				referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
+				if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
+					return true;
+			}
+			catch (Exception e) {
+				Logging.tML.Error($"There was a problem detecting reference assemblies." +
+									$"\nAssociated path is: {Environment.GetFolderPath(Environment.SpecialFolder.System)}", e);
+			}
 			referenceAssembliesPath = null;
 			return false;
+#else
+			referenceAssembliesPath = null;
+			return false;
+#endif
 		}
 
 		internal static bool ReferenceAssembliesCheck(out string infoKey) {
@@ -193,22 +204,17 @@ namespace Terraria.ModLoader
 			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
 			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
 
-			var tModLoaderTargets = @"<?xml version=""1.0"" encoding=""utf-8""?>
+			var tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
-    <TerrariaSteamPath>%tMLDir%</TerrariaSteamPath>
-    <tMLPath>%tMLPath%</tMLPath>
-    <tMLServerPath>%tMLServerPath%</tMLServerPath>
+    <TerrariaSteamPath>{tMLDir}</TerrariaSteamPath>
+    <tMLPath>{tMLPath}</tMLPath>
+    <tMLServerPath>{tMLServerPath}</tMLServerPath>
   </PropertyGroup>
   <ItemGroup>
-%references%
+{string.Join("\n", referencesXMLList)}
   </ItemGroup>
 </Project>";
-			tModLoaderTargets = tModLoaderTargets
-				.Replace("%tMLDir%", tMLDir)
-				.Replace("%tMLPath%", tMLPath)
-				.Replace("%tMLServerPath%", tMLServerPath)
-				.Replace("%references%", string.Join("\n", referencesXMLList));
 			
 			File.WriteAllText(Path.Combine(modReferencesPath, "tModLoader.targets"), tModLoaderTargets);
 			File.WriteAllText(touchFile, touchStamp);
