@@ -552,7 +552,7 @@ namespace Terraria.ModLoader
 				return File.OpenRead(assetName);
 
 			SplitName(assetName.Substring(5).Replace('\\', '/'), out var modName, out var entryPath);
-			return ModLoader.GetMod(modName).GetFileSteam(entryPath, newFileStream);
+			return ModLoader.GetMod(modName).GetFileStream(entryPath, newFileStream);
 		}
 	}
 }
