@@ -790,7 +790,7 @@ Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalTile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadGlobalWall
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadItem
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadModWorld
-Generating call graph for function Terraria.ModL/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1485: warning: The following parameters of Terraria.ModLoader.Mod.GetFileSteam(string name, bool newFileStream=false) are not documented:
+Generating call graph for function Terraria.ModL/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1485: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
   parameter 'newFileStream'
 oader.Mod.AutoloadNPC
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadPlayer
@@ -805,7 +805,7 @@ Generating call graph for function Terraria.ModLoader.Mod.AutoloadWaterfallStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWaterStyle
 Generating caller graph for function Terraria.ModLoader.Mod.FileExists
 Generating caller graph for function Terraria.ModLoader.Mod.GetFileBytes
-Generating caller graph for function Terraria.ModLoader.Mod.GetFileSteam
+Generating caller graph for function Terraria.ModLoader.Mod.GetFileStream
 Generating caller graph for function Terraria.ModLoader.Mod.GetGlobalItem
 Generating caller graph for function Terraria.ModLoader.Mod.GetItem
 Generating caller graph for function Terraria.ModLoader.Mod.GetMusic
@@ -846,8 +846,8 @@ Generating call graph for function Terraria.ModLoader.ModContent.GetSound
 Generating caller graph for function Terraria.ModLoader.ModContent.GetSound
 Generating call graph for function Terraria.ModLoader.ModContent.GetTexture
 Generating caller graph for function Terraria.ModLoader.ModContent.GetTexture
-Generating call graph for function Terraria.ModLoader.ModContent.MusicExists
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+Generating call graph for function Terraria.ModLoader.ModContent.MusicExists/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+
 Generating call graph for function Terraria.ModLoader.ModContent.OpenRead
 Generating caller graph for function Terraria.ModLoader.ModContent.OpenRead
 Generating call graph for function Terraria.ModLoader.ModContent.RefreshModLanguage
@@ -903,7 +903,7 @@ Generating caller graph for function Terraria.ModLoader.ModPlayer.CanBuyItem
 Generating caller graph for function Terraria.ModLoader.ModPlayer.CanSellItem
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ModifyDrawInfo
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PostBuyItem
-Generating caller graph for functio/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:491: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller graph for functi/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:491: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:295: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -949,7 +949,7 @@ Generating caller graph for functio/home/travis/build/blushiemagic/tModLoader/pa
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:449: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-n Terraria.ModLoader.ModPlayer.PostNurseHeal
+on Terraria.ModLoader.ModPlayer.PostNurseHeal
 Generating caller graph for function Terraria.ModLoader.ModPlayer.PostSellItem
 Generating caller graph for function Terraria.ModLoader.ModPlayer.ReceiveCustomBiomes
 Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes

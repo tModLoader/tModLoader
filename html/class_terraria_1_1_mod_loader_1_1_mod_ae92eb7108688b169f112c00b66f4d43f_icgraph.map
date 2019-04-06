@@ -1,4 +1,4 @@
-<map id="Terraria.ModLoader.Mod.GetFileSteam" name="Terraria.ModLoader.Mod.GetFileSteam">
+<map id="Terraria.ModLoader.Mod.GetFileStream" name="Terraria.ModLoader.Mod.GetFileStream">
 <area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a7d35872c47802050843cea0404e40112" title="Terraria.ModLoader.ModContent.\lOpenRead" alt="" coords="243,5,456,46"/>
 <area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_t_m_l_content_manager.html#aba97cf9e97cfc01207237cc276e357c8" title="Terraria.ModLoader.IO.TMLContent\lManager.OpenStream" alt="" coords="505,5,733,46"/>
 </map>
