@@ -23,7 +23,7 @@ namespace ExampleMod.Items.Weapons
 			item.rare = 2;
 			item.UseSound = SoundID.Item11;
 			item.autoReuse = true;
-			item.shoot = 10; //idk why but all the guns in the vanilla source have this
+			item.shoot = 10; // the bullet projectile id
 			item.shootSpeed = 16f;
 			item.useAmmo = AmmoID.Bullet;
 		}
