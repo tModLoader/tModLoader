@@ -588,9 +588,7 @@ namespace Terraria.ModLoader
 					return;
 				}
 
-				PostProcess(compileOptions.OutputAssembly, forWindows);
-				if (mod.properties.includePDB)
-					CecilizePdb(compileOptions.OutputAssembly, !forWindows);
+				PostProcess(compileOptions.OutputAssembly, !forWindows, mod.properties.includePDB);
 
 				dll = File.ReadAllBytes(compileOptions.OutputAssembly);
 				if (mod.properties.includePDB)
@@ -666,7 +664,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
-		private static Assembly roslynWrapper;
+		private static Type roslynWrapper;
 		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
 			if (roslynWrapper == null) {
 				// ensure the AssemblyManager is loaded for its assembly upgrading hook
@@ -678,19 +676,16 @@ namespace Terraria.ModLoader
 					return File.Exists(f) ? Assembly.LoadFile(f) : null;
 				};
 
-				roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll"));
+				roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll")).GetType("Terraria.ModLoader.RoslynWrapper");
 			}
 
-			return (CompilerResults)roslynWrapper.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("Compile")
+			return (CompilerResults)roslynWrapper.GetMethod("Compile")
 				.Invoke(null, new object[] { compileOptions, files });
 		}
-		/// <summary>
-		/// Roslyn outputs pdb files that are incompatible with cecil modified assemblies (which we use for reload support)
-		/// Mono.Cecil can parse the roslyn debug info, and then output a compatible pdb file and binary using the windows API
-		/// </summary>
-		private static void CecilizePdb(string assemblyPath, bool mdb) {
-			roslynWrapper.GetType("Terraria.ModLoader.RoslynWrapper").GetMethod("CecilizePdb")
-				.Invoke(null, new object[] { assemblyPath, mdb });
+
+		private static void PostProcess(string assemblyPath, bool mono, bool includeSymbols) {
+			roslynWrapper.GetMethod("PostProcess")
+				.Invoke(null, new object[] { assemblyPath, mono, includeSymbols });
 		}
 
 		private static FileStream AcquireConsoleBuildLock() {
@@ -707,49 +702,6 @@ namespace Terraria.ModLoader
 					}
 				}
 			}
-		}
-
-		private static void PostProcess(string path, bool forWindows) {
-			if (forWindows)
-				return;
-
-			var asm = AssemblyDefinition.ReadAssembly(path, new ReaderParameters {
-				ReadWrite = true,
-			});
-			
-			AssemblyNameReference SystemCoreRef = null;
-			AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module) {
-				if (SystemCoreRef != null)
-					return SystemCoreRef;
-
-				var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
-				if (assemblyRef == null) {
-					//System.Linq.Enumerable is in System.Core
-					var name = Assembly.GetAssembly(typeof(Enumerable)).GetName();
-					assemblyRef = new AssemblyNameReference(name.Name, name.Version) {
-						Culture = name.CultureInfo.Name,
-						PublicKeyToken = name.GetPublicKeyToken(),
-						HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
-					};
-					module.AssemblyReferences.Add(assemblyRef);
-				}
-				return assemblyRef;
-			}
-
-			// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
-			// Find all extension attributes and change their assembly references
-			foreach (var module in asm.Modules)
-				foreach (var type in module.Types)
-					foreach (var met in type.Methods)
-						foreach (var attr in met.CustomAttributes)
-							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-								attr.AttributeType.Scope = GetOrAddSystemCore(module);
-			
-			// note, mdb files don't actually use the debug header, so this may be completely redundant
-			// it appears that we haven't disturbed the mdb matching mechanism or any of the method tokens
-			// if bugs appear in the future, we'll need to read and write the mdb like in RoslynWrapper.Cecilize
-			asm.Write(new WriterParameters { SymbolWriterProvider = AssemblyManager.SymbolWriterProvider.instance });
-			asm.Dispose();
 		}
 	}
 }

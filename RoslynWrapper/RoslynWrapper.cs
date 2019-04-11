@@ -5,7 +5,9 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
+using Mono.Cecil.Pdb;
 
 namespace Terraria.ModLoader
 {
@@ -36,18 +38,60 @@ namespace Terraria.ModLoader
 			return cRes;
 		}
 
-		public static void CecilizePdb(string assemblyPath, bool mdb) {
+		/*
+		 * Roslyn outputs pdb files that are incompatible with cecil modified assemblies (which we use for reload support)
+		 * Mono.Cecil can parse the roslyn debug info, and then output a compatible pdb file and binary using the windows API
+		 * 
+		 * In addition, some remapping is required to use extension methods on mono.
+		 */
+		public static void PostProcess(string assemblyPath, bool mono, bool includeSymbols) {
+			if (!mono && !includeSymbols)
+				return; //nothing to do
+
 			var asm = AssemblyDefinition.ReadAssembly(assemblyPath, new ReaderParameters {
-				ReadSymbols = true,
+				ReadSymbols = includeSymbols,
 				ReadWrite = true
 			});
-			
+
+			if (mono)
+				FixExtensionMethods(asm);
+
 			using (asm) {
 				asm.Write(new WriterParameters { 
-					WriteSymbols = true,
-					SymbolWriterProvider = mdb ? new MdbWriterProvider() : null
+					WriteSymbols = includeSymbols,
+					SymbolWriterProvider = (includeSymbols && mono) ? new MdbWriterProvider() : null
 				});
 			}
+		}
+
+		// Extension methods are marked with an attribute which is located in mscorlib on .NET but in System.Core on Mono
+		// Find all extension attributes and change their assembly references
+		private static void FixExtensionMethods(AssemblyDefinition asm) {
+			AssemblyNameReference SystemCoreRef = null;
+			AssemblyNameReference GetOrAddSystemCore(ModuleDefinition module) {
+				if (SystemCoreRef != null)
+					return SystemCoreRef;
+
+				var assemblyRef = module.AssemblyReferences.SingleOrDefault(r => r.Name == "System.Core");
+				if (assemblyRef == null) {
+					//System.Linq.Enumerable is in System.Core
+					var name = System.Reflection.Assembly.GetAssembly(typeof(Enumerable)).GetName();
+					assemblyRef = new AssemblyNameReference(name.Name, name.Version) {
+						Culture = name.CultureInfo.Name,
+						PublicKeyToken = name.GetPublicKeyToken(),
+						HashAlgorithm = (AssemblyHashAlgorithm)name.HashAlgorithm
+					};
+					module.AssemblyReferences.Add(assemblyRef);
+				}
+				return assemblyRef;
+			}
+
+			foreach (var module in asm.Modules)
+				foreach (var type in module.Types)
+					foreach (var met in type.Methods)
+						foreach (var attr in met.CustomAttributes)
+							if (attr.AttributeType.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
+								attr.AttributeType.Scope = GetOrAddSystemCore(module);
 		}
 	}
 }
