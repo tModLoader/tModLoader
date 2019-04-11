@@ -348,7 +348,10 @@ namespace Terraria.ModLoader
 				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
 			}
 
-			public new void RegisterAssembly(AssemblyDefinition asm) => base.RegisterAssembly(asm);
+			public new void RegisterAssembly(AssemblyDefinition asm) {
+				lock (this) //locking on this is not recommended but fine in this case
+					base.RegisterAssembly(asm);
+			}
 
 			public override AssemblyDefinition Resolve(AssemblyNameReference name)
 			{
