@@ -20,17 +20,17 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnInitialize() {
 			var area = new UIElement {
-				Width = { Percent = 0.8f },
-				Top = { Pixels = 60 },
-				Height = { Pixels = -60, Percent = 1f },
+				Width = { Percent = 0.5f },
+				Top = { Pixels = 200 },
+				Height = { Pixels = -240, Percent = 1f },
 				HAlign = 0.5f
 			};
 
 			backPanel = new UIPanel {
 				Width = { Percent = 1f },
-				Height = { Pixels = -70, Percent = 1f },
+				Height = { Pixels = -90, Percent = 1f },
 				BackgroundColor = UICommon.mainPanelBackground
-			}.WithPadding(6);
+			};
 			area.Append(backPanel);
 
 			var heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.UI
 				Height = { Pixels = 50 },
 				HAlign = 0.5f,
 				VAlign = 1f,
-				Top = { Pixels = -20 }
+				Top = { Pixels = -30 }
 			}.WithFadedMouseOver();
 			bottomButton.OnClick += BackClick;
 			area.Append(bottomButton);
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.UI
 					Width = { Percent = 1f },
 					Height = { Percent = .2f },
 					Top = { Percent = (i++) / 4f + 0.05f },
-				}.WithPadding(6);
+				};
 				backPanel.Append(msgBox);
 				return msgBox;
 			}
@@ -94,8 +94,6 @@ namespace Terraria.ModLoader.UI
 			bool refAssemCheck = ModCompile.ReferenceAssembliesCheck(out var refAssemMsg);
 			var refAssemMsgBox = AddMessageBox(Language.GetTextValue(refAssemMsg));
 
-			// TODO Unix compile support
-#if WINDOWS
 			if (!refAssemCheck) {
 				var vsButton = AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
@@ -108,7 +106,6 @@ namespace Terraria.ModLoader.UI
 				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
 				refAssemMsgBox.Append(refAssemDirectDlButton);
 			}
-#endif
 
 			var tutorialMsgBox = AddMessageBox(Language.GetTextValue("tModLoader.DMTutorialWelcome"));
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);

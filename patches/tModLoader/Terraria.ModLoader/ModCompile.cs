@@ -107,7 +107,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static bool DotNet46Check(out string msg) {
-			if (FrameworkVersion.Framework == ".NET Framework" && FrameworkVersion.Version > new Version(4, 6)) {
+			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 6) ||
+				FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version >= new Version(5, 0)) {
+
 				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $"{FrameworkVersion.Framework} {FrameworkVersion.Version}");
 				return true;
 			}
@@ -122,27 +124,21 @@ namespace Terraria.ModLoader
 			if (referenceAssembliesPath != null)
 				return true;
 
-			// TODO add Unix support
-#if WINDOWS
-			try {
-				referenceAssembliesPath = Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.System)) + @"Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
-				if (Directory.Exists(referenceAssembliesPath))
-					return true;
-
-				referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
-				if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
-					return true;
-			}
-			catch (Exception e) {
-				Logging.tML.Error($"There was a problem detecting reference assemblies." +
-									$"\nAssociated path is: {Environment.GetFolderPath(Environment.SpecialFolder.System)}", e);
-			}
-			referenceAssembliesPath = null;
-			return false;
+#if !MONO
+			referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+			if (Directory.Exists(referenceAssembliesPath))
+				return true;
 #else
+			referenceAssembliesPath = "/usr/lib/mono/4.5-api";
+			if (Directory.Exists(referenceAssembliesPath))
+				return true;
+#endif
+			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
+			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
+				return true;
+
 			referenceAssembliesPath = null;
 			return false;
-#endif
 		}
 
 		internal static bool ReferenceAssembliesCheck(out string infoKey) {
@@ -334,11 +330,6 @@ namespace Terraria.ModLoader
 		private bool Build(BuildingMod mod) {
 			status.SetMod(mod.Name);
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
-			
-			if (Program.LaunchParameters.ContainsKey("-eac") && !windows) {
-				status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACWindowsOnly"));
-				return false;
-			}
 
 			byte[] winDLL = null;
 			byte[] monoDLL = null;
@@ -363,9 +354,6 @@ namespace Terraria.ModLoader
 					status.LogError(Language.GetTextValue("tModLoader.BuildErrorMissingDllFiles", string.Join(", ", missing)));
 					return false;
 				}
-
-				if (Program.LaunchParameters.ContainsKey("-eac") && pdb != null)
-					mod.properties.editAndContinue = true;
 			}
 			else {
 				List<LocalMod> refMods;
@@ -377,29 +365,10 @@ namespace Terraria.ModLoader
 					return false;
 				}
 
-				if (Program.LaunchParameters.ContainsKey("-eac")) {
-					var winPath = Program.LaunchParameters["-eac"];
-					try {
-						status.SetStatus(Language.GetTextValue("tModLoader.LoadingEAC"));
-						winDLL = File.ReadAllBytes(winPath);
-						pdb = File.ReadAllBytes(Path.ChangeExtension(winPath, "pdb"));
-						mod.properties.editAndContinue = true;
-					}
-					catch (Exception e) {
-						status.LogError(Language.GetTextValue("tModLoader.BuildErrorEACLoadFailed", winPath + "/.pdb"), e);
-						return false;
-					}
-				}
-				else {
-					status.SetStatus(Language.GetTextValue("tModLoader.CompilingWindows", mod));
-					status.SetProgress(0, 2);
-					CompileMod(mod, refMods, true, ref winDLL, ref pdb);
-				}
+				CompileMod(mod, refMods, true, ref winDLL, ref pdb);
 				if (winDLL == null)
 					return false;
 
-				status.SetStatus(Language.GetTextValue("tModLoader.CompilingMono", mod));
-				status.SetProgress(1, 2);
 				CompileMod(mod, refMods, false, ref monoDLL, ref mdb);
 				if (monoDLL == null)
 					return false;
@@ -407,6 +376,15 @@ namespace Terraria.ModLoader
 
 			if (!VerifyName(mod.Name, winDLL) || !VerifyName(mod.Name, monoDLL))
 				return false;
+
+			if (Program.LaunchParameters.ContainsKey("-eac")) {
+				if (!windows)
+					status.SetStatus(Language.GetTextValue("tModLoader.BuildWarningEACWindowsOnly"));
+				else if (pdb != null) {
+					status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC"));
+					mod.properties.editAndContinue = true;
+				}
+			}
 
 			status.SetStatus(Language.GetTextValue("tModLoader.Packaging", mod));
 			status.SetProgress(0, 1);
@@ -533,6 +511,20 @@ namespace Terraria.ModLoader
 		}
 
 		private void CompileMod(BuildingMod mod, List<LocalMod> refMods, bool forWindows, ref byte[] dll, ref byte[] pdb) {
+			status.SetProgress(forWindows ? 0 : 1, 2);
+
+			// use an assembly compiled by msbuild, instead of supplying our own
+			if (Program.LaunchParameters.ContainsKey("-eac") && forWindows == windows) {
+				var path = Program.LaunchParameters["-eac"];
+				status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", forWindows ? "Windows.dll" : "Mono.dll"));
+				PostProcess(path, !forWindows, mod.properties.includePDB && !forWindows); //post-processing still required on mono
+				dll = File.ReadAllBytes(path);
+				if (mod.properties.includePDB)
+					pdb = File.ReadAllBytes(Path.ChangeExtension(path, forWindows ? "pdb" : "dll.mdb"));
+				return;
+			}
+
+			status.SetStatus(Language.GetTextValue("tModLoader.Compiling" + (forWindows ? "Windows" : "Mono"), mod));
 			if (!DeveloperModeReady(out string msg)) {
 				status.LogError(msg);
 				return;

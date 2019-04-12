@@ -1,32 +1,44 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Mono.Cecil;
-using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
-using Mono.Cecil.Pdb;
 
 namespace Terraria.ModLoader
 {
-	public class RoslynWrapper
+	public static class RoslynWrapper
 	{
 		public static CompilerResults Compile(CompilerParameters args, string[] files) {
 			var name = Path.GetFileNameWithoutExtension(args.OutputAssembly);
+			var pdbPath = Path.ChangeExtension(args.OutputAssembly, "pdb");
+
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 				.WithOptimizationLevel(args.IncludeDebugInformation ? OptimizationLevel.Debug : OptimizationLevel.Release)
 				.WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default);
+
 			var parseOptions = new CSharpParseOptions(LanguageVersion.Latest);
+
+			var emitOptions = new EmitOptions();
+			if (Type.GetType("Mono.Runtime") != null)
+				emitOptions = emitOptions.WithDebugInformationFormat(DebugInformationFormat.PortablePdb);
 
 			var refs = args.ReferencedAssemblies.Cast<string>().Select(s => MetadataReference.CreateFromFile(s));
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 			var comp = CSharpCompilation.Create(name, src, refs, options);
 
-			var res = comp.Emit(args.OutputAssembly, args.IncludeDebugInformation ? Path.ChangeExtension(args.OutputAssembly, "pdb") : null);
+			EmitResult results;
+			using (var peStream = File.OpenWrite(args.OutputAssembly))
+			using (var pdbStream = args.IncludeDebugInformation ? File.OpenWrite(pdbPath) : null) {
+				results = comp.Emit(peStream, pdbStream, options: emitOptions);
+			}
+
 			var cRes = new CompilerResults(args.TempFiles);
-			foreach (var d in res.Diagnostics) {
+			foreach (var d in results.Diagnostics) {
 				if (d.Severity != DiagnosticSeverity.Error)
 					continue;
 
