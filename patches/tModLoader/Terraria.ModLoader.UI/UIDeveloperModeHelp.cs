@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.UI
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
 			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
-#if DEBUG
+#if !DEBUG
 			if (!modCompileCheck)
 				AddButton(modCompileMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadModCompile);
 #endif
