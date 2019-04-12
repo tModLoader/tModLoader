@@ -97,8 +97,6 @@ namespace Terraria.ModLoader.UI
 			bool refAssemCheck = ModCompile.ReferenceAssembliesCheck(out var refAssemMsg);
 			var refAssemMsgBox = AddMessageBox(Language.GetTextValue(refAssemMsg));
 
-			// TODO Unix compile support
-#if WINDOWS
 			if (!refAssemCheck) {
 				var vsButton = AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
@@ -111,7 +109,6 @@ namespace Terraria.ModLoader.UI
 				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
 				refAssemMsgBox.Append(refAssemDirectDlButton);
 			}
-#endif
 
 			var tutorialMsgBox = AddMessageBox(Language.GetTextValue("tModLoader.DMTutorialWelcome"));
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);

@@ -168,7 +168,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static bool DotNet45Check() {
-			if (FrameworkVersion.Framework != ".NET Framework" || FrameworkVersion.Version >= new Version(4, 5))
+			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
 				return true;
 
 			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");

@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 
 		internal static void LogFirstChanceExceptions(bool enabled) {
 			if (enabled) {
-				if (FrameworkVersion.Framework == "Mono")
+				if (FrameworkVersion.Framework == Framework.Mono)
 					tML.Warn("First-chance exception reporting is not implemented on Mono");
 
 				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
