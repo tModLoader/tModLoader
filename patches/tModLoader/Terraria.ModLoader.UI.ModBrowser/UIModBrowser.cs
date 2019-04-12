@@ -4,21 +4,23 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.ModBrowser
 {
+	// TODO could use a refactor
 	internal class UIModBrowser : UIState
 	{
 		public UIList modList;
@@ -166,7 +168,10 @@ namespace Terraria.ModLoader.UI
 				Top = { Pixels = -20 },
 				BackgroundColor = Color.Azure * 0.7f
 			}.WithFadedMouseOver(Color.Azure, Color.Azure * 0.7f);
-			downloadAllButton.OnClick += (s, e) => DownloadMods(SpecialModPackFilter, SpecialModPackFilterTitle);
+			downloadAllButton.OnClick += (s, e) => {
+				EnqueueModBrowserDownloads(SpecialModPackFilter, SpecialModPackFilterTitle);
+				StartDownloading();
+			};
 
 			updateAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUpdateAll")) {
 				Width = { Pixels = -10, Percent = 0.5f },
@@ -180,7 +185,8 @@ namespace Terraria.ModLoader.UI
 				//TODO: move all click events to separate methods, behavior buried in layout is hard to find
 				if (!loading) {
 					var updatableMods = items.Where(x => x.update && !x.updateIsDowngrade).Select(x => x.mod).ToList();
-					DownloadMods(updatableMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
+					EnqueueModBrowserDownloads(updatableMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
+					StartDownloading();
 				}
 			};
 
@@ -369,6 +375,7 @@ namespace Terraria.ModLoader.UI
 			items.Clear();
 		}
 
+		// TODO C WebClient interface is kinda buggy, maybe we should use something like RestSharp
 		private void PopulateModBrowser() {
 			loading = true;
 			SpecialModPackFilter = null;
@@ -406,12 +413,10 @@ namespace Terraria.ModLoader.UI
 						return;
 					}
 					SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", resp.StatusCode));
-					return;
 				}
 			}
 			catch (Exception e) {
 				LogModBrowserException(e);
-				return;
 			}
 		}
 
@@ -510,17 +515,113 @@ namespace Terraria.ModLoader.UI
 				updateNeeded = true;
 			}
 			catch (Exception e) {
-				UIModBrowser.LogModBrowserException(e);
-				return;
+				LogModBrowserException(e);
 			}
 		}
 
-		private void DownloadMods(List<string> specialModPackFilter, string SpecialModPackFilterTitle) {
+		/// <summary>
+		/// Enqueue a Mod browser item to the download manager
+		/// </summary>
+		internal void EnqueueModBrowserDownload(UIModDownloadItem mod) {
+
+			// TODO this will not support concurrent downloading
+			string dlFilePath() => $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{DateTime.Now.Ticks}.tmod";
+
+			Interface.downloadFile.EnqueueRequest(
+				new HttpDownloadRequest(
+					mod.displayname, 
+					dlFilePath(),
+					() => (HttpWebRequest)WebRequest.Create(mod.download),
+					onFinish: OnModDownloadFinished,
+					onCancel: OnModDownloadCancelled) {
+					CustomData = mod
+				});
+		}
+
+		private readonly List<string> _missingMods = new List<string>();
+
+		/// <summary>
+		/// Enqueues a list of mods, if found on the browser (also used for ModPacks)
+		/// </summary>
+		internal void EnqueueModBrowserDownloads(IEnumerable<string> modNames, string overrideUiTitle = null) {
 			Main.PlaySound(SoundID.MenuTick);
-			Interface.downloadMods.SetDownloading(SpecialModPackFilterTitle);
-			Interface.downloadMods.SetModsToDownload(specialModPackFilter, items);
-			Interface.modBrowser.updateNeeded = true;
-			Main.menuMode = Interface.downloadModsID;
+
+			foreach (var desiredMod in modNames) {
+				var mod = items.FirstOrDefault(x => x.mod == desiredMod);
+				if (mod == null) {
+					// Not found on the browser
+					_missingMods.Add(desiredMod);
+				}
+				else if (mod.installed == null || mod.update) {
+					// Found, enqueue download
+					EnqueueModBrowserDownload(mod);
+				}
+			}
+
+			Interface.downloadFile.OverrideName = overrideUiTitle;
+		}
+
+		/// <summary>
+		/// Will prompt the download manager to begin downloading
+		/// </summary>
+		internal void StartDownloading() {
+			Interface.downloadFile.OnQueueProcessed = () => {
+				Interface.modBrowser.updateNeeded = true;
+				Main.menuMode = Interface.modBrowserID;
+				if (_missingMods.Count > 0) {
+					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
+				}
+				_missingMods.Clear();
+			};
+			Main.menuMode = Interface.downloadFileID;
+		}
+
+		private void OnModDownloadCancelled(HttpDownloadRequest req) {
+			try {
+				File.Delete(req.OutputFilePath);
+			}
+			catch (Exception e) {
+				Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", req.OutputFilePath), e);
+			}
+		}
+
+		private void OnModDownloadFinished(HttpDownloadRequest req) {
+			if (req.Response.StatusCode != HttpStatusCode.OK) {
+				var errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
+				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
+			}
+			else if (req.CustomData is UIModDownloadItem currentDownload) {
+				ProcessDownloadedMod(req, currentDownload);
+			}
+		}
+
+		private void ProcessDownloadedMod(HttpDownloadRequest req, UIModDownloadItem currentDownload) {
+			var mod = ModLoader.GetMod(currentDownload.mod);
+			if (mod != null) {
+				Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{mod.Name}: {mod.DisplayName}"));
+				mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+				Interface.modBrowser.anEnabledModDownloaded = true;
+			}
+			try {
+				//string destinationFileName = ModLoader.GetMod(currentDownload.mod) == null ? currentDownload.mod + ".tmod" : currentDownload.mod + ".tmod.update"; // if above fix has issues we can use this.
+				File.Copy(req.OutputFilePath, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{currentDownload.mod}.tmod", true);
+				File.Delete(req.OutputFilePath);
+			}
+			catch (Exception e) {
+				Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", req.OutputFilePath), e);
+			}
+			finally {
+				if (!currentDownload.update) {
+					Interface.modBrowser.aNewModDownloaded = true;
+				}
+				else {
+					Interface.modBrowser.aModUpdated = true;
+				}
+				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+					ModLoader.EnableMod(currentDownload.mod);
+				}
+				Interface.modBrowser.RemoveItem(currentDownload);
+			}
 		}
 
 		private void SetHeading(string heading) {
@@ -541,6 +642,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.RemoveChild(uILoader);
 		}
 
+		// TODO why is this here?
 		//unused
 		//public XmlDocument GetDataFromUrl(string url)
 		//{
@@ -556,11 +658,9 @@ namespace Terraria.ModLoader.UI
 		//	return urlData;
 		//}
 
-		private HttpStatusCode GetHttpStatusCode(System.Exception err) {
-			if (err is WebException) {
-				WebException we = (WebException)err;
-				if (we.Response is HttpWebResponse) {
-					HttpWebResponse response = (HttpWebResponse)we.Response;
+		private HttpStatusCode GetHttpStatusCode(Exception err) {
+			if (err is WebException we) {
+				if (we.Response is HttpWebResponse response) {
 					return response.StatusCode;
 				}
 			}
@@ -582,105 +682,5 @@ namespace Terraria.ModLoader.UI
 			Logging.tML.Info(message);
 			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBServerResponse", message), Interface.managePublishedID);
 		}
-	}
-
-	public static class ModBrowserSortModesExtensions
-	{
-		public static string ToFriendlyString(this ModBrowserSortMode sortmode) {
-			switch (sortmode) {
-				case ModBrowserSortMode.DisplayNameAtoZ:
-					return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
-				case ModBrowserSortMode.DisplayNameZtoA:
-					return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
-				case ModBrowserSortMode.DownloadsDescending:
-					return Language.GetTextValue("tModLoader.MBSortDownloadDesc");
-				case ModBrowserSortMode.DownloadsAscending:
-					return Language.GetTextValue("tModLoader.MBSortDownloadAsc");
-				case ModBrowserSortMode.RecentlyUpdated:
-					return Language.GetTextValue("tModLoader.MBSortByRecentlyUpdated");
-				case ModBrowserSortMode.Hot:
-					return Language.GetTextValue("tModLoader.MBSortByPopularity");
-			}
-			return "Unknown Sort";
-		}
-	}
-
-	public static class UpdateFilterModesExtensions
-	{
-		public static string ToFriendlyString(this UpdateFilter updateFilterMode) {
-			switch (updateFilterMode) {
-				case UpdateFilter.All:
-					return Language.GetTextValue("tModLoader.MBShowAllMods");
-				case UpdateFilter.Available:
-					return Language.GetTextValue("tModLoader.MBShowNotInstalledUpdates");
-				case UpdateFilter.UpdateOnly:
-					return Language.GetTextValue("tModLoader.MBShowUpdates");
-			}
-			return "Unknown Sort";
-		}
-	}
-
-	public static class ModSideFilterModesExtensions
-	{
-		public static string ToFriendlyString(this ModSideFilter modSideFilterMode) {
-			switch (modSideFilterMode) {
-				case ModSideFilter.All:
-					return Language.GetTextValue("tModLoader.MBShowMSAll");
-				case ModSideFilter.Both:
-					return Language.GetTextValue("tModLoader.MBShowMSBoth");
-				case ModSideFilter.Client:
-					return Language.GetTextValue("tModLoader.MBShowMSClient");
-				case ModSideFilter.Server:
-					return Language.GetTextValue("tModLoader.MBShowMSServer");
-				case ModSideFilter.NoSync:
-					return Language.GetTextValue("tModLoader.MBShowMSNoSync");
-			}
-			return "Unknown Sort";
-		}
-	}
-
-	public static class SearchFilterModesExtensions
-	{
-		public static string ToFriendlyString(this SearchFilter searchFilterMode) {
-			switch (searchFilterMode) {
-				case SearchFilter.Name:
-					return Language.GetTextValue("tModLoader.ModsSearchByModName");
-				case SearchFilter.Author:
-					return Language.GetTextValue("tModLoader.ModsSearchByAuthor");
-			}
-			return "Unknown Sort";
-		}
-	}
-
-	public enum ModBrowserSortMode
-	{
-		DisplayNameAtoZ,
-		DisplayNameZtoA,
-		DownloadsDescending,
-		DownloadsAscending,
-		RecentlyUpdated,
-		Hot,
-	}
-
-	public enum UpdateFilter
-	{
-		All,
-		Available,
-		UpdateOnly,
-	}
-
-	public enum SearchFilter
-	{
-		Name,
-		Author,
-	}
-
-	public enum ModSideFilter
-	{
-		All,
-		Both,
-		Client,
-		Server,
-		NoSync,
 	}
 }

@@ -293,7 +293,17 @@
  		}
  
  		public static void InitializeItemAnimations()
-@@ -2566,9 +_,10 @@
+@@ -2550,6 +_,9 @@
+ 			{
+ 				return;
+ 			}
++			Logging.Terraria.Info($"Updating graphics profile: NEW[{profile}] OLD[{Main._currentGraphicsProfile}]" +
++				$"\nCurrent resolution settings: w:{Main.maxScreenW} h:{Main.maxScreenH}" +
++				$"\nAllowing greater resolutions: {ModLoader.ModLoader.allowGreaterResolutions}");
+ 			Main._selectedGraphicsProfile = profile;
+ 			Main.SetGraphicsProfileInternal();
+ 		}
+@@ -2566,12 +_,15 @@
  					Main._renderTargetMaxSize = 2048;
  					break;
  				case GraphicsProfile.HiDef:
@@ -307,6 +317,30 @@
  					Main.TrySupporting8K();
  					break;
  			}
++			Logging.Terraria.Info($"Graphics profile was updated: w:{Main.maxScreenW} h:{Main.maxScreenH}");
++
+ 			try
+ 			{
+ 				Main.graphics.ApplyChanges();
+@@ -2589,8 +_,10 @@
+ 
+ 		private static void TrySupporting8K()
+ 		{
++			Logging.Terraria.Info("Attempting to support 8K resolutions");
+ 			if (!Platform.IsWindows)
+ 			{
++				Logging.Terraria.Warn("Cannot support 8K Resolutions on non Windows OS");
+ 				return;
+ 			}
+ 			Main.instance.ReleaseTargets();
+@@ -2603,6 +_,7 @@
+ 				if (field != null && field2 != null)
+ 				{
+ 					field.SetValue(field2.GetValue(null), 8192);
++					Logging.Terraria.Info($"Updated HiDef setting on Microsoft.Xna.Framework.Graphics.ProfileCapabilities to 8192");
+ 				}
+ 			}
+ 		}
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);

@@ -6,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI

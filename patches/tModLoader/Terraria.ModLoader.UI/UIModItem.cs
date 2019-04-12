@@ -10,6 +10,7 @@ using Terraria.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
+using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Terraria.ModLoader.UI
 {

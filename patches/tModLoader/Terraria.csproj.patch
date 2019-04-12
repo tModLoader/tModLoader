@@ -97,7 +97,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,210 @@
+@@ -339,6 +_,219 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -175,18 +175,27 @@
 +    <Compile Include="Terraria.ModLoader.IO\TagCompound.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\EntryReadStream.cs" />
++    <Compile Include="Terraria.ModLoader.UI.DownloadManager\DownloadRequest.cs" />
++    <Compile Include="Terraria.ModLoader.UI.DownloadManager\HttpDownloadRequest.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\ModBrowserSortMode.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\ModBrowserSortModesExtensions.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\ModSideFilter.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\ModSideFilterModesExtensions.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\SearchFilter.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\SearchFilterModesExtensions.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\TimeHelper.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UpdateFilter.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UpdateFilterModesExtensions.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICreateMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDeveloperModeHelp.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIDownloadFile.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIDownloadMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIDownloadFile.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIEnterPassphraseMenu.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICycleImage.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIDownloadMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIEnterSteamIDMenu.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIErrorMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIHoverImage.cs" />
@@ -199,9 +208,9 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMemoryBar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIModBrowser.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UIModBrowser.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModControls.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UIModDownloadItem.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UIModDownloadItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModInfo.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModPackItem.cs" />
@@ -343,7 +352,7 @@
 +    <EmbeddedResource Include="..\..\references\NVorbis.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.dll" />
-+    <EmbeddedResource Include="..\..\references\Mono.Cecil.Mdb.dll" Condition="$(DefineConstants.Contains('MONO'))"/>
++    <EmbeddedResource Include="..\..\references\Mono.Cecil.Mdb.dll" Condition="$(DefineConstants.Contains('MONO'))" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
 +    <EmbeddedResource Include="..\..\references\System.ValueTuple.dll" />

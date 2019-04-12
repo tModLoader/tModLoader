@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
+using Terraria.ModLoader.UI.DownloadManager;
 
 namespace Terraria.ModLoader.UI
 {
@@ -20,32 +22,32 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnInitialize() {
 			var area = new UIElement {
-				Width = { Percent = 0.8f },
-				Top = { Pixels = 60 },
-				Height = { Pixels = -60, Percent = 1f },
+				Width = {Percent = 0.8f},
+				Top = {Pixels = 60},
+				Height = {Pixels = -60, Percent = 1f},
 				HAlign = 0.5f
 			};
 
 			backPanel = new UIPanel {
-				Width = { Percent = 1f },
-				Height = { Pixels = -70, Percent = 1f },
+				Width = {Percent = 1f},
+				Height = {Pixels = -70, Percent = 1f},
 				BackgroundColor = UICommon.mainPanelBackground
 			}.WithPadding(6);
 			area.Append(backPanel);
 
 			var heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
 				HAlign = 0.5f,
-				Top = { Pixels = -45 },
+				Top = {Pixels = -45},
 				BackgroundColor = UICommon.defaultUIBlue
 			}.WithPadding(15);
 			area.Append(heading);
 
 			bottomButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, true) {
-				Width = { Percent = 0.5f },
-				Height = { Pixels = 50 },
+				Width = {Percent = 0.5f},
+				Height = {Pixels = 50},
 				HAlign = 0.5f,
 				VAlign = 1f,
-				Top = { Pixels = -20 }
+				Top = {Pixels = -20}
 			}.WithFadedMouseOver();
 			bottomButton.OnClick += BackClick;
 			area.Append(bottomButton);
@@ -57,11 +59,12 @@ namespace Terraria.ModLoader.UI
 			backPanel.RemoveAllChildren();
 
 			int i = 0;
+
 			UIMessageBox AddMessageBox(string text) {
 				var msgBox = new UIMessageBox(text) {
-					Width = { Percent = 1f },
-					Height = { Percent = .2f },
-					Top = { Percent = (i++) / 4f + 0.05f },
+					Width = {Percent = 1f},
+					Height = {Percent = .2f},
+					Top = {Percent = (i++) / 4f + 0.05f},
 				}.WithPadding(6);
 				backPanel.Append(msgBox);
 				return msgBox;
@@ -69,8 +72,8 @@ namespace Terraria.ModLoader.UI
 
 			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction) {
 				var button = new UITextPanel<string>(text) {
-					Top = { Pixels = -2 },
-					Left = { Pixels = -2 },
+					Top = {Pixels = -2},
+					Left = {Pixels = -2},
 					HAlign = 1,
 					VAlign = 1
 				}.WithFadedMouseOver();
@@ -86,7 +89,7 @@ namespace Terraria.ModLoader.UI
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
 			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
-#if !DEBUG
+#if DEBUG
 			if (!modCompileCheck)
 				AddButton(modCompileMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadModCompile);
 #endif
@@ -101,8 +104,8 @@ namespace Terraria.ModLoader.UI
 
 				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
-					Left = { Pixels = -1 },
-					Top = { Pixels = -1 },
+					Left = {Pixels = -1},
+					Top = {Pixels = -1},
 					VAlign = 1,
 				};
 				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
@@ -114,9 +117,7 @@ namespace Terraria.ModLoader.UI
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);
 
 			allChecksSatisfied = dotNetCheck && modCompileCheck && refAssemCheck;
-			bottomButton.SetText(allChecksSatisfied ?
-				Language.GetTextValue("tModLoader.Continue") :
-				Language.GetTextValue("UI.Back"));
+			bottomButton.SetText(allChecksSatisfied ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("UI.Back"));
 		}
 
 		private void DevelopingWithVisualStudio() {
@@ -136,7 +137,8 @@ namespace Terraria.ModLoader.UI
 			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(ModLoader.windows ? "Windows" : "Mono")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
-			DownloadFile("ModCompile", url, file, () => {
+			Interface.downloadFile.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
+			DownloadFile("ModCompile", url, file, (req) => {
 				try {
 					Extract(file);
 					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
@@ -146,10 +148,7 @@ namespace Terraria.ModLoader.UI
 					File.Delete(originalXMLFile);
 				}
 				catch (Exception e) {
-					Logging.tML.Error("Problem during extracting of mod compile files", e);
-				}
-				finally {
-					Main.menuMode = Interface.developerModeHelpID;
+					Logging.tML.Error($"Problem during extracting of mod compile files for [{req.DisplayText}]", e);
 				}
 			});
 		}
@@ -160,15 +159,13 @@ namespace Terraria.ModLoader.UI
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			DownloadFile("v4.5 Reference Assemblies", url, file, () => {
+			Interface.downloadFile.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
+			DownloadFile("v4.5 Reference Assemblies", url, file, (req) => {
 				try {
 					Extract(file);
 				}
 				catch (Exception e) {
-					Logging.tML.Error("Problem during extracting of reference assembly files", e);
-				}
-				finally {
-					Main.menuMode = Interface.developerModeHelpID;
+					Logging.tML.Error($"Problem during extracting of reference assembly files for [{req.DisplayText}]", e);
 				}
 			});
 		}
@@ -189,10 +186,9 @@ namespace Terraria.ModLoader.UI
 			File.Delete(zipFile);
 		}
 
-		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete) {
-			Interface.downloadFile.SetDownloading(name, url, file, downloadModCompileComplete, () => {
-				Main.menuMode = Interface.developerModeHelpID;
-			});
+		private void DownloadFile(string name, string url, string file, Action<DownloadRequest> downloadModCompileComplete) {
+			Interface.downloadFile.EnqueueRequest(
+				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), downloadModCompileComplete));
 			Main.menuMode = Interface.downloadFileID;
 		}
 

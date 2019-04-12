@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -14,9 +13,10 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal class UIModDownloadItem : UIPanel
 	{
@@ -274,10 +274,8 @@ namespace Terraria.ModLoader.UI
 
 		internal void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
-			Interface.downloadMods.SetDownloading("Mod");
-			Interface.downloadMods.SetModsToDownload(new List<string>() { mod }, new List<UIModDownloadItem>() { this });
-			Interface.modBrowser.updateNeeded = true;
-			Main.menuMode = Interface.downloadModsID;
+			Interface.modBrowser.EnqueueModBrowserDownload(this);
+			Interface.modBrowser.StartDownloading();
 		}
 
 		internal void RequestMoreinfo(UIMouseEvent evt, UIElement listeningElement) {
@@ -317,51 +315,6 @@ namespace Terraria.ModLoader.UI
 			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
 			Interface.modInfo.SetURL(homepage);
 			Main.menuMode = Interface.modInfoID;
-		}
-	}
-
-	internal class TimeHelper
-	{
-		private const int SECOND = 1;
-		private const int MINUTE = 60 * SECOND;
-		private const int HOUR = 60 * MINUTE;
-		private const int DAY = 24 * HOUR;
-		private const int MONTH = 30 * DAY;
-
-		// Note: Polish has different plural for numbers ending in 2,3,4. Too complicated to do though.
-		public static string HumanTimeSpanString(DateTime yourDate) {
-			var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
-			double delta = Math.Abs(ts.TotalSeconds);
-
-			if (delta < 1 * MINUTE)
-				return ts.Seconds == 1 ? Language.GetTextValue("tModLoader.1SecondAgo") : Language.GetTextValue("tModLoader.XSecondsAgo", ts.Seconds);
-
-			if (delta < 2 * MINUTE)
-				return Language.GetTextValue("tModLoader.1MinuteAgo");
-
-			if (delta < 45 * MINUTE)
-				return Language.GetTextValue("tModLoader.XMinutesAgo", ts.Minutes);
-
-			if (delta < 90 * MINUTE)
-				return Language.GetTextValue("tModLoader.1HourAgo");
-
-			if (delta < 24 * HOUR)
-				return Language.GetTextValue("tModLoader.XHoursAgo", ts.Hours);
-
-			if (delta < 48 * HOUR)
-				return Language.GetTextValue("tModLoader.1DayAgo");
-
-			if (delta < 30 * DAY)
-				return Language.GetTextValue("tModLoader.XDaysAgo", ts.Days);
-
-			if (delta < 12 * MONTH) {
-				int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-				return months <= 1 ? Language.GetTextValue("tModLoader.1MonthAgo") : Language.GetTextValue("tModLoader.XMonthsAgo", months);
-			}
-			else {
-				int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-				return years <= 1 ? Language.GetTextValue("tModLoader.1YearAgo") : Language.GetTextValue("tModLoader.XYearsAgo", years);
-			}
 		}
 	}
 }

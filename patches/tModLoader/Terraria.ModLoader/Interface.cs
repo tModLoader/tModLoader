@@ -6,6 +6,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Terraria.ModLoader
 {
@@ -44,7 +45,6 @@ namespace Terraria.ModLoader
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
-		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -52,10 +52,9 @@ namespace Terraria.ModLoader
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
-		internal static UIDownloadMods downloadMods = new UIDownloadMods();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
-		internal static UIDownloadFile downloadFile = new UIDownloadFile();
+		internal static UIDownloadManager downloadFile = new UIDownloadManager();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
@@ -179,14 +178,6 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == modInfoID) {
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == downloadModID) {
-				Main.MenuUI.SetState(downloadMod);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == downloadModsID) {
-				Main.menuMode = 888;
-				Main.MenuUI.SetState(downloadMods);
 			}
 			else if (Main.menuMode == managePublishedID) {
 				Main.MenuUI.SetState(managePublished);

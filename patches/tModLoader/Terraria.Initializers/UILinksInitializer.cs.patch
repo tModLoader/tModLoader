@@ -1,10 +1,11 @@
 --- src/Terraria\Terraria.Initializers\UILinksInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\UILinksInitializer.cs
-@@ -3,6 +_,7 @@
+@@ -3,6 +_,8 @@
  using System.Collections.Generic;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ModLoader.UI;
++using Terraria.ModLoader.UI.ModBrowser;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  

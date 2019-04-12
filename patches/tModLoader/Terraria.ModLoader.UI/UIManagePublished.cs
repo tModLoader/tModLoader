@@ -7,6 +7,7 @@ using System.Net;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
