@@ -66,8 +66,11 @@ call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep ye
 :: Mac release
 copy ..\src\tModLoader\bin\MacRelease\net40\Terraria.exe "%mac%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\MacServerRelease\net40\Terraria.exe "%mac%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Mac "%mac%\tModLoaderServer" /y
-copy ReleaseExtras\Terraria "%mac%\Terraria" /y
+copy ReleaseExtras\tModLoader-mono "%lnx%\tModLoader-mono" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
+copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
 
 copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
@@ -80,7 +83,10 @@ call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -f
 :: Linux release
 copy ..\src\tModLoader\bin\LinuxRelease\net40\Terraria.exe "%lnx%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\LinuxServerRelease\net40\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Linux "%lnx%\tModLoaderServer" /y
+copy ReleaseExtras\tModLoader-mono "%lnx%\tModLoader-mono" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
 copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y

@@ -10,6 +10,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Utilities;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader.UI
 {
@@ -82,10 +84,19 @@ namespace Terraria.ModLoader.UI
 				return button;
 			}
 
-			bool dotNetCheck = ModCompile.DotNet46Check(out var dotNetMsg);
+			bool frameworkCheck = ModCompile.RoslynCompatibleFrameworkCheck(out var dotNetMsg);
+			if (monoStartScriptsUpdated)
+				dotNetMsg = Language.GetTextValue("tModLoader.DMScriptsRequireRestart");
+
 			var dotNetMsgBox = AddMessageBox(dotNetMsg);
-			if (!dotNetCheck)
-				AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
+			if (!frameworkCheck && !monoStartScriptsUpdated) {
+				if (ModCompile.systemMonoSuitable)
+					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.DMUpdateScripts"), UpdateMonoStartScripts);
+				else if (FrameworkVersion.Framework == Framework.Mono)
+					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadMono);
+				else
+					AddButton(dotNetMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadDotNet);
+			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
 			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
@@ -113,7 +124,7 @@ namespace Terraria.ModLoader.UI
 			var tutorialMsgBox = AddMessageBox(Language.GetTextValue("tModLoader.DMTutorialWelcome"));
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);
 
-			allChecksSatisfied = dotNetCheck && modCompileCheck && refAssemCheck;
+			allChecksSatisfied = frameworkCheck && modCompileCheck && refAssemCheck;
 			bottomButton.SetText(allChecksSatisfied ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("UI.Back"));
 		}
 
@@ -127,6 +138,34 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadDotNet() {
 			Process.Start("https://www.microsoft.com/net/download/thank-you/net472");
+		}
+
+		private void DownloadMono() {
+			Process.Start("https://www.mono-project.com/download/stable/");
+		}
+
+		private static bool monoStartScriptsUpdated;
+		private void UpdateMonoStartScripts() {
+			try {
+				// upgrade start scripts to system mono
+				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
+					File.Copy("tModLoader-mono", monoPath, true);
+
+				// vanilla start scripts need to be upgraded to copy back the sys/ folder
+				var kickPaths = new List<string> { "TerrariaServer" };
+				if (!File.ReadAllText("Terraria").Contains("forwarder"))
+					kickPaths.Add("Terraria");
+
+				foreach (var kickPath in kickPaths)
+					File.Copy("tModLoader-kick", kickPath, true);
+
+				monoStartScriptsUpdated = true;
+				//TODO just reload the UI
+				Main.menuMode = 0;
+			} catch (Exception e) {
+				Logging.tML.Error(e);
+				Interface.errorMessage.Show("Failed to copy mono start scripts\n"+e, Interface.developerModeHelpID);
+			}
 		}
 
 		private void DownloadModCompile() {

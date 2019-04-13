@@ -2,9 +2,11 @@ using Mono.Cecil;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
@@ -84,7 +86,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static bool DeveloperModeReady(out string msg) {
-			return DotNet46Check(out msg) &&
+			return RoslynCompatibleFrameworkCheck(out msg) &&
 				ModCompileVersionCheck(out msg) &&
 				ReferenceAssembliesCheck(out msg);
 		}
@@ -106,15 +108,42 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal static bool DotNet46Check(out string msg) {
-			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 6) ||
-				FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version >= new Version(5, 0)) {
+		private static readonly Version minDotNetVersion = new Version(4, 6);
+		private static readonly Version minMonoVersion = new Version(5, 18, 1);
+		internal static bool RoslynCompatibleFrameworkCheck(out string msg) {
+			// mono 5.20 is required due to https://github.com/mono/mono/issues/12362
+			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= minDotNetVersion ||
+				FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version >= minMonoVersion) {
 
 				msg = Language.GetTextValue("tModLoader.DMDotNetSatisfied", $"{FrameworkVersion.Framework} {FrameworkVersion.Version}");
 				return true;
 			}
-			else {
-				msg = Language.GetTextValue("tModLoader.DMDotNet46Required");
+
+			if (FrameworkVersion.Framework == Framework.NetFramework)
+				msg = Language.GetTextValue("tModLoader.DMDotNetUpdateRequired", minDotNetVersion);
+			else if (SystemMonoCheck())
+				msg = Language.GetTextValue("tModLoader.DMMonoRuntimeRequired", minMonoVersion);
+			else
+				msg = Language.GetTextValue("tModLoader.DMMonoUpdateRequired", minMonoVersion);
+
+			return false;
+		}
+
+		internal static bool systemMonoSuitable;
+		private static bool SystemMonoCheck() {
+			try {
+				string output = Process.Start(new ProcessStartInfo {
+					FileName = "mono",
+					Arguments = "--version",
+					UseShellExecute = false,
+					RedirectStandardOutput = true
+				}).StandardOutput.ReadToEnd();
+
+				var monoVersion = new Version(new Regex("version (.+?) ").Match(output).Groups[1].Value);
+				return systemMonoSuitable = monoVersion >= minMonoVersion;
+
+			} catch (Exception e) {
+				Logging.tML.Debug("System mono check failed: ", e);
 				return false;
 			}
 		}
@@ -143,7 +172,9 @@ namespace Terraria.ModLoader
 
 		internal static bool ReferenceAssembliesCheck(out string infoKey) {
 			var ret = ReferenceAssembliesCheck();
-			infoKey = "tModLoader." + (ret ? "DMReferenceAssembliesSatisfied" : "DMReferenceAssembliesMissing");
+			infoKey = "tModLoader." + (
+				ret ? "DMReferenceAssembliesSatisfied" :
+				FrameworkVersion.Framework == Framework.Mono ? "DMReferenceAssembliesMissingMono" : "DMReferenceAssembliesMissingMono");
 			return ret;
 		}
 		
