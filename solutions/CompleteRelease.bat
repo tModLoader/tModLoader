@@ -34,7 +34,6 @@ mkdir "%mac%"
 mkdir "%lnx%"
 mkdir "%winmc%"
 mkdir "%monomc%"
-mkdir "%mac%\mono"
 
 :: TODO: Automatically create version string file. Or have setup.sln copy it to ReleaseExtras
 
@@ -75,7 +74,6 @@ copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
-copy ReleaseExtras\Terraria.exe.config "%lnx%\Terraria.exe.config" /y
 
 call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
 
@@ -86,7 +84,8 @@ copy ..\src\tModLoader\bin\MacServerRelease\net40\Terraria.exe "%mac%\tModLoader
 
 copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
-copy ReleaseExtras\macconfig "%mac%\mono\config" /y
+mkdir "%mac%\osx"
+copy ReleaseExtras\osx "%mac%\osx" /y
 
 call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
 
