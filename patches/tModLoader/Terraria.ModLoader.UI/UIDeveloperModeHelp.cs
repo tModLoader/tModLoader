@@ -12,6 +12,7 @@ using Terraria.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.Utilities;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.UI
 {
@@ -24,32 +25,32 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnInitialize() {
 			var area = new UIElement {
-				Width = {Percent = 0.8f},
-				Top = {Pixels = 60},
-				Height = {Pixels = -60, Percent = 1f},
+				Width = { Percent = 0.8f },
+				Top = { Pixels = 60 },
+				Height = { Pixels = -60, Percent = 1f },
 				HAlign = 0.5f
 			};
 
 			backPanel = new UIPanel {
-				Width = {Percent = 1f},
-				Height = {Pixels = -70, Percent = 1f},
+				Width = { Percent = 1f },
+				Height = { Pixels = -70, Percent = 1f },
 				BackgroundColor = UICommon.mainPanelBackground
 			}.WithPadding(6);
 			area.Append(backPanel);
 
 			var heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
 				HAlign = 0.5f,
-				Top = {Pixels = -45},
+				Top = { Pixels = -45 },
 				BackgroundColor = UICommon.defaultUIBlue
 			}.WithPadding(15);
 			area.Append(heading);
 
 			bottomButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, true) {
-				Width = {Percent = 0.5f},
-				Height = {Pixels = 50},
+				Width = { Percent = 0.5f },
+				Height = { Pixels = 50 },
 				HAlign = 0.5f,
 				VAlign = 1f,
-				Top = {Pixels = -20}
+				Top = { Pixels = -20 }
 			}.WithFadedMouseOver();
 			bottomButton.OnClick += BackClick;
 			area.Append(bottomButton);
@@ -58,24 +59,36 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			updateRequired = true;
+		}
+
+		private bool updateRequired;
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+
+			if (!updateRequired)
+				return;
+			updateRequired = false;
+
 			backPanel.RemoveAllChildren();
 
 			int i = 0;
 
 			UIMessageBox AddMessageBox(string text) {
 				var msgBox = new UIMessageBox(text) {
-					Width = {Percent = 1f},
-					Height = {Percent = .2f},
-					Top = {Percent = (i++) / 4f + 0.05f},
+					Width = { Percent = 1f },
+					Height = { Percent = .2f },
+					Top = { Percent = (i++) / 4f + 0.05f },
 				}.WithPadding(6);
 				backPanel.Append(msgBox);
+				msgBox.OnActivate();
 				return msgBox;
 			}
 
 			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction) {
 				var button = new UITextPanel<string>(text) {
-					Top = {Pixels = -2},
-					Left = {Pixels = -2},
+					Top = { Pixels = -2 },
+					Left = { Pixels = -2 },
 					HAlign = 1,
 					VAlign = 1
 				}.WithFadedMouseOver();
@@ -113,8 +126,8 @@ namespace Terraria.ModLoader.UI
 
 				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
-					Left = {Pixels = -1},
-					Top = {Pixels = -1},
+					Left = { Pixels = -1 },
+					Top = { Pixels = -1 },
 					VAlign = 1,
 				};
 				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
@@ -160,11 +173,10 @@ namespace Terraria.ModLoader.UI
 					File.Copy("tModLoader-kick", kickPath, true);
 
 				monoStartScriptsUpdated = true;
-				//TODO just reload the UI
-				Main.menuMode = 0;
+				updateRequired = true;
 			} catch (Exception e) {
 				Logging.tML.Error(e);
-				Interface.errorMessage.Show("Failed to copy mono start scripts\n"+e, Interface.developerModeHelpID);
+				Interface.errorMessage.Show("Failed to copy mono start scripts\n" + e, Interface.developerModeHelpID);
 			}
 		}
 
