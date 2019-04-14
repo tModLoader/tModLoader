@@ -684,30 +684,34 @@ namespace Terraria.ModLoader
 			return refs;
 		}
 		
+		private static Type roslynWrapper;
+		private static Type RoslynWrapper {
+			get {
+				if (roslynWrapper == null) {
+					// ensure the AssemblyManager is loaded for its assembly upgrading hook
+					AssemblyManager.GetAssemblyBytes("");
+
+					AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
+						var name = new AssemblyName(args.Name).Name;
+						var f = Path.Combine(modCompileDir, name + ".dll");
+						return File.Exists(f) ? Assembly.LoadFile(f) : null;
+					};
+					roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll")).GetType("Terraria.ModLoader.RoslynWrapper");
+				}
+				return roslynWrapper;
+			}
+		}
+
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
-		private static Type roslynWrapper;
 		private static CompilerResults RoslynCompile(CompilerParameters compileOptions, string[] files) {
-			if (roslynWrapper == null) {
-				// ensure the AssemblyManager is loaded for its assembly upgrading hook
-				AssemblyManager.GetAssemblyBytes("");
-
-				AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
-					var name = new AssemblyName(args.Name).Name;
-					var f = Path.Combine(modCompileDir, name + ".dll");
-					return File.Exists(f) ? Assembly.LoadFile(f) : null;
-				};
-
-				roslynWrapper = Assembly.LoadFile(Path.Combine(modCompileDir, "RoslynWrapper.dll")).GetType("Terraria.ModLoader.RoslynWrapper");
-			}
-
-			return (CompilerResults)roslynWrapper.GetMethod("Compile")
+			return (CompilerResults)RoslynWrapper.GetMethod("Compile")
 				.Invoke(null, new object[] { compileOptions, files });
 		}
 
 		private static void PostProcess(string assemblyPath, bool mono, bool includeSymbols) {
-			roslynWrapper.GetMethod("PostProcess")
+			RoslynWrapper.GetMethod("PostProcess")
 				.Invoke(null, new object[] { assemblyPath, mono, includeSymbols });
 		}
 
