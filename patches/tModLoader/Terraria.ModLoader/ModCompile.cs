@@ -72,6 +72,9 @@ namespace Terraria.ModLoader
 			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name[0] != '.').ToArray();
 		}
 
+		// Silence exception reporting in the chat unless actively modding.
+		public static bool activelyModding;
+
 		private static bool? developerMode;
 		public static bool DeveloperMode {
 			get {
@@ -82,7 +85,6 @@ namespace Terraria.ModLoader
 			}
 			set {
 				developerMode = value;
-				Logging.LogFirstChanceExceptions(value);
 			}
 		}
 
@@ -454,6 +456,8 @@ namespace Terraria.ModLoader
 			mod.modFile.Save();
 			mod.modFile.Close();
 			EnableMod(mod.Name);
+			ModCompile.activelyModding = true;
+			Logging.ResetPastExceptions();
 			return true;
 		}
 

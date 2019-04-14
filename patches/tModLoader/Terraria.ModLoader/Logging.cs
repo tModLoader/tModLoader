@@ -62,8 +62,8 @@ namespace Terraria.ModLoader
 
 			if (ModCompile.DeveloperMode) {
 				tML.Info("Developer mode enabled");
-				LogFirstChanceExceptions(true);
 			}
+			LogFirstChanceExceptions();
 		}
 
 		private static void ConfigureAppenders() {
@@ -164,16 +164,11 @@ namespace Terraria.ModLoader
 			});
 		}
 
-		internal static void LogFirstChanceExceptions(bool enabled) {
-			if (enabled) {
-				if (FrameworkVersion.Framework == Framework.Mono)
-					tML.Warn("First-chance exception reporting is not implemented on Mono");
+		internal static void LogFirstChanceExceptions() {
+			if (FrameworkVersion.Framework == Framework.Mono)
+				tML.Warn("First-chance exception reporting is not implemented on Mono");
 
-				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
-			}
-			else {
-				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
-			}
+			AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 		}
 
 		private static HashSet<string> pastExceptions = new HashSet<string>();
@@ -221,7 +216,7 @@ namespace Terraria.ModLoader
 			previousException = args.Exception;
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
 #if CLIENT
-			if (Main.ContentLoaded) {
+			if (!Main.gameMenu && ModCompile.activelyModding) {
 				float soundVolume = Main.soundVolume;
 				Main.soundVolume = 0f;
 				Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);

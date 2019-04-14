@@ -285,6 +285,7 @@ namespace Terraria.ModLoader
 #if !MONO	//as far as we know, mono doesn't support edit and continue anyway
 			if (Debugger.IsAttached) {
 				ModCompile.DeveloperMode = true;
+				ModCompile.activelyModding = true;
 				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
 					mod.EnableEaC();
 			}
