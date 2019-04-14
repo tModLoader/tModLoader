@@ -167,7 +167,7 @@ namespace {modNameTrimmed}
     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath)"" />
+    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath)"" />
   </Target>
 </Project>");
 				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";

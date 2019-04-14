@@ -10,6 +10,7 @@ BASENAME=${BASENAME%-*} #remove anyting after a dash
 
 if [ "$UNAME" == "Darwin" ]; then
 	export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:./osx/
+	export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 
 	if [ "$STEAM_DYLD_INSERT_LIBRARIES" != "" ] && [ "$DYLD_INSERT_LIBRARIES" == "" ]; then
 		export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
@@ -25,4 +26,4 @@ mv WindowsBase.dll sys 2> /dev/null
 mv Mono*.dll sys 2> /dev/null
 
 # Run system mono
-mono $@ ${BASENAME}.exe
+mono ${BASENAME}.exe $@

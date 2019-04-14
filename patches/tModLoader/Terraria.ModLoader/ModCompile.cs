@@ -1,4 +1,5 @@
 using Mono.Cecil;
+using ReLogic.OS;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -109,7 +110,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static readonly Version minDotNetVersion = new Version(4, 6);
-		private static readonly Version minMonoVersion = new Version(5, 18, 1);
+		private static readonly Version minMonoVersion = new Version(5, 20);
 		internal static bool RoslynCompatibleFrameworkCheck(out string msg) {
 			// mono 5.20 is required due to https://github.com/mono/mono/issues/12362
 			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= minDotNetVersion ||
@@ -132,8 +133,12 @@ namespace Terraria.ModLoader
 		internal static bool systemMonoSuitable;
 		private static bool SystemMonoCheck() {
 			try {
+				var monoPath = "mono";
+				if (Platform.IsOSX) //mono installs on OSX don't resolve properly outside of terminal
+					monoPath = "/Library/Frameworks/Mono.framework/Versions/Current/Commands/mono";
+
 				string output = Process.Start(new ProcessStartInfo {
-					FileName = "mono",
+					FileName = monoPath,
 					Arguments = "--version",
 					UseShellExecute = false,
 					RedirectStandardOutput = true
@@ -148,34 +153,35 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static bool PlatformSupportsVisualStudio => !Platform.IsLinux;
+
 		private static string referenceAssembliesPath;
-		internal static bool ReferenceAssembliesCheck() {
+		internal static bool ReferenceAssembliesCheck(out string msg) {
+			msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesSatisfied");
 			if (referenceAssembliesPath != null)
 				return true;
 
-#if !MONO
-			referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+			if (Platform.IsWindows)
+				referenceAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+			else if (Platform.IsOSX)
+				referenceAssembliesPath = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5-api";
+			else if (Platform.IsLinux)
+				referenceAssembliesPath = "/usr/lib/mono/4.5-api";
+
 			if (Directory.Exists(referenceAssembliesPath))
 				return true;
-#else
-			referenceAssembliesPath = "/usr/lib/mono/4.5-api";
-			if (Directory.Exists(referenceAssembliesPath))
-				return true;
-#endif
+
 			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
 			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
 				return true;
 
+			if (FrameworkVersion.Framework == Framework.Mono)
+				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissingMono", "lib/mono/4.5-api");
+			else
+				msg = Language.GetTextValue("tModLoader.DMReferenceAssembliesMissing");
+
 			referenceAssembliesPath = null;
 			return false;
-		}
-
-		internal static bool ReferenceAssembliesCheck(out string infoKey) {
-			var ret = ReferenceAssembliesCheck();
-			infoKey = "tModLoader." + (
-				ret ? "DMReferenceAssembliesSatisfied" :
-				FrameworkVersion.Framework == Framework.Mono ? "DMReferenceAssembliesMissingMono" : "DMReferenceAssembliesMissingMono");
-			return ret;
 		}
 		
 		private static readonly string modReferencesPath = Path.Combine(Main.SavePath, "references");
@@ -220,6 +226,9 @@ namespace Terraria.ModLoader
 			if (!File.Exists(tMLPath))
 				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
 #endif
+			var tMLBuildServerPath = tMLServerPath;
+			if (FrameworkVersion.Framework == Framework.Mono)
+				tMLBuildServerPath = tMLServerPath.Substring(0, tMLServerPath.Length - 4);
 			
 			string MakeRef(string path, string name = null) {
 				if (name == null)
@@ -237,6 +246,7 @@ namespace Terraria.ModLoader
     <TerrariaSteamPath>{tMLDir}</TerrariaSteamPath>
     <tMLPath>{tMLPath}</tMLPath>
     <tMLServerPath>{tMLServerPath}</tMLServerPath>
+    <tMLBuildServerPath>{tMLBuildServerPath}</tMLBuildServerPath>
   </PropertyGroup>
   <ItemGroup>
 {string.Join("\n", referencesXMLList)}

@@ -119,10 +119,11 @@ namespace Terraria.ModLoader.UI
 #endif
 
 			bool refAssemCheck = ModCompile.ReferenceAssembliesCheck(out var refAssemMsg);
-			var refAssemMsgBox = AddMessageBox(Language.GetTextValue(refAssemMsg));
+			var refAssemMsgBox = AddMessageBox(refAssemMsg);
 
 			if (!refAssemCheck) {
-				var vsButton = AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
+				if (ModCompile.PlatformSupportsVisualStudio)
+					AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
 				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
