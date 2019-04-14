@@ -6,19 +6,19 @@ public class LinuxInfo
     {
         String[] files = new String[]
         {
-            "Terraria.exe",
+            "tModLoader.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
-            "Terraria",
-            "Terraria.exe.config",
+            "Terraria"
         };
         String[] filesToDelete = new String[]
         {
+            "Terraria.exe.config",
             "MP3Sharp.dll",
             "Ionic.Zip.Reduced.dll",
             "Mono.Cecil.dll"
         };
-        Installer.tryInstall(files, filesToDelete, getInstallDir());
+        Installer.tryInstall(files, filesToDelete, getInstallDir(), false);
     }
 
     private static File getInstallDir()

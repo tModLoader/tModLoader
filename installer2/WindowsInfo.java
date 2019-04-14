@@ -29,7 +29,7 @@ public class WindowsInfo
         String[] filesToDelete = new String[]
         {
         };
-        Installer.tryInstall(files, filesToDelete, directory);
+        Installer.tryInstall(files, filesToDelete, directory, true);
     }
 
     private static File getInstallDir(String programFileDir)
