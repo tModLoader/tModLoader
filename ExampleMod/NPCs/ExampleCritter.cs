@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.Cil;
 using System;
 using System.Linq;
 using Terraria;
@@ -46,10 +46,10 @@ namespace ExampleMod.NPCs
 		/// 
 		/// </summary>
 		/// <param name="il"></param>
-		private void HookStatue(HookIL il) {
+		private void HookStatue(ILContext il) {
 			// obtain a cursor positioned before the first instruction of the method
 			// the cursor is used for navigating and modifying the il
-			var c = il.At(0);
+			var c = new ILCursor(il);
 
 			// the exact location for this hook is very complex to search for due to the hook instructions not being unique, and buried deep in control flow
 			// switch statements are sometimes compiled to if-else chains, and debug builds litter the code with no-ops and redundant locals
@@ -67,7 +67,7 @@ namespace ExampleMod.NPCs
 
 			// we'll just use the fact that there are no other switch statements with case 56, followed by a SelectRandom
 
-			HookILLabel[] targets = null;
+			ILLabel[] targets = null;
 			while (c.TryGotoNext(i => i.MatchSwitch(out targets))) {
 				// some optimising compilers generate a sub so that all the switch cases start at 0
 				// ldc.i4.s 51
@@ -95,10 +95,10 @@ namespace ExampleMod.NPCs
 
 				// goto next positions us before the instruction we searched for, so we can insert our array modifying code right here
 				c.EmitDelegate<Func<short[], short[]>>(arr => {
-					// convert the array to a list, add our custom snail, and back to an array
-					var list = arr.ToList();
-					list.Add((short)npc.type);
-					return list.ToArray();
+					// resize the array and add our custom snail
+					Array.Resize(ref arr, arr.Length+1);
+					arr[arr.Length-1] = (short)npc.type;
+					return arr;
 				});
 
 				// hook applied successfully
