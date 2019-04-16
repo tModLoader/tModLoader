@@ -184,6 +184,7 @@ namespace Terraria.ModLoader
 			Interface.updateMessage.SetMessage(msg);
 			Interface.updateMessage.SetGotoMenu(0);
 			Interface.updateMessage.SetURL("https://www.microsoft.com/net/download/thank-you/net472");
+			Interface.updateMessage.SetAutoUpdateURL(null);
 			Main.menuMode = Interface.updateMessageID;
 			return false;
 		}

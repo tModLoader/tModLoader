@@ -51,6 +51,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private bool updateAvailable;
 		private string updateText;
 		private string updateURL;
+		private string autoUpdateURL;
 		public bool aModUpdated = false;
 		public bool aNewModDownloaded = false;
 		public bool anEnabledModDownloaded = false; // disregard user preference for mods that are enabled
@@ -307,6 +308,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Interface.updateMessage.SetMessage(updateText);
 				Interface.updateMessage.SetGotoMenu(Interface.modBrowserID);
 				Interface.updateMessage.SetURL(updateURL);
+				Interface.updateMessage.SetAutoUpdateURL(autoUpdateURL);
 				Main.menuMode = Interface.updateMessageID;
 			}
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
@@ -477,6 +479,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					updateAvailable = true;
 					updateText = (string)updateObject["message"];
 					updateURL = (string)updateObject["url"];
+					autoUpdateURL = (string)updateObject["autoupdateurl"];
 				}
 				JArray modlist = (JArray)jsonObject["modlist"];
 				foreach (JObject mod in modlist.Children<JObject>()) {
