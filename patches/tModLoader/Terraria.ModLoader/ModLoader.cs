@@ -78,9 +78,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
-		internal static bool allowGreaterResolutions;
 		internal static bool showMemoryEstimates;
-		internal static bool ignoreForcedHiDef; // Beta 4 test
 
 		internal static string modToBuild;
 		internal static bool reloadAfterBuild = false;
@@ -310,9 +308,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
-			Main.Configuration.Put("AllowGreaterResolutions", allowGreaterResolutions);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
-			Main.Configuration.Put("IgnoreForcedHiDef", ignoreForcedHiDef);
 		}
 
 		internal static void LoadConfiguration() {
@@ -324,7 +320,6 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
-			Main.Configuration.Get("AllowGreaterResolutions", ref allowGreaterResolutions);
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		}
 

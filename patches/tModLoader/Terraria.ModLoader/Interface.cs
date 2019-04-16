@@ -244,13 +244,6 @@ namespace Terraria.ModLoader
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
-				/*buttonIndex++;
-				buttonNames[buttonIndex] = (ModLoader.musicStreamMode == 0 ? Language.GetTextValue("tModLoader.MusicStreamModeConvert") : Language.GetTextValue("tModLoader.MusicStreamModeStream"));
-				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
-					ModLoader.musicStreamMode = (byte)((ModLoader.musicStreamMode + 1) % 2);
-				}*/
-
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
@@ -263,13 +256,6 @@ namespace Terraria.ModLoader
 				if (selectedMenu == buttonIndex) {
 					Main.PlaySound(SoundID.MenuTick);
 					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
-				}
-
-				buttonIndex++;
-				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AllowGreaterResolutions{(ModLoader.allowGreaterResolutions ? "Yes" : "No")}");
-				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
-					ModLoader.allowGreaterResolutions = !ModLoader.allowGreaterResolutions;
 				}
 
 				buttonIndex++;

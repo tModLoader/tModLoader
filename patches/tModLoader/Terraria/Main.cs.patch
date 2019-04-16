@@ -189,6 +189,14 @@
  		public static bool playerInventory = false;
  		public static int stackSplit;
  		public static int stackCounter = 0;
+@@ -1309,6 +_,7 @@
+ 			2488
+ 		};
+ 		public static bool Support4K = true;
++		public static bool Support8K = true; // provide option to disable 8k (but leave 4k)
+ 		private static int _renderTargetMaxSize = 2048;
+ 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
+ 		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.Reach;
 @@ -1317,6 +_,7 @@
  		public static float temporaryGUIScaleSlider = -1f;
  		public static bool temporaryGUIScaleSliderUpdate = false;
@@ -293,54 +301,28 @@
  		}
  
  		public static void InitializeItemAnimations()
-@@ -2550,6 +_,9 @@
- 			{
- 				return;
- 			}
-+			Logging.Terraria.Info($"Updating graphics profile: NEW[{profile}] OLD[{Main._currentGraphicsProfile}]" +
-+				$"\nCurrent resolution settings: w:{Main.maxScreenW} h:{Main.maxScreenH}" +
-+				$"\nAllowing greater resolutions: {ModLoader.ModLoader.allowGreaterResolutions}");
- 			Main._selectedGraphicsProfile = profile;
- 			Main.SetGraphicsProfileInternal();
- 		}
-@@ -2566,12 +_,15 @@
+@@ -2566,12 +_,17 @@
  					Main._renderTargetMaxSize = 2048;
  					break;
  				case GraphicsProfile.HiDef:
 -					Main.maxScreenW = 4096;
 -					Main.maxScreenH = 4096;
 -					Main._renderTargetMaxSize = 4096;
-+					int hiRes = ModLoader.ModLoader.allowGreaterResolutions ? 8192 : 4096;
+-					Main.TrySupporting8K();
++					// update resolution related variables alongside TrySupporting8K
++					Configuration.Get<bool>("Support8K", ref Support8K);
++					int hiRes = Support8K ? 8192 : 4096;
 +					Main.maxScreenW = hiRes;
 +					Main.maxScreenH = hiRes;
 +					Main._renderTargetMaxSize = hiRes;
- 					Main.TrySupporting8K();
++					if (Support8K)
++						Main.TrySupporting8K();
  					break;
  			}
-+			Logging.Terraria.Info($"Graphics profile was updated: w:{Main.maxScreenW} h:{Main.maxScreenH}");
 +
  			try
  			{
  				Main.graphics.ApplyChanges();
-@@ -2589,8 +_,10 @@
- 
- 		private static void TrySupporting8K()
- 		{
-+			Logging.Terraria.Info("Attempting to support 8K resolutions");
- 			if (!Platform.IsWindows)
- 			{
-+				Logging.Terraria.Warn("Cannot support 8K Resolutions on non Windows OS");
- 				return;
- 			}
- 			Main.instance.ReleaseTargets();
-@@ -2603,6 +_,7 @@
- 				if (field != null && field2 != null)
- 				{
- 					field.SetValue(field2.GetValue(null), 8192);
-+					Logging.Terraria.Info($"Updated HiDef setting on Microsoft.Xna.Framework.Graphics.ProfileCapabilities to 8192");
- 				}
- 			}
- 		}
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -375,6 +357,14 @@
  			Main.Configuration.Put("ClientUUID", Main.clientUUID);
  			Main.Configuration.Put("UseSmartCursorForCommonBlocks", Player.SmartCursorSettings.SmartBlocksEnabled);
  			Main.Configuration.Put("UseSmartAxeAfterSmartPickaxe", Player.SmartCursorSettings.SmartAxeAfterPickaxe);
+@@ -2866,6 +_,7 @@
+ 			Main.Configuration.Put("UseHeatDistortion", Main.UseHeatDistortion);
+ 			Main.Configuration.Put("WaveQuality", Main.WaveQuality);
+ 			Main.Configuration.Put("Support4K", Main.Support4K);
++			Main.Configuration.Put("Support8K", Main.Support8K);
+ 			Main.Configuration.Put("MouseColor", new Dictionary<string, byte>
+ 				{
+ 					{
 @@ -2903,6 +_,7 @@
  			Main.Configuration.Put("QuickLaunch", Main.SkipAssemblyLoad);
  			Main.Configuration.Put("Zoom", Main.GameZoomTarget);
@@ -704,7 +694,7 @@
  			}
  			return result;
  		}
-@@ -7482,18 +_,22 @@
+@@ -7482,18 +_,15 @@
  			}
  			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
  			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
@@ -712,14 +702,7 @@
 -			{
 -				flag = false;
 -			}
-+			Main.Configuration.Get("IgnoreForcedHiDef", ref ModLoader.ModLoader.ignoreForcedHiDef);
-+			// tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
-+			if (ModLoader.ModLoader.ignoreForcedHiDef)
-+				if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
-+				{
-+					flag = false;
-+				}
-+			//
++			// (resolution check removed) tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
  			if (Main.Support4K && flag)
  			{
  				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
@@ -4485,6 +4468,17 @@
  						}
  					}
  				}
+@@ -54389,7 +_,9 @@
+ 
+ 		public void LoadBackground(int i)
+ 		{
+-			if (i >= 0 && !Main.backgroundLoaded[i])
++			// sometimes when updating GraphicsProfile from Reach to HiDef, the device is re-created rather than reset
++			// This happens early, and the background loading texture may be disposed
++			if (i >= 0 && (!Main.backgroundLoaded[i] || Main.backgroundTexture[i].IsDisposed))
+ 			{
+ 				Main.backgroundTexture[i] = this.OurLoad<Texture2D>(string.Concat(new object[]
+ 						{
 @@ -54404,7 +_,7 @@
  			}
  		}
