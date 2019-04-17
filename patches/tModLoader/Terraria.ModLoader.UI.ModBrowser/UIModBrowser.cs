@@ -586,6 +586,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			catch (Exception e) {
 				Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", req.OutputFilePath), e);
 			}
+			Main.menuMode = Interface.modBrowserID;
 		}
 
 		private void OnModDownloadFinished(HttpDownloadRequest req) {

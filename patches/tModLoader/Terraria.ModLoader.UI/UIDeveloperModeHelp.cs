@@ -237,7 +237,7 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadFile(string name, string url, string file, Action<DownloadRequest> downloadModCompileComplete) {
 			Interface.downloadFile.EnqueueRequest(
-				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), downloadModCompileComplete));
+				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), downloadModCompileComplete, onCancel: (req) => { Interface.developerModeHelp.updateRequired = true; Main.menuMode = Interface.developerModeHelpID; }));
 			Main.menuMode = Interface.downloadFileID;
 		}
 

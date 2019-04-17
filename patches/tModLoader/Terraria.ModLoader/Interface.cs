@@ -38,6 +38,7 @@ namespace Terraria.ModLoader
 		internal const int downloadFileID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
+		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		private static UIModSources modSources = new UIModSources();
@@ -285,6 +286,9 @@ namespace Terraria.ModLoader
 			{
 				Main.MenuUI.SetState(modConfig);
 				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == exitID) {
+				Environment.Exit(0);
 			}
 		}
 
