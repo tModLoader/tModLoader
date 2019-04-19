@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ReLogic.OS;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,10 +26,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UpdateFileAssociation() {
-#if WINDOWS
-			if (System.Environment.OSVersion.Version.Major >= 6) // Approached used apparently only applicable to Vista and later
+			if (Platform.IsWindows && System.Environment.OSVersion.Version.Major >= 6) // Approached used apparently only applicable to Vista and later
 				EnsureAssociationsSet();
-#endif
 		}
 
 		// Solution below adapted from https://stackoverflow.com/a/44816953

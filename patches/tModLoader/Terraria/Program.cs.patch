@@ -92,7 +92,7 @@
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
  			Program.SetupLogging();
 +			FileAssociationSupport.UpdateFileAssociation();
-+#if !WINDOWS
++#if FNA
 +			FNAThreading.Init();
 +#endif
  			using (Main main = new Main())

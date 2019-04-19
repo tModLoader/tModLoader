@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,28 +35,12 @@ namespace Terraria.ModLoader
 		public static readonly string versionTag = $"v{version}" +
 				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 				(beta == 0 ? "" : $"-beta{beta}");
-
-#if WINDOWS
-		public static readonly bool windows = true;
-#else
-		public static readonly bool windows = false;
-#endif
-#if LINUX
-		public static readonly bool linux = true;
-#else
-		public static readonly bool linux = false;
-#endif
-#if MAC
-		public static readonly bool mac = true;
-#else
-		public static readonly bool mac = false;
-#endif
 #if GOG
 		public static readonly bool gog = true;
 #else
 		public static readonly bool gog = false;
 #endif
-		public static readonly string compressedPlatformRepresentation = (windows ? "w" : (linux ? "l" : "m")) + (gog ? "g" : "s");
+		public static readonly string compressedPlatformRepresentation = (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (gog ? "g" : "s");
 
 		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
 		/// <summary>The file path in which mods are stored.</summary>
@@ -80,9 +65,6 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates;
 
-		internal static string modToBuild;
-		internal static bool reloadAfterBuild = false;
-		internal static bool buildAll = false;
 		internal static bool skipLoad;
 
 		internal static Action OnSuccessfulLoad;
@@ -282,21 +264,6 @@ namespace Terraria.ModLoader
 			}
 
 			ModOrganizer.SaveEnabledMods();
-		}
-
-		internal static void BuildAllMods() {
-			ThreadPool.QueueUserWorkItem(_ =>
-				PostBuildMenu(new ModCompile(Interface.buildMod).BuildAll()));
-		}
-
-		internal static void BuildMod() {
-			Interface.buildMod.SetProgress(0, 1);
-			ThreadPool.QueueUserWorkItem(_ =>
-				PostBuildMenu(new ModCompile(Interface.buildMod).Build(modToBuild)));
-		}
-
-		private static void PostBuildMenu(bool success) {
-			Main.menuMode = success ? (reloadAfterBuild ? Interface.reloadModsID : 0) : Interface.errorMessageID;
 		}
 
 		internal static void SaveConfiguration() {

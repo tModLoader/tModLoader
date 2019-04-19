@@ -15,8 +15,6 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
 using MonoMod.Utils;
 using Terraria.Localization;
 
@@ -41,9 +39,8 @@ namespace Terraria.ModLoader
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
-#if MONO
-			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
-#endif
+			if (FrameworkVersion.Framework == Framework.Mono)
+				new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
 
 			if (!Directory.Exists(LogDir))
 				Directory.CreateDirectory(LogDir);
@@ -267,7 +264,7 @@ namespace Terraria.ModLoader
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
-#if WINDOWS
+		// On .NET, hook the StackTrace constructor
 		private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
 		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
 		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
@@ -275,11 +272,12 @@ namespace Terraria.ModLoader
 			if (fNeedFileInfo)
 				PrettifyStackTraceSources(self.GetFrames());
 		}
-#else
+
+		// On Mono, hook Exception.StackTrace, generate a StackTrace, and edit it with source and line info
 		private static readonly Regex trimParamTypes = new Regex(@"([([,] ?)(?:[\w.+]+[.+])", RegexOptions.Compiled);
 		private static readonly Regex dropOffset = new Regex(@" \[.+?\](?![^:]+:-1)", RegexOptions.Compiled);
 		private static readonly Regex dropGenericTicks = new Regex(@"`\d+", RegexOptions.Compiled);
-		
+
 		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
 		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
 		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)
@@ -294,7 +292,7 @@ namespace Terraria.ModLoader
 			s = s.Replace(":-1", "");
 			return s;
 		}
-#endif
+
 		public static void PrettifyStackTraceSources(StackFrame[] frames) {
 			if (frames == null)
 				return;
@@ -322,14 +320,13 @@ namespace Terraria.ModLoader
 		}
 
 		private static void PrettifyStackTraceSources() {
-#if WINDOWS
 			if (f_fileName == null)
 				return;
 
-			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
-#else
-			new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
-#endif
+			if (FrameworkVersion.Framework == Framework.NetFramework)
+				new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
+			else if (FrameworkVersion.Framework == Framework.Mono)
+				new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
 		}
 	}
 }

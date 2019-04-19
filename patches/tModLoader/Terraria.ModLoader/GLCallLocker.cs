@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 	public static class GLCallLocker
 	{
 		public static void Enter(object lockObj) {
-#if WINDOWS
+#if XNA
 			Monitor.Enter(lockObj);
 #else
 			if (Thread.CurrentThread.ManagedThreadId != Main.mainThreadId) {
@@ -31,17 +31,17 @@ namespace Terraria.ModLoader
 #endif
 		}
 
-#if !WINDOWS
 		internal static void Init() {
+#if FNA
 			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
 			var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
 
 			new Hook(m_ForceToMainThread, new hook_ForceToMainThread(HookForceToMainThread));
-		}
 #endif
+		}
 
 		internal static Task<T> InvokeAsync<T>(Func<T> task) {
-#if WINDOWS
+#if XNA
 			return Task.Factory.StartNew(task);
 #else
 			var tcs = new TaskCompletionSource<T>();
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 		// disables warning during mod loading
 		internal static bool ActionsAreSpeedrun;
 		internal static void SpeedrunActions() {
-#if !WINDOWS
+#if FNA
 			var sw = new Stopwatch();
 			sw.Start();
 
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 #endif
 		}
 
-#if !WINDOWS
+#if FNA
 		private static FieldInfo f_GLDevice = typeof(GraphicsDevice).GetField("GLDevice", BindingFlags.Instance | BindingFlags.NonPublic);
 		private static FieldInfo f_actions;
 		private static MethodInfo m_RunActions;

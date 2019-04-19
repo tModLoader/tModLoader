@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -36,14 +37,15 @@ namespace Terraria.ModLoader
 			private bool eacEnabled;
 
 			private bool _needsReload = true;
-
 			private bool NeedsReload {
-				get { return _needsReload; }
+				get => _needsReload;
 				set {
 					if (value && !_needsReload) loadIndex++;
 					_needsReload = value;
 				}
 			}
+
+			public bool HasEaC => File.Exists(properties.eacPath);
 
 			private string AssemblyName => eacEnabled ? Name : Name + '_' + loadIndex;
 			private string DllName(string dll) => eacEnabled ? dll : Name + '_' + dll + '_' + loadIndex;
@@ -113,7 +115,12 @@ namespace Terraria.ModLoader
 						foreach (var dll in properties.dllReferences)
 							LoadAssembly(EncapsulateReferences(modFile.GetBytes("lib/" + dll + ".dll")));
 
-						assembly = LoadAssembly(EncapsulateReferences(modFile.GetMainAssembly()), modFile.GetMainPDB());
+						if (eacEnabled && HasEaC) //load the unmodified dll and EaC pdb
+							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));
+						else {
+							var pdb = GetModPdb(out var imageDebugHeader);
+							assembly = LoadAssembly(EncapsulateReferences(modFile.GetModAssembly(), imageDebugHeader), pdb);
+						}
 						NeedsReload = false;
 					}
 				}
@@ -123,26 +130,46 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			private byte[] EncapsulateReferences(byte[] code) {
-				if (eacEnabled)
+			private byte[] GetModPdb(out ImageDebugHeader header) {
+				var fileName = modFile.GetModAssemblyFileName();
+
+				// load a separate debug header to splice into the assembly (dll provided was precompiled and references non-cecil symbols)
+				if (modFile.HasFile(fileName + ".cecildebugheader"))
+					header = ImageDebugHeaderFile.Read(modFile.GetBytes(fileName + ".cecildebugheader"));
+				else
+					header = null;
+
+				if (FrameworkVersion.Framework == Framework.Mono)
+					fileName += ".mdb";
+				else
+					fileName = Path.ChangeExtension(fileName, "pdb");
+
+				return modFile.GetBytes(fileName);
+			}
+
+			private byte[] EncapsulateReferences(byte[] code, ImageDebugHeader debugHeader = null) {
+				if (eacEnabled && debugHeader == null)
 					return code;
 
-				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = CecilAssemblyResolver });
+				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters {
+					AssemblyResolver = CecilAssemblyResolver
+				});
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
-#if !MONO
 				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
-				asm.MainModule.Mvid = Guid.NewGuid();
-#endif
+				if (FrameworkVersion.Framework == Framework.NetFramework)
+					asm.MainModule.Mvid = Guid.NewGuid();
 
 				foreach (var mod in asm.Modules)
 					foreach (var asmRef in mod.AssemblyReferences)
 						asmRef.Name = EncapsulateName(asmRef.Name);
 
-				var ret = new MemoryStream();
-				asm.Write(ret, new WriterParameters { SymbolWriterProvider = SymbolWriterProvider.instance });
+				var ms = new MemoryStream();
+				asm.Write(ms, new WriterParameters {
+					SymbolWriterProvider = new DebugHeaderWriterProvider(debugHeader ?? asm.MainModule.GetDebugHeader())
+				});
 				cecilAssemblyResolver.RegisterAssembly(asm);
-				return ret.ToArray();
+				return ms.ToArray();
 			}
 
 			private string EncapsulateName(string name) {
@@ -171,18 +198,17 @@ namespace Terraria.ModLoader
 				assemblyBinaries[asm.GetName().Name] = code;
 				hostModForAssembly[asm] = this;
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
-#if MONO
-				if (pdb != null) {
+				if (pdb != null && FrameworkVersion.Framework == Framework.Mono) {
 					var cecilAssemblyDef = cecilAssemblyResolver.Resolve(asm.GetName().ToReference());
 					MdbManager.RegisterMdb(cecilAssemblyDef.MainModule, pdb);
 				}
-#endif
 				return asm;
 			}
 		}
 
 		internal static void AssemblyResolveEarly(ResolveEventHandler handler) {
-			var f = typeof(AppDomain).GetField(ModLoader.windows ? "_AssemblyResolve" : "AssemblyResolve", BindingFlags.Instance | BindingFlags.NonPublic);
+			var backingFieldName = FrameworkVersion.Framework == Framework.NetFramework ? "_AssemblyResolve" : "AssemblyResolve";
+			var f = typeof(AppDomain).GetField(backingFieldName, BindingFlags.Instance | BindingFlags.NonPublic);
 			var a = (ResolveEventHandler)f.GetValue(AppDomain.CurrentDomain);
 			f.SetValue(AppDomain.CurrentDomain, null);
 
@@ -192,14 +218,18 @@ namespace Terraria.ModLoader
 
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
-
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
 
 		private static TerrariaCecilAssemblyResolver cecilAssemblyResolver = new TerrariaCecilAssemblyResolver();
 		public static IAssemblyResolver CecilAssemblyResolver => cecilAssemblyResolver;
 
-		static AssemblyManager() {
+		private static bool assemblyResolveEventsAdded;
+		internal static void InitAssemblyResolvers() {
+			if (assemblyResolveEventsAdded)
+				return;
+			assemblyResolveEventsAdded = true;
+
 			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
 				string name = new AssemblyName(args.Name).Name;
 
@@ -271,6 +301,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
+			InitAssemblyResolvers();
+
 			var modList = new List<LoadedMod>();
 			foreach (var loading in modsToLoad) {
 				if (!loadedMods.TryGetValue(loading.Name, out LoadedMod mod))
@@ -282,14 +314,12 @@ namespace Terraria.ModLoader
 
 			RecalculateReferences();
 
-#if !MONO	//as far as we know, mono doesn't support edit and continue anyway
-			if (Debugger.IsAttached) {
-				ModCompile.DeveloperMode = true;
+			//as far as we know, mono doesn't support edit and continue anyway
+			if (Debugger.IsAttached && FrameworkVersion.Framework == Framework.NetFramework) {
 				ModCompile.activelyModding = true;
-				foreach (var mod in modList.Where(mod => mod.properties.editAndContinue && mod.CanEaC))
+				foreach (var mod in modList.Where(mod => mod.HasEaC && mod.CanEaC))
 					mod.EnableEaC();
 			}
-#endif
 
 			try {
 				//load all the assemblies in parallel.
@@ -299,7 +329,7 @@ namespace Terraria.ModLoader
 					Interface.loadMods.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
 				});
-				
+
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
 				MemoryTracking.Checkpoint();
@@ -311,12 +341,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
+		private static string GetModAssemblyFileName(this TmodFile modFile, bool? xna = null) {
+			var variant = modFile.HasFile($"{modFile.name}.All.dll") ? "All" : (xna ?? PlatformUtilities.IsXNA) ? "XNA" : "FNA";
+			var fileName = $"{modFile.name}.{variant}.dll";
+			if (!modFile.HasFile(fileName)) // legacy compatibility
+				fileName = modFile.HasFile("All.dll") ? "All.dll" : (xna ?? FrameworkVersion.Framework == Framework.NetFramework) ? "Windows.dll" : "Mono.dll";
 
-		internal static byte[] GetAssemblyBytes(string name) {
-			assemblyBinaries.TryGetValue(name, out var code);
-			return code;
+			return fileName;
 		}
+
+		internal static byte[] GetModAssembly(this TmodFile modFile, bool? xna = null) => modFile.GetBytes(modFile.GetModAssemblyFileName(xna));
+
+		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
 
 		public static bool GetAssemblyOwner(Assembly assembly, out string modName) {
 			if (hostModForAssembly.TryGetValue(assembly, out var mod)) {
@@ -363,7 +399,7 @@ namespace Terraria.ModLoader
 					var asm = FallbackResolve(name);
 					if (asm == null)
 						throw new AssemblyResolutionException(name);
-					
+
 					RegisterAssembly(asm);
 					return asm;
 				}
@@ -379,8 +415,7 @@ namespace Terraria.ModLoader
 						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
 				}
 
-				var modAssemblyBytes = GetAssemblyBytes(name.Name);
-				if (modAssemblyBytes != null) {
+				if (assemblyBinaries.TryGetValue(name.Name, out var modAssemblyBytes)) {
 					Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
 					using (var stream = new MemoryStream(modAssemblyBytes))
 						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
@@ -390,28 +425,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal class SymbolWriterProvider : ISymbolWriterProvider
+		internal class DebugHeaderWriterProvider : ISymbolWriterProvider, ISymbolWriter
 		{
-			public static readonly SymbolWriterProvider instance = new SymbolWriterProvider();
+			private ImageDebugHeader header;
 
-			private class HeaderCopyWriter : ISymbolWriter
-			{
-				private ModuleDefinition module;
-
-				public HeaderCopyWriter(ModuleDefinition module) {
-					this.module = module;
-				}
-
-				public ImageDebugHeader GetDebugHeader() => module.GetDebugHeader();
-
-				public ISymbolReaderProvider GetReaderProvider() => throw new NotImplementedException();
-				public void Write(MethodDebugInformation info) => throw new NotImplementedException();
-
-				public void Dispose() { }
+			public DebugHeaderWriterProvider(ImageDebugHeader header) {
+				this.header = header;
 			}
 
-			public ISymbolWriter GetSymbolWriter(ModuleDefinition module, string fileName) => new HeaderCopyWriter(module);
-			public ISymbolWriter GetSymbolWriter(ModuleDefinition module, Stream symbolStream) => new HeaderCopyWriter(module);
+			public ISymbolWriter GetSymbolWriter(ModuleDefinition module, string fileName) => this;
+			public ISymbolWriter GetSymbolWriter(ModuleDefinition module, Stream symbolStream) => this;
+
+			public ImageDebugHeader GetDebugHeader() => header;
+
+			public ISymbolReaderProvider GetReaderProvider() => throw new NotImplementedException();
+			public void Write(MethodDebugInformation info) => throw new NotImplementedException();
+			public void Dispose() { }
 		}
 	}
 }

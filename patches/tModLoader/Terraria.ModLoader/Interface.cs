@@ -17,7 +17,6 @@ namespace Terraria.ModLoader
 		//set initial Main.menuMode to loadModsID
 		internal const int loadModsID = 10002;
 		internal const int buildModID = 10003;
-		internal const int buildAllModsID = 10004;
 		internal const int errorMessageID = 10005;
 		internal const int reloadModsID = 10006;
 		internal const int modBrowserID = 10007;
@@ -158,12 +157,6 @@ namespace Terraria.ModLoader
 			else if (Main.menuMode == buildModID) {
 				Main.MenuUI.SetState(buildMod);
 				Main.menuMode = 888;
-				ModLoader.BuildMod();
-			}
-			else if (Main.menuMode == buildAllModsID) {
-				Main.MenuUI.SetState(buildMod);
-				Main.menuMode = 888;
-				ModLoader.BuildAllMods();
 			}
 			else if (Main.menuMode == errorMessageID) {
 				Main.MenuUI.SetState(errorMessage);

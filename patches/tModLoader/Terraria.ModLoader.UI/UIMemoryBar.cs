@@ -111,7 +111,7 @@ namespace Terraria.ModLoader.UI
 			_hoverPanel = new UIPanel();
 			_hoverPanel.Activate();
 			
-#if WINDOWS
+#if WINDOWS //TODO: 64bit?
 			maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
 			long availableMemory = maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
 #else

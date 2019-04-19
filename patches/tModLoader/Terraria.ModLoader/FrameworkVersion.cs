@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ReLogic.OS;
 using System;
 using System.Reflection;
 
@@ -25,7 +26,9 @@ namespace Terraria.ModLoader
 				return;
 			}
 
-#if WINDOWS
+			if (!Platform.IsWindows)
+				Framework = Framework.Unknown;
+
 			Framework = Framework.NetFramework;
 
 			const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
@@ -35,11 +38,6 @@ namespace Terraria.ModLoader
 
 			if (Version == null)
 				Version = new Version(4, 0);
-
-			return;
-#endif
-
-			Framework = Framework.Mono;
 		}
 
 		// Checking the version using >= will enable forward compatibility.

@@ -54,22 +54,22 @@
 -    <DebugType>pdbonly</DebugType>
 -    <Optimize>true</Optimize>
 +    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
-+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
++    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
-+    <DefineConstants>$(DefineConstants);MAC;MONO</DefineConstants>
++    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
-+    <DefineConstants>$(DefineConstants);LINUX;MONO</DefineConstants>
++    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Microsoft.Xna.Framework" />
-+    <Reference Include="Microsoft.Xna.Framework.Game" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <Reference Include="Microsoft.Xna.Framework" Condition="!$(DefineConstants.Contains('MONO'))" />
-+    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="!$(DefineConstants.Contains('MONO'))" />
++    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
++    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
++    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
++    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="System" />
 -    <Reference Include="Steamworks.NET" />
@@ -92,11 +92,11 @@
 +    <Reference Include="Ionic.Zip.CF">
 +      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
 +    </Reference>
-+    <Reference Include="FNA" Condition="$(DefineConstants.Contains('MONO'))">
++    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
 +      <HintPath>..\..\references\FNA.dll</HintPath>
 +    </Reference>
 +    <Reference Include="System.Windows.Forms">
-+      <HintPath Condition="$(DefineConstants.Contains('MONO'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
++      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
 +    </Reference>
      <Reference Include="WindowsBase" />
    </ItemGroup>

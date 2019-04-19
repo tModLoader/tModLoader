@@ -107,18 +107,12 @@ namespace Terraria.ModLoader.UI
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modToBuild = this.mod;
-			ModLoader.reloadAfterBuild = false;
-			ModLoader.buildAll = false;
-			Main.menuMode = Interface.buildModID;
+			Interface.buildMod.Build(mod, false);
 		}
 
 		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modToBuild = this.mod;
-			ModLoader.reloadAfterBuild = true;
-			ModLoader.buildAll = false;
-			Main.menuMode = Interface.buildModID;
+			Interface.buildMod.Build(mod, true);
 		}
 
 		private void Publish(UIMouseEvent evt, UIElement listeningElement) {

@@ -1,7 +1,10 @@
 using log4net.Core;
+using Microsoft.Xna.Framework;
 using System;
 using System.CodeDom.Compiler;
+using System.Threading;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -23,8 +26,12 @@ namespace Terraria.ModLoader.UI
 			Append(loadProgress);
 		}
 
-		public void SetProgress(int num, int max) {
-			loadProgress.SetProgress((float)num / (float)max);
+		private int numProgressItems;
+		public void SetProgress(int i, int n = -1) {
+			if (n >= 0)
+				numProgressItems = n;
+
+			loadProgress.SetProgress(i / (float)numProgressItems);
 		}
 
 		public void SetStatus(string msg) {
@@ -32,36 +39,38 @@ namespace Terraria.ModLoader.UI
 			loadProgress.SetText(msg);
 		}
 
-		private string mod;
-		public void SetMod(string modName) {
-			mod = modName;
+		public void LogCompilerLine(string msg, Level level) {
+			Logging.tML.Logger.Log(null, level, msg, null);
 		}
 
-		public void LogError(string msg, Exception e = null) {
-			Logging.tML.Error(msg, e);
+		internal void Build(string mod, bool reload) => Build(mc => mc.Build(mod), reload);
 
-			msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "") + "\n" + msg;
-			if (e != null)
-				msg += "\n" + e;
+		internal void BuildAll(bool reload) => Build(mc => mc.BuildAll(), reload);
 
-			Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
-		}
+		private void Build(Action<ModCompile> buildAction, bool reload) {
+			Main.menuMode = Interface.buildModID;
+			ThreadPool.QueueUserWorkItem(_ => {
+				while (loadProgress == null)
+					Thread.Sleep(1);// wait for the UI to init
 
-		public void LogCompileErrors(string dllName, CompilerErrorCollection errors, string hint) {
-			int warnings = 0;
-			CompilerError displayError = null;
-			foreach (CompilerError error in errors) {
-				Logging.tML.Logger.Log(null, error.IsWarning ? Level.Warn : Level.Error, error, null);
-				if (error.IsWarning)
-					warnings++;
-				else if (displayError == null)
-					displayError = error;
-			}
-			var msg = Language.GetTextValue("tModLoader.CompileError", dllName, errors.Count - warnings, warnings);
-			if (hint != null)
-				msg += "\n" + hint;
+				try {
+					buildAction(new ModCompile(this));
+					if (reload)
+						Main.menuMode = Interface.reloadModsID;
+				}
+				catch (Exception e) {
+					Logging.tML.Error(e.Message, e);
 
-			Interface.errorMessage.Show(msg + "\n\n" + displayError, Interface.modSourcesID);
+					var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
+					var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
+					if (e is BuildException)
+						msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
+					else
+						msg += $"\n\n{e}";
+
+					Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
+				}
+			});
 		}
 	}
 }

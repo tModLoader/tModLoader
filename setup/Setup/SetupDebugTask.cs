@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.Setup
 			CreateParentDirectory(launchSettingsPath);
 			File.WriteAllText(launchSettingsPath, DebugConfig);
 
-			taskInterface.SetStatus("Compiling tModLoaderMac.exe");
+			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
 			compileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
 				"tModLoader.sln /restore /p:Configuration=MacRelease",
 				null, null, null, taskInterface.CancellationToken()

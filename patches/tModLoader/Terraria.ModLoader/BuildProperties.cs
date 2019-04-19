@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 		internal bool hideResources = true;
 		internal bool includeSource = false;
 		internal bool includePDB = true;
-		internal bool editAndContinue = false;
+		internal string eacPath = "";
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
 		internal Version buildVersion = ModLoader.version;
@@ -229,8 +229,9 @@ namespace Terraria.ModLoader
 					if (includePDB) {
 						writer.Write("includePDB");
 					}
-					if (editAndContinue) {
-						writer.Write("editAndContinue");
+					if (eacPath.Length > 0) {
+						writer.Write("eacPath");
+						writer.Write(eacPath);
 					}
 					if (side != ModSide.Both) {
 						writer.Write("side");
@@ -303,8 +304,8 @@ namespace Terraria.ModLoader
 					if (tag == "includePDB") {
 						properties.includePDB = true;
 					}
-					if (tag == "editAndContinue") {
-						properties.editAndContinue = true;
+					if (tag == "eacPath") {
+						properties.eacPath = reader.ReadString();
 					}
 					if (tag == "side") {
 						properties.side = (ModSide)reader.ReadByte();

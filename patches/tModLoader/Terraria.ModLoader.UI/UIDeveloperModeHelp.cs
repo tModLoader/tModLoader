@@ -183,7 +183,8 @@ namespace Terraria.ModLoader.UI
 
 		private void DownloadModCompile() {
 			Main.PlaySound(SoundID.MenuOpen);
-			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(ModLoader.windows ? "Windows" : "Mono")}.zip";
+			// download the ModCompile for the platform we don't have
+			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			Interface.downloadFile.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };

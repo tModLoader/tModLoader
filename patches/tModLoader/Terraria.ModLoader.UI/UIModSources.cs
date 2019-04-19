@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -133,20 +132,14 @@ namespace Terraria.ModLoader.UI
 
 		private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (modList.Count > 0) {
-				ModLoader.reloadAfterBuild = false;
-				ModLoader.buildAll = true;
-				Main.menuMode = Interface.buildAllModsID;
-			}
+			if (modList.Count > 0)
+				Interface.buildMod.BuildAll(false);
 		}
 
 		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			if (modList.Count > 0) {
-				ModLoader.reloadAfterBuild = true;
-				ModLoader.buildAll = true;
-				Main.menuMode = Interface.buildAllModsID;
-			}
+			if (modList.Count > 0)
+				Interface.buildMod.BuildAll(true);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {

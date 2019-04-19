@@ -49,10 +49,8 @@ copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%\start-tModLoa
 call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
 
 :: Windows ModCompile
-copy ..\src\tModLoader\bin\MacRelease\net40\Terraria.exe "%winmc%\tModLoaderMac.exe" /y
+copy ..\src\tModLoader\bin\MacRelease\net40\Terraria.exe "%winmc%\tModLoader.FNA.exe" /y
 copy ..\references\FNA.dll "%winmc%\FNA.dll" /y
-copy ..\references\Mono.Cecil.Pdb.dll "%winmc%\Mono.Cecil.Pdb.dll" /y
-copy ..\references\Mono.Cecil.Mdb.dll "%winmc%\Mono.Cecil.Mdb.dll" /y
 copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%winmc%\RoslynWrapper.dll" /y
 copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%winmc%\System.Reflection.Metadata.dll" /y
 copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%winmc%\System.Collections.Immutable.dll" /y
@@ -91,9 +89,9 @@ call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -f
 
 :: Mono ModCompile
 copy "%winmc%" "%monomc%"
-del "%monomc%\tModLoaderMac.exe"
+del "%monomc%\tModLoader.FNA.exe"
 del "%monomc%\FNA.dll"
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%monomc%\tModLoaderWindows.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%monomc%\tModLoader.XNA.exe" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.dll "%monomc%\Microsoft.Xna.Framework.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%monomc%\Microsoft.Xna.Framework.Game.dll" /y
 copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%monomc%\Microsoft.Xna.Framework.Graphics.dll" /y

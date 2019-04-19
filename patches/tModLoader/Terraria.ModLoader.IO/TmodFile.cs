@@ -321,7 +321,7 @@ namespace Terraria.ModLoader.IO
 			}
 			public void Dispose() => dispose?.Invoke();
 		}
-		public IDisposable EnsureOpen() {
+		public IDisposable EnsureOpen() { //TODO: reference counter
 			if (fileStream != null)
 				return new DisposeWrapper(null);
 
@@ -367,24 +367,6 @@ namespace Terraria.ModLoader.IO
 			// Save closes the file so re-open it
 			fileStream = File.OpenRead(path);
 			// Read contract fulfilled
-		}
-
-		public void VerifyCoreFiles() {
-			if (!HasFile("Info"))
-				throw new Exception("Missing Info file");
-
-			if (!HasFile("All.dll") && !(HasFile("Windows.dll") && HasFile("Mono.dll")))
-				throw new Exception("Missing All.dll or Windows.dll and Mono.dll");
-		}
-
-		public byte[] GetMainAssembly(bool? windows = null) {
-			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
-			return HasFile("All.dll") ? GetBytes("All.dll") : isWindows ? GetBytes("Windows.dll") : GetBytes("Mono.dll");
-		}
-
-		public byte[] GetMainPDB(bool? windows = null) {
-			bool isWindows = windows.GetValueOrDefault(ModLoader.windows);
-			return HasFile("All.pdb") ? GetBytes("All.pdb") : isWindows ? GetBytes("Windows.pdb") : GetBytes("Mono.mdb");
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream) {
-#if WINDOWS
+#if XNA
 			if (!(stream is MemoryStream)) {
 				var ms = new MemoryStream((int)stream.Length);
 				stream.CopyTo(ms);
