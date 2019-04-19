@@ -1,7 +1,6 @@
 var dir_563615b9ae08cf63712a5de713529dc7 =
 [
     [ "AssemblyManager.cs", "_assembly_manager_8cs.html", [
-      [ "HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer" ],
       [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ],
       [ "TerrariaCecilAssemblyResolver", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver" ]
     ] ],
@@ -64,7 +63,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading" ],
       [ "SyncContext", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context" ]
     ] ],
-    [ "FrameworkVersion.cs", "_framework_version_8cs.html", null ],
+    [ "FrameworkVersion.cs", "_framework_version_8cs.html", "_framework_version_8cs" ],
     [ "GLCallLocker.cs", "_g_l_call_locker_8cs.html", [
       [ "GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker" ]
     ] ],
@@ -89,6 +88,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "GlobalWall.cs", "_global_wall_8cs.html", [
       [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ]
     ] ],
+    [ "ImageDebugHeaderIO.cs", "_image_debug_header_i_o_8cs.html", null ],
     [ "Interface.cs", "_interface_8cs.html", null ],
     [ "ItemLoader.cs", "_item_loader_8cs.html", [
       [ "HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list" ],

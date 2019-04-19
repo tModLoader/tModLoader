@@ -1,2 +1,4 @@
 <map id="Terraria.ModLoader.ProjectileLoader" name="Terraria.ModLoader.ProjectileLoader">
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list.html" title="Terraria.ModLoader.Projectile\lLoader.HookList" alt="" coords="561,298,753,339"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles..." alt="" coords="222,234,397,275"/>
 </map>

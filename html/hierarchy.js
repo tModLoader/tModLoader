@@ -59,6 +59,7 @@ var hierarchy =
     [ "Terraria.ModLoader.FileAssociationSupport.FileAssociation", "class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html", null ],
     [ "Terraria.ModLoader.IO.TmodFile.FileEntry", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_file_entry.html", null ],
     [ "Terraria.ModLoader.FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", null ],
+    [ "Terraria.ModLoader.FrameworkVersion", "class_terraria_1_1_mod_loader_1_1_framework_version.html", null ],
     [ "Terraria.ModLoader.GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", null ],
     [ "Terraria.ModLoader.GlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_global_bg_style.html", null ],
     [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
@@ -91,9 +92,7 @@ var hierarchy =
     [ "IOException", "class_i_o_exception.html", [
       [ "Terraria.ModLoader.Exceptions.CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", null ]
     ] ],
-    [ "ISymbolWriter", "class_i_symbol_writer.html", [
-      [ "Terraria.ModLoader.AssemblyManager.SymbolWriterProvider.HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", null ]
-    ] ],
+    [ "ISymbolWriter", "class_i_symbol_writer.html", null ],
     [ "ISymbolWriterProvider", "class_i_symbol_writer_provider.html", null ],
     [ "Terraria.ModLoader.Config.ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
@@ -146,6 +145,7 @@ var hierarchy =
     [ "Terraria.ModLoader.IO.TagIO.PayloadHandler", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", [
       [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", null ]
     ] ],
+    [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< string >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", null ],
     [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", [
       [ "Terraria.ModLoader.IO.TagIO.ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html", null ]
     ] ],

@@ -1,3 +1,5 @@
 <map id="Terraria.ModLoader.IO.TmodFile.GetBytes" name="Terraria.ModLoader.IO.TmodFile.GetBytes">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad406f52f32b86d42353ef40f2c4936f7" title="Terraria.ModLoader.Assembly\lManager.LoadedMod.LoadAssemblies" alt="" coords="243,5,485,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a7740e3b29a0d07d20e2f53efcf3cf186" title="Terraria.ModLoader.Assembly\lManager.LoadedMod.GetModPdb" alt="" coords="256,5,472,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ad406f52f32b86d42353ef40f2c4936f7" title="Terraria.ModLoader.Assembly\lManager.LoadedMod.LoadAssemblies" alt="" coords="243,70,485,111"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac210a4d3e7eb20973b3f56a4020ffd62" title="Terraria.ModLoader.Assembly\lManager.LoadedMod.LoadAssembly" alt="" coords="247,135,481,177"/>
 </map>

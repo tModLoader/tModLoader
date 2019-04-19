@@ -65,6 +65,7 @@ var searchData=
   ['bufftownnpc',['BuffTownNPC',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad6815d7134a83a69d25be338163ad6fb',1,'Terraria.ModLoader.GlobalNPC.BuffTownNPC()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae90339e990dbc9b5a350cc4c1550abe6',1,'Terraria.ModLoader.NPCLoader.BuffTownNPC()']]],
   ['bufftype',['BuffType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a05e3499466a6248fde49e7643d987133',1,'Terraria::ModLoader::Mod']]],
   ['bufftype_3c_20t_20_3e',['BuffType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a00596eb992453f702a1b7ba59eee2e45',1,'Terraria::ModLoader::Mod']]],
+  ['buildexception_2ecs',['BuildException.cs',['../_build_exception_8cs.html',1,'']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html#a50883060a4be6e39c451d379ae58c4b1',1,'Terraria::ModLoader::ModCompile::BuildingMod']]],
   ['buildingmod',['BuildingMod',['../class_terraria_1_1_mod_loader_1_1_mod_compile_1_1_building_mod.html',1,'Terraria::ModLoader::ModCompile']]],
   ['buildproperties_2ecs',['BuildProperties.cs',['../_build_properties_8cs.html',1,'']]],

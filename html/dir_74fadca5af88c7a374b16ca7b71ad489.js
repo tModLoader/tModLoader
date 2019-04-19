@@ -1,5 +1,6 @@
 var dir_74fadca5af88c7a374b16ca7b71ad489 =
 [
+    [ "BuildException.cs", "_build_exception_8cs.html", null ],
     [ "CustomModDataException.cs", "_custom_mod_data_exception_8cs.html", [
       [ "CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception" ]
     ] ],

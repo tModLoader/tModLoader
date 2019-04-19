@@ -10,6 +10,7 @@ var searchData=
   ['ignoreexceptioncontents',['IgnoreExceptionContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a8731b7b43fc16de84f8bfd70cd00abc7',1,'Terraria::ModLoader::Logging']]],
   ['ignoreexceptionsource',['IgnoreExceptionSource',['../class_terraria_1_1_mod_loader_1_1_logging.html#ae5c7c0a302892df4428d57119c256fa5',1,'Terraria::ModLoader::Logging']]],
   ['ignoresources',['ignoreSources',['../class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308',1,'Terraria::ModLoader::Logging']]],
+  ['imagedebugheaderio_2ecs',['ImageDebugHeaderIO.cs',['../_image_debug_header_i_o_8cs.html',1,'']]],
   ['imageio',['ImageIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html',1,'Terraria::ModLoader::IO']]],
   ['imageio_2ecs',['ImageIO.cs',['../_image_i_o_8cs.html',1,'']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a177941f839c1b12fe3c27cd30d26eeae',1,'Terraria::ModLoader::ModContent']]],

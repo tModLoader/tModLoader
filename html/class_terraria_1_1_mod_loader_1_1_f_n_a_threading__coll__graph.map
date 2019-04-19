@@ -1,2 +1,4 @@
 <map id="Terraria.ModLoader.FNAThreading" name="Terraria.ModLoader.FNAThreading">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html" title="Terraria.ModLoader.FNAThreading.\lSyncContext" alt="" coords="64,113,291,154"/>
+<area shape="rect" id="node3" href="$class_synchronization_context.html" title="SynchronizationContext" alt="" coords="5,13,165,40"/>
 </map>

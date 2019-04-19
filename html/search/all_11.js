@@ -66,8 +66,8 @@ var searchData=
   ['resize2darray_3c_20t_20_3e',['Resize2DArray&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa48fea1bba9480a0550b886ccf2c1386',1,'Terraria.ModLoader.TileLoader.Resize2DArray&lt; T &gt;()'],['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab712fb4bd82a7922736fd1264d55a514',1,'Terraria.ModLoader.WallLoader.Resize2DArray&lt; T &gt;()']]],
   ['resizearrays',['ResizeArrays',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a64e17478828a86a8bfa3a5e2fa991955',1,'Terraria::ModLoader::ModContent']]],
   ['resolve',['Resolve',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_terraria_cecil_assembly_resolver.html#a5aa2fc604d7b10daf006db741e5b42f3',1,'Terraria::ModLoader::AssemblyManager::TerrariaCecilAssemblyResolver']]],
-  ['resourceloadexception',['ResourceLoadException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html',1,'Terraria::ModLoader::Exceptions']]],
   ['resourceloadexception',['ResourceLoadException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html#a465e643323a5cce0ffdb0396ff4f7ab2',1,'Terraria::ModLoader::Exceptions::ResourceLoadException']]],
+  ['resourceloadexception',['ResourceLoadException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html',1,'Terraria::ModLoader::Exceptions']]],
   ['resourceloadexception_2ecs',['ResourceLoadException.cs',['../_resource_load_exception_8cs.html',1,'']]],
   ['result',['result',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a3224dcbdd4dacd849c381286255e6cef',1,'Terraria::ModLoader::RecipeFinder']]],
   ['retrocurrent',['RetroCurrent',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a78f6c0c928b44fd0810a97bc212b4382',1,'Terraria::ModLoader::ModHotKey']]],
@@ -75,7 +75,6 @@ var searchData=
   ['rollchance',['RollChance',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764',1,'Terraria::ModLoader::ModPrefix']]],
   ['rolllogs',['RollLogs',['../class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8',1,'Terraria::ModLoader::Logging']]],
   ['rotation',['rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc',1,'Terraria::ModLoader::DrawableTooltipLine']]],
-  ['runglactions',['RunGLActions',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#a724cc1c9013fa7ef64c48f862f86cc61',1,'Terraria::ModLoader::GLCallLocker']]],
   ['rxdatatype',['rxDataType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a181180be2847764153c54bff8579b743',1,'Terraria::ModLoader::ModNet']]],
   ['rxmsgtype',['rxMsgType',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a22cb82108f22c5d0556cc5001a69bbbc',1,'Terraria::ModLoader::ModNet']]]
 ];

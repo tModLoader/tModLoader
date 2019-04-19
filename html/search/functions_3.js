@@ -105,7 +105,7 @@ var searchData=
   ['disablesmartcursor',['DisableSmartCursor',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad646fc6fbf857656987ad7e46608e234',1,'Terraria::ModLoader::TileLoader']]],
   ['disablesmartinteract',['DisableSmartInteract',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#af83b7649657bbd1a6b80df21cfef0349',1,'Terraria::ModLoader::TileLoader']]],
   ['displayloaderror',['DisplayLoadError',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3685348d7daa3d5abf8f0f1b33b8a275',1,'Terraria::ModLoader::ModLoader']]],
-  ['dispose',['Dispose',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a7bb3947ac58d5d5b45657658269ebe66',1,'Terraria.ModLoader.AssemblyManager.SymbolWriterProvider.HeaderCopyWriter.Dispose()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#ae9c5f3cae9ba8e8fe7c17bdc8bf49d98',1,'Terraria.ModLoader.IO.TmodFile.DisposeWrapper.Dispose()']]],
+  ['dispose',['Dispose',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#ae9c5f3cae9ba8e8fe7c17bdc8bf49d98',1,'Terraria::ModLoader::IO::TmodFile::DisposeWrapper']]],
   ['disposemusic',['DisposeMusic',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a60eea5814ee1e397f921dd37943ccde7',1,'Terraria::ModLoader::ModContent']]],
   ['disposewrapper',['DisposeWrapper',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file_1_1_dispose_wrapper.html#acb45aeb4185a051ba5ffc27071f112ac',1,'Terraria::ModLoader::IO::TmodFile::DisposeWrapper']]],
   ['dllname',['DllName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3abd4e5185e46221525287e41a1f6f8',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],

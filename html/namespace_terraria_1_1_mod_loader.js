@@ -16,6 +16,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", "class_terraria_1_1_mod_loader_1_1_equip_texture" ],
     [ "ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", "class_terraria_1_1_mod_loader_1_1_error_logger" ],
     [ "FNAThreading", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html", "class_terraria_1_1_mod_loader_1_1_f_n_a_threading" ],
+    [ "FrameworkVersion", "class_terraria_1_1_mod_loader_1_1_framework_version.html", "class_terraria_1_1_mod_loader_1_1_framework_version" ],
     [ "GLCallLocker", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html", "class_terraria_1_1_mod_loader_1_1_g_l_call_locker" ],
     [ "GlobalBgStyle", "class_terraria_1_1_mod_loader_1_1_global_bg_style.html", "class_terraria_1_1_mod_loader_1_1_global_bg_style" ],
     [ "GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", "class_terraria_1_1_mod_loader_1_1_global_buff" ],

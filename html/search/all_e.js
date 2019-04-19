@@ -15,6 +15,7 @@ var searchData=
   ['needsreload',['NeedsReload',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#abdbb8c9f89ef36e42c06a16eed2a99e8',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.NeedsReload()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ab905bc1e570eded8e8c4daa4fb50d53e',1,'Terraria.ModLoader.Config.ModConfig.NeedsReload()']]],
   ['needssaving',['NeedsSaving',['../class_terraria_1_1_mod_loader_1_1_global_item.html#aa0cb13211b3a88c4b992bd00d06858eb',1,'Terraria::ModLoader::GlobalItem']]],
   ['needwater',['needWater',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a2e0cf16d72c5ecef87e2a86dcfe4acd2',1,'Terraria::ModLoader::RecipeFinder']]],
+  ['netframework',['NetFramework',['../namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b',1,'Terraria::ModLoader']]],
   ['netmodcount',['NetModCount',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#affbd35055e18fcf9c99a093c95b42665',1,'Terraria::ModLoader::ModNet']]],
   ['netmods',['netMods',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd',1,'Terraria::ModLoader::ModNet']]],
   ['netplaceentity',['NetPlaceEntity',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad27a28c41e66a411ea2c601b5c60ac33',1,'Terraria::ModLoader::ModTileEntity']]],

@@ -172,6 +172,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_f_n_a_threading.html">FNAThreading</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_framework_version.html">FrameworkVersion</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html">GLCallLocker</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FNA uses a single-threaded GL context. This class helps with tracking down related issues and deadlocks. See <a href="https://github.com/blushiemagic/tModLoader/issues/237">https://github.com/blushiemagic/tModLoader/issues/237</a> and <a href="https://github.com/FNA-XNA/FNA/blob/master/src/FNAPlatform/OpenGLDevice.cs#L4676">https://github.com/FNA-XNA/FNA/blob/master/src/FNAPlatform/OpenGLDevice.cs#L4676</a> It also improves loading performance on FNA  <a href="class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +202,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_wall.html">GlobalWall</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to modify the behavior of any wall in the game (although admittedly walls don't have much behavior). Create an instance of an overriding class then call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a34fbb533991ad5a328a3f0c897b5e4a7" title="Adds the given GlobalWall instance to this mod with the provided name. ">Mod.AddGlobalWall</a> to use this.  <a href="class_terraria_1_1_mod_loader_1_1_global_wall.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ImageDebugHeaderFile</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>Interface</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,6 +438,11 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:ab5632221fbbd1ad7f37983e2b9400282"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an enum of all the types of equipment that exist. An equipment type is defined as a type or layer of texture that is drawn on the player (for example, body and shield and wings).  <a href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ab5632221fbbd1ad7f37983e2b9400282"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70a14621c40b95e8b411943e6f18666e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a> { <a class="el" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b">Framework.NetFramework</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086">Framework.Mono</a>, 
+<a class="el" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea88183b946cc5f0e8c96b2e66e1c74a7e">Framework.Unknown</a>
+ }</td></tr>
+<tr class="separator:a70a14621c40b95e8b411943e6f18666e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c82c6b1930a8ee5c45efb091a036b06"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06">ModSide</a> { <a class="el" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a130c5b3473c57faa76e2a1c54e26f88e">ModSide.Both</a>, 
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4">ModSide.Client</a>, 
 <a class="el" href="namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a9aa1b03934893d7134a660af4204f2a9">ModSide.Server</a>, 
@@ -602,6 +611,39 @@ Enumerations</h2></td></tr>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde">Terraria.ModLoader.EquipType.Front</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_ab5632221fbbd1ad7f37983e2b9400282aa60ba1a7a56c9e00252baebe89d62c12"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282aa60ba1a7a56c9e00252baebe89d62c12">Terraria.ModLoader.EquipType.Shoes</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_ab5632221fbbd1ad7f37983e2b9400282a48423a9049b3065103ef1026a5fa08e5"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a48423a9049b3065103ef1026a5fa08e5">Terraria.ModLoader.EquipType.Legs</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a70a14621c40b95e8b411943e6f18666e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b"></a>NetFramework&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086"></a>Mono&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a70a14621c40b95e8b411943e6f18666ea88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="_framework_version_8cs_source.html#l00008">8</a> of file <a class="el" href="_framework_version_8cs_source.html">FrameworkVersion.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b">NetFramework</a>,</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086">Mono</a>,</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666ea88183b946cc5f0e8c96b2e66e1c74a7e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea88183b946cc5f0e8c96b2e66e1c74a7e">Terraria.ModLoader.Framework.Unknown</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086">Terraria.ModLoader.Framework.Mono</a></div></div>
+<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666eaf80cff00562a00db4e0038e29303ed0b">Terraria.ModLoader.Framework.NetFramework</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

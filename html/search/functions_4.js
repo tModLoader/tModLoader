@@ -6,7 +6,7 @@ var searchData=
   ['effectexists',['EffectExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#a79e02b7c7d7dccc70abd554a6f6de1ea',1,'Terraria::ModLoader::Mod']]],
   ['enableeac',['EnableEaC',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9d80010aa1b56a4d51d208f240652d42',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['encapsulatename',['EncapsulateName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#acb7a0b19359fe4ce746d033d880a623c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
-  ['encapsulatereferences',['EncapsulateReferences',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac5c3718bc5def39e46596eec59f0123c',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
+  ['encapsulatereferences',['EncapsulateReferences',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a1896e2cabe6a4f3ebed4ee4970491cf6',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['ensureopen',['EnsureOpen',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a47dbf42ff27d9d07248873faba17ee64',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['enter',['Enter',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#ab6f479a5c466461a9922767458bb7c9c',1,'Terraria::ModLoader::GLCallLocker']]],
   ['equals',['Equals',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a832e1e661b161ffae815257ab6df3ee1',1,'Terraria::ModLoader::Config::ItemDefinition']]],

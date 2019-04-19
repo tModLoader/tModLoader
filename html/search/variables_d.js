@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['m_5frunactions',['m_RunActions',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html#a0cab98f061abde6d78b99da3a81e951c',1,'Terraria::ModLoader::GLCallLocker']]],
-  ['mac',['mac',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab',1,'Terraria::ModLoader::ModLoader']]],
   ['makedefault',['makeDefault',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html#a6d65e0fec2b1b5fe56ff744ee0f6e31a',1,'Terraria::ModLoader::IO::TagIO::ClassPayloadHandler']]],
   ['manager',['manager',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#ae16d891175eb71f85380c27dad46a511',1,'Terraria::ModLoader::MonoModHooks']]],
   ['marble',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
@@ -29,7 +27,7 @@ var searchData=
   ['modname',['modName',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html#af3694e36d87c388f5bf1532e420d0207',1,'Terraria::ModLoader::Exceptions::CustomModDataException']]],
   ['modpath',['ModPath',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f',1,'Terraria::ModLoader::ModLoader']]],
   ['modsbyname',['modsByName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758',1,'Terraria::ModLoader::ModLoader']]],
-  ['module',['module',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html#a74f54f42aed60cf34d520fcde90d059f',1,'Terraria.ModLoader.AssemblyManager.SymbolWriterProvider.HeaderCopyWriter.module()'],['../class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry.html#a9d3a561e9e6c761ce4a450ed206088b1',1,'Terraria.ModLoader.MdbManager.MdbModuleEntry.module()']]],
+  ['module',['module',['../class_terraria_1_1_mod_loader_1_1_mdb_manager_1_1_mdb_module_entry.html#a9d3a561e9e6c761ce4a450ed206088b1',1,'Terraria::ModLoader::MdbManager::MdbModuleEntry']]],
   ['mountback',['MountBack',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a0ecdf0fac44aac1cd7a80eeea98dcf8f',1,'Terraria::ModLoader::PlayerLayer']]],
   ['mountcolor',['mountColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a4219f889804b62f6d4fac023e7f1f5bd',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['mountfront',['MountFront',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af75c8f3741bb21d9d64a7e26fd7a784e',1,'Terraria::ModLoader::PlayerLayer']]],
