@@ -126,10 +126,10 @@ namespace Terraria.ModLoader
 		/// <param name="getStream">A function which returns a stream containing the file content</param>
 		/// <returns>true if the file will no-longer be needed and should not be cached</returns>
 		public virtual bool LoadResource(string path, int length, Func<Stream> getStream) {
-			if (tModLoaderVersion < new Version(0, 11) && LoadResourceLegacy(path, length, getStream))
+			if (tModLoaderVersion < new Version(0, 11) && LoadResourceLegacy(path, length, getStream)) // TODO LoadResourceLegacy is marked obsolete
 				return false;
 
-			string extension = Path.GetExtension(path);
+			string extension = Path.GetExtension(path).ToLower();
 			path = Path.ChangeExtension(path, null);
 			switch (extension) {
 				case ".png":

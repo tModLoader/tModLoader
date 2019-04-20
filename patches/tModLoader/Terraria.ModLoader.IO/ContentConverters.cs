@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.IO
 	public static class ContentConverters
 	{
 		internal static bool Convert(ref string resourceName, FileStream src, MemoryStream dst) {
-			switch (Path.GetExtension(resourceName)) {
+			switch (Path.GetExtension(resourceName).ToLower()) {
 				case ".png":
 					if (resourceName != "icon.png" && ImageIO.ToRaw(src, dst)) {
 						resourceName = Path.ChangeExtension(resourceName, "rawimg");
@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 				converter = BuildProperties.InfoToBuildTxt;
 				return true;
 			}
-			switch (Path.GetExtension(resourceName)) {
+			switch (Path.GetExtension(resourceName).ToLower()) {
 				case ".rawimg":
 					resourceName = Path.ChangeExtension(resourceName, "png");
 					converter = ImageIO.RawToPng;

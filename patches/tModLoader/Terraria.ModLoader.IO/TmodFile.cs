@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.IO
 		public readonly string path;
 
 		private FileStream fileStream;
-		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>();
+		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>(StringComparer.OrdinalIgnoreCase);
 		private FileEntry[] fileTable;
 
 		public Version tModLoaderVersion {
@@ -100,11 +100,12 @@ namespace Terraria.ModLoader.IO
 				stream = new MemoryStream(entry.cachedBytes);
 			}
 			else if (newFileStream) {
+				// File.OpenRead is fine, it uses FindFirstFile which is case insensitive
 				stream = new EntryReadStream(File.OpenRead(path), entry, false);
 			}
 			else {
 				if (fileStream == null)
-					throw new IOException("File not open: " + path);
+					throw new IOException($"File not open: {path}");
 				
 				if (lastEntryReadStream != null && !lastEntryReadStream.IsClosed)
 					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.Name}");
@@ -303,6 +304,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		// TODO never used
 		public void RemoveFromCache(IEnumerable<string> fileNames) {
 			foreach (var fileName in fileNames)
 				files[fileName].cachedBytes = null;
@@ -351,6 +353,7 @@ namespace Terraria.ModLoader.IO
 			// update buildVersion
 			var info = BuildProperties.ReadModFile(this);
 			info.buildVersion = tModLoaderVersion;
+			// TODO should be turn this into .info? Generally files starting with . are ignored, at least on Windows (and are much harder to accidentally delete or even manually create)
 			AddFile("Info", info.ToBytes());
 
 			// make a backup
