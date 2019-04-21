@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.IO
 		public readonly string path;
 
 		private FileStream fileStream;
-		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>(StringComparer.OrdinalIgnoreCase);
+		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>();
 		private FileEntry[] fileTable;
 
 		public Version tModLoaderVersion {
