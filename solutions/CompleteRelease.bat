@@ -26,40 +26,33 @@ mkdir "%destinationFolder%"
 set win=%destinationFolder%\tModLoader Windows %version%
 set mac=%destinationFolder%\tModLoader Mac %version%
 set lnx=%destinationFolder%\tModLoader Linux %version%
-set winmc=%destinationFolder%\ModCompile_Windows
-set monomc=%destinationFolder%\ModCompile_Mono
+set mcfna=%destinationFolder%\ModCompile_FNA
+set mcxna=%destinationFolder%\ModCompile_XNA
 
 mkdir "%win%"
 mkdir "%mac%"
 mkdir "%lnx%"
-mkdir "%winmc%"
-mkdir "%monomc%"
-
-:: TODO: Automatically create version string file. Or have setup.sln copy it to ReleaseExtras
+mkdir "%mcfna%"
+mkdir "%mcxna%"
 
 :: Windows release
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%win%\Terraria.exe" /y
 copy ..\src\tModLoader\bin\WindowsServerRelease\net40\Terraria.exe "%win%\tModLoaderServer.exe" /y
 copy ..\installer2\WindowsInstaller.jar "%win%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%win%\README.txt" /y
-copy ReleaseExtras\start-tModLoaderServer.bat "%win%\start-tModLoaderServer.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%\start-tModLoaderServer-steam-friends.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%\start-tModLoaderServer-steam-private.bat" /y
+copy ReleaseExtras\start-tModLoaderServer.bat "%win%" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%" /y
 
 call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
 
 :: Windows ModCompile
-copy ..\src\tModLoader\bin\MacRelease\net40\Terraria.exe "%winmc%\tModLoader.FNA.exe" /y
-copy ..\references\FNA.dll "%winmc%\FNA.dll" /y
-copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%winmc%\RoslynWrapper.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%winmc%\System.Reflection.Metadata.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%winmc%\System.Collections.Immutable.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%winmc%\Microsoft.CodeAnalysis.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%winmc%\Microsoft.CodeAnalysis.CSharp.dll" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%winmc%\Terraria.xml" /y
-copy ReleaseExtras\version "%winmc%\version" /y
+for /f %%i in ('..\setup\bin\setup --steamdir') do set steamdir=%%i
+copy "%steamdir%\ModCompile" "%mcfna%"
+del "%mcfna%"\buildlock 2>nul
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y
 
-call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep yes -force yes
+call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
 
 :: Linux release
 copy ..\src\tModLoader\bin\LinuxRelease\net40\Terraria.exe "%lnx%\tModLoader.exe" /y
@@ -88,23 +81,23 @@ copy ReleaseExtras\osx "%mac%\osx" /y
 call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
 
 :: Mono ModCompile
-copy "%winmc%" "%monomc%"
-del "%monomc%\tModLoader.FNA.exe"
-del "%monomc%\FNA.dll"
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%monomc%\tModLoader.XNA.exe" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.dll "%monomc%\Microsoft.Xna.Framework.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%monomc%\Microsoft.Xna.Framework.Game.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%monomc%\Microsoft.Xna.Framework.Graphics.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%monomc%\Microsoft.Xna.Framework.Xact.dll" /y
+copy "%mcfna%" "%mcxna%"
+del "%mcxna%\tModLoader.FNA.exe"
+del "%mcxna%\FNA.dll"
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Graphics.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Xact.dll "%mcxna%" /y
 
-call zipjs.bat zipDirItems -source "%monomc%" -destination "%monomc%.zip" -keep yes -force yes
+call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
 
 :: CleanUp, Delete temp Folders
 rmdir "%win%" /S /Q
 rmdir "%mac%" /S /Q
 rmdir "%lnx%" /S /Q
-rmdir "%winmc%" /S /Q
-rmdir "%monomc%" /S /Q
+rmdir "%mcfna%" /S /Q
+rmdir "%mcxna%" /S /Q
 
 :: Copy to public DropBox Folder
 ::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"

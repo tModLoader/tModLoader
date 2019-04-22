@@ -8,7 +8,8 @@ namespace Terraria.ModLoader.Setup
 {
 	public class SetupDebugTask : Task
 	{
-		private bool compileFailed;
+		private bool roslynCompileFailed;
+		private bool tMLFNACompileFailed;
 
 		public SetupDebugTask(ITaskInterface taskInterface) : base(taskInterface) { }
 
@@ -22,26 +23,32 @@ namespace Terraria.ModLoader.Setup
 		public override void Run() {
 			taskInterface.SetStatus("Copying References");
 
-			var modCompile = Path.Combine(SteamDir, "ModCompile");
-
-			var references = new[] {"FNA.dll", "Mono.Cecil.Pdb.dll", "Mono.Cecil.Mdb.dll" };
-			foreach (var dll in references)
-				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
-
-			var roslynRefs = new[] {"RoslynWrapper.dll", "System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll"};
-			foreach (var dll in roslynRefs)
-				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
-
-			taskInterface.SetStatus("Updating ModCompile version");
-			UpdateModCompileVersion(modCompile);
-
 			taskInterface.SetStatus("Generating launchSettings.json");
 			var launchSettingsPath = Path.Combine(baseDir, "src/tModLoader/Properties/launchSettings.json");
 			CreateParentDirectory(launchSettingsPath);
 			File.WriteAllText(launchSettingsPath, DebugConfig);
 
+			taskInterface.SetStatus("Updating ModCompile version");
+			var modCompile = Path.Combine(SteamDir, "ModCompile");
+			UpdateModCompileVersion(modCompile);
+
+			var references = new[] { "FNA.dll" };
+			foreach (var dll in references)
+				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
+
+			roslynCompileFailed = RunCmd(Path.Combine(baseDir, "RoslynWrapper"), "msbuild",
+				"RoslynWrapper.sln /restore /p:Configuration=Release",
+				null, null, null, taskInterface.CancellationToken()
+			) != 0;
+
+			var roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll", 
+				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
+				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
+			foreach (var dll in roslynRefs)
+				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
+
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
-			compileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
+			tMLFNACompileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
 				"tModLoader.sln /restore /p:Configuration=MacRelease",
 				null, null, null, taskInterface.CancellationToken()
 			) != 0;
@@ -64,19 +71,18 @@ namespace Terraria.ModLoader.Setup
 			File.WriteAllText(Path.Combine(modCompileDir, "version"), versionTag);
 		}
 
-		private void UpdateModCompileVersion()
-		{
-			throw new NotImplementedException();
-		}
-
 		public override bool Failed() {
-			return compileFailed;
+			return roslynCompileFailed || tMLFNACompileFailed;
 		}
 
 		public override void FinishedDialog() {
-			MessageBox.Show(
-				"Failed to compile tModLoaderMac.exe\r\nJust build it from the tModLoader solution.",
-				"Build Failed tModLoaderMac.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			if (roslynCompileFailed)
+				MessageBox.Show("MSBuild Error", "Failed to compile RoslynWrapper.sln.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+			if (tMLFNACompileFailed)
+				MessageBox.Show(
+					"Failed to compile tModLoader.FNA.exe\r\nJust build it from the tModLoader solution.",
+					"MSBuild Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		private static string DebugConfig => @"{

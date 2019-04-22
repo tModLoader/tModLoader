@@ -26,8 +26,7 @@ namespace Terraria.ModLoader
 
 		public static readonly string branchName = "";
 		// beta > 0 cannot publish to mod browser
-		internal const int beta_value = 3;
-		public static readonly int beta = beta_value;
+		public static readonly int beta = 3;
 
 		public static readonly string versionedName = $"tModLoader v{version}" +
 				(branchName.Length == 0 ? "" : $" {branchName}") +
