@@ -1,6 +1,8 @@
 using log4net.Core;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
+using Mono.Cecil.Pdb;
 using ReLogic.OS;
 using System;
 using System.CodeDom.Compiler;
@@ -483,7 +485,12 @@ namespace Terraria.ModLoader.Core
 				// when reading and writing a module with cecil, the debug sequence points need regenerating, even if the methods are not changed
 				// write out the pdb file using cecil because doing it at runtime is difficult
 				var tempDllPath = Path.Combine(tempDir, dllName); //use the temp dir to avoid overwriting a precompiled dll
-				asm.Write(tempDllPath, new WriterParameters { WriteSymbols = true });
+				
+				// force the native pdb writer when possible, to support stack traces on older .NET frameworks
+				asm.Write(tempDllPath, new WriterParameters {
+					WriteSymbols = true,
+					SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
+				});
 
 				mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
 
