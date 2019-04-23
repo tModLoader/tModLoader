@@ -7,13 +7,16 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UILoadProgress : UIPanel
 	{
-		private UIText text;
+		private UIAutoScaleTextTextPanel<string> text;
 		private float progress;
 
 		public UILoadProgress() {
-			text = new UIText("", 0.75f, true) {
-				Top = { Pixels = 20 },
-				HAlign = 0.5f
+			text = new UIAutoScaleTextTextPanel<string>("", 1f, true) {
+				Top = { Pixels = 10 },
+				HAlign = 0.5f,
+				Width = { Percent = 1 },
+				Height = { Pixels = 60 },
+				DrawPanel = false
 			};
 			Append(text);
 			progress = 0f;
@@ -27,7 +30,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void SetText(string text) {
-			this.text.SetText(text, 0.75f, true);
+			this.text.SetText(text);
 		}
 
 		internal void SetProgress(float progress) {

@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) {
-			this.SetText(text, TextScaleMax, large);
+			this.SetText(text, textScaleMax, large);
 		}
 
 		public override void Recalculate() {
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.UI
 				if (textSize.X > availableSpace.X || textSize.Y > availableSpace.Y) {
 					float scale = (textSize.X / availableSpace.X > textSize.Y / availableSpace.Y) ? availableSpace.X / textSize.X : availableSpace.Y / textSize.Y;
 					TextScale = scale;
-					textSize = dynamicSpriteFont.MeasureString(text.ToString()) * TextScaleMax;
+					textSize = dynamicSpriteFont.MeasureString(text.ToString()) * TextScale;
 				}
 				else {
 					TextScale = TextScaleMax;
@@ -96,7 +96,10 @@ namespace Terraria.ModLoader.UI
 			for (int i = 0; i < textStrings.Length; i++) {
 				//Vector2 pos = innerDimensions.Center.ToVector2() + drawOffsets[i];
 				Vector2 pos = innerDimensions.TopLeft() + drawOffsets[i];
-				Utils.DrawBorderString(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);
+				if (this.IsLarge)
+					Utils.DrawBorderStringBig(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);
+				else
+					Utils.DrawBorderString(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);
 			}
 
 			//foreach (var singleLine in textStrings)
