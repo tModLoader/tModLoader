@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Setup
 				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
 				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
 			foreach (var dll in roslynRefs)
-				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/"+dll), Path.Combine(modCompile, dll));
+				Copy(Path.Combine(baseDir, "RoslynWrapper/bin/Release/net46", dll), Path.Combine(modCompile, dll));
 
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
 			tMLFNACompileFailed = RunCmd(Path.Combine(baseDir, "solutions"), "msbuild",
