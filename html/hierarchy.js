@@ -81,6 +81,9 @@ var hierarchy =
     [ "Terraria.ModLoader.Config.ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
+    [ "Terraria.ModLoader.EffectsTracker.KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", [
+      [ "Terraria.ModLoader.EffectsTracker.KeyCache< K, V >", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", null ]
+    ] ],
     [ "Terraria.ModLoader.Exceptions.LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", null ],
     [ "Terraria.ModLoader.Logging", "class_terraria_1_1_mod_loader_1_1_logging.html", null ],
     [ "Terraria.ModLoader.MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", null ],

@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mono_mod_hooks =
 [
-    [ "GenerateCecilModule", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a9fe05dc679e83c009eede9a89e755b3d", null ],
     [ "GetOwnerName", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a6c63ed7c9650fc9d194cbd84c6c91e4c", null ],
     [ "NativeAccessCheck", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a8b7e4b1886428b79994c6a20f24aca09", null ],
     [ "RequestNativeAccess", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a8fd8c6a16df620459fac0ae58dbee86a", null ],

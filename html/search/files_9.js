@@ -28,7 +28,6 @@ var searchData=
   ['modproperties_2ecs',['ModProperties.cs',['../_mod_properties_8cs.html',1,'']]],
   ['modrecipe_2ecs',['ModRecipe.cs',['../_mod_recipe_8cs.html',1,'']]],
   ['modside_2ecs',['ModSide.cs',['../_mod_side_8cs.html',1,'']]],
-  ['modsortingexception_2ecs',['ModSortingException.cs',['../_mod_sorting_exception_8cs.html',1,'']]],
   ['modsound_2ecs',['ModSound.cs',['../_mod_sound_8cs.html',1,'']]],
   ['modtile_2ecs',['ModTile.cs',['../_mod_tile_8cs.html',1,'']]],
   ['modtileentity_2ecs',['ModTileEntity.cs',['../_mod_tile_entity_8cs.html',1,'']]],

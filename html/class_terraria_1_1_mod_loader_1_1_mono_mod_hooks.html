@@ -134,8 +134,6 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a9fe05dc679e83c009eede9a89e755b3d"><td class="memItemLeft" align="right" valign="top">static ModuleDefinition&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a9fe05dc679e83c009eede9a89e755b3d">GenerateCecilModule</a> (AssemblyName name)</td></tr>
-<tr class="separator:a9fe05dc679e83c009eede9a89e755b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c63ed7c9650fc9d194cbd84c6c91e4c"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a6c63ed7c9650fc9d194cbd84c6c91e4c">GetOwnerName</a> (Delegate d)</td></tr>
 <tr class="separator:a6c63ed7c9650fc9d194cbd84c6c91e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b7e4b1886428b79994c6a20f24aca09"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a8b7e4b1886428b79994c6a20f24aca09">NativeAccessCheck</a> (Assembly asm)</td></tr>
@@ -154,32 +152,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00015">15</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00016">16</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a9fe05dc679e83c009eede9a89e755b3d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static ModuleDefinition Terraria.ModLoader.MonoModHooks.GenerateCecilModule </td>
-          <td>(</td>
-          <td class="paramtype">AssemblyName&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a6c63ed7c9650fc9d194cbd84c6c91e4c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -202,8 +176,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00077">77</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                                                       {</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> d.Method.DeclaringType.Assembly.GetName().Name;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00078">78</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                                       {</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> d.Method.DeclaringType.Assembly.GetName().Name;</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8b7e4b1886428b79994c6a20f24aca09"></a>
@@ -228,8 +202,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00060">60</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                                            {</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">NativeDetouringGranted</a>.Contains(<span class="keyword">asm</span>))</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> UnauthorizedAccessException(</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                $<span class="stringliteral">&quot;Native detouring permissions not granted to {asm.GetName().Name}. \n&quot;</span> +</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                $<span class="stringliteral">&quot;Mods should use HookEndpointManager for compatibility. \n&quot;</span> +</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                $<span class="stringliteral">&quot;If Detour or NativeDetour are required, call MonoModHooks.RequestNativeAccess()&quot;</span>);</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks_html_abdfa837c67eb1b891eaac5e344a11458"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">Terraria.ModLoader.MonoModHooks.NativeDetouringGranted</a></div><div class="ttdeci">static HashSet&lt; Assembly &gt; NativeDetouringGranted</div><div class="ttdef"><b>Definition:</b> <a href="_mono_mod_hooks_8cs_source.html#l00018">MonoModHooks.cs:18</a></div></div>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00061">61</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                                            {</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">NativeDetouringGranted</a>.Contains(<span class="keyword">asm</span>))</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> UnauthorizedAccessException(</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                $<span class="stringliteral">&quot;Native detouring permissions not granted to {asm.GetName().Name}. \n&quot;</span> +</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                $<span class="stringliteral">&quot;Mods should use HookEndpointManager for compatibility. \n&quot;</span> +</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                $<span class="stringliteral">&quot;If Detour or NativeDetour are required, call MonoModHooks.RequestNativeAccess()&quot;</span>);</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks_html_abdfa837c67eb1b891eaac5e344a11458"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">Terraria.ModLoader.MonoModHooks.NativeDetouringGranted</a></div><div class="ttdeci">static HashSet&lt; Assembly &gt; NativeDetouringGranted</div><div class="ttdef"><b>Definition:</b> <a href="_mono_mod_hooks_8cs_source.html#l00019">MonoModHooks.cs:19</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,8 +228,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00070">70</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                                 {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            var stack = <span class="keyword">new</span> StackTrace();</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            var <span class="keyword">asm</span> = stack.GetFrame(1).GetMethod().DeclaringType.Assembly;</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">NativeDetouringGranted</a>.Add(<span class="keyword">asm</span>);</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            Logging.tML.Warn($<span class="stringliteral">&quot;Granted native detouring access to {asm.GetName().Name}&quot;</span>);</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks_html_abdfa837c67eb1b891eaac5e344a11458"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">Terraria.ModLoader.MonoModHooks.NativeDetouringGranted</a></div><div class="ttdeci">static HashSet&lt; Assembly &gt; NativeDetouringGranted</div><div class="ttdef"><b>Definition:</b> <a href="_mono_mod_hooks_8cs_source.html#l00018">MonoModHooks.cs:18</a></div></div>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00071">71</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                 {</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            var stack = <span class="keyword">new</span> StackTrace();</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            var <span class="keyword">asm</span> = stack.GetFrame(1).GetMethod().DeclaringType.Assembly;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">NativeDetouringGranted</a>.Add(<span class="keyword">asm</span>);</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            Logging.tML.Warn($<span class="stringliteral">&quot;Granted native detouring access to {asm.GetName().Name}&quot;</span>);</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks_html_abdfa837c67eb1b891eaac5e344a11458"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458">Terraria.ModLoader.MonoModHooks.NativeDetouringGranted</a></div><div class="ttdeci">static HashSet&lt; Assembly &gt; NativeDetouringGranted</div><div class="ttdef"><b>Definition:</b> <a href="_mono_mod_hooks_8cs_source.html#l00019">MonoModHooks.cs:19</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -281,10 +255,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00081">81</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00082">82</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
 
 <p>References <a class="el" href="_mod_8cs_source.html#l00041">Terraria.ModLoader.Mod.Name</a>.</p>
-<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                                      {</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            var paramString = <span class="keywordtype">string</span>.Join(<span class="stringliteral">&quot;, &quot;</span>, m.GetParameters().Select(p =&gt; {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                var s = p.ParameterType.Name;</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordflow">if</span> (p.ParameterType.IsByRef)</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    s = p.IsOut ? <span class="stringliteral">&quot;out &quot;</span> : <span class="stringliteral">&quot;ref &quot;</span>;</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keywordflow">return</span> s;</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            }));</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            var owner = m.DeclaringType?.FullName ??</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                (m is DynamicMethod ? <span class="stringliteral">&quot;dynamic&quot;</span> : <span class="stringliteral">&quot;unknown&quot;</span>);</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{owner}::{m.Name}({paramString})&quot;</span>;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                                      {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            var paramString = <span class="keywordtype">string</span>.Join(<span class="stringliteral">&quot;, &quot;</span>, m.GetParameters().Select(p =&gt; {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                var s = p.ParameterType.Name;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <span class="keywordflow">if</span> (p.ParameterType.IsByRef)</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    s = p.IsOut ? <span class="stringliteral">&quot;out &quot;</span> : <span class="stringliteral">&quot;ref &quot;</span>;</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">return</span> s;</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }));</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            var owner = m.DeclaringType?.FullName ??</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                (m is DynamicMethod ? <span class="stringliteral">&quot;dynamic&quot;</span> : <span class="stringliteral">&quot;unknown&quot;</span>);</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{owner}::{m.Name}({paramString})&quot;</span>;</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -306,7 +280,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00020">20</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00021">21</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
 
 </div>
 </div>
@@ -328,7 +302,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00017">17</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00018">18</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
 
 </div>
 </div>
@@ -350,7 +324,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00018">18</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mono_mod_hooks_8cs_source.html#l00019">19</a> of file <a class="el" href="_mono_mod_hooks_8cs_source.html">MonoModHooks.cs</a>.</p>
 
 </div>
 </div>

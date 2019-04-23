@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Terraria ModLoader: /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/ModSortingException.cs Source File</title>
+<title>Terraria ModLoader: Terraria.ModLoader.EffectsTracker.KeyCache Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -50,8 +50,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -72,8 +72,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -88,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('_mod_sorting_exception_8cs_source.html','');});
+$(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -107,18 +109,28 @@ $(document).ready(function(){initNavTree('_mod_sorting_exception_8cs_source.html
 
 <div class="header">
   <div class="headertitle">
-<div class="title">ModSortingException.cs</div>  </div>
+<div class="title">Terraria.ModLoader.EffectsTracker.KeyCache Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_mod_sorting_exception_8cs.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="namespace_system.html">System</a>.Collections.Generic;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespace_terraria.html">Terraria</a>.ModLoader.Exceptions</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    <span class="keyword">internal</span> <span class="keyword">class </span>ModSortingException : <a class="code" href="class_exception.html">Exception</a></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        <span class="keyword">public</span> ICollection&lt;LocalMod&gt; errored;</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keyword">public</span> ModSortingException(ICollection&lt;LocalMod&gt; errored, <span class="keywordtype">string</span> message) : base(message) {</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            this.errored = errored;</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        }</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    }</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div><div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div></div>
-<div class="ttc" id="namespace_system_html"><div class="ttname"><a href="namespace_system.html">System</a></div></div>
-<div class="ttc" id="namespace_terraria_html"><div class="ttname"><a href="namespace_terraria.html">Terraria</a></div></div>
-</div><!-- fragment --></div><!-- contents -->
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.EffectsTracker.KeyCache:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache__inherit__graph.png" border="0" usemap="#_terraria_8_mod_loader_8_effects_tracker_8_key_cache_inherit__map" alt="Inheritance graph"/></div>
+<map name="_terraria_8_mod_loader_8_effects_tracker_8_key_cache_inherit__map" id="_terraria_8_mod_loader_8_effects_tracker_8_key_cache_inherit__map">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html" title="Terraria.ModLoader.Effects\lTracker.KeyCache\&lt; K, V \&gt;" alt="" coords="5,97,187,138"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="_effects_tracker_8cs_source.html#l00011">11</a> of file <a class="el" href="_effects_tracker_8cs_source.html">EffectsTracker.cs</a>.</p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_b2dee0249ca1c6e98736e679cc6a5269.html">patches</a></li><li class="navelem"><a class="el" href="dir_33550c180f9cedd6db1017f362610614.html">tModLoader</a></li><li class="navelem"><a class="el" href="dir_74fadca5af88c7a374b16ca7b71ad489.html">Terraria.ModLoader.Exceptions</a></li><li class="navelem"><a class="el" href="_mod_sorting_exception_8cs.html">ModSortingException.cs</a></li>
+    <li class="navelem"><a class="el" href="namespace_terraria.html">Terraria</a></li><li class="navelem"><a class="el" href="namespace_terraria_1_1_mod_loader.html">ModLoader</a></li><li class="navelem"><b>EffectsTracker</b></li><li class="navelem"><a class="el" href="class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html">KeyCache</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>

@@ -37,6 +37,10 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "PlayerHeadLayer", "class_terraria_1_1_mod_loader_1_1_player_head_layer.html", "class_terraria_1_1_mod_loader_1_1_player_head_layer" ],
       [ "PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", "class_terraria_1_1_mod_loader_1_1_player_layer" ]
     ] ],
+    [ "EffectsTracker.cs", "_effects_tracker_8cs.html", [
+      [ "KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache" ],
+      [ "KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", null ]
+    ] ],
     [ "EquipLoader.cs", "_equip_loader_8cs.html", [
       [ "EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", "class_terraria_1_1_mod_loader_1_1_equip_loader" ]
     ] ],

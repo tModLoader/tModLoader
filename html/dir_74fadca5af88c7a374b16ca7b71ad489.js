@@ -7,7 +7,6 @@ var dir_74fadca5af88c7a374b16ca7b71ad489 =
       [ "LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance" ],
       [ "MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception" ]
     ] ],
-    [ "ModSortingException.cs", "_mod_sorting_exception_8cs.html", null ],
     [ "OldHookException.cs", "_old_hook_exception_8cs.html", [
       [ "OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception" ]
     ] ],

@@ -41,10 +41,10 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a14ca9115ed296de1799aa67efd0df6c1",
 "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a31486b528f94f87a6c463f14cd254bbf",
 "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a56033539d5b322f615f675a80527214a",
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a16c69a5a6498e077b2c7ae050f28c878",
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2744e597c3133cba11b7a4b7592bc2d3",
-"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a282e98b17126aee0254fd64115033987",
-"functions_n.html"
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a178294aa247bd08b123c44d6a49fd40c",
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b",
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2908d02ba26d5def65c109923515c664",
+"functions_o.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
