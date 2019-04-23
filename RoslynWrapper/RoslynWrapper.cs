@@ -11,18 +11,18 @@ namespace Terraria.ModLoader
 {
 	public static class RoslynWrapper
 	{
-		public static CompilerErrorCollection Compile(string name, string outputPath, string[] references, string[] files, bool includePdb) {
+		public static CompilerErrorCollection Compile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe) {
 			var pdbPath = Path.ChangeExtension(outputPath, "pdb");
 
-			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
-				.WithOptimizationLevel(OptimizationLevel.Debug) // currently no way to specify debug vs release. We still want pdb files with release mode for bug reports
-				.WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default);
+			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
+				optimizationLevel: preprocessorSymbols.Contains("DEBUG") ? OptimizationLevel.Debug : OptimizationLevel.Release,
+				allowUnsafe: allowUnsafe);
 
-			var parseOptions = new CSharpParseOptions(LanguageVersion.Latest);
+			var parseOptions = new CSharpParseOptions(LanguageVersion.Latest, preprocessorSymbols: preprocessorSymbols);
 
-			var emitOptions = new EmitOptions();
-			if (Type.GetType("Mono.Runtime") != null)
-				emitOptions = emitOptions.WithDebugInformationFormat(DebugInformationFormat.PortablePdb);
+			bool mono = Type.GetType("Mono.Runtime") != null;
+			var emitOptions = new EmitOptions(debugInformationFormat: mono ? DebugInformationFormat.PortablePdb : DebugInformationFormat.Pdb);
 
 			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));

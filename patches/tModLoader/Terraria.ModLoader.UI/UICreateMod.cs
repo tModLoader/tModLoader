@@ -164,11 +164,8 @@ namespace {modNameTrimmed}
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=""'$(Configuration)'=='Debug'"">
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath)"" />
+    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
 </Project>");
 				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";

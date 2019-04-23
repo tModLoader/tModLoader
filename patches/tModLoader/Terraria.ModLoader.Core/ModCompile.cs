@@ -1,6 +1,5 @@
 using log4net.Core;
 using Mono.Cecil;
-using Mono.Cecil.Cil;
 using Mono.Cecil.Mdb;
 using Mono.Cecil.Pdb;
 using ReLogic.OS;
@@ -340,8 +339,8 @@ namespace Terraria.ModLoader.Core
 				BuildModForPlatform(mod, ref refMods, true);
 				BuildModForPlatform(mod, ref refMods, false);
 
-				if (Program.LaunchParameters.ContainsKey("-eac")) {
-					mod.properties.eacPath = Path.ChangeExtension(Program.LaunchParameters["-eac"], "pdb");
+				if (Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
+					mod.properties.eacPath = Path.ChangeExtension(eacValue, "pdb");
 					status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
 				}
 
@@ -458,8 +457,8 @@ namespace Terraria.ModLoader.Core
 					var allPath = Path.Combine(mod.path, mod.Name + ".All.dll");
 					dllPath = File.Exists(allPath) ? allPath : Path.Combine(mod.path, dllName);
 				}
-				else if (Program.LaunchParameters.ContainsKey("-eac") && xna == PlatformUtilities.IsXNA) {
-					dllPath = Program.LaunchParameters["-eac"];
+				else if (xna == PlatformUtilities.IsXNA && Program.LaunchParameters.TryGetValue("-eac", out var eacValue)) {
+					dllPath = eacValue;
 				}
 
 				// precompiled load, or fallback to Roslyn compile
@@ -556,7 +555,15 @@ namespace Terraria.ModLoader.Core
 
 			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !mod.properties.ignoreFile(file.Substring(mod.path.Length + 1))).ToArray();
 
-			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, mod.properties.includePDB);
+			bool allowUnsafe =
+				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&
+				bool.TryParse(unsafeParam, out var _allowUnsafe) && _allowUnsafe;
+
+			var preprocessorSymbols = new List<string> { xna ? "XNA" : "FNA" };
+			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
+				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
+
+			var results = RoslynCompile(mod.Name, outputPath, refs.ToArray(), files, preprocessorSymbols.ToArray(), mod.properties.includePDB, allowUnsafe);
 
 			int numWarnings = results.Cast<CompilerError>().Count(e => e.IsWarning);
 			int numErrors = results.Count - numWarnings;
@@ -643,9 +650,10 @@ namespace Terraria.ModLoader.Core
 		/// <summary>
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
-		private static CompilerErrorCollection RoslynCompile(string name, string outputPath, string[] references, string[] files, bool includePdb) {
+		private static CompilerErrorCollection RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
+		{		
 			return (CompilerErrorCollection)RoslynWrapper.GetMethod("Compile")
-				.Invoke(null, new object[] { name, outputPath, references, files, includePdb });
+				.Invoke(null, new object[] { name, outputPath, references, files, preprocessorSymbols, includePdb, allowUnsafe });
 		}
 
 		private static FileStream AcquireConsoleBuildLock() {
