@@ -5,6 +5,7 @@ var class_terraria_1_1_mod_loader_1_1_logging =
     [ "ConfigureAppenders", "class_terraria_1_1_mod_loader_1_1_logging.html#a3bd5f56a76a41af81063b3f9d72cbab5", null ],
     [ "ctor_StackTrace", "class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae", null ],
     [ "DeleteOldArchives", "class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387", null ],
+    [ "EnablePortablePDBTraces", "class_terraria_1_1_mod_loader_1_1_logging.html#ab125db3972e9b4f88d1ea899214b2e3b", null ],
     [ "FirstChanceExceptionHandler", "class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f", null ],
     [ "hook_GetEncoding", "class_terraria_1_1_mod_loader_1_1_logging.html#aa77d8c6eb50837ddd08094269457f7bd", null ],
     [ "hook_GetStackTrace", "class_terraria_1_1_mod_loader_1_1_logging.html#ab77f1d28cd3c77d5cc506ab0d3039d86", null ],

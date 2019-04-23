@@ -5,6 +5,7 @@ var searchData=
   ['editspawnrate',['EditSpawnRate',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a63bf497418d5bbb5592355a2f44f31a5',1,'Terraria.ModLoader.GlobalNPC.EditSpawnRate()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa3c1075b462bc4c9bccb800492ad1c18',1,'Terraria.ModLoader.NPCLoader.EditSpawnRate()']]],
   ['effectexists',['EffectExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#a79e02b7c7d7dccc70abd554a6f6de1ea',1,'Terraria::ModLoader::Mod']]],
   ['effectstracker_2ecs',['EffectsTracker.cs',['../_effects_tracker_8cs.html',1,'']]],
+  ['enableportablepdbtraces',['EnablePortablePDBTraces',['../class_terraria_1_1_mod_loader_1_1_logging.html#ab125db3972e9b4f88d1ea899214b2e3b',1,'Terraria::ModLoader::Logging']]],
   ['enchantedsword',['EnchantedSword',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a832d14b93e7a2fb75dfbfff0c77ef6fd',1,'Terraria::ModLoader::SpawnCondition']]],
   ['ensureloaded',['EnsureLoaded',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#ab6f127b36eee38dca1af8bf878be624f',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['environment',['Environment',['../namespace_terraria_1_1_mod_loader.html#a2f24335a34de4ae16e51b7a9c8dd0ed9a0ba29c6a1afacf586b03a26162c72274',1,'Terraria::ModLoader']]],
