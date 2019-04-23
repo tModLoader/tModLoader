@@ -53,8 +53,8 @@ namespace Terraria.ModLoader.Core
 		internal Version version = new Version(1, 0);
 		internal string displayName = "";
 		internal bool noCompile = false;
-		internal bool hideCode = true;
-		internal bool hideResources = true;
+		internal bool hideCode = false;
+		internal bool hideResources = false;
 		internal bool includeSource = false;
 		internal bool includePDB = true;
 		internal string eacPath = "";
