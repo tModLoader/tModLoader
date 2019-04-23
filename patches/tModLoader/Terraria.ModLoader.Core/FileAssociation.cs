@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	internal class FileAssociationSupport
 	{

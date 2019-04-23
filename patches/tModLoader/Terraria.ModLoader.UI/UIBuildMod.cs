@@ -1,15 +1,13 @@
 using log4net.Core;
-using Microsoft.Xna.Framework;
 using System;
-using System.CodeDom.Compiler;
 using System.Threading;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	// TODO: yet another progress UI?, otherwise it's fine, no cancel button in this one
+	// TODO: Extend a progress UI? No cancel button here.
 	internal class UIBuildMod : UIState, ModCompile.IBuildStatus
 	{
 		private UILoadProgress loadProgress;

@@ -4,6 +4,7 @@ using System.IO;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -123,7 +124,7 @@ namespace Terraria.ModLoader.UI
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
 			string modNameTrimmed = modName.currentString.Trim();
-			string sourceFolder = ModCompile.ModSourcePath + Path.DirectorySeparatorChar + modNameTrimmed;
+			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
 			if(Directory.Exists(sourceFolder))
 				messagePanel.SetText("Folder already exists");

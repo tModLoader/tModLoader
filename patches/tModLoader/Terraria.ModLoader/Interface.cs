@@ -4,6 +4,7 @@ using System.Net;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -105,7 +106,6 @@ namespace Terraria.ModLoader
 				modBrowser._categoryButtons[3].setCurrentState((int)modBrowser.searchFilterMode);
 			}
 			modBrowser.loading = false;
-			ModOrganizer.modsDirCache.Clear();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 

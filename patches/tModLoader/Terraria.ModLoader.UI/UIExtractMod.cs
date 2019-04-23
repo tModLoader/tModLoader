@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Terraria.Localization;
-using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	// TODO: yet another progress bar
+	// TODO: yet another progress bar, but we don't show an 'extract completed' screen either
 	internal class UIExtractMod : UIState
 	{
 		private UILoadProgress loadProgress;

@@ -9,11 +9,11 @@ using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
-	public class ModNet
+	public static class ModNet
 	{
 		private class ModHeader
 		{
@@ -122,10 +122,11 @@ namespace Terraria.ModLoader
 		private static void AddNoSyncDeps(List<Mod> syncMods) {
 			var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
 			while (queue.Count > 0) {
-				var depNames = ModOrganizer.dependencyCache[queue.Dequeue().Name];
-				foreach (var dep in depNames.Select(ModLoader.GetMod).Where(m => m.Side == ModSide.NoSync && !syncMods.Contains(m))) {
-					syncMods.Add(dep);
-					queue.Enqueue(dep);
+				foreach (var dep in AssemblyManager.GetDependencies(queue.Dequeue())) {
+					if (dep.Side == ModSide.NoSync && !syncMods.Contains(dep)) {
+						syncMods.Add(dep);
+						queue.Enqueue(dep);
+					}
 				}
 			}
 		}

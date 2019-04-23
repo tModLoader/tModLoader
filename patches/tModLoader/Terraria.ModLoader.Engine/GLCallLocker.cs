@@ -6,8 +6,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria.ModLoader.Core;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Engine
 {
 	/// <summary>
 	/// FNA uses a single-threaded GL context. This class helps with tracking down related issues and deadlocks.
@@ -16,11 +17,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class GLCallLocker
 	{
+		private static int mainThreadId;
+
 		public static void Enter(object lockObj) {
 #if XNA
 			Monitor.Enter(lockObj);
 #else
-			if (Thread.CurrentThread.ManagedThreadId != Main.mainThreadId) {
+			if (Thread.CurrentThread.ManagedThreadId != mainThreadId) {
 				Monitor.Enter(lockObj);
 				return;
 			}
@@ -32,6 +35,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Init() {
+			mainThreadId = Thread.CurrentThread.ManagedThreadId;
 #if FNA
 			var t_OpenGLDevice = typeof(GraphicsDevice).Assembly.GetType("Microsoft.Xna.Framework.Graphics.OpenGLDevice");
 			var m_ForceToMainThread = t_OpenGLDevice.GetMethod("ForceToMainThread", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -45,7 +49,7 @@ namespace Terraria.ModLoader
 			return Task.Factory.StartNew(task);
 #else
 			var tcs = new TaskCompletionSource<T>();
-			if (Thread.CurrentThread.ManagedThreadId == Main.mainThreadId) {
+			if (Thread.CurrentThread.ManagedThreadId == mainThreadId) {
 				tcs.SetResult(task());
 				return tcs.Task;
 			}
@@ -106,7 +110,7 @@ namespace Terraria.ModLoader
 		private delegate void orig_ForceToMainThread(object self, Action action);
 		private delegate void hook_ForceToMainThread(orig_ForceToMainThread orig, object self, Action action);
 		private static void HookForceToMainThread(orig_ForceToMainThread orig, object self, Action action) {
-			if (ModCompile.DeveloperMode && !ActionsAreSpeedrun && Thread.CurrentThread.ManagedThreadId != Main.mainThreadId) {
+			if (ModCompile.activelyModding && !ActionsAreSpeedrun && Thread.CurrentThread.ManagedThreadId != mainThreadId) {
 				var stackTrace = new StackTrace(false); // line numbers not supported on mono yet
 				var s = stackTrace.ToString();
 				if (pastStackTraces.Add(s))
@@ -115,7 +119,7 @@ namespace Terraria.ModLoader
 
 			orig(self, action);
 
-			if (ActionsAreSpeedrun && Thread.CurrentThread.ManagedThreadId != Main.mainThreadId)
+			if (ActionsAreSpeedrun && Thread.CurrentThread.ManagedThreadId != mainThreadId)
 				actionQueuedEvent.Set();
 		}
 #endif

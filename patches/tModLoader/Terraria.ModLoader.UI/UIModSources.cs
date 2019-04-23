@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 

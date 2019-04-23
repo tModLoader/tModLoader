@@ -10,21 +10,21 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -54,6 +_,9 @@
+@@ -54,6 +_,11 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Audio;
++using Terraria.ModLoader.Core;
++using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
-@@ -76,8 +_,9 @@
- #endif
+@@ -77,7 +_,7 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
-+		public static int mainThreadId;
  
 -		public const int curRelease = 193;
 +		public const int curRelease = 194;
@@ -428,7 +428,7 @@
 +							}
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpath=")
 +							{
-+								ModLoader.ModLoader.modPath = text.Substring(8);
++								ModOrganizer.modPath = text.Substring(8);
 +							}
 +							if (text.Length >= 8 && text.Substring(0, 8).ToLower() == "modpack=")
 +							{
@@ -931,13 +931,11 @@
  							if (Main.musicFade[Main.curMusic] > 0.25f)
  							{
  								Main.musicFade[m] -= 0.005f;
-@@ -11924,6 +_,9 @@
+@@ -11924,6 +_,7 @@
  
  		protected override void Update(GameTime gameTime)
  		{
-+#if !WINDOWS
-+			FNAThreading.Update();
-+#endif
++			FallbackSyncContext.Update();
  			if (!Main.IsEnginePreloaded)
  			{
  				Main.IsEnginePreloaded = true;

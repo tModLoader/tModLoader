@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Terraria.ModLoader.IO;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	//todo: further documentation
 	internal class BuildProperties
@@ -360,9 +360,7 @@ namespace Terraria.ModLoader
 			dst.Write(bytes, 0, bytes.Length);
 		}
 
-		internal bool ignoreFile(string resource) {
-			return this.buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
-		}
+		internal bool ignoreFile(string resource) => buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
 
 		private bool FitsMask(string fileName, string fileMask) {
 			string pattern =

@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	internal class MdbManager
 	{

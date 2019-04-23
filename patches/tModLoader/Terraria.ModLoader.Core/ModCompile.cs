@@ -13,11 +13,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	//todo: further documentation
 	internal class ModCompile

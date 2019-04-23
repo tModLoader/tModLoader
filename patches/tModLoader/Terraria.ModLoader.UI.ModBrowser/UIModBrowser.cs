@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.UI;
 using Terraria.UI.Gamepad;

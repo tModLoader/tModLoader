@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using MonoMod.Utils;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {

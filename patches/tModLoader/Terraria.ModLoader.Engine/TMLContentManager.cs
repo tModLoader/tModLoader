@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
 
-namespace Terraria.ModLoader.IO
+namespace Terraria.ModLoader.Engine
 {
-	public class TMLContentManager : ContentManager
+	internal class TMLContentManager : ContentManager
 	{
 		public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory) : base(serviceProvider, rootDirectory) { }
 

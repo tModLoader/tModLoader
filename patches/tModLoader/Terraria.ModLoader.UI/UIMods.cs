@@ -12,6 +12,7 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {

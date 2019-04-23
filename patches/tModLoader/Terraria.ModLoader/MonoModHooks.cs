@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader
@@ -22,7 +23,7 @@ namespace Terraria.ModLoader
 			if (isInitialized)
 				return;
 
-			HookEndpointManager.OnGenerateCecilModule += GenerateCecilModule;
+			HookEndpointManager.OnGenerateCecilModule += AssemblyManager.GetMainModule;
 			HookEndpointManager.OnAdd += (m, d) => {
 				Logging.tML.Debug($"Hook On.{StringRep(m)} added by {GetOwnerName(d)}");
 				return true;
@@ -122,7 +123,5 @@ namespace Terraria.ModLoader
 			if (hooks > 0 || detours > 0 || ndetours > 0)
 				Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {mod.Name}");
 		}
-
-		private static ModuleDefinition GenerateCecilModule(AssemblyName name) => AssemblyManager.CecilAssemblyResolver.Resolve(name.ToReference()).MainModule;
 	}
 }

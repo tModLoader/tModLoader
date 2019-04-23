@@ -10,8 +10,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.IO;
 using System.Linq;
 using Terraria.ModLoader.Config;
 
@@ -25,7 +25,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The TmodFile object created when tModLoader reads this mod.
 		/// </summary>
-		public TmodFile File { get; internal set; }
+		internal TmodFile File { get; set; }
 		/// <summary>
 		/// The assembly code this is loaded when tModLoader loads this mod.
 		/// </summary>
@@ -103,19 +103,20 @@ namespace Terraria.ModLoader
 				return;
 
 			var skipCache = new HashSet<string>();
-			File.EnsureOpen();
-			foreach (var entry in File) {
-				Interface.loadMods.SubProgressText = entry.Name;
+			using (File.EnsureOpen()) {
+				foreach (var entry in File) {
+					Interface.loadMods.SubProgressText = entry.Name;
 
-				Stream _stream = null;
-				Stream GetStream() => _stream = File.GetStream(entry);
+					Stream _stream = null;
+					Stream GetStream() => _stream = File.GetStream(entry);
 
-				if (LoadResource(entry.Name, entry.Length, GetStream))
-					skipCache.Add(entry.Name);
+					if (LoadResource(entry.Name, entry.Length, GetStream))
+						skipCache.Add(entry.Name);
 				
-				_stream?.Dispose();
-			};
-			File.CacheFiles(skipCache);
+					_stream?.Dispose();
+				}
+				File.CacheFiles(skipCache);
+			}
 		}
 
 		/// <summary>

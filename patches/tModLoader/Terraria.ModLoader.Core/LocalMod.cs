@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Terraria.ModLoader.IO;
 
 [assembly: InternalsVisibleTo("tModLoaderTests")]
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	internal class LocalMod
 	{

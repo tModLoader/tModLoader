@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Engine
 {
 	internal static class ServerHangWatchdog
 	{

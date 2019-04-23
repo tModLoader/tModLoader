@@ -2,9 +2,12 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Engine
 {
-	public static class FNAThreading
+	/// <summary>
+	/// Provides a SynchronizationContext for running continuations on the Main thread in the Update loop, for platforms which don't initialized with one
+	/// </summary>
+	internal static class FallbackSyncContext
 	{
 		private class SyncContext : SynchronizationContext
 		{
@@ -53,10 +56,12 @@ namespace Terraria.ModLoader
 
 		private static SyncContext ctx;
 		public static void Init() {
-			SynchronizationContext.SetSynchronizationContext(ctx = new SyncContext());
-			GLCallLocker.Init();
+			if (SynchronizationContext.Current == null) {
+				SynchronizationContext.SetSynchronizationContext(ctx = new SyncContext());
+				Logging.tML.Debug("Fallback synchronization context assigned");
+			}
 		}
 
-		public static void Update() => ctx.Update();
+		public static void Update() => ctx?.Update();
 	}
 }

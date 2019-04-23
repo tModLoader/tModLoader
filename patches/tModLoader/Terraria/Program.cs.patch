@@ -16,36 +16,7 @@
  		}
  
  		private static void ForceJITOnAssembly(Assembly assembly)
-@@ -139,8 +_,9 @@
- 
- 		private static void SetupLogging()
- 		{
-+			Logging.Init();
- 			bool flag = Program.LaunchParameters.ContainsKey("-logfile");
--			if (flag)
-+			if (false)
- 			{
- 				string text = Program.LaunchParameters["-logfile"];
- 				if (text == null || text.Trim() == "")
-@@ -175,7 +_,7 @@
- 				string text = "================\r\n";
- 				text += string.Format("{0}: First-Chance Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
- 				text += "================\r\n\r\n";
--				Console.Write(text);
-+				Console.WriteLine(text);
- 				if (useMiniDumps)
- 				{
- 					CrashDump.WriteException(CrashDump.Options.WithIndirectlyReferencedMemory, Path.Combine(Main.SavePath, "Dumps"));
-@@ -187,7 +_,7 @@
- 				string text = "================\r\n";
- 				text += string.Format("{0}: Unhandled Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
- 				text += "================\r\n";
--				Console.Write(text);
-+				Console.WriteLine(text);
- 				if (useFullDumps)
- 				{
- 					CrashDump.WriteException(dumpOptions, Path.Combine(Main.SavePath, "Dumps"));
-@@ -205,20 +_,34 @@
+@@ -205,20 +_,40 @@
  #endif
  			try
  			{
@@ -74,6 +45,12 @@
  			}
 +
 +			LaunchParameters = Utils.ParseArguements(args);
++			try {
++				Logging.Init();
++			} catch (Exception e) {
++				DisplayException(e);
++				return;
++			}
 +			LaunchGame_();
 +		}
 +
@@ -82,19 +59,16 @@
  			if (Platform.IsOSX)
  			{
  				Main.OnEngineLoad += delegate
-@@ -226,10 +_,14 @@
+@@ -226,10 +_,10 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
 -			Program.LaunchParameters = Utils.ParseArguements(args);
-+			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
- 			Program.SetupLogging();
-+			FileAssociationSupport.UpdateFileAssociation();
-+#if FNA
-+			FNAThreading.Init();
-+#endif
+-			Program.SetupLogging();
++			//Program.SetupLogging();
++			ModLoader.ModLoader.EngineInit();
  			using (Main main = new Main())
  			{
  				try

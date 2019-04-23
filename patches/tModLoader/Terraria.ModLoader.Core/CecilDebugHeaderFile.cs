@@ -1,9 +1,9 @@
 ﻿using Mono.Cecil.Cil;
 using System.IO;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
-	internal static class ImageDebugHeaderFile
+	internal static class CecilDebugHeaderFile
 	{
 		public static ImageDebugHeader Read(BinaryReader reader) {
 			var entries = new ImageDebugHeaderEntry[reader.ReadByte()];

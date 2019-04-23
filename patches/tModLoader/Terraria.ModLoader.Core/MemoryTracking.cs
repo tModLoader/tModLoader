@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	internal class ModMemoryUsage
 	{

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader.Engine;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI

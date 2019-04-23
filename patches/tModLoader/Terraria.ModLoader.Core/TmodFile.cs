@@ -7,8 +7,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Terraria.Localization;
+using Terraria.ModLoader.IO;
 
-namespace Terraria.ModLoader.IO
+namespace Terraria.ModLoader.Core
 {
 	// warning class is not threadsafe
 	public class TmodFile : IEnumerable<TmodFile.FileEntry>
@@ -100,7 +101,6 @@ namespace Terraria.ModLoader.IO
 				stream = new MemoryStream(entry.cachedBytes);
 			}
 			else if (newFileStream) {
-				// File.OpenRead is fine, it uses FindFirstFile which is case insensitive
 				stream = new EntryReadStream(File.OpenRead(path), entry, false);
 			}
 			else {
@@ -323,6 +323,7 @@ namespace Terraria.ModLoader.IO
 			}
 			public void Dispose() => dispose?.Invoke();
 		}
+
 		public IDisposable EnsureOpen() { //TODO: reference counter
 			if (fileStream != null)
 				return new DisposeWrapper(null);

@@ -12,8 +12,9 @@ using System.Security.Cryptography;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
-using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader
 {
@@ -41,10 +42,7 @@ namespace Terraria.ModLoader
 #endif
 		public static readonly string compressedPlatformRepresentation = (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (gog ? "g" : "s");
 
-		//change Terraria.Main.SavePath and cloud fields to use "ModLoader" folder
-		/// <summary>The file path in which mods are stored.</summary>
-		public static string ModPath => modPath;
-		internal static string modPath = Path.Combine(Main.SavePath, "Mods");
+		public static string ModPath => ModOrganizer.modPath;
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		private static WeakReference[] weakModReferences = new WeakReference[0];
@@ -89,6 +87,13 @@ namespace Terraria.ModLoader
 		[Obsolete("Use ModLoader.Mods.Select(m => m.Name)", true)]
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
+		internal static void EngineInit() {
+			FileAssociationSupport.UpdateFileAssociation();
+			FallbackSyncContext.Init();
+			GLCallLocker.Init();
+			MonoModHooks.Initialize();
+		}
+
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
 
 		internal static void Load() {
@@ -96,7 +101,6 @@ namespace Terraria.ModLoader
 				return;
 
 			try {
-				MonoModHooks.Initialize();
 				var modInstances = ModOrganizer.LoadMods();
 
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();

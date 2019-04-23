@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using Terraria.ModLoader.IO;
 
-namespace Terraria.ModLoader.IO
+namespace Terraria.ModLoader.Core
 {
-	public static class ContentConverters
+	internal static class ContentConverters
 	{
 		internal static bool Convert(ref string resourceName, FileStream src, MemoryStream dst) {
 			switch (Path.GetExtension(resourceName).ToLower()) {

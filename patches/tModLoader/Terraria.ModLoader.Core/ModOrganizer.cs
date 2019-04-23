@@ -5,22 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	/// <summary>
 	/// Responsible for sorting, dependency verification and organizing which mods to load
 	/// </summary>
-	internal class ModOrganizer
+	internal static class ModOrganizer
 	{
-		internal static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
+		internal static string modPath = Path.Combine(Main.SavePath, "Mods");
+		internal static string commandLineModPack;
 
-		internal static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
-
-		internal static Dictionary<string, List<string>> dependencyCache; // for some internal features that need to lookup dependencies after load
+		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
+		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
 
 		internal static LocalMod[] FindMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
@@ -55,7 +53,7 @@ namespace Terraria.ModLoader
 
 		private static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-		public static List<Mod> LoadMods() {
+		internal static List<Mod> LoadMods() {
 			CommandLineModPackOverride();
 
 			// Alternate fix for updating enabled mods
@@ -79,7 +77,6 @@ namespace Terraria.ModLoader
 				EnsureDependenciesExist(modsToLoad, false);
 				EnsureTargetVersionsMet(modsToLoad);
 				modsToLoad = Sort(modsToLoad);
-				dependencyCache = modsToLoad.ToDictionary(m => m.Name, m => m.properties.RefNames(false).ToList());
 			}
 			catch (ModSortingException e) {
 				e.Data["mods"] = e.errored.Select(m => m.Name).ToArray();
@@ -90,9 +87,8 @@ namespace Terraria.ModLoader
 			return AssemblyManager.InstantiateMods(modsToLoad);
 		}
 
-		internal static string commandLineModPack = "";
 		private static void CommandLineModPackOverride() {
-			if (commandLineModPack == "")
+			if (string.IsNullOrWhiteSpace(commandLineModPack))
 				return;
 
 			if (!commandLineModPack.EndsWith(".json"))
@@ -113,7 +109,7 @@ namespace Terraria.ModLoader
 				throw new Exception(msg, e);
 			}
 			finally {
-				commandLineModPack = "";
+				commandLineModPack = null;
 			}
 		}
 

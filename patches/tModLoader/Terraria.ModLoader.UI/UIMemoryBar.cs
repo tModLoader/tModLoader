@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI

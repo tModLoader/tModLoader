@@ -13,6 +13,7 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.Utilities;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Core
 {
 	//todo: further documentation
 	internal static class AssemblyManager
@@ -135,7 +135,7 @@ namespace Terraria.ModLoader
 
 				// load a separate debug header to splice into the assembly (dll provided was precompiled and references non-cecil symbols)
 				if (modFile.HasFile(fileName + ".cecildebugheader"))
-					header = ImageDebugHeaderFile.Read(modFile.GetBytes(fileName + ".cecildebugheader"));
+					header = CecilDebugHeaderFile.Read(modFile.GetBytes(fileName + ".cecildebugheader"));
 				else
 					header = null;
 
@@ -151,9 +151,7 @@ namespace Terraria.ModLoader
 				if (eacEnabled && debugHeader == null)
 					return code;
 
-				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters {
-					AssemblyResolver = CecilAssemblyResolver
-				});
+				var asm = AssemblyDefinition.ReadAssembly(new MemoryStream(code), new ReaderParameters { AssemblyResolver = cecilAssemblyResolver });
 				asm.Name.Name = EncapsulateName(asm.Name.Name);
 
 				//randomize the module version id so that the debugger can detect it as a different module (even if it has the same content)
@@ -198,10 +196,9 @@ namespace Terraria.ModLoader
 				assemblyBinaries[asm.GetName().Name] = code;
 				hostModForAssembly[asm] = this;
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
-				if (pdb != null && FrameworkVersion.Framework == Framework.Mono) {
-					var cecilAssemblyDef = cecilAssemblyResolver.Resolve(asm.GetName().ToReference());
-					MdbManager.RegisterMdb(cecilAssemblyDef.MainModule, pdb);
-				}
+				if (pdb != null && FrameworkVersion.Framework == Framework.Mono)
+					MdbManager.RegisterMdb(GetMainModule(asm.GetName()), pdb);
+
 				return asm;
 			}
 		}
@@ -221,8 +218,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
 		private static readonly IDictionary<Assembly, LoadedMod> hostModForAssembly = new ConcurrentDictionary<Assembly, LoadedMod>();
 
-		private static TerrariaCecilAssemblyResolver cecilAssemblyResolver = new TerrariaCecilAssemblyResolver();
-		public static IAssemblyResolver CecilAssemblyResolver => cecilAssemblyResolver;
+		private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
 		private static bool assemblyResolveEventsAdded;
 		internal static void InitAssemblyResolvers() {
@@ -354,7 +350,7 @@ namespace Terraria.ModLoader
 
 		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
 
-		public static bool GetAssemblyOwner(Assembly assembly, out string modName) {
+		internal static bool GetAssemblyOwner(Assembly assembly, out string modName) {
 			if (hostModForAssembly.TryGetValue(assembly, out var mod)) {
 				modName = mod.Name;
 				return true;
@@ -376,12 +372,14 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		internal static AssemblyNameReference ToReference(this AssemblyName name) =>
-			new AssemblyNameReference(name.Name, name.Version);
+		internal static IEnumerable<Mod> GetDependencies(Mod mod) => loadedMods[mod.Name].dependencies.Select(m => ModLoader.GetMod(mod.Name));
 
-		private class TerrariaCecilAssemblyResolver : DefaultAssemblyResolver
+		internal static ModuleDefinition GetMainModule(AssemblyName name) =>
+			cecilAssemblyResolver.Resolve(new AssemblyNameReference(name.Name, name.Version)).MainModule;
+
+		private class CecilAssemblyResolver : DefaultAssemblyResolver
 		{
-			public TerrariaCecilAssemblyResolver() {
+			public CecilAssemblyResolver() {
 				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
 			}
 
@@ -390,23 +388,23 @@ namespace Terraria.ModLoader
 					base.RegisterAssembly(asm);
 			}
 
-			public override AssemblyDefinition Resolve(AssemblyNameReference name)
-			{
+			public override AssemblyDefinition Resolve(AssemblyNameReference name) {
 				try {
 					return base.Resolve(name);
 				}
 				catch (AssemblyResolutionException) {
-					var asm = FallbackResolve(name);
-					if (asm == null)
-						throw new AssemblyResolutionException(name);
+					lock (this) {
+						var asm = FallbackResolve(name);
+						if (asm == null)
+							throw new AssemblyResolutionException(name);
 
-					RegisterAssembly(asm);
-					return asm;
+						RegisterAssembly(asm);
+						return asm;
+					}
 				}
 			}
 
-			private AssemblyDefinition FallbackResolve(AssemblyNameReference name)
-			{
+			private AssemblyDefinition FallbackResolve(AssemblyNameReference name) {
 				string resourceName = name.Name + ".dll";
 				resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
 				if (resourceName != null) {
@@ -425,7 +423,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal class DebugHeaderWriterProvider : ISymbolWriterProvider, ISymbolWriter
+		private class DebugHeaderWriterProvider : ISymbolWriterProvider, ISymbolWriter
 		{
 			private ImageDebugHeader header;
 

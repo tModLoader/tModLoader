@@ -1,7 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 
-namespace Terraria.ModLoader.Exceptions
+namespace Terraria.ModLoader.Core
 {
 	internal class BuildException : Exception
 	{

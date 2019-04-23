@@ -10,6 +10,7 @@ using System.Text;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;

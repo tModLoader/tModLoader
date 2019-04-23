@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +6,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {

@@ -4,6 +4,7 @@ using System.IO;
 using MP3Sharp;
 using NVorbis;
 
+//TODO refactor to Terraria.ModLoader, delayed due to breaking change (public in Mod[Content].GetMusic)
 namespace Terraria.ModLoader.Audio
 {
 	public abstract class Music
