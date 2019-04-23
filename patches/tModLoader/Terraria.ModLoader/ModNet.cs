@@ -100,7 +100,6 @@ namespace Terraria.ModLoader
 				//if (modConfigs.Equals(default(List<ModConfig>)))
 				{
 					p.Write(0);
-					Console.WriteLine($"No configs for {mod.Name}");
 				}
 				else
 				{
@@ -108,7 +107,7 @@ namespace Terraria.ModLoader
 					foreach (var config in modConfigs)
 					{
 						string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-						Console.WriteLine($"Sending Server Config {config.Name}: {json}");
+						Logging.Terraria.Info($"Sending Server Config {config.Name}: {json}");
 
 						p.Write(config.Name);
 						p.Write(json);
