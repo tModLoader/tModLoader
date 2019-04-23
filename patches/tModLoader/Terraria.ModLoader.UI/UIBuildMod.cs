@@ -53,8 +53,7 @@ namespace Terraria.ModLoader.UI
 
 				try {
 					buildAction(new ModCompile(this));
-					if (reload)
-						Main.menuMode = Interface.reloadModsID;
+					Main.menuMode = reload ? Interface.reloadModsID : Interface.modSourcesID;
 				}
 				catch (Exception e) {
 					Logging.tML.Error(e.Message, e);
