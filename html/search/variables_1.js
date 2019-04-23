@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['actions',['actions',['../class_terraria_1_1_mod_loader_1_1_f_n_a_threading_1_1_sync_context.html#a3d46303a2c9848855da321f3b22b6e4a',1,'Terraria::ModLoader::FNAThreading::SyncContext']]],
   ['active',['active',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8da0fb295154f126cf99fa9c103a2247',1,'Terraria.ModLoader.SpawnCondition.active()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a214a878252541b15e32c0f36c8dcbc6a',1,'Terraria.ModLoader.SpawnCondition.Active()']]],
   ['adjtiles',['adjTiles',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a3c4708fb532377f886b5626e79e0f801',1,'Terraria::ModLoader::ModTile']]],
   ['aitype',['aiType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a82e4bee564b54f8863d73fb632087457',1,'Terraria.ModLoader.ModNPC.aiType()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aa348d2c84755d8da68bb470cf35ab28d',1,'Terraria.ModLoader.ModProjectile.aiType()']]],
@@ -17,9 +16,6 @@ var searchData=
   ['armorshader',['armorShader',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a68aaf59a24ffc56466449ad7bd91d842',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['arms',['Arms',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a6acba4cddca857b38e687066d4d08f54',1,'Terraria::ModLoader::PlayerLayer']]],
   ['arr',['arr',['../class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html#a12fd9a385c4d55711ef2327aa57933b1',1,'Terraria.ModLoader.ItemLoader.HookList.arr()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html#a7405e0a667cba8a0b75ce2c3fe189235',1,'Terraria.ModLoader.NPCLoader.HookList.arr()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list.html#aa83eda24de0f148186219be31c6126e5',1,'Terraria.ModLoader.PlayerHooks.HookList.arr()'],['../class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list.html#ab802a7830cf524a54081e63046d3f36c',1,'Terraria.ModLoader.ProjectileLoader.HookList.arr()']]],
-  ['assemblies',['assemblies',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a4578233860c5e460831e47ab99de17d1',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
-  ['assembly',['assembly',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a9f3bd2fd1805a4dc012653846c800cf2',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
-  ['assemblyname',['AssemblyName',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ac302b5327050b9849dcf52e7b26e01cb',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]],
   ['asyncloadqueue',['AsyncLoadQueue',['../class_terraria_1_1_mod_loader_1_1_mod.html#a0fcebfa8559b2cfea3db7189c32b94e0',1,'Terraria::ModLoader::Mod']]],
   ['autoload',['Autoload',['../struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b',1,'Terraria::ModLoader::ModProperties']]],
   ['autoloadbackgrounds',['AutoloadBackgrounds',['../struct_terraria_1_1_mod_loader_1_1_mod_properties.html#aae6b80f1ec219e29d73538b4203f0a7b',1,'Terraria::ModLoader::ModProperties']]],

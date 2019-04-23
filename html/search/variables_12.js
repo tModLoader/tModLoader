@@ -1,6 +1,7 @@
 var searchData=
 [
   ['saferangex',['safeRangeX',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a019c1f1fb493b8ceb88fb399d88011a1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['samplerate',['sampleRate',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#ad756f6d3f1f8e9511a75f589d4d7b8a6',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['sandstormevent',['SandstormEvent',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a9040bf32d65e821e11f5fd5358618e21',1,'Terraria::ModLoader::SpawnCondition']]],
   ['sapling',['sapling',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2f579064218f05fb5a60980f05f1c9cd',1,'Terraria::ModLoader::ModTile']]],
   ['sb',['sb',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a2cd9a047c943b291d1f0dde908a63cfe',1,'Terraria::ModLoader::IO::TagPrinter']]],
@@ -20,7 +21,7 @@ var searchData=
   ['signed',['signed',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#abd55455aead6a25074169d6c601d425f',1,'Terraria::ModLoader::ModNet::ModHeader']]],
   ['skin',['Skin',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af25eed4c94d182d5a7dd942c50b49918',1,'Terraria::ModLoader::PlayerLayer']]],
   ['skincolor',['skinColor',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
-  ['sky',['sky',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e',1,'Terraria.ModLoader.NPCSpawnInfo.sky()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc',1,'Terraria.ModLoader.SpawnCondition.Sky()']]],
+  ['sky',['Sky',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc',1,'Terraria.ModLoader.SpawnCondition.Sky()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e',1,'Terraria.ModLoader.NPCSpawnInfo.sky()']]],
   ['snailcritter',['SnailCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aae7f2e9393072a02b6ecd10ad5b9ff36',1,'Terraria::ModLoader::SpawnCondition']]],
   ['solareclipse',['SolarEclipse',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a44309c3e80f43ed57cf9d1bd16902dc1',1,'Terraria::ModLoader::SpawnCondition']]],
   ['solarshield',['SolarShield',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a1424df92ca7322828d2e8b437a34d565',1,'Terraria::ModLoader::PlayerLayer']]],
@@ -37,6 +38,7 @@ var searchData=
   ['stardusttower',['StardustTower',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a2d840c057aa8f6ab9533ba0871b39be8',1,'Terraria::ModLoader::SpawnCondition']]],
   ['statusregex',['statusRegex',['../class_terraria_1_1_mod_loader_1_1_logging.html#a067ef79a2235a8e09142ea42fb6132d7',1,'Terraria::ModLoader::Logging']]],
   ['steamid64',['steamID64',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e',1,'Terraria::ModLoader::ModLoader']]],
+  ['stream',['stream',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#aebc435c9e00f1ba6e0f88b1bf24be19c',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['stringhandler',['StringHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a88f67ce0a5f71c3e12f264a0f0877781',1,'Terraria::ModLoader::IO::TagIO']]],
   ['surfacejungle',['SurfaceJungle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a4d880834b424c68fa9267c6449596bc3',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

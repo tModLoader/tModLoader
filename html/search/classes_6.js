@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['glcalllocker',['GLCallLocker',['../class_terraria_1_1_mod_loader_1_1_g_l_call_locker.html',1,'Terraria::ModLoader']]],
   ['globalbgstyle',['GlobalBgStyle',['../class_terraria_1_1_mod_loader_1_1_global_bg_style.html',1,'Terraria::ModLoader']]],
   ['globalbuff',['GlobalBuff',['../class_terraria_1_1_mod_loader_1_1_global_buff.html',1,'Terraria::ModLoader']]],
   ['globalitem',['GlobalItem',['../class_terraria_1_1_mod_loader_1_1_global_item.html',1,'Terraria::ModLoader']]],

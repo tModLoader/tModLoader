@@ -26,5 +26,8 @@ var searchData=
   ['branchname',['branchName',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380',1,'Terraria::ModLoader::ModLoader']]],
   ['buf',['buf',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html#afab9c69b776cce58ebabb87b2758c575',1,'Terraria::ModLoader::ModPacket']]],
   ['buffcount',['BuffCount',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019',1,'Terraria::ModLoader::BuffLoader']]],
-  ['bytesloaded',['bytesLoaded',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#ab3733cc525ee326a3e05d1b926f15c3b',1,'Terraria::ModLoader::AssemblyManager::LoadedMod']]]
+  ['buffer',['buffer',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a03d610a84fc8b74a10e57967888f4d8d',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
+  ['buffercountpersubmit',['bufferCountPerSubmit',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#af1b93a71754edfe9b7d5bc9a754f04ff',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
+  ['bufferlength',['bufferLength',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a2027877a65f6be9dfe965032ec341b2e',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
+  ['buffermin',['bufferMin',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#aa4a595275185afdc49cc398a36d10da8',1,'Terraria::ModLoader::Audio::MusicStreaming']]]
 ];

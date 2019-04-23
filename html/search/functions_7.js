@@ -1,7 +1,6 @@
 var searchData=
 [
   ['handlepacket',['HandlePacket',['../class_terraria_1_1_mod_loader_1_1_mod.html#a348865b876891d72bf9079768c414705',1,'Terraria::ModLoader::Mod']]],
-  ['hasfile',['HasFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a81dfdaacfd61f0cd14fe9de844d10b78',1,'Terraria::ModLoader::IO::TmodFile']]],
   ['hasmethod',['HasMethod',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a3ca1130517f3d9bdb6211d05853103f7',1,'Terraria.ModLoader.ItemLoader.HasMethod()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#acd76455796a9dff78a3f271e6fe435a3',1,'Terraria.ModLoader.NPCLoader.HasMethod()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a41d51a3eda6991de41f19fbed4e2c47e',1,'Terraria.ModLoader.PlayerHooks.HasMethod()'],['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#af7efc1cb982e5e63abaa6d9a8ed5b0e6',1,'Terraria.ModLoader.ProjectileLoader.HasMethod()']]],
   ['hassmartinteract',['HasSmartInteract',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a91836ce89331442894f23a27b4eeeab9',1,'Terraria.ModLoader.ModTile.HasSmartInteract()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#acaa3a318ef08b6d87c69071c20a187c8',1,'Terraria.ModLoader.TileLoader.HasSmartInteract()']]],
   ['hastag',['HasTag',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aef825e36993f1860d5012627394068a9',1,'Terraria::ModLoader::IO::TagCompound']]],

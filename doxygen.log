@@ -14,8 +14,6 @@ Searching for files in directory /home/travis/build/blushiemagic/tModLoader/patc
 Searching for files in directory /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config
 Reading and parsing tag files
 Parsing files
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
@@ -26,8 +24,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuildProperties.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuildProperties.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/CommandManager.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/CommandManager.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ConvertiblePlants.cs...
@@ -38,8 +34,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawInfo.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawLayer.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawLayer.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EffectsTracker.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EffectsTracker.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipTexture.cs...
@@ -48,14 +42,8 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipType.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ErrorLogger.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ErrorLogger.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FileAssociation.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FileAssociation.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FNAThreading.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FNAThreading.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FrameworkVersion.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FrameworkVersion.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GLCallLocker.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GLCallLocker.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalBuff.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalBuff.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs...
@@ -70,14 +58,10 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalWall.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalWall.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ImageDebugHeaderIO.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ImageDebugHeaderIO.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Interface.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Interface.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/LocalMod.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/LocalMod.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Logging.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Logging.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapEntry.cs...
@@ -86,10 +70,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLegend.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLoader.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MdbManager.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MdbManager.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MemoryTracking.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MemoryTracking.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBackgroundStyle.cs...
@@ -98,8 +78,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBuff.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCommand.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCommand.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCompile.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCompile.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModContent.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModContent.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModDust.cs...
@@ -122,8 +100,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNet.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNPC.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNPC.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModOrganizer.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModOrganizer.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPacket.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPacket.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPlayer.cs...
@@ -160,6 +136,8 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
+Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicWrappers.cs...
+Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicWrappers.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
@@ -180,8 +158,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeGroupHelper.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeHooks.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeHooks.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ServerHangWatchdog.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ServerHangWatchdog.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundLoader.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundType.cs...
@@ -198,8 +174,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/WaterStyleLoader.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/WorldHooks.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/WorldHooks.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/BuildException.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/BuildException.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/CustomModDataException.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/CustomModDataException.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/MissingResourceException.cs...
@@ -216,10 +190,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BigEndian.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BinaryIO.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BinaryIO.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ContentConverters.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ContentConverters.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/EntryReadStream.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/EntryReadStream.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ImageIO.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ImageIO.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ItemIO.cs...
@@ -240,10 +210,6 @@ Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terr
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TagSerializer.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TileIO.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TileIO.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TMLContentManager.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TMLContentManager.cs...
-Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TmodFile.cs...
-Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TmodFile.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/UploadFile.cs...
 Parsing file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/UploadFile.cs...
 Preprocessing /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/WorldIO.cs...
@@ -312,7 +278,6 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ConfigManager.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ItemDefinition.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ModConfig.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/BuildException.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/CustomModDataException.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/MissingResourceException.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/ModSortingException.cs...
@@ -321,8 +286,6 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/ResourceLoadException.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BigEndian.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BinaryIO.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ContentConverters.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/EntryReadStream.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ImageIO.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ItemIO.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/MapIO.cs...
@@ -333,31 +296,23 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TagSerializable.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TagSerializer.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TileIO.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TMLContentManager.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TmodFile.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/UploadFile.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/WorldIO.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuildProperties.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/CommandManager.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ConvertiblePlants.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawableTooltipLine.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawInfo.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawLayer.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EffectsTracker.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipTexture.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipType.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ErrorLogger.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FileAssociation.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FNAThreading.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FrameworkVersion.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GLCallLocker.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalBuff.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalNPC.cs...
@@ -365,21 +320,16 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalRecipe.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalWall.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ImageDebugHeaderIO.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Interface.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/LocalMod.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Logging.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapEntry.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLegend.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLoader.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MdbManager.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MemoryTracking.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBackgroundStyle.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBuff.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCommand.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCompile.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModContent.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModDust.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModGore.cs...
@@ -391,7 +341,6 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModMountData.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNet.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNPC.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModOrganizer.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPacket.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPlayer.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPrefix.cs...
@@ -410,6 +359,7 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
+Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicWrappers.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCSpawnHelper.cs...
@@ -420,7 +370,6 @@ Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeFinder.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeGroupHelper.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeHooks.cs...
-Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ServerHangWatchdog.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundLoader.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundType.cs...
 Generating code for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/TileLoader.cs...
@@ -434,7 +383,6 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ConfigManager.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ItemDefinition.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ModConfig.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/BuildException.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/CustomModDataException.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/MissingResourceException.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/ModSortingException.cs...
@@ -443,8 +391,6 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.Exceptions/ResourceLoadException.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BigEndian.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/BinaryIO.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ContentConverters.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/EntryReadStream.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ImageIO.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/ItemIO.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/MapIO.cs...
@@ -455,31 +401,23 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TagSerializable.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TagSerializer.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TileIO.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TMLContentManager.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/TmodFile.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/UploadFile.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader.IO/WorldIO.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AssemblyManager.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadEquip.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/AutoloadHead.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundStyleLoaders.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BackgroundTextureLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuffLoader.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/BuildProperties.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/CommandManager.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ConvertiblePlants.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawableTooltipLine.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawInfo.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/DrawLayer.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EffectsTracker.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipTexture.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/EquipType.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ErrorLogger.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FileAssociation.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FNAThreading.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/FrameworkVersion.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GLCallLocker.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalBuff.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalNPC.cs...
@@ -487,21 +425,16 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalRecipe.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalWall.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ImageDebugHeaderIO.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Interface.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/LocalMod.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Logging.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapEntry.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLegend.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MapLoader.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MdbManager.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MemoryTracking.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBackgroundStyle.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModBuff.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCommand.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModCompile.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModContent.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModDust.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModGore.cs...
@@ -513,7 +446,6 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModMountData.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNet.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNPC.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModOrganizer.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPacket.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPlayer.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModPrefix.cs...
@@ -532,6 +464,7 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MountTextureType.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicPriority.cs...
+Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/MusicWrappers.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCHeadLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/NPCSpawnHelper.cs...
@@ -542,7 +475,6 @@ Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tMod
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeFinder.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeGroupHelper.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeHooks.cs...
-Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ServerHangWatchdog.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundLoader.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/SoundType.cs...
 Generating docs for file /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/TileLoader.cs...
@@ -557,32 +489,22 @@ Generating class documentation...
 Generating docs for compound Attribute...
 Generating docs for compound BinaryReader...
 Generating docs for compound BinaryWriter...
-Generating docs for compound ContentManager...
-Generating docs for compound DefaultAssemblyResolver...
 Generating docs for compound Exception...
 Generating docs for compound ICloneable...
 Generating docs for compound IDisposable...
-Generating docs for compound IEnumerable...
 Generating docs for compound IEnumerable< KeyValuePair< string, object >>...
 Generating docs for compound IOException...
-Generating docs for compound ISymbolWriter...
-Generating docs for compound ISymbolWriterProvider...
-Generating docs for compound SynchronizationContext...
 Generating docs for compound TileEntity...
 Generating docs for compound TypeConverter...
 Generating namespace index...
 Generating docs for namespace Terraria
 Generating docs for namespace Terraria::ModLoader
-Generating docs for nested compound Terraria::ModLoader::AssemblyManager::LoadedMod...
-Generating call graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.GetModPdb
-Generating call graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssemblies
-Generating call graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.LoadAssembly
-Generating caller graph for function Terraria.ModLoader.AssemblyManager.LoadedMod.SetMod
-Generating docs for nested compound Terraria::ModLoader::AssemblyManager::TerrariaCecilAssemblyResolver...
 Generating docs for compound Terraria::ModLoader::AutoloadBossHead...
 Generating docs for compound Terraria::ModLoader::AutoloadEquip...
 Generating docs for compound Terraria::ModLoader::AutoloadHead...
-Generating docs for compound Terraria::ModLoader::BackgroundTextureLoader...
+Generating docs for co/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:441: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+  parameter 'male'
+mpound Terraria::ModLoader::BackgroundTextureLoader...
 Generating caller graph for function Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot
 Generating docs for compound Terraria::ModLoader::BuffLoader...
 Generating caller graph for function Terraria.ModLoader.BuffLoader.GetBuff
@@ -592,8 +514,6 @@ Generating docs for compound Terraria::ModLoader::CommandManager...
 Generating call graph for function Terraria.ModLoader.CommandManager.Matches
 Generating docs for compound Terraria::ModLoader::DrawableTooltipLine...
 Generating docs for compound Terraria::ModLoader::DrawLayer...
-Generating docs for nested compound Terraria::ModLoader::EffectsTracker::KeyCache...
-Generating docs for nested compound Terraria::ModLoader::EffectsTracker::KeyCache...
 Generating docs for compound Terraria::ModLoader::EquipLoader...
 Generating call graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
 Generating caller graph for function Terraria.ModLoader.EquipLoader.GetEquipTexture
@@ -617,14 +537,8 @@ Generating caller graph for function Terraria.ModLoader.EquipTexture.WingUpdate
 Generating docs for compound Terraria::ModLoader::ErrorLogger...
 Generating call graph for function Terraria.ModLoader.ErrorLogger.Log
 Generating call graph for function Terraria.ModLoader.ErrorLogger.Log
-Generating docs for nested compound Terraria::ModLoader::FileAssociationSupport::FileAssociation...
-Generating docs for compound Terraria::ModLoader::FNAThreading...
-Generating docs for nested compound Terraria::ModLoader::FNAThreading::SyncContext...
 Generating docs for compound Terraria::ModLoader::FrameworkVersion...
-Generating docs for compound Terraria::ModLoader::GLCallLocker...
-Generating docs for co/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:441: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
-  parameter 'male'
-mpound Terraria::ModLoader::GlobalBgStyle...
+Generating docs for compound Terraria::ModLoader::GlobalBgStyle...
 Generating caller graph for function Terraria.ModLoader.GlobalBgStyle.Autoload
 Generating docs for compound Terraria::ModLoader::GlobalBuff...
 Generating caller graph for function Terraria.ModLoader.GlobalBuff.Autoload
@@ -694,7 +608,10 @@ Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackP
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackProjSpeed
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackShoot
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackStrength
-Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAttackSwing
+Generating caller graph for function Terraria.ModLoader.GlobalNPC.TownNPCAtta/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:257: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
+  parameter 'type'
+  parameter 'spriteBatch'
+ckSwing
 Generating caller graph for function Terraria.ModLoader.GlobalNPC.UpdateLifeRegen
 Generating docs for compound Terraria::ModLoader::GlobalProjectile...
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.AI
@@ -726,13 +643,7 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PostAI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PostDraw
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreAI
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreDraw
-Generating caller gr/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:257: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
-  parameter 'type'
-  parameter 'spriteBatch'
-/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1023: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
-  parameter 'item'
-  parameter 'reforgePrice'
-aph for function Terraria.ModLoader.GlobalProjectile.PreDrawExtras
+Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreDrawExtras
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.PreKill
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.ShouldUpdatePosition
 Generating caller graph for function Terraria.ModLoader.GlobalProjectile.SingleGrappleHook
@@ -750,7 +661,10 @@ Generating caller graph for function Terraria.ModLoader.GlobalWall.Autoload
 Generating caller graph for function Terraria.ModLoader.GlobalWall.SetDefaults
 Generating docs for compound Terraria::ModLoader::ItemLoader...
 Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorArmGlowMask
-Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorSetShadows
+Generating call graph for function Terraria.ModLoader.ItemLoader.ArmorS/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1023: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+  parameter 'item'
+  parameter 'reforgePrice'
+etShadows
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawArmorColor
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawBody
 Generating call graph for function Terraria.ModLoader.ItemLoader.DrawHair
@@ -776,7 +690,6 @@ Generating call graph for function Terraria.ModLoader.ItemLoader.WingUpdate
 Generating docs for nested compound Terraria::ModLoader::ItemLoader::HookList...
 Generating docs for compound Terraria::ModLoader::Logging...
 Generating docs for compound Terraria::ModLoader::MapLegend...
-Generating docs for nested compound Terraria::ModLoader::MdbManager::MdbModuleEntry...
 Generating docs for compound Terraria::ModLoader::Mod...
 Generating call graph for function Terraria.ModLoader.Mod.AddBackgroundTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddBossHeadTexture
@@ -785,9 +698,7 @@ Generating call graph for function Terraria.ModLoader.Mod.AddEquipTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddGore
 Generating call graph for function Terraria.ModLoader.Mod.AddMount
 Generating call graph for function Terraria.ModLoader.Mod.AddMusicBox
-Generating call graph for funct/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1485: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
-  parameter 'newFileStream'
-ion Terraria.ModLoader.Mod.AddNPCHeadTexture
+Generating call graph for function Terraria.ModLoader.Mod.AddNPCHeadTexture
 Generating call graph for function Terraria.ModLoader.Mod.AddSound
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadBuff
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadDust
@@ -808,7 +719,9 @@ Generating call graph for function Terraria.ModLoader.Mod.AutoloadProjectile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadSurfaceBgStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadTile
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadTileEntity
-Generating call graph for function Terraria.ModLoader.Mod.AutoloadUgBgStyle
+Generat/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1485: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
+  parameter 'newFileStream'
+ing call graph for function Terraria.ModLoader.Mod.AutoloadUgBgStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWall
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWaterfallStyle
 Generating call graph for function Terraria.ModLoader.Mod.AutoloadWaterStyle
@@ -824,6 +737,7 @@ Generating caller graph for function Terraria.ModLoader.Mod.ItemType
 Generating caller graph for function Terraria.ModLoader.Mod.Load
 Generating call graph for function Terraria.ModLoader.Mod.LoadMusic
 Generating caller graph for function Terraria.ModLoader.Mod.LoadResources
+Generating call graph for function Terraria.ModLoader.Mod.LoadSound
 Generating call graph for function Terraria.ModLoader.Mod.LoadTexture
 Generating caller graph for function Terraria.ModLoader.Mod.MusicExists
 Generating caller graph for function Terraria.ModLoader.Mod.PostSetupContent
@@ -837,14 +751,6 @@ Generating caller graph for function Terraria.ModLoader.ModBuff.SetDefaults
 Generating docs for compound Terraria::ModLoader::ModCactus...
 Generating docs for compound Terraria::ModLoader::ModCommand...
 Generating caller graph for function Terraria.ModLoader.ModCommand.Action
-Generating docs for nested compound Terraria::ModLoader::ModCompile::BuildingMod...
-Generating call graph for function Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod
-Generating docs for nested compound Terraria::ModLoader::ModCompile::ConsoleBuildStatus...
-Generating docs for nested compound Terraria::ModLoader::ModCompile::IBuildStatus...
-Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.LogCompilerLine
-Generating caller graph for funct/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
-ion Terraria.ModLoader.ModCompile.IBuildStatus.SetProgress
-Generating caller graph for function Terraria.ModLoader.ModCompile.IBuildStatus.SetStatus
 Generating docs for compound Terraria::ModLoader::ModContent...
 Generating call graph for function Terraria.ModLoader.ModContent.FileExists
 Generating call graph for function Terraria.ModLoader.ModContent.GetFileBytes
@@ -871,7 +777,8 @@ Generating caller graph for function Terraria.ModLoader.ModDust.SetDefaults
 Generating docs for compound Terraria::ModLoader::ModGore...
 Generating call graph for function Terraria.ModLoader.ModGore.GetGoreSlot
 Generating caller graph for function Terraria.ModLoader.ModGore.GetGoreSlot
-Generating docs for compound Terraria::ModLoader::ModHotKey...
+Generating docs for compound/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+ Terraria::ModLoader::ModHotKey...
 Generating docs for compound Terraria::ModLoader::ModItem...
 Generating caller graph for function Terraria.ModLoader.ModItem.Autoload
 Generating call graph for function Terraria.ModLoader.ModItem.AutoStaticDefaults
@@ -898,7 +805,35 @@ Generating call graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.AutoStaticDefaults
 Generating caller graph for function Terraria.ModLoader.ModNPC.CanTownNPCSpawn
 Generating caller graph for function Terraria.ModLoader.ModNPC.SetDefaults
-Generating calle/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:491: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller graph for function Terraria.ModLoader.ModNPC.SetStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnChance
+Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnNPC
+Generating docs for compound Terraria::ModLoader::ModPacket...
+Generating caller graph for function Terraria.ModLoader.ModPacket.Send
+Generating docs for compound Terraria::ModLoader::ModPalmTree...
+Generating docs for compound Terraria::ModLoader::ModPlayer...
+Generating caller graph for function Terraria.ModLoader.ModPlayer.Autoload
+Generating caller graph for function Terraria.ModLoader.ModPlayer.CanBuyItem
+Generating caller graph for function Terraria.ModLoader.ModPlayer.CanSellItem
+Generating caller graph for function Terraria.ModLoader.ModPlayer.ModifyDrawInfo
+Generating caller graph for function Terraria.ModLoader.ModPlayer.PostBuyItem
+Generating caller graph for function Terraria.ModLoader.ModPlayer.PostNurseHeal
+Generating caller graph for function Terraria.ModLoader.ModPlayer.PostSellItem
+Generating caller graph for function Terraria.ModLoader.ModPlayer.ReceiveCustomBiomes
+Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes
+Generating docs for compound Terraria::ModLoader::ModPrefix...
+Generating caller graph for function Terraria.ModLoader.ModPrefix.AutoDefaults
+Generating caller graph for function Terraria.ModLoader.ModPrefix.Autoload
+Generating caller graph for function Terraria.ModLoader.ModPrefix.GetPrefix
+Generating caller graph for function Terraria.ModLoader.ModPrefix.SetDefaults
+Generating docs for compound Terraria::ModLoader::ModProjectile...
+Generating caller graph for function Terraria.ModLoader.ModProjectile.Autoload
+Generating call graph for function Terraria.ModLoader.ModProjectile.AutoStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModProjectile.AutoStaticDefaults
+Generating caller graph for function Terraria.ModLoader.ModProjectile.SetStaticDefaults
+Generating docs for compound Terraria::ModLoader::ModProperties...
+Generating docs for compound Terraria::ModLoader::ModRecipe...
+Generating c/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:491: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:295: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -944,35 +879,7 @@ Generating calle/home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Te
 /home/travis/build/blushiemagic/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:449: warning: The following parameters of Terraria.ModLoader.ModTile.TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) are not documented:
   parameter 'resetFrame'
   parameter 'noBreak'
-r graph for function Terraria.ModLoader.ModNPC.SetStaticDefaults
-Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnChance
-Generating caller graph for function Terraria.ModLoader.ModNPC.SpawnNPC
-Generating docs for compound Terraria::ModLoader::ModPacket...
-Generating caller graph for function Terraria.ModLoader.ModPacket.Send
-Generating docs for compound Terraria::ModLoader::ModPalmTree...
-Generating docs for compound Terraria::ModLoader::ModPlayer...
-Generating caller graph for function Terraria.ModLoader.ModPlayer.Autoload
-Generating caller graph for function Terraria.ModLoader.ModPlayer.CanBuyItem
-Generating caller graph for function Terraria.ModLoader.ModPlayer.CanSellItem
-Generating caller graph for function Terraria.ModLoader.ModPlayer.ModifyDrawInfo
-Generating caller graph for function Terraria.ModLoader.ModPlayer.PostBuyItem
-Generating caller graph for function Terraria.ModLoader.ModPlayer.PostNurseHeal
-Generating caller graph for function Terraria.ModLoader.ModPlayer.PostSellItem
-Generating caller graph for function Terraria.ModLoader.ModPlayer.ReceiveCustomBiomes
-Generating caller graph for function Terraria.ModLoader.ModPlayer.SendCustomBiomes
-Generating docs for compound Terraria::ModLoader::ModPrefix...
-Generating caller graph for function Terraria.ModLoader.ModPrefix.AutoDefaults
-Generating caller graph for function Terraria.ModLoader.ModPrefix.Autoload
-Generating caller graph for function Terraria.ModLoader.ModPrefix.GetPrefix
-Generating caller graph for function Terraria.ModLoader.ModPrefix.SetDefaults
-Generating docs for compound Terraria::ModLoader::ModProjectile...
-Generating caller graph for function Terraria.ModLoader.ModProjectile.Autoload
-Generating call graph for function Terraria.ModLoader.ModProjectile.AutoStaticDefaults
-Generating caller graph for function Terraria.ModLoader.ModProjectile.AutoStaticDefaults
-Generating caller graph for function Terraria.ModLoader.ModProjectile.SetStaticDefaults
-Generating docs for compound Terraria::ModLoader::ModProperties...
-Generating docs for compound Terraria::ModLoader::ModRecipe...
-Generating call graph for function Terraria.ModLoader.ModRecipe.AddIngredient
+all graph for function Terraria.ModLoader.ModRecipe.AddIngredient
 Generating call graph for function Terraria.ModLoader.ModRecipe.AddTile
 Generating caller graph for function Terraria.ModLoader.ModRecipe.OnCraft
 Generating caller graph for function Terraria.ModLoader.ModRecipe.RecipeAvailable
@@ -1209,6 +1116,15 @@ Generating call graph for function Terraria.ModLoader.WorldHooks.PreUpdate
 Generating call graph for function Terraria.ModLoader.WorldHooks.PreWorldGen
 Generating call graph for function Terraria.ModLoader.WorldHooks.ResetNearbyTileEffects
 Generating call graph for function Terraria.ModLoader.WorldHooks.TileCountsAvailable
+Generating docs for namespace Terraria::ModLoader::Audio
+Generating docs for compound Terraria::ModLoader::Audio::Music...
+Generating docs for compound Terraria::ModLoader::Audio::MusicCue...
+Generating docs for compound Terraria::ModLoader::Audio::MusicStreaming...
+Generating call graph for function Terraria.ModLoader.Audio.MusicStreaming.EnsureLoaded
+Generating docs for compound Terraria::ModLoader::Audio::MusicStreamingMP3...
+Generating docs for compound Terraria::ModLoader::Audio::MusicStreamingOGG...
+Generating caller graph for function Terraria.ModLoader.Audio.MusicStreamingOGG.Convert
+Generating docs for compound Terraria::ModLoader::Audio::MusicStreamingWAV...
 Generating docs for namespace Terraria::ModLoader::Config
 Generating docs for compound Terraria::ModLoader::Config::BackgroundColorAttribute...
 Generating docs for compound Terraria::ModLoader::Config::ConfigManager...
@@ -1242,7 +1158,6 @@ Generating docs for compound Terraria::ModLoader::IO::BigEndianWriter...
 Generating docs for compound Terraria::ModLoader::IO::BinaryIO...
 Generating docs for compound Terraria::ModLoader::IO::BoolTagSerializer...
 Generating docs for compound Terraria::ModLoader::IO::ColorSerializer...
-Generating docs for compound Terraria::ModLoader::IO::ContentConverters...
 Generating docs for compound Terraria::ModLoader::IO::ImageIO...
 Generating caller graph for function Terraria.ModLoader.IO.ImageIO.PngToTexture2DAsync
 Generating caller graph for function Terraria.ModLoader.IO.ImageIO.RawToTexture2DAsync
@@ -1280,15 +1195,6 @@ Generating docs for compound Terraria::ModLoader::IO::TagPrinter...
 Generating caller graph for function Terraria.ModLoader.IO.TagPrinter.Print
 Generating docs for compound Terraria::ModLoader::IO::TagSerializable...
 Generating docs for compound Terraria::ModLoader::IO::TagSerializer...
-Generating docs for compound Terraria::ModLoader::IO::TMLContentManager...
-Generating call graph for function Terraria.ModLoader.IO.TMLContentManager.OpenStream
-Generating docs for compound Terraria::ModLoader::IO::TmodFile...
-Generating caller graph for function Terraria.ModLoader.IO.TmodFile.Close
-Generating caller graph for function Terraria.ModLoader.IO.TmodFile.EnsureOpen
-Generating caller graph for function Terraria.ModLoader.IO.TmodFile.GetBytes
-Generating caller graph for function Terraria.ModLoader.IO.TmodFile.HasFile
-Generating docs for nested compound Terraria::ModLoader::IO::TmodFile::DisposeWrapper...
-Generating docs for nested compound Terraria::ModLoader::IO::TmodFile::FileEntry...
 Generating docs for compound Terraria::ModLoader::IO::UIntTagSerializer...
 Generating docs for compound Terraria::ModLoader::IO::ULongTagSerializer...
 Generating docs for compound Terraria::ModLoader::IO::UploadFile...
@@ -1314,998 +1220,940 @@ finalizing index lists...
 writing tag file...
 Running dot...
 Generating dot graphs using 3 parallel threads...
-Running dot for graph 1/839
-Running dot for graph 2/839
-Running dot for graph 3/839
-Running dot for graph 4/839
-Running dot for graph 5/839
-Running dot for graph 6/839
-Running dot for graph 7/839
-Running dot for graph 8/839
-Running dot for graph 9/839
-Running dot for graph 10/839
-Running dot for graph 11/839
-Running dot for graph 12/839
-Running dot for graph 13/839
-Running dot for graph 14/839
-Running dot for graph 15/839
-Running dot for graph 16/839
-Running dot for graph 17/839
-Running dot for graph 18/839
-Running dot for graph 19/839
-Running dot for graph 20/839
-Running dot for graph 21/839
-Running dot for graph 22/839
-Running dot for graph 23/839
-Running dot for graph 24/839
-Running dot for graph 25/839
-Running dot for graph 26/839
-Running dot for graph 27/839
-Running dot for graph 28/839
-Running dot for graph 29/839
-Running dot for graph 30/839
-Running dot for graph 31/839
-Running dot for graph 32/839
-Running dot for graph 33/839
-Running dot for graph 34/839
-Running dot for graph 35/839
-Running dot for graph 36/839
-Running dot for graph 37/839
-Running dot for graph 38/839
-Running dot for graph 39/839
-Running dot for graph 40/839
-Running dot for graph 41/839
-Running dot for graph 42/839
-Running dot for graph 43/839
-Running dot for graph 44/839
-Running dot for graph 45/839
-Running dot for graph 46/839
-Running dot for graph 47/839
-Running dot for graph 48/839
-Running dot for graph 49/839
-Running dot for graph 50/839
-Running dot for graph 51/839
-Running dot for graph 52/839
-Running dot for graph 53/839
-Running dot for graph 54/839
-Running dot for graph 55/839
-Running dot for graph 56/839
-Running dot for graph 57/839
-Running dot for graph 58/839
-Running dot for graph 59/839
-Running dot for graph 60/839
-Running dot for graph 61/839
-Running dot for graph 62/839
-Running dot for graph 63/839
-Running dot for graph 64/839
-Running dot for graph 65/839
-Running dot for graph 66/839
-Running dot for graph 67/839
-Running dot for graph 68/839
-Running dot for graph 69/839
-Running dot for graph 70/839
-Running dot for graph 71/839
-Running dot for graph 72/839
-Running dot for graph 73/839
-Running dot for graph 74/839
-Running dot for graph 75/839
-Running dot for graph 76/839
-Running dot for graph 77/839
-Running dot for graph 78/839
-Running dot for graph 79/839
-Running dot for graph 80/839
-Running dot for graph 81/839
-Running dot for graph 82/839
-Running dot for graph 83/839
-Running dot for graph 84/839
-Running dot for graph 85/839
-Running dot for graph 86/839
-Running dot for graph 87/839
-Running dot for graph 88/839
-Running dot for graph 89/839
-Running dot for graph 90/839
-Running dot for graph 91/839
-Running dot for graph 92/839
-Running dot for graph 93/839
-Running dot for graph 94/839
-Running dot for graph 95/839
-Running dot for graph 96/839
-Running dot for graph 97/839
-Running dot for graph 98/839
-Running dot for graph 99/839
-Running dot for graph 100/839
-Running dot for graph 101/839
-Running dot for graph 102/839
-Running dot for graph 103/839
-Running dot for graph 104/839
-Running dot for graph 105/839
-Running dot for graph 106/839
-Running dot for graph 107/839
-Running dot for graph 108/839
-Running dot for graph 109/839
-Running dot for graph 110/839
-Running dot for graph 111/839
-Running dot for graph 112/839
-Running dot for graph 113/839
-Running dot for graph 114/839
-Running dot for graph 115/839
-Running dot for graph 116/839
-Running dot for graph 117/839
-Running dot for graph 118/839
-Running dot for graph 119/839
-Running dot for graph 120/839
-Running dot for graph 121/839
-Running dot for graph 122/839
-Running dot for graph 123/839
-Running dot for graph 124/839
-Running dot for graph 125/839
-Running dot for graph 126/839
-Running dot for graph 127/839
-Running dot for graph 128/839
-Running dot for graph 129/839
-Running dot for graph 130/839
-Running dot for graph 131/839
-Running dot for graph 132/839
-Running dot for graph 133/839
-Running dot for graph 134/839
-Running dot for graph 135/839
-Running dot for graph 136/839
-Running dot for graph 137/839
-Running dot for graph 138/839
-Running dot for graph 139/839
-Running dot for graph 140/839
-Running dot for graph 141/839
-Running dot for graph 142/839
-Running dot for graph 143/839
-Running dot for graph 144/839
-Running dot for graph 145/839
-Running dot for graph 146/839
-Running dot for graph 147/839
-Running dot for graph 148/839
-Running dot for graph 149/839
-Running dot for graph 150/839
-Running dot for graph 151/839
-Running dot for graph 152/839
-Running dot for graph 153/839
-Running dot for graph 154/839
-Running dot for graph 155/839
-Running dot for graph 156/839
-Running dot for graph 157/839
-Running dot for graph 158/839
-Running dot for graph 159/839
-Running dot for graph 160/839
-Running dot for graph 161/839
-Running dot for graph 162/839
-Running dot for graph 163/839
-Running dot for graph 164/839
-Running dot for graph 165/839
-Running dot for graph 166/839
-Running dot for graph 167/839
-Running dot for graph 168/839
-Running dot for graph 169/839
-Running dot for graph 170/839
-Running dot for graph 171/839
-Running dot for graph 172/839
-Running dot for graph 173/839
-Running dot for graph 174/839
-Running dot for graph 175/839
-Running dot for graph 176/839
-Running dot for graph 177/839
-Running dot for graph 178/839
-Running dot for graph 179/839
-Running dot for graph 180/839
-Running dot for graph 181/839
-Running dot for graph 182/839
-Running dot for graph 183/839
-Running dot for graph 184/839
-Running dot for graph 185/839
-Running dot for graph 186/839
-Running dot for graph 187/839
-Running dot for graph 188/839
-Running dot for graph 189/839
-Running dot for graph 190/839
-Running dot for graph 191/839
-Running dot for graph 192/839
-Running dot for graph 193/839
-Running dot for graph 194/839
-Running dot for graph 195/839
-Running dot for graph 196/839
-Running dot for graph 197/839
-Running dot for graph 198/839
-Running dot for graph 199/839
-Running dot for graph 200/839
-Running dot for graph 201/839
-Running dot for graph 202/839
-Running dot for graph 203/839
-Running dot for graph 204/839
-Running dot for graph 205/839
-Running dot for graph 206/839
-Running dot for graph 207/839
-Running dot for graph 208/839
-Running dot for graph 209/839
-Running dot for graph 210/839
-Running dot for graph 211/839
-Running dot for graph 212/839
-Running dot for graph 213/839
-Running dot for graph 214/839
-Running dot for graph 215/839
-Running dot for graph 216/839
-Running dot for graph 217/839
-Running dot for graph 218/839
-Running dot for graph 219/839
-Running dot for graph 220/839
-Running dot for graph 221/839
-Running dot for graph 222/839
-Running dot for graph 223/839
-Running dot for graph 224/839
-Running dot for graph 225/839
-Running dot for graph 226/839
-Running dot for graph 227/839
-Running dot for graph 228/839
-Running dot for graph 229/839
-Running dot for graph 230/839
-Running dot for graph 231/839
-Running dot for graph 232/839
-Running dot for graph 233/839
-Running dot for graph 234/839
-Running dot for graph 235/839
-Running dot for graph 236/839
-Running dot for graph 237/839
-Running dot for graph 238/839
-Running dot for graph 239/839
-Running dot for graph 240/839
-Running dot for graph 241/839
-Running dot for graph 242/839
-Running dot for graph 243/839
-Running dot for graph 244/839
-Running dot for graph 245/839
-Running dot for graph 246/839
-Running dot for graph 247/839
-Running dot for graph 248/839
-Running dot for graph 249/839
-Running dot for graph 250/839
-Running dot for graph 251/839
-Running dot for graph 252/839
-Running dot for graph 253/839
-Running dot for graph 254/839
-Running dot for graph 255/839
-Running dot for graph 256/839
-Running dot for graph 257/839
-Running dot for graph 258/839
-Running dot for graph 259/839
-Running dot for graph 260/839
-Running dot for graph 261/839
-Running dot for graph 262/839
-Running dot for graph 263/839
-Running dot for graph 264/839
-Running dot for graph 265/839
-Running dot for graph 266/839
-Running dot for graph 267/839
-Running dot for graph 268/839
-Running dot for graph 269/839
-Running dot for graph 270/839
-Running dot for graph 271/839
-Running dot for graph 272/839
-Running dot for graph 273/839
-Running dot for graph 274/839
-Running dot for graph 275/839
-Running dot for graph 276/839
-Running dot for graph 277/839
-Running dot for graph 278/839
-Running dot for graph 279/839
-Running dot for graph 280/839
-Running dot for graph 281/839
-Running dot for graph 282/839
-Running dot for graph 283/839
-Running dot for graph 284/839
-Running dot for graph 285/839
-Running dot for graph 286/839
-Running dot for graph 287/839
-Running dot for graph 288/839
-Running dot for graph 289/839
-Running dot for graph 290/839
-Running dot for graph 291/839
-Running dot for graph 292/839
-Running dot for graph 293/839
-Running dot for graph 294/839
-Running dot for graph 295/839
-Running dot for graph 296/839
-Running dot for graph 297/839
-Running dot for graph 298/839
-Running dot for graph 299/839
-Running dot for graph 300/839
-Running dot for graph 301/839
-Running dot for graph 302/839
-Running dot for graph 303/839
-Running dot for graph 304/839
-Running dot for graph 305/839
-Running dot for graph 306/839
-Running dot for graph 307/839
-Running dot for graph 308/839
-Running dot for graph 309/839
-Running dot for graph 310/839
-Running dot for graph 311/839
-Running dot for graph 312/839
-Running dot for graph 313/839
-Running dot for graph 314/839
-Running dot for graph 315/839
-Running dot for graph 316/839
-Running dot for graph 317/839
-Running dot for graph 318/839
-Running dot for graph 319/839
-Running dot for graph 320/839
-Running dot for graph 321/839
-Running dot for graph 322/839
-Running dot for graph 323/839
-Running dot for graph 324/839
-Running dot for graph 325/839
-Running dot for graph 326/839
-Running dot for graph 327/839
-Running dot for graph 328/839
-Running dot for graph 329/839
-Running dot for graph 330/839
-Running dot for graph 331/839
-Running dot for graph 332/839
-Running dot for graph 333/839
-Running dot for graph 334/839
-Running dot for graph 335/839
-Running dot for graph 336/839
-Running dot for graph 337/839
-Running dot for graph 338/839
-Running dot for graph 339/839
-Running dot for graph 340/839
-Running dot for graph 341/839
-Running dot for graph 342/839
-Running dot for graph 343/839
-Running dot for graph 344/839
-Running dot for graph 345/839
-Running dot for graph 346/839
-Running dot for graph 347/839
-Running dot for graph 348/839
-Running dot for graph 349/839
-Running dot for graph 350/839
-Running dot for graph 351/839
-Running dot for graph 352/839
-Running dot for graph 353/839
-Running dot for graph 354/839
-Running dot for graph 355/839
-Running dot for graph 356/839
-Running dot for graph 357/839
-Running dot for graph 358/839
-Running dot for graph 359/839
-Running dot for graph 360/839
-Running dot for graph 361/839
-Running dot for graph 362/839
-Running dot for graph 363/839
-Running dot for graph 364/839
-Running dot for graph 365/839
-Running dot for graph 366/839
-Running dot for graph 367/839
-Running dot for graph 368/839
-Running dot for graph 369/839
-Running dot for graph 370/839
-Running dot for graph 371/839
-Running dot for graph 372/839
-Running dot for graph 373/839
-Running dot for graph 374/839
-Running dot for graph 375/839
-Running dot for graph 376/839
-Running dot for graph 377/839
-Running dot for graph 378/839
-Running dot for graph 379/839
-Running dot for graph 380/839
-Running dot for graph 381/839
-Running dot for graph 382/839
-Running dot for graph 383/839
-Running dot for graph 384/839
-Running dot for graph 385/839
-Running dot for graph 386/839
-Running dot for graph 387/839
-Running dot for graph 388/839
-Running dot for graph 389/839
-Running dot for graph 390/839
-Running dot for graph 391/839
-Running dot for graph 392/839
-Running dot for graph 393/839
-Running dot for graph 394/839
-Running dot for graph 395/839
-Running dot for graph 396/839
-Running dot for graph 397/839
-Running dot for graph 398/839
-Running dot for graph 399/839
-Running dot for graph 400/839
-Running dot for graph 401/839
-Running dot for graph 402/839
-Running dot for graph 403/839
-Running dot for graph 404/839
-Running dot for graph 405/839
-Running dot for graph 406/839
-Running dot for graph 407/839
-Running dot for graph 408/839
-Running dot for graph 409/839
-Running dot for graph 410/839
-Running dot for graph 411/839
-Running dot for graph 412/839
-Running dot for graph 413/839
-Running dot for graph 414/839
-Running dot for graph 415/839
-Running dot for graph 416/839
-Running dot for graph 417/839
-Running dot for graph 418/839
-Running dot for graph 419/839
-Running dot for graph 420/839
-Running dot for graph 421/839
-Running dot for graph 422/839
-Running dot for graph 423/839
-Running dot for graph 424/839
-Running dot for graph 425/839
-Running dot for graph 426/839
-Running dot for graph 427/839
-Running dot for graph 428/839
-Running dot for graph 429/839
-Running dot for graph 430/839
-Running dot for graph 431/839
-Running dot for graph 432/839
-Running dot for graph 433/839
-Running dot for graph 434/839
-Running dot for graph 435/839
-Running dot for graph 436/839
-Running dot for graph 437/839
-Running dot for graph 438/839
-Running dot for graph 439/839
-Running dot for graph 440/839
-Running dot for graph 441/839
-Running dot for graph 442/839
-Running dot for graph 443/839
-Running dot for graph 444/839
-Running dot for graph 445/839
-Running dot for graph 446/839
-Running dot for graph 447/839
-Running dot for graph 448/839
-Running dot for graph 449/839
-Running dot for graph 450/839
-Running dot for graph 451/839
-Running dot for graph 452/839
-Running dot for graph 453/839
-Running dot for graph 454/839
-Running dot for graph 455/839
-Running dot for graph 456/839
-Running dot for graph 457/839
-Running dot for graph 458/839
-Running dot for graph 459/839
-Running dot for graph 460/839
-Running dot for graph 461/839
-Running dot for graph 462/839
-Running dot for graph 463/839
-Running dot for graph 464/839
-Running dot for graph 465/839
-Running dot for graph 466/839
-Running dot for graph 467/839
-Running dot for graph 468/839
-Running dot for graph 469/839
-Running dot for graph 470/839
-Running dot for graph 471/839
-Running dot for graph 472/839
-Running dot for graph 473/839
-Running dot for graph 474/839
-Running dot for graph 475/839
-Running dot for graph 476/839
-Running dot for graph 477/839
-Running dot for graph 478/839
-Running dot for graph 479/839
-Running dot for graph 480/839
-Running dot for graph 481/839
-Running dot for graph 482/839
-Running dot for graph 483/839
-Running dot for graph 484/839
-Running dot for graph 485/839
-Running dot for graph 486/839
-Running dot for graph 487/839
-Running dot for graph 488/839
-Running dot for graph 489/839
-Running dot for graph 490/839
-Running dot for graph 491/839
-Running dot for graph 492/839
-Running dot for graph 493/839
-Running dot for graph 494/839
-Running dot for graph 495/839
-Running dot for graph 496/839
-Running dot for graph 497/839
-Running dot for graph 498/839
-Running dot for graph 499/839
-Running dot for graph 500/839
-Running dot for graph 501/839
-Running dot for graph 502/839
-Running dot for graph 503/839
-Running dot for graph 504/839
-Running dot for graph 505/839
-Running dot for graph 506/839
-Running dot for graph 507/839
-Running dot for graph 508/839
-Running dot for graph 509/839
-Running dot for graph 510/839
-Running dot for graph 511/839
-Running dot for graph 512/839
-Running dot for graph 513/839
-Running dot for graph 514/839
-Running dot for graph 515/839
-Running dot for graph 516/839
-Running dot for graph 517/839
-Running dot for graph 518/839
-Running dot for graph 519/839
-Running dot for graph 520/839
-Running dot for graph 521/839
-Running dot for graph 522/839
-Running dot for graph 523/839
-Running dot for graph 524/839
-Running dot for graph 525/839
-Running dot for graph 526/839
-Running dot for graph 527/839
-Running dot for graph 528/839
-Running dot for graph 529/839
-Running dot for graph 530/839
-Running dot for graph 531/839
-Running dot for graph 532/839
-Running dot for graph 533/839
-Running dot for graph 534/839
-Running dot for graph 535/839
-Running dot for graph 536/839
-Running dot for graph 537/839
-Running dot for graph 538/839
-Running dot for graph 539/839
-Running dot for graph 540/839
-Running dot for graph 541/839
-Running dot for graph 542/839
-Running dot for graph 543/839
-Running dot for graph 544/839
-Running dot for graph 545/839
-Running dot for graph 546/839
-Running dot for graph 547/839
-Running dot for graph 548/839
-Running dot for graph 549/839
-Running dot for graph 550/839
-Running dot for graph 551/839
-Running dot for graph 552/839
-Running dot for graph 553/839
-Running dot for graph 554/839
-Running dot for graph 555/839
-Running dot for graph 556/839
-Running dot for graph 557/839
-Running dot for graph 558/839
-Running dot for graph 559/839
-Running dot for graph 560/839
-Running dot for graph 561/839
-Running dot for graph 562/839
-Running dot for graph 563/839
-Running dot for graph 564/839
-Running dot for graph 565/839
-Running dot for graph 566/839
-Running dot for graph 567/839
-Running dot for graph 568/839
-Running dot for graph 569/839
-Running dot for graph 570/839
-Running dot for graph 571/839
-Running dot for graph 572/839
-Running dot for graph 573/839
-Running dot for graph 574/839
-Running dot for graph 575/839
-Running dot for graph 576/839
-Running dot for graph 577/839
-Running dot for graph 578/839
-Running dot for graph 579/839
-Running dot for graph 580/839
-Running dot for graph 581/839
-Running dot for graph 582/839
-Running dot for graph 583/839
-Running dot for graph 584/839
-Running dot for graph 585/839
-Running dot for graph 586/839
-Running dot for graph 587/839
-Running dot for graph 588/839
-Running dot for graph 589/839
-Running dot for graph 590/839
-Running dot for graph 591/839
-Running dot for graph 592/839
-Running dot for graph 593/839
-Running dot for graph 594/839
-Running dot for graph 595/839
-Running dot for graph 596/839
-Running dot for graph 597/839
-Running dot for graph 598/839
-Running dot for graph 599/839
-Running dot for graph 600/839
-Running dot for graph 601/839
-Running dot for graph 602/839
-Running dot for graph 603/839
-Running dot for graph 604/839
-Running dot for graph 605/839
-Running dot for graph 606/839
-Running dot for graph 607/839
-Running dot for graph 608/839
-Running dot for graph 609/839
-Running dot for graph 610/839
-Running dot for graph 611/839
-Running dot for graph 612/839
-Running dot for graph 613/839
-Running dot for graph 614/839
-Running dot for graph 615/839
-Running dot for graph 616/839
-Running dot for graph 617/839
-Running dot for graph 618/839
-Running dot for graph 619/839
-Running dot for graph 620/839
-Running dot for graph 621/839
-Running dot for graph 622/839
-Running dot for graph 623/839
-Running dot for graph 624/839
-Running dot for graph 625/839
-Running dot for graph 626/839
-Running dot for graph 627/839
-Running dot for graph 628/839
-Running dot for graph 629/839
-Running dot for graph 630/839
-Running dot for graph 631/839
-Running dot for graph 632/839
-Running dot for graph 633/839
-Running dot for graph 634/839
-Running dot for graph 635/839
-Running dot for graph 636/839
-Running dot for graph 637/839
-Running dot for graph 638/839
-Running dot for graph 639/839
-Running dot for graph 640/839
-Running dot for graph 641/839
-Running dot for graph 642/839
-Running dot for graph 643/839
-Running dot for graph 644/839
-Running dot for graph 645/839
-Running dot for graph 646/839
-Running dot for graph 647/839
-Running dot for graph 648/839
-Running dot for graph 649/839
-Running dot for graph 650/839
-Running dot for graph 651/839
-Running dot for graph 652/839
-Running dot for graph 653/839
-Running dot for graph 654/839
-Running dot for graph 655/839
-Running dot for graph 656/839
-Running dot for graph 657/839
-Running dot for graph 658/839
-Running dot for graph 659/839
-Running dot for graph 660/839
-Running dot for graph 661/839
-Running dot for graph 662/839
-Running dot for graph 663/839
-Running dot for graph 664/839
-Running dot for graph 665/839
-Running dot for graph 666/839
-Running dot for graph 667/839
-Running dot for graph 668/839
-Running dot for graph 669/839
-Running dot for graph 670/839
-Running dot for graph 671/839
-Running dot for graph 672/839
-Running dot for graph 673/839
-Running dot for graph 674/839
-Running dot for graph 675/839
-Running dot for graph 676/839
-Running dot for graph 677/839
-Running dot for graph 678/839
-Running dot for graph 679/839
-Running dot for graph 680/839
-Running dot for graph 681/839
-Running dot for graph 682/839
-Running dot for graph 683/839
-Running dot for graph 684/839
-Running dot for graph 685/839
-Running dot for graph 686/839
-Running dot for graph 687/839
-Running dot for graph 688/839
-Running dot for graph 689/839
-Running dot for graph 690/839
-Running dot for graph 691/839
-Running dot for graph 692/839
-Running dot for graph 693/839
-Running dot for graph 694/839
-Running dot for graph 695/839
-Running dot for graph 696/839
-Running dot for graph 697/839
-Running dot for graph 698/839
-Running dot for graph 699/839
-Running dot for graph 700/839
-Running dot for graph 701/839
-Running dot for graph 702/839
-Running dot for graph 703/839
-Running dot for graph 704/839
-Running dot for graph 705/839
-Running dot for graph 706/839
-Running dot for graph 707/839
-Running dot for graph 708/839
-Running dot for graph 709/839
-Running dot for graph 710/839
-Running dot for graph 711/839
-Running dot for graph 712/839
-Running dot for graph 713/839
-Running dot for graph 714/839
-Running dot for graph 715/839
-Running dot for graph 716/839
-Running dot for graph 717/839
-Running dot for graph 718/839
-Running dot for graph 719/839
-Running dot for graph 720/839
-Running dot for graph 721/839
-Running dot for graph 722/839
-Running dot for graph 723/839
-Running dot for graph 724/839
-Running dot for graph 725/839
-Running dot for graph 726/839
-Running dot for graph 727/839
-Running dot for graph 728/839
-Running dot for graph 729/839
-Running dot for graph 730/839
-Running dot for graph 731/839
-Running dot for graph 732/839
-Running dot for graph 733/839
-Running dot for graph 734/839
-Running dot for graph 735/839
-Running dot for graph 736/839
-Running dot for graph 737/839
-Running dot for graph 738/839
-Running dot for graph 739/839
-Running dot for graph 740/839
-Running dot for graph 741/839
-Running dot for graph 742/839
-Running dot for graph 743/839
-Running dot for graph 744/839
-Running dot for graph 745/839
-Running dot for graph 746/839
-Running dot for graph 747/839
-Running dot for graph 748/839
-Running dot for graph 749/839
-Running dot for graph 750/839
-Running dot for graph 751/839
-Running dot for graph 752/839
-Running dot for graph 753/839
-Running dot for graph 754/839
-Running dot for graph 755/839
-Running dot for graph 756/839
-Running dot for graph 757/839
-Running dot for graph 758/839
-Running dot for graph 759/839
-Running dot for graph 760/839
-Running dot for graph 761/839
-Running dot for graph 762/839
-Running dot for graph 763/839
-Running dot for graph 764/839
-Running dot for graph 765/839
-Running dot for graph 766/839
-Running dot for graph 767/839
-Running dot for graph 768/839
-Running dot for graph 769/839
-Running dot for graph 770/839
-Running dot for graph 771/839
-Running dot for graph 772/839
-Running dot for graph 773/839
-Running dot for graph 774/839
-Running dot for graph 775/839
-Running dot for graph 776/839
-Running dot for graph 777/839
-Running dot for graph 778/839
-Running dot for graph 779/839
-Running dot for graph 780/839
-Running dot for graph 781/839
-Running dot for graph 782/839
-Running dot for graph 783/839
-Running dot for graph 784/839
-Running dot for graph 785/839
-Running dot for graph 786/839
-Running dot for graph 787/839
-Running dot for graph 788/839
-Running dot for graph 789/839
-Running dot for graph 790/839
-Running dot for graph 791/839
-Running dot for graph 792/839
-Running dot for graph 793/839
-Running dot for graph 794/839
-Running dot for graph 795/839
-Running dot for graph 796/839
-Running dot for graph 797/839
-Running dot for graph 798/839
-Running dot for graph 799/839
-Running dot for graph 800/839
-Running dot for graph 801/839
-Running dot for graph 802/839
-Running dot for graph 803/839
-Running dot for graph 804/839
-Running dot for graph 805/839
-Running dot for graph 806/839
-Running dot for graph 807/839
-Running dot for graph 808/839
-Running dot for graph 809/839
-Running dot for graph 810/839
-Running dot for graph 811/839
-Running dot for graph 812/839
-Running dot for graph 813/839
-Running dot for graph 814/839
-Running dot for graph 815/839
-Running dot for graph 816/839
-Running dot for graph 817/839
-Running dot for graph 818/839
-Running dot for graph 819/839
-Running dot for graph 820/839
-Running dot for graph 821/839
-Running dot for graph 822/839
-Running dot for graph 823/839
-Running dot for graph 824/839
-Running dot for graph 825/839
-Running dot for graph 826/839
-Running dot for graph 827/839
-Running dot for graph 828/839
-Running dot for graph 829/839
-Running dot for graph 830/839
-Running dot for graph 831/839
-Running dot for graph 832/839
-Running dot for graph 833/839
-Running dot for graph 834/839
-Running dot for graph 835/839
-Running dot for graph 836/839
-Running dot for graph 837/839
-Running dot for graph 838/839
-Running dot for graph 839/839
-Patching output file 1/154
-Patching output file 2/154
-Patching output file 3/154
-Patching output file 4/154
-Patching output file 5/154
-Patching output file 6/154
-Patching output file 7/154
-Patching output file 8/154
-Patching output file 9/154
-Patching output file 10/154
-Patching output file 11/154
-Patching output file 12/154
-Patching output file 13/154
-Patching output file 14/154
-Patching output file 15/154
-Patching output file 16/154
-Patching output file 17/154
-Patching output file 18/154
-Patching output file 19/154
-Patching output file 20/154
-Patching output file 21/154
-Patching output file 22/154
-Patching output file 23/154
-Patching output file 24/154
-Patching output file 25/154
-Patching output file 26/154
-Patching output file 27/154
-Patching output file 28/154
-Patching output file 29/154
-Patching output file 30/154
-Patching output file 31/154
-Patching output file 32/154
-Patching output file 33/154
-Patching output file 34/154
-Patching output file 35/154
-Patching output file 36/154
-Patching output file 37/154
-Patching output file 38/154
-Patching output file 39/154
-Patching output file 40/154
-Patching output file 41/154
-Patching output file 42/154
-Patching output file 43/154
-Patching output file 44/154
-Patching output file 45/154
-Patching output file 46/154
-Patching output file 47/154
-Patching output file 48/154
-Patching output file 49/154
-Patching output file 50/154
-Patching output file 51/154
-Patching output file 52/154
-Patching output file 53/154
-Patching output file 54/154
-Patching output file 55/154
-Patching output file 56/154
-Patching output file 57/154
-Patching output file 58/154
-Patching output file 59/154
-Patching output file 60/154
-Patching output file 61/154
-Patching output file 62/154
-Patching output file 63/154
-Patching output file 64/154
-Patching output file 65/154
-Patching output file 66/154
-Patching output file 67/154
-Patching output file 68/154
-Patching output file 69/154
-Patching output file 70/154
-Patching output file 71/154
-Patching output file 72/154
-Patching output file 73/154
-Patching output file 74/154
-Patching output file 75/154
-Patching output file 76/154
-Patching output file 77/154
-Patching output file 78/154
-Patching output file 79/154
-Patching output file 80/154
-Patching output file 81/154
-Patching output file 82/154
-Patching output file 83/154
-Patching output file 84/154
-Patching output file 85/154
-Patching output file 86/154
-Patching output file 87/154
-Patching output file 88/154
-Patching output file 89/154
-Patching output file 90/154
-Patching output file 91/154
-Patching output file 92/154
-Patching output file 93/154
-Patching output file 94/154
-Patching output file 95/154
-Patching output file 96/154
-Patching output file 97/154
-Patching output file 98/154
-Patching output file 99/154
-Patching output file 100/154
-Patching output file 101/154
-Patching output file 102/154
-Patching output file 103/154
-Patching output file 104/154
-Patching output file 105/154
-Patching output file 106/154
-Patching output file 107/154
-Patching output file 108/154
-Patching output file 109/154
-Patching output file 110/154
-Patching output file 111/154
-Patching output file 112/154
-Patching output file 113/154
-Patching output file 114/154
-Patching output file 115/154
-Patching output file 116/154
-Patching output file 117/154
-Patching output file 118/154
-Patching output file 119/154
-Patching output file 120/154
-Patching output file 121/154
-Patching output file 122/154
-Patching output file 123/154
-Patching output file 124/154
-Patching output file 125/154
-Patching output file 126/154
-Patching output file 127/154
-Patching output file 128/154
-Patching output file 129/154
-Patching output file 130/154
-Patching output file 131/154
-Patching output file 132/154
-Patching output file 133/154
-Patching output file 134/154
-Patching output file 135/154
-Patching output file 136/154
-Patching output file 137/154
-Patching output file 138/154
-Patching output file 139/154
-Patching output file 140/154
-Patching output file 141/154
-Patching output file 142/154
-Patching output file 143/154
-Patching output file 144/154
-Patching output file 145/154
-Patching output file 146/154
-Patching output file 147/154
-Patching output file 148/154
-Patching output file 149/154
-Patching output file 150/154
-Patching output file 151/154
-Patching output file 152/154
-Patching output file 153/154
-Patching output file 154/154
-lookup cache used 12014/131072 hits=102620 misses=12635
+Running dot for graph 1/795
+Running dot for graph 2/795
+Running dot for graph 3/795
+Running dot for graph 4/795
+Running dot for graph 5/795
+Running dot for graph 6/795
+Running dot for graph 7/795
+Running dot for graph 8/795
+Running dot for graph 9/795
+Running dot for graph 10/795
+Running dot for graph 11/795
+Running dot for graph 12/795
+Running dot for graph 13/795
+Running dot for graph 14/795
+Running dot for graph 15/795
+Running dot for graph 16/795
+Running dot for graph 17/795
+Running dot for graph 18/795
+Running dot for graph 19/795
+Running dot for graph 20/795
+Running dot for graph 21/795
+Running dot for graph 22/795
+Running dot for graph 23/795
+Running dot for graph 24/795
+Running dot for graph 25/795
+Running dot for graph 26/795
+Running dot for graph 27/795
+Running dot for graph 28/795
+Running dot for graph 29/795
+Running dot for graph 30/795
+Running dot for graph 31/795
+Running dot for graph 32/795
+Running dot for graph 33/795
+Running dot for graph 34/795
+Running dot for graph 35/795
+Running dot for graph 36/795
+Running dot for graph 37/795
+Running dot for graph 38/795
+Running dot for graph 39/795
+Running dot for graph 40/795
+Running dot for graph 41/795
+Running dot for graph 42/795
+Running dot for graph 43/795
+Running dot for graph 44/795
+Running dot for graph 45/795
+Running dot for graph 46/795
+Running dot for graph 47/795
+Running dot for graph 48/795
+Running dot for graph 49/795
+Running dot for graph 50/795
+Running dot for graph 51/795
+Running dot for graph 52/795
+Running dot for graph 53/795
+Running dot for graph 54/795
+Running dot for graph 55/795
+Running dot for graph 56/795
+Running dot for graph 57/795
+Running dot for graph 58/795
+Running dot for graph 59/795
+Running dot for graph 60/795
+Running dot for graph 61/795
+Running dot for graph 62/795
+Running dot for graph 63/795
+Running dot for graph 64/795
+Running dot for graph 65/795
+Running dot for graph 66/795
+Running dot for graph 67/795
+Running dot for graph 68/795
+Running dot for graph 69/795
+Running dot for graph 70/795
+Running dot for graph 71/795
+Running dot for graph 72/795
+Running dot for graph 73/795
+Running dot for graph 74/795
+Running dot for graph 75/795
+Running dot for graph 76/795
+Running dot for graph 77/795
+Running dot for graph 78/795
+Running dot for graph 79/795
+Running dot for graph 80/795
+Running dot for graph 81/795
+Running dot for graph 82/795
+Running dot for graph 83/795
+Running dot for graph 84/795
+Running dot for graph 85/795
+Running dot for graph 86/795
+Running dot for graph 87/795
+Running dot for graph 88/795
+Running dot for graph 89/795
+Running dot for graph 90/795
+Running dot for graph 91/795
+Running dot for graph 92/795
+Running dot for graph 93/795
+Running dot for graph 94/795
+Running dot for graph 95/795
+Running dot for graph 96/795
+Running dot for graph 97/795
+Running dot for graph 98/795
+Running dot for graph 99/795
+Running dot for graph 100/795
+Running dot for graph 101/795
+Running dot for graph 102/795
+Running dot for graph 103/795
+Running dot for graph 104/795
+Running dot for graph 105/795
+Running dot for graph 106/795
+Running dot for graph 107/795
+Running dot for graph 108/795
+Running dot for graph 109/795
+Running dot for graph 110/795
+Running dot for graph 111/795
+Running dot for graph 112/795
+Running dot for graph 113/795
+Running dot for graph 114/795
+Running dot for graph 115/795
+Running dot for graph 116/795
+Running dot for graph 117/795
+Running dot for graph 118/795
+Running dot for graph 119/795
+Running dot for graph 120/795
+Running dot for graph 121/795
+Running dot for graph 122/795
+Running dot for graph 123/795
+Running dot for graph 124/795
+Running dot for graph 125/795
+Running dot for graph 126/795
+Running dot for graph 127/795
+Running dot for graph 128/795
+Running dot for graph 129/795
+Running dot for graph 130/795
+Running dot for graph 131/795
+Running dot for graph 132/795
+Running dot for graph 133/795
+Running dot for graph 134/795
+Running dot for graph 135/795
+Running dot for graph 136/795
+Running dot for graph 137/795
+Running dot for graph 138/795
+Running dot for graph 139/795
+Running dot for graph 140/795
+Running dot for graph 141/795
+Running dot for graph 142/795
+Running dot for graph 143/795
+Running dot for graph 144/795
+Running dot for graph 145/795
+Running dot for graph 146/795
+Running dot for graph 147/795
+Running dot for graph 148/795
+Running dot for graph 149/795
+Running dot for graph 150/795
+Running dot for graph 151/795
+Running dot for graph 152/795
+Running dot for graph 153/795
+Running dot for graph 154/795
+Running dot for graph 155/795
+Running dot for graph 156/795
+Running dot for graph 157/795
+Running dot for graph 158/795
+Running dot for graph 159/795
+Running dot for graph 160/795
+Running dot for graph 161/795
+Running dot for graph 162/795
+Running dot for graph 163/795
+Running dot for graph 164/795
+Running dot for graph 165/795
+Running dot for graph 166/795
+Running dot for graph 167/795
+Running dot for graph 168/795
+Running dot for graph 169/795
+Running dot for graph 170/795
+Running dot for graph 171/795
+Running dot for graph 172/795
+Running dot for graph 173/795
+Running dot for graph 174/795
+Running dot for graph 175/795
+Running dot for graph 176/795
+Running dot for graph 177/795
+Running dot for graph 178/795
+Running dot for graph 179/795
+Running dot for graph 180/795
+Running dot for graph 181/795
+Running dot for graph 182/795
+Running dot for graph 183/795
+Running dot for graph 184/795
+Running dot for graph 185/795
+Running dot for graph 186/795
+Running dot for graph 187/795
+Running dot for graph 188/795
+Running dot for graph 189/795
+Running dot for graph 190/795
+Running dot for graph 191/795
+Running dot for graph 192/795
+Running dot for graph 193/795
+Running dot for graph 194/795
+Running dot for graph 195/795
+Running dot for graph 196/795
+Running dot for graph 197/795
+Running dot for graph 198/795
+Running dot for graph 199/795
+Running dot for graph 200/795
+Running dot for graph 201/795
+Running dot for graph 202/795
+Running dot for graph 203/795
+Running dot for graph 204/795
+Running dot for graph 205/795
+Running dot for graph 206/795
+Running dot for graph 207/795
+Running dot for graph 208/795
+Running dot for graph 209/795
+Running dot for graph 210/795
+Running dot for graph 211/795
+Running dot for graph 212/795
+Running dot for graph 213/795
+Running dot for graph 214/795
+Running dot for graph 215/795
+Running dot for graph 216/795
+Running dot for graph 217/795
+Running dot for graph 218/795
+Running dot for graph 219/795
+Running dot for graph 220/795
+Running dot for graph 221/795
+Running dot for graph 222/795
+Running dot for graph 223/795
+Running dot for graph 224/795
+Running dot for graph 225/795
+Running dot for graph 226/795
+Running dot for graph 227/795
+Running dot for graph 228/795
+Running dot for graph 229/795
+Running dot for graph 230/795
+Running dot for graph 231/795
+Running dot for graph 232/795
+Running dot for graph 233/795
+Running dot for graph 234/795
+Running dot for graph 235/795
+Running dot for graph 236/795
+Running dot for graph 237/795
+Running dot for graph 238/795
+Running dot for graph 239/795
+Running dot for graph 240/795
+Running dot for graph 241/795
+Running dot for graph 242/795
+Running dot for graph 243/795
+Running dot for graph 244/795
+Running dot for graph 245/795
+Running dot for graph 246/795
+Running dot for graph 247/795
+Running dot for graph 248/795
+Running dot for graph 249/795
+Running dot for graph 250/795
+Running dot for graph 251/795
+Running dot for graph 252/795
+Running dot for graph 253/795
+Running dot for graph 254/795
+Running dot for graph 255/795
+Running dot for graph 256/795
+Running dot for graph 257/795
+Running dot for graph 258/795
+Running dot for graph 259/795
+Running dot for graph 260/795
+Running dot for graph 261/795
+Running dot for graph 262/795
+Running dot for graph 263/795
+Running dot for graph 264/795
+Running dot for graph 265/795
+Running dot for graph 266/795
+Running dot for graph 267/795
+Running dot for graph 268/795
+Running dot for graph 269/795
+Running dot for graph 270/795
+Running dot for graph 271/795
+Running dot for graph 272/795
+Running dot for graph 273/795
+Running dot for graph 274/795
+Running dot for graph 275/795
+Running dot for graph 276/795
+Running dot for graph 277/795
+Running dot for graph 278/795
+Running dot for graph 279/795
+Running dot for graph 280/795
+Running dot for graph 281/795
+Running dot for graph 282/795
+Running dot for graph 283/795
+Running dot for graph 284/795
+Running dot for graph 285/795
+Running dot for graph 286/795
+Running dot for graph 287/795
+Running dot for graph 288/795
+Running dot for graph 289/795
+Running dot for graph 290/795
+Running dot for graph 291/795
+Running dot for graph 292/795
+Running dot for graph 293/795
+Running dot for graph 294/795
+Running dot for graph 295/795
+Running dot for graph 296/795
+Running dot for graph 297/795
+Running dot for graph 298/795
+Running dot for graph 299/795
+Running dot for graph 300/795
+Running dot for graph 301/795
+Running dot for graph 302/795
+Running dot for graph 303/795
+Running dot for graph 304/795
+Running dot for graph 305/795
+Running dot for graph 306/795
+Running dot for graph 307/795
+Running dot for graph 308/795
+Running dot for graph 309/795
+Running dot for graph 310/795
+Running dot for graph 311/795
+Running dot for graph 312/795
+Running dot for graph 313/795
+Running dot for graph 314/795
+Running dot for graph 315/795
+Running dot for graph 316/795
+Running dot for graph 317/795
+Running dot for graph 318/795
+Running dot for graph 319/795
+Running dot for graph 320/795
+Running dot for graph 321/795
+Running dot for graph 322/795
+Running dot for graph 323/795
+Running dot for graph 324/795
+Running dot for graph 325/795
+Running dot for graph 326/795
+Running dot for graph 327/795
+Running dot for graph 328/795
+Running dot for graph 329/795
+Running dot for graph 330/795
+Running dot for graph 331/795
+Running dot for graph 332/795
+Running dot for graph 333/795
+Running dot for graph 334/795
+Running dot for graph 335/795
+Running dot for graph 336/795
+Running dot for graph 337/795
+Running dot for graph 338/795
+Running dot for graph 339/795
+Running dot for graph 340/795
+Running dot for graph 341/795
+Running dot for graph 342/795
+Running dot for graph 343/795
+Running dot for graph 344/795
+Running dot for graph 345/795
+Running dot for graph 346/795
+Running dot for graph 347/795
+Running dot for graph 348/795
+Running dot for graph 349/795
+Running dot for graph 350/795
+Running dot for graph 351/795
+Running dot for graph 352/795
+Running dot for graph 353/795
+Running dot for graph 354/795
+Running dot for graph 355/795
+Running dot for graph 356/795
+Running dot for graph 357/795
+Running dot for graph 358/795
+Running dot for graph 359/795
+Running dot for graph 360/795
+Running dot for graph 361/795
+Running dot for graph 362/795
+Running dot for graph 363/795
+Running dot for graph 364/795
+Running dot for graph 365/795
+Running dot for graph 366/795
+Running dot for graph 367/795
+Running dot for graph 368/795
+Running dot for graph 369/795
+Running dot for graph 370/795
+Running dot for graph 371/795
+Running dot for graph 372/795
+Running dot for graph 373/795
+Running dot for graph 374/795
+Running dot for graph 375/795
+Running dot for graph 376/795
+Running dot for graph 377/795
+Running dot for graph 378/795
+Running dot for graph 379/795
+Running dot for graph 380/795
+Running dot for graph 381/795
+Running dot for graph 382/795
+Running dot for graph 383/795
+Running dot for graph 384/795
+Running dot for graph 385/795
+Running dot for graph 386/795
+Running dot for graph 387/795
+Running dot for graph 388/795
+Running dot for graph 389/795
+Running dot for graph 390/795
+Running dot for graph 391/795
+Running dot for graph 392/795
+Running dot for graph 393/795
+Running dot for graph 394/795
+Running dot for graph 395/795
+Running dot for graph 396/795
+Running dot for graph 397/795
+Running dot for graph 398/795
+Running dot for graph 399/795
+Running dot for graph 400/795
+Running dot for graph 401/795
+Running dot for graph 402/795
+Running dot for graph 403/795
+Running dot for graph 404/795
+Running dot for graph 405/795
+Running dot for graph 406/795
+Running dot for graph 407/795
+Running dot for graph 408/795
+Running dot for graph 409/795
+Running dot for graph 410/795
+Running dot for graph 411/795
+Running dot for graph 412/795
+Running dot for graph 413/795
+Running dot for graph 414/795
+Running dot for graph 415/795
+Running dot for graph 416/795
+Running dot for graph 417/795
+Running dot for graph 418/795
+Running dot for graph 419/795
+Running dot for graph 420/795
+Running dot for graph 421/795
+Running dot for graph 422/795
+Running dot for graph 423/795
+Running dot for graph 424/795
+Running dot for graph 425/795
+Running dot for graph 426/795
+Running dot for graph 427/795
+Running dot for graph 428/795
+Running dot for graph 429/795
+Running dot for graph 430/795
+Running dot for graph 431/795
+Running dot for graph 432/795
+Running dot for graph 433/795
+Running dot for graph 434/795
+Running dot for graph 435/795
+Running dot for graph 436/795
+Running dot for graph 437/795
+Running dot for graph 438/795
+Running dot for graph 439/795
+Running dot for graph 440/795
+Running dot for graph 441/795
+Running dot for graph 442/795
+Running dot for graph 443/795
+Running dot for graph 444/795
+Running dot for graph 445/795
+Running dot for graph 446/795
+Running dot for graph 447/795
+Running dot for graph 448/795
+Running dot for graph 449/795
+Running dot for graph 450/795
+Running dot for graph 451/795
+Running dot for graph 452/795
+Running dot for graph 453/795
+Running dot for graph 454/795
+Running dot for graph 455/795
+Running dot for graph 456/795
+Running dot for graph 457/795
+Running dot for graph 458/795
+Running dot for graph 459/795
+Running dot for graph 460/795
+Running dot for graph 461/795
+Running dot for graph 462/795
+Running dot for graph 463/795
+Running dot for graph 464/795
+Running dot for graph 465/795
+Running dot for graph 466/795
+Running dot for graph 467/795
+Running dot for graph 468/795
+Running dot for graph 469/795
+Running dot for graph 470/795
+Running dot for graph 471/795
+Running dot for graph 472/795
+Running dot for graph 473/795
+Running dot for graph 474/795
+Running dot for graph 475/795
+Running dot for graph 476/795
+Running dot for graph 477/795
+Running dot for graph 478/795
+Running dot for graph 479/795
+Running dot for graph 480/795
+Running dot for graph 481/795
+Running dot for graph 482/795
+Running dot for graph 483/795
+Running dot for graph 484/795
+Running dot for graph 485/795
+Running dot for graph 486/795
+Running dot for graph 487/795
+Running dot for graph 488/795
+Running dot for graph 489/795
+Running dot for graph 490/795
+Running dot for graph 491/795
+Running dot for graph 492/795
+Running dot for graph 493/795
+Running dot for graph 494/795
+Running dot for graph 495/795
+Running dot for graph 496/795
+Running dot for graph 497/795
+Running dot for graph 498/795
+Running dot for graph 499/795
+Running dot for graph 500/795
+Running dot for graph 501/795
+Running dot for graph 502/795
+Running dot for graph 503/795
+Running dot for graph 504/795
+Running dot for graph 505/795
+Running dot for graph 506/795
+Running dot for graph 507/795
+Running dot for graph 508/795
+Running dot for graph 509/795
+Running dot for graph 510/795
+Running dot for graph 511/795
+Running dot for graph 512/795
+Running dot for graph 513/795
+Running dot for graph 514/795
+Running dot for graph 515/795
+Running dot for graph 516/795
+Running dot for graph 517/795
+Running dot for graph 518/795
+Running dot for graph 519/795
+Running dot for graph 520/795
+Running dot for graph 521/795
+Running dot for graph 522/795
+Running dot for graph 523/795
+Running dot for graph 524/795
+Running dot for graph 525/795
+Running dot for graph 526/795
+Running dot for graph 527/795
+Running dot for graph 528/795
+Running dot for graph 529/795
+Running dot for graph 530/795
+Running dot for graph 531/795
+Running dot for graph 532/795
+Running dot for graph 533/795
+Running dot for graph 534/795
+Running dot for graph 535/795
+Running dot for graph 536/795
+Running dot for graph 537/795
+Running dot for graph 538/795
+Running dot for graph 539/795
+Running dot for graph 540/795
+Running dot for graph 541/795
+Running dot for graph 542/795
+Running dot for graph 543/795
+Running dot for graph 544/795
+Running dot for graph 545/795
+Running dot for graph 546/795
+Running dot for graph 547/795
+Running dot for graph 548/795
+Running dot for graph 549/795
+Running dot for graph 550/795
+Running dot for graph 551/795
+Running dot for graph 552/795
+Running dot for graph 553/795
+Running dot for graph 554/795
+Running dot for graph 555/795
+Running dot for graph 556/795
+Running dot for graph 557/795
+Running dot for graph 558/795
+Running dot for graph 559/795
+Running dot for graph 560/795
+Running dot for graph 561/795
+Running dot for graph 562/795
+Running dot for graph 563/795
+Running dot for graph 564/795
+Running dot for graph 565/795
+Running dot for graph 566/795
+Running dot for graph 567/795
+Running dot for graph 568/795
+Running dot for graph 569/795
+Running dot for graph 570/795
+Running dot for graph 571/795
+Running dot for graph 572/795
+Running dot for graph 573/795
+Running dot for graph 574/795
+Running dot for graph 575/795
+Running dot for graph 576/795
+Running dot for graph 577/795
+Running dot for graph 578/795
+Running dot for graph 579/795
+Running dot for graph 580/795
+Running dot for graph 581/795
+Running dot for graph 582/795
+Running dot for graph 583/795
+Running dot for graph 584/795
+Running dot for graph 585/795
+Running dot for graph 586/795
+Running dot for graph 587/795
+Running dot for graph 588/795
+Running dot for graph 589/795
+Running dot for graph 590/795
+Running dot for graph 591/795
+Running dot for graph 592/795
+Running dot for graph 593/795
+Running dot for graph 594/795
+Running dot for graph 595/795
+Running dot for graph 596/795
+Running dot for graph 597/795
+Running dot for graph 598/795
+Running dot for graph 599/795
+Running dot for graph 600/795
+Running dot for graph 601/795
+Running dot for graph 602/795
+Running dot for graph 603/795
+Running dot for graph 604/795
+Running dot for graph 605/795
+Running dot for graph 606/795
+Running dot for graph 607/795
+Running dot for graph 608/795
+Running dot for graph 609/795
+Running dot for graph 610/795
+Running dot for graph 611/795
+Running dot for graph 612/795
+Running dot for graph 613/795
+Running dot for graph 614/795
+Running dot for graph 615/795
+Running dot for graph 616/795
+Running dot for graph 617/795
+Running dot for graph 618/795
+Running dot for graph 619/795
+Running dot for graph 620/795
+Running dot for graph 621/795
+Running dot for graph 622/795
+Running dot for graph 623/795
+Running dot for graph 624/795
+Running dot for graph 625/795
+Running dot for graph 626/795
+Running dot for graph 627/795
+Running dot for graph 628/795
+Running dot for graph 629/795
+Running dot for graph 630/795
+Running dot for graph 631/795
+Running dot for graph 632/795
+Running dot for graph 633/795
+Running dot for graph 634/795
+Running dot for graph 635/795
+Running dot for graph 636/795
+Running dot for graph 637/795
+Running dot for graph 638/795
+Running dot for graph 639/795
+Running dot for graph 640/795
+Running dot for graph 641/795
+Running dot for graph 642/795
+Running dot for graph 643/795
+Running dot for graph 644/795
+Running dot for graph 645/795
+Running dot for graph 646/795
+Running dot for graph 647/795
+Running dot for graph 648/795
+Running dot for graph 649/795
+Running dot for graph 650/795
+Running dot for graph 651/795
+Running dot for graph 652/795
+Running dot for graph 653/795
+Running dot for graph 654/795
+Running dot for graph 655/795
+Running dot for graph 656/795
+Running dot for graph 657/795
+Running dot for graph 658/795
+Running dot for graph 659/795
+Running dot for graph 660/795
+Running dot for graph 661/795
+Running dot for graph 662/795
+Running dot for graph 663/795
+Running dot for graph 664/795
+Running dot for graph 665/795
+Running dot for graph 666/795
+Running dot for graph 667/795
+Running dot for graph 668/795
+Running dot for graph 669/795
+Running dot for graph 670/795
+Running dot for graph 671/795
+Running dot for graph 672/795
+Running dot for graph 673/795
+Running dot for graph 674/795
+Running dot for graph 675/795
+Running dot for graph 676/795
+Running dot for graph 677/795
+Running dot for graph 678/795
+Running dot for graph 679/795
+Running dot for graph 680/795
+Running dot for graph 681/795
+Running dot for graph 682/795
+Running dot for graph 683/795
+Running dot for graph 684/795
+Running dot for graph 685/795
+Running dot for graph 686/795
+Running dot for graph 687/795
+Running dot for graph 688/795
+Running dot for graph 689/795
+Running dot for graph 690/795
+Running dot for graph 691/795
+Running dot for graph 692/795
+Running dot for graph 693/795
+Running dot for graph 694/795
+Running dot for graph 695/795
+Running dot for graph 696/795
+Running dot for graph 697/795
+Running dot for graph 698/795
+Running dot for graph 699/795
+Running dot for graph 700/795
+Running dot for graph 701/795
+Running dot for graph 702/795
+Running dot for graph 703/795
+Running dot for graph 704/795
+Running dot for graph 705/795
+Running dot for graph 706/795
+Running dot for graph 707/795
+Running dot for graph 708/795
+Running dot for graph 709/795
+Running dot for graph 710/795
+Running dot for graph 711/795
+Running dot for graph 712/795
+Running dot for graph 713/795
+Running dot for graph 714/795
+Running dot for graph 715/795
+Running dot for graph 716/795
+Running dot for graph 717/795
+Running dot for graph 718/795
+Running dot for graph 719/795
+Running dot for graph 720/795
+Running dot for graph 721/795
+Running dot for graph 722/795
+Running dot for graph 723/795
+Running dot for graph 724/795
+Running dot for graph 725/795
+Running dot for graph 726/795
+Running dot for graph 727/795
+Running dot for graph 728/795
+Running dot for graph 729/795
+Running dot for graph 730/795
+Running dot for graph 731/795
+Running dot for graph 732/795
+Running dot for graph 733/795
+Running dot for graph 734/795
+Running dot for graph 735/795
+Running dot for graph 736/795
+Running dot for graph 737/795
+Running dot for graph 738/795
+Running dot for graph 739/795
+Running dot for graph 740/795
+Running dot for graph 741/795
+Running dot for graph 742/795
+Running dot for graph 743/795
+Running dot for graph 744/795
+Running dot for graph 745/795
+Running dot for graph 746/795
+Running dot for graph 747/795
+Running dot for graph 748/795
+Running dot for graph 749/795
+Running dot for graph 750/795
+Running dot for graph 751/795
+Running dot for graph 752/795
+Running dot for graph 753/795
+Running dot for graph 754/795
+Running dot for graph 755/795
+Running dot for graph 756/795
+Running dot for graph 757/795
+Running dot for graph 758/795
+Running dot for graph 759/795
+Running dot for graph 760/795
+Running dot for graph 761/795
+Running dot for graph 762/795
+Running dot for graph 763/795
+Running dot for graph 764/795
+Running dot for graph 765/795
+Running dot for graph 766/795
+Running dot for graph 767/795
+Running dot for graph 768/795
+Running dot for graph 769/795
+Running dot for graph 770/795
+Running dot for graph 771/795
+Running dot for graph 772/795
+Running dot for graph 773/795
+Running dot for graph 774/795
+Running dot for graph 775/795
+Running dot for graph 776/795
+Running dot for graph 777/795
+Running dot for graph 778/795
+Running dot for graph 779/795
+Running dot for graph 780/795
+Running dot for graph 781/795
+Running dot for graph 782/795
+Running dot for graph 783/795
+Running dot for graph 784/795
+Running dot for graph 785/795
+Running dot for graph 786/795
+Running dot for graph 787/795
+Running dot for graph 788/795
+Running dot for graph 789/795
+Running dot for graph 790/795
+Running dot for graph 791/795
+Running dot for graph 792/795
+Running dot for graph 793/795
+Running dot for graph 794/795
+Running dot for graph 795/795
+Patching output file 1/140
+Patching output file 2/140
+Patching output file 3/140
+Patching output file 4/140
+Patching output file 5/140
+Patching output file 6/140
+Patching output file 7/140
+Patching output file 8/140
+Patching output file 9/140
+Patching output file 10/140
+Patching output file 11/140
+Patching output file 12/140
+Patching output file 13/140
+Patching output file 14/140
+Patching output file 15/140
+Patching output file 16/140
+Patching output file 17/140
+Patching output file 18/140
+Patching output file 19/140
+Patching output file 20/140
+Patching output file 21/140
+Patching output file 22/140
+Patching output file 23/140
+Patching output file 24/140
+Patching output file 25/140
+Patching output file 26/140
+Patching output file 27/140
+Patching output file 28/140
+Patching output file 29/140
+Patching output file 30/140
+Patching output file 31/140
+Patching output file 32/140
+Patching output file 33/140
+Patching output file 34/140
+Patching output file 35/140
+Patching output file 36/140
+Patching output file 37/140
+Patching output file 38/140
+Patching output file 39/140
+Patching output file 40/140
+Patching output file 41/140
+Patching output file 42/140
+Patching output file 43/140
+Patching output file 44/140
+Patching output file 45/140
+Patching output file 46/140
+Patching output file 47/140
+Patching output file 48/140
+Patching output file 49/140
+Patching output file 50/140
+Patching output file 51/140
+Patching output file 52/140
+Patching output file 53/140
+Patching output file 54/140
+Patching output file 55/140
+Patching output file 56/140
+Patching output file 57/140
+Patching output file 58/140
+Patching output file 59/140
+Patching output file 60/140
+Patching output file 61/140
+Patching output file 62/140
+Patching output file 63/140
+Patching output file 64/140
+Patching output file 65/140
+Patching output file 66/140
+Patching output file 67/140
+Patching output file 68/140
+Patching output file 69/140
+Patching output file 70/140
+Patching output file 71/140
+Patching output file 72/140
+Patching output file 73/140
+Patching output file 74/140
+Patching output file 75/140
+Patching output file 76/140
+Patching output file 77/140
+Patching output file 78/140
+Patching output file 79/140
+Patching output file 80/140
+Patching output file 81/140
+Patching output file 82/140
+Patching output file 83/140
+Patching output file 84/140
+Patching output file 85/140
+Patching output file 86/140
+Patching output file 87/140
+Patching output file 88/140
+Patching output file 89/140
+Patching output file 90/140
+Patching output file 91/140
+Patching output file 92/140
+Patching output file 93/140
+Patching output file 94/140
+Patching output file 95/140
+Patching output file 96/140
+Patching output file 97/140
+Patching output file 98/140
+Patching output file 99/140
+Patching output file 100/140
+Patching output file 101/140
+Patching output file 102/140
+Patching output file 103/140
+Patching output file 104/140
+Patching output file 105/140
+Patching output file 106/140
+Patching output file 107/140
+Patching output file 108/140
+Patching output file 109/140
+Patching output file 110/140
+Patching output file 111/140
+Patching output file 112/140
+Patching output file 113/140
+Patching output file 114/140
+Patching output file 115/140
+Patching output file 116/140
+Patching output file 117/140
+Patching output file 118/140
+Patching output file 119/140
+Patching output file 120/140
+Patching output file 121/140
+Patching output file 122/140
+Patching output file 123/140
+Patching output file 124/140
+Patching output file 125/140
+Patching output file 126/140
+Patching output file 127/140
+Patching output file 128/140
+Patching output file 129/140
+Patching output file 130/140
+Patching output file 131/140
+Patching output file 132/140
+Patching output file 133/140
+Patching output file 134/140
+Patching output file 135/140
+Patching output file 136/140
+Patching output file 137/140
+Patching output file 138/140
+Patching output file 139/140
+Patching output file 140/140
+lookup cache used 11027/131072 hits=94447 misses=11538
 finished...

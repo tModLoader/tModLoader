@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['file',['File',['../class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a',1,'Terraria::ModLoader::Mod']]],
-  ['filename',['Filename',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a818ed0aa74b0c4ae80a5efc25d3f4b31',1,'Terraria::ModLoader::IO::UploadFile']]],
-  ['filetypedescription',['FileTypeDescription',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#a9ec5f6268e8a733d7be31ee45b752315',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]]
+  ['ispaused',['IsPaused',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html#a36baf48e9a3e39958d64b1c624ae5249',1,'Terraria::ModLoader::Audio::Music']]],
+  ['isplaying',['IsPlaying',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html#a7a810a17dab1862aca9a5dda8038d674',1,'Terraria::ModLoader::Audio::Music']]],
+  ['item',['item',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac46c4efb754d326b7b4d6454ae103f1a',1,'Terraria.ModLoader.EquipTexture.item()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#adfa21ecac7d2f1cc3bd373dc75b4b356',1,'Terraria.ModLoader.ModItem.item()']]]
 ];

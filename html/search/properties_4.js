@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['executablefilepath',['ExecutableFilePath',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#ac500557878758ca830142a40a8c51d16',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]],
-  ['extension',['Extension',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#a89ce5161cf2e92eb25ffdb2c105b9430',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]]
+  ['file',['File',['../class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a',1,'Terraria::ModLoader::Mod']]],
+  ['filename',['Filename',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a818ed0aa74b0c4ae80a5efc25d3f4b31',1,'Terraria::ModLoader::IO::UploadFile']]]
 ];

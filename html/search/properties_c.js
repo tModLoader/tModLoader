@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['payloadtype',['PayloadType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#ad5e031f90059699836617594dba4223f',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],
-  ['player',['Player',['../interface_terraria_1_1_mod_loader_1_1_command_caller.html#ad5f546f675b3d164a08e8bea3df67897',1,'Terraria.ModLoader.CommandCaller.Player()'],['../class_terraria_1_1_mod_loader_1_1_mod_player.html#af494d0e0a2690a912ea76732bf19265f',1,'Terraria.ModLoader.ModPlayer.player()']]],
-  ['progid',['ProgId',['../class_terraria_1_1_mod_loader_1_1_file_association_support_1_1_file_association.html#ad6a53efbcc3b6373e8f0aa88db295a25',1,'Terraria::ModLoader::FileAssociationSupport::FileAssociation']]],
-  ['projectile',['projectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a54aa9dc3ed825c44b6397211e40d83a0',1,'Terraria::ModLoader::ModProjectile']]],
-  ['projonswing_5fobsolete',['ProjOnSwing_Obsolete',['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ad580fc73425d033b40df11bd561981d4',1,'Terraria::ModLoader::ModItem']]],
-  ['properties',['Properties',['../class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea',1,'Terraria::ModLoader::Mod']]]
+  ['side',['Side',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777',1,'Terraria::ModLoader::Mod']]],
+  ['slot',['Slot',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#a7553bacf32a584b692c9f15dd0d6da10',1,'Terraria.ModLoader.EquipTexture.Slot()'],['../class_terraria_1_1_mod_loader_1_1_mod_ug_bg_style.html#a00006fd879dc9abc966e5ca779ccbf9d',1,'Terraria.ModLoader.ModUgBgStyle.Slot()'],['../class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a915bcb631d8d83299480a2d76bd564e8',1,'Terraria.ModLoader.ModSurfaceBgStyle.Slot()']]],
+  ['sound',['sound',['../class_terraria_1_1_mod_loader_1_1_mod_sound.html#af96e0f27b33af5337f999385aca13b00',1,'Terraria::ModLoader::ModSound']]]
 ];

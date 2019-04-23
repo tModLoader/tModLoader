@@ -1,7 +1,0 @@
-<map id="Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod" name="Terraria.ModLoader.ModCompile.BuildingMod.BuildingMod">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tmod_file.html#a04e3d22463c12b597e9ccef6446a35c3" title="Terraria.ModLoader.IO.Tmod\lFile.Close" alt="" coords="283,5,472,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="274,70,481,111"/>
-<area shape="rect" id="node4" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html#a12227532be8f5f11f623ff9ba59e0d22" title="Terraria.ModLoader.ModCompile.\lIBuildStatus.LogCompilerLine" alt="" coords="270,135,485,177"/>
-<area shape="rect" id="node5" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html#a34d389c6489f081804368e72e59af46c" title="Terraria.ModLoader.ModCompile.\lIBuildStatus.SetProgress" alt="" coords="270,201,485,242"/>
-<area shape="rect" id="node6" href="$interface_terraria_1_1_mod_loader_1_1_mod_compile_1_1_i_build_status.html#a7837ec3bc02a184da8f1e15e10b94fce" title="Terraria.ModLoader.ModCompile.\lIBuildStatus.SetStatus" alt="" coords="270,266,485,307"/>
-</map>

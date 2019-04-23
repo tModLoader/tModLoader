@@ -1,4 +1,4 @@
 <map id="Terraria.ModLoader.ModNet" name="Terraria.ModLoader.ModNet">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html" title="Terraria.ModLoader.ModNet.\lModHeader" alt="" coords="414,199,602,241"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co..." alt="" coords="427,1389,589,1416"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html" title="Terraria.ModLoader.ModNet.\lModHeader" alt="" coords="414,94,602,135"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co..." alt="" coords="427,1397,589,1424"/>
 </map>
