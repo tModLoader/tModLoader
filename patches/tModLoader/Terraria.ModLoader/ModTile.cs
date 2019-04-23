@@ -556,5 +556,27 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item used to place this tile.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
+
+		/// <summary>
+		/// Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <returns></returns>
+		public virtual bool IsLockedChest(int i, int j) => false;
+
+		/// <summary>
+		/// Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left
+		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. 
+		/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
+		/// Make sure that the logic is consistent and not dependent on local player data.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="frameXAdjustment">The adjustment made to each Tile.frameX, defaults to -36</param>
+		/// <param name="dustType">The dust spawned, defaults to 11</param>
+		/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
+		/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
+		public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
 	}
 }

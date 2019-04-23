@@ -8,6 +8,33 @@
  
  namespace Terraria
  {
+@@ -167,6 +_,8 @@
+ 
+ 		public static bool isLocked(int x, int y)
+ 		{
++			if (Main.tile[x, y]?.type >= TileID.Count)
++				return TileLoader.IsLockedChest(x, y, Main.tile[x, y].type);
+ 			return Main.tile[x, y] == null || ((Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106) || (Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178) || (Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006) || (Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330) || (Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402) || (Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474));
+ 		}
+ 
+@@ -253,6 +_,17 @@
+ 			int num2 = num;
+ 			short num3;
+ 			int type;
++			if (Main.tile[X, Y].type >= TileID.Count) {
++				num3 = -36;
++				type = 11;
++				bool manual = false;
++				if(!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num3, ref type, ref manual))
++					return false;
++				if (manual)
++					return true;
++				num3 *= -1;
++				goto IL_B7;
++			}
+ 			switch (num2)
+ 			{
+ 				case 2:
 @@ -418,17 +_,25 @@
  				}
  				Main.chest[num] = chest;
