@@ -62,7 +62,7 @@ namespace ExampleMod.NPCs
 		public override void PostDraw(SpriteBatch spriteBatch, Color drawColor) {
 			// As mentioned above, be sure not to forget this step.
 			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.Transform);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
 		}
 
 		// We use CheckDead to delay death providing time for our death drama to happen. The logic here is a bit complicated, if you are curious, please step through AI and CheckDead in Visual Studio to see how CheckDead prevents death the first time but allows it after the death drama has finished.

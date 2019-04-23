@@ -15,8 +15,6 @@ namespace ExampleMod.Items
 		public byte awesome;
 		public bool examplePersonFreeGift;
 
-		private static readonly string saveOriginalOwner;
-
 		public ExampleInstancedGlobalItem() {
 			originalOwner = "";
 			awesome = 0;
