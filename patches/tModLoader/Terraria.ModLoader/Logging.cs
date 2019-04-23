@@ -54,14 +54,15 @@ namespace Terraria.ModLoader
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
 
+			EnablePortablePDBTraces();
 			HookModuleLoad();
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			PrettifyStackTraceSources();
+			LogFirstChanceExceptions();
 
 			if (ModCompile.DeveloperMode) {
 				tML.Info("Developer mode enabled");
 			}
-			LogFirstChanceExceptions();
 		}
 
 		private static void ConfigureAppenders() {
@@ -156,6 +157,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void HookModuleLoad() {
+			AssemblyManager.InitAssemblyResolvers(); // must be initialized before we add the assembly resolve logger, so that the assembly resolve logger goes first
 			AssemblyManager.AssemblyResolveEarly((sender, args) => {
 				tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);
 				return null;
@@ -328,6 +330,11 @@ namespace Terraria.ModLoader
 				new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 			else if (FrameworkVersion.Framework == Framework.Mono)
 				new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
+		}
+
+		private static void EnablePortablePDBTraces() {
+			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 7, 2))
+				Type.GetType("System.AppContextSwitches").GetField("_ignorePortablePDBsInStackTraces", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);
 		}
 	}
 }
