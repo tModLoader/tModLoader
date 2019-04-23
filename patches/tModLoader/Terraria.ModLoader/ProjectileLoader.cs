@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveProjectileID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding projectiles breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding projectiles breaks vanilla client compatibility");
 
 			int reserveID = nextProjectile;
 			nextProjectile++;

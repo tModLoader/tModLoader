@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
 
 			int reserveID = nextTile;
 			nextTile++;

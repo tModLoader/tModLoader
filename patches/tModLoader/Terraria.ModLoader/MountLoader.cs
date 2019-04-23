@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveMountID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding mounts breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding mounts breaks vanilla client compatibility");
 
 			int reserveID = nextMount;
 			nextMount++;

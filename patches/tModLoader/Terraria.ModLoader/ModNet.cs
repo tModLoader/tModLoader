@@ -78,7 +78,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			netMods = null;
-			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
 				AllowVanillaClients = false;
 		}
 

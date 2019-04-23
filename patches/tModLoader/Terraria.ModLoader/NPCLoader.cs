@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveNPCID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
 
 			int reserveID = nextNPC;
 			nextNPC++;
