@@ -207,6 +207,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ac59ee574e2292d3ba1921b49030159e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c97c48cae115f24c84b9ecaf4d1f742"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2c97c48cae115f24c84b9ecaf4d1f742">IsDresser</a> (int type)</td></tr>
 <tr class="separator:a2c97c48cae115f24c84b9ecaf4d1f742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2535a7383faf51655066c587ec7b4513"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2535a7383faf51655066c587ec7b4513">IsLockedChest</a> (int i, int j, int type)</td></tr>
+<tr class="separator:a2535a7383faf51655066c587ec7b4513"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab04869f2c558dee16068efb1e9b0a70"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#aab04869f2c558dee16068efb1e9b0a70">IsModBed</a> (int type)</td></tr>
 <tr class="separator:aab04869f2c558dee16068efb1e9b0a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62c88b8eb4a959b6120e0da5386ba6f0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a62c88b8eb4a959b6120e0da5386ba6f0">IsModMusicBox</a> (Tile tile)</td></tr>
@@ -277,6 +279,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a2aece9441db7b674f14908b63307fe93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b6f41e241e1de3aeb410d858c7cba4c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0b6f41e241e1de3aeb410d858c7cba4c">TreeGrowthFXGore</a> (int type, ref int gore)</td></tr>
 <tr class="separator:a0b6f41e241e1de3aeb410d858c7cba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a094fb9b89204dd4e17f056fbf92d0bbf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a094fb9b89204dd4e17f056fbf92d0bbf">UnlockChest</a> (int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual)</td></tr>
+<tr class="separator:a094fb9b89204dd4e17f056fbf92d0bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ee8573b61cc8354d605a2855de5e765"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0ee8573b61cc8354d605a2855de5e765">WalkDust</a> (int type, ref int dustType, ref bool makeDust, ref Color color)</td></tr>
 <tr class="separator:a0ee8573b61cc8354d605a2855de5e765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -2438,6 +2442,50 @@ Static Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a2535a7383faf51655066c587ec7b4513"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.TileLoader.IsLockedChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l01038">1038</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;                                                                 {</div><div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de">GetTile</a>(type)?.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a73168146e18265de2739d619377b8adf">IsLockedChest</a>(i, j) ?? <span class="keyword">false</span>;</div><div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tile_loader_html_a046d2f0670d83bdc212241b0f87ff2de"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de">Terraria.ModLoader.TileLoader.GetTile</a></div><div class="ttdeci">static ModTile GetTile(int type)</div><div class="ttdoc">Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null. </div><div class="ttdef"><b>Definition:</b> <a href="_tile_loader_8cs_source.html#l00102">TileLoader.cs:102</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_a73168146e18265de2739d619377b8adf"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a73168146e18265de2739d619377b8adf">Terraria.ModLoader.ModTile.IsLockedChest</a></div><div class="ttdeci">virtual bool IsLockedChest(int i, int j)</div><div class="ttdoc">Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into th...</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="aab04869f2c558dee16068efb1e9b0a70"></a>
 <div class="memitem">
 <div class="memproto">
@@ -4044,6 +4092,68 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l00958">958</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;                                                                    {</div><div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;            <span class="keywordflow">if</span> (trees.ContainsKey(type)) {</div><div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;                gore = trees[type].GrowthFXGore();</div><div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;            }</div><div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a094fb9b89204dd4e17f056fbf92d0bbf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.TileLoader.UnlockChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref short&#160;</td>
+          <td class="paramname"><em>frameXAdjustment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>dustType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>manual</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_tile_loader_8cs_source.html#l01042">1042</a> of file <a class="el" href="_tile_loader_8cs_source.html">TileLoader.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;                                                                                                                              {</div><div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de">GetTile</a>(type)?.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a120164cf1f14b2efd5cbbc723a4d1b50">UnlockChest</a>(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? <span class="keyword">false</span>;</div><div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_tile_loader_html_a046d2f0670d83bdc212241b0f87ff2de"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de">Terraria.ModLoader.TileLoader.GetTile</a></div><div class="ttdeci">static ModTile GetTile(int type)</div><div class="ttdoc">Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null. </div><div class="ttdef"><b>Definition:</b> <a href="_tile_loader_8cs_source.html#l00102">TileLoader.cs:102</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_tile_html_a120164cf1f14b2efd5cbbc723a4d1b50"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a120164cf1f14b2efd5cbbc723a4d1b50">Terraria.ModLoader.ModTile.UnlockChest</a></div><div class="ttdeci">virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)</div><div class="ttdoc">Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36...</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0ee8573b61cc8354d605a2855de5e765"></a>

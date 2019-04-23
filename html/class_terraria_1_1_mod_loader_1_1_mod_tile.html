@@ -204,6 +204,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a48b417a095315611106b7173032ffe82"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a48b417a095315611106b7173032ffe82">HitWire</a> (int i, int j)</td></tr>
 <tr class="memdesc:a48b417a095315611106b7173032ffe82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through this tile.  <a href="#a48b417a095315611106b7173032ffe82">More...</a><br /></td></tr>
 <tr class="separator:a48b417a095315611106b7173032ffe82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73168146e18265de2739d619377b8adf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a73168146e18265de2739d619377b8adf">IsLockedChest</a> (int i, int j)</td></tr>
+<tr class="memdesc:a73168146e18265de2739d619377b8adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.  <a href="#a73168146e18265de2739d619377b8adf">More...</a><br /></td></tr>
+<tr class="separator:a73168146e18265de2739d619377b8adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81433b4e5c3a6a72ffeb38dbe49181f8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a81433b4e5c3a6a72ffeb38dbe49181f8">KillMultiTile</a> (int i, int j, int frameX, int frameY)</td></tr>
 <tr class="memdesc:a81433b4e5c3a6a72ffeb38dbe49181f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. You can use it to make your multi-tile block drop a single item, for example.  <a href="#a81433b4e5c3a6a72ffeb38dbe49181f8">More...</a><br /></td></tr>
 <tr class="separator:a81433b4e5c3a6a72ffeb38dbe49181f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,6 +279,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec237f34a1022d26cae044deccb2abbf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf">TileFrame</a> (int i, int j, ref bool resetFrame, ref bool noBreak)</td></tr>
 <tr class="memdesc:aec237f34a1022d26cae044deccb2abbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever this tile updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.  <a href="#aec237f34a1022d26cae044deccb2abbf">More...</a><br /></td></tr>
 <tr class="separator:aec237f34a1022d26cae044deccb2abbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a120164cf1f14b2efd5cbbc723a4d1b50"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a120164cf1f14b2efd5cbbc723a4d1b50">UnlockChest</a> (int i, int j, ref short frameXAdjustment, ref int <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">dustType</a>, ref bool manual)</td></tr>
+<tr class="memdesc:a120164cf1f14b2efd5cbbc723a4d1b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. This hook is called on the client, and if successful will be called on the server and other clients as the action is synced. Make sure that the logic is consistent and not dependent on local player data.  <a href="#a120164cf1f14b2efd5cbbc723a4d1b50">More...</a><br /></td></tr>
+<tr class="separator:a120164cf1f14b2efd5cbbc723a4d1b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34536351a09ae478bd2700a93cc9d0e2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a34536351a09ae478bd2700a93cc9d0e2">WalkDust</a> (ref int <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#acb29b9805a72524b6de8106705b24cfe">dustType</a>, ref bool makeDust, ref Color color)</td></tr>
 <tr class="memdesc:a34536351a09ae478bd2700a93cc9d0e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the dust created when the player walks on this tile. The makeDust parameter is whether or not to make dust; you can randomly set this to false to reduce the amount of dust produced.  <a href="#a34536351a09ae478bd2700a93cc9d0e2">More...</a><br /></td></tr>
 <tr class="separator:a34536351a09ae478bd2700a93cc9d0e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1478,6 +1484,50 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;                                                  {</div><div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="a73168146e18265de2739d619377b8adf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModTile.IsLockedChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a81433b4e5c3a6a72ffeb38dbe49181f8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2666,6 +2716,71 @@ Properties</h2></td></tr>
 </map>
 </div>
 </p>
+
+</div>
+</div>
+<a class="anchor" id="a120164cf1f14b2efd5cbbc723a4d1b50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModTile.UnlockChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref short&#160;</td>
+          <td class="paramname"><em>frameXAdjustment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>dustType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>manual</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. This hook is called on the client, and if successful will be called on the server and other clients as the action is synced. Make sure that the logic is consistent and not dependent on local player data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">frameXAdjustment</td><td>The adjustment made to each Tile.frameX, defaults to -36</td></tr>
+    <tr><td class="paramname">dustType</td><td>The dust spawned, defaults to 11</td></tr>
+    <tr><td class="paramname">manual</td><td>Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true if this tile truly is a locked chest and the chest can be unlocked</dd></dl>
 
 </div>
 </div>

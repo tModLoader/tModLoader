@@ -31,6 +31,7 @@ var searchData=
   ['isdefault',['IsDefault',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#ac1fd751f1ed8a9139b64f9d07f2a43d4',1,'Terraria::ModLoader::ModTranslation']]],
   ['isdresser',['IsDresser',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2c97c48cae115f24c84b9ecaf4d1f742',1,'Terraria::ModLoader::TileLoader']]],
   ['isinitialized',['isInitialized',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#a88ec9fc54a7f734521733cede553940f',1,'Terraria::ModLoader::MonoModHooks']]],
+  ['islockedchest',['IsLockedChest',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a73168146e18265de2739d619377b8adf',1,'Terraria.ModLoader.ModTile.IsLockedChest()'],['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2535a7383faf51655066c587ec7b4513',1,'Terraria.ModLoader.TileLoader.IsLockedChest()']]],
   ['ismodbed',['IsModBed',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aab04869f2c558dee16068efb1e9b0a70',1,'Terraria::ModLoader::TileLoader']]],
   ['ismodbossbag',['IsModBossBag',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a61113f728375a71ca5714b354fa3873e',1,'Terraria::ModLoader::ItemLoader']]],
   ['ismoddedclient',['IsModdedClient',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#ab0864e08a521b65ccf01b36be9217666',1,'Terraria::ModLoader::ModNet']]],
