@@ -297,8 +297,14 @@ namespace Terraria.ModLoader.Core
 			try {
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 			}
+			catch (BuildException e) {
+				Console.Error.WriteLine("Error: "+e.Message);
+				if (e.InnerException != null);
+					Console.Error.WriteLine(e.InnerException);
+				Environment.Exit(1);
+			}
 			catch (Exception e) {
-				Console.WriteLine(e);
+				Console.Error.WriteLine(e);
 				Environment.Exit(1);
 			}
 			finally {
@@ -344,19 +350,8 @@ namespace Terraria.ModLoader.Core
 					status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
 				}
 
-				mod.modFile.AddFile("Info", mod.properties.ToBytes());
+				PackageMod(mod);
 
-				status.SetStatus(Language.GetTextValue("tModLoader.Packaging", mod));
-				status.SetProgress(0, 1);
-
-				var resources = Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)
-					.Where(res => !IgnoreResource(mod, res))
-					.ToList();
-
-				status.SetProgress(packedResourceCount = 0, resources.Count);
-				Parallel.ForEach(resources, resource => AddResource(mod, resource));
-
-				
 				ModLoader.GetMod(mod.Name)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 				mod.modFile.Save();
 				mod.modFile.Close();
@@ -365,6 +360,26 @@ namespace Terraria.ModLoader.Core
 				e.Data["mod"] = mod.Name;
 				throw;
 			}
+		}
+
+		private void PackageMod(BuildingMod mod) {
+			status.SetStatus(Language.GetTextValue("tModLoader.Packaging", mod));
+			status.SetProgress(0, 1);
+
+			mod.modFile.AddFile("Info", mod.properties.ToBytes());
+
+			var resources = Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories)
+				.Where(res => !IgnoreResource(mod, res))
+				.ToList();
+
+			status.SetProgress(packedResourceCount = 0, resources.Count);
+			Parallel.ForEach(resources, resource => AddResource(mod, resource));
+
+			// add dll references from the bin folder
+			var libFolder = Path.Combine(mod.path, "lib");
+			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)))
+				if (!dllPath.StartsWith(libFolder))
+					mod.modFile.AddFile("lib/"+Path.GetFileName(dllPath), File.ReadAllBytes(dllPath));
 		}
 
 		private bool IgnoreResource(BuildingMod mod, string resource) {
@@ -536,7 +551,7 @@ namespace Terraria.ModLoader.Core
 				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
 
 			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(refDll => Path.Combine(mod.path, "lib/" + refDll + ".dll")));
+			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods) {
@@ -575,6 +590,20 @@ namespace Terraria.ModLoader.Core
 				var firstError = results.Cast<CompilerError>().First(e => !e.IsWarning);
 				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, firstError));
 			}
+		}
+
+		private string DllRefPath(BuildingMod mod, string dllName) {
+			var path = Path.Combine(mod.path, "lib", dllName + ".dll");
+			if (File.Exists(path))
+				return path;
+
+			if (Program.LaunchParameters.TryGetValue("-eac", out var eacPath)) {
+				var outputCopiedPath = Path.Combine(Path.GetDirectoryName(eacPath), dllName + ".dll");
+				if (File.Exists(outputCopiedPath))
+					return outputCopiedPath;
+			}
+
+			throw new BuildException("Missing dll reference: "+path);
 		}
 
 		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {
@@ -651,7 +680,7 @@ namespace Terraria.ModLoader.Core
 		/// Invoke the Roslyn compiler via reflection to avoid a .NET 4.6 dependency
 		/// </summary>
 		private static CompilerErrorCollection RoslynCompile(string name, string outputPath, string[] references, string[] files, string[] preprocessorSymbols, bool includePdb, bool allowUnsafe)
-		{		
+		{
 			return (CompilerErrorCollection)RoslynWrapper.GetMethod("Compile")
 				.Invoke(null, new object[] { name, outputPath, references, files, preprocessorSymbols, includePdb, allowUnsafe });
 		}
