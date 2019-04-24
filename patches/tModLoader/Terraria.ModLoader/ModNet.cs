@@ -95,24 +95,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
-				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == ConfigScope.ServerSide);
-				if (modConfigs == null)
-				//if (modConfigs.Equals(default(List<ModConfig>)))
-				{
-					p.Write(0);
-				}
-				else
-				{
-					p.Write(modConfigs.Count());
-					foreach (var config in modConfigs)
-					{
-						string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-						Logging.Terraria.Info($"Sending Server Config {config.Name}: {json}");
-
-						p.Write(config.Name);
-						p.Write(json);
-					}
-				}
+				SendServerConfigs(p, mod);
 			}
 
 			p.Send(clientIndex);
@@ -127,6 +110,23 @@ namespace Terraria.ModLoader
 						queue.Enqueue(dep);
 					}
 				}
+			}
+		}
+
+		private static void SendServerConfigs(ModPacket p, Mod mod) {
+			if (!ConfigManager.Configs.TryGetValue(mod, out var configs)) {
+				p.Write(0);
+				return;
+			}
+			
+			var serverConfigs = configs.Where(x => x.Mode == ConfigScope.ServerSide).ToArray();
+			p.Write(serverConfigs.Length);
+			foreach (var config in serverConfigs) {
+				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
+				Logging.Terraria.Info($"Sending Server Config {config.Name}: {json}");
+
+				p.Write(config.Name);
+				p.Write(json);
 			}
 		}
 
@@ -206,6 +206,20 @@ namespace Terraria.ModLoader
 
 				Logging.tML.Warn(msg);
 				Interface.errorMessage.Show(msg, 0);
+			}
+
+			// ready to connect, apply configs. Config manager will apply the configs on reload automatically
+			if (!needsReload) {
+				foreach (var pendingConfig in pendingConfigs)
+					JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
+				
+				if (ConfigManager.AnyModNeedsReload()) {
+					needsReload = true;
+				}
+				else {
+					foreach (var pendingConfig in pendingConfigs)
+						ConfigManager.GetConfig(pendingConfig).OnChanged();
+				}
 			}
 		}
 
@@ -315,23 +329,6 @@ namespace Terraria.ModLoader
 				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
-			}
-
-			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
-			foreach (var pendingConfig in pendingConfigs)
-			{
-				var activeConfig = ConfigManager.GetConfig(pendingConfig);
-				JsonConvert.PopulateObject(pendingConfig.json, activeConfig, ConfigManager.serializerSettingsCompact);
-			}
-			if (ConfigManager.AnyModNeedsReload())
-			{
-				ModLoader.OnSuccessfulLoad = NetReload();
-				ModLoader.Reload();
-				return;
-			}
-			foreach (var pendingConfig in pendingConfigs) {
-				var activeConfig = ConfigManager.GetConfig(pendingConfig);
-				activeConfig.OnChanged();
 			}
 
 			downloadingMod = null;

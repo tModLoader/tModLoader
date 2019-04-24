@@ -93,25 +93,13 @@ namespace Terraria.ModLoader.Config
 		{
 			string filename = config.mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == ConfigScope.ServerSide && Main.netMode == 1 /*ModLoader.OnSuccessfulLoad == ModNet.NetReload()*/)
+			if (config.Mode == ConfigScope.ServerSide && Main.netMode == 1)
 			{
-				//path = Path.Combine(ServerModConfigPath, filename);
-				//if (!File.Exists(path))
-				//{
-				//	throw new Exception("Somehow server config is missing.");
-				//}
 				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
 				return;
 			}
-			string json = "{}";
-			if (File.Exists(path))
-			{
-				using (StreamReader r = new StreamReader(path))
-				{
-					json = r.ReadToEnd();
-				}
-			}
+			string json = File.Exists(path) ? File.ReadAllText(path) : "{}";
 			JsonConvert.PopulateObject(json, config, serializerSettings);
 		}
 

@@ -234,11 +234,7 @@ namespace Terraria.ModLoader.UI
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
-			foreach (var activeConfigs in ConfigManager.Configs) {
-				foreach (var activeConfig in activeConfigs.Value) {
-					activeConfig.OnChanged();
-				}
-			}
+			ConfigManager.OnChangedAll();
 			Main.menuMode = 0;
 		}
 
