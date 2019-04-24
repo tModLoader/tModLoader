@@ -1,3 +1,3 @@
 <map id="Terraria.ModLoader.Config.ModConfig.OnChanged" name="Terraria.ModLoader.Config.ModConfig.OnChanged">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_net.html#ab34e665297766ff71a00a9812fa88acb" title="Terraria.ModLoader.ModNet.\lOnModsDownloaded" alt="" coords="235,5,423,46"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_net.html#a7b38b5f2ca6cd52e273d8ecca1624a05" title="Terraria.ModLoader.ModNet.\lSendServerConfigs" alt="" coords="235,5,423,46"/>
 </map>
