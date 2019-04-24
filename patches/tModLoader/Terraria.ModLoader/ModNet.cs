@@ -170,14 +170,15 @@ namespace Terraria.ModLoader
 				needsReload = true;
 
 				var localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-				var matching = localVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
+				var matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
 				if (matching != null) {
 					matching.Enabled = true;
 					continue;
 				}
 
 				// overwrite an existing version of the mod if there is one
-				header.path = localVersions.FirstOrDefault()?.modFile?.path;
+				if (localVersions.Length > 0)
+					header.path = localVersions[0].modFile.path;
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 					downloadQueue.Enqueue(header);
