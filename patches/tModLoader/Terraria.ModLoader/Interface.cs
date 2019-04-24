@@ -46,6 +46,7 @@ namespace Terraria.ModLoader
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
+		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -171,6 +172,10 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == modInfoID) {
 				Main.MenuUI.SetState(modInfo);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == downloadModID) {
+				Main.MenuUI.SetState(downloadMod);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == managePublishedID) {

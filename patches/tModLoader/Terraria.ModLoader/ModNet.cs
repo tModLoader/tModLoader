@@ -263,8 +263,8 @@ namespace Terraria.ModLoader
 				if (downloadingFile == null) {
 					// TODO migrate to download UI, create new StreamingDownloadRequest
 					// TODO I hope this works fine without UI for the moment...
-					//Interface.downloadMod.SetDownloading(reader.ReadString());
-					//Interface.downloadMod.SetCancel(CancelDownload);
+					Interface.downloadMod.SetDownloading(reader.ReadString());
+					Interface.downloadMod.SetCancel(CancelDownload);
 					Main.menuMode = Interface.downloadModID;
 
 					ModLoader.GetMod(downloadingMod.name)?.File?.Close();
@@ -275,7 +275,7 @@ namespace Terraria.ModLoader
 
 				var bytes = reader.ReadBytes((int)Math.Min(downloadingLength - downloadingFile.Position, CHUNK_SIZE));
 				downloadingFile.Write(bytes, 0, bytes.Length);
-				//Interface.downloadMod.SetProgress(downloadingFile.Position, downloadingLength);
+				Interface.downloadMod.SetProgress(downloadingFile.Position, downloadingLength);
 
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
