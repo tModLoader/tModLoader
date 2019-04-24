@@ -131,7 +131,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SyncClientMods(BinaryReader reader) {
-			SyncClientMods(reader, out var needsReload);
+			if (!SyncClientMods(reader, out var needsReload))
+				return; //error syncing can't connect to server
+
 			if (downloadQueue.Count > 0)
 				DownloadNextMod();
 			else
@@ -139,7 +141,7 @@ namespace Terraria.ModLoader
 		}
 
 		// This method is split so that the local variables aren't held by the GC when reloading
-		internal static void SyncClientMods(BinaryReader reader, out bool needsReload) {
+		internal static bool SyncClientMods(BinaryReader reader, out bool needsReload) {
 			AllowVanillaClients = reader.ReadBoolean();
 			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
@@ -159,29 +161,23 @@ namespace Terraria.ModLoader
 
 				int configCount = reader.ReadInt32();
 				for (int c = 0; c < configCount; c++)
-				{
 					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
-				}
 
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
-				if (clientMod != null) {
-					if (header.Matches(clientMod.File))
-						continue;
+				if (clientMod != null && header.Matches(clientMod.File))
+					continue;
 
-					header.path = clientMod.File.path;
-				}
-				else {
-					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
-					if (matching != null) {
-						matching.Enabled = true;
-						needsReload = true;
-						continue;
-					}
+				needsReload = true;
 
-					if (disabledVersions.Length > 0)
-						header.path = disabledVersions[0].modFile.path;
+				var localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
+				var matching = localVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
+				if (matching != null) {
+					matching.Enabled = true;
+					continue;
 				}
+
+				// overwrite an existing version of the mod if there is one
+				header.path = localVersions.FirstOrDefault()?.modFile?.path;
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 					downloadQueue.Enqueue(header);
@@ -206,6 +202,7 @@ namespace Terraria.ModLoader
 
 				Logging.tML.Warn(msg);
 				Interface.errorMessage.Show(msg, 0);
+				return false;
 			}
 
 			// ready to connect, apply configs. Config manager will apply the configs on reload automatically
@@ -221,6 +218,8 @@ namespace Terraria.ModLoader
 						ConfigManager.GetConfig(pendingConfig).OnChanged();
 				}
 			}
+
+			return true;
 		}
 
 		private static void DownloadNextMod() {
