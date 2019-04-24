@@ -137,8 +137,8 @@
  			spriteBatch.DrawString(fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
 -			return fontDeathText.MeasureString(text) * scale;
 +			*/
-+			Vector2 vector = ChatManager.GetStringSize(fontDeathText, text, new Vector2(scale));
-+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 1.5f);
++			Vector2 vector = ChatManager.GetStringSize(fontDeathText, text, Vector2.One);
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
 +			return vector * scale;
  		}
  
