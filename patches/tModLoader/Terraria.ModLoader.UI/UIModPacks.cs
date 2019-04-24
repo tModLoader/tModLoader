@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -16,10 +15,10 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIModPacks : UIState
 	{
-		private UIList modListList;
+		private UIList modPacks;
 		private UILoaderAnimatedImage uiLoader;
 		private UIPanel scrollPanel;
-		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
+		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
 		internal static string[] mods;
 
 		public override void OnInitialize() {
@@ -40,19 +39,19 @@ namespace Terraria.ModLoader.UI
 			};
 			uIElement.Append(scrollPanel);
 
-			modListList = new UIList {
+			modPacks = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
 				Height = { Percent = 1f },
 				ListPadding = 5f
 			};
-			scrollPanel.Append(modListList);
+			scrollPanel.Append(modPacks);
 
 			var uIScrollbar = new UIScrollbar {
 				Height = { Percent = 1f },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			scrollPanel.Append(uIScrollbar);
-			modListList.SetScrollbar(uIScrollbar);
+			modPacks.SetScrollbar(uIScrollbar);
 
 			var titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true) {
 				HAlign = 0.5f,
@@ -92,9 +91,9 @@ namespace Terraria.ModLoader.UI
 			//Main.menuMode = Interface.modsMenuID;
 
 			//Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModListSaveDirectory);
+			Directory.CreateDirectory(ModPacksDirectory);
 
-			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
+			string path = Path.Combine(ModPacksDirectory, filename + ".json");
 			var foundMods = ModOrganizer.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
 			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
@@ -115,88 +114,30 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnActivate() {
 			scrollPanel.Append(uiLoader);
-			modListList.Clear();
+			modPacks.Clear();
 			Task.Factory
 				.StartNew(delegate {
 					mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
-					return FindModLists();
+
+					Directory.CreateDirectory(ModPacksDirectory);
+					return Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
 				})
 				.ContinueWith(task => {
-					string[] modListsFullPath = task.Result;
-					foreach (string modListFilePath in modListsFullPath) {
+					foreach (string modPackPath in task.Result) {
 						try {
-							string[] mods = { };
-							//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
-
-							if (File.Exists(modListFilePath)) {
-								using (StreamReader r = new StreamReader(modListFilePath)) {
-									string json = r.ReadToEnd();
-
-									mods = JsonConvert.DeserializeObject<string[]>(json);
-								}
-							}
-							UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
-							modListList.Add(modItem);
+							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
+							modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods));
 						}
 						catch {
-							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modListFilePath))) {
+							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
 								Width = { Percent = 1 },
 								Height = { Pixels = 50, Percent = 0 }
 							};
-							modListList.Add(badModPackMessage);
+							modPacks.Add(badModPackMessage);
 						}
 					}
 					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
-
-		private string[] FindModLists() {
-			Directory.CreateDirectory(ModListSaveDirectory);
-			string[] files = Directory.GetFiles(ModListSaveDirectory, "*.json", SearchOption.TopDirectoryOnly);
-			//string[] files = Directory.GetFiles(ModListSaveDirectory, "*.json", SearchOption.TopDirectoryOnly).Select(file => Path.GetFileNameWithoutExtension(file)).ToArray();
-			return files;
-		}
 	}
 }
-/*
-
-		private static void SaveModList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			// enabled, not necessarially loaded.
-			string[] enabledMods = ModLoader.FindMods()
-				.Where(ModLoader.IsEnabled)
-				.Select(mod => mod.name)
-				.ToArray();
-
-			Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists");
-
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists" + Path.DirectorySeparatorChar + "testlist.json";
-
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
-			File.WriteAllText(path, json);
-
-		}
-
-		private static void LoadModList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			string[] mods = { };
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists" + Path.DirectorySeparatorChar + "testlist.json";
-
-			if (File.Exists(path))
-			{
-				using (StreamReader r = new StreamReader(path))
-				{
-					string json = r.ReadToEnd();
-					mods = JsonConvert.DeserializeObject<string[]>(json);
-				}
-			}
-
-			// Actually Set mods to enabled.
-
-			Main.PlaySound(11, -1, -1, 1);
-			Interface.infoMessage.SetMessage($"The Following mods were enabled:\n{String.Join(", ", mods)}\n, some disabled: ");
-			Interface.infoMessage.SetGotoMenu(Interface.reloadModsID);
-			Main.menuMode = Interface.infoMessageID;
-		}
-		*/

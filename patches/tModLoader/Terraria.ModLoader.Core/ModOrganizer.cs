@@ -94,10 +94,10 @@ namespace Terraria.ModLoader.Core
 			if (!commandLineModPack.EndsWith(".json"))
 				commandLineModPack += ".json";
 
-			string filePath = Path.Combine(UIModPacks.ModListSaveDirectory, commandLineModPack);
+			string filePath = Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack);
 
 			try {
-				Directory.CreateDirectory(UIModPacks.ModListSaveDirectory);
+				Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
 				Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.LoadingSpecifiedModPack", commandLineModPack));
 				var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 				foreach (var mod in FindMods()) {

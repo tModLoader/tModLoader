@@ -184,8 +184,8 @@ namespace Terraria.ModLoader.UI
 
 		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
-			Directory.CreateDirectory(UIModPacks.ModListSaveDirectory);
-			string path = UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + modPackItem.filename + ".json";
+			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
+			string path = UIModPacks.ModPacksDirectory + Path.DirectorySeparatorChar + modPackItem.filename + ".json";
 			if (File.Exists(path)) {
 				File.Delete(path);
 			}
