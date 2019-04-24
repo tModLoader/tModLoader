@@ -107,7 +107,7 @@ namespace ExampleMod.Tiles
 			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			var flameTexture = mod.GetTexture("Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 
-			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(ulong)i);
+			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i);
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref num190, -10, 11) * 0.15f;

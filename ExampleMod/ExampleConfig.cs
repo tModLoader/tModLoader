@@ -39,7 +39,9 @@ namespace ExampleMod
 		public bool UselessBoolExample;
 
 		// This is private. You'll notice that it doesn't show up in the config menu. Don't set something private.
+#pragma warning disable CS0169 // Unused field
 		private bool PrivateFieldBoolExample;
+#pragma warning restore CS0169
 
 		// This is ignored, it also shouldn't show up in the config menu despite being public.
 		[JsonIgnore]
@@ -429,7 +431,9 @@ namespace ExampleMod
 		// Private and Internal fields and properties will not be shown. 
 		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
 		// You should avoid private and internal values in 
+#pragma warning disable CS0414 
 		private float Private = 144;
+#pragma warning restore CS0414
 		internal float Internal;
 
 		// Public fields are most common. Use public for most items.
