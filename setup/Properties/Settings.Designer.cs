@@ -58,8 +58,23 @@ namespace Terraria.ModLoader.Properties {
                 this["SingleDecompileThread"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("2015-01-01")]
+		public global::System.DateTime PlatformDiffCutoff
+		{
+			get
+			{
+				return ((global::System.DateTime)(this["PlatformDiffCutoff"]));
+			}
+			set
+			{
+				this["PlatformDiffCutoff"] = value;
+			}
+		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2015-01-01")]
         public global::System.DateTime MergedDiffCutoff {

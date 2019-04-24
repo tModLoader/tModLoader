@@ -21,8 +21,25 @@ namespace Terraria.ModLoader.Setup
 			InitializeComponent();
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
-			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+
+			//ToDo: Pretty sure there is better way to update platform tasks! Check radiobutton check change as well!!
+			if (radioButtonSteam.Checked)
+			{
+				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+			}
+			else if (radioButtonGoG.Checked)
+			{
+				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+			}
+			else
+			{
+				//Should not be here for the time being!
+			}
+
+			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/platform", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/platform", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
@@ -30,11 +47,11 @@ namespace Terraria.ModLoader.Setup
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchPlatform, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
-				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new SetupTask(this, new[] { buttonDecompile, buttonPatchPlatform, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
@@ -104,6 +121,7 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
+			Settings.Default.PlatformDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
@@ -197,6 +215,24 @@ namespace Terraria.ModLoader.Setup
 					progressBar.Value = 0;
 					if (closeOnCancel) Close();
 				}));
+			}
+		}
+
+		private void radioButtonSteam_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radioButtonSteam.Checked)
+			{
+				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+			}
+		}
+
+		private void radioButtonGoG_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radioButtonGoG.Checked)
+			{
+				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
+				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 			}
 		}
 	}

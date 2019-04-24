@@ -1,0 +1,68 @@
+--- src/decompiled\Terraria.csproj
++++ src/platform\Terraria.csproj
+@@ -1,29 +_,43 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++<Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
+     <ProjectGuid>{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}</ProjectGuid>
+-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
++    <DefineConstants>$(DefineConstants);GOG</DefineConstants>
++    <AssemblyName>Terraria</AssemblyName>
++    <TargetFramework>net40</TargetFramework>
++    <Version>1.3.5.1</Version>
++    <Company>Re-Logic</Company>
++    <Copyright>Copyright © Re-Logic 2017</Copyright>
++    <RootNamespace />
++    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++    <LangVersion>latest</LangVersion>
++    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+     <OutputType>WinExe</OutputType>
+-    <AssemblyName>Terraria</AssemblyName>
+-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+-    <WarningLevel>4</WarningLevel>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
++    <PlatformTarget>AnyCPU</PlatformTarget>
++    <Optimize>true</Optimize>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
++    <OutputType>Exe</OutputType>
++    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
++    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
++    <Optimize>false</Optimize>
++    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
+     <PlatformTarget>x86</PlatformTarget>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+-    <OutputPath>bin\Debug\</OutputPath>
+-    <DebugSymbols>true</DebugSymbols>
+-    <DebugType>full</DebugType>
+-    <Optimize>false</Optimize>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+-    <OutputPath>bin\Release\</OutputPath>
+-    <DebugSymbols>true</DebugSymbols>
+-    <DebugType>pdbonly</DebugType>
+-    <Optimize>true</Optimize>
++    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
++    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
++    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
++    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="Microsoft.Xna.Framework.Game" />
+
