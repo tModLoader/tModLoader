@@ -7,7 +7,7 @@ var searchData=
   ['fallback',['fallback',['../class_terraria_1_1_mod_loader_1_1_mod_translation.html#a64afcfcd8b9bcbaa786351f8267accf0',1,'Terraria::ModLoader::ModTranslation']]],
   ['floatbuf',['floatBuf',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a740df534cc9cf096f37fcd55fbf918ac',1,'Terraria::ModLoader::Audio::MusicStreamingOGG']]],
   ['font',['font',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#afa12e9d44d3270f8d219225ebf9acbbb',1,'Terraria::ModLoader::DrawableTooltipLine']]],
-  ['framework',['Framework',['../class_terraria_1_1_mod_loader_1_1_framework_version.html#a9b48f1305ebe9773e8cb5eadd9151c82',1,'Terraria.ModLoader.FrameworkVersion.Framework()'],['../_mod_net_8cs.html#a6c5f1e60dd265cf02a13e257dc5c3886',1,'Framework():&#160;ModNet.cs']]],
+  ['framework',['Framework',['../class_terraria_1_1_mod_loader_1_1_framework_version.html#a9b48f1305ebe9773e8cb5eadd9151c82',1,'Terraria::ModLoader::FrameworkVersion']]],
   ['frogcritter',['FrogCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a0576ddf1b86463287a14626af1a375bf',1,'Terraria::ModLoader::SpawnCondition']]],
   ['frontacc',['FrontAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a17de29ed07facba1c0c480182a97970a',1,'Terraria::ModLoader::PlayerLayer']]],
   ['frontshader',['frontShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a98d4f8a7fd8d11e63cb66fc444b528eb',1,'Terraria::ModLoader::PlayerDrawInfo']]],

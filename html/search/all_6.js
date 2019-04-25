@@ -22,7 +22,7 @@ var searchData=
   ['font',['font',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#afa12e9d44d3270f8d219225ebf9acbbb',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['fontexists',['FontExists',['../class_terraria_1_1_mod_loader_1_1_mod.html#ade5d55a43735a11dded9db34d5f73305',1,'Terraria::ModLoader::Mod']]],
   ['frameeffects',['FrameEffects',['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e',1,'Terraria.ModLoader.ModPlayer.FrameEffects()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a460c2b183e3a96ee8d626ecae17c8d67',1,'Terraria.ModLoader.PlayerHooks.FrameEffects()']]],
-  ['framework',['Framework',['../class_terraria_1_1_mod_loader_1_1_framework_version.html#a9b48f1305ebe9773e8cb5eadd9151c82',1,'Terraria.ModLoader.FrameworkVersion.Framework()'],['../namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e',1,'Terraria.ModLoader.Framework()'],['../_mod_net_8cs.html#a6c5f1e60dd265cf02a13e257dc5c3886',1,'Framework():&#160;ModNet.cs']]],
+  ['framework',['Framework',['../class_terraria_1_1_mod_loader_1_1_framework_version.html#a9b48f1305ebe9773e8cb5eadd9151c82',1,'Terraria.ModLoader.FrameworkVersion.Framework()'],['../namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e',1,'Terraria.ModLoader.Framework()']]],
   ['frameworkversion',['FrameworkVersion',['../class_terraria_1_1_mod_loader_1_1_framework_version.html',1,'Terraria::ModLoader']]],
   ['frameworkversion',['FrameworkVersion',['../class_terraria_1_1_mod_loader_1_1_framework_version.html#a216ec3ecedea317a087e759507d32556',1,'Terraria::ModLoader::FrameworkVersion']]],
   ['frameworkversion_2ecs',['FrameworkVersion.cs',['../_framework_version_8cs.html',1,'']]],

@@ -3,7 +3,7 @@ var searchData=
   ['pantscolor',['pantsColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a293e8fd4a13295adb200ef82197df9bd',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['parent',['parent',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#ab655430c48d6ee75580d4b4d641c7de1',1,'Terraria::ModLoader::DrawLayer']]],
   ['pastexceptions',['pastExceptions',['../class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41',1,'Terraria::ModLoader::Logging']]],
-  ['path',['path',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#a5fd2a16466037e348b5593cf4d367ecc',1,'Terraria.ModLoader.ModNet.ModHeader.path()'],['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a65137326ec3e9869302e7aa0f9747594',1,'Terraria.ModLoader.Audio.MusicStreaming.path()']]],
+  ['path',['path',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a65137326ec3e9869302e7aa0f9747594',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['payloadhandlers',['PayloadHandlers',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a1aeccffe5e6152cbc65b115d652491e0',1,'Terraria::ModLoader::IO::TagIO']]],
   ['payloadids',['PayloadIDs',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#ae68883dc80d655302b849f18016e00c4',1,'Terraria::ModLoader::IO::TagIO']]],
   ['payloadtype',['PayloadType',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html#a3e5b0d7115aa3fa7e8d2a2bbc63a9054',1,'Terraria::ModLoader::IO::TagIO::PayloadHandler']]],

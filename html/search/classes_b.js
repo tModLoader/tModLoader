@@ -10,7 +10,6 @@ var searchData=
   ['modcontent',['ModContent',['../class_terraria_1_1_mod_loader_1_1_mod_content.html',1,'Terraria::ModLoader']]],
   ['moddust',['ModDust',['../class_terraria_1_1_mod_loader_1_1_mod_dust.html',1,'Terraria::ModLoader']]],
   ['modgore',['ModGore',['../class_terraria_1_1_mod_loader_1_1_mod_gore.html',1,'Terraria::ModLoader']]],
-  ['modheader',['ModHeader',['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html',1,'Terraria::ModLoader::ModNet']]],
   ['modhotkey',['ModHotKey',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html',1,'Terraria::ModLoader']]],
   ['moditem',['ModItem',['../class_terraria_1_1_mod_loader_1_1_mod_item.html',1,'Terraria::ModLoader']]],
   ['modloader',['ModLoader',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html',1,'Terraria::ModLoader']]],

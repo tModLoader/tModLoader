@@ -95,7 +95,6 @@ var hierarchy =
     [ "Terraria.ModLoader.ModContent", "class_terraria_1_1_mod_loader_1_1_mod_content.html", null ],
     [ "Terraria.ModLoader.ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", null ],
     [ "Terraria.ModLoader.ModGore", "class_terraria_1_1_mod_loader_1_1_mod_gore.html", null ],
-    [ "Terraria.ModLoader.ModNet.ModHeader", "class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html", null ],
     [ "Terraria.ModLoader.ModHotKey", "class_terraria_1_1_mod_loader_1_1_mod_hot_key.html", null ],
     [ "Terraria.ModLoader.ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", null ],
     [ "Terraria.ModLoader.ModLoader", "class_terraria_1_1_mod_loader_1_1_mod_loader.html", null ],
