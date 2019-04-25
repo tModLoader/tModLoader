@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -80,13 +82,19 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
+		private static readonly UIVirtualKeyboard VirtualKeyboard = new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0);
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
-			Main.MenuUI.SetState(new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), () => Main.menuMode = Interface.modPacksMenuID, 0));
+			Main.MenuUI.SetState(VirtualKeyboard);
 			Main.menuMode = 888;
 		}
 
 		public static void SaveModList(string filename) {
+			// Sanitize input if not valid
+			if (!IsValidModpackName(filename.Split(Path.DirectorySeparatorChar).Last())) {
+				VirtualKeyboard.Text = SanitizeModpackName(filename);
+				return;
+			}
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
@@ -112,6 +120,13 @@ namespace Terraria.ModLoader.UI
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 		}
 
+		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
+		internal static string SanitizeModpackName(string name) 
+			=> Regex.Replace(name, MODPACK_REGEX, string.Empty, RegexOptions.Compiled);
+
+		internal static bool IsValidModpackName(string name)
+			=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+
 		public override void OnActivate() {
 			scrollPanel.Append(uiLoader);
 			modPacks.Clear();
@@ -125,6 +140,9 @@ namespace Terraria.ModLoader.UI
 				.ContinueWith(task => {
 					foreach (string modPackPath in task.Result) {
 						try {
+							if (modPackPath.EndsWith("/") || !IsValidModpackName(modPackPath.Split(Path.DirectorySeparatorChar).Last())) {
+								throw new Exception();
+							}
 							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
 							modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods));
 						}
