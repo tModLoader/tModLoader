@@ -49,7 +49,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					}
 
 					OnQueueProcessed();
-				}, cts.Token);
+				});
 		}
 
 		private void DispatchWorkersFromQueue() {

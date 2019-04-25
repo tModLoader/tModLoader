@@ -59,9 +59,14 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		// It might be executing on a worker thread
 		// so do not update controls directly from here
 		private void ResponseCallback(object state) {
-
-			Response = (HttpWebResponse)Request.EndGetResponse(ResponseAsyncResult);
-
+			try {
+				Response = (HttpWebResponse)Request.EndGetResponse(ResponseAsyncResult);
+			}
+			catch (Exception e) {
+				Logging.tML.Error($"The HttpRequest [{DisplayText}] failed.", e);
+				Completed = true;
+				return;
+			}
 			long contentLength = Response.ContentLength;
 			if (contentLength < 0) {
 				Logging.tML.Error($"Could not get a proper content length for HttpDownloadRequest [{DisplayText}]");
