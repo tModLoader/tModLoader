@@ -15,10 +15,19 @@
  				Main.instance.MouseText(this._item.Name, this._item.rare, 0, -1, -1, -1, -1);
  			}
  
-+			//@todo possibly allow modders to custom draw here
++			//TODO possibly allow modders to custom draw here
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  			{
  				float num = 1f;
+@@ -74,7 +_,7 @@
+ 		{
+ 			Item item = new Item();
+ 			int type;
+-			if (int.TryParse(text, out type))
++			if (int.TryParse(text, out type) && type < ItemLoader.ItemCount)
+ 			{
+ 				item.netDefaults(type);
+ 			}
 @@ -83,8 +_,11 @@
  				return new TextSnippet(text);
  			}
