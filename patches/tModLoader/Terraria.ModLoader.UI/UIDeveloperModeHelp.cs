@@ -188,7 +188,7 @@ namespace Terraria.ModLoader.UI
 			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
-			Interface.downloadFile.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
+			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
 			DownloadFile("ModCompile", url, file, (req) => {
 				try {
 					Extract(file);
@@ -210,7 +210,7 @@ namespace Terraria.ModLoader.UI
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			Interface.downloadFile.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
+			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
 			DownloadFile("v4.5 Reference Assemblies", url, file, (req) => {
 				try {
 					Extract(file);
@@ -238,9 +238,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DownloadFile(string name, string url, string file, Action<DownloadRequest> downloadModCompileComplete) {
-			Interface.downloadFile.EnqueueRequest(
+			Interface.downloadManager.EnqueueRequest(
 				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), downloadModCompileComplete, onCancel: (req) => { Interface.developerModeHelp.updateRequired = true; Main.menuMode = Interface.developerModeHelpID; }));
-			Main.menuMode = Interface.downloadFileID;
+			Main.menuMode = Interface.downloadManagerID;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {

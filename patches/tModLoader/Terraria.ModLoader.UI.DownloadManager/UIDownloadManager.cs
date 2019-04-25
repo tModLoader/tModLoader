@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.DownloadManager
 {
+	/// <summary>
+	/// Responsible for managing download requests and reporting the progress of it in a UI
+	/// </summary>
 	internal class UIDownloadManager : UIState
 	{
+		internal bool Active;
 		private UILoadProgress loadProgress;
 		private string _oldName;
 		private string _name;
@@ -28,7 +28,7 @@ namespace Terraria.ModLoader.UI
 
 		public Action OnQueueProcessed { get; internal set; }
 
-		public void EnqueueRequest(HttpDownloadRequest request) {
+		public void EnqueueRequest(DownloadRequest request) {
 			_requestQueue.Enqueue(request);
 		}
 
@@ -63,6 +63,8 @@ namespace Terraria.ModLoader.UI
 				var req = _requestQueue.Dequeue();
 				_name = req.DisplayText;
 
+				// TODO Add a concurrency TML option, up to 4 concurrent downloads
+				// Start a new task to handle this download
 				Task.Factory.StartNew(() => {
 					try {
 						if (!req.SetupRequest(cts.Token)) {
@@ -72,21 +74,26 @@ namespace Terraria.ModLoader.UI
 						}
 
 						if (req is HttpDownloadRequest httpRequest) {
-							httpRequest.OnBufferUpdate = (httpReq) => { SetProgress(httpReq.Progress); };
-							httpRequest.OnComplete = (httpReq) => {
-								File.WriteAllBytes(httpReq.OutputFilePath, httpReq.ResponseBytes);
-								Logging.tML.Info($"DownloadManager finished downloading a file [{httpReq.DisplayText}] to {httpReq.OutputFilePath}");
+							httpRequest.OnBufferUpdate = (_) => { SetProgress(httpRequest.Progress); };
+							httpRequest.OnComplete = (_) => {
+								File.WriteAllBytes(httpRequest.OutputFilePath, httpRequest.ResponseBytes);
+								Logging.tML.Info($"DownloadManager finished downloading a file [{httpRequest.DisplayText}] to {httpRequest.OutputFilePath}");
 							};
 							httpRequest.Begin();
-							while (!httpRequest.Completed && !cts.IsCancellationRequested) ; // Fully wait for completion
 						}
+						else if (req is StreamingDownloadRequest streamingRequest) {
+							streamingRequest.OnBufferUpdate = (_) => { SetProgress(streamingRequest.FileStream.Position / (double)streamingRequest.DownloadingLength); };
+							streamingRequest.OnComplete = (_) => { Logging.tML.Info($"DownloadManager finished downloading a file [{req.DisplayText}] to {req.OutputFilePath} when syncing mods"); };
+						}
+
+						while (!req.Completed && !cts.IsCancellationRequested); // Fully wait for completion of this request
 					}
 					catch (Exception e) {
-						// Problem during setup, such as TLS handshake failure
+						// Problem during setup, such as TLS handshake failure for web dls
 						Logging.tML.Error($"Problem during processing of HttpDownloadRequest[{req.DisplayText}]", e);
 					}
 				}, cts.Token, TaskCreationOptions.AttachedToParent, TaskScheduler.Current)
-				.Wait(); // TODO Do not support concurrency for now, make it a TML option (2-4)
+				.Wait(cts.Token); // Wait for dl completion
 			}
 
 			Logging.tML.Info($"DownloadManager processed {processed} out of {toProcess} requests. Waiting for downloading to complete.");
@@ -113,29 +120,33 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
-			if (OnQueueProcessed == null)
-				OnQueueProcessed = () => Main.menuMode = 0;
+			if (!Active) {
+				if (OnQueueProcessed == null)
+					OnQueueProcessed = () => Main.menuMode = 0;
 
-			if (OverrideName != null)
-				UpdateDisplayText();
+				if (OverrideName != null)
+					UpdateDisplayText();
 
-			loadProgress.SetProgress(0f);
+				loadProgress.SetProgress(0f);
 
-			if (!UIModBrowser.PlatformSupportsTls12) {
-				// Needed for downloads from Github
-				Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
-				return;
+				if (!UIModBrowser.PlatformSupportsTls12) {
+					// Needed for downloads from Github
+					Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
+					return;
+				}
+
+				cts?.Dispose();
+				cts = new CancellationTokenSource();
+				ProcessQueue();
+				Active = true;
 			}
-
-			cts?.Dispose();
-			cts = new CancellationTokenSource();
-			ProcessQueue();
 		}
 
 		public override void OnDeactivate() {
 			_requestQueue.Clear();
 			OnQueueProcessed = null;
 			OverrideName = null;
+			Active = false;
 		}
 
 		public override void Update(GameTime gameTime) {

@@ -7,6 +7,7 @@ using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Terraria.ModLoader
@@ -22,7 +23,7 @@ namespace Terraria.ModLoader
 		internal const int reloadModsID = 10006;
 		internal const int modBrowserID = 10007;
 		internal const int modInfoID = 10008;
-		internal const int downloadModID = 10009;
+		//internal const int downloadModID = 10009;
 		//internal const int modControlsID = 10010;
 		internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
@@ -35,7 +36,7 @@ namespace Terraria.ModLoader
 		internal const int downloadModsID = 10020;
 		internal const int uploadModID = 10021;
 		internal const int developerModeHelpID = 10022;
-		internal const int downloadFileID = 10023;
+		internal const int downloadManagerID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
@@ -46,7 +47,6 @@ namespace Terraria.ModLoader
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
-		internal static UIDownloadMod downloadMod = new UIDownloadMod();
 		internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
-		internal static UIDownloadManager downloadFile = new UIDownloadManager();
+		internal static UIDownloadManager downloadManager = new UIDownloadManager();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
@@ -147,8 +147,8 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == downloadFileID) {
-				Main.MenuUI.SetState(downloadFile);
+			else if (Main.menuMode == downloadManagerID) {
+				Main.MenuUI.SetState(downloadManager);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == loadModsID) {
@@ -174,10 +174,10 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == downloadModID) {
-				Main.MenuUI.SetState(downloadMod);
-				Main.menuMode = 888;
-			}
+			//else if (Main.menuMode == downloadModID) {
+				//Main.MenuUI.SetState(downloadMod);
+				//Main.menuMode = 888;
+			//}
 			else if (Main.menuMode == managePublishedID) {
 				Main.MenuUI.SetState(managePublished);
 				Main.menuMode = 888;

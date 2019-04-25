@@ -17,26 +17,18 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public HttpWebRequest Request { get; protected set; }
 		public IAsyncResult ResponseAsyncResult { get; protected set; }
 		public byte[] ResponseBytes { get; protected set; }
-		public bool Completed { get; protected set; }
 
 		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
 		public SecurityProtocolType SecurityProtocol = Tls12;
 		public Version ProtocolVersion = HttpVersion.Version11;
 
-		public Action<HttpDownloadRequest> OnBufferUpdate;
-		public Action<HttpDownloadRequest> OnComplete;
-		public Action<HttpDownloadRequest> OnCancel;
-		public Action<HttpDownloadRequest> OnFinish;
-
 		public HttpDownloadRequest(string displayText, string outputFilePath, Func<HttpWebRequest> requestCallback,
-			Action<HttpDownloadRequest> onFinish = null, Action<HttpDownloadRequest> onCancel = null,
-			Action<HttpDownloadRequest> onBufferUpdate = null)
-			: base(displayText, outputFilePath) {
+			Action<DownloadRequest> onBufferUpdate = null, Action<DownloadRequest> onComplete = null, 
+			Action<DownloadRequest> onCancel = null, Action<DownloadRequest> onFinish = null, 
+			object customData = null) 
+			: base(displayText, outputFilePath, onBufferUpdate, onComplete, onCancel, onFinish, customData) {
 
 			_requestCallback = requestCallback;
-			OnFinish = onFinish;
-			OnBufferUpdate = onBufferUpdate;
-			OnCancel = onCancel;
 		}
 
 		public override bool SetupRequest(CancellationToken cancellationToken) {
@@ -58,7 +50,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			return ResponseAsyncResult;
 		}
 
-		// TODO HPKP / Expect-CT
+		// TODO Jof: HPKP / Expect-CT Manager
 		private bool ServerCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) {
 			return errors == SslPolicyErrors.None;
 		}
@@ -71,7 +63,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Response = (HttpWebResponse)Request.EndGetResponse(ResponseAsyncResult);
 
 			long contentLength = Response.ContentLength;
-			if (contentLength <= -1) {
+			if (contentLength < 0) {
 				Logging.tML.Error($"Could not get a proper content length for HttpDownloadRequest [{DisplayText}]");
 				// error
 				return;
@@ -97,7 +89,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				Array.Copy(buffer, 0, data, currentIndex, bytesReceived);
 				currentIndex += bytesReceived;
 				Progress = (double)currentIndex / contentLength;
-				// Use a buffer update callback
+				// Use a buffer update callback to update UI
 				OnBufferUpdate(this);
 			} while (currentIndex < contentLength);
 

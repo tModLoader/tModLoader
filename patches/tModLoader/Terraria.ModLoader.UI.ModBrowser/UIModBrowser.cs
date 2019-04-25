@@ -527,17 +527,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		/// Enqueue a Mod browser item to the download manager
 		/// </summary>
 		internal void EnqueueModBrowserDownload(UIModDownloadItem mod) {
-
-			// TODO this will not support concurrent downloading
-			string dlFilePath() => $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{DateTime.Now.Ticks}.tmod";
-
-			Interface.downloadFile.EnqueueRequest(
+			Interface.downloadManager.EnqueueRequest(
 				new HttpDownloadRequest(
-					mod.displayname, 
-					dlFilePath(),
+					mod.displayname,
+					$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{DateTime.Now.Ticks}.tmod",
 					() => (HttpWebRequest)WebRequest.Create(mod.download),
-					onFinish: OnModDownloadFinished,
-					onCancel: OnModDownloadCancelled) {
+					onFinish: (req) => OnModDownloadFinished((HttpDownloadRequest)req),
+					onCancel: (req) => OnModDownloadCancelled((HttpDownloadRequest)req)) {
 					CustomData = mod
 				});
 		}
@@ -562,14 +558,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 			}
 
-			Interface.downloadFile.OverrideName = overrideUiTitle;
+			Interface.downloadManager.OverrideName = overrideUiTitle;
 		}
 
 		/// <summary>
 		/// Will prompt the download manager to begin downloading
 		/// </summary>
 		internal void StartDownloading() {
-			Interface.downloadFile.OnQueueProcessed = () => {
+			Interface.downloadManager.OnQueueProcessed = () => {
 				Interface.modBrowser.updateNeeded = true;
 				Main.menuMode = Interface.modBrowserID;
 				if (_missingMods.Count > 0) {
@@ -577,7 +573,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 				_missingMods.Clear();
 			};
-			Main.menuMode = Interface.downloadFileID;
+			Main.menuMode = Interface.downloadManagerID;
 		}
 
 		private void OnModDownloadCancelled(HttpDownloadRequest req) {
