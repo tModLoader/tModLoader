@@ -25,17 +25,11 @@ namespace Terraria.ModLoader.Setup
 			//ToDo: Pretty sure there is better way to update platform tasks! Check radiobutton check change as well!!
 			if (radioButtonSteam.Checked)
 			{
-				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 			}
 			else if (radioButtonGoG.Checked)
 			{
-				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
-			}
-			else
-			{
-				//Should not be here for the time being!
 			}
 
 			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/platform", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
@@ -222,7 +216,6 @@ namespace Terraria.ModLoader.Setup
 		{
 			if (radioButtonSteam.Checked)
 			{
-				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 			}
 		}
@@ -231,7 +224,6 @@ namespace Terraria.ModLoader.Setup
 		{
 			if (radioButtonGoG.Checked)
 			{
-				taskButtons[buttonDiffPlatform] = () => new DiffTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
 			}
 		}

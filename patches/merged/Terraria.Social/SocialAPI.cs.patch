@@ -1,20 +1,16 @@
 --- src/decompiled\Terraria.Social\SocialAPI.cs
 +++ src/merged\Terraria.Social\SocialAPI.cs
-@@ -34,9 +_,18 @@
+@@ -34,7 +_,14 @@
  			if (!mode.HasValue)
  			{
  				mode = new SocialMode?(SocialMode.None);
 +#if CLIENT
- #if STEAM
  				mode = new SocialMode?(SocialMode.Steam);
- #endif
 +#else
-+#if STEAM
 +				if (Program.LaunchParameters.ContainsKey("-steam"))
 +				{
 +					mode = new SocialMode?(SocialMode.Steam);
 +				}
-+#endif
 +#endif
  			}
  			SocialAPI._mode = mode.Value;

@@ -43,7 +43,6 @@ namespace Terraria.ModLoader.Setup
 			this.buttonPatchMerged = new System.Windows.Forms.Button();
 			this.buttonRegenSource = new System.Windows.Forms.Button();
 			this.buttonPatchPlatform = new System.Windows.Forms.Button();
-			this.buttonDiffPlatform = new System.Windows.Forms.Button();
 			this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this.menuItemOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemTerraria = new System.Windows.Forms.ToolStripMenuItem();
@@ -240,20 +239,6 @@ namespace Terraria.ModLoader.Setup
 			this.buttonPatchPlatform.UseVisualStyleBackColor = true;
 			this.buttonPatchPlatform.Click += new System.EventHandler(this.buttonTask_Click);
 			// 
-			// buttonDiffPlatform
-			// 
-			this.buttonDiffPlatform.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.buttonDiffPlatform.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonDiffPlatform.Location = new System.Drawing.Point(12, 130);
-			this.buttonDiffPlatform.Name = "buttonDiffPlatform";
-			this.buttonDiffPlatform.Size = new System.Drawing.Size(107, 23);
-			this.buttonDiffPlatform.TabIndex = 14;
-			this.buttonDiffPlatform.Text = "Diff Platform";
-			this.toolTipButtons.SetToolTip(this.buttonDiffPlatform, "Recalculates the merge patches\r\nDiffs the src/decompiled and src/merged directori" +
-        "es\r\nUsed for combining the server and client");
-			this.buttonDiffPlatform.UseVisualStyleBackColor = true;
-			this.buttonDiffPlatform.Click += new System.EventHandler(this.buttonTask_Click);
-			// 
 			// mainMenuStrip
 			// 
 			this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -392,7 +377,6 @@ namespace Terraria.ModLoader.Setup
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(349, 371);
-			this.Controls.Add(this.buttonDiffPlatform);
 			this.Controls.Add(this.buttonPatchPlatform);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.buttonPatchMerged);
@@ -451,7 +435,6 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.RadioButton radioButtonGoG;
 		private System.Windows.Forms.RadioButton radioButtonSteam;
 		private System.Windows.Forms.Button buttonPatchPlatform;
-		private System.Windows.Forms.Button buttonDiffPlatform;
 	}
 }
 

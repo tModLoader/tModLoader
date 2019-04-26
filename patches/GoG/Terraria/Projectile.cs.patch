@@ -1,132 +1,25 @@
 --- src/decompiled\Terraria\Projectile.cs
 +++ src/platform\Terraria\Projectile.cs
-@@ -12706,100 +_,34 @@
+@@ -12706,9 +_,9 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)
  			{
 -				if (<PrivateImplementationDetails>{0C990DF5-322A-4D8B-8E04-1A47D72DE4A7}.$$method0x6000dca-1 == null)
 -				{
 -					<PrivateImplementationDetails>{0C990DF5-322A-4D8B-8E04-1A47D72DE4A7}.$$method0x6000dca-1 = new Dictionary<string, int>(14)
--					{
--						{
--							"Tsuki",
--							0
--						},
--						{
--							"Yoraiz0r",
--							1
--						},
--						{
--							"Ghostar",
--							2
--						},
--						{
--							"Devalaous",
--							3
--						},
--						{
--							"Leinfors",
--							4
--						},
--						{
--							"Aeroblop",
--							5
--						},
--						{
--							"Doylee",
--							6
--						},
--						{
--							"Darkhalis",
--							7
--						},
--						{
--							"Arkhalis",
--							8
--						},
--						{
--							"Nike Leon",
--							9
--						},
--						{
--							"Suweeka",
--							10
--						},
--						{
--							"W1K",
--							11
--						},
--						{
--							"Grox The Great",
--							12
--						},
--						{
--							"Random",
--							13
--						}
--					};
--				}
--				int num;
--				if (<PrivateImplementationDetails>{0C990DF5-322A-4D8B-8E04-1A47D72DE4A7}.$$method0x6000dca-1.TryGetValue(name, out num))
--				{
--					switch (num)
--					{
--					case 0:
--					case 1:
--						return 0.85f;
--					case 2:
--						return 0.33f;
--					case 3:
--						return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
--					case 4:
--						return 0.77f;
--					case 5:
--						return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
--					case 6:
--						return 0f;
--					case 7:
--					case 8:
--						return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
--					case 9:
--						return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
--					case 10:
--						return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
--					case 11:
--						return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
--					case 12:
--						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
--					case 13:
--						return Main.rand.NextFloat();
--					}
-+				switch (name)
++				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 == null)
 +				{
-+				case "Tsuki":
-+				case "Yoraiz0r":
-+					return 0.85f;
-+				case "Ghostar":
-+					return 0.33f;
-+				case "Devalaous":
-+					return 0.66f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
-+				case "Leinfors":
-+					return 0.77f;
-+				case "Aeroblop":
-+					return 0.25f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.1f;
-+				case "Doylee":
-+					return 0f;
-+				case "Darkhalis":
-+				case "Arkhalis":
-+					return 0.75f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
-+				case "Nike Leon":
-+					return 0.075f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.07f;
-+				case "Suweeka":
-+					return 0.5f + (float)Math.Cos(Main.time / 180.0 * 6.2831854820251465) * 0.18f;
-+				case "W1K":
-+					return 0.75f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.05f;
-+				case "Grox The Great":
-+					return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
-+				case "Random":
-+					return Main.rand.NextFloat();
++					<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1 = new Dictionary<string, int>(14)
+ 					{
+ 						{
+ 							"Tsuki",
+@@ -12769,7 +_,7 @@
+ 					};
  				}
- 			}
- 			return (float)((int)indexing) / 6f;
+ 				int num;
+-				if (<PrivateImplementationDetails>{0C990DF5-322A-4D8B-8E04-1A47D72DE4A7}.$$method0x6000dca-1.TryGetValue(name, out num))
++				if (<PrivateImplementationDetails>{E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877}.$$method0x6000dca-1.TryGetValue(name, out num))
+ 				{
+ 					switch (num)
+ 					{
 
