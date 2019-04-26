@@ -11,6 +11,7 @@ namespace Terraria.ModLoader.Engine
 
 		private static volatile Ref<DateTime> lastCheckin;
 		internal static void Checkin() {
+			if (Debugger.IsAttached) return;
 			bool started = lastCheckin != null;
 			lastCheckin = new Ref<DateTime>(DateTime.Now);
 			if (!started)
