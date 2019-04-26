@@ -11,6 +11,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	internal sealed class HttpDownloadRequest : DownloadRequest
 	{
 		public HttpWebRequest Request { get; private set; }
+		// Must use callback, or else will not use ServicePoint settings
 		private readonly Func<HttpWebRequest> _requestSupplier;
 
 		public HttpWebResponse Response { get; private set; }

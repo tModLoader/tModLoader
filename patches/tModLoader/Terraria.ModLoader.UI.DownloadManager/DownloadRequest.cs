@@ -63,13 +63,13 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				}
 			}
 			catch (Exception e) {
-				Logging.tML.Error($"Problem during cancellation of HttpRequest[{DisplayText}]", e);
+				Logging.tML.Error($"Problem during cancellation of DownloadRequest[{DisplayText}]", e);
 			}
 			OnCancel?.Invoke();
 		}
 
 		/// <summary>
-		/// Complete the request. When executed you are certain the request
+		/// Complete the request. When executed you are certain the request is completed successfully
 		/// </summary>
 		public virtual void Complete() {
 			try {
@@ -78,7 +78,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				File.Delete(_downloadPath);
 			}
 			catch (Exception e) {
-				Logging.tML.Error($"Problem during completion of HttpRequest[{DisplayText}]", e);
+				Logging.tML.Error($"Problem during completion of DownloadRequest[{DisplayText}]", e);
 			}
 
 			Completed = true;

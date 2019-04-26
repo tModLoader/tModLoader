@@ -20,8 +20,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	{
 		public string OverrideName { get; internal set; }
 
-		internal bool Active;
-
 		private UILoadProgress _loadProgress;
 		private string _oldName;
 		private string _name;
@@ -94,33 +92,29 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public override void OnActivate() {
-			if (!Active) {
-				if (OnQueueProcessed == null)
-					OnQueueProcessed = () => Main.menuMode = 0;
+			if (OnQueueProcessed == null)
+				OnQueueProcessed = () => Main.menuMode = 0;
 
-				if (OverrideName != null)
-					UpdateDisplayText();
+			if (OverrideName != null)
+				UpdateDisplayText();
 
-				_loadProgress.SetProgress(0f);
+			_loadProgress.SetProgress(0f);
 
-				if (!UIModBrowser.PlatformSupportsTls12) {
-					// Needed for downloads from Github
-					Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
-					return;
-				}
-
-				_cts?.Dispose();
-				_cts = new CancellationTokenSource();
-				ProcessQueue();
-				Active = true;
+			if (!UIModBrowser.PlatformSupportsTls12) {
+				// Needed for downloads from Github
+				Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
+				return;
 			}
+
+			_cts?.Dispose();
+			_cts = new CancellationTokenSource();
+			ProcessQueue();
 		}
 
 		public override void OnDeactivate() {
 			_requestQueue.Clear();
 			OnQueueProcessed = null;
 			OverrideName = null;
-			Active = false;
 		}
 
 		public override void Update(GameTime gameTime) {
