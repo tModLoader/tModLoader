@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11 Beta 3
+set version=v0.11 Beta 4
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -47,7 +47,7 @@ copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%" /y
 call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
 
 :: Windows ModCompile
-for /f %%i in ('..\setup\bin\setup --steamdir') do set steamdir=%%i
+set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
 copy "%steamdir%\ModCompile" "%mcfna%"
 del "%mcfna%"\buildlock 2>nul
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y

@@ -68,6 +68,7 @@ namespace Terraria.ModLoader.Setup
 				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 				(beta == 0 ? "" : $"-beta{beta}");
 
+			Directory.CreateDirectory(modCompileDir);
 			File.WriteAllText(Path.Combine(modCompileDir, "version"), versionTag);
 		}
 
