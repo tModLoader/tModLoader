@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {autoUpdateURL}");
 			Interface.downloadManager.OnQueueProcessed = () => { };
 			Interface.downloadManager.EnqueueRequest(
-				new HttpDownloadRequest($"Auto Update: {zipFileName}", zipFilePath, () => (HttpWebRequest)WebRequest.Create(autoUpdateURL), (req) => {
+				new HttpDownloadRequest($"Auto Update: {zipFileName}", zipFilePath, () => (HttpWebRequest)WebRequest.Create(autoUpdateURL), onComplete: () => {
 					try {
 						using (var zip = ZipFile.Read(zipFilePath))
 							for (int i = 0; i < zip.Count; i++) {
@@ -152,7 +152,7 @@ exit /B 1");
 					catch (Exception e) {
 						Logging.tML.Error($"Problem during autoupdate", e);
 					}
-				}, onCancel: (req) => { Main.menuMode = Interface.modBrowserID; }));
+				}, onCancel: () => Main.menuMode = Interface.modBrowserID));
 			Main.menuMode = Interface.downloadManagerID;
 		}
 	}

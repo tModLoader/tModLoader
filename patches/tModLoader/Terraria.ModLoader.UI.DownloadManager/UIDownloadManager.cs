@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -17,14 +18,15 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	/// </summary>
 	internal class UIDownloadManager : UIState
 	{
+		public string OverrideName { get; internal set; }
+
 		internal bool Active;
-		private UILoadProgress loadProgress;
+
+		private UILoadProgress _loadProgress;
 		private string _oldName;
 		private string _name;
-
-		public string OverrideName { get; internal set; }
 		private readonly Queue<DownloadRequest> _requestQueue = new Queue<DownloadRequest>();
-		private CancellationTokenSource cts;
+		private CancellationTokenSource _cts;
 
 		public Action OnQueueProcessed { get; internal set; }
 
@@ -37,7 +39,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public void ProcessQueue() {
-			Task.Factory.StartNew(DispatchWorkersFromQueue, cts.Token)
+			Task.Factory.StartNew(DispatchWorkersFromQueue, _cts.Token)
 				.ContinueWith(parent => {
 
 					if (parent.IsCanceled) {
@@ -64,43 +66,15 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				_name = req.DisplayText;
 
 				// TODO Add a concurrency TML option, up to 4 concurrent downloads
-				// Start a new task to handle this download
-				Task.Factory.StartNew(() => {
-					try {
-						if (!req.SetupRequest(cts.Token)) {
-							// Should never happen, but if it does, problem and aborting
-							Logging.tML.Error("Problem during setup of HttpDownloadRequest");
-							return;
-						}
-
-						if (req is HttpDownloadRequest httpRequest) {
-							httpRequest.OnBufferUpdate = (_) => { SetProgress(httpRequest.Progress); };
-							httpRequest.OnComplete = (_) => {
-								File.WriteAllBytes(httpRequest.OutputFilePath, httpRequest.ResponseBytes);
-								Logging.tML.Info($"DownloadManager finished downloading a file [{httpRequest.DisplayText}] to {httpRequest.OutputFilePath}");
-							};
-							httpRequest.Begin();
-						}
-						else if (req is StreamingDownloadRequest streamingRequest) {
-							streamingRequest.OnBufferUpdate = (_) => { SetProgress(streamingRequest.FileStream.Position / (double)streamingRequest.DownloadingLength); };
-							streamingRequest.OnComplete = (_) => { Logging.tML.Info($"DownloadManager finished downloading a file [{req.DisplayText}] to {req.OutputFilePath} when syncing mods"); };
-						}
-
-						while (!req.Completed && !cts.IsCancellationRequested); // Fully wait for completion of this request
-					}
-					catch (Exception e) {
-						// Problem during setup, such as TLS handshake failure for web dls
-						Logging.tML.Error($"Problem during processing of HttpDownloadRequest[{req.DisplayText}]", e);
-					}
-				}, cts.Token, TaskCreationOptions.AttachedToParent, TaskScheduler.Current)
-				.Wait(cts.Token); // Wait for dl completion
+				req.OnUpdateProgress += SetProgress;
+				req.Start(_cts.Token).Wait(_cts.Token);
 			}
 
 			Logging.tML.Info($"DownloadManager processed {processed} out of {toProcess} requests. Waiting for downloading to complete.");
 		}
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress {
+			_loadProgress = new UILoadProgress {
 				Width = { Percent = 0.8f },
 				MaxWidth = UICommon.MaxPanelWidth,
 				Height = { Pixels = 150 },
@@ -108,7 +82,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				VAlign = 0.5f,
 				Top = { Pixels = 10 }
 			};
-			Append(loadProgress);
+			Append(_loadProgress);
 
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
@@ -127,7 +101,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				if (OverrideName != null)
 					UpdateDisplayText();
 
-				loadProgress.SetProgress(0f);
+				_loadProgress.SetProgress(0f);
 
 				if (!UIModBrowser.PlatformSupportsTls12) {
 					// Needed for downloads from Github
@@ -135,8 +109,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					return;
 				}
 
-				cts?.Dispose();
-				cts = new CancellationTokenSource();
+				_cts?.Dispose();
+				_cts = new CancellationTokenSource();
 				ProcessQueue();
 				Active = true;
 			}
@@ -157,18 +131,18 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void UpdateDisplayText() {
-			loadProgress.SetText(GetDisplayText());
+			_loadProgress.SetText(GetDisplayText());
 		}
 
 		private string GetDisplayText() => Language.GetTextValue("tModLoader.MBDownloadingMod", OverrideName ?? _name);
 
 		internal void SetProgress(double percent) {
-			loadProgress?.SetProgress((float)percent);
+			_loadProgress?.SetProgress((float)percent);
 		}
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			cts.Cancel(false);
+			_cts.Cancel(false);
 		}
 	}
 }

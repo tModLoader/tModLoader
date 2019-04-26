@@ -176,7 +176,8 @@ namespace Terraria.ModLoader.UI
 
 				monoStartScriptsUpdated = true;
 				updateRequired = true;
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				Logging.tML.Error(e);
 				Interface.errorMessage.Show("Failed to copy mono start scripts\n" + e, Interface.developerModeHelpID);
 			}
@@ -189,7 +190,7 @@ namespace Terraria.ModLoader.UI
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
-			DownloadFile("ModCompile", url, file, (req) => {
+			DownloadFile("ModCompile", url, file, () => {
 				try {
 					Extract(file);
 					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
@@ -199,7 +200,7 @@ namespace Terraria.ModLoader.UI
 					File.Delete(originalXMLFile);
 				}
 				catch (Exception e) {
-					Logging.tML.Error($"Problem during extracting of mod compile files for [{req.DisplayText}]", e);
+					Logging.tML.Error($"Problem during extracting of mod compile files for", e);
 				}
 			});
 		}
@@ -211,12 +212,12 @@ namespace Terraria.ModLoader.UI
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
 			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
-			DownloadFile("v4.5 Reference Assemblies", url, file, (req) => {
+			DownloadFile("v4.5 Reference Assemblies", url, file, () => {
 				try {
 					Extract(file);
 				}
 				catch (Exception e) {
-					Logging.tML.Error($"Problem during extracting of reference assembly files for [{req.DisplayText}]", e);
+					Logging.tML.Error($"Problem during extracting of reference assembly files for", e);
 				}
 			});
 		}
@@ -237,9 +238,13 @@ namespace Terraria.ModLoader.UI
 			File.Delete(zipFile);
 		}
 
-		private void DownloadFile(string name, string url, string file, Action<DownloadRequest> downloadModCompileComplete) {
+		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete) {
 			Interface.downloadManager.EnqueueRequest(
-				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), downloadModCompileComplete, onCancel: (req) => { Interface.developerModeHelp.updateRequired = true; Main.menuMode = Interface.developerModeHelpID; }));
+				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), onComplete: downloadModCompileComplete,
+					onCancel: () => {
+						Interface.developerModeHelp.updateRequired = true;
+						Main.menuMode = Interface.developerModeHelpID;
+					}));
 			Main.menuMode = Interface.downloadManagerID;
 		}
 

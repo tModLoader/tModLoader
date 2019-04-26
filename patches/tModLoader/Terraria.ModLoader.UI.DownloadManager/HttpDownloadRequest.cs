@@ -4,50 +4,44 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
-	internal class HttpDownloadRequest : DownloadRequest
+	internal sealed class HttpDownloadRequest : DownloadRequest
 	{
-		private readonly Func<HttpWebRequest> _requestCallback;
+		public HttpWebRequest Request { get; private set; }
+		private readonly Func<HttpWebRequest> _requestSupplier;
 
-		public double Progress { get; private set; }
-
-		public HttpWebResponse Response { get; protected set; }
-		public HttpWebRequest Request { get; protected set; }
-		public IAsyncResult ResponseAsyncResult { get; protected set; }
-		public byte[] ResponseBytes { get; protected set; }
+		public HttpWebResponse Response { get; private set; }
+		public IAsyncResult ResponseAsyncResult { get; private set; }
 
 		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
 		public SecurityProtocolType SecurityProtocol = Tls12;
 		public Version ProtocolVersion = HttpVersion.Version11;
 
-		public HttpDownloadRequest(string displayText, string outputFilePath, Func<HttpWebRequest> requestCallback,
-			Action<DownloadRequest> onBufferUpdate = null, Action<DownloadRequest> onComplete = null, 
-			Action<DownloadRequest> onCancel = null, Action<DownloadRequest> onFinish = null, 
-			object customData = null) 
-			: base(displayText, outputFilePath, onBufferUpdate, onComplete, onCancel, onFinish, customData) {
+		public HttpDownloadRequest(string displayText, string outputFilePath, Func<HttpWebRequest> supplier,
+			object customData = null, Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null)
+			: base(displayText, outputFilePath, customData, onUpdateProgress, onCancel, onComplete) {
 
-			_requestCallback = requestCallback;
+			_requestSupplier = supplier;
 		}
 
-		public override bool SetupRequest(CancellationToken cancellationToken) {
+		public override void Execute() {
 			ServicePointManager.SecurityProtocol = SecurityProtocol;
 			ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidation;
-			Request = _requestCallback();
+			Request = _requestSupplier();
+			Request.ServicePoint.ReceiveBufferSize = ModNet.CHUNK_SIZE;
 			Request.ProtocolVersion = ProtocolVersion;
 			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
 			Request.KeepAlive = true;
-			cancellationToken.Register(() => {
-				Request?.Abort();
-				OnCancel?.Invoke(this);
-			});
-			return true;
+			ResponseAsyncResult = Request.BeginGetResponse(ResponseCallback, null);
 		}
 
-		public IAsyncResult Begin() {
-			ResponseAsyncResult = Request.BeginGetResponse(ResponseCallback, null);
-			return ResponseAsyncResult;
+		public override void Cancel() {
+			Logging.tML.Warn($"The HttpRequest [{DisplayText}] was cancelled.");
+			Request?.Abort();
+			base.Cancel();
 		}
 
 		// TODO Jof: HPKP / Expect-CT Manager
@@ -63,42 +57,28 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				Response = (HttpWebResponse)Request.EndGetResponse(ResponseAsyncResult);
 			}
 			catch (Exception e) {
-				Logging.tML.Error($"The HttpRequest [{DisplayText}] failed.", e);
-				Completed = true;
+				Logging.tML.Error($"The HttpRequest [{DisplayText}] failed to get a response.", e);
 				return;
 			}
 			long contentLength = Response.ContentLength;
 			if (contentLength < 0) {
 				Logging.tML.Error($"Could not get a proper content length for HttpDownloadRequest [{DisplayText}]");
-				// error
 				return;
 			}
 
 			Stream responseStream = Response.GetResponseStream();
-			ResponseBytes = HandleAsynchronousResponse(responseStream, contentLength);
-			Response.Close();
 
-			OnComplete?.Invoke(this);
-			OnFinish?.Invoke(this);
-			Completed = true;
-		}
-
-		// This is also on a worker thread, use callback to update UI
-		private byte[] HandleAsynchronousResponse(Stream responseStream, long contentLength) {
-			var data = new byte[contentLength];
 			int currentIndex = 0;
-			var buffer = new byte[256];
 
 			do {
-				int bytesReceived = responseStream.Read(buffer, 0, 256);
-				Array.Copy(buffer, 0, data, currentIndex, bytesReceived);
-				currentIndex += bytesReceived;
-				Progress = (double)currentIndex / contentLength;
-				// Use a buffer update callback to update UI
-				OnBufferUpdate(this);
+				byte[] buf = responseStream.ReadBytes((int)Math.Min(contentLength - FileStream.Position, ModNet.CHUNK_SIZE));
+				FileStream.Write(buf, 0, buf.Length);
+				currentIndex += buf.Length;
+				UpdateProgress(currentIndex / (double)contentLength);
 			} while (currentIndex < contentLength);
 
-			return data;
+			Response.Close();
+			Complete();
 		}
 	}
 }

@@ -13,26 +13,23 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	{
 		public long DownloadingLength { get; internal set; }
 		public ModNet.ModHeader ModHeader { get; internal set; }
-		public FileStream FileStream { get; internal set; }
 
-		public StreamingDownloadRequest(string displayText, string outputFilePath,
-			Action<DownloadRequest> onBufferUpdate = null, Action<DownloadRequest> onComplete = null,
-			Action<DownloadRequest> onCancel = null, Action<DownloadRequest> onFinish = null,
-			object customData = null)
-			: base(displayText, outputFilePath, onBufferUpdate, onComplete, onCancel, onFinish, customData) {
+		public StreamingDownloadRequest(string displayText, string outputFilePath, long downloadingLength, ModNet.ModHeader modHeader,
+			object customData = null, Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null)
+			: base(displayText, outputFilePath, customData, onUpdateProgress, onCancel, onComplete) {
 
+			DownloadingLength = downloadingLength;
+			ModHeader = modHeader;
 		}
 
-		public override bool SetupRequest(CancellationToken cancellationToken) {
-			cancellationToken.Register(Cancel);
-			return true;
-		}
+		private int _currentIndex;
 
 		public bool Receive(BinaryReader reader) {
 			try {
-				var bytes = reader.ReadBytes((int)Math.Min(DownloadingLength - FileStream.Position, ModNet.CHUNK_SIZE));
+				byte[] bytes = reader.ReadBytes((int)Math.Min(DownloadingLength - FileStream.Position, ModNet.CHUNK_SIZE));
 				FileStream.Write(bytes, 0, bytes.Length);
-				OnBufferUpdate?.Invoke(this);
+				_currentIndex += bytes.Length;
+				UpdateProgress(_currentIndex / (double)DownloadingLength);
 				return FileStream.Position == DownloadingLength;
 			}
 			catch (Exception e) {
@@ -42,14 +39,17 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			}
 		}
 
-		public void Complete() {
+		public override void Execute() {
+			ModLoader.GetMod(ModHeader.name)?.File?.Close();
+		}
+
+		public override void Complete() {
+			base.Complete();
+
 			try {
-				FileStream.Close();
 				var mod = new TmodFile(ModHeader.path);
 				mod.Read();
 				mod.Close();
-				OnComplete?.Invoke(this);
-				Completed = true;
 
 				if (!ModHeader.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
@@ -58,7 +58,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 				ModLoader.EnableMod(mod.name);
-				OnFinish?.Invoke(this);
 			}
 			catch (Exception e) {
 				Cancel();
@@ -66,23 +65,14 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			}
 		}
 
-		public void Cancel() {
-			try {
-				FileStream?.Close();
-				File.Delete(ModHeader.path);
-			}
-			catch (Exception e) {
-				Logging.tML.Error("Problem during download sync when receiving mod during closing of the filestream ", e);
-			}
-
-			OnCancel?.Invoke(this);
+		public override void Cancel() {
+			Netplay.disconnect = true;
 		}
 
 		private void ShowError(Exception e) {
 			var msg = Language.GetTextValue("tModLoader.MPErrorModDownloadError", ModHeader.name);
 			Logging.tML.Error(msg, e);
 			Interface.errorMessage.Show(msg + e, 0);
-			Netplay.disconnect = true;
 		}
 	}
 }

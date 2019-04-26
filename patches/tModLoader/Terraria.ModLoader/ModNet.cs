@@ -257,37 +257,34 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static StreamingDownloadRequest currentRequest;
+		private static StreamingDownloadRequest _currentRequest;
 
 		// Receive a mod when connecting to server
 		internal static void ReceiveMod(BinaryReader reader) {
 
 			// We have no request yet, but we are ready to request a mod for download
-			if (currentRequest == null) {
+			if (_currentRequest == null) {
 				// Create this request and enqueue it in the download manager
-				currentRequest = new StreamingDownloadRequest(reader.ReadString(), downloadingHeader.path) {
-					DownloadingLength = reader.ReadInt64(),
-					ModHeader = downloadingHeader,
-					FileStream = new FileStream(downloadingHeader.path, FileMode.Create),
-					OnFinish = (_) => {
+				_currentRequest = new StreamingDownloadRequest(reader.ReadString(), downloadingHeader.path, reader.ReadInt64(), downloadingHeader,
+					onComplete: () => {
 						if (downloadQueue.Count > 0)
 							DownloadNextMod();
 						else
 							OnModsDownloaded(true);
 					},
-					OnCancel = (_) => { currentRequest = null; }
-				};
-				Interface.downloadManager.EnqueueRequest(currentRequest);
-				ModLoader.GetMod(downloadingHeader.name)?.File?.Close();
+					onCancel: () => _currentRequest = null
+				);
+
+				Interface.downloadManager.EnqueueRequest(_currentRequest);
 				Main.menuMode = Interface.downloadManagerID;
 				return;
 			}
 
 			// Read the currently streamed mod
-			if (currentRequest.Receive(reader)) {
+			if (_currentRequest.Receive(reader)) {
 				// When we reached download completion, complete the request
-				currentRequest.Complete();
-				currentRequest = null;
+				_currentRequest.Complete();
+				_currentRequest = null;
 			}
 		}
 

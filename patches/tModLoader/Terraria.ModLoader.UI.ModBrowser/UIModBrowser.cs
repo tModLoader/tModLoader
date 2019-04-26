@@ -527,15 +527,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		/// Enqueue a Mod browser item to the download manager
 		/// </summary>
 		internal void EnqueueModBrowserDownload(UIModDownloadItem mod) {
-			Interface.downloadManager.EnqueueRequest(
-				new HttpDownloadRequest(
-					mod.displayname,
-					$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{DateTime.Now.Ticks}.tmod",
-					() => (HttpWebRequest)WebRequest.Create(mod.download),
-					onFinish: (req) => OnModDownloadFinished((HttpDownloadRequest)req),
-					onCancel: (req) => OnModDownloadCancelled((HttpDownloadRequest)req)) {
-					CustomData = mod
-				});
+			var req = new HttpDownloadRequest(
+				mod.displayname,
+				$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{mod.mod}.tmod",
+				() => (HttpWebRequest)WebRequest.Create(mod.download),
+				customData: mod
+			);
+			req.OnComplete += () => { OnModDownloadCompleted((HttpDownloadRequest)req); };
+			req.OnCancel += () => { OnModDownloadCancelled((HttpDownloadRequest)req); };
+			Interface.downloadManager.EnqueueRequest(req);
 		}
 
 		private readonly List<string> _missingMods = new List<string>();
@@ -586,7 +586,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Main.menuMode = Interface.modBrowserID;
 		}
 
-		private void OnModDownloadFinished(HttpDownloadRequest req) {
+		private void OnModDownloadCompleted(HttpDownloadRequest req) {
 			if (req.Response.StatusCode != HttpStatusCode.OK) {
 				var errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
 				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
@@ -603,26 +603,16 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 				Interface.modBrowser.anEnabledModDownloaded = true;
 			}
-			try {
-				//string destinationFileName = ModLoader.GetMod(currentDownload.mod) == null ? currentDownload.mod + ".tmod" : currentDownload.mod + ".tmod.update"; // if above fix has issues we can use this.
-				File.Copy(req.OutputFilePath, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{currentDownload.mod}.tmod", true);
-				File.Delete(req.OutputFilePath);
+			if (!currentDownload.update) {
+				Interface.modBrowser.aNewModDownloaded = true;
 			}
-			catch (Exception e) {
-				Logging.tML.Error(Language.GetTextValue("tModLoader.MBDownloadFileProblem", req.OutputFilePath), e);
+			else {
+				Interface.modBrowser.aModUpdated = true;
 			}
-			finally {
-				if (!currentDownload.update) {
-					Interface.modBrowser.aNewModDownloaded = true;
-				}
-				else {
-					Interface.modBrowser.aModUpdated = true;
-				}
-				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
-					ModLoader.EnableMod(currentDownload.mod);
-				}
-				Interface.modBrowser.RemoveItem(currentDownload);
+			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+				ModLoader.EnableMod(currentDownload.mod);
 			}
+			Interface.modBrowser.RemoveItem(currentDownload);
 		}
 
 		private void SetHeading(string heading) {
