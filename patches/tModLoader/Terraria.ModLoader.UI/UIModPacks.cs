@@ -82,7 +82,11 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
+#if CLIENT
 		private static readonly UIVirtualKeyboard VirtualKeyboard = new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0);
+#elif SERVER
+		private static readonly UIVirtualKeyboard VirtualKeyboard = null;
+#endif
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.MenuUI.SetState(VirtualKeyboard);
@@ -121,7 +125,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
-		internal static string SanitizeModpackName(string name) 
+		internal static string SanitizeModpackName(string name)
 			=> Regex.Replace(name, MODPACK_REGEX, string.Empty, RegexOptions.Compiled);
 
 		internal static bool IsValidModpackName(string name)
@@ -140,7 +144,7 @@ namespace Terraria.ModLoader.UI
 				.ContinueWith(task => {
 					foreach (string modPackPath in task.Result) {
 						try {
-							if (modPackPath.EndsWith("/") || !IsValidModpackName(modPackPath.Split(Path.DirectorySeparatorChar).Last())) {
+							if (IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
 								throw new Exception();
 							}
 							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
