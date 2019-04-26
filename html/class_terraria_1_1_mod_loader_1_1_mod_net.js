@@ -8,7 +8,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_net =
     [ "ReadNetIDs", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a7634a7cc6435ffb2f86239cd554a624c", null ],
     [ "SendServerConfigs", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a7b38b5f2ca6cd52e273d8ecca1624a05", null ],
     [ "SetupDiagnostics", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aa0fca9c327a57eec13abdbaa065f993a", null ],
-    [ "currentRequest", "class_terraria_1_1_mod_loader_1_1_mod_net.html#a1aacf69cfda699796097b26baf74f1f0", null ],
+    [ "_currentRequest", "class_terraria_1_1_mod_loader_1_1_mod_net.html#ac7306ad061e3b075f6035877dddd1083", null ],
     [ "downloadingHeader", "class_terraria_1_1_mod_loader_1_1_mod_net.html#aca24d728719cd77d2294a542cc0aeffe", null ],
     [ "downloadQueue", "class_terraria_1_1_mod_loader_1_1_mod_net.html#af8ec83e3ea88f98c0bb81c3613c03279", null ],
     [ "NetModCount", "class_terraria_1_1_mod_loader_1_1_mod_net.html#affbd35055e18fcf9c99a093c95b42665", null ],

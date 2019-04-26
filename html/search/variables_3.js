@@ -25,7 +25,6 @@ var searchData=
   ['count',['Count',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a546328535535759db8c68cec1c1cf302',1,'Terraria::ModLoader::IO::TagCompound']]],
   ['crimson',['Crimson',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af7a5afe818518bf8156c1dd1bff041e4',1,'Terraria::ModLoader::SpawnCondition']]],
   ['current',['Current',['../class_terraria_1_1_mod_loader_1_1_mod_hot_key.html#a4e8375d5be966ec564963c805d054665',1,'Terraria::ModLoader::ModHotKey']]],
-  ['currentrequest',['currentRequest',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#a1aacf69cfda699796097b26baf74f1f0',1,'Terraria::ModLoader::ModNet']]],
   ['customsoundtype',['customSoundType',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#a6aa5ef5849dec0efaaf48092ed596c75',1,'Terraria::ModLoader::SoundLoader']]],
   ['cycles',['cycles',['../class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html#a0362b797deb0580f346a4fa9ba90531e',1,'Terraria::ModLoader::TopoSort::SortingException']]]
 ];
