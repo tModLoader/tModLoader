@@ -91,7 +91,7 @@ namespace Terraria.ModLoader.UI
 
 		public static void SaveModList(string filename) {
 			// Sanitize input if not valid
-			if (!IsValidModpackName(filename.Split(Path.DirectorySeparatorChar).Last())) {
+			if (!IsValidModpackName(filename)) {
 				VirtualKeyboard.Text = SanitizeModpackName(filename);
 				return;
 			}
