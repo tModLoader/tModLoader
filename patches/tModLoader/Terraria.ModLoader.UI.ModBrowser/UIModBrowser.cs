@@ -186,7 +186,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			updateAllButton.OnClick += (s, e) => {
 				//TODO: move all click events to separate methods, behavior buried in layout is hard to find
 				if (!loading) {
-					var updatableMods = items.Where(x => x.update && !x.updateIsDowngrade).Select(x => x.mod).ToList();
+					var updatableMods = items.Where(x => x.HasUpdate && !x.UpdateIsDowngrade).Select(x => x.ModName).ToList();
 					EnqueueModBrowserDownloads(updatableMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
 					StartDownloading();
 				}
@@ -338,10 +338,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
-			if (!loading) {
-				Main.PlaySound(SoundID.MenuOpen);
-				PopulateModBrowser();
-			}
+			if (loading) return;
+			Main.PlaySound(SoundID.MenuOpen);
+			PopulateModBrowser();
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -358,7 +357,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			else if (hasNoModsFoundNotif)
 				modList.RemoveChild(uINoModsFoundText);
 			uIElement.RemoveChild(updateAllButton);
-			if (SpecialModPackFilter == null && items.Count(x => x.update && !x.updateIsDowngrade) > 0) {
+			if (SpecialModPackFilter == null && items.Count(x => x.HasUpdate && !x.UpdateIsDowngrade) > 0) {
 				uIElement.Append(updateAllButton);
 			}
 
@@ -370,7 +369,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				PopulateModBrowser();
 		}
 
-		internal bool RemoveItem(UIModDownloadItem item) {
+		private bool RemoveItem(UIModDownloadItem item) {
 			return items.Remove(item);
 		}
 
@@ -447,7 +446,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Task.Factory
 					.StartNew(ModOrganizer.FindMods)
 					.ContinueWith(task => {
-						PopulateFromJSON(task.Result, response);
+						PopulateFromJson(task.Result, response);
 						loading = false;
 						reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 					}, TaskScheduler.FromCurrentSynchronizationContext());
@@ -465,8 +464,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 		}
 
-		private void PopulateFromJSON(LocalMod[] installedMods, string json) {
-			string tls = PlatformSupportsTls12 ? "&tls12=y" : "";
+		private void PopulateFromJson(LocalMod[] installedMods, string json) {
 			try {
 				JObject jsonObject;
 				try {
@@ -484,37 +482,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 				JArray modlist = (JArray)jsonObject["modlist"];
 				foreach (JObject mod in modlist.Children<JObject>()) {
-					string displayname = (string)mod["displayname"];
-					//reloadButton.SetText("Adding " + displayname + "...");
-					string name = (string)mod["name"];
-					string version = (string)mod["version"];
-					string author = (string)mod["author"];
-					string download = ((string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod") + tls;
-					int downloads = (int)mod["downloads"];
-					int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
-					string timeStamp = (string)mod["updateTimeStamp"];
-					//string[] modreferences = ((string)mod["modreferences"]).Split(',');
-					string modreferences = ((string)mod["modreferences"] ?? "");
-					ModSide modside = ModSide.Both; // TODO: add filter option for modside.
-					string modIconURL = (string)mod["iconurl"];
-					string modsideString = (string)mod["modside"];
-					if (modsideString == "Client") modside = ModSide.Client;
-					if (modsideString == "Server") modside = ModSide.Server;
-					if (modsideString == "NoSync") modside = ModSide.NoSync;
-					//bool exists = false; // unused?
-					bool update = false;
-					bool updateIsDowngrade = false;
-					var installed = installedMods.FirstOrDefault(m => m.Name == name);
-					if (installed != null) {
-						//exists = true;
-						var cVersion = new Version(version.Substring(1));
-						if (cVersion > installed.modFile.version)
-							update = true;
-						else if (cVersion < installed.modFile.version)
-							update = updateIsDowngrade = true;
-					}
-					UIModDownloadItem modItem = new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
-					items.Add(modItem);
+					items.Add(UIModDownloadItem.FromJson(installedMods, mod));
 				}
 				updateNeeded = true;
 			}
@@ -528,13 +496,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		/// </summary>
 		internal void EnqueueModBrowserDownload(UIModDownloadItem mod) {
 			var req = new HttpDownloadRequest(
-				mod.displayname,
-				$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{mod.mod}.tmod",
-				() => (HttpWebRequest)WebRequest.Create(mod.download),
-				customData: mod
+				mod.DisplayName,
+				$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{mod.ModName}.tmod",
+				() => (HttpWebRequest)WebRequest.Create(mod.DownloadUrl),
+				mod
 			);
-			req.OnComplete += () => { OnModDownloadCompleted((HttpDownloadRequest)req); };
-			req.OnCancel += () => { OnModDownloadCancelled((HttpDownloadRequest)req); };
+			req.OnComplete += () => { OnModDownloadCompleted(req); };
+			req.OnCancel += () => { OnModDownloadCancelled(req); };
 			Interface.downloadManager.EnqueueRequest(req);
 		}
 
@@ -547,12 +515,12 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Main.PlaySound(SoundID.MenuTick);
 
 			foreach (var desiredMod in modNames) {
-				var mod = items.FirstOrDefault(x => x.mod == desiredMod);
+				var mod = items.FirstOrDefault(x => x.ModName == desiredMod);
 				if (mod == null) {
 					// Not found on the browser
 					_missingMods.Add(desiredMod);
 				}
-				else if (mod.installed == null || mod.update) {
+				else if (mod.Installed == null || mod.HasUpdate) {
 					// Found, enqueue download
 					EnqueueModBrowserDownload(mod);
 				}
@@ -576,7 +544,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Main.menuMode = Interface.downloadManagerID;
 		}
 
-		private void OnModDownloadCancelled(HttpDownloadRequest req) {
+		private void OnModDownloadCancelled(DownloadRequest req) {
 			try {
 				File.Delete(req.OutputFilePath);
 			}
@@ -597,20 +565,20 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void ProcessDownloadedMod(HttpDownloadRequest req, UIModDownloadItem currentDownload) {
-			var mod = ModLoader.GetMod(currentDownload.mod);
+			var mod = ModLoader.GetMod(currentDownload.ModName);
 			if (mod != null) {
 				Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{mod.Name}: {mod.DisplayName}"));
 				mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 				Interface.modBrowser.anEnabledModDownloaded = true;
 			}
-			if (!currentDownload.update) {
+			if (!currentDownload.HasUpdate) {
 				Interface.modBrowser.aNewModDownloaded = true;
 			}
 			else {
 				Interface.modBrowser.aModUpdated = true;
 			}
 			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
-				ModLoader.EnableMod(currentDownload.mod);
+				ModLoader.EnableMod(currentDownload.ModName);
 			}
 			Interface.modBrowser.RemoveItem(currentDownload);
 		}
@@ -659,7 +627,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		internal static void LogModBrowserException(Exception e) {
-			string errorMessage = Language.GetTextValue("tModLoader.MBBrowserError") + "\n\n" + e.Message + "\n" + e.StackTrace;
+			string errorMessage = $"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}";
 			Logging.tML.Error(errorMessage);
 			Interface.errorMessage.Show(errorMessage, 0);
 		}
