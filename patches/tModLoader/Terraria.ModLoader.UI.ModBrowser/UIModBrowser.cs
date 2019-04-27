@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -158,6 +159,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+			cts?.Cancel(false);
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
 
@@ -217,6 +219,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		internal void ClearItems() => _items.Clear();
 
+		private CancellationTokenSource cts;
+		
 		// TODO C WebClient interface is kinda buggy, maybe we should use something like RestSharp
 		private void PopulateModBrowser() {
 			Loading = true;
@@ -229,17 +233,21 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_items.Clear();
 			ModList.Deactivate();
 			try {
-				ServicePointManager.Expect100Continue = false;
-				string url = "http://javid.ddns.net/tModLoader/listmods.php";
-				var values = new NameValueCollection {
-					{"modloaderversion", ModLoader.versionedName},
-					{"platform", ModLoader.compressedPlatformRepresentation}
-				};
-				using (var client = new WebClient()) {
-					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };
-					client.UploadValuesCompleted += UploadComplete;
-					client.UploadValuesAsync(new Uri(url), "POST", values);
-				}
+				cts = new CancellationTokenSource();
+
+				Task.Factory.StartNew(() => {
+					ServicePointManager.Expect100Continue = false;
+					string url = "http://javid.ddns.net/tModLoader/listmods.php";
+					var values = new NameValueCollection {
+						{"modloaderversion", ModLoader.versionedName},
+						{"platform", ModLoader.compressedPlatformRepresentation}
+					};
+					using (var client = new WebClient()) {
+						ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };
+						client.UploadValuesCompleted += UploadComplete;
+						client.UploadValuesAsync(new Uri(url), "POST", values);
+					}
+				}, cts.Token);
 			}
 			catch (WebException e) {
 				ShowOfflineTroubleshootingMessage();
@@ -289,7 +297,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 						PopulateFromJson(task.Result, response);
 						Loading = false;
 						_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
-					}, TaskScheduler.FromCurrentSynchronizationContext());
+					}, TaskScheduler.Current);
 			}
 		}
 
