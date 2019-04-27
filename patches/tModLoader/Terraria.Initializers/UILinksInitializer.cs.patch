@@ -1,9 +1,10 @@
 --- src/Terraria\Terraria.Initializers\UILinksInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\UILinksInitializer.cs
-@@ -3,6 +_,8 @@
+@@ -3,6 +_,9 @@
  using System.Collections.Generic;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.UI;
 +using Terraria.ModLoader.UI.ModBrowser;
  using Terraria.UI;
@@ -36,7 +37,7 @@
 +					Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
 +					return;
 +				case 101:
-+					UIModBrowser.BackClick(null, null);
++					Interface.modBrowser.BackClick(null, null);
 +					return;
  				default:
  					return;

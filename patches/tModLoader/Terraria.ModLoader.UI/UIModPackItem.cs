@@ -219,8 +219,8 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 			Interface.modBrowser.modSideFilterMode = ModSideFilter.All;
-			Interface.modBrowser.UpdateFilterToggle.setCurrentState((int)Interface.modBrowser.updateFilterMode);
-			Interface.modBrowser.ModSideFilterToggle.setCurrentState((int)Interface.modBrowser.modSideFilterMode);
+			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.updateFilterMode);
+			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.modSideFilterMode);
 			Interface.modBrowser.updateNeeded = true;
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;

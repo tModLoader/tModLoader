@@ -3,6 +3,6 @@
 	public enum SearchFilter
 	{
 		Name,
-		Author,
+		Author
 	}
 }

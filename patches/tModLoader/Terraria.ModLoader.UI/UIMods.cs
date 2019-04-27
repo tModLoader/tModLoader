@@ -143,7 +143,7 @@ namespace Terraria.ModLoader.UI
 			for (int j = 0; j < 3; j++) {
 				if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
-					toggleImage.setCurrentState((int)sortMode);
+					toggleImage.SetCurrentState((int)sortMode);
 					toggleImage.OnClick += (a, b) => {
 						sortMode = sortMode.NextEnum();
 						updateNeeded = true;
@@ -155,7 +155,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (j == 1) {
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
-					toggleImage.setCurrentState((int)enabledFilterMode);
+					toggleImage.SetCurrentState((int)enabledFilterMode);
 					toggleImage.OnClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.NextEnum();
 						updateNeeded = true;
@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else {
 					toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
-					toggleImage.setCurrentState((int)modSideFilterMode);
+					toggleImage.SetCurrentState((int)modSideFilterMode);
 					toggleImage.OnClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.NextEnum();
 						updateNeeded = true;
@@ -203,7 +203,7 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
 				Left = { Pixels = 545 }
 			};
-			SearchFilterToggle.setCurrentState((int)searchFilterMode);
+			SearchFilterToggle.SetCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
 				updateNeeded = true;

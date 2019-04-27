@@ -1,6 +1,12 @@
 --- src/Terraria\Terraria.csproj
 +++ src/tModLoader\Terraria.csproj
-@@ -15,10 +_,12 @@
+@@ -10,15 +_,17 @@
+     <RootNamespace />
+     <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+-    <LangVersion>latest</LangVersion>
++    <LangVersion>7.3</LangVersion>
+     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
      <OutputType>WinExe</OutputType>
      <PlatformTarget>AnyCPU</PlatformTarget>
      <Optimize>true</Optimize>

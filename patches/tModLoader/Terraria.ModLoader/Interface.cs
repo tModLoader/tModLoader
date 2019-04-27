@@ -101,10 +101,10 @@ namespace Terraria.ModLoader
 			modBrowser.modSideFilterMode = ModSideFilter.All;
 			if (modBrowser._categoryButtons.Count == 4) // basically checking if modBrowser._isInitialized
 			{
-				modBrowser._categoryButtons[0].setCurrentState((int)modBrowser.sortMode);
-				modBrowser._categoryButtons[1].setCurrentState((int)modBrowser.updateFilterMode);
-				modBrowser._categoryButtons[2].setCurrentState((int)modBrowser.modSideFilterMode);
-				modBrowser._categoryButtons[3].setCurrentState((int)modBrowser.searchFilterMode);
+				modBrowser._categoryButtons[0].SetCurrentState((int)modBrowser.sortMode);
+				modBrowser._categoryButtons[1].SetCurrentState((int)modBrowser.updateFilterMode);
+				modBrowser._categoryButtons[2].SetCurrentState((int)modBrowser.modSideFilterMode);
+				modBrowser._categoryButtons[3].SetCurrentState((int)modBrowser.searchFilterMode);
 			}
 			modBrowser.loading = false;
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);

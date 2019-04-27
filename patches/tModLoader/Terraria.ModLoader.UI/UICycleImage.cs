@@ -17,9 +17,9 @@ namespace Terraria.ModLoader.UI
 
 		public event EventHandler OnStateChanged;
 
-		private int currentState = 0;
+		private int currentState;
 		public int CurrentState {
-			get { return currentState; }
+			get => currentState;
 			set {
 				if (value != currentState) {
 					currentState = value;
@@ -30,12 +30,12 @@ namespace Terraria.ModLoader.UI
 
 		public UICycleImage(Texture2D texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
 			this.texture = texture;
-			this._drawWidth = width;
-			this._drawHeight = height;
+			_drawWidth = width;
+			_drawHeight = height;
 			this.textureOffsetX = textureOffsetX;
 			this.textureOffsetY = textureOffsetY;
-			this.Width.Pixels = width;
-			this.Height.Pixels = height;
+			Width.Pixels = width;
+			Height.Pixels = height;
 			this.states = states;
 			this.padding = padding;
 		}
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.UI
 			CalculatedStyle dimensions = GetDimensions();
 			Point point = new Point(textureOffsetX, textureOffsetY + ((padding + _drawHeight) * currentState));
 			Color color = IsMouseHovering ? Color.White : Color.Silver;
-			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, _drawWidth, _drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, _drawWidth, _drawHeight)), color);
+			spriteBatch.Draw(texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, _drawWidth, _drawHeight), new Rectangle(point.X, point.Y, _drawWidth, _drawHeight), color);
 		}
 
 		public override void Click(UIMouseEvent evt) {
@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.UI
 			base.RightClick(evt);
 		}
 
-		internal void setCurrentState(int sortMode) {
+		internal void SetCurrentState(int sortMode) {
 			CurrentState = sortMode;
 		}
 	}
