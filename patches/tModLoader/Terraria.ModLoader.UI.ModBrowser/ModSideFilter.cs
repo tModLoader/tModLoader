@@ -6,6 +6,6 @@
 		Both,
 		Client,
 		Server,
-		NoSync,
+		NoSync
 	}
 }

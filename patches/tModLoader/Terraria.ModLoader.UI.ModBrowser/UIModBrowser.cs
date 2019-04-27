@@ -16,6 +16,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -40,14 +41,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		internal UIInputTextField filterTextBox;
 		public bool loading;
 		public UIList modList;
-		public ModSideFilter modSideFilterMode = ModSideFilter.All;
-		public UICycleImage ModSideFilterToggle;
 		private UITextPanel<string> reloadButton;
-		public SearchFilter searchFilterMode = SearchFilter.Name;
-		public UICycleImage SearchFilterToggle;
 		public UIModDownloadItem selectedItem;
-		public ModBrowserSortMode sortMode = ModBrowserSortMode.RecentlyUpdated;
-		public UICycleImage SortModeFilterToggle;
 		private UIElement uIElement;
 		public UITextPanel<string> uIHeaderTextPanel;
 		private UILoaderAnimatedImage uILoader;
@@ -55,12 +50,43 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private UIPanel uIPanel;
 		private UITextPanel<string> updateAllButton;
 		private bool updateAvailable;
-		public UpdateFilter updateFilterMode = UpdateFilter.Available;
-		public UICycleImage UpdateFilterToggle;
 		internal bool updateNeeded;
 		private string updateText;
 		private string updateURL;
+		
+		/* Filters */
+		public ModBrowserSortMode SortMode {
+			get => SortModeFilterToggle.State;
+			set => SortModeFilterToggle.SetCurrentState(value);
+		}
+		public readonly UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
+			Left = new StyleDimension {Pixels = 0 * 36 + 8}
+		};
 
+		public UpdateFilter UpdateFilterMode {
+			get => UpdateFilterToggle.State;
+			set => UpdateFilterToggle.SetCurrentState(value);
+		}
+		public readonly UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
+			Left = new StyleDimension {Pixels = 1 * 36 + 8}
+		};
+
+		public SearchFilter SearchFilterMode {
+			get => SearchFilterToggle.State;
+			set => SearchFilterToggle.SetCurrentState(value);
+		}
+		public readonly UIBrowserFilterToggle<SearchFilter> SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
+			Left = new StyleDimension {Pixels = 545f}
+		};
+		
+		public ModSideFilter ModSideFilterMode {
+			get => ModSideFilterToggle.State;
+			set => ModSideFilterToggle.SetCurrentState(value);
+		}
+		public readonly UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
+			Left = new StyleDimension {Pixels = 2 * 36 + 8}
+		};
+		
 		internal string SpecialModPackFilterTitle {
 			get => _specialModPackFilterTitle;
 			set {
@@ -197,35 +223,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Height = {Pixels = 32},
 				Top = {Pixels = 10}
 			};
-			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-
-			//TODO: lots of duplication in these buttons
-			SortModeFilterToggle = new UICycleImage(texture, 6, 32, 32, 0, 0) {
-				Left = new StyleDimension {Pixels = 0 * 36 + 8}
-			};
-			SortModeFilterToggle.SetCurrentState((int)sortMode);
-			SortModeFilterToggle.OnClick += (a, b) => UpdateToNext(ref sortMode);
-			SortModeFilterToggle.OnRightClick += (a, b) => UpdateToPrevious(ref sortMode);
+			
 			_categoryButtons.Add(SortModeFilterToggle);
 			upperMenuContainer.Append(SortModeFilterToggle);
-
-			UpdateFilterToggle = new UICycleImage(texture, 3, 32, 32, 34, 0) {
-				Left = new StyleDimension {Pixels = 1 * 36 + 8}
-			};
-			UpdateFilterToggle.SetCurrentState((int)updateFilterMode);
-			UpdateFilterToggle.OnClick += (a, b) => UpdateToNext(ref updateFilterMode);
-			UpdateFilterToggle.OnRightClick += (a, b) => UpdateToPrevious(ref updateFilterMode);
+			
 			_categoryButtons.Add(UpdateFilterToggle);
 			upperMenuContainer.Append(UpdateFilterToggle);
-
-			ModSideFilterToggle = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0) {
-				Left = new StyleDimension {Pixels = 2 * 36 + 8}
-			};
-			ModSideFilterToggle.SetCurrentState((int)modSideFilterMode);
-			ModSideFilterToggle.OnClick += (a, b) => UpdateToNext(ref modSideFilterMode);
-			ModSideFilterToggle.OnRightClick += (a, b) => UpdateToPrevious(ref modSideFilterMode);
+			
 			_categoryButtons.Add(ModSideFilterToggle);
 			upperMenuContainer.Append(ModSideFilterToggle);
+			
+			_categoryButtons.Add(SearchFilterToggle);
+			upperMenuContainer.Append(SearchFilterToggle);
 
 			var filterTextBoxBackground = new UIPanel {
 				Top = {Percent = 0f},
@@ -244,26 +253,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			};
 			filterTextBox.OnTextChange += (sender, e) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
-
-			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
-				Left = new StyleDimension {Pixels = 545f}
-			};
-			SearchFilterToggle.SetCurrentState((int)searchFilterMode);
-			SearchFilterToggle.OnClick += (a, b) => UpdateToNext(ref searchFilterMode);
-			SearchFilterToggle.OnRightClick += (a, b) => UpdateToPrevious(ref searchFilterMode);
-			_categoryButtons.Add(SearchFilterToggle);
-			upperMenuContainer.Append(SearchFilterToggle);
+			
 			uIPanel.Append(upperMenuContainer);
-		}
-
-		private void UpdateToNext<T>(ref T @enum) where T : struct, Enum {
-			@enum = @enum.NextEnum();
-			updateNeeded = true;
-		}
-
-		private void UpdateToPrevious<T>(ref T @enum) where T : struct, Enum {
-			@enum = @enum.PreviousEnum();
-			updateNeeded = true;
 		}
 
 		private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
@@ -293,16 +284,16 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					string text;
 					switch (i) {
 						case 0:
-							text = sortMode.ToFriendlyString();
+							text = SortMode.ToFriendlyString();
 							break;
 						case 1:
-							text = updateFilterMode.ToFriendlyString();
+							text = UpdateFilterMode.ToFriendlyString();
 							break;
 						case 2:
-							text = modSideFilterMode.ToFriendlyString();
+							text = ModSideFilterMode.ToFriendlyString();
 							break;
 						case 3:
-							text = searchFilterMode.ToFriendlyString();
+							text = SearchFilterMode.ToFriendlyString();
 							break;
 						default:
 							text = "None";

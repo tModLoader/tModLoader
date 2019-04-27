@@ -154,7 +154,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		
 		public override int CompareTo(object obj) {
 			var item = obj as UIModDownloadItem;
-			switch (Interface.modBrowser.sortMode) {
+			switch (Interface.modBrowser.SortMode) {
 				default:
 					return base.CompareTo(obj);
 				case ModBrowserSortMode.DisplayNameAtoZ:
@@ -177,18 +177,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				return false;
 
 			if (Interface.modBrowser.filter.Length > 0
-			    && Interface.modBrowser.searchFilterMode == SearchFilter.Author)
+			    && Interface.modBrowser.SearchFilterMode == SearchFilter.Author)
 					if (_author.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
 						return false;
 					else if (DisplayName.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1 && ModName.IndexOf(Interface.modBrowser.filter, StringComparison.OrdinalIgnoreCase) == -1)
 						return false;
 
-			if (Interface.modBrowser.modSideFilterMode != ModSideFilter.All
-			    && (int)_modSide != (int)Interface.modBrowser.modSideFilterMode - 1)
+			if (Interface.modBrowser.ModSideFilterMode != ModSideFilter.All
+			    && (int)_modSide != (int)Interface.modBrowser.ModSideFilterMode - 1)
 				return false;
 			
 
-			switch (Interface.modBrowser.updateFilterMode) {
+			switch (Interface.modBrowser.UpdateFilterMode) {
 				default:
 				case UpdateFilter.All:
 					return true;

@@ -2,11 +2,11 @@
 {
 	public enum ModBrowserSortMode
 	{
+		RecentlyUpdated,
+		Hot,
 		DisplayNameAtoZ,
 		DisplayNameZtoA,
 		DownloadsDescending,
 		DownloadsAscending,
-		RecentlyUpdated,
-		Hot,
 	}
 }

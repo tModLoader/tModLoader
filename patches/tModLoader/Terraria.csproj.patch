@@ -112,7 +112,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,224 @@
+@@ -339,6 +_,225 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -191,6 +191,8 @@
 +    <Compile Include="Terraria.ModLoader.IO\TagCompound.cs" />
 +    <Compile Include="Terraria.ModLoader.IO\TagIO.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\EntryReadStream.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser.Elements\UIBrowserFilterToggle.cs" />
++    <Compile Include="Terraria.ModLoader.UI.ModBrowser.Elements\UIModDownloadItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\DownloadRequest.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\HttpDownloadRequest.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\StreamingDownloadRequest.cs" />
@@ -229,7 +231,6 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UIModBrowser.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModControls.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UIModDownloadItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModInfo.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModItem.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIModPackItem.cs" />
