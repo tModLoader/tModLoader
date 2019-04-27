@@ -3,10 +3,11 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI.ModBrowser.Elements
+namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 	{
+		// TODO is this memory abusive as static?
 		private static readonly Texture2D Texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
 
 		public T State {
@@ -28,12 +29,12 @@ namespace Terraria.ModLoader.UI.ModBrowser.Elements
 
 		private void UpdateToNext(UIMouseEvent @event, UIElement element) {
 			SetCurrentState(State.NextEnum());
-			Interface.modBrowser.updateNeeded = true;
+			Interface.modBrowser.UpdateNeeded = true;
 		}
 
 		private void UpdateToPrevious(UIMouseEvent @event, UIElement element) {
 			SetCurrentState(State.PreviousEnum());
-			Interface.modBrowser.updateNeeded = true;
+			Interface.modBrowser.UpdateNeeded = true;
 		}
 	}
 }

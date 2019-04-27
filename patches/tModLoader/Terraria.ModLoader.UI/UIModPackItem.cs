@@ -214,14 +214,14 @@ namespace Terraria.ModLoader.UI
 		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Interface.modBrowser.Activate();
-			Interface.modBrowser.filterTextBox.Text = "";
+			Interface.modBrowser.FilterTextBox.Text = "";
 			Interface.modBrowser.SpecialModPackFilter = modListItem._mods.ToList();
 			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 			Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 			Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
 			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
 			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
-			Interface.modBrowser.updateNeeded = true;
+			Interface.modBrowser.UpdateNeeded = true;
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;
 		}

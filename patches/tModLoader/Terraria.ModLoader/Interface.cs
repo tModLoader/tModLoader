@@ -94,19 +94,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResetData() {
-			modBrowser.modList?.Clear();
-			modBrowser.SortMode = ModBrowserSortMode.RecentlyUpdated;
-			modBrowser.UpdateFilterMode = UpdateFilter.Available;
-			modBrowser.SearchFilterMode = SearchFilter.Name;
-			modBrowser.ModSideFilterMode = ModSideFilter.All;
-			if (modBrowser._categoryButtons.Count == 4) // basically checking if modBrowser._isInitialized
-			{
-				modBrowser._categoryButtons[0].SetCurrentState((int)modBrowser.SortMode);
-				modBrowser._categoryButtons[1].SetCurrentState((int)modBrowser.UpdateFilterMode);
-				modBrowser._categoryButtons[2].SetCurrentState((int)modBrowser.ModSideFilterMode);
-				modBrowser._categoryButtons[3].SetCurrentState((int)modBrowser.SearchFilterMode);
-			}
-			modBrowser.loading = false;
+			modBrowser.Reset();
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 		}
 
