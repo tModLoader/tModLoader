@@ -439,11 +439,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 		/// </summary>
-		public static void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback);
+		public static void PickAmmo(Item item, Item shooter, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+			item.modItem?.PickAmmo(shooter, player, ref type, ref speed, ref damage, ref knockback);
+			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
-			foreach (var g in HookPickAmmo.arr)
-				g.Instance(item).PickAmmo(item, player, ref type, ref speed, ref damage, ref knockback);
+			foreach (var g in HookPickAmmo.arr) {
+				g.Instance(item).PickAmmo(shooter, item, player, ref type, ref speed, ref damage, ref knockback);
+				g.Instance(item).PickAmmo(item, player, ref type, ref speed, ref damage, ref knockback); // deprecated
+			}
 		}
 
 		private static HookList HookConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.ConsumeAmmo);

@@ -5515,7 +5515,7 @@
  					Damage = (int)((double)((float)Damage) * 1.2);
  				}
  				KnockBack += item.knockBack;
-+				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
++				ItemLoader.PickAmmo(item, sItem, this, ref shoot, ref speed, ref Damage, ref KnockBack);
  				bool flag2 = dontConsume;
  				if (sItem.type == 3245)
  				{

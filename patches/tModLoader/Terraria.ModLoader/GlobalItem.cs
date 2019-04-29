@@ -207,11 +207,16 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
 		/// <param name="item">The ammo item</param>
-		/// <param name="player"></param>
-		/// <param name="type"></param>
-		/// <param name="speed"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockback"></param>
+		/// <param name="shooter">The item that is using this ammo</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="type">The ID of the projectile shot</param>
+		/// <param name="speed">The speed of the projectile shot</param>
+		/// <param name="damage">The damage of the projectile shot</param>
+		/// <param name="knockback">The speed of the projectile shot</param>
+		public virtual void PickAmmo(Item item, Item shooter, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+		}
+
+		[Obsolete("PickAmmo now has a shooter parameter that represents the item using the ammo.", true)]
 		public virtual void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 
