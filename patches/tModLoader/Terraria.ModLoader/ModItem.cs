@@ -307,7 +307,7 @@ namespace Terraria.ModLoader
 		public virtual void PickAmmo(Item shooter, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 		
-		[Obsolete("PickAmmo now has a shooter parameter that represents the item using the ammo.", true)]
+		[Obsolete("PickAmmo now has a shooter parameter that represents the item using the ammo.")]
 		public virtual void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 

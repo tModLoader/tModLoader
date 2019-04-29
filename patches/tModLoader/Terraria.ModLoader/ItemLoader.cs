@@ -439,7 +439,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 		/// </summary>
-		public static void PickAmmo(Item item, Item shooter, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+		public static void PickAmmo(Item shooter, Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 			item.modItem?.PickAmmo(shooter, player, ref type, ref speed, ref damage, ref knockback);
 			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
