@@ -113,6 +113,50 @@
  												{
  													WorldGen.SwitchMB(i, j);
  													return;
+@@ -2414,18 +_,14 @@
+ 														{
+ 															if (Wiring.CheckMech(num131, num130, 300))
+ 															{
+-																int[] array = new int[10];
++																List<int> array = new List<int>();
+ 																int num139 = 0;
+ 																for (int num140 = 0; num140 < 200; num140++)
+ 																{
+-																	if (Main.npc[num140].active && (Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550))
++																	if (Main.npc[num140].active && (Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550 || (Main.npc[num140].townNPC && Main.npc[num140].modNPC?.AddToKingStatue == true)))
+ 																	{
+-																		array[num139] = num140;
++																		array.Add(num140);
+ 																		num139++;
+-																		if (num139 >= 9)
+-																		{
+-																			break;
+-																		}
+ 																	}
+ 																}
+ 																if (num139 > 0)
+@@ -2439,18 +_,14 @@
+ 														}
+ 														else if (num132 == 41 && Wiring.CheckMech(num131, num130, 300))
+ 														{
+-															int[] array2 = new int[10];
++															List<int> array2 = new List<int>();
+ 															int num142 = 0;
+ 															for (int num143 = 0; num143 < 200; num143++)
+ 															{
+-																if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353))
++																if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || (Main.npc[num143].townNPC && Main.npc[num143].modNPC?.AddToQueenStatue == true)))
+ 																{
+-																	array2[num142] = num143;
++																	array2.Add(num143);
+ 																	num142++;
+-																	if (num142 >= 9)
+-																	{
+-																		break;
+-																	}
+ 																}
+ 															}
+ 															if (num142 > 0)
 @@ -2515,6 +_,7 @@
  						}
  					}
