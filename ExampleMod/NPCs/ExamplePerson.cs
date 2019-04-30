@@ -19,6 +19,11 @@ namespace ExampleMod.NPCs
 			return mod.Properties.Autoload;
 		}
 
+		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
+		public override bool AddToKingStatue => true;
+
+		public override bool AddToQueenStatue => true;
+
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
