@@ -629,6 +629,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
+		/// </summary>
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool CanGoToStatue(bool toKingStatue) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(bool toKingStatue) {
+		}
+
+		/// <summary>
 		/// Allows you to determine the damage and knockback of this town NPC's attack before the damage is scaled. (More information on scaling in GlobalNPC.BuffTownNPCs.)
 		/// </summary>
 		/// <param name="damage"></param>

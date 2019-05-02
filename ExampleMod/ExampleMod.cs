@@ -420,6 +420,11 @@ namespace ExampleMod
 						packet.Send(-1, playernumber);
 					}
 					break;
+				case ExampleModMessageType.ExampleTeleportToStatue:
+					if (Main.npc[reader.ReadByte()].modNPC is NPCs.ExamplePerson person && person.npc.active) {
+						person.StatueTeleport();
+					}
+					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
 					break;
@@ -434,7 +439,8 @@ namespace ExampleMod
 		PuritySpirit,
 		HeroLives,
 		ExamplePlayerSyncPlayer,
-		NonStopPartyChanged
+		NonStopPartyChanged,
+		ExampleTeleportToStatue
 	}
 
 	/*public static class ExampleModExtensions

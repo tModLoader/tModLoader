@@ -501,6 +501,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool? CanGoToStatue(NPC npc, bool toKingStatue) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(NPC npc, bool toKingStatue) {
+		}
+
+		/// <summary>
 		/// Allows you to modify the stats of town NPCs. Useful for buffing town NPCs when certain bosses are defeated, etc.
 		/// </summary>
 		/// <param name="damageMult"></param>

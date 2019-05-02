@@ -946,6 +946,34 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
+
+		public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo) {
+			bool defaultCanGo = npc.modNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
+
+			foreach (GlobalNPC g in HookCanGoToStatue.arr) {
+				bool? canGo = g.Instance(npc).CanGoToStatue(npc, toKingStatue);
+				if (canGo.HasValue) {
+					if (!canGo.Value) {
+						return false;
+					}
+					defaultCanGo = true;
+				}
+			}
+
+			return defaultCanGo;
+		}
+
+		private static HookList HookOnGoToStatue = AddHook<Action<NPC, bool>>(g => g.OnGoToStatue);
+
+		public static void OnGoToStatue(NPC npc, bool toKingStatue) {
+			npc.modNPC?.OnGoToStatue(toKingStatue);
+
+			foreach (GlobalNPC g in HookOnGoToStatue.arr) {
+				g.OnGoToStatue(npc, toKingStatue);
+			}
+		}
+
 		private delegate void DelegateBuffTownNPC(ref float damageMult, ref int defense);
 		private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
