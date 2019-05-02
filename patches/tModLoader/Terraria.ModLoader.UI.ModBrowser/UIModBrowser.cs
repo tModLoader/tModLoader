@@ -373,6 +373,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Main.menuMode = Interface.downloadManagerID;
 		}
 
+		internal UIModDownloadItem FindModDownloadItem(string modName) {
+			return _items.FirstOrDefault(x => x.ModName.Equals(modName));
+		}
+
 		private void OnModDownloadCompleted(HttpDownloadRequest req) {
 			if (req.Response.StatusCode != HttpStatusCode.OK) {
 				string errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
