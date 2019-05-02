@@ -1,5 +1,9 @@
 var dir_abb04cf70b4f0d2da8c90c1faf70fdc9 =
 [
+    [ "BackupIO.cs", "_backup_i_o_8cs.html", [
+      [ "Player", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player" ],
+      [ "World", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world" ]
+    ] ],
     [ "BigEndian.cs", "_big_endian_8cs.html", [
       [ "BigEndianReader", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader" ],
       [ "BigEndianWriter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer" ]

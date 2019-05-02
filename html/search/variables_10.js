@@ -10,6 +10,8 @@ var searchData=
   ['pirates',['Pirates',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af5bbadbc818777dc5333a45251914b17',1,'Terraria::ModLoader::SpawnCondition']]],
   ['planteradefeated',['planteraDefeated',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9b19eb26b1ac89612fa9c7a9be9649da',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['player',['player',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a894868167c60f17bea09fba0aea811a8',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['playerbackupdir',['PlayerBackupDir',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#ad63da925de6b2c83deacd281d6f92e38',1,'Terraria::ModLoader::BackupIO::Player']]],
+  ['playerdir',['PlayerDir',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5f5df4d7487063e72faccb00787a4f93',1,'Terraria::ModLoader::BackupIO::Player']]],
   ['playerfloorx',['playerFloorX',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eec678c546a950cc906e36ec64f362c',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['playerfloory',['playerFloorY',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#afb34f12bdfa209993adda54c3b1d09d4',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['playerintown',['playerInTown',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a104a11199f860cb5e5ed8272b1e11a02',1,'Terraria::ModLoader::NPCSpawnInfo']]],

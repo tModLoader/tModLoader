@@ -134,6 +134,7 @@ var hierarchy =
     [ "Terraria.ModLoader.IO.TagIO.PayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html", [
       [ "Terraria.ModLoader.IO.TagIO.ClassPayloadHandler< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html", null ]
     ] ],
+    [ "Terraria.ModLoader.BackupIO.Player", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html", null ],
     [ "Terraria.ModLoader.PlayerDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html", null ],
     [ "Terraria.ModLoader.PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", null ],
     [ "Terraria.ModLoader.PlayerHooks", "class_terraria_1_1_mod_loader_1_1_player_hooks.html", null ],
@@ -192,6 +193,7 @@ var hierarchy =
     [ "Terraria.ModLoader.WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", null ],
     [ "Terraria.ModLoader.WaterfallStyleLoader", "class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html", null ],
     [ "Terraria.ModLoader.WaterStyleLoader", "class_terraria_1_1_mod_loader_1_1_water_style_loader.html", null ],
+    [ "Terraria.ModLoader.BackupIO.World", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html", null ],
     [ "Terraria.ModLoader.WorldHooks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html", null ],
     [ "Recipe", null, [
       [ "Terraria.ModLoader.ModRecipe", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html", null ]

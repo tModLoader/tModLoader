@@ -28,19 +28,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_autoload_equip_8cs.html",
-"_tag_serializable_8cs.html",
-"class_terraria_1_1_mod_loader_1_1_equip_texture.html#aa904bf2469387af9a116926e53f9dd86",
-"class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6bcef45bd1de82982ccf99d34db4d8e7",
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html",
-"class_terraria_1_1_mod_loader_1_1_logging.html#a65761555203062c1839dc1375e7d39df",
-"class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4d3d217d6a87207370895ac84603efd5",
-"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a10bb42e54445d397e5a28277ed9c0d12",
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4be1c96db232e9c9c6abb42baebf3818",
-"class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html",
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a1a227129a4dd20d9076a3f2cef375d5f",
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2b456cbce3969dbbe4e023652decb648",
-"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a282e98b17126aee0254fd64115033987",
-"functions_n.html"
+"_tag_printer_8cs.html",
+"class_terraria_1_1_mod_loader_1_1_equip_texture.html#a998b26d3af50f2304fa78176035f9e62",
+"class_terraria_1_1_mod_loader_1_1_global_projectile.html#a54e53d2666fd2746541428bee75542a9",
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#acfec77bae1fb664acadb848a91afaadc",
+"class_terraria_1_1_mod_loader_1_1_logging.html#a4ee052d38eb589a3ee12e4f1c267210f",
+"class_terraria_1_1_mod_loader_1_1_mod_buff.html#a23e45ce794e3dbe3af3c55eb7e396583",
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0be4253832f342ed238d29f2575f2166",
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a48f04db7c4e6636b043bc62020ff1342",
+"class_terraria_1_1_mod_loader_1_1_mod_water_style.html#ab32a21465ad930bd6d3ff7ff42d54efb",
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a16c69a5a6498e077b2c7ae050f28c878",
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2744e597c3133cba11b7a4b7592bc2d3",
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2535a7383faf51655066c587ec7b4513",
+"functions_l.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
