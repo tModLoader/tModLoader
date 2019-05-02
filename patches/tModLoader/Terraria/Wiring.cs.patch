@@ -139,8 +139,8 @@
  																	int num141 = array[Main.rand.Next(num139)];
  																	Main.npc[num141].position.X = (float)(num133 - Main.npc[num141].width / 2);
  																	Main.npc[num141].position.Y = (float)(num134 - Main.npc[num141].height - 1);
-+																	NPCLoader.OnGoToStatue(Main.npc[num141], true);
  																	NetMessage.SendData(23, -1, -1, null, num141, 0f, 0f, 0f, 0, 0, 0);
++																	NPCLoader.OnGoToStatue(Main.npc[num141], true);
  																}
  															}
  														}
@@ -168,8 +168,8 @@
  																int num144 = array2[Main.rand.Next(num142)];
  																Main.npc[num144].position.X = (float)(num133 - Main.npc[num144].width / 2);
  																Main.npc[num144].position.Y = (float)(num134 - Main.npc[num144].height - 1);
-+																NPCLoader.OnGoToStatue(Main.npc[num144], false);
  																NetMessage.SendData(23, -1, -1, null, num144, 0f, 0f, 0f, 0, 0, 0);
++																NPCLoader.OnGoToStatue(Main.npc[num144], false);
  															}
  														}
 @@ -2515,6 +_,7 @@

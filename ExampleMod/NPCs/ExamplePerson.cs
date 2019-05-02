@@ -1,4 +1,6 @@
+using System;
 using ExampleMod.Items;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -18,11 +20,6 @@ namespace ExampleMod.NPCs
 			name = "Example Person";
 			return mod.Properties.Autoload;
 		}
-
-		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
-		public override bool AddToKingStatue => true;
-
-		public override bool AddToQueenStatue => true;
 
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
@@ -260,6 +257,42 @@ namespace ExampleMod.NPCs
 
 		public override void NPCLoot() {
 			Item.NewItem(npc.getRect(), mod.ItemType<Items.Armor.ExampleCostume>());
+		}
+
+		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
+		public override bool CanGoToKingStatue() {
+			return true;
+		}
+
+		public override bool CanGoToQueenStatue() {
+			return true;
+		}
+
+		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
+		public override void OnGoToStatue(bool toKingStatue) {
+			if (Main.netMode == NetmodeID.Server) {
+				ModPacket packet = mod.GetPacket();
+				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
+				packet.Write((byte)npc.whoAmI);
+				packet.Send();
+			}
+			else {
+				StatueTeleport();
+			}
+		}
+
+		// Create a square of pixels around the NPC on teleport.
+		public void StatueTeleport() {
+			for (int i = 0; i < 30; i++) {
+				Vector2 position = Main.rand.NextVector2Square(-20, 21);
+				if (Math.Abs(position.X) > Math.Abs(position.Y)) {
+					position.X = Math.Sign(position.X) * 20;
+				}
+				else {
+					position.Y = Math.Sign(position.Y) * 20;
+				}
+				Dust.NewDustPerfect(position, mod.DustType<Dusts.Pixel>(), Vector2.Zero).noGravity = true;
+			}
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
