@@ -165,6 +165,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7ca3d3bdc8f0f1deb33e3723b773f3fc">CanChat</a> ()</td></tr>
 <tr class="memdesc:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.  <a href="#a7ca3d3bdc8f0f1deb33e3723b773f3fc">More...</a><br /></td></tr>
 <tr class="separator:a7ca3d3bdc8f0f1deb33e3723b773f3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec8d814c912202730b31ad1e4e394859"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aec8d814c912202730b31ad1e4e394859">CanGoToStatue</a> (bool toKingStatue)</td></tr>
+<tr class="memdesc:aec8d814c912202730b31ad1e4e394859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this NPC can be telported to a King or Queen statue. Returns false by default.  <a href="#aec8d814c912202730b31ad1e4e394859">More...</a><br /></td></tr>
+<tr class="separator:aec8d814c912202730b31ad1e4e394859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a95612d7298ad2fc45117b67a7769e8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1a95612d7298ad2fc45117b67a7769e8">CanHitNPC</a> (NPC target)</td></tr>
 <tr class="memdesc:a1a95612d7298ad2fc45117b67a7769e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this NPC can hit the given friendly NPC. Return true to allow hitting the target, return false to block this NPC from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.  <a href="#a1a95612d7298ad2fc45117b67a7769e8">More...</a><br /></td></tr>
 <tr class="separator:a1a95612d7298ad2fc45117b67a7769e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,6 +234,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2">OnChatButtonClicked</a> (bool firstButton, ref bool shop)</td></tr>
 <tr class="memdesc:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.  <a href="#a1ee36b9bb95769ce0c242ee45fdf73d2">More...</a><br /></td></tr>
 <tr class="separator:a1ee36b9bb95769ce0c242ee45fdf73d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12874ea363df07665bc18c3dbd34ee8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af12874ea363df07665bc18c3dbd34ee8">OnGoToStatue</a> (bool toKingStatue)</td></tr>
+<tr class="memdesc:af12874ea363df07665bc18c3dbd34ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this NPC teleports to a King or Queen statue. This method is only called server side.  <a href="#af12874ea363df07665bc18c3dbd34ee8">More...</a><br /></td></tr>
+<tr class="separator:af12874ea363df07665bc18c3dbd34ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0133b98a2324f41df2a0e7766bb4c54"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af0133b98a2324f41df2a0e7766bb4c54">OnHitByItem</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, int damage, float knockback, bool crit)</td></tr>
 <tr class="memdesc:af0133b98a2324f41df2a0e7766bb4c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this NPC is hit by a melee weapon.  <a href="#af0133b98a2324f41df2a0e7766bb4c54">More...</a><br /></td></tr>
 <tr class="separator:af0133b98a2324f41df2a0e7766bb4c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -824,6 +830,40 @@ Properties</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a class="anchor" id="aec8d814c912202730b31ad1e4e394859"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModNPC.CanGoToStatue </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>toKingStatue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether this NPC can be telported to a King or Queen statue. Returns false by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">toKingStatue</td><td>Whether the NPC is being teleported to a King or Queen statue.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00635">635</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                                                             {</div><div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a1a95612d7298ad2fc45117b67a7769e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1241,8 +1281,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00692">692</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;                                                                                                {</div><div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00708">708</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;                                                                                                {</div><div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0be4253832f342ed238d29f2575f2166"></a>
@@ -1300,8 +1340,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00702">702</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;                                                                                                                           {</div><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00718">718</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;                                                                                                                           {</div><div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a2d3686f29c6f2e2955ac19a462d702a6"></a>
@@ -1802,6 +1842,40 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00620">620</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;                                                                                 {</div><div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af12874ea363df07665bc18c3dbd34ee8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModNPC.OnGoToStatue </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>toKingStatue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when this NPC teleports to a King or Queen statue. This method is only called server side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">toKingStatue</td><td>Whether the NPC was teleported to a King or Queen statue.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00644">644</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;                                                            {</div><div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af0133b98a2324f41df2a0e7766bb4c54"></a>
@@ -2771,8 +2845,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00644">644</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;                                                                                               {</div><div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00660">660</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;                                                                                               {</div><div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac4e3086dee973bf1a5ea266e2307f633"></a>
@@ -2805,8 +2879,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00675">675</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;                                                                              {</div><div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00691">691</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;                                                                              {</div><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac35dcebf6a982b6ea4fc98fae8387a84"></a>
@@ -2850,8 +2924,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00652">652</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;                                                                                     {</div><div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00668">668</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;                                                                                     {</div><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a3abff473a965503e4e34de6d4d864903"></a>
@@ -2902,8 +2976,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00661">661</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;                                                                                                                              {</div><div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00677">677</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;                                                                                                                              {</div><div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6f5aeec1d141380d6135c775b466a774"></a>
@@ -2936,8 +3010,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00668">668</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;                                                                        {</div><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00684">684</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                                                                        {</div><div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a21859f42dc5177e7f92094fca7af2c57"></a>
@@ -2981,8 +3055,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00636">636</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;                                                                                       {</div><div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00652">652</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;                                                                                       {</div><div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5ab2125c0d53ccf0c98a39e6c1ced2c0"></a>
@@ -3026,8 +3100,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00683">683</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;                                                                                      {</div><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_n_p_c_8cs_source.html#l00699">699</a> of file <a class="el" href="_mod_n_p_c_8cs_source.html">ModNPC.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;                                                                                      {</div><div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a14ca9115ed296de1799aa67efd0df6c1"></a>
