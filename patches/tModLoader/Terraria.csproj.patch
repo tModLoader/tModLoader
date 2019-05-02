@@ -112,7 +112,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,226 @@
+@@ -339,6 +_,227 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -277,6 +277,7 @@
 +    <Compile Include="Terraria.ModLoader.Core\MdbManager.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\MemoryTracking.cs" />
 +    <Compile Include="Terraria.ModLoader\Mod.cs" />
++    <Compile Include="Terraria.ModLoader.IO\BackupIO.cs" />
 +    <Compile Include="Terraria.ModLoader\ModInternals.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBackgroundStyle.cs" />
 +    <Compile Include="Terraria.ModLoader\ModBuff.cs" />

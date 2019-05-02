@@ -5854,7 +5854,7 @@
  			}
  			catch
  			{
-@@ -39244,15 +_,18 @@
+@@ -39244,16 +_,20 @@
  			{
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1)
  				{
@@ -5869,10 +5869,13 @@
  					{
  						return null;
  					}
+-				}
 +					playerFileData.customDataFail = customDataFail;
- 				}
++				}
++				BackupIO.Player.ArchivePlayer(playerFileData);
  				return playerFileData;
  			}
+ 			return null;
 @@ -39313,13 +_,31 @@
  			return -1;
  		}

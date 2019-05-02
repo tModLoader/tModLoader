@@ -26,6 +26,14 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
+@@ -296,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			BackupIO.World.ArchiveWorld();
+ 			if (WorldFile.OnWorldLoad != null)
+ 			{
+ 				WorldFile.OnWorldLoad();
 @@ -402,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
