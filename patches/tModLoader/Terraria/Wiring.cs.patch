@@ -123,7 +123,7 @@
  																for (int num140 = 0; num140 < 200; num140++)
  																{
 -																	if (Main.npc[num140].active && (Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550))
-+																	if (Main.npc[num140].active && (Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550 || (Main.npc[num140].townNPC && Main.npc[num140].modNPC?.AddToKingStatue == true)))
++																	if (Main.npc[num140].active && NPCLoader.CanGoToKingStatue(Main.npc[num140]))
  																	{
 -																		array[num139] = num140;
 +																		array.Add(num140);
@@ -135,7 +135,14 @@
  																	}
  																}
  																if (num139 > 0)
-@@ -2439,18 +_,14 @@
+@@ -2433,24 +_,21 @@
+ 																	int num141 = array[Main.rand.Next(num139)];
+ 																	Main.npc[num141].position.X = (float)(num133 - Main.npc[num141].width / 2);
+ 																	Main.npc[num141].position.Y = (float)(num134 - Main.npc[num141].height - 1);
++																	NPCLoader.OnGoToStatue(Main.npc[num141], true);
+ 																	NetMessage.SendData(23, -1, -1, null, num141, 0f, 0f, 0f, 0, 0, 0);
+ 																}
+ 															}
  														}
  														else if (num132 == 41 && Wiring.CheckMech(num131, num130, 300))
  														{
@@ -145,7 +152,7 @@
  															for (int num143 = 0; num143 < 200; num143++)
  															{
 -																if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353))
-+																if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || (Main.npc[num143].townNPC && Main.npc[num143].modNPC?.AddToQueenStatue == true)))
++																if (Main.npc[num143].active && NPCLoader.CanGoToQueenStatue(Main.npc[num143]))
  																{
 -																	array2[num142] = num143;
 +																	array2.Add(num143);
@@ -157,6 +164,14 @@
  																}
  															}
  															if (num142 > 0)
+@@ -2458,6 +_,7 @@
+ 																int num144 = array2[Main.rand.Next(num142)];
+ 																Main.npc[num144].position.X = (float)(num133 - Main.npc[num144].width / 2);
+ 																Main.npc[num144].position.Y = (float)(num134 - Main.npc[num144].height - 1);
++																NPCLoader.OnGoToStatue(Main.npc[num144], false);
+ 																NetMessage.SendData(23, -1, -1, null, num144, 0f, 0f, 0f, 0, 0, 0);
+ 															}
+ 														}
 @@ -2515,6 +_,7 @@
  						}
  					}

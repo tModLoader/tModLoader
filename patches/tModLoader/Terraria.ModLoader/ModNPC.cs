@@ -60,14 +60,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string HeadTexture => Texture + "_Head";
 		/// <summary>
-		/// Wether this town NPC can be telported to the King statue.
-		/// </summary>
-		public virtual bool AddToKingStatue => false;
-		/// <summary>
-		/// Wether this town NPC can be teleported to the Queen statue.
-		/// </summary>
-		public virtual bool AddToQueenStatue => false;
-		/// <summary>
 		/// This file name of this NPC's boss head texture file, to be used in autoloading.
 		/// </summary>
 		public virtual string BossHeadTexture => Texture + "_Head_Boss";
@@ -634,6 +626,28 @@ namespace Terraria.ModLoader
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
 		public virtual void SetupShop(Chest shop, ref int nextSlot) {
+		}
+
+		/// <summary>
+		/// Wether this NPC can be telported to the King statue. Returns false by default.
+		/// </summary>
+		public virtual bool CanGoToKingStatue() {
+			return false;
+		}
+
+		/// <summary>
+		/// Wether this NPC can be telported to the Queen statue. Returns false by default.
+		/// </summary>
+		public virtual bool CanGoToQueenStatue() {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(bool toKingStatue) {
 		}
 
 		/// <summary>
