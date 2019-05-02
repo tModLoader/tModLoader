@@ -260,11 +260,7 @@ namespace ExampleMod.NPCs
 		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
-		public override bool CanGoToKingStatue() {
-			return true;
-		}
-
-		public override bool CanGoToQueenStatue() {
+		public override bool CanGoToStatue(bool toKingStatue) {
 			return true;
 		}
 

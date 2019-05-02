@@ -946,63 +946,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanGoToKingStatue = AddHook<Func<NPC, bool?>>(g => g.CanGoToKingStatue);
+		private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
 
-		public static bool CanGoToKingStatue(NPC npc) {
-			bool defaultCanGo = npc.modNPC?.CanGoToKingStatue() ?? false;
+		public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo) {
+			bool defaultCanGo = npc.modNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
 
-			switch (npc.type) {
-				case NPCID.Merchant:
-				case NPCID.Guide:
-				case NPCID.ArmsDealer:
-				case NPCID.Demolitionist:
-				case NPCID.Clothier:
-				case NPCID.GoblinTinkerer:
-				case NPCID.Wizard:
-				case NPCID.SantaClaus:
-				case NPCID.Truffle:
-				case NPCID.DyeTrader:
-				case NPCID.Painter:
-				case NPCID.WitchDoctor:
-				case NPCID.Pirate:
-				case NPCID.LightningBug: // A literal bug
-				case NPCID.Angler:
-				case NPCID.DD2Bartender:
-					defaultCanGo = true;
-					break;
-			}
-
-			foreach (GlobalNPC g in HookCanGoToKingStatue.arr) {
-				bool? canGo = g.Instance(npc).CanGoToKingStatue(npc);
-				if (canGo.HasValue) {
-					if (!canGo.Value) {
-						return false;
-					}
-					defaultCanGo = true;
-				}
-			}
-
-			return defaultCanGo;
-		}
-
-		private static HookList HookCanGoToQueenStatue = AddHook<Func<NPC, bool?>>(g => g.CanGoToQueenStatue);
-
-		public static bool CanGoToQueenStatue(NPC npc) {
-			bool defaultCanGo = npc.modNPC?.CanGoToQueenStatue() ?? false;
-
-			switch (npc.type) {
-				case NPCID.Nurse:
-				case NPCID.Dryad:
-				case NPCID.Mechanic:
-				case NPCID.Steampunker:
-				case NPCID.PartyGirl:
-				case NPCID.Stylist:
-					defaultCanGo = true;
-					break;
-			}
-
-			foreach (GlobalNPC g in HookCanGoToQueenStatue.arr) {
-				bool? canGo = g.Instance(npc).CanGoToQueenStatue(npc);
+			foreach (GlobalNPC g in HookCanGoToStatue.arr) {
+				bool? canGo = g.Instance(npc).CanGoToStatue(npc, toKingStatue);
 				if (canGo.HasValue) {
 					if (!canGo.Value) {
 						return false;

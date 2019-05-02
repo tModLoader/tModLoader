@@ -629,16 +629,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Wether this NPC can be telported to the King statue. Returns false by default.
+		/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
 		/// </summary>
-		public virtual bool CanGoToKingStatue() {
-			return false;
-		}
-
-		/// <summary>
-		/// Wether this NPC can be telported to the Queen statue. Returns false by default.
-		/// </summary>
-		public virtual bool CanGoToQueenStatue() {
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool CanGoToStatue(bool toKingStatue) {
 			return false;
 		}
 
