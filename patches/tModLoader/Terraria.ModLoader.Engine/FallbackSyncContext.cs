@@ -55,13 +55,13 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static SyncContext ctx;
-		public static void Init() {
+		public static void Update() {
 			if (SynchronizationContext.Current == null) {
 				SynchronizationContext.SetSynchronizationContext(ctx = new SyncContext());
 				Logging.tML.Debug("Fallback synchronization context assigned");
 			}
-		}
 
-		public static void Update() => ctx?.Update();
+			ctx?.Update();
+		}
 	}
 }
