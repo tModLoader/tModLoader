@@ -15,6 +15,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public event Action OnCancel;
 		public event Action OnComplete;
 
+		public bool Success { get; protected set; }
 		public object CustomData { get; internal set; }
 		public bool Completed { get; internal set; }
 
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			FileStream = new FileStream(_downloadPath, FileMode.Create);
 			return Task.Factory.StartNew(() => {
 				Execute();
-				while (!Completed && !cancellationToken.IsCancellationRequested); // Fully wait for completion of this request
+				while (!Completed && !cancellationToken.IsCancellationRequested) ; // Fully wait for completion of this request
 			}, cancellationToken, TaskCreationOptions.AttachedToParent, TaskScheduler.Current);
 		}
 
@@ -74,7 +75,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public virtual void Complete() {
 			try {
 				FileStream?.Close();
-				File.Copy(_downloadPath, OutputFilePath, true);
+				if (Success)
+					File.Copy(_downloadPath, OutputFilePath, true);
 				File.Delete(_downloadPath);
 			}
 			catch (Exception e) {

@@ -65,10 +65,16 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 				// TODO Add a concurrency TML option, up to 4 concurrent downloads
 				req.OnUpdateProgress += SetProgress;
-				req.Start(_cts.Token).Wait(_cts.Token);
+				try {
+					req.Start(_cts.Token).Wait();
+				}
+				catch (Exception e) {
+					// In case we don't do proper error handling in a request we can catch it here
+					Logging.tML.Warn("A download errored", e);
+				}
 			}
 
-			Logging.tML.Info($"DownloadManager processed {processed} out of {toProcess} requests. Waiting for downloading to complete.");
+			Logging.tML.Info($"DownloadManager processed {processed} out of {toProcess} requests.");
 		}
 
 		public override void OnInitialize() {

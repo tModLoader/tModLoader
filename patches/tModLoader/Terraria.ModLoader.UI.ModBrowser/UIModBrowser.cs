@@ -382,7 +382,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				string errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
 				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
 			}
-			else if (req.CustomData is UIModDownloadItem currentDownload) {
+			else if (req.Success && req.CustomData is UIModDownloadItem currentDownload) {
 				ProcessDownloadedMod(req, currentDownload);
 			}
 		}

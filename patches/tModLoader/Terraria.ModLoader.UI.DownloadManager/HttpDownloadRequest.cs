@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
+using System.Threading.Tasks;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI.DownloadManager
@@ -15,7 +16,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private readonly Func<HttpWebRequest> _requestSupplier;
 
 		public HttpWebResponse Response { get; private set; }
-		public IAsyncResult ResponseAsyncResult { get; private set; }
 
 		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
 		public SecurityProtocolType SecurityProtocol = Tls12;
@@ -36,11 +36,16 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Request.ProtocolVersion = ProtocolVersion;
 			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
 			Request.KeepAlive = true;
-			ResponseAsyncResult = Request.BeginGetResponse(ResponseCallback, null);
+			Request.Proxy = null;
+
+			UpdateProgress(0);
+			var task = Task.Factory.FromAsync(Request.BeginGetResponse, Request.EndGetResponse, TaskCreationOptions.AttachedToParent);
+			task.ContinueWith(HandleResponse, TaskContinuationOptions.OnlyOnRanToCompletion);
+			task.ContinueWith(HandleErrors, TaskContinuationOptions.OnlyOnFaulted);
 		}
 
 		public override void Cancel() {
-			Logging.tML.Warn($"The HttpRequest [{DisplayText}] was cancelled.");
+			Logging.tML.Warn($"HttpDownloadRequest [{DisplayText}] was cancelled.");
 			Request?.Abort();
 			base.Cancel();
 		}
@@ -50,34 +55,51 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			return errors == SslPolicyErrors.None;
 		}
 
+		private void HandleErrors(Task task) {
+			var aggregate = task.Exception;
+			foreach (var exception in aggregate.InnerExceptions) {
+				if (exception.Message.Contains("The request was canceled.")) {
+					Logging.tML.Warn($"HttpDownloadRequest [{DisplayText}] was aborted");
+					break;
+				}
+			}
+			Response?.Close();
+			FileStream?.Dispose();
+			UpdateProgress(0);
+		}
+
 		// This is an asynchronous callback
 		// It might be executing on a worker thread
 		// so do not update controls directly from here
-		private void ResponseCallback(object state) {
-			try {
-				Response = (HttpWebResponse)Request.EndGetResponse(ResponseAsyncResult);
-			}
-			catch (Exception e) {
-				Logging.tML.Error($"The HttpRequest [{DisplayText}] failed to get a response.", e);
-				return;
-			}
-			long contentLength = Response.ContentLength;
+		private void HandleResponse(Task<WebResponse> task) {
+			Response = (HttpWebResponse)task.Result;
+			Debug.Assert(Response.StatusCode == HttpStatusCode.OK);
+
+			var contentLength = Response.ContentLength;
 			if (contentLength < 0) {
-				Logging.tML.Error($"Could not get a proper content length for HttpDownloadRequest [{DisplayText}]");
-				return;
+				var txt = $"Could not get a proper content length for HttpDownloadRequest [{DisplayText}]";
+				Logging.tML.Error(txt);
+				throw new Exception(txt);
 			}
 
-			Stream responseStream = Response.GetResponseStream();
-
+			var responseStream = Response.GetResponseStream();
 			int currentIndex = 0;
+			byte[] buf;
 
 			do {
-				byte[] buf = responseStream.ReadBytes((int)Math.Min(contentLength - FileStream.Position, ModNet.CHUNK_SIZE));
-				FileStream.Write(buf, 0, buf.Length);
-				currentIndex += buf.Length;
-				UpdateProgress(currentIndex / (double)contentLength);
+				try {
+					buf = responseStream.ReadBytes((int)Math.Min(contentLength - FileStream.Position, ModNet.CHUNK_SIZE));
+					FileStream.Write(buf, 0, buf.Length);
+					currentIndex += buf.Length;
+					UpdateProgress(currentIndex / (double)contentLength);
+				}
+				catch {
+					// during cancellation of request ReadBytes will throw
+					break;
+				}
 			} while (currentIndex < contentLength);
 
+			Success = currentIndex == contentLength;
 			Response.Close();
 			Complete();
 		}

@@ -35,8 +35,7 @@ namespace Terraria.ModLoader
 		internal const string side = "server";
 #endif
 
-		internal static void Init()
-		{
+		internal static void Init() {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
@@ -187,6 +186,17 @@ namespace Terraria.ModLoader
 			"System.Diagnostics.Process.Kill",//attempt to kill non-started process when joining server
 		};
 
+		// there are a couple of annoying messages that happen during cancellation of asynchronous downloads
+		// that have no other useful info to suppress by
+		private static List<string> ignoreMessages = new List<string> {
+			"A blocking operation was interrupted by a call to WSACancelBlockingCall", //c#.net abort for downloads
+			"The request was aborted: The request was canceled.", // System.Net.ConnectStream.IOError
+			"Object name: 'System.Net.Sockets.Socket'.", // System.Net.Sockets.Socket.BeginReceive
+			"Object name: 'System.Net.Sockets.NetworkStream'",// System.Net.Sockets.NetworkStream.UnsafeBeginWrite
+			"This operation cannot be performed on a completed asynchronous result object.", // System.Net.ContextAwareResult.get_ContextCopy()
+			"Object name: 'SslStream'.", //System.Net.Security.SslState.InternalEndProcessAuthentication
+		};
+
 		public static void IgnoreExceptionContents(string source) {
 			if (!ignoreContents.Contains(source))
 				ignoreContents.Add(source);
@@ -196,7 +206,8 @@ namespace Terraria.ModLoader
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
 			if (args.Exception == previousException ||
 				args.Exception is ThreadAbortException ||
-				ignoreSources.Contains(args.Exception.Source))
+				ignoreSources.Contains(args.Exception.Source) ||
+				ignoreMessages.Any(str => args.Exception.Message.Contains(str)))
 				return;
 
 			var stackTrace = new StackTrace(true);
@@ -283,8 +294,7 @@ namespace Terraria.ModLoader
 
 		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
 		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
-		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)
-		{
+		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo) {
 			var stackTrace = new StackTrace(self, true);
 			MdbManager.Symbolize(stackTrace.GetFrames());
 			PrettifyStackTraceSources(stackTrace.GetFrames());

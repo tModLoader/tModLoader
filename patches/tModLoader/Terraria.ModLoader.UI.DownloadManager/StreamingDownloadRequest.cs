@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
@@ -40,10 +39,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public override void Execute() {
+			UpdateProgress(0);
 			ModLoader.GetMod(ModHeader.name)?.Close();
 		}
 
 		public override void Complete() {
+			Success = true;
 			base.Complete();
 
 			try {
