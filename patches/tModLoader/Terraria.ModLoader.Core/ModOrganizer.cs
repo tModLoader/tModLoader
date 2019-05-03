@@ -163,11 +163,12 @@ namespace Terraria.ModLoader.Core
 				foreach (var dep in mod.properties.Refs(true)) {
 					if (dep.target == null || !nameMap.TryGetValue(dep.mod, out var inst))
 						continue;
-					
+
 					if (inst.properties.version < dep.target) {
 						errored.Add(mod);
 						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
-					} else if (inst.properties.version.Major != dep.target.Major) {
+					}
+					else if (inst.properties.version.Major != dep.target.Major) {
 						errored.Add(mod);
 						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.properties.version));
 					}
@@ -256,9 +257,14 @@ namespace Terraria.ModLoader.Core
 		internal static HashSet<string> LoadEnabledMods() {
 			try {
 				var path = Path.Combine(ModLoader.ModPath, "enabled.json");
+				if (!File.Exists(path)) {
+					Logging.tML.Warn("Did not find enabled.json file");
+					return new HashSet<string>();
+				}
 				return JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
 			}
-			catch {
+			catch (Exception e) {
+				Logging.tML.Warn("Unknown error occurred when trying to read enabled.json", e);
 				return new HashSet<string>();
 			}
 		}
