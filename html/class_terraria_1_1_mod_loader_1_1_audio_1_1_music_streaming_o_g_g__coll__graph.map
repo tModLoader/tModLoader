@@ -1,5 +1,4 @@
 <map id="Terraria.ModLoader.Audio.MusicStreamingOGG" name="Terraria.ModLoader.Audio.MusicStreamingOGG">
 <area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html" title="MusicStreaming" alt="" coords="382,235,498,261"/>
 <area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html" title="Music" alt="" coords="75,5,133,32"/>
-<area shape="rect" id="node4" href="$class_i_disposable.html" title="IDisposable" alt="" coords="59,56,149,83"/>
 </map>

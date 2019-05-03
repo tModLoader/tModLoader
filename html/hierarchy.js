@@ -64,13 +64,6 @@ var hierarchy =
     [ "ICloneable", "class_i_cloneable.html", [
       [ "Terraria.ModLoader.IO.TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", null ]
     ] ],
-    [ "IDisposable", "class_i_disposable.html", [
-      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", [
-        [ "Terraria.ModLoader.Audio.MusicStreamingMP3", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html", null ],
-        [ "Terraria.ModLoader.Audio.MusicStreamingOGG", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html", null ],
-        [ "Terraria.ModLoader.Audio.MusicStreamingWAV", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html", null ]
-      ] ]
-    ] ],
     [ "IEnumerable< KeyValuePair< string, object >>", "class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html", [
       [ "Terraria.ModLoader.IO.TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", null ]
     ] ],
@@ -121,7 +114,11 @@ var hierarchy =
     [ "Terraria.ModLoader.MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", null ],
     [ "Terraria.ModLoader.Audio.Music", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html", [
       [ "Terraria.ModLoader.Audio.MusicCue", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html", null ],
-      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", null ]
+      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", [
+        [ "Terraria.ModLoader.Audio.MusicStreamingMP3", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html", null ],
+        [ "Terraria.ModLoader.Audio.MusicStreamingOGG", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html", null ],
+        [ "Terraria.ModLoader.Audio.MusicStreamingWAV", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html", null ]
+      ] ]
     ] ],
     [ "Terraria.ModLoader.NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", null ],
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
@@ -195,6 +192,9 @@ var hierarchy =
     [ "Terraria.ModLoader.WaterStyleLoader", "class_terraria_1_1_mod_loader_1_1_water_style_loader.html", null ],
     [ "Terraria.ModLoader.BackupIO.World", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html", null ],
     [ "Terraria.ModLoader.WorldHooks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html", null ],
+    [ "IDisposable", null, [
+      [ "Terraria.ModLoader.Audio.MusicStreaming", "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html", null ]
+    ] ],
     [ "Recipe", null, [
       [ "Terraria.ModLoader.ModRecipe", "class_terraria_1_1_mod_loader_1_1_mod_recipe.html", null ]
     ] ]

@@ -2,7 +2,6 @@ var searchData=
 [
   ['icegolem',['IceGolem',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a94bf56b7bcc8ff6b997a211672bdd896',1,'Terraria::ModLoader::SpawnCondition']]],
   ['icloneable',['ICloneable',['../class_i_cloneable.html',1,'']]],
-  ['idisposable',['IDisposable',['../class_i_disposable.html',1,'']]],
   ['ienumerable_3c_20keyvaluepair_3c_20string_2c_20object_20_3e_3e',['IEnumerable&lt; KeyValuePair&lt; string, object &gt;&gt;',['../class_i_enumerable_3_01_key_value_pair_3_01string_00_01object_01_4_4.html',1,'']]],
   ['ignorecontents',['ignoreContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f',1,'Terraria::ModLoader::Logging']]],
   ['ignoreexceptioncontents',['IgnoreExceptionContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a8731b7b43fc16de84f8bfd70cd00abc7',1,'Terraria::ModLoader::Logging']]],

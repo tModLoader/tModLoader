@@ -8,7 +8,7 @@ var searchData=
   ['tilecount',['TileCount',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03',1,'Terraria::ModLoader::TileLoader']]],
   ['tiles',['tiles',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a1bba3df7d170d51ccd7e331f5dad4bf4',1,'Terraria::ModLoader::RecipeFinder']]],
   ['todaysbackup',['TodaysBackup',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9c91295cbe789a4e1c4dc563ba03c0df',1,'Terraria::ModLoader::BackupIO::World']]],
-  ['tooltip',['Tooltip',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a6ca5b581dc1c6d8eca060f5f18f9482c',1,'Terraria.ModLoader.Config.TooltipAttribute.Tooltip()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a0b1f71ee38337297fd4546dd92568310',1,'Terraria.ModLoader.Config.TooltipAttribute.tooltip()']]],
+  ['tooltip',['tooltip',['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a0b1f71ee38337297fd4546dd92568310',1,'Terraria.ModLoader.Config.TooltipAttribute.tooltip()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html#a6ca5b581dc1c6d8eca060f5f18f9482c',1,'Terraria.ModLoader.Config.TooltipAttribute.Tooltip()']]],
   ['torch',['torch',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#afbe1c8db2e449068ac201af997ac218c',1,'Terraria::ModLoader::ModTile']]],
   ['towncritter',['TownCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a78bb4d6d65c2da43c4d547caf1645b2f',1,'Terraria::ModLoader::SpawnCondition']]],
   ['towndefaultwatercritter',['TownDefaultWaterCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a89a5658e43c33b91140917d7f16fd568',1,'Terraria::ModLoader::SpawnCondition']]],
