@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_back
   <div class="summary">
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.BackupIO.Player Class Reference</div>  </div>
@@ -135,18 +136,19 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a9376d495e72c8099c147f9f59f3e3e5a"><td class="memItemLeft" align="right" valign="top">static DateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a9376d495e72c8099c147f9f59f3e3e5a">GetTime</a> (string file)</td></tr>
-<tr class="separator:a9376d495e72c8099c147f9f59f3e3e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5031e069f3ff251c7e6231fff5d7c28e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5031e069f3ff251c7e6231fff5d7c28e">IsArchiveOlder</a> (DateTime time, TimeSpan thresholdAge)</td></tr>
-<tr class="separator:a5031e069f3ff251c7e6231fff5d7c28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf5b675a05c5c6006d5335fbf82329cc"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#aaf5b675a05c5c6006d5335fbf82329cc">TodaysBackup</a> (string name)</td></tr>
-<tr class="separator:aaf5b675a05c5c6006d5335fbf82329cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2af0ee1e3acb86675eddb1b2da9bcd2f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a2af0ee1e3acb86675eddb1b2da9bcd2f">WriteArchive</a> (ZipFile zip, string name)</td></tr>
+<tr class="separator:a2af0ee1e3acb86675eddb1b2da9bcd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ac9fd9ee6f6774278ce779c243b67338f"><td class="memItemLeft" align="right" valign="top">static ReaderWriterLockSlim&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#ac9fd9ee6f6774278ce779c243b67338f">_lock</a> = new ReaderWriterLockSlim()</td></tr>
+<tr class="separator:ac9fd9ee6f6774278ce779c243b67338f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00078">78</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00122">122</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a9376d495e72c8099c147f9f59f3e3e5a"></a>
+<a class="anchor" id="a2af0ee1e3acb86675eddb1b2da9bcd2f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -154,40 +156,16 @@ Static Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static DateTime Terraria.ModLoader.BackupIO.Player.GetTime </td>
+          <td class="memname">static void Terraria.ModLoader.BackupIO.Player.WriteArchive </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5031e069f3ff251c7e6231fff5d7c28e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Terraria.ModLoader.BackupIO.Player.IsArchiveOlder </td>
-          <td>(</td>
-          <td class="paramtype">DateTime&#160;</td>
-          <td class="paramname"><em>time</em>, </td>
+          <td class="paramtype">ZipFile&#160;</td>
+          <td class="paramname"><em>zip</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TimeSpan&#160;</td>
-          <td class="paramname"><em>thresholdAge</em>&#160;</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -202,9 +180,13 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00133">133</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                                                                       {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                zip.AddZipEntry(Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5f5df4d7487063e72faccb00787a4f93">PlayerDir</a>, name + <span class="stringliteral">&quot;.plr&quot;</span>));</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                var tPlrFile = Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5f5df4d7487063e72faccb00787a4f93">PlayerDir</a>, name + <span class="stringliteral">&quot;.tplr&quot;</span>);</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                <span class="keywordflow">if</span> (File.Exists(tPlrFile)) zip.AddZipEntry(tPlrFile);</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                var plrDir = Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5f5df4d7487063e72faccb00787a4f93">PlayerDir</a>, name);</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keywordflow">if</span> (Directory.Exists(plrDir)) zip.AddZipEntry(plrDir);</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player_html_a5f5df4d7487063e72faccb00787a4f93"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#a5f5df4d7487063e72faccb00787a4f93">Terraria.ModLoader.BackupIO.Player.PlayerDir</a></div><div class="ttdeci">static readonly string PlayerDir</div><div class="ttdef"><b>Definition:</b> <a href="_backup_i_o_8cs_source.html#l00124">BackupIO.cs:124</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aaf5b675a05c5c6006d5335fbf82329cc"></a>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ac9fd9ee6f6774278ce779c243b67338f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -212,11 +194,7 @@ Static Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static string Terraria.ModLoader.BackupIO.Player.TodaysBackup </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
+          <td class="memname">ReaderWriterLockSlim Terraria.ModLoader.BackupIO.Player._lock = new ReaderWriterLockSlim()</td>
         </tr>
       </table>
   </td>
@@ -226,9 +204,10 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00126">126</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="ad63da925de6b2c83deacd281d6f92e38"></a>
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +226,7 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00081">81</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00125">125</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
@@ -269,7 +248,7 @@ Static Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00080">80</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00124">124</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>

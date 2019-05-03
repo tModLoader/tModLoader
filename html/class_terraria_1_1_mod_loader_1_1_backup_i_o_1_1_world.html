@@ -133,28 +133,26 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a6a053334bd28fec706a1adf209e83939"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec291cedf9025d618d24714bd43f712b"><td class="memItemLeft" align="right" valign="top">static readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#aec291cedf9025d618d24714bd43f712b">WorldDir</a> = Path.Combine(Main.SavePath, &quot;Worlds&quot;)</td></tr>
 <tr class="separator:aec291cedf9025d618d24714bd43f712b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a7b90282d59055a7ffd59269f0d59c9a3"><td class="memItemLeft" align="right" valign="top">static DateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a7b90282d59055a7ffd59269f0d59c9a3">GetTime</a> (string file)</td></tr>
-<tr class="separator:a7b90282d59055a7ffd59269f0d59c9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64e9627d74474a9054e72db2e9ec79ca"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a64e9627d74474a9054e72db2e9ec79ca">IsArchiveOlder</a> (DateTime time, TimeSpan thresholdAge)</td></tr>
-<tr class="separator:a64e9627d74474a9054e72db2e9ec79ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a9c91295cbe789a4e1c4dc563ba03c0df"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9c91295cbe789a4e1c4dc563ba03c0df">TodaysBackup</a> =&gt; $&quot;{DateTime.Now:yyyy-MM-dd}-{<a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126">WorldName</a>}.zip&quot;</td></tr>
-<tr class="separator:a9c91295cbe789a4e1c4dc563ba03c0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9155500afcb6a566b4c6af0c748a6126"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126">WorldName</a> =&gt; Path.GetFileNameWithoutExtension(<a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#ade0297bf7f2f50c9bef40f074926d219">WorldPath</a>)</td></tr>
 <tr class="separator:a9155500afcb6a566b4c6af0c748a6126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade0297bf7f2f50c9bef40f074926d219"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#ade0297bf7f2f50c9bef40f074926d219">WorldPath</a> =&gt; Main.worldPathName</td></tr>
 <tr class="separator:ade0297bf7f2f50c9bef40f074926d219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a3fd538c7547872090827a8b549651baa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a3fd538c7547872090827a8b549651baa">WriteArchive</a> (ZipFile zip)</td></tr>
+<tr class="separator:a3fd538c7547872090827a8b549651baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a0ea82f5c5e4b30c7d2a9cbd3c2fa4b18"><td class="memItemLeft" align="right" valign="top">static ReaderWriterLockSlim&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a0ea82f5c5e4b30c7d2a9cbd3c2fa4b18">_lock</a> = new ReaderWriterLockSlim()</td></tr>
+<tr class="separator:a0ea82f5c5e4b30c7d2a9cbd3c2fa4b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00013">13</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00103">103</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a7b90282d59055a7ffd59269f0d59c9a3"></a>
+<a class="anchor" id="a3fd538c7547872090827a8b549651baa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -162,10 +160,10 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static DateTime Terraria.ModLoader.BackupIO.World.GetTime </td>
+          <td class="memname">static void Terraria.ModLoader.BackupIO.World.WriteArchive </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
+          <td class="paramtype">ZipFile&#160;</td>
+          <td class="paramname"><em>zip</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -176,44 +174,15 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a class="anchor" id="a64e9627d74474a9054e72db2e9ec79ca"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Terraria.ModLoader.BackupIO.World.IsArchiveOlder </td>
-          <td>(</td>
-          <td class="paramtype">DateTime&#160;</td>
-          <td class="paramname"><em>time</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TimeSpan&#160;</td>
-          <td class="paramname"><em>thresholdAge</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00115">115</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                                                          {</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                zip.AddZipEntry(<a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#ade0297bf7f2f50c9bef40f074926d219">WorldPath</a>);</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                var tWldFile = Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#aec291cedf9025d618d24714bd43f712b">WorldDir</a>, <a class="code" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126">WorldName</a> + <span class="stringliteral">&quot;.twld&quot;</span>);</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <span class="keywordflow">if</span> (File.Exists(tWldFile)) zip.AddZipEntry(tWldFile);</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world_html_ade0297bf7f2f50c9bef40f074926d219"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#ade0297bf7f2f50c9bef40f074926d219">Terraria.ModLoader.BackupIO.World.WorldPath</a></div><div class="ttdeci">static string WorldPath</div><div class="ttdef"><b>Definition:</b> <a href="_backup_i_o_8cs_source.html#l00107">BackupIO.cs:107</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world_html_aec291cedf9025d618d24714bd43f712b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#aec291cedf9025d618d24714bd43f712b">Terraria.ModLoader.BackupIO.World.WorldDir</a></div><div class="ttdeci">static readonly string WorldDir</div><div class="ttdef"><b>Definition:</b> <a href="_backup_i_o_8cs_source.html#l00105">BackupIO.cs:105</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world_html_a9155500afcb6a566b4c6af0c748a6126"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126">Terraria.ModLoader.BackupIO.World.WorldName</a></div><div class="ttdeci">static string WorldName</div><div class="ttdef"><b>Definition:</b> <a href="_backup_i_o_8cs_source.html#l00108">BackupIO.cs:108</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a9c91295cbe789a4e1c4dc563ba03c0df"></a>
+<a class="anchor" id="a0ea82f5c5e4b30c7d2a9cbd3c2fa4b18"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -221,7 +190,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string Terraria.ModLoader.BackupIO.World.TodaysBackup =&gt; $&quot;{DateTime.Now:yyyy-MM-dd}-{<a class="el" href="class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126">WorldName</a>}.zip&quot;</td>
+          <td class="memname">ReaderWriterLockSlim Terraria.ModLoader.BackupIO.World._lock = new ReaderWriterLockSlim()</td>
         </tr>
       </table>
   </td>
@@ -231,7 +200,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00020">20</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00109">109</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
@@ -253,7 +222,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00016">16</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00106">106</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
@@ -275,7 +244,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00015">15</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00105">105</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
@@ -292,12 +261,12 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00019">19</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00108">108</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
@@ -314,12 +283,12 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00018">18</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
+<p>Definition at line <a class="el" href="_backup_i_o_8cs_source.html#l00107">107</a> of file <a class="el" href="_backup_i_o_8cs_source.html">BackupIO.cs</a>.</p>
 
 </div>
 </div>
