@@ -280,9 +280,9 @@ namespace Terraria.ModLoader.Core
 		public bool IsOpen => fileStream != null;
 
 		// Ignore file extensions which don't compress well under deflate to improve build time
-		private static bool ShouldCompress(string fileName) => 
-			!fileName.EndsWith(".png") && 
-			!fileName.EndsWith(".mp3") && 
+		private static bool ShouldCompress(string fileName) =>
+			!fileName.EndsWith(".png") &&
+			!fileName.EndsWith(".mp3") &&
 			!fileName.EndsWith(".ogg");
 
 		private void Read() {
@@ -373,7 +373,7 @@ namespace Terraria.ModLoader.Core
 			foreach (var f in fileTable)
 				f.cachedBytes = null;
 		}
-		
+
 		private void Upgrade() {
 			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
 			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
@@ -401,6 +401,8 @@ namespace Terraria.ModLoader.Core
 			using (var backupStream = File.OpenWrite(Path.Combine(backupFolder, Path.GetFileName(path))))
 				fileStream.CopyTo(backupStream);
 
+			// close stream before upgrade
+			Close();
 			// write to the new format (also updates the file offset table)
 			Save();
 			// clear all the file contents from AddFile
