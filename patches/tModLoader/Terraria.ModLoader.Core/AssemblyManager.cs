@@ -111,7 +111,7 @@ namespace Terraria.ModLoader.Core
 					return;
 
 				try {
-					using (modFile.EnsureOpen()) {
+					using (modFile.Open()) {
 						foreach (var dll in properties.dllReferences)
 							LoadAssembly(EncapsulateReferences(modFile.GetBytes("lib/" + dll + ".dll")));
 

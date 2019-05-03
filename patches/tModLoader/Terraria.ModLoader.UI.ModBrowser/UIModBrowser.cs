@@ -391,7 +391,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var mod = ModLoader.GetMod(currentDownload.ModName);
 			if (mod != null) {
 				Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{mod.Name}: {mod.DisplayName}"));
-				mod.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+				mod?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 				Interface.modBrowser.anEnabledModDownloaded = true;
 			}
 

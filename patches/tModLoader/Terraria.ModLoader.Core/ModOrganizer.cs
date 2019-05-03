@@ -31,9 +31,8 @@ namespace Terraria.ModLoader.Core
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
 					try {
 						var modFile = new TmodFile(fileName);
-						modFile.Read();
-						mod = new LocalMod(modFile) { lastModified = lastModified };
-						modFile.Close();
+						using (modFile.Open())
+							mod = new LocalMod(modFile) { lastModified = lastModified };
 					}
 					catch (Exception e) {
 						if (!readFailures.Contains(fileName)) {

@@ -330,10 +330,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			var file = Path.Combine(ModLoader.ModPath, modName + ".tmod");
-			var modFile = new TmodFile(file) {
-				name = modName,
-				version = properties.version
-			};
+			var modFile = new TmodFile(file, modName, properties.version);
 			return new BuildingMod(modFile, properties, modFolder);
 		}
 
@@ -352,9 +349,8 @@ namespace Terraria.ModLoader.Core
 
 				PackageMod(mod);
 
-				ModLoader.GetMod(mod.Name)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+				ModLoader.GetMod(mod.Name)?.Close();
 				mod.modFile.Save();
-				mod.modFile.Close();
 				ModLoader.EnableMod(mod.Name);
 			} catch (Exception e) {
 				e.Data["mod"] = mod.Name;
@@ -440,9 +436,8 @@ namespace Terraria.ModLoader.Core
 				LocalMod mod;
 				try {
 					var modFile = new TmodFile(Path.Combine(ModLoader.ModPath, refName + ".tmod"));
-					modFile.Read();
-					mod = new LocalMod(modFile);
-					modFile.Close();
+					using (modFile.Open())
+						mod = new LocalMod(modFile);
 				}
 				catch (FileNotFoundException) when (isWeak && !requireWeak) {
 					// don't recursively require weak deps, if the mod author needs to compile against them, they'll have them installed
@@ -555,7 +550,7 @@ namespace Terraria.ModLoader.Core
 
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods) {
-				using (refMod.modFile.EnsureOpen()) {
+				using (refMod.modFile.Open()) {
 					var path = Path.Combine(tempDir, refMod + ".dll");
 					File.WriteAllBytes(path, refMod.modFile.GetModAssembly(xna));
 					refs.Add(path);

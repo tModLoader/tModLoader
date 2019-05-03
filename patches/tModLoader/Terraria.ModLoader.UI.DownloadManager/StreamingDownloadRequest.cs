@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public override void Execute() {
-			ModLoader.GetMod(ModHeader.name)?.File?.Close();
+			ModLoader.GetMod(ModHeader.name)?.Close();
 		}
 
 		public override void Complete() {
@@ -48,8 +48,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 			try {
 				var mod = new TmodFile(ModHeader.path);
-				mod.Read();
-				mod.Close();
+				using (mod.Open()) { }
 
 				if (!ModHeader.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));

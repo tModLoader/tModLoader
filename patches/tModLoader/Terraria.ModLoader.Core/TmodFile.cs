@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -49,19 +50,17 @@ namespace Terraria.ModLoader.Core
 		private IDictionary<string, FileEntry> files = new Dictionary<string, FileEntry>();
 		private FileEntry[] fileTable;
 
-		public Version tModLoaderVersion {
-			get; private set;
-		}
+		private int openCounter;
+		private EntryReadStream sharedEntryReadStream;
+		private List<EntryReadStream> independentEntryReadStreams = new List<EntryReadStream>();
 
-		public string name { get; internal set; }
+		public Version tModLoaderVersion { get; private set; }
 
-		public Version version {
-			get; internal set;
-		}
+		public string name { get; private set; }
 
-		public byte[] hash {
-			get; private set;
-		}
+		public Version version { get; private set; }
+
+		public byte[] hash { get; private set; }
 
 		internal byte[] signature { get; private set; } = new byte[256];
 
@@ -75,8 +74,10 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		internal TmodFile(string path) {
+		internal TmodFile(string path, string name = null, Version version = null) {
 			this.path = path;
+			this.name = name;
+			this.version = version;
 		}
 
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
@@ -94,29 +95,37 @@ namespace Terraria.ModLoader.Core
 
 		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
-		private EntryReadStream lastEntryReadStream;
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
 			Stream stream;
 			if (entry.cachedBytes != null) {
 				stream = new MemoryStream(entry.cachedBytes);
 			}
+			else if (fileStream == null) {
+				throw new IOException($"File not open: {path}");
+			}
 			else if (newFileStream) {
-				stream = new EntryReadStream(File.OpenRead(path), entry, false);
+				var ers = new EntryReadStream(this, entry, File.OpenRead(path), false);
+				independentEntryReadStreams.Add(ers);
+				stream = ers;
+			}
+			else if (sharedEntryReadStream != null) {
+				throw new IOException($"Previous entry read stream not closed: {sharedEntryReadStream.Name}");
 			}
 			else {
-				if (fileStream == null)
-					throw new IOException($"File not open: {path}");
-				
-				if (lastEntryReadStream != null && !lastEntryReadStream.IsClosed)
-					throw new IOException($"Previous entry read stream not closed: {lastEntryReadStream.Name}");
-				
-				stream = lastEntryReadStream = new EntryReadStream(fileStream, entry, true);
+				stream = sharedEntryReadStream = new EntryReadStream(this, entry, fileStream, true);
 			}
 
 			if (entry.IsCompressed)
 				stream = new DeflateStream(stream, CompressionMode.Decompress);
 
 			return stream;
+		}
+
+		internal void OnStreamClosed(EntryReadStream stream) {
+			if (stream == sharedEntryReadStream)
+				sharedEntryReadStream = null;
+			else if (!independentEntryReadStreams.Remove(stream))
+				throw new IOException($"Closed EntryReadStream not associated with this file. {stream.Name} @ {path}");
 		}
 
 		public Stream GetStream(string fileName, bool newFileStream = false) {
@@ -167,8 +176,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal void Save() {
-			// invalidate the read handle
-			Close();
+			if (fileStream != null)
+				throw new IOException($"File already open: {path}");
 
 			// write the general TMOD header and data blob
 			// TMOD ascii identifier
@@ -232,16 +241,51 @@ namespace Terraria.ModLoader.Core
 			fileStream = null;
 		}
 
+		private class DisposeWrapper : IDisposable
+		{
+			private readonly Action dispose;
+			public DisposeWrapper(Action dispose) {
+				this.dispose = dispose;
+			}
+
+			public void Dispose() => dispose?.Invoke();
+		}
+
+		public IDisposable Open() {
+			if (openCounter++ == 0) {
+				if (fileStream != null)
+					throw new Exception($"File already opened? {path}");
+
+				if (name == null)
+					Read();
+				else
+					Reopen();
+			}
+
+			return new DisposeWrapper(Close);
+		}
+
+		private void Close() {
+			if (--openCounter == 0) {
+				if (sharedEntryReadStream != null)
+					throw new IOException($"Previous entry read stream not closed: {sharedEntryReadStream.Name}");
+				if (independentEntryReadStreams.Count != 0)
+					throw new IOException($"Shared entry read streams not closed: {string.Join(", ", independentEntryReadStreams.Select(e => e.Name))}");
+
+				fileStream?.Close();
+				fileStream = null;
+			}
+		}
+
+		public bool IsOpen => fileStream != null;
+
 		// Ignore file extensions which don't compress well under deflate to improve build time
 		private static bool ShouldCompress(string fileName) => 
 			!fileName.EndsWith(".png") && 
 			!fileName.EndsWith(".mp3") && 
 			!fileName.EndsWith(".ogg");
 
-		internal void Read() {
-			if (fileStream != null)
-				throw new Exception("File has already been read");
-
+		private void Read() {
 			fileStream = File.OpenRead(path);
 			var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
 
@@ -292,6 +336,21 @@ namespace Terraria.ModLoader.Core
 				f.Offset += fileStartPos;
 		}
 
+		private void Reopen() {
+			fileStream = File.OpenRead(path);
+			var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
+
+			// read header info
+			if (Encoding.ASCII.GetString(reader.ReadBytes(4)) != "TMOD")
+				throw new Exception("Magic Header != \"TMOD\"");
+
+			reader.ReadString(); //tModLoader version
+			if (!reader.ReadBytes(20).SequenceEqual(hash))
+				throw new Exception($"File has been modifed, hash. {path}");
+
+			// could also check name and version but hash should suffice
+		}
+
 		public void CacheFiles(ISet<string> skip = null) {
 			fileStream.Seek(fileTable[0].Offset, SeekOrigin.Begin);
 			foreach (var f in fileTable) {
@@ -313,28 +372,6 @@ namespace Terraria.ModLoader.Core
 		public void ResetCache() {
 			foreach (var f in fileTable)
 				f.cachedBytes = null;
-		}
-
-		private class DisposeWrapper : IDisposable
-		{
-			private Action dispose;
-			public DisposeWrapper(Action dispose) {
-				this.dispose = dispose;
-			}
-			public void Dispose() => dispose?.Invoke();
-		}
-
-		public IDisposable EnsureOpen() { //TODO: reference counter
-			if (fileStream != null)
-				return new DisposeWrapper(null);
-
-			fileStream = File.OpenRead(path);
-			return new DisposeWrapper(Close);
-		}
-
-		public void Close() {
-			fileStream?.Close();
-			fileStream = null;
 		}
 		
 		private void Upgrade() {

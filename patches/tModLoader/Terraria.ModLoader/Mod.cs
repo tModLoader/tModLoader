@@ -61,6 +61,8 @@ namespace Terraria.ModLoader
 		internal short netID = -1;
 		public bool IsNetSynced => netID >= 0;
 
+		private IDisposable fileHandle;
+
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
@@ -102,21 +104,33 @@ namespace Terraria.ModLoader
 			if (File == null)
 				return;
 
+			fileHandle = File.Open();
+
 			var skipCache = new HashSet<string>();
-			using (File.EnsureOpen()) {
-				foreach (var entry in File) {
-					Interface.loadMods.SubProgressText = entry.Name;
+			foreach (var entry in File) {
+				Interface.loadMods.SubProgressText = entry.Name;
 
-					Stream _stream = null;
-					Stream GetStream() => _stream = File.GetStream(entry);
+				Stream _stream = null;
+				Stream GetStream() => _stream = File.GetStream(entry);
 
-					if (LoadResource(entry.Name, entry.Length, GetStream))
-						skipCache.Add(entry.Name);
+				if (LoadResource(entry.Name, entry.Length, GetStream))
+					skipCache.Add(entry.Name);
 				
-					_stream?.Dispose();
-				}
-				File.CacheFiles(skipCache);
+				_stream?.Dispose();
 			}
+			File.CacheFiles(skipCache);
+		}
+
+		/// <summary>
+		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
+		/// Use this to release any additional file handles, or stop streaming music. 
+		/// Make sure to call `base.Close()` at the end
+		/// May be called multiple times before Unload
+		/// </summary>
+		public virtual void Close() {
+			fileHandle?.Dispose();
+			if (File != null && File.IsOpen)
+				throw new IOException($"TModFile has open handles: {File.path}");
 		}
 
 		/// <summary>

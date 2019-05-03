@@ -5,19 +5,19 @@ namespace Terraria.ModLoader.Core
 {
 	internal sealed class EntryReadStream : Stream
 	{
-		private Stream stream;
+		private TmodFile file;
 		private TmodFile.FileEntry entry;
+		private Stream stream;
 		private bool leaveOpen;
 		
 		private int Start => entry.Offset;
 
 		public string Name => entry.Name;
 
-		public bool IsClosed => stream == null;
-
-		public EntryReadStream(Stream stream, TmodFile.FileEntry entry, bool leaveOpen) {
-			this.stream = stream;
+		public EntryReadStream(TmodFile file, TmodFile.FileEntry entry, Stream stream, bool leaveOpen) {
+			this.file = file;
 			this.entry = entry;
+			this.stream = stream;
 			this.leaveOpen = leaveOpen;
 
 			if (this.stream.Position != Start)
@@ -74,6 +74,8 @@ namespace Terraria.ModLoader.Core
 				stream.Close();
 
 			stream = null;
+
+			file.OnStreamClosed(this);
 		}
 	}
 }

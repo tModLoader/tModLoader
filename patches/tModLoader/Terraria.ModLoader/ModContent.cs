@@ -374,8 +374,8 @@ namespace Terraria.ModLoader
 		internal static void UnloadModContent() {
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
+					mod.Close();
 					mod.UnloadContent();
-					mod.File?.Close();
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

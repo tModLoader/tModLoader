@@ -343,7 +343,7 @@ namespace Terraria.ModLoader
 				else {
 					string modname = command;
 					try {
-						System.Net.ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
+						ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
 						using (WebClient client = new WebClient()) {
 							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
 							if (downloadURL.StartsWith("Failed")) {
@@ -352,7 +352,7 @@ namespace Terraria.ModLoader
 							else {
 								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload.tmod";
 								client.DownloadFile(downloadURL, tempFile);
-								ModLoader.GetMod(modname)?.File?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+								ModLoader.GetMod(modname)?.Close();
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
 								File.Delete(tempFile);
 							}

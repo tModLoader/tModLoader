@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.UI
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractFileListing"));
 
 				int i = 0;
-				modHandle = mod.modFile.EnsureOpen();
+				modHandle = mod.modFile.Open();
 				foreach (var entry in mod.modFile) {
 					var name = entry.Name;
 					ContentConverters.Reverse(ref name, out var converter);
