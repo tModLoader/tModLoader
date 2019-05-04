@@ -89,6 +89,7 @@ namespace Terraria.ModLoader.UI
 #endif
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
+			VirtualKeyboard.Text = "";
 			Main.MenuUI.SetState(VirtualKeyboard);
 			Main.menuMode = 888;
 		}
@@ -144,7 +145,7 @@ namespace Terraria.ModLoader.UI
 				.ContinueWith(task => {
 					foreach (string modPackPath in task.Result) {
 						try {
-							if (IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
+							if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
 								throw new Exception();
 							}
 							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));

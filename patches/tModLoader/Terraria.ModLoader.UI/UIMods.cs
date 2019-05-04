@@ -114,7 +114,7 @@ namespace Terraria.ModLoader.UI
 			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
-			buttonDA.WithFadedMouseOver();
+			buttonRM.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
 
