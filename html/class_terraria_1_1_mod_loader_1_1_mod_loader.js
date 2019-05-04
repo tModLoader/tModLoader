@@ -20,7 +20,9 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "branchName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380", null ],
     [ "compressedPlatformRepresentation", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7", null ],
     [ "gog", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a191014086a6e58e2099d1b1250f070a0", null ],
+    [ "linux", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a46c9bf5139a301182b33928437641062", null ],
     [ "LoadedMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f", null ],
+    [ "mac", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab", null ],
     [ "ModCount", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a55b743e8b6af63233a618f244f71334f", null ],
     [ "ModPath", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f", null ],
     [ "modsByName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758", null ],
@@ -29,6 +31,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "versionedName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad492cc67d552a98b9b58fd49ac7bf427", null ],
     [ "versionTag", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aea44f6f5f3d190d2708af4c2fcf399ef", null ],
     [ "weakModReferences", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3", null ],
+    [ "windows", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac0d1dcc0ee625f8883c8967e0e660a84", null ],
     [ "Mods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5", null ],
     [ "SteamID64", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a734c915242ff947b30c8edd7e003ed06", null ]
 ];

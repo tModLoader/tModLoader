@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['mac',['mac',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac206478b57c5efbc32df50359aacdbab',1,'Terraria::ModLoader::ModLoader']]],
   ['magic',['Magic',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1',1,'Terraria::ModLoader']]],
   ['makedefault',['makeDefault',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_class_payload_handler.html#a6d65e0fec2b1b5fe56ff744ee0f6e31a',1,'Terraria::ModLoader::IO::TagIO::ClassPayloadHandler']]],
   ['manager',['manager',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#ae16d891175eb71f85380c27dad46a511',1,'Terraria::ModLoader::MonoModHooks']]],
@@ -176,11 +177,11 @@ var searchData=
   ['musicpriority_2ecs',['MusicPriority.cs',['../_music_priority_8cs.html',1,'']]],
   ['musicstreaming',['MusicStreaming',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html',1,'Terraria::ModLoader::Audio']]],
   ['musicstreaming',['MusicStreaming',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a8ac45a330432fe5550e2e4f2af939ba2',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
-  ['musicstreamingmp3',['MusicStreamingMP3',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html',1,'Terraria::ModLoader::Audio']]],
   ['musicstreamingmp3',['MusicStreamingMP3',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html#a1b27a4536b78ff72153d0745bdd3f79c',1,'Terraria::ModLoader::Audio::MusicStreamingMP3']]],
-  ['musicstreamingogg',['MusicStreamingOGG',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html',1,'Terraria::ModLoader::Audio']]],
+  ['musicstreamingmp3',['MusicStreamingMP3',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html',1,'Terraria::ModLoader::Audio']]],
   ['musicstreamingogg',['MusicStreamingOGG',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#ad7beff0b46074d7ad531a0dab358e637',1,'Terraria::ModLoader::Audio::MusicStreamingOGG']]],
-  ['musicstreamingwav',['MusicStreamingWAV',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html#a0ea11d4b0b03d6cd814cffd89d08213a',1,'Terraria::ModLoader::Audio::MusicStreamingWAV']]],
+  ['musicstreamingogg',['MusicStreamingOGG',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html',1,'Terraria::ModLoader::Audio']]],
   ['musicstreamingwav',['MusicStreamingWAV',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html',1,'Terraria::ModLoader::Audio']]],
+  ['musicstreamingwav',['MusicStreamingWAV',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html#a0ea11d4b0b03d6cd814cffd89d08213a',1,'Terraria::ModLoader::Audio::MusicStreamingWAV']]],
   ['musicwrappers_2ecs',['MusicWrappers.cs',['../_music_wrappers_8cs.html',1,'']]]
 ];
