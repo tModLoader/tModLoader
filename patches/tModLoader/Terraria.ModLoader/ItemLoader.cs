@@ -381,6 +381,54 @@ namespace Terraria.ModLoader
 				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
 		}
 
+		private delegate void DelegateGetManaCost(Item item, Player player, ref int mana);
+		private static HookList HookGetManaCost = AddHook<DelegateGetManaCost>(g => g.GetManaCost);
+		/// <summary>
+		/// Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks.
+		/// </summary>
+		public static void GetManaCost(Item item, Player player, ref int mana) {
+			if (item.IsAir) {
+				return;
+			}
+			item.modItem?.GetManaCost(player, ref mana);
+
+			foreach (var g in HookGetManaCost.arr) {
+				g.Instance(item).GetManaCost(item, player, ref mana);
+			}
+		}
+
+		private delegate bool DelegateMissingMana(Item item, Player player, int neededMana, ref bool quickMana);
+		private static HookList HookMissingMana = AddHook<DelegateMissingMana>(g => g.MissingMana);
+		/// <summary>
+		/// Calls ModItem.MissingMana, then all GlobalItem.MissingMana hooks.
+		/// </summary>
+		public static bool MissingMana(Item item, Player player, int neededMana, ref bool quickMana) {
+			if (item.IsAir) {
+				return false;
+			}
+			bool runManaCode = item.modItem?.MissingMana(player, neededMana, ref quickMana) ?? false;
+
+			foreach (var g in HookMissingMana.arr) {
+				runManaCode |= g.Instance(item).MissingMana(item, player, neededMana, ref quickMana);
+			}
+			return runManaCode;
+		}
+
+		private static HookList HookOnConsumeMana = AddHook<Action<Item, Player, int>>(g => g.OnConsumeMana);
+		/// <summary>
+		/// Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks.
+		/// </summary>
+		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
+			if (item.IsAir) {
+				return;
+			}
+			item.modItem?.OnConsumeMana(player, manaConsumed);
+
+			foreach (var g in HookOnConsumeMana.arr) {
+				g.Instance(item).OnConsumeMana(item, player, manaConsumed);
+			}
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
 		/// <summary>

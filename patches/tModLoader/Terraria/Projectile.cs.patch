@@ -581,6 +581,15 @@
  					if (num71 < 24f)
  					{
  						this.Kill();
+@@ -24282,7 +_,7 @@
+ 																							}
+ 																							if (Main.myPlayer == this.owner)
+ 																							{
+-																								bool flag43 = !flag41 || player5.CheckMana(player5.inventory[player5.selectedItem].mana, true, false);
++																								bool flag43 = !flag41 || player5.CheckMana(player5.inventory[player5.selectedItem], true, false);
+ 																								bool flag44 = player5.channel && flag43;
+ 																								if ((!flag42 && !flag44) || this.ai[0] == 180f)
+ 																								{
 @@ -28233,7 +_,7 @@
  					Rectangle value = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  					if (rectangle.Intersects(value))
@@ -598,6 +607,33 @@
  							item.newAndShiny = true;
  							Item item2 = Main.player[this.owner].GetItem(this.owner, item, false, false);
  							if (item2.stack > 0)
+@@ -36636,7 +_,7 @@
+ 				}
+ 				if (flag && Main.myPlayer == this.owner)
+ 				{
+-					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem].mana, true, false) && !player.noItems && !player.CCed;
++					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem], true, false) && !player.noItems && !player.CCed;
+ 					if (flag2)
+ 					{
+ 						float scaleFactor = player.inventory[player.selectedItem].shootSpeed * this.scale;
+@@ -36879,7 +_,7 @@
+ 				}
+ 				if (flag6 && Main.myPlayer == this.owner)
+ 				{
+-					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
++					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem], true, false);
+ 					bool flag8 = player.channel && flag7 && !player.noItems && !player.CCed;
+ 					if (flag8)
+ 					{
+@@ -36999,7 +_,7 @@
+ 				}
+ 				if (flag10 && Main.myPlayer == this.owner)
+ 				{
+-					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
++					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem], true, false);
+ 					bool flag12 = player.channel && flag11 && !player.noItems && !player.CCed;
+ 					if (flag12)
+ 					{
 @@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])

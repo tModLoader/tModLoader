@@ -259,6 +259,34 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="mana">The amount of mana the item will use, after being affected by mana cost reduction.</param>
+		public virtual void GetManaCost(Player player, ref int mana) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
+		/// Return true to force the mana consumption code to run again, regardless of whether the player has the mana flower. Returns false by default.
+		/// Only runs once per item use.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="neededMana">The mana needed to use the item.</param>
+		/// <param name="quickMana">Whether to consume a mana potion after this method runs, like the mana flower.</param>
+		public virtual bool MissingMana(Player player, int neededMana, ref bool quickMana) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player consumes mana on use of this item.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="manaConsumed">The mana consumed from the player.</param>
+		public virtual void OnConsumeMana(Player player, int manaConsumed) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
