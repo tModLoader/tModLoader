@@ -70,7 +70,7 @@
  				{
  					return;
  				}
-@@ -2305,6 +_,18 @@
+@@ -2305,10 +_,23 @@
  
  		public static void worldGenCallBack(object threadContext)
  		{
@@ -89,6 +89,11 @@
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  			WorldGen.clearWorld();
  			WorldGen.generateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
+ 			WorldFile.saveWorld(Main.ActiveWorldFileData.IsCloudSave, true);
++			BackupIO.archiveLock = false;
+ 			if (Main.menuMode == 10 || Main.menuMode == 888)
+ 			{
+ 				Main.menuMode = 6;
 @@ -2367,11 +_,25 @@
  		public static void SaveAndQuit(Action callback = null)
  		{
@@ -293,7 +298,7 @@
  					TrackGenerator.Run((int)(10f * num), (int)(num * 25f) + 250);
  					progress.Set(1f);
  				});
-@@ -10575,7 +_,9 @@
+@@ -10575,8 +_,11 @@
  					WorldGen.gen = false;
  					Main.AnglerQuestSwap();
  				});
@@ -301,8 +306,10 @@
  			WorldGen._generator.GenerateWorld(customProgressObject);
 +			WorldHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
++			BackupIO.archiveLock = true;
  		}
  
+ 		public static Point RandomRectanglePoint(Rectangle rectangle)
 @@ -10602,7 +_,7 @@
  		public static bool GrowPalmTree(int i, int y)
  		{

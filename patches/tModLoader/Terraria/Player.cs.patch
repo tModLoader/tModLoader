@@ -5718,6 +5718,21 @@
  			{
  				return false;
  			}
+@@ -38532,10 +_,14 @@
+ 			{
+ 				return;
+ 			}
++
++			
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
+ 			if (FileUtilities.Exists(path, isCloudSave))
+ 			{
+ 				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
+ 			}
++
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+ 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream(2000) : (Stream)new FileStream(path, FileMode.Create))
+ 			{
 @@ -38543,13 +_,14 @@
  				{
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
@@ -5809,12 +5824,13 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -38697,7 +_,7 @@
+@@ -38697,7 +_,8 @@
  			{
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			}
 -			Player player = new Player();
 +			Player player = new Player(false); // setup inventory is unnecessary
++
  			try
  			{
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -5854,7 +5870,7 @@
  			}
  			catch
  			{
-@@ -39244,16 +_,20 @@
+@@ -39244,15 +_,18 @@
  			{
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1)
  				{
@@ -5869,13 +5885,10 @@
  					{
  						return null;
  					}
--				}
 +					playerFileData.customDataFail = customDataFail;
-+				}
-+				BackupIO.Player.ArchivePlayer(playerFileData);
+ 				}
  				return playerFileData;
  			}
- 			return null;
 @@ -39313,13 +_,31 @@
  			return -1;
  		}
