@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.DownloadManager;
 
 namespace Terraria.ModLoader.Core
 {
@@ -24,9 +25,9 @@ namespace Terraria.ModLoader.Core
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
 
+			ClearTempDownloadFiles();
+
 			foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly)) {
-				if (Path.GetFileName(fileName) == "temporaryDownload.tmod")
-					continue;
 				var lastModified = File.GetLastWriteTime(fileName);
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
 					try {
@@ -48,6 +49,18 @@ namespace Terraria.ModLoader.Core
 				mods.Add(mod);
 			}
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
+		}
+
+		private static void ClearTempDownloadFiles() {
+			foreach (string path in Directory.GetFiles(ModLoader.ModPath, $"*{DownloadRequest.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)) {
+				Logging.tML.Info($"Cleaning up leftover temporary file {Path.GetFileName(path)}");
+				try {
+					File.Delete(path);
+				}
+				catch (Exception e) {
+					Logging.tML.Error($"Could not delete leftover temporary file {Path.GetFileName(path)}", e);
+				}
+			}
 		}
 
 		private static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);

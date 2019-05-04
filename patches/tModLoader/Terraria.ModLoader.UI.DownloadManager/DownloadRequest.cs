@@ -7,6 +7,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal abstract class DownloadRequest
 	{
+		internal const string TEMP_EXTENSION = ".tmp";
+
 		public readonly string DisplayText;
 		public readonly string OutputFilePath;
 		public FileStream FileStream;
@@ -40,7 +42,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public Task Start(CancellationToken cancellationToken) {
 			cancellationToken.Register(Cancel);
 			_timeStamp = DateTime.Now;
-			_downloadPath = $"{new FileInfo(OutputFilePath).Directory.FullName}{Path.DirectorySeparatorChar}{_timeStamp.Ticks}";
+			_downloadPath = $"{new FileInfo(OutputFilePath).Directory.FullName}{Path.DirectorySeparatorChar}{_timeStamp.Ticks}{TEMP_EXTENSION}";
 			FileStream = new FileStream(_downloadPath, FileMode.Create);
 			return Task.Factory.StartNew(() => {
 				Execute();
@@ -90,6 +92,5 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		protected void UpdateProgress(double progress) {
 			OnUpdateProgress?.Invoke(progress);
 		}
-
 	}
 }
