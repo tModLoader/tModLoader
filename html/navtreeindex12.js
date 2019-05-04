@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a1bcb92f08e32e2415bcf9c264c742f01":[1,0,0,0,78,108],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a1def136261178cf59ab2ddfedbe8dfa6":[1,0,0,0,78,9],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2535a7383faf51655066c587ec7b4513":[1,0,0,0,78,47],
 "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a25dec7b693a6ac7c8e7690bf9447b179":[1,0,0,0,78,117],
@@ -223,8 +224,8 @@ var NAVTREEINDEX12 =
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "functions_func_w.html":[1,3,1,21],
 "functions_g.html":[1,3,0,7],
 "functions_h.html":[1,3,0,8],
-"functions_i.html":[1,3,0,9],
-"functions_j.html":[1,3,0,10]
+"functions_i.html":[1,3,0,9]
 };

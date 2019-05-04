@@ -2,6 +2,7 @@ var searchData=
 [
   ['icegolem',['IceGolem',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a94bf56b7bcc8ff6b997a211672bdd896',1,'Terraria::ModLoader::SpawnCondition']]],
   ['ignorecontents',['ignoreContents',['../class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f',1,'Terraria::ModLoader::Logging']]],
+  ['ignoremessages',['ignoreMessages',['../class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69',1,'Terraria::ModLoader::Logging']]],
   ['ignoresources',['ignoreSources',['../class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308',1,'Terraria::ModLoader::Logging']]],
   ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a177941f839c1b12fe3c27cd30d26eeae',1,'Terraria::ModLoader::ModContent']]],
   ['increment',['increment',['../class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html#ad6e228163084eabb72870b97646cb874',1,'Terraria::ModLoader::Config::IncrementAttribute']]],
