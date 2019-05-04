@@ -91,12 +91,12 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			float left = HasModIcon ? 85f : 0f;
 			_modName = new UIText(displayName) {
 				Left = new StyleDimension(left + 5, 0f),
-				Top = {Pixels = 5}
+				Top = { Pixels = 5 }
 			};
 			Append(_modName);
 
 			_authorText = new UIText(Language.GetTextValue("tModLoader.ModsByline", author)) {
-				Top = {Pixels = 83}
+				Top = { Pixels = 83 }
 			};
 			Append(_authorText);
 
@@ -113,10 +113,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 
 			_moreInfoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsMoreInfo")) {
-				Width = {Pixels = 100},
-				Height = {Pixels = 36},
-				Left = {Pixels = left},
-				Top = {Pixels = 40}
+				Width = { Pixels = 100 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = left },
+				Top = { Pixels = 40 }
 			}.WithFadedMouseOver();
 			_moreInfoButton.PaddingTop -= 2f;
 			_moreInfoButton.PaddingBottom -= 2f;
@@ -144,8 +144,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (modReferences.Length > 0) {
 				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modReferences.Split(',').Select(x => x.Trim())))) {
-					Left = {Pixels = -icon.Width, Percent = 1f},
-					Top = {Pixels = 83}
+					Left = { Pixels = -icon.Width, Percent = 1f },
+					Top = { Pixels = 83 }
 				};
 				modReferenceIcon.OnClick += (s, e) => {
 					var modListItem = (UIModDownloadItem)e.Parent;
@@ -219,17 +219,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModName))
 				return false;
 
-			if (Interface.modBrowser.Filter.Length > 0
-			    && Interface.modBrowser.SearchFilterMode == SearchFilter.Author)
-				if (_author.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
+			if (!string.IsNullOrEmpty(Interface.modBrowser.Filter)) {
+				if (Interface.modBrowser.SearchFilterMode == SearchFilter.Author
+					&& _author.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
 					return false;
-				else if (DisplayName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1 && ModName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
+				else if (DisplayName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1
+					&& ModName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
 					return false;
+			}
 
 			if (Interface.modBrowser.ModSideFilterMode != ModSideFilter.All
-			    && (int)_modSide != (int)Interface.modBrowser.ModSideFilterMode - 1)
+				&& (int)_modSide != (int)Interface.modBrowser.ModSideFilterMode - 1)
 				return false;
-
 
 			switch (Interface.modBrowser.UpdateFilterMode) {
 				default:
@@ -289,8 +290,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				using (var buffer = new MemoryStream(data)) {
 					var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
 					_modIcon = new UIImage(iconTexture) {
-						Left = {Percent = 0f},
-						Top = {Percent = 0f}
+						Left = { Percent = 0f },
+						Top = { Percent = 0f }
 					};
 					_modIconStatus = ModIconStatus.READY;
 				}

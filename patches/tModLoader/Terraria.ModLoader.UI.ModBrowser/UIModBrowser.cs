@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
 		
 		internal bool UpdateNeeded;
-		internal string Filter;
+		internal string Filter => FilterTextBox.Text;
 		
 		/* Filters */
 		public ModBrowserSortMode SortMode {
@@ -197,7 +197,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (!UpdateNeeded) return;
 			UpdateNeeded = false;
 			if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
-			Filter = FilterTextBox.Text;
 			ModList.Clear();
 			ModList.AddRange(_items.Where(item => item.PassFilters()));
 			bool hasNoModsFoundNotif = ModList.HasChild(NoModsFoundText);

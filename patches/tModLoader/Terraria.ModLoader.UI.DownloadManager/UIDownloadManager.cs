@@ -53,7 +53,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void DispatchWorkersFromQueue() {
-
 			int toProcess = _requestQueue.Count;
 			int processed = 0;
 
