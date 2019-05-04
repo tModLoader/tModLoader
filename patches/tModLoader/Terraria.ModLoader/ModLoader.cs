@@ -35,12 +35,18 @@ namespace Terraria.ModLoader
 		public static readonly string versionTag = $"v{version}" +
 				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 				(beta == 0 ? "" : $"-beta{beta}");
-#if GOG
-		public static readonly bool gog = true;
-#else
+
+		[Obsolete("Use Platform.IsWindows")]
+		public static readonly bool windows = Platform.IsWindows;
+		[Obsolete("Use Platform.IsLinux")]
+		public static readonly bool linux = Platform.IsLinux;
+		[Obsolete("Use Platform.IsOSX")]
+		public static readonly bool mac = Platform.IsOSX;
+
+		// GoG support soon to be runtime
 		public static readonly bool gog = false;
-#endif
-		public static readonly string compressedPlatformRepresentation = (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (gog ? "g" : "s");
+
+		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
 
 		public static string ModPath => ModOrganizer.modPath;
 
