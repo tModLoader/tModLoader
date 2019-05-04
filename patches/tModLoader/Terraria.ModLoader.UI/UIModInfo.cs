@@ -218,6 +218,7 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
 				_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
+				_uITextPanel.Recalculate();
 				_modInfo.SetText(_info);
 				
 				if (!string.IsNullOrEmpty(_url)){
