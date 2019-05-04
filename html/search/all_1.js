@@ -83,6 +83,7 @@ var searchData=
   ['anyweapon',['AnyWeapon',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa6da6f556bd2c1f3a661ea10c83368a6c',1,'Terraria::ModLoader']]],
   ['apply',['Apply',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#adc2deb5f2b010b6241e9177edf2f30c8',1,'Terraria::ModLoader::ModPrefix']]],
   ['archive',['Archive',['../class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9',1,'Terraria::ModLoader::Logging']]],
+  ['archiveplayer',['ArchivePlayer',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html#aa9a91d0979526015bf1978428cb43348',1,'Terraria::ModLoader::BackupIO::Player']]],
   ['armglowmask',['armGlowMask',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a96380c5980fdc10a77c6d96213ddc0ca',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['armglowmaskcolor',['armGlowMaskColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a17f9a366d7a5b47defa9b95e4d9a655b',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['armor',['Armor',['../class_terraria_1_1_mod_loader_1_1_player_head_layer.html#acbd6ccf3e9f3f59ceea099f37e0c11a3',1,'Terraria::ModLoader::PlayerHeadLayer']]],

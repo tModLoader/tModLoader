@@ -12,8 +12,6 @@ var searchData=
   ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['worldbackupdir',['WorldBackupDir',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a6a053334bd28fec706a1adf209e83939',1,'Terraria::ModLoader::BackupIO::World']]],
   ['worlddir',['WorldDir',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#aec291cedf9025d618d24714bd43f712b',1,'Terraria::ModLoader::BackupIO::World']]],
-  ['worldname',['WorldName',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#a9155500afcb6a566b4c6af0c748a6126',1,'Terraria::ModLoader::BackupIO::World']]],
-  ['worldpath',['WorldPath',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html#ade0297bf7f2f50c9bef40f074926d219',1,'Terraria::ModLoader::BackupIO::World']]],
   ['wormcritter',['WormCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad0c9e5bc7dce146093692ca3fec7c17c',1,'Terraria::ModLoader::SpawnCondition']]],
   ['wraith',['Wraith',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a02a19fdfa58040226209c8ab3f7adaa1',1,'Terraria::ModLoader::SpawnCondition']]]
 ];
