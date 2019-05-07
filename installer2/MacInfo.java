@@ -16,6 +16,9 @@ public class MacInfo
             "tModLoaderServer.exe",
             "tModLoaderServer",
             "Terraria",
+            "tModLoader",
+            "tModLoader-kick",
+            "tModLoader-mono",
             "osx/libMonoPosixHelper.dylib"
         };
         String[] filesToDelete = new String[]
