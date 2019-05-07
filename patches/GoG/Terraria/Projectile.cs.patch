@@ -1,5 +1,5 @@
---- src/decompiled\Terraria\Projectile.cs
-+++ src/platform\Terraria\Projectile.cs
+--- src/decompiled_gog\Terraria\Projectile.cs
++++ src/decompiled\Terraria\Projectile.cs
 @@ -12706,9 +_,9 @@
  			string name;
  			if (Main.player[this.owner].active && (name = Main.player[this.owner].name) != null)

@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.Social\SocialAPI.cs
-+++ src/platform\Terraria.Social\SocialAPI.cs
+--- src/decompiled_gog\Terraria.Social\SocialAPI.cs
++++ src/decompiled\Terraria.Social\SocialAPI.cs
 @@ -34,6 +_,7 @@
  			if (!mode.HasValue)
  			{

@@ -26,5 +26,14 @@
     <Setting Name="ServerVersion" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1.3.5.1</Value>
     </Setting>
+    <Setting Name="SteamClientWinMD5" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">3179a1ec67d5f80bfb77175c403d59c7</Value>
+    </Setting>
+    <Setting Name="GoGClientWinMD5" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">b92f242bc874dddbf08f705661b313a9</Value>
+    </Setting>
+    <Setting Name="DecompiledDiffCutoff" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2015-01-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

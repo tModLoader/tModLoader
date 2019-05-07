@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 using Terraria.ModLoader.Properties;
 using static Terraria.ModLoader.Setup.Program;
 
@@ -11,29 +12,62 @@ namespace Terraria.ModLoader.Setup
 {
 	public partial class MainForm : Form, ITaskInterface
 	{
+		class AssemblyDecompileTask : Task
+		{
+			private byte[] ToByteArray(String hexString) {
+				byte[] retval = new byte[hexString.Length / 2];
+				for (int i = 0; i < hexString.Length; i += 2)
+					retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
+				return retval;
+			}
+
+			private MainForm parent;
+			public AssemblyDecompileTask(MainForm parent) : base(parent) {
+				this.parent = parent;
+			}
+
+			public override bool StartupWarning() {
+				return MessageBox.Show(
+						"Decompilation may take a long time (1-3 hours) and consume a lot of RAM (2GB will not be enough)",
+						"Ready to Decompile", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
+					== DialogResult.OK;
+			}
+
+			public override void Run() {
+				var md5 = MD5.Create();
+				var stream = File.OpenRead(TerrariaPath);
+
+				byte[] GoGHash = ToByteArray(Settings.Default.GoGClientWinMD5);
+
+				//Check assembly MD5
+				if (GoGHash.SequenceEqual(md5.ComputeHash(stream))) {
+					parent.decompileGoG().Run();
+					parent.patchGoG().Run();
+				}
+				else {
+					parent.decompile().Run();
+				}
+			}
+		}
 		private CancellationTokenSource cancelSource;
 
 		private bool closeOnCancel;
 		private IDictionary<Button, Func<Task>> taskButtons = new Dictionary<Button, Func<Task>>();
+		private Func<Task> decompile;
+		private Func<Task> decompileGoG;
+		private Func<Task> patchGoG;
 
 		public MainForm()
 		{
 			InitializeComponent();
 
-			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
+			decompile = () => new DecompileTask(this, "src/decompiled");
+			decompileGoG = () => new DecompileTask(this, "src/decompiled_gog");
+			patchGoG = () => new PatchTask(this, "src/decompiled_gog", "src/decompiled", "patches/GoG", new ProgramSetting<DateTime>("DecompiledDiffCutoff"));
 
-			//ToDo: Pretty sure there is better way to update platform tasks! Check radiobutton check change as well!!
-			if (radioButtonSteam.Checked)
-			{
-				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
-			}
-			else if (radioButtonGoG.Checked)
-			{
-				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
-			}
-
-			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/platform", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/platform", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+			taskButtons[buttonDecompile] = () => new AssemblyDecompileTask(this);
+			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
+			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
@@ -41,11 +75,11 @@ namespace Terraria.ModLoader.Setup
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchPlatform, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
-				new SetupTask(this, new[] { buttonDecompile, buttonPatchPlatform, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
@@ -115,7 +149,7 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
-			Settings.Default.PlatformDiffCutoff = new DateTime(2015, 1, 1);
+			Settings.Default.DecompiledDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
@@ -212,20 +246,8 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private void radioButtonSteam_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radioButtonSteam.Checked)
-			{
-				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/Steam", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
-			}
-		}
-
-		private void radioButtonGoG_CheckedChanged(object sender, EventArgs e)
-		{
-			if (radioButtonGoG.Checked)
-			{
-				taskButtons[buttonPatchPlatform] = () => new PatchTask(this, "src/decompiled", "src/platform", "patches/GoG", new ProgramSetting<DateTime>("PlatformDiffCutoff"));
-			}
+		private void diffGoGToolStripMenuItem_Click(object sender, EventArgs e) {
+			RunTask(new DiffTask(this, "src/decompiled_gog", "src/decompiled", "patches/GoG", new ProgramSetting<DateTime>("DecompiledDiffCutoff")));
 		}
 	}
 }
