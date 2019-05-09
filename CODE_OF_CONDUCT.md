@@ -1,5 +1,8 @@
 # Code of Conduct
 
+By partaking in our community you agree with our code of conduct.
+The code of conduct outlines a set of social norms expected from an individual in the community.
+
 ## 1. Purpose
 
 A primary goal of tModLoader is to be inclusive to the largest number of contributors, with the most varied and diverse backgrounds possible. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
@@ -29,7 +32,7 @@ The following behaviors are expected and requested of all community members:
 
 ## 4. Unacceptable Behavior
 
-Rules are made by the community organizers so they don't have to constantly state what is not acceptible, the organizers however are not bound by these rules. The following behaviors are considered unacceptable within our community:
+Rules are made by the community organizers, so they don't have to constantly state what is not acceptable, the organizers however are not bound by these rules. The following behaviors are considered unacceptable within our community:
 
 -   Violence, threats of violence or violent language directed against another person.
 -   Sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory jokes and language.
@@ -45,10 +48,11 @@ Rules are made by the community organizers so they don't have to constantly stat
 -   (Continuous- or singular) abuse of mentioning a person or a group of people in particular to their disliking in public chat or in private chat (this is treated as stalking).
 -   (Continuous- or singular) disruptive communication in public conversations ("spam").
 -   (Continuous- or singular) abuse of false reports about other community members.
--   The advertisment of other communities or products (be it within the same platform or another) without explicit permission of a community administrator.
+-   The advertisement of other communities or products (be it within the same platform or another) without explicit permission of a community administrator.
 -   Avoiding a temporary or sustained (permanent) ban, via any means such as using a VPN or registering new accounts and things alike.
 -   Failing to comply when a community organizer takes action against unacceptable behavior, which does not necessarily have to be stated in the code of conduct. A community organizer may take action whenever deemed necessary against a community member.
--	Unecessarily provoking or harassing any community organizer (staff, administrator or moderator) in public or private (out of spite, wanting to appeal judgement(s) cast by any of the community organizers, or things alike). See section 7 to learn more about the ability to have your grievance(s) addressed. 
+-	Unnecessarily provoking or harassing any community organizer (staff, administrator or moderator) in public or private (out of spite, wanting to appeal judgement(s) cast by any of the community organizers, or things alike). See section 7 to learn more about the ability to have your grievance(s) addressed. 
+-   Talking about illicit subjects, provided illegality can be proven, which is inclusive to the talk about use or sharing of pirated copies of Terraria or modified content (such as files and hyperlinks) to contain _any form of malware or other modifications that could otherwise harm a person's computer_
 -   Advocating for, or encouraging, any of the above behavior.
 
 ## 5. Consequences of Unacceptable Behavior
@@ -71,7 +75,7 @@ Additionally, community organizers are available to help community members engag
 
 If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify a community organizer _in private_ with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies. 
 
-In case of injustful expulsion from the community it is the expectation of the community managers to ensure the member in question is able to rejoin the community in welcoming and safe manner.
+In case of unjustful expulsion from the community it is the expectation of the community managers to ensure the member in question is able to rejoin the community in welcoming and safe manner.
 
 ## 8. Scope
 
@@ -81,7 +85,7 @@ This code of conduct and its related procedures also applies to unacceptable beh
 
 ## 9. Community organizers
 
-You may find community organizers either in Malibu blue (Administrators) or Mandy red (Moderators) color in the official community chatrooms.
+You may find community organizers either in Malibu blue (Administrators) or Mandy red (Moderators) color in the official community chatrooms. Please **only** contact an organizer when in distress.
 
 Administrators:
 
@@ -97,10 +101,31 @@ Moderators:
 -   Itorius
 -   Shockah
 
-## 10. License and attribution
+## 10. Monetizing Mods Policy
+
+Monetizing mods is not allowed on the Terraria Community Forums and our community. We have a standing policy that adf.ly links and other such money making link sites are allowed, but ONLY under the circumstance that all linked content must have at least one non-monetized link as well.
+
+**If you do pirate Terraria: PLEASE keep that information to yourself. Don't expect or ask for any technical help from anyone with those versions. Don't try to 'help' others with pirated versions.**
+
+For further Mod Rules & Guidelines, see: http://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/
+
+For a policy clarification concerning Piracy and Scam Links, see: http://forums.terraria.org/index.php?threads/policy-clarification-concerning-piracy-and-scam-links.49989/
+
+## 11. Mod theft, copyright & legal conerns
+
+Please be weary of mod theft. This includes people in the community stealing other people's work without consent.
+
+You are highly advised to read our article about legality of product use, copyright and legal concerns: https://github.com/blushiemagic/tModLoader/wiki/Licensing-information
+
+An official statement from Yoraiz0r, the lead developer of Terraria, may be read here: http://pastebin.com/raw/4Znc1C5c
+
+The Terraria Community Forums also covers rules and guidelines subject to this topic: https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/
+
+## 12. License and attribution
 
 This Code of Conduct is distributed under a [Creative Commons Attribution-ShareAlike license](http://creativecommons.org/licenses/by-sa/3.0/).
 
 Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy).
 
 Retrieved on November 22, 2016 from [http://citizencodeofconduct.org/](http://citizencodeofconduct.org/)
+
