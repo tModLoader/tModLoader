@@ -575,3 +575,24 @@ Program, unless a warranty or assumption of liability accompanies a
 copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
+
+               LICENSE INCOORPORATIONS OF USED SOFTWARE
+The FNA framework (https://github.com/FNA-XNA/FNA), Copyright (C) Ethan Lee (http://www.flibitijibibo.com/) Licensed under the Microsoft Public License.
+
+The DotNetZip Library (https://archive.codeplex.com/?p=DotNetZip), Copyright (C) 2006 - 2011 Dino Chiesa, Copyright (C) 2006, 2007, 2008, 2009 Dino Chiesa and Microsoft Corporation. Licensed under the Microsoft Public License.
+
+The MonoMod library (https://github.com/0x0ade/MonoMod), Copyright (C) 2015 Maik Macho. Licensed under the MIT License.
+
+NVorbis, unknown copyright holder and license
+
+ReLogic binaries, Copyright (C) Re-Logic (https://re-logic.com/)
+
+Steamworks libraries (https://github.com/rlabrecque/Steamworks.NET), Copyright (C) Riley Labrecque (https://github.com/rlabrecque). Licensed under the MIT license.
+
+Apache Log4Net library, Copyright (C) Apache Software Foundation (http://www.apache.org/). Licensed under the Apache License (V2.0)
+
+TerrariaHooks library, Copyright (C) 2018 Everest Team. Licensed under the MIT License.
+
+			            SOFTWARE LIABILITY
+tModLoader incorporates the use of Microsoft's largeaddresstools (released as "dumpbin.exe" and "editbin.exe")
+These are released under the (Microsoft's) Visual Studio SDK. These are licensed under a Microsoft Software License. All rights reserved by Microsoft. A copy of this license can be found as a file named "MS-EULA.rtf"

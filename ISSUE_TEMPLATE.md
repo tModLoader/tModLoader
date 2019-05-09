@@ -1,17 +1,21 @@
 <!-- 
+PLEASE NOTE THE FOLLOWING:
+The tModLoader software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the software developers be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
-PLEASE use the following template when creating an issue. We can't exactly know what every issue is about before it's posted, so we set a baseline of information required to suit most issues.
+PLEASE DO NOT USE THE ISSUES SECTION TO HOLD PERSONAL RANTS FOR DAMAGES CAUSED BY THE SOFTWARE
 
-PLEASE DO NOT create issues for the following problems: problem installing tModLoader, forums offline, a specific mod crash.
-Do you have any of these issues? Or doo you want to ask a question? Are you looking for support? Our discord server is more suitable for this: http://discord.me/tmodloader 
+PLEASE ONLY CREATE ISSUES FOR THE FOLLOWING SUBJECTS: (CRITICAL OR NON CRITICAL) BUG IN THE SOFTWARE OR SUGGESTIONS FOR SOFTWARE IMPROVEMENT
 
-You should only create an issue thread to report an actual issue related to the tModLoader API.
-If you think something is mod related, report to the mod's respective author(s)
+If you are just looking to chat about the software, receive help modding and what have you, please join our Discord chat server instead of making an issue: https://tmodloader.net/discord
 
-Prerequisites
- * Checked the FAQs for common issues and their solutions: http://forums.terraria.org/index.php?threads/.28901/
- * Checked that your issue isn't already filed: https://github.com/bluemagic123/tModLoader/issues
+You should only create an issue thread to report an actual issue related to the API this software exposes.
+If you think something is related to a mod made with this software, please report to the mod's respective author(s) instead.
+
+Check the FAQs for common issues and their solutions: http://forums.terraria.org/index.php?threads/.28901/
+
+The following template that is provided can be used to describe a bug in the software. You are free to discard the template if you want to express suggestions for potential software improvement, but please kindly use the template to report issues in the software.
 -->
+
 ### Description
 <!-- Describe your issue(s) here. What is the issue?
 Please keep this as concise as possible, preferably a single line describing the issue. For example:
@@ -22,7 +26,7 @@ Please keep this as concise as possible, preferably a single line describing the
 
 1. [First Step]
 2. [Second Step]
-3. [and so on...]
+3. [And so on...]
 
 ### Expected behavior 
 <!-- What should be happening? If you don't know, leave what you think should happen -->
