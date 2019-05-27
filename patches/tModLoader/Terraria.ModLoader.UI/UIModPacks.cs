@@ -82,11 +82,11 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-#if CLIENT
-		private static readonly UIVirtualKeyboard VirtualKeyboard = new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0);
-#elif SERVER
-		private static readonly UIVirtualKeyboard VirtualKeyboard = null;
-#endif
+		private static UIVirtualKeyboard _virtualKeyboard;
+		private static UIVirtualKeyboard VirtualKeyboard => 
+			_virtualKeyboard ?? (_virtualKeyboard = new UIVirtualKeyboard(
+				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0));
+		
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			VirtualKeyboard.Text = "";

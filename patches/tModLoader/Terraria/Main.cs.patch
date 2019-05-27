@@ -301,6 +301,24 @@
  		}
  
  		public static void InitializeItemAnimations()
+@@ -2544,14 +_,15 @@
+ 			Main.RegisterItemAnimation(549, new DrawAnimationVertical(5, 4));
+ 		}
+ 
+-		public static void SetGraphicsProfile(GraphicsProfile profile)
++		private static bool SetGraphicsProfile(GraphicsProfile profile)
+ 		{
+ 			if (Main._currentGraphicsProfile == profile)
+ 			{
+-				return;
++				return false;
+ 			}
+ 			Main._selectedGraphicsProfile = profile;
+ 			Main.SetGraphicsProfileInternal();
++			return graphics.GraphicsDevice.GraphicsProfile == profile;
+ 		}
+ 
+ 		private static void SetGraphicsProfileInternal()
 @@ -2566,12 +_,17 @@
  					Main._renderTargetMaxSize = 2048;
  					break;
@@ -323,6 +341,16 @@
  			try
  			{
  				Main.graphics.ApplyChanges();
+@@ -2584,7 +_,8 @@
+ 					Main.SetGraphicsProfileInternal();
+ 				}
+ 			}
+-			Main.instance.EnsureRenderTargetContent();
++			// Seems unnecessary as graphics profile is only changed very early on, before the first frame is rendered
++			// Main.instance.EnsureRenderTargetContent();
+ 		}
+ 
+ 		private static void TrySupporting8K()
 @@ -2622,6 +_,7 @@
  				flag2 = false;
  				Main.anglerQuest = Main.rand.Next(Main.anglerQuestItemNetIDs.Length);
@@ -684,7 +712,7 @@
  			{
  				if (TexturePackSupport.Enabled && typeof(T) == this.t2d)
  				{
-@@ -7468,6 +_,9 @@
+@@ -7468,12 +_,16 @@
  					}
  				}
  				result = base.Content.Load<T>(path);
@@ -694,7 +722,14 @@
  			}
  			return result;
  		}
-@@ -7482,18 +_,15 @@
+ 
+ 		protected override void LoadContent()
+ 		{
++			HiDefGraphicsIssues.OnLoadContent();
+ 			Main.Configuration.Load();
+ 			Main.Configuration.Get<bool>("UseExperimentalFeatures", ref Main.UseExperimentalFeatures);
+ 			if (Main.UseExperimentalFeatures)
+@@ -7482,18 +_,16 @@
  			}
  			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
  			bool flag = Main.Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
@@ -705,9 +740,12 @@
 +			// (resolution check removed) tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
  			if (Main.Support4K && flag)
  			{
- 				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
- 			}
+-				Main.SetGraphicsProfile(GraphicsProfile.HiDef);
+-			}
 -			TexturePackSupport.FindTexturePack();
++				if (Main.SetGraphicsProfile(GraphicsProfile.HiDef))
++					return; // changing the graphics profile triggers a device recreation and XNA will call `LoadContent` again
++			}
 +			TexturePackSupport.FindTexturePacks();
  			TextureManager.Initialize();
  			this.mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
@@ -4948,4 +4986,26 @@
  				}
  				return null;
  #if !WINDOWS
+@@ -61145,8 +_,9 @@
+ 				}
+ 			}
+ #endif
+-			width &= 2147483646;
+-			height &= 2147483646;
++			// unknown justification for preventing odd window sizes. Causes excessive device resets.
++			// width &= 2147483646;
++			// height &= 2147483646;
+ 			width = Math.Max(width, Main.minScreenW);
+ 			height = Math.Max(height, Main.minScreenH);
+ 			if (width != num3 || height != num4 || flag2)
+@@ -61160,7 +_,8 @@
+ 				Main.screenHeight = height;
+ 				Main.graphics.PreferredBackBufferWidth = Main.screenWidth;
+ 				Main.graphics.PreferredBackBufferHeight = Main.screenHeight;
+-				Main.graphics.ApplyChanges();
++				if (width != num3 || height != num4) //avoid resetting the device when it doesn't need resizing
++					Main.graphics.ApplyChanges();
+ 				PlayerInput.CacheOriginalScreenDimensions();
+ 				Main.FixUIScale();
+ 				if (Main.OnResolutionChanged != null)
 

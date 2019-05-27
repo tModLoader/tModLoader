@@ -9,8 +9,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 	// The "UI" elements (View) of the browser
 	internal partial class UIModBrowser
 	{
-		public bool IsInitialized = false;
-		
 		/* Layout */
 		private readonly UIElement _rootElement = new UIElement {
 			Width = {Percent = 0.8f},
@@ -110,33 +108,19 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		};
 
 		/* Filters */
-		public readonly UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
-			Left = new StyleDimension {Pixels = 0 * 36 + 8}
-		};
-
-		public readonly UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
-			Left = new StyleDimension {Pixels = 1 * 36 + 8}
-		};
-
-		public readonly UIBrowserFilterToggle<SearchFilter> SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
-			Left = new StyleDimension {Pixels = 545f}
-		};
-
-		public readonly UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
-			Left = new StyleDimension {Pixels = 2 * 36 + 8}
-		};
+		public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
+		public UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle;
+		public UIBrowserFilterToggle<SearchFilter> SearchFilterToggle;
+		public UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle;
 
 		internal void Reset() {
-			if (IsInitialized)
-			{
-				ModList?.Clear();
-				_items?.Clear();
-				_missingMods?.Clear();
-				SearchFilterToggle.SetCurrentState(default);
-				UpdateFilterToggle.SetCurrentState(default);
-				ModSideFilterToggle.SetCurrentState(default);
-				SortModeFilterToggle.SetCurrentState(default);
-			}
+			ModList?.Clear();
+			_items?.Clear();
+			_missingMods?.Clear();
+			SearchFilterToggle?.SetCurrentState(default);
+			UpdateFilterToggle?.SetCurrentState(default);
+			ModSideFilterToggle?.SetCurrentState(default);
+			SortModeFilterToggle?.SetCurrentState(default);
 			Loading = false;
 			UpdateNeeded = true;
 		}
@@ -154,43 +138,51 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 		
 		public override void OnInitialize() {
-			if (!IsInitialized) {
-				
-				InitializeInteractions();
-				
-				_backgroundElement.Append(HeaderTextPanel);
-				
-				var listScrollbar = new UIScrollbar {
-					Height = {Pixels = -50, Percent = 1f},
-					Top = {Pixels = 50},
-					HAlign = 1f
-				}.WithView(100f, 1000f);
-				
-				ModList.SetScrollbar(listScrollbar);
-				_backgroundElement.Append(ModList);
-				_backgroundElement.Append(listScrollbar);
+			SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
+				Left = new StyleDimension {Pixels = 0 * 36 + 8}
+			};
+			UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
+				Left = new StyleDimension {Pixels = 1 * 36 + 8}
+			};
+			SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
+				Left = new StyleDimension {Pixels = 545f}
+			};
+			ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
+				Left = new StyleDimension {Pixels = 2 * 36 + 8}
+			};
+			
+			InitializeInteractions();
+			
+			_backgroundElement.Append(HeaderTextPanel);
+			
+			var listScrollbar = new UIScrollbar {
+				Height = {Pixels = -50, Percent = 1f},
+				Top = {Pixels = 50},
+				HAlign = 1f
+			}.WithView(100f, 1000f);
+			
+			ModList.SetScrollbar(listScrollbar);
+			_backgroundElement.Append(ModList);
+			_backgroundElement.Append(listScrollbar);
 
-				_rootElement.Append(_reloadButton);
-				_rootElement.Append(_backButton);
-				
-				CategoryButtons.Add(SortModeFilterToggle);
-				_upperMenuContainer.Append(SortModeFilterToggle);
-				CategoryButtons.Add(UpdateFilterToggle);
-				_upperMenuContainer.Append(UpdateFilterToggle);
-				CategoryButtons.Add(ModSideFilterToggle);
-				_upperMenuContainer.Append(ModSideFilterToggle);
-				CategoryButtons.Add(SearchFilterToggle);
-				_upperMenuContainer.Append(SearchFilterToggle);
-				
-				_upperMenuContainer.Append(_filterTextBoxBackground);
-				_upperMenuContainer.Append(FilterTextBox);
-				_backgroundElement.Append(_upperMenuContainer);
+			_rootElement.Append(_reloadButton);
+			_rootElement.Append(_backButton);
+			
+			CategoryButtons.Add(SortModeFilterToggle);
+			_upperMenuContainer.Append(SortModeFilterToggle);
+			CategoryButtons.Add(UpdateFilterToggle);
+			_upperMenuContainer.Append(UpdateFilterToggle);
+			CategoryButtons.Add(ModSideFilterToggle);
+			_upperMenuContainer.Append(ModSideFilterToggle);
+			CategoryButtons.Add(SearchFilterToggle);
+			_upperMenuContainer.Append(SearchFilterToggle);
+			
+			_upperMenuContainer.Append(_filterTextBoxBackground);
+			_upperMenuContainer.Append(FilterTextBox);
+			_backgroundElement.Append(_upperMenuContainer);
 
-				_rootElement.Append(_backgroundElement);
-				Append(_rootElement);
-
-				IsInitialized = true;
-			}
+			_rootElement.Append(_backgroundElement);
+			Append(_rootElement);
 		}
 	}
 }
