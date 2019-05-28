@@ -198,6 +198,7 @@ namespace Terraria.ModLoader.UI
 					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
 					File.Copy(originalXMLFile, correctXMLFile, true);
 					File.Delete(originalXMLFile);
+					updateRequired = true;
 				}
 				catch (Exception e) {
 					Logging.tML.Error($"Problem during extracting of mod compile files for", e);
