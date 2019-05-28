@@ -1,6 +1,6 @@
 author = tModLoader Team
 version = 0.11
-displayName = Example Mod - 0.11 Beta 4
+displayName = Example Mod - 0.11 Beta 5
 homepage = https://tmodloader.net/
 hideCode = false
 hideResources = false
