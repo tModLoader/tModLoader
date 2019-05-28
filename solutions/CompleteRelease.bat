@@ -50,6 +50,7 @@ call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -f
 :: TODO: investigate why this isn't working on my machine
 :: for /f %%i in ('..\setup\bin\setup --steamdir') do set steamdir=%%i
 set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
+:: Make sure to clear out ModCompile and run Setup Debugging so ModCompile folder is clean from old versions.
 copy "%steamdir%\ModCompile" "%mcfna%"
 del "%mcfna%"\buildlock 2>nul
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y
