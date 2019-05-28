@@ -227,8 +227,8 @@ namespace Terraria.ModLoader.UI
 				if (_localMod != null) {
 					_uIElement.AddOrRemoveChild(_deleteButton, ModLoader.Mods.All(x => x.Name != _localMod.Name));
 					_uIElement.Append(_extractButton);
-					Recalculate();
 				}
+				Recalculate();
 				_modInfo.RemoveChild(_loaderElement);
 				_ready = false;
 			}
