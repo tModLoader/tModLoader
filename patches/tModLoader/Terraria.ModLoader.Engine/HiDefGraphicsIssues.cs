@@ -4,12 +4,15 @@ using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -71,7 +74,7 @@ namespace Terraria.ModLoader.Engine
 			AddParam("Display", self.GraphicsDevice.Adapter.DeviceName, newDeviceInfo.Adapter.DeviceName);
 			
 			Logging.Terraria.Debug("Device Reset"+changes);
-			
+
 			// we can force a device recreation, to 'simulate' the bug as it's not very reproducible
 			//return false;
 
@@ -107,10 +110,29 @@ namespace Terraria.ModLoader.Engine
 			Main.SaveSettings();
 			Logging.tML.Debug("Disabled Main.Support4K");
 
-			// TODO: upload log to server for analysis
-			
+			string reportStatus = "Unknown";
+			log4net.LogManager.Shutdown();
+			string logContents = System.IO.File.ReadAllText(Logging.LogPath);
+			try {
+				ServicePointManager.Expect100Continue = false;
+				string url = "http://javid.ddns.net/tModLoader/errorreport.php";
+				var values = new NameValueCollection
+				{
+					{ "steamid64", ModLoader.SteamID64 },
+					{ "modloaderversion", ModLoader.versionedName },
+					{ "category", "ReportFatalEngineReload" },
+					{ "logcontents", logContents },
+				};
+				byte[] result = UploadFile.UploadFiles(url, null, values);
+				reportStatus = Encoding.UTF8.GetString(result, 0, result.Length);
+			}
+			catch {
+				// Can't log since log4net.LogManager.Shutdown happened.
+				reportStatus = "Failure";
+			}
+
 			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";
-			MessageBox.Show("tML encountered a crash when testing some experimental graphics features. Experimental features will be disabled. \nPlease restart your game.", "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show($"tML encountered a crash when testing some experimental graphics features. Experimental features will be disabled. \nPlease restart your game.\nReport Status: {reportStatus}", "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			Environment.Exit(1);
 		}
 
