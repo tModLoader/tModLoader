@@ -51,8 +51,9 @@ namespace Terraria.ModLoader.Setup
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.decompileServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.formatCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.buttonSetupDebugging = new System.Windows.Forms.Button();
 			this.hookGenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.buttonSetupDebugging = new System.Windows.Forms.Button();
+			this.diffGoGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -277,7 +278,8 @@ namespace Terraria.ModLoader.Setup
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.decompileServerToolStripMenuItem,
             this.formatCodeToolStripMenuItem,
-            this.hookGenToolStripMenuItem});
+            this.hookGenToolStripMenuItem,
+            this.diffGoGToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
 			this.toolsToolStripMenuItem.Text = "Tools";
@@ -297,6 +299,13 @@ namespace Terraria.ModLoader.Setup
 			this.formatCodeToolStripMenuItem.Text = "Format Code";
 			this.formatCodeToolStripMenuItem.Click += new System.EventHandler(this.menuItemFormatCode_Click);
 			// 
+			// hookGenToolStripMenuItem
+			// 
+			this.hookGenToolStripMenuItem.Name = "hookGenToolStripMenuItem";
+			this.hookGenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.hookGenToolStripMenuItem.Text = "HookGen";
+			this.hookGenToolStripMenuItem.Click += new System.EventHandler(this.menuItemHookGen_Click);
+			// 
 			// buttonSetupDebugging
 			// 
 			this.buttonSetupDebugging.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -309,12 +318,12 @@ namespace Terraria.ModLoader.Setup
 			this.buttonSetupDebugging.UseVisualStyleBackColor = true;
 			this.buttonSetupDebugging.Click += new System.EventHandler(this.buttonTask_Click);
 			// 
-			// hookGenToolStripMenuItem
+			// diffGoGToolStripMenuItem
 			// 
-			this.hookGenToolStripMenuItem.Name = "hookGenToolStripMenuItem";
-			this.hookGenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.hookGenToolStripMenuItem.Text = "HookGen";
-			this.hookGenToolStripMenuItem.Click += new System.EventHandler(this.menuItemHookGen_Click);
+			this.diffGoGToolStripMenuItem.Name = "diffGoGToolStripMenuItem";
+			this.diffGoGToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.diffGoGToolStripMenuItem.Text = "Diff GoG";
+			this.diffGoGToolStripMenuItem.Click += new System.EventHandler(this.diffGoGToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -371,6 +380,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem decompileServerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem formatCodeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem hookGenToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem diffGoGToolStripMenuItem;
 	}
 }
 
