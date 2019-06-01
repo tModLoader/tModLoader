@@ -4986,9 +4986,23 @@
  				}
  				return null;
  #if !WINDOWS
-@@ -61145,8 +_,9 @@
- 				}
+@@ -61131,7 +_,9 @@
+ 				flag2 = (Main.graphics.PreferredBackBufferWidth != Main.graphics.GraphicsDevice.Viewport.Width || Main.graphics.PreferredBackBufferHeight != Main.graphics.GraphicsDevice.Viewport.Height);
  			}
+ #if WINDOWS
+-			if (!fullscreen && !flag2)
++			// appears redundant. Just causes the window to fight the user when attempting to resize too small
++			// with this disabled, the window will just snap back to minimum size when released
++			/*if (!fullscreen && !flag2)
+ 			{
+ 				if (form.ClientSize.Width < Main.graphics.PreferredBackBufferWidth)
+ 				{
+@@ -61143,10 +_,11 @@
+ 					height = form.ClientSize.Height;
+ 					flag2 = true;
+ 				}
+-			}
++			}*/
  #endif
 -			width &= 2147483646;
 -			height &= 2147483646;
