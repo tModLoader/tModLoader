@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
-			if (FrameworkVersion.Framework == Framework.Mono)
+			if (FrameworkVersion.Framework == Framework.Mono && FrameworkVersion.Version < new Version(5, 20))
 				new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
 
 			if (!Directory.Exists(LogDir))

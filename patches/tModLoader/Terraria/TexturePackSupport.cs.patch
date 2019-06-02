@@ -1,14 +1,15 @@
 --- src/Terraria\Terraria\TexturePackSupport.cs
 +++ src/tModLoader\Terraria\TexturePackSupport.cs
-@@ -5,6 +_,7 @@
+@@ -5,6 +_,8 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
 +using System.Linq;
++using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -12,7 +_,7 @@
+@@ -12,18 +_,19 @@
  	{
  		public static bool Enabled = false;
  		public static int ReplacedTextures = 0;
@@ -17,6 +18,19 @@
  		private static Dictionary<string, ZipEntry> entries = new Dictionary<string, ZipEntry>();
  		private static Stopwatch test = new Stopwatch();
  
+ 		public static bool FetchTexture(string path, out Texture2D tex)
+ 		{
+ 			ZipEntry zipEntry;
+-			if (TexturePackSupport.entries.TryGetValue(path, out zipEntry))
++			if (TexturePackSupport.entries.TryGetValue(path.Replace('\\', '/'), out zipEntry))
+ 			{
+ 				using (MemoryStream memoryStream = new MemoryStream())
+ 				{
+ 					zipEntry.Extract(memoryStream);
++					memoryStream.Position = 0; // required for FNA
+ 					tex = TexturePackSupport.FromStreamSlow(Main.instance.GraphicsDevice, memoryStream);
+ 					TexturePackSupport.ReplacedTextures++;
+ 					return true;
 @@ -46,6 +_,7 @@
  			return texture2D;
  		}
@@ -25,7 +39,7 @@
  		public static void FindTexturePack()
  		{
  			string savePath = Main.SavePath;
-@@ -61,5 +_,33 @@
+@@ -61,5 +_,34 @@
  				TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
  			}
  		}
@@ -48,11 +62,12 @@
 +				files.Sort();
 +				foreach (string fileName in files)
 +				{
++					Logging.Terraria.Info("Loading Texture Pack: "+Path.GetFileName(fileName));
 +					ZipFile zipFile = ZipFile.Read(File.OpenRead(fileName));
 +					TexturePackSupport.texturePacks.Add(zipFile);
 +					foreach (ZipEntry current in zipFile.Entries)
 +					{
-+						TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
++						TexturePackSupport.entries.Add(current.FileName.Replace('\\', '/'), current);
 +					}
 +				}
 +			}

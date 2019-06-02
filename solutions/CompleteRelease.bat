@@ -65,6 +65,8 @@ copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
 copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
+copy references\I18N.dll "%lnx%\I18N.dll" /y
+copy references\I18N.West.dll "%lnx%\I18N.West.dll" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
