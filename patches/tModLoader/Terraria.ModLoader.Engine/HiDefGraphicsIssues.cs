@@ -136,14 +136,27 @@ namespace Terraria.ModLoader.Engine
 			Environment.Exit(1);
 		}
 
+#if XNA
 		private static int CurrentDevice = -1;
+#else
+		// FNA doesn't implement GraphicsDevice.DeviceId so use Description as the next best option for tracking devices.
+		// won't tell us if the user swaps between two identical graphics cards but that's probably okay
+		private static string CurrentDeviceDescription;
+#endif
 		private static void LogGraphicsDevice()
 		{
 			var adapter = Main.graphics.GraphicsDevice.Adapter;
+#if XNA
 			if (CurrentDevice == adapter.DeviceId)
 				return;
 
 			CurrentDevice = adapter.DeviceId;
+#else
+			if (CurrentDeviceDescription == adapter.Description)
+				return;
+
+			CurrentDeviceDescription = adapter.Description;
+#endif
 			Logging.Terraria.Debug($"Graphics Device: {adapter.Description} {adapter.CurrentDisplayMode}");
 		}
     }
