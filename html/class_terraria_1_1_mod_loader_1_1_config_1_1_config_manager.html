@@ -135,6 +135,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ac9d906d75e28bce5eafebe346d4902e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d6379c15d1fb9a5720e6d618d64eff7"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; PropertyFieldWrapper &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a3d6379c15d1fb9a5720e6d618d64eff7">GetFieldsAndProperties</a> (object item)</td></tr>
 <tr class="separator:a3d6379c15d1fb9a5720e6d618d64eff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a237e51f74c77ad09385991d6976f8c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a0a237e51f74c77ad09385991d6976f8c">SetPendingChanges</a> (bool changes=true)</td></tr>
+<tr class="separator:a0a237e51f74c77ad09385991d6976f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4031109694a6d651df6655fa81a91113"><td class="memItemLeft" align="right" valign="top">static Tuple&lt; UIElement, UIElement &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a4031109694a6d651df6655fa81a91113">WrapIt</a> (UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array=null, Type arrayType=null, int index=-1)</td></tr>
 <tr class="separator:a4031109694a6d651df6655fa81a91113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -273,6 +275,32 @@ Static Private Attributes</h2></td></tr>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="a0a237e51f74c77ad09385991d6976f8c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.Config.ConfigManager.SetPendingChanges </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>changes</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_config_manager_8cs_source.html#l00329">329</a> of file <a class="el" href="_config_manager_8cs_source.html">ConfigManager.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                                                                  {</div><div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="comment">// public api for modders.</span></div><div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            Interface.modConfig.SetPendingChanges(changes);</div><div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4031109694a6d651df6655fa81a91113"></a>
