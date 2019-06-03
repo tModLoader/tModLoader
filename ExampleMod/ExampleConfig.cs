@@ -13,6 +13,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
+using Terraria.UI;
 
 namespace ExampleMod
 {
@@ -529,8 +530,12 @@ namespace ExampleMod
 
 		[Label("Custom UI Element")]
 		[Tooltip("This UI Element is modder defined")]
-		[CustomModConfigItem(typeof(UIModConfigGradientItem))]
+		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient;
+
+		[Label("Custom UI Element 2")]
+		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
+		public Corner corner;
 
 		public Dictionary<string, Pair> StringPairDictionary;
 		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary;
@@ -719,10 +724,11 @@ namespace ExampleMod
 		}
 	}
 
-	class UIModConfigGradientItem : ConfigElement
+	// This custom config UI element uses vanilla config elements paired with custom drawing.
+	class GradientElement : ConfigElement
 	{
 		//public UIModConfigVector2Item(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
+		public GradientElement(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
 		{
 			object subitem = memberInfo.GetValue(item);
 			if (subitem == null)
@@ -770,6 +776,77 @@ namespace ExampleMod
 				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + 3 * hitbox.Width / 4, hitbox.Y, hitbox.Width / 4, 30), g.end);
 			}
 		}
+	}
 
+	[JsonConverter(typeof(StringEnumConverter))]
+	[CustomModConfigItem(typeof(CornerElement))]
+	public enum Corner
+	{
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight
+	}
+
+	// This custom config UI element shows a completely custom config element that handles setting and getting the values in addition to custom drawing.
+	class CornerElement : ConfigElement
+	{
+		int index;
+		Texture2D circleTexture;
+		string[] valueStrings;
+
+		public CornerElement(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2) {
+			this.index = index;
+			circleTexture = Terraria.Graphics.TextureManager.Load("Images/UI/Settings_Toggle");
+			valueStrings = Enum.GetNames(memberInfo.Type);
+			_TextDisplayFunction = () => memberInfo.Name + ": " + GetStringValue();
+			if (labelAttribute != null) {
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetStringValue();
+			}
+		}
+
+		// This Get and Set code is careful to handle both individual fields and the List approach. 
+		// A fully functioning Config Element should handle both gracefully
+		void SetValue(Corner value) {
+			if (index != -1)
+				((IList<Corner>)array)[index] = value;
+			if (!memberInfo.CanWrite) return;
+			memberInfo.SetValue(item, value);
+			ConfigManager.SetPendingChanges(); // This tells the ModConfigUI that changes have been made to the current ModConfig
+		}
+
+		Corner GetValue() {
+			if (index != -1)
+				return ((IList<Corner>)array)[index];
+			return (Corner)memberInfo.GetValue(item);
+		}
+
+		string GetStringValue() {
+			return valueStrings[(int)GetValue()];
+		}
+
+		public override void Click(UIMouseEvent evt) {
+			base.Click(evt);
+			Corner corner = GetValue();
+			Corner next = corner.NextEnum();
+			SetValue(next);
+		}
+
+		public override void RightClick(UIMouseEvent evt) {
+			base.RightClick(evt);
+			Corner corner = GetValue();
+			Corner previous = corner.PreviousEnum();
+			SetValue(previous);
+		}
+
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+			Terraria.UI.CalculatedStyle dimensions = base.GetDimensions();
+			Rectangle circleSourceRectangle = new Rectangle(0, 0, (circleTexture.Width - 2) / 2, circleTexture.Height);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)(dimensions.X + dimensions.Width - 25), (int)(dimensions.Y + 4), 22, 22), Color.LightGreen);
+			Corner corner = GetValue();
+			Vector2 circlePositionOffset = new Vector2((int)corner % 2 * 8, (int)corner / 2 * 8);
+			spriteBatch.Draw(circleTexture, new Vector2(dimensions.X + dimensions.Width - 25, dimensions.Y + 4) + circlePositionOffset, circleSourceRectangle, Color.White);
+		}
 	}
 }

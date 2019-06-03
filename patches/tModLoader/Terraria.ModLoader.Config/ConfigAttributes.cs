@@ -75,7 +75,7 @@ namespace Terraria.ModLoader.Config
 	/// <summary>
 	/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI. 
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
 	public class CustomModConfigItemAttribute : Attribute
 	{
 		public Type t;

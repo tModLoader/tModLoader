@@ -325,6 +325,11 @@ namespace Terraria.ModLoader.Config
 			// public api for modders.
 			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, array, arrayType, index);
 		}
+
+		public static void SetPendingChanges(bool changes = true) {
+			// public api for modders.
+			Interface.modConfig.SetPendingChanges(changes);
+		}
 	}
 
 	//public class ColorJsonConverter : JsonConverter
