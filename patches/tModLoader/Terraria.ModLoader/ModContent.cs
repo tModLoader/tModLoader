@@ -345,7 +345,7 @@ namespace Terraria.ModLoader
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
-				Interface.loadMods.SetCurrentMod(num++, mod.Name);
+				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
