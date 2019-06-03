@@ -54,6 +54,7 @@ set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
 copy "%steamdir%\ModCompile" "%mcfna%"
 del "%mcfna%"\buildlock 2>nul
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\tModLoader.pdb "%mcfna%" /y
 
 call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
 
@@ -89,6 +90,9 @@ call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -f
 copy "%mcfna%" "%mcxna%"
 del "%mcxna%\tModLoader.FNA.exe"
 del "%mcxna%\FNA.dll"
+del "%mcxna%\tModLoader.pdb"
+copy ..\src\tModLoader\bin\MacRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Mac.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Linux.pdb" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.dll "%mcxna%" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y
