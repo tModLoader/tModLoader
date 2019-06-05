@@ -6,31 +6,29 @@ namespace Terraria.ModLoader.Config.UI
 {
 	public class FloatElement : RangeElement
 	{
-		private Func<float> _GetValue;
-		private Action<float> _SetValue;
-		internal float min = 0;
-		internal float max = 1;
-		internal float increment = 0.01f;
+		public float min = 0;
+		public float max = 1;
+		public float increment = 0.01f;
+		public int index;
+		public new IList<float> array;
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (increment) / (max - min);
 
 		public FloatElement(PropertyFieldWrapper memberInfo, object item, IList<float> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
-			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
-			this._GetValue = () => DefaultGetValue();
-			this._SetValue = (float value) => DefaultSetValue(value);
+			this.array = array;
+			this.index = index;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
 
 			if (array != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (float value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
 			}
 
 			if (rangeAttribute != null && rangeAttribute.min is float && rangeAttribute.max is float)
@@ -45,20 +43,25 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected override float Proportion {
-			get => (_GetValue() - min) / (max - min);
-			set => _SetValue((float)Math.Round((value * (max - min) + min) * (1 / increment)) * increment);
+			get => (GetValue() - min) / (max - min);
+			set => SetValue((float)Math.Round((value * (max - min) + min) * (1 / increment)) * increment);
 		}
 
-
-		void DefaultSetValue(float value)
-		{
+		protected virtual void SetValue(float value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
 			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		float DefaultGetValue()
+		protected virtual float GetValue()
 		{
+			if (array != null)
+				return array[index];
 			return (float)memberInfo.GetValue(item);
 		}
 	}

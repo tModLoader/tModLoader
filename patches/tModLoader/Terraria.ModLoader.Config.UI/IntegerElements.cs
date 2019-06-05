@@ -11,21 +11,19 @@ namespace Terraria.ModLoader.Config.UI
 {
 	internal class IntInputElement : ConfigElement
 	{
-		private Func<int> _GetValue;
-		private Action<int> _SetValue;
-		int min = 0;
-		int max = 100;
-		int increment = 1;
+		public int index;
+		public new IList<int> array;
+		public int min = 0;
+		public int max = 100;
+		public int increment = 1;
 
 		public IntInputElement(PropertyFieldWrapper memberInfo, object item, IList<int> array, int index) : base(memberInfo, item, (IList)array)
 		{
-			_GetValue = () => DefaultGetValue();
-			_SetValue = (int value) => DefaultSetValue(value);
+			this.array = array;
+			this.index = index;
 
 			if (array != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (int value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
@@ -48,7 +46,7 @@ namespace Terraria.ModLoader.Config.UI
 			textBoxBackground.Height.Set(30, 0f);
 			Append(textBoxBackground);
 
-			uIInputTextField.SetText(_GetValue().ToString());
+			uIInputTextField.SetText(GetValue().ToString());
 			uIInputTextField.Top.Set(5, 0f);
 			uIInputTextField.Left.Set(10, 0f);
 			uIInputTextField.Width.Set(-42, 1f); // allow space for arrows
@@ -57,14 +55,14 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				if (Int32.TryParse(uIInputTextField.currentString, out int val))
 				{
-					_SetValue(val);
+					SetValue(val);
 				}
 				//else
 				//{
 				//	Interface.modConfig.SetMessage($"{uIInputTextField.currentString} isn't a valid value.", Color.Green);
 				//}
 			};
-			uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(_GetValue().ToString());
+			uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(GetValue().ToString());
 			textBoxBackground.Append(uIInputTextField);
 
 			UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "+" + increment, "-" + increment);
@@ -75,63 +73,65 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				Rectangle r = b.GetDimensions().ToRectangle();
 				if(a.MousePosition.Y < r.Y + r.Height / 2) {
-					_SetValue(Utils.Clamp(_GetValue() + increment, min, max));
+					SetValue(Utils.Clamp(GetValue() + increment, min, max));
 				}
 				else {
-					_SetValue(Utils.Clamp(_GetValue() - increment, min, max));
+					SetValue(Utils.Clamp(GetValue() - increment, min, max));
 				}
-				uIInputTextField.SetText(_GetValue().ToString());
+				uIInputTextField.SetText(GetValue().ToString());
 			};
 			textBoxBackground.Append(upDownButton);
 			Recalculate();
 		}
 
-		void DefaultSetValue(int text)
-		{
+		protected virtual void SetValue(int value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
 			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, text);
+			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		int DefaultGetValue()
-		{
+		protected virtual int GetValue() {
+			if (array != null)
+				return array[index];
 			return (int)memberInfo.GetValue(item);
 		}
 	}
 
 	internal class IntRangeElement : RangeElement
 	{
-		private Func<int> _GetValue;
-		private Action<int> _SetValue;
-
-		int min = 0;
-		int max = 100;
-		int increment = 1;
+		public int index;
+		public new IList<int> array;
+		public int min = 0;
+		public int max = 100;
+		public int increment = 1;
 
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
 		protected override float Proportion {
-			get => (_GetValue() - min) / (float)(max - min);
-			set => _SetValue((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
+			get => (GetValue() - min) / (float)(max - min);
+			set => SetValue((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
 		}
 
 		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, IList<int> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
-			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
-			this._GetValue = () => DefaultGetValue();
-			this._SetValue = (int value) => DefaultSetValue(value);
+			this.array = array;
+			this.index = index;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
 
 			if (array != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (int value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
 			if (labelAttribute != null) // Problem with Lists using ModConfig Label.
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
 			}
 
 			if (rangeAttribute != null && rangeAttribute.min is int && rangeAttribute.max is int)
@@ -145,52 +145,54 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		void DefaultSetValue(int value)
-		{
+		protected virtual void SetValue(int value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
 			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		int DefaultGetValue()
-		{
+		protected virtual int GetValue() {
+			if (array != null)
+				return array[index];
 			return (int)memberInfo.GetValue(item);
 		}
 	}
 
 	internal class UIntElement : RangeElement
 	{
-		private Func<uint> _GetValue;
-		private Action<uint> _SetValue;
-
-		uint min = 0;
-		uint max = 100;
-		uint increment = 1;
+		public int index;
+		public new IList<uint> array;
+		public uint min = 0;
+		public uint max = 100;
+		public uint increment = 1;
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
 		protected override float Proportion {
-			get => (_GetValue() - min) / (float)(max - min);
-			set => _SetValue((uint)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
+			get => (GetValue() - min) / (float)(max - min);
+			set => SetValue((uint)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
 		}
 
 		public UIntElement(PropertyFieldWrapper memberInfo, object item, IList<uint> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
-			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
-			this._GetValue = () => DefaultGetValue();
-			this._SetValue = (uint value) => DefaultSetValue(value);
+			this.array = array;
+			this.index = index;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
 
 			if (array != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (uint value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
 			}
 
 			if (rangeAttribute != null && rangeAttribute.min is uint && rangeAttribute.max is uint)
@@ -204,52 +206,54 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		void DefaultSetValue(uint value)
-		{
+		protected virtual void SetValue(uint value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
 			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		uint DefaultGetValue()
-		{
+		protected virtual uint GetValue() {
+			if (array != null)
+				return array[index];
 			return (uint)memberInfo.GetValue(item);
 		}
 	}
 
 	internal class ByteElement : RangeElement
 	{
-		private Func<byte> _GetValue;
-		private Action<byte> _SetValue;
-
-		byte min = 0;
-		byte max = 255;
-		byte increment = 1;
+		public int index;
+		public new IList<byte> array;
+		public byte min = 0;
+		public byte max = 255;
+		public byte increment = 1;
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
 		protected override float Proportion {
-			get => (_GetValue() - min) / (float)(max - min);
-			set => _SetValue(Convert.ToByte((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment));
+			get => (GetValue() - min) / (float)(max - min);
+			set => SetValue(Convert.ToByte((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment));
 		}
 
 		public ByteElement(PropertyFieldWrapper memberInfo, object item, IList<byte> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
-			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
-			this._GetValue = () => DefaultGetValue();
-			this._SetValue = (byte value) => DefaultSetValue(value);
+			this.array = array;
+			this.index = index;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
 
 			if (array != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (byte value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
 				_TextDisplayFunction = () => index + 1 + ": " + array[index];
 			}
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
 			}
 
 			if (rangeAttribute != null && rangeAttribute.min is byte && rangeAttribute.max is byte)
@@ -262,15 +266,21 @@ namespace Terraria.ModLoader.Config.UI
 				this.increment = (byte)incrementAttribute.increment;
 			}
 		}
-		void DefaultSetValue(byte value)
-		{
+
+		protected virtual void SetValue(byte value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
 			if (!memberInfo.CanWrite) return;
 			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		byte DefaultGetValue()
-		{
+		protected virtual byte GetValue() {
+			if (array != null)
+				return array[index];
 			return (byte)memberInfo.GetValue(item);
 		}
 	}
