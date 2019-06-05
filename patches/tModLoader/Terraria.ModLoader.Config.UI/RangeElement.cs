@@ -2,11 +2,60 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
+	public abstract class PrimitiveRangeElement<T> : RangeElement where T : IComparable<T>
+	{
+		public int index;
+		public T min;
+		public T max;
+		public T increment;
+		public new IList<T> array;
+
+		public PrimitiveRangeElement(PropertyFieldWrapper memberInfo, object item, IList<T> array = null, int index = -1) : base(memberInfo, item, (IList)array) {
+			this.array = array;
+			this.index = index;
+			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
+
+			if (array != null) {
+				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			}
+
+			if (labelAttribute != null) // Problem with Lists using ModConfig Label.
+			{
+				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
+			}
+			if (rangeAttribute != null && rangeAttribute.min is T && rangeAttribute.max is T) {
+				min = (T)rangeAttribute.min;
+				max = (T)rangeAttribute.max;
+			}
+			if (incrementAttribute != null && incrementAttribute.increment is T) {
+				this.increment = (T)incrementAttribute.increment;
+			}
+		}
+
+		protected virtual void SetValue(T value) {
+			if (array != null) {
+				array[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
+			if (!memberInfo.CanWrite) return;
+			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
+			Interface.modConfig.SetPendingChanges();
+		}
+
+		protected virtual T GetValue() {
+			if (array != null)
+				return array[index];
+			return (T)memberInfo.GetValue(item);
+		}
+	}
+
 	public abstract class RangeElement : ConfigElement
 	{
 		protected Color sliderColor = Color.White;
