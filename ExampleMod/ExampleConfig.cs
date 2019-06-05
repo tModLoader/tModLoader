@@ -272,6 +272,7 @@ namespace ExampleMod
 		// Use Tooltip to convey additional information about the config item.
 		[Label("This is a float")]
 		[Tooltip("This text will show when hovered")]
+		[SliderColor(255, 0, 127)]
 		public float SomeFloat;
 
 		// Using localization keys will help make your config readable in multiple languages. See ExampleMod/Localization/en-US.lang

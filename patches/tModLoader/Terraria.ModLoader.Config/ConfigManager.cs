@@ -127,34 +127,7 @@ namespace Terraria.ModLoader.Config
 			Interface.modConfigList.Unload();
 		}
 
-		// pending changes are stored (in a variable? dictionary?)?? when synced from server.
-		// Save personal?
-		// replace values or config instance?
-		// if needs reload, reload
-		// hmm, mods.enabled persists after joining, so maybe server config jsons can persist for now until we redo that.
-		//internal static bool NeedsReload()
-		//{
-		//	foreach (var entry in Configs.Keys)
-		//	{
-		//		if (ModNeedsReload(entry))
-		//		{
-		//			return true;
-		//		}
-		//	}
-		//	return false;
-		//}
-
-		internal static bool AnyModNeedsReload()
-		{
-			foreach (var mod in ModLoader.Mods)
-			{
-				if (ModNeedsReload(mod))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
+		internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
 
 		internal static bool ModNeedsReload(Mod mod)
 		{
@@ -174,7 +147,6 @@ namespace Terraria.ModLoader.Config
 		}
 
 		// GetConfig...returns the config instance
-
 		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 		internal static ModConfig GetConfig(Mod mod, string config)
 		{
@@ -277,11 +249,6 @@ namespace Terraria.ModLoader.Config
 			}
 			return;
 		}
-
-		// ReloadPrep?
-		// 
-
-		// Save
 
 		public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item)
 		{

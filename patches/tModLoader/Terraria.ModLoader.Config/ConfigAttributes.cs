@@ -17,6 +17,18 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
+	/// Specifies a slider color for ModConfig elements that use a slider. The default color is white.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class SliderColorAttribute : Attribute
+	{
+		public Color color;
+		public SliderColorAttribute(int r, int g, int b, int a = 255) {
+			this.color = new Color(r, g, b, a);
+		}
+	}
+
+	/// <summary>
 	/// This attribute hints that changing the value of the annotated property or field will put the config in a state that requires a reload. An overridden ModConfig.NeedsReload can further validate if more complex logic is needed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

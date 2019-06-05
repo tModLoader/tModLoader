@@ -9,6 +9,7 @@ namespace Terraria.ModLoader.Config.UI
 {
 	abstract class RangeElement : ConfigElement
 	{
+		protected Color sliderColor = Color.White;
 		internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
@@ -18,6 +19,7 @@ namespace Terraria.ModLoader.Config.UI
 		public RangeElement(PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+			sliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(memberInfo, item, array)?.color ?? Color.White;
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
@@ -48,7 +50,7 @@ namespace Terraria.ModLoader.Config.UI
 					}
 				}
 			}
-			sb.Draw(colorBarTexture, rectangle, Color.White);
+			sb.Draw(colorBarTexture, rectangle, sliderColor);
 			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
 			{
 				float percent = num4 / (float)num;
