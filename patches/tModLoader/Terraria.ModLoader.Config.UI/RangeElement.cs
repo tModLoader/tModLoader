@@ -37,21 +37,11 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		protected virtual void SetValue(T value) {
-			if (tList != null) {
-				tList[index] = value;
-				Interface.modConfig.SetPendingChanges();
-				return;
-			}
-			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
-			Interface.modConfig.SetPendingChanges();
-		}
+		protected virtual T GetValue() => (T)GetObject();
 
-		protected virtual T GetValue() {
-			if (tList != null)
-				return tList[index];
-			return (T)memberInfo.GetValue(item);
+		protected virtual void SetValue(object value) {
+			if(value is T t)
+				SetObject(Utils.Clamp(t, min, max));
 		}
 	}
 
@@ -145,19 +135,15 @@ namespace Terraria.ModLoader.Config.UI
 			base.DrawSelf(spriteBatch);
 			float num = 6f;
 			int num2 = 0;
-			//IngameOptions.rightHover = -1;
 			rightHover = null;
 			if (!Main.mouseLeft)
 			{
-				//IngameOptions.rightLock = -1;
 				rightLock = null;
 			}
-			//if (IngameOptions.rightLock == this._sliderIDInPage)
 			if (rightLock == this)
 			{
 				num2 = 1;
 			}
-			//else if (IngameOptions.rightLock != -1)
 			else if (rightLock != null)
 			{
 				num2 = 2;
@@ -182,21 +168,16 @@ namespace Terraria.ModLoader.Config.UI
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
 			float obj = DrawValueBar(spriteBatch, 1f, Proportion, num2, colorMethod);
-			//if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
 			if (IngameOptions.inBar || rightLock == this)
 			{
 				rightHover = this;
-				//IngameOptions.rightHover = this._sliderIDInPage;
 				if (PlayerInput.Triggers.Current.MouseLeft && rightLock == this)
-				//if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
 				{
 					Proportion = obj;
 				}
 			}
 			if (rightHover != null && rightLock == null)
-			//if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
 			{
-				//IngameOptions.rightLock = IngameOptions.rightHover;
 				rightLock = rightHover;
 			}
 		}

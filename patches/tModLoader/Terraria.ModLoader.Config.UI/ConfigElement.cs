@@ -10,6 +10,12 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.Config.UI
 {
+	public abstract class ConfigElement<T> : ConfigElement
+	{
+		protected virtual T GetValue() => (T)GetObject();
+		protected virtual void SetValue(T value) => SetObject(value);
+	}
+
 	public abstract class ConfigElement : UIElement
 	{
 		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
@@ -73,6 +79,22 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, list);
 			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, list);
+		}
+
+		protected virtual void SetObject(object value) {
+			if (list != null) {
+				list[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
+			if (!memberInfo.CanWrite) return;
+			memberInfo.SetValue(item, value);
+			Interface.modConfig.SetPendingChanges();
+		}
+		protected virtual object GetObject() {
+			if (list != null)
+				return list[index];
+			return memberInfo.GetValue(item);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)

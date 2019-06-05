@@ -76,22 +76,9 @@ namespace Terraria.ModLoader.Config.UI
 			Recalculate();
 		}
 
-		protected virtual void SetValue(int value) {
-			if (intList != null) {
-				intList[index] = value;
-				Interface.modConfig.SetPendingChanges();
-				return;
-			}
-			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, Utils.Clamp(value, min, max));
-			Interface.modConfig.SetPendingChanges();
-		}
+		protected virtual int GetValue() => (int)GetObject();
 
-		protected virtual int GetValue() {
-			if (intList != null)
-				return intList[index];
-			return (int)memberInfo.GetValue(item);
-		}
+		protected virtual void SetValue(int value) => SetObject(Utils.Clamp(value, min, max));
 	}
 
 	internal class IntRangeElement : PrimitiveRangeElement<int>

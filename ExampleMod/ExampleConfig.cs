@@ -771,21 +771,9 @@ namespace ExampleMod
 			}
 		}
 
-		// This Get and Set code is careful to handle both individual fields and the List approach. 
-		// A fully functioning Config Element should handle both gracefully
-		void SetValue(Corner value) {
-			if (index != -1)
-				((IList<Corner>)list)[index] = value;
-			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, value);
-			ConfigManager.SetPendingChanges(); // This tells the ModConfigUI that changes have been made to the current ModConfig
-		}
+		void SetValue(Corner value) => SetObject(value);
 
-		Corner GetValue() {
-			if (index != -1)
-				return ((IList<Corner>)list)[index];
-			return (Corner)memberInfo.GetValue(item);
-		}
+		Corner GetValue() => (Corner)GetObject();
 
 		string GetStringValue() {
 			return valueStrings[(int)GetValue()];
@@ -803,7 +791,7 @@ namespace ExampleMod
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			Terraria.UI.CalculatedStyle dimensions = base.GetDimensions();
+			CalculatedStyle dimensions = base.GetDimensions();
 			Rectangle circleSourceRectangle = new Rectangle(0, 0, (circleTexture.Width - 2) / 2, circleTexture.Height);
 			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)(dimensions.X + dimensions.Width - 25), (int)(dimensions.Y + 4), 22, 22), Color.LightGreen);
 			Corner corner = GetValue();
