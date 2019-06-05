@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class FloatElement : RangeElement
+	public class FloatElement : RangeElement
 	{
 		private Func<float> _GetValue;
 		private Action<float> _SetValue;
@@ -42,9 +42,13 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				increment = (float)incrementAttribute.increment;
 			}
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
+
+		protected override float Proportion {
+			get => (_GetValue() - min) / (max - min);
+			set => _SetValue((float)Math.Round((value * (max - min) + min) * (1 / increment)) * increment);
+		}
+
 
 		void DefaultSetValue(float value)
 		{
@@ -56,16 +60,6 @@ namespace Terraria.ModLoader.Config.UI
 		float DefaultGetValue()
 		{
 			return (float)memberInfo.GetValue(item);
-		}
-
-		float DefaultGetProportion()
-		{
-			return (_GetValue() - min) / (max - min);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue((float)Math.Round((proportion * (max - min) + min) * (1 / increment)) * increment);
 		}
 	}
 }

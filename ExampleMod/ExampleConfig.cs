@@ -538,6 +538,10 @@ namespace ExampleMod
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
 		public Corner corner;
 
+		// In this example we inherit from a tmodloader config UIElement to slightly customize the colors.
+		[CustomModConfigItem(typeof(CustomFloatElement))]
+		public float tint;
+
 		public Dictionary<string, Pair> StringPairDictionary;
 		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary;
 
@@ -848,6 +852,13 @@ namespace ExampleMod
 			Corner corner = GetValue();
 			Vector2 circlePositionOffset = new Vector2((int)corner % 2 * 8, (int)corner / 2 * 8);
 			spriteBatch.Draw(circleTexture, new Vector2(dimensions.X + dimensions.Width - 25, dimensions.Y + 4) + circlePositionOffset, circleSourceRectangle, Color.White);
+		}
+	}
+
+	class CustomFloatElement : FloatElement
+	{
+		public CustomFloatElement(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList<float>)array2, index) {
+			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
 		}
 	}
 }

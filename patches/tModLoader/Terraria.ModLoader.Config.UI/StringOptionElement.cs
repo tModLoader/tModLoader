@@ -6,8 +6,6 @@ namespace Terraria.ModLoader.Config.UI
 {
 	class StringOptionElement : RangeElement
 	{
-		//private Func<string> _TextDisplayFunction;
-
 		private Func<string> _GetValue;
 		private Func<int> _GetIndex;
 		private Action<int> _SetValue;
@@ -15,6 +13,11 @@ namespace Terraria.ModLoader.Config.UI
 
 		public override int NumberTicks => options.Length;
 		public override float TickIncrement => 1f / (options.Length - 1);
+
+		protected override float Proportion {
+			get => _GetIndex() / (float)(options.Length - 1);
+			set => _SetValue((int)(Math.Round(value * (options.Length - 1))));
+		}
 
 		public StringOptionElement(PropertyFieldWrapper memberInfo, object item, IList<string> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
@@ -35,11 +38,8 @@ namespace Terraria.ModLoader.Config.UI
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				_TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
-
-			_GetProportion = () => DefaultGetProportion();
-			_SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
 		void DefaultSetValue(int index)
@@ -57,16 +57,6 @@ namespace Terraria.ModLoader.Config.UI
 		int DefaultGetIndex()
 		{
 			return Array.IndexOf(options, _GetValue());
-		}
-
-		float DefaultGetProportion()
-		{
-			return _GetIndex() / (float)(options.Length - 1);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue((int)(Math.Round(proportion * (options.Length - 1))));
 		}
 	}
 }

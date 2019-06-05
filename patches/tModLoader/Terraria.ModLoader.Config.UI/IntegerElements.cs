@@ -111,6 +111,11 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
 
+		protected override float Proportion {
+			get => (_GetValue() - min) / (float)(max - min);
+			set => _SetValue((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
+		}
+
 		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, IList<int> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
 			this._TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
@@ -138,8 +143,6 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				this.increment = (int)incrementAttribute.increment;
 			}
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
 		void DefaultSetValue(int value)
@@ -152,16 +155,6 @@ namespace Terraria.ModLoader.Config.UI
 		int DefaultGetValue()
 		{
 			return (int)memberInfo.GetValue(item);
-		}
-
-		float DefaultGetProportion()
-		{
-			return (_GetValue() - min) / (float)(max - min);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue((int)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment);
 		}
 	}
 
@@ -176,6 +169,11 @@ namespace Terraria.ModLoader.Config.UI
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
+
+		protected override float Proportion {
+			get => (_GetValue() - min) / (float)(max - min);
+			set => _SetValue((uint)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
+		}
 
 		public UIntElement(PropertyFieldWrapper memberInfo, object item, IList<uint> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
@@ -204,8 +202,6 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				this.increment = (uint)incrementAttribute.increment;
 			}
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
 		void DefaultSetValue(uint value)
@@ -218,16 +214,6 @@ namespace Terraria.ModLoader.Config.UI
 		uint DefaultGetValue()
 		{
 			return (uint)memberInfo.GetValue(item);
-		}
-
-		float DefaultGetProportion()
-		{
-			return (_GetValue() - min) / (float)(max - min);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue((uint)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment);
 		}
 	}
 
@@ -242,6 +228,11 @@ namespace Terraria.ModLoader.Config.UI
 
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
+
+		protected override float Proportion {
+			get => (_GetValue() - min) / (float)(max - min);
+			set => _SetValue(Convert.ToByte((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment));
+		}
 
 		public ByteElement(PropertyFieldWrapper memberInfo, object item, IList<byte> array = null, int index = -1) : base(memberInfo, item, (IList)array)
 		{
@@ -270,10 +261,7 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				this.increment = (byte)incrementAttribute.increment;
 			}
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
-
 		void DefaultSetValue(byte value)
 		{
 			if (!memberInfo.CanWrite) return;
@@ -284,16 +272,6 @@ namespace Terraria.ModLoader.Config.UI
 		byte DefaultGetValue()
 		{
 			return (byte)memberInfo.GetValue(item);
-		}
-
-		float DefaultGetProportion()
-		{
-			return (_GetValue() - min) / (float)(max - min);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue(Convert.ToByte((int)Math.Round((proportion * (max - min) + min) * (1f / increment)) * increment));
 		}
 	}
 }

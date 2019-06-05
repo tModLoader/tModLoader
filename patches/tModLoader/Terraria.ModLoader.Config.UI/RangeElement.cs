@@ -7,19 +7,24 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class RangeElement : ConfigElement
+	public abstract class RangeElement : ConfigElement
 	{
 		protected Color sliderColor = Color.White;
+		protected Utils.ColorLerpMethod colorMethod;
 		internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
-		protected Func<float> _GetProportion;
-		protected Action<float> _SetProportion;
+
+		protected abstract float Proportion {
+			get;
+			set;
+		}
 
 		public RangeElement(PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
 		{
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
 			sliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(memberInfo, item, array)?.color ?? Color.White;
+			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.Black, sliderColor, percent));
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
@@ -50,7 +55,7 @@ namespace Terraria.ModLoader.Config.UI
 					}
 				}
 			}
-			sb.Draw(colorBarTexture, rectangle, sliderColor);
+			sb.Draw(colorBarTexture, rectangle, Color.White);
 			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
 			{
 				float percent = num4 / (float)num;
@@ -125,7 +130,7 @@ namespace Terraria.ModLoader.Config.UI
 			Main.colorBarTexture.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
-			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
+			float obj = DrawValueBar(spriteBatch, 1f, Proportion, num2, colorMethod);
 			//if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
 			if (IngameOptions.inBar || rightLock == this)
 			{
@@ -134,7 +139,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (PlayerInput.Triggers.Current.MouseLeft && rightLock == this)
 				//if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
 				{
-					this._SetProportion(obj);
+					Proportion = obj;
 				}
 			}
 			if (rightHover != null && rightLock == null)
