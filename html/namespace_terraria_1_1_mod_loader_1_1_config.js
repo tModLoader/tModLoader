@@ -14,5 +14,6 @@ var namespace_terraria_1_1_mod_loader_1_1_config =
     [ "RangeAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute" ],
     [ "ReloadRequiredAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html", null ],
     [ "SeparatePageAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_separate_page_attribute.html", null ],
+    [ "SliderColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute" ],
     [ "TooltipAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute" ]
 ];

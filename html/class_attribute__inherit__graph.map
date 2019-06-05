@@ -13,5 +13,6 @@
 <area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html" title="Specifies a range for primative data values. Without this, default min and max are as follows: float:..." alt="" coords="146,710,326,751"/>
 <area shape="rect" id="node14" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i..." alt="" coords="146,775,326,817"/>
 <area shape="rect" id="node15" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_separate_page_attribute.html" title="This specifies that the annotated item will appear as a button that leads to a separate page in the U..." alt="" coords="146,841,326,882"/>
-<area shape="rect" id="node16" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html" title="This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig ..." alt="" coords="146,906,326,947"/>
+<area shape="rect" id="node16" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html" title="Specifies a slider color for ModConfig elements that use a slider. The default color is white..." alt="" coords="146,906,326,947"/>
+<area shape="rect" id="node17" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html" title="This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig ..." alt="" coords="146,971,326,1013"/>
 </map>

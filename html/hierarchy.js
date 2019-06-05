@@ -15,6 +15,7 @@ var hierarchy =
       [ "Terraria.ModLoader.Config.RangeAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html", null ],
       [ "Terraria.ModLoader.Config.ReloadRequiredAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html", null ],
       [ "Terraria.ModLoader.Config.SeparatePageAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_separate_page_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.SliderColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html", null ],
       [ "Terraria.ModLoader.Config.TooltipAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html", null ]
     ] ],
     [ "Terraria.ModLoader.BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", null ],
