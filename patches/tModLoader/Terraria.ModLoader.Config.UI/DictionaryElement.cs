@@ -89,9 +89,6 @@ namespace Terraria.ModLoader.Config.UI
 		internal UIText save;
 		public List<IDictionaryElementWrapper> dataWrapperList;
 
-		public DictionaryElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-		}
-
 		protected override void PrepareTypes() {
 			keyType = memberInfo.Type.GetGenericArguments()[0];
 			valueType = memberInfo.Type.GetGenericArguments()[1];

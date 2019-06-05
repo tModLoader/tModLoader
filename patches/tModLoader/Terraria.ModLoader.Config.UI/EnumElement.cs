@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -19,14 +20,14 @@ namespace Terraria.ModLoader.Config.UI
 			set => _SetValue((int)(Math.Round(value * (max - 1))));
 		}
 
-		public EnumElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
-		{
+		public override void OnBind() {
+			base.OnBind();
 			valueStrings = Enum.GetNames(memberInfo.Type);
 			max = valueStrings.Length;
 
 			//valueEnums = Enum.GetValues(variable.Type);
 
-			_TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
+			TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
 			_GetValue = () => DefaultGetValue();
 			_GetValueString = () => DefaultGetStringValue();
 			_GetIndex = () => DefaultGetIndex();
@@ -41,7 +42,7 @@ namespace Terraria.ModLoader.Config.UI
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
+				TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
 			}
 		}
 

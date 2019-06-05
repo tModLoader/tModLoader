@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Config.UI
 			set => SetValue((float)Math.Round((value * (max - min) + min) * (1 / increment)) * increment);
 		}
 
-		public FloatElement(PropertyFieldWrapper memberInfo, object item, IList<float> array = null, int index = -1) : base(memberInfo, item, array, index) {
+		public FloatElement() {
 			min = 0;
 			max = 1;
 			increment = 0.01f;

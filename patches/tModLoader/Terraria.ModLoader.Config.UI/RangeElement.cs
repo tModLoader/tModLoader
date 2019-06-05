@@ -10,24 +10,23 @@ namespace Terraria.ModLoader.Config.UI
 {
 	public abstract class PrimitiveRangeElement<T> : RangeElement where T : IComparable<T>
 	{
-		public int index;
 		public T min;
 		public T max;
 		public T increment;
-		public new IList<T> array;
+		public IList<T> tList;
 
-		public PrimitiveRangeElement(PropertyFieldWrapper memberInfo, object item, IList<T> array = null, int index = -1) : base(memberInfo, item, (IList)array) {
-			this.array = array;
-			this.index = index;
-			this._TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
+		public override void OnBind() {
+			base.OnBind();
+			this.tList = (IList<T>)list;
+			TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
 
-			if (array != null) {
-				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			if (tList != null) {
+				TextDisplayFunction = () => index + 1 + ": " + tList[index];
 			}
 
 			if (labelAttribute != null) // Problem with Lists using ModConfig Label.
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
+				TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
 			}
 			if (rangeAttribute != null && rangeAttribute.min is T && rangeAttribute.max is T) {
 				min = (T)rangeAttribute.min;
@@ -39,8 +38,8 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected virtual void SetValue(T value) {
-			if (array != null) {
-				array[index] = value;
+			if (tList != null) {
+				tList[index] = value;
 				Interface.modConfig.SetPendingChanges();
 				return;
 			}
@@ -50,8 +49,8 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected virtual T GetValue() {
-			if (array != null)
-				return array[index];
+			if (tList != null)
+				return tList[index];
 			return (T)memberInfo.GetValue(item);
 		}
 	}
@@ -69,11 +68,14 @@ namespace Terraria.ModLoader.Config.UI
 			set;
 		}
 
-		public RangeElement(PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
-		{
-			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
-			sliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(memberInfo, item, array)?.color ?? Color.White;
+		public RangeElement() {
 			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.Black, sliderColor, percent));
+		}
+
+		public override void OnBind() {
+			base.OnBind();
+			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+			sliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(memberInfo, item, list)?.color ?? Color.White;
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)

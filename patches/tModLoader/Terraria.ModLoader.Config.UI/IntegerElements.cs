@@ -11,18 +11,17 @@ namespace Terraria.ModLoader.Config.UI
 {
 	internal class IntInputElement : ConfigElement
 	{
-		public int index;
-		public new IList<int> array;
+		public IList<int> intList;
 		public int min = 0;
 		public int max = 100;
 		public int increment = 1;
 
-		public IntInputElement(PropertyFieldWrapper memberInfo, object item, IList<int> array, int index) : base(memberInfo, item, (IList)array) {
-			this.array = array;
-			this.index = index;
+		public override void OnBind() {
+			base.OnBind();
+			this.intList = (IList<int>)list;
 
-			if (array != null) {
-				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+			if (intList != null) {
+				TextDisplayFunction = () => index + 1 + ": " + intList[index];
 			}
 
 			if (rangeAttribute != null && rangeAttribute.min is int && rangeAttribute.max is int) {
@@ -78,8 +77,8 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected virtual void SetValue(int value) {
-			if (array != null) {
-				array[index] = value;
+			if (intList != null) {
+				intList[index] = value;
 				Interface.modConfig.SetPendingChanges();
 				return;
 			}
@@ -89,8 +88,8 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected virtual int GetValue() {
-			if (array != null)
-				return array[index];
+			if (intList != null)
+				return intList[index];
 			return (int)memberInfo.GetValue(item);
 		}
 	}
@@ -105,7 +104,7 @@ namespace Terraria.ModLoader.Config.UI
 			set => SetValue((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
 		}
 
-		public IntRangeElement(PropertyFieldWrapper memberInfo, object item, IList<int> array = null, int index = -1) : base(memberInfo, item, array, index) {
+		public IntRangeElement() {
 			min = 0;
 			max = 100;
 			increment = 1;
@@ -122,7 +121,7 @@ namespace Terraria.ModLoader.Config.UI
 			set => SetValue((uint)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
 		}
 
-		public UIntElement(PropertyFieldWrapper memberInfo, object item, IList<uint> array = null, int index = -1) : base(memberInfo, item, array, index) { 
+		public UIntElement() { 
 			min = 0;
 			max = 100;
 			increment = 1;
@@ -139,7 +138,7 @@ namespace Terraria.ModLoader.Config.UI
 			set => SetValue(Convert.ToByte((int)Math.Round((value * (max - min) + min) * (1f / increment)) * increment));
 		}
 
-		public ByteElement(PropertyFieldWrapper memberInfo, object item, IList<byte> array = null, int index = -1) : base(memberInfo, item, array, index) {
+		public ByteElement() {
 			min = 0;
 			max = 255;
 			increment = 1;

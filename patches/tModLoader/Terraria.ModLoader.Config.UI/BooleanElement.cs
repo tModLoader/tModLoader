@@ -12,28 +12,26 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		private Func<bool> _IsOnFunction;
 		private Texture2D _toggleTexture;
+		public IList<bool> boolList;
 
 		// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
-		public BooleanElement(PropertyFieldWrapper memberInfo, object modConfig, IList<bool> array = null, int index = -1) : base(memberInfo, modConfig, (IList)array)
-		{
-			this._toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
+		public override void OnBind() {
+			base.OnBind();
+			boolList = (IList<bool>)list;
+			_toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
 
-			if (array != null)
-			{
-				_IsOnFunction = () => array[index];
-				this.OnClick += (ev, v) =>
-				{
-					array[index] = !array[index];
+			if (boolList != null) {
+				_IsOnFunction = () => boolList[index];
+				OnClick += (ev, v) => {
+					boolList[index] = !boolList[index];
 					Interface.modConfig.SetPendingChanges();
 				};
 			}
-			else
-			{
-				this._IsOnFunction = () => (bool)memberInfo.GetValue(modConfig);
+			else {
+				_IsOnFunction = () => (bool)memberInfo.GetValue(item);
 				if (memberInfo.CanWrite)
-					this.OnClick += (ev, v) =>
-					{
-						memberInfo.SetValue(modConfig, !(bool)memberInfo.GetValue(modConfig));
+					OnClick += (ev, v) => {
+						memberInfo.SetValue(item, !(bool)memberInfo.GetValue(item));
 						Interface.modConfig.SetPendingChanges();
 					};
 			}
@@ -43,9 +41,9 @@ namespace Terraria.ModLoader.Config.UI
 		{
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle dimensions = base.GetDimensions();
-			Rectangle sourceRectangle = new Rectangle(this._IsOnFunction() ? ((this._toggleTexture.Width - 2) / 2 + 2) : 0, 0, (this._toggleTexture.Width - 2) / 2, this._toggleTexture.Height);
+			Rectangle sourceRectangle = new Rectangle(_IsOnFunction() ? ((_toggleTexture.Width - 2) / 2 + 2) : 0, 0, (_toggleTexture.Width - 2) / 2, _toggleTexture.Height);
 			Vector2 drawPosition = new Vector2(dimensions.X + dimensions.Width - sourceRectangle.Width - 10f, dimensions.Y + 8f);
-			spriteBatch.Draw(this._toggleTexture, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+			spriteBatch.Draw(_toggleTexture, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
 		}
 	}
 }

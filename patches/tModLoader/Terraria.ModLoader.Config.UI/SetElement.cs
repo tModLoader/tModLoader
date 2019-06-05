@@ -55,9 +55,6 @@ namespace Terraria.ModLoader.Config.UI
 		private Type setType;
 		public List<ISetElementWrapper> dataWrapperList;
 
-		public SetElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-		}
-
 		protected override void PrepareTypes() {
 			setType = memberInfo.Type.GetGenericArguments()[0];
 		}

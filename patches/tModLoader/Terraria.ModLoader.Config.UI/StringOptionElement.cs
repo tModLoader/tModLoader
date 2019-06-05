@@ -10,6 +10,7 @@ namespace Terraria.ModLoader.Config.UI
 		private Func<int> _GetIndex;
 		private Action<int> _SetValue;
 		string[] options;
+		public IList<string> stringList;
 
 		public override int NumberTicks => options.Length;
 		public override float TickIncrement => 1f / (options.Length - 1);
@@ -19,26 +20,27 @@ namespace Terraria.ModLoader.Config.UI
 			set => _SetValue((int)(Math.Round(value * (options.Length - 1))));
 		}
 
-		public StringOptionElement(PropertyFieldWrapper memberInfo, object item, IList<string> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		{
-			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
+		public override void OnBind() {
+			base.OnBind();
+			stringList = (IList<string>)list;
+			OptionStringsAttribute optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, stringList);
 			options = optionsAttribute.optionLabels;
 
-			_TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
+			TextDisplayFunction = () => memberInfo.Name + ": " + _GetValue();
 			_GetValue = () => DefaultGetValue();
 			_GetIndex = () => DefaultGetIndex();
 			_SetValue = (int value) => DefaultSetValue(value);
 
-			if (array != null)
+			if (stringList != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (int value) => { array[index] = options[value]; Interface.modConfig.SetPendingChanges(); };
-				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+				_GetValue = () => this.stringList[index];
+				_SetValue = (int value) => { stringList[index] = options[value]; Interface.modConfig.SetPendingChanges(); };
+				TextDisplayFunction = () => index + 1 + ": " + stringList[index];
 			}
 
 			if (labelAttribute != null)
 			{
-				_TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
+				TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValue();
 			}
 		}
 
