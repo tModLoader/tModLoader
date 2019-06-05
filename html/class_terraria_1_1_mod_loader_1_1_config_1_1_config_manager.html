@@ -137,8 +137,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a3d6379c15d1fb9a5720e6d618d64eff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a237e51f74c77ad09385991d6976f8c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a0a237e51f74c77ad09385991d6976f8c">SetPendingChanges</a> (bool changes=true)</td></tr>
 <tr class="separator:a0a237e51f74c77ad09385991d6976f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4031109694a6d651df6655fa81a91113"><td class="memItemLeft" align="right" valign="top">static Tuple&lt; UIElement, UIElement &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a4031109694a6d651df6655fa81a91113">WrapIt</a> (UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array=null, Type arrayType=null, int index=-1)</td></tr>
-<tr class="separator:a4031109694a6d651df6655fa81a91113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7e18573b29a639c6c1cde0a27e1d35"><td class="memItemLeft" align="right" valign="top">static Tuple&lt; UIElement, UIElement &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#abe7e18573b29a639c6c1cde0a27e1d35">WrapIt</a> (UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list=null, Type arrayType=null, int index=-1)</td></tr>
+<tr class="separator:abe7e18573b29a639c6c1cde0a27e1d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -303,7 +303,7 @@ Static Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                                                                  {</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            <span class="comment">// public api for modders.</span></div><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            Interface.modConfig.SetPendingChanges(changes);</div><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a4031109694a6d651df6655fa81a91113"></a>
+<a class="anchor" id="abe7e18573b29a639c6c1cde0a27e1d35"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -344,7 +344,7 @@ Static Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>array</em> = <code>null</code>, </td>
+          <td class="paramname"><em>list</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -372,7 +372,7 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="_config_manager_8cs_source.html#l00290">290</a> of file <a class="el" href="_config_manager_8cs_source.html">ConfigManager.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment">// public api for modders.</span></div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, array, arrayType, index);</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        {</div><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="comment">// public api for modders.</span></div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">return</span> UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
