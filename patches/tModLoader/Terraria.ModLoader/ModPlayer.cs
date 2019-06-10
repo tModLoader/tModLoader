@@ -445,14 +445,12 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
-		/// Return true to force the mana consumption code to run again, regardless of whether the player has the mana flower. Returns false by default.
+		/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
 		/// Only runs once per item use.
 		/// </summary>
 		/// <param name="item">The item being used.</param>
 		/// <param name="neededMana">The mana needed to use the item.</param>
-		/// <param name="quickMana">Whether to consume a mana potion after this method runs, like the mana flower.</param>
-		public virtual bool MissingMana(Item item, int neededMana, ref bool quickMana) {
-			return false;
+		public virtual void OnMissingMana(Item item, int neededMana) {
 		}
 
 		/// <summary>

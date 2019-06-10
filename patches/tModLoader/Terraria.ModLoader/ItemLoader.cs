@@ -397,21 +397,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate bool DelegateMissingMana(Item item, Player player, int neededMana, ref bool quickMana);
-		private static HookList HookMissingMana = AddHook<DelegateMissingMana>(g => g.MissingMana);
+		private static HookList HookOnMissingMana = AddHook<Action<Item, Player, int>>(g => g.OnMissingMana);
 		/// <summary>
-		/// Calls ModItem.MissingMana, then all GlobalItem.MissingMana hooks.
+		/// Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks.
 		/// </summary>
-		public static bool MissingMana(Item item, Player player, int neededMana, ref bool quickMana) {
+		public static void OnMissingMana(Item item, Player player, int neededMana) {
 			if (item.IsAir) {
-				return false;
+				return;
 			}
-			bool runManaCode = item.modItem?.MissingMana(player, neededMana, ref quickMana) ?? false;
+			item.modItem?.OnMissingMana(player, neededMana);
 
-			foreach (var g in HookMissingMana.arr) {
-				runManaCode |= g.Instance(item).MissingMana(item, player, neededMana, ref quickMana);
+			foreach (var g in HookOnMissingMana.arr) {
+				g.Instance(item).OnMissingMana(item, player, neededMana);
 			}
-			return runManaCode;
 		}
 
 		private static HookList HookOnConsumeMana = AddHook<Action<Item, Player, int>>(g => g.OnConsumeMana);

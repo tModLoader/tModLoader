@@ -315,12 +315,11 @@
  					for (int j = 0; j < 22; j++)
  					{
  						if (num == 27 && (this.buffType[j] == num || this.buffType[j] == 101 || this.buffType[j] == 102))
-@@ -2173,6 +_,11 @@
+@@ -2173,6 +_,10 @@
  					}
  					if (this.inventory[i].mana > 0 && flag)
  					{
-+						flag = this.CheckMana(this.inventory[i], true, true);
-+						if (flag) {
++						if (this.CheckMana(this.inventory[i], this.GetManaCost(this.inventory[i]), true, true)) {
 +							this.manaRegenDelay = (int)this.maxRegenDelay;
 +						}
 +						goto SkipManaCode;
@@ -3660,7 +3659,7 @@
  				this.controlUseItem = true;
  			}
 -			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(20, true, false))
-+			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(this.inventory[this.selectedItem], true, false))
++			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(this.inventory[this.selectedItem], 20, true, false))
  			{
  				this.altFunctionUse = 1;
  				this.controlUseItem = true;
@@ -4533,7 +4532,7 @@
  					{
  						flag6 = true;
  					}
-+					if (!this.CheckMana(item, !flag6)) {
++					if (!this.CheckMana(item, this.GetManaCost(item), !flag6)) {
 +						flag2 = false;
 +					}
 +					goto SkipManaCode;
@@ -5775,7 +5774,7 @@
  				return;
  			}
 +
-+			
++
 +			BackupIO.Player.ArchivePlayer(path, isCloudSave);
  			if (FileUtilities.Exists(path, isCloudSave))
  			{
@@ -6177,7 +6176,7 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
-@@ -40007,6 +_,46 @@
+@@ -40007,6 +_,41 @@
  					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
  				}
  			}
@@ -6190,35 +6189,30 @@
 +			return mana >= 0 ? mana : 0;
 +		}
 +
-+		public bool CheckMana(Item item, bool pay = false, bool blockQuickMana = false) {
-+			int mana = this.GetManaCost(item);
-+			if (mana == 0) {
-+				return true;
-+			}
-+			if (this.statMana >= mana) {
++		public bool CheckMana(Item item, int amount, bool pay = false, bool blockQuickMana = false) {
++			if (this.statMana >= amount) {
 +				if (pay) {
-+					ItemLoader.OnConsumeMana(item, this, mana);
-+					PlayerHooks.OnConsumeMana(this, item, mana);
-+					this.statMana -= mana;
++					ItemLoader.OnConsumeMana(item, this, amount);
++					PlayerHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
 +				}
 +				return true;
 +			}
 +			if (blockQuickMana) {
 +				return false;
 +			}
-+			bool doQuickMana = this.manaFlower;
-+			if (ItemLoader.MissingMana(item, this, mana, ref doQuickMana) || PlayerHooks.MissingMana(this, item, mana, ref doQuickMana) || this.manaFlower) {
-+				if (doQuickMana) {
-+					this.QuickMana();
++			ItemLoader.OnMissingMana(item, this, amount);
++			PlayerHooks.OnMissingMana(this, item, amount);
++			if (this.statMana < amount && this.manaFlower) {
++				this.QuickMana();
++			}
++			if (this.statMana >= amount) {
++				if (pay) {
++					ItemLoader.OnConsumeMana(item, this, amount);
++					PlayerHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
 +				}
-+				if (this.statMana >= mana) {
-+					if (pay) {
-+						ItemLoader.OnConsumeMana(item, this, mana);
-+						PlayerHooks.OnConsumeMana(this, item, mana);
-+						this.statMana -= mana;
-+					}
-+					return true;
-+				}
++				return true;
 +			}
 +			return false;
  		}
