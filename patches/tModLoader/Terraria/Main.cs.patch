@@ -1210,7 +1210,7 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1)
  			{
  				if ((float)num + vector.X + 4f > (float)hackedScreenWidth)
-@@ -14612,27 +_,33 @@
+@@ -14612,34 +_,58 @@
  			{
  				Main.HoverItem.knockBack *= 1f + (1f - Main.player[Main.myPlayer].stealth) * 0.5f;
  			}
@@ -1245,90 +1245,38 @@
  				num4++;
  			}
  			else
-@@ -14640,10 +_,14 @@
+ 			{
  				if (Main.HoverItem.damage > 0 && (!Main.HoverItem.notAmmo || Main.HoverItem.useStyle > 0) && (Main.HoverItem.type < 71 || Main.HoverItem.type > 74 || Main.player[Main.myPlayer].HasItem(905)))
  				{
- 					float num5 = 5E-06f;
--					int damage = Main.HoverItem.damage;
+-					float num5 = 5E-06f;
++					LocalizedText tip;
++					if (HoverItem.melee)
++						tip = Lang.tip[2];
++					else if (HoverItem.ranged)
++						tip = Lang.tip[3];
++					else if (HoverItem.magic)
++						tip = Lang.tip[4];
++					else if (HoverItem.thrown)
++						tip = Lang.tip[58];
++					else if (HoverItem.summon)
++						tip = Lang.tip[53];
++					else
++						tip = Lang.tip[55];
 +					Player player = Main.player[Main.myPlayer];
-+					float damage = player.allDamage * Main.HoverItem.damage;
++					int damage = player.GetWeaponDamage(HoverItem);
++					if (Main.HoverItem.type == 3829 || Main.HoverItem.type == 3830 || Main.HoverItem.type == 3831)
++						damage *= 3;
++					array[num4] = string.Concat(damage, tip.Value);
++/*					float num5 = 5E-06f;
+ 					int damage = Main.HoverItem.damage;
  					if (Main.HoverItem.melee)
  					{
--						array[num4] = string.Concat((int)(Main.player[Main.myPlayer].meleeDamage * (float)damage + num5));
-+						int damage2 = (int)(player.meleeDamage * (float)damage + num5);
-+						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+						array[num4] = string.Concat(damage2);
- 						string[] array4;
- 						IntPtr intPtr;
- 						(array4 = array)[(int)(intPtr = (IntPtr)num4)] = array4[(int)intPtr] + Lang.tip[2].Value;
-@@ -14667,21 +_,30 @@
- 						{
- 							num6 *= Main.player[Main.myPlayer].rocketDamage;
- 						}
--						array[num4] = string.Concat((int)(num6 + num5));
-+						int damage2 = (int)(num6 + num5);
-+						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+						array[num4] = string.Concat(damage2);
- 						string[] array5;
- 						IntPtr intPtr2;
- 						(array5 = array)[(int)(intPtr2 = (IntPtr)num4)] = array5[(int)intPtr2] + Lang.tip[3].Value;
- 					}
- 					else if (Main.HoverItem.magic)
- 					{
--						array[num4] = string.Concat((int)(Main.player[Main.myPlayer].magicDamage * (float)damage + num5));
-+						int damage2 = (int)(player.magicDamage * (float)damage + num5);
-+						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+						array[num4] = string.Concat(damage2);
- 						string[] array6;
- 						IntPtr intPtr3;
- 						(array6 = array)[(int)(intPtr3 = (IntPtr)num4)] = array6[(int)intPtr3] + Lang.tip[4].Value;
- 					}
- 					else if (Main.HoverItem.thrown)
- 					{
--						array[num4] = string.Concat((int)(Main.player[Main.myPlayer].thrownDamage * (float)damage + num5));
-+						int damage2 = (int)(player.thrownDamage * (float)damage + num5);
-+						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+						array[num4] = string.Concat(damage2);
- 						string[] array7;
- 						IntPtr intPtr4;
- 						(array7 = array)[(int)(intPtr4 = (IntPtr)num4)] = array7[(int)intPtr4] + Lang.tip[58].Value;
-@@ -14690,11 +_,17 @@
- 					{
- 						if (Main.HoverItem.type == 3829 || Main.HoverItem.type == 3830 || Main.HoverItem.type == 3831)
- 						{
--							array[num4] = string.Concat((int)((Main.player[Main.myPlayer].minionDamage * (float)damage + num5) * 3f));
-+							int damage2 = (int)((player.minionDamage * (float)damage + num5) * 3f);
-+							ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+							PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+							array[num4] = string.Concat(damage2);
- 						}
- 						else
- 						{
--							array[num4] = string.Concat((int)(Main.player[Main.myPlayer].minionDamage * (float)damage + num5));
-+							int damage2 = (int)(player.minionDamage * (float)damage + num5);
-+							ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+							PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+							array[num4] = string.Concat(damage2);
- 						}
- 						string[] array8;
- 						IntPtr intPtr5;
-@@ -14702,36 +_,61 @@
- 					}
- 					else
- 					{
--						array[num4] = string.Concat(damage);
-+						int damage2 = (int)damage;
-+						ItemLoader.GetWeaponDamage(Main.HoverItem, player, ref damage2);
-+						PlayerHooks.GetWeaponDamage(player, Main.HoverItem, ref damage2);
-+						array[num4] = string.Concat(damage2);
+@@ -14706,32 +_,54 @@
  						string[] array4;
  						IntPtr intPtr;
  						(array4 = array)[(int)(intPtr = (IntPtr)num4)] = array4[(int)intPtr] + Lang.tip[55].Value;
- 					}
+-					}
++					}*/
 +					tooltipNames[num4] = "Damage";
  					num4++;
  					if (Main.HoverItem.melee)
