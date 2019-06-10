@@ -55,6 +55,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aa533d40be6702b68133f006671a17b56", null ],
     [ "ModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ae18cf93cad8a7699240c9b8ae2584f5f", null ],
     [ "ModifyTooltips", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ab4235d9107ea3dd403a760666051995a", null ],
+    [ "ModifyWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac80e1276fb6d9f2248210972528c7af3", null ],
     [ "NetRecieve", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4e4112cadf7f23f51b913cda238c8708", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5f7a03b9388a7610935e6f628b257dfe", null ],
     [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5954012f872a84362f335c55905ade15", null ],

@@ -146,6 +146,7 @@ var searchData=
   ['hookmodifynurseprice',['HookModifyNursePrice',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a5cb7be7b009d81df5ac89b80268e39f5',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmodifyscreenposition',['HookModifyScreenPosition',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#a0d40e53939b1dde99f5e5274f076dd71',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmodifytooltips',['HookModifyTooltips',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ae5e1e9826bdf9c6f6f2902eb09cef4ff',1,'Terraria::ModLoader::ItemLoader']]],
+  ['hookmodifyweapondamage',['HookModifyWeaponDamage',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a7fefcab5023535ad78162f13ed513ee9',1,'Terraria.ModLoader.ItemLoader.HookModifyWeaponDamage()'],['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad95359183278dd9532b6a76d45ae0641',1,'Terraria.ModLoader.PlayerHooks.HookModifyWeaponDamage()']]],
   ['hookmodifyzoom',['HookModifyZoom',['../class_terraria_1_1_mod_loader_1_1_player_hooks.html#af623cb47b6b182e6a5e1754939ddadfb',1,'Terraria::ModLoader::PlayerHooks']]],
   ['hookmouseover',['HookMouseOver',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2a428233799fd307bdb72d932fd3cd8f',1,'Terraria::ModLoader::TileLoader']]],
   ['hookmouseoverfar',['HookMouseOverFar',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a058e88d37cfcf5c92b233b77d00b57a1',1,'Terraria::ModLoader::TileLoader']]],

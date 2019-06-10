@@ -17,6 +17,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "BuffLoader.cs", "_buff_loader_8cs.html", [
       [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ]
     ] ],
+    [ "CombinedHooks.cs", "_combined_hooks_8cs.html", [
+      [ "CombinedHooks", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html", "class_terraria_1_1_mod_loader_1_1_combined_hooks" ]
+    ] ],
     [ "CommandManager.cs", "_command_manager_8cs.html", [
       [ "CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", "class_terraria_1_1_mod_loader_1_1_command_manager" ]
     ] ],

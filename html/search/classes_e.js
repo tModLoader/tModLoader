@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler']]],
+  ['payloadhandler',['PayloadHandler',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria.ModLoader.IO.TagIO.PayloadHandler&lt; T &gt;']]],
   ['payloadhandler_3c_20string_20_3e',['PayloadHandler&lt; string &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria::ModLoader::IO::TagIO']]],
   ['payloadhandler_3c_20t_20_3e',['PayloadHandler&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler.html',1,'Terraria::ModLoader::IO::TagIO']]],
   ['player',['Player',['../class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html',1,'Terraria::ModLoader::BackupIO']]],

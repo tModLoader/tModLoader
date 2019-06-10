@@ -44,6 +44,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "ModifyNurseHeal", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a74e6f26bb243335170ad46bb619e9edd", null ],
     [ "ModifyNursePrice", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a8b1c79709291e66c69796bb6a3e75db3", null ],
     [ "ModifyScreenPosition", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc", null ],
+    [ "ModifyWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a68464ea92e0527ec6a857fc15574fc36", null ],
     [ "ModifyZoom", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64", null ],
     [ "NaturalLifeRegen", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ae8dbfbc03aeba36009cca97321fb8754", null ],
     [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a6bb0584ad6810e06dbad60b0bdca5818", null ],

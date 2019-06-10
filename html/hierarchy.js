@@ -28,6 +28,7 @@ var hierarchy =
       [ "Terraria.ModLoader.ModPacket", "class_terraria_1_1_mod_loader_1_1_mod_packet.html", null ]
     ] ],
     [ "Terraria.ModLoader.BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", null ],
+    [ "Terraria.ModLoader.CombinedHooks", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html", null ],
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
     [ "Terraria.ModLoader.Config.ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", null ],

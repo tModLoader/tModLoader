@@ -9,6 +9,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", null ],
     [ "BackgroundTextureLoader", "class_terraria_1_1_mod_loader_1_1_background_texture_loader.html", "class_terraria_1_1_mod_loader_1_1_background_texture_loader" ],
     [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ],
+    [ "CombinedHooks", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html", "class_terraria_1_1_mod_loader_1_1_combined_hooks" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],
     [ "CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", "class_terraria_1_1_mod_loader_1_1_command_manager" ],
     [ "DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line" ],
