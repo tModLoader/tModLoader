@@ -612,7 +612,7 @@
  				if (flag && Main.myPlayer == this.owner)
  				{
 -					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem].mana, true, false) && !player.noItems && !player.CCed;
-+					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player5.selectedItem]), true, false) && !player.noItems && !player.CCed;
++					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player.selectedItem]), true, false) && !player.noItems && !player.CCed;
  					if (flag2)
  					{
  						float scaleFactor = player.inventory[player.selectedItem].shootSpeed * this.scale;
@@ -621,7 +621,7 @@
  				if (flag6 && Main.myPlayer == this.owner)
  				{
 -					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
-+					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player5.selectedItem]), true, false);
++					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player.selectedItem]), true, false);
  					bool flag8 = player.channel && flag7 && !player.noItems && !player.CCed;
  					if (flag8)
  					{
@@ -630,7 +630,7 @@
  				if (flag10 && Main.myPlayer == this.owner)
  				{
 -					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
-+					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player5.selectedItem]), true, false);
++					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem], player.GetManaCost(player.inventory[player.selectedItem]), true, false);
  					bool flag12 = player.channel && flag11 && !player.noItems && !player.CCed;
  					if (flag12)
  					{
