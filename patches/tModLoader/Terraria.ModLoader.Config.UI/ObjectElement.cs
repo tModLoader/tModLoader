@@ -28,43 +28,44 @@ namespace Terraria.ModLoader.Config.UI
 		UIPanel separatePagePanel;
 		UITextPanel<FuncStringWrapper> separatePageButton;
 		bool expanded = true;
-		int index;
 
-		bool AllowNull => array == null; // nulls don't make sense for a collection, but a standalone might be useful. NonNull attribute might be nice.
+		bool AllowNull => list == null; // nulls don't make sense for a collection, but a standalone might be useful. NonNull attribute might be nice.
 
 		// Label:
 		//  Members
 		//  Members
-		public ObjectElement(PropertyFieldWrapper memberInfo, object item, IList array = null, int index = -1, bool ignoreSeparatePage = false) : base(memberInfo, item, array)
-		{
-			this.index = index;
+		public ObjectElement(bool ignoreSeparatePage = false) {
 			this.ignoreSeparatePage = ignoreSeparatePage;
+		}
+
+		public override void OnBind() {
+			base.OnBind();
 			_GetValue = () => memberInfo.GetValue(this.item);
 			_SetValue = (object value) => {
 				if (!memberInfo.CanWrite) return;
 				memberInfo.SetValue(this.item, value);
 			};
 
-			if (array != null) {
-				_GetValue = () => array[index];
-				_SetValue = (object value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
+			if (list != null) {
+				_GetValue = () => list[index];
+				_SetValue = (object value) => { list[index] = value; Interface.modConfig.SetPendingChanges(); };
 				// TODO: only do this if ToString is overriden. 
 
 				var listType = memberInfo.Type.GetGenericArguments()[0];
 				bool hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
 
 				if (hasToString) {
-					_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
-					AbridgedTextDisplayFunction = () => (array[index]?.ToString() ?? "null");
+					TextDisplayFunction = () => index + 1 + ": " + (list[index]?.ToString() ?? "null");
+					AbridgedTextDisplayFunction = () => (list[index]?.ToString() ?? "null");
 				}
 				else {
-					_TextDisplayFunction = () => index + 1 + ": ";
+					TextDisplayFunction = () => index + 1 + ": ";
 				}
 			}
 			else {
 				bool hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
 				if (hasToString) {
-					_TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (_GetValue() == null ? "" : ": " + _GetValue().ToString());
+					TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (_GetValue() == null ? "" : ": " + _GetValue().ToString());
 					AbridgedTextDisplayFunction = () => _GetValue()?.ToString() ?? "";
 				}
 			}
@@ -80,12 +81,12 @@ namespace Terraria.ModLoader.Config.UI
 				_SetValue(data);
 			}
 
-			separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(memberInfo, item, array) != null;
+			separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(memberInfo, item, list) != null;
 			//separatePage = separatePage && !ignoreSeparatePage;
 			//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
 			if (separatePage && !ignoreSeparatePage) {
 				// TODO: UITextPanel doesn't update...
-				separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper() { func = _TextDisplayFunction });
+				separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper() { func = TextDisplayFunction });
 				separatePageButton.HAlign = 0.5f;
 				//e.Recalculate();
 				//elementHeight = (int)e.GetOuterDimensions().Height;
@@ -126,7 +127,7 @@ namespace Terraria.ModLoader.Config.UI
 			//{
 			//	name = labelAttribute.Label;
 			//}
-			if (array == null)
+			if (list == null)
 			{
 				// drawLabel = false; TODO uncomment
 			}
@@ -243,7 +244,7 @@ namespace Terraria.ModLoader.Config.UI
 			object data = _GetValue();
 			if (data != null) {
 				if (separatePage && !ignoreSeparatePage) {
-					separatePagePanel = UIModConfig.MakeSeparateListPanel(item, data, memberInfo, array, index, AbridgedTextDisplayFunction);
+					separatePagePanel = UIModConfig.MakeSeparateListPanel(item, data, memberInfo, list, index, AbridgedTextDisplayFunction);
 				}
 				else {
 					int order = 0;
@@ -258,7 +259,7 @@ namespace Terraria.ModLoader.Config.UI
 							UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
 						}
 						var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
-						if (array != null) {
+						if (list != null) {
 							//wrapped.Item1.Left.Pixels -= 20;
 							wrapped.Item1.Width.Pixels += 20;
 						}

@@ -35,7 +35,9 @@ namespace Terraria.ModLoader.UI
 		private LocalMod _localMod;
 		private string _url = string.Empty;
 		private string _info = string.Empty;
+		private string _modName = string.Empty;
 		private string _modDisplayName = string.Empty;
+		private bool _loadFromWeb = false;
 
 		private CancellationTokenSource _cts;
 		
@@ -61,7 +63,6 @@ namespace Terraria.ModLoader.UI
 			};
 			uIPanel.Append(_modInfo);
 
-			// TODO broken
 			var uIScrollbar = new UIScrollbar {
 				Height = {Pixels = -20, Percent = 1f},
 				VAlign = 0.5f,
@@ -115,42 +116,40 @@ namespace Terraria.ModLoader.UI
 			Append(_uIElement);
 		}
 
-		// TODO use Show pattern
-		internal void SetModInfo(string text) {
-			_info = text;
-			if (_info.Equals("")) {
+		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false) {
+			_modName = modName;
+			_modDisplayName = displayName;
+			_gotoMenu = gotoMenu;
+			_localMod = localMod;
+			_info = description;
+			if (_info.Equals("") && !loadFromWeb) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
-		}
-
-		internal void SetModName(string text) {
-			_modDisplayName = text;
-		}
-
-		internal void SetGotoMenu(int gotoMenu) {
-			_gotoMenu = gotoMenu;
-		}
-
-		internal void SetUrl(string url) {
 			_url = url;
+			_loadFromWeb = loadFromWeb;
+
+			Main.gameMenu = true;
+			Main.menuMode = Interface.modInfoID;
 		}
 
-		internal void SetMod(LocalMod mod) {
-			_localMod = mod;
-		}
+		public override void OnDeactivate() {
+			base.OnDeactivate();
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			_cts?.Cancel(false);
-			Main.PlaySound(11);
-			Main.menuMode = _gotoMenu;
 			_info = string.Empty;
-			SetMod(null);
-			SetGotoMenu(0);
-			SetModName(string.Empty);
-			SetUrl(string.Empty);
+			_localMod = null;
+			_gotoMenu = 0;
+			_modName = string.Empty;
+			_modDisplayName = string.Empty;
+			_url = string.Empty;
 			_modHomepageButton.Remove();
 			_deleteButton.Remove();
 			_extractButton.Remove();
+		}
+
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(SoundID.MenuClose);
+			Main.menuMode = _gotoMenu;
 		}
 
 		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -184,8 +183,10 @@ namespace Terraria.ModLoader.UI
 		private bool _ready;
 
 		public override void OnActivate() {
-			if (string.IsNullOrEmpty(_info)) {
-				_uIElement.Append(_loaderElement);
+			_modInfo.SetText(_info);
+			_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
+			if (_loadFromWeb) {
+				_modInfo.Append(_loaderElement);
 				_loading = true;
 				_ready = false;
 				
@@ -196,7 +197,7 @@ namespace Terraria.ModLoader.UI
 						ServicePointManager.Expect100Continue = false;
 						const string url = "http://javid.ddns.net/tModLoader/moddescription.php";
 						var values = new NameValueCollection {
-							{"modname", _modDisplayName}
+							{"modname", _modName}
 						};
 						using (WebClient client = new WebClient()) {
 							ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => policyErrors == SslPolicyErrors.None;
@@ -217,8 +218,6 @@ namespace Terraria.ModLoader.UI
 
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
-				_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
-				_uITextPanel.Recalculate();
 				_modInfo.SetText(_info);
 				
 				if (!string.IsNullOrEmpty(_url)){
@@ -229,6 +228,9 @@ namespace Terraria.ModLoader.UI
 					_uIElement.AddOrRemoveChild(_deleteButton, ModLoader.Mods.All(x => x.Name != _localMod.Name));
 					_uIElement.Append(_extractButton);
 				}
+				Recalculate();
+				_modInfo.RemoveChild(_loaderElement);
+				_ready = false;
 			}
 		}
 
@@ -255,9 +257,11 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 
-			SetModInfo(description);
-			SetUrl(homepage);
-			_uIElement.RemoveChild(_loaderElement);
+			_info = description;
+			if (_info.Equals("")) {
+				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
+			}
+			_url = homepage;
 			_ready = true;
 		}
 	}

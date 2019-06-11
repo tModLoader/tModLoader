@@ -13,6 +13,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
+using Terraria.UI;
 
 namespace ExampleMod
 {
@@ -64,15 +65,14 @@ namespace ExampleMod
 
 		// Watch in action: https://gfycat.com/SickTerribleHoatzin
 		[Label("Example Person free gift list")]
-		[Tooltip("Each player can claim one free item from this list from Example Person\nSell the item back to Example Person to take a new item")] 
+		[Tooltip("Each player can claim one free item from this list from Example Person\nSell the item back to Example Person to take a new item")]
 		public List<ItemDefinition> ExamplePersonFreeGiftList { get; set; }
 
 		// Clone logic is required. See ModConfigShowcaseDataTypes.Clone for more info.
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			var clone = (ExampleConfigServer)base.Clone();
 
-			clone.ExamplePersonFreeGiftList = ExamplePersonFreeGiftList?.Select(item=> new ItemDefinition(item.mod, item.name)).ToList();
+			clone.ExamplePersonFreeGiftList = ExamplePersonFreeGiftList?.Select(item => new ItemDefinition(item.mod, item.name)).ToList();
 
 			return clone;
 		}
@@ -80,17 +80,14 @@ namespace ExampleMod
 		// Here I use OnLoaded to assign a static variable in ExampleMod to make it a little easier to access config values.
 		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleMod.exampleServerConfig.DisableExampleWings". It's just a style choice.
 		// Note that OnLoaded happens before AutoLoad and Mod.Load.
-		public override void OnLoaded()
-		{
+		public override void OnLoaded() {
 			ExampleMod.exampleServerConfig = this;
 		}
 
 		// AcceptClientChanges is called on the server when a Client player attempts to change ServerSide settings in-game. By default, client changes are accepted. (As long as they don't necessitate a Reload)
 		// With more effort, a mod could implement more control over changing mod settings.
-		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
-		{
-			if (Main.player[whoAmI].name == "jopojelly")
-			{
+		public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message) {
+			if (Main.player[whoAmI].name == "jopojelly") {
 				message = "Sorry, players named jopojelly aren't allowed to change settings.";
 				return false;
 			}
@@ -120,13 +117,11 @@ namespace ExampleMod
 		[Label("Show mod origin in tooltip")]
 		public bool ShowModOriginTooltip;
 
-		public override void OnLoaded()
-		{
+		public override void OnLoaded() {
 			ExampleMod.exampleClientConfig = this;
 		}
 
-		public override void OnChanged()
-		{
+		public override void OnChanged() {
 			// Here we use the OnChanged hook to initialize ExampleUI.visible with the new values.
 			// We maintain both ExampleUI.visible and ShowCoinUI as separate values so ShowCoinUI can act as a default while ExampleUI.visible can change within a play session.
 			UI.ExampleUI.Visible = ShowCoinUI;
@@ -163,11 +158,10 @@ namespace ExampleMod
 		// Classes (Reference Types
 		public ItemDefinition SomeClassA; // ItemDefinition is a new class that can store the identity of a Item added by a mod or vanilla. Only the identity is preserved, not other mod data or stack. Has a unique UI
 		public SimpleData SomeClassB; // Classes are automatically implemented in the UI.
-		// See ??? for an example of a class with a CustomUI.
+									  // See ??? for an example of a class with a CustomUI.
 
 		// Proper cloning of reference types is required because behind the scenes many instances of ModConfig classes co-exist.
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
 			var clone = (ModConfigShowcaseDataTypes)base.Clone();
 
@@ -185,16 +179,14 @@ namespace ExampleMod
 		}
 
 		[OnDeserialized]
-		internal void OnDeserializedMethod(StreamingContext context)
-		{
+		internal void OnDeserializedMethod(StreamingContext context) {
 			// constructors and field initializers don't work with the json deserialization process. We need to use a method annotated with [OnDeserialized] to handle default values. 
 			// tModLoader will crash if you don't initialize the Array. If you need dynamic size collection, use List
 			SomeArray = SomeArray?.Length == SomeArrayDefaults.Length ? SomeArray : SomeArrayDefaults.ToArray();
 		}
 
 		// ShouldSerialize{FieldNameHere}
-		public bool ShouldSerializeSomeArray()
-		{
+		public bool ShouldSerializeSomeArray() {
 			// This allows an update to a mod to change array defaults. Without ignoring default values, default values will populate the json file and prevent updated defaults from being loaded without extra logic.
 			return !SomeArray.SequenceEqual(SomeArrayDefaults);
 		}
@@ -246,15 +238,13 @@ namespace ExampleMod
 		public Vector2 RangedWithIncrementVector2;
 
 		[OnDeserialized]
-		internal void OnDeserializedMethod(StreamingContext context)
-		{
+		internal void OnDeserializedMethod(StreamingContext context) {
 			// RangeAttribute is just a suggestion to the UI. If we want to enforce constraints, we need to validate the data here. Users can edit config files manually with values outside the RangeAttribute, so we fix here if necessary.
 			// Both enforcing ranges and not enforcing ranges have uses in mods.
 			RangedFloat = Utils.Clamp(RangedFloat, 2f, 5f);
 		}
 
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			var clone = (ModConfigShowcaseRanges)base.Clone();
 			clone.ListOfInts = ListOfInts?.ToList();
 			return clone;
@@ -271,6 +261,7 @@ namespace ExampleMod
 		// Use Tooltip to convey additional information about the config item.
 		[Label("This is a float")]
 		[Tooltip("This text will show when hovered")]
+		[SliderColor(255, 0, 127)]
 		public float SomeFloat;
 
 		// Using localization keys will help make your config readable in multiple languages. See ExampleMod/Localization/en-US.lang
@@ -285,7 +276,7 @@ namespace ExampleMod
 		// List elements also inherit BackgroundColor
 		[BackgroundColor(255, 0, 0)]
 		public List<Pair> ListOfPair;
-		
+
 		// We can also add section headers, separating fields for organization
 		[Header("Headers Section")]
 		public int Header;
@@ -341,8 +332,7 @@ namespace ExampleMod
 		[DefaultListValue(123)]
 		public List<int> ListOfInts;
 
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			var clone = (ModConfigShowcaseDefaultValues)base.Clone();
 			clone.ListOfInts = ListOfInts?.ToList();
 			return clone;
@@ -375,8 +365,7 @@ namespace ExampleMod
 		[Label("Special Pair")]
 		public Pair pair;
 
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			var clone = (ModConfigShowcaseSubpages)base.Clone();
 			clone.gradient = gradient?.Clone();
 			clone.subConfigExample = subConfigExample?.Clone();
@@ -402,8 +391,7 @@ namespace ExampleMod
 			[Label("Even More Sub")]
 			public SubSubConfigExample SubB;
 
-			public SubConfigExample Clone()
-			{
+			public SubConfigExample Clone() {
 				var clone = (SubConfigExample)MemberwiseClone();
 				clone.SubA = SubA?.Clone();
 				clone.SubB = SubB?.Clone();
@@ -415,8 +403,7 @@ namespace ExampleMod
 		{
 			public int whoa;
 
-			public SubSubConfigExample Clone()
-			{
+			public SubSubConfigExample Clone() {
 				return (SubSubConfigExample)MemberwiseClone();
 			}
 		}
@@ -431,7 +418,7 @@ namespace ExampleMod
 		// Private and Internal fields and properties will not be shown. 
 		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
 		// You should avoid private and internal values in 
-#pragma warning disable CS0414 
+#pragma warning disable CS0414
 		private float Private = 144;
 #pragma warning restore CS0414
 		internal float Internal;
@@ -450,8 +437,7 @@ namespace ExampleMod
 
 		// Properties work as well. The backing field will be ignored when writing the json out.
 		private float propertyBackingField;
-		public float Property
-		{
+		public float Property {
 			get { return propertyBackingField; }
 			set { propertyBackingField = value + 0.2f; } // + 0.2f is just to mess with the user.
 		}
@@ -476,26 +462,20 @@ namespace ExampleMod
 		// public float Setter { set { Public = value; } }
 
 		// The following shows how you can use properties to implement a preset system
-		public bool PresetA
-		{
+		public bool PresetA {
 			get => Data1 == 23 && Data2 == 63;
-			set
-			{
-				if (value)
-				{
+			set {
+				if (value) {
 					Data1 = 23;
 					Data2 = 63;
 				}
 			}
 		}
 
-		public bool PresetB
-		{
+		public bool PresetB {
 			get => Data1 == 93 && Data2 == 13;
-			set
-			{
-				if (value)
-				{
+			set {
+				if (value) {
 					Data1 = 93;
 					Data2 = 13;
 				}
@@ -505,8 +485,7 @@ namespace ExampleMod
 		public int Data1 { get; set; }
 		public int Data2 { get; set; }
 
-		public ModConfigShowcaseAccessibility()
-		{
+		public ModConfigShowcaseAccessibility() {
 			Internal = 0.2f;
 		}
 	}
@@ -529,8 +508,20 @@ namespace ExampleMod
 
 		[Label("Custom UI Element")]
 		[Tooltip("This UI Element is modder defined")]
-		[CustomModConfigItem(typeof(UIModConfigGradientItem))]
+		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient;
+
+		[Label("Custom UI Element 2")]
+		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
+		public Corner corner;
+
+		// In this example we inherit from a tmodloader config UIElement to slightly customize the colors.
+		[CustomModConfigItem(typeof(CustomFloatElement))]
+		public float tint;
+
+		//[CustomModConfigItem(typeof(LogScaleFloatElement))]
+		//[Range(-10f, 100f)]
+		//public float log;
 
 		public Dictionary<string, Pair> StringPairDictionary;
 		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary;
@@ -551,8 +542,7 @@ namespace ExampleMod
 		private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
 		[OnDeserialized]
-		internal void OnDeserializedMethod(StreamingContext context)
-		{
+		internal void OnDeserializedMethod(StreamingContext context) {
 			// We use a method marked OnDeserialized to initialize default values of reference types since we can't do that with the DefaultValue attribute.
 			if (StringPairDictionary == null)
 				StringPairDictionary = new Dictionary<string, Pair>();
@@ -585,8 +575,7 @@ namespace ExampleMod
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
 		}
 
-		public override ModConfig Clone()
-		{
+		public override ModConfig Clone() {
 			// Since ListOfInts is a reference type, we need to clone it manually so our config works properly.
 			var clone = (ModConfigShowcaseMisc)base.Clone();
 
@@ -634,8 +623,7 @@ namespace ExampleMod
 		{
 		}
 
-		internal Gradient Clone()
-		{
+		internal Gradient Clone() {
 			return (Gradient)MemberwiseClone();
 		}
 	}
@@ -647,14 +635,12 @@ namespace ExampleMod
 		public bool enabled;
 		public int boost;
 
-		public Pair Clone()
-		{
+		public Pair Clone() {
 			return (Pair)MemberwiseClone();
 		}
 
 		// If you override ToString, it will show up appended to the Label in the ModConfig UI.
-		public override string ToString()
-		{
+		public override string ToString() {
 			return $"Boost: {(enabled ? "" + boost : "disabled")}";
 		}
 	}
@@ -665,7 +651,7 @@ namespace ExampleMod
 		[Header("Awesome")]
 		public int boost;
 		public float percent;
-		
+
 		[Header("Lame")]
 		public bool enabled;
 
@@ -674,13 +660,11 @@ namespace ExampleMod
 		[DefaultValue("Bulbasor")]
 		public string FavoritePokemon;
 
-		public SimpleData()
-		{
+		public SimpleData() {
 			//FavoritePokemon = "Bulbasor";
 		}
 
-		public SimpleData Clone()
-		{
+		public SimpleData Clone() {
 			return (SimpleData)MemberwiseClone();
 		}
 	}
@@ -697,14 +681,12 @@ namespace ExampleMod
 		[DefaultValue(2f)]
 		public float IncrementalFloat;
 
-		public ComplexData()
-		{
+		public ComplexData() {
 			//ListOfInts = new List<int>();
 			//nestedSimple = new SimpleData();
 		}
 
-		public ComplexData Clone()
-		{
+		public ComplexData Clone() {
 			var clone = (ComplexData)MemberwiseClone();
 			clone.ListOfInts = ListOfInts?.ToList();
 			clone.nestedSimple = nestedSimple?.Clone();
@@ -712,21 +694,19 @@ namespace ExampleMod
 		}
 
 		[OnDeserialized]
-		internal void OnDeserializedMethod(StreamingContext context)
-		{
+		internal void OnDeserializedMethod(StreamingContext context) {
 			// NonNull annotation for UI and post Deserialize?
 			nestedSimple = nestedSimple ?? new SimpleData();
 		}
 	}
 
-	class UIModConfigGradientItem : ConfigElement
+	// This custom config UI element uses vanilla config elements paired with custom drawing.
+	class GradientElement : ConfigElement
 	{
-		//public UIModConfigVector2Item(PropertyFieldWrapper memberInfo, object item, ref int i, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		public UIModConfigGradientItem(PropertyFieldWrapper memberInfo, object item, int orderIgnore, IList array2 = null, int index = -1) : base(memberInfo, item, (IList)array2)
-		{
+		public override void OnBind() {
+			base.OnBind();
 			object subitem = memberInfo.GetValue(item);
-			if (subitem == null)
-			{
+			if (subitem == null) {
 				subitem = Activator.CreateInstance(memberInfo.Type);
 				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
 				memberInfo.SetValue(item, subitem);
@@ -735,33 +715,26 @@ namespace ExampleMod
 			// item is the owner object instance, memberinfo is the Info about this field in item
 
 			int height = 30;
-			IList<Vector2> array = (IList<Vector2>)array2;
-			//object subitem = memberInfo.GetValue(item
 			int order = 0;
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem))
-			{
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
 				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
 
-				if (array != null)
-				{
+				if (list != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			Rectangle hitbox = GetInnerDimensions().ToRectangle();
 			Gradient g = (memberInfo.GetValue(item) as Gradient);
-			if (g != null)
-			{
+			if (g != null) {
 				int left = (hitbox.Left + hitbox.Right) / 2;
 				int right = hitbox.Right;
 				int steps = right - left;
-				for (int i = 0; i < steps; i += 1)
-				{
+				for (int i = 0; i < steps; i += 1) {
 					float percent = (float)i / steps;
 					spriteBatch.Draw(Main.magicPixel, new Rectangle(left + i, hitbox.Y, 1, 30), Color.Lerp(g.start, g.end, percent));
 				}
@@ -770,6 +743,67 @@ namespace ExampleMod
 				//Main.spriteBatch.Draw(Main.magicPixel, new Rectangle(hitbox.X + 3 * hitbox.Width / 4, hitbox.Y, hitbox.Width / 4, 30), g.end);
 			}
 		}
+	}
 
+	[JsonConverter(typeof(StringEnumConverter))]
+	[CustomModConfigItem(typeof(CornerElement))]
+	public enum Corner
+	{
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight
+	}
+
+	// This custom config UI element shows a completely custom config element that handles setting and getting the values in addition to custom drawing.
+	class CornerElement : ConfigElement
+	{
+		Texture2D circleTexture;
+		string[] valueStrings;
+
+		public override void OnBind() {
+			base.OnBind();
+			circleTexture = Terraria.Graphics.TextureManager.Load("Images/UI/Settings_Toggle");
+			valueStrings = Enum.GetNames(memberInfo.Type);
+			TextDisplayFunction = () => memberInfo.Name + ": " + GetStringValue();
+			if (labelAttribute != null) {
+				TextDisplayFunction = () => labelAttribute.Label + ": " + GetStringValue();
+			}
+		}
+
+		void SetValue(Corner value) => SetObject(value);
+
+		Corner GetValue() => (Corner)GetObject();
+
+		string GetStringValue() {
+			return valueStrings[(int)GetValue()];
+		}
+
+		public override void Click(UIMouseEvent evt) {
+			base.Click(evt);
+			SetValue(GetValue().NextEnum());
+		}
+
+		public override void RightClick(UIMouseEvent evt) {
+			base.RightClick(evt);
+			SetValue(GetValue().PreviousEnum());
+		}
+
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+			CalculatedStyle dimensions = base.GetDimensions();
+			Rectangle circleSourceRectangle = new Rectangle(0, 0, (circleTexture.Width - 2) / 2, circleTexture.Height);
+			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)(dimensions.X + dimensions.Width - 25), (int)(dimensions.Y + 4), 22, 22), Color.LightGreen);
+			Corner corner = GetValue();
+			Vector2 circlePositionOffset = new Vector2((int)corner % 2 * 8, (int)corner / 2 * 8);
+			spriteBatch.Draw(circleTexture, new Vector2(dimensions.X + dimensions.Width - 25, dimensions.Y + 4) + circlePositionOffset, circleSourceRectangle, Color.White);
+		}
+	}
+
+	class CustomFloatElement : FloatElement
+	{
+		public CustomFloatElement() {
+			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
+		}
 	}
 }

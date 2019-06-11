@@ -56,11 +56,15 @@ namespace Terraria.ModLoader.Config.UI
 		float min = 0;
 		float max = 1;
 		float increment = 0.01f;
-		public Vector2Element(PropertyFieldWrapper memberInfo, object item, IList<Vector2> array = null, int index = -1) : base(memberInfo, item, (IList)array) {
-			if (array != null) {
+		public IList<Vector2> vector2List;
+
+		public override void OnBind() {
+			base.OnBind();
+			vector2List = (IList<Vector2>)list;
+			if (vector2List != null) {
 				drawLabel = false;
 				height = 30;
-				c = new Vector2Object(array, index);
+				c = new Vector2Object(vector2List, index);
 			}
 			else {
 				height = 30;
@@ -87,7 +91,7 @@ namespace Terraria.ModLoader.Config.UI
 					floatElement.drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
 				}
 
-				if (array != null) {
+				if (vector2List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}

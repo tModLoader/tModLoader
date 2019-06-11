@@ -239,7 +239,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					string url = "http://javid.ddns.net/tModLoader/listmods.php";
 					var values = new NameValueCollection {
 						{"modloaderversion", ModLoader.versionedName},
-						{"platform", ModLoader.compressedPlatformRepresentation}
+						{"platform", ModLoader.compressedPlatformRepresentation},
+						{"netversion", FrameworkVersion.Version.ToString()}
 					};
 					using (var client = new WebClient()) {
 						ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };

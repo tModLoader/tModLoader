@@ -8,14 +8,7 @@ namespace Terraria.ModLoader.Config.UI
 {
 	internal class ListElement : CollectionElement
 	{
-		// does not apply?
-		//public override int NumberTicks => 0;
-		//public override float TickIncrement => 0;
-		//private List<object> dataAsList;
 		private Type listType;
-
-		public ListElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-		}
 
 		protected override void PrepareTypes() {
 			listType = memberInfo.Type.GetGenericArguments()[0];

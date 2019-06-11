@@ -7,12 +7,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 	{
-		// TODO is this memory abusive as static?
-		private static readonly Texture2D Texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+		private static Texture2D _texture;
+		private static Texture2D Texture =>
+			_texture ?? (_texture = Texture2D.FromStream(Main.instance.GraphicsDevice,
+				Assembly.GetExecutingAssembly()
+					.GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png")));
 
 		public T State {
 			get;
-			protected set;
+			private set;
 		}
 
 		public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2) 

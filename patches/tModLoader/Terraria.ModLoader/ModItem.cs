@@ -293,7 +293,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="damage">The damage.</param>
+		[Obsolete("Use ModifyWeaponDamage", true)]
 		public virtual void GetWeaponDamage(Player player, ref int damage) {
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// </summary>
+		/// <param name="player">The player using the item</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
+		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
 		}
 
 		/// <summary>

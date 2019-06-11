@@ -198,6 +198,12 @@ namespace Terraria.ModLoader.UI
 					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
 					File.Copy(originalXMLFile, correctXMLFile, true);
 					File.Delete(originalXMLFile);
+					string originalPDBFilename = ReLogic.OS.Platform.IsWindows ? "tModLoader.pdb" : (ReLogic.OS.Platform.IsLinux ? "tModLoader_Linux.pdb" : "tModLoader_Mac.pdb");
+					string originalPDBFile = Path.Combine(ModCompile.modCompileDir, originalPDBFilename);
+					string correctPDBFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.pdb");
+					File.Copy(originalPDBFile, correctPDBFile, true);
+					File.Delete(originalPDBFile);
+					updateRequired = true;
 				}
 				catch (Exception e) {
 					Logging.tML.Error($"Problem during extracting of mod compile files for", e);

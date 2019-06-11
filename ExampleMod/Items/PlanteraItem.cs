@@ -9,6 +9,7 @@ namespace ExampleMod.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
+			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know this is a boss summoning item.
 		}
 
 		public override void SetDefaults() {

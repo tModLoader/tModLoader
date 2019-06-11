@@ -112,7 +112,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,227 @@
+@@ -339,6 +_,230 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -168,6 +168,8 @@
 +    <Compile Include="Terraria.ModLoader.Default\NetHandler.cs" />
 +    <Compile Include="Terraria.ModLoader.Default\StartBag.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\BuildException.cs" />
++    <Compile Include="Terraria.ModLoader.Engine\GoGVerifier.cs" />
++    <Compile Include="Terraria.ModLoader.Engine\HiDefGraphicsIssues.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\CustomModDataException.cs" />
 +    <Compile Include="Terraria.ModLoader.Exceptions\MissingResourceException.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\ModSortingException.cs" />
@@ -249,6 +251,7 @@
 +    <Compile Include="Terraria.ModLoader\BackgroundTextureLoader.cs" />
 +    <Compile Include="Terraria.ModLoader\BuffLoader.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\BuildProperties.cs" />
++    <Compile Include="Terraria.ModLoader\CombinedHooks.cs" />
 +    <Compile Include="Terraria.ModLoader\CommandManager.cs" />
 +    <Compile Include="Terraria.ModLoader.Core\CecilDebugHeaderFile.cs" />
 +    <Compile Include="Terraria.ModLoader\DrawInfo.cs" />

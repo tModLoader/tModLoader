@@ -14,17 +14,21 @@ namespace Terraria.ModLoader.UI
 		private float scale;
 		public const int maxFrames = 16;
 		public const int maxDelay = 5;
-		private readonly Texture2D backgroundTexture;
-		private readonly Texture2D loaderTexture;
+		private Texture2D backgroundTexture;
+		private Texture2D loaderTexture;
 
 		public UILoaderAnimatedImage(float left, float top, float scale = 1f) {
-			backgroundTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.LoaderBG.png"));
-			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
 			this.scale = scale;
 			Width.Pixels = 200f * scale;
 			Height.Pixels = 200f * scale;
 			HAlign = left;
 			VAlign = top;
+		}
+
+		public override void OnInitialize()
+		{
+			backgroundTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.LoaderBG.png"));
+			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {

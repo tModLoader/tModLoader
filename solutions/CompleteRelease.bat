@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11 Beta 4
+set version=v0.11 Beta 5
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -47,10 +47,14 @@ copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%" /y
 call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
 
 :: Windows ModCompile
+:: TODO: investigate why this isn't working on my machine
+:: for /f %%i in ('..\setup\bin\setup --steamdir') do set steamdir=%%i
 set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
+:: Make sure to clear out ModCompile and run Setup Debugging so ModCompile folder is clean from old versions.
 copy "%steamdir%\ModCompile" "%mcfna%"
 del "%mcfna%"\buildlock 2>nul
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net40\tModLoader.pdb "%mcfna%" /y
 
 call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
 
@@ -62,6 +66,8 @@ copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
 copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
+copy ..\references\I18N.dll "%lnx%\I18N.dll" /y
+copy ..\references\I18N.West.dll "%lnx%\I18N.West.dll" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
@@ -84,6 +90,9 @@ call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -f
 copy "%mcfna%" "%mcxna%"
 del "%mcxna%\tModLoader.FNA.exe"
 del "%mcxna%\FNA.dll"
+del "%mcxna%\tModLoader.pdb"
+copy ..\src\tModLoader\bin\MacRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Mac.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Linux.pdb" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.dll "%mcxna%" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y

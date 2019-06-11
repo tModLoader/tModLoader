@@ -78,13 +78,16 @@ namespace Terraria.ModLoader.Config.UI
 
 		int height;
 		ColorObject c;
-		public ColorElement(PropertyFieldWrapper memberInfo, object item, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		{
-			if (array != null)
+		public IList<Color> colorList;
+
+		public override void OnBind() {
+			base.OnBind();
+			colorList = (IList<Color>)list;
+			if (colorList != null)
 			{
 				drawLabel = false;
 				height = 30;
-				c = new ColorObject(array, index);
+				c = new ColorObject(colorList, index);
 			}
 			else
 			{
@@ -97,7 +100,7 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
 
-				if (array != null)
+				if (colorList != null)
 				{
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;

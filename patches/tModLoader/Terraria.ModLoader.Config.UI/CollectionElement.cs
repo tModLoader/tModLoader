@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -22,7 +23,8 @@ namespace Terraria.ModLoader.Config.UI
 		UIModConfigHoverImageSplit upDownButton;
 		bool expanded = true;
 
-		public CollectionElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null) {
+		public override void OnBind() {
+			base.OnBind();
 			data = memberInfo.GetValue(item);
 			defaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(memberInfo, null, null);
 

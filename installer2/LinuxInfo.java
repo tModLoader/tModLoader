@@ -9,7 +9,12 @@ public class LinuxInfo
             "tModLoader.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
-            "Terraria"
+            "Terraria",
+            "tModLoader",
+            "tModLoader-kick",
+            "tModLoader-mono",
+            "I18N.dll",
+            "I18N.West.dll"
         };
         String[] filesToDelete = new String[]
         {

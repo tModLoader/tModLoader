@@ -10,12 +10,14 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.Config.UI
 {
+	public abstract class ConfigElement<T> : ConfigElement
+	{
+		protected virtual T GetValue() => (T)GetObject();
+		protected virtual void SetValue(T value) => SetObject(value);
+	}
+
 	public abstract class ConfigElement : UIElement
 	{
-		//static ConfigElement() {
-		//	if (Main.dedServ) return;
-		//}
-
 		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
 		protected Texture2D deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
 		protected Texture2D plusTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonPlus.png"));
@@ -25,13 +27,17 @@ namespace Terraria.ModLoader.Config.UI
 		protected Texture2D collapsedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonCollapsed.png"));
 		protected Texture2D expandedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonExpanded.png"));
 
+		// Provides access to the field/property contained in the item
 		protected PropertyFieldWrapper memberInfo;
+		// The object that contains the memberInfo. This is usually a ModConfig instance or an object instance contained within a ModConfig instance.
 		protected object item;
-		protected IList array;
+		// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
+		protected IList list;
+		public int index;
 
 		private Color backgroundColor; // TODO inherit parent object color?
-		protected Func<string> _TextDisplayFunction;
-		protected Func<string> _TooltipFunction;
+		protected Func<string> TextDisplayFunction;
+		protected Func<string> TooltipFunction;
 		protected bool drawLabel = true;
 
 		protected LabelAttribute labelAttribute;
@@ -40,32 +46,55 @@ namespace Terraria.ModLoader.Config.UI
 		protected RangeAttribute rangeAttribute;
 		protected IncrementAttribute incrementAttribute;
 
-		public ConfigElement(PropertyFieldWrapper memberInfo, object item, IList array)
+		public ConfigElement()
 		{
 			Width.Set(0f, 1f);
 			Height.Set(30f, 0f);
+		}
+
+		/// <summary>
+		/// Bind must always be called after the ctor and serves to facilitate a convenient inheritance workflow for custom ConfigElemets from mods. 
+		/// </summary>
+		public void Bind(PropertyFieldWrapper memberInfo, object item, IList array, int index) {
 			this.memberInfo = memberInfo;
 			this.item = item;
-			this.array = array;
+			this.list = array;
+			this.index = index;
 			this.backgroundColor = UICommon.defaultUIBlue;
-			this._TextDisplayFunction = () => memberInfo.Name;
-			labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, item, array);
-			if (labelAttribute != null)
-			{
-				this._TextDisplayFunction = () => labelAttribute.Label;
+		}
+
+		public virtual void OnBind() {
+			TextDisplayFunction = () => memberInfo.Name;
+			labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, item, list);
+			if (labelAttribute != null) {
+				TextDisplayFunction = () => labelAttribute.Label;
 			}
-			tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(memberInfo, item, array);
-			if (tooltipAttribute != null)
-			{
-				this._TooltipFunction = () => tooltipAttribute.Tooltip;
+			tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(memberInfo, item, list);
+			if (tooltipAttribute != null) {
+				this.TooltipFunction = () => tooltipAttribute.Tooltip;
 			}
-			backgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, item, array);
-			if (backgroundColorAttribute != null)
-			{
+			backgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, item, list);
+			if (backgroundColorAttribute != null) {
 				backgroundColor = backgroundColorAttribute.color;
 			}
-			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
-			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, array);
+			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, list);
+			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, list);
+		}
+
+		protected virtual void SetObject(object value) {
+			if (list != null) {
+				list[index] = value;
+				Interface.modConfig.SetPendingChanges();
+				return;
+			}
+			if (!memberInfo.CanWrite) return;
+			memberInfo.SetValue(item, value);
+			Interface.modConfig.SetPendingChanges();
+		}
+		protected virtual object GetObject() {
+			if (list != null)
+				return list[index];
+			return memberInfo.GetValue(item);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -86,11 +115,11 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				position.X += 8f;
 				position.Y += 8f;
-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, this._TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 			}
-			if (IsMouseHovering && _TooltipFunction != null)
+			if (IsMouseHovering && TooltipFunction != null)
 			{
-				UIModConfig.tooltip = _TooltipFunction();
+				UIModConfig.tooltip = TooltipFunction();
 				//string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
 				//float x = Main.fontMouseText.MeasureString(hoverText).X;
 				//vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);

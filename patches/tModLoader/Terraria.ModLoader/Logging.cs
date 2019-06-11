@@ -39,9 +39,6 @@ namespace Terraria.ModLoader
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
-			if (FrameworkVersion.Framework == Framework.Mono)
-				new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
-
 			if (!Directory.Exists(LogDir))
 				Directory.CreateDirectory(LogDir);
 
@@ -261,15 +258,6 @@ namespace Terraria.ModLoader
 			Console.ResetColor();
 
 			(log ?? Terraria).Logger.Log(null, level, msg, ex);
-		}
-
-		private delegate Encoding orig_GetEncoding(string name);
-		private delegate Encoding hook_GetEncoding(orig_GetEncoding orig, string name);
-		private static Encoding HookGetEncoding(orig_GetEncoding orig, string name) {
-			if (name == "IBM437")
-				return null;
-
-			return orig(name);
 		}
 
 		internal static readonly FieldInfo f_fileName =

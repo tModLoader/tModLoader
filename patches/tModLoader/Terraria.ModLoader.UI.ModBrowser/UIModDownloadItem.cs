@@ -359,10 +359,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void RequestMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modInfo.SetModName(ModName);
-			Interface.modInfo.SetMod(Installed);
-			Interface.modInfo.SetGotoMenu(Interface.modBrowserID);
-			Main.menuMode = Interface.modInfoID;
+			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, loadFromWeb: true);
 		}
 	}
 }

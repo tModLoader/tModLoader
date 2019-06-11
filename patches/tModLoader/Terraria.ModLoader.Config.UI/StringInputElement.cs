@@ -10,17 +10,19 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		private Func<string> _GetValue;
 		private Action<string> _SetValue;
+		public IList<string> stringList;
 
-		public StringInputElement(PropertyFieldWrapper memberInfo, object item, IList<string> array, int index) : base(memberInfo, item, (IList)array)
-		{
+		public override void OnBind() {
+			base.OnBind();
+			stringList = (IList<string>)list;
 			_GetValue = () => DefaultGetValue();
 			_SetValue = (string value) => DefaultSetValue(value);
 
-			if (array != null)
+			if (stringList != null)
 			{
-				_GetValue = () => array[index];
-				_SetValue = (string value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
-				_TextDisplayFunction = () => index + 1 + ": " + array[index];
+				_GetValue = () => stringList[index];
+				_SetValue = (string value) => { this.stringList[index] = value; Interface.modConfig.SetPendingChanges(); };
+				TextDisplayFunction = () => index + 1 + ": " + this.stringList[index];
 			}
 
 			UIPanel textBoxBackground = new UIPanel();

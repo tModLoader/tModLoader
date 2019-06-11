@@ -9,7 +9,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	class UICreateMod : UIState
+	public class UICreateMod : UIState
 	{
 		UITextPanel<string> messagePanel;
 		UIFocusInputTextField modName;
@@ -126,7 +126,7 @@ namespace Terraria.ModLoader.UI
 			string modNameTrimmed = modName.currentString.Trim();
 			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
-			if(Directory.Exists(sourceFolder))
+			if (Directory.Exists(sourceFolder))
 				messagePanel.SetText("Folder already exists");
 			else if (!provider.IsValidIdentifier(modNameTrimmed))
 				messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
@@ -142,20 +142,44 @@ namespace Terraria.ModLoader.UI
 				Directory.CreateDirectory(sourceFolder);
 
 				// TODO: Simple ModItem and PNG, verbatim line endings, localization.
-				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), $"displayName = {modDiplayName.currentString}{Environment.NewLine}author = {modAuthor.currentString}{Environment.NewLine}version = 0.1");
-				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), $"{modDiplayName.currentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.");
-				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), $@"using Terraria.ModLoader;
+				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
+				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
+				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
+				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
+				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";
+				Directory.CreateDirectory(propertiesFolder);
+				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), GetLaunchSettings());
+			}
+		}
+
+		private string GetModBuild() {
+			return $"displayName = {modDiplayName.currentString}" +
+				$"{Environment.NewLine}author = {modAuthor.currentString}" +
+				$"{Environment.NewLine}version = 0.1";
+		}
+
+		private string GetModDescription() {
+			return $"{modDiplayName.currentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.";
+		}
+
+		private string GetModClass(string modNameTrimmed) {
+			return 
+$@"using Terraria.ModLoader;
 
 namespace {modNameTrimmed}
 {{
-	class {modNameTrimmed} : Mod
+	public class {modNameTrimmed} : Mod
 	{{
 		public {modNameTrimmed}()
 		{{
 		}}
 	}}
-}}");
-				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), $@"<?xml version=""1.0"" encoding=""utf-8""?>
+}}";
+		}
+
+		private string GetModCsproj(string modNameTrimmed) {
+			return
+$@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
   <Import Project=""..\..\references\tModLoader.targets"" />
   <PropertyGroup>
@@ -167,10 +191,12 @@ namespace {modNameTrimmed}
   <Target Name=""BuildMod"" AfterTargets=""Build"">
     <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
-</Project>");
-				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";
-				Directory.CreateDirectory(propertiesFolder);
-				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), $@"{{
+</Project>";
+		}
+
+		private string GetLaunchSettings() {
+			return
+$@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
@@ -183,8 +209,7 @@ namespace {modNameTrimmed}
       ""workingDirectory"": ""$(TerrariaSteamPath)""
     }}
   }}
-}}");
-			}
+}}";
 		}
 	}
 }

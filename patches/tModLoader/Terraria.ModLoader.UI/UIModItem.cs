@@ -260,12 +260,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Moreinfo(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			Interface.modInfo.SetModName(mod.DisplayName);
-			Interface.modInfo.SetModInfo(mod.properties.description);
-			Interface.modInfo.SetMod(mod);
-			Interface.modInfo.SetGotoMenu(Interface.modsMenuID);
-			Interface.modInfo.SetUrl(mod.properties.homepage);
-			Main.menuMode = Interface.modInfoID;
+			Interface.modInfo.Show(mod.Name, mod.DisplayName, Interface.modsMenuID, mod, mod.properties.description, mod.properties.homepage);
 		}
 
 		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)

@@ -9,6 +9,7 @@ namespace ExampleMod.Items.Abomination
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("The underworld would like this.");
+			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 13; // This helps sort inventory know this is a boss summoning item.
 		}
 
 		public override void SetDefaults() {

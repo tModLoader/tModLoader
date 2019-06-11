@@ -44,11 +44,17 @@
  		public Player.OverheadMessage chatOverhead = default(Player.OverheadMessage);
  		public Player.SelectionRadial DpadRadial = new Player.SelectionRadial(Player.SelectionRadial.SelectionMode.Dpad4);
  		public Player.SelectionRadial CircularRadial = new Player.SelectionRadial(Player.SelectionRadial.SelectionMode.RadialCircular);
-@@ -822,6 +_,7 @@
+@@ -822,6 +_,13 @@
  		public int rangedCrit;
  		public int magicCrit;
  		public int thrownCrit;
 +		public float allDamage; // added to better support new damage classes
++		public float allDamageMult;
++		public float meleeDamageMult;
++		public float rangedDamageMult;
++		public float magicDamageMult;
++		public float thrownDamageMult;
++		public float minionDamageMult;
  		public float meleeDamage;
  		public float rangedDamage;
  		public float thrownDamage;
@@ -3360,7 +3366,7 @@
  						{
  							if (this.nonTorch == -1)
  							{
-@@ -14517,6 +_,7 @@
+@@ -14517,11 +_,18 @@
  			this.lifeRegen = 0;
  			this.manaCost = 1f;
  			this.meleeSpeed = 1f;
@@ -3368,6 +3374,17 @@
  			this.meleeDamage = 1f;
  			this.rangedDamage = 1f;
  			this.thrownDamage = 1f;
+ 			this.magicDamage = 1f;
+ 			this.minionDamage = 1f;
++			this.allDamageMult = 1f;
++			this.meleeDamageMult = 1f;
++			this.rangedDamageMult = 1f;
++			this.thrownDamageMult = 1f;
++			this.magicDamageMult = 1f;
++			this.minionDamageMult = 1f;
+ 			this.meleeCrit = 4;
+ 			this.rangedCrit = 4;
+ 			this.magicCrit = 4;
 @@ -14806,6 +_,7 @@
  				Player.tileRangeY = 4;
  			}
@@ -3523,6 +3540,15 @@
  			if (this.maxTurretsOld != this.maxTurrets)
  			{
  				this.UpdateMaxTurrets();
+@@ -19990,7 +_,7 @@
+ 			}
+ 			if (this.manaSick)
+ 			{
+-				this.magicDamage *= 1f - this.manaSickReduction;
++				this.magicDamageMult *= 1f - this.manaSickReduction;
+ 			}
+ 			if (this.inventory[this.selectedItem].type == 1947)
+ 			{
 @@ -20064,6 +_,7 @@
  				}
  			}
@@ -3535,7 +3561,7 @@
  			}
  			if (this.witheredWeapon)
  			{
-+				this.allDamage *= 0.5f;
++				this.allDamageMult *= 0.5f;
 +				/*
  				this.meleeDamage *= 0.5f;
  				this.rangedDamage *= 0.5f;
@@ -4989,40 +5015,32 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num312 = 0; num312 < 200; num312++)
-@@ -36048,27 +_,20 @@
+@@ -36048,27 +_,7 @@
  					}
  					if (Main.myPlayer == i && (item.damage > 0 || item.type == 3183))
  					{
 -						int num313 = item.damage;
-+						float itemDamage = item.damage * this.allDamage;
- 						if (item.melee)
+-						if (item.melee)
 -						{
 -							num313 = (int)((float)item.damage * this.meleeDamage);
 -						}
-+							itemDamage *= this.meleeDamage;
- 						if (item.ranged)
+-						if (item.ranged)
 -						{
 -							num313 = (int)((float)item.damage * this.rangedDamage);
 -						}
-+							itemDamage *= this.rangedDamage;
- 						if (item.magic)
+-						if (item.magic)
 -						{
 -							num313 = (int)((float)item.damage * this.magicDamage);
 -						}
-+							itemDamage *= this.magicDamage;
- 						if (item.summon)
+-						if (item.summon)
 -						{
 -							num313 = (int)((float)item.damage * this.minionDamage);
 -						}
-+							itemDamage *= this.minionDamage;
- 						if (item.thrown)
+-						if (item.thrown)
 -						{
 -							num313 = (int)((float)item.damage * this.thrownDamage);
 -						}
-+							itemDamage *= this.thrownDamage;
-+						int num313 = (int)itemDamage;
-+						ItemLoader.GetWeaponDamage(item, this, ref num313);
-+						PlayerHooks.GetWeaponDamage(this, item, ref num313);
++						int num313 = weaponDamage;//No idea why vanilla doesn't do this. weaponDamage is currently only used for ranged, and the seprate calculation here (which is identical, except ignores ammo modifiers) is used for everything else.
  						float num314 = item.knockBack;
  						float num315 = 1f;
  						if (this.kbGlove)
@@ -5492,7 +5510,7 @@
  		}
  
  		public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
-@@ -37374,12 +_,14 @@
+@@ -37374,73 +_,79 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
@@ -5501,21 +5519,86 @@
  			return KnockBack;
  		}
  
- 		public int GetWeaponDamage(Item sItem)
+-		public int GetWeaponDamage(Item sItem)
++		public int GetWeaponDamage(Item item)
  		{
 -			int num = sItem.damage;
-+			float num = sItem.damage * this.allDamage;
- 			if (num > 0)
- 			{
- 				if (sItem.melee)
-@@ -37415,32 +_,35 @@
- 					num = (int)((float)num * this.minionDamage);
- 				}
- 			}
+-			if (num > 0)
+-			{
+-				if (sItem.melee)
+-				{
+-					num = (int)((float)num * this.meleeDamage + 5E-06f);
+-				}
+-				else if (sItem.ranged)
+-				{
+-					num = (int)((float)num * this.rangedDamage + 5E-06f);
+-					if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
+-					{
+-						num = (int)((float)num * this.arrowDamage + 5E-06f);
+-					}
+-					if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
+-					{
+-						num = (int)((float)num * this.bulletDamage + 5E-06f);
+-					}
+-					if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
+-					{
+-						num = (int)((float)num * this.rocketDamage + 5E-06f);
+-					}
+-				}
+-				else if (sItem.thrown)
+-				{
+-					num = (int)((float)num * this.thrownDamage + 5E-06f);
+-				}
+-				else if (sItem.magic)
+-				{
+-					num = (int)((float)num * this.magicDamage + 5E-06f);
+-				}
+-				else if (sItem.summon)
+-				{
+-					num = (int)((float)num * this.minionDamage);
+-				}
+-			}
 -			return num;
-+			int damage = (int)num;
-+			ItemLoader.GetWeaponDamage(sItem, this, ref damage);
-+			PlayerHooks.GetWeaponDamage(this, sItem, ref damage);
++			float add = allDamage;
++			float mult = allDamageMult;
++
++			if (item.melee) {
++				add += meleeDamage - 1;
++				mult *= meleeDamageMult;
++			}
++			if (item.ranged) {
++				add += rangedDamage - 1;
++				mult *= rangedDamageMult;
++
++				if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
++					mult *= arrowDamage;
++				}
++				if (item.useAmmo == AmmoID.Arrow && archery) {
++					mult *= 1.2f;
++				}
++				if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn) {
++					mult *= bulletDamage;
++				}
++				if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly) {
++					mult *= rocketDamage;
++				}
++			}
++			if (item.magic) {
++				add += magicDamage - 1;
++				mult *= magicDamageMult;
++			}
++			if (item.summon) {
++				add += minionDamage - 1;
++				mult *= minionDamageMult;
++			}
++			if (item.thrown) {
++				add += thrownDamage - 1;
++				mult *= thrownDamageMult;
++			}
++
++			CombinedHooks.ModifyWeaponDamage(this, item, ref add, ref mult);
++			int damage = (int)(item.damage * add * mult + 5E-06f);
++			CombinedHooks.GetWeaponDamage(this, item, ref damage);
 +			return damage;
  		}
  
@@ -5562,8 +5645,24 @@
  				}
  				else if (sItem.useAmmo == AmmoID.Rocket)
  				{
-@@ -37568,6 +_,7 @@
- 					Damage = (int)((double)((float)Damage) * 1.2);
+@@ -37548,7 +_,9 @@
+ 				{
+ 					if (item.damage > 0)
+ 					{
+-						Damage += (int)((float)item.damage * this.rangedDamage);
++						// determine damage multiplier using item base damage and apply to ammo
++						// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
++						Damage += (int)(item.damage * Damage / (float)sItem.damage);
+ 					}
+ 				}
+ 				else
+@@ -37565,9 +_,11 @@
+ 							speed = 20f;
+ 						}
+ 					}
+-					Damage = (int)((double)((float)Damage) * 1.2);
++					// archery buff damage moved into GetWeaponDamage
++					// Damage = (int)((double)((float)Damage) * 1.2);
  				}
  				KnockBack += item.knockBack;
 +				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
@@ -5991,6 +6090,19 @@
  			this.meleeDamage = 1f;
  			this.rangedDamage = 1f;
  			this.thrownDamage = 1f;
+@@ -39402,6 +_,12 @@
+ 			this.rocketDamage = 1f;
+ 			this.magicDamage = 1f;
+ 			this.minionDamage = 1f;
++			this.allDamageMult = 1f;
++			this.meleeDamageMult = 1f;
++			this.rangedDamageMult = 1f;
++			this.thrownDamageMult = 1f;
++			this.magicDamageMult = 1f;
++			this.minionDamageMult = 1f;
+ 			this.meleeSpeed = 1f;
+ 			this.thrownVelocity = 1f;
+ 			this.moveSpeed = 1f;
 @@ -39442,13 +_,14 @@
  			this.talkNPC = -1;
  			this.potionDelayTime = Item.potionDelay;

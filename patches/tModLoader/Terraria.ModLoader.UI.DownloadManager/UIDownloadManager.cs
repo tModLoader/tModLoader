@@ -100,8 +100,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			if (OnQueueProcessed == null)
 				OnQueueProcessed = () => Main.menuMode = 0;
 
-			if (OverrideName != null)
-				UpdateDisplayText();
+			UpdateDisplayText();
 
 			_loadProgress.SetProgress(0f);
 
@@ -123,7 +122,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public override void Update(GameTime gameTime) {
-			if (_name != _oldName && OverrideName == null) {
+			if (_name != _oldName) {
 				_oldName = _name;
 				UpdateDisplayText();
 			}
@@ -133,7 +132,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			_loadProgress.SetText(GetDisplayText());
 		}
 
-		private string GetDisplayText() => Language.GetTextValue("tModLoader.MBDownloadingMod", OverrideName ?? _name);
+		private string GetDisplayText() => Language.GetTextValue("tModLoader.MBDownloadingMod", OverrideName != null ? OverrideName + ": " + _name : _name);
 
 		internal void SetProgress(double percent) {
 			_loadProgress?.SetProgress((float)percent);
