@@ -5594,35 +5594,25 @@
  				}
  				else if (sItem.useAmmo == AmmoID.Rocket)
  				{
-@@ -37544,16 +_,17 @@
- 					speed *= 1.1f;
- 				}
- 				speed += item.shootSpeed;
-+				int projDamage = 0; // because archery is now factored in GetWeaponDamage too
- 				if (item.ranged)
+@@ -37548,7 +_,9 @@
  				{
  					if (item.damage > 0)
  					{
 -						Damage += (int)((float)item.damage * this.rangedDamage);
-+						projDamage += (int)((float)item.damage * this.rangedDamage);
++						// determine damage multiplier using item base damage and apply to ammo
++						// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
++						Damage += (int)(item.damage * Damage / (float)sItem.damage);
  					}
  				}
  				else
- 				{
--					Damage += item.damage;
-+					projDamage += item.damage;
- 				}
- 				if (sItem.useAmmo == AmmoID.Arrow && this.archery)
- 				{
 @@ -37565,9 +_,11 @@
  							speed = 20f;
  						}
  					}
 -					Damage = (int)((double)((float)Damage) * 1.2);
--				}
-+					projDamage = (int)((double)((float)Damage) * 1.2);
-+				}
-+				Damage += projDamage;
++					// archery buff damage moved into GetWeaponDamage
++					// Damage = (int)((double)((float)Damage) * 1.2);
+ 				}
  				KnockBack += item.knockBack;
 +				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
  				bool flag2 = dontConsume;
