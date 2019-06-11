@@ -325,7 +325,7 @@
  					}
  					if (this.inventory[i].mana > 0 && flag)
  					{
-+						if (this.CheckMana(this.inventory[i], this.GetManaCost(this.inventory[i]), true, true)) {
++						if (this.CheckMana(this.inventory[i], -1, true, true)) {
 +							this.manaRegenDelay = (int)this.maxRegenDelay;
 +						}
 +						goto SkipManaCode;
@@ -4558,7 +4558,7 @@
  					{
  						flag6 = true;
  					}
-+					if (!this.CheckMana(item, this.GetManaCost(item), !flag6)) {
++					if (!this.CheckMana(item, -1, !flag6)) {
 +						flag2 = false;
 +					}
 +					goto SkipManaCode;
@@ -6288,7 +6288,7 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
-@@ -40007,6 +_,41 @@
+@@ -40007,6 +_,40 @@
  					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
  				}
  			}
@@ -6296,16 +6296,17 @@
 +
 +		public int GetManaCost(Item item) {
 +			int mana = (item.type != 127 || !this.spaceGun) ? (int)(item.mana * this.manaCost) : 0;
-+			ItemLoader.GetManaCost(item, this, ref mana);
-+			PlayerHooks.GetManaCost(this, item, ref mana);
++			CombinedHooks.GetManaCost(this, item, ref mana);
 +			return mana >= 0 ? mana : 0;
 +		}
 +
-+		public bool CheckMana(Item item, int amount, bool pay = false, bool blockQuickMana = false) {
++		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
++			if (amount <= -1) {
++				amount = this.GetManaCost(item);
++			}
 +			if (this.statMana >= amount) {
 +				if (pay) {
-+					ItemLoader.OnConsumeMana(item, this, amount);
-+					PlayerHooks.OnConsumeMana(this, item, amount);
++					CombinedHooks.OnConsumeMana(this, item, amount);
 +					this.statMana -= amount;
 +				}
 +				return true;
@@ -6313,15 +6314,13 @@
 +			if (blockQuickMana) {
 +				return false;
 +			}
-+			ItemLoader.OnMissingMana(item, this, amount);
-+			PlayerHooks.OnMissingMana(this, item, amount);
++			CombinedHooks.OnMissingMana(this, item, amount);
 +			if (this.statMana < amount && this.manaFlower) {
 +				this.QuickMana();
 +			}
 +			if (this.statMana >= amount) {
 +				if (pay) {
-+					ItemLoader.OnConsumeMana(item, this, amount);
-+					PlayerHooks.OnConsumeMana(this, item, amount);
++					CombinedHooks.OnConsumeMana(this, item, amount);
 +					this.statMana -= amount;
 +				}
 +				return true;
