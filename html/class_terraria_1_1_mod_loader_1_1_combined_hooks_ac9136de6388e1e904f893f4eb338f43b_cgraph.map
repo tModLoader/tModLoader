@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.CombinedHooks.GetManaCost" name="Terraria.ModLoader.CombinedHooks.GetManaCost">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a589aa7cd6478ef3bfa29ddf2aac750f9" title="Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks. " alt="" coords="251,5,458,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#a6f368f597f961b8219e1f1c82d5e8425" title="Terraria.ModLoader.Player\lHooks.GetManaCost" alt="" coords="267,70,442,111"/>
+</map>

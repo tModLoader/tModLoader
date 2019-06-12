@@ -134,8 +134,11 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_mod_loader_1_1_buff_loader.html#ae78209c5b78357bafbc9e01f0bcc33a0":[1,0,0,0,8,21],
 "class_terraria_1_1_mod_loader_1_1_buff_loader.html#af0b8606154d66c37a9ec015479eaca0c":[1,0,0,0,8,8],
 "class_terraria_1_1_mod_loader_1_1_combined_hooks.html":[1,0,0,0,9],
-"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a8744ea05658bc63d8015de21121fa6b8":[1,0,0,0,9,1],
-"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ae6ecbc6b4c8603dfd16162b3c7b2b419":[1,0,0,0,9,0],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a489c14486111f61f07bcfd17cab039e2":[1,0,0,0,9,4],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a66ebe7169a134de5a8d45e4fe74559df":[1,0,0,0,9,3],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a8744ea05658bc63d8015de21121fa6b8":[1,0,0,0,9,2],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ac9136de6388e1e904f893f4eb338f43b":[1,0,0,0,9,0],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ae6ecbc6b4c8603dfd16162b3c7b2b419":[1,0,0,0,9,1],
 "class_terraria_1_1_mod_loader_1_1_command_manager.html":[1,0,0,0,11],
 "class_terraria_1_1_mod_loader_1_1_command_manager.html#a3641357f743ede79a33d1e97814c516b":[1,0,0,0,11,0],
 "class_terraria_1_1_mod_loader_1_1_command_manager.html#a4727c449168dce8069e2ebdecb0a6475":[1,0,0,0,11,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ade82e21849572b0d564a84074e3d26f7":[1,0,0,0,12,1],
 "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#afa12e9d44d3270f8d219225ebf9acbbb":[1,0,0,0,12,4],
 "class_terraria_1_1_mod_loader_1_1_equip_loader.html":[1,0,0,0,14],
-"class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70":[1,0,0,0,14,3],
-"class_terraria_1_1_mod_loader_1_1_equip_loader.html#a6f29f0695eaea5f40fb00bc6ff462a44":[1,0,0,0,14,0],
-"class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575":[1,0,0,0,14,1],
-"class_terraria_1_1_mod_loader_1_1_equip_loader.html#a95d4c93ab5bc1685cfcf13f75e200ef5":[1,0,0,0,14,2]
+"class_terraria_1_1_mod_loader_1_1_equip_loader.html#a2cb330c224aad0edb60c4f76d0c08d70":[1,0,0,0,14,3]
 };

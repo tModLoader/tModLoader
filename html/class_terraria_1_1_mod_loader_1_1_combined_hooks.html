@@ -118,15 +118,78 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_comb
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac9136de6388e1e904f893f4eb338f43b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ac9136de6388e1e904f893f4eb338f43b">GetManaCost</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref int mana)</td></tr>
+<tr class="separator:ac9136de6388e1e904f893f4eb338f43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6ecbc6b4c8603dfd16162b3c7b2b419"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ae6ecbc6b4c8603dfd16162b3c7b2b419">GetWeaponDamage</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref int damage)</td></tr>
 <tr class="separator:ae6ecbc6b4c8603dfd16162b3c7b2b419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8744ea05658bc63d8015de21121fa6b8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a8744ea05658bc63d8015de21121fa6b8">ModifyWeaponDamage</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, ref float add, ref float mult)</td></tr>
 <tr class="separator:a8744ea05658bc63d8015de21121fa6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ebe7169a134de5a8d45e4fe74559df"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a66ebe7169a134de5a8d45e4fe74559df">OnConsumeMana</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, int manaConsumed)</td></tr>
+<tr class="separator:a66ebe7169a134de5a8d45e4fe74559df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489c14486111f61f07bcfd17cab039e2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a489c14486111f61f07bcfd17cab039e2">OnMissingMana</a> (Player player, <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, int neededMana)</td></tr>
+<tr class="separator:a489c14486111f61f07bcfd17cab039e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00005">5</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ac9136de6388e1e904f893f4eb338f43b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.CombinedHooks.GetManaCost </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>mana</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00018">18</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
+
+<p>References <a class="el" href="_item_loader_8cs_source.html#l00389">Terraria.ModLoader.ItemLoader.GetManaCost()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00591">Terraria.ModLoader.PlayerHooks.GetManaCost()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                                                                               {</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            ItemLoader.GetManaCost(item, player, ref mana);</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            PlayerHooks.GetManaCost(player, item, ref mana);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_combined_hooks_ac9136de6388e1e904f893f4eb338f43b_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_combined_hooks_ac9136de6388e1e904f893f4eb338f43b_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_combined_hooks_ac9136de6388e1e904f893f4eb338f43b_cgraph" id="class_terraria_1_1_mod_loader_1_1_combined_hooks_ac9136de6388e1e904f893f4eb338f43b_cgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a589aa7cd6478ef3bfa29ddf2aac750f9" title="Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks. " alt="" coords="251,5,458,46"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a6f368f597f961b8219e1f1c82d5e8425" title="Terraria.ModLoader.Player\lHooks.GetManaCost" alt="" coords="267,70,442,111"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="ae6ecbc6b4c8603dfd16162b3c7b2b419"></a>
 <div class="memitem">
 <div class="memproto">
@@ -167,13 +230,13 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00013">13</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
 
-<p>References <a class="el" href="_item_loader_8cs_source.html#l00391">Terraria.ModLoader.ItemLoader.GetWeaponDamage()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00592">Terraria.ModLoader.PlayerHooks.GetWeaponDamage()</a>.</p>
+<p>References <a class="el" href="_item_loader_8cs_source.html#l00437">Terraria.ModLoader.ItemLoader.GetWeaponDamage()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00626">Terraria.ModLoader.PlayerHooks.GetWeaponDamage()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;                                                                                     {</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            ItemLoader.GetWeaponDamage(item, player, ref damage);</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            PlayerHooks.GetWeaponDamage(player, item, ref damage);</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_combined_hooks_ae6ecbc6b4c8603dfd16162b3c7b2b419_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_combined_hooks_ae6ecbc6b4c8603dfd16162b3c7b2b419_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_combined_hooks_ae6ecbc6b4c8603dfd16162b3c7b2b419_cgraph" id="class_terraria_1_1_mod_loader_1_1_combined_hooks_ae6ecbc6b4c8603dfd16162b3c7b2b419_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a53a8e7c32465eaef772fd8340f48c3e6" title="Calls ModItem.GetWeaponDamage, then all GlobalItem.GetWeaponDamage hooks. " alt="" coords="251,5,458,46"/>
@@ -230,17 +293,131 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00007">7</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
 
-<p>References <a class="el" href="_item_loader_8cs_source.html#l00406">Terraria.ModLoader.ItemLoader.ModifyWeaponDamage()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00606">Terraria.ModLoader.PlayerHooks.ModifyWeaponDamage()</a>.</p>
+<p>References <a class="el" href="_item_loader_8cs_source.html#l00452">Terraria.ModLoader.ItemLoader.ModifyWeaponDamage()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00640">Terraria.ModLoader.PlayerHooks.ModifyWeaponDamage()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;                                                                                                       {</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;            ItemLoader.ModifyWeaponDamage(item, player, ref add, ref mult);</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;            PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult);</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_combined_hooks_a8744ea05658bc63d8015de21121fa6b8_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_combined_hooks_a8744ea05658bc63d8015de21121fa6b8_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_combined_hooks_a8744ea05658bc63d8015de21121fa6b8_cgraph" id="class_terraria_1_1_mod_loader_1_1_combined_hooks_a8744ea05658bc63d8015de21121fa6b8_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa309c4e4e52a69129cc6cf9681286e61" title="Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks. " alt="" coords="254,5,461,46"/>
 <area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#aee01005a69bb17f7810c731a17c8847f" title="Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks. " alt="" coords="257,70,457,111"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a66ebe7169a134de5a8d45e4fe74559df"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.CombinedHooks.OnConsumeMana </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>manaConsumed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00023">23</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
+
+<p>References <a class="el" href="_item_loader_8cs_source.html#l00419">Terraria.ModLoader.ItemLoader.OnConsumeMana()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00613">Terraria.ModLoader.PlayerHooks.OnConsumeMana()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                                                                                     {</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            ItemLoader.OnConsumeMana(item, player, manaConsumed);</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            PlayerHooks.OnConsumeMana(player, item, manaConsumed);</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_combined_hooks_a66ebe7169a134de5a8d45e4fe74559df_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_combined_hooks_a66ebe7169a134de5a8d45e4fe74559df_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_combined_hooks_a66ebe7169a134de5a8d45e4fe74559df_cgraph" id="class_terraria_1_1_mod_loader_1_1_combined_hooks_a66ebe7169a134de5a8d45e4fe74559df_cgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a23732ae147a8efaefc4a1a55f221b27a" title="Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks. " alt="" coords="251,5,458,46"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#a997502415af20e78a2430d251d242387" title="Terraria.ModLoader.Player\lHooks.OnConsumeMana" alt="" coords="267,70,442,111"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a489c14486111f61f07bcfd17cab039e2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.CombinedHooks.OnMissingMana </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>neededMana</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_combined_hooks_8cs_source.html#l00028">28</a> of file <a class="el" href="_combined_hooks_8cs_source.html">CombinedHooks.cs</a>.</p>
+
+<p>References <a class="el" href="_item_loader_8cs_source.html#l00404">Terraria.ModLoader.ItemLoader.OnMissingMana()</a>, and <a class="el" href="_player_hooks_8cs_source.html#l00602">Terraria.ModLoader.PlayerHooks.OnMissingMana()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                                                                                   {</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            ItemLoader.OnMissingMana(item, player, neededMana);</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            PlayerHooks.OnMissingMana(player, item, neededMana);</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_combined_hooks_a489c14486111f61f07bcfd17cab039e2_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_combined_hooks_a489c14486111f61f07bcfd17cab039e2_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_combined_hooks_a489c14486111f61f07bcfd17cab039e2_cgraph" id="class_terraria_1_1_mod_loader_1_1_combined_hooks_a489c14486111f61f07bcfd17cab039e2_cgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ab7ea3260fa0df18ac902245a06ef7e65" title="Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks. " alt="" coords="251,5,458,46"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_player_hooks.html#af1d13d95436bc3a6968c52c70ffdeed9" title="Terraria.ModLoader.Player\lHooks.OnMissingMana" alt="" coords="267,70,442,111"/>
 </map>
 </div>
 </p>

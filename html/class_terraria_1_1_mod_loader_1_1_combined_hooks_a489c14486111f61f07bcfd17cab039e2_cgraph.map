@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.CombinedHooks.OnMissingMana" name="Terraria.ModLoader.CombinedHooks.OnMissingMana">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ab7ea3260fa0df18ac902245a06ef7e65" title="Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks. " alt="" coords="251,5,458,46"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#af1d13d95436bc3a6968c52c70ffdeed9" title="Terraria.ModLoader.Player\lHooks.OnMissingMana" alt="" coords="267,70,442,111"/>
+</map>
