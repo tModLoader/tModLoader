@@ -436,6 +436,32 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="mana">The amount of mana the item will use, after being affected by mana cost reduction.</param>
+		public virtual void GetManaCost(Item item, ref int mana) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
+		/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
+		/// Only runs once per item use.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="neededMana">The mana needed to use the item.</param>
+		public virtual void OnMissingMana(Item item, int neededMana) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player consumes mana on use of an item.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="manaConsumed">The mana consumed from the player.</param>
+		public virtual void OnConsumeMana(Item item, int manaConsumed) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify a weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item"></param>

@@ -585,6 +585,40 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateGetManaCost(Item item, ref int mana);
+		private static HookList HookGetManaCost = AddHook<DelegateGetManaCost>(p => p.GetManaCost);
+
+		public static void GetManaCost(Player player, Item item, ref int mana) {
+			if (item.IsAir) {
+				return;
+			}
+			foreach (int index in HookGetManaCost.arr) {
+				player.modPlayers[index].GetManaCost(item, ref mana);
+			}
+		}
+
+		private static HookList HookOnMissingMana = AddHook<Action<Item, int>>(p => p.OnMissingMana);
+
+		public static void OnMissingMana(Player player, Item item, int manaNeeded) {
+			if (item.IsAir) {
+				return;
+			}
+			foreach (int index in HookOnMissingMana.arr) {
+				player.modPlayers[index].OnMissingMana(item, manaNeeded);
+			}
+		}
+
+		private static HookList HookOnConsumeMana = AddHook<Action<Item, int>>(p => p.OnConsumeMana);
+
+		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
+			if (item.IsAir) {
+				return;
+			}
+			foreach (int index in HookOnConsumeMana.arr) {
+				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
+			}
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
 		[Obsolete]
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);

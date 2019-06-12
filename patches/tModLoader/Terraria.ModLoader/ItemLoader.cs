@@ -381,6 +381,52 @@ namespace Terraria.ModLoader
 				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
 		}
 
+		private delegate void DelegateGetManaCost(Item item, Player player, ref int mana);
+		private static HookList HookGetManaCost = AddHook<DelegateGetManaCost>(g => g.GetManaCost);
+		/// <summary>
+		/// Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks.
+		/// </summary>
+		public static void GetManaCost(Item item, Player player, ref int mana) {
+			if (item.IsAir) {
+				return;
+			}
+			item.modItem?.GetManaCost(player, ref mana);
+
+			foreach (var g in HookGetManaCost.arr) {
+				g.Instance(item).GetManaCost(item, player, ref mana);
+			}
+		}
+
+		private static HookList HookOnMissingMana = AddHook<Action<Item, Player, int>>(g => g.OnMissingMana);
+		/// <summary>
+		/// Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks.
+		/// </summary>
+		public static void OnMissingMana(Item item, Player player, int neededMana) {
+			if (item.IsAir) {
+				return;
+			}
+			item.modItem?.OnMissingMana(player, neededMana);
+
+			foreach (var g in HookOnMissingMana.arr) {
+				g.Instance(item).OnMissingMana(item, player, neededMana);
+			}
+		}
+
+		private static HookList HookOnConsumeMana = AddHook<Action<Item, Player, int>>(g => g.OnConsumeMana);
+		/// <summary>
+		/// Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks.
+		/// </summary>
+		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
+			if (item.IsAir) {
+				return;
+			}
+			item.modItem?.OnConsumeMana(player, manaConsumed);
+
+			foreach (var g in HookOnConsumeMana.arr) {
+				g.Instance(item).OnConsumeMana(item, player, manaConsumed);
+			}
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
 		[Obsolete]
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);

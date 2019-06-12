@@ -287,7 +287,7 @@ namespace ExampleMod.NPCs
 				else {
 					position.Y = Math.Sign(position.Y) * 20;
 				}
-				Dust.NewDustPerfect(position, mod.DustType<Dusts.Pixel>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(npc.Center + position, mod.DustType<Dusts.Pixel>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

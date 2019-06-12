@@ -14,5 +14,20 @@ namespace Terraria.ModLoader
 			ItemLoader.GetWeaponDamage(item, player, ref damage);
 			PlayerHooks.GetWeaponDamage(player, item, ref damage);
 		}
+
+		public static void GetManaCost(Player player, Item item, ref int mana) {
+			ItemLoader.GetManaCost(item, player, ref mana);
+			PlayerHooks.GetManaCost(player, item, ref mana);
+		}
+
+		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
+			ItemLoader.OnConsumeMana(item, player, manaConsumed);
+			PlayerHooks.OnConsumeMana(player, item, manaConsumed);
+		}
+
+		public static void OnMissingMana(Player player, Item item, int neededMana) {
+			ItemLoader.OnMissingMana(item, player, neededMana);
+			PlayerHooks.OnMissingMana(player, item, neededMana);
+		}
 	}
 }

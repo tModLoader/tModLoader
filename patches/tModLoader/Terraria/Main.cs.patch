@@ -1438,7 +1438,8 @@
  				}
  				if (Main.HoverItem.mana > 0 && (Main.HoverItem.type != 127 || !Main.player[Main.myPlayer].spaceGun))
  				{
- 					array[num4] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)Main.HoverItem.mana * Main.player[Main.myPlayer].manaCost));
+-					array[num4] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)Main.HoverItem.mana * Main.player[Main.myPlayer].manaCost));
++					array[num4] = Language.GetTextValue("CommonItemTooltip.UsesMana", Main.player[Main.myPlayer].GetManaCost(Main.HoverItem));
 +					tooltipNames[num4] = "UseMana";
  					num4++;
  				}

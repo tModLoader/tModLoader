@@ -43,6 +43,8 @@ namespace ExampleMod
 		public bool exampleShield;
 		public bool infinity;
 		public bool strongBeesUpgrade;
+		public bool manaHeart;
+		public int manaHeartCounter;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
 		public bool blockyAccessory;
@@ -72,6 +74,10 @@ namespace ExampleMod
 			exampleShield = false;
 			infinity = false;
 			strongBeesUpgrade = false;
+			if (!manaHeart) {
+				manaHeartCounter = 0;
+			}
+			manaHeart = false;
 			blockyAccessoryPrevious = blockyAccessory;
 			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 
@@ -516,6 +522,25 @@ namespace ExampleMod
 
 		public override float UseTimeMultiplier(Item item) {
 			return exampleShield ? 1.5f : 1f;
+		}
+
+		public override void OnConsumeMana(Item item, int manaConsumed) {
+			if (manaHeart) {
+				manaHeartCounter += manaConsumed;
+				if (manaHeartCounter >= 200) { 					
+					if (Main.netMode != NetmodeID.Server) {
+						Main.PlaySound(SoundID.Item4, player.position);
+						player.statLife += 20;
+						if (Main.myPlayer == player.whoAmI) {
+							player.HealEffect(20, true);
+						}
+						if (player.statLife > player.statLifeMax2) {
+							player.statLife = player.statLifeMax2;
+						}
+					}
+					manaHeartCounter -= 200;
+				}
+			}
 		}
 
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems) {

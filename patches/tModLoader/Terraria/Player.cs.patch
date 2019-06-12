@@ -321,6 +321,25 @@
  					for (int j = 0; j < 22; j++)
  					{
  						if (num == 27 && (this.buffType[j] == num || this.buffType[j] == 101 || this.buffType[j] == 102))
+@@ -2173,6 +_,10 @@
+ 					}
+ 					if (this.inventory[i].mana > 0 && flag)
+ 					{
++						if (this.CheckMana(this.inventory[i], -1, true, true)) {
++							this.manaRegenDelay = (int)this.maxRegenDelay;
++						}
++						goto SkipManaCode;
+ 						if (this.statMana >= (int)((float)this.inventory[i].mana * this.manaCost))
+ 						{
+ 							this.manaRegenDelay = (int)this.maxRegenDelay;
+@@ -2183,6 +_,7 @@
+ 							flag = false;
+ 						}
+ 					}
++					SkipManaCode:
+ 					if (this.whoAmI == Main.myPlayer && this.inventory[i].type == 603 && !Main.cEd)
+ 					{
+ 						flag = false;
 @@ -2205,6 +_,7 @@
  					}
  					if (flag)
@@ -3661,6 +3680,15 @@
  			bool flag = this.selectedItem != 58 && this.controlUseTile && !this.tileInteractionHappened && this.releaseUseItem && !this.controlUseItem && !this.mouseInterface && !CaptureManager.Instance.Active && !Main.HoveringOverAnNPC && !Main.SmartInteractShowingGenuine;
  			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3384)
  			{
+@@ -23445,7 +_,7 @@
+ 				this.altFunctionUse = 1;
+ 				this.controlUseItem = true;
+ 			}
+-			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(20, true, false))
++			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(this.inventory[this.selectedItem], 20, true, false))
+ 			{
+ 				this.altFunctionUse = 1;
+ 				this.controlUseItem = true;
 @@ -23456,6 +_,11 @@
  				this.controlUseItem = true;
  			}
@@ -4526,6 +4554,25 @@
  												if (this.inventory[num13].stack <= 0)
  												{
  													this.inventory[num13].SetDefaults(0, false);
+@@ -31860,6 +_,10 @@
+ 					{
+ 						flag6 = true;
+ 					}
++					if (!this.CheckMana(item, -1, !flag6)) {
++						flag2 = false;
++					}
++					goto SkipManaCode;
+ 					if (item.type != 127 || !this.spaceGun)
+ 					{
+ 						if (this.statMana >= (int)((float)item.mana * this.manaCost))
+@@ -31889,6 +_,7 @@
+ 							flag2 = false;
+ 						}
+ 					}
++					SkipManaCode:
+ 					if (this.whoAmI == Main.myPlayer && item.buffType != 0 && item.buffTime != 0 && flag2)
+ 					{
+ 						this.AddBuff(item.buffType, item.buffTime, true);
 @@ -32006,7 +_,7 @@
  						Main.PlaySound(item.UseSound, base.Center);
  					}
@@ -4535,7 +4582,7 @@
  				{
  					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
  					{
-@@ -32132,11 +_,11 @@
+@@ -32132,13 +_,13 @@
  			{
  				if (item.melee)
  				{
@@ -4545,10 +4592,14 @@
  				else
  				{
 -					this.itemAnimationMax = item.useAnimation;
+-				}
+-				if (item.mana > 0 && !flag && (item.type != 127 || !this.spaceGun))
 +					this.itemAnimationMax = (int)(item.useAnimation / PlayerHooks.TotalMeleeSpeedMultiplier(this, item));
- 				}
- 				if (item.mana > 0 && !flag && (item.type != 127 || !this.spaceGun))
++				}
++				if (item.mana > 0 && !flag && this.GetManaCost(item) > 0)
  				{
+ 					this.manaRegenDelay = (int)this.maxRegenDelay;
+ 				}
 @@ -32396,6 +_,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
@@ -6237,4 +6288,45 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
+@@ -40007,6 +_,40 @@
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
++		}
++
++		public int GetManaCost(Item item) {
++			int mana = (item.type != 127 || !this.spaceGun) ? (int)(item.mana * this.manaCost) : 0;
++			CombinedHooks.GetManaCost(this, item, ref mana);
++			return mana >= 0 ? mana : 0;
++		}
++
++		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
++			if (amount <= -1) {
++				amount = this.GetManaCost(item);
++			}
++			if (this.statMana >= amount) {
++				if (pay) {
++					CombinedHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
++				}
++				return true;
++			}
++			if (blockQuickMana) {
++				return false;
++			}
++			CombinedHooks.OnMissingMana(this, item, amount);
++			if (this.statMana < amount && this.manaFlower) {
++				this.QuickMana();
++			}
++			if (this.statMana >= amount) {
++				if (pay) {
++					CombinedHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
++				}
++				return true;
++			}
++			return false;
+ 		}
+ 
+ 		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false)
 
