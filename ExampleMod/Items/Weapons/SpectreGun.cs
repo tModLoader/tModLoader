@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Weapons
 {
-	//ported from my tAPI mod because I'm lazy
 	public class SpectreGun : ModItem
 	{
 		public override void SetStaticDefaults() {
@@ -39,8 +38,9 @@ namespace ExampleMod.Items.Weapons
 			recipe.AddRecipe();
 		}
 
-		public override void GetWeaponDamage(Player player, ref int damage) {
-			damage = (int)(damage * player.bulletDamage + 5E-06);
+		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
+			// Here we use the multiplicative damage modifier because Terraria does this approach for Ammo damage bonuses. 
+			mult *= player.bulletDamage;
 		}
 
 		public override Vector2? HoldoutOffset() {

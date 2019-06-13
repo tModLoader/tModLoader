@@ -25,10 +25,9 @@ namespace ExampleMod.Items.ExampleDamageClass
 			item.summon = false;
 		}
 
-		// As a modder, you could also opt to make the Get overrides also sealed. Up to the modder
-		public override void GetWeaponDamage(Player player, ref int damage) {
-			// Multiplies the damage by our custom damage multiplier
-			damage = (int)(damage * ExampleDamagePlayer.ModPlayer(player).exampleDamage + 5E-06f);
+		// As a modder, you could also opt to make these overrides also sealed. Up to the modder
+		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
+			add += ExampleDamagePlayer.ModPlayer(player).exampleDamage;
 		}
 
 		public override void GetWeaponKnockback(Player player, ref float knockback) {
