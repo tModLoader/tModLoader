@@ -220,9 +220,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				return false;
 
 			if (!string.IsNullOrEmpty(Interface.modBrowser.Filter)) {
-				if (Interface.modBrowser.SearchFilterMode == SearchFilter.Author
-					&& _author.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
-					return false;
+				if (Interface.modBrowser.SearchFilterMode == SearchFilter.Author) {
+					if (_author.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
+						return false;
+				}
 				else if (DisplayName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1
 					&& ModName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
 					return false;
