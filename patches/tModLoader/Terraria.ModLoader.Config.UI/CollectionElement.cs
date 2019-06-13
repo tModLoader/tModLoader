@@ -152,7 +152,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected virtual void NullCollection() {
 			data = null;
-			memberInfo.SetValue(item, data);
+			SetObject(data);
 		}
 
 		protected abstract void SetupList();

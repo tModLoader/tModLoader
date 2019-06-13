@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
-			memberInfo.SetValue(item, data);
+			SetObject(data);
 		}
 
 		protected override void SetupList() {

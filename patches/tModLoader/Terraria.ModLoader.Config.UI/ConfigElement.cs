@@ -12,8 +12,10 @@ namespace Terraria.ModLoader.Config.UI
 {
 	public abstract class ConfigElement<T> : ConfigElement
 	{
-		protected virtual T GetValue() => (T)GetObject();
-		protected virtual void SetValue(T value) => SetObject(value);
+		protected virtual T Value {
+			get => (T)GetObject();
+			set => SetObject(value);
+		}
 	}
 
 	public abstract class ConfigElement : UIElement

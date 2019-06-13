@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
-			memberInfo.SetValue(item, data);
+			SetObject(data);
 		}
 
 		protected override void SetupList() {

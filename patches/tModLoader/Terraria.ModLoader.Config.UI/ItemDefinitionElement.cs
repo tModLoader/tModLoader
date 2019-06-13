@@ -37,12 +37,7 @@ namespace Terraria.ModLoader.Config.UI
 			Height.Set(30f, 0f);
 			itemDefinitionList = (IList<ItemDefinition>)list;
 
-			_GetValue = () => DefaultGetValue();
-			_SetValue = (ItemDefinition value) => DefaultSetValue(value);
-
 			if (itemDefinitionList != null) {
-				_GetValue = () => itemDefinitionList[index];
-				_SetValue = (ItemDefinition value) => { itemDefinitionList[index] = value; Interface.modConfig.SetPendingChanges(); };
 				TextDisplayFunction = () => index + 1 + ": ";
 			}
 
@@ -194,18 +189,6 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			//itemChoice.SetItem(_GetValue()?.GetID() ?? 0);
 			itemChoice.SetItem(_GetValue());
-		}
-
-		void DefaultSetValue(ItemDefinition text)
-		{
-			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, text);
-			Interface.modConfig.SetPendingChanges();
-		}
-
-		ItemDefinition DefaultGetValue()
-		{
-			return (ItemDefinition)memberInfo.GetValue(item);
 		}
 	}
 

@@ -17,14 +17,14 @@ namespace Terraria.ModLoader.Config.UI
 			base.OnBind();
 			_toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
 
-			OnClick += (ev, v) => SetValue(!GetValue());
+			OnClick += (ev, v) => Value = !Value;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle dimensions = base.GetDimensions();
-			Rectangle sourceRectangle = new Rectangle(GetValue() ? ((_toggleTexture.Width - 2) / 2 + 2) : 0, 0, (_toggleTexture.Width - 2) / 2, _toggleTexture.Height);
+			Rectangle sourceRectangle = new Rectangle(Value ? ((_toggleTexture.Width - 2) / 2 + 2) : 0, 0, (_toggleTexture.Width - 2) / 2, _toggleTexture.Height);
 			Vector2 drawPosition = new Vector2(dimensions.X + dimensions.Width - sourceRectangle.Width - 10f, dimensions.Y + 8f);
 			spriteBatch.Draw(_toggleTexture, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
 		}
