@@ -8,6 +8,7 @@ public class Installer
 {
     private static final String TERRARIA_VERSION = "v1.3.5.3";
     private static final int TERRARIA_SIZE = 10786816; // Windows only: We only want to make a backup of the official release
+    private static final int TERRARIA_SIZE_GOG = 10786816; // Could potentially differ in a later release. Coincidence?
 
     public static void tryInstall(String[] files, String[] filesToDelete, File directory, boolean WindowsInstall)
     {
@@ -38,7 +39,7 @@ public class Installer
         {
             File terrariaBackup = new File(directory, "Terraria_" + TERRARIA_VERSION + ".exe");
             File terrariaUnknown = new File(directory, "Terraria_Unknown.exe");
-            if (!terrariaBackup.exists() && terraria.length() == TERRARIA_SIZE)
+            if (!terrariaBackup.exists() && (terraria.length() == TERRARIA_SIZE || terraria.length() == TERRARIA_SIZE_GOG))
             {
                 copy(terraria, terrariaBackup);
             }

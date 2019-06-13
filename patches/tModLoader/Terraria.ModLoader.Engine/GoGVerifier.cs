@@ -29,8 +29,10 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			var vanillaPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location) != "Terraria.exe" ? "Terraria.exe" : "Terraria_v1.3.5.3.exe";
-			if (!File.Exists(vanillaPath))
+			if (!File.Exists(vanillaPath)) {
+				Logging.tML.Info("Vanilla Terraria.exe not found.");
 				return false;
+			}
 
 			if (!HashMatchesFile(GoGHash, vanillaPath))
 				return false;
