@@ -494,16 +494,24 @@ namespace Terraria.ModLoader
 			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
-		private delegate void DelegatePickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
+		private delegate void DelegateOldPickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback); // deprecated
+		private static HookList HookOldPickAmmo = AddHook<DelegateOldPickAmmo>(g => g.PickAmmo); // deprecated
+
+		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 		/// <summary>
 		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 		/// </summary>
-		public static void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback);
+		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+			ammo.modItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
+			ammo.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
-			foreach (var g in HookPickAmmo.arr)
-				g.Instance(item).PickAmmo(item, player, ref type, ref speed, ref damage, ref knockback);
+			foreach (var g in HookPickAmmo.arr) {
+				g.Instance(ammo).PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
+			}
+			foreach (var g in HookOldPickAmmo.arr) {
+				g.Instance(ammo).PickAmmo(ammo, player, ref type, ref speed, ref damage, ref knockback); // deprecated
+			}
 		}
 
 		private static HookList HookConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.ConsumeAmmo);
