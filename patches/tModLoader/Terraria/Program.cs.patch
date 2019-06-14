@@ -80,12 +80,14 @@
  					Program.DisplayException(e);
  				}
  			}
-@@ -264,8 +_,15 @@
+@@ -263,9 +_,16 @@
+ 					streamWriter.WriteLine("");
  				}
  #if CLIENT
- 				MessageBox.Show(e.ToString(), "Terraria: Error");
+-				MessageBox.Show(e.ToString(), "Terraria: Error");
 -#else
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				MessageBox.Show(e.ToString(), "Terraria: Error" + $" ({ModLoader.ModLoader.versionedName})");
 +				if (e.Message.Contains("CSteamworks"))
 +					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +				if (e.StackTrace.Contains("LaunchLocalServer"))
