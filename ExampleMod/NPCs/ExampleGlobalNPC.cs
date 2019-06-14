@@ -142,13 +142,15 @@ namespace ExampleMod.NPCs
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
 				nextSlot++;
 
+				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value. 
+				// Editing item.value in SetupShop is an incorrect approach.
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
-				shop.item[nextSlot].shopCustomPrice = new int?(2);
-				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
+				shop.item[nextSlot].shopCustomPrice = 2;
+				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals; // omit this line if shopCustomPrice should be in regular coins. 
 				nextSlot++;
 
 				shop.item[nextSlot].SetDefaults(mod.ItemType<Items.CarKey>());
-				shop.item[nextSlot].shopCustomPrice = new int?(3);
+				shop.item[nextSlot].shopCustomPrice = 3;
 				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyId;
 				nextSlot++;
 			}
