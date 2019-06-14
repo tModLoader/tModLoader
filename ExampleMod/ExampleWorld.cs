@@ -27,46 +27,51 @@ namespace ExampleMod
 		public int VolcanoCountdown;
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
-		public static int[] travelerItems; // An array of ints to get item types
-		public static bool spawnChance;
-		public static double randomTime;
-		public static int exampleTiles;
+        public static int[] travelerItems; // An array of ints to get item types
+        public static bool canSpawn;
+        public static double randomTime;
+        public static int exampleTiles;
 
 		public override void Initialize() {
 			downedAbomination = false;
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
-			travelerItems = new int[3]; // Initializing to set 3 random items (Starts off with zeros)
-			for (int i = 0; i < travelerItems.Length; i++) {
-				travelerItems[i] = 0;
-			}
-			spawnChance = false;
-			randomTime = 0;
-		}
+            travelerItems = new int[3]; // Initializing to set 3 random items (Starts off with zeros)
+            for (int i = 0; i < travelerItems.Length; i++)
+            {
+                travelerItems[i] = 0;
+            }
+            canSpawn = false;
+            randomTime = 0;
+        }
 
-		public override TagCompound Save() {
-			var downed = new List<string>();
-			if (downedAbomination) {
-				downed.Add("abomination");
-			}
+        public override TagCompound Save()
+        {
+            var downed = new List<string>();
+            if (downedAbomination)
+            {
+                downed.Add("abomination");
+            }
 
-			if (downedPuritySpirit) {
-				downed.Add("puritySpirit");
-			}
+            if (downedPuritySpirit)
+            {
+                downed.Add("puritySpirit");
+            }
 
-			return new TagCompound {
-				["downed"] = downed,
-				["travelerShopItems"] = travelerItems
-			};
-		}
+            return new TagCompound
+            {
+                ["downed"] = downed,
+                ["travelerShopItems"] = travelerItems
+            };
+        }
 
-		public override void Load(TagCompound tag) {
+        public override void Load(TagCompound tag) {
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
-			travelerItems = tag.GetIntArray("travelerShopItems");
-		}
+            travelerItems = tag.GetIntArray("travelerShopItems");
+        }
 
 		public override void LoadLegacy(BinaryReader reader) {
 			int loadVersion = reader.ReadInt32();
@@ -412,98 +417,99 @@ namespace ExampleMod
 			exampleTiles = tileCounts[mod.TileType("ExampleBlock")];
 		}
 
-		public override void PreUpdate() {
-			bool travelerExists = false; // Find an Explorer
-			bool travelerConditions = false; // If no conditions, either remove or set true
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				if (Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant") || !Main.npc[i].active) continue; // We dont care about NPCs that arent the Example Traveling Merchant or not active
-				travelerExists = true; // We found one, so set it to true
-			}
+        public override void PreUpdate()
+        {
+            bool travelerExists = false; // Find an Explorer
+            bool conditionsMet = false; // If no conditions, either remove or set true
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                if (Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant") || !Main.npc[i].active) continue; // We dont care about NPCs that arent the Example Traveling Merchant or not active
+                travelerExists = true; // We found one, so set it to true
+            }
 
-			if (Main.dayTime && randomTime == 0) // Each day we will set a new SpawnChance and TimeVariation
-			{
-				spawnChance = SpawnChance(4); // 4 = 25% Chance
-				randomTime = RandomizeSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
-			}
+            if (Main.dayTime && randomTime == 0) // Each day we will set a new SpawnChance and TimeVariation
+            {
+                canSpawn = Main.rand.Next(4) == 0; // 4 = 25% Chance
+                randomTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
+            }
 
-			if (travelerExists) {
-				if (!Main.dayTime || Main.time > 48600.0) // If its becomes night or the time passes your desired point, despawn the traveler
-				{
-					for (int i = 0; i < Main.maxNPCs; i++) {
-						if (!Main.npc[i].active) continue; // We dont care about inactive NPCs
-						if (Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant")) continue;
+            if (travelerExists)
+            {
+                if (!Main.dayTime || Main.time > 48600.0) // If its becomes night or the time passes your desired point, despawn the traveler
+                {
+                    for (int i = 0; i < Main.maxNPCs; i++)
+                    {
+                        if (!Main.npc[i].active || Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant")) continue;
+                        
+                        // Here we despawn the NPC and send a message stating that the NPC has despawned
+                        if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Main.npc[i].FullName + " has departed!", 50, 125, 255);
+                        else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(Main.npc[i].FullName + " has departed!"), new Color(50, 125, 255));
+                        Main.npc[i].active = false;
+                        Main.npc[i].netSkip = -1;
+                        Main.npc[i].life = 0;
+                        randomTime = 0; // Set to 0 so the reset can happen
+                    }
+                }
+            }
+            else if (canSpawn) // If a traveler does not exist, and the spawnchance is successful, spawn a traveler
+            {
+                // If you do not want Conditions, just remove this for loop and the if statement
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    if (!Main.npc[i].active || Main.npc[i].type != mod.NPCType("Example Person")) continue; // If the npc is not the Example Person or inactive, move onto the next npc
+                    conditionsMet = true; // If one Example Person exists, Example traveling Merchant can spawn
+                }
+                if (conditionsMet)
+                {
+                    // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+                    if (!Main.fastForwardTime && Main.dayTime && Main.time > randomTime) // Should spawn between 4:30am and 7:30am (Do not spawn if using the Sundial)
+                    {
+                        if (!Main.eclipse && (Main.invasionType <= 0 || Main.invasionDelay != 0 || Main.invasionSize <= 0)) // Make sure no events are occuring
+                        {
+                            // Here we are randomizing our chances of items. With this we can interchange between 2 items
+                            // This code line is here and not with the spawnChance and randomTime because this is saved data. We dont want it to randomize when we join back in a world
+                            travelerItems = GetTravelerShop();
 
-						// Here we despawn the NPC and send a message stating that the NPC has despawned
-						string fullName = Main.npc[i].FullName;
-						if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Main.npc[i].FullName + " has departed!", 50, 125, 255);
-						else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(Main.npc[i].FullName + " has departed!"), new Color(50, 125, 255));
-						Main.npc[i].active = false;
-						Main.npc[i].netSkip = -1;
-						Main.npc[i].life = 0;
-						randomTime = 0; // Set to 0 so the reset can happen
-					}
-				}
-			}
-			else if (spawnChance) // If a traveler does not exist, and the spawnchance is successful, spawn a traveler
-			{
-				// If you do not want Conditions, just remove this for loop and the if statement
-				for (int i = 0; i < Main.maxNPCs; i++) {
-					if (!Main.npc[i].active) continue; // We dont care about inactive NPCs
-					if (Main.npc[i].type != mod.NPCType("Example Person")) continue; // If the npc is not the Example Person, move onto the next npc
-					travelerConditions = true; // If one Example Person exists, Example traveling Merchant can spawn
-				}
-				if (travelerConditions) {
-					// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
-					if (!Main.fastForwardTime && Main.dayTime && Main.time > randomTime) // Should spawn between 4:30am and 7:30am (Do not spawn if using the Sundial)
-					{
-						if (!Main.eclipse && (Main.invasionType <= 0 || Main.invasionDelay != 0 || Main.invasionSize <= 0)) // Make sure no events are occuring
-						{
-							// Here we are randomizing our chances of items. With this we can interchange between 2 items
-							// This code line is here and not with the spawnChance and randomTime because this is saved data. We dont want it to randomize when we join back in a world
-							travelerItems = RandomizeTravelerShop();
+                            int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
+                            Main.npc[newExplorer].homeless = true;
+                            Main.npc[newExplorer].direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
+                            Main.npc[newExplorer].netUpdate = true;
 
-							int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
-							Main.npc[newExplorer].homeless = true;
-							if (Main.spawnTileX < WorldGen.bestX) Main.npc[newExplorer].direction = 1;
-							else if (Main.spawnTileX > WorldGen.bestX) Main.npc[newExplorer].direction = -1;
-							Main.npc[newExplorer].netUpdate = true;
+                            // Annouce that the traveler has spawned in!
+                            if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", Main.npc[newExplorer].FullName), 50, 125, 255);
+                            else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", Main.npc[newExplorer].GetFullNetName()), new Color(50, 125, 255));
+                        }
+                    }
+                }
+                if (!Main.dayTime)
+                {
+                    // The traveler wont spawn at night so this is a safety if the chance is true but it somehow doesnt spawn
+                    randomTime = 0; // Set to 0 so the reset can happen
+                }
+            }
+            else if (!Main.dayTime)
+            {
+                // In this case the traveler does NOT exist and the spanChance is false, meaning they never spawn. So we have to reset the timeVar to attempt a new chance
+                randomTime = 0; // Set to 0 so the reset can happen
+            }
+        }
 
-							// Annouce that the traveler has spawned in!
-							string fullName = Main.npc[newExplorer].FullName;
-							if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", fullName), 50, 125, 255);
-							else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", Main.npc[newExplorer].GetFullNetName()), new Color(50, 125, 255));
-						}
-					}
-				}
-				if (!Main.dayTime) {
-					// The traveler wont spawn at night so this is a safety if the chance is true but it somehow doesnt spawn
-					randomTime = 0; // Set to 0 so the reset can happen
-				}
-			}
-			else if (!Main.dayTime) {
-				// In this case the traveler does NOT exist and the spanChance is false, meaning they never spawn. So we have to reset the timeVar to attempt a new chance
-				randomTime = 0; // Set to 0 so the reset can happen
-			}
-		}
+        public static double GetRandomSpawnTime(double minTime, double maxTime)
+        {
+            return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
+        }
 
-		public static double RandomizeSpawnTime(double minTime, double maxTime) {
-			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
-		}
+        public int[] GetTravelerShop()
+        {
+            int[] randomizedInts = new int[3];
+            randomizedInts[0] = Main.rand.Next(2); // Randomize between 2 items
+            randomizedInts[1] = Main.rand.Next(3); // 3 items
+            randomizedInts[2] = Main.rand.Next(4); // 4 items
 
-		public bool SpawnChance(int num) {
-			return Main.rand.Next(num) == 0;
-		}
+            return randomizedInts;
+        }
 
-		public int[] RandomizeTravelerShop() {
-			int[] randomizedInts = new int[3];
-			randomizedInts[0] = Main.rand.Next(2); // Randomize between 2 items
-			randomizedInts[1] = Main.rand.Next(3); // 3 items
-			randomizedInts[2] = Main.rand.Next(4); // 4 items
-
-			return randomizedInts;
-		}
-
-		public override void PostUpdate() {
+        public override void PostUpdate() {
 			if (Main.dayTime && VolcanoCountdown == 0) {
 				if (VolcanoCooldown > 0) {
 					VolcanoCooldown--;
