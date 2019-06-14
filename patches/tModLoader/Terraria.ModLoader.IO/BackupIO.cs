@@ -48,7 +48,7 @@ namespace Terraria.ModLoader
 		/// Some files are already compressed and will not be compressed further
 		/// </summary>
 		private static void AddZipEntry(this ZipFile zip, string path, bool isCloud = false) {
-			zip.CompressionMethod = CompressionMethod.BZip2;
+			// zip.CompressionMethod = CompressionMethod.BZip2; // Does not work with Windows Explorer.
 			zip.CompressionLevel = CompressionLevel.BestCompression;
 			zip.Comment = $"Archived on ${DateTime.Now} by tModLoader";
 
