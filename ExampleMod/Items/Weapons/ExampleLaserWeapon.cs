@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using ExampleMod.Projectiles;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,7 +25,7 @@ namespace ExampleMod.Items.Weapons
 			item.useStyle = 5;
 			item.shootSpeed = 14f;
 			item.useAnimation = 20;
-			item.shoot = mod.ProjectileType("ExampleLaser");
+			item.shoot = mod.ProjectileType<ExampleLaser>();
 			item.value = Item.sellPrice(silver: 3);
 		}
 
