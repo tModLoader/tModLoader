@@ -106,50 +106,14 @@ namespace ExampleMod.NPCs
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-            // Here we get the random ints that were declared in ExampleWorld, and based on them make randomzied shop items
-            // Remember that we saved the int array so even if we revisit the shop or leave the world, the items will remain the same until the traveler despawns
-            // You can of course add to the Main.rand.Next(#) number to increase the amount of items that can randomly generate
-            if (ExampleWorld.travelerItems[0] == 0)
+            // Here we get the randomized items that were declared in ExampleWorld and place them into each slot of the shop
+            // Remember, we saved the items in ExampleWorld so even if we revisit the shop or leave the world, the items will remain the same until the traveler despawns
+            foreach (Item item in ExampleWorld.travelerItems)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleItem"));
+                if (item == null || item.type == 0) continue;
+                shop.item[nextSlot].SetDefaults(item.type);
+                nextSlot++;
             }
-            else if (ExampleWorld.travelerItems[0] == 1)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("EquipMaterial"));
-            }
-            nextSlot++;
-
-            if (ExampleWorld.travelerItems[1] == 0)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("BossItem"));
-            }
-            else if (ExampleWorld.travelerItems[1] == 1)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleWorkbench"));
-            }
-            else if (ExampleWorld.travelerItems[1] == 2)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleChair"));
-            }
-            nextSlot++;
-
-            if (ExampleWorld.travelerItems[2] == 0)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleDoor"));
-            }
-            else if (ExampleWorld.travelerItems[2] == 1)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleBed"));
-            }
-            else if (ExampleWorld.travelerItems[2] == 2)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExampleChest"));
-            }
-            else if (ExampleWorld.travelerItems[2] == 3)
-            {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExamplePickaxe"));
-            }
-            nextSlot++;
         }
 
         public override void AI()

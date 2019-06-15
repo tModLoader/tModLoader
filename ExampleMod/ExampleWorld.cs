@@ -27,8 +27,9 @@ namespace ExampleMod
 		public int VolcanoCountdown;
 		public int VolcanoCooldown = DefaultVolcanoCooldown;
 		public int VolcanoTremorTime;
-        public static int[] travelerItems; // An array of ints to get item types
-        public static double travellerSpawnTime; // the time of day the traveller will spawn (double.MaxValue for no spawn)
+        public static List<Item> travelerItems; // An array of ints to get item types
+        public static bool canSpawn;
+        public static double randomTime;
         public static int exampleTiles;
 
 		public override void Initialize() {
@@ -36,12 +37,9 @@ namespace ExampleMod
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
-            travelerItems = new int[3]; // Initializing to set 3 random items (Starts off with zeros)
-            for (int i = 0; i < travelerItems.Length; i++)
-            {
-                travelerItems[i] = 0;
-            }
-            travellerSpawnTime = 0;
+            travelerItems = new List<Item>();
+            canSpawn = false;
+            randomTime = 0;
         }
 
         public override TagCompound Save()
@@ -68,7 +66,7 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
-            travelerItems = tag.GetIntArray("travelerShopItems");
+            travelerItems = tag.Get<List<Item>>("travelerShopItems");
         }
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -417,76 +415,79 @@ namespace ExampleMod
 
         public override void PreUpdate()
         {
-            NPC traveller = FindNPC(mod.NPCType("ExampleTravelingMerchant")); // Find an Explorer if there's one spawned in the world
-            if (traveller != null && (!Main.dayTime || Main.time > 48600.0) && !IsNpcOnscreen(traveller.Center)) // If the time is after 6PM and the NPC isn't onscreen
+            bool travelerExists = false; // Find an Explorer
+            bool conditionsMet = false; // If no conditions, either remove or set true
+            for (int i = 0; i < Main.maxNPCs; i++)
             {
-                // Here we despawn the NPC and send a message stating that the NPC has despawned
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(traveller.FullName + " has departed!", 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(traveller.FullName + " has departed!"), new Color(50, 125, 255));
-                traveller.active = false;
-                traveller.netSkip = -1;
-                traveller.life = 0;
+                if (Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant") || !Main.npc[i].active) continue; // We dont care about NPCs that arent the Example Traveling Merchant or not active
+                travelerExists = true; // We found one, so set it to true
             }
 
-            // Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
-            if (Main.dayTime && Main.time == 0)
+            if (Main.dayTime && randomTime == 0) // Each day we will set a new SpawnChance and TimeVariation
             {
-                // insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
-                // NPC won't spawn today if it stayed all night
-                if (traveller == null && Main.rand.Next(4) == 0) // 4 = 25% Chance
+                canSpawn = Main.rand.Next(4) == 0; // 4 = 25% Chance
+                randomTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
+            }
+
+            if (travelerExists)
+            {
+                if (!Main.dayTime || Main.time > 48600.0) // If its becomes night or the time passes your desired point, despawn the traveler
+                {
+                    for (int i = 0; i < Main.maxNPCs; i++)
+                    {
+                        if (!Main.npc[i].active || Main.npc[i].type != mod.NPCType("ExampleTravelingMerchant")) continue;
+                        
+                        // Here we despawn the NPC and send a message stating that the NPC has despawned
+                        if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Main.npc[i].FullName + " has departed!", 50, 125, 255);
+                        else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(Main.npc[i].FullName + " has departed!"), new Color(50, 125, 255));
+                        Main.npc[i].active = false;
+                        Main.npc[i].netSkip = -1;
+                        Main.npc[i].life = 0;
+                        randomTime = 0; // Set to 0 so the reset can happen
+                    }
+                }
+            }
+            else if (canSpawn) // If a traveler does not exist, and the spawnchance is successful, spawn a traveler
+            {
+                // If you do not want Conditions, just remove this for loop and the if statement
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    if (!Main.npc[i].active || Main.npc[i].type != mod.NPCType("Example Person")) continue; // If the npc is not the Example Person or inactive, move onto the next npc
+                    conditionsMet = true; // If one Example Person exists, Example traveling Merchant can spawn
+                }
+                if (conditionsMet)
                 {
                     // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
-                    travellerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
+                    if (!Main.fastForwardTime && Main.dayTime && Main.time > randomTime) // Should spawn between 4:30am and 7:30am (Do not spawn if using the Sundial)
+                    {
+                        if (!Main.eclipse && (Main.invasionType <= 0 || Main.invasionDelay != 0 || Main.invasionSize <= 0)) // Make sure no events are occuring
+                        {
+                            // Here we are randomizing our chances of items. With this we can interchange between 2 items
+                            // This code line is here and not with the spawnChance and randomTime because this is saved data. We dont want it to randomize when we join back in a world
+                            travelerItems = GetTravelerShop();
 
-                    // Set the items the NPC will spawn with. If the NPC respawns during the day, then it'll return with the same items.
-                    travelerItems = GetTravelerShop();
+                            int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
+                            Main.npc[newExplorer].homeless = true;
+                            Main.npc[newExplorer].direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
+                            Main.npc[newExplorer].netUpdate = true;
+
+                            // Annouce that the traveler has spawned in!
+                            if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", Main.npc[newExplorer].FullName), 50, 125, 255);
+                            else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", Main.npc[newExplorer].GetFullNetName()), new Color(50, 125, 255));
+                        }
+                    }
                 }
-                else
+                if (!Main.dayTime)
                 {
-                    travellerSpawnTime = double.MaxValue; // no spawn today
+                    // The traveler wont spawn at night so this is a safety if the chance is true but it somehow doesnt spawn
+                    randomTime = 0; // Set to 0 so the reset can happen
                 }
             }
-
-            // Spawn the traveller after our chosen point in the day.
-            // We can't spawn hile the sundial is active, or while an event is running
-            // but if an event ends, the traveller can still arrive late in the day
-            bool eventActive = Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0;
-            if (traveller == null && Main.dayTime && Main.time > travellerSpawnTime && !Main.fastForwardTime && !eventActive)
+            else if (!Main.dayTime)
             {
-                int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
-                traveller = Main.npc[newExplorer];
-                traveller.homeless = true;
-                traveller.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
-                traveller.netUpdate = true;
-
-                // Annouce that the traveler has spawned in!
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveller.FullName), 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveller.GetFullNetName()), new Color(50, 125, 255));
+                // In this case the traveler does NOT exist and the spanChance is false, meaning they never spawn. So we have to reset the timeVar to attempt a new chance
+                randomTime = 0; // Set to 0 so the reset can happen
             }
-        }
-
-        public static NPC FindNPC(int npcType)
-        {
-            foreach (NPC npc in Main.npc)
-                if (npc.active && npc.type == npcType)
-                    return npc;
-
-            return null;
-        }
-
-        private bool IsNpcOnscreen(Vector2 center)
-        {
-            int w = NPC.sWidth + NPC.safeRangeX * 2;
-            int h = NPC.sHeight + NPC.safeRangeY * 2;
-            Rectangle npcScreenRect = new Rectangle((int)center.X - w/2, (int)center.Y - h/2, w, h);
-            foreach (Player player in Main.player)
-            {
-                if (player.active && new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height).Intersects(npcScreenRect))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public static double GetRandomSpawnTime(double minTime, double maxTime)
@@ -494,14 +495,56 @@ namespace ExampleMod
             return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
         }
 
-        public int[] GetTravelerShop()
+        public List<Item> GetTravelerShop()
         {
-            int[] randomizedInts = new int[3];
-            randomizedInts[0] = Main.rand.Next(2); // Randomize between 2 items
-            randomizedInts[1] = Main.rand.Next(3); // 3 items
-            randomizedInts[2] = Main.rand.Next(4); // 4 items
+            List<Item> RandomizedItems = new List<Item>();
 
-            return randomizedInts;
+            // For each slot we add a switch case to determine what should go in that slot
+            Item nextItem = new Item();
+
+            switch (WorldGen.genRand.Next(2))
+            {
+                case 0:
+                    nextItem.SetDefaults(mod.ItemType("ExampleItem"));
+                    break;
+                default:
+                    nextItem.SetDefaults(mod.ItemType("EquipMaterial"));
+                    break;
+            }
+            RandomizedItems.Add(nextItem);
+
+            switch (WorldGen.genRand.Next(3))
+            {
+                case 0:
+                    nextItem.SetDefaults(mod.ItemType("BossItem"));
+                    break;
+                case 1:
+                    nextItem.SetDefaults(mod.ItemType("ExampleWorkbench"));
+                    break;
+                default:
+                    nextItem.SetDefaults(mod.ItemType("ExampleChair"));
+                    break;
+            }
+            RandomizedItems.Add(nextItem);
+
+            switch (WorldGen.genRand.Next(4))
+            {
+                case 0:
+                    nextItem.SetDefaults(mod.ItemType("ExampleDoor"));
+                    break;
+                case 1:
+                    nextItem.SetDefaults(mod.ItemType("ExampleBed"));
+                    break;
+                case 2:
+                    nextItem.SetDefaults(mod.ItemType("ExampleChest"));
+                    break;
+                default:
+                    nextItem.SetDefaults(mod.ItemType("ExamplePickaxe"));
+                    break;
+            }
+            RandomizedItems.Add(nextItem);
+
+            return RandomizedItems;
         }
 
         public override void PostUpdate() {
