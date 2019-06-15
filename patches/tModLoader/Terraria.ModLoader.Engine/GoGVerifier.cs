@@ -18,12 +18,28 @@ namespace Terraria.ModLoader.Engine
 				return hash.SequenceEqual(md5.ComputeHash(stream));
 		}
 
-		private static byte[] GoGHash = new byte[] { 185, 47, 36, 43, 200, 116, 221, 219, 240, 143, 112, 86, 97, 179, 19, 169 };
-		private static bool GoGCheck() {
-			if (!Platform.IsWindows)
-				return false;
+		private static void GetPlatformCheckInfo(out string steamAPIpath, out byte[] vanillaGoGhash) {
+			if (Platform.IsWindows) {
+				steamAPIpath = "steam_api.dll";
+				vanillaGoGhash = new byte[] { 185, 47, 36, 43, 200, 116, 221, 219, 240, 143, 112, 86, 97, 179, 19, 169 };
+			} 
+			else if (Platform.IsOSX) {
+				steamAPIpath = "osx/libCSteamworks";
+				// hash not yet implemented, need someone with GoG for mac
+				vanillaGoGhash = new byte[] { 148, 42, 176, 97, 232, 84, 199, 77, 179, 166, 177, 239, 226, 220, 36, 208 };
+			} 
+			else if (Platform.IsLinux) {
+				steamAPIpath = "lib/libCSteamworks.so";
+				vanillaGoGhash = new byte[] { 148, 42, 176, 97, 232, 84, 199, 77, 179, 166, 177, 239, 226, 220, 36, 208 };
+			}
+			else {
+				throw new Exception("Platform??");
+			}
+		}
 
-			if (File.Exists("steam_api.dll")) {
+		private static bool GoGCheck() {
+			GetPlatformCheckInfo(out var steamAPIpath, out var vanillaGoGhash);
+			if (File.Exists(steamAPIpath)) {
 				VerifySteamAPI();
 				return false;
 			}
@@ -34,16 +50,19 @@ namespace Terraria.ModLoader.Engine
 				return false;
 			}
 
-			if (!HashMatchesFile(GoGHash, vanillaPath))
+			if (!HashMatchesFile(vanillaGoGhash, vanillaPath))
 				return false;
 
 			Logging.tML.Info("GoG detected. Disabled steam check.");
 			return true;
 		}
 
-		private static byte[] SteamAPIHash = new byte[] { 123, 133, 124, 137, 123, 198, 147, 19, 228, 147, 109, 195, 220, 206, 81, 147 };
 		private static void VerifySteamAPI() {
-			if (!HashMatchesFile(SteamAPIHash, "steam_api.dll")) {
+			if (!Platform.IsWindows)
+				return;
+
+			var steamAPIhash = new byte[] { 123, 133, 124, 137, 123, 198, 147, 19, 228, 147, 109, 195, 220, 206, 81, 147 };
+			if (!HashMatchesFile(steamAPIhash, "steam_api.dll")) {
 				Logging.tML.Fatal("Steam API hash mismatch, assumed pirated");
 				Environment.Exit(1);
 			}
