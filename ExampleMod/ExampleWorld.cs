@@ -534,7 +534,7 @@ namespace ExampleMod
             return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
         }
 
-        public int[] GetTravelerShop()
+        public List<Item> GetTravelerShop()
         {
             List<Item> RandomizedItems = new List<Item>();
 
