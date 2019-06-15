@@ -13,7 +13,8 @@ namespace ExampleMod.Items.ExampleDamageClass
 		// Vanilla only really has damage multipliers in code
 		// And crit and knockback is usually just added to
 		// As a modder, you could make separate variables for multipliers and simple addition bonuses
-		public float exampleDamage = 1f;
+		public float exampleDamageAdd;
+		public float exampleDamageMult = 1f;
 		public float exampleKnockback;
 		public int exampleCrit;
 
@@ -26,7 +27,8 @@ namespace ExampleMod.Items.ExampleDamageClass
 		}
 
 		private void ResetVariables() {
-			exampleDamage = 1f;
+			exampleDamageAdd = 0f;
+			exampleDamageMult = 1f;
 			exampleKnockback = 0f;
 			exampleCrit = 0;
 		}

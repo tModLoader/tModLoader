@@ -27,17 +27,18 @@ namespace ExampleMod.Items.ExampleDamageClass
 
 		// As a modder, you could also opt to make these overrides also sealed. Up to the modder
 		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
-			add += ExampleDamagePlayer.ModPlayer(player).exampleDamage;
+			add += ExampleDamagePlayer.ModPlayer(player).exampleDamageAdd;
+			mult *= ExampleDamagePlayer.ModPlayer(player).exampleDamageMult;
 		}
 
 		public override void GetWeaponKnockback(Player player, ref float knockback) {
 			// Adds knockback bonuses
-			knockback = knockback + ExampleDamagePlayer.ModPlayer(player).exampleKnockback;
+			knockback += ExampleDamagePlayer.ModPlayer(player).exampleKnockback;
 		}
 
 		public override void GetWeaponCrit(Player player, ref int crit) {
 			// Adds crit bonuses
-			crit = crit + ExampleDamagePlayer.ModPlayer(player).exampleCrit;
+			crit += ExampleDamagePlayer.ModPlayer(player).exampleCrit;
 		}
 
 		// Because we want the damage tooltip to show our custom damage, we need to modify it
@@ -45,7 +46,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 			// Get the vanilla damage tooltip
 			TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
 			if (tt != null) {
-				// We want to grab the last word of the tooltip, which is the translated word for 'damage' (depending on what langauge the player is using)
+				// We want to grab the last word of the tooltip, which is the translated word for 'damage' (depending on what language the player is using)
 				// So we split the string by whitespace, and grab the last word from the returned arrays to get the damage word, and the first to get the damage shown in the tooltip
 				string[] splitText = tt.text.Split(' ');
 				string damageValue = splitText.First();
