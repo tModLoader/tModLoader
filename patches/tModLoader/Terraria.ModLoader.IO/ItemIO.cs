@@ -79,11 +79,13 @@ namespace Terraria.ModLoader.IO
 				}
 			}
 
-			item.Prefix(tag.GetByte("prefix"));
 			if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
 				string prefixMod = tag.GetString("modPrefixMod");
 				string prefixName = tag.GetString("modPrefixName");
 				item.Prefix(ModLoader.GetMod(prefixMod)?.PrefixType(prefixName) ?? 0);
+			}
+			else if (tag.ContainsKey("prefix")) {
+				item.Prefix(tag.GetByte("prefix"));
 			}
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
