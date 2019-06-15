@@ -36,6 +36,10 @@ namespace ExampleMod.Items.Weapons
 			recipe.AddRecipe();
 		}
 
+		/*
+		 * Feel free to uncomment any of the examples below to see what they do
+		 */
+
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
 		{

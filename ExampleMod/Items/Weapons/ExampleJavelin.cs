@@ -28,6 +28,8 @@ namespace ExampleMod.Items.Weapons
 
 			item.UseSound = SoundID.Item1;
 			item.value = Item.sellPrice(silver: 5);
+			// Look at the javelin projectile for a lot of custom code
+			// If you are in an editor like Visual Studio, you can hold CTRL and Click ExampleJavelinProjectile
 			item.shoot = mod.ProjectileType<ExampleJavelinProjectile>();
 		}
 	}
