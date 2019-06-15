@@ -7,6 +7,7 @@ using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ExampleMod.Items.ExampleDamageClass;
 using Terraria;
 using Terraria.GameContent.Dyes;
 using Terraria.GameContent.UI;
@@ -73,6 +74,8 @@ namespace ExampleMod
 
 			// Registers a new custom currency
 			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
+
+			Mundane.AddHacks();
 
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ) {
