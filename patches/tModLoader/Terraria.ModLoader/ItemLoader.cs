@@ -387,9 +387,9 @@ namespace Terraria.ModLoader
 		/// Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks.
 		/// </summary>
 		public static void GetManaCost(Item item, Player player, ref int mana) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
+			
 			item.modItem?.GetManaCost(player, ref mana);
 
 			foreach (var g in HookGetManaCost.arr) {
@@ -402,9 +402,9 @@ namespace Terraria.ModLoader
 		/// Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks.
 		/// </summary>
 		public static void OnMissingMana(Item item, Player player, int neededMana) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
+			
 			item.modItem?.OnMissingMana(player, neededMana);
 
 			foreach (var g in HookOnMissingMana.arr) {
@@ -417,9 +417,9 @@ namespace Terraria.ModLoader
 		/// Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks.
 		/// </summary>
 		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
-			if (item.IsAir) {
+			if (item.IsAir)
 				return;
-			}
+			
 			item.modItem?.OnConsumeMana(player, manaConsumed);
 
 			foreach (var g in HookOnConsumeMana.arr) {
@@ -450,6 +450,9 @@ namespace Terraria.ModLoader
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
 		public static void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult) {
+			if (item.IsAir)
+				return;
+
 			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult);
 
 			foreach (var g in HookModifyWeaponDamage.arr)
