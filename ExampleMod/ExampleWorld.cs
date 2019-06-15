@@ -432,11 +432,14 @@ namespace ExampleMod
             if (Main.dayTime && Main.time == 0)
             {
                 // insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
+                // NPC won't spawn today if it stayed all night
                 if (traveller == null && Main.rand.Next(4) == 0) // 4 = 25% Chance
                 {
                     // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
                     travellerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
-                    PickTravellerItems();
+
+                    // Set the items the NPC will spawn with. If the NPC respawns during the day, then it'll return with the same items.
+                    travelerItems = GetTravelerShop();
                 }
                 else
                 {
@@ -450,10 +453,6 @@ namespace ExampleMod
             bool eventActive = Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0;
             if (traveller == null && Main.dayTime && Main.time > travellerSpawnTime && !Main.fastForwardTime && !eventActive)
             {
-                // Here we are randomizing our chances of items. With this we can interchange between 2 items
-                // This code line is here and not with the spawnChance and randomTime because this is saved data. We dont want it to randomize when we join back in a world
-                travelerItems = GetTravelerShop();
-
                 int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
                 traveller = Main.npc[newExplorer];
                 traveller.homeless = true;
