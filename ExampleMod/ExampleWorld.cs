@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
@@ -28,7 +29,7 @@ namespace ExampleMod
         public int VolcanoCooldown = DefaultVolcanoCooldown;
         public int VolcanoTremorTime;
         public static List<Item> travelerItems; // An array of ints to get item types
-        public static double travellerSpawnTime; // the time of day the traveller will spawn (double.MaxValue for no spawn)
+        public static double travelerSpawnTime; // the time of day the traveler will spawn (double.MaxValue for no spawn)
         public static int exampleTiles;
 
         public override void Initialize()
@@ -38,7 +39,7 @@ namespace ExampleMod
             VolcanoCountdown = 0;
             VolcanoTremorTime = 0;
             travelerItems = new List<Item>(); // Initializing to set 3 random items (Starts off with zeros)
-            travellerSpawnTime = 0;
+            travelerSpawnTime = 0;
         }
 
         public override TagCompound Save()
@@ -457,15 +458,15 @@ namespace ExampleMod
 
         public override void PreUpdate()
         {
-            NPC traveller = FindNPC(mod.NPCType("ExampleTravelingMerchant")); // Find an Explorer if there's one spawned in the world
-            if (traveller != null && (!Main.dayTime || Main.time > 48600.0) && !IsNpcOnscreen(traveller.Center)) // If the time is after 6PM and the NPC isn't onscreen
+            NPC traveler = FindNPC(mod.NPCType("ExampleTravelingMerchant")); // Find an Explorer if there's one spawned in the world
+            if (traveler != null && (!Main.dayTime || Main.time > 48600.0) && !IsNpcOnscreen(traveler.Center)) // If the time is after 6PM and the NPC isn't onscreen
             {
                 // Here we despawn the NPC and send a message stating that the NPC has despawned
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(traveller.FullName + " has departed!", 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(traveller.FullName + " has departed!"), new Color(50, 125, 255));
-                traveller.active = false;
-                traveller.netSkip = -1;
-                traveller.life = 0;
+                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(traveler.FullName + " has departed!", 50, 125, 255);
+                else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(traveler.FullName + " has departed!"), new Color(50, 125, 255));
+                traveler.active = false;
+                traveler.netSkip = -1;
+                traveler.life = 0;
             }
 
             // Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
@@ -473,45 +474,38 @@ namespace ExampleMod
             {
                 // insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
                 // NPC won't spawn today if it stayed all night
-                if (traveller == null && Main.rand.Next(4) == 0) // 4 = 25% Chance
+				if (traveler == null && Main.rand.NextBool(4)) // 4 = 25% Chance
                 {
                     // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
-                    travellerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
+                    travelerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 
                     // Set the items the NPC will spawn with. If the NPC respawns during the day, then it'll return with the same items.
                     travelerItems = GetTravelerShop();
                 }
-                else
-                {
-                    travellerSpawnTime = double.MaxValue; // no spawn today
-                }
+                else travelerSpawnTime = double.MaxValue; // no spawn today
             }
 
-            // Spawn the traveller after our chosen point in the day.
+            // Spawn the traveler after our chosen point in the day.
             // We can't spawn hile the sundial is active, or while an event is running
-            // but if an event ends, the traveller can still arrive late in the day
+            // but if an event ends, the traveler can still arrive late in the day
             bool eventActive = Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0;
-            if (traveller == null && Main.dayTime && Main.time > travellerSpawnTime && !Main.fastForwardTime && !eventActive)
+            if (traveler == null && Main.dayTime && Main.time > travelerSpawnTime && !Main.fastForwardTime && !eventActive)
             {
-                int newExplorer = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
-                traveller = Main.npc[newExplorer];
-                traveller.homeless = true;
-                traveller.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
-                traveller.netUpdate = true;
+                int newTraveler = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
+                traveler = Main.npc[newTraveler];
+                traveler.homeless = true;
+                traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
+                traveler.netUpdate = true;
 
                 // Annouce that the traveler has spawned in!
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveller.FullName), 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveller.GetFullNetName()), new Color(50, 125, 255));
+                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
+                else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
             }
         }
 
         public static NPC FindNPC(int npcType)
         {
-            foreach (NPC npc in Main.npc)
-                if (npc.active && npc.type == npcType)
-                    return npc;
-
-            return null;
+            return Main.npc.FirstOrDefault(npc => npc.type == npcType);
         }
 
         private bool IsNpcOnscreen(Vector2 center)
@@ -521,16 +515,15 @@ namespace ExampleMod
             Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
             foreach (Player player in Main.player)
             {
-                if (player.active && new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height).Intersects(npcScreenRect))
-                {
-                    return true;
-                }
+				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
+                if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
             }
             return false;
         }
 
         public static double GetRandomSpawnTime(double minTime, double maxTime)
         {
+			// A simple formula go get a random time between two chosen times
             return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
         }
 
@@ -541,7 +534,7 @@ namespace ExampleMod
             // For each slot we add a switch case to determine what should go in that slot
             Item nextItem = new Item();
 
-            switch (WorldGen.genRand.Next(2))
+            switch (Main.rand.Next(2))
             {
                 case 0:
                     nextItem.SetDefaults(mod.ItemType("ExampleItem"));
@@ -552,7 +545,7 @@ namespace ExampleMod
             }
             RandomizedItems.Add(nextItem);
 
-            switch (WorldGen.genRand.Next(3))
+            switch (Main.rand.Next(3))
             {
                 case 0:
                     nextItem.SetDefaults(mod.ItemType("BossItem"));
@@ -566,7 +559,7 @@ namespace ExampleMod
             }
             RandomizedItems.Add(nextItem);
 
-            switch (WorldGen.genRand.Next(4))
+            switch (Main.rand.Next(4))
             {
                 case 0:
                     nextItem.SetDefaults(mod.ItemType("ExampleDoor"));
