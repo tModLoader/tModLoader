@@ -18,7 +18,8 @@ namespace ExampleMod.Items.Accessories
             return base.Autoload(ref name);
 		}
 
-        private static int implementation;
+		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/blushiemagic/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade
+		private static int implementation;
 		private void HookBeeType(ILContext il)
 		{
 			var c = new ILCursor(il);
