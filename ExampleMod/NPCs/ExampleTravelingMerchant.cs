@@ -1,4 +1,8 @@
 ﻿using ExampleMod.Items;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -8,8 +12,140 @@ namespace ExampleMod.NPCs
 {
     [AutoloadHead]
     class ExampleTravelingMerchant : ModNPC
-    {
-        public override void SetStaticDefaults()
+	{
+		public static List<Item> travelerItems; // The list of items in the traveler's shop
+
+		public static void UpdateTravelingMerchant()
+		{
+			NPC traveler = FindNPC(ExampleMod.Instance.NPCType("ExampleTravelingMerchant")); // Find an Explorer if there's one spawned in the world
+			if (traveler != null && traveler.active && (!Main.dayTime || Main.time > 48600.0) && !IsNpcOnscreen(traveler.Center)) // If the time is after 6PM and the NPC isn't onscreen
+			{
+				// Here we despawn the NPC and send a message stating that the NPC has despawned
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(traveler.FullName + " has departed!", 50, 125, 255);
+				else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(traveler.FullName + " has departed!"), new Color(50, 125, 255));
+				traveler.active = false;
+				traveler.netSkip = -1;
+				traveler.life = 0;
+			}
+
+			// Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
+			if (Main.dayTime && Main.time == 0)
+			{
+				// insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
+				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
+
+				// NPC won't spawn today if it stayed all night
+				if ((traveler == null || !traveler.active) && Main.rand.NextBool(4)) // 4 = 25% Chance
+				{
+					// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+					ExampleWorld.travelerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
+
+					// Set the items the NPC will spawn with. If the NPC respawns during the day, then it'll return with the same items.
+					travelerItems = GetTravelerShop();
+				}
+				else ExampleWorld.travelerSpawnTime = double.MaxValue; // no spawn today
+			}
+
+			// Spawn the traveler after our chosen point in the day.
+			// We can't spawn hile the sundial is active, or while an event is running
+			// but if an event ends, the traveler can still arrive late in the day
+			bool eventActive = Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0;
+			if (traveler == null && Main.dayTime && Main.time > ExampleWorld.travelerSpawnTime && !Main.fastForwardTime && !eventActive)
+			{
+				int newTraveler = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, ExampleMod.Instance.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
+				traveler = Main.npc[newTraveler];
+				traveler.homeless = true;
+				traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
+				traveler.netUpdate = true;
+
+				// Prevents the traveler from spawning again the same day
+				ExampleWorld.travelerSpawnTime = Double.MaxValue;
+
+				// Annouce that the traveler has spawned in!
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
+				else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
+			}
+		}
+
+		public static NPC FindNPC(int npcType)
+		{
+			return Main.npc.FirstOrDefault(npc => npc.type == npcType);
+		}
+
+		private static bool IsNpcOnscreen(Vector2 center)
+		{
+			int w = NPC.sWidth + NPC.safeRangeX * 2;
+			int h = NPC.sHeight + NPC.safeRangeY * 2;
+			Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
+			foreach (Player player in Main.player)
+			{
+				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
+				if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
+			}
+			return false;
+		}
+
+		public static double GetRandomSpawnTime(double minTime, double maxTime)
+		{
+			// A simple formula to get a random time between two chosen times
+			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
+		}
+
+		public static List<Item> GetTravelerShop()
+		{
+			List<Item> RandomizedItems = new List<Item>();
+
+			// For each slot we add a switch case to determine what should go in that slot
+			Item nextItem = new Item();
+
+			switch (Main.rand.Next(2))
+			{
+				case 0:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleItem"));
+					break;
+				default:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("EquipMaterial"));
+					break;
+			}
+			RandomizedItems.Add(nextItem);
+
+			nextItem = new Item();
+			switch (Main.rand.Next(3))
+			{
+				case 0:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("BossItem"));
+					break;
+				case 1:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleWorkbench"));
+					break;
+				default:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleChair"));
+					break;
+			}
+			RandomizedItems.Add(nextItem);
+
+			nextItem = new Item();
+			switch (Main.rand.Next(4))
+			{
+				case 0:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleDoor"));
+					break;
+				case 1:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleBed"));
+					break;
+				case 2:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExampleChest"));
+					break;
+				default:
+					nextItem.SetDefaults(ExampleMod.Instance.ItemType("ExamplePickaxe"));
+					break;
+			}
+			RandomizedItems.Add(nextItem);
+
+			return RandomizedItems;
+		}
+
+		public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Example Traveler");
             Main.npcFrameCount[npc.type] = 25;
@@ -108,9 +244,10 @@ namespace ExampleMod.NPCs
         {
             // Here we get the randomized items that were declared in ExampleWorld and place them into each slot of the shop
             // Remember, we saved the items in ExampleWorld so even if we revisit the shop or leave the world, the items will remain the same until the traveler despawns
-            foreach (Item item in ExampleWorld.travelerItems)
+            foreach (Item item in travelerItems)
             {
-                if (item == null || item.type == 0) continue;
+                // We dont want "empty" items and unloaded items to appear
+                if (item == null || item.type == 0 || item.type == ItemID.Count) continue;
                 shop.item[nextSlot].SetDefaults(item.type);
                 nextSlot++;
             }
