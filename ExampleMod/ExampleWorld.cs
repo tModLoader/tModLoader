@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Generation;
@@ -28,8 +27,8 @@ namespace ExampleMod
         public int VolcanoCountdown;
         public int VolcanoCooldown = DefaultVolcanoCooldown;
         public int VolcanoTremorTime;
-        public static List<Item> travelerItems; // An array of ints to get item types
         public static double travelerSpawnTime; // the time of day the traveler will spawn (double.MaxValue for no spawn)
+		// public static int traverlerDayCooldown = 1; // (as a proof of concept)
         public static int exampleTiles;
 
         public override void Initialize()
@@ -38,7 +37,7 @@ namespace ExampleMod
             downedPuritySpirit = false;
             VolcanoCountdown = 0;
             VolcanoTremorTime = 0;
-            travelerItems = new List<Item>(); // Initializing to set 3 random items (Starts off with zeros)
+            NPCs.ExampleTravelingMerchant.travelerItems = new List<Item>(); // Initializing to set 3 random items (Starts off with zeros)
             travelerSpawnTime = 0;
         }
 
@@ -58,7 +57,7 @@ namespace ExampleMod
             return new TagCompound
             {
                 ["downed"] = downed,
-                ["travelerShopItems"] = travelerItems
+                ["travelerShopItems"] = NPCs.ExampleTravelingMerchant.travelerItems
             };
         }
 
@@ -67,7 +66,7 @@ namespace ExampleMod
             var downed = tag.GetList<string>("downed");
             downedAbomination = downed.Contains("abomination");
             downedPuritySpirit = downed.Contains("puritySpirit");
-            travelerItems = tag.Get<List<Item>>("travelerShopItems");
+			NPCs.ExampleTravelingMerchant.travelerItems = tag.Get<List<Item>>("travelerShopItems");
         }
 
         public override void LoadLegacy(BinaryReader reader)
@@ -458,125 +457,8 @@ namespace ExampleMod
 
         public override void PreUpdate()
         {
-            NPC traveler = FindNPC(mod.NPCType("ExampleTravelingMerchant")); // Find an Explorer if there's one spawned in the world
-            if (traveler != null && (!Main.dayTime || Main.time > 48600.0) && !IsNpcOnscreen(traveler.Center)) // If the time is after 6PM and the NPC isn't onscreen
-            {
-                // Here we despawn the NPC and send a message stating that the NPC has despawned
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(traveler.FullName + " has departed!", 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(traveler.FullName + " has departed!"), new Color(50, 125, 255));
-                traveler.active = false;
-                traveler.netSkip = -1;
-                traveler.life = 0;
-            }
-
-            // Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
-            if (Main.dayTime && Main.time == 0)
-            {
-                // insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
-                // NPC won't spawn today if it stayed all night
-				if (traveler == null && Main.rand.NextBool(4)) // 4 = 25% Chance
-                {
-                    // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
-                    travelerSpawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
-
-                    // Set the items the NPC will spawn with. If the NPC respawns during the day, then it'll return with the same items.
-                    travelerItems = GetTravelerShop();
-                }
-                else travelerSpawnTime = double.MaxValue; // no spawn today
-            }
-
-            // Spawn the traveler after our chosen point in the day.
-            // We can't spawn hile the sundial is active, or while an event is running
-            // but if an event ends, the traveler can still arrive late in the day
-            bool eventActive = Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0;
-            if (traveler == null && Main.dayTime && Main.time > travelerSpawnTime && !Main.fastForwardTime && !eventActive)
-            {
-                int newTraveler = NPC.NewNPC(Main.spawnTileX * 16, Main.spawnTileY * 16, mod.NPCType("ExampleTravelingMerchant"), 1); // Spawning at the world spawn
-                traveler = Main.npc[newTraveler];
-                traveler.homeless = true;
-                traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
-                traveler.netUpdate = true;
-
-                // Annouce that the traveler has spawned in!
-                if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
-                else NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
-            }
-        }
-
-        public static NPC FindNPC(int npcType)
-        {
-            return Main.npc.FirstOrDefault(npc => npc.type == npcType);
-        }
-
-        private bool IsNpcOnscreen(Vector2 center)
-        {
-            int w = NPC.sWidth + NPC.safeRangeX * 2;
-            int h = NPC.sHeight + NPC.safeRangeY * 2;
-            Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
-            foreach (Player player in Main.player)
-            {
-				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
-                if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
-            }
-            return false;
-        }
-
-        public static double GetRandomSpawnTime(double minTime, double maxTime)
-        {
-			// A simple formula go get a random time between two chosen times
-            return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
-        }
-
-        public List<Item> GetTravelerShop()
-        {
-            List<Item> RandomizedItems = new List<Item>();
-
-            // For each slot we add a switch case to determine what should go in that slot
-            Item nextItem = new Item();
-
-            switch (Main.rand.Next(2))
-            {
-                case 0:
-                    nextItem.SetDefaults(mod.ItemType("ExampleItem"));
-                    break;
-                default:
-                    nextItem.SetDefaults(mod.ItemType("EquipMaterial"));
-                    break;
-            }
-            RandomizedItems.Add(nextItem);
-
-            switch (Main.rand.Next(3))
-            {
-                case 0:
-                    nextItem.SetDefaults(mod.ItemType("BossItem"));
-                    break;
-                case 1:
-                    nextItem.SetDefaults(mod.ItemType("ExampleWorkbench"));
-                    break;
-                default:
-                    nextItem.SetDefaults(mod.ItemType("ExampleChair"));
-                    break;
-            }
-            RandomizedItems.Add(nextItem);
-
-            switch (Main.rand.Next(4))
-            {
-                case 0:
-                    nextItem.SetDefaults(mod.ItemType("ExampleDoor"));
-                    break;
-                case 1:
-                    nextItem.SetDefaults(mod.ItemType("ExampleBed"));
-                    break;
-                case 2:
-                    nextItem.SetDefaults(mod.ItemType("ExampleChest"));
-                    break;
-                default:
-                    nextItem.SetDefaults(mod.ItemType("ExamplePickaxe"));
-                    break;
-            }
-            RandomizedItems.Add(nextItem);
-
-            return RandomizedItems;
+			// Update everything about spawning the traveling merchant from the methods we have in the Traveling Merchant's class
+			NPCs.ExampleTravelingMerchant.UpdateTravelingMerchant();
         }
 
         public override void PostUpdate()
