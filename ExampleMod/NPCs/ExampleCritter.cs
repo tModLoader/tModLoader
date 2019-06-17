@@ -217,8 +217,4 @@ namespace ExampleMod.NPCs
 			item.makeNPC = (short)mod.NPCType<ExampleCritterNPC>();
 		}
 	}
-
-	// ExampleCritterCage needed.
-
-	// TODO: spawn from statue?
 }
