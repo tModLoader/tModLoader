@@ -212,6 +212,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadAnglerQuest(TagCompound tag) {
+			// Don't try to load modded angler quest item if there isn't one
+			if (!tag.ContainsKey("mod")) {
+				return;
+			}
 			var mod = ModLoader.GetMod(tag.GetString("mod"));
 			int type = mod?.ItemType(tag.GetString("itemName")) ?? 0;
 			if (type > 0) {
