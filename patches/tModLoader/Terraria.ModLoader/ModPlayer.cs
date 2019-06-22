@@ -439,8 +439,9 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
 		/// </summary>
 		/// <param name="item">The item being used.</param>
-		/// <param name="mana">The amount of mana the item will use, after being affected by mana cost reduction.</param>
-		public virtual void GetManaCost(Item item, ref int mana) {
+		/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
+		/// <param name="mult">Use to directly multiply the item's effective mana cost. Good for debuffs, or things which should stack separately (eg meteor armor set bonus).</param>
+		public virtual void ModifyManaCost(Item item, ref float reduce, ref float mult) {
 		}
 
 		/// <summary>

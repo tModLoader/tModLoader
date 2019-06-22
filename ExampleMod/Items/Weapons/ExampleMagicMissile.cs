@@ -31,7 +31,7 @@ namespace ExampleMod.Items.Weapons
 		}
 
 		// This item's mana usage changes through the day, peaking at 1.5x mana usage at noon, and 0.5x mana usage at midnight.
-		public override void GetManaCost(Player player, ref int mana) {
+		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
 			float currentTime = (float)Main.time;
 			int maxTime = Main.dayTime ? 54000 : 32400;
 			int time12 = Main.dayTime ? 28800 : 18000;
@@ -39,8 +39,8 @@ namespace ExampleMod.Items.Weapons
 				time12 = maxTime - time12;
 				currentTime = maxTime - currentTime;
 			}
-			float multi = 1 + currentTime / time12 * 0.5f * Main.dayTime.ToDirectionInt();
-			mana = (int)(mana * multi);
+			float timeMult = 1 + currentTime / time12 * 0.5f * (Main.dayTime ? 1 : -1);
+			mult *= timeMult;
 		}
 
 		public override void AddRecipes() {
