@@ -248,7 +248,7 @@ namespace Terraria.ModLoader
 
 		public static int ChoosePrefix(Item item, UnifiedRandom rand) {
 			foreach (var g in HookChoosePrefix.arr) {
-				int pre = g.ChoosePrefix(item, rand);
+				int pre = g.Instance(item).ChoosePrefix(item, rand);
 				if (pre >= 0) {
 					return pre;
 				}
@@ -1280,7 +1280,7 @@ namespace Terraria.ModLoader
 				ref maxAscentMultiplier, ref constantAscend);
 
 			foreach (var g in HookVerticalWingSpeeds.arr)
-				g.VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
+				g.Instance(item).VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
 		}
 
@@ -1527,7 +1527,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			foreach (var g in HookHoldoutOrigin.arr) {
-				Vector2? modOrigin2 = g.HoldoutOrigin(item.type);
+				Vector2? modOrigin2 = g.Instance(item).HoldoutOrigin(item.type);
 				if (modOrigin2.HasValue) {
 					modOrigin = modOrigin2.Value;
 				}
@@ -1631,7 +1631,7 @@ namespace Terraria.ModLoader
 		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines) {
 			item.modItem?.PostDrawTooltip(lines);
 			foreach (var g in HookPostDrawTooltip.arr)
-				g.PostDrawTooltip(item, lines);
+				g.Instance(item).PostDrawTooltip(item, lines);
 		}
 
 		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
@@ -1649,7 +1649,7 @@ namespace Terraria.ModLoader
 		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line) {
 			item.modItem?.PostDrawTooltipLine(line);
 			foreach (var g in HookPostDrawTooltipLine.arr)
-				g.PostDrawTooltipLine(item, line);
+				g.Instance(item).PostDrawTooltipLine(item, line);
 		}
 
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
