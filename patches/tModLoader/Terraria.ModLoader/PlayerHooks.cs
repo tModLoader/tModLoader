@@ -585,15 +585,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetManaCost(Item item, ref int mana);
-		private static HookList HookGetManaCost = AddHook<DelegateGetManaCost>(p => p.GetManaCost);
+		private delegate void DelegateModifyManaCost(Item item, ref float reduce, ref float mult);
+		private static HookList HookModifyManaCost = AddHook<DelegateModifyManaCost>(p => p.ModifyManaCost);
 
-		public static void GetManaCost(Player player, Item item, ref int mana) {
+		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
 			
-			foreach (int index in HookGetManaCost.arr) {
-				player.modPlayers[index].GetManaCost(item, ref mana);
+			foreach (int index in HookModifyManaCost.arr) {
+				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
 			}
 		}
 

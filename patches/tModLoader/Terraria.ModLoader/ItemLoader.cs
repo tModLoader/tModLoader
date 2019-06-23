@@ -381,19 +381,19 @@ namespace Terraria.ModLoader
 				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
 		}
 
-		private delegate void DelegateGetManaCost(Item item, Player player, ref int mana);
-		private static HookList HookGetManaCost = AddHook<DelegateGetManaCost>(g => g.GetManaCost);
+		private delegate void DelegateModifyManaCost(Item item, Player player, ref float reduce, ref float mult);
+		private static HookList HookModifyManaCost = AddHook<DelegateModifyManaCost>(g => g.ModifyManaCost);
 		/// <summary>
-		/// Calls ModItem.GetManaCost, then all GlobalItem.GetManaCost hooks.
+		/// Calls ModItem.ModifyManaCost, then all GlobalItem.ModifyManaCost hooks.
 		/// </summary>
-		public static void GetManaCost(Item item, Player player, ref int mana) {
+		public static void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
 			
-			item.modItem?.GetManaCost(player, ref mana);
+			item.modItem?.ModifyManaCost(player, ref reduce, ref mult);
 
-			foreach (var g in HookGetManaCost.arr) {
-				g.Instance(item).GetManaCost(item, player, ref mana);
+			foreach (var g in HookModifyManaCost.arr) {
+				g.Instance(item).ModifyManaCost(item, player, ref reduce, ref mult);
 			}
 		}
 
