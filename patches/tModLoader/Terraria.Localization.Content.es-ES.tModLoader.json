@@ -5,6 +5,7 @@
 		"MenuModBrowser": "Navegador de Mods",
 		"MenuMods": "Mods",
 		"MenuModSources": "Fuentes de Mods",
+		// "MenuEnableDeveloperMode": "Enable Developer Mode",
 
 		// Mods Menu
 		"ModsModsList": "Lista de mods",
@@ -20,7 +21,9 @@
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
 		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
 		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		// "ModReloadRequired": "Reload Required",
+		// "ModReloadForced": "Reload Forced",
 		// "ModsByline": "By: {0}",
 		"ModsMoreInfo": "Información",
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
@@ -40,29 +43,34 @@
 		// "ModsXBuffs": "{0} buffs",
 		// "ModsXMounts": "{0} mounts",
 
-		// Mod Loading Errors
+		// Mod Errors
 		// "LoadError": "An error occurred while loading {0}",
-		// "LoadErrorRecipes": "An error occurred while adding recipes for {0}",
-		// "LoadErrorDisabledSeeBelowForError": "This mod has automatically been disabled. See below for actual error:",
+		// "LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
+		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
 		// "LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		// "LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
-		// "LoadErrorDependencyVersionTooLow": "{0} requires version {1} of {2} but version {3} is installed",
+		// "LoadErrorDependencyVersionTooLow": "{0} requires {2} version {1} or greater but version {3} is installed",
+		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
+		// "BuildError": "An error ocurred while building {0}",
+		// "CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		// "BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
 		// "BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
 		// "BuildErrorModNameHasPeriod": "A mod's internal name cannot contain a period",
 		// "BuildErrorTwoModsSameName": "Two mods share the internal name {0}",
-		// "BuildErrorCompilingError": "An error ocurred while compiling a mod.",
-		// "BuildErrorModCompileFolderHint": "It is likely that you didn't install correctly. Make sure you installed the ModCompile folder as well.",
-		// "BuildErrorMissingDllFilesFor": "Missing dll files for {0}",
+		// "BuildErrorModReference": "Failed to read mod reference {0}",
+		// "BuildErrorMissingNoCompile": "Missing dll files for noCompile: {0} or {1}\n\nAll.dll must not have any references to Microsoft.Xna.Framework or FNA\nXNA.dll must reference the appropriate tModLoader.exe and framework",
 		// "BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		// "BuildErrorNamespaceFolderDontMatch": "Namespace and Folder name do not match. The top level namespace must match the folder name.",
 		// "BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
-		// "BuildErrorDotNet45forCS6": ".NET Framework 4.5 must be installed to compile C# 6.0",
-		// "BuildErrorPDBWindowsOnly": "PDB files can only be generated for windows, on windows.",
+		// "BuildErrorLoadingPrecompiled": "Failed to load precompiled: {0}",
 		// "BuildErrorFailedLoadBuildTxt": "Failed to load {0}",
+		// "BuildWarningEACWindowsOnly": "Edit and continue is only supported on windows.",
 		// "LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		// "LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
 		// "LoadErrorMP3SoundFailedToLoad": "The mp3 sound file at {0} failed to load",
@@ -75,9 +83,13 @@
 		// "LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
 		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
-		// "RuntimeErrorSeeLogsTxtForFullTrace": "(see Logs.txt for full trace)",
+		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		// "OpenLogs": "Open Logs",
 		// "OpenWebHelp": "Open Web Help",
+		// "SkipToMainMenu": "Skip Loading Mods",
+		// "Retry": "Retry",
+		// "Exit": "Exit",
+		// "ExitAndDisableAll": "Exit and Disable All",
 
 		// Mod Info
 		// "ModInfoHeader": "Mod Info: ",
@@ -102,7 +114,7 @@
 		// "ModPackDisabled": " - Disabled",
 		// "ModPackLoadingSpecifiedModPack": "Loading specified modpack: {0}",
 		// "ModPackDoesNotExist": "Modpack {0} does not exist.",
-		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed. ({1})",
+		// "ModPackMalformed": "The {0} modpack failed to be read properly, it might be malformed.",
 
 		// ModNet/Multiplayer
 		// "MPSyncingMods": "Syncing Mods",
@@ -119,9 +131,16 @@
 		"MBDownload": "Descargar",
 		// "MBDownloadAll": "Download All",
 		// "MBDownloadingMod": "Downloading: {0}",
+		// "MBInstallingMod": "Installing: {0}",
+		// "MBDownloadFileProblem": "Failed to handle {0}",
+		// "MBReleaseFileHandle": "Releasing file handle for {0}",
+		// "MBDownloadFinished": "Downloading mods finished, returning to browser",
 		// "MBUploadingMod": "Uploading: {0}",
 		"MBDowngrade": "Degradar",
 		"MBUpdate": "Actualizar",
+		// "MBDowngradeWithDependencies": "Downgrade with dependencies",
+		// "MBUpdateWithDependencies": "Update with dependencies",
+		// "MBDownloadWithDependencies": "Download with dependencies",
 		// "MBUpdateAll": "Update All",
 		"MBReloadBrowser": "Actualizar Navegador",
 		// "MBGettingData": "Getting data...",
@@ -142,6 +161,7 @@
 		// "MBOfflineWithReason": "OFFLINE ({0})",
 		// "MBBusy": "Busy",
 		// "MBUnknown": "Unknown",
+		// "MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
 		// "MBClickToViewDependencyMods": "Click to view dependency mods:\n{0}",
 		// "MBModsNotFoundOnline": "The following mods were not found on the Mod Browser: {0}",
 		// "MBFilterDependencies": "Dependencies",
@@ -149,6 +169,7 @@
 		// "MBExceededBandwidth": "The Mod Browser server has exceeded its daily bandwidth allotment. Please consult this mod's homepage for an alternate download or try again later.",
 		// "MBUnknownMBError": "Unknown Mod Browser Error. Try again later.",
 		// "MBNoModsFound": "No mods found",
+		// "MBBrowserError": "The mod browser encountered an error.",
 		// "1SecondAgo": "1 second ago",
 		// "XSecondsAgo": "{0} seconds ago",
 		// "1MinuteAgo": "1 minute ago",
@@ -188,7 +209,13 @@
 		// "RemoveForcedMinimumZoomNo": "Remove Forced Minimum Zoom: Off",
 		// "AllowGreaterResolutionsYes": "Allow Greater Resolutions: On",
 		// "AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
+		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
+		// "ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
 		"ClearMBCredentials": "Borrar credenciales del navegador",
+		// "AutomaticallyEnableNewlyDownloadedModsYes": "Automatically enabled newly downloaded mods: On",
+		// "AutomaticallyEnableNewlyDownloadedModsNo": "Automatically enabled newly downloaded mods: Off",
+		// "AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "Automatically enable and reload mods when leaving Mod Browser: On",
+		// "AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatically enable and reload mods when leaving Mod Browser: Off",
 		// "ReloadModsReminder": "You have updated a mod. Remember to reload mods for it to take effect.",
 		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable and reload if you intend to use them.",
 		// "DontShowAgain": "Don't show again",
@@ -196,7 +223,11 @@
 
 		// Player and World Select
 		// "MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
-		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nplease copy them from /Terraria/Worlds to /Terraria/ModLoader/Worlds.\nCopy the .wld file over.\nClick me to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "MigratePlayersText": "Click here to migrate players...",
+		// "MigratePlayersException": "There was a problem while trying to migrate Player files",
+		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n /Terraria/Worlds\nto\n/Terraria/ModLoader/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
+		// "MigrateWorldsText": "Click here to migrate worlds...",
+		// "MigratingWorldsText": "Migrating...",
 		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		// "Missing1Mod": "Missing 1 mod.",
 		// "MissingXMods": "Missing {0} mods.",
@@ -204,6 +235,8 @@
 		// "New1Mod": "1 new mod.",
 		// "NewXMods": "{0} new mods.",
 		// "NewModsListing": "New mods:\n{0}",
+		// "PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		// "PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -214,6 +247,26 @@
 		"MSManagePublished": "Gestionar publicaciones",
 		"MSPublish": "Publicar",
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+		// "MSCreateMod": "Create Mod",
+
+		// Developer Mode UI
+		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
+		// "DMModCompileUpdate": "ModCompile folder version mismatch. Terraria: {0}, ModCompile: {1}",
+		// "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
+		// "DMModCompileSatisfied": "ModCompile folder up to date.",
+		// "DMDotNetSatisfied": "{0} is installed",
+		// "DMDotNetUpdateRequired": ".NET Framework {0} or newer is required to build mods. Please download the latest .NET Framework.",
+		// "DMMonoUpdateRequired": "Mono {0} or newer is required to build mods. Please install the latest Mono.",
+		// "DMMonoRuntimeRequired": "Terraria must be launched with Mono {0} or newer to build mods. Please update your start scripts.",
+		// "DMReferenceAssembliesMissing": ".NET 4.5 Reference Assemblies not found. Please install Visual Studio with the .NET 4.5 Targetting pack.",
+		// "DMReferenceAssembliesMissingMono": ".NET 4.5 Reference Assemblies not found. Please ensure your installation of mono contains {0}",
+		// "DMReferenceAssembliesSatisfied": "Ready to compile targetting .NET 4.5",
+		// "DMReferenceAssembliesDownload": "Click to download just the targetting pack (not recommended)",
+		// "DMVisualStudio": "Visual Studio",
+		// "DMTutorialWelcome": "Welcome to modding with tModLoader. Check out the Wiki for more information and tutorials.",
+		// "DMTutorial": "Tutorial",
+		// "DMUpdateScripts": "Update Scripts",
+		// "DMScriptsRequireRestart": "Start scripts have been updated and require tModLoader to be restarted.",
 
 		// Extract Mod
 		// "ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
@@ -229,20 +282,21 @@
 		// "CommandModListClientMods": "Client Mods:",
 		// "CommandModListModlist": "Modlist:",
 
+		// Mod Building
+		// "Building": "Building: {0}",
+		// "ReadingProperties": "Reading properties: {0}",
+		// "Compiling": "Compiling {0}",
+		// "CompilationResult": "Compilation finished with {0} errors and {1} warnings",
+		// "LoadingPrecompiled": "Loading pre-compiled {0} from {1}",
+		// "EnabledEAC": "Edit and continue path: {0}",
+		// "Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
-		"MSReadingProperties": "Leyendo las propiedades: ",
-		"MSCompilingWindows": "Compilando {0} por Windows...",
-		"MSCompilingMono": "Compilando {0} por Mono...",
-		// There should be ModName after ':'
-		"MSBuilding": "Construyendo: ",
 		"MSFinding": "Buscando Mods...",
-		// There should be ModName after ':'
+		// "MSInstantiating": "Instantiating Mods...",
+		// "MSSandboxing": "Sandboxing: {0}",
 		"MSIntializing": "Inicializando: ",
-		// There should be ModName after ':'
 		"MSLoading": "Cargando Mod: ",
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
-		// "MSSandboxing": "Compatibilizing: {0}",
-		// "MSReading": "Reading: {0}",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",
 		// "AddingModContent": "Adding mod content...",
@@ -256,6 +310,7 @@
 		// "AprilFoolsJoke": "April Fools Joke",
 		// "DefaultTownNPCName": "No-Name",
 		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
+		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Click del medio",
@@ -265,6 +320,12 @@
 		// Misc
 		// "OK": "OK",
 		// "Continue": "Continue",
-		// "PatreonSetTooltip": "Thank you for your support!"
+		// "PatreonSetTooltip": "Thank you for your support!",
+		// "WorldGenError": "A problem was encountered during world generation",
+		// "WorldIODataException": "The game encountered a mod data problem for a world.",
+		// "ServerCrash": "Server crash: {0}\n{1}\n\nPlease check server.log to determine if a mod is responsible, otherwise head to #support in the tModLoader Discord"
+	},
+	"CommonItemTooltip": {
+		"PercentIncreasedDamage": "Aumenta un {0}% el daño"
 	}
 }

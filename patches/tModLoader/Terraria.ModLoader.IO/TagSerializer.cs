@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.IO
@@ -20,13 +20,11 @@ namespace Terraria.ModLoader.IO
 		private static IDictionary<Type, TagSerializer> serializers = new Dictionary<Type, TagSerializer>();
 		private static IDictionary<string, Type> typeNameCache = new Dictionary<string, Type>();
 
-		static TagSerializer()
-		{
+		static TagSerializer() {
 			Reload();
 		}
 
-		internal static void Reload()
-		{
+		internal static void Reload() {
 			serializers.Clear();
 			typeNameCache.Clear();
 			AddSerializer(new BoolTagSerializer());
@@ -40,13 +38,11 @@ namespace Terraria.ModLoader.IO
 			AddSerializer(new RectangleSerializer());
 		}
 
-		public static bool TryGetSerializer(Type type, out TagSerializer serializer)
-		{
+		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
 			if (serializers.TryGetValue(type, out serializer))
 				return true;
 
-			if (typeof(TagSerializable).IsAssignableFrom(type))
-			{
+			if (typeof(TagSerializable).IsAssignableFrom(type)) {
 				var sType = typeof(TagSerializableSerializer<>).MakeGenericType(type);
 				serializers[type] = serializer = (TagSerializer)sType.GetConstructor(new Type[0]).Invoke(new object[0]);
 				return true;
@@ -55,13 +51,11 @@ namespace Terraria.ModLoader.IO
 			return false;
 		}
 
-		public static void AddSerializer(TagSerializer serializer)
-		{
+		public static void AddSerializer(TagSerializer serializer) {
 			serializers.Add(serializer.Type, serializer);
 		}
 
-		public static Type GetType(string name)
-		{
+		public static Type GetType(string name) {
 			if (typeNameCache.TryGetValue(name, out Type type))
 				return type;
 
@@ -69,8 +63,7 @@ namespace Terraria.ModLoader.IO
 			if (type != null)
 				return typeNameCache[name] = type;
 
-			foreach (var mod in ModLoader.Mods)
-			{
+			foreach (var mod in ModLoader.Mods) {
 				type = mod.Code?.GetType(name);
 				if (type != null)
 					return typeNameCache[name] = type;
@@ -88,23 +81,19 @@ namespace Terraria.ModLoader.IO
 		public abstract S Serialize(T value);
 		public abstract T Deserialize(S tag);
 
-		public override object Serialize(object value)
-		{
+		public override object Serialize(object value) {
 			return Serialize((T)value);
 		}
 
-		public override object Deserialize(object tag)
-		{
+		public override object Deserialize(object tag) {
 			return Deserialize((S)tag);
 		}
 
-		public override IList SerializeList(IList value)
-		{
+		public override IList SerializeList(IList value) {
 			return ((IList<T>)value).Select(Serialize).ToList();
 		}
 
-		public override IList DeserializeList(IList value)
-		{
+		public override IList DeserializeList(IList value) {
 			return ((IList<S>)value).Select(Deserialize).ToList();
 		}
 	}
@@ -135,8 +124,7 @@ namespace Terraria.ModLoader.IO
 
 	public class Vector2TagSerializer : TagSerializer<Vector2, TagCompound>
 	{
-		public override TagCompound Serialize(Vector2 value) => new TagCompound
-		{
+		public override TagCompound Serialize(Vector2 value) => new TagCompound {
 			["x"] = value.X,
 			["y"] = value.Y,
 		};
@@ -146,8 +134,7 @@ namespace Terraria.ModLoader.IO
 
 	public class Vector3TagSerializer : TagSerializer<Vector3, TagCompound>
 	{
-		public override TagCompound Serialize(Vector3 value) => new TagCompound
-		{
+		public override TagCompound Serialize(Vector3 value) => new TagCompound {
 			["x"] = value.X,
 			["y"] = value.Y,
 			["z"] = value.Z,
@@ -158,21 +145,18 @@ namespace Terraria.ModLoader.IO
 
 	public class ColorSerializer : TagSerializer<Color, int>
 	{
-		public override int Serialize(Color value)
-		{
+		public override int Serialize(Color value) {
 			return (int)value.PackedValue;
 		}
 
-		public override Color Deserialize(int tag)
-		{
+		public override Color Deserialize(int tag) {
 			return new Color(tag & 0xFF, tag >> 8 & 0xFF, tag >> 16 & 0xFF, tag >> 24 & 0xFF);
 		}
 	}
 
 	public class Point16Serializer : TagSerializer<Point16, TagCompound>
 	{
-		public override TagCompound Serialize(Point16 value) => new TagCompound
-		{
+		public override TagCompound Serialize(Point16 value) => new TagCompound {
 			["x"] = value.X,
 			["y"] = value.Y
 		};
@@ -182,8 +166,7 @@ namespace Terraria.ModLoader.IO
 
 	public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>
 	{
-		public override TagCompound Serialize(Rectangle value) => new TagCompound
-		{
+		public override TagCompound Serialize(Rectangle value) => new TagCompound {
 			["x"] = value.X,
 			["y"] = value.Y,
 			["width"] = value.Width,

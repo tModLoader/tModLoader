@@ -1,10 +1,10 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using System;
+using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using ReLogic.Graphics;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader.UI
 {
@@ -16,44 +16,36 @@ namespace Terraria.ModLoader.UI
 		private bool heightNeedsRecalculating;
 		private List<Tuple<string, float>> drawtexts = new List<Tuple<string, float>>();
 
-		public UIMessageBox(string text)
-		{
+		public UIMessageBox(string text) {
 			this.text = text;
-			if (this._scrollbar != null)
-			{
-				this._scrollbar.ViewPosition = 0;
+			if (_scrollbar != null) {
+				_scrollbar.ViewPosition = 0;
 				heightNeedsRecalculating = true;
 			}
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			base.OnActivate();
 			heightNeedsRecalculating = true;
 		}
 
-		internal void SetText(string text)
-		{
+		internal void SetText(string text) {
 			this.text = text;
-			if (this._scrollbar != null)
-			{
-				this._scrollbar.ViewPosition = 0;
+			if (_scrollbar != null) {
+				_scrollbar.ViewPosition = 0;
 				heightNeedsRecalculating = true;
 			}
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle space = GetInnerDimensions();
 			DynamicSpriteFont font = Main.fontMouseText;
 			float position = 0f;
-			if (this._scrollbar != null)
-			{
-				position = -this._scrollbar.GetValue();
+			if (_scrollbar != null) {
+				position = -_scrollbar.GetValue();
 			}
-			foreach (var drawtext in drawtexts)
-			{
+			foreach (var drawtext in drawtexts) {
 				if (position + drawtext.Item2 > space.Height)
 					break;
 				if (position >= 0)
@@ -63,43 +55,30 @@ namespace Terraria.ModLoader.UI
 			this.Recalculate();
 		}
 
-		public override void RecalculateChildren()
-		{
+		public override void RecalculateChildren() {
 			base.RecalculateChildren();
-			if (!heightNeedsRecalculating)
-			{
+			if (!heightNeedsRecalculating) {
 				return;
 			}
 			CalculatedStyle space = GetInnerDimensions();
-			if (space.Width <= 0 || space.Height <= 0)
-			{
+			if (space.Width <= 0 || space.Height <= 0) {
 				return;
 			}
 			DynamicSpriteFont font = Main.fontMouseText;
 			drawtexts.Clear();
 			float position = 0f;
 			float textHeight = font.MeasureString("A").Y;
-			string[] lines = text.Split('\n');
-			foreach (string line in lines)
-			{
+			foreach (string line in text.Split('\n')) {
 				string drawString = line;
-				if (drawString.Length == 0)
-				{
-					position += textHeight;
-				}
-				while (drawString.Length > 0)
-				{
+				do {
 					string remainder = "";
-					while (font.MeasureString(drawString).X > space.Width)
-					{
+					while (font.MeasureString(drawString).X > space.Width) {
 						remainder = drawString[drawString.Length - 1] + remainder;
 						drawString = drawString.Substring(0, drawString.Length - 1);
 					}
-					if (remainder.Length > 0)
-					{
+					if (remainder.Length > 0) {
 						int index = drawString.LastIndexOf(' ');
-						if (index >= 0)
-						{
+						if (index >= 0) {
 							remainder = drawString.Substring(index + 1) + remainder;
 							drawString = drawString.Substring(0, index);
 						}
@@ -108,40 +87,32 @@ namespace Terraria.ModLoader.UI
 					position += textHeight;
 					drawString = remainder;
 				}
+				while (drawString.Length > 0);
 			}
 			height = position;
 			heightNeedsRecalculating = false;
 		}
 
-		public override void Recalculate()
-		{
+		public override void Recalculate() {
 			base.Recalculate();
-			this.UpdateScrollbar();
+			UpdateScrollbar();
 		}
 
-		public override void ScrollWheel(UIScrollWheelEvent evt)
-		{
+		public override void ScrollWheel(UIScrollWheelEvent evt) {
 			base.ScrollWheel(evt);
-			if (this._scrollbar != null)
-			{
-				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
+			if (_scrollbar != null) {
+				_scrollbar.ViewPosition -= evt.ScrollWheelValue;
 			}
 		}
 
-		public void SetScrollbar(UIScrollbar scrollbar)
-		{
-			this._scrollbar = scrollbar;
-			this.UpdateScrollbar();
-			this.heightNeedsRecalculating = true;
+		public void SetScrollbar(UIScrollbar scrollbar) {
+			_scrollbar = scrollbar;
+			UpdateScrollbar();
+			heightNeedsRecalculating = true;
 		}
 
-		private void UpdateScrollbar()
-		{
-			if (this._scrollbar == null)
-			{
-				return;
-			}
-			this._scrollbar.SetView(base.GetInnerDimensions().Height, this.height);
+		private void UpdateScrollbar() {
+			_scrollbar?.SetView(base.GetInnerDimensions().Height, this.height);
 		}
 	}
 }

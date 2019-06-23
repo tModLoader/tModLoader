@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Commands
@@ -7,29 +6,20 @@ namespace ExampleMod.Commands
 	public class NpcTypeCommand : ModCommand
 	{
 		public override CommandType Type
-		{
-			get { return CommandType.Chat; }
-		}
+			=> CommandType.Chat;
 
 		public override string Command
-		{
-			get { return "npcType"; }
-		}
+			=> "npcType";
 
 		public override string Usage
-		{
-			get { return "/npcType modName npcName"; }
-		}
+			=> "/npcType modName npcName";
 
 		public override string Description
-		{
-			get { return "Find mod npc ids"; }
-		}
+			=> "Find mod npc ids";
 
-		public override void Action(CommandCaller caller, string input, string[] args)
-		{
-			var mod = ModLoader.GetMod(args[0]);
-			var type = mod == null ? 0 : mod.NPCType(args[1]);
+		public override void Action(CommandCaller caller, string input, string[] args) {
+			var theMod = ModLoader.GetMod(args[0]);
+			var type = theMod?.NPCType(args[1]) ?? 0;
 			caller.Reply(type.ToString(), Color.Yellow);
 		}
 	}

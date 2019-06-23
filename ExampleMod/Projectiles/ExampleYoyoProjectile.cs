@@ -6,8 +6,7 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleYoyoProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// The following sets are only applicable to yoyo that use aiStyle 99.
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
@@ -20,8 +19,7 @@ namespace ExampleMod.Projectiles
 			ProjectileID.Sets.YoyosTopSpeed[projectile.type] = 13f;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.extraUpdates = 0;
 			projectile.width = 16;
 			projectile.height = 16;
@@ -40,10 +38,8 @@ namespace ExampleMod.Projectiles
 		// ai[0] being negative makes the yoyo move back towards the player
 		// Any AI method can be used for dust, spawning projectiles, etc specific to your yoyo.
 
-		public override void PostAI()
-		{
-			if (Main.rand.Next(2) == 0)
-			{
+		public override void PostAI() {
+			if (Main.rand.NextBool()) {
 				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 16);
 				dust.noGravity = true;
 				dust.scale = 1.6f;

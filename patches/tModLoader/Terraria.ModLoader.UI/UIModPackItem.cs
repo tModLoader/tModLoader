@@ -1,17 +1,17 @@
-﻿using System;
-using System.IO;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using System.Linq;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
-using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	//TODO common 'Item' code
 	internal class UIModPackItem : UIPanel
 	{
 		// Name -- > x in list disabled
@@ -24,154 +24,142 @@ namespace Terraria.ModLoader.UI
 
 		// TODO update this list button.
 
-		private readonly Texture2D dividerTexture;
-		private readonly Texture2D innerPanelTexture;
-		private readonly UIText modName;
-		private readonly string[] mods;
-		private readonly bool[] modMissing;
-		private readonly int numMods;
-		private readonly int numModsEnabled;
-		private readonly int numModsDisabled;
-		private readonly int numModsMissing;
-		readonly UITextPanel<string> enableListButton;
-		readonly UITextPanel<string> enableListOnlyButton;
-		readonly UITextPanel<string> viewInModBrowserButton;
-		readonly UITextPanel<string> updateListWithEnabledButton;
-		private readonly UIImageButton deleteButton;
-		private readonly string filename;
+		private readonly Texture2D _dividerTexture;
+		private readonly Texture2D _innerPanelTexture;
+		private readonly UIText _modName;
+		private readonly string[] _mods;
+		private readonly bool[] _modMissing;
+		private readonly int _numMods;
+		private readonly int _numModsEnabled;
+		private readonly int _numModsDisabled;
+		private readonly int _numModsMissing;
+		private readonly UIAutoScaleTextTextPanel<string> _enableListButton;
+		private readonly UIAutoScaleTextTextPanel<string> _enableListOnlyButton;
+		private readonly UIAutoScaleTextTextPanel<string> _viewInModBrowserButton;
+		private readonly UIAutoScaleTextTextPanel<string> _updateListWithEnabledButton;
+		private readonly UIImageButton _deleteButton;
+		private readonly string _filename;
 
-		public UIModPackItem(string name, string[] mods)
-		{
-			this.filename = name;
-			this.mods = mods;
-			this.numMods = mods.Length;
-			modMissing = new bool[mods.Length];
-			numModsEnabled = 0;
-			numModsDisabled = 0;
-			numModsMissing = 0;
-			for (int i = 0; i < mods.Length; i++)
-			{
-				if (UIModPacks.mods.Contains(mods[i]))
-				{
-					if (ModLoader.IsEnabled(mods[i]))
-					{
-						numModsEnabled++;
+		public UIModPackItem(string name, string[] mods) {
+			_filename = name;
+			_mods = mods;
+			_numMods = mods.Length;
+			_modMissing = new bool[mods.Length];
+			_numModsEnabled = 0;
+			_numModsDisabled = 0;
+			_numModsMissing = 0;
+			for (int i = 0; i < mods.Length; i++) {
+				if (UIModPacks.mods.Contains(mods[i])) {
+					if (ModLoader.IsEnabled(mods[i])) {
+						_numModsEnabled++;
 					}
-					else
-					{
-						numModsDisabled++;
+					else {
+						_numModsDisabled++;
 					}
 				}
-				else
-				{
-					modMissing[i] = true;
-					numModsMissing++;
+				else {
+					_modMissing[i] = true;
+					_numModsMissing++;
 				}
 			}
 
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
-			this.dividerTexture = TextureManager.Load("Images/UI/Divider");
-			this.innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
-			this.Height.Set(126f, 0f);
-			this.Width.Set(0f, 1f);
-			base.SetPadding(6f);
+			BorderColor = new Color(89, 116, 213) * 0.7f;
+			_dividerTexture = TextureManager.Load("Images/UI/Divider");
+			_innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+			Height.Pixels = 126;
+			Width.Percent = 1f;
+			SetPadding(6f);
 
-			this.modName = new UIText(name, 1f, false);
-			this.modName.Left.Set(10f, 0f);
-			this.modName.Top.Set(5f, 0f);
-			base.Append(this.modName);
+			_modName = new UIText(name) {
+				Left = { Pixels = 10 },
+				Top = { Pixels = 5 }
+			};
+			Append(_modName);
 
-			UITextPanel<string> viewListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList"), 1f, false);
-			viewListButton.Width.Set(100f, 0f);
-			viewListButton.Height.Set(30f, 0f);
-			viewListButton.Left.Set(407f, 0f);
-			viewListButton.Top.Set(40f, 0f);
+			var viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList")) {
+				Width = { Pixels = 100 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 407 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
 			viewListButton.PaddingTop -= 2f;
 			viewListButton.PaddingBottom -= 2f;
-			viewListButton.OnMouseOver += UICommon.FadedMouseOver;
-			viewListButton.OnMouseOut += UICommon.FadedMouseOut;
 			viewListButton.OnClick += ViewListInfo;
-			base.Append(viewListButton);
+			Append(viewListButton);
 
-			enableListButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList"), 1f, false);
-			enableListButton.Width.Set(100f, 0f);
-			enableListButton.Height.Set(30f, 0f);
-			enableListButton.Left.Set(248f, 0f);
-			enableListButton.Top.Set(40f, 0f);
-			enableListButton.PaddingTop -= 2f;
-			enableListButton.PaddingBottom -= 2f;
-			enableListButton.OnMouseOver += UICommon.FadedMouseOver;
-			enableListButton.OnMouseOut += UICommon.FadedMouseOut;
-			enableListButton.OnClick += EnableList;
-			base.Append(enableListButton);
+			_enableListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList")) {
+				Width = { Pixels = 151 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 248 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
+			_enableListButton.PaddingTop -= 2f;
+			_enableListButton.PaddingBottom -= 2f;
+			_enableListButton.OnClick += EnableList;
+			Append(_enableListButton);
 
-			enableListOnlyButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList"), 1f, false);
-			enableListOnlyButton.Width.Set(100f, 0f);
-			enableListOnlyButton.Height.Set(30f, 0f);
-			enableListOnlyButton.Left.Set(50f, 0f);
-			enableListOnlyButton.Top.Set(40f, 0f);
-			enableListOnlyButton.PaddingTop -= 2f;
-			enableListOnlyButton.PaddingBottom -= 2f;
-			enableListOnlyButton.OnMouseOver += UICommon.FadedMouseOver;
-			enableListOnlyButton.OnMouseOut += UICommon.FadedMouseOut;
-			enableListOnlyButton.OnClick += EnableListOnly;
-			base.Append(enableListOnlyButton);
+			_enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList")) {
+				Width = { Pixels = 190 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 50 },
+				Top = { Pixels = 40 }
+			}.WithFadedMouseOver();
+			_enableListOnlyButton.PaddingTop -= 2f;
+			_enableListOnlyButton.PaddingBottom -= 2f;
+			_enableListOnlyButton.OnClick += EnableListOnly;
+			Append(_enableListOnlyButton);
 
-			viewInModBrowserButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser"), 1f, false);
-			viewInModBrowserButton.Width.Set(50f, 0f);
-			viewInModBrowserButton.Height.Set(30f, 0f);
-			viewInModBrowserButton.Left.Set(50f, 0f);
-			viewInModBrowserButton.Top.Set(80f, 0f);
-			viewInModBrowserButton.PaddingTop -= 2f;
-			viewInModBrowserButton.PaddingBottom -= 2f;
-			viewInModBrowserButton.OnMouseOver += UICommon.FadedMouseOver;
-			viewInModBrowserButton.OnMouseOut += UICommon.FadedMouseOut;
-			viewInModBrowserButton.OnClick += ViewInModBrowser;
-			base.Append(viewInModBrowserButton);
+			_viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser")) {
+				Width = { Pixels = 246 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 50 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_viewInModBrowserButton.PaddingTop -= 2f;
+			_viewInModBrowserButton.PaddingBottom -= 2f;
+			_viewInModBrowserButton.OnClick += ViewInModBrowser;
+			Append(_viewInModBrowserButton);
 
-			updateListWithEnabledButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled"), 1f, false);
-			updateListWithEnabledButton.Width.Set(50f, 0f);
-			updateListWithEnabledButton.Height.Set(30f, 0f);
-			updateListWithEnabledButton.Left.Set(304f, 0f);
-			updateListWithEnabledButton.Top.Set(80f, 0f);
-			updateListWithEnabledButton.PaddingTop -= 2f;
-			updateListWithEnabledButton.PaddingBottom -= 2f;
-			updateListWithEnabledButton.OnMouseOver += UICommon.FadedMouseOver;
-			updateListWithEnabledButton.OnMouseOut += UICommon.FadedMouseOut;
-			updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(filename);
-			Append(updateListWithEnabledButton);
+			_updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_updateListWithEnabledButton.PaddingTop -= 2f;
+			_updateListWithEnabledButton.PaddingBottom -= 2f;
+			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(_filename);
+			Append(_updateListWithEnabledButton);
 
-			deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete"));
-			deleteButton.Top.Set(40f, 0f);
-			deleteButton.OnClick += this.DeleteButtonClick;
-			base.Append(deleteButton);
+			_deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete")) {
+				Top = { Pixels = 40 }
+			};
+			_deleteButton.OnClick += DeleteButtonClick;
+			Append(_deleteButton);
 		}
 
-		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
-		{
-			spriteBatch.Draw(this.innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this.innerPanelTexture.Height)), Color.White);
-			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this.innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(this.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, this.innerPanelTexture.Height)), Color.White);
+		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
+			spriteBatch.Draw(_innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, _innerPanelTexture.Height)), Color.White);
+			spriteBatch.Draw(_innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, _innerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle?(new Rectangle(16, 0, 8, _innerPanelTexture.Height)), Color.White);
 		}
 
-		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos)
-		{
+		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
 
-			string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", numMods, numModsEnabled, numModsDisabled, numModsMissing);
-			Color color = (numModsMissing > 0 ? Color.Red : (numModsDisabled > 0 ? Color.Yellow : Color.Green));
+			string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", _numMods, _numModsEnabled, _numModsDisabled, _numModsMissing);
+			Color color = (_numModsMissing > 0 ? Color.Red : (_numModsDisabled > 0 ? Color.Yellow : Color.Green));
 
 			Utils.DrawBorderString(spriteBatch, text, drawPos, color, 1f, 0f, 0f, -1);
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
-			CalculatedStyle innerDimensions = base.GetInnerDimensions();
+			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 355, innerDimensions.Y);
-			this.DrawPanel(spriteBatch, drawPos, 350f);
-			this.DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
+			DrawPanel(spriteBatch, drawPos, 350f);
+			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
 			//if (this.enabled != ModLoader.ModLoaded(mod.name))
 			//{
 			//	drawPos += new Vector2(120f, 5f);
@@ -182,127 +170,101 @@ namespace Terraria.ModLoader.UI
 			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 
-		public override void MouseOver(UIMouseEvent evt)
-		{
+		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			this.BackgroundColor = new Color(73, 94, 171);
-			this.BorderColor = new Color(89, 116, 213);
+			BackgroundColor = UICommon.defaultUIBlue;
+			BorderColor = new Color(89, 116, 213);
 		}
 
-		public override void MouseOut(UIMouseEvent evt)
-		{
+		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
-			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
+			BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
-			Directory.CreateDirectory(UIModPacks.ModListSaveDirectory);
-			string path = UIModPacks.ModListSaveDirectory + Path.DirectorySeparatorChar + modPackItem.filename + ".json";
-			if (File.Exists(path))
-			{
+			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
+			string path = UIModPacks.ModPacksDirectory + Path.DirectorySeparatorChar + modPackItem._filename + ".json";
+			if (File.Exists(path)) {
 				File.Delete(path);
 			}
 			Main.menuMode = Interface.modPacksMenuID;// should reload
 		}
 
-		private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (string modname in modListItem.mods)
-			{
+			foreach (string modname in modListItem._mods) {
 				if (UIModPacks.mods.Contains(modname))
 					ModLoader.EnableMod(modname);
 			}
 			Main.menuMode = Interface.modPacksMenuID; // should reload, which should refresh enabled counts
 
-			if (modListItem.numModsMissing > 0)
-			{
+			if (modListItem._numModsMissing > 0) {
 				string missing = "";
-				for (int i = 0; i < modListItem.mods.Length; i++)
-				{
-					if (modListItem.modMissing[i])
-					{
-						missing += modListItem.mods[i] + "\n";
+				for (int i = 0; i < modListItem._mods.Length; i++) {
+					if (modListItem._modMissing[i]) {
+						missing += modListItem._mods[i] + "\n";
 					}
 				}
-				Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsMissing", missing));
-				Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.modPacksMenuID);
 			}
 		}
 
-		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Interface.modBrowser.Activate();
-			Interface.modBrowser.filterTextBox.currentString = "";
-			Interface.modBrowser.SpecialModPackFilter = modListItem.mods.ToList();
+			Interface.modBrowser.FilterTextBox.Text = "";
+			Interface.modBrowser.SpecialModPackFilter = modListItem._mods.ToList();
 			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
-			Interface.modBrowser.updateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
-			Interface.modBrowser.modSideFilterMode = ModSideFilter.All;
-			Interface.modBrowser.UpdateFilterToggle.setCurrentState((int)Interface.modBrowser.updateFilterMode);
-			Interface.modBrowser.ModSideFilterToggle.setCurrentState((int)Interface.modBrowser.modSideFilterMode);
-			Interface.modBrowser.updateNeeded = true;
+			Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+			Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
+			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
+			Interface.modBrowser.UpdateNeeded = true;
 			Main.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;
 		}
 
-		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (var item in UIModPacks.mods)
-			{
+			foreach (var item in UIModPacks.mods) {
 				ModLoader.DisableMod(item);
 			}
-			foreach (string modname in modListItem.mods)
-			{
+			foreach (string modname in modListItem._mods) {
 				if (UIModPacks.mods.Contains(modname))
 					ModLoader.EnableMod(modname);
 			}
 			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 
-			if (modListItem.numModsMissing > 0)
-			{
+			if (modListItem._numModsMissing > 0) {
 				string missing = "";
-				for (int i = 0; i < modListItem.mods.Length; i++)
-				{
-					if (modListItem.modMissing[i])
-					{
-						missing += modListItem.mods[i] + "\n";
+				for (int i = 0; i < modListItem._mods.Length; i++) {
+					if (modListItem._modMissing[i]) {
+						missing += modListItem._mods[i] + "\n";
 					}
 				}
-				Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsMissing", missing));
-				Interface.infoMessage.SetGotoMenu(Interface.reloadModsID);
-				Main.menuMode = Interface.infoMessageID;
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.reloadModsID);
 			}
 		}
 
-		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			Main.PlaySound(10, -1, -1, 1);
 			string message = "";
-			for (int i = 0; i < modListItem.mods.Length; i++)
-			{
-				message += modListItem.mods[i] + (modListItem.modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem.mods[i]) ? Language.GetTextValue("tModLoader.ModPackDisabled") : "") + "\n";
+			for (int i = 0; i < modListItem._mods.Length; i++) {
+				message += modListItem._mods[i] + (modListItem._modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem._mods[i]) ? "" : Language.GetTextValue("tModLoader.ModPackDisabled")) + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
-			Interface.infoMessage.SetMessage(Language.GetTextValue("tModLoader.ModPackModsContained", message));
-			Interface.infoMessage.SetGotoMenu(Interface.modPacksMenuID);
-			Main.menuMode = Interface.infoMessageID;
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsContained", message), Interface.modPacksMenuID);
 		}
 
-		public override int CompareTo(object obj)
-		{
+		public override int CompareTo(object obj) {
 			var item = obj as UIModPackItem;
-			if (item == null)
-			{
+			if (item == null) {
 				return base.CompareTo(obj);
 			}
-			return filename.CompareTo(item.filename);
+			return _filename.CompareTo(item._filename);
 		}
 	}
 }

@@ -10,8 +10,7 @@ namespace Terraria.ModLoader
 		public readonly string Key;
 		private Dictionary<int, string> translations;
 
-		internal ModTranslation(string key, bool defaultEmpty = false)
-		{
+		internal ModTranslation(string key, bool defaultEmpty = false) {
 			if (key.Contains(" "))
 				throw new Exception("ModTranslation keys can't contain spaces.");
 			this.Key = key;
@@ -19,52 +18,42 @@ namespace Terraria.ModLoader
 			this.translations[fallback] = defaultEmpty ? null : key;
 		}
 
-		public void SetDefault(string value)
-		{
+		public void SetDefault(string value) {
 			AddTranslation(fallback, value);
 		}
 
-		public void AddTranslation(int culture, string value)
-		{
+		public void AddTranslation(int culture, string value) {
 			translations[culture] = value;
 		}
 
-		public void AddTranslation(string culture, string value)
-		{
+		public void AddTranslation(string culture, string value) {
 			AddTranslation(GameCulture.FromName(culture).LegacyId, value);
 		}
 
-		public void AddTranslation(GameCulture culture, string value)
-		{
+		public void AddTranslation(GameCulture culture, string value) {
 			AddTranslation(culture.LegacyId, value);
 		}
 
-		public bool IsDefault()
-		{
+		public bool IsDefault() {
 			return translations[fallback] == Key;
 		}
 
-		public string GetDefault()
-		{
+		public string GetDefault() {
 			return GetTranslation(fallback);
 		}
 
-		public string GetTranslation(int culture)
-		{
-			if (translations.ContainsKey(culture))
-			{
+		public string GetTranslation(int culture) {
+			if (translations.ContainsKey(culture)) {
 				return translations[culture];
 			}
 			return translations[fallback];
 		}
 
-		public string GetTranslation(string culture)
-		{
+		public string GetTranslation(string culture) {
 			return GetTranslation(GameCulture.FromName(culture).LegacyId);
 		}
 
-		public string GetTranslation(GameCulture culture)
-		{
+		public string GetTranslation(GameCulture culture) {
 			return GetTranslation(culture.LegacyId);
 		}
 	}

@@ -128,6 +128,21 @@
  			switch (this._type)
  			{
  				case 8:
+@@ -2461,11 +_,14 @@
+ 						{
+ 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * (float)mountedPlayer.direction * 20f, value3.X, value3.Y, value3.Z);
+ 						}
++						mountedPlayer.allDamage += 0.15f;
++						/*
+ 						mountedPlayer.meleeDamage += 0.15f;
+ 						mountedPlayer.rangedDamage += 0.15f;
+ 						mountedPlayer.magicDamage += 0.15f;
+ 						mountedPlayer.minionDamage += 0.15f;
+ 						mountedPlayer.thrownDamage += 0.15f;
++						*/
+ 					}
+ 					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
+ 					{
 @@ -2585,6 +_,7 @@
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  		{

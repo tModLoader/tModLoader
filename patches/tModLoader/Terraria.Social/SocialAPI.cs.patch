@@ -1,13 +1,23 @@
 --- src/Terraria\Terraria.Social\SocialAPI.cs
 +++ src/tModLoader\Terraria.Social\SocialAPI.cs
-@@ -29,6 +_,9 @@
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader.Engine;
+ using Terraria.Social.Base;
+ using Terraria.Social.Steam;
+ 
+@@ -29,7 +_,11 @@
  			{
  				mode = new SocialMode?(SocialMode.None);
  #if CLIENT
+-				mode = new SocialMode?(SocialMode.Steam);
 +#if DEBUG
 +                if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
- 				mode = new SocialMode?(SocialMode.Steam);
++				if (!GoGVerifier.IsGoG)
++					mode = new SocialMode?(SocialMode.Steam);
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
+ 				{
 

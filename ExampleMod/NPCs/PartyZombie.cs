@@ -4,17 +4,15 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.NPCs
 {
-    // Party Zombie is a pretty basic clone of a vanilla NPC. To learn how to further adapt vanilla NPC behaviors, see https://github.com/blushiemagic/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-npc-npc-clone-with-modified-projectile-hoplite
+	// Party Zombie is a pretty basic clone of a vanilla NPC. To learn how to further adapt vanilla NPC behaviors, see https://github.com/blushiemagic/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-npc-npc-clone-with-modified-projectile-hoplite
 	public class PartyZombie : ModNPC
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Zombie");
 			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.Zombie];
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			npc.width = 18;
 			npc.height = 40;
 			npc.damage = 14;
@@ -27,17 +25,16 @@ namespace ExampleMod.NPCs
 			npc.aiStyle = 3;
 			aiType = NPCID.Zombie;
 			animationType = NPCID.Zombie;
+			banner = Item.NPCtoBanner(NPCID.Zombie);
+			bannerItem = Item.BannerToItem(banner);
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
+		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 			return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
-		{
-			for (int i = 0; i < 10; i++)
-			{
+		public override void HitEffect(int hitDirection, double damage) {
+			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
 				int dustIndex = Dust.NewDust(npc.position, npc.width, npc.height, dustType);
 				Dust dust = Main.dust[dustIndex];

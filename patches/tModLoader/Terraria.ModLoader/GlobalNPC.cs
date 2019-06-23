@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+using System;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
@@ -14,8 +13,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod to which this GlobalNPC belongs.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -23,8 +21,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of this GlobalNPC instance.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -37,8 +34,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		public virtual bool Autoload(ref string name)
-		{
+		public virtual bool Autoload(ref string name) {
 			return mod.Properties.Autoload;
 		}
 
@@ -70,10 +66,8 @@ namespace Terraria.ModLoader
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
 		/// </summary>
-		public virtual GlobalNPC NewInstance(NPC npc)
-		{
-			if (CloneNewInstances)
-			{
+		public virtual GlobalNPC NewInstance(NPC npc) {
+			if (CloneNewInstances) {
 				return Clone();
 			}
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
@@ -88,8 +82,7 @@ namespace Terraria.ModLoader
 		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void SetDefaults(NPC npc)
-		{
+		public virtual void SetDefaults(NPC npc) {
 		}
 
 		/// <summary>
@@ -98,16 +91,14 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="numPlayers"></param>
 		/// <param name="bossLifeScale"></param>
-		public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
-		{
+		public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale) {
 		}
 
 		/// <summary>
 		/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void ResetEffects(NPC npc)
-		{
+		public virtual void ResetEffects(NPC npc) {
 		}
 
 		/// <summary>
@@ -115,8 +106,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool PreAI(NPC npc)
-		{
+		public virtual bool PreAI(NPC npc) {
 			return true;
 		}
 
@@ -124,16 +114,14 @@ namespace Terraria.ModLoader
 		/// Allows you to determine how any NPC behaves. This will only be called if PreAI returns true.
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void AI(NPC npc)
-		{
+		public virtual void AI(NPC npc) {
 		}
 
 		/// <summary>
 		/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void PostAI(NPC npc)
-		{
+		public virtual void PostAI(NPC npc) {
 		}
 
 		/// <summary>
@@ -141,8 +129,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="frameHeight"></param>
-		public virtual void FindFrame(NPC npc, int frameHeight)
-		{
+		public virtual void FindFrame(NPC npc, int frameHeight) {
 		}
 
 		/// <summary>
@@ -151,8 +138,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="damage"></param>
-		public virtual void HitEffect(NPC npc, int hitDirection, double damage)
-		{
+		public virtual void HitEffect(NPC npc, int hitDirection, double damage) {
 		}
 
 		/// <summary>
@@ -160,8 +146,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="damage"></param>
-		public virtual void UpdateLifeRegen(NPC npc, ref int damage)
-		{
+		public virtual void UpdateLifeRegen(NPC npc, ref int damage) {
 		}
 
 		/// <summary>
@@ -169,8 +154,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool CheckActive(NPC npc)
-		{
+		public virtual bool CheckActive(NPC npc) {
 			return true;
 		}
 
@@ -179,8 +163,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool CheckDead(NPC npc)
-		{
+		public virtual bool CheckDead(NPC npc) {
 			return true;
 		}
 
@@ -188,8 +171,7 @@ namespace Terraria.ModLoader
 		/// Allows you to call NPCLoot on your own when the NPC dies, rather then letting vanilla call it on its own. Useful for things like dropping loot from the nearest segment of a worm boss. Returns false by default.
 		/// </summary>
 		/// <returns>Return true to stop vanilla from calling NPCLoot on its own. Do this if you call NPCLoot yourself.</returns>
-		public virtual bool SpecialNPCLoot(NPC npc)
-		{
+		public virtual bool SpecialNPCLoot(NPC npc) {
 			return false;
 		}
 
@@ -198,8 +180,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool PreNPCLoot(NPC npc)
-		{
+		public virtual bool PreNPCLoot(NPC npc) {
 			return true;
 		}
 
@@ -207,8 +188,7 @@ namespace Terraria.ModLoader
 		/// Allows you to add drops to an NPC when it dies.
 		/// </summary>
 		/// <param name="npc"></param>
-		public virtual void NPCLoot(NPC npc)
-		{
+		public virtual void NPCLoot(NPC npc) {
 		}
 
 		/// <summary>
@@ -218,8 +198,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="cooldownSlot"></param>
 		/// <returns></returns>
-		public virtual bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
-		{
+		public virtual bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) {
 			return true;
 		}
 
@@ -230,8 +209,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
-		{
+		public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit) {
 		}
 
 		/// <summary>
@@ -241,8 +219,7 @@ namespace Terraria.ModLoader
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
-		{
+		public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit) {
 		}
 
 		/// <summary>
@@ -251,8 +228,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="target"></param>
 		/// <returns></returns>
-		public virtual bool? CanHitNPC(NPC npc, NPC target)
-		{
+		public virtual bool? CanHitNPC(NPC npc, NPC target) {
 			return null;
 		}
 
@@ -264,8 +240,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
-		{
+		public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit) {
 		}
 
 		/// <summary>
@@ -276,8 +251,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
-		{
+		public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
 		}
 
 		/// <summary>
@@ -287,8 +261,7 @@ namespace Terraria.ModLoader
 		/// <param name="player"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public virtual bool? CanBeHitByItem(NPC npc, Player player, Item item)
-		{
+		public virtual bool? CanBeHitByItem(NPC npc, Player player, Item item) {
 			return null;
 		}
 
@@ -301,8 +274,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
-		{
+		public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit) {
 		}
 
 		/// <summary>
@@ -314,8 +286,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
-		{
+		public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
 		}
 
 		/// <summary>
@@ -324,8 +295,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
-		public virtual bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
-		{
+		public virtual bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
 			return null;
 		}
 
@@ -338,8 +308,7 @@ namespace Terraria.ModLoader
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
 		/// <param name="hitDirection"></param>
-		public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-		{
+		public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
 		}
 
 		/// <summary>
@@ -350,8 +319,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="crit"></param>
-		public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
-		{
+		public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
 		}
 
 		/// <summary>
@@ -364,8 +332,7 @@ namespace Terraria.ModLoader
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
 		/// <returns></returns>
-		public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
-		{
+		public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
 			return true;
 		}
 
@@ -374,8 +341,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="index"></param>
-		public virtual void BossHeadSlot(NPC npc, ref int index)
-		{
+		public virtual void BossHeadSlot(NPC npc, ref int index) {
 		}
 
 		/// <summary>
@@ -383,8 +349,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="rotation"></param>
-		public virtual void BossHeadRotation(NPC npc, ref float rotation)
-		{
+		public virtual void BossHeadRotation(NPC npc, ref float rotation) {
 		}
 
 		/// <summary>
@@ -392,8 +357,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="spriteEffects"></param>
-		public virtual void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
-		{
+		public virtual void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects) {
 		}
 
 		/// <summary>
@@ -402,8 +366,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="drawColor"></param>
 		/// <returns></returns>
-		public virtual Color? GetAlpha(NPC npc, Color drawColor)
-		{
+		public virtual Color? GetAlpha(NPC npc, Color drawColor) {
 			return null;
 		}
 
@@ -412,8 +375,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="drawColor"></param>
-		public virtual void DrawEffects(NPC npc, ref Color drawColor)
-		{
+		public virtual void DrawEffects(NPC npc, ref Color drawColor) {
 		}
 
 		/// <summary>
@@ -423,8 +385,7 @@ namespace Terraria.ModLoader
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
 		/// <returns></returns>
-		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
-		{
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
 			return true;
 		}
 
@@ -434,8 +395,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="spriteBatch"></param>
 		/// <param name="drawColor"></param>
-		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
-		{
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
 		}
 
 		/// <summary>
@@ -446,8 +406,7 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="position"></param>
 		/// <returns></returns>
-		public virtual bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
-		{
+		public virtual bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position) {
 			return null;
 		}
 
@@ -457,8 +416,7 @@ namespace Terraria.ModLoader
 		/// <param name="player"></param>
 		/// <param name="spawnRate"></param>
 		/// <param name="maxSpawns"></param>
-		public virtual void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
-		{
+		public virtual void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
 		}
 
 		/// <summary>
@@ -470,8 +428,7 @@ namespace Terraria.ModLoader
 		/// <param name="safeRangeX"></param>
 		/// <param name="safeRangeY"></param>
 		public virtual void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
-			ref int safeRangeX, ref int safeRangeY)
-		{
+			ref int safeRangeX, ref int safeRangeY) {
 		}
 
 		/// <summary>
@@ -479,8 +436,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="pool"></param>
 		/// <param name="spawnInfo"></param>
-		public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
-		{
+		public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
 		}
 
 		/// <summary>
@@ -489,8 +445,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="tileX"></param>
 		/// <param name="tileY"></param>
-		public virtual void SpawnNPC(int npc, int tileX, int tileY)
-		{
+		public virtual void SpawnNPC(int npc, int tileX, int tileY) {
 		}
 
 		/// <summary>
@@ -498,8 +453,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <returns></returns>
-		public virtual bool? CanChat(NPC npc)
-		{
+		public virtual bool? CanChat(NPC npc) {
 			return null;
 		}
 
@@ -508,8 +462,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="chat"></param>
-		public virtual void GetChat(NPC npc, ref string chat)
-		{
+		public virtual void GetChat(NPC npc, ref string chat) {
 		}
 
 		/// <summary>
@@ -518,8 +471,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="firstButton"></param>
 		/// <returns></returns>
-		public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
-		{
+		public virtual bool PreChatButtonClicked(NPC npc, bool firstButton) {
 			return true;
 		}
 
@@ -528,8 +480,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="firstButton"></param>
-		public virtual void OnChatButtonClicked(NPC npc, bool firstButton)
-		{
+		public virtual void OnChatButtonClicked(NPC npc, bool firstButton) {
 		}
 
 		/// <summary>
@@ -538,8 +489,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
-		public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
-		{
+		public virtual void SetupShop(int type, Chest shop, ref int nextSlot) {
 		}
 
 		/// <summary>
@@ -547,8 +497,25 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
-		public virtual void SetupTravelShop(int[] shop, ref int nextSlot)
-		{
+		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
+		}
+
+		/// <summary>
+		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool? CanGoToStatue(NPC npc, bool toKingStatue) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(NPC npc, bool toKingStatue) {
 		}
 
 		/// <summary>
@@ -556,8 +523,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="damageMult"></param>
 		/// <param name="defense"></param>
-		public virtual void BuffTownNPC(ref float damageMult, ref int defense)
-		{
+		public virtual void BuffTownNPC(ref float damageMult, ref int defense) {
 		}
 
 		/// <summary>
@@ -566,8 +532,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
-		public virtual void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
-		{
+		public virtual void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback) {
 		}
 
 		/// <summary>
@@ -576,8 +541,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="cooldown"></param>
 		/// <param name="randExtraCooldown"></param>
-		public virtual void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
-		{
+		public virtual void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown) {
 		}
 
 		/// <summary>
@@ -586,8 +550,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="projType"></param>
 		/// <param name="attackDelay"></param>
-		public virtual void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
-		{
+		public virtual void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay) {
 		}
 
 		/// <summary>
@@ -598,8 +561,7 @@ namespace Terraria.ModLoader
 		/// <param name="gravityCorrection"></param>
 		/// <param name="randomOffset"></param>
 		public virtual void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
-			ref float randomOffset)
-		{
+			ref float randomOffset) {
 		}
 
 		/// <summary>
@@ -607,8 +569,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="inBetweenShots"></param>
-		public virtual void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
-		{
+		public virtual void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots) {
 		}
 
 		/// <summary>
@@ -616,8 +577,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="auraLightMultiplier"></param>
-		public virtual void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
-		{
+		public virtual void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier) {
 		}
 
 		/// <summary>
@@ -626,8 +586,7 @@ namespace Terraria.ModLoader
 		/// <param name="npc"></param>
 		/// <param name="itemWidth"></param>
 		/// <param name="itemHeight"></param>
-		public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
-		{
+		public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight) {
 		}
 
 		/// <summary>
@@ -637,8 +596,7 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="item"></param>
 		/// <param name="closeness"></param>
-		public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
-		{
+		public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness) {
 		}
 
 		/// <summary>
@@ -649,8 +607,7 @@ namespace Terraria.ModLoader
 		/// <param name="itemSize"></param>
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
-		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
-		{
+		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
 		}
 	}
 }

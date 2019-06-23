@@ -1,7 +1,6 @@
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 
 namespace Terraria.ModLoader
 {
@@ -32,10 +31,8 @@ namespace Terraria.ModLoader
 
 		public static readonly EquipType[] EquipTypes = (EquipType[])Enum.GetValues(typeof(EquipType));
 
-		static EquipLoader()
-		{
-			foreach (EquipType type in EquipTypes)
-			{
+		static EquipLoader() {
+			foreach (EquipType type in EquipTypes) {
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type] = new Dictionary<int, EquipTexture>();
 			}
@@ -44,8 +41,7 @@ namespace Terraria.ModLoader
 			slotToId[EquipType.Legs] = new Dictionary<int, int>();
 		}
 
-		internal static int ReserveEquipID(EquipType type)
-		{
+		internal static int ReserveEquipID(EquipType type) {
 			int reserveID = nextEquip[type];
 			nextEquip[type]++;
 			return reserveID;
@@ -57,14 +53,12 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="slot"></param>
 		/// <returns></returns>
-		public static EquipTexture GetEquipTexture(EquipType type, int slot)
-		{
+		public static EquipTexture GetEquipTexture(EquipType type, int slot) {
 			EquipTexture texture;
 			return equipTextures[type].TryGetValue(slot, out texture) ? texture : null;
 		}
 
-		internal static void ResizeAndFillArrays()
-		{
+		internal static void ResizeAndFillArrays() {
 			Array.Resize(ref Main.armorHeadLoaded, nextEquip[EquipType.Head]);
 			Array.Resize(ref Main.armorBodyLoaded, nextEquip[EquipType.Body]);
 			Array.Resize(ref Main.armorLegsLoaded, nextEquip[EquipType.Legs]);
@@ -79,10 +73,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accNeckLoaded, nextEquip[EquipType.Neck]);
 			Array.Resize(ref Main.accFaceLoaded, nextEquip[EquipType.Face]);
 			Array.Resize(ref Main.accballoonLoaded, nextEquip[EquipType.Balloon]);
-			foreach (EquipType type in EquipTypes)
-			{
-				for (int k = GetNumVanilla(type); k < nextEquip[type]; k++)
-				{
+			foreach (EquipType type in EquipTypes) {
+				for (int k = GetNumVanilla(type); k < nextEquip[type]; k++) {
 					GetLoadedArray(type)[k] = true;
 				}
 			}
@@ -102,41 +94,33 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.accNeckTexture, nextEquip[EquipType.Neck]);
 			Array.Resize(ref Main.accFaceTexture, nextEquip[EquipType.Face]);
 			Array.Resize(ref Main.accBalloonTexture, nextEquip[EquipType.Balloon]);
-			foreach (EquipType type in EquipTypes)
-			{
-				foreach (var entry in equipTextures[type])
-				{
+			foreach (EquipType type in EquipTypes) {
+				foreach (var entry in equipTextures[type]) {
 					int slot = entry.Key;
 					EquipTexture texture = entry.Value;
 					GetTextureArray(type)[slot] = ModContent.GetTexture(texture.Texture);
-					if (type == EquipType.Body)
-					{
+					if (type == EquipType.Body) {
 						Main.femaleBodyTexture[slot] = ModContent.GetTexture(femaleTextures[slot]);
 						Main.armorArmTexture[slot] = ModContent.GetTexture(armTextures[slot]);
 					}
 				}
 			}
 			Array.Resize(ref Item.headType, nextEquip[EquipType.Head]);
-			foreach (var entry in slotToId[EquipType.Head])
-			{
+			foreach (var entry in slotToId[EquipType.Head]) {
 				Item.headType[entry.Key] = entry.Value;
 			}
 			Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
-			foreach (var entry in slotToId[EquipType.Body])
-			{
+			foreach (var entry in slotToId[EquipType.Body]) {
 				Item.bodyType[entry.Key] = entry.Value;
 			}
 			Array.Resize(ref Item.legType, nextEquip[EquipType.Legs]);
-			foreach (var entry in slotToId[EquipType.Legs])
-			{
+			foreach (var entry in slotToId[EquipType.Legs]) {
 				Item.legType[entry.Key] = entry.Value;
 			}
 		}
 
-		internal static void Unload()
-		{
-			foreach (EquipType type in EquipTypes)
-			{
+		internal static void Unload() {
+			foreach (EquipType type in EquipTypes) {
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type].Clear();
 			}
@@ -148,10 +132,8 @@ namespace Terraria.ModLoader
 			armTextures.Clear();
 		}
 
-		internal static int GetNumVanilla(EquipType type)
-		{
-			switch (type)
-			{
+		internal static int GetNumVanilla(EquipType type) {
+			switch (type) {
 				case EquipType.Head:
 					return Main.numArmorHead;
 				case EquipType.Body:
@@ -184,10 +166,8 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
-		internal static bool[] GetLoadedArray(EquipType type)
-		{
-			switch (type)
-			{
+		internal static bool[] GetLoadedArray(EquipType type) {
+			switch (type) {
 				case EquipType.Head:
 					return Main.armorHeadLoaded;
 				case EquipType.Body:
@@ -220,10 +200,8 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		internal static Texture2D[] GetTextureArray(EquipType type)
-		{
-			switch (type)
-			{
+		internal static Texture2D[] GetTextureArray(EquipType type) {
+			switch (type) {
 				case EquipType.Head:
 					return Main.armorHeadTexture;
 				case EquipType.Body:
@@ -256,17 +234,14 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		internal static void SetSlot(Item item)
-		{
+		internal static void SetSlot(Item item) {
 			IDictionary<EquipType, int> slots;
 			if (!idToSlot.TryGetValue(item.type, out slots))
 				return;
 
-			foreach (var entry in slots)
-			{
+			foreach (var entry in slots) {
 				int slot = entry.Value;
-				switch (entry.Key)
-				{
+				switch (entry.Key) {
 					case EquipType.Head:
 						item.headSlot = slot;
 						break;
@@ -313,10 +288,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static int GetPlayerEquip(Player player, EquipType type)
-		{
-			switch (type)
-			{
+		internal static int GetPlayerEquip(Player player, EquipType type) {
+			switch (type) {
 				case EquipType.Head:
 					return player.head;
 				case EquipType.Body:

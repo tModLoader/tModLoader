@@ -6,14 +6,12 @@ namespace ExampleMod.Items
 {
 	public class ExampleHealingPotion : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Heals for half of your maximum life"
 				+ "\nHealing amount reduced by half if quick healing");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;
 			item.useStyle = ItemUseStyleID.EatingUsing;
@@ -29,8 +27,7 @@ namespace ExampleMod.Items
 			item.value = Item.buyPrice(gold: 1);
 		}
 
-		public override void GetHealLife(Player player, bool quickHeal, ref int healValue)
-		{
+		public override void GetHealLife(Player player, bool quickHeal, ref int healValue) {
 			// Make the item heal half the player's max health normally, or one fourth if used with quick heal
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}

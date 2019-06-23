@@ -10,7 +10,7 @@
  
  namespace Terraria
  {
-@@ -40,19 +_,23 @@
+@@ -40,19 +_,24 @@
  			public static void PlayerConnect(int playerIndex)
  			{
  				PressurePlateHelper.ResetPlayer(playerIndex);
@@ -25,6 +25,7 @@
  
  			public static void EnterWorld(int playerIndex)
  			{
++				Logging.Terraria.InfoFormat("Entering world with player: {0}, IsCloud={1}", Main.ActivePlayerFileData.Name, Main.ActivePlayerFileData.IsCloudSave);
 +				Interface.ResetData();
  				if (Player.Hooks.OnEnterWorld != null)
  				{
@@ -43,6 +44,20 @@
  		public Player.OverheadMessage chatOverhead = default(Player.OverheadMessage);
  		public Player.SelectionRadial DpadRadial = new Player.SelectionRadial(Player.SelectionRadial.SelectionMode.Dpad4);
  		public Player.SelectionRadial CircularRadial = new Player.SelectionRadial(Player.SelectionRadial.SelectionMode.RadialCircular);
+@@ -822,6 +_,13 @@
+ 		public int rangedCrit;
+ 		public int magicCrit;
+ 		public int thrownCrit;
++		public float allDamage; // added to better support new damage classes
++		public float allDamageMult;
++		public float meleeDamageMult;
++		public float rangedDamageMult;
++		public float magicDamageMult;
++		public float thrownDamageMult;
++		public float minionDamageMult;
+ 		public float meleeDamage;
+ 		public float rangedDamage;
+ 		public float thrownDamage;
 @@ -867,8 +_,28 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -306,6 +321,25 @@
  					for (int j = 0; j < 22; j++)
  					{
  						if (num == 27 && (this.buffType[j] == num || this.buffType[j] == 101 || this.buffType[j] == 102))
+@@ -2173,6 +_,10 @@
+ 					}
+ 					if (this.inventory[i].mana > 0 && flag)
+ 					{
++						if (this.CheckMana(this.inventory[i], -1, true, true)) {
++							this.manaRegenDelay = (int)this.maxRegenDelay;
++						}
++						goto SkipManaCode;
+ 						if (this.statMana >= (int)((float)this.inventory[i].mana * this.manaCost))
+ 						{
+ 							this.manaRegenDelay = (int)this.maxRegenDelay;
+@@ -2183,6 +_,7 @@
+ 							flag = false;
+ 						}
+ 					}
++					SkipManaCode:
+ 					if (this.whoAmI == Main.myPlayer && this.inventory[i].type == 603 && !Main.cEd)
+ 					{
+ 						flag = false;
 @@ -2205,6 +_,7 @@
  					}
  					if (flag)
@@ -493,7 +527,7 @@
 -		private void TryGettingDevArmor()
 +		public void TryGettingDevArmor()
  		{
-+			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonArmor(this))
++			if (Terraria.ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
 +				return;
  			if (Main.rand.Next(20) != 0)
  			{
@@ -651,6 +685,73 @@
  					if (this.buffType[k] == 1)
  					{
  						this.lavaImmune = true;
+@@ -6083,11 +_,14 @@
+ 					}
+ 					else if (this.buffType[k] == 117)
+ 					{
++						this.allDamage += 0.1f;
++						/*
+ 						this.thrownDamage += 0.1f;
+ 						this.meleeDamage += 0.1f;
+ 						this.rangedDamage += 0.1f;
+ 						this.magicDamage += 0.1f;
+ 						this.minionDamage += 0.1f;
++						*/
+ 					}
+ 					else if (this.buffType[k] == 119)
+ 					{
+@@ -6317,11 +_,14 @@
+ 							this.buffTime[k] = 480;
+ 						}
+ 						float num17 = 0.15f * (float)this.nebulaLevelDamage;
++						this.allDamage += num17;
++						/*
+ 						this.meleeDamage += num17;
+ 						this.rangedDamage += num17;
+ 						this.magicDamage += num17;
+ 						this.minionDamage += num17;
+ 						this.thrownDamage += num17;
++						*/
+ 					}
+ 					else if (this.buffType[k] == 62)
+ 					{
+@@ -6828,11 +_,14 @@
+ 								this.AddBuff(35, (int)(60f * num21 * 1f), true);
+ 							}
+ 						}
++						this.allDamage += 0.2f;
++						/*
+ 						this.meleeDamage += 0.2f;
+ 						this.magicDamage += 0.2f;
+ 						this.rangedDamage += 0.2f;
+ 						this.thrownDamage += 0.2f;
+ 						this.minionDamage += 0.2f;
++						*/
+ 					}
+ 					else if (this.buffType[k] == 41)
+ 					{
+@@ -7349,15 +_,16 @@
+ 						this.wellFed = true;
+ 						this.statDefense += 2;
+ 						this.meleeCrit += 2;
+-						this.meleeDamage += 0.05f;
++						this.allDamage += 0.05f;
++						//this.meleeDamage += 0.05f;
+ 						this.meleeSpeed += 0.05f;
+ 						this.magicCrit += 2;
+-						this.magicDamage += 0.05f;
++						//this.magicDamage += 0.05f;
+ 						this.rangedCrit += 2;
+-						this.rangedDamage += 0.05f;
++						//this.rangedDamage += 0.05f;
+ 						this.thrownCrit += 2;
+-						this.thrownDamage += 0.05f;
+-						this.minionDamage += 0.05f;
++						//this.thrownDamage += 0.05f;
++						//this.minionDamage += 0.05f;
+ 						this.minionKB += 0.5f;
+ 						this.moveSpeed += 0.2f;
+ 					}
 @@ -7392,6 +_,10 @@
  					else if (this.buffType[k] == 79)
  					{
@@ -730,7 +831,7 @@
  					int num3 = type3;
  					switch (num3)
  					{
-@@ -7939,36 +_,36 @@
+@@ -7939,41 +_,44 @@
  							}
  							break;
  					}
@@ -771,11 +872,20 @@
  						this.armorPenetration += 5;
  					}
 -					if (this.armor[k].type == 2277)
+-					{
 +					if (item.type == 2277)
- 					{
++					{
++						this.allDamage += 0.05f;
++						/*
  						this.magicDamage += 0.05f;
  						this.meleeDamage += 0.05f;
-@@ -7981,182 +_,182 @@
+ 						this.rangedDamage += 0.05f;
+ 						this.thrownDamage += 0.05f;
++						*/
+ 						this.magicCrit += 5;
+ 						this.rangedCrit += 5;
+ 						this.meleeCrit += 5;
+@@ -7981,182 +_,185 @@
  						this.meleeSpeed += 0.1f;
  						this.moveSpeed += 0.1f;
  					}
@@ -863,14 +973,19 @@
  						this.meleeSpeed += 0.07f;
  					}
 -					if (this.armor[k].type == 792 || this.armor[k].type == 793 || this.armor[k].type == 794)
+-					{
 +					if (item.type == 792 || item.type == 793 || item.type == 794)
- 					{
++					{
++						this.allDamage += 0.02f;
++						/*
  						this.meleeDamage += 0.02f;
  						this.rangedDamage += 0.02f;
  						this.magicDamage += 0.02f;
  						this.thrownDamage += 0.02f;
- 					}
+-					}
 -					if (this.armor[k].type == 371)
++						*/
++					}
 +					if (item.type == 371)
  					{
  						this.magicCrit += 9;
@@ -1136,7 +1251,7 @@
  					{
  						this.meleeDamage += 0.05f;
  						this.magicDamage += 0.05f;
-@@ -8291,285 +_,285 @@
+@@ -8291,397 +_,414 @@
  						this.meleeCrit += 7;
  						this.rangedCrit += 7;
  					}
@@ -1476,42 +1591,62 @@
  						this.thrownCrit += 4;
  					}
 -					if (this.armor[k].prefix == 69)
+-					{
 +					if (item.prefix == 69)
- 					{
++					{
++						this.allDamage += 0.01f;
++						/*
  						this.meleeDamage += 0.01f;
  						this.rangedDamage += 0.01f;
-@@ -8577,7 +_,7 @@
+ 						this.magicDamage += 0.01f;
  						this.minionDamage += 0.01f;
  						this.thrownDamage += 0.01f;
- 					}
+-					}
 -					if (this.armor[k].prefix == 70)
+-					{
++						*/
++					}
 +					if (item.prefix == 70)
- 					{
++					{
++						this.allDamage += 0.02f;
++						/*
  						this.meleeDamage += 0.02f;
  						this.rangedDamage += 0.02f;
-@@ -8585,7 +_,7 @@
+ 						this.magicDamage += 0.02f;
  						this.minionDamage += 0.02f;
  						this.thrownDamage += 0.02f;
- 					}
+-					}
 -					if (this.armor[k].prefix == 71)
+-					{
++						*/
++					}
 +					if (item.prefix == 71)
- 					{
++					{
++						this.allDamage += 0.03f;
++						/*
  						this.meleeDamage += 0.03f;
  						this.rangedDamage += 0.03f;
-@@ -8593,7 +_,7 @@
+ 						this.magicDamage += 0.03f;
  						this.minionDamage += 0.03f;
  						this.thrownDamage += 0.03f;
- 					}
+-					}
 -					if (this.armor[k].prefix == 72)
+-					{
++						*/
++					}
 +					if (item.prefix == 72)
- 					{
++					{
++						this.allDamage += 0.04f;
++						/*
  						this.meleeDamage += 0.04f;
  						this.rangedDamage += 0.04f;
-@@ -8601,52 +_,54 @@
+ 						this.magicDamage += 0.04f;
  						this.minionDamage += 0.04f;
  						this.thrownDamage += 0.04f;
- 					}
+-					}
 -					if (this.armor[k].prefix == 73)
++						*/
++					}
 +					if (item.prefix == 73)
  					{
  						this.moveSpeed += 0.01f;
@@ -1581,11 +1716,20 @@
  					{
  						this.aggro -= 400;
  						this.meleeCrit += 5;
-@@ -8659,29 +_,29 @@
+ 						this.magicCrit += 5;
+ 						this.rangedCrit += 5;
+ 						this.thrownCrit += 5;
++						this.allDamage += 0.05f;
++						/*
+ 						this.meleeDamage += 0.05f;
+ 						this.magicDamage += 0.05f;
+ 						this.rangedDamage += 0.05f;
  						this.thrownDamage += 0.05f;
  						this.minionDamage += 0.05f;
- 					}
+-					}
 -					if (this.armor[l].type == 3016)
++						*/
++					}
 +					if (item.type == 3016)
  					{
  						this.aggro += 400;
@@ -1617,7 +1761,7 @@
  					{
  						this.npcTypeNoAggro[1] = true;
  						this.npcTypeNoAggro[16] = true;
-@@ -8705,141 +_,141 @@
+@@ -8705,434 +_,437 @@
  						this.npcTypeNoAggro[336] = true;
  						this.npcTypeNoAggro[537] = true;
  					}
@@ -1790,11 +1934,19 @@
  					{
  						this.meleeCrit += 8;
  						this.rangedCrit += 8;
-@@ -8851,288 +_,288 @@
+ 						this.magicCrit += 8;
+ 						this.thrownCrit += 8;
++						this.allDamage += 0.1f;
++						/*
+ 						this.meleeDamage += 0.1f;
+ 						this.rangedDamage += 0.1f;
+ 						this.magicDamage += 0.1f;
  						this.minionDamage += 0.1f;
  						this.thrownDamage += 0.1f;
- 					}
+-					}
 -					if (this.armor[l].type == 982)
++						*/
++					}
 +					if (item.type == 982)
  					{
  						this.statManaMax2 += 20;
@@ -2248,7 +2400,7 @@
  					{
  						this.noKnockback = true;
  						if ((float)this.statLife > (float)this.statLifeMax2 * 0.25f)
-@@ -9246,36 +_,36 @@
+@@ -9246,337 +_,343 @@
  							}
  						}
  					}
@@ -2291,8 +2443,23 @@
  					{
  						this.lifeRegen += 2;
  						this.statDefense += 4;
-@@ -9292,7 +_,7 @@
- 						this.thrownDamage += 0.1f;
+ 						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
++						this.allDamage += 0.1f;
++						//this.meleeDamage += 0.1f;
+ 						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
++						//this.rangedDamage += 0.1f;
+ 						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
++						//this.magicDamage += 0.1f;
+ 						this.magicCrit += 2;
+ 						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
++						//this.minionDamage += 0.1f;
+ 						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
++						//this.thrownDamage += 0.1f;
  						this.thrownCrit += 2;
  					}
 -					if (this.armor[l].type == 899 && Main.dayTime)
@@ -2300,8 +2467,23 @@
  					{
  						this.lifeRegen += 2;
  						this.statDefense += 4;
-@@ -9309,7 +_,7 @@
- 						this.thrownDamage += 0.1f;
+ 						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
++						this.allDamage += 0.1f;
++						//this.meleeDamage += 0.1f;
+ 						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
++						//this.rangedDamage += 0.1f;
+ 						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
++						//this.magicDamage += 0.1f;
+ 						this.magicCrit += 2;
+ 						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
++						//this.minionDamage += 0.1f;
+ 						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
++						//this.thrownDamage += 0.1f;
  						this.thrownCrit += 2;
  					}
 -					if (this.armor[l].type == 900 && (!Main.dayTime || Main.eclipse))
@@ -2309,8 +2491,23 @@
  					{
  						this.lifeRegen += 2;
  						this.statDefense += 4;
-@@ -9326,27 +_,27 @@
- 						this.thrownDamage += 0.1f;
+ 						this.meleeSpeed += 0.1f;
+-						this.meleeDamage += 0.1f;
++						this.allDamage += 0.1f;
++						//this.meleeDamage += 0.1f;
+ 						this.meleeCrit += 2;
+-						this.rangedDamage += 0.1f;
++						//this.rangedDamage += 0.1f;
+ 						this.rangedCrit += 2;
+-						this.magicDamage += 0.1f;
++						//this.magicDamage += 0.1f;
+ 						this.magicCrit += 2;
+ 						this.pickSpeed -= 0.15f;
+-						this.minionDamage += 0.1f;
++						//this.minionDamage += 0.1f;
+ 						this.minionKB += 0.5f;
+-						this.thrownDamage += 0.1f;
++						//this.thrownDamage += 0.1f;
  						this.thrownCrit += 2;
  					}
 -					if (this.armor[l].type == 407)
@@ -2339,15 +2536,20 @@
  						this.minionDamage += 0.15f;
  					}
 -					if (this.armor[l].type == 935)
+-					{
 +					if (item.type == 935)
- 					{
++					{
++						this.allDamage += 0.12f;
++						/*
  						this.magicDamage += 0.12f;
  						this.meleeDamage += 0.12f;
-@@ -9354,229 +_,229 @@
+ 						this.rangedDamage += 0.12f;
  						this.minionDamage += 0.12f;
  						this.thrownDamage += 0.12f;
- 					}
+-					}
 -					if (this.armor[l].type == 492)
++						*/
++					}
 +					if (item.type == 492)
  					{
  						this.wingTimeMax = 100;
@@ -2684,7 +2886,7 @@
  						{
  							int num7 = 0;
  							if (Main.curMusic == 1)
-@@ -9691,154 +_,164 @@
+@@ -9691,166 +_,202 @@
  							}
  							if (Main.curMusic == 28)
  							{
@@ -2862,38 +3064,10 @@
  						}
 -					}
 -				}
--			}
--			if (this.dd2Accessory)
--			{
--				this.minionDamage += 0.1f;
--				this.maxTurrets++;
--			}
--			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
--			{
--				if (this.armor[m].wingSlot > 0)
--				{
--					if (!this.hideVisual[m] || (this.velocity.Y != 0f && !this.mount.Active))
--					{
--						this.wings = (int)this.armor[m].wingSlot;
--					}
--					this.wingsLogic = (int)this.armor[m].wingSlot;
--				}
--			}
--			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
--			{
--				int type4 = this.armor[n].type;
--				if (this.armor[n].wingSlot > 0)
--				{
--					this.wings = (int)this.armor[n].wingSlot;
 +						if (SoundLoader.itemToMusic.ContainsKey(item.type))
 +						{
 +							Main.musicBox2 = SoundLoader.itemToMusic[item.type];
 +						}
-+					}
-+					if (this.dd2Accessory)
-+					{
-+						this.minionDamage += 0.1f;
-+						this.maxTurrets++;
 +					}
 +					if (item.wingSlot > 0)
 +					{
@@ -2916,13 +3090,18 @@
 +				if (item.wingSlot > 0)
 +				{
 +					this.wings = item.wingSlot;
- 				}
- 				if (type4 == 861 || type4 == 3110 || type4 == 485)
- 				{
-@@ -9851,6 +_,32 @@
- 					this.forceMerman = true;
- 				}
- 			}
++				}
++				if (type4 == 861 || type4 == 3110 || type4 == 485)
++				{
++					this.hideWolf = false;
++					this.forceWerewolf = true;
++				}
++				if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type4 == 861 || type4 == 3110 || type4 == 497))
++				{
++					this.hideMerman = false;
++					this.forceMerman = true;
++				}
++			}
 +		}
 +
 +		public void UpdateEquips(int i) //Noise for the Diff
@@ -2941,17 +3120,63 @@
 +			for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
 +			{
 +				VanillaUpdateAccessory(i, this.armor[l], this.hideVisual[l], ref flag, ref flag2, ref flag3);
-+			}
+ 			}
+ 			if (this.dd2Accessory)
+ 			{
+ 				this.minionDamage += 0.1f;
+ 				this.maxTurrets++;
+ 			}
+-			for (int m = 3; m < 8 + this.extraAccessorySlots; m++)
+-			{
+-				if (this.armor[m].wingSlot > 0)
+-				{
+-					if (!this.hideVisual[m] || (this.velocity.Y != 0f && !this.mount.Active))
+-					{
+-						this.wings = (int)this.armor[m].wingSlot;
+-					}
+-					this.wingsLogic = (int)this.armor[m].wingSlot;
+-				}
+-			}
 +			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
 +			//wing loop merged into VanillaUpdateAccessory
-+			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
-+			{
+ 			for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
+ 			{
+-				int type4 = this.armor[n].type;
+-				if (this.armor[n].wingSlot > 0)
+-				{
+-					this.wings = (int)this.armor[n].wingSlot;
+-				}
+-				if (type4 == 861 || type4 == 3110 || type4 == 485)
+-				{
+-					this.hideWolf = false;
+-					this.forceWerewolf = true;
+-				}
+-				if (((this.wet && !this.lavaWet && (!this.mount.Active || this.mount.Type != 3)) || !this.forceWerewolf) && (type4 == 861 || type4 == 3110 || type4 == 497))
+-				{
+-					this.hideMerman = false;
+-					this.forceMerman = true;
+-				}
+-			}
 +				VanillaUpdateVanityAccessory(this.armor[n]);
 +			}
 +			PlayerHooks.UpdateVanityAccessories(this);
  			if (this.whoAmI == Main.myPlayer && Main.clock && this.accWatch < 3)
  			{
  				this.accWatch++;
+@@ -9976,10 +_,13 @@
+ 			if (this.head == 112 && this.body == 75 && this.legs == 64)
+ 			{
+ 				this.setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
++				this.allDamage += 0.1f;
++				/*
+ 				this.meleeDamage += 0.1f;
+ 				this.magicDamage += 0.1f;
+ 				this.rangedDamage += 0.1f;
+ 				this.thrownDamage += 0.1f;
++				*/
+ 			}
+ 			if (this.head == 22 && this.body == 14 && this.legs == 14)
+ 			{
 @@ -10485,6 +_,7 @@
  				this.setMonkT2 = true;
  				this.maxTurrets++;
@@ -3141,6 +3366,25 @@
  						{
  							if (this.nonTorch == -1)
  							{
+@@ -14517,11 +_,18 @@
+ 			this.lifeRegen = 0;
+ 			this.manaCost = 1f;
+ 			this.meleeSpeed = 1f;
++			this.allDamage = 1f;
+ 			this.meleeDamage = 1f;
+ 			this.rangedDamage = 1f;
+ 			this.thrownDamage = 1f;
+ 			this.magicDamage = 1f;
+ 			this.minionDamage = 1f;
++			this.allDamageMult = 1f;
++			this.meleeDamageMult = 1f;
++			this.rangedDamageMult = 1f;
++			this.thrownDamageMult = 1f;
++			this.magicDamageMult = 1f;
++			this.minionDamageMult = 1f;
+ 			this.meleeCrit = 4;
+ 			this.rangedCrit = 4;
+ 			this.magicCrit = 4;
 @@ -14806,6 +_,7 @@
  				Player.tileRangeY = 4;
  			}
@@ -3296,6 +3540,15 @@
  			if (this.maxTurretsOld != this.maxTurrets)
  			{
  				this.UpdateMaxTurrets();
+@@ -19990,7 +_,7 @@
+ 			}
+ 			if (this.manaSick)
+ 			{
+-				this.magicDamage *= 1f - this.manaSickReduction;
++				this.magicDamageMult *= 1f - this.manaSickReduction;
+ 			}
+ 			if (this.inventory[this.selectedItem].type == 1947)
+ 			{
 @@ -20064,6 +_,7 @@
  				}
  			}
@@ -3304,6 +3557,21 @@
  			this.UpdateLifeRegen();
  			this.soulDrain = 0;
  			this.UpdateManaRegen();
+@@ -20095,11 +_,14 @@
+ 			}
+ 			if (this.witheredWeapon)
+ 			{
++				this.allDamageMult *= 0.5f;
++				/*
+ 				this.meleeDamage *= 0.5f;
+ 				this.rangedDamage *= 0.5f;
+ 				this.magicDamage *= 0.5f;
+ 				this.minionDamage *= 0.5f;
+ 				this.thrownDamage *= 0.5f;
++				*/
+ 			}
+ 			this.lastTileRangeX = Player.tileRangeX;
+ 			this.lastTileRangeY = Player.tileRangeY;
 @@ -20615,6 +_,7 @@
  					{
  						this.accRunSpeed = 7f;
@@ -3412,6 +3680,15 @@
  			bool flag = this.selectedItem != 58 && this.controlUseTile && !this.tileInteractionHappened && this.releaseUseItem && !this.controlUseItem && !this.mouseInterface && !CaptureManager.Instance.Active && !Main.HoveringOverAnNPC && !Main.SmartInteractShowingGenuine;
  			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3384)
  			{
+@@ -23445,7 +_,7 @@
+ 				this.altFunctionUse = 1;
+ 				this.controlUseItem = true;
+ 			}
+-			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(20, true, false))
++			if (flag && this.altFunctionUse == 0 && this.inventory[this.selectedItem].type == 3852 && this.itemAnimation == 0 && this.CheckMana(this.inventory[this.selectedItem], 20, true, false))
+ 			{
+ 				this.altFunctionUse = 1;
+ 				this.controlUseItem = true;
 @@ -23456,6 +_,11 @@
  				this.controlUseItem = true;
  			}
@@ -4277,6 +4554,25 @@
  												if (this.inventory[num13].stack <= 0)
  												{
  													this.inventory[num13].SetDefaults(0, false);
+@@ -31860,6 +_,10 @@
+ 					{
+ 						flag6 = true;
+ 					}
++					if (!this.CheckMana(item, -1, !flag6)) {
++						flag2 = false;
++					}
++					goto SkipManaCode;
+ 					if (item.type != 127 || !this.spaceGun)
+ 					{
+ 						if (this.statMana >= (int)((float)item.mana * this.manaCost))
+@@ -31889,6 +_,7 @@
+ 							flag2 = false;
+ 						}
+ 					}
++					SkipManaCode:
+ 					if (this.whoAmI == Main.myPlayer && item.buffType != 0 && item.buffTime != 0 && flag2)
+ 					{
+ 						this.AddBuff(item.buffType, item.buffTime, true);
 @@ -32006,7 +_,7 @@
  						Main.PlaySound(item.UseSound, base.Center);
  					}
@@ -4286,7 +4582,7 @@
  				{
  					if (ProjectileID.Sets.MinionSacrificable[item.shoot])
  					{
-@@ -32132,11 +_,11 @@
+@@ -32132,13 +_,13 @@
  			{
  				if (item.melee)
  				{
@@ -4296,10 +4592,14 @@
  				else
  				{
 -					this.itemAnimationMax = item.useAnimation;
+-				}
+-				if (item.mana > 0 && !flag && (item.type != 127 || !this.spaceGun))
 +					this.itemAnimationMax = (int)(item.useAnimation / PlayerHooks.TotalMeleeSpeedMultiplier(this, item));
- 				}
- 				if (item.mana > 0 && !flag && (item.type != 127 || !this.spaceGun))
++				}
++				if (item.mana > 0 && !flag && this.GetManaCost(item) > 0)
  				{
+ 					this.manaRegenDelay = (int)this.maxRegenDelay;
+ 				}
 @@ -32396,6 +_,7 @@
  							this.itemLocation.Y = this.MountedCenter.Y - (float)Main.itemTexture[item.type].Height * 0.5f;
  						}
@@ -4715,12 +5015,32 @@
  					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183))
  					{
  						for (int num312 = 0; num312 < 200; num312++)
-@@ -36069,6 +_,8 @@
- 						{
- 							num313 = (int)((float)item.damage * this.thrownDamage);
- 						}
-+						ItemLoader.GetWeaponDamage(item, this, ref num313);
-+						PlayerHooks.GetWeaponDamage(this, item, ref num313);
+@@ -36048,27 +_,7 @@
+ 					}
+ 					if (Main.myPlayer == i && (item.damage > 0 || item.type == 3183))
+ 					{
+-						int num313 = item.damage;
+-						if (item.melee)
+-						{
+-							num313 = (int)((float)item.damage * this.meleeDamage);
+-						}
+-						if (item.ranged)
+-						{
+-							num313 = (int)((float)item.damage * this.rangedDamage);
+-						}
+-						if (item.magic)
+-						{
+-							num313 = (int)((float)item.damage * this.magicDamage);
+-						}
+-						if (item.summon)
+-						{
+-							num313 = (int)((float)item.damage * this.minionDamage);
+-						}
+-						if (item.thrown)
+-						{
+-							num313 = (int)((float)item.damage * this.thrownDamage);
+-						}
++						int num313 = weaponDamage;//No idea why vanilla doesn't do this. weaponDamage is currently only used for ranged, and the seprate calculation here (which is identical, except ignores ammo modifiers) is used for everything else.
  						float num314 = item.knockBack;
  						float num315 = 1f;
  						if (this.kbGlove)
@@ -5190,7 +5510,7 @@
  		}
  
  		public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
-@@ -37374,6 +_,8 @@
+@@ -37374,73 +_,79 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
@@ -5199,16 +5519,90 @@
  			return KnockBack;
  		}
  
-@@ -37415,6 +_,8 @@
- 					num = (int)((float)num * this.minionDamage);
- 				}
- 			}
-+			ItemLoader.GetWeaponDamage(sItem, this, ref num);
-+			PlayerHooks.GetWeaponDamage(this, sItem, ref num);
- 			return num;
+-		public int GetWeaponDamage(Item sItem)
++		public int GetWeaponDamage(Item item)
+ 		{
+-			int num = sItem.damage;
+-			if (num > 0)
+-			{
+-				if (sItem.melee)
+-				{
+-					num = (int)((float)num * this.meleeDamage + 5E-06f);
+-				}
+-				else if (sItem.ranged)
+-				{
+-					num = (int)((float)num * this.rangedDamage + 5E-06f);
+-					if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
+-					{
+-						num = (int)((float)num * this.arrowDamage + 5E-06f);
+-					}
+-					if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
+-					{
+-						num = (int)((float)num * this.bulletDamage + 5E-06f);
+-					}
+-					if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
+-					{
+-						num = (int)((float)num * this.rocketDamage + 5E-06f);
+-					}
+-				}
+-				else if (sItem.thrown)
+-				{
+-					num = (int)((float)num * this.thrownDamage + 5E-06f);
+-				}
+-				else if (sItem.magic)
+-				{
+-					num = (int)((float)num * this.magicDamage + 5E-06f);
+-				}
+-				else if (sItem.summon)
+-				{
+-					num = (int)((float)num * this.minionDamage);
+-				}
+-			}
+-			return num;
++			float add = allDamage;
++			float mult = allDamageMult;
++
++			if (item.melee) {
++				add += meleeDamage - 1;
++				mult *= meleeDamageMult;
++			}
++			if (item.ranged) {
++				add += rangedDamage - 1;
++				mult *= rangedDamageMult;
++
++				if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
++					mult *= arrowDamage;
++				}
++				if (item.useAmmo == AmmoID.Arrow && archery) {
++					mult *= 1.2f;
++				}
++				if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn) {
++					mult *= bulletDamage;
++				}
++				if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly) {
++					mult *= rocketDamage;
++				}
++			}
++			if (item.magic) {
++				add += magicDamage - 1;
++				mult *= magicDamageMult;
++			}
++			if (item.summon) {
++				add += minionDamage - 1;
++				mult *= minionDamageMult;
++			}
++			if (item.thrown) {
++				add += thrownDamage - 1;
++				mult *= thrownDamageMult;
++			}
++
++			CombinedHooks.ModifyWeaponDamage(this, item, ref add, ref mult);
++			int damage = (int)(item.damage * add * mult + 5E-06f);
++			CombinedHooks.GetWeaponDamage(this, item, ref damage);
++			return damage;
  		}
  
-@@ -37422,25 +_,25 @@
+ 		private void ApplyAnimation(Item sItem)
  		{
  			if (sItem.melee)
  			{
@@ -5251,11 +5645,27 @@
  				}
  				else if (sItem.useAmmo == AmmoID.Rocket)
  				{
-@@ -37568,6 +_,7 @@
- 					Damage = (int)((double)((float)Damage) * 1.2);
+@@ -37548,7 +_,9 @@
+ 				{
+ 					if (item.damage > 0)
+ 					{
+-						Damage += (int)((float)item.damage * this.rangedDamage);
++						// determine damage multiplier using item base damage and apply to ammo
++						// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
++						Damage += (int)(item.damage * Damage / (float)sItem.damage);
+ 					}
+ 				}
+ 				else
+@@ -37565,9 +_,11 @@
+ 							speed = 20f;
+ 						}
+ 					}
+-					Damage = (int)((double)((float)Damage) * 1.2);
++					// archery buff damage moved into GetWeaponDamage
++					// Damage = (int)((double)((float)Damage) * 1.2);
  				}
  				KnockBack += item.knockBack;
-+				ItemLoader.PickAmmo(item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
++				ItemLoader.PickAmmo(sItem, item, this, ref shoot, ref speed, ref Damage, ref KnockBack);
  				bool flag2 = dontConsume;
  				if (sItem.type == 3245)
  				{
@@ -5458,7 +5868,22 @@
  			{
  				return false;
  			}
-@@ -38543,7 +_,8 @@
+@@ -38532,10 +_,14 @@
+ 			{
+ 				return;
+ 			}
++
++
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
+ 			if (FileUtilities.Exists(path, isCloudSave))
+ 			{
+ 				FileUtilities.Copy(path, path + ".bak", isCloudSave, true);
+ 			}
++
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+ 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream(2000) : (Stream)new FileStream(path, FileMode.Create))
+ 			{
+@@ -38543,13 +_,14 @@
  				{
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream))
  					{
@@ -5468,6 +5893,13 @@
  						playerFile.Metadata.Write(binaryWriter);
  						binaryWriter.Write(player.name);
  						binaryWriter.Write(player.difficulty);
+ 						binaryWriter.Write(playerFile.GetPlayTime().Ticks);
+ 						binaryWriter.Write(player.hair);
+-						binaryWriter.Write(player.hairDye);
++						PlayerIO.WriteVanillaHairDye(player.hairDye, binaryWriter);
+ 						BitsByte bb = 0;
+ 						for (int i = 0; i < 8; i++)
+ 						{
 @@ -38594,49 +_,49 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)
@@ -5542,12 +5974,13 @@
  		}
  
  		public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
-@@ -38697,7 +_,7 @@
+@@ -38697,7 +_,8 @@
  			{
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			}
 -			Player player = new Player();
 +			Player player = new Player(false); // setup inventory is unnecessary
++
  			try
  			{
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
@@ -5649,6 +6082,27 @@
  			this.heldProj = -1;
  			this.breathMax = 200;
  			this.breath = 200;
+@@ -39394,6 +_,7 @@
+ 			this.rangedCrit = 4;
+ 			this.magicCrit = 4;
+ 			this.thrownCrit = 4;
++			this.allDamage = 1f;
+ 			this.meleeDamage = 1f;
+ 			this.rangedDamage = 1f;
+ 			this.thrownDamage = 1f;
+@@ -39402,6 +_,12 @@
+ 			this.rocketDamage = 1f;
+ 			this.magicDamage = 1f;
+ 			this.minionDamage = 1f;
++			this.allDamageMult = 1f;
++			this.meleeDamageMult = 1f;
++			this.rangedDamageMult = 1f;
++			this.thrownDamageMult = 1f;
++			this.magicDamageMult = 1f;
++			this.minionDamageMult = 1f;
+ 			this.meleeSpeed = 1f;
+ 			this.thrownVelocity = 1f;
+ 			this.moveSpeed = 1f;
 @@ -39442,13 +_,14 @@
  			this.talkNPC = -1;
  			this.potionDelayTime = Item.potionDelay;
@@ -5834,4 +6288,45 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
+@@ -40007,6 +_,40 @@
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
+ 				}
+ 			}
++		}
++
++		public int GetManaCost(Item item) {
++			int mana = (item.type != 127 || !this.spaceGun) ? (int)(item.mana * this.manaCost) : 0;
++			CombinedHooks.GetManaCost(this, item, ref mana);
++			return mana >= 0 ? mana : 0;
++		}
++
++		public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
++			if (amount <= -1) {
++				amount = this.GetManaCost(item);
++			}
++			if (this.statMana >= amount) {
++				if (pay) {
++					CombinedHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
++				}
++				return true;
++			}
++			if (blockQuickMana) {
++				return false;
++			}
++			CombinedHooks.OnMissingMana(this, item, amount);
++			if (this.statMana < amount && this.manaFlower) {
++				this.QuickMana();
++			}
++			if (this.statMana >= amount) {
++				if (pay) {
++					CombinedHooks.OnConsumeMana(this, item, amount);
++					this.statMana -= amount;
++				}
++				return true;
++			}
++			return false;
+ 		}
+ 
+ 		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false)
 

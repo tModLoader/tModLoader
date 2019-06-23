@@ -1,18 +1,17 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using ExampleMod.Projectiles;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Weapons
 {
 	public class ExampleLaserWeapon : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Shoot a laser beam that can eliminate anything...");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 40;
 			item.noMelee = true;
 			item.magic = true;
@@ -26,12 +25,11 @@ namespace ExampleMod.Items.Weapons
 			item.useStyle = 5;
 			item.shootSpeed = 14f;
 			item.useAnimation = 20;
-			item.shoot = mod.ProjectileType("ExampleLaser");
+			item.shoot = mod.ProjectileType<ExampleLaser>();
 			item.value = Item.sellPrice(silver: 3);
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod, "ExampleItem", 10);
 			recipe.AddTile(mod, "ExampleWorkbench");

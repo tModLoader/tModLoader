@@ -4,8 +4,7 @@ namespace ExampleMod.Items.Placeable
 {
 	public class AbominationTrophy : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 30;
 			item.height = 30;
 			item.maxStack = 99;

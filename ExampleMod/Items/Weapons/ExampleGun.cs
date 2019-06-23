@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,13 +5,11 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleGun : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded gun.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.damage = 20;
 			item.ranged = true;
 			item.width = 40;
@@ -32,14 +28,17 @@ namespace ExampleMod.Items.Weapons
 			item.useAmmo = AmmoID.Bullet;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem", 10);
-			recipe.AddTile(null, "ExampleWorkbench");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
+			recipe.AddTile(mod.TileType("ExampleWorkbench"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
+
+		/*
+		 * Feel free to uncomment any of the examples below to see what they do
+		 */
 
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
@@ -117,7 +116,7 @@ namespace ExampleMod.Items.Weapons
 			return true;
 		}*/
 
-		// How can I get a "Clockwork Assault Riffle" effect?
+		// How can I get a "Clockwork Assault Rifle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
 		/*	The following changes to SetDefaults()
 		 	item.useAnimation = 12;
@@ -136,6 +135,14 @@ namespace ExampleMod.Items.Weapons
 			// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
 			Projectile.NewProjectile(position.X, position.Y, speedX, speedY, ProjectileID.GrenadeI, damage, knockBack, player.whoAmI);
 			// By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
+			return true;
+		}*/
+
+		// How can I choose between several projectiles randomly?
+		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		{
+			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
+			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, mod.ProjectileType<Projectiles.ExampleBullet>() });
 			return true;
 		}*/
 	}

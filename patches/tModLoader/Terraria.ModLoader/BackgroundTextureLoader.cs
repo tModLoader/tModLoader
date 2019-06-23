@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -15,8 +13,7 @@ namespace Terraria.ModLoader
 		private static int nextBackground = vanillaBackgroundTextureCount;
 		internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 
-		internal static int ReserveBackgroundSlot()
-		{
+		internal static int ReserveBackgroundSlot() {
 			int reserve = nextBackground;
 			nextBackground++;
 			return reserve;
@@ -25,26 +22,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the slot/ID of the background texture with the given name.
 		/// </summary>
-		public static int GetBackgroundSlot(string texture)
-		{
-			if (backgrounds.ContainsKey(texture))
-			{
-				return backgrounds[texture];
-			}
-			else
-			{
-				return -1;
-			}
-		}
+		public static int GetBackgroundSlot(string texture) => backgrounds.TryGetValue(texture, out int slot) ? slot : -1;
 
-		internal static void ResizeAndFillArrays()
-		{
+		internal static void ResizeAndFillArrays() {
 			Array.Resize(ref Main.backgroundTexture, nextBackground);
 			Array.Resize(ref Main.backgroundHeight, nextBackground);
 			Array.Resize(ref Main.backgroundWidth, nextBackground);
 			Array.Resize(ref Main.backgroundLoaded, nextBackground);
-			foreach (string texture in backgrounds.Keys)
-			{
+			foreach (string texture in backgrounds.Keys) {
 				int slot = backgrounds[texture];
 				Main.backgroundTexture[slot] = ModContent.GetTexture(texture);
 				Main.backgroundWidth[slot] = Main.backgroundTexture[slot].Width;
@@ -53,8 +38,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			nextBackground = vanillaBackgroundTextureCount;
 			backgrounds.Clear();
 		}

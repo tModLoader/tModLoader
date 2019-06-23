@@ -7,14 +7,12 @@ namespace ExampleMod.Projectiles.Minions
 {
 	public class PurityBolt : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			ProjectileID.Sets.Homing[projectile.type] = true;
 			ProjectileID.Sets.MinionShot[projectile.type] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 16;
 			projectile.height = 16;
 			projectile.alpha = 255;
@@ -23,22 +21,18 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.ignoreWater = true;
 		}
 
-		public override void AI()
-		{
-			if (projectile.localAI[0] == 0f)
-			{
+		public override void AI() {
+			if (projectile.localAI[0] == 0f) {
 				Main.PlaySound(SoundID.Item20, projectile.position);
 				projectile.localAI[0] = 1f;
 			}
 			int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, 66, 0f, 0f, 100, new Color(0, 255, 0), 1.5f);
 			Main.dust[dust].velocity *= 0.1f;
-			if (projectile.velocity == Vector2.Zero)
-			{
+			if (projectile.velocity == Vector2.Zero) {
 				Main.dust[dust].velocity.Y -= 1f;
 				Main.dust[dust].scale = 1.2f;
 			}
-			else
-			{
+			else {
 				Main.dust[dust].velocity += projectile.velocity * 0.2f;
 			}
 			Main.dust[dust].position.X = projectile.Center.X + 4f + (float)Main.rand.Next(-2, 3);
@@ -46,8 +40,7 @@ namespace ExampleMod.Projectiles.Minions
 			Main.dust[dust].noGravity = true;
 		}
 
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
+		public override bool OnTileCollide(Vector2 oldVelocity) {
 			projectile.penetrate = -1;
 			projectile.maxPenetrate = -1;
 			projectile.tileCollide = false;

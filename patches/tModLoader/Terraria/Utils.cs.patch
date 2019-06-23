@@ -123,4 +123,24 @@
  
  		public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f)
  		{
+@@ -1131,6 +_,7 @@
+ 				text.Substring(0, maxCharactersDisplayed);
+ 			}
+ 			DynamicSpriteFont fontDeathText = Main.fontDeathText;
++			/*
+ 			for (int i = -1; i < 2; i++)
+ 			{
+ 				for (int j = -1; j < 2; j++)
+@@ -1139,7 +_,10 @@
+ 				}
+ 			}
+ 			spriteBatch.DrawString(fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
+-			return fontDeathText.MeasureString(text) * scale;
++			*/
++			Vector2 vector = ChatManager.GetStringSize(fontDeathText, text, Vector2.One);
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
++			return vector * scale;
+ 		}
+ 
+ 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color))
 

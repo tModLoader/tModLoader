@@ -1,21 +1,18 @@
-using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader.IO;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Newtonsoft.Json;
-using System.Reflection;
-using Terraria.Localization;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {
@@ -37,187 +34,191 @@ namespace Terraria.ModLoader.UI
 		public SearchFilter searchFilterMode = SearchFilter.Name;
 		internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 		internal string filter;
-		private UIColorTextPanel buttonEA;
-		private UIColorTextPanel buttonDA;
-		private UITextPanel<string> buttonRM;
-		private UITextPanel<string> buttonB;
-		private UITextPanel<string> buttonOMF;
-		private UITextPanel<string> buttonMP;
+		private UIAutoScaleTextTextPanel<string> buttonEA;
+		private UIAutoScaleTextTextPanel<string> buttonDA;
+		private UIAutoScaleTextTextPanel<string> buttonRM;
+		private UIAutoScaleTextTextPanel<string> buttonB;
+		private UIAutoScaleTextTextPanel<string> buttonOMF;
+		private UIAutoScaleTextTextPanel<string> buttonMP;
 
-		public override void OnInitialize()
-		{
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+		public override void OnInitialize() {
+			uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
-			uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIPanel.PaddingTop = 0f;
+			uIPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -110, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground,
+				PaddingTop = 0f
+			};
 			uIElement.Append(uIPanel);
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			modList = new UIList();
-			modList.Width.Set(-25f, 1f);
-			modList.Height.Set(-50f, 1f);
-			modList.Top.Set(50f, 0f);
-			modList.ListPadding = 5f;
+			modList = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
+				Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
+				ListPadding = 5f
+			};
 			uIPanel.Append(modList);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(-50f, 1f);
-			uIScrollbar.Top.Set(50f, 0f);
-			uIScrollbar.HAlign = 1f;
+			if (ModLoader.showMemoryEstimates) {
+				var ramUsage = new UIMemoryBar() {
+					Top = { Pixels = 45 },
+				};
+				ramUsage.Width.Pixels = -25;
+				uIPanel.Append(ramUsage);
+			}
+
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -50, Percent = 1f },
+				Top = { Pixels = 50 },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
 			modList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true);
-			uIHeaderTexTPanel.HAlign = 0.5f;
-			uIHeaderTexTPanel.Top.Set(-35f, 0f);
-			uIHeaderTexTPanel.SetPadding(15f);
-			uIHeaderTexTPanel.BackgroundColor = new Color(73, 94, 171);
+			var uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTexTPanel);
-			buttonEA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsEnableAll"), Color.Green, 1f, false);
-			buttonEA.Width.Set(-10f, 1f / 3f);
-			buttonEA.Height.Set(25f, 0f);
-			buttonEA.VAlign = 1f;
-			buttonEA.Top.Set(-65f, 0f);
-			buttonEA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonEA.OnMouseOut += UICommon.FadedMouseOut;
-			buttonEA.OnClick += this.EnableAll;
+
+			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll")) {
+				TextColor = Color.Green,
+				Width = new StyleDimension(-10f, 1f / 3f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
+			buttonEA.OnClick += EnableAll;
 			uIElement.Append(buttonEA);
-			buttonDA = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModsDisableAll"), Color.Red, 1f, false);
+
+			// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
+			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"));
 			buttonDA.CopyStyle(buttonEA);
+			buttonDA.TextColor = Color.Red;
 			buttonDA.HAlign = 0.5f;
-			buttonDA.OnMouseOver += UICommon.FadedMouseOver;
-			buttonDA.OnMouseOut += UICommon.FadedMouseOut;
-			buttonDA.OnClick += this.DisableAll;
+			buttonDA.WithFadedMouseOver();
+			buttonDA.OnClick += DisableAll;
 			uIElement.Append(buttonDA);
-			buttonRM = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"), 1f, false);
+
+			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
-			buttonRM.OnMouseOver += UICommon.FadedMouseOver;
-			buttonRM.OnMouseOut += UICommon.FadedMouseOut;
+			buttonRM.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
-			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
+
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
 			buttonB.CopyStyle(buttonEA);
-			buttonB.Top.Set(-20f, 0f);
-			buttonB.OnMouseOver += UICommon.FadedMouseOver;
-			buttonB.OnMouseOut += UICommon.FadedMouseOut;
+			buttonB.Top.Pixels = -20;
+			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
+
 			uIElement.Append(buttonB);
-			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"));
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
-			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
-			buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
+			buttonOMF.WithFadedMouseOver();
 			buttonOMF.OnClick += OpenModsFolder;
 			uIElement.Append(buttonOMF);
 
-			Texture2D texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
-			UIElement upperMenuContainer = new UIElement();
-			upperMenuContainer.Width.Set(0f, 1f);
-			upperMenuContainer.Height.Set(32f, 0f);
-			upperMenuContainer.Top.Set(10f, 0f);
+			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			var upperMenuContainer = new UIElement {
+				Width = { Percent = 1f },
+				Height = { Pixels = 32 },
+				Top = { Pixels = 10 }
+			};
 
 			UICycleImage toggleImage;
-			for (int j = 0; j < 3; j++)
-			{
-				if (j == 0)
-				{
+			for (int j = 0; j < 3; j++) {
+				if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
-					toggleImage.setCurrentState((int)sortMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.SetCurrentState((int)sortMode);
+					toggleImage.OnClick += (a, b) => {
 						sortMode = sortMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						sortMode = sortMode.PreviousEnum();
 						updateNeeded = true;
 					};
 				}
-				else if (j == 1)
-				{
+				else if (j == 1) {
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
-					toggleImage.setCurrentState((int)enabledFilterMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.SetCurrentState((int)enabledFilterMode);
+					toggleImage.OnClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.PreviousEnum();
 						updateNeeded = true;
 					};
 				}
-				else
-				{
+				else {
 					toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
-					toggleImage.setCurrentState((int)modSideFilterMode);
-					toggleImage.OnClick += (a, b) =>
-					{
+					toggleImage.SetCurrentState((int)modSideFilterMode);
+					toggleImage.OnClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.NextEnum();
 						updateNeeded = true;
 					};
-					toggleImage.OnRightClick += (a, b) =>
-					{
+					toggleImage.OnRightClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.PreviousEnum();
 						updateNeeded = true;
 					};
 				}
-				toggleImage.Left.Set((float)(j * 36 + 8), 0f);
+				toggleImage.Left.Pixels = j * 36 + 8;
 				_categoryButtons.Add(toggleImage);
 				upperMenuContainer.Append(toggleImage);
 			}
 
-			UIPanel filterTextBoxBackground = new UIPanel();
-			filterTextBoxBackground.Top.Set(0f, 0f);
-			filterTextBoxBackground.Left.Set(-170f, 1f);
-			filterTextBoxBackground.Width.Set(135f, 0f);
-			filterTextBoxBackground.Height.Set(40f, 0f);
-			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.SetText("");
+			var filterTextBoxBackground = new UIPanel {
+				Top = { Percent = 0f },
+				Left = { Pixels = -170, Percent = 1f },
+				Width = { Pixels = 135 },
+				Height = { Pixels = 40 }
+			};
+			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
 			upperMenuContainer.Append(filterTextBoxBackground);
 
-			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch"));
-			filterTextBox.Top.Set(5f, 0f);
-			filterTextBox.Left.Set(-160f, 1f);
-			filterTextBox.Width.Set(160f, 0f);
-			filterTextBox.Height.Set(20f, 0f);
-			filterTextBox.OnTextChange += (a, b) => { updateNeeded = true; };
+			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
+				Top = { Pixels = 5 },
+				Left = { Pixels = -160, Percent = 1f },
+				Width = { Pixels = 120 },
+				Height = { Pixels = 20 }
+			};
+			filterTextBox.OnTextChange += (a, b) => updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 
-			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0);
-			SearchFilterToggle.setCurrentState((int)searchFilterMode);
-			SearchFilterToggle.OnClick += (a, b) =>
-			{
+			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
+				Left = { Pixels = 545 }
+			};
+			SearchFilterToggle.SetCurrentState((int)searchFilterMode);
+			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.OnRightClick += (a, b) =>
-			{
+			SearchFilterToggle.OnRightClick += (a, b) => {
 				searchFilterMode = searchFilterMode.PreviousEnum();
 				updateNeeded = true;
 			};
-			SearchFilterToggle.Left.Set(545f, 0f);
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 
-			buttonMP = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"), 1f, false);
+			buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"));
 			buttonMP.CopyStyle(buttonOMF);
 			buttonMP.HAlign = 1f;
-			buttonMP.OnMouseOver += UICommon.FadedMouseOver;
-			buttonMP.OnMouseOut += UICommon.FadedMouseOut;
+			buttonMP.WithFadedMouseOver();
 			buttonMP.OnClick += GotoModPacksMenu;
 			uIElement.Append(buttonMP);
 
@@ -225,78 +226,70 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
+			// To prevent entering the game with Configs that violate ReloadRequired
+			if (ConfigManager.AnyModNeedsReload())
+			{
+				Main.menuMode = Interface.reloadModsID;
+				return;
+			}
+			ConfigManager.OnChangedAll();
 			Main.menuMode = 0;
 		}
 
-		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			if (items.Count > 0)
 				ModLoader.Reload();
 		}
 
-		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Process.Start(ModLoader.ModPath);
 		}
 
-		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement)
-		{
-			if (!Interface.modsMenu.loading)
-			{
+		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement) {
+			if (!Interface.modsMenu.loading) {
 				Main.PlaySound(12, -1, -1, 1);
 				Main.menuMode = Interface.modPacksMenuID;
 			}
 		}
 
-		private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
-			foreach (UIModItem modItem in items)
-			{
+			foreach (UIModItem modItem in items) {
 				modItem.Enable();
 			}
 		}
 
-		private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
-			foreach (UIModItem modItem in items)
-			{
+			foreach (UIModItem modItem in items) {
 				modItem.Disable();
 			}
 		}
 
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (needToRemoveLoading)
-			{
+			if (needToRemoveLoading) {
 				needToRemoveLoading = false;
 				uIPanel.RemoveChild(uiLoader);
 			}
 			if (!updateNeeded) return;
 			updateNeeded = false;
-			filter = filterTextBox.currentString;
+			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			for (int i = 0; i < this._categoryButtons.Count; i++)
-			{
-				if (this._categoryButtons[i].IsMouseHovering)
-				{
+			for (int i = 0; i < this._categoryButtons.Count; i++) {
+				if (this._categoryButtons[i].IsMouseHovering) {
 					string text;
-					switch (i)
-					{
+					switch (i) {
 						case 0:
 							text = sortMode.ToFriendlyString();
 							break;
@@ -313,44 +306,29 @@ namespace Terraria.ModLoader.UI
 							text = "None";
 							break;
 					}
-					float x = Main.fontMouseText.MeasureString(text).X;
-					Vector2 vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-					if (vector.Y > (float)(Main.screenHeight - 30))
-					{
-						vector.Y = (float)(Main.screenHeight - 30);
-					}
-					if (vector.X > (float)Main.screenWidth - x)
-					{
-						vector.X = (float)(Main.screenWidth - x - 30);
-					}
-					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					UICommon.DrawHoverStringInBounds(spriteBatch, text);
 					return;
 				}
 			}
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
 			loading = true;
 			uIPanel.Append(uiLoader);
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
 		}
 
-		internal void Populate()
-		{
-			if (SynchronizationContext.Current == null)
-				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+		internal void Populate() {
 			Task.Factory
 				.StartNew(ModOrganizer.FindMods)
-				.ContinueWith(task =>
-				{
+				.ContinueWith(task => {
 					var mods = task.Result;
-					foreach (var mod in mods)
-					{
+					foreach (var mod in mods) {
 						UIModItem modItem = new UIModItem(mod);
 						items.Add(modItem);
 					}
@@ -363,10 +341,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class ModsMenuSortModesExtensions
 	{
-		public static string ToFriendlyString(this ModsMenuSortMode sortmode)
-		{
-			switch (sortmode)
-			{
+		public static string ToFriendlyString(this ModsMenuSortMode sortmode) {
+			switch (sortmode) {
 				case ModsMenuSortMode.RecentlyUpdated:
 					return Language.GetTextValue("tModLoader.ModsSortRecently");
 				case ModsMenuSortMode.DisplayNameAtoZ:
@@ -380,10 +356,8 @@ namespace Terraria.ModLoader.UI
 
 	public static class EnabledFilterModesExtensions
 	{
-		public static string ToFriendlyString(this EnabledFilter updateFilterMode)
-		{
-			switch (updateFilterMode)
-			{
+		public static string ToFriendlyString(this EnabledFilter updateFilterMode) {
+			switch (updateFilterMode) {
 				case EnabledFilter.All:
 					return Language.GetTextValue("tModLoader.ModsShowAllMods");
 				case EnabledFilter.EnabledOnly:

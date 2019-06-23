@@ -33,3 +33,7 @@ ItemTooltip.ExamplePet=Summons a {$Mods.ExampleMod.Common.PaperAirplane} to foll
 ProjectileName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
 BuffName.ExamplePet={$Mods.ExampleMod.Common.PaperAirplane}
 BuffDescription.ExamplePet="Let this pet be an example to you!"
+
+Common.LocalizedLabel=This Label is from the .lang files: {$Mods.ExampleMod.Common.PaperAirplane}
+Common.LocalizedTooltip=This tooltip is from the .lang files.
+Common.LocalizedHeader=Headers can help organize

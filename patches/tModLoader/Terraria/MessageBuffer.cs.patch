@@ -204,6 +204,15 @@
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
  						{
+@@ -1495,7 +_,7 @@
+ 				case 28:
+ 					{
+ 						int num84 = (int)this.reader.ReadInt16();
+-						int num85 = (int)this.reader.ReadInt16();
++						int num85 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadInt32();
+ 						float num86 = this.reader.ReadSingle();
+ 						int num87 = (int)(this.reader.ReadByte() - 1);
+ 						byte b7 = this.reader.ReadByte();
 @@ -1631,6 +_,7 @@
  						Main.chest[num94].item[num95].netDefaults(type5);
  						Main.chest[num94].item[num95].Prefix(pre2);
@@ -426,14 +435,17 @@
  						{
  							TileEntity.ByID.Remove(num180);
  							TileEntity.ByPosition.Remove(tileEntity2.Position);
-@@ -3489,9 +_,34 @@
+@@ -3489,9 +_,37 @@
  						CombatText.NewText(new Rectangle(x13, y13, 0, 0), color4, networkText.ToString(), false, false);
  						return;
  					}
-+				case 250:
-+					ModNet.HandleModPacket(reader, whoAmI);
++				case MessageID.InGameChangeConfig:
++					ModLoader.Config.ConfigManager.HandleInGameChangeConfigPacket(reader, whoAmI);
 +					return;
-+				case 251:
++				case MessageID.ModPacket:
++					ModNet.HandleModPacket(reader, whoAmI, length);
++					return;
++				case MessageID.SyncMods:
 +					if (Main.netMode == 1)
 +					{
 +						ModNet.SyncClientMods(reader);
@@ -444,14 +456,14 @@
 +						NetMessage.SendData(3, whoAmI);
 +					}
 +					return;
-+				case 252:
++				case MessageID.ModFile:
 +					if (Main.netMode == 1)
 +					{
 +						ModNet.ReceiveMod(reader);
 +					}
 +					else
 +					{
-+						ModNet.SendMod(reader.ReadString(), whoAmI);
++						ModNet.SendMod(reader, whoAmI);
 +					}
 +					return;
  				default:

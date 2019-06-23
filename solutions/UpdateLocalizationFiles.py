@@ -24,14 +24,15 @@ for language in languages:
                 
         # Skip empty whitespace and comment lines to end up with only json lines.
         otherLines = [x for x in otherLinesAll if not (x.strip().startswith("//") or len(x.strip()) == 0)]
+        # Store in dictionary for easy retrieval
+        otherLinesDict = dict((k.strip(), v.strip()) for k,v in (line.strip().split(':', 1) for line in otherLines if line.find(':') != -1))
 
-        otherIndex = 0
         for englishIndex, englishLine in enumerate(enLines):
             # For lines with key values pairs, copy translation or add commented translation placeholder.
-            if englishLine.find(": ") != -1:
-                if otherLines[otherIndex].startswith(englishLine[:englishLine.find(": ")]):
-                    otherLanguage += otherLines[otherIndex]
-                    otherIndex += 1
+            if englishLine.find(": ") != -1 and len(englishLine.split('"')) >= 4:
+                translationKey = englishLine[:englishLine.find(": ")].strip()
+                if translationKey in otherLinesDict:
+                    otherLanguage += "\t\t" + translationKey + ": " + otherLinesDict[translationKey] + '\n'
                 else:
                     otherLanguage += "\t\t// " + englishLine.strip() + '\n'
                     missing += 1
@@ -41,8 +42,6 @@ for language in languages:
             # Add other json lines in. Also add in whitespace lines.
             else:
                 otherLanguage += englishLine
-                if len(englishLine.strip()) > 0:
-                    otherIndex += 1
             #print(otherLanguage)
     # Save changes.
     if missing > 0:

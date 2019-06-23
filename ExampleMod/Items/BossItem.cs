@@ -4,15 +4,13 @@ namespace ExampleMod.Items
 {
 	public class BossItem : ExampleItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Used to craft boss items");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem");
+			recipe.AddIngredient(mod.ItemType("ExampleItem"));
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

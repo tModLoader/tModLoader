@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria.Chat;
-using Terraria.GameContent.NetModules;
-using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default
@@ -13,8 +11,7 @@ namespace Terraria.ModLoader.Default
 		//note that Chat | Server is a strange combination, as Chat overrides Server. Normally one would use World
 		public override CommandType Type => CommandType.Chat | CommandType.Server | CommandType.Console;
 		public override string Description => Language.GetTextValue("tModLoader.CommandModListDescription");
-		public override void Action(CommandCaller caller, string input, string[] args)
-		{
+		public override void Action(CommandCaller caller, string input, string[] args) {
 			var mods = ModLoader.Mods.Skip(1);//ignore the built in Modloader mod
 
 			if (Main.netMode == 1) //multiplayer client
@@ -23,8 +20,7 @@ namespace Terraria.ModLoader.Default
 				NetMessage.SendChatMessageFromClient(new ChatMessage(input));
 
 				var client = mods.Where(m => m.Side == ModSide.Client || m.Side == ModSide.NoSync).ToArray();
-				if (client.Length > 0)
-				{
+				if (client.Length > 0) {
 					caller.Reply(Language.GetTextValue("tModLoader.CommandModListClientMods"), Color.Yellow);
 					foreach (var mod in client)
 						caller.Reply(mod.DisplayName);
@@ -33,8 +29,7 @@ namespace Terraria.ModLoader.Default
 			else if (caller.CommandType == CommandType.Server) //server from a player
 			{
 				var server = mods.Where(m => m.Side == ModSide.Server || m.Side == ModSide.NoSync).ToArray();
-				if (server.Length > 0)
-				{
+				if (server.Length > 0) {
 					caller.Reply(Language.GetTextValue("tModLoader.CommandModListServerMods"), Color.Yellow);
 					foreach (var mod in server)
 						caller.Reply(mod.DisplayName);

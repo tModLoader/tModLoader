@@ -6,11 +6,9 @@ namespace Terraria.ModLoader.IO
 {
 	public class BigEndianWriter : BinaryWriter
 	{
-		public BigEndianWriter(Stream output) : base(output)
-		{ }
+		public BigEndianWriter(Stream output) : base(output) { }
 
-		private void WriteBigEndian(byte[] bytes)
-		{
+		private void WriteBigEndian(byte[] bytes) {
 			if (BitConverter.IsLittleEndian)
 				bytes = bytes.Reverse().ToArray();
 
@@ -29,8 +27,7 @@ namespace Terraria.ModLoader.IO
 
 	public class BigEndianReader : BinaryReader
 	{
-		public BigEndianReader(Stream input) : base(input)
-		{ }
+		public BigEndianReader(Stream input) : base(input) { }
 
 		private byte[] ReadBigEndian(int len) =>
 			BitConverter.IsLittleEndian ? ReadBytes(len).Reverse().ToArray() : ReadBytes(len);

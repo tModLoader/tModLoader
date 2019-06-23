@@ -5,13 +5,11 @@ namespace ExampleMod.Items
 {
 	public class ExampleItem : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded item.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 999;
@@ -19,8 +17,7 @@ namespace ExampleMod.Items
 			item.rare = 1;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.DirtBlock);
 			recipe.SetResult(this, 999);
@@ -46,7 +43,7 @@ namespace ExampleMod.Items
 			// an alternate approach to the above.
 			recipe.AddIngredient(mod.ItemType("EquipMaterial"), 3);
 			// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
-			recipe.AddRecipeGroup("Wood"); // check here for other vanilla groups: https://github.com/bluemagic123/tModLoader/wiki/ModRecipe#public-void-addrecipegroupstring-name-int-stack--1
+			recipe.AddRecipeGroup("Wood"); // check here for other vanilla groups: https://github.com/blushiemagic/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
 			// Here is using a mod recipe group. Check out ExampleMod.AddRecipeGroups() to see how to register a recipe group.
 			recipe.AddRecipeGroup("ExampleMod:ExampleItem", 2);
 			// To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/bluemagic123/tModLoader/wiki/Vanilla-Tile-IDs

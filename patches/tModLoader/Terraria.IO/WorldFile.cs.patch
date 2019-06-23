@@ -1,11 +1,10 @@
 --- src/Terraria\Terraria.IO\WorldFile.cs
 +++ src/tModLoader\Terraria.IO\WorldFile.cs
-@@ -11,6 +_,9 @@
+@@ -11,6 +_,8 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.IO
@@ -27,6 +26,16 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
+@@ -355,6 +_,9 @@
+ 				{
+ 					return;
+ 				}
++				if (!BackupIO.archiveLock) {
++					BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
++				}
+ 				Stopwatch stopwatch = new Stopwatch();
+ 				stopwatch.Start();
+ 				byte[] array = null;
 @@ -402,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
@@ -150,6 +159,14 @@
  				{
  					result = false;
  				}
+@@ -2538,6 +_,7 @@
+ 			}
+ 			catch (Exception value)
+ 			{
++				Logging.Terraria.Error("World Validation", value);
+ 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true))
+ 				{
+ 					streamWriter.WriteLine(DateTime.Now);
 @@ -2562,7 +_,7 @@
  					using (BinaryReader binaryReader = new BinaryReader(fileStream))
  					{

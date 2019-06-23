@@ -1,33 +1,73 @@
+using log4net.Core;
 using System;
-using System.IO;
+using System.Threading;
+using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
+	// TODO: Extend a progress UI? No cancel button here.
 	internal class UIBuildMod : UIState, ModCompile.IBuildStatus
 	{
 		private UILoadProgress loadProgress;
 
-		public override void OnInitialize()
-		{
-			loadProgress = new UILoadProgress();
-			loadProgress.Width.Set(0f, 0.8f);
-			loadProgress.MaxWidth.Set(600f, 0f);
-			loadProgress.Height.Set(150f, 0f);
-			loadProgress.HAlign = 0.5f;
-			loadProgress.VAlign = 0.5f;
-			loadProgress.Top.Set(10f, 0f);
-			base.Append(loadProgress);
+		public override void OnInitialize() {
+			loadProgress = new UILoadProgress {
+				Top = { Pixels = 10 },
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Height = { Pixels = 150 },
+				HAlign = 0.5f,
+				VAlign = 0.5f
+			};
+			Append(loadProgress);
 		}
 
-		public void SetProgress(int num, int max)
-		{
-			loadProgress.SetProgress((float)num / (float)max);
+		private int numProgressItems;
+		public void SetProgress(int i, int n = -1) {
+			if (n >= 0)
+				numProgressItems = n;
+
+			loadProgress.SetProgress(i / (float)numProgressItems);
 		}
 
-		public void SetStatus(string msg)
-		{
+		public void SetStatus(string msg) {
+			Logging.tML.Info(msg);
 			loadProgress.SetText(msg);
+		}
+
+		public void LogCompilerLine(string msg, Level level) {
+			Logging.tML.Logger.Log(null, level, msg, null);
+		}
+
+		internal void Build(string mod, bool reload) => Build(mc => mc.Build(mod), reload);
+
+		internal void BuildAll(bool reload) => Build(mc => mc.BuildAll(), reload);
+
+		private void Build(Action<ModCompile> buildAction, bool reload) {
+			Main.menuMode = Interface.buildModID;
+			ThreadPool.QueueUserWorkItem(_ => {
+				while (loadProgress == null)
+					Thread.Sleep(1);// wait for the UI to init
+
+				try {
+					buildAction(new ModCompile(this));
+					Main.menuMode = reload ? Interface.reloadModsID : Interface.modSourcesID;
+				}
+				catch (Exception e) {
+					Logging.tML.Error(e.Message, e);
+
+					var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
+					var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
+					if (e is BuildException)
+						msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
+					else
+						msg += $"\n\n{e}";
+
+					Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
+				}
+			});
 		}
 	}
 }

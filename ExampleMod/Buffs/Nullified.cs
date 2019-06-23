@@ -5,8 +5,7 @@ namespace ExampleMod.Buffs
 {
 	public class Nullified : ModBuff
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			DisplayName.SetDefault("Nullified");
 			Description.SetDefault("Your abilities are nullified");
 			Main.debuff[Type] = true;
@@ -15,9 +14,8 @@ namespace ExampleMod.Buffs
 			longerExpertDebuff = true;
 		}
 
-		public override void Update(Player player, ref int buffIndex)
-		{
-			player.GetModPlayer<ExamplePlayer>(mod).nullified = true;
+		public override void Update(Player player, ref int buffIndex) {
+			player.GetModPlayer<ExamplePlayer>().nullified = true;
 		}
 	}
 }

@@ -1,100 +1,112 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
+using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.GameContent.UI.States;
-using Newtonsoft.Json;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModPacks : UIState
 	{
-		private UIList modListList;
+		private UIList modPacks;
 		private UILoaderAnimatedImage uiLoader;
 		private UIPanel scrollPanel;
-		internal static string ModListSaveDirectory = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModPacks";
+		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
 		internal static string[] mods;
 
-		public override void OnInitialize()
-		{
-			UIElement uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+		public override void OnInitialize() {
+			var uIElement = new UIElement {
+				Width = { Percent = 0.8f },
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = { Pixels = 220 },
+				Height = { Pixels = -220, Percent = 1f },
+				HAlign = 0.5f
+			};
 
 			uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
 
-			scrollPanel = new UIPanel();
-			scrollPanel.Width.Set(0f, 1f);
-			scrollPanel.Height.Set(-65f, 1f);
-			scrollPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+			scrollPanel = new UIPanel {
+				Width = { Percent = 1f },
+				Height = { Pixels = -65, Percent = 1f },
+				BackgroundColor = UICommon.mainPanelBackground
+			};
 			uIElement.Append(scrollPanel);
 
-			modListList = new UIList();
-			modListList.Width.Set(-25f, 1f);
-			modListList.Height.Set(0f, 1f);
-			modListList.ListPadding = 5f;
-			scrollPanel.Append(modListList);
+			modPacks = new UIList {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f },
+				ListPadding = 5f
+			};
+			scrollPanel.Append(modPacks);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(0f, 1f);
-			uIScrollbar.HAlign = 1f;
+			var uIScrollbar = new UIScrollbar {
+				Height = { Percent = 1f },
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			scrollPanel.Append(uIScrollbar);
-			modListList.SetScrollbar(uIScrollbar);
+			modPacks.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true);
-			titleTextPanel.HAlign = 0.5f;
-			titleTextPanel.Top.Set(-35f, 0f);
-			titleTextPanel.SetPadding(15f);
-			titleTextPanel.BackgroundColor = new Color(73, 94, 171);
+			var titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = { Pixels = -35 },
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
 			uIElement.Append(titleTextPanel);
 
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			backButton.Width.Set(-10f, 1f / 2f);
-			backButton.Height.Set(25f, 0f);
-			backButton.VAlign = 1f;
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = new StyleDimension(-10f, 1f / 2f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			UIColorTextPanel saveNewButton = new UIColorTextPanel(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"), Color.Green, 1f, false);
+			var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 			saveNewButton.CopyStyle(backButton);
+			saveNewButton.TextColor = Color.Green;
 			saveNewButton.HAlign = 1f;
-			saveNewButton.OnMouseOver += UICommon.FadedMouseOver;
-			saveNewButton.OnMouseOut += UICommon.FadedMouseOut;
+			saveNewButton.WithFadedMouseOver();
 			saveNewButton.OnClick += SaveNewModList;
 			uIElement.Append(saveNewButton);
 
-			base.Append(uIElement);
+			Append(uIElement);
 		}
 
-		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static UIVirtualKeyboard _virtualKeyboard;
+		private static UIVirtualKeyboard VirtualKeyboard => 
+			_virtualKeyboard ?? (_virtualKeyboard = new UIVirtualKeyboard(
+				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0));
+		
+		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
-			Main.MenuUI.SetState(new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", new UIVirtualKeyboard.KeyboardSubmitEvent(SaveModList), () => Main.menuMode = Interface.modPacksMenuID, 0));
+			VirtualKeyboard.Text = "";
+			Main.MenuUI.SetState(VirtualKeyboard);
 			Main.menuMode = 888;
 		}
 
-		public static void SaveModList(string filename)
-		{
+		public static void SaveModList(string filename) {
+			// Sanitize input if not valid
+			if (!IsValidModpackName(filename)) {
+				VirtualKeyboard.Text = SanitizeModpackName(filename);
+				return;
+			}
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
 			//Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModListSaveDirectory);
+			Directory.CreateDirectory(ModPacksDirectory);
 
-			string path = ModListSaveDirectory + Path.DirectorySeparatorChar + filename + ".json";
+			string path = Path.Combine(ModPacksDirectory, filename + ".json");
 			var foundMods = ModOrganizer.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
 			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
@@ -102,103 +114,53 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.modPacksMenuID; // should reload
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = Interface.modsMenuID;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 		}
 
-		public override void OnActivate()
-		{
+		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
+		internal static string SanitizeModpackName(string name)
+			=> Regex.Replace(name, MODPACK_REGEX, string.Empty, RegexOptions.Compiled);
+
+		internal static bool IsValidModpackName(string name)
+			=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+
+		public override void OnActivate() {
 			scrollPanel.Append(uiLoader);
-			modListList.Clear();
-			if (SynchronizationContext.Current == null)
-				SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+			modPacks.Clear();
 			Task.Factory
-				.StartNew(delegate
-				{
+				.StartNew(delegate {
 					mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
-					return FindModLists();
+
+					Directory.CreateDirectory(ModPacksDirectory);
+					return Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
 				})
-				.ContinueWith(task =>
-				{
-					string[] modListsFullPath = task.Result;
-					foreach (string modListFilePath in modListsFullPath)
-					{
-						string[] mods = { };
-						//string path = ModListSaveDirectory + Path.DirectorySeparatorChar + modListFilePath + ".json";
-
-						if (File.Exists(modListFilePath))
-						{
-							using (StreamReader r = new StreamReader(modListFilePath))
-							{
-								string json = r.ReadToEnd();
-								mods = JsonConvert.DeserializeObject<string[]>(json);
+				.ContinueWith(task => {
+					foreach (string modPackPath in task.Result) {
+						try {
+							if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
+								throw new Exception();
 							}
+							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
+							modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods));
 						}
-
-						UIModPackItem modItem = new UIModPackItem(Path.GetFileNameWithoutExtension(modListFilePath), mods);
-						modListList.Add(modItem);
+						catch {
+							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
+								Width = { Percent = 1 },
+								Height = { Pixels = 50, Percent = 0 }
+							};
+							modPacks.Add(badModPackMessage);
+						}
 					}
 					scrollPanel.RemoveChild(uiLoader);
 				}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
-
-		private string[] FindModLists()
-		{
-			Directory.CreateDirectory(ModListSaveDirectory);
-			string[] files = Directory.GetFiles(ModListSaveDirectory, "*.json", SearchOption.TopDirectoryOnly);
-			//string[] files = Directory.GetFiles(ModListSaveDirectory, "*.json", SearchOption.TopDirectoryOnly).Select(file => Path.GetFileNameWithoutExtension(file)).ToArray();
-			return files;
-		}
 	}
 }
-/*
-
-		private static void SaveModList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			// enabled, not necessarially loaded.
-			string[] enabledMods = ModLoader.FindMods()
-				.Where(ModLoader.IsEnabled)
-				.Select(mod => mod.name)
-				.ToArray();
-
-			Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists");
-
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists" + Path.DirectorySeparatorChar + "testlist.json";
-
-			string json = JsonConvert.SerializeObject(enabledMods, Newtonsoft.Json.Formatting.Indented);
-			File.WriteAllText(path, json);
-
-		}
-
-		private static void LoadModList(UIMouseEvent evt, UIElement listeningElement)
-		{
-			string[] mods = { };
-			string path = ModLoader.ModPath + Path.DirectorySeparatorChar + "ModLists" + Path.DirectorySeparatorChar + "testlist.json";
-
-			if (File.Exists(path))
-			{
-				using (StreamReader r = new StreamReader(path))
-				{
-					string json = r.ReadToEnd();
-					mods = JsonConvert.DeserializeObject<string[]>(json);
-				}
-			}
-
-			// Actually Set mods to enabled.
-
-			Main.PlaySound(11, -1, -1, 1);
-			Interface.infoMessage.SetMessage($"The Following mods were enabled:\n{String.Join(", ", mods)}\n, some disabled: ");
-			Interface.infoMessage.SetGotoMenu(Interface.reloadModsID);
-			Main.menuMode = Interface.infoMessageID;
-		}
-		*/

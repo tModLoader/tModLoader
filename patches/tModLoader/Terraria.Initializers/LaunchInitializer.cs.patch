@@ -1,14 +1,12 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
-@@ -1,6 +_,11 @@
+@@ -1,6 +_,9 @@
  using System;
-+using System.Collections.Generic;
  using System.Diagnostics;
-+using System.IO;
 +using System.Linq;
 +using System.Text.RegularExpressions;
  using Terraria.Localization;
-+using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
  using Terraria.Social;
  
  namespace Terraria.Initializers
@@ -64,7 +62,7 @@
  			}
  		}
  
-@@ -156,6 +_,19 @@
+@@ -156,6 +_,23 @@
  			{
  				LanguageManager.Instance.SetLanguage(text);
  			}
@@ -81,6 +79,10 @@
 +				ModCompile.BuildModCommandLine(text);
 +			}
 +
++			if ((text = TryParameter("-install")) != null) {
++				FileAssociationSupport.HandleFileAssociation(text);
++			}
++
  			string worldName;
  			if ((worldName = LaunchInitializer.TryParameter(new string[]
  				{
@@ -95,7 +97,7 @@
 +					"-modpath"
 +				})) != null)
 +			{
-+				ModLoader.ModLoader.modPath = modPath;
++				ModOrganizer.modPath = modPath;
  			}
  			string banFilePath;
  			if ((banFilePath = LaunchInitializer.TryParameter(new string[]

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "setup", "setup.csproj", "{ECAD06B8-1A3B-4288-A02C-198A198EF98E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HookGenWrapper", "HookGenWrapper\HookGenWrapper.csproj", "{A386559E-0850-47AD-8F5B-D1492FA27980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,8 +14,13 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ECAD06B8-1A3B-4288-A02C-198A198EF98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECAD06B8-1A3B-4288-A02C-198A198EF98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A386559E-0850-47AD-8F5B-D1492FA27980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A386559E-0850-47AD-8F5B-D1492FA27980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FDF598EF-0C8A-4148-807A-13F6C1A5A033}
 	EndGlobalSection
 EndGlobal

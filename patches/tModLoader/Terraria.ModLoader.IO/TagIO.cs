@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Ionic.Zlib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ionic.Zlib;
 
 namespace Terraria.ModLoader.IO
 {
@@ -27,8 +27,7 @@ namespace Terraria.ModLoader.IO
 			internal Func<BinaryReader, T> reader;
 			internal Action<BinaryWriter, T> writer;
 
-			public PayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer)
-			{
+			public PayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer) {
 				this.reader = reader;
 				this.writer = writer;
 			}
@@ -37,8 +36,7 @@ namespace Terraria.ModLoader.IO
 			public override object Read(BinaryReader r) => reader(r);
 			public override void Write(BinaryWriter w, object v) => writer(w, (T)v);
 
-			public override IList ReadList(BinaryReader r, int size)
-			{
+			public override IList ReadList(BinaryReader r, int size) {
 				var list = new List<T>(size);
 				for (int i = 0; i < size; i++)
 					list.Add(reader(r));
@@ -47,8 +45,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			public override void WriteList(BinaryWriter w, IList list) => WriteList(w, (IList<T>)list);
-			public void WriteList(BinaryWriter w, IList<T> list)
-			{
+			public void WriteList(BinaryWriter w, IList<T> list) {
 				foreach (T t in list)
 					writer(w, t);
 			}
@@ -67,8 +64,7 @@ namespace Terraria.ModLoader.IO
 
 			public ClassPayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer,
 					Func<T, T> clone, Func<T> makeDefault = null) :
-					base(reader, writer)
-			{
+					base(reader, writer) {
 				this.clone = clone;
 				this.makeDefault = makeDefault;
 			}
@@ -165,16 +161,14 @@ namespace Terraria.ModLoader.IO
 
 		private static PayloadHandler<string> StringHandler = (PayloadHandler<string>)PayloadHandlers[8];
 
-		private static PayloadHandler GetHandler(int id)
-		{
+		private static PayloadHandler GetHandler(int id) {
 			if (id < 1 || id >= PayloadHandlers.Length)
 				throw new IOException("Invalid NBT payload id: " + id);
 
 			return PayloadHandlers[id];
 		}
 
-		private static int GetPayloadId(Type t)
-		{
+		private static int GetPayloadId(Type t) {
 			int id;
 			if (PayloadIDs.TryGetValue(t, out id))
 				return id;
@@ -185,8 +179,7 @@ namespace Terraria.ModLoader.IO
 			throw new IOException($"Invalid NBT payload type '{t}'");
 		}
 
-		public static object Serialize(object value)
-		{
+		public static object Serialize(object value) {
 			var type = value.GetType();
 
 			TagSerializer serializer;
@@ -212,20 +205,17 @@ namespace Terraria.ModLoader.IO
 			return list;
 		}
 
-		public static T Deserialize<T>(object tag)
-		{
+		public static T Deserialize<T>(object tag) {
 			if (tag is T) return (T)tag;
 			return (T)Deserialize(typeof(T), tag);
 		}
 
-		public static object Deserialize(Type type, object tag)
-		{
+		public static object Deserialize(Type type, object tag) {
 			if (type.IsInstanceOfType(tag))
 				return tag;
 
 			TagSerializer serializer;
-			if (TagSerializer.TryGetSerializer(type, out serializer))
-			{
+			if (TagSerializer.TryGetSerializer(type, out serializer)) {
 				if (tag == null)
 					tag = Deserialize(serializer.TagType, null);
 
@@ -233,8 +223,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			//normal nbt type with missing value
-			if (tag == null)
-			{
+			if (tag == null) {
 				if (type.GetGenericArguments().Length == 0)
 					return GetHandler(GetPayloadId(type)).Default();
 
@@ -244,12 +233,10 @@ namespace Terraria.ModLoader.IO
 
 			//list conversion required
 			if ((tag == null || tag is IList) &&
-				type.GetGenericArguments().Length == 1)
-			{
+				type.GetGenericArguments().Length == 1) {
 				var elemType = type.GetGenericArguments()[0];
 				var newListType = typeof(List<>).MakeGenericType(elemType);
-				if (type.IsAssignableFrom(newListType))
-				{//if the desired type is a superclass of List<elemType>
+				if (type.IsAssignableFrom(newListType)) {//if the desired type is a superclass of List<elemType>
 					if (tag == null)
 						return newListType.GetConstructor(new Type[0]).Invoke(new object[0]);
 
@@ -274,11 +261,9 @@ namespace Terraria.ModLoader.IO
 
 		public static T Clone<T>(T o) => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
 
-		public static object ReadTag(BinaryReader r, out string name)
-		{
+		public static object ReadTag(BinaryReader r, out string name) {
 			int id = r.ReadByte();
-			if (id == 0)
-			{
+			if (id == 0) {
 				name = null;
 				return null;
 			}
@@ -287,35 +272,29 @@ namespace Terraria.ModLoader.IO
 			return PayloadHandlers[id].Read(r);
 		}
 
-		public static void WriteTag(string name, object tag, BinaryWriter w)
-		{
+		public static void WriteTag(string name, object tag, BinaryWriter w) {
 			int id = GetPayloadId(tag.GetType());
 			w.Write((byte)id);
 			StringHandler.writer(w, name);
 			PayloadHandlers[id].Write(w, tag);
 		}
 
-		public static TagCompound FromFile(string path, bool compressed = true)
-		{
-			try
-			{
+		public static TagCompound FromFile(string path, bool compressed = true) {
+			try {
 				using (Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
 					return FromStream(fs, compressed);
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				throw new IOException("Failed to read NBT file: " + path, e);
 			}
 		}
 
-		public static TagCompound FromStream(Stream stream, bool compressed = true)
-		{
+		public static TagCompound FromStream(Stream stream, bool compressed = true) {
 			if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
 			return Read(new BigEndianReader(stream));
 		}
 
-		public static TagCompound Read(BinaryReader reader)
-		{
+		public static TagCompound Read(BinaryReader reader) {
 			string name;
 			var tag = ReadTag(reader, out name);
 			if (!(tag is TagCompound))
@@ -324,21 +303,17 @@ namespace Terraria.ModLoader.IO
 			return (TagCompound)tag;
 		}
 
-		public static void ToFile(TagCompound root, string path, bool compress = true)
-		{
-			try
-			{
+		public static void ToFile(TagCompound root, string path, bool compress = true) {
+			try {
 				using (Stream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
 					ToStream(root, fs, compress);
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				throw new IOException("Failed to read NBT file: " + path, e);
 			}
 		}
 
-		public static void ToStream(TagCompound root, Stream stream, bool compress = true)
-		{
+		public static void ToStream(TagCompound root, Stream stream, bool compress = true) {
 			if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
 			Write(root, new BigEndianWriter(stream));
 			if (compress) stream.Close();

@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using Terraria;
 
 namespace Terraria.ModLoader
 {
@@ -15,8 +13,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMountData.
 		/// </summary>
-		public Mount.MountData mountData
-		{
+		public Mount.MountData mountData {
 			get;
 			internal set;
 		}
@@ -24,8 +21,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod which has added this ModMountData.
 		/// </summary>
-		public Mod mod
-		{
+		public Mod mod {
 			get;
 			internal set;
 		}
@@ -33,8 +29,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The index of this ModMountData in the Mount.mounts array.
 		/// </summary>
-		public int Type
-		{
+		public int Type {
 			get;
 			internal set;
 		}
@@ -42,8 +37,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of this type of mount.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get;
 			internal set;
 		}
@@ -51,8 +45,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ModMountData()
-		{
+		public ModMountData() {
 			mountData = new Mount.MountData();
 		}
 
@@ -63,13 +56,11 @@ namespace Terraria.ModLoader
 		/// <param name="texture"></param>
 		/// <param name="extraTextures"></param>
 		/// <returns></returns>
-		public virtual bool Autoload(ref string name, ref string texture, IDictionary<MountTextureType, string> extraTextures)
-		{
+		public virtual bool Autoload(ref string name, ref string texture, IDictionary<MountTextureType, string> extraTextures) {
 			return mod.Properties.Autoload;
 		}
 
-		internal void SetupMount(Mount.MountData mountData)
-		{
+		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();
 			newMountData.mountData = mountData;
 			mountData.modMountData = newMountData;
@@ -80,8 +71,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set the properties of this type of mount.
 		/// </summary>
-		public virtual void SetDefaults()
-		{
+		public virtual void SetDefaults() {
 		}
 
 		/// <summary>
@@ -89,8 +79,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="jumpHeight"></param>
 		/// <param name="xVelocity"></param>
-		public virtual void JumpHeight(ref int jumpHeight, float xVelocity)
-		{
+		public virtual void JumpHeight(ref int jumpHeight, float xVelocity) {
 		}
 
 		/// <summary>
@@ -98,16 +87,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="jumpSeed"></param>
 		/// <param name="xVelocity"></param>
-		public virtual void JumpSpeed(ref float jumpSeed, float xVelocity)
-		{
+		public virtual void JumpSpeed(ref float jumpSeed, float xVelocity) {
 		}
 
 		/// <summary>
 		/// Allows you to make things happen when mount is used (creating dust etc.) Can also be used for mount special abilities.
 		/// </summary>
 		/// <param name="player"></param>
-		public virtual void UpdateEffects(Player player)
-		{
+		public virtual void UpdateEffects(Player player) {
 		}
 
 		/// <summary>
@@ -117,14 +104,12 @@ namespace Terraria.ModLoader
 		/// <param name="state"></param>
 		/// <param name="velocity"></param>
 		/// <returns></returns>
-		public virtual bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
-		{
+		public virtual bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
 			return true;
 		}
 
 		//todo: MountLoader is never called for this, why is this in here? Made it internal for now
-		internal virtual bool CustomBodyFrame()
-		{
+		internal virtual bool CustomBodyFrame() {
 			return false;
 		}
 
@@ -134,8 +119,7 @@ namespace Terraria.ModLoader
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
 		/// <param name="toggleOn">Does nothing yet</param>
-		public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
-		{
+		public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn) {
 		}
 
 		/// <summary>
@@ -143,8 +127,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="mousePosition"></param>
-		public virtual void AimAbility(Player player, Vector2 mousePosition)
-		{
+		public virtual void AimAbility(Player player, Vector2 mousePosition) {
 		}
 	}
 }

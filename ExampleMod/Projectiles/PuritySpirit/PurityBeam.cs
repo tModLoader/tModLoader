@@ -1,9 +1,9 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -11,14 +11,12 @@ namespace ExampleMod.Projectiles.PuritySpirit
 	{
 		internal const float charge = 60f;
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("PurifyingColumn");
 			Main.projFrames[projectile.type] = 3;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 80;
 			projectile.height = 14;
 			projectile.penetrate = -1;
@@ -28,46 +26,37 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			cooldownSlot = 1;
 		}
 
-		public override void AI()
-		{
-			if (projectile.height != (int)projectile.ai[0])
-			{
+		public override void AI() {
+			if (projectile.height != (int)projectile.ai[0]) {
 				Vector2 center = projectile.Center;
 				projectile.height = (int)projectile.ai[0];
 				projectile.Center = center;
 			}
 			projectile.ai[1] += 1f;
-			if (projectile.ai[1] == charge)
-			{
-				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
-				if (modPlayer.heroLives > 0)
-				{
+			if (projectile.ai[1] == charge) {
+				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+				if (modPlayer.heroLives > 0) {
 					Main.PlaySound(SoundID.Zombie, -1, -1, 104);
 				}
-				else
-				{
+				else {
 					Main.PlaySound(SoundID.Zombie, projectile.Center, 104);
 				}
 				projectile.hostile = true;
 			}
-			if (projectile.ai[1] >= charge + 60f)
-			{
+			if (projectile.ai[1] >= charge + 60f) {
 				projectile.Kill();
 			}
 		}
 
-		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
-		{
-			if (target.hurtCooldowns[1] <= 0)
-			{
-				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>(mod);
+		public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit) {
+			if (target.hurtCooldowns[1] <= 0) {
+				ExamplePlayer modPlayer = target.GetModPlayer<ExamplePlayer>();
 				modPlayer.constantDamage = projectile.damage;
 				modPlayer.percentDamage = Main.expertMode ? 0.6f : 0.5f;
 			}
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Color color = Color.White * 0.8f;
 			Vector2 drawPos = projectile.Top - Main.screenPosition;
 			Rectangle frame = new Rectangle(0, 0, 100, 14);

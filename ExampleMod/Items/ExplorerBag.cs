@@ -6,26 +6,22 @@ namespace ExampleMod.Items
 {
 	public class ExplorerBag : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Explorer's Bag");
 			Tooltip.SetDefault("<right> for goodies!");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
 			item.rare = 2;
 		}
 
-		public override bool CanRightClick()
-		{
+		public override bool CanRightClick() {
 			return true;
 		}
 
-		public override void RightClick(Player player)
-		{
+		public override void RightClick(Player player) {
 			player.QuickSpawnItem(ItemID.LifeCrystal, 15);
 			player.QuickSpawnItem(ItemID.LifeFruit, 20);
 			player.QuickSpawnItem(ItemID.ManaCrystal, 9);
@@ -36,10 +32,9 @@ namespace ExampleMod.Items
 			player.QuickSpawnItem(ItemID.SuspiciousLookingTentacle);
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "ExampleItem", 10);
+			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

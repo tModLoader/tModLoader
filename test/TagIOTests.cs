@@ -794,7 +794,7 @@ namespace Terraria.ModLoader
 
 		class C2 : TagSerializable
 		{
-			public new static Func<TagCompound, C2> DESERIALIZER = tag => new C2(tag.GetInt("value"));
+			public static Func<TagCompound, C2> DESERIALIZER = tag => new C2(tag.GetInt("value"));
 			public int value;
 
 			public C2(int value) {

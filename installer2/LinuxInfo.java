@@ -6,22 +6,24 @@ public class LinuxInfo
     {
         String[] files = new String[]
         {
-            "Terraria.exe",
-            "ModCompile/tModLoaderWindows.exe",
+            "tModLoader.exe",
             "tModLoaderServer.exe",
             "tModLoaderServer",
-            "tModLoaderServer.bin.x86",
-            "tModLoaderServer.bin.x86_64",
+            "Terraria",
+            "tModLoader",
+            "tModLoader-kick",
+            "tModLoader-mono",
+            "I18N.dll",
+            "I18N.West.dll"
+        };
+        String[] filesToDelete = new String[]
+        {
+            "Terraria.exe.config",
             "MP3Sharp.dll",
             "Ionic.Zip.Reduced.dll",
-            "Mono.Cecil.dll",
-            "Terraria.exe.config",
-            "ModCompile/Microsoft.Xna.Framework.dll",
-            "ModCompile/Microsoft.Xna.Framework.Game.dll",
-            "ModCompile/Microsoft.Xna.Framework.Graphics.dll",
-            "ModCompile/Microsoft.Xna.Framework.Xact.dll"
+            "Mono.Cecil.dll"
         };
-        Installer.tryInstall(files, getInstallDir());
+        Installer.tryInstall(files, filesToDelete, getInstallDir(), false);
     }
 
     private static File getInstallDir()

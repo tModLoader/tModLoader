@@ -6,8 +6,7 @@ namespace ExampleMod.Items.Placeable
 {
 	public class VoidMonolith : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 22;
 			item.height = 32;
 			item.maxStack = 999;
@@ -22,8 +21,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("VoidMonolith");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.LunarBar, 12);
 			recipe.AddTile(TileID.LunarCraftingStation);

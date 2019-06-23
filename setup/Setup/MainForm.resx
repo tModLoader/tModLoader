@@ -120,6 +120,9 @@
   <metadata name="toolTipButtons.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>11, 12</value>
   </metadata>
+  <metadata name="toolTipButtons.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>11, 12</value>
+  </metadata>
   <data name="buttonDiffModLoader.ToolTip" xml:space="preserve">
     <value>Recalculates the tModLoader patches
 Diffs the src/Terraria and src/tModLoader directories

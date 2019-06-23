@@ -14,7 +14,7 @@
  						{
  							Main.defaultChestName = Lang.dresserType[(int)(Main.tile[player.chestX, player.chestY].frameX / 54)].Value;
  						}
-+						if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type])
++						if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] && Main.tile[player.chestX, player.chestY].type >= TileID.Count)
 +						{
 +							Main.defaultChestName = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
 +						}

@@ -1,7 +1,7 @@
-author = blushiemagic, jopojelly, Jofairden
-version = 0.10.1.5
-displayName = Example Mod
-homepage = http://forums.terraria.org/index.php?threads/1-3-tmodloader-a-modding-api.23726/
+author = tModLoader Team
+version = 0.11
+displayName = Example Mod - 0.11 Beta 6
+homepage = https://tmodloader.net/
 hideCode = false
 hideResources = false
 includeSource = true

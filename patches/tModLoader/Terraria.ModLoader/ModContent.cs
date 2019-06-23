@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
@@ -24,8 +25,7 @@ namespace Terraria.ModLoader
 
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
 
-		private static void SplitName(string name, out string domain, out string subName)
-		{
+		public static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
 			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);
@@ -38,8 +38,7 @@ namespace Terraria.ModLoader
 		/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static byte[] GetFileBytes(string name)
-		{
+		public static byte[] GetFileBytes(string name) {
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 
@@ -53,8 +52,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a file with the specified name exists.
 		/// </summary>
-		public static bool FileExists(string name)
-		{
+		public static bool FileExists(string name) {
 			if (!name.Contains('/'))
 				return false;
 
@@ -69,8 +67,7 @@ namespace Terraria.ModLoader
 		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Texture2D GetTexture(string name)
-		{
+		public static Texture2D GetTexture(string name) {
 			if (Main.dedServ)
 				return null;
 
@@ -89,8 +86,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
-		public static bool TextureExists(string name)
-		{
+		public static bool TextureExists(string name) {
 			if (!name.Contains('/'))
 				return false;
 
@@ -105,11 +101,42 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Returns whether or not a texture with the specified name exists. texture will be populated with null if not found, and the texture if found.
+		/// </summary>
+		/// <param name="name">The texture name that is requested</param>
+		/// <param name="texture">The texture itself will be output to this</param>
+		/// <returns>True if the texture is found, false otherwise.</returns>
+		internal static bool TryGetTexture(string name, out Texture2D texture) {
+			if (Main.dedServ) {
+				texture = null;
+				return false;
+			}
+
+			string modName, subName;
+			SplitName(name, out modName, out subName);
+			if (modName == "Terraria") {
+				if (File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb")) {
+					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+					return true;
+				}
+				texture = null;
+				return false;
+			}
+
+			Mod mod = ModLoader.GetMod(modName);
+			if (mod == null) {
+				texture = null;
+				return false;
+			}
+
+			return mod.textures.TryGetValue(subName, out texture);
+		}
+
+		/// <summary>
 		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static SoundEffect GetSound(string name)
-		{
+		public static SoundEffect GetSound(string name) {
 			if (Main.dedServ)
 				return null;
 
@@ -126,8 +153,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
-		public static bool SoundExists(string name)
-		{
+		public static bool SoundExists(string name) {
 			if (!name.Contains('/'))
 				return false;
 
@@ -142,8 +168,7 @@ namespace Terraria.ModLoader
 		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Music GetMusic(string name)
-		{
+		public static Music GetMusic(string name) {
 			if (Main.dedServ) { return null; }
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -155,8 +180,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether or not a sound with the specified name exists.
 		/// </summary>
-		public static bool MusicExists(string name)
-		{
+		public static bool MusicExists(string name) {
 			if (!name.Contains('/')) { return false; }
 			string modName, subName;
 			SplitName(name, out modName, out subName);
@@ -164,99 +188,206 @@ namespace Terraria.ModLoader
 			return mod != null && mod.MusicExists(subName);
 		}
 
-		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value)
-		{
-			if (dict.ContainsKey(value.Key))
-			{
+		/// <summary>
+		/// Gets the ModNPC instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the npc</param>
+		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
+		public static ModNPC GetModNPC(int type) => NPCLoader.GetNPC(type);
+
+		/// <summary>
+		/// Gets the index of the boss head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture"></param>
+		/// <returns></returns>
+		public static int GetModBossHeadSlot(string texture) => NPCHeadLoader.GetBossHeadSlot(texture);
+
+		/// <summary>
+		/// Gets the index of the head texture corresponding to the given texture path.
+		/// </summary>
+		/// <param name="texture">Relative texture path</param>
+		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
+		public static int GetModHeadSlot(string texture) => NPCHeadLoader.GetHeadSlot(texture);
+
+		/// <summary>
+		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
+		/// </summary>
+		public static ModItem GetModItem(int type) => ItemLoader.GetItem(type);
+
+		/// <summary>
+		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
+		/// </summary>
+		public static ModDust GetModDust(int type) => ModDust.GetDust(type);
+
+		/// <summary>
+		/// Gets the ModProjectile instance corresponding to the specified type.
+		/// </summary>
+		/// <param name="type">The type of the projectile</param>
+		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
+		public static ModProjectile GetModProjectile(int type) => ProjectileLoader.GetProjectile(type);
+
+		/// <summary>
+		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
+		/// </summary>
+		public static ModBuff GetModBuff(int type) => BuffLoader.GetBuff(type);
+
+		/// <summary>
+		/// Gets the equipment texture for the specified equipment type and ID.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="slot"></param>
+		/// <returns></returns>
+		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
+
+		/// <summary>
+		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
+		/// </summary>
+		/// <param name="type">The type of the mount.</param>
+		/// <returns>Null if not found, otherwise the ModMountData associated with the mount.</returns>
+		public static ModMountData GetModMountData(int type) => MountLoader.GetMount(type);
+
+		/// <summary>
+		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
+		/// </summary>
+		/// <param name="type">The type of the ModTile</param>
+		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
+		public static ModTile GetModTile(int type) => TileLoader.GetTile(type);
+
+		/// <summary>
+		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
+		/// </summary>
+		public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
+
+		/// <summary>
+		/// Returns the ModWaterStyle with the given ID.
+		/// </summary>
+		public static ModWaterStyle GetModWaterStyle(int style) => WaterStyleLoader.GetWaterStyle(style);
+
+		/// <summary>
+		/// Returns the ModWaterfallStyle with the given ID.
+		/// </summary>
+		public static ModWaterfallStyle GetModWaterfallStyle(int style) => WaterfallStyleLoader.GetWaterfallStyle(style);
+
+		/// <summary>
+		/// Returns the slot/ID of the background texture with the given name.
+		/// </summary>
+		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
+
+		/// <summary>
+		/// Returns the ModSurfaceBgStyle object with the given ID.
+		/// </summary>
+		public static ModSurfaceBgStyle GetModSurfaceBgStyle(int style) => SurfaceBgStyleLoader.GetSurfaceBgStyle(style);
+
+		/// <summary>
+		/// Returns the ModUgBgStyle object with the given ID.
+		/// </summary>
+		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
+
+		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
+			if (dict.ContainsKey(value.Key)) {
 				dict[value.Key].SetValue(value.Value);
 			}
-			else
-			{
+			else {
 				dict[value.Key] = value;
 			}
 			return dict[value.Key];
 		}
 
-		internal static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey)
-		{
+		internal static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey) {
 			string key = mod.Name + ": " + name;
 			modHotKeys[key] = new ModHotKey(mod, name, defaultKey);
 			return modHotKeys[key];
 		}
 
-		internal static bool Load()
-		{
-			try
-			{
-				Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
-				LoadModContent(mod => {
-					mod.loading = true;
-					mod.File?.Read(TmodFile.LoadedState.Streaming, mod.LoadResourceFromStream);
-					mod.Autoload();
-					mod.Load();
-					mod.loading = false;
-				});
-				
-				Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
-				ResizeArrays();
-				RecipeGroupHelper.FixRecipeGroupLookups();
-				
-				Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
-				LoadModContent(mod => {
-					mod.SetupContent();
-					mod.PostSetupContent();
-					mod.File?.UnloadAssets();
-				});
+		internal static void Load() {
+			CacheVanillaState();
 
-				if (Main.dedServ)
-					ModNet.AssignNetIDs();
+			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			LoadModContent(mod => {
+				mod.loading = true;
+				mod.AutoloadConfig();
+				mod.LoadResources();
+				mod.Autoload();
+				mod.Load();
+				mod.loading = false;
+			});
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+			ResizeArrays();
+			RecipeGroupHelper.FixRecipeGroupLookups();
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			LoadModContent(mod => {
+				mod.SetupContent();
+				mod.PostSetupContent();
+			});
 			
-				Main.player[255] = new Player(false); // setup inventory is unnecessary 
-			
-				RefreshModLanguage(Language.ActiveCulture);
-				MapLoader.SetupModMap();
-				ItemSorting.SetupWhiteLists();
-				PlayerInput.ReInitialize();
-				SetupRecipes();
-				return true;
-			}
-			catch (LoadingException e)
-			{
-				ModLoader.DisableMod(e.mod.Name);
-				ErrorLogger.LogLoadingError(e.mod.Name, e.mod.Version, e.InnerException, e is AddRecipesException);
-				Main.menuMode = Interface.errorMessageID;
-				return false;
-			}
+			MemoryTracking.Finish();
+
+			if (Main.dedServ)
+				ModNet.AssignNetIDs();
+
+			Main.player[255] = new Player(false); // setup inventory is unnecessary 
+
+			RefreshModLanguage(Language.ActiveCulture);
+			MapLoader.SetupModMap();
+			ItemSorting.SetupWhiteLists();
+			PlayerInput.reinitialize = true;
+			SetupRecipes();
 		}
 
-		private static void LoadModContent(Action<Mod> loadAction)
-		{
+		private static void CacheVanillaState() {
+			EffectsTracker.CacheVanillaState();
+		}
+
+		internal static Mod LoadingMod { get; private set; }
+		private static void LoadModContent(Action<Mod> loadAction) {
+			MemoryTracking.Checkpoint();
 			int num = 0;
-			foreach (var mod in ModLoader.Mods)
-			{
-				Interface.loadMods.SetCurrentMod(num++, mod.Name);
+			foreach (var mod in ModLoader.Mods) {
+				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
+					LoadingMod = mod;
 					loadAction(mod);
 				}
 				catch (Exception e) {
-					throw new LoadingException(mod, e.Message, e);
+					e.Data["mod"] = mod.Name;
+					throw;
+				}
+				finally {
+					LoadingMod = null;
+					MemoryTracking.Update(mod.Name);
 				}
 			}
 		}
 
-		private static void SetupRecipes()
-		{
+		private static void SetupRecipes() {
 			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 				Main.recipe[k] = new Recipe();
-			
+
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
 		}
 
-		public static void Unload()
-		{
+		internal static void UnloadModContent() {
+			foreach (var mod in ModLoader.Mods.Reverse()) {
+				try {
+					mod.Close();
+					mod.UnloadContent();
+				}
+				catch (Exception e) {
+					e.Data["mod"] = mod.Name;
+					throw;
+				}
+				finally {
+					MonoModHooks.RemoveAll(mod);
+				}
+			}
+		}
+
+		internal static void Unload() {
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
@@ -281,8 +412,7 @@ namespace Terraria.ModLoader
 			WaterfallStyleLoader.Unload();
 			WorldHooks.Unload();
 			ResizeArrays(true);
-			for (int k = 0; k < Recipe.maxRecipes; k++)
-			{
+			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
 			}
 			Recipe.numRecipes = 0;
@@ -295,13 +425,14 @@ namespace Terraria.ModLoader
 			CommandManager.Unload();
 			TagSerializer.Reload();
 			ModNet.Unload();
+			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
+			EffectsTracker.RemoveModEffects();
 
 			CleanupModReferences();
 		}
 
-		private static void ResizeArrays(bool unloading = false)
-		{
+		private static void ResizeArrays(bool unloading = false) {
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();
@@ -324,74 +455,58 @@ namespace Terraria.ModLoader
 			WaterStyleLoader.ResizeArrays();
 			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
-			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values)
-			{
+			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
 		}
 
-		public static void RefreshModLanguage(GameCulture culture)
-		{
+		public static void RefreshModLanguage(GameCulture culture) {
 			Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
-			foreach (ModItem item in ItemLoader.items)
-			{
+			foreach (ModItem item in ItemLoader.items) {
 				LocalizedText text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
 				Lang._itemNameCache[item.item.type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
-				if (text.Value != null)
-				{
+				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
 					Lang._itemTooltipCache[item.item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				}
 			}
-			foreach (ModPrefix prefix in ModPrefix.prefixes)
-			{
+			foreach (ModPrefix prefix in ModPrefix.prefixes) {
 				LocalizedText text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
 				Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
 			}
-			foreach (var keyValuePair in MapLoader.tileEntries)
-			{
-				foreach (MapEntry entry in keyValuePair.Value)
-				{
-					if (entry.translation != null)
-					{
+			foreach (var keyValuePair in MapLoader.tileEntries) {
+				foreach (MapEntry entry in keyValuePair.Value) {
+					if (entry.translation != null) {
 						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
 						SetLocalizedText(dict, text);
 					}
 				}
 			}
-			foreach (var keyValuePair in MapLoader.wallEntries)
-			{
-				foreach (MapEntry entry in keyValuePair.Value)
-				{
-					if (entry.translation != null)
-					{
+			foreach (var keyValuePair in MapLoader.wallEntries) {
+				foreach (MapEntry entry in keyValuePair.Value) {
+					if (entry.translation != null) {
 						LocalizedText text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
 						SetLocalizedText(dict, text);
 					}
 				}
 			}
-			foreach (ModProjectile proj in ProjectileLoader.projectiles)
-			{
+			foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 				LocalizedText text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
 				Lang._projectileNameCache[proj.projectile.type] = SetLocalizedText(dict, text);
 			}
-			foreach (ModNPC npc in NPCLoader.npcs)
-			{
+			foreach (ModNPC npc in NPCLoader.npcs) {
 				LocalizedText text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
 				Lang._npcNameCache[npc.npc.type] = SetLocalizedText(dict, text);
 			}
-			foreach (ModBuff buff in BuffLoader.buffs)
-			{
+			foreach (ModBuff buff in BuffLoader.buffs) {
 				LocalizedText text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
 				Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
 				text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
-			foreach (Mod mod in ModLoader.Mods)
-			{
-				foreach (ModTranslation translation in mod.translations.Values)
-				{
+			foreach (Mod mod in ModLoader.Mods) {
+				foreach (ModTranslation translation in mod.translations.Values) {
 					LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 					SetLocalizedText(dict, text);
 				}
@@ -399,58 +514,46 @@ namespace Terraria.ModLoader
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 		}
 
-		private static void DisposeMusic()
-		{
-			for (int i = 0; i < Main.music.Length; i++)
-			{
-				MusicStreaming music = Main.music[i] as MusicStreaming;
-				if (music != null)
-				{
-					if (i < Main.maxMusic)
-					{
-						Main.music[i] = Main.soundBank.GetCue("Music_" + i);
-					}
-					else
-					{
-						Main.music[i] = null;
-					}
-					music.Stop(AudioStopOptions.Immediate);
-					music.Dispose();
-				}
-			}
+		private static void DisposeMusic() {
+			foreach (var music in Main.music.OfType<MusicStreaming>())
+				music.Dispose();
 		}
 
 		/// <summary>
 		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references
 		/// so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
 		/// </summary>
-		internal static void CleanupModReferences()
-		{
+		internal static void CleanupModReferences() {
 			// Clear references to ModPlayer instances
-			for (int i = 0; i < 256; i++)
-			{
+			for (int i = 0; i < 256; i++) {
 				Main.player[i] = new Player();
 			}
-			// TODO: This breaks net reload. Restore this cleanup step later?
-			// Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
+
+			Main.clientPlayer = new Player(false);
+			Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			foreach (var npc in Main.npc)
-			{
+			foreach (var npc in Main.npc) {
 				npc.SetDefaults(0);
 			}
 
-			foreach (var item in Main.item)
-			{
+			foreach (var item in Main.item) {
 				item.SetDefaults(0);
 			}
 			ItemSlot.singleSlotArray[0]?.SetDefaults(0);
 
-			for (int i = 0; i < Main.chest.Length; i++)
-			{
+			for (int i = 0; i < Main.chest.Length; i++) {
 				Main.chest[i] = new Chest();
 			}
+		}
+
+		public static Stream OpenRead(string assetName, bool newFileStream = false) {
+			if (!assetName.StartsWith("tmod:"))
+				return File.OpenRead(assetName);
+
+			SplitName(assetName.Substring(5).Replace('\\', '/'), out var modName, out var entryPath);
+			return ModLoader.GetMod(modName).GetFileStream(entryPath, newFileStream);
 		}
 	}
 }

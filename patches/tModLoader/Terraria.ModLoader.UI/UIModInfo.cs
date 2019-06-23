@@ -1,194 +1,268 @@
+using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.ModLoader.IO;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI
 {
 	internal class UIModInfo : UIState
 	{
-		internal UIElement uIElement;
-		public UIMessageBox modInfo;
-		public UITextPanel<string> uITextPanel;
-		internal UITextPanel<string> modHomepageButton;
-		internal UITextPanel<string> extractButton;
-		internal UITextPanel<string> deleteButton;
-		private int gotoMenu = 0;
-		private LocalMod localMod;
-		private string url = "";
-		private string info = "";
-		private string modDisplayName = "";
+		private UIElement _uIElement;
+		private UIMessageBox _modInfo;
+		private UITextPanel<string> _uITextPanel;
+		private UIAutoScaleTextTextPanel<string> _modHomepageButton;
+		private UIAutoScaleTextTextPanel<string> _extractButton;
+		private UIAutoScaleTextTextPanel<string> _deleteButton;
+		private readonly UILoaderAnimatedImage _loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
 
-		public override void OnInitialize()
-		{
-			uIElement = new UIElement();
-			uIElement.Width.Set(0f, 0.8f);
-			uIElement.MaxWidth.Set(600f, 0f);
-			uIElement.Top.Set(220f, 0f);
-			uIElement.Height.Set(-220f, 1f);
-			uIElement.HAlign = 0.5f;
+		private int _gotoMenu;
+		private LocalMod _localMod;
+		private string _url = string.Empty;
+		private string _info = string.Empty;
+		private string _modName = string.Empty;
+		private string _modDisplayName = string.Empty;
+		private bool _loadFromWeb = false;
 
-			UIPanel uIPanel = new UIPanel();
-			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
-			uIElement.Append(uIPanel);
+		private CancellationTokenSource _cts;
+		
+		public override void OnInitialize() {
+			_uIElement = new UIElement {
+				Width = {Percent = 0.8f},
+				MaxWidth = UICommon.MaxPanelWidth,
+				Top = {Pixels = 220},
+				Height = {Pixels = -220, Percent = 1f},
+				HAlign = 0.5f
+			};
 
-			modInfo = new UIMessageBox("This is a test of mod info here.");
-			modInfo.Width.Set(-25f, 1f);
-			modInfo.Height.Set(0f, 1f);
-			uIPanel.Append(modInfo);
+			var uIPanel = new UIPanel {
+				Width = {Percent = 1f},
+				Height = {Pixels = -110, Percent = 1f},
+				BackgroundColor = UICommon.mainPanelBackground
+			};
+			_uIElement.Append(uIPanel);
 
-			UIScrollbar uIScrollbar = new UIScrollbar();
-			uIScrollbar.SetView(100f, 1000f);
-			uIScrollbar.Height.Set(-20, 1f);
-			uIScrollbar.VAlign = 0.5f;
-			uIScrollbar.HAlign = 1f;
+			_modInfo = new UIMessageBox(string.Empty) {
+				Width = {Pixels = -25, Percent = 1f},
+				Height = {Percent = 1f}
+			};
+			uIPanel.Append(_modInfo);
+
+			var uIScrollbar = new UIScrollbar {
+				Height = {Pixels = -20, Percent = 1f},
+				VAlign = 0.5f,
+				HAlign = 1f
+			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
-			modInfo.SetScrollbar(uIScrollbar);
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true);
-			uITextPanel.HAlign = 0.5f;
-			uITextPanel.Top.Set(-35f, 0f);
-			uITextPanel.SetPadding(15f);
-			uITextPanel.BackgroundColor = new Color(73, 94, 171);
-			uIElement.Append(uITextPanel);
+			_modInfo.SetScrollbar(uIScrollbar);
+			_uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
+				HAlign = 0.5f,
+				Top = {Pixels = -35},
+				BackgroundColor = UICommon.defaultUIBlue
+			}.WithPadding(15f);
+			_uIElement.Append(_uITextPanel);
 
-			modHomepageButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage"), 1f, false);
-			modHomepageButton.Width.Set(-10f, 1f);
-			modHomepageButton.Height.Set(25f, 0f);
-			modHomepageButton.VAlign = 1f;
-			modHomepageButton.Top.Set(-65f, 0f);
-			modHomepageButton.OnMouseOver += UICommon.FadedMouseOver;
-			modHomepageButton.OnMouseOut += UICommon.FadedMouseOut;
-			modHomepageButton.OnClick += VisitModHomePage;
-			uIElement.Append(modHomepageButton);
+			_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
+				Width = {Percent = 1f},
+				Height = {Pixels = 40},
+				VAlign = 1f,
+				Top = {Pixels = -65}
+			}.WithFadedMouseOver();
+			_modHomepageButton.OnClick += VisitModHomePage;
 
-			UITextPanel<string> backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			backButton.Width.Set(-10f, 0.333f);
-			backButton.Height.Set(25f, 0f);
-			backButton.VAlign = 1f;
-			backButton.Top.Set(-20f, 0f);
-			backButton.OnMouseOver += UICommon.FadedMouseOver;
-			backButton.OnMouseOut += UICommon.FadedMouseOut;
+			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = {Pixels = -10, Percent = 0.333f},
+				Height = {Pixels = 40},
+				VAlign = 1f,
+				Top = {Pixels = -20}
+			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
-			uIElement.Append(backButton);
+			_uIElement.Append(backButton);
 
-			extractButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract"), 1f, false);
-			extractButton.Width.Set(-10f, 0.333f);
-			extractButton.Height.Set(25f, 0f);
-			extractButton.VAlign = 1f;
-			extractButton.HAlign = 0.5f;
-			extractButton.Top.Set(-20f, 0f);
-			extractButton.OnMouseOver += UICommon.FadedMouseOver;
-			extractButton.OnMouseOut += UICommon.FadedMouseOut;
-			extractButton.OnClick += ExtractClick;
-			uIElement.Append(extractButton);
+			_extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract")) {
+				Width = {Pixels = -10, Percent = 0.333f},
+				Height = {Pixels = 40},
+				VAlign = 1f,
+				HAlign = 0.5f,
+				Top = {Pixels = -20}
+			}.WithFadedMouseOver();
+			_extractButton.OnClick += ExtractClick;
 
-			deleteButton = new UITextPanel<string>(Language.GetTextValue("UI.Delete"), 1f, false);
-			deleteButton.Width.Set(-10f, 0.333f);
-			deleteButton.Height.Set(25f, 0f);
-			deleteButton.VAlign = 1f;
-			deleteButton.HAlign = 1f;
-			deleteButton.Top.Set(-20f, 0f);
-			deleteButton.OnMouseOver += UICommon.FadedMouseOver;
-			deleteButton.OnMouseOut += UICommon.FadedMouseOut;
-			deleteButton.OnClick += DeleteClick;
-			uIElement.Append(deleteButton);
+			_deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
+				Width = {Pixels = -10, Percent = 0.333f},
+				Height = {Pixels = 40},
+				VAlign = 1f,
+				HAlign = 1f,
+				Top = {Pixels = -20}
+			}.WithFadedMouseOver();
+			_deleteButton.OnClick += DeleteClick;
 
-			Append(uIElement);
+			Append(_uIElement);
 		}
 
-		internal void SetModInfo(string text)
-		{
-			info = text;
-			if (info.Equals(""))
-			{
-				info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
+		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false) {
+			_modName = modName;
+			_modDisplayName = displayName;
+			_gotoMenu = gotoMenu;
+			_localMod = localMod;
+			_info = description;
+			if (_info.Equals("") && !loadFromWeb) {
+				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}
+			_url = url;
+			_loadFromWeb = loadFromWeb;
+
+			Main.gameMenu = true;
+			Main.menuMode = Interface.modInfoID;
 		}
 
-		internal void SetModName(string text)
-		{
-			modDisplayName = text;
+		public override void OnDeactivate() {
+			base.OnDeactivate();
+
+			_cts?.Cancel(false);
+			_info = string.Empty;
+			_localMod = null;
+			_gotoMenu = 0;
+			_modName = string.Empty;
+			_modDisplayName = string.Empty;
+			_url = string.Empty;
+			_modHomepageButton.Remove();
+			_deleteButton.Remove();
+			_extractButton.Remove();
 		}
 
-		internal void SetGotoMenu(int gotoMenu)
-		{
-			this.gotoMenu = gotoMenu;
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(SoundID.MenuClose);
+			Main.menuMode = _gotoMenu;
 		}
 
-		internal void SetURL(string url)
-		{
-			this.url = url;
+		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(SoundID.MenuOpen);
+			Interface.extractMod.Show(_localMod, _gotoMenu);
 		}
 
-		internal void SetMod(LocalMod mod)
-		{
-			localMod = mod;
+		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(SoundID.MenuClose);
+			File.Delete(_localMod.modFile.path);
+			Main.menuMode = _gotoMenu;
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(11);
-			Main.menuMode = gotoMenu;
-		}
-
-		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(ID.SoundID.MenuOpen);
-			Interface.extractMod.SetMod(localMod);
-			Interface.extractMod.SetGotoMenu(gotoMenu);
-			Main.menuMode = Interface.extractModID;
-		}
-
-		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(ID.SoundID.MenuClose);
-			File.Delete(localMod.modFile.path);
-			Main.menuMode = this.gotoMenu;
-		}
-
-		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10);
-			Process.Start(url);
+			Process.Start(_url);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
+			
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-			UILinkPointNavigator.Shortcuts.BackButtonGoto = this.gotoMenu;
+			UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
+			
+			if (_modHomepageButton.IsMouseHovering) {
+				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
+			}
 		}
 
-		public override void OnActivate()
-		{
-			uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + modDisplayName, 0.8f, true);
-			modInfo.SetText(info);
-			if (url.Equals(""))
-			{
-				modHomepageButton.Remove();
+		private bool _loading;
+		private bool _ready;
+
+		public override void OnActivate() {
+			_modInfo.SetText(_info);
+			_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
+			if (_loadFromWeb) {
+				_modInfo.Append(_loaderElement);
+				_loading = true;
+				_ready = false;
+				
+				_cts = new CancellationTokenSource();
+				
+				Task.Factory.StartNew(() => {
+					try {
+						ServicePointManager.Expect100Continue = false;
+						const string url = "http://javid.ddns.net/tModLoader/moddescription.php";
+						var values = new NameValueCollection {
+							{"modname", _modName}
+						};
+						using (WebClient client = new WebClient()) {
+							ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => policyErrors == SslPolicyErrors.None;
+							client.UploadValuesCompleted += ReceiveModInfo;
+							client.UploadValuesAsync(new Uri(url), "POST", values);
+						}
+					}
+					catch (Exception e) {
+						UIModBrowser.LogModBrowserException(e);
+					}
+				}, _cts.Token);
 			}
-			else
-			{
-				uIElement.Append(modHomepageButton);
+			else {
+				_loading = false;
+				_ready = true;
 			}
-			if (localMod != null)
-			{
-				uIElement.Append(deleteButton);
-				uIElement.Append(extractButton);
+		}
+
+		public override void Update(GameTime gameTime) {
+			if (!_loading && _ready) {
+				_modInfo.SetText(_info);
+				
+				if (!string.IsNullOrEmpty(_url)){
+					_uIElement.Append(_modHomepageButton);
+				}
+
+				if (_localMod != null) {
+					_uIElement.AddOrRemoveChild(_deleteButton, ModLoader.Mods.All(x => x.Name != _localMod.Name));
+					_uIElement.Append(_extractButton);
+				}
+				Recalculate();
+				_modInfo.RemoveChild(_loaderElement);
+				_ready = false;
 			}
-			else
-			{
-				deleteButton.Remove();
-				extractButton.Remove();
+		}
+
+		private void ReceiveModInfo(object sender, UploadValuesCompletedEventArgs e) {
+			_loading = false;
+			string description = Language.GetTextValue("tModLoader.ModInfoProblemTryAgain");
+			string homepage = "";
+			if (!e.Cancelled) {
+				try {
+					string response = Encoding.UTF8.GetString(e.Result);
+					if (!string.IsNullOrEmpty(response)) {
+						try {
+							JObject joResponse = JObject.Parse(response);
+							description = (string)joResponse["description"];
+							homepage = (string)joResponse["homepage"];
+						}
+						catch (Exception err) {
+							Logging.tML.Error($"Problem during JSON parse of mod info for {_modDisplayName}", err);
+						}
+					}
+				}
+				catch (Exception err) {
+					Logging.tML.Error($"There was a problem trying to receive the result of a mod info request for {_modDisplayName}", err);
+				}
 			}
+
+			_info = description;
+			if (_info.Equals("")) {
+				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
+			}
+			_url = homepage;
+			_ready = true;
 		}
 	}
 }

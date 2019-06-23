@@ -4,13 +4,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class PuritySpiritTrophy : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Spirit of Purity Trophy");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 30;
 			item.height = 30;
 			item.maxStack = 99;

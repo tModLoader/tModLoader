@@ -1,0 +1,21 @@
+--- src/Terraria\Terraria.GameContent.UI.Elements\UITextPanel.cs
++++ src/tModLoader\Terraria.GameContent.UI.Elements\UITextPanel.cs
+@@ -3,6 +_,7 @@
+ using ReLogic.Graphics;
+ using System;
+ using Terraria.UI;
++using Terraria.UI.Chat;
+ 
+ namespace Terraria.GameContent.UI.Elements
+ {
+@@ -98,7 +_,8 @@
+ 		public virtual void SetText(T text, float textScale, bool large)
+ 		{
+ 			DynamicSpriteFont dynamicSpriteFont = large ? Main.fontDeathText : Main.fontMouseText;
+-			Vector2 textSize = new Vector2(dynamicSpriteFont.MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
++			Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(textScale));
++			textSize.Y = (large ? 32f : 16f) * textScale;
+ 			this._text = text;
+ 			this._textScale = textScale;
+ 			this._textSize = textSize;
+
