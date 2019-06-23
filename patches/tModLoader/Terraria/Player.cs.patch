@@ -6288,7 +6288,7 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
-@@ -40007,6 +_,42 @@
+@@ -40007,6 +_,45 @@
  					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
  				}
  			}
@@ -6296,7 +6296,10 @@
 +
 +		public int GetManaCost(Item item) {
 +			float reduce = manaCost;
-+			float mult = item.type != 127 || !spaceGun ? 1 : 0;
++			float mult = 1;
++			if (item.type == ItemID.SpaceGun && spaceGun) {
++				mult = 0;
++			}
 +			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
 +			int mana = (int)(item.mana * reduce * mult);
 +			return mana >= 0 ? mana : 0;
