@@ -1,3 +1,4 @@
+using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace ExampleMod
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
+			ExampleTravelingMerchant.spawnTime = double.MaxValue;
 		}
 
 		public override TagCompound Save() {
@@ -48,6 +50,7 @@ namespace ExampleMod
 
 			return new TagCompound {
 				["downed"] = downed,
+				["traveler"] = ExampleTravelingMerchant.Save()
 			};
 		}
 
@@ -55,6 +58,7 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
+			ExampleTravelingMerchant.Load(tag.GetCompound("traveler"));
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -399,6 +403,11 @@ namespace ExampleMod
 
 		public override void TileCountsAvailable(int[] tileCounts) {
 			exampleTiles = tileCounts[mod.TileType("ExampleBlock")];
+		}
+
+		public override void PreUpdate() {
+			// Update everything about spawning the traveling merchant from the methods we have in the Traveling Merchant's class
+			ExampleTravelingMerchant.UpdateTravelingMerchant();
 		}
 
 		public override void PostUpdate() {
