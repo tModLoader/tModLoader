@@ -189,6 +189,14 @@
  		public static bool playerInventory = false;
  		public static int stackSplit;
  		public static int stackCounter = 0;
+@@ -1237,6 +_,7 @@
+ 		public static bool recFastScroll = false;
+ 		public static bool recBigList = false;
+ 		public static int recStart = 0;
++		public static Point16 trashSlotOffset = Point16.Zero;
+ 		public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
+ 		public static int[] availableRecipe = new int[Recipe.maxRecipes];
+ 		public static float[] availableRecipeY = new float[Recipe.maxRecipes];
 @@ -1309,6 +_,7 @@
  			2488
  		};
@@ -3789,6 +3797,19 @@
  						if (Main.npc[Main.player[Main.myPlayer].talkNPC].type == 20)
  						{
  							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+@@ -35775,6 +_,12 @@
+ 				Main.inventoryScale = 0.755f;
+ 				num += 5;
+ 			}
++			else if ((Main.player[Main.myPlayer].chest == -1 || Main.npcShop == -1) && Main.trashSlotOffset != Point16.Zero)
++			{
++				num += Main.trashSlotOffset.X;
++				num2 += Main.trashSlotOffset.Y;
++				Main.inventoryScale = 0.755f;
++			}
+ 			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
+ 			if (Main.mouseX >= num && (float)Main.mouseX <= (float)num + (float)Main.inventoryBackTexture.Width * Main.inventoryScale && Main.mouseY >= num2 && (float)Main.mouseY <= (float)num2 + (float)Main.inventoryBackTexture.Height * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface)
+ 			{
 @@ -36133,14 +_,13 @@
  							int num31 = (int)(Main.player[Main.myPlayer].manaSickReduction * 100f) + 1;
  							Main.buffString = Main.buffString + num31 + "%";
