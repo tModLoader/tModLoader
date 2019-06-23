@@ -109,7 +109,7 @@
 +				TileObjectData.FixNewTile();
 +				throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.")
 +				{
-+					HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-Tile"
++					HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile"
 +				};
 +			}
  		}

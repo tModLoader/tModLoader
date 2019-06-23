@@ -146,7 +146,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return BuffID.Frostburn;//BuffDef.byName["Bluemagic:EtherealFlames"];
+					return BuffID.Frostburn;
 				case 3:
 					return BuffID.Venom;
 				case 4:

@@ -530,11 +530,12 @@
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)
-@@ -12665,6 +_,8 @@
+@@ -12665,6 +_,9 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
 +					case "bluemagic123":
++					case "blushiemagic":
 +						return 0.55f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.1f;
  				}
  			}

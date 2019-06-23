@@ -132,7 +132,7 @@ namespace ExampleMod
 		}
 
 		public override TagCompound Save() {
-			// Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
+			// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
 			return new TagCompound {
 				// {"somethingelse", somethingelse}, // To save more data, add additional lines
 				{"score", score},
@@ -149,7 +149,7 @@ namespace ExampleMod
 		public override void Load(TagCompound tag) {
 			score = tag.GetInt("score");
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
-			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
+			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
 			nonStopParty = tag.GetBool("nonStopParty");
 			examplePersonGiftReceived = tag.GetBool(nameof(examplePersonGiftReceived));
 		}

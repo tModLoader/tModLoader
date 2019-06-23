@@ -475,7 +475,7 @@ namespace Terraria.ModLoader
 			tile.SetDefaults();
 			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1) {
 				TileObjectData.FixNewTile();
-				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
 			}
 			if (Main.tileLavaDeath[tile.Type]) {
 				Main.tileObsidianKill[tile.Type] = true;

@@ -185,7 +185,7 @@ namespace ExampleMod
 			snailGroup.ValidItems.Add(ItemType<NPCs.ExampleCritterItem>());
 		}
 
-		// Learn how to do Recipes: https://github.com/blushiemagic/tModLoader/wiki/Basic-Recipes 
+		// Learn how to do Recipes: https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes 
 		public override void AddRecipes() {
 			// Here is an example of a recipe.
 			ModRecipe recipe = new ModRecipe(this);

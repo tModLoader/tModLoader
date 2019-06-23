@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Engine
 {
 	/// <summary>
 	/// FNA uses a single-threaded GL context. This class helps with tracking down related issues and deadlocks.
-	/// See https://github.com/blushiemagic/tModLoader/issues/237 and https://github.com/FNA-XNA/FNA/blob/master/src/FNAPlatform/OpenGLDevice.cs#L4676
+	/// See https://github.com/tModLoader/tModLoader/issues/237 and https://github.com/FNA-XNA/FNA/blob/master/src/FNAPlatform/OpenGLDevice.cs#L4676
 	/// It also improves loading performance on FNA
 	/// </summary>
 	public static class GLCallLocker
