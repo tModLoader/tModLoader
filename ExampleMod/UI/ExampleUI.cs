@@ -86,7 +86,7 @@ namespace ExampleMod.UI
 		}
 
 		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			Main.PlaySound(SoundID.MenuClose);
 			Visible = false;
 		}
 
