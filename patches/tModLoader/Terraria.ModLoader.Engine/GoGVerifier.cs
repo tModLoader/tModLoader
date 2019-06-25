@@ -18,19 +18,28 @@ namespace Terraria.ModLoader.Engine
 				return hash.SequenceEqual(md5.ComputeHash(stream));
 		}
 
+		private static byte[] ToByteArray(string hexString) {
+			byte[] retval = new byte[hexString.Length / 2];
+			for (int i = 0; i < hexString.Length; i += 2)
+				retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
+			return retval;
+		}
+
 		private static void GetPlatformCheckInfo(out string steamAPIpath, out byte[] vanillaGoGhash) {
+			// I'd like it if you couldn't just open tML in a hex editor and replace the hash
+			// but whether I make it byte array or string doesn't change that. I could obfuscate the hash a bit
+			// but I can't really make it more effort than just nuking the steam check with dnspy (which could be done before we added GoG support)
 			if (Platform.IsWindows) {
 				steamAPIpath = "steam_api.dll";
-				vanillaGoGhash = new byte[] { 185, 47, 36, 43, 200, 116, 221, 219, 240, 143, 112, 86, 97, 179, 19, 169 };
-			} 
+				vanillaGoGhash = ToByteArray("81ef4a9337ae6d7a1698fdeb3137580d");
+			}
 			else if (Platform.IsOSX) {
 				steamAPIpath = "osx/libCSteamworks";
-				// hash not yet implemented, need someone with GoG for mac
-				vanillaGoGhash = new byte[] { 148, 42, 176, 97, 232, 84, 199, 77, 179, 166, 177, 239, 226, 220, 36, 208 };
-			} 
+				vanillaGoGhash = ToByteArray("e8dfb127721edc4ceb32381f41ece7b8");
+			}
 			else if (Platform.IsLinux) {
 				steamAPIpath = "lib/libCSteamworks.so";
-				vanillaGoGhash = new byte[] { 148, 42, 176, 97, 232, 84, 199, 77, 179, 166, 177, 239, 226, 220, 36, 208 };
+				vanillaGoGhash = ToByteArray("942ab061e854c74db3a6b1efe2dc24d0");
 			}
 			else {
 				throw new Exception("Platform??");
