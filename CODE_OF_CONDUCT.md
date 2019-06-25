@@ -115,7 +115,7 @@ For a policy clarification concerning Piracy and Scam Links, see: http://forums.
 
 Please be weary of mod theft. This includes people in the community stealing other people's work without consent.
 
-You are highly advised to read our article about legality of product use, copyright and legal concerns: https://github.com/blushiemagic/tModLoader/wiki/Licensing-information
+You are highly advised to read our article about legality of product use, copyright and legal concerns: https://github.com/tModLoader/tModLoader/wiki/Licensing-information
 
 An official statement from Yoraiz0r, the lead developer of Terraria, may be read here: http://pastebin.com/raw/4Znc1C5c
 
