@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
+		/// Useful for storing information on an npc. Defaults to false. 
 		/// Return true if you need to store information (have non-static fields).
 		/// </summary>
 		public virtual bool InstancePerEntity => false;

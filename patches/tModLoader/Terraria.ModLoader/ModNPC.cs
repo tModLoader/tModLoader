@@ -139,13 +139,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a clone of this ModNPC. 
 		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Create a new instance of this ModNPC for an NPC instance. 
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
