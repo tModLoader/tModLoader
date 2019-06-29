@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -55,6 +58,7 @@ namespace Terraria.ModLoader
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			PrettifyStackTraceSources();
 			LogFirstChanceExceptions();
+			HookWebRequests();
 
 			if (ModCompile.DeveloperMode) {
 				tML.Info("Developer mode enabled");
@@ -160,7 +164,19 @@ namespace Terraria.ModLoader
 			});
 		}
 
-		internal static void LogFirstChanceExceptions() {
+		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
+		private delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request);
+		private static void HookWebRequests() {
+			new Hook(typeof(HttpWebRequest).Assembly
+					.GetType("System.Net.WebConnection")
+					.FindMethod("SendRequest"),
+				new SendRequestHook((orig, self, request) => {
+					tML.Debug($"Web Request: " + request.Address);
+					return orig(self, request);
+				}));
+		}
+
+		private static void LogFirstChanceExceptions() {
 			if (FrameworkVersion.Framework == Framework.Mono)
 				tML.Warn("First-chance exception reporting is not implemented on Mono");
 

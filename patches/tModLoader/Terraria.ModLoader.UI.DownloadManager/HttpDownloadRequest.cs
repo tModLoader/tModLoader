@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
@@ -17,6 +15,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public HttpWebResponse Response { get; private set; }
 
+		// note that this will be completely ignored on old Mono versions
+		public const int CHUNK_SIZE = 1 << 20; //1MB
 		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
 		public SecurityProtocolType SecurityProtocol = Tls12;
 		public Version ProtocolVersion = HttpVersion.Version11;
@@ -32,7 +32,9 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			ServicePointManager.SecurityProtocol = SecurityProtocol;
 			ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidation;
 			Request = _requestSupplier();
-			Request.ServicePoint.ReceiveBufferSize = ModNet.CHUNK_SIZE;
+			
+			if (FrameworkVersion.Framework == Framework.NetFramework)
+				Request.ServicePoint.ReceiveBufferSize = CHUNK_SIZE;
 			Request.ProtocolVersion = ProtocolVersion;
 			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
 			Request.KeepAlive = true;
@@ -84,20 +86,21 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 			var responseStream = Response.GetResponseStream();
 			int currentIndex = 0;
-			byte[] buf;
+			byte[] buf = new byte[CHUNK_SIZE];
 
-			do {
-				try {
-					buf = responseStream.ReadBytes((int)Math.Min(contentLength - FileStream.Position, ModNet.CHUNK_SIZE));
-					FileStream.Write(buf, 0, buf.Length);
-					currentIndex += buf.Length;
+			try {
+				// Use a standard read loop, attempting to read small amounts causes it to lock up and die on mono
+				int r;
+				while ((r = responseStream.Read(buf, 0, buf.Length)) > 0) {
+					FileStream.Write(buf, 0, r);
+					currentIndex += r;
 					UpdateProgress(currentIndex / (double)contentLength);
 				}
-				catch {
-					// during cancellation of request ReadBytes will throw
-					break;
-				}
-			} while (currentIndex < contentLength);
+			}
+			catch (Exception e) {
+				// during cancellation of request ReadBytes will throw
+				// TODO: but what if it's not a cancel????
+			}
 
 			Success = currentIndex == contentLength;
 			Response.Close();

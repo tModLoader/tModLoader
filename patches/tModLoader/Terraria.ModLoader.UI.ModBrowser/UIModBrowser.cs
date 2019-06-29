@@ -91,14 +91,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 		}
 
-		internal static bool PlatformSupportsTls12 {
-			get {
-				foreach (SecurityProtocolType protocol in Enum.GetValues(typeof(SecurityProtocolType)))
-					if (protocol.GetHashCode() == 3072)
-						return true;
-				return false;
-			}
-		}
+		internal static bool PlatformSupportsTls12 => 
+			FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
 
 		private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
 			if (Loading) return;

@@ -104,11 +104,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 			_loadProgress.SetProgress(0f);
 
-			if (!UIModBrowser.PlatformSupportsTls12) {
+			// This doesn't actually work here, apparently you can't switch UIs OnActivate anyway
+			/*if (!UIModBrowser.PlatformSupportsTls12) {
 				// Needed for downloads from Github
 				Interface.errorMessage.Show("TLS 1.2 not supported on this computer.", 0); // github releases
 				return;
-			}
+			}*/
 
 			_cts?.Dispose();
 			_cts = new CancellationTokenSource();
