@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		// TODO if we store a browser 'state' we can probably refactor this
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (!UpdateNeeded) return;
+			if (!UpdateNeeded || Loading) return;
 			UpdateNeeded = false;
 			if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
 			ModList.Clear();
