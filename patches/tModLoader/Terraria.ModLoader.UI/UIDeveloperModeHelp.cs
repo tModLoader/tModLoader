@@ -113,9 +113,11 @@ namespace Terraria.ModLoader.UI
 			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
+			if (!modCompileCheck && !HttpDownloadRequest.PlatformSupportsTls12)
+				modCompileMsg = "tModLoader.DMUpdateMonoToDownloadModCompile";
 			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
 #if !DEBUG
-			if (!modCompileCheck)
+			if (!modCompileCheck && HttpDownloadRequest.PlatformSupportsTls12)
 				AddButton(modCompileMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadModCompile);
 #endif
 
@@ -144,11 +146,11 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DevelopingWithVisualStudio() {
-			Process.Start("https://github.com/tModLoader/tModLoader/wiki/Developing-with-Visual-Studio");
+			Process.Start("https://github.com/blushiemagic/tModLoader/wiki/Developing-with-Visual-Studio");
 		}
 
 		private void OpenTutorial() {
-			Process.Start("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide");
+			Process.Start("https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-Guide");
 		}
 
 		private void DownloadDotNet() {
@@ -186,7 +188,7 @@ namespace Terraria.ModLoader.UI
 		private void DownloadModCompile() {
 			Main.PlaySound(SoundID.MenuOpen);
 			// download the ModCompile for the platform we don't have
-			string url = $"https://github.com/tModLoader/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
+			string url = $"https://github.com/blushiemagic/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
 			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };

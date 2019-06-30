@@ -9,6 +9,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal sealed class HttpDownloadRequest : DownloadRequest
 	{
+		public static bool PlatformSupportsTls12 => 
+			FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
+		
+		public const int CHUNK_SIZE = 1 << 20; //1MB
+		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
+		
 		public HttpWebRequest Request { get; private set; }
 		// Must use callback, or else will not use ServicePoint settings
 		private readonly Func<HttpWebRequest> _requestSupplier;
@@ -16,8 +22,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public HttpWebResponse Response { get; private set; }
 
 		// note that this will be completely ignored on old Mono versions
-		public const int CHUNK_SIZE = 1 << 20; //1MB
-		public const SecurityProtocolType Tls12 = (SecurityProtocolType)3072;
 		public SecurityProtocolType SecurityProtocol = Tls12;
 		public Version ProtocolVersion = HttpVersion.Version11;
 

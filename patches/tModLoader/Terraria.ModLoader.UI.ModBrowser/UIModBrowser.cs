@@ -91,9 +91,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 		}
 
-		internal static bool PlatformSupportsTls12 => 
-			FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
-
 		private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
 			if (Loading) return;
 			var relevantMods = _items.Where(x => x.HasUpdate && !x.UpdateIsDowngrade).Select(x => x.ModName).ToList();

@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.Core
 #if DEBUG
 			msg = Language.GetTextValue("tModLoader.DMModCompileDev", Path.GetFileName(Assembly.GetExecutingAssembly().Location));
 #else
-			if (!Directory.Exists(modCompileDir))
+			if (modCompileVersion == "missing")
 				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
 			else
 				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, modCompileVersion);
@@ -298,8 +298,8 @@ namespace Terraria.ModLoader.Core
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 			}
 			catch (BuildException e) {
-				Console.Error.WriteLine("Error: " + e.Message);
-				if (e.InnerException != null)
+				Console.Error.WriteLine("Error: "+e.Message);
+				if (e.InnerException != null);
 					Console.Error.WriteLine(e.InnerException);
 				Environment.Exit(1);
 			}
