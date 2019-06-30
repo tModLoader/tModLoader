@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ionic.Zlib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
@@ -310,7 +311,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					_autoUpdateUrl = (string)updateObject["autoupdateurl"];
 				}
 
-				var modlist = (JArray)jsonObject["modlist"];
+				JArray modlist;
+				string modlist_compressed = (string)jsonObject["modlist_compressed"];
+				if (modlist_compressed != null) {
+					byte[] data = Convert.FromBase64String(modlist_compressed);
+					using (GZipStream zip = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
+					using (var reader = new StreamReader(zip))
+						modlist = JArray.Parse(reader.ReadToEnd());
+				}
+				else {
+					// Fallback if needed.
+					modlist = (JArray)jsonObject["modlist"];
+				}
 				foreach (var mod in modlist.Children<JObject>()) _items.Add(UIModDownloadItem.FromJson(installedMods, mod));
 				UpdateNeeded = true;
 			}
