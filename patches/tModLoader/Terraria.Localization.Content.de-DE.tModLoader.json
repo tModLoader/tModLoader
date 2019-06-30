@@ -64,7 +64,7 @@
 		"BuildErrorModNameHasPeriod": "Ein interner Modname kann keine Sonderzeichen enthalten!",
 		"BuildErrorTwoModsSameName": " Zwei Mods haben den gleichen internen Namen {0}",
 		"BuildErrorModReference": "Mod Referenz konnte nicht gelesen werden. {0}",
-		"BuildErrorMissingNoCompile": "Fehlende DLL-Dateien für noCompile: {0} oder {1} \ n \ nAll.dll darf keine Verweise auf Microsoft.Xna.Framework enthalten, oder FNA \ nXNA.dll muss auf die entsprechende tModLoader.exe und das entsprechende Framework verweisen",
+		"BuildErrorMissingNoCompile": "Fehlende DLL-Dateien für noCompile: {0} oder {1}\n\nAll.dll darf keine Verweise auf Microsoft.Xna.Framework enthalten, oder FNA\nXNA.dll muss auf die entsprechende tModLoader.exe und das entsprechende Framework verweisen",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Mod name {0} does not match assembly name {1}",
 		"BuildErrorNamespaceFolderDontMatch": "NAmespace und Ordnername isnd nicht gleich. Das oberste Namespace muss mit dem Ordnernamen übereinstimmen.",
 		"BuildErrorNoModClass": "Stelle sicher dass Du eine Mod erweiternde Klasse hast.",
@@ -150,7 +150,7 @@
 		"MBSortDownloadDesc": "Suche nach heruntergeladen absteigend",
 		"MBSortDownloadAsc": "Suche nach heruntergeladen aufsteigend",
 		"MBShowAllMods": "Zeige alle Mods",
-		"MBShowNotInstalleDupdates": "Zeige mods nicht installiert sind und aktualisierungen haben",
+		"MBShowNotInstalledUpdates": "Zeige mods nicht installiert sind und aktualisierungen haben",
 		"MBShowUpdates": "Zeige nur aktualisierungen",
 		"MBShowMSAll": "Zeige alle Mods",
 		"MBShowMSBoth": "Zeige normale Seite Mods",
@@ -267,6 +267,7 @@
 		"DMTutorial": "Tutorial",
 		"DMUpdateScripts": "Aktualisiere Skripte",
 		"DMScriptsRequireRestart": "Start Skripte wurden aktualisiert. tModLoader muss neu gestartet werden.",
+		// "DMUpdateMonoToDownloadModCompile": "Extra libraries can be downloaded from github when running on an up-to-date version of Mono.",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Ein Fehler ist beim extrahieren aufgetreten {0}",

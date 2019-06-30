@@ -267,6 +267,7 @@
 		// "DMTutorial": "Tutorial",
 		// "DMUpdateScripts": "Update Scripts",
 		// "DMScriptsRequireRestart": "Start scripts have been updated and require tModLoader to be restarted.",
+		// "DMUpdateMonoToDownloadModCompile": "Extra libraries can be downloaded from github when running on an up-to-date version of Mono.",
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Произошла ошибка при извлечении мода {0}",
