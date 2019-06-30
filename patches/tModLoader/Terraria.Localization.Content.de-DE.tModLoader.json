@@ -138,6 +138,8 @@
 		"MBUploadingMod": "Hochladen: {0}",
 		"MBDowngrade": "Zurücksetzen",
 		"MBUpdate": "Aktualisieren",
+		// "MBRequiresTMLUpdate": "Requires {0}",
+		// "MBClickToUpdate": "Click to update",
 		"MBDowngradeWithDependencies": "Mit Abhängigkeiten (dependencies) downgraden",
 		"MBUpdateWithDependencies": "Mit Abhängigkeiten (dependencies) aktualisieren",
 		"MBDownloadWithDependencies": "Mit Abhängigkeiten (dependencies) herunterladen",

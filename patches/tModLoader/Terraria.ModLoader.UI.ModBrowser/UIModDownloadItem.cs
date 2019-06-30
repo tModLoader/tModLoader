@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -47,6 +48,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly UIAutoScaleTextTextPanel<string> _updateButton;
 		private readonly UIAutoScaleTextTextPanel<string> _updateWithDepsButton;
 		private readonly UIAutoScaleTextTextPanel<string> _moreInfoButton;
+		private readonly UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 		private readonly UIText _authorText;
 		private UIImage _modIcon;
 
@@ -65,7 +67,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 			: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
-		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string downloadUrl, int downloads, int hot, string timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed) {
+		public UIModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string downloadUrl, int downloads, int hot, string timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion) {
 			ModName = name;
 			DisplayName = displayName;
 			DownloadUrl = downloadUrl;
@@ -124,7 +126,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_moreInfoButton.OnClick += RequestMoreInfo;
 			Append(_moreInfoButton);
 
-			if (hasUpdate || installed == null) {
+			if (modloaderversion != null) {
+				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", modloaderversion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
+				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
+				tMLUpdateRequired.CopyStyle(_moreInfoButton);
+				tMLUpdateRequired.Width.Pixels = 340;
+				tMLUpdateRequired.Left.Pixels = _moreInfoButton.Width.Pixels + _moreInfoButton.Left.Pixels + 5f;
+				tMLUpdateRequired.OnClick += (a, b) => {
+					Process.Start("https://github.com/tModLoader/tModLoader/releases/latest");
+				};
+				Append(tMLUpdateRequired);
+			}
+			else if (hasUpdate || installed == null) {
 				_updateButton = new UIAutoScaleTextTextPanel<string>(UpdateText).WithFadedMouseOver();
 				_updateButton.CopyStyle(_moreInfoButton);
 				_updateButton.Width.Pixels = 120;
@@ -180,6 +193,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (modsideString == "Client") modside = ModSide.Client;
 			if (modsideString == "Server") modside = ModSide.Server;
 			if (modsideString == "NoSync") modside = ModSide.NoSync;
+			string modloaderversion = (string)mod["modloaderversion"];
 			//bool exists = false; // unused?
 			bool update = false;
 			bool updateIsDowngrade = false;
@@ -193,7 +207,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					update = updateIsDowngrade = true;
 			}
 
-			return new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed);
+			return new UIModDownloadItem(displayname, name, version, author, modreferences, modside, modIconURL, download, downloads, hot, timeStamp, update, updateIsDowngrade, installed, modloaderversion);
 		}
 
 		public override int CompareTo(object obj) {
@@ -258,6 +272,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			drawPos = new Vector2(innerDimensions.X, innerDimensions.Y + 80);
 			DrawTimeText(spriteBatch, drawPos);
+		}
+
+		protected override void DrawChildren(SpriteBatch spriteBatch) {
+			base.DrawChildren(spriteBatch);
+			if (tMLUpdateRequired?.IsMouseHovering == true) {
+				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MBClickToUpdate"), GetInnerDimensions().ToRectangle());
+			}
 		}
 
 		public override void Update(GameTime gameTime) {

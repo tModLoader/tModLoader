@@ -139,6 +139,8 @@
 		"MBUploadingMod": "Wysyłanie: {0}",
 		"MBDowngrade": "Zdezaktualizuj",
 		"MBUpdate": "Zaktualizuj",
+		// "MBRequiresTMLUpdate": "Requires {0}",
+		// "MBClickToUpdate": "Click to update",
 		// "MBDowngradeWithDependencies": "Downgrade with dependencies",
 		// "MBUpdateWithDependencies": "Update with dependencies",
 		// "MBDownloadWithDependencies": "Download with dependencies",

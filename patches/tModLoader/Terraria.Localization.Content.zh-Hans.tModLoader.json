@@ -139,6 +139,8 @@
 		"MBUploadingMod": "上传中: {0}",
 		"MBDowngrade": "降级",
 		"MBUpdate": "更新",
+		// "MBRequiresTMLUpdate": "Requires {0}",
+		// "MBClickToUpdate": "Click to update",
 		"MBDowngradeWithDependencies": "降级(附带依赖)",
 		"MBUpdateWithDependencies": "更新(附带依赖)",
 		"MBDownloadWithDependencies": "下载(附带依赖)",

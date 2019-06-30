@@ -138,6 +138,8 @@
 		"MBUploadingMod": "Загрузка: {0}",
 		"MBDowngrade": "Предыдущая версия",
 		"MBUpdate": "Обновить",
+		// "MBRequiresTMLUpdate": "Requires {0}",
+		// "MBClickToUpdate": "Click to update",
 		// "MBDowngradeWithDependencies": "Downgrade with dependencies",
 		// "MBUpdateWithDependencies": "Update with dependencies",
 		// "MBDownloadWithDependencies": "Download with dependencies",
