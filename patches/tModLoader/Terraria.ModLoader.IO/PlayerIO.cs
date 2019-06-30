@@ -90,7 +90,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static string SaveHairDye(short hairDye) {
-			if (hairDye < EffectsTracker.vanillaHairShaderCount)
+			if (hairDye <= EffectsTracker.vanillaHairShaderCount)
 				return "";
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
