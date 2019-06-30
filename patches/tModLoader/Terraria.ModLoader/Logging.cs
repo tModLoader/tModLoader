@@ -166,14 +166,59 @@ namespace Terraria.ModLoader
 
 		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
 		private delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request);
-		private static void HookWebRequests() {
-			new Hook(typeof(HttpWebRequest).Assembly
+		
+		private delegate void WebOperation_ctor(object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
+		private delegate void WebOperation_ctorHook(WebOperation_ctor orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
+		
+		private delegate bool SubmitRequest(object self, HttpWebRequest request, bool forcedsubmit);
+		private delegate bool SubmitRequestHook(SubmitRequest orig, object self, HttpWebRequest request, bool forcedsubmit);
+		
+		/// <summary>
+		/// Attempt to hook the .NET internal methods to log when requests are sent to web addresses.
+		/// Use the right internal methods to capture redirects
+		/// </summary>
+		private static void HookWebRequests()
+		{
+			try {
+				// .NET 4.7.2
+				MethodBase met = typeof(HttpWebRequest).Assembly
+					.GetType("System.Net.Connection")
+					?.FindMethod("SubmitRequest");
+				if (met != null) {
+					new Hook(met, new SubmitRequestHook((orig, self, request, forcedsubmit) => {
+						tML.Debug($"Web Request: " + request.Address);
+						return orig(self, request, forcedsubmit);
+					}));
+					return;
+				}
+
+				// Mono 5.20
+				met = typeof(HttpWebRequest).Assembly
+					.GetType("System.Net.WebOperation")
+					?.GetConstructors()[0];
+				if (met != null && met.GetParameters().Length == 4) {
+					new Hook(met, new WebOperation_ctorHook((orig, self, request, buffer, challenge, token) => {
+						tML.Debug($"Web Request: " + request.Address);
+						orig(self, request, buffer, challenge, token);
+					}));
+					return;
+				}
+
+				// Mono 4.6.1
+				met = typeof(HttpWebRequest).Assembly
 					.GetType("System.Net.WebConnection")
-					.FindMethod("SendRequest"),
-				new SendRequestHook((orig, self, request) => {
-					tML.Debug($"Web Request: " + request.Address);
-					return orig(self, request);
-				}));
+					?.FindMethod("SendRequest");
+				if (met != null) {
+					new Hook(met, new SendRequestHook((orig, self, request) => {
+						tML.Debug($"Web Request: " + request.Address);
+						return orig(self, request);
+					}));
+					return;
+				}
+			}
+			catch { }
+
+			tML.Warn("HttpWebRequest send/submit method not found");
 		}
 
 		private static void LogFirstChanceExceptions() {
