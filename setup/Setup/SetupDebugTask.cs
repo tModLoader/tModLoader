@@ -36,6 +36,13 @@ namespace Terraria.ModLoader.Setup
 			foreach (var dll in references)
 				Copy(Path.Combine(baseDir, "references/"+dll), Path.Combine(modCompile, dll));
 
+			bool msBuildOnPath = RunCmd(Path.Combine(baseDir, "RoslynWrapper"), "where",
+				"msbuild",
+				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken()
+			) == 0;
+			if (!msBuildOnPath)
+				throw new Exception("msbuild not found on PATH");
+
 			roslynCompileFailed = RunCmd(Path.Combine(baseDir, "RoslynWrapper"), "msbuild",
 				"RoslynWrapper.sln /restore /p:Configuration=Release",
 				null, null, null, taskInterface.CancellationToken()
