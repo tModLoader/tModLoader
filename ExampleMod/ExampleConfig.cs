@@ -700,6 +700,9 @@ namespace ExampleMod
 		}
 	}
 
+	// ATTENTION: Below this point are custom config UI elements. Be aware that mods using custom config elements will break with the next few tModLoader updates until their design is finalized.
+	// You will need to be very active in updating your mod if you use these as they can break in any update.
+
 	// This custom config UI element uses vanilla config elements paired with custom drawing.
 	class GradientElement : ConfigElement
 	{
