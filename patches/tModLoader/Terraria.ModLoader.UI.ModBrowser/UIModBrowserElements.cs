@@ -36,10 +36,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModList?.Clear();
 			_items?.Clear();
 			_missingMods?.Clear();
-			SearchFilterToggle?.SetCurrentState(default);
-			UpdateFilterToggle?.SetCurrentState(default);
-			ModSideFilterToggle?.SetCurrentState(default);
-			SortModeFilterToggle?.SetCurrentState(default);
+			SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
+			UpdateFilterToggle?.SetCurrentState(UpdateFilter.Available);
+			ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
+			SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
 			Loading = false;
 			UpdateNeeded = true;
 		}
@@ -176,6 +176,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
 				Left = new StyleDimension { Pixels = 2 * 36 + 8 }
 			};
+			SearchFilterToggle.SetCurrentState(SearchFilter.Name);
+			UpdateFilterToggle.SetCurrentState(UpdateFilter.Available);
+			ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
+			SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
 
 			InitializeInteractions();
 

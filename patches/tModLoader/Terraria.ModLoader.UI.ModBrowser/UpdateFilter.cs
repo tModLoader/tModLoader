@@ -2,8 +2,8 @@
 {
 	public enum UpdateFilter
 	{
+		All,
 		Available,
-		UpdateOnly,
-		All
+		UpdateOnly
 	}
 }
