@@ -298,8 +298,8 @@ namespace Terraria.ModLoader.Core
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 			}
 			catch (BuildException e) {
-				Console.Error.WriteLine("Error: "+e.Message);
-				if (e.InnerException != null);
+				Console.Error.WriteLine("Error: " + e.Message);
+				if (e.InnerException != null)
 					Console.Error.WriteLine(e.InnerException);
 				Environment.Exit(1);
 			}
