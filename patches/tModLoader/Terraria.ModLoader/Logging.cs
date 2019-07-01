@@ -227,6 +227,7 @@ namespace Terraria.ModLoader
 		public static void IgnoreExceptionSource(string source) => ignoreSources.Add(source);
 
 		private static List<string> ignoreContents = new List<string> {
+			"System.Console.set_OutputEncoding", // when the game is launched without a console handle (client outside dev environment)
 			"Terraria.ModLoader.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
