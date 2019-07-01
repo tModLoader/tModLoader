@@ -44,7 +44,8 @@ KICKSTART=./${BASENAME}.bin.${ext}
 
 # copy the Terraria and rename the terraria kickstart
 if [ ! -f ${KICKSTART} ]; then
-    cp ./Terraria.bin.${ext} $KICKSTART
+	kicks=( Terraria*.bin.${ext} ) # find a vanilla kickstart, either Terraria.bin. or TerrariaServer.bin.
+	cp "./${kicks[0]}" $KICKSTART
 fi
 
 export MONO_IOMAP=all
