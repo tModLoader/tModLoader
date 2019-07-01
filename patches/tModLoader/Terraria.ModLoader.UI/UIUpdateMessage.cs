@@ -79,6 +79,7 @@ namespace Terraria.ModLoader.UI
 		internal void SetURL(string url) {
 			this.url = url;
 		}
+		
 		internal void SetAutoUpdateURL(string autoUpdateURL) {
 			this.autoUpdateURL = autoUpdateURL;
 		}

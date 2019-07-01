@@ -13,20 +13,19 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using System.Security.Authentication;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using MonoMod.Utils;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		public static readonly string LogDir = Path.Combine(Main.SavePath, "Logs");
+		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
 		public static string LogPath { get; private set; }
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
@@ -47,22 +46,21 @@ namespace Terraria.ModLoader
 
 			ConfigureAppenders();
 
-			tML.InfoFormat("Starting {0}{1} {2}", ModLoader.versionedName, ModLoader.CompressedPlatformRepresentation, side);
+			tML.InfoFormat("Starting {0} {1} {2}", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side);
 			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
 
-			EnablePortablePDBTraces();
-			HookModuleLoad();
-			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
-			PrettifyStackTraceSources();
-			LogFirstChanceExceptions();
-			HookWebRequests();
-
-			if (ModCompile.DeveloperMode) {
+			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
-			}
+
+			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
+			LogFirstChanceExceptions();
+			EnablePortablePDBTraces();
+			AssemblyResolving.Init();
+			PrettifyStackTraceSources();
+			HookWebRequests();
 		}
 
 		private static void ConfigureAppenders() {
@@ -154,14 +152,6 @@ namespace Terraria.ModLoader
 				}
 				catch (IOException) { }
 			}
-		}
-
-		private static void HookModuleLoad() {
-			AssemblyManager.InitAssemblyResolvers(); // must be initialized before we add the assembly resolve logger, so that the assembly resolve logger goes first
-			AssemblyManager.AssemblyResolveEarly((sender, args) => {
-				tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);
-				return null;
-			});
 		}
 
 		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
@@ -285,18 +275,25 @@ namespace Terraria.ModLoader
 			previousException = args.Exception;
 			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
 #if CLIENT
-			if (!Main.gameMenu && ModCompile.activelyModding) {
-				float soundVolume = Main.soundVolume;
-				Main.soundVolume = 0f;
-				Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);
-				Main.soundVolume = soundVolume;
-			}
+			if (ModCompile.activelyModding)
+				AddChatMessage(msg, Color.OrangeRed);
 #else
 			Console.ForegroundColor = ConsoleColor.DarkMagenta;
 			Console.WriteLine(msg);
 			Console.ResetColor();
 #endif
 			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+		}
+
+		// Separate method to avoid triggering Main constructor
+		private static void AddChatMessage(string msg, Color color) {
+			if (Main.gameMenu)
+				return;
+
+			float soundVolume = Main.soundVolume;
+			Main.soundVolume = 0f;
+			Main.NewText(msg, color);
+			Main.soundVolume = soundVolume;
 		}
 
 		private static Regex statusRegex = new Regex(@"(.+?)[: \d]*%$");

@@ -8,6 +8,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -32,6 +_,7 @@
+ 		public const bool IsServer = true;
+ 		#endif
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
++		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes 
+ 		private static int ThingsToLoad = 0;
+ 		private static int ThingsLoaded = 0;
+ 		public static bool LoadedEverything = false;
 @@ -63,6 +_,7 @@
  		{
  			Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
@@ -16,7 +24,7 @@
  		}
  
  		private static void ForceJITOnAssembly(Assembly assembly)
-@@ -205,20 +_,40 @@
+@@ -205,20 +_,45 @@
  #endif
  			try
  			{
@@ -45,6 +53,11 @@
  			}
 +
 +			LaunchParameters = Utils.ParseArguements(args);
++			SavePath =
++				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
++				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
++				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++
 +			try {
 +				Logging.Init();
 +			} catch (Exception e) {
@@ -59,7 +72,7 @@
  			if (Platform.IsOSX)
  			{
  				Main.OnEngineLoad += delegate
-@@ -226,10 +_,10 @@
+@@ -226,13 +_,12 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
@@ -67,19 +80,31 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
 -			Program.SetupLogging();
+-			using (Main main = new Main())
+-			{
+-				try
 +			//Program.SetupLogging();
-+			ModLoader.ModLoader.EngineInit();
- 			using (Main main = new Main())
- 			{
- 				try
-@@ -247,6 +_,7 @@
- 				}
- 				catch (Exception e)
++			try {
++				ModLoader.ModLoader.EngineInit();
++				using (Main main = new Main())
  				{
-+					Logging.Terraria.Fatal("Main engine crash", e);
- 					Program.DisplayException(e);
+ 					Program.InitializeConsoleOutput();
+ 					Lang.InitializeLegacyLocalization();
+@@ -245,10 +_,10 @@
+ 					main.DedServ();
+ #endif
  				}
+-				catch (Exception e)
+-				{
+-					Program.DisplayException(e);
+-				}
++			}
++			catch (Exception e) {
++				Logging.Terraria.Fatal("Main engine crash", e);
++				Program.DisplayException(e);
  			}
+ 		}
+ 
 @@ -263,9 +_,16 @@
  					streamWriter.WriteLine("");
  				}

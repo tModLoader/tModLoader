@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Core
@@ -203,19 +202,6 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		internal static void AssemblyResolveEarly(ResolveEventHandler handler)
-		{
-			// in newer .NET frameworks, the AssemblyResolve event is actually backed by an _AssemblyResolve field
-			var backingField = typeof(AppDomain)
-				.GetFields((BindingFlags) (-1))
-				.First(f => f.Name.EndsWith("AssemblyResolve"));
-			var a = (ResolveEventHandler)backingField.GetValue(AppDomain.CurrentDomain);
-			backingField.SetValue(AppDomain.CurrentDomain, null);
-
-			AppDomain.CurrentDomain.AssemblyResolve += handler;
-			AppDomain.CurrentDomain.AssemblyResolve += a;
-		}
-
 		private static readonly IDictionary<string, LoadedMod> loadedMods = new Dictionary<string, LoadedMod>();
 		private static readonly IDictionary<string, Assembly> loadedAssemblies = new ConcurrentDictionary<string, Assembly>();
 		private static readonly IDictionary<string, byte[]> assemblyBinaries = new ConcurrentDictionary<string, byte[]>();
@@ -223,13 +209,13 @@ namespace Terraria.ModLoader.Core
 
 		private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
-		private static bool assemblyResolveEventsAdded;
-		internal static void InitAssemblyResolvers() {
-			if (assemblyResolveEventsAdded)
+		private static bool assemblyResolverAdded;
+		internal static void AddAssemblyResolver() {
+			if (assemblyResolverAdded)
 				return;
-			assemblyResolveEventsAdded = true;
+			assemblyResolverAdded = true;
 
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
+			AppDomain.CurrentDomain.AssemblyResolve += (_, args) => {
 				string name = new AssemblyName(args.Name).Name;
 
 				if (name == "Terraria")
@@ -239,21 +225,6 @@ namespace Terraria.ModLoader.Core
 				loadedAssemblies.TryGetValue(name, out a);
 				return a;
 			};
-
-			// allow mods which reference embedded assemblies to reference a different version and be safely upgraded
-			AssemblyResolveEarly((sender, args) => {
-				var name = new AssemblyName(args.Name);
-				if (Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), s => s.EndsWith(name.Name + ".dll")) == null)
-					return null;
-
-				var existing = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == name.Name);
-				if (existing != null) {
-					Logging.tML.Warn($"Upgraded Reference {name.Name} -> Version={name.Version} -> {existing.GetName().Version}");
-					return existing;
-				}
-
-				return null;
-			});
 		}
 
 		private static void RecalculateReferences() {
@@ -300,7 +271,7 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
-			InitAssemblyResolvers();
+			AddAssemblyResolver();
 
 			var modList = new List<LoadedMod>();
 			foreach (var loading in modsToLoad) {

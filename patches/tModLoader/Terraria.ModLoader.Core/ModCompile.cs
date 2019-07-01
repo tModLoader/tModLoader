@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		public static readonly string ModSourcePath = Path.Combine(Main.SavePath, "Mod Sources");
+		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
 		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
 		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
@@ -164,7 +164,7 @@ namespace Terraria.ModLoader.Core
 			return false;
 		}
 
-		private static readonly string modReferencesPath = Path.Combine(Main.SavePath, "references");
+		private static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static bool referencesUpdated = false;
 		internal static void UpdateReferencesFolder() {
 			if (referencesUpdated)
@@ -657,9 +657,6 @@ namespace Terraria.ModLoader.Core
 		private static Type RoslynWrapper {
 			get {
 				if (roslynWrapper == null) {
-					// ensure the AssemblyManager is loaded for its assembly upgrading hook
-					AssemblyManager.InitAssemblyResolvers();
-
 					AppDomain.CurrentDomain.AssemblyResolve += (o, args) => {
 						var name = new AssemblyName(args.Name).Name;
 						var f = Path.Combine(modCompileDir, name + ".dll");
