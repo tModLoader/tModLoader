@@ -203,11 +203,14 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		internal static void AssemblyResolveEarly(ResolveEventHandler handler) {
-			var backingFieldName = FrameworkVersion.Framework == Framework.NetFramework ? "_AssemblyResolve" : "AssemblyResolve";
-			var f = typeof(AppDomain).GetField(backingFieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-			var a = (ResolveEventHandler)f.GetValue(AppDomain.CurrentDomain);
-			f.SetValue(AppDomain.CurrentDomain, null);
+		internal static void AssemblyResolveEarly(ResolveEventHandler handler)
+		{
+			// in newer .NET frameworks, the AssemblyResolve event is actually backed by an _AssemblyResolve field
+			var backingField = typeof(AppDomain)
+				.GetFields((BindingFlags) (-1))
+				.First(f => f.Name.EndsWith("AssemblyResolve"));
+			var a = (ResolveEventHandler)backingField.GetValue(AppDomain.CurrentDomain);
+			backingField.SetValue(AppDomain.CurrentDomain, null);
 
 			AppDomain.CurrentDomain.AssemblyResolve += handler;
 			AppDomain.CurrentDomain.AssemblyResolve += a;
@@ -275,7 +278,7 @@ namespace Terraria.ModLoader.Core
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
 					throw new Exception(mod.Name + " does not have a class extending Mod. Mods need a Mod class to function.") {
-						HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
+						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
 					};
 
 				var m = (Mod)Activator.CreateInstance(modType);
