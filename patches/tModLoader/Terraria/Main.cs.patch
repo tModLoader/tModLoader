@@ -4044,9 +4044,11 @@
  				{
  					num5 = 2;
  					array9[0] = Main.statusText;
-@@ -43401,9 +_,9 @@
+@@ -43400,10 +_,11 @@
+ 						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
  						}
++						text = text + " -modpath \"" + ModOrganizer.modPath + "\"";
  #if WINDOWS
 -						this.tServer.StartInfo.FileName = "TerrariaServer.exe";
 +						this.tServer.StartInfo.FileName = "tModLoaderServer.exe";
