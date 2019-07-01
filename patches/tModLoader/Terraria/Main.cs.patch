@@ -4064,7 +4064,7 @@
  					array9[0] = Lang.menu[9].Value;
 +					if (WorldIO.customDataFail != null)
 +					{
-+						array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
++						array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
 +					}
  					array[0] = true;
  					num2 -= 30;
@@ -4074,7 +4074,7 @@
  					array9[2] = Lang.menu[6].Value;
 +					if (WorldIO.customDataFail != null)
 +					{
-+						array9[2] = "View Error";
++						array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
 +					}
  					if (this.selectedMenu == 1)
  					{
@@ -4085,7 +4085,7 @@
  							Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  							WorldGen.playWorld();
  							Main.menuMode = 10;
-@@ -43559,7 +_,14 @@
+@@ -43559,7 +_,16 @@
  					{
  						flag5 = false;
  						Main.PlaySound(11, -1, -1, 1, 1f, 0f);
@@ -4097,6 +4097,8 @@
 +						else
 +						{
 +							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++							Main.PlaySound(SoundID.MenuOpen);
++							Process.Start(Logging.LogPath);
 +						}
  						Main.netMode = 0;
  					}
@@ -4107,18 +4109,18 @@
  					array9[0] = Lang.menu[9].Value;
 +					if (WorldIO.customDataFail != null)
 +					{
-+						array9[0] = WorldIO.customDataFail.modName + " " + array9[0];
++						array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
 +					}
  					array[0] = true;
  					array[1] = true;
  					num2 -= 30;
-@@ -43574,10 +_,22 @@
+@@ -43574,10 +_,24 @@
  					array4[2] = 50;
  					array9[1] = Lang.menu[11].Value;
  					array9[2] = Lang.menu[5].Value;
 +					if (WorldIO.customDataFail != null)
 +					{
-+						array9[2] = "View Error";
++						array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
 +					}
  					if (this.selectedMenu == 2 || flag5)
  					{
@@ -4128,9 +4130,11 @@
 +						{
 +							Main.menuMode = 0;
 +						}
-+						else
++						else 
 +						{
 +							Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++							Main.PlaySound(SoundID.MenuOpen);
++							Process.Start(Logging.LogPath);
 +						}
  						Main.menuMode = 0;
  						Main.netMode = 0;
