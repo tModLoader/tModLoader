@@ -231,6 +231,14 @@
  		public static string getIP = Main.defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer = false;
+@@ -2026,6 +_,7 @@
+ 		public List<int> DrawCacheProjsOverWiresUI = new List<int>(1000);
+ 		public static string oldStatusText = "";
+ 		public static bool autoShutdown = false;
++		public static bool showServerConsole = false;
+ 		public static bool serverGenLock = false;
+ 		public static int sundialCooldown = 0;
+ 		public static bool fastForwardTime = false;
 @@ -2058,15 +_,15 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -469,6 +477,15 @@
  							}
  							if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							{
+@@ -3849,7 +_,7 @@
+ 		public void DedServ()
+ 		{
+ 			Main.rand = new UnifiedRandom();
+-			if (Main.autoShutdown)
++			if (Main.autoShutdown && !Main.showServerConsole)
+ 			{
+ 				string text = "terraria" + Main.rand.Next(2147483647);
+ 				Console.Title = text;
 @@ -3863,18 +_,19 @@
  			}
  			else
@@ -525,7 +542,7 @@
  			WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", Main.versionNumber));
  			Console.WriteLine("");
-@@ -4301,16 +_,21 @@
+@@ -4301,39 +_,36 @@
  					Console.WriteLine(Main.statusText);
  				}
  			}
@@ -548,7 +565,10 @@
  			Console.WriteLine(Language.GetTextValue("CLI.HelpHint"));
  			Console.WriteLine("");
  			Console.Title = "Terraria Server: " + Main.worldName;
-@@ -4320,20 +_,12 @@
+ 			Stopwatch stopwatch = new Stopwatch();
+-			if (!Main.autoShutdown)
++			if (!Main.autoShutdown || Main.showServerConsole)
+ 			{
  				Main.startDedInput();
  			}
  			stopwatch.Start();
@@ -4041,11 +4061,13 @@
  				{
  					num5 = 2;
  					array9[0] = Main.statusText;
-@@ -43400,10 +_,11 @@
+@@ -43400,10 +_,13 @@
  						{
  							text = text + " -world \"" + Main.worldPathName + "\"";
  						}
 +						text = text + " -modpath \"" + ModOrganizer.modPath + "\"";
++						if (Main.showServerConsole)
++							text = text + " -showserverconsole";
  #if WINDOWS
 -						this.tServer.StartInfo.FileName = "TerrariaServer.exe";
 +						this.tServer.StartInfo.FileName = "tModLoaderServer.exe";
@@ -4055,6 +4077,38 @@
  #endif
  						this.tServer.StartInfo.Arguments = text;
  						if (Main.libPath != "")
+@@ -43412,7 +_,7 @@
+ 							expr_1014.Arguments = expr_1014.Arguments + " -loadlib " + Main.libPath;
+ 						}
+ 						this.tServer.StartInfo.UseShellExecute = false;
+-						this.tServer.StartInfo.CreateNoWindow = true;
++						this.tServer.StartInfo.CreateNoWindow = !Main.showServerConsole;
+ 						if (SocialAPI.Network != null)
+ 						{
+ 							SocialAPI.Network.LaunchLocalServer(this.tServer, Main.MenuServerMode);
+@@ -43437,7 +_,10 @@
+ 					array4[3] = 30;
+ 					array4[4] = 70;
+ 					array4[5] = 70;
+-					num5 = 6;
++					array4[6] = 70;
++					num5 = 7;
++					array9[6] = Language.GetTextValue(Main.showServerConsole ? "tModLoader.MPShowServerConsoleYes" : "tModLoader.MPShowServerConsoleNo");
++					array7[6] = 0.5f;
+ 					array9[0] = Lang.menu[135].Value;
+ 					array9[4] = Lang.menu[144].Value;
+ 					array9[5] = Lang.menu[5].Value;
+@@ -43510,6 +_,10 @@
+ 							Main.menuMode = 6;
+ 							Main.PlaySound(11, -1, -1, 1, 1f, 0f);
+ 							break;
++						case 6:
++							Main.showServerConsole = !Main.showServerConsole;
++							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
++							break;
+ 					}
+ 				}
+ 				else if (Main.menuMode == 15)
 @@ -43533,17 +_,26 @@
  				{
  					num5 = 3;

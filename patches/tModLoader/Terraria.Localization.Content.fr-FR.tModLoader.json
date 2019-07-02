@@ -122,6 +122,8 @@
 		"MPServerModsCantDownloadReasonSigned": "car vous acceptez uniquement les Mods enregistrés sur le navigateur",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "car vous avez désactivé le téléchargement automatique des Mods",
 		"MPServerModsCantDownloadChangeSettingsHint": "Vous allez devoir changer vos paramètres ou acquérir les Mods par le propriétaire du serveur.",
+		// "MPShowServerConsoleYes": "Show Server Console: On",
+		// "MPShowServerConsoleNo": "Show Server Console: Off",
 		"MPErrorModHashMismatch": "Le Hachage ne correspond pas",
 		"MPErrorModNotSigned": "Le Mod n'a pas été enregistré par le navigateur",
 		"MPErrorModDownloadError": "Une erreur est apparue en téléchargeant {0}",

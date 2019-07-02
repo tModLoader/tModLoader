@@ -123,6 +123,8 @@
 		"MPServerModsCantDownloadReasonSigned": "因为你已开启[只从服务器下载带签名认证的模组]",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "因为你已关闭[从服务器下载模组]",
 		"MPServerModsCantDownloadChangeSettingsHint": "你需要更改设置或向该服务器的服主索要模组.",
+		// "MPShowServerConsoleYes": "Show Server Console: On",
+		// "MPShowServerConsoleNo": "Show Server Console: Off",
 		"MPErrorModHashMismatch": "散列匹配",
 		"MPErrorModNotSigned": "模组未在模组浏览器中签名认证",
 		"MPErrorModDownloadError": "下载时发生错误 {0}",

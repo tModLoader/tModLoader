@@ -122,6 +122,8 @@
 		// "MPServerModsCantDownloadReasonSigned": "because you only accept mods signed by the mod browser",
 		// "MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "because you have disabled automatic mod downloading",
 		// "MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
+		// "MPShowServerConsoleYes": "Show Server Console: On",
+		// "MPShowServerConsoleNo": "Show Server Console: Off",
 		// "MPErrorModHashMismatch": "Hash mismatch",
 		// "MPErrorModNotSigned": "Mod was not signed by the Mod Browser",
 		// "MPErrorModDownloadError": "An error occurred while downloading {0}",

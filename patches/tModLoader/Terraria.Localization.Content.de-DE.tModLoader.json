@@ -122,6 +122,8 @@
 		"MPServerModsCantDownloadReasonSigned": "Du akzeptierst nur Mods aus der Mod Suche",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "Du hast das automatische herunterladen von Mods deaktiviert.",
 		"MPServerModsCantDownloadChangeSettingsHint": "Du musst deine Mods ändern oder den Serverbesitzer bitten sie dir zu schicken.",
+		// "MPShowServerConsoleYes": "Show Server Console: On",
+		// "MPShowServerConsoleNo": "Show Server Console: Off",
 		"MPErrorModHashMismatch": "Hash unpassend",
 		"MPErrorModNotSigned": "Mod wurde nicht von der Mod suche signiert",
 		"MPErrorModDownloadError": "Beim herunterladen ist ein Fehler aufgetreten {0}",

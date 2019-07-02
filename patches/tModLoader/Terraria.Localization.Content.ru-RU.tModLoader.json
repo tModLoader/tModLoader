@@ -122,6 +122,8 @@
 		"MPServerModsCantDownloadReasonSigned": "потому что у вас активированна функция скачивания только подписанных модов",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "потому что у вас отключена функция автоматического скачивания модов",
 		"MPServerModsCantDownloadChangeSettingsHint": "Вам необходимо изменить свои настройки чтобы скачать моды, установленные владельцем сервера.",
+		// "MPShowServerConsoleYes": "Show Server Console: On",
+		// "MPShowServerConsoleNo": "Show Server Console: Off",
 		"MPErrorModHashMismatch": "Хэш-сумма не совпадает",
 		"MPErrorModNotSigned": "Данный мод не подписан Браузером Модов",
 		"MPErrorModDownloadError": "Обнаружена ошибка во время загрузки {0}",

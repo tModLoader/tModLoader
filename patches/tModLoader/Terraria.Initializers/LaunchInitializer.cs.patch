@@ -86,11 +86,10 @@
  			string worldName;
  			if ((worldName = LaunchInitializer.TryParameter(new string[]
  				{
-@@ -171,6 +_,14 @@
- 				})) != null)
+@@ -172,6 +_,16 @@
  			{
  				game.NewMOTD(newMOTD);
-+			}
+ 			}
 +			string modPath;
 +			if ((modPath = LaunchInitializer.TryParameter(new string[]
 +				{
@@ -98,7 +97,10 @@
 +				})) != null)
 +			{
 +				ModOrganizer.modPath = modPath;
- 			}
++			}
++			if (LaunchInitializer.HasParameter("-showserverconsole"))
++				Main.showServerConsole = true;
  			string banFilePath;
  			if ((banFilePath = LaunchInitializer.TryParameter(new string[]
+ 				{
 
