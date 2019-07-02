@@ -4,6 +4,9 @@ To install tModLoader, simply run the tModLoaderInstaller.jar file after extract
 Manual Install:
 If the installer for some reason does not work, or if you do not want to install/upgrade Java, you may also do a manual install. Go to your Terraria's Steam folder; for most people, this will be "C:\Program Files (x86)\Steam\SteamApps\common\Terraria". Then, copy all these files into that folder. You may wish to back-up your vanilla Terraria.exe first.
 
+GOG Install:
+If you are installing to a GOG verison of the game, you need to manually install by finding the installation location. This is likely C:\GOG Games\Terraria. To install, you need to first rename the original Terraria.exe in the install folder to Terraria_v1.3.5.3.exe. After renaming, simply copy over the files from this zip to that folder.
+
 Manual Install Video Guide:
 If the above instructions still aren't clear enough, the manual install can be seen in these 2 quick videos:
 1. Find install location: https://gfycat.com/SelfreliantAssuredIsabellineshrike

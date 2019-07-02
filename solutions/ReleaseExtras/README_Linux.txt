@@ -10,6 +10,9 @@ If the installer for some reason does not work, or if you do not want to install
 
 3.  Additionally, if you are updating from 0.10.1.5 or earlier, you'll need to delete "MP3Sharp.dll", "Ionic.Zip.Reduced.dll", and "Mono.Cecil.dll" from that folder.
 
+GOG Install:
+For GOG installs, follow the manual install instructions above. 
+
 Manual Install Video Guide:
 If the above instructions still aren't clear enough, the manual install can be seen in these 2 quick videos:
 1. Find install location: https://gfycat.com/SelfreliantAssuredIsabellineshrike

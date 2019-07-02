@@ -6,6 +6,9 @@ If the installer for some reason does not work, or if you do not want to install
 
 To enter your hidden Library folder, in the Finder open the "Go" menu, then hold down the "Alt" key. The hidden Library will become visible. To enter the Terraria.app folder, right-click it then click on "Show Package Contents".
 
+GOG Install:
+For GOG installs, follow the manual install instructions above.
+
 Manual Install Video Guide:
 If the above instructions still aren't clear enough, the manual install can be seen in these 2 quick videos:
 1. Find install location: https://gfycat.com/SelfreliantAssuredIsabellineshrike
