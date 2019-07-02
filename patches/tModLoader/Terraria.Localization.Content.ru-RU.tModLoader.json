@@ -245,6 +245,7 @@
 		"MSBuildReload": "Скомпилировать и перезагрузить",
 		"MSBuildAll": "Скомпилировать всё",
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",

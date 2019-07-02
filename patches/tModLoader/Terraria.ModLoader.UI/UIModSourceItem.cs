@@ -6,9 +6,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
@@ -24,6 +26,7 @@ namespace Terraria.ModLoader.UI
 		private Texture2D dividerTexture;
 		private UIText modName;
 		private LocalMod builtMod;
+		private bool upgradePotentialChecked;
 
 		public UIModSourceItem(string mod, LocalMod builtMod) {
 			this.mod = mod;
@@ -78,6 +81,29 @@ namespace Terraria.ModLoader.UI
 			CalculatedStyle innerDimensions = base.GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+
+			// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
+			if (!upgradePotentialChecked) {
+				upgradePotentialChecked = true;
+				string modFolderName = Path.GetFileName(mod);
+				string csprojFile = Path.Combine(mod, $"{modFolderName}.csproj");
+				if (!File.Exists(csprojFile) || !File.ReadAllText(csprojFile).Contains("tModLoader.targets")) {
+					var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
+					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
+						Left = { Pixels = -26, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+					upgradeCSProjButton.OnClick += (s, e) => {
+						File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
+						string propertiesFolder = Path.Combine(mod, "Properties");
+						Directory.CreateDirectory(propertiesFolder);
+						File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
+						Main.PlaySound(SoundID.MenuOpen);
+						Main.menuMode = Interface.modSourcesID;
+					};
+					Append(upgradeCSProjButton);
+				}
+			}
 		}
 
 		public override void MouseOver(UIMouseEvent evt) {

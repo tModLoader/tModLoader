@@ -246,6 +246,7 @@
 		"MSBuildReload": "Zbuduj + Przeładuj",
 		"MSBuildAll": "Zbuduj wszystkie",
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",

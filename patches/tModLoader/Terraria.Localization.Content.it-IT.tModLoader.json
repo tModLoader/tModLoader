@@ -247,6 +247,7 @@
 		"MSBuildReload": "Costruisci + Ricarica",
 		"MSBuildAll": "Costruisci Tutte",
 		"MSBuildReloadAll": "Costruisci + Ricarica Tutte",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Risorse aperte",
 		"MSManagePublished": "Gestisci Pubblicate",
 		"MSPublish": "Pubblica",

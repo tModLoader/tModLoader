@@ -146,7 +146,7 @@ namespace Terraria.ModLoader.UI
 				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
 				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
 				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
-				string propertiesFolder = sourceFolder + Path.DirectorySeparatorChar + "Properties";
+				string propertiesFolder = Path.Combine(sourceFolder, "Properties");
 				Directory.CreateDirectory(propertiesFolder);
 				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), GetLaunchSettings());
 			}
@@ -177,7 +177,7 @@ namespace {modNameTrimmed}
 }}";
 		}
 
-		private string GetModCsproj(string modNameTrimmed) {
+		internal string GetModCsproj(string modNameTrimmed) {
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -194,7 +194,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 </Project>";
 		}
 
-		private string GetLaunchSettings() {
+		internal string GetLaunchSettings() {
 			return
 $@"{{
   ""profiles"": {{

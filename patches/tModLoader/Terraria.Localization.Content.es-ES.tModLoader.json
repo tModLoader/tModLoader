@@ -245,6 +245,7 @@
 		"MSBuildReload": "Construir y reiniciar mod",
 		"MSBuildAll": "Construir todo",
 		"MSBuildReloadAll": "Construir y reiniciar todo",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Abrir fuente",
 		"MSManagePublished": "Gestionar publicaciones",
 		"MSPublish": "Publicar",

@@ -249,7 +249,7 @@ namespace Terraria.ModLoader.Core
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
 					throw new Exception(mod.Name + " does not have a class extending Mod. Mods need a Mod class to function.") {
-						HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
+						HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#sequence-contains-no-matching-element-error"
 					};
 
 				var m = (Mod)Activator.CreateInstance(modType);

@@ -245,6 +245,7 @@
 		"MSBuildReload": "Compiler + Relancer",
 		"MSBuildAll": "Tout compiler",
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Dossier des sources",
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",

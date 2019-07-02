@@ -245,6 +245,7 @@
 		"MSBuildReload": "Erstellen + Neu laden",
 		"MSBuildAll": "Alle Erstellen",
 		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "Offene Quelle",
 		"MSManagePublished": "Verwalte veröffentlichung",
 		"MSPublish": "Veröffentlichen",

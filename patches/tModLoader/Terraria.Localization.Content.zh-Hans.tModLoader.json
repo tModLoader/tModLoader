@@ -246,6 +246,7 @@
 		"MSBuildReload": "生成并重新加载",
 		"MSBuildAll": "生成全部",
 		"MSBuildReloadAll": "生成并重新加载全部模组",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		"MSOpenSources": "打开源码文件夹",
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",

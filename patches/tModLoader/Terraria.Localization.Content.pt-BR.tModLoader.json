@@ -245,6 +245,7 @@
 		// "MSBuildReload": "Build + Reload",
 		// "MSBuildAll": "Build All",
 		// "MSBuildReloadAll": "Build + Reload All",
+		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		// "MSOpenSources": "Open Sources",
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",
