@@ -161,8 +161,9 @@ namespace Terraria.ModLoader
 			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
 				return;
 
+			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
 #if CLIENT
-			MessageBox.Show(Language.GetTextValue("tModLoader.LoadErrorDotNet45Required"));
+			MessageBox.Show(msg);
 			Process.Start("https://www.microsoft.com/net/download/thank-you/net472");
 #else
 			Console.ForegroundColor = ConsoleColor.Red;
