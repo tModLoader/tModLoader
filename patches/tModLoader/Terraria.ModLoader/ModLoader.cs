@@ -4,12 +4,12 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Windows.Forms;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
@@ -97,6 +97,7 @@ namespace Terraria.ModLoader
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
 		internal static void EngineInit() {
+			DotNet45Check();
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
 			HiDefGraphicsIssues.Init();
@@ -106,9 +107,6 @@ namespace Terraria.ModLoader
 		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
 
 		internal static void Load() {
-			if (!DotNet45Check())
-				return;
-
 			try {
 				var modInstances = ModOrganizer.LoadMods();
 
@@ -159,26 +157,21 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static bool DotNet45Check() {
+		private static void DotNet45Check() {
 			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
-				return true;
+				return;
 
-			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
-			if (Main.dedServ) {
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine(msg);
-				Console.ResetColor();
-				Console.WriteLine("Press any key to exit...");
-				Console.ReadKey();
-				Environment.Exit(-1);
-			}
-
-			Interface.updateMessage.SetMessage(msg);
-			Interface.updateMessage.SetGotoMenu(0);
-			Interface.updateMessage.SetURL("https://www.microsoft.com/net/download/thank-you/net472");
-			Interface.updateMessage.SetAutoUpdateURL(null);
-			Main.menuMode = Interface.updateMessageID;
-			return false;
+#if CLIENT
+			MessageBox.Show(Language.GetTextValue("tModLoader.LoadErrorDotNet45Required"));
+			Process.Start("https://www.microsoft.com/net/download/thank-you/net472");
+#else
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(msg);
+			Console.ResetColor();
+			Console.WriteLine("Press any key to exit...");
+			Console.ReadKey();
+#endif
+			Environment.Exit(-1);
 		}
 
 		internal static void Reload() {
@@ -324,7 +317,7 @@ namespace Terraria.ModLoader
 			try {
 				var convert = expr.Body as UnaryExpression;
 				var makeDelegate = convert.Operand as MethodCallExpression;
-				var methodArg = makeDelegate.Arguments[2] as ConstantExpression;
+				var methodArg = makeDelegate.Object as ConstantExpression;
 				method = methodArg.Value as MethodInfo;
 				if (method == null) throw new NullReferenceException();
 			}
