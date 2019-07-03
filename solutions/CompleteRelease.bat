@@ -36,8 +36,8 @@ mkdir "%mcfna%"
 mkdir "%mcxna%"
 
 :: Windows release
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%win%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\WindowsServerRelease\net40\Terraria.exe "%win%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.exe "%win%\Terraria.exe" /y
+copy ..\src\tModLoader\bin\WindowsServerRelease\net45\Terraria.exe "%win%\tModLoaderServer.exe" /y
 copy ..\installer2\WindowsInstaller.jar "%win%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%win%\README.txt" /y
 copy ReleaseExtras\start-tModLoaderServer.bat "%win%" /y
@@ -53,14 +53,14 @@ set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
 :: Make sure to clear out ModCompile and run Setup Debugging so ModCompile folder is clean from old versions.
 copy "%steamdir%\ModCompile" "%mcfna%"
 del "%mcfna%"\buildlock 2>nul
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.xml "%mcfna%" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\tModLoader.pdb "%mcfna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.xml "%mcfna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\tModLoader.pdb "%mcfna%" /y
 
 call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
 
 :: Linux release
-copy ..\src\tModLoader\bin\LinuxRelease\net40\Terraria.exe "%lnx%\tModLoader.exe" /y
-copy ..\src\tModLoader\bin\LinuxServerRelease\net40\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\Terraria.exe "%lnx%\tModLoader.exe" /y
+copy ..\src\tModLoader\bin\LinuxServerRelease\net45\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
 copy ReleaseExtras\tModLoader-mono "%lnx%\tModLoader-mono" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
 copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
@@ -76,8 +76,8 @@ call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -f
 
 :: Mac release
 copy "%lnx%" "%mac%"
-copy ..\src\tModLoader\bin\MacRelease\net40\Terraria.exe "%mac%\tModLoader.exe" /y
-copy ..\src\tModLoader\bin\MacServerRelease\net40\Terraria.exe "%mac%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\MacRelease\net45\Terraria.exe "%mac%\tModLoader.exe" /y
+copy ..\src\tModLoader\bin\MacServerRelease\net45\Terraria.exe "%mac%\tModLoaderServer.exe" /y
 
 copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
@@ -91,13 +91,13 @@ copy "%mcfna%" "%mcxna%"
 del "%mcxna%\tModLoader.FNA.exe"
 del "%mcxna%\FNA.dll"
 del "%mcxna%\tModLoader.pdb"
-copy ..\src\tModLoader\bin\MacRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Mac.pdb" /y
-copy ..\src\tModLoader\bin\LinuxRelease\net40\tModLoader.pdb "%mcxna%\tModLoader_Linux.pdb" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.dll "%mcxna%" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Graphics.dll "%mcxna%" /y
-copy ..\src\tModLoader\bin\WindowsRelease\net40\Microsoft.Xna.Framework.Xact.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\MacRelease\net45\tModLoader.pdb "%mcxna%\tModLoader_Mac.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\tModLoader.pdb "%mcxna%\tModLoader_Linux.pdb" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Graphics.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Xact.dll "%mcxna%" /y
 
 call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
 
