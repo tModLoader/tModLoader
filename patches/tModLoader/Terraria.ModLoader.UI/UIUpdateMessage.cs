@@ -122,17 +122,18 @@ namespace Terraria.ModLoader.UI
 							}
 						File.Delete(zipFilePath);
 
-						// TODO: Auto delete this file somewhere.
+						// Self deleting bat file techinque found here: https://stackoverflow.com/a/20333575
 						string autoUpdateScript = Path.Combine(installDirectory, "AutoUpdate.bat");
 						File.WriteAllText(autoUpdateScript, @"@ECHO OFF
 if [%1]==[] goto usage
 if [%2]==[] goto usage
 
+ECHO Auto-update in progress. Waiting for tModLoader to close...
 :LOOP
+Timeout /T 5 /Nobreak
 copy %2 %1 /Y
-echo Exit Code is %errorlevel%
 IF ERRORLEVEL 1 (
-  ECHO %1 is still running
+  ECHO %1 is still running, waiting for tModLoader to close...
   Timeout /T 5 /Nobreak
   GOTO LOOP
 ) ELSE (
@@ -140,7 +141,10 @@ IF ERRORLEVEL 1 (
 )
 
 :CONTINUE
-echo Successfully updated
+echo Successfully updated, tModLoader will restart now.
+del %2
+start """" %1
+(goto) 2>nul & del ""%~f0""
 exit /B 0
 
 :usage
