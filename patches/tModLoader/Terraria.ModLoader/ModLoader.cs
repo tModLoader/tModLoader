@@ -43,9 +43,6 @@ namespace Terraria.ModLoader
 		[Obsolete("Use Platform.IsOSX")]
 		public static readonly bool mac = Platform.IsOSX;
 
-		[Obsolete("Will always be false")]
-		public static readonly bool gog = false;
-
 		[Obsolete("Use CompressedPlatformRepresentation instead")]
 		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
 
