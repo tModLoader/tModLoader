@@ -16,6 +16,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public event Action<double> OnUpdateProgress;
 		public event Action OnCancel;
 		public event Action OnComplete;
+		public event Action PreCopy;
 
 		public bool Success { get; protected set; }
 		public object CustomData { get; internal set; }
@@ -25,7 +26,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private string _downloadPath;
 
 		protected DownloadRequest(string displayText, string outputFilePath, object customData = null,
-			Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null) {
+			Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null, Action preCopy = null) {
 
 			DisplayText = displayText;
 			OutputFilePath = outputFilePath;
@@ -33,6 +34,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			OnUpdateProgress = onUpdateProgress;
 			OnCancel = onCancel;
 			OnComplete = onComplete;
+			PreCopy = preCopy;
 		}
 
 		/// <summary>
@@ -77,8 +79,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public virtual void Complete() {
 			try {
 				FileStream?.Close();
-				if (Success)
+				if (Success) {
+					PreCopy?.Invoke();
 					File.Copy(_downloadPath, OutputFilePath, true);
+				}
 				File.Delete(_downloadPath);
 			}
 			catch (Exception e) {

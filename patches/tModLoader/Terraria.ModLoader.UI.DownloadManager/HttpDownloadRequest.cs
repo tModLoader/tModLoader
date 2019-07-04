@@ -26,8 +26,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public Version ProtocolVersion = HttpVersion.Version11;
 
 		public HttpDownloadRequest(string displayText, string outputFilePath, Func<HttpWebRequest> supplier,
-			object customData = null, Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null)
-			: base(displayText, outputFilePath, customData, onUpdateProgress, onCancel, onComplete) {
+			object customData = null, Action<double> onUpdateProgress = null, Action onCancel = null, Action onComplete = null, Action preCopy = null)
+			: base(displayText, outputFilePath, customData, onUpdateProgress, onCancel, onComplete, preCopy) {
 
 			_requestSupplier = supplier;
 		}

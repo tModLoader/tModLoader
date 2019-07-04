@@ -339,7 +339,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				mod.DisplayName,
 				$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{mod.ModName}.tmod",
 				() => (HttpWebRequest)WebRequest.Create(mod.DownloadUrl),
-				mod
+				mod,
+				preCopy: () => {
+					var modInstance = ModLoader.GetMod(mod.ModName);
+					if (modInstance != null) {
+						Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{modInstance.Name}: {modInstance.DisplayName}"));
+						modInstance?.Close(); // if the mod is currently loaded, the file-handle needs to be released
+					}
+				}
 			);
 			req.OnComplete += () => { OnModDownloadCompleted(req); };
 			Interface.downloadManager.EnqueueRequest(req);
@@ -393,8 +400,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void ProcessDownloadedMod(HttpDownloadRequest req, UIModDownloadItem currentDownload) {
 			var mod = ModLoader.GetMod(currentDownload.ModName);
 			if (mod != null) {
-				Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{mod.Name}: {mod.DisplayName}"));
-				mod?.Close(); // if the mod is currently loaded, the file-handle needs to be released
 				Interface.modBrowser.anEnabledModDownloaded = true;
 			}
 
