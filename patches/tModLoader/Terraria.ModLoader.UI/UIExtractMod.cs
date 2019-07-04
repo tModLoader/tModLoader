@@ -105,7 +105,7 @@ namespace Terraria.ModLoader.UI
 					}
 
 					// Copy the dll to ModLoader\references\mods for easy collaboration.
-					if (name == "All.dll" || name == (PlatformUtilities.IsXNA ? "Windows.dll" : "Mono.dll")) {
+					if (name == "All.dll" || PlatformUtilities.IsXNA ? (name == "Windows.dll" || name == $"{mod.Name}.XNA.dll") : (name == "Mono.dll" || name == $"{mod.Name}.FNA.dll")) {
 						string modReferencesPath = Path.Combine(Program.SavePath, "references", "mods");
 						if (!Directory.Exists(modReferencesPath))
 							Directory.CreateDirectory(modReferencesPath);
