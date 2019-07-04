@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11);
+		public static readonly Version version = new Version(0, 11, 1);
 
 		public static readonly string branchName = "";
 		// beta > 0 cannot publish to mod browser
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		[Obsolete("Use Platform.IsOSX")]
 		public static readonly bool mac = Platform.IsOSX;
 
-		// GoG support soon to be runtime
+		[Obsolete("Will always be false")]
 		public static readonly bool gog = false;
 
 		[Obsolete("Use CompressedPlatformRepresentation instead")]
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader
 
 		private static string steamID64 = "";
 		internal static string SteamID64 {
-			get => gog ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
+			get => GoGVerifier.IsGoG ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
 			set => steamID64 = value;
 		}
 

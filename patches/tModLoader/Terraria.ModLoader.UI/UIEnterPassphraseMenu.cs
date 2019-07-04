@@ -76,12 +76,12 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10, -1, -1, 1);
 			ModLoader.modBrowserPassphrase = passcodeTextField.Text.Trim();
 			Main.SaveSettings();
-#if GOG
-			Main.menuMode = Interface.enterSteamIDMenuID;
-			Interface.enterSteamIDMenu.SetGotoMenu(this.gotoMenu);
-#else
-			Main.menuMode = this.gotoMenu;
-#endif
+			if (Engine.GoGVerifier.IsGoG) {
+				Main.menuMode = Interface.enterSteamIDMenuID;
+				Interface.enterSteamIDMenu.SetGotoMenu(this.gotoMenu);
+			}
+			else
+				Main.menuMode = this.gotoMenu;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
