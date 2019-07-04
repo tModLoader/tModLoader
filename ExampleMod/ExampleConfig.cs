@@ -493,7 +493,7 @@ namespace ExampleMod
 	// Custom UI
 	// more JSON attributes
 	//[NonNull]
-	// Show off CanChange, ReloadRequired, AcceptClientChanges
+	// Show off CanChange, ReloadRequired
 	// TODO: does List<List> work?? NOPE
 	//public List<List<int>> ListOfLists;
 	//clone.ListOfLists = ListOfLists?.Select(x => x?.ToList()).ToList();

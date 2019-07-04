@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader.UI
 {
@@ -101,6 +102,14 @@ namespace Terraria.ModLoader.UI
 							converter(src, dst);
 						else
 							src.CopyTo(dst);
+					}
+
+					// Copy the dll to ModLoader\references\mods for easy collaboration.
+					if (name == "All.dll" || name == (PlatformUtilities.IsXNA ? "Windows.dll" : "Mono.dll")) {
+						string modReferencesPath = Path.Combine(Program.SavePath, "references", "mods");
+						if (!Directory.Exists(modReferencesPath))
+							Directory.CreateDirectory(modReferencesPath);
+						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.version}.dll"));
 					}
 				};
 			}
