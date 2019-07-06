@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using Terraria.UI;
 
@@ -23,6 +24,7 @@ namespace Terraria.ModLoader.UI
 
 		public delegate void EventHandler(object sender, EventArgs e);
 		public event EventHandler OnTextChange;
+		public event EventHandler OnTab;
 
 		public UIInputTextField(string hintText) {
 			this.hintText = hintText;
@@ -58,11 +60,13 @@ namespace Terraria.ModLoader.UI
 		internal string currentString = "";
 		private int textBlinkerCount;
 		private int textBlinkerState;
+		public bool UnfocusOnTab { get; internal set; } = false;
 
 		public delegate void EventHandler(Object sender, EventArgs e);
 
 		public event EventHandler OnTextChange;
 		public event EventHandler OnUnfocus;
+		public event EventHandler OnTab;
 
 		public UIFocusInputTextField(string hintText)
 		{
@@ -96,6 +100,9 @@ namespace Terraria.ModLoader.UI
 			}
 			base.Update(gameTime);
 		}
+		private static bool JustPressed(Keys key) {
+			return Main.inputText.IsKeyDown(key) && !Main.oldInputText.IsKeyDown(key);
+		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
@@ -115,6 +122,13 @@ namespace Terraria.ModLoader.UI
 				else
 				{
 					currentString = newString;
+				}
+				if (JustPressed(Keys.Tab)) {
+					if (UnfocusOnTab) {
+						focused = false;
+						OnUnfocus?.Invoke(this, new EventArgs());
+					}
+					OnTab?.Invoke(this, new EventArgs());
 				}
 				if (++textBlinkerCount >= 20)
 				{
