@@ -78,6 +78,8 @@ public class Installer
                 if(file == "tModLoaderServer" || file == "Terraria"){
                     // Alt: file.setExecutable(true, false);
                     Set<PosixFilePermission> permissions = new HashSet<>();
+                    permissions.add(PosixFilePermission.OWNER_READ);
+                    permissions.add(PosixFilePermission.OWNER_WRITE);
                     permissions.add(PosixFilePermission.OWNER_EXECUTE);
                     Files.setPosixFilePermissions(destination.toPath(), permissions);
                 }
