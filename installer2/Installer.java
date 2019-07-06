@@ -76,10 +76,7 @@ public class Installer
                 }
                 copy(source, destination);
                 if(file == "tModLoaderServer" || file == "Terraria"){
-                    // Alt: file.setExecutable(true, false);
-                    Set<PosixFilePermission> permissions = new HashSet<>();
-                    permissions.add(PosixFilePermission.OWNER_EXECUTE);
-                    Files.setPosixFilePermissions(destination.toPath(), permissions);
+                    file.setExecutable(true, false); // Result should be rw-r--r-- becoming rwxr-xr-x
                 }
             }
             else
