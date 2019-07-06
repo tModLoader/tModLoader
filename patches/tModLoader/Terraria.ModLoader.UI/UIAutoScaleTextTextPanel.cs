@@ -86,6 +86,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (float.IsNaN(TextScale)) {
+				this.Recalculate();
+			}
 			if (this.DrawPanel) {
 				base.DrawSelf(spriteBatch);
 			}

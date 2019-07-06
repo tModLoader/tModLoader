@@ -282,7 +282,6 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
-			Recalculate(); // This shouldn't be needed, but UIAutoScaleTextTextPanel might be acting strange.
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
