@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.PlayerHooks.PostSellItem" name="Terraria.ModLoader.PlayerHooks.PostSellItem">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a329c7efd1a2ef1b568a22aaf0f1de3ff" title="Called whenever the player sells an item to an NPC. " alt="" coords="230,5,434,46"/>
-</map>

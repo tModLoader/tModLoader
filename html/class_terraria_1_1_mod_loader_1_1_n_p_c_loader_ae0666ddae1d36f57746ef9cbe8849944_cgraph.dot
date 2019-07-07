@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.NPCLoader.NPCLoot"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node187 [label="Terraria.ModLoader.NPCLoader.\lNPCLoot",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node187 -> Node188 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node188 [label="Terraria.ModLoader.Global\lNPC.Instance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c"];
+  Node187 -> Node189 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node189 [label="Terraria.ModLoader.Global\lNPC.NPCLoot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae624b063ab6ddbaefdae0d2db8ecc5fa",tooltip="Allows you to add drops to an NPC when it dies. "];
+}

@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadGlobalNPC" name="Terraria.ModLoader.Mod.AutoloadGlobalNPC">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7152e134e1faf0fa685644c3e6f6b1f2" title="Allows you to automatically load a GlobalNPC instead of using Mod.AddGlobalNPC. Return true to allow ..." alt="" coords="273,5,447,46"/>
-</map>

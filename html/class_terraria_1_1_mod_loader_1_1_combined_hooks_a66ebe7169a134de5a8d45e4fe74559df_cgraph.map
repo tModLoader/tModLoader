@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.CombinedHooks.OnConsumeMana" name="Terraria.ModLoader.CombinedHooks.OnConsumeMana">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a23732ae147a8efaefc4a1a55f221b27a" title="Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks. " alt="" coords="251,5,458,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#a997502415af20e78a2430d251d242387" title="Terraria.ModLoader.Player\lHooks.OnConsumeMana" alt="" coords="267,70,442,111"/>
-</map>

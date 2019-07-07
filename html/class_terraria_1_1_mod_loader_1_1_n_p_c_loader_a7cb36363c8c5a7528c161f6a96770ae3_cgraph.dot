@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.NPCLoader.TownNPCAttackShoot"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node287 [label="Terraria.ModLoader.NPCLoader.\lTownNPCAttackShoot",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node287 -> Node288 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node288 [label="Terraria.ModLoader.Global\lNPC.Instance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c"];
+  Node287 -> Node289 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node289 [label="Terraria.ModLoader.Global\lNPC.TownNPCAttackShoot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa0c7388db7dc4d7dd7d920e9cf55ce8a",tooltip="Allows you to tell the game that a town NPC has already created a projectile and will still create mo..."];
+}

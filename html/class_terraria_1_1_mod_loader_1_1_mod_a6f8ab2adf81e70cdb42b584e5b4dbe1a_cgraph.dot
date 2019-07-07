@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.Mod.LoadTexture"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node413 [label="Terraria.ModLoader.Mod.Load\lTexture",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node413 -> Node414 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node414 [label="Terraria.ModLoader.IO.Image\lIO.PngToTexture2DAsync",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#a478d23984f4495a4f01c96177f129c05"];
+  Node413 -> Node415 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node415 [label="Terraria.ModLoader.IO.Image\lIO.RawToTexture2DAsync",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html#ae8697e6299da726bc81891da83695898"];
+}

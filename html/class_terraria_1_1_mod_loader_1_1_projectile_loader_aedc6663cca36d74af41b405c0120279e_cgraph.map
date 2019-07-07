@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.GetAlpha" name="Terraria.ModLoader.ProjectileLoader.GetAlpha">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a7b67b1fc3ff53a59a66cb0fe82410778" title="Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. " alt="" coords="246,5,421,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,70,421,111"/>
-</map>

@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ModTileEntity.UpdateStartInternal"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node53 [label="Terraria.ModLoader.ModTile\lEntity.UpdateStartInternal",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node53 -> Node54 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="Terraria.ModLoader.ModTile\lEntity.PreGlobalUpdate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0bba74f83ef3aa8dcf418b0182951544",tooltip="Code that should be run before all tile entities in the world update. "];
+}

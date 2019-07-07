@@ -1,0 +1,14 @@
+digraph "Terraria.ModLoader.ModPacket"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="Terraria.ModLoader.ModPacket",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="BinaryWriter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_binary_writer.html"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" netID" ,fontname="Helvetica"];
+  Node4 [label="short",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" len" ,fontname="Helvetica"];
+  Node5 [label="ushort",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" buf" ,fontname="Helvetica"];
+  Node6 [label="byte []",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.OnHitPlayer" name="Terraria.ModLoader.ProjectileLoader.OnHitPlayer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,5,421,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a2dac12ff40a1dabbf0d4fb1442f6f832" title="Allows you to create special effects when a hostile projectile hits a player. " alt="" coords="246,70,421,111"/>
-</map>

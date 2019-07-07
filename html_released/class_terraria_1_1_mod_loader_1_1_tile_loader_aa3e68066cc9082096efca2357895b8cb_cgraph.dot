@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.TileLoader.Dangersense"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node31 [label="Terraria.ModLoader.TileLoader.\lDangersense",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node31 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Terraria.ModLoader.ModTile.\lDangersense",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2d7b38e3d7eb90b24f7c295fac0719e7",tooltip="Allows you to determine whether this block glows red when the given player has the Dangersense buff..."];
+}

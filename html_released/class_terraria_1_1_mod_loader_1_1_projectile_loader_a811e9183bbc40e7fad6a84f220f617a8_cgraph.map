@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer" name="Terraria.ModLoader.ProjectileLoader.ModifyHitPlayer">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,5,421,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a294bc7ef4586362ed1ef19df56d88e09" title="Allows you to modify the damage, etc., that a hostile projectile does to a player. " alt="" coords="246,70,421,111"/>
-</map>

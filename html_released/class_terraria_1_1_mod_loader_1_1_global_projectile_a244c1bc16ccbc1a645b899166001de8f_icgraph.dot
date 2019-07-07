@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.GlobalProjectile.PreDraw"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node120 [label="Terraria.ModLoader.Global\lProjectile.PreDraw",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node120 -> Node121 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node121 [label="Terraria.ModLoader.Projectile\lLoader.PreDraw",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7ba8c15540798577b214b9841725aadb"];
+}

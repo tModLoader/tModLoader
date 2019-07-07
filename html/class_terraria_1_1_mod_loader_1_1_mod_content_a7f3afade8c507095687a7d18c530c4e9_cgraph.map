@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ModContent.GetMusic" name="Terraria.ModLoader.ModContent.GetMusic">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="267,5,474,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a5456a56362277b999e3d5360616e7631" title="Shorthand for calling ModContent.GetMusic(this.FileName(name)). " alt="" coords="277,70,465,111"/>
-</map>

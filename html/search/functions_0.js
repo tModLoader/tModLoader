@@ -7,6 +7,7 @@ var searchData=
   ['addbackgroundtexture',['AddBackgroundTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6dec81443d46c9904a00522d66b9c025',1,'Terraria::ModLoader::Mod']]],
   ['addbossheadtexture',['AddBossHeadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a45e9a26a0b1883168c11b1199c6b542b',1,'Terraria::ModLoader::Mod']]],
   ['addbuff',['AddBuff',['../class_terraria_1_1_mod_loader_1_1_mod.html#a55288ca705db7b2771c9d38b9a98594b',1,'Terraria::ModLoader::Mod']]],
+  ['addchatmessage',['AddChatMessage',['../class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6',1,'Terraria::ModLoader::Logging']]],
   ['addcommand',['AddCommand',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5b184beb12e724540f0e0ca11fc2845f',1,'Terraria::ModLoader::Mod']]],
   ['addconfig',['AddConfig',['../class_terraria_1_1_mod_loader_1_1_mod.html#ad14287f83742a72083e3c6c9f298835f',1,'Terraria::ModLoader::Mod']]],
   ['adddust',['AddDust',['../class_terraria_1_1_mod_loader_1_1_mod.html#a35e24b2d8b9d749c129d8219023b0ec0',1,'Terraria::ModLoader::Mod']]],

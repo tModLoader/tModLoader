@@ -29,7 +29,6 @@ var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound =
     [ "Remove", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#adcd975500a22a06b82511ccec00b7800", null ],
     [ "RemoveTag", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a3f495453ae689b73237f1dc85d68fc2f", null ],
     [ "Set", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a00abf9ec8a3d61f3d304421cc3f671f1", null ],
-    [ "Set", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a82aa5507cedd18a63053c653e5908681", null ],
     [ "SetTag", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a0c1094c41ca0000d3ebf63421cd4d941", null ],
     [ "ToString", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af590c6c7bdedea389a24b4b9ecf08d92", null ],
     [ "Count", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a546328535535759db8c68cec1c1cf302", null ],

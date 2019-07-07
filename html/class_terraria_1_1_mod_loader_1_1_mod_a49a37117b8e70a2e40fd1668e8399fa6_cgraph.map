@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadWall" name="Terraria.ModLoader.Mod.AutoloadWall">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae666e7352ab01dfab8b25212bca0a895" title="Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call Mod.AddWall. By default returns the mod&#39;s autoload property. " alt="" coords="299,5,493,46"/>
-</map>

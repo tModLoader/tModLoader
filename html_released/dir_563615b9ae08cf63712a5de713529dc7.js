@@ -1,15 +1,7 @@
 var dir_563615b9ae08cf63712a5de713529dc7 =
 [
     [ "AssemblyManager.cs", "_assembly_manager_8cs.html", [
-      [ "HeaderCopyWriter", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_symbol_writer_provider_1_1_header_copy_writer" ],
       [ "LoadedMod", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html", "class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod" ]
-    ] ],
-    [ "AutoloadEquip.cs", "_autoload_equip_8cs.html", [
-      [ "AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", "class_terraria_1_1_mod_loader_1_1_autoload_equip" ]
-    ] ],
-    [ "AutoloadHead.cs", "_autoload_head_8cs.html", [
-      [ "AutoloadBossHead", "class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html", null ],
-      [ "AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", null ]
     ] ],
     [ "BackgroundStyleLoaders.cs", "_background_style_loaders_8cs.html", [
       [ "SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader" ],
@@ -30,9 +22,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree" ],
       [ "ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_tree" ]
     ] ],
-    [ "DrawableTooltipLine.cs", "_drawable_tooltip_line_8cs.html", [
-      [ "DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line" ]
-    ] ],
     [ "DrawInfo.cs", "_draw_info_8cs.html", [
       [ "PlayerDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_draw_info" ],
       [ "PlayerHeadDrawInfo", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html", "struct_terraria_1_1_mod_loader_1_1_player_head_draw_info" ]
@@ -44,7 +33,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     ] ],
     [ "EntityInfo.cs", "_entity_info_8cs.html", [
       [ "EntityInfo", "class_terraria_1_1_mod_loader_1_1_entity_info.html", "class_terraria_1_1_mod_loader_1_1_entity_info" ],
-      [ "NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_info" ]
+      [ "ItemInfo", "class_terraria_1_1_mod_loader_1_1_item_info.html", "class_terraria_1_1_mod_loader_1_1_item_info" ],
+      [ "NPCInfo", "class_terraria_1_1_mod_loader_1_1_n_p_c_info.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_info" ],
+      [ "ProjectileInfo", "class_terraria_1_1_mod_loader_1_1_projectile_info.html", "class_terraria_1_1_mod_loader_1_1_projectile_info" ]
     ] ],
     [ "EquipLoader.cs", "_equip_loader_8cs.html", [
       [ "EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", "class_terraria_1_1_mod_loader_1_1_equip_loader" ]
@@ -79,7 +70,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     ] ],
     [ "Interface.cs", "_interface_8cs.html", null ],
     [ "ItemLoader.cs", "_item_loader_8cs.html", [
-      [ "HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list" ],
       [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ]
     ] ],
     [ "MapEntry.cs", "_map_entry_8cs.html", null ],
@@ -157,9 +147,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModTileEntity.cs", "_mod_tile_entity_8cs.html", [
       [ "ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity" ]
     ] ],
-    [ "ModTranslation.cs", "_mod_translation_8cs.html", [
-      [ "ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", "class_terraria_1_1_mod_loader_1_1_mod_translation" ]
-    ] ],
     [ "ModWall.cs", "_mod_wall_8cs.html", [
       [ "ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", "class_terraria_1_1_mod_loader_1_1_mod_wall" ]
     ] ],
@@ -174,11 +161,13 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ]
     ] ],
     [ "MountTextureType.cs", "_mount_texture_type_8cs.html", "_mount_texture_type_8cs" ],
+    [ "MusicWrapper.cs", "_music_wrapper_8cs.html", [
+      [ "MusicWrapper", "class_terraria_1_1_mod_loader_1_1_music_wrapper.html", "class_terraria_1_1_mod_loader_1_1_music_wrapper" ]
+    ] ],
     [ "NPCHeadLoader.cs", "_n_p_c_head_loader_8cs.html", [
       [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ]
     ] ],
     [ "NPCLoader.cs", "_n_p_c_loader_8cs.html", [
-      [ "HookList", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list" ],
       [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ]
     ] ],
     [ "NPCSpawnHelper.cs", "_n_p_c_spawn_helper_8cs.html", [
@@ -189,11 +178,9 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
       [ "NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info" ]
     ] ],
     [ "PlayerHooks.cs", "_player_hooks_8cs.html", [
-      [ "HookList", "class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list" ],
       [ "PlayerHooks", "class_terraria_1_1_mod_loader_1_1_player_hooks.html", "class_terraria_1_1_mod_loader_1_1_player_hooks" ]
     ] ],
     [ "ProjectileLoader.cs", "_projectile_loader_8cs.html", [
-      [ "HookList", "class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_projectile_loader_1_1_hook_list" ],
       [ "ProjectileLoader", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html", "class_terraria_1_1_mod_loader_1_1_projectile_loader" ]
     ] ],
     [ "RecipeEditor.cs", "_recipe_editor_8cs.html", [
@@ -215,10 +202,6 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     ] ],
     [ "TooltipLine.cs", "_tooltip_line_8cs.html", [
       [ "TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_tooltip_line" ]
-    ] ],
-    [ "TopoSort.cs", "_topo_sort_8cs.html", [
-      [ "SortingException", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception.html", "class_terraria_1_1_mod_loader_1_1_topo_sort_1_1_sorting_exception" ],
-      [ "TopoSort", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", "class_terraria_1_1_mod_loader_1_1_topo_sort" ]
     ] ],
     [ "WallLoader.cs", "_wall_loader_8cs.html", [
       [ "WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", "class_terraria_1_1_mod_loader_1_1_wall_loader" ]

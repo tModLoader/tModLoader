@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.Mod.LoadSound"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node410 [label="Terraria.ModLoader.Mod.Load\lSound",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node410 -> Node411 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node411 [label="Terraria.ModLoader.Audio.\lMusicStreamingOGG.Convert",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a5e14ea160f9b2af16604cec2f9f14dfa"];
+}

@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.PlayerHooks.ModifyDrawInfo"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node119 [label="Terraria.ModLoader.Player\lHooks.ModifyDrawInfo",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node119 -> Node120 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node120 [label="Terraria.ModLoader.ModPlayer.\lModifyDrawInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_player.html#a3cde8f8bdd569e9fe5aca8b7e30c7185",tooltip="Allows you to modify the drawing parameters of the player before drawing begins. "];
+}

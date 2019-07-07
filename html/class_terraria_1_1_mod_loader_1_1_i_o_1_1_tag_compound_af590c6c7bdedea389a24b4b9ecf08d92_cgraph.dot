@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.IO.TagCompound.ToString"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node78 [label="Terraria.ModLoader.IO.Tag\lCompound.ToString",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="Terraria.ModLoader.IO.Tag\lPrinter.Print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a4a791c916b376533c07640ea329fe869"];
+}

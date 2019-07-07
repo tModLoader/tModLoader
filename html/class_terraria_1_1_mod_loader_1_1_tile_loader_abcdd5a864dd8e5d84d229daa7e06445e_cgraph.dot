@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.TileLoader.KillSound"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node115 [label="Terraria.ModLoader.TileLoader.\lKillSound",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node115 -> Node116 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node116 [label="Terraria.ModLoader.ModTile.\lKillSound",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a4a7621f2131742715f4e30a9e490b2a2",tooltip="Allows you to customize which sound you want to play when the tile at the given coordinates is hit..."];
+}

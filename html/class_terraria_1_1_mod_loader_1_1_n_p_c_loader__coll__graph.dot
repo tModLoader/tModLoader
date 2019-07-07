@@ -1,0 +1,34 @@
+digraph "Terraria.ModLoader.NPCLoader"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.NPCLoader",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" blockLoot" ,fontname="Helvetica"];
+  Node2 [label="static readonly IList\l\< int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalNPCs" ,fontname="Helvetica"];
+  Node3 [label="static readonly IList\l\< Terraria.ModLoader.Global\lNPC \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hooks" ,fontname="Helvetica"];
+  Node4 [label="static List\< Terraria.Mod\lLoader.NPCLoader.HookList \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalIndexes" ,fontname="Helvetica"];
+  Node5 [label="static readonly IDictionary\l\< string, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nextNPC\nvanillaSkeletonCount\nshopToNPC\nNPCCount" ,fontname="Helvetica"];
+  Node6 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" HookBossHeadSlot\nHookFindFrame\nHookOnGoToStatue\nHookPreChatButtonClicked\nHookPreDraw\nHookCanBeHitByProjectile\nHookPreNPCLoot\nHookOnHitByItem\nHookCanBeHitByItem\nHookUpdateLifeRegen\n..." ,fontname="Helvetica"];
+  Node7 [label="Terraria.ModLoader.NPCLoader.\lHookList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html"];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" method" ,fontname="Helvetica"];
+  Node8 [label="readonly MethodInfo",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" arr" ,fontname="Helvetica"];
+  Node9 [label="Terraria.ModLoader.GlobalNPC",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html",tooltip="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. "];
+  Node6 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" instanceIndex\nindex" ,fontname="Helvetica"];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" InstancePerEntity\nCloneNewInstances" ,fontname="Helvetica"];
+  Node10 [label="bool",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bannerToItem" ,fontname="Helvetica"];
+  Node11 [label="IDictionary\< int, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" loaded" ,fontname="Helvetica"];
+  Node12 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalIndexesByType" ,fontname="Helvetica"];
+  Node12 [label="static readonly IDictionary\l\< Type, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" npcs" ,fontname="Helvetica"];
+  Node13 [label="static readonly IList\l\< Terraria.ModLoader.ModNPC \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" InstancedGlobals" ,fontname="Helvetica"];
+}

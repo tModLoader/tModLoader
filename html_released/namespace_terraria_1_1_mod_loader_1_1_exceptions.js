@@ -5,6 +5,5 @@ var namespace_terraria_1_1_mod_loader_1_1_exceptions =
     [ "MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception" ],
     [ "ModNameException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_mod_name_exception" ],
     [ "OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception" ],
-    [ "RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception" ],
-    [ "ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception" ]
+    [ "RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception" ]
 ];

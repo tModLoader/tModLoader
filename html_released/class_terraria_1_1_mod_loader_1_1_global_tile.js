@@ -14,7 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_global_tile =
     [ "ChangeWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a64bfa928daa2b265e3fbd586f3352301", null ],
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a859cee4c0040c19c9c1ba9d2f4407b20", null ],
     [ "Dangersense", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a19db5c50626b6ecafb866674bee6e029", null ],
-    [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#aa4e74f8f2d6ddbf7eb4e0c00d7adc6c2", null ],
+    [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ad3e3d5559ca3d94cb1a7f6bae5229e32", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ae0704b7c0026c5192737cfa1961aedf4", null ],
     [ "DropCritterChance", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a20513e5708b6792f9c37d010d0698f4d", null ],
     [ "FloorVisuals", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a3b6ea8306dfa056be4a1e51182aa8c8c", null ],
@@ -36,7 +36,6 @@ var class_terraria_1_1_mod_loader_1_1_global_tile =
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ab98f5b2949277faeb8ccf2e52ba1e304", null ],
     [ "SetSpriteEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#adec30c147c382f5adec9e4534ead5022", null ],
     [ "Slope", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a01d357fc71a23b11a8ae248edef1a881", null ],
-    [ "SpecialDraw", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a7c6048173df5a36c232231ef18f49e41", null ],
     [ "TileFrame", "class_terraria_1_1_mod_loader_1_1_global_tile.html#abd7e991de75582c8ac50b8f3a83c52e1", null ],
     [ "mod", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a90091764bc6be194c8f7bb55ff93f8ae", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_global_tile.html#abe8bbde6ac3862dcbb31686f78953232", null ]

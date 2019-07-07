@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.CombinedHooks.OnMissingMana"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node16 [label="Terraria.ModLoader.Combined\lHooks.OnMissingMana",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Terraria.ModLoader.ItemLoader.\lOnMissingMana",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ab7ea3260fa0df18ac902245a06ef7e65",tooltip="Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks. "];
+  Node16 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Terraria.ModLoader.Player\lHooks.OnMissingMana",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#af1d13d95436bc3a6968c52c70ffdeed9"];
+}

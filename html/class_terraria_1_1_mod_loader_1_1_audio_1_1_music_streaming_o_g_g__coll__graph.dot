@@ -1,0 +1,33 @@
+digraph "Terraria.ModLoader.Audio.MusicStreamingOGG"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="Terraria.ModLoader.Audio.\lMusicStreamingOGG",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="MusicStreaming",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html"];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Music",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html"];
+  Node7 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="IDisposable",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" path" ,fontname="Helvetica"];
+  Node8 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" channels" ,fontname="Helvetica"];
+  Node9 [label="AudioChannels",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node10 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" IsPaused\nIsPlaying" ,fontname="Helvetica"];
+  Node10 [label="override bool",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" instance" ,fontname="Helvetica"];
+  Node11 [label="DynamicSoundEffectInstance",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bufferLength\nbufferCountPerSubmit\nbufferMin" ,fontname="Helvetica"];
+  Node12 [label="const int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node13 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sampleRate" ,fontname="Helvetica"];
+  Node13 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node14 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" buffer" ,fontname="Helvetica"];
+  Node14 [label="byte []",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node15 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" stream" ,fontname="Helvetica"];
+  Node15 [label="Stream",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node16 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" floatBuf" ,fontname="Helvetica"];
+  Node16 [label="float",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node17 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" reader" ,fontname="Helvetica"];
+  Node17 [label="VorbisReader",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

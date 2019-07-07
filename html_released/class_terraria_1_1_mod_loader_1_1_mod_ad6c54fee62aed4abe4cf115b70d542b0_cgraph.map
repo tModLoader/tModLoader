@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.Mod.AutoloadGlobalWall" name="Terraria.ModLoader.Mod.AutoloadGlobalWall">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_wall.html#a85c38ec58b4d6ad0036e64bd327f639a" title="Allows you to automatically load a GlobalWall instead of using Mod.AddGlobalWall. Return true to allo..." alt="" coords="273,5,447,46"/>
-</map>

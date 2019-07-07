@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.Mod.GetSound" name="Terraria.ModLoader.Mod.GetSound">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a75adeae33e772eb4903c72c19493d67c" title="Gets the sound with the specified name. The name is in the same format as for texture names..." alt="" coords="243,5,456,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1" title="Adds the given sound file to the game as the given type of sound and with the given custom sound play..." alt="" coords="729,5,919,46"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb" title="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S..." alt="" coords="505,34,679,75"/>
-</map>

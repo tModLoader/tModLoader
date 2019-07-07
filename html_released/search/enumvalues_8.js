@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['server',['Server',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a9aa1b03934893d7134a660af4204f2a9',1,'Terraria.ModLoader.Server()'],['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a9aa1b03934893d7134a660af4204f2a9',1,'Terraria.ModLoader.Server()']]],
-  ['shield',['Shield',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a970da5f1f2e32aeb9e488dd017160ab4',1,'Terraria::ModLoader']]],
-  ['shoes',['Shoes',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282aa60ba1a7a56c9e00252baebe89d62c12',1,'Terraria::ModLoader']]]
+  ['magic',['Magic',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa02700e454d679f31f27c6f0768986dd1',1,'Terraria::ModLoader']]],
+  ['melee',['Melee',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e',1,'Terraria::ModLoader']]],
+  ['mono',['Mono',['../namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666ea5d9b47bd3b65072e0d5daf55f01da086',1,'Terraria::ModLoader']]],
+  ['music',['Music',['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a47dcbd834e669233d7eb8a51456ed217',1,'Terraria::ModLoader']]]
 ];

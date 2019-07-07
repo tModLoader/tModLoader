@@ -1,6 +1,0 @@
-<map id="Terraria.ModLoader.Audio.MusicStreaming" name="Terraria.ModLoader.Audio.MusicStreaming">
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html" title="Terraria.ModLoader.Audio.\lMusicStreamingMP3" alt="" coords="369,5,543,46"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html" title="Terraria.ModLoader.Audio.\lMusicStreamingOGG" alt="" coords="369,70,543,111"/>
-<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html" title="Terraria.ModLoader.Audio.\lMusicStreamingWAV" alt="" coords="369,135,543,177"/>
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html" title="Music" alt="" coords="22,52,79,79"/>
-</map>

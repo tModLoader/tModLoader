@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.WorldHooks.PreUpdate"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node19 [label="Terraria.ModLoader.World\lHooks.PreUpdate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="Terraria.ModLoader.ModWorld.\lPreUpdate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf",tooltip="Use this method to have things happen in the world. In vanilla Terraria, a good example of code suita..."];
+}

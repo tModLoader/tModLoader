@@ -1,0 +1,13 @@
+digraph "Terraria.ModLoader.ModLoader.GetSound"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node29 [label="Terraria.ModLoader.ModLoader.\lGetSound",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node29 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="Terraria.ModLoader.Mod.Add\lSound",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a69d7e56dcfcd228f47704d9a2fb5c9a1",tooltip="Adds the given sound file to the game as the given type of sound and with the given custom sound play..."];
+  Node29 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Terraria.ModLoader.Sound\lLoader.GetSoundSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_sound_loader.html#ad1a432c30af8ee06ec095bd5fbd6a6eb",tooltip="Returns the style (last parameter passed to Main.PlaySound) of the sound corresponding to the given S..."];
+  Node31 -> Node32 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Terraria.ModLoader.Mod.Get\lSoundSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#ac909b7b0f4a36c41219d18af58e4fbf7",tooltip="Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + &#39;/&#39; + name). "];
+}

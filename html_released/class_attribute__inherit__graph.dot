@@ -1,0 +1,39 @@
+digraph "Attribute"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Attribute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Terraria.ModLoader.Autoload\lBossHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_autoload_boss_head.html"];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Autoload\lEquip",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_autoload_equip.html"];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.AutoloadHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_autoload_head.html"];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Config.\lBackgroundColorAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html",tooltip="Specifies a background color to be used for the property, field, or class in the ModConfig UI..."];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.Config.\lCustomModConfigItemAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html",tooltip="Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI. "];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Terraria.ModLoader.Config.\lDefaultListValueAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html",tooltip="Defines the default value to be added when using the ModConfig UI to add elements to a List ..."];
+  Node0 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Terraria.ModLoader.Config.\lDrawTicksAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html",tooltip="Add this attribute and the sliders will show white tick marks at each increment. "];
+  Node0 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Terraria.ModLoader.Config.\lHeaderAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html",tooltip="This attribute adds a label above this property or field in the ModConfig UI that acts as a header..."];
+  Node0 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Terraria.ModLoader.Config.\lIncrementAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html",tooltip="Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values. Defaults are: float: 0.01f - byte/int/uint: 1 "];
+  Node0 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Terraria.ModLoader.Config.\lLabelAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html",tooltip="This attribute sets a label for the property, field, or class for use in the ModConfig UI..."];
+  Node0 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Terraria.ModLoader.Config.\lOptionStringsAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_option_strings_attribute.html",tooltip="By default, string fields will provide the user with a text input field. Use this attribute to restri..."];
+  Node0 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Terraria.ModLoader.Config.\lRangeAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html",tooltip="Specifies a range for primative data values. Without this, default min and max are as follows: float:..."];
+  Node0 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="Terraria.ModLoader.Config.\lReloadRequiredAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html",tooltip="This attribute hints that changing the value of the annotated property or field will put the config i..."];
+  Node0 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Terraria.ModLoader.Config.\lSeparatePageAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_separate_page_attribute.html",tooltip="This specifies that the annotated item will appear as a button that leads to a separate page in the U..."];
+  Node0 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Terraria.ModLoader.Config.\lSliderColorAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html",tooltip="Specifies a slider color for ModConfig elements that use a slider. The default color is white..."];
+  Node0 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Terraria.ModLoader.Config.\lTooltipAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html",tooltip="This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig ..."];
+}

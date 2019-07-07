@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.PlayerHooks.TotalUseTimeMultiplier"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node257 [label="Terraria.ModLoader.Player\lHooks.TotalUseTimeMultiplier",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node257 -> Node258 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node258 [label="Terraria.ModLoader.ItemLoader.\lUseTimeMultiplier",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a414e14cf34dd5d5bdea5683311c95a38"];
+}

@@ -1,0 +1,21 @@
+digraph "Terraria.ModLoader.ItemLoader.UpdateVanitySet"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node311 [label="Terraria.ModLoader.ItemLoader.\lUpdateVanitySet",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node311 -> Node312 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node312 [label="Terraria.ModLoader.Equip\lLoader.GetEquipTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575",tooltip="Gets the equipment texture for the specified equipment type and ID. "];
+  Node312 -> Node313 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node313 [label="Terraria.ModLoader.ModContent.\lGetTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059",tooltip="Gets the texture with the specified name. The name is in the format of \"ModFolder/OtherFolders/FileNa..."];
+  Node313 -> Node314 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node314 [label="Terraria.ModLoader.ModLoader.\lGetMod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af",tooltip="Gets the instance of the Mod with the specified name. "];
+  Node311 -> Node315 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node315 [label="Terraria.ModLoader.Equip\lTexture.IsVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#acd4647b2d645c915743daa3b734919f7",tooltip="Returns whether or not the head armor, body armor, and leg armor textures make up a set..."];
+  Node311 -> Node316 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node316 [label="Terraria.ModLoader.Global\lItem.IsVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_item.html#afc66c0f98cbc3d51a577b847d011d711",tooltip="Returns whether or not the head armor, body armor, and leg armor textures make up a set..."];
+  Node311 -> Node317 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node317 [label="Terraria.ModLoader.Equip\lTexture.UpdateVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#abd69a9fb53d2d6ec87763c26d052e8fa",tooltip="Allows you to create special effects (such as dust) when the player wears this equipment texture&#39;s va..."];
+  Node311 -> Node318 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node318 [label="Terraria.ModLoader.Global\lItem.UpdateVanitySet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_item.html#acea1ec4dfa7de3501671ec24cb5dd3a2",tooltip="Allows you to create special effects (such as dust) when the player wears the vanity set with the giv..."];
+}

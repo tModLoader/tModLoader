@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ItemLoader.GetWeaponDamage"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node164 [label="Terraria.ModLoader.ItemLoader.\lGetWeaponDamage",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node164 -> Node165 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node165 [label="Terraria.ModLoader.Combined\lHooks.GetWeaponDamage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ae6ecbc6b4c8603dfd16162b3c7b2b419"];
+}

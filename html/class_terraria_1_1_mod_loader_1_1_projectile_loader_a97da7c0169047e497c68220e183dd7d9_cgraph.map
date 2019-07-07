@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.ProjectileLoader.CutTiles" name="Terraria.ModLoader.ProjectileLoader.CutTiles">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae" title="Code ran when the projectile cuts tiles. Only runs if CanCutTiles() returns true. Useful when program..." alt="" coords="246,5,421,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="246,70,421,111"/>
-</map>

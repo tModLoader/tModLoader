@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.NPCLoader" name="Terraria.ModLoader.NPCLoader">
-<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. " alt="" coords="222,387,426,413"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader_1_1_hook_list.html" title="Terraria.ModLoader.NPCLoader.\lHookList" alt="" coords="603,442,813,483"/>
-</map>

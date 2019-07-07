@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.PlayerHooks.MeleeSpeedMultiplier"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node72 [label="Terraria.ModLoader.Player\lHooks.MeleeSpeedMultiplier",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node72 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="Terraria.ModLoader.ModPlayer.\lMeleeSpeedMultiplier",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ac98ff1db7484c7cf96f7ca4d4a278a8d"];
+}

@@ -1,0 +1,31 @@
+digraph "Terraria.ModLoader.ItemLoader"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.ItemLoader",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" HookOnCraft\nHookIsAnglerQuestAvailable\nHookPostDrawInInventory\nHookPreDrawInWorld\nHookOnPickup\nHookOpenVanillaBag\nHookPreOpenVanillaBag\nHookCaughtFishStack\nHookHoldoutOffset\nHookCanPickup\n..." ,fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.ItemLoader.\lHookList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" arr" ,fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.GlobalItem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_item.html",tooltip="This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this. "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" instanceIndex\nindex" ,fontname="Helvetica"];
+  Node4 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" InstancePerEntity\nCloneNewInstances" ,fontname="Helvetica"];
+  Node5 [label="bool",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" method" ,fontname="Helvetica"];
+  Node6 [label="readonly MethodInfo",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" animations" ,fontname="Helvetica"];
+  Node7 [label="static readonly ISet\l\< int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" NetGlobals\nInstancedGlobals" ,fontname="Helvetica"];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" items" ,fontname="Helvetica"];
+  Node8 [label="static readonly IList\l\< Terraria.ModLoader.ModItem \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalIndexes" ,fontname="Helvetica"];
+  Node9 [label="static readonly IDictionary\l\< string, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vanillaWings\nnextItem\nItemCount\nvanillaQuestFishCount" ,fontname="Helvetica"];
+  Node10 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hooks" ,fontname="Helvetica"];
+  Node10 [label="static List\< Terraria.Mod\lLoader.ItemLoader.HookList \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalIndexesByType" ,fontname="Helvetica"];
+  Node11 [label="static readonly IDictionary\l\< Type, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node12 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" globalItems" ,fontname="Helvetica"];
+  Node12 [label="static readonly IList\l\< Terraria.ModLoader.Global\lItem \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

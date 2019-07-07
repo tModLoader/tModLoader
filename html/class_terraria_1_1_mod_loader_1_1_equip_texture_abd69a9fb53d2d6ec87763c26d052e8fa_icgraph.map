@@ -1,3 +1,0 @@
-<map id="Terraria.ModLoader.EquipTexture.UpdateVanitySet" name="Terraria.ModLoader.EquipTexture.UpdateVanitySet">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a5866cf3c0858190e8cc63460329bd5a4" title="If the player&#39;s head texture&#39;s IsVanitySet returns true, calls the equipment texture&#39;s UpdateVanitySe..." alt="" coords="225,5,431,46"/>
-</map>

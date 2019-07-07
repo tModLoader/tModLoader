@@ -1,0 +1,45 @@
+digraph "Terraria.ModLoader.Mod.LoadMusic"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node382 [label="Terraria.ModLoader.Mod.Load\lMusic",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node382 -> Node383 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node383 [label="Terraria.ModLoader.ModPrefix.\lAutoDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ab17ffafd13b5784b4202de347fb05324"];
+  Node382 -> Node384 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node384 [label="Terraria.ModLoader.ModProjectile.\lAutoStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae5eb3338bf93c693f7367a824e39d242",tooltip="Automatically sets certain static defaults. Override this if you do not want the properties to be set..."];
+  Node384 -> Node385 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node385 [label="Terraria.ModLoader.ModContent.\lGetTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059",tooltip="Gets the texture with the specified name. The name is in the format of \"ModFolder/OtherFolders/FileNa..."];
+  Node385 -> Node386 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node386 [label="Terraria.ModLoader.ModLoader.\lGetMod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af",tooltip="Gets the instance of the Mod with the specified name. "];
+  Node382 -> Node387 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node387 [label="Terraria.ModLoader.ModItem.\lAutoStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af",tooltip="Automatically sets certain static defaults. Override this if you do not want the properties to be set..."];
+  Node387 -> Node385 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node387 -> Node388 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node388 [label="Terraria.ModLoader.ModContent.\lTextureExists",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a556b4c3c23ea56d8047846905927a9fb",tooltip="Returns whether or not a texture with the specified name exists. "];
+  Node388 -> Node386 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node388 -> Node389 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node389 [label="Terraria.ModLoader.Mod.Texture\lExists",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6",tooltip="Shorthand for calling ModLoader.TextureExists(this.FileName(name)). "];
+  Node382 -> Node390 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node390 [label="Terraria.ModLoader.ModNPC.\lAutoStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060",tooltip="Automatically sets certain static defaults. Override this if you do not want the properties to be set..."];
+  Node390 -> Node385 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node382 -> Node385 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node382 -> Node391 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node391 [label="Terraria.ModLoader.Global\lWall.SetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_wall.html#a62871274fb0f222ebd18e7917d562b71",tooltip="Allows you to modify the properties of any wall in the game. Most properties are stored as arrays thr..."];
+  Node382 -> Node392 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node392 [label="Terraria.ModLoader.ModBuff.\lSetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_buff.html#afea8807b0b4d89785177f30965821fe2",tooltip="This is where all buff related assignments go. For example: Main.buffName[Type] = \"Display Name\"; Mai..."];
+  Node382 -> Node393 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node393 [label="Terraria.ModLoader.Global\lTile.SetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_tile.html#ab98f5b2949277faeb8ccf2e52ba1e304",tooltip="Allows you to modify the properties of any tile in the game. Most properties are stored as arrays thr..."];
+  Node382 -> Node394 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node394 [label="Terraria.ModLoader.ModDust.\lSetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_dust.html#ae40da1253a003b27d36c0e642ab35a1d",tooltip="Allows you to set this ModDust&#39;s updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array. "];
+  Node382 -> Node395 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node395 [label="Terraria.ModLoader.ModWall.\lSetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8ef2e5554dd8f96bdb01dfe255812131",tooltip="Allows you to set the properties of this wall. Many properties are stored as arrays throughout Terrar..."];
+  Node382 -> Node396 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node396 [label="Terraria.ModLoader.ModPrefix.\lSetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ae97dd67988efb66bb7b86d48befec39a",tooltip="Allows you to set the prefix&#39;s name/translations and to set its category. "];
+  Node382 -> Node397 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node397 [label="Terraria.ModLoader.ModProjectile.\lSetStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac774ca279b50afbdc57aa278321e22f4",tooltip="Allows you to set all your projectile&#39;s static properties, such as names/translations and the arrays ..."];
+  Node382 -> Node398 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node398 [label="Terraria.ModLoader.ModItem.\lSetStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a9de5c2591b0443b342a81003bfc86540",tooltip="This is where you set all your item&#39;s static properties, such as names/translations and the arrays in..."];
+  Node382 -> Node399 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node399 [label="Terraria.ModLoader.ModNPC.\lSetStaticDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af7933d98714543ab0f484b252b14c238",tooltip="Allows you to set all your NPC&#39;s static properties, such as names/translations and the arrays in NPCI..."];
+}

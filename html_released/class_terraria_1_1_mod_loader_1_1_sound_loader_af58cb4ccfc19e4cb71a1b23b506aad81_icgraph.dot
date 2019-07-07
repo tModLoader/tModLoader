@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.SoundLoader.SoundCount"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="Terraria.ModLoader.Sound\lLoader.SoundCount",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Terraria.ModLoader.Mod.Add\lMusicBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a2c1e83b143448233295027694ef6ef3a",tooltip="Allows you to tie a music ID, and item ID, and a tile ID together to form a music box..."];
+}

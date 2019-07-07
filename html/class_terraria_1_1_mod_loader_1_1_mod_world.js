@@ -5,7 +5,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_world =
     [ "Initialize", "class_terraria_1_1_mod_loader_1_1_mod_world.html#adeaf03c2c6361b70d0c0eabca94641d7", null ],
     [ "Load", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a2d5993331e9a2e313242e2f7ba19bedc", null ],
     [ "LoadLegacy", "class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605", null ],
-    [ "ModifyHardmodeTasks", "class_terraria_1_1_mod_loader_1_1_mod_world.html#ad81d5304809613f8b2aa6755268ee2c8", null ],
     [ "ModifyWorldGenTasks", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a80b0fd5f98d260664332ce94b185e1a4", null ],
     [ "NetReceive", "class_terraria_1_1_mod_loader_1_1_mod_world.html#aaf20d147cc364d10b4b137999b5c26b5", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_world.html#a58fe0616b0c4135ec038025e67268561", null ],

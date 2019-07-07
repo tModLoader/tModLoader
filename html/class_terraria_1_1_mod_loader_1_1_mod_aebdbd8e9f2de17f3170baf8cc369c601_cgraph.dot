@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.Mod.AutoloadTileEntity"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node172 [label="Terraria.ModLoader.Mod.Autoload\lTileEntity",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node172 -> Node173 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node173 [label="Terraria.ModLoader.ModTile\lEntity.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#addfffafc879f8c79ffdcadf2a869f222",tooltip="Allows you to automatically load a tile entity instead of using Mod.AddTileEntity. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name. "];
+}

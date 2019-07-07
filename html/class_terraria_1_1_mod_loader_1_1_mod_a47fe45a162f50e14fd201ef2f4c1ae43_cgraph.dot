@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.Mod.AutoloadPrefix"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node158 [label="Terraria.ModLoader.Mod.Autoload\lPrefix",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node158 -> Node159 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node159 [label="Terraria.ModLoader.ModPrefix.\lAutoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a9e463f23a09aecd988ccabdee98f9864"];
+}

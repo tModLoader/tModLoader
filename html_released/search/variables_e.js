@@ -1,12 +1,14 @@
 var searchData=
 [
-  ['name',['Name',['../class_terraria_1_1_mod_loader_1_1_assembly_manager_1_1_loaded_mod.html#a437559667a762dae5d8c5455265a0965',1,'Terraria.ModLoader.AssemblyManager.LoadedMod.Name()'],['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#a351414795641dae14c730926cd6c7b37',1,'Terraria.ModLoader.DrawLayer.Name()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09',1,'Terraria.ModLoader.Mod.Name()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f',1,'Terraria.ModLoader.TooltipLine.Name()'],['../class_terraria_1_1_mod_loader_1_1_mod_net_1_1_mod_header.html#afa914f5a99bb58918f4c9736780e9f9f',1,'Terraria.ModLoader.ModNet.ModHeader.name()']]],
+  ['name',['name',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a127628f467826dc51efbe081802ce28f',1,'Terraria.ModLoader.Config.ItemDefinition.name()'],['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#a351414795641dae14c730926cd6c7b37',1,'Terraria.ModLoader.DrawLayer.Name()'],['../class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09',1,'Terraria.ModLoader.Mod.Name()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#aa3cc4c9901181e7f30f9d44b33b16b3f',1,'Terraria.ModLoader.TooltipLine.Name()']]],
+  ['nativedetouringgranted',['NativeDetouringGranted',['../class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html#abdfa837c67eb1b891eaac5e344a11458',1,'Terraria::ModLoader::MonoModHooks']]],
   ['nebulatower',['NebulaTower',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#acb4b6e81926e6c8b0b3cfd0399016046',1,'Terraria::ModLoader::SpawnCondition']]],
   ['neckacc',['NeckAcc',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a1692343d036d91bf641c40e50a7c977a',1,'Terraria::ModLoader::PlayerLayer']]],
   ['neckshader',['neckShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#af8eebf07e42400609fbb5f93fe3c9120',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['needhoney',['needHoney',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#ad54807819a74eb424d6d4f03c752be3d',1,'Terraria::ModLoader::RecipeFinder']]],
   ['needlava',['needLava',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a0e66a6823be3f265e1a7e20144ff7615',1,'Terraria::ModLoader::RecipeFinder']]],
   ['needwater',['needWater',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a2e0cf16d72c5ecef87e2a86dcfe4acd2',1,'Terraria::ModLoader::RecipeFinder']]],
+  ['netmodcount',['NetModCount',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#affbd35055e18fcf9c99a093c95b42665',1,'Terraria::ModLoader::ModNet']]],
   ['netmods',['netMods',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#ae8f1236c3d6398b75ca02a4a520db9dd',1,'Terraria::ModLoader::ModNet']]],
   ['nextbackground',['nextBackground',['../class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#aa932d62f40d6b4d93edcb238abe4f3b5',1,'Terraria::ModLoader::BackgroundTextureLoader']]],
   ['nextbosshead',['nextBossHead',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#aa9ab935a8574d68b2b99291cf69cb8dd',1,'Terraria::ModLoader::NPCHeadLoader']]],
@@ -18,6 +20,7 @@ var searchData=
   ['nextitem',['nextItem',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#add09eb72f1381a392b453fbe34e56924',1,'Terraria::ModLoader::ItemLoader']]],
   ['nextmount',['nextMount',['../class_terraria_1_1_mod_loader_1_1_mount_loader.html#a53c5e92a42d9c7107de8d55650c1d763',1,'Terraria::ModLoader::MountLoader']]],
   ['nextnpc',['nextNPC',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#affee1a015d6e55f8dd983ab60cb360f5',1,'Terraria::ModLoader::NPCLoader']]],
+  ['nextprefix',['nextPrefix',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a8f577f2e89b2f0219a7d60be1f253faa',1,'Terraria::ModLoader::ModPrefix']]],
   ['nextprojectile',['nextProjectile',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#ae337d6707120b5430b55c3b537b968da',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['nextsound',['nextSound',['../class_terraria_1_1_mod_loader_1_1_sound_loader.html#ac213340da38a927039d5190eacb242d1',1,'Terraria::ModLoader::SoundLoader']]],
   ['nextsurfacebgstyle',['nextSurfaceBgStyle',['../class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#a3b32e82457e0019a696b22ed28e9f31d',1,'Terraria::ModLoader::SurfaceBgStyleLoader']]],

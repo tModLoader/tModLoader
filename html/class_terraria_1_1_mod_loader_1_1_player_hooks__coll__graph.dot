@@ -1,0 +1,21 @@
+digraph "Terraria.ModLoader.PlayerHooks"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.Player\lHooks",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" players" ,fontname="Helvetica"];
+  Node2 [label="static readonly IList\l\< Terraria.ModLoader.ModPlayer \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hooks" ,fontname="Helvetica"];
+  Node3 [label="static List\< Terraria.Mod\lLoader.PlayerHooks.HookList \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexes" ,fontname="Helvetica"];
+  Node4 [label="static readonly IDictionary\l\< string, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indexesByType" ,fontname="Helvetica"];
+  Node5 [label="static readonly IDictionary\l\< Type, int \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" HookModifyHitByNPC\nHookOnHitPvpWithProj\nHookSendCustomBiomes\nHookUpdateBiomes\nHookModifyNursePrice\nHookPostBuyItem\nHookPostSellItem\nHookCanBeHitByProjectile\nHookModifyHitNPCWithProj\nHookGetHealLife\n..." ,fontname="Helvetica"];
+  Node6 [label="Terraria.ModLoader.Player\lHooks.HookList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks_1_1_hook_list.html"];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" arr" ,fontname="Helvetica"];
+  Node7 [label="int",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" method" ,fontname="Helvetica"];
+  Node8 [label="readonly MethodInfo",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

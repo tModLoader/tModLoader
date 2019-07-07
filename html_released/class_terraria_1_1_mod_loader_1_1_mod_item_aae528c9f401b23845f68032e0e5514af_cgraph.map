@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ModItem.AutoStaticDefaults" name="Terraria.ModLoader.ModItem.AutoStaticDefaults">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaddf4c69589710e2b5329d4df1e93f18" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="249,5,455,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a" title="Returns whether or not a texture with the specified name exists. " alt="" coords="249,70,455,111"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a7dc7c15a681b04deeab2765ba889adf6" title="Shorthand for calling ModLoader.TextureExists(this.FileName(name)). " alt="" coords="504,70,715,111"/>
-</map>

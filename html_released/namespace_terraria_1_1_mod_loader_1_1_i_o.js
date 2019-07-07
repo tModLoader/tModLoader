@@ -6,7 +6,6 @@ var namespace_terraria_1_1_mod_loader_1_1_i_o =
     [ "BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer" ],
     [ "ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer" ],
     [ "ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o" ],
-    [ "Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer" ],
     [ "TagCompound", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound" ],
     [ "TagIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o" ],
     [ "TagPrinter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer" ],

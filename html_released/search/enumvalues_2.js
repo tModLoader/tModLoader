@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['face',['Face',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a8af5861002f3c157f9ba842bba10aa3f',1,'Terraria::ModLoader']]],
-  ['front',['Front',['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde',1,'Terraria.ModLoader.Front()'],['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398a5835bab1ade0060909e31a06af2e2cde',1,'Terraria.ModLoader.Front()']]],
-  ['frontextra',['FrontExtra',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398acb87ecd0146e4043453f646f8ec64a8a',1,'Terraria::ModLoader']]],
-  ['frontextraglow',['FrontExtraGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aa1227743ed969deb8c75c2f841620983',1,'Terraria::ModLoader']]],
-  ['frontglow',['FrontGlow',['../namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398aeb2f12de52987b96bc59c077116d2f26',1,'Terraria::ModLoader']]]
+  ['chat',['Chat',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26a55dcdf017b51fc96f7b5f9d63013b95d',1,'Terraria::ModLoader']]],
+  ['client',['Client',['../namespace_terraria_1_1_mod_loader.html#a1c82c6b1930a8ee5c45efb091a036b06a577d7068826de925ea2aec01dbadf5e4',1,'Terraria::ModLoader']]],
+  ['clientside',['ClientSide',['../namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262',1,'Terraria::ModLoader::Config']]],
+  ['console',['Console',['../namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f',1,'Terraria::ModLoader']]],
+  ['custom',['Custom',['../namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af',1,'Terraria.ModLoader.Custom()'],['../namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a90589c47f06eb971d548591f23c285af',1,'Terraria.ModLoader.Custom()']]]
 ];

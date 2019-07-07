@@ -1,4 +1,0 @@
-<map id="Terraria.ModLoader.NPCLoader.CanGoToStatue" name="Terraria.ModLoader.NPCLoader.CanGoToStatue">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae8db68fb45a269cce3a91f750d8af2ee" title="Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to..." alt="" coords="265,5,439,46"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="265,70,439,111"/>
-</map>

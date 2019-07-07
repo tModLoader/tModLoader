@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['file',['File',['../class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a',1,'Terraria::ModLoader::Mod']]],
-  ['filename',['Filename',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a818ed0aa74b0c4ae80a5efc25d3f4b31',1,'Terraria::ModLoader::IO::UploadFile']]]
+  ['description',['Description',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a5905443567e9ba00bfe1eec3730bdf76',1,'Terraria::ModLoader::ModBuff']]],
+  ['displayname',['DisplayName',['../class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb',1,'Terraria.ModLoader.Mod.DisplayName()'],['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#aa50943e2169144b4337a24b3ae74eb00',1,'Terraria.ModLoader.ModBuff.DisplayName()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355',1,'Terraria.ModLoader.ModItem.DisplayName()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab3571f511237283f0d54765c5e485448',1,'Terraria.ModLoader.ModNPC.DisplayName()'],['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#ad8d4aa1d24d14d509ded984087738a40',1,'Terraria.ModLoader.ModPrefix.DisplayName()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab54cf738c24778cfec13031c9acd67a5',1,'Terraria.ModLoader.ModProjectile.DisplayName()']]]
 ];

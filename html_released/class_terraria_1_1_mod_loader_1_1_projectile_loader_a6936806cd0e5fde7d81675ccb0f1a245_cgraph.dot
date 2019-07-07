@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.ProjectileLoader.PreDrawExtras"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node138 [label="Terraria.ModLoader.Projectile\lLoader.PreDrawExtras",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node138 -> Node139 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node139 [label="Terraria.ModLoader.Global\lProjectile.Instance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212"];
+  Node138 -> Node140 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node140 [label="Terraria.ModLoader.Global\lProjectile.PreDrawExtras",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#af9d2b93baaa0fb81a19e50d03725d670",tooltip="Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras tex..."];
+}

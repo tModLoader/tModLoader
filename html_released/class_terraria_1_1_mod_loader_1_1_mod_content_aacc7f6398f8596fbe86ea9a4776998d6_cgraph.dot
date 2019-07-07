@@ -1,0 +1,48 @@
+digraph "Terraria.ModLoader.ModContent.MusicExists"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node91 [label="Terraria.ModLoader.ModContent.\lMusicExists",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node91 -> Node92 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node92 [label="Terraria.ModLoader.Background\lTextureLoader.GetBackgroundSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9",tooltip="Returns the slot/ID of the background texture with the given name. "];
+  Node91 -> Node93 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 [label="Terraria.ModLoader.NPCHead\lLoader.GetBossHeadSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#a89950f2a9433a2c981916550c78703ae",tooltip="Gets the index of the boss head texture corresponding to the given texture path. "];
+  Node91 -> Node94 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node94 [label="Terraria.ModLoader.BuffLoader.\lGetBuff",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_buff_loader.html#a79a721a0fafe68082890b026043ca538",tooltip="Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null. "];
+  Node91 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node95 [label="Terraria.ModLoader.ModDust.\lGetDust",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_dust.html#afe80059dd56be18b6eb1fd9ef940cb29",tooltip="Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists..."];
+  Node95 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node96 [label="Terraria.ModLoader.ModDust.\lOnSpawn",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_dust.html#a4716ad247673f0cd67b5adbdbc6acf8f",tooltip="Allows you to modify a dust&#39;s fields when it is created. "];
+  Node91 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="Terraria.ModLoader.Equip\lLoader.GetEquipTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575",tooltip="Gets the equipment texture for the specified equipment type and ID. "];
+  Node97 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="Terraria.ModLoader.ModContent.\lGetTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059",tooltip="Gets the texture with the specified name. The name is in the format of \"ModFolder/OtherFolders/FileNa..."];
+  Node98 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="Terraria.ModLoader.ModLoader.\lGetMod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af",tooltip="Gets the instance of the Mod with the specified name. "];
+  Node91 -> Node100 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 [label="Terraria.ModLoader.NPCHead\lLoader.GetHeadSlot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html#ab002e373efd84676ba6081d3b242dab6",tooltip="Gets the index of the head texture corresponding to the given texture path. "];
+  Node91 -> Node101 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="Terraria.ModLoader.ItemLoader.\lGetItem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8f5f5f4245b184038a9e6d1abbf4d3",tooltip="Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the..."];
+  Node91 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node91 -> Node102 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="Terraria.ModLoader.Mount\lLoader.GetMount",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mount_loader.html#a09e19c4faa1e5f105a6f282abaf9da6f",tooltip="Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has t..."];
+  Node91 -> Node103 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 [label="Terraria.ModLoader.NPCLoader.\lGetNPC",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a1e9eae6ec444b4a23e1a809cfea3be94",tooltip="Gets the ModNPC instance corresponding to the specified type. "];
+  Node91 -> Node104 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node104 [label="Terraria.ModLoader.Projectile\lLoader.GetProjectile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1367d806fe025ee2b27c5f0aa945b46d",tooltip="Gets the ModProjectile instance corresponding to the specified type. "];
+  Node91 -> Node105 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node105 [label="Terraria.ModLoader.Surface\lBgStyleLoader.GetSurfaceBgStyle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#aa764a50ec9347f186eaa6be90a1d48af",tooltip="Returns the ModSurfaceBgStyle object with the given ID. "];
+  Node91 -> Node106 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node106 [label="Terraria.ModLoader.TileLoader.\lGetTile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#a046d2f0670d83bdc212241b0f87ff2de",tooltip="Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null. "];
+  Node91 -> Node107 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="Terraria.ModLoader.UgBgStyle\lLoader.GetUgBgStyle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html#a1920e2529e358ed593853378a0e6079a",tooltip="Returns the ModUgBgStyle object with the given ID. "];
+  Node91 -> Node108 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node108 [label="Terraria.ModLoader.WallLoader.\lGetWall",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_wall_loader.html#a52a7457356cd330af2425e371a0cdc49",tooltip="Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null. "];
+  Node91 -> Node109 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 [label="Terraria.ModLoader.Waterfall\lStyleLoader.GetWaterfallStyle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_waterfall_style_loader.html#a896b0437728b98a317aa2ca7da5a4af3",tooltip="Returns the ModWaterfallStyle with the given ID. "];
+  Node91 -> Node110 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node110 [label="Terraria.ModLoader.Water\lStyleLoader.GetWaterStyle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_water_style_loader.html#a0778cff18767e911698a313f1b7d2f94",tooltip="Returns the ModWaterStyle with the given ID. "];
+  Node91 -> Node111 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node111 [label="Terraria.ModLoader.Mod.Music\lExists",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#af995bbfa93c0a1fe4c6252fb9fc179e7",tooltip="Shorthand for calling ModLoader.MusicExists(this.FileName(name)). "];
+}

@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ItemLoader.AnglerChat"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="Terraria.ModLoader.ItemLoader.\lAnglerChat",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.ModItem.\lAnglerQuestChat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7fedbda0e561959eefd688955c6e614",tooltip="Allows you to set what the Angler says when he requests for this item. The description parameter is h..."];
+}

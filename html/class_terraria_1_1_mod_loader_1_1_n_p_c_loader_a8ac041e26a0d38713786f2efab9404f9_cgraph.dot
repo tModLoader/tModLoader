@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.NPCLoader.TownNPCAttackSwing"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node295 [label="Terraria.ModLoader.NPCLoader.\lTownNPCAttackSwing",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node295 -> Node296 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node296 [label="Terraria.ModLoader.Global\lNPC.Instance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c"];
+  Node295 -> Node297 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node297 [label="Terraria.ModLoader.Global\lNPC.TownNPCAttackSwing",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5ef4cbdeffb9eed794a04b625d3099da",tooltip="Allows you to determine the width and height of the item a town NPC swings when it attacks..."];
+}

@@ -1,5 +1,0 @@
-<map id="Terraria.ModLoader.ModContent.SetLocalizedText" name="Terraria.ModLoader.ModContent.SetLocalizedText">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a..." alt="" coords="267,5,461,32"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a6e0e8bff817d6b27299d096b1ac96afd" title="Terraria.ModLoader.Mod.Load\lResources" alt="" coords="267,57,461,98"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a026f70f45d29300a148e8257d324ba12" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f..." alt="" coords="267,122,461,163"/>
-</map>

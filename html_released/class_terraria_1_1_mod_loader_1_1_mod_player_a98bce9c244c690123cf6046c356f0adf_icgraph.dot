@@ -1,0 +1,9 @@
+digraph "Terraria.ModLoader.ModPlayer.OnHitNPCWithProj"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node130 [label="Terraria.ModLoader.ModPlayer.\lOnHitNPCWithProj",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node130 -> Node131 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node131 [label="Terraria.ModLoader.Player\lHooks.OnHitNPCWithProj",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#af8f23e3c8a1c7700ffe84ea7de61b2b4"];
+}

@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.ProjectileLoader.NumGrappleHooks"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node102 [label="Terraria.ModLoader.Projectile\lLoader.NumGrappleHooks",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node102 -> Node103 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 [label="Terraria.ModLoader.Global\lProjectile.Instance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212"];
+  Node102 -> Node104 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node104 [label="Terraria.ModLoader.Global\lProjectile.NumGrappleHooks",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184",tooltip="How many of this type of grappling hook the given player can latch onto blocks before the hooks start..."];
+}

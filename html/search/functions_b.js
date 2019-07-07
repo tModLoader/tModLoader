@@ -14,5 +14,6 @@ var searchData=
   ['loadsound',['LoadSound',['../class_terraria_1_1_mod_loader_1_1_mod.html#acaab05a1e9897f05e5d930437f2cee46',1,'Terraria::ModLoader::Mod']]],
   ['loadtexture',['LoadTexture',['../class_terraria_1_1_mod_loader_1_1_mod.html#a6f8ab2adf81e70cdb42b584e5b4dbe1a',1,'Terraria::ModLoader::Mod']]],
   ['log',['Log',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225',1,'Terraria.ModLoader.ErrorLogger.Log(string message)'],['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a482452c467e1a6f8005b2968a12c3930',1,'Terraria.ModLoader.ErrorLogger.Log(object param, bool alternateOutput=false)']]],
+  ['logfirstchanceexceptions',['LogFirstChanceExceptions',['../class_terraria_1_1_mod_loader_1_1_logging.html#a69840616214e1e132c1da455230fb0a7',1,'Terraria::ModLoader::Logging']]],
   ['longerexpertdebuff',['LongerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#af0b8606154d66c37a9ec015479eaca0c',1,'Terraria::ModLoader::BuffLoader']]]
 ];
