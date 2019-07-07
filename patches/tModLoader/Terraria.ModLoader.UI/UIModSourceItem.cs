@@ -161,11 +161,12 @@ namespace Terraria.ModLoader.UI
 					Content = File.ReadAllBytes(modFile.path)
 				});
 				if (modFile.HasFile("icon.png")) {
-					files.Add(new UploadFile {
-						Name = "iconfile",
-						Filename = "icon.png",
-						Content = modFile.GetBytes("icon.png")
-					});
+					using (modFile.Open())
+						files.Add(new UploadFile {
+							Name = "iconfile",
+							Filename = "icon.png",
+							Content = modFile.GetBytes("icon.png")
+						});
 				}
 				if (bp.beta)
 					throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
