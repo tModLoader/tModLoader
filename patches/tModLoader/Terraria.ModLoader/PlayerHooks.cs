@@ -545,6 +545,10 @@ namespace Terraria.ModLoader
 			return UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
 		}
 
+		public static int TotalUseTime(float useTime, Player player, Item item) {
+			return Math.Max(2, (int)(useTime / TotalUseTimeMultiplier(player, item)));
+		}
+
 		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, float>>(p => p.MeleeSpeedMultiplier);
 
 		public static float MeleeSpeedMultiplier(Player player, Item item) {
@@ -559,6 +563,10 @@ namespace Terraria.ModLoader
 		public static float TotalMeleeSpeedMultiplier(Player player, Item item) {
 			return TotalUseTimeMultiplier(player, item) * MeleeSpeedMultiplier(player, item)
 				* ItemLoader.MeleeSpeedMultiplier(item, player);
+		}
+
+		public static int TotalMeleeTime(float useAnimation, Player player, Item item) {
+			return Math.Max(2, (int)(useAnimation / TotalMeleeSpeedMultiplier(player, item)));
 		}
 
 		private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);

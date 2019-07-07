@@ -108,7 +108,7 @@
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
  						{
 -							num = player.inventory[player.selectedItem].useTime;
-+							num = (int)(player.inventory[player.selectedItem].useTime / PlayerHooks.TotalUseTimeMultiplier(player, player.inventory[player.selectedItem]));
++							num = PlayerHooks.TotalUseTime(player.inventory[player.selectedItem].useTime, player, player.inventory[player.selectedItem]);
  						}
  						PlayerInput.DpadSnapCooldown[i] = num;
  						value += value2;
