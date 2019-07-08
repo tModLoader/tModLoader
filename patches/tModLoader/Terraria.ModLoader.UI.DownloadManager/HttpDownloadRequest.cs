@@ -9,7 +9,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal sealed class HttpDownloadRequest : DownloadRequest
 	{
-		public static bool PlatformSupportsTls12 => 
+		internal static bool AvoidGithub = false; // Hidden config option for those unable to access GitHub urls
+		public static bool PlatformSupportsTls12 =>
 			FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
 		
 		public const int CHUNK_SIZE = 1 << 20; //1MB

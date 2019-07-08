@@ -181,7 +181,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			string name = (string)mod["name"];
 			string version = (string)mod["version"];
 			string author = (string)mod["author"];
-			string download = (string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod{(HttpDownloadRequest.PlatformSupportsTls12 ? "&tls12=y" : "")}";
+			string download = (string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod{(HttpDownloadRequest.PlatformSupportsTls12 && !HttpDownloadRequest.AvoidGithub ? "&tls12=y" : "")}";
 			int downloads = (int)mod["downloads"];
 			int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 			string timeStamp = (string)mod["updateTimeStamp"];
