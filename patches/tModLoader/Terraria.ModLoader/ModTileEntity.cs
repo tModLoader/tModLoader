@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntitry.Update is called in SP and on Server, not on Clients.
+	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
 	public abstract class ModTileEntity : TileEntity
