@@ -14,14 +14,12 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ItemDefinitionElement : ConfigElement
+	class ItemDefinitionElement : ConfigElement<ItemDefinition>
 	{
 		private List<ItemDefinitionOptionElement> items;
 		private bool updateNeeded;
 		private bool itemSelectionExpanded;
 
-		private Func<ItemDefinition> _GetValue;
-		private Action<ItemDefinition> _SetValue;
 		private ItemDefinitionOptionElement itemChoice;
 		private UIPanel chooserPanel;
 		private NestedUIGrid chooserGrid;
@@ -35,14 +33,9 @@ namespace Terraria.ModLoader.Config.UI
 		public override void OnBind() {
 			base.OnBind();
 			Height.Set(30f, 0f);
-			itemDefinitionList = (IList<ItemDefinition>)list;
-
-			if (itemDefinitionList != null) {
-				TextDisplayFunction = () => index + 1 + ": ";
-			}
 
 			//itemChoice = new UIModConfigItemDefinitionChoice(_GetValue()?.GetID() ?? 0, 0.5f);
-			itemChoice = new ItemDefinitionOptionElement(_GetValue(), 0.5f);
+			itemChoice = new ItemDefinitionOptionElement(Value, 0.5f);
 			itemChoice.Top.Set(2f, 0f);
 			itemChoice.Left.Set(-30, 1f);
 			itemChoice.OnClick += (a, b) =>
@@ -145,10 +138,10 @@ namespace Terraria.ModLoader.Config.UI
 						if (capturedID >= ItemID.Count)
 						{
 							var moditem = ItemLoader.GetItem(capturedID);
-							_SetValue(new ItemDefinition(moditem.mod.Name, moditem.Name));
+							Value = new ItemDefinition(moditem.mod.Name, moditem.Name);
 						}
 						else
-							_SetValue(new ItemDefinition("Terraria", ItemID.Search.GetName(capturedID)));
+							Value = new ItemDefinition("Terraria", ItemID.Search.GetName(capturedID));
 						updateNeeded = true;
 						itemSelectionExpanded = false;
 					};
@@ -188,7 +181,7 @@ namespace Terraria.ModLoader.Config.UI
 				chooserGrid.AddRange(passed);
 			}
 			//itemChoice.SetItem(_GetValue()?.GetID() ?? 0);
-			itemChoice.SetItem(_GetValue());
+			itemChoice.SetItem(Value);
 		}
 	}
 
