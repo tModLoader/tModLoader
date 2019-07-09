@@ -45,9 +45,11 @@ public class Installer {
         if (directory != null && directory.exists())
             return directory;
 
+        messageBox("Please select the Terraria install directory.\n\nPlease do not select the Terraria saves folder (It contains your players and worlds), that is incorrect.\n\nThe install folder should have a file called Terraria.exe in it.", JOptionPane.PLAIN_MESSAGE);
+
         final JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fileChooser.showDialog(null, "Select directory");
+        fileChooser.showDialog(null, "Select Terraria install directory");
 
         if (fileChooser.getCurrentDirectory() == null || !fileChooser.getCurrentDirectory().isDirectory()) {
             messageBox("Could not find place to install to!", JOptionPane.ERROR_MESSAGE);

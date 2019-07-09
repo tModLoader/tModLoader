@@ -1,5 +1,5 @@
 Automatic Install:
-To install tModLoader, extract the zip achive containing this README.txt file to a temporary folder and then simply run the tModLoaderInstaller.jar file in that folder. Java 1.7 or higher is required for the installer to run. The installer will make a window pop up, informing you of either success or failure. If you have changed the steam library location or are on GOG, you will need to do the Manual Install instructions.
+To install tModLoader, extract the zip achive containing this README.txt file to a temporary folder and then simply run the tModLoaderInstaller.jar file in that folder. Java 1.8 or higher is required for the installer to run. The installer will make a window pop up, informing you of either success or failure. If needed, the installer might ask you where you installed Terraria. If for some reason the installer doesn't work, you'll need to follow the Manual Install instructions.
 
 Manual Install:
 If the installer for some reason does not work, or if you do not want to install/upgrade Java, you may also do a manual install.
