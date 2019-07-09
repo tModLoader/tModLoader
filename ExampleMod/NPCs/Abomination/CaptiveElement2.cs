@@ -380,7 +380,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return mod.BuffType("EtherealFlames");
+					return mod.BuffType<Buffs.EtherealFlames>();
 				case 3:
 					return BuffID.Venom;
 				case 4:

@@ -148,7 +148,7 @@ namespace ExampleMod.Projectiles
 				case 1:
 					return BuffID.Frostburn;
 				case 2:
-					return mod.BuffType("EtherealFlames");
+					return mod.BuffType<Buffs.EtherealFlames>();
 				case 3:
 					return 0;
 				case 4:

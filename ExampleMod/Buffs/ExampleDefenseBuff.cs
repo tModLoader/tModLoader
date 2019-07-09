@@ -15,7 +15,7 @@ namespace ExampleMod.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.defense += 4; //Grant a +4 defense boost to the player while the buff is active.
+            player.statDefense += 4; //Grant a +4 defense boost to the player while the buff is active.
         }
     }
 }

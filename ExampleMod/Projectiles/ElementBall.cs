@@ -67,7 +67,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.ai[0] == 44f) {
 				return "Frost Ball";
 			}
-			if (projectile.ai[0] == mod.BuffType("EtherealFlames")) {
+			if (projectile.ai[0] == mod.BuffType<Buffs.EtherealFlames>()) {
 				return "Ethereal Fireball";
 			}
 			if (projectile.ai[0] == 70f) {
@@ -86,7 +86,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.ai[0] == 44f) {
 				return new Color(0, 230, 230);
 			}
-			if (projectile.ai[0] == mod.BuffType("EtherealFlames")) {
+			if (projectile.ai[0] == mod.BuffType<Buffs.EtherealFlames>()) {
 				return new Color(0, 153, 230);
 			}
 			if (projectile.ai[0] == 70f) {

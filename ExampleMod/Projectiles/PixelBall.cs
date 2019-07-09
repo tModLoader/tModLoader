@@ -32,7 +32,7 @@ namespace ExampleMod.Projectiles
 			if (projectile.ai[0] == 44f) {
 				return "Frost Sprite";
 			}
-			if (projectile.ai[0] == mod.BuffType("EtherealFlames")) {
+			if (projectile.ai[0] == mod.BuffType<Buffs.EtherealFlames>()) {
 				return "Spirit Sprite";
 			}
 			if (projectile.ai[0] == 70f) {
