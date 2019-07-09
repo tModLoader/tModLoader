@@ -1,13 +1,9 @@
 ﻿using Ionic.Zip;
 using Ionic.Zlib;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Terraria.IO;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -30,35 +26,35 @@ namespace Terraria.ModLoader
 		/// Zip entries added will be compressed
 		/// </summary>
 		private static void RunArchiving(Action<ZipFile, bool, string> saveAction, bool isCloudSave, string dir, string name, string path) {
-			Directory.CreateDirectory(dir);
-			DeleteOldArchives(dir, isCloudSave, name);
+			try {
+				Directory.CreateDirectory(dir);
+				DeleteOldArchives(dir, isCloudSave, name);
 
-			using (var zip = new ZipFile(Path.Combine(dir, TodaysBackup(name, isCloudSave)), Encoding.UTF8)) {
-				// use zip64 extensions if necessary for huge files
-				zip.UseZip64WhenSaving = Zip64Option.AsNecessary;
-				zip.ZipErrorAction = ZipErrorAction.Throw;
-				saveAction(zip, isCloudSave, path);
-				zip.Save();
+				using (var zip = new ZipFile(Path.Combine(dir, TodaysBackup(name, isCloudSave)), Encoding.UTF8)) {
+					// use zip64 extensions if necessary for huge files
+					zip.UseZip64WhenSaving = Zip64Option.AsNecessary;
+					zip.ZipErrorAction = ZipErrorAction.Throw;
+					saveAction(zip, isCloudSave, path);
+					zip.Save();
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Error("A problem occurred when trying to create a backup file.", e);
 			}
 		}
 
 		/// <summary>
 		/// Adds a new entry to the archive .zip file
-		/// Will use the best compression level using BZip2 technique
+		/// Will use the best compression level using Deflate
 		/// Some files are already compressed and will not be compressed further
 		/// </summary>
 		private static void AddZipEntry(this ZipFile zip, string path, bool isCloud = false) {
-			// zip.CompressionMethod = CompressionMethod.BZip2; // Does not work with Windows Explorer.
+			zip.CompressionMethod = CompressionMethod.Deflate;
 			zip.CompressionLevel = CompressionLevel.BestCompression;
 			zip.Comment = $"Archived on ${DateTime.Now} by tModLoader";
 
-			if ((Path.IsPathRooted(path) && (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory)
-				|| isCloud && !Path.HasExtension(path)) {
-				if (isCloud) {
-					//Require manual because there's no easy way to filter files here
-					Logging.tML.Warn("Failed to add directory to archive from cloud: Directory through cloud not supported");
-				}
-				else zip.AddFiles(Directory.GetFiles(path), false, Path.GetFileNameWithoutExtension(path));
+			if (!isCloud && (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory) {
+				zip.AddFiles(Directory.GetFiles(path), false, Path.GetFileNameWithoutExtension(path));
 			}
 			else {
 				if (isCloud) zip.AddEntry(Path.GetFileName(path), FileUtilities.ReadAllBytes(path, true));
@@ -151,14 +147,16 @@ namespace Terraria.ModLoader
 				path = Path.ChangeExtension(path, ".tplr");
 				if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
 
-				if (isCloudSave) WriteCloud(zip, path);
-				else WriteLocal(zip, path);
+				// Write other files, such as tmap files to the zip
+				if (isCloudSave) WriteCloudFiles(zip, path);
+				else WriteLocalFiles(zip, path);
 			}
 
 			/// <summary>
-			/// Writes for cloud files
+			/// Write cloud files, which will get the relevant part of the path and write map & tmap files
 			/// </summary>
-			private static void WriteCloud(ZipFile zip, string path) {
+			private static void WriteCloudFiles(ZipFile zip, string path) {
+				// Path is still equal to local path
 				var name = Path.GetFileNameWithoutExtension(path);
 				path = Path.ChangeExtension(path, "");
 				path = path.Substring(0, path.Length - 1);
@@ -171,9 +169,9 @@ namespace Terraria.ModLoader
 			}
 
 			/// <summary>
-			/// Writes for local files
+			/// Write local files, which simply writes the entire player dir
 			/// </summary>
-			private static void WriteLocal(ZipFile zip, string path) {
+			private static void WriteLocalFiles(ZipFile zip, string path) {
 				// Write map files from plr dir
 				var plrDir = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
 				if (Directory.Exists(plrDir)) zip.AddZipEntry(plrDir);
