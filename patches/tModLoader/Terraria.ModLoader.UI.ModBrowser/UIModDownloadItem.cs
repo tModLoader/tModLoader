@@ -181,7 +181,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			string name = (string)mod["name"];
 			string version = (string)mod["version"];
 			string author = (string)mod["author"];
-			string download = (string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod{(HttpDownloadRequest.PlatformSupportsTls12 && !HttpDownloadRequest.AvoidGithub ? "&tls12=y" : "")}";
+			string download = (string)mod["download"] ?? $"http://javid.ddns.net/tModLoader/download.php?Down=mods/{name}.tmod{(ModBrowser.UIModBrowser.PlatformSupportsTls12 && !ModBrowser.UIModBrowser.AvoidGithub ? "&tls12=y" : "")}";
 			int downloads = (int)mod["downloads"];
 			int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 			string timeStamp = (string)mod["updateTimeStamp"];
@@ -367,22 +367,41 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
-			Interface.modBrowser.EnqueueModBrowserDownload(this);
-			Interface.modBrowser.StartDownloading();
+			var modDownload = GetModDownload();
+			modDownload.OnComplete += () => {
+				Interface.modBrowser.ProcessDownloadedMod(modDownload);
+			};
+			Interface.downloadProgress.HandleDownloads(modDownload);
 		}
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
-			DownloadMod(evt, listeningElement);
-			_modReferences.Split(',')
+			Main.PlaySound(SoundID.MenuTick);
+			var modDownload = GetModDownload();
+			var mods = _modReferences.Split(',')
 				.Select(Interface.modBrowser.FindModDownloadItem)
 				.Where(item => item != null)
-				.ToList()
-				.ForEach(Interface.modBrowser.EnqueueModBrowserDownload);
+				.Select(x => x.GetModDownload())
+				.ToList();
+			mods.Add(modDownload);
+			foreach (var mod in mods) {
+				mod.OnComplete += () => {
+					Interface.modBrowser.ProcessDownloadedMod(mod);
+				};
+			}
+			Interface.downloadProgress.HandleDownloads(mods.ToArray());
 		}
 
 		private void RequestMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, loadFromWeb: true);
+		}
+
+
+		public DownloadModFile GetModDownload() {
+			var modDownload = new DownloadModFile(DownloadUrl, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{ModName}.tmod", DisplayName) {
+				ModBrowserItem = this
+			};
+			return modDownload;
 		}
 	}
 }

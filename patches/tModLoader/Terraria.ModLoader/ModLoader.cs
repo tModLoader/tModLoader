@@ -279,7 +279,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
-			Main.Configuration.Put("AvoidGithub", UI.DownloadManager.HttpDownloadRequest.AvoidGithub);
+			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 		}
 
 		internal static void LoadConfiguration() {
@@ -292,7 +292,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
-			Main.Configuration.Get("AvoidGithub", ref UI.DownloadManager.HttpDownloadRequest.AvoidGithub);
+			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 		}
 
 		/// <summary>

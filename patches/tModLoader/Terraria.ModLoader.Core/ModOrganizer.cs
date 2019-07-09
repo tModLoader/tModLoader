@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static void ClearTempDownloadFiles() {
-			foreach (string path in Directory.GetFiles(ModLoader.ModPath, $"*{DownloadRequest.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)) {
+			foreach (string path in Directory.GetFiles(ModLoader.ModPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)) {
 				Logging.tML.Info($"Cleaning up leftover temporary file {Path.GetFileName(path)}");
 				try {
 					File.Delete(path);

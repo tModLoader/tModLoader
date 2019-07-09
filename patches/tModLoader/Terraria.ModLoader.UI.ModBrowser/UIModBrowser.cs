@@ -25,14 +25,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal partial class UIModBrowser : UIState
 	{
+		public static bool AvoidGithub;
+		public static bool PlatformSupportsTls12
+			=> FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
+
 		public UIModDownloadItem SelectedItem;
-		
+
 		// TODO maybe we can refactor this as a "BrowserState" enum
 		public bool Loading;
 		public bool aModUpdated;
 		public bool anEnabledModDownloaded;
 		public bool aNewModDownloaded;
-		
+
 		private bool _updateAvailable;
 		private string _updateText;
 		private string _updateUrl;
@@ -41,10 +45,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private List<string> _specialModPackFilter;
 		private readonly List<string> _missingMods = new List<string>();
 		private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
-		
+
 		internal bool UpdateNeeded;
 		internal string Filter => FilterTextBox.Text;
-		
+
 		/* Filters */
 		public ModBrowserSortMode SortMode {
 			get => SortModeFilterToggle.State;
@@ -95,8 +99,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
 			if (Loading) return;
 			var relevantMods = _items.Where(x => x.HasUpdate && !x.UpdateIsDowngrade).Select(x => x.ModName).ToList();
-			EnqueueModBrowserDownloads(relevantMods, Language.GetTextValue("tModLoader.MBUpdateAll"));
-			StartDownloading();
+			DownloadMods(relevantMods);
 		}
 
 		private void ClearFilters(UIMouseEvent @event, UIElement element) {
@@ -107,8 +110,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element) {
-			EnqueueModBrowserDownloads(SpecialModPackFilter, SpecialModPackFilterTitle);
-			StartDownloading();
+			DownloadMods(SpecialModPackFilter);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -151,7 +153,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			cts?.Cancel(false);
+			_cts?.Cancel(false);
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
 
@@ -202,17 +204,16 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		public override void OnActivate() {
 			Main.clrInput();
-			if (!Loading && _items.Count <= 0)
+			if (!Loading && _items.Count <= 0) {
 				PopulateModBrowser();
+			}
 		}
 
 		private bool RemoveItem(UIModDownloadItem item) => _items.Remove(item);
 
 		internal void ClearItems() => _items.Clear();
 
-		private CancellationTokenSource cts;
-		
-		// TODO C WebClient interface is kinda buggy, maybe we should use something like RestSharp
+		private CancellationTokenSource _cts;
 		private void PopulateModBrowser() {
 			Loading = true;
 			SpecialModPackFilter = null;
@@ -224,7 +225,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_items.Clear();
 			ModList.Deactivate();
 			try {
-				cts = new CancellationTokenSource();
+				_cts = new CancellationTokenSource();
 
 				Task.Factory.StartNew(() => {
 					ServicePointManager.Expect100Continue = false;
@@ -239,7 +240,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 						client.UploadValuesCompleted += UploadComplete;
 						client.UploadValuesAsync(new Uri(url), "POST", values);
 					}
-				}, cts.Token);
+				}, _cts.Token);
 			}
 			catch (WebException e) {
 				ShowOfflineTroubleshootingMessage();
@@ -332,82 +333,63 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		/// <summary>
-		///     Enqueue a Mod browser item to the download manager
-		/// </summary>
-		internal void EnqueueModBrowserDownload(UIModDownloadItem mod) {
-			var req = new HttpDownloadRequest(
-				mod.DisplayName,
-				$"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{mod.ModName}.tmod",
-				() => (HttpWebRequest)WebRequest.Create(mod.DownloadUrl),
-				mod,
-				preCopy: () => {
-					var modInstance = ModLoader.GetMod(mod.ModName);
-					if (modInstance != null) {
-						Logging.tML.Info(Language.GetTextValue("tModLoader.MBReleaseFileHandle", $"{modInstance.Name}: {modInstance.DisplayName}"));
-						modInstance?.Close(); // if the mod is currently loaded, the file-handle needs to be released
-					}
-				}
-			);
-			req.OnComplete += () => { OnModDownloadCompleted(req); };
-			Interface.downloadManager.EnqueueRequest(req);
-		}
-
-		/// <summary>
 		///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 		/// </summary>
-		internal void EnqueueModBrowserDownloads(IEnumerable<string> modNames, string overrideUiTitle = null) {
+		internal void DownloadMods(IEnumerable<string> modNames) {
 			Main.PlaySound(SoundID.MenuTick);
+
+			var downloads = new List<DownloadFile>();
 
 			foreach (string desiredMod in modNames) {
 				var mod = _items.FirstOrDefault(x => x.ModName == desiredMod);
-				if (mod == null) // Not found on the browser
+				if (mod == null) {
+					// Not found on the browser
 					_missingMods.Add(desiredMod);
-				else if (mod.Installed == null || mod.HasUpdate) // Found, enqueue download
-					EnqueueModBrowserDownload(mod);
+				}
+				else if (mod.Installed == null || mod.HasUpdate) {
+					// Found, add to downloads
+					var modDownload = mod.GetModDownload();
+					modDownload.OnComplete += () => { ProcessDownloadedMod((DownloadModFile)modDownload); };
+					downloads.Add(modDownload);
+				}
 			}
 
-			Interface.downloadManager.OverrideName = overrideUiTitle;
-		}
-
-		/// <summary>
-		///     Will prompt the download manager to begin downloading
-		/// </summary>
-		internal void StartDownloading() {
-			Interface.downloadManager.OnQueueProcessed = () => {
+			Interface.downloadProgress.OnDownloadsComplete += () => {
 				Interface.modBrowser.UpdateNeeded = true;
 				Main.menuMode = Interface.modBrowserID;
-				if (_missingMods.Count > 0) 
+				if (_missingMods.Count > 0) {
 					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
+				}
 				_missingMods.Clear();
 			};
-			Main.menuMode = Interface.downloadManagerID;
+
+			Interface.downloadProgress.HandleDownloads(downloads.ToArray());
 		}
 
-		internal UIModDownloadItem FindModDownloadItem(string modName) {
-			return _items.FirstOrDefault(x => x.ModName.Equals(modName));
-		}
+		internal UIModDownloadItem FindModDownloadItem(string modName)
+			=> _items.FirstOrDefault(x => x.ModName.Equals(modName));
 
-		private void OnModDownloadCompleted(HttpDownloadRequest req) {
-			if (req.Response.StatusCode != HttpStatusCode.OK) {
-				string errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
-				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
-			}
-			else if (req.Success && req.CustomData is UIModDownloadItem currentDownload) {
-				ProcessDownloadedMod(req, currentDownload);
-			}
-		}
+		//		private void OnModDownloadCompleted(HttpDownloadRequest req) {
+		//			if (req.Response.StatusCode != HttpStatusCode.OK) {
+		//				string errorKey = req.Response.StatusCode == HttpStatusCode.ServiceUnavailable ? "MBExceededBandwidth" : "MBUnknownMBError";
+		//				Interface.errorMessage.Show(Language.GetTextValue("tModLoader." + errorKey), 0);
+		//			}
+		//			else if (req.Success && req.CustomData is UIModDownloadItem currentDownload) {
+		//				ProcessDownloadedMod(req, currentDownload);
+		//			}
+		//		}
 
-		private void ProcessDownloadedMod(HttpDownloadRequest req, UIModDownloadItem currentDownload) {
-			var mod = ModLoader.GetMod(currentDownload.ModName);
+		internal void ProcessDownloadedMod(DownloadModFile modDownload) {
+			var mod = ModLoader.GetMod(modDownload.ModBrowserItem.ModName);
 			if (mod != null) {
 				Interface.modBrowser.anEnabledModDownloaded = true;
 			}
 
-			if (!currentDownload.HasUpdate) Interface.modBrowser.aNewModDownloaded = true;
+			if (!modDownload.ModBrowserItem.HasUpdate) Interface.modBrowser.aNewModDownloaded = true;
 			else Interface.modBrowser.aModUpdated = true;
-			
-			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) ModLoader.EnableMod(currentDownload.ModName);
-			Interface.modBrowser.RemoveItem(currentDownload);
+
+			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) ModLoader.EnableMod(modDownload.ModBrowserItem.ModName);
+			Interface.modBrowser.RemoveItem(modDownload.ModBrowserItem);
 			UpdateNeeded = true;
 		}
 
@@ -418,8 +400,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void ShowOfflineTroubleshootingMessage() {
 			var message = new UIMessageBox(Language.GetTextValue("tModLoader.MBOfflineTroubleshooting")) {
-				Width = {Percent = 1},
-				Height = {Pixels = 400, Percent = 0}
+				Width = { Percent = 1 },
+				Height = { Pixels = 400, Percent = 0 }
 			};
 			message.OnDoubleClick += (a, b) => {
 				Process.Start("http://javid.ddns.net/tModLoader/DirectModDownloadListing.php");
@@ -451,21 +433,5 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Logging.tML.Info(message);
 			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBServerResponse", message), Interface.managePublishedID);
 		}
-		
-		// TODO why is this here?
-		//unused
-		//public XmlDocument GetDataFromUrl(string url)
-		//{
-		//	XmlDocument urlData = new XmlDocument();
-		//	HttpWebRequest rq = (HttpWebRequest)WebRequest.Create(url);
-		//	rq.Timeout = 5000;
-		//	HttpWebResponse response = rq.GetResponse() as HttpWebResponse;
-		//	using (Stream responseStream = response.GetResponseStream())
-		//	{
-		//		XmlTextReader reader = new XmlTextReader(responseStream);
-		//		urlData.Load(reader);
-		//	}
-		//	return urlData;
-		//}
 	}
 }

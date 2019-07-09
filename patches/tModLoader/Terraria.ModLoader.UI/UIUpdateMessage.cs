@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.UI
 		internal void SetURL(string url) {
 			this.url = url;
 		}
-		
+
 		internal void SetAutoUpdateURL(string autoUpdateURL) {
 			this.autoUpdateURL = autoUpdateURL;
 		}
@@ -107,24 +107,35 @@ namespace Terraria.ModLoader.UI
 
 			Logging.tML.Info($"AutoUpdate started");
 			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {autoUpdateURL}");
-			Interface.downloadManager.OnQueueProcessed = () => { };
-			Interface.downloadManager.EnqueueRequest(
-				new HttpDownloadRequest($"Auto Update: {zipFileName}", zipFilePath, () => (HttpWebRequest)WebRequest.Create(autoUpdateURL), onComplete: () => {
-					try {
-						using (var zip = ZipFile.Read(zipFilePath))
-							for (int i = 0; i < zip.Count; i++) {
-								var current = zip[i];
-								if (current.FileName == "Terraria.exe") {
-									current.FileName = Path.GetFileName(autoUpdateFilePath);
-									Logging.tML.Info($"Saving AutoUpdate Terraria.exe to {current.FileName}");
-								}
-								current.Extract(ExtractExistingFileAction.OverwriteSilently);
-							}
-						File.Delete(zipFilePath);
+			//Interface.downloadManager.OnQueueProcessed = () => { };
 
-						// Self deleting bat file techinque found here: https://stackoverflow.com/a/20333575
-						string autoUpdateScript = Path.Combine(installDirectory, "AutoUpdate.bat");
-						File.WriteAllText(autoUpdateScript, @"@ECHO OFF
+
+			var downloadFile = new DownloadFile(url, zipFilePath, $"Auto update: {zipFileName}");
+			downloadFile.OnComplete += () => {
+				OnAutoUpdateDownloadComplete(zipFilePath, autoUpdateFilePath, installDirectory, currentExecutingFilePath);
+			};
+			Interface.downloadProgress.OnCancel += () => {
+				Main.menuMode = Interface.modBrowserID;
+			};
+			Interface.downloadProgress.HandleDownloads(downloadFile);
+		}
+
+		private void OnAutoUpdateDownloadComplete(string zipFilePath, string autoUpdateFilePath, string installDirectory, string currentExecutingFilePath) {
+			try {
+				using (var zip = ZipFile.Read(zipFilePath))
+					for (int i = 0; i < zip.Count; i++) {
+						var current = zip[i];
+						if (current.FileName == "Terraria.exe") {
+							current.FileName = Path.GetFileName(autoUpdateFilePath);
+							Logging.tML.Info($"Saving AutoUpdate Terraria.exe to {current.FileName}");
+						}
+						current.Extract(ExtractExistingFileAction.OverwriteSilently);
+					}
+				File.Delete(zipFilePath);
+
+				// Self deleting bat file techinque found here: https://stackoverflow.com/a/20333575
+				string autoUpdateScript = Path.Combine(installDirectory, "AutoUpdate.bat");
+				File.WriteAllText(autoUpdateScript, @"@ECHO OFF
 if [%1]==[] goto usage
 if [%2]==[] goto usage
 
@@ -150,15 +161,13 @@ exit /B 0
 :usage
 echo Please do not run this file manually
 exit /B 1");
-						Process.Start(autoUpdateScript, $"\"{currentExecutingFilePath}\" \"{autoUpdateFilePath}\"");
+				Process.Start(autoUpdateScript, $"\"{currentExecutingFilePath}\" \"{autoUpdateFilePath}\"");
 
-						Main.menuMode = Interface.exitID; // Environment.Exit(0); // Exit on main thread to avoid crash
-					}
-					catch (Exception e) {
-						Logging.tML.Error($"Problem during autoupdate", e);
-					}
-				}, onCancel: () => Main.menuMode = Interface.modBrowserID));
-			Main.menuMode = Interface.downloadManagerID;
+				Main.menuMode = Interface.exitID; // Environment.Exit(0); // Exit on main thread to avoid crash
+			}
+			catch (Exception e) {
+				Logging.tML.Error($"Problem during autoupdate", e);
+			}
 		}
 	}
 }

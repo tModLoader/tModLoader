@@ -113,11 +113,11 @@ namespace Terraria.ModLoader.UI
 			}
 
 			bool modCompileCheck = ModCompile.ModCompileVersionCheck(out var modCompileMsg);
-			if (!modCompileCheck && !HttpDownloadRequest.PlatformSupportsTls12)
+			if (!modCompileCheck && !ModBrowser.UIModBrowser.PlatformSupportsTls12)
 				modCompileMsg = "tModLoader.DMUpdateMonoToDownloadModCompile";
 			var modCompileMsgBox = AddMessageBox(Language.GetTextValue(modCompileMsg));
 #if !DEBUG
-			if (!modCompileCheck && HttpDownloadRequest.PlatformSupportsTls12)
+			if (!modCompileCheck && ModBrowser.UIModBrowser.PlatformSupportsTls12)
 				AddButton(modCompileMsgBox, Language.GetTextValue("tModLoader.MBDownload"), DownloadModCompile);
 #endif
 
@@ -191,8 +191,10 @@ namespace Terraria.ModLoader.UI
 			string url = $"https://github.com/tModLoader/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
 			Directory.CreateDirectory(ModCompile.modCompileDir);
-			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
-			DownloadFile("ModCompile", url, file, () => {
+			Interface.downloadProgress.OnDownloadsComplete += () => {
+				Main.menuMode = Interface.developerModeHelpID;
+			};
+			DownloadFileFromUrl("ModCompile", url, file, () => {
 				try {
 					Extract(file);
 					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
@@ -219,8 +221,12 @@ namespace Terraria.ModLoader.UI
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
 			Directory.CreateDirectory(folder);
-			Interface.downloadManager.OnQueueProcessed = () => { Main.menuMode = Interface.developerModeHelpID; };
-			DownloadFile("v4.5 Reference Assemblies", url, file, () => {
+
+			Interface.downloadProgress.OnDownloadsComplete += () => {
+				Main.menuMode = Interface.developerModeHelpID;
+			};
+
+			DownloadFileFromUrl("v4.5 Reference Assemblies", url, file, () => {
 				try {
 					Extract(file);
 				}
@@ -246,14 +252,14 @@ namespace Terraria.ModLoader.UI
 			File.Delete(zipFile);
 		}
 
-		private void DownloadFile(string name, string url, string file, Action downloadModCompileComplete) {
-			Interface.downloadManager.EnqueueRequest(
-				new HttpDownloadRequest(name, file, () => (HttpWebRequest)WebRequest.Create(url), onComplete: downloadModCompileComplete,
-					onCancel: () => {
-						Interface.developerModeHelp.updateRequired = true;
-						Main.menuMode = Interface.developerModeHelpID;
-					}));
-			Main.menuMode = Interface.downloadManagerID;
+		private void DownloadFileFromUrl(string name, string url, string file, Action downloadModCompileComplete) {
+			var downloadFile = new DownloadFile(url, file, name);
+			downloadFile.OnComplete += downloadModCompileComplete;
+			Interface.downloadProgress.OnCancel += () => {
+				Interface.developerModeHelp.updateRequired = true;
+				Main.menuMode = Interface.developerModeHelpID;
+			};
+			Interface.downloadProgress.HandleDownloads(downloadFile);
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {

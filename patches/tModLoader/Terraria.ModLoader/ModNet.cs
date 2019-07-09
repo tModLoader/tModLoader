@@ -66,6 +66,9 @@ namespace Terraria.ModLoader
 
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
 		internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
+		private static ModHeader downloadingMod;
+		private static FileStream downloadingFile;
+		private static long downloadingLength;
 
 		internal static void AssignNetIDs() {
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
@@ -220,12 +223,11 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		// Set the next downloading mod
-		private static ModHeader downloadingHeader;
 		private static void DownloadNextMod() {
-			downloadingHeader = downloadQueue.Dequeue();
+			downloadingMod = downloadQueue.Dequeue();
+			downloadingFile = null;
 			var p = new ModPacket(MessageID.ModFile);
-			p.Write(downloadingHeader.name);
+			p.Write(downloadingMod.name);
 			p.Send();
 		}
 
@@ -233,59 +235,92 @@ namespace Terraria.ModLoader
 		// First, send the initial mod name and length of the file stream
 		// so the client knows what to expect
 		internal const int CHUNK_SIZE = 16384;
-		internal static void SendMod(BinaryReader reader, int toClient) {
-			string modName = reader.ReadString();
-
+		internal static void SendMod(string modName, int toClient) {
 			var mod = ModLoader.GetMod(modName);
 			var path = mod.File.path;
-			using (var fs = File.OpenRead(path)) {
-				{
-					//send mod name and file length
-					var p = new ModPacket(MessageID.ModFile);
-					p.Write(mod.DisplayName);
-					p.Write(fs.Length);
-					p.Send(toClient);
-				}
-				// start sending the file using a buffer
-				var buf = new byte[CHUNK_SIZE];
-				int count;
-				while ((count = fs.Read(buf, 0, buf.Length)) > 0) {
-					var p = new ModPacket(MessageID.ModFile, CHUNK_SIZE + 3);
-					p.Write(buf, 0, count);
-					p.Send(toClient);
-				}
+			var fs = File.OpenRead(path);
+			{
+				//send file length
+				var p = new ModPacket(MessageID.ModFile);
+				p.Write(mod.DisplayName);
+				p.Write(fs.Length);
+				p.Send(toClient);
 			}
-		}
 
-		private static StreamingDownloadRequest _currentRequest;
+			var buf = new byte[CHUNK_SIZE];
+			int count;
+			while ((count = fs.Read(buf, 0, buf.Length)) > 0) {
+				var p = new ModPacket(MessageID.ModFile, CHUNK_SIZE + 3);
+				p.Write(buf, 0, count);
+				p.Send(toClient);
+			}
+
+			fs.Close();
+		}
 
 		// Receive a mod when connecting to server
 		internal static void ReceiveMod(BinaryReader reader) {
-
-			// We have no request yet, but we are ready to request a mod for download
-			if (_currentRequest == null) {
-				// Create this request and enqueue it in the download manager
-				_currentRequest = new StreamingDownloadRequest(reader.ReadString(), downloadingHeader.path, reader.ReadInt64(), downloadingHeader,
-					onComplete: () => {
-						if (downloadQueue.Count > 0)
-							DownloadNextMod();
-						else
-							OnModsDownloaded(true);
-					},
-					onCancel: () => _currentRequest = null
-				);
-
-				Interface.downloadManager.EnqueueRequest(_currentRequest);
-				Main.menuMode = Interface.downloadManagerID;
+			if (downloadingMod == null)
 				return;
-			}
 
-			// Read the currently streamed mod
-			if (_currentRequest.Receive(reader)) {
-				// When we reached download completion, complete the request
-				_currentRequest.Complete();
-				_currentRequest = null;
+			try {
+				if (downloadingFile == null) {
+					Interface.progress.DisplayText = reader.ReadString();
+					Interface.progress.OnCancel += CancelDownload;
+					Interface.progress.ActivateUI();
+
+					ModLoader.GetMod(downloadingMod.name)?.Close();
+					downloadingLength = reader.ReadInt64();
+					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
+					return;
+				}
+
+				var bytes = reader.ReadBytes((int)Math.Min(downloadingLength - downloadingFile.Position, CHUNK_SIZE));
+				downloadingFile.Write(bytes, 0, bytes.Length);
+				Interface.progress.Progress = downloadingFile.Position / downloadingLength;
+
+				if (downloadingFile.Position == downloadingLength) {
+					downloadingFile.Close();
+					var mod = new TmodFile(downloadingMod.path);
+					ModLoader.GetMod(mod.name)?.Close();
+
+					if (!downloadingMod.Matches(mod))
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
+
+					if (downloadingMod.signed && !mod.ValidModBrowserSignature)
+						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
+
+					ModLoader.EnableMod(mod.name);
+					if (downloadQueue.Count > 0) DownloadNextMod();
+					else OnModsDownloaded(true);
+				}
 			}
+			catch (Exception e) {
+				try {
+					downloadingFile?.Close();
+					File.Delete(downloadingMod.path);
+				}
+				catch (Exception exc2) {
+					Logging.tML.Error("Unknown error during mod sync", exc2);
+				}
+
+				var msg = Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name);
+				Logging.tML.Error(msg, e);
+				Interface.errorMessage.Show(msg + e, 0);
+
+				Netplay.disconnect = true;
+				downloadingMod = null;
+			}
+		}
+
+		private static void CancelDownload() {
+			try {
+				downloadingFile?.Close();
+				File.Delete(downloadingMod.path);
+			}
+			catch { }
+			downloadingMod = null;
+			Netplay.disconnect = true;
 		}
 
 		private static void OnModsDownloaded(bool needsReload) {
@@ -295,6 +330,7 @@ namespace Terraria.ModLoader
 				return;
 			}
 
+			downloadingMod = null;
 			netMods = null;
 			foreach (var mod in ModLoader.Mods)
 				mod.netID = -1;

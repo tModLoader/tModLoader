@@ -33,10 +33,10 @@ namespace Terraria.ModLoader
 		internal const int tModLoaderSettingsID = 10017;
 		internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
-		internal const int downloadModsID = 10020;
+		internal const int downloadProgressID = 10020;
 		internal const int uploadModID = 10021;
 		internal const int developerModeHelpID = 10022;
-		internal const int downloadManagerID = 10023;
+		internal const int progressID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
@@ -56,10 +56,12 @@ namespace Terraria.ModLoader
 		internal static UIExtractMod extractMod = new UIExtractMod();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
-		internal static UIDownloadManager downloadManager = new UIDownloadManager();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
+		internal static UIProgress progress = new UIProgress();
+		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
@@ -135,10 +137,6 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == downloadManagerID) {
-				Main.MenuUI.SetState(downloadManager);
-				Main.menuMode = 888;
-			}
 			else if (Main.menuMode == loadModsID) {
 				Main.menuMode = 888;
 				Main.MenuUI.SetState(loadMods);
@@ -162,10 +160,6 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
 			}
-			//else if (Main.menuMode == downloadModID) {
-				//Main.MenuUI.SetState(downloadMod);
-				//Main.menuMode = 888;
-			//}
 			else if (Main.menuMode == managePublishedID) {
 				Main.MenuUI.SetState(managePublished);
 				Main.menuMode = 888;
@@ -200,6 +194,14 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == uploadModID) {
 				Main.MenuUI.SetState(uploadMod);
+				Main.menuMode = 888;
+			}
+			else if(Main.menuMode == progressID) {
+				Main.MenuUI.SetState(progress);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == downloadProgressID) {
+				Main.MenuUI.SetState(downloadProgress);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == tModLoaderSettingsID) {
@@ -350,7 +352,7 @@ namespace Terraria.ModLoader
 								Console.WriteLine(downloadURL);
 							}
 							else {
-								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadRequest.TEMP_EXTENSION;
+								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
 								client.DownloadFile(downloadURL, tempFile);
 								ModLoader.GetMod(modname)?.Close();
 								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);

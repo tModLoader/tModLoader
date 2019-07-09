@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Terraria.Localization;
+
+namespace Terraria.ModLoader.UI.DownloadManager
+{
+	internal class UIDownloadProgress : UIProgress
+	{
+		public event Action OnDownloadsComplete;
+
+		private readonly List<DownloadFile> _downloads = new List<DownloadFile>();
+		internal CancellationTokenSource _cts;
+
+		public override void OnActivate() {
+			if (_downloads.Count <= 0) {
+				Logging.tML.Warn("UIDownloadProgress was activated but no downloads were present.");
+				Main.menuMode = 0;
+				return;
+			}
+
+			_cts = new CancellationTokenSource();
+			OnCancel += () => {
+				_cts.Cancel();
+			};
+			DownloadMods();
+		}
+
+		public override void OnDeactivate() {
+			foreach (DownloadFile download in _downloads) {
+				Logging.tML.Warn($"UIDownloadProgress was deactivated but download [{download.FilePath}] was still present.");
+			}
+
+			OnDownloadsComplete = null;
+			_cts?.Dispose();
+			_downloads.Clear();
+			_progressBar.UpdateProgress(0f);
+		}
+
+		public void HandleDownloads(params DownloadFile[] downloads) {
+			foreach (DownloadFile download in downloads) {
+				if (download.Verify()) {
+					_downloads.Add(download);
+				}
+			}
+			ActivateUI();
+		}
+
+		public new void ActivateUI() {
+			Main.menuMode = Interface.downloadProgressID;
+		}
+
+		private void DownloadMods() {
+			var downloadFile = _downloads.First();
+			if (downloadFile == null) return;
+			_progressBar.UpdateProgress(0f);
+			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", downloadFile.DisplayText);
+			downloadFile.Download(_cts.Token, _progressBar.UpdateProgress)
+				.ContinueWith(HandleNextDownload, _cts.Token);
+		}
+
+		private void HandleNextDownload(Task<DownloadFile> task) {
+			_downloads.Remove(task.Result);
+			if (_downloads.Count <= 0) {
+				OnDownloadsComplete?.Invoke();
+				Main.menuMode = Interface.modBrowserID;
+				return;
+			}
+			DownloadMods();
+		}
+	}
+}

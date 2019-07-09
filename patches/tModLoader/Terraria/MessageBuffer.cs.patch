@@ -463,7 +463,7 @@
 +					}
 +					else
 +					{
-+						ModNet.SendMod(reader, whoAmI);
++						ModNet.SendMod(reader.ReadString(), whoAmI);
 +					}
 +					return;
  				default:
