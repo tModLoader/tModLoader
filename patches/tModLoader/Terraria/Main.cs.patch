@@ -380,6 +380,16 @@
  			}
  			NetMessage.SendAnglerQuest(-1);
  		}
+@@ -2793,7 +_,8 @@
+ 			Directory.CreateDirectory(Main.SavePath);
+ 			try
+ 			{
+-				File.SetAttributes(Main.SavePath + Path.DirectorySeparatorChar + "servers.dat", FileAttributes.Normal);
++				if(File.Exists(Main.SavePath + Path.DirectorySeparatorChar + "servers.dat"))
++					File.SetAttributes(Main.SavePath + Path.DirectorySeparatorChar + "servers.dat", FileAttributes.Normal);
+ 			}
+ 			catch
+ 			{
 @@ -2804,7 +_,7 @@
  				{
  					using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
