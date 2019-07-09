@@ -19,7 +19,6 @@ namespace ExampleMod
 	// several effects and items in ExampleMod. See SimpleModPlayer for a very simple example of how ModPlayer classes work.
 	public class ExamplePlayer : ModPlayer
 	{
-		private const int saveVersion = 0;
 		public int score;
 		public bool eFlames;
 		public bool elementShield;
@@ -54,7 +53,7 @@ namespace ExampleMod
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 		public bool examplePersonGiftReceived;
 
-		private const int maxExampleLifeFruits = 10;
+		public const int maxExampleLifeFruits = 10;
 		public int exampleLifeFruits;
 
 		public bool ZoneExample;
@@ -214,10 +213,12 @@ namespace ExampleMod
 
 		public override void UpdateBadLifeRegen() {
 			if (eFlames) {
+				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
 				if (player.lifeRegen > 0) {
 					player.lifeRegen = 0;
 				}
 				player.lifeRegenTime = 0;
+				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second.
 				player.lifeRegen -= 16;
 			}
 			if (healHurt > 0) {

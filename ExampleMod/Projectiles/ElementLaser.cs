@@ -109,7 +109,7 @@ namespace ExampleMod.Projectiles
 				return BuffID.Frostburn;
 			}
 			if (npc.ai[1] == 1f) {
-				return mod.BuffType("EtherealFlames");
+				return mod.BuffType<Buffs.EtherealFlames>();
 			}
 			if (npc.ai[1] == 3f) {
 				return BuffID.Venom;
