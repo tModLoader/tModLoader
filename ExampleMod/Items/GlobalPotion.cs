@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items
 {
-	public class Potion : GlobalItem
+	public class GlobalPotion : GlobalItem
 	{
 		public override bool UseItem(Item item, Player player) {
 			if (item.healLife > 0) {
