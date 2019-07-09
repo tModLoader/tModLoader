@@ -176,7 +176,7 @@ namespace Terraria.ModLoader.Config.UI
 					Proportion = obj;
 				}
 			}
-			if (rightHover != null && rightLock == null)
+			if (rightHover != null && rightLock == null && PlayerInput.Triggers.JustPressed.MouseLeft)
 			{
 				rightLock = rightHover;
 			}
