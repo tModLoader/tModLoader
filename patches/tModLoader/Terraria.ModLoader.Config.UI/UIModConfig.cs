@@ -447,8 +447,8 @@ namespace Terraria.ModLoader.Config.UI
 				e = new UIntElement();
 			}
 			else if (type == typeof(int)) {
-				RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, list);
-				if (rangeAttribute != null)
+				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttribute<SliderAttribute>(memberInfo, item, list);
+				if (sliderAttribute != null)
 					e = new IntRangeElement();
 				else
 					e = new IntInputElement();

@@ -218,12 +218,13 @@ namespace ExampleMod
 		[DefaultValue(2f)]
 		public float RangedFloat;
 
-		// With no annotations on an int, a range from 0 to 100 with ticks of 1 is the default. Without a Range attribute, there will be no slider.
+		// With no annotations on an int, a range from 0 to 100 with ticks of 1 is the default. Without a Slider attribute, there will be no slider.
 		public int NormalInt;
 
 		[Increment(5)]
 		[Range(60, 250)]
 		[DefaultValue(100)]
+		[Slider] // The Slider attribute makes this field be presented with a slider rather than a text input.
 		public int RangedInteger;
 
 		// We can annotate a List<int> and the range, ticks, and increment will be used by all elements of the List
