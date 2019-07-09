@@ -371,6 +371,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			modDownload.OnComplete += () => {
 				Interface.modBrowser.ProcessDownloadedMod(modDownload);
 			};
+			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(modDownload);
 		}
 
@@ -388,6 +389,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					Interface.modBrowser.ProcessDownloadedMod(mod);
 				};
 			}
+
+			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(mods.ToArray());
 		}
 

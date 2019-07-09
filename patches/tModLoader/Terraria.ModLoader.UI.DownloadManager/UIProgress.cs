@@ -8,13 +8,14 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	// One progress tracker for now, multi-download in the future.
 	internal class UIProgress : UIState
 	{
-
 		public event Action OnCancel;
 		protected UIProgressBar _progressBar;
 
+		public int gotoMenu = 0;
+
 		public string DisplayText {
-			get => _progressBar.DisplayText;
-			set => _progressBar.DisplayText = value;
+			get => _progressBar?.DisplayText;
+			set =>_progressBar.DisplayText = value;
 		}
 
 		public float Progress {
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(ID.SoundID.MenuOpen);
-			Main.menuMode = 0;
+			Main.menuMode = gotoMenu;
 			OnCancel?.Invoke();
 		}
 
@@ -53,6 +54,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public override void OnDeactivate() {
 			OnCancel = null;
+			gotoMenu = 0;
 		}
 	}
 

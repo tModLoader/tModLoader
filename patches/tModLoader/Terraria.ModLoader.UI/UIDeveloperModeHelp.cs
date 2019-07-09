@@ -255,9 +255,9 @@ namespace Terraria.ModLoader.UI
 		private void DownloadFileFromUrl(string name, string url, string file, Action downloadModCompileComplete) {
 			var downloadFile = new DownloadFile(url, file, name);
 			downloadFile.OnComplete += downloadModCompileComplete;
+			Interface.downloadProgress.gotoMenu = Interface.developerModeHelpID;
 			Interface.downloadProgress.OnCancel += () => {
 				Interface.developerModeHelp.updateRequired = true;
-				Main.menuMode = Interface.developerModeHelpID;
 			};
 			Interface.downloadProgress.HandleDownloads(downloadFile);
 		}

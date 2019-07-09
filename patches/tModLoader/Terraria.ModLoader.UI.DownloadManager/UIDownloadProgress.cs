@@ -15,9 +15,11 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		internal CancellationTokenSource _cts;
 
 		public override void OnActivate() {
+			base.OnActivate();
+
 			if (_downloads.Count <= 0) {
 				Logging.tML.Warn("UIDownloadProgress was activated but no downloads were present.");
-				Main.menuMode = 0;
+				Main.menuMode = gotoMenu;
 				return;
 			}
 
@@ -29,6 +31,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		public override void OnDeactivate() {
+			base.OnDeactivate();
+
 			foreach (DownloadFile download in _downloads) {
 				Logging.tML.Warn($"UIDownloadProgress was deactivated but download [{download.FilePath}] was still present.");
 			}
@@ -64,8 +68,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private void HandleNextDownload(Task<DownloadFile> task) {
 			_downloads.Remove(task.Result);
 			if (_downloads.Count <= 0) {
+				Main.menuMode = gotoMenu;
 				OnDownloadsComplete?.Invoke();
-				Main.menuMode = Interface.modBrowserID;
 				return;
 			}
 			DownloadMods();

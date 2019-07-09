@@ -349,14 +349,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				else if (mod.Installed == null || mod.HasUpdate) {
 					// Found, add to downloads
 					var modDownload = mod.GetModDownload();
-					modDownload.OnComplete += () => { ProcessDownloadedMod((DownloadModFile)modDownload); };
+					modDownload.OnComplete += () => { ProcessDownloadedMod(modDownload); };
 					downloads.Add(modDownload);
 				}
 			}
 
+			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.OnDownloadsComplete += () => {
-				Interface.modBrowser.UpdateNeeded = true;
-				Main.menuMode = Interface.modBrowserID;
 				if (_missingMods.Count > 0) {
 					Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
 				}
