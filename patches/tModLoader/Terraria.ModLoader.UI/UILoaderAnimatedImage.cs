@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using Terraria.UI;
 
-
 namespace Terraria.ModLoader.UI
 {
 	internal sealed class UILoaderAnimatedImage : UIElement

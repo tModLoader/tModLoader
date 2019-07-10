@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.Engine
 				vanillaGoGhash = ToByteArray("942ab061e854c74db3a6b1efe2dc24d0");
 			}
 			else {
-				throw new Exception("Platform??");
+				throw new Exception("Unknown OS platform");
 			}
 		}
 

@@ -8,7 +8,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal class UILoadModsProgress : UIProgress
 	{
+		public int modCount;
+
 		private UIText subProgress;
+		private string stageText;
 
 		public override void OnInitialize() {
 			base.OnInitialize();
@@ -22,6 +25,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public override void OnActivate() {
 			base.OnActivate();
+			gotoMenu = 0;
+			OnCancel += CancelLoadingMods;
 			ModLoader.BeginLoad();
 			GLCallLocker.ActionsAreSpeedrun = true;
 		}
@@ -40,14 +45,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			set => subProgress?.SetText(value);
 		}
 
-		public int modCount;
-		private string stageText;
 		public void SetLoadStage(string stageText, int modCount = -1) {
 			this.stageText = stageText;
 			this.modCount = modCount;
-			if (modCount < 0)
-				SetProgressText(Language.GetTextValue(stageText));
-
+			if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
 			Progress = 0;
 			SubProgressText = "";
 		}
@@ -61,6 +62,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public void SetCurrentMod(int i, string mod) {
 			SetProgressText(Language.GetTextValue(stageText, mod));
 			Progress = i / (float)modCount;
+		}
+
+		private void CancelLoadingMods() {
+			// TODO Cancelling mods through button to be determined.
+			//ModLoader.skipLoad = false;
+			//Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
 		}
 	}
 }

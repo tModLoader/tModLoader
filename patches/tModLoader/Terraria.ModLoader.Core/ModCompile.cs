@@ -14,11 +14,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Core
 {
-	//todo: further documentation
+	// TODO further documentation
+	// TODO too many inner classes
 	internal class ModCompile
 	{
 		public interface IBuildStatus

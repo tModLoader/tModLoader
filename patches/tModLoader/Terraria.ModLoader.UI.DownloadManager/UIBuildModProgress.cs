@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {

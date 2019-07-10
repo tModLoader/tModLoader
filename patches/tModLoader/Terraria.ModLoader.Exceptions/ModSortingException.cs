@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Exceptions
 {
 	internal class ModSortingException : Exception
 	{

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 
@@ -222,7 +223,7 @@ namespace Terraria.ModLoader.Core
 				foreach (var chain in chains)
 					if (!syncedDependencies.Contains(chain.Last())) {
 						errored.Add(mod);
-						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + String.Join(" -> ", chain));
+						errorLog.AppendLine(mod + " indirectly depends on " + chain.Last() + " via " + string.Join(" -> ", chain));
 					}
 			}
 
