@@ -10,17 +10,21 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	{
 		public event Action OnCancel;
 		protected UIProgressBar _progressBar;
+		private string _cachedText = "";
 
 		public int gotoMenu = 0;
 
 		public string DisplayText {
 			get => _progressBar?.DisplayText;
-			set =>_progressBar.DisplayText = value;
+			set {
+				if (_progressBar?.DisplayText == null) _cachedText = value;
+				else _progressBar.DisplayText = value;
+			}
 		}
 
 		public float Progress {
-			get => _progressBar.Progress;
-			set => _progressBar.UpdateProgress(value);
+			get => _progressBar?.Progress ?? 0f;
+			set => _progressBar?.UpdateProgress(value);
 		}
 
 		public override void OnInitialize() {
@@ -32,6 +36,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				VAlign = 0.5f,
 				Top = { Pixels = 10 }
 			};
+			_progressBar.DisplayText = _cachedText;
 			Append(_progressBar);
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
@@ -48,7 +53,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			OnCancel?.Invoke();
 		}
 
-		public void ActivateUI() {
+		public void Show() {
 			Main.menuMode = Interface.progressID;
 		}
 

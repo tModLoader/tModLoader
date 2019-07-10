@@ -267,7 +267,7 @@ namespace Terraria.ModLoader
 				if (downloadingFile == null) {
 					Interface.progress.DisplayText = reader.ReadString();
 					Interface.progress.OnCancel += CancelDownload;
-					Interface.progress.ActivateUI();
+					Interface.progress.Show();
 
 					ModLoader.GetMod(downloadingMod.name)?.Close();
 					downloadingLength = reader.ReadInt64();
@@ -282,7 +282,7 @@ namespace Terraria.ModLoader
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					ModLoader.GetMod(mod.name)?.Close();
+					using (mod.Open()) { }
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));

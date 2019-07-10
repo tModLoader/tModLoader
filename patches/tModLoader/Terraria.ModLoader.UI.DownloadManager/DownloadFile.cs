@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public bool Verify() {
 			if (string.IsNullOrWhiteSpace(Url)) return false;
 			if (string.IsNullOrWhiteSpace(FilePath)) return false;
-			if (File.Exists(FilePath)) return false;
+			//if (File.Exists(FilePath)) return false;
 			return true;
 		}
 
@@ -103,6 +103,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 			if (!_aborted) {
 				_fileStream?.Close();
+				PreCopy();
 				File.Copy(_downloadPath, FilePath, true);
 				File.Delete(_downloadPath);
 				OnComplete?.Invoke();
@@ -129,6 +130,9 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		// TODO Jof: HPKP / Expect-CT Manager
 		private bool ServerCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) {
 			return errors == SslPolicyErrors.None;
+		}
+
+		internal virtual void PreCopy() {
 		}
 	}
 }
