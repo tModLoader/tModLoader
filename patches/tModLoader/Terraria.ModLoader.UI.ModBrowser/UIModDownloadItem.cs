@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
@@ -20,7 +14,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser
 {
@@ -368,9 +361,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
 			var modDownload = GetModDownload();
-			modDownload.OnComplete += () => {
-				Interface.modBrowser.ProcessDownloadedMod(modDownload);
-			};
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(modDownload);
 		}
@@ -384,12 +374,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				.Select(x => x.GetModDownload())
 				.ToList();
 			mods.Add(modDownload);
-			foreach (var mod in mods) {
-				mod.OnComplete += () => {
-					Interface.modBrowser.ProcessDownloadedMod(mod);
-				};
-			}
-
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(mods.ToArray());
 		}
@@ -398,7 +382,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Main.PlaySound(SoundID.MenuOpen);
 			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, loadFromWeb: true);
 		}
-
 
 		public DownloadModFile GetModDownload() {
 			var modDownload = new DownloadModFile(DownloadUrl, $"{ModLoader.ModPath}{Path.DirectorySeparatorChar}{ModName}.tmod", DisplayName) {

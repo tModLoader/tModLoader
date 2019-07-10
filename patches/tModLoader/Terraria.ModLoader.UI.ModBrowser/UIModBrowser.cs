@@ -209,7 +209,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 		}
 
-		private bool RemoveItem(UIModDownloadItem item) => _items.Remove(item);
+		internal bool RemoveItem(UIModDownloadItem item) => _items.Remove(item);
 
 		internal void ClearItems() => _items.Clear();
 
@@ -342,14 +342,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			foreach (string desiredMod in modNames) {
 				var mod = _items.FirstOrDefault(x => x.ModName == desiredMod);
-				if (mod == null) {
-					// Not found on the browser
+				if (mod == null) { // Not found on the browser
 					_missingMods.Add(desiredMod);
 				}
-				else if (mod.Installed == null || mod.HasUpdate) {
-					// Found, add to downloads
+				else if (mod.Installed == null || mod.HasUpdate) { // Found, add to downloads
 					var modDownload = mod.GetModDownload();
-					modDownload.OnComplete += () => { ProcessDownloadedMod(modDownload); };
 					downloads.Add(modDownload);
 				}
 			}
@@ -377,20 +374,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		//				ProcessDownloadedMod(req, currentDownload);
 		//			}
 		//		}
-
-		internal void ProcessDownloadedMod(DownloadModFile modDownload) {
-			var mod = ModLoader.GetMod(modDownload.ModBrowserItem.ModName);
-			if (mod != null) {
-				Interface.modBrowser.anEnabledModDownloaded = true;
-			}
-
-			if (!modDownload.ModBrowserItem.HasUpdate) Interface.modBrowser.aNewModDownloaded = true;
-			else Interface.modBrowser.aModUpdated = true;
-
-			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) ModLoader.EnableMod(modDownload.ModBrowserItem.ModName);
-			Interface.modBrowser.RemoveItem(modDownload.ModBrowserItem);
-			UpdateNeeded = true;
-		}
 
 		private void SetHeading(string heading) {
 			HeaderTextPanel.SetText(heading, 0.8f, true);

@@ -8,6 +8,21 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public UIModDownloadItem ModBrowserItem;
 
 		public DownloadModFile(string url, string filePath, string displayText) : base(url, filePath, displayText) {
+			OnComplete += ProcessDownloadedMod;
+		}
+
+		private void ProcessDownloadedMod() {
+			var mod = ModLoader.GetMod(ModBrowserItem.ModName);
+			if (mod != null) {
+				Interface.modBrowser.anEnabledModDownloaded = true;
+			}
+
+			if (!ModBrowserItem.HasUpdate) Interface.modBrowser.aNewModDownloaded = true;
+			else Interface.modBrowser.aModUpdated = true;
+
+			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) ModLoader.EnableMod(ModBrowserItem.ModName);
+			Interface.modBrowser.RemoveItem(ModBrowserItem);
+			Interface.modBrowser.UpdateNeeded = true;
 		}
 
 		internal override void PreCopy() {

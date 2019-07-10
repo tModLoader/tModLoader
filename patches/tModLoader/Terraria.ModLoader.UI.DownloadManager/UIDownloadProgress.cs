@@ -49,10 +49,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					_downloads.Add(download);
 				}
 			}
-			ActivateUI();
+			Show();
 		}
 
-		public new void ActivateUI() {
+		public new void Show() {
 			Main.menuMode = Interface.downloadProgressID;
 		}
 
