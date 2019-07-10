@@ -3,52 +3,36 @@ using System;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.DownloadManager
 {
-	// TODO: Extend a progress UI? No cancel button here.
-	internal class UIBuildMod : UIState, ModCompile.IBuildStatus
+	internal class UIBuildModProgress : UIProgress, ModCompile.IBuildStatus
 	{
-		private UILoadProgress loadProgress;
-
-		public override void OnInitialize() {
-			loadProgress = new UILoadProgress {
-				Top = { Pixels = 10 },
-				Width = { Percent = 0.8f },
-				MaxWidth = UICommon.MaxPanelWidth,
-				Height = { Pixels = 150 },
-				HAlign = 0.5f,
-				VAlign = 0.5f
-			};
-			Append(loadProgress);
-		}
-
 		private int numProgressItems;
 		public void SetProgress(int i, int n = -1) {
-			if (n >= 0)
-				numProgressItems = n;
-
-			loadProgress.SetProgress(i / (float)numProgressItems);
+			if (n >= 0) numProgressItems = n;
+			Progress = i / (float)numProgressItems;
 		}
 
 		public void SetStatus(string msg) {
 			Logging.tML.Info(msg);
-			loadProgress.SetText(msg);
+			DisplayText = msg;
 		}
 
 		public void LogCompilerLine(string msg, Level level) {
 			Logging.tML.Logger.Log(null, level, msg, null);
 		}
 
-		internal void Build(string mod, bool reload) => Build(mc => mc.Build(mod), reload);
+		internal void Build(string mod, bool reload)
+			=> Build(mc => mc.Build(mod), reload);
 
-		internal void BuildAll(bool reload) => Build(mc => mc.BuildAll(), reload);
+		internal void BuildAll(bool reload)
+			=> Build(mc => mc.BuildAll(), reload);
 
 		private void Build(Action<ModCompile> buildAction, bool reload) {
 			Main.menuMode = Interface.buildModID;
 			ThreadPool.QueueUserWorkItem(_ => {
-				while (loadProgress == null)
+				while (_progressBar == null)
 					Thread.Sleep(1);// wait for the UI to init
 
 				try {
