@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
-
 	internal class DownloadFile
 	{
 		internal const string TEMP_EXTENSION = ".tmp";

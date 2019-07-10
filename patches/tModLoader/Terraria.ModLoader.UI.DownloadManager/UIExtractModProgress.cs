@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -10,24 +11,23 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal class UIExtractModProgress : UIProgress
 	{
+		private const string LOG_NAME = "extract.log";
 		private LocalMod mod;
 		private static readonly IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {
 			".dll", ".pdb"
 		};
 
+		private CancellationTokenSource _cts;
+
 		public override void OnActivate() {
 			base.OnActivate();
 
-			// I expect this will move out of Activate during progress UI merger
-			Task.Factory.StartNew(() => {
-				Interface.extractMod._Extract(); // Interface.extractMod is just `this`
-			}).ContinueWith(t => {
-				var exception = t?.Exception;//TODO can you even continue on an exceptional task?
-				if (exception != null)
-					Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), exception);
-				else
-					Main.menuMode = gotoMenu;
-			}, TaskScheduler.FromCurrentSynchronizationContext());
+			_cts = new CancellationTokenSource();
+			OnCancel += () => {
+				// TODO should cancel also clean up the extract folder?
+				_cts.Cancel();
+			};
+			Task.Run(Extract, _cts.Token);
 		}
 
 		internal void Show(LocalMod mod, int gotoMenu) {
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Main.menuMode = Interface.extractModProgressID;
 		}
 
-		private Exception _Extract() {
+		private Task Extract() {
 			StreamWriter log = null;
 			IDisposable modHandle = null;
 			try {
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					Directory.Delete(dir, true);
 				Directory.CreateDirectory(dir);
 
-				log = new StreamWriter(Path.Combine(dir, "tModReader.txt")) { AutoFlush = true };
+				log = new StreamWriter(Path.Combine(dir, LOG_NAME)) { AutoFlush = true };
 
 				if (mod.properties.hideCode)
 					log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
@@ -59,6 +59,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				int i = 0;
 				modHandle = mod.modFile.Open();
 				foreach (var entry in mod.modFile) {
+					_cts.Token.ThrowIfCancellationRequested();
 					var name = entry.Name;
 					ContentConverters.Reverse(ref name, out var converter);
 
@@ -66,18 +67,19 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					DisplayText = name;
 					Progress = i++ / (float)mod.modFile.Count;
 
-					if (name == "tModReader.txt")
+					if (name == LOG_NAME)
 						continue;
 
 					bool hidden = codeExtensions.Contains(Path.GetExtension(name))
 						? mod.properties.hideCode
 						: mod.properties.hideResources;
 
-					if (hidden)
-						log.Write("[hidden] ");
-					log.WriteLine(name);
-					if (hidden)
+					if (hidden) {
+						log.Write($"[hidden] {name}");
 						continue;
+					} else {
+						log.WriteLine(name);
+					}
 
 					var path = Path.Combine(dir, name);
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
@@ -91,21 +93,28 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					// Copy the dll to ModLoader\references\mods for easy collaboration.
 					if (name == "All.dll" || PlatformUtilities.IsXNA ? name == "Windows.dll" || name == $"{mod.Name}.XNA.dll" : name == "Mono.dll" || name == $"{mod.Name}.FNA.dll") {
 						string modReferencesPath = Path.Combine(Program.SavePath, "references", "mods");
-						if (!Directory.Exists(modReferencesPath))
-							Directory.CreateDirectory(modReferencesPath);
-						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.version}.dll"));
+						Directory.CreateDirectory(modReferencesPath);
+						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.version}.dll"), true);
+						log?.WriteLine("You can find this mod's .dll files under ModLoader\\references\\mods for easy mod collaboration!");
 					}
 				};
 			}
+			catch (OperationCanceledException e) {
+				log?.WriteLine("Extraction was cancelled.");
+				return Task.FromResult(false);
+			}
 			catch (Exception e) {
 				log?.WriteLine(e);
-				return e;
+				Logging.tML.Error(Language.GetTextValue("tModLoader.ExtractErrorWhileExtractingMod", mod.Name), e);
+				Main.menuMode = gotoMenu;
+				return Task.FromResult(false);
 			}
 			finally {
 				log?.Close();
 				modHandle?.Dispose();
 			}
-			return null;
+			Main.menuMode = gotoMenu;
+			return Task.FromResult(true);
 		}
 	}
 }
