@@ -1,6 +1,7 @@
 using log4net.Core;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
@@ -9,7 +10,9 @@ namespace Terraria.ModLoader.UI.DownloadManager
 {
 	internal class UIBuildModProgress : UIProgress, ModCompile.IBuildStatus
 	{
+		private CancellationTokenSource _cts;
 		private int numProgressItems;
+
 		public void SetProgress(int i, int n = -1) {
 			if (n >= 0) numProgressItems = n;
 			Progress = i / (float)numProgressItems;
@@ -32,27 +35,51 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		private void Build(Action<ModCompile> buildAction, bool reload) {
 			Main.menuMode = Interface.buildModProgressID;
-			ThreadPool.QueueUserWorkItem(_ => {
-				while (_progressBar == null)
-					Thread.Sleep(1);// wait for the UI to init
+			Task.Run(() => { BuildMod(buildAction, reload); });
+		}
 
-				try {
-					buildAction(new ModCompile(this));
-					Main.menuMode = reload ? Interface.reloadModsID : Interface.modSourcesID;
-				}
-				catch (Exception e) {
-					Logging.tML.Error(e.Message, e);
+		public override void OnActivate() {
+			base.OnActivate();
+			_cts = new CancellationTokenSource();
+			OnCancel += () => {
+				_cts.Cancel();
+			};
+		}
 
-					var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
-					var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
-					if (e is BuildException)
-						msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
-					else
-						msg += $"\n\n{e}";
+		public override void OnDeactivate() {
+			base.OnDeactivate();
+			_cts?.Dispose();
+			_cts = null;
+		}
 
-					Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
-				}
-			});
+		private Task BuildMod(Action<ModCompile> buildAction, bool reload) {
+			while (_progressBar == null || _cts == null)
+				Task.Delay(1); // wait for the UI to init
+
+			try {
+				// TODO propagate _cts and check for cancellation during build process:
+				// _cts.Token.ThrowIfCancellationRequested(); 
+				buildAction(new ModCompile(this));
+				Main.menuMode = reload ? Interface.reloadModsID : Interface.modSourcesID;
+			}
+			catch (OperationCanceledException e) {
+				Logging.tML.Info("Mod building was cancelled.");
+				return Task.FromResult(false);
+			}
+			catch (Exception e) {
+				Logging.tML.Error(e.Message, e);
+
+				var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
+				var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
+				if (e is BuildException)
+					msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
+				else 
+					msg += $"\n\n{e}";
+
+				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
+				return Task.FromResult(false);
+			}
+			return Task.FromResult(true);
 		}
 	}
 }
