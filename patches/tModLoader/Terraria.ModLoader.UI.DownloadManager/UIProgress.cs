@@ -9,10 +9,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	internal class UIProgress : UIState
 	{
 		public event Action OnCancel;
+		public int gotoMenu = 0;
+
 		protected UIProgressBar _progressBar;
 		private string _cachedText = "";
-
-		public int gotoMenu = 0;
 
 		public string DisplayText {
 			get => _progressBar?.DisplayText;
@@ -36,7 +36,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				VAlign = 0.5f,
 				Top = { Pixels = 10 }
 			};
-			_progressBar.DisplayText = _cachedText;
 			Append(_progressBar);
 			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
@@ -57,7 +56,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Main.menuMode = Interface.progressID;
 		}
 
+		public override void OnActivate() {
+			_progressBar.DisplayText = _cachedText;
+		}
+
 		public override void OnDeactivate() {
+			_cachedText = string.Empty;
 			OnCancel = null;
 			gotoMenu = 0;
 		}

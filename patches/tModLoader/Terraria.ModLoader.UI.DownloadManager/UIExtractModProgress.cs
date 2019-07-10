@@ -4,34 +4,20 @@ using System.IO;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.UI;
 using Terraria.Utilities;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.DownloadManager
 {
-	// TODO: yet another progress bar, but we don't show an 'extract completed' screen either
-	internal class UIExtractMod : UIState
+	internal class UIExtractModProgress : UIProgress
 	{
-		private UILoadProgress loadProgress;
-		private int gotoMenu;
 		private LocalMod mod;
-
-		private static IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) { ".dll", ".pdb" };
-
-		public override void OnInitialize() {
-			loadProgress = new UILoadProgress {
-				Width = { Percent = 0.8f },
-				MaxWidth = UICommon.MaxPanelWidth,
-				Height = { Pixels = 150 },
-				HAlign = 0.5f,
-				VAlign = 0.5f,
-				Top = { Pixels = 10 }
-			};
-			Append(loadProgress);
-		}
+		private static readonly IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {
+			".dll", ".pdb"
+		};
 
 		public override void OnActivate() {
-			Main.menuMode = Interface.extractModID;
+			base.OnActivate();
+
 			// I expect this will move out of Activate during progress UI merger
 			Task.Factory.StartNew(() => {
 				Interface.extractMod._Extract(); // Interface.extractMod is just `this`
@@ -47,7 +33,7 @@ namespace Terraria.ModLoader.UI
 		internal void Show(LocalMod mod, int gotoMenu) {
 			this.mod = mod;
 			this.gotoMenu = gotoMenu;
-			Main.menuMode = Interface.extractModID;
+			Main.menuMode = Interface.extractModProgressID;
 		}
 
 		private Exception _Extract() {
@@ -77,8 +63,8 @@ namespace Terraria.ModLoader.UI
 					ContentConverters.Reverse(ref name, out var converter);
 
 					//this access is not threadsafe, but it should be atomic enough to not cause issues
-					loadProgress.SetText(name);
-					loadProgress.SetProgress(i++ / (float)mod.modFile.Count);
+					DisplayText = name;
+					Progress = i++ / (float)mod.modFile.Count;
 
 					if (name == "tModReader.txt")
 						continue;
@@ -97,15 +83,13 @@ namespace Terraria.ModLoader.UI
 					Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 					using (var dst = File.OpenWrite(path))
-					using (var src = mod.modFile.GetStream(entry)) {
-						if (converter != null)
+					using (var src = mod.modFile.GetStream(entry)) if (converter != null)
 							converter(src, dst);
 						else
 							src.CopyTo(dst);
-					}
 
 					// Copy the dll to ModLoader\references\mods for easy collaboration.
-					if (name == "All.dll" || PlatformUtilities.IsXNA ? (name == "Windows.dll" || name == $"{mod.Name}.XNA.dll") : (name == "Mono.dll" || name == $"{mod.Name}.FNA.dll")) {
+					if (name == "All.dll" || PlatformUtilities.IsXNA ? name == "Windows.dll" || name == $"{mod.Name}.XNA.dll" : name == "Mono.dll" || name == $"{mod.Name}.FNA.dll") {
 						string modReferencesPath = Path.Combine(Program.SavePath, "references", "mods");
 						if (!Directory.Exists(modReferencesPath))
 							Directory.CreateDirectory(modReferencesPath);

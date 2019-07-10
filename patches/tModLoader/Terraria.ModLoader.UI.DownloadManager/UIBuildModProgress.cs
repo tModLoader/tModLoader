@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			=> Build(mc => mc.BuildAll(), reload);
 
 		private void Build(Action<ModCompile> buildAction, bool reload) {
-			Main.menuMode = Interface.buildModID;
+			Main.menuMode = Interface.buildModProgressID;
 			ThreadPool.QueueUserWorkItem(_ => {
 				while (_progressBar == null)
 					Thread.Sleep(1);// wait for the UI to init

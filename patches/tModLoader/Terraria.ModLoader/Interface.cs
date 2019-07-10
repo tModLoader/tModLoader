@@ -32,7 +32,7 @@ namespace Terraria.ModLoader
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
 		internal const int enterSteamIDMenuID = 10018;
-		internal const int extractModID = 10019;
+		internal const int extractModProgressID = 10019;
 		internal const int downloadProgressID = 10020;
 		internal const int uploadModID = 10021;
 		internal const int developerModeHelpID = 10022;
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
-		internal static UIExtractMod extractMod = new UIExtractMod();
+		internal static UIExtractModProgress extractMod = new UIExtractModProgress();
 		internal static UIUploadMod uploadMod = new UIUploadMod();
 		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		internal static UIModConfig modConfig = new UIModConfig();
@@ -188,7 +188,7 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(modPacksMenu);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == extractModID) {
+			else if (Main.menuMode == extractModProgressID) {
 				Main.MenuUI.SetState(extractMod);
 				Main.menuMode = 888;
 			}
