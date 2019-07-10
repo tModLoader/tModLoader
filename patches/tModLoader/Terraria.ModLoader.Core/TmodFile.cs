@@ -408,7 +408,7 @@ namespace Terraria.ModLoader.Core
 			// clear all the file contents from AddFile
 			ResetCache();
 			// Save closes the file so re-open it
-			fileStream = File.OpenRead(path);
+			Open();
 			// Read contract fulfilled
 		}
 	}
