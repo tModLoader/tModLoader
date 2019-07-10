@@ -6,9 +6,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	internal class UIUploadModProgress : UIProgress
 	{
 		public override void OnActivate() {
-			Progress = 0f;
 			gotoMenu = Interface.modSourcesID;
-			OnCancel += () => { Main.PlaySound(ID.SoundID.MenuOpen); };
 		}
 
 		internal void SetDownloading(string name)

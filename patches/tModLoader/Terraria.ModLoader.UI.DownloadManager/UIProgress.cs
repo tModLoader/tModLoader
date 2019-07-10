@@ -62,8 +62,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public override void OnDeactivate() {
 			_cachedText = string.Empty;
+			DisplayText = string.Empty;
 			OnCancel = null;
 			gotoMenu = 0;
+			Progress = 0f;
 		}
 	}
 
