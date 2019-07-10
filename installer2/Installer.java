@@ -110,7 +110,7 @@ public class Installer {
                 if (file.equals("tModLoaderServer") || file.equals("Terraria")) {
                     final boolean exeutableSuccess = destination.setExecutable(true, false); // Result should be rw-r--r-- becoming rwxr-xr-x
                     if (!exeutableSuccess) {
-                        messageBox("Failed to set binary exeutable permissions!", JOptionPane.WARNING_MESSAGE);
+                        messageBox("Failed to set binary executable permissions!", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } else {
