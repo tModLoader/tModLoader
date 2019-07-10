@@ -108,7 +108,7 @@ namespace Terraria.ModLoader
 
 			var skipCache = new HashSet<string>();
 			foreach (var entry in File) {
-				Interface.loadMods.SubProgressText = entry.Name;
+				Interface.loadModsProgress.SubProgressText = entry.Name;
 
 				Stream _stream = null;
 				Stream GetStream() => _stream = File.GetStream(entry);

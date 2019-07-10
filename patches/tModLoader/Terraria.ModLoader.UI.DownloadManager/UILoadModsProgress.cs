@@ -1,28 +1,17 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.Engine;
-using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI.DownloadManager
 {
-	internal class UILoadMods : UIState
+	internal class UILoadModsProgress : UIProgress
 	{
-		private UILoadProgress loadProgress;
 		private UIText subProgress;
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress {
-				Width = { Percent = 0.8f },
-				MaxWidth = UICommon.MaxPanelWidth,
-				Height = { Pixels = 150 },
-				HAlign = 0.5f,
-				VAlign = 0.5f,
-				Top = { Pixels = 10 }
-			};
-			Append(loadProgress);
-
+			base.OnInitialize();
 			subProgress = new UIText("", 0.5f, true) {
 				Top = { Pixels = 65 },
 				HAlign = 0.5f,
@@ -32,11 +21,13 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			base.OnActivate();
 			ModLoader.BeginLoad();
 			GLCallLocker.ActionsAreSpeedrun = true;
 		}
 
 		public override void OnDeactivate() {
+			base.OnDeactivate();
 			GLCallLocker.ActionsAreSpeedrun = false;
 		}
 
@@ -57,21 +48,19 @@ namespace Terraria.ModLoader.UI
 			if (modCount < 0)
 				SetProgressText(Language.GetTextValue(stageText));
 
-			loadProgress?.SetProgress(0);
+			Progress = 0;
 			SubProgressText = "";
 		}
 
 		private void SetProgressText(string text) {
 			Logging.tML.Info(text);
-			if (Main.dedServ)
-				Console.WriteLine(text);
-			else
-				loadProgress.SetText(text);
+			if (Main.dedServ) Console.WriteLine(text);
+			else DisplayText = text;
 		}
 
 		public void SetCurrentMod(int i, string mod) {
 			SetProgressText(Language.GetTextValue(stageText, mod));
-			loadProgress?.SetProgress(i / (float)modCount);
+			Progress = i / (float)modCount;
 		}
 	}
 }

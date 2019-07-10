@@ -179,7 +179,7 @@ namespace Terraria.ModLoader
 				if (Main.dedServ)
 					Load();
 				else
-					Main.menuMode = Interface.loadModsID;
+					Main.menuMode = Interface.loadModsProgressID;
 			}
 			catch (Exception e) {
 				var msg = Language.GetTextValue("tModLoader.UnloadError");

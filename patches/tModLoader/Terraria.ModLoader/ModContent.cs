@@ -302,7 +302,7 @@ namespace Terraria.ModLoader
 		internal static void Load() {
 			CacheVanillaState();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			Interface.loadModsProgress.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.loading = true;
 				mod.AutoloadConfig();
@@ -312,11 +312,11 @@ namespace Terraria.ModLoader
 				mod.loading = false;
 			});
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+			Interface.loadModsProgress.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			Interface.loadModsProgress.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
@@ -345,7 +345,7 @@ namespace Terraria.ModLoader
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
+				Interface.loadModsProgress.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
@@ -362,7 +362,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void SetupRecipes() {
-			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
+			Interface.loadModsProgress.SetLoadStage("tModLoader.MSAddingRecipes");
 			for (int k = 0; k < Recipe.maxRecipes; k++)
 				Main.recipe[k] = new Recipe();
 

@@ -293,15 +293,15 @@ namespace Terraria.ModLoader.Core
 
 			try {
 				//load all the assemblies in parallel.
-				Interface.loadMods.SetLoadStage("tModLoader.MSSandboxing", modsToLoad.Count);
+				Interface.loadModsProgress.SetLoadStage("tModLoader.MSSandboxing", modsToLoad.Count);
 				int i = 0;
 				Parallel.ForEach(modList, mod => {
-					Interface.loadMods.SetCurrentMod(i++, mod.Name);
+					Interface.loadModsProgress.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
 				});
 
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
-				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
+				Interface.loadModsProgress.SetLoadStage("tModLoader.MSInstantiating");
 				MemoryTracking.Checkpoint();
 				return modList.Select(Instantiate).ToList();
 			}

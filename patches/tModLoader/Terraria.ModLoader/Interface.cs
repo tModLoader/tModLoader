@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		internal const int modsMenuID = 10000;
 		internal const int modSourcesID = 10001;
 		//set initial Main.menuMode to loadModsID
-		internal const int loadModsID = 10002;
+		internal const int loadModsProgressID = 10002;
 		internal const int buildModID = 10003;
 		internal const int errorMessageID = 10005;
 		internal const int reloadModsID = 10006;
@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
-		internal static UILoadMods loadMods = new UILoadMods();
+		internal static UILoadModsProgress loadModsProgress = new UILoadModsProgress();
 		private static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
@@ -137,9 +137,9 @@ namespace Terraria.ModLoader
 				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == loadModsID) {
+			else if (Main.menuMode == loadModsProgressID) {
 				Main.menuMode = 888;
-				Main.MenuUI.SetState(loadMods);
+				Main.MenuUI.SetState(loadModsProgress);
 			}
 			else if (Main.menuMode == buildModID) {
 				Main.MenuUI.SetState(buildMod);
