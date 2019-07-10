@@ -231,19 +231,26 @@ namespace Terraria.ModLoader
 			"Terraria.ModLoader.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
-			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", //client disconnects from server
-			"System.Diagnostics.Process.Kill",//attempt to kill non-started process when joining server
+			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
+			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 		};
 
 		// there are a couple of annoying messages that happen during cancellation of asynchronous downloads
 		// that have no other useful info to suppress by
 		private static List<string> ignoreMessages = new List<string> {
-			"A blocking operation was interrupted by a call to WSACancelBlockingCall", //c#.net abort for downloads
+			"A blocking operation was interrupted by a call to WSACancelBlockingCall", // c#.net abort for downloads
 			"The request was aborted: The request was canceled.", // System.Net.ConnectStream.IOError
 			"Object name: 'System.Net.Sockets.Socket'.", // System.Net.Sockets.Socket.BeginReceive
 			"Object name: 'System.Net.Sockets.NetworkStream'",// System.Net.Sockets.NetworkStream.UnsafeBeginWrite
 			"This operation cannot be performed on a completed asynchronous result object.", // System.Net.ContextAwareResult.get_ContextCopy()
-			"Object name: 'SslStream'.", //System.Net.Security.SslState.InternalEndProcessAuthentication
+			"Object name: 'SslStream'.", // System.Net.Security.SslState.InternalEndProcessAuthentication
+		};
+
+		private static List<string> ignoreStackTraces = new List<string> {
+			"at Terraria.Lighting.doColors_Mode0_Swipe", // vanilla lighting which bug randomly happens
+			"at Terraria.Lighting.doColors_Mode1_Swipe",
+			"at Terraria.Lighting.doColors_Mode2_Swipe",
+			"at Terraria.Lighting.doColors_Mode3_Swipe",
 		};
 
 		public static void IgnoreExceptionContents(string source) {
@@ -256,7 +263,8 @@ namespace Terraria.ModLoader
 			if (args.Exception == previousException ||
 				args.Exception is ThreadAbortException ||
 				ignoreSources.Contains(args.Exception.Source) ||
-				ignoreMessages.Any(str => args.Exception.Message.Contains(str)))
+				ignoreMessages.Any(str => args.Exception.Message.Contains(str)) ||
+				ignoreStackTraces.Any(str => args.Exception.StackTrace.Contains(str)))
 				return;
 
 			var stackTrace = new StackTrace(true);
