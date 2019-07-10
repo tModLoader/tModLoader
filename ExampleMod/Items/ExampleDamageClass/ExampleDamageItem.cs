@@ -26,7 +26,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 		}
 
 		// As a modder, you could also opt to make these overrides also sealed. Up to the modder
-		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
+		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) {
 			add += ExampleDamagePlayer.ModPlayer(player).exampleDamageAdd;
 			mult *= ExampleDamagePlayer.ModPlayer(player).exampleDamageMult;
 		}

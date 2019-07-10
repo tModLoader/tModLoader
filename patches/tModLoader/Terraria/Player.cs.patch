@@ -5510,7 +5510,7 @@
  		}
  
  		public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
-@@ -37374,73 +_,79 @@
+@@ -37374,73 +_,82 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
@@ -5596,10 +5596,13 @@
 +				mult *= thrownDamageMult;
 +			}
 +
-+			CombinedHooks.ModifyWeaponDamage(this, item, ref add, ref mult);
-+			int damage = (int)(item.damage * add * mult + 5E-06f);
++			if (item.modItem?.IgnoreDamageModifiers == true)
++				return item.damage;
++			float flat = 0f;
++			CombinedHooks.ModifyWeaponDamage(this, item, ref add, ref mult, ref flat);
++			int damage = (int)(item.damage * add * mult + 5E-06f + flat);
 +			CombinedHooks.GetWeaponDamage(this, item, ref damage);
-+			return damage;
++			return Math.Max(0, damage);
  		}
  
  		private void ApplyAnimation(Item sItem)

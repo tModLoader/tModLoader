@@ -4,9 +4,9 @@ namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
-		public static void ModifyWeaponDamage(Player player, Item item, ref float add, ref float mult) {
-			ItemLoader.ModifyWeaponDamage(item, player, ref add, ref mult);
-			PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult);
+		public static void ModifyWeaponDamage(Player player, Item item, ref float add, ref float mult, ref float flat) {
+			ItemLoader.ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
+			PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult, ref flat);
 		}
 
 		[Obsolete]
