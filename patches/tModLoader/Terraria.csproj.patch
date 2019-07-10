@@ -120,7 +120,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,231 @@
+@@ -339,6 +_,230 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -235,9 +235,8 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIHoverImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UILoader.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoaderAnimatedImage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIExtractModProgress.cs" />
-+    <Compile Include="Terraria.ModLoader.UI\UILoadProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMemoryBar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />
