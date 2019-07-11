@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.UI;
@@ -62,6 +63,31 @@ namespace Terraria.ModLoader.UI
 			vector.X = Math.Min(vector.X, bounds.Value.Right - x - 16);
 			vector.Y = Math.Min(vector.Y, bounds.Value.Bottom - 30);
 			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+		}
+
+		internal static Texture2D buttonErrorTexture;
+		internal static Texture2D buttonConfigTexture;
+		internal static Texture2D buttonPlusTexture;
+		internal static Texture2D buttonUpDownTexture;
+		internal static Texture2D buttonCollapsedTexture;
+		internal static Texture2D buttonExpandedTexture;
+		internal static Texture2D modBrowserIconsTexture;
+		internal static Texture2D buttonExclamationTexture;
+		internal static Texture2D loaderTexture;
+		internal static Texture2D loaderBGTexture;
+		internal static void LoadTextures() {
+			buttonErrorTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonError.png");
+			buttonConfigTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonConfig.png");
+			buttonPlusTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonPlus.png");
+			buttonUpDownTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonUpDown.png");
+			buttonCollapsedTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonCollapsed.png");
+			buttonExpandedTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonExpanded.png");
+			modBrowserIconsTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.UIModBrowserIcons.png");
+			buttonExclamationTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonExclamation.png");
+			loaderTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.Loader.png");
+			loaderBGTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.LoaderBG.png");
+
+			Texture2D LoadEmbeddedTexture(string name) => Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
 		}
 	}
 }

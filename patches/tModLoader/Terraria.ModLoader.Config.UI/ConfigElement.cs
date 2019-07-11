@@ -22,12 +22,12 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
 		protected Texture2D deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-		protected Texture2D plusTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonPlus.png"));
+		protected Texture2D plusTexture = UICommon.buttonPlusTexture;
 		//protected Texture2D upArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png"));
 		//protected Texture2D downArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png"));
-		protected Texture2D upDownTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonUpDown.png"));
-		protected Texture2D collapsedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonCollapsed.png"));
-		protected Texture2D expandedTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonExpanded.png"));
+		protected Texture2D upDownTexture = UICommon.buttonUpDownTexture;
+		protected Texture2D collapsedTexture = UICommon.buttonCollapsedTexture;
+		protected Texture2D expandedTexture = UICommon.buttonExpandedTexture;
 
 		// Provides access to the field/property contained in the item
 		protected PropertyFieldWrapper memberInfo;

@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 
 			if (modReferences.Length > 0) {
-				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
+				var icon = UICommon.buttonExclamationTexture;
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modReferences.Split(',').Select(x => x.Trim())))) {
 					Left = { Pixels = -icon.Width, Percent = 1f },
 					Top = { Pixels = 83 }

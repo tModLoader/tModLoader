@@ -112,8 +112,7 @@ namespace Terraria.ModLoader.UI
 			var modRefs = mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (modRefs.Length > 0 && !mod.Enabled) {
 				string refs = string.Join(", ", mod.properties.modReferences);
-				var icon = Texture2D.FromStream(Main.instance.GraphicsDevice,
-					Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonExclamation.png"));
+				var icon = UICommon.buttonExclamationTexture;
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
 					Left = new StyleDimension(toggleModEnabledButton.Left.Pixels - 24f, 0f),
 					Top = { Pixels = 47 }
@@ -141,8 +140,7 @@ namespace Terraria.ModLoader.UI
 				Append(keyImage);
 			}
 			if (ModLoader.badUnloaders.Contains(mod.Name)) {
-				keyImage = new UIHoverImage(Texture2D.FromStream(Main.instance.GraphicsDevice,
-				Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.ButtonError.png")), "This mod did not fully unload during last unload.") {
+				keyImage = new UIHoverImage(UICommon.buttonErrorTexture, "This mod did not fully unload during last unload.") {
 					Left = { Pixels = modIconAdjust + 4 },
 					Top = { Pixels = 3 }
 				};

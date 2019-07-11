@@ -26,8 +26,8 @@ namespace Terraria.ModLoader.UI
 
 		public override void OnInitialize()
 		{
-			backgroundTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.LoaderBG.png"));
-			loaderTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.Loader.png"));
+			backgroundTexture = UICommon.loaderBGTexture;
+			loaderTexture = UICommon.loaderTexture;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {

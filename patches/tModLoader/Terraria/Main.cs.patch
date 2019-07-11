@@ -800,6 +800,14 @@
  		}
  
  		private void LoadFonts()
+@@ -8253,6 +_,7 @@
+ 							}));
+ 				}
+ 			}
++			ModLoader.UI.UICommon.LoadTextures();
+ 		}
+ 
+ 		private static void LoadMusic()
 @@ -8518,6 +_,8 @@
  
  		protected void UpdateAudio()

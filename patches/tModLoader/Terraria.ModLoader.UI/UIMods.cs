@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.UI
 			buttonOMF.OnClick += OpenModsFolder;
 			uIElement.Append(buttonOMF);
 
-			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			var texture = UICommon.modBrowserIconsTexture;
 			var upperMenuContainer = new UIElement {
 				Width = { Percent = 1f },
 				Height = { Pixels = 32 },

@@ -7,11 +7,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 	{
-		private static Texture2D _texture;
-		private static Texture2D Texture =>
-			_texture ?? (_texture = Texture2D.FromStream(Main.instance.GraphicsDevice,
-				Assembly.GetExecutingAssembly()
-					.GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png")));
+		private static Texture2D Texture => UICommon.modBrowserIconsTexture;
 
 		public T State {
 			get;

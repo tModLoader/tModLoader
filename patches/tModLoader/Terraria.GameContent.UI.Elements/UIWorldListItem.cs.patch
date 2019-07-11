@@ -35,12 +35,11 @@
  			UIImageButton uIImageButton5 = new UIImageButton(this._buttonDeleteTexture);
  			uIImageButton5.VAlign = 1f;
  			uIImageButton5.HAlign = 1f;
-@@ -126,6 +_,8 @@
+@@ -126,6 +_,7 @@
  			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
  			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-+			this._configTexture = Texture2D.FromStream(Main.instance.GraphicsDevice,
-+				System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonConfig.png"));
++			this._configTexture = ModLoader.UI.UICommon.buttonConfigTexture;
  		}
  
  		private void InitializeAppearance()
