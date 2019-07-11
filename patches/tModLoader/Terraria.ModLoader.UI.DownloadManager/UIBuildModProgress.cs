@@ -38,6 +38,11 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Task.Run(() => { BuildMod(buildAction, reload); });
 		}
 
+		public override void OnInitialize() {
+			base.OnInitialize();
+			_cancelButton.Remove();
+		}
+
 		public override void OnActivate() {
 			base.OnActivate();
 			_cts = new CancellationTokenSource();

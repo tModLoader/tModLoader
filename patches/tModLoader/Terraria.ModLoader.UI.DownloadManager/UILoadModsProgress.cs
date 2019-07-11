@@ -21,6 +21,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				VAlign = 0.5f
 			};
 			Append(subProgress);
+			_cancelButton.Remove();
 		}
 
 		public override void OnActivate() {

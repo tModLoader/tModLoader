@@ -12,6 +12,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public int gotoMenu = 0;
 
 		protected UIProgressBar _progressBar;
+		protected UITextPanel<String> _cancelButton;
 		private string _cachedText = "";
 
 		public string DisplayText {
@@ -37,13 +38,13 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				Top = { Pixels = 10 }
 			};
 			Append(_progressBar);
-			var cancel = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
+			_cancelButton = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
 				VAlign = 0.5f,
 				HAlign = 0.5f,
 				Top = { Pixels = 170 }
 			}.WithFadedMouseOver();
-			cancel.OnClick += CancelClick;
-			Append(cancel);
+			_cancelButton.OnClick += CancelClick;
+			Append(_cancelButton);
 		}
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
