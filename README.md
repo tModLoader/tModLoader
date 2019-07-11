@@ -54,12 +54,14 @@ If you would like to contact us or tModLoader users, it's best to join our [Disc
 
 ### Installation
 ___
-Installing tModLoader is relatively easy. If you want to ensure you can easily revert back to vanilla, you should make a backup copy of your Terraria.exe and TerrariaServer.exe
+Installing tModLoader is relatively easy. If you want to ensure you can easily revert back to vanilla, you should make a backup copy of your Terraria.exe and TerrariaServer.exe, however if you use the installer jar it will create these backups for you (Windows only, Mac and Linux don't need backups as we don't replace the files)
 
 1. Goto the **[releases](https://github.com/tModLoader/tModLoader/releases)** page and download the tML release you want. (usually the **[latest](https://github.com/tModLoader/tModLoader/releases/latest)**)
-2. Unzip the contents somewhere (usually documents or downloads folder)
-3. Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
-4. Done. You can launch Terraria as usual.
+2. Unblock the .zip file _if needed_ ([How to](https://thirtysix.zendesk.com/hc/en-us/articles/202921675-How-to-Unblock-a-File-Downloaded-from-an-Email-or-the-Internet))
+3. Unzip the contents somewhere (usually documents or downloads folder)
+5. (Installer) Run the installer .jar file (requires Java 8 or higher) (_Recommended to have launched vanilla Terraria at least once for the best install experience_)
+4. (Manual Install) Open the extracted folder, **copy** the contents to your Terraria folder and let it overwrite files when asked. (replace files)
+5. Done. You can launch Terraria as usual.
 
 Tip: Here is an easy way to find where your Terraria files are located:
 
