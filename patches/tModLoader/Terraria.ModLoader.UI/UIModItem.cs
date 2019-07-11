@@ -208,9 +208,15 @@ namespace Terraria.ModLoader.UI
 			drawPos = new Vector2(innerDimensions.X + 10f + modIconAdjust, innerDimensions.Y + 45f);
 			DrawPanel(spriteBatch, drawPos, 85f);
 			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
-			if (mod.Enabled != loaded || configChangesRequireReload) {
+			if (mod.properties.side != ModSide.Server && (mod.Enabled != loaded || configChangesRequireReload)) {
 				drawPos += new Vector2(90f, 5f);
 				Utils.DrawBorderString(spriteBatch, configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
+			}
+			if (mod.properties.side == ModSide.Server) {
+				drawPos += new Vector2(90f, -2f);
+				spriteBatch.Draw(UICommon.modBrowserIconsTexture, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				if(new Rectangle((int)drawPos.X, (int)drawPos.Y, 32, 32).Contains(Main.MouseScreen.ToPoint()))
+					UICommon.DrawHoverStringInBounds(spriteBatch, "This is a server side mod");
 			}
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
