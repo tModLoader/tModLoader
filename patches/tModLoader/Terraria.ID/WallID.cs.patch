@@ -1,0 +1,30 @@
+--- src/Terraria\Terraria.ID\WallID.cs
++++ src/tModLoader\Terraria.ID\WallID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -307,5 +_,19 @@
+ 		public const byte SillyBalloonPurpleWall = 229;
+ 		public const byte SillyBalloonGreenWall = 230;
+ 		public const byte Count = 231;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<WallID, short>();
++
++		public static string GetUniqueId(int wallType) {
++			if ( WallID.Search.ContainsId(wallType) ) {
++				return "Terraria " + WallID.Search.GetName(wallType);
++			}
++
++			return "" + wallType;
++		}
++
++		public static string GetUniqueId(ModWall wall) {
++			return wall.mod.Name + " " + wall.Name;
++		}
+ 	}
+ }
+

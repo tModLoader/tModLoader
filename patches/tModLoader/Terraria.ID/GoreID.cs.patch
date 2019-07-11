@@ -1,0 +1,16 @@
+--- src/Terraria\Terraria.ID\GoreID.cs
++++ src/tModLoader\Terraria.ID\GoreID.cs
+@@ -1,3 +_,4 @@
++using ReLogic.Reflection;
+ using System;
+ 
+ namespace Terraria.ID
+@@ -531,5 +_,7 @@
+ 		public const int DD2BetsyHand = 1085;
+ 		public const int DD2BetsyButt = 1086;
+ 		public const short Count = 1087;
++
++		//public static readonly IdDictionary Search = IdDictionary.Create<GoreID, short>();	Can't use with `static` classes!
+ 	}
+ }
+

@@ -14,4 +14,35 @@
  		private static readonly int[] NetIdMap = new int[]
  		{
  			81,
+@@ -3759,5 +_,30 @@
+ 			}
+ 			return id;
+ 		}
++
++		public static string GetUniqueId(int npcType) {
++			if ( NPCID.Search.ContainsId(npcType) ) {
++				return "Terraria " + NPCID.Search.GetName(npcType);
++			}
++			else {
++				var npc = new NPC();
++				npc.SetDefaults(npcType);
++
++				if ( npc.modNPC != null ) {
++					return npc.modNPC.mod.Name + " " + npc.modNPC.Name;
++				}
++			}
++
++			return "" + npcType;
++		}
++
++		public static string GetUniqueId(NPC npc) {
++			if ( npc.modNPC == null ) {
++				return "Terraria " + NPCID.Search.GetName(npc.type);
++			}
++			else {
++				return npc.modNPC.mod.Name + " " + npc.modNPC.Name;
++			}
++		}
+ 	}
+ }
 

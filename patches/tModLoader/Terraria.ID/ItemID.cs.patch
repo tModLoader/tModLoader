@@ -17,4 +17,35 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
+@@ -7655,5 +_,30 @@
+ 			}
+ 			return 0;
+ 		}
++
++		public static string GetUniqueId(int itemType) {
++			if ( ItemID.Search.ContainsId(itemType) ) {
++				return "Terraria " + ItemID.Search.GetName(itemType);
++			}
++			else {
++				var item = new Item();
++				item.SetDefaults(itemType, true);
++
++				if ( item.modItem != null ) {
++					return item.modItem.mod.Name + " " + item.modItem.Name;
++				}
++			}
++
++			return "" + itemType;
++		}
++
++		public static string GetUniqueId(Item item) {
++			if ( item.modItem == null ) {
++				return "Terraria " + ItemID.Search.GetName(item.type);
++			}
++			else {
++				return item.modItem.mod.Name + " " + item.modItem.Name;
++			}
++		}
+ 	}
+ }
 

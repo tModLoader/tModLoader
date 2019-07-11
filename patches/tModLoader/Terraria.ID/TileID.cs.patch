@@ -53,4 +53,24 @@
  				});
  			public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(new int[]
  				{
+@@ -1148,5 +_,19 @@
+ 		public const ushort FakeContainers2 = 468;
+ 		public const ushort Tables2 = 469;
+ 		public const ushort Count = 470;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<TileID, short>();
++
++		public static string GetUniqueId(int tileType) {
++			if ( TileID.Search.ContainsId(tileType) ) {
++				return "Terraria " + TileID.Search.GetName(tileType);
++			}
++
++			return "" + tileType;
++		}
++
++		public static string GetUniqueId(ModTile tile) {
++			return tile.mod.Name + " " + tile.Name;
++		}
+ 	}
+ }
 

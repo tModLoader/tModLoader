@@ -1,0 +1,30 @@
+--- src/Terraria\Terraria.ID\BuffID.cs
++++ src/tModLoader\Terraria.ID\BuffID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -210,5 +_,19 @@
+ 		public const int Oiled = 204;
+ 		public const int BallistaPanic = 205;
+ 		public const int Count = 206;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<BuffID, short>();
++
++		public static string GetUniqueId(int buffType) {
++			if ( BuffID.Search.ContainsId(buffType) ) {
++				return "Terraria " + BuffID.Search.GetName(buffType);
++			}
++
++			return "" + buffType;
++		}
++
++		public static string GetUniqueId(ModBuff buff) {
++			return buff.mod.Name + " " + buff.Name;
++		}
+ 	}
+ }
+
