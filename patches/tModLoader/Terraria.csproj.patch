@@ -394,7 +394,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -593,4 +_,142 @@
+@@ -593,4 +_,144 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -433,6 +433,8 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Squid_Head_Head.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Squid_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Squid_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDownload.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDownloadMultiple.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\CopyCodeButton.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Arms.png" />

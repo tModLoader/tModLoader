@@ -75,6 +75,8 @@ namespace Terraria.ModLoader.UI
 		internal static Texture2D buttonExclamationTexture;
 		internal static Texture2D loaderTexture;
 		internal static Texture2D loaderBGTexture;
+		internal static Texture2D buttonDownloadTexture;
+		internal static Texture2D buttonDownloadMultipleTexture;
 		internal static void LoadTextures() {
 			buttonErrorTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonError.png");
 			buttonConfigTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonConfig.png");
@@ -86,6 +88,8 @@ namespace Terraria.ModLoader.UI
 			buttonExclamationTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonExclamation.png");
 			loaderTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.Loader.png");
 			loaderBGTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.LoaderBG.png");
+			buttonDownloadTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonDownload.png");
+			buttonDownloadMultipleTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonDownloadMultiple.png");
 
 			Texture2D LoadEmbeddedTexture(string name) => Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
 		}
