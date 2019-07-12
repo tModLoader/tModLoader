@@ -2,14 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 
@@ -45,9 +42,7 @@ namespace Terraria.ModLoader.UI
 			base.OnActivate();
 			// moved from constructor to avoid texture loading on JIT thread
 			recalculateMemoryNeeded = true;
-			ThreadPool.QueueUserWorkItem(_ => {
-				RecalculateMemory();
-			}, 1);
+			Task.Run(RecalculateMemory);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -65,7 +60,7 @@ namespace Terraria.ModLoader.UI
 			for (int i = 0; i < memoryBarItems.Count; i++) {
 				var memoryBarData = memoryBarItems[i];
 				width = (int)(rectangle.Width * (memoryBarData.memory / (float)maxMemory));
-				if(i == memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
+				if (i == memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
 					width = rectangle.Right - xOffset - rectangle.X;
 				}
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
@@ -111,7 +106,7 @@ namespace Terraria.ModLoader.UI
 			memoryBarItems.Clear();
 			_hoverPanel = new UIPanel();
 			_hoverPanel.Activate();
-			
+
 #if WINDOWS //TODO: 64bit?
 			maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
 			long availableMemory = maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
@@ -127,7 +122,7 @@ namespace Terraria.ModLoader.UI
 				var usage = entry.Value;
 				if (usage.total <= 0 || modName == "tModLoader")
 					continue;
-				
+
 				totalModMemory += usage.total;
 				var sb = new StringBuilder();
 				sb.Append(ModLoader.GetMod(modName).DisplayName);
@@ -142,16 +137,16 @@ namespace Terraria.ModLoader.UI
 					sb.Append($"\n Textures: {SizeSuffix(usage.textures)}");
 				memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, colors[i++ % colors.Length]));
 			}
-			
+
 			long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
 			var nonModMemory = allocatedMemory - totalModMemory;
 			memoryBarItems.Add(new MemoryBarItem(
-				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}", 
+				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}",
 				nonModMemory, Color.DeepSkyBlue));
-			
+
 			var remainingMemory = availableMemory - allocatedMemory;
 			memoryBarItems.Add(new MemoryBarItem(
-				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}", 
+				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}",
 				remainingMemory, Color.Gray));
 
 			//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
