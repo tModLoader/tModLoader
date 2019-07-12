@@ -33,6 +33,16 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Append(_textPanel);
 		}
 
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+
+			// Sometimes the element gets initialized before the cache is set
+			if (!string.IsNullOrEmpty(_cachedText) && _textPanel != null) {
+				_textPanel.SetText(_cachedText);
+				_cachedText = string.Empty;
+			}
+		}
+
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle space = GetInnerDimensions();

@@ -10,41 +10,36 @@ namespace Terraria.ModLoader.UI
 	// TODO: needs a code review, but potentially low priority
 	public class UIAutoScaleTextTextPanel<T> : UIPanel
 	{
-		private T _text = default(T);
-		private string[] textStrings;
-		private Vector2[] drawOffsets;
+		public string Text => _text?.ToString() ?? string.Empty;
+
 		public bool IsLarge { get; private set; }
 		public bool DrawPanel { get; set; } = true;
 		public float TextScaleMax { get; set; } = 1f;
 		public float TextScale { get; set; } = 1f;
 		public Vector2 TextSize { get; private set; } = Vector2.Zero;
 		public Color TextColor { get; set; } = Color.White;
+
 		private Rectangle oldInnerDimensions;
+		private T _text = default;
+		private string[] textStrings;
+		private Vector2[] drawOffsets;
 
-		public string Text {
-			get {
-				if (this._text != null) {
-					return this._text.ToString();
-				}
-				return "";
-			}
-		}
-
-		public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) {
-			this.SetText(text, textScaleMax, large);
+		public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) : base() {
+			SetText(text, textScaleMax, large);
 		}
 
 		public override void Recalculate() {
-			this.SetText(this._text, TextScaleMax, this.IsLarge);
 			base.Recalculate();
+			SetText(_text, TextScaleMax, IsLarge);
 		}
 
 		public void SetText(T text) {
-			this.SetText(text, TextScaleMax, this.IsLarge);
+			SetText(text, TextScaleMax, IsLarge);
 		}
 
 		public virtual void SetText(T text, float textScaleMax, bool large) {
 			var innerDimensionsRectangle = GetDimensions().ToRectangle();
+
 			if (text.ToString() != _text?.ToString() || oldInnerDimensions != innerDimensionsRectangle) {
 				oldInnerDimensions = innerDimensionsRectangle;
 
@@ -66,10 +61,10 @@ namespace Terraria.ModLoader.UI
 				}
 				innerDimensionsRectangle.Y += 8;
 				innerDimensionsRectangle.Height -= 8;
-				this._text = text;
+				_text = text;
 				//this.TextScale = textScaleMax;
-				this.TextSize = textSize;
-				this.IsLarge = large;
+				TextSize = textSize;
+				IsLarge = large;
 				textStrings = text.ToString().Split('\n');
 				// offset off left corner for centering
 				drawOffsets = new Vector2[textStrings.Length];
@@ -86,23 +81,23 @@ namespace Terraria.ModLoader.UI
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if (float.IsNaN(TextScale)) {
-				this.Recalculate();
-			}
-			if (this.DrawPanel) {
+			if (float.IsNaN(TextScale))
+				Recalculate();
+			
+			if (DrawPanel)
 				base.DrawSelf(spriteBatch);
-			}
-			var innerDimensions = base.GetDimensions().ToRectangle();
+			
+			var innerDimensions = GetDimensions().ToRectangle();
 			innerDimensions.Inflate(-4, 0);
 			innerDimensions.Y += 8;
 			innerDimensions.Height -= 8;
 			for (int i = 0; i < textStrings.Length; i++) {
 				//Vector2 pos = innerDimensions.Center.ToVector2() + drawOffsets[i];
 				Vector2 pos = innerDimensions.TopLeft() + drawOffsets[i];
-				if (this.IsLarge)
-					Utils.DrawBorderStringBig(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);
+				if (IsLarge)
+					Utils.DrawBorderStringBig(spriteBatch, textStrings[i], pos, TextColor, TextScale, 0f, 0f, -1);
 				else
-					Utils.DrawBorderString(spriteBatch, textStrings[i], pos, this.TextColor, this.TextScale, 0f, 0f, -1);
+					Utils.DrawBorderString(spriteBatch, textStrings[i], pos, TextColor, TextScale, 0f, 0f, -1);
 			}
 
 			//foreach (var singleLine in textStrings)
