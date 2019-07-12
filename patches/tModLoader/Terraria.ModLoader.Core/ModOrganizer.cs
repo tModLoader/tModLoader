@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
@@ -66,7 +67,7 @@ namespace Terraria.ModLoader.Core
 
 		private static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-		internal static List<Mod> LoadMods() {
+		internal static List<Mod> LoadMods(CancellationToken token) {
 			CommandLineModPackOverride();
 
 			// Alternate fix for updating enabled mods
@@ -77,6 +78,12 @@ namespace Terraria.ModLoader.Core
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 
+			// Throw early if requested
+			if (token.IsCancellationRequested) {
+				Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
+				token.ThrowIfCancellationRequested();
+			}
+			
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.oldKeyState.PressingShift() || ModLoader.skipLoad) {
 				ModLoader.skipLoad = false;
@@ -97,7 +104,7 @@ namespace Terraria.ModLoader.Core
 				throw;
 			}
 
-			return AssemblyManager.InstantiateMods(modsToLoad);
+			return AssemblyManager.InstantiateMods(modsToLoad, token);
 		}
 
 		private static void CommandLineModPackOverride() {

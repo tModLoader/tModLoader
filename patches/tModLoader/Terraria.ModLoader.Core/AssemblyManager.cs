@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Utilities;
 
@@ -244,7 +245,7 @@ namespace Terraria.ModLoader.Core
 				mod.UpdateWeakRefs();
 		}
 
-		private static Mod Instantiate(LoadedMod mod) {
+		private static Mod Instantiate(LoadedMod mod, CancellationToken token) {
 			try {
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
@@ -259,6 +260,7 @@ namespace Terraria.ModLoader.Core
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
 				m.tModLoaderVersion = mod.properties.buildVersion;
+				token.ThrowIfCancellationRequested();
 				return m;
 			}
 			catch (Exception e) {
@@ -270,7 +272,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad) {
+		internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token) {
 			AddAssemblyResolver();
 
 			var modList = new List<LoadedMod>();
@@ -295,7 +297,7 @@ namespace Terraria.ModLoader.Core
 				//load all the assemblies in parallel.
 				Interface.loadModsProgress.SetLoadStage("tModLoader.MSSandboxing", modsToLoad.Count);
 				int i = 0;
-				Parallel.ForEach(modList, mod => {
+				Parallel.ForEach(modList, new ParallelOptions() { CancellationToken = token }, mod => {
 					Interface.loadModsProgress.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
 				});
@@ -303,7 +305,7 @@ namespace Terraria.ModLoader.Core
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 				Interface.loadModsProgress.SetLoadStage("tModLoader.MSInstantiating");
 				MemoryTracking.Checkpoint();
-				return modList.Select(Instantiate).ToList();
+				return modList.Select(mod => Instantiate(mod, token)).ToList();
 			}
 			catch (AggregateException ae) {
 				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]).ToArray();

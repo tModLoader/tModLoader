@@ -7,7 +7,6 @@ using Terraria.UI.Chat;
 namespace Terraria.ModLoader.UI
 {
 	// UITextPanel except we scale and manipulate Text to preserve original dimensions.
-	// TODO: needs a code review, but potentially low priority
 	public class UIAutoScaleTextTextPanel<T> : UIPanel
 	{
 		public string Text => _text?.ToString() ?? string.Empty;

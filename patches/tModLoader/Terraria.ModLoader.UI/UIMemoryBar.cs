@@ -15,7 +15,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	class UIMemoryBar : UIElement
+	internal class UIMemoryBar : UIElement
 	{
 		private class MemoryBarItem
 		{

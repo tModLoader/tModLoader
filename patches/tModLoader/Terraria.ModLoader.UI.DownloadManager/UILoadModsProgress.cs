@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Threading;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.Engine;
@@ -13,6 +14,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private UIText subProgress;
 		private string stageText;
 
+		private CancellationTokenSource _cts;
+
 		public override void OnInitialize() {
 			base.OnInitialize();
 			subProgress = new UIText("", 0.5f, true) {
@@ -21,19 +24,24 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				VAlign = 0.5f
 			};
 			Append(subProgress);
-			_cancelButton.Remove();
 		}
 
 		public override void OnActivate() {
 			base.OnActivate();
+			_cts = new CancellationTokenSource();
+			OnCancel += () => {
+				SetLoadStage("Loading Cancelled");
+				_cts.Cancel();
+			};
 			gotoMenu = 0;
-			OnCancel += CancelLoadingMods;
-			ModLoader.BeginLoad();
+			ModLoader.BeginLoad(_cts.Token);
 			GLCallLocker.ActionsAreSpeedrun = true;
 		}
 
 		public override void OnDeactivate() {
 			base.OnDeactivate();
+			_cts?.Dispose();
+			_cts = null;
 			GLCallLocker.ActionsAreSpeedrun = false;
 		}
 
@@ -63,12 +71,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public void SetCurrentMod(int i, string mod) {
 			SetProgressText(Language.GetTextValue(stageText, mod));
 			Progress = i / (float)modCount;
-		}
-
-		private void CancelLoadingMods() {
-			// TODO Cancelling mods through button to be determined.
-			//ModLoader.skipLoad = false;
-			//Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.Localization;
@@ -299,11 +300,12 @@ namespace Terraria.ModLoader
 			return modHotKeys[key];
 		}
 
-		internal static void Load() {
+		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
-			LoadModContent(mod => {
+			var loadingMods = new List<Mod>();
+			LoadModContent(token, ref loadingMods, mod => {
 				mod.loading = true;
 				mod.AutoloadConfig();
 				mod.LoadResources();
@@ -317,7 +319,7 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
-			LoadModContent(mod => {
+			LoadModContent(token, ref loadingMods, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
 			});
@@ -341,17 +343,20 @@ namespace Terraria.ModLoader
 		}
 
 		internal static Mod LoadingMod { get; private set; }
-		private static void LoadModContent(Action<Mod> loadAction) {
+		private static void LoadModContent(CancellationToken token, ref List<Mod> mods, Action<Mod> loadAction) {
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				Interface.loadModsProgress.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
+					if (!mods.Contains(mod)) mods.Add(mod);
+					token.ThrowIfCancellationRequested();
 					LoadingMod = mod;
 					loadAction(mod);
+					token.ThrowIfCancellationRequested();
 				}
 				catch (Exception e) {
-					e.Data["mod"] = mod.Name;
+					e.Data["mods"] = mods.Select(x => x.Name).ToArray();
 					throw;
 				}
 				finally {

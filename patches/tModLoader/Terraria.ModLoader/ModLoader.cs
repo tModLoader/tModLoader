@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
@@ -101,11 +102,11 @@ namespace Terraria.ModLoader
 			MonoModHooks.Initialize();
 		}
 
-		internal static void BeginLoad() => ThreadPool.QueueUserWorkItem(_ => Load());
+		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
-		internal static void Load() {
+		internal static void Load(CancellationToken token) {
 			try {
-				var modInstances = ModOrganizer.LoadMods();
+				var modInstances = ModOrganizer.LoadMods(token);
 
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
 				modInstances.Insert(0, new ModLoaderMod());
@@ -113,7 +114,7 @@ namespace Terraria.ModLoader
 				foreach (var mod in Mods)
 					modsByName[mod.Name] = mod;
 
-				ModContent.Load();
+				ModContent.Load(token);
 
 				if (OnSuccessfulLoad != null) {
 					OnSuccessfulLoad();
@@ -133,6 +134,15 @@ namespace Terraria.ModLoader
 
 				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
 					responsibleMods.Add(stackMod);
+
+				// If e is of type OperationCancelledException the loading action was cancelled
+				// It should only be thrown at points where it's safe to begin unloading all mods
+				if (e is OperationCanceledException) {
+					foreach (var mod in responsibleMods) 
+						DisableMod(mod);
+					Unload();
+					return;
+				}
 
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
@@ -177,7 +187,7 @@ namespace Terraria.ModLoader
 				Unload();
 
 				if (Main.dedServ)
-					Load();
+					Load(new CancellationTokenSource().Token);
 				else
 					Main.menuMode = Interface.loadModsProgressID;
 			}

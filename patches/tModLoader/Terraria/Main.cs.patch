@@ -506,7 +506,7 @@
  			Main.dedServ = true;
  			Main.showSplash = false;
  			this.Initialize();
-+			ModLoader.ModLoader.Load();
++			ModLoader.ModLoader.Load(new CancellationTokenSource().Token);
  			while (Main.worldPathName == null || Main.worldPathName == "")
  			{
  				bool flag = true;
