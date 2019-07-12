@@ -48,6 +48,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private bool HasModIcon => _modIconUrl != null;
 		private float ModIconAdjust => _modIconStatus == ModIconStatus.APPENDED ? 85f : 0f;
+		private bool IsInstalled => Installed != null;
 
 		private string UpdateText => HasUpdate
 			? UpdateIsDowngrade
@@ -172,7 +173,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			int hot = (int)mod["hot"]; // for now, hotness is just downloadsYesterday
 			string timeStamp = (string)mod["updateTimeStamp"];
 			//string[] modreferences = ((string)mod["modreferences"]).Split(',');
-			string modreferences = (string)mod["modreferences"] ?? "";
+			string modreferences = ((string)mod["modreferences"])?.Replace(" ", string.Empty) ?? string.Empty;
 			ModSide modside = ModSide.Both; // TODO: add filter option for modside.
 			string modIconURL = (string)mod["iconurl"];
 			string modsideString = (string)mod["modside"];
@@ -375,7 +376,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var modDownload = GetModDownload();
 			var mods = _modReferences.Split(',')
 				.Select(Interface.modBrowser.FindModDownloadItem)
-				.Where(item => item != null)
+				.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)))
 				.Select(x => x.GetModDownload())
 				.ToList();
 			mods.Add(modDownload);
