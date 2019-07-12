@@ -38,8 +38,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly Texture2D _dividerTexture;
 		private readonly Texture2D _innerPanelTexture;
 		private readonly UIText _modName;
-		private readonly UIModDownloadHoverImage _updateButton;
-		private readonly UIModDownloadHoverImage _updateWithDepsButton;
+		private readonly UIImage _updateButton;
+		private readonly UIImage _updateWithDepsButton;
 		private readonly UIAutoScaleTextTextPanel<string> _moreInfoButton;
 		private readonly UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 		private readonly UIText _authorText;
@@ -127,7 +127,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Append(tMLUpdateRequired);
 			}
 			else if (hasUpdate || installed == null) {
-				_updateButton = new UIModDownloadHoverImage(UICommon.buttonDownloadTexture, UpdateText);
+				_updateButton = new UIImage(UICommon.buttonDownloadTexture);
 				_updateButton.Top.Pixels = 40;
 				_updateButton.Left.Set(-166, 1f);
 				_updateButton.OnClick += DownloadMod;
@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 				if (_modReferences.Length > 0) {
 					_updateButton.Left.Set(_updateButton.Left.Pixels - _updateButton.Width.Pixels - 6, 1f);
-					_updateWithDepsButton = new UIModDownloadHoverImage(UICommon.buttonDownloadMultipleTexture, UpdateWithDepsText);
+					_updateWithDepsButton = new UIImage(UICommon.buttonDownloadMultipleTexture);
 					_updateWithDepsButton.CopyStyle(_updateButton);
 					_updateWithDepsButton.Left.Pixels = _updateButton.Width.Pixels + _updateButton.Left.Pixels + 5f;
 					_updateWithDepsButton.OnClick += DownloadWithDeps;
@@ -259,6 +259,12 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 125, innerDimensions.Y + 45);
 			DrawTimeText(spriteBatch, drawPos);
+
+			if (_updateButton?.IsMouseHovering == true) {
+				tooltip = UpdateText;
+			} else if (_updateWithDepsButton?.IsMouseHovering == true) {
+				tooltip = UpdateWithDepsText;
+			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -394,24 +400,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				ModBrowserItem = this
 			};
 			return modDownload;
-		}
-	}
-
-	// Yet another useless class. 
-	internal class UIModDownloadHoverImage : UIImage
-	{
-		internal string hoverText;
-
-		public UIModDownloadHoverImage(Texture2D texture, string hoverText) : base(texture) {
-			this.hoverText = hoverText;
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			base.DrawSelf(spriteBatch);
-			if (IsMouseHovering) {
-				if(Parent is UIModDownloadItem download)
-					download.tooltip = hoverText;
-			}
 		}
 	}
 }
