@@ -25,7 +25,7 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
-@@ -7655,5 +_,32 @@
+@@ -7655,5 +_,36 @@
  			}
  			return 0;
  		}
@@ -38,7 +38,11 @@
 +			var item = new Item();
 +			item.SetDefaults(itemType, true);
 +
-+			return ItemID.GetReadableUniqueKey(item);
++			if ( item.modItem != null ) {
++				return ItemID.GetReadableUniqueKey(item.modItem);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid `Item.type` value.");
 +		}
 +
 +		public static string GetReadableUniqueKey(Item item) {

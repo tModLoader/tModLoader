@@ -7,7 +7,7 @@
  
  namespace Terraria.ID
  {
-@@ -1199,5 +_,34 @@
+@@ -1199,5 +_,38 @@
  		public const short BookStaffShot = 712;
  		public const short DD2Win = 713;
  		public const short Count = 714;
@@ -22,7 +22,11 @@
 +			var proj = new Projectile();
 +			proj.SetDefaults(projType);
 +
-+			return ProjectileID.GetReadableUniqueKey(proj);
++			if ( proj.modProjectile != null ) {
++				return ProjectileID.GetReadableUniqueKey(proj.modProjectile);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid `Projectile.type` value.");
 +		}
 +
 +		public static string GetReadableUniqueKey(Projectile proj) {

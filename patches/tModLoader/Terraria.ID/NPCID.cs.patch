@@ -17,7 +17,7 @@
  		private static readonly int[] NetIdMap = new int[]
  		{
  			81,
-@@ -3759,5 +_,32 @@
+@@ -3759,5 +_,36 @@
  			}
  			return id;
  		}
@@ -30,7 +30,11 @@
 +			var npc = new NPC();
 +			npc.SetDefaults(npcType);
 +
-+			return NPCID.GetReadableUniqueKey(npc);
++			if ( npc.modNPC != null ) {
++				return NPCID.GetReadableUniqueKey(npc.modNPC);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid `NPC.type` value.");
 +		}
 +
 +		public static string GetReadableUniqueKey(NPC npc) {

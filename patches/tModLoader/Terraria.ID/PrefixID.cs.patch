@@ -1,0 +1,18 @@
+--- src/Terraria\Terraria.ID\PrefixID.cs
++++ src/tModLoader\Terraria.ID\PrefixID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -88,5 +_,7 @@
+ 		public const int Unreal = 82;
+ 		public const int Mythical = 83;
+ 		public const int Count = 84;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, short>();
+ 	}
+ }
+
