@@ -7,22 +7,27 @@
  
  namespace Terraria.ID
  {
-@@ -210,5 +_,19 @@
+@@ -210,5 +_,24 @@
  		public const int Oiled = 204;
  		public const int BallistaPanic = 205;
  		public const int Count = 206;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<BuffID, short>();
 +
-+		public static string GetUniqueId(int buffType) {
++		public static string GetReadableUniqueKey(int buffType) {
 +			if ( BuffID.Search.ContainsId(buffType) ) {
 +				return "Terraria " + BuffID.Search.GetName(buffType);
 +			}
 +
-+			return "" + buffType;
++			ModBuff modBuff = BuffLoader.GetBuff(buffType);
++			if( modBuff != null ) {
++				return BuffID.GetReadableUniqueKey(modBuff);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid buff type value.");
 +		}
 +
-+		public static string GetUniqueId(ModBuff buff) {
++		public static string GetReadableUniqueKey(ModBuff buff) {
 +			return buff.mod.Name + " " + buff.Name;
 +		}
  	}

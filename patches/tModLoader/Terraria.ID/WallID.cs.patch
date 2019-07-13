@@ -7,22 +7,27 @@
  
  namespace Terraria.ID
  {
-@@ -307,5 +_,19 @@
+@@ -307,5 +_,24 @@
  		public const byte SillyBalloonPurpleWall = 229;
  		public const byte SillyBalloonGreenWall = 230;
  		public const byte Count = 231;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<WallID, short>();
 +
-+		public static string GetUniqueId(int wallType) {
-+			if ( WallID.Search.ContainsId(wallType) ) {
++		public static string GetReadableUniqueKey(int wallType) {
++			if( WallID.Search.ContainsId(wallType) ) {
 +				return "Terraria " + WallID.Search.GetName(wallType);
 +			}
 +
-+			return "" + wallType;
++			ModWall modWall = WallLoader.GetWall(wallType);
++			if( modWall != null ) {
++				return WallID.GetReadableUniqueKey(modWall);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid wall type value.");
 +		}
 +
-+		public static string GetUniqueId(ModWall wall) {
++		public static string GetReadableUniqueKey(ModWall wall) {
 +			return wall.mod.Name + " " + wall.Name;
 +		}
  	}

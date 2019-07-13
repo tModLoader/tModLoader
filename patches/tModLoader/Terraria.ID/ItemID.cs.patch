@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.ID\ItemID.cs
 +++ src/tModLoader\Terraria.ID\ItemID.cs
+@@ -1,6 +_,7 @@
+ using ReLogic.Reflection;
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
 @@ -306,7 +_,7 @@
  					1103,
  					0,
@@ -17,34 +25,36 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
-@@ -7655,5 +_,30 @@
+@@ -7655,5 +_,32 @@
  			}
  			return 0;
  		}
 +
-+		public static string GetUniqueId(int itemType) {
++		public static string GetReadableUniqueKey(int itemType) {
 +			if ( ItemID.Search.ContainsId(itemType) ) {
 +				return "Terraria " + ItemID.Search.GetName(itemType);
 +			}
-+			else {
-+				var item = new Item();
-+				item.SetDefaults(itemType, true);
 +
-+				if ( item.modItem != null ) {
-+					return item.modItem.mod.Name + " " + item.modItem.Name;
-+				}
-+			}
++			var item = new Item();
++			item.SetDefaults(itemType, true);
 +
-+			return "" + itemType;
++			return ItemID.GetReadableUniqueKey(item);
 +		}
 +
-+		public static string GetUniqueId(Item item) {
-+			if ( item.modItem == null ) {
++		public static string GetReadableUniqueKey(Item item) {
++			if ( ItemID.Search.ContainsId(item.type) ) {
 +				return "Terraria " + ItemID.Search.GetName(item.type);
 +			}
-+			else {
-+				return item.modItem.mod.Name + " " + item.modItem.Name;
++			
++			if ( item.modItem != null ) {
++				return ItemID.GetReadableUniqueKey(item.modItem);
 +			}
++
++			throw new ArgumentException("Invalid `Item`.");
++		}
++
++		public static string GetReadableUniqueKey(ModItem modItem) {
++			return modItem.mod.Name + " " + modItem.Name;
 +		}
  	}
  }

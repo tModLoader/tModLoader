@@ -1,11 +1,14 @@
 --- src/Terraria\Terraria.ID\NPCID.cs
 +++ src/tModLoader\Terraria.ID\NPCID.cs
-@@ -1,4 +_,5 @@
+@@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;
 +using ReLogic.Reflection;
  using System;
  using System.Collections.Generic;
++using Terraria.ModLoader;
  
+ namespace Terraria.ID
+ {
 @@ -1777,6 +_,7 @@
  		public const short DD2LightningBugT3 = 578;
  		public const short BartenderUnconscious = 579;
@@ -14,34 +17,36 @@
  		private static readonly int[] NetIdMap = new int[]
  		{
  			81,
-@@ -3759,5 +_,30 @@
+@@ -3759,5 +_,32 @@
  			}
  			return id;
  		}
 +
-+		public static string GetUniqueId(int npcType) {
++		public static string GetReadableUniqueKey(int npcType) {
 +			if ( NPCID.Search.ContainsId(npcType) ) {
 +				return "Terraria " + NPCID.Search.GetName(npcType);
 +			}
-+			else {
-+				var npc = new NPC();
-+				npc.SetDefaults(npcType);
 +
-+				if ( npc.modNPC != null ) {
-+					return npc.modNPC.mod.Name + " " + npc.modNPC.Name;
-+				}
-+			}
++			var npc = new NPC();
++			npc.SetDefaults(npcType);
 +
-+			return "" + npcType;
++			return NPCID.GetReadableUniqueKey(npc);
 +		}
 +
-+		public static string GetUniqueId(NPC npc) {
-+			if ( npc.modNPC == null ) {
++		public static string GetReadableUniqueKey(NPC npc) {
++			if ( NPCID.Search.ContainsId(npc.type) ) {
 +				return "Terraria " + NPCID.Search.GetName(npc.type);
 +			}
-+			else {
-+				return npc.modNPC.mod.Name + " " + npc.modNPC.Name;
++
++			if ( npc.modNPC != null ) {
++				return NPCID.GetReadableUniqueKey(npc.modNPC);
 +			}
++
++			throw new ArgumentException("Invalid `NPC`.");
++		}
++
++		public static string GetReadableUniqueKey(ModNPC modNpc) {
++			return modNpc.mod.Name + " " + modNpc.Name;
 +		}
  	}
  }

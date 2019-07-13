@@ -1,5 +1,12 @@
 --- src/Terraria\Terraria.ID\TileID.cs
 +++ src/tModLoader\Terraria.ID\TileID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
 @@ -294,6 +_,20 @@
  					468
  				});
@@ -53,22 +60,27 @@
  				});
  			public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(new int[]
  				{
-@@ -1148,5 +_,19 @@
+@@ -1148,5 +_,24 @@
  		public const ushort FakeContainers2 = 468;
  		public const ushort Tables2 = 469;
  		public const ushort Count = 470;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<TileID, short>();
 +
-+		public static string GetUniqueId(int tileType) {
++		public static string GetReadableUniqueKey(int tileType) {
 +			if ( TileID.Search.ContainsId(tileType) ) {
 +				return "Terraria " + TileID.Search.GetName(tileType);
 +			}
 +
-+			return "" + tileType;
++			ModTile modTile = TileLoader.GetTile(tileType);
++			if ( modTile != null ) {
++				return TileID.GetReadableUniqueKey(modTile);
++			}
++
++			throw new ArgumentOutOfRangeException("Invalid tile type value.");
 +		}
 +
-+		public static string GetUniqueId(ModTile tile) {
++		public static string GetReadableUniqueKey(ModTile tile) {
 +			return tile.mod.Name + " " + tile.Name;
 +		}
  	}

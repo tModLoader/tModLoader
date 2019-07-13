@@ -1,40 +1,44 @@
 --- src/Terraria\Terraria.ID\ProjectileID.cs
 +++ src/tModLoader\Terraria.ID\ProjectileID.cs
-@@ -1,3 +_,4 @@
+@@ -1,4 +_,6 @@
 +using ReLogic.Reflection;
  using System;
++using Terraria.ModLoader;
  
  namespace Terraria.ID
-@@ -1199,5 +_,32 @@
+ {
+@@ -1199,5 +_,34 @@
  		public const short BookStaffShot = 712;
  		public const short DD2Win = 713;
  		public const short Count = 714;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
 +
-+		public static string GetUniqueId(int projType) {
++		public static string GetReadableUniqueKey(int projType) {
 +			if ( ProjectileID.Search.ContainsId(projType) ) {
 +				return "Terraria " + ProjectileID.Search.GetName(projType);
 +			}
-+			else {
-+				var proj = new Projectile();
-+				proj.SetDefaults(projType);
 +
-+				if ( proj.modProjectile != null ) {
-+					return proj.modProjectile.mod.Name + " " + proj.modProjectile.Name;
-+				}
-+			}
++			var proj = new Projectile();
++			proj.SetDefaults(projType);
 +
-+			return "" + projType;
++			return ProjectileID.GetReadableUniqueKey(proj);
 +		}
 +
-+		public static string GetUniqueId(Projectile proj) {
-+			if ( proj.modProjectile == null ) {
++		public static string GetReadableUniqueKey(Projectile proj) {
++			if ( ProjectileID.Search.ContainsId(proj.type) ) {
 +				return "Terraria " + ProjectileID.Search.GetName(proj.type);
 +			}
-+			else {
-+				return proj.modProjectile.mod.Name + " " + proj.modProjectile.Name;
++
++			if ( proj.modProjectile != null ) {
++				return ProjectileID.GetReadableUniqueKey(proj.modProjectile);
 +			}
++
++			throw new ArgumentException("Invalid `Projectile`.");
++		}
++
++		public static string GetReadableUniqueKey(ModProjectile modProj) {
++			return modProj.mod.Name + " " + modProj.Name;
 +		}
  	}
  }
