@@ -551,6 +551,10 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < Main.chest.Length; i++) {
 				Main.chest[i] = new Chest();
 			}
+
+			foreach (var projectile in Main.projectile) {
+				projectile.SetDefaults(0);
+			}
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
