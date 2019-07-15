@@ -100,15 +100,8 @@ namespace ExampleMod.Tiles
 
 			public void Reply(string text, Color color = default(Color))
 			{
-				if (text == "")
-				{
-					return;
-				}
-				string[] array = text.Split('\n');
-				foreach (string value in array)
-				{
+				foreach (string value in text.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries))
 					Main.NewText(value);
-				}
 			}
 		}
 	}

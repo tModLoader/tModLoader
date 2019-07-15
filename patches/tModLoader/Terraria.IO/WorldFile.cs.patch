@@ -1,12 +1,11 @@
 --- src/Terraria\Terraria.IO\WorldFile.cs
 +++ src/tModLoader\Terraria.IO\WorldFile.cs
-@@ -11,6 +_,9 @@
+@@ -11,6 +_,8 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
-+using System.Windows.Forms;
  
  namespace Terraria.IO
  {
@@ -18,13 +17,12 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen)
  			{
  				if (!flag)
-@@ -222,6 +_,9 @@
+@@ -222,6 +_,8 @@
  						}
  						binaryReader.Close();
  						memoryStream.Close();
 +						WorldHooks.SetupWorld();
 +						WorldIO.Load(Main.worldPathName, flag);
-+
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
