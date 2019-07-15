@@ -53,6 +53,14 @@ namespace Terraria.ModLoader.IO
 			var tag = TagIO.FromStream(new MemoryStream(buf));
 			LoadChests(tag.GetList<TagCompound>("chests"));
 			TileIO.LoadTiles(tag.GetCompound("tiles"));
+			for (int i = 0; i < Main.sign.Length; i++) {
+				if (Main.sign[i] != null) {
+					Tile tile = Main.tile[Main.sign[i].x, Main.sign[i].y];
+					if (!(tile.active() && Main.tileSign[(int)tile.type])) {
+						Main.sign[i] = null;
+					}
+				}
+			}
 			TileIO.LoadContainers(tag.GetCompound("containers"));
 			LoadNPCs(tag.GetList<TagCompound>("npcs"));
 			try {
