@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11, 2, 1);
+		public static readonly Version version = new Version(0, 11, 2, 2);
 
 		public static readonly string branchName = "";
 		// beta > 0 cannot publish to mod browser

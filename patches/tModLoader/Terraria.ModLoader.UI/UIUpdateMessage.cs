@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.UI
 
 			Logging.tML.Info($"AutoUpdate started");
 			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {autoUpdateURL}");
-			var downloadFile = new DownloadFile(url, zipFilePath, $"Auto update: {zipFileName}");
+			var downloadFile = new DownloadFile(autoUpdateURL, zipFilePath, $"Auto update: {zipFileName}");
 			downloadFile.OnComplete += () => {
 				OnAutoUpdateDownloadComplete(zipFilePath, autoUpdateFilePath, installDirectory, currentExecutingFilePath);
 			};
@@ -159,6 +159,7 @@ exit /B 1");
 				Process.Start(autoUpdateScript, $"\"{currentExecutingFilePath}\" \"{autoUpdateFilePath}\"");
 
 				Main.menuMode = Interface.exitID; // Environment.Exit(0); // Exit on main thread to avoid crash
+				Interface.downloadProgress.gotoMenu = Interface.exitID;
 			}
 			catch (Exception e) {
 				Logging.tML.Error($"Problem during autoupdate", e);
