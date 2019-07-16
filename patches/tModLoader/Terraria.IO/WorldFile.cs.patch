@@ -53,15 +53,6 @@
  			{
  				return 1;
  			}
-@@ -863,7 +_,7 @@
- 					string text2 = fileIO.ReadString();
- 					int num9 = fileIO.ReadInt32();
- 					int num10 = fileIO.ReadInt32();
--					if (Main.tile[num9, num10].active() && (Main.tile[num9, num10].type == 55 || Main.tile[num9, num10].type == 85))
-+					if (Main.tile[num9, num10].active())
- 					{
- 						Main.sign[n] = new Sign();
- 						Main.sign[n].x = num9;
 @@ -965,7 +_,7 @@
  		{
  			short num = 470;
@@ -159,23 +150,23 @@
  				{
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
-@@ -2181,16 +_,11 @@
+@@ -2181,14 +_,14 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];
  				Sign sign;
 -				if (tile.active() && Main.tileSign[(int)tile.type])
++				if (true) //if (tile.active() && Main.tileSign[(int)tile.type]) 
  				{
  					sign = new Sign();
  					sign.text = text;
  					sign.x = num2;
  					sign.y = num3;
--				}
--				else
--				{
--					sign = null;
  				}
- 				Main.sign[i] = sign;
- 			}
+-				else
++				else 
+ 				{
+ 					sign = null;
+ 				}
 @@ -2302,7 +_,7 @@
  			{
  				Stream baseStream = fileIO.BaseStream;
