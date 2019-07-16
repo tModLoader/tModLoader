@@ -552,10 +552,10 @@ namespace Terraria.ModLoader
 				Main.chest[i] = new Chest();
 			}
 
-			foreach (var projectile in Main.projectile) {
-				projectile.SetDefaults(0);
-			}
-		}
+            for (int i = 0; i < 1001; i++) {
+                Main.projectile[i] = new Projectile();
+            }
+        }
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
 			if (!assetName.StartsWith("tmod:"))
