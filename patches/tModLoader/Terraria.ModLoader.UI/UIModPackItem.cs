@@ -64,8 +64,8 @@ namespace Terraria.ModLoader.UI
 			}
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
-			_dividerTexture = TextureManager.Load("Images/UI/Divider");
-			_innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+			_dividerTexture = UICommon.dividerTexture;
+			_innerPanelTexture = UICommon.innerPanelTexture;
 			Height.Pixels = 126;
 			Width.Percent = 1f;
 			SetPadding(6f);

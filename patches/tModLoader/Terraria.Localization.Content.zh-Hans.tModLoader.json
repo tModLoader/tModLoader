@@ -17,6 +17,7 @@
 		"ModsModPacks": "模组整合包",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
+		// "ModsOpenConfig":  "Click to open config",
 		"ModOldWarning": "旧模组,有风险",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n (点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",

@@ -282,6 +282,7 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
+			Recalculate();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -330,6 +331,7 @@ namespace Terraria.ModLoader.UI
 					var mods = task.Result;
 					foreach (var mod in mods) {
 						UIModItem modItem = new UIModItem(mod);
+						modItem.Activate();
 						items.Add(modItem);
 					}
 					needToRemoveLoading = true;

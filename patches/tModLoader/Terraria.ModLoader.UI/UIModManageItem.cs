@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.UI
 			this.name = name;
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
-			dividerTexture = TextureManager.Load("Images/UI/Divider");
+			dividerTexture = UICommon.dividerTexture;
 			Height.Pixels = 90;
 			Width.Percent = 1f;
 			SetPadding(6f);

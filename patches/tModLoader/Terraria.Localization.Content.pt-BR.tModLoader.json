@@ -16,6 +16,7 @@
 		"ModsModPacks": "Pacotes de Mods",
 		"ModsDisable": "Desativar",
 		"ModsEnable": "Ativar",
+		// "ModsOpenConfig":  "Click to open config",
 		// "ModOldWarning": "Old mod, enable at own risk",
 		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",

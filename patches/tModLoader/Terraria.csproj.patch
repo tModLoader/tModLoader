@@ -35,7 +35,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
      <PlatformTarget>x86</PlatformTarget>
-@@ -38,13 +_,26 @@
+@@ -38,13 +_,30 @@
    <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
      <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
    </PropertyGroup>
@@ -48,6 +48,10 @@
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
++    <None Remove="Terraria.ModLoader.UI\ButtonModConfig.png" />
++    <None Remove="Terraria.ModLoader.UI\ButtonModInfo.png" />
++  </ItemGroup>
++  <ItemGroup>
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))">
 +      <Private>true</Private>
 +    </Reference>
@@ -394,7 +398,7 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -593,4 +_,144 @@
+@@ -593,4 +_,146 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -435,6 +439,8 @@
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Squid_Legs_Legs.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDownload.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDownloadMultiple.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonModConfig.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonModInfo.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\CopyCodeButton.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\Saethar_Body_Arms.png" />

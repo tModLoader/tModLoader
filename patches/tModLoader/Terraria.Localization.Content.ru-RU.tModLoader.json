@@ -16,6 +16,7 @@
 		"ModsModPacks": "Сборки модов",
 		"ModsDisable": "Выключить",
 		"ModsEnable": "Включить",
+		// "ModsOpenConfig":  "Click to open config",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",

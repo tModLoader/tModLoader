@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.UI;
 
@@ -77,21 +78,33 @@ namespace Terraria.ModLoader.UI
 		internal static Texture2D loaderBGTexture;
 		internal static Texture2D buttonDownloadTexture;
 		internal static Texture2D buttonDownloadMultipleTexture;
-		internal static void LoadTextures() {
-			buttonErrorTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonError.png");
-			buttonConfigTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonConfig.png");
-			buttonPlusTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonPlus.png");
-			buttonUpDownTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonUpDown.png");
-			buttonCollapsedTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonCollapsed.png");
-			buttonExpandedTexture = LoadEmbeddedTexture("Terraria.ModLoader.Config.UI.ButtonExpanded.png");
-			modBrowserIconsTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.UIModBrowserIcons.png");
-			buttonExclamationTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonExclamation.png");
-			loaderTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.Loader.png");
-			loaderBGTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.LoaderBG.png");
-			buttonDownloadTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonDownload.png");
-			buttonDownloadMultipleTexture = LoadEmbeddedTexture("Terraria.ModLoader.UI.ButtonDownloadMultiple.png");
+		internal static Texture2D buttonModInfoTexture;
+		internal static Texture2D buttonModConfigTexture;
 
-			Texture2D LoadEmbeddedTexture(string name) => Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
+		internal static Texture2D dividerTexture;
+		internal static Texture2D innerPanelTexture;
+
+		internal static void LoadTextures() {
+			buttonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
+			buttonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
+			buttonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
+			buttonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown.png");
+			buttonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed.png");
+			buttonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded.png");
+			modBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons.png");
+			buttonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation.png");
+			loaderTexture = LoadEmbeddedTexture("UI.Loader.png");
+			loaderBGTexture = LoadEmbeddedTexture("UI.LoaderBG.png");
+			buttonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload.png");
+			buttonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple.png");
+			buttonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo.png");
+			buttonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig.png");
+
+			dividerTexture = TextureManager.Load("Images/UI/Divider");
+			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+
+			Texture2D LoadEmbeddedTexture(string name) 
+				=> Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.{name}"));
 		}
 	}
 }
