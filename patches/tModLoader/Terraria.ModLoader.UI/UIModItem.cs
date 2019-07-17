@@ -158,7 +158,9 @@ namespace Terraria.ModLoader.UI
 			}
 
 			OnDoubleClick += (e, el) => {
-				_modStateText.Click(e);
+				// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
+				if (e.Target.GetType() != typeof(ModStateText))
+					_modStateText.Click(e);
 			};
 		}
 
