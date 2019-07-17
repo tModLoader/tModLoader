@@ -116,7 +116,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Append(tMLUpdateRequired);
 			}
 			else if (hasUpdate || installed == null) {
-				_updateButton = new UIImage(UICommon.buttonDownloadTexture);
+				_updateButton = new UIImage(UpdateIsDowngrade ? UICommon.buttonDowngradeTexture : UICommon.buttonDownloadTexture);
 				_updateButton.CopyStyle(_moreInfoButton);
 				_updateButton.Left.Pixels += 36 + PADDING;
 				_updateButton.OnClick += DownloadMod;
@@ -253,9 +253,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			if (_updateButton?.IsMouseHovering == true) {
 				tooltip = UpdateText;
-			} else if (_updateWithDepsButton?.IsMouseHovering == true) {
+			}
+			else if (_updateWithDepsButton?.IsMouseHovering == true) {
 				tooltip = UpdateWithDepsText;
-			} else if (_moreInfoButton?.IsMouseHovering == true) {
+			}
+			else if (_moreInfoButton?.IsMouseHovering == true) {
 				tooltip = ViewModInfoText;
 			}
 		}

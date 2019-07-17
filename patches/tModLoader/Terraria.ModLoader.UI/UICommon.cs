@@ -77,6 +77,7 @@ namespace Terraria.ModLoader.UI
 		internal static Texture2D loaderTexture;
 		internal static Texture2D loaderBGTexture;
 		internal static Texture2D buttonDownloadTexture;
+		internal static Texture2D buttonDowngradeTexture;
 		internal static Texture2D buttonDownloadMultipleTexture;
 		internal static Texture2D buttonModInfoTexture;
 		internal static Texture2D buttonModConfigTexture;
@@ -96,6 +97,7 @@ namespace Terraria.ModLoader.UI
 			loaderTexture = LoadEmbeddedTexture("UI.Loader.png");
 			loaderBGTexture = LoadEmbeddedTexture("UI.LoaderBG.png");
 			buttonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload.png");
+			buttonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade.png");
 			buttonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple.png");
 			buttonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo.png");
 			buttonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig.png");
