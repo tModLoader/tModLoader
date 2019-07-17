@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Core
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
 
-			ClearTempDownloadFiles();
+			DeleteTemporaryFiles();
 
 			foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly)) {
 				var lastModified = File.GetLastWriteTime(fileName);
@@ -53,8 +53,8 @@ namespace Terraria.ModLoader.Core
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
-		private static void ClearTempDownloadFiles() {
-			foreach (string path in Directory.GetFiles(ModLoader.ModPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly).Union(Directory.GetFiles(ModLoader.ModPath, "temporaryDownload.tmod"))) {
+		private static void DeleteTemporaryFiles() {
+			foreach (string path in GetTemporaryFiles()) {
 				Logging.tML.Info($"Cleaning up leftover temporary file {Path.GetFileName(path)}");
 				try {
 					File.Delete(path);
@@ -63,6 +63,11 @@ namespace Terraria.ModLoader.Core
 					Logging.tML.Error($"Could not delete leftover temporary file {Path.GetFileName(path)}", e);
 				}
 			}
+		}
+
+		private static IEnumerable<string> GetTemporaryFiles() {
+			return Directory.GetFiles(ModLoader.ModPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)
+				.Union(Directory.GetFiles(ModLoader.ModPath, "temporaryDownload.tmod", SearchOption.TopDirectoryOnly)); // Old tML remnant
 		}
 
 		private static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
