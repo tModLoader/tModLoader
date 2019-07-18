@@ -8,10 +8,11 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIEnterPassphraseMenu : UIState
 	{
-		readonly string registerURL = "http://javid.ddns.net/tModLoader/register.php";
-		public UITextPanel<string> uITextPanel;
-		internal UIInputTextField passcodeTextField;
-		private int gotoMenu;
+		private const string REGISTER_URL = "http://javid.ddns.net/tModLoader/register.php";
+
+		public UITextPanel<string> UITextPanel;
+		internal UIInputTextField PasscodeTextField;
+		private int _gotoMenu;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -25,17 +26,17 @@ namespace Terraria.ModLoader.UI
 			var uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground,
+				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true) {
+			UITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishEnterPassphrase"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15);
-			uIElement.Append(uITextPanel);
+			uIElement.Append(UITextPanel);
 			
 			var buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = { Pixels = -10, Percent = 0.5f },
@@ -50,7 +51,7 @@ namespace Terraria.ModLoader.UI
 			buttonSubmit.CopyStyle(buttonBack);
 			buttonSubmit.HAlign = 1f;
 			buttonSubmit.WithFadedMouseOver();
-			buttonSubmit.OnClick += OKClick;
+			buttonSubmit.OnClick += SubmitPassphrase;
 			uIElement.Append(buttonSubmit);
 
 			var buttonVisitWebsite = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBPublishVisitWebsiteForPassphrase"));
@@ -61,44 +62,45 @@ namespace Terraria.ModLoader.UI
 			buttonVisitWebsite.OnClick += VisitRegisterWebpage;
 			uIElement.Append(buttonVisitWebsite);
 
-			passcodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase")) {
+			PasscodeTextField = new UIInputTextField(Language.GetTextValue("tModLoader.MBPublishPastePassphrase")) {
 				HAlign = 0.5f,
 				VAlign = 0.5f,
 				Left = { Pixels = -100, Percent = 0 }
 			};
-			passcodeTextField.OnTextChange += OnTextChange;
-			uIPanel.Append(passcodeTextField);
+			PasscodeTextField.OnTextChange += OnTextChange;
+			uIPanel.Append(PasscodeTextField);
 
 			Append(uIElement);
 		}
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.modBrowserPassphrase = passcodeTextField.Text.Trim();
+		private void SubmitPassphrase(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(10);
+			ModLoader.modBrowserPassphrase = PasscodeTextField.Text.Trim();
 			Main.SaveSettings();
 			if (Engine.GoGVerifier.IsGoG) {
 				Main.menuMode = Interface.enterSteamIDMenuID;
-				Interface.enterSteamIDMenu.SetGotoMenu(this.gotoMenu);
+				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu);
 			}
 			else
-				Main.menuMode = this.gotoMenu;
+				Main.menuMode = _gotoMenu;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
-			Main.menuMode = this.gotoMenu;
+			Main.PlaySound(11);
+			Main.menuMode = _gotoMenu;
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Process.Start(registerURL);
+			Main.PlaySound(10);
+			Process.Start(REGISTER_URL);
 		}
 
+		// TODO unused?
 		private void OnTextChange(object sender, EventArgs e) {
 		}
 
 		internal void SetGotoMenu(int gotoMenu) {
-			this.gotoMenu = gotoMenu;
+			_gotoMenu = gotoMenu;
 		}
 	}
 }

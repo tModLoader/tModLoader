@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIInputTextField.Width.Set(-42, 1f); // allow space for arrows
 			uIInputTextField.Height.Set(20, 0);
 			uIInputTextField.OnTextChange += (a, b) => {
-				if (Int32.TryParse(uIInputTextField.currentString, out int val)) {
+				if (Int32.TryParse(uIInputTextField.CurrentString, out int val)) {
 					SetValue(val);
 				}
 				//else

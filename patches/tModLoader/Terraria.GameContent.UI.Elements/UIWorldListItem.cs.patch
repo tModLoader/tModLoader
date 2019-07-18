@@ -39,7 +39,7 @@
  			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
  			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-+			this._configTexture = ModLoader.UI.UICommon.buttonConfigTexture;
++			this._configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  		}
  
  		private void InitializeAppearance()

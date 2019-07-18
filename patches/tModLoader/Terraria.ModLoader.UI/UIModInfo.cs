@@ -37,7 +37,9 @@ namespace Terraria.ModLoader.UI
 		private string _info = string.Empty;
 		private string _modName = string.Empty;
 		private string _modDisplayName = string.Empty;
-		private bool _loadFromWeb = false;
+		private bool _loadFromWeb;
+		private bool _loading;
+		private bool _ready;
 
 		private CancellationTokenSource _cts;
 		
@@ -53,7 +55,7 @@ namespace Terraria.ModLoader.UI
 			var uIPanel = new UIPanel {
 				Width = {Percent = 1f},
 				Height = {Pixels = -110, Percent = 1f},
-				BackgroundColor = UICommon.mainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground
 			};
 			_uIElement.Append(uIPanel);
 
@@ -74,7 +76,7 @@ namespace Terraria.ModLoader.UI
 			_uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = {Pixels = -35},
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15f);
 			_uIElement.Append(_uITextPanel);
 
@@ -102,7 +104,7 @@ namespace Terraria.ModLoader.UI
 				HAlign = 0.5f,
 				Top = {Pixels = -20}
 			}.WithFadedMouseOver();
-			_extractButton.OnClick += ExtractClick;
+			_extractButton.OnClick += ExtractMod;
 
 			_deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
 				Width = {Pixels = -10, Percent = 0.333f},
@@ -111,7 +113,7 @@ namespace Terraria.ModLoader.UI
 				HAlign = 1f,
 				Top = {Pixels = -20}
 			}.WithFadedMouseOver();
-			_deleteButton.OnClick += DeleteClick;
+			_deleteButton.OnClick += DeleteMod;
 
 			Append(_uIElement);
 		}
@@ -152,12 +154,12 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = _gotoMenu;
 		}
 
-		private void ExtractClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void ExtractMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			Interface.extractMod.Show(_localMod, _gotoMenu);
 		}
 
-		private void DeleteClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			File.Delete(_localMod.modFile.path);
 			Main.menuMode = _gotoMenu;
@@ -178,9 +180,6 @@ namespace Terraria.ModLoader.UI
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
 			}
 		}
-
-		private bool _loading;
-		private bool _ready;
 
 		public override void OnActivate() {
 			_modInfo.SetText(_info);

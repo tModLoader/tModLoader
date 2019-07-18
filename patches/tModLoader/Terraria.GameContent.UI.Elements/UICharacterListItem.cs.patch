@@ -23,8 +23,8 @@
  			this._buttonFavoriteInactiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteInactive");
  			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-+			this._errorTexture = ModLoader.UI.UICommon.buttonErrorTexture;
-+			this._configTexture = ModLoader.UI.UICommon.buttonConfigTexture;
++			this._errorTexture = ModLoader.UI.UICommon.ButtonErrorTexture;
++			this._configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  			this.Height.Set(96f, 0f);
  			this.Width.Set(0f, 1f);
  			base.SetPadding(6f);

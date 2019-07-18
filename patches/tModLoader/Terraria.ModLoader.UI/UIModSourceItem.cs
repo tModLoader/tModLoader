@@ -6,10 +6,8 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -22,80 +20,80 @@ namespace Terraria.ModLoader.UI
 	//TODO common 'Item' code
 	internal class UIModSourceItem : UIPanel
 	{
-		private string mod;
-		private Texture2D dividerTexture;
-		private UIText modName;
-		private LocalMod builtMod;
-		private bool upgradePotentialChecked;
+		private readonly string _mod;
+		private readonly Texture2D _dividerTexture;
+		private readonly UIText _modName;
+		private readonly LocalMod _builtMod;
+		private bool _upgradePotentialChecked;
 
 		public UIModSourceItem(string mod, LocalMod builtMod) {
-			this.mod = mod;
+			_mod = mod;
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
-			dividerTexture = UICommon.dividerTexture;
+			_dividerTexture = UICommon.DividerTexture;
 			Height.Pixels = 90;
 			Width.Percent = 1f;
 			SetPadding(6f);
 
 			string addendum = Path.GetFileName(mod).Contains(" ") ? $"  [c/FF0000:{Language.GetTextValue("tModLoader.MSModSourcesCantHaveSpaces")}]" : "";
-			modName = new UIText(Path.GetFileName(mod) + addendum) {
+			_modName = new UIText(Path.GetFileName(mod) + addendum) {
 				Left = { Pixels = 10 },
 				Top = { Pixels = 5 }
 			};
-			Append(modName);
+			Append(_modName);
 
-			var button = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild")) {
+			var buildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild")) {
 				Width = { Pixels = 100 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 10 },
 				Top = { Pixels = 40 }
 			}.WithFadedMouseOver();
-			button.PaddingTop -= 2f;
-			button.PaddingBottom -= 2f;
-			button.OnClick += BuildMod;
-			Append(button);
+			buildButton.PaddingTop -= 2f;
+			buildButton.PaddingBottom -= 2f;
+			buildButton.OnClick += BuildMod;
+			Append(buildButton);
 
-			var button2 = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"));
-			button2.CopyStyle(button);
-			button2.Width.Pixels = 200;
-			button2.Left.Pixels = 150;
-			button2.WithFadedMouseOver();
-			button2.OnClick += BuildAndReload;
-			Append(button2);
+			var buildReloadButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"));
+			buildReloadButton.CopyStyle(buildButton);
+			buildReloadButton.Width.Pixels = 200;
+			buildReloadButton.Left.Pixels = 150;
+			buildReloadButton.WithFadedMouseOver();
+			buildReloadButton.OnClick += BuildAndReload;
+			Append(buildReloadButton);
 
-			this.builtMod = builtMod;
+			_builtMod = builtMod;
 			if (builtMod != null) {
-				var button3 = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
-				button3.CopyStyle(button2);
-				button3.Width.Pixels = 100;
-				button3.Left.Pixels = 390;
-				button3.WithFadedMouseOver();
-				button3.OnClick += this.Publish;
-				Append(button3);
+				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
+				publishButton.CopyStyle(buildReloadButton);
+				publishButton.Width.Pixels = 100;
+				publishButton.Left.Pixels = 390;
+				publishButton.WithFadedMouseOver();
+				publishButton.OnClick += PublishMod;
+				Append(publishButton);
 			}
 			OnDoubleClick += BuildAndReload;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
-			CalculatedStyle innerDimensions = base.GetInnerDimensions();
+			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(this.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 
 			// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
-			if (!upgradePotentialChecked) {
-				upgradePotentialChecked = true;
-				string modFolderName = Path.GetFileName(mod);
-				string csprojFile = Path.Combine(mod, $"{modFolderName}.csproj");
+			if (!_upgradePotentialChecked) {
+				_upgradePotentialChecked = true;
+				string modFolderName = Path.GetFileName(_mod);
+				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 				if (!File.Exists(csprojFile) || !File.ReadAllText(csprojFile).Contains("tModLoader.targets")) {
-					var icon = UICommon.buttonExclamationTexture;
+					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
 						Left = { Pixels = -26, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 					upgradeCSProjButton.OnClick += (s, e) => {
 						File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
-						string propertiesFolder = Path.Combine(mod, "Properties");
+						string propertiesFolder = Path.Combine(_mod, "Properties");
 						Directory.CreateDirectory(propertiesFolder);
 						File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
 						Main.PlaySound(SoundID.MenuOpen);
@@ -108,14 +106,14 @@ namespace Terraria.ModLoader.UI
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			this.BackgroundColor = UICommon.defaultUIBlue;
-			this.BorderColor = new Color(89, 116, 213);
+			BackgroundColor = UICommon.DefaultUIBlue;
+			BorderColor = new Color(89, 116, 213);
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
-			this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			this.BorderColor = new Color(89, 116, 213) * 0.7f;
+			BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
 		public override int CompareTo(object obj) {
@@ -123,26 +121,26 @@ namespace Terraria.ModLoader.UI
 			if (uIModSourceItem == null) {
 				return base.CompareTo(obj);
 			}
-			if (uIModSourceItem.builtMod == null && builtMod == null)
-				return modName.Text.CompareTo(uIModSourceItem.modName.Text);
-			if (uIModSourceItem.builtMod == null)
+			if (uIModSourceItem._builtMod == null && _builtMod == null)
+				return _modName.Text.CompareTo(uIModSourceItem._modName.Text);
+			if (uIModSourceItem._builtMod == null)
 				return -1;
-			if (builtMod == null)
+			if (_builtMod == null)
 				return 1;
-			return uIModSourceItem.builtMod.lastModified.CompareTo(builtMod.lastModified);
+			return uIModSourceItem._builtMod.lastModified.CompareTo(_builtMod.lastModified);
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Interface.buildMod.Build(mod, false);
+			Main.PlaySound(10);
+			Interface.buildMod.Build(_mod, false);
 		}
 
 		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Interface.buildMod.Build(mod, true);
+			Main.PlaySound(10);
+			Interface.buildMod.Build(_mod, true);
 		}
 
-		private void Publish(UIMouseEvent evt, UIElement listeningElement) {
+		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == "") {
 				Main.menuMode = Interface.enterPassphraseMenuID;
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
@@ -150,8 +148,8 @@ namespace Terraria.ModLoader.UI
 			}
 			Main.PlaySound(10);
 			try {
-				var modFile = builtMod.modFile;
-				var bp = builtMod.properties;
+				var modFile = _builtMod.modFile;
+				var bp = _builtMod.properties;
 
 				var files = new List<UploadFile>();
 				files.Add(new UploadFile {

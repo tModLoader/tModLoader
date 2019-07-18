@@ -2,7 +2,6 @@ using Ionic.Zip;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -14,25 +13,25 @@ namespace Terraria.ModLoader.UI
 	//TODO how is this different to UIInfoMessage?
 	internal class UIUpdateMessage : UIState
 	{
-		private UIMessageBox message = new UIMessageBox("");
-		private UIElement area;
-		private UITextPanel<string> autoUpdateButton;
-		private int gotoMenu = 0;
-		private string url;
-		private string autoUpdateURL;
+		private readonly UIMessageBox _message = new UIMessageBox("");
+		private UIElement _area;
+		private UITextPanel<string> _autoUpdateButton;
+		private int _gotoMenu;
+		private string _url;
+		private string _autoUpdateUrl;
 
 		public override void OnInitialize() {
-			area = new UIElement {
+			_area = new UIElement {
 				Width = { Percent = 0.8f },
 				Top = { Pixels = 200 },
 				Height = { Pixels = -240, Percent = 1f },
 				HAlign = 0.5f
 			};
 
-			message.Width.Percent = 1f;
-			message.Height.Percent = 0.8f;
-			message.HAlign = 0.5f;
-			area.Append(message);
+			_message.Width.Percent = 1f;
+			_message.Height.Percent = 0.8f;
+			_message.HAlign = 0.5f;
+			_area.Append(_message);
 
 			var button = new UITextPanel<string>("Ignore", 0.7f, true) {
 				Width = { Pixels = -10, Percent = 1f / 3f },
@@ -42,56 +41,56 @@ namespace Terraria.ModLoader.UI
 			};
 			button.WithFadedMouseOver();
 			button.OnClick += IgnoreClick;
-			area.Append(button);
+			_area.Append(button);
 
 			var button2 = new UITextPanel<string>("Download", 0.7f, true);
 			button2.CopyStyle(button);
 			button2.HAlign = 0.5f;
 			button2.WithFadedMouseOver();
 			button2.OnClick += OpenURL;
-			area.Append(button2);
+			_area.Append(button2);
 
-			autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
-			autoUpdateButton.CopyStyle(button);
-			autoUpdateButton.HAlign = 1f;
-			autoUpdateButton.WithFadedMouseOver();
-			autoUpdateButton.OnClick += AutoUpdate;
+			_autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
+			_autoUpdateButton.CopyStyle(button);
+			_autoUpdateButton.HAlign = 1f;
+			_autoUpdateButton.WithFadedMouseOver();
+			_autoUpdateButton.OnClick += AutoUpdate;
 
-			Append(area);
+			Append(_area);
 		}
 
 		public override void OnActivate() {
 			base.OnActivate();
 
 #if WINDOWS
-			area.AddOrRemoveChild(autoUpdateButton, !string.IsNullOrEmpty(autoUpdateURL));
+			_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
 #endif
 		}
 
 		internal void SetMessage(string text) {
-			message.SetText(text);
+			_message.SetText(text);
 		}
 
 		internal void SetGotoMenu(int gotoMenu) {
-			this.gotoMenu = gotoMenu;
+			_gotoMenu = gotoMenu;
 		}
 
 		internal void SetURL(string url) {
-			this.url = url;
+			_url = url;
 		}
 
 		internal void SetAutoUpdateURL(string autoUpdateURL) {
-			this.autoUpdateURL = autoUpdateURL;
+			_autoUpdateUrl = autoUpdateURL;
 		}
 
 		private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Main.menuMode = gotoMenu;
+			Main.PlaySound(10);
+			Main.menuMode = _gotoMenu;
 		}
 
 		private void OpenURL(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Process.Start(url);
+			Main.PlaySound(10);
+			Process.Start(_url);
 		}
 
 		// Windows only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
@@ -102,12 +101,12 @@ namespace Terraria.ModLoader.UI
 			string currentExecutingFilePath = Assembly.GetExecutingAssembly().Location;
 			string installDirectory = Path.GetDirectoryName(currentExecutingFilePath);
 			string autoUpdateFilePath = Path.Combine(installDirectory, Path.GetFileNameWithoutExtension(currentExecutingFilePath) + "_AutoUpdate.exe");
-			string zipFileName = Path.GetFileName(new Uri(autoUpdateURL).LocalPath);
+			string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);
 			string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
-			Logging.tML.Info($"AutoUpdate started");
-			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {autoUpdateURL}");
-			var downloadFile = new DownloadFile(autoUpdateURL, zipFilePath, $"Auto update: {zipFileName}");
+			Logging.tML.Info("AutoUpdate started");
+			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {_autoUpdateUrl}");
+			var downloadFile = new DownloadFile(_autoUpdateUrl, zipFilePath, $"Auto update: {zipFileName}");
 			downloadFile.OnComplete += () => {
 				OnAutoUpdateDownloadComplete(zipFilePath, autoUpdateFilePath, installDirectory, currentExecutingFilePath);
 			};

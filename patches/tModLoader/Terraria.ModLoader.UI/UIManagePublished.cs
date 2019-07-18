@@ -1,9 +1,9 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Specialized;
 using System.Net;
+using System.Text;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -15,8 +15,9 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIManagePublished : UIState
 	{
-		private UIList myPublishedMods;
-		public UITextPanel<string> textPanel;
+		public UITextPanel<string> TextPanel;
+
+		private UIList _myPublishedMods;
 
 		public override void OnInitialize() {
 			var area = new UIElement {
@@ -30,30 +31,30 @@ namespace Terraria.ModLoader.UI
 			var uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground
 			};
 			area.Append(uIPanel);
 
-			myPublishedMods = new UIList {
+			_myPublishedMods = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
 				Height = { Percent = 1f },
 				ListPadding = 5f
 			};
-			uIPanel.Append(myPublishedMods);
+			uIPanel.Append(_myPublishedMods);
 
 			var uIScrollbar = new UIScrollbar {
 				Height = { Percent = 1f },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
-			myPublishedMods.SetScrollbar(uIScrollbar);
+			_myPublishedMods.SetScrollbar(uIScrollbar);
 
-			textPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true) {
+			TextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15);
-			area.Append(textPanel);
+			area.Append(TextPanel);
 
 			var backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				VAlign = 1f,
@@ -74,14 +75,15 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
+			// TODO why is this in Draw?
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modSourcesID;
 		}
 
 		public override void OnActivate() {
-			myPublishedMods.Clear();
-			textPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
-			string response = "";
+			_myPublishedMods.Clear();
+			TextPanel.SetText(Language.GetTextValue("tModLoader.MBMyPublishedMods"), 0.8f, true);
+			string response = string.Empty;
 			try {
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/listmymods.php";
@@ -92,14 +94,14 @@ namespace Terraria.ModLoader.UI
 					{ "passphrase", ModLoader.modBrowserPassphrase },
 				};
 				byte[] result = IO.UploadFile.UploadFiles(url, null, values);
-				response = System.Text.Encoding.UTF8.GetString(result);
+				response = Encoding.UTF8.GetString(result);
 			}
 			catch (WebException e) {
 				if (e.Status == WebExceptionStatus.Timeout) {
-					textPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
+					TextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", Language.GetTextValue("tModLoader.MBBusy")), 0.8f, true);
 					return;
 				}
-				textPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
+				TextPanel.SetText(Language.GetTextValue("tModLoader.MenuModBrowser") + " " + Language.GetTextValue("tModLoader.MBOfflineWithReason", ""), 0.8f, true);
 				return;
 			}
 			catch (Exception e) {
@@ -119,7 +121,7 @@ namespace Terraria.ModLoader.UI
 						(string)o["downloadsversion"],
 						(string)o["modloaderversion"]
 					);
-					myPublishedMods.Add(modItem);
+					_myPublishedMods.Add(modItem);
 				}
 			}
 			catch (Exception e) {

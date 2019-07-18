@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -53,7 +52,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground,
+				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
 			uIElement.Append(uIPanel);
@@ -88,7 +87,7 @@ namespace Terraria.ModLoader.UI
 			var uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTexTPanel);
 
@@ -132,7 +131,7 @@ namespace Terraria.ModLoader.UI
 			buttonOMF.OnClick += OpenModsFolder;
 			uIElement.Append(buttonOMF);
 
-			var texture = UICommon.modBrowserIconsTexture;
+			var texture = UICommon.ModBrowserIconsTexture;
 			var upperMenuContainer = new UIElement {
 				Width = { Percent = 1f },
 				Height = { Pixels = 32 },
@@ -287,8 +286,8 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			for (int i = 0; i < this._categoryButtons.Count; i++) {
-				if (this._categoryButtons[i].IsMouseHovering) {
+			for (int i = 0; i < _categoryButtons.Count; i++) {
+				if (_categoryButtons[i].IsMouseHovering) {
 					string text;
 					switch (i) {
 						case 0:

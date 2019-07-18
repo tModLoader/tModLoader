@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -8,20 +7,18 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIInfoMessage : UIState
 	{
-		private UIElement area;
-		private UIMessageBox messageBox;
-		private UITextPanel<string> button;
-		private UITextPanel<string> buttonAlt;
-		private UIState gotoState;
-
-		private string message;
-		private int gotoMenu;
-
-		private Action altAction;
-		private string altText;
+		private UIElement _area;
+		private UIMessageBox _messageBox;
+		private UITextPanel<string> _button;
+		private UITextPanel<string> _buttonAlt;
+		private UIState _gotoState;
+		private string _message;
+		private int _gotoMenu;
+		private Action _altAction;
+		private string _altText;
 
 		public override void OnInitialize() {
-			area = new UIElement {
+			_area = new UIElement {
 				Width = { Percent = 0.8f },
 				Top = { Pixels = 200 },
 				Height = { Pixels = -240, Percent = 1f },
@@ -31,15 +28,15 @@ namespace Terraria.ModLoader.UI
 			var uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground
 			};
-			area.Append(uIPanel);
+			_area.Append(uIPanel);
 
-			messageBox = new UIMessageBox("") {
+			_messageBox = new UIMessageBox(string.Empty) {
 				Width = { Pixels = -25, Percent = 1f },
 				Height = { Percent = 1f }
 			};
-			uIPanel.Append(messageBox);
+			uIPanel.Append(_messageBox);
 
 			var uIScrollbar = new UIScrollbar {
 				Height = { Pixels = -20, Percent = 1f },
@@ -48,59 +45,59 @@ namespace Terraria.ModLoader.UI
 			}.WithView(100f, 1000f);
 			uIPanel.Append(uIScrollbar);
 
-			messageBox.SetScrollbar(uIScrollbar);
+			_messageBox.SetScrollbar(uIScrollbar);
 
-			button = new UITextPanel<string>(Language.GetTextValue("tModLoader.OK"), 0.7f, true) {
+			_button = new UITextPanel<string>(Language.GetTextValue("tModLoader.OK"), 0.7f, true) {
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 50 },
 				Left = { Percent = .25f },
 				VAlign = 1f,
 				Top = { Pixels = -30 }
 			}.WithFadedMouseOver();
-			button.OnClick += OKClick;
-			area.Append(button);
+			_button.OnClick += OKClick;
+			_area.Append(_button);
 
-			buttonAlt = new UITextPanel<string>("???", 0.7f, true) {
+			_buttonAlt = new UITextPanel<string>("???", 0.7f, true) {
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 50 },
 				Left = { Percent = .5f },
 				VAlign = 1f,
 				Top = { Pixels = -30 }
 			}.WithFadedMouseOver();
-			buttonAlt.OnClick += AltClick;
-			area.Append(buttonAlt);
+			_buttonAlt.OnClick += AltClick;
+			_area.Append(_buttonAlt);
 
-			Append(area);
+			Append(_area);
 		}
 
 		public override void OnActivate() {
-			messageBox.SetText(message);
-			buttonAlt.SetText(altText);
-			bool showAlt = !string.IsNullOrEmpty(altText);
-			button.Left.Percent = showAlt ? 0 : .25f;
-			area.AddOrRemoveChild(buttonAlt, showAlt);
+			_messageBox.SetText(_message);
+			_buttonAlt.SetText(_altText);
+			bool showAlt = !string.IsNullOrEmpty(_altText);
+			_button.Left.Percent = showAlt ? 0 : .25f;
+			_area.AddOrRemoveChild(_buttonAlt, showAlt);
 		}
 
 		internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null) {
-			this.message = message;
-			this.gotoMenu = gotoMenu;
-			this.gotoState = state;
-			this.altText = altButtonText;
-			this.altAction = altButtonAction;
+			_message = message;
+			_gotoMenu = gotoMenu;
+			_gotoState = state;
+			_altText = altButtonText;
+			_altAction = altButtonAction;
 			Main.menuMode = Interface.infoMessageID;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Main.menuMode = this.gotoMenu;
-			if (gotoState != null)
-				Main.MenuUI.SetState(gotoState);
+			Main.PlaySound(10);
+			Main.menuMode = _gotoMenu;
+			if (_gotoState != null)
+				Main.MenuUI.SetState(_gotoState);
 		}
 
 		private void AltClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			altAction?.Invoke();
-			Main.menuMode = this.gotoMenu;
+			Main.PlaySound(10);
+			_altAction?.Invoke();
+			Main.menuMode = _gotoMenu;
 		}
 	}
 }

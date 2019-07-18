@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
 			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
+			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 			uIPanel.PaddingTop = 0f;
 			uIElement.Append(uIPanel);
 
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIHeaderTexTPanel.HAlign = 0.5f;
 			uIHeaderTexTPanel.Top.Set(-35f, 0f);
 			uIHeaderTexTPanel.SetPadding(15f);
-			uIHeaderTexTPanel.BackgroundColor = UICommon.defaultUIBlue;
+			uIHeaderTexTPanel.BackgroundColor = UICommon.DefaultUIBlue;
 			uIElement.Append(uIHeaderTexTPanel);
 
 			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);

@@ -1,66 +1,67 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
 	internal sealed class UILoaderAnimatedImage : UIElement
 	{
-		public bool withBackground = false;
-		public int frameTick = 0;
-		public int frame = 0;
-		private float scale;
-		public const int maxFrames = 16;
-		public const int maxDelay = 5;
-		private Texture2D backgroundTexture;
-		private Texture2D loaderTexture;
+		public const int MAX_FRAMES = 16;
+		public const int MAX_DELAY = 5;
+
+		public bool WithBackground = false;
+		public int FrameTick;
+		public int Frame;
+
+		private readonly float _scale;
+		private Texture2D _backgroundTexture;
+		private Texture2D _loaderTexture;
 
 		public UILoaderAnimatedImage(float left, float top, float scale = 1f) {
-			this.scale = scale;
+			_scale = scale;
 			Width.Pixels = 200f * scale;
 			Height.Pixels = 200f * scale;
 			HAlign = left;
 			VAlign = top;
 		}
 
-		public override void OnInitialize()
-		{
-			backgroundTexture = UICommon.loaderBGTexture;
-			loaderTexture = UICommon.loaderTexture;
+		public override void OnInitialize() {
+			_backgroundTexture = UICommon.LoaderBgTexture;
+			_loaderTexture = UICommon.LoaderTexture;
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if (++frameTick >= maxDelay) {
-				frameTick = 0;
-				if (++frame >= maxFrames)
-					frame = 0;
+			if (++FrameTick >= MAX_DELAY) {
+				FrameTick = 0;
+				if (++Frame >= MAX_FRAMES)
+					Frame = 0;
 			}
 
-			CalculatedStyle dimensions = base.GetDimensions();
+			CalculatedStyle dimensions = GetDimensions();
+
 			// Draw BG
-			if (withBackground) {
+			if (WithBackground) {
 				spriteBatch.Draw(
-					backgroundTexture,
+					_backgroundTexture,
 					new Vector2((int)dimensions.X, (int)dimensions.Y),
 					new Rectangle(0, 0, 200, 200),
 					Color.White,
 					0f,
 					new Vector2(0, 0),
-					scale,
+					_scale,
 					SpriteEffects.None,
 					0.0f);
 			}
 
 			// Draw loader animation
 			spriteBatch.Draw(
-				loaderTexture,
+				_loaderTexture,
 				new Vector2((int)dimensions.X, (int)dimensions.Y),
-				new Rectangle(200 * (frame / 8), 200 * (frame % 8), 200, 200),
+				new Rectangle(200 * (Frame / 8), 200 * (Frame % 8), 200, 200),
 				Color.White,
 				0f,
 				new Vector2(0, 0),
-				scale,
+				_scale,
 				SpriteEffects.None,
 				0.0f);
 		}

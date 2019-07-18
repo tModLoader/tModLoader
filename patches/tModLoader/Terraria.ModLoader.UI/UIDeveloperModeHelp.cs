@@ -1,9 +1,7 @@
 ﻿using Ionic.Zip;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -19,10 +17,11 @@ namespace Terraria.ModLoader.UI
 {
 	internal class UIDeveloperModeHelp : UIState
 	{
-		private UIPanel backPanel;
-		private UIImage refAssemDirectDlButton;
-		private UITextPanel<string> bottomButton;
-		private bool allChecksSatisfied;
+		private UIPanel _backPanel;
+		private UIImage _refAssemDirectDlButton;
+		private UITextPanel<string> _bottomButton;
+		private bool _allChecksSatisfied;
+		private bool _updateRequired;
 
 		public override void OnInitialize() {
 			var area = new UIElement {
@@ -32,46 +31,43 @@ namespace Terraria.ModLoader.UI
 				HAlign = 0.5f
 			};
 
-			backPanel = new UIPanel {
+			_backPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -70, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground
+				BackgroundColor = UICommon.MainPanelBackground
 			}.WithPadding(6);
-			area.Append(backPanel);
+			area.Append(_backPanel);
 
 			var heading = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuEnableDeveloperMode"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -45 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15);
 			area.Append(heading);
 
-			bottomButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, true) {
+			_bottomButton = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, true) {
 				Width = { Percent = 0.5f },
 				Height = { Pixels = 50 },
 				HAlign = 0.5f,
 				VAlign = 1f,
 				Top = { Pixels = -20 }
 			}.WithFadedMouseOver();
-			bottomButton.OnClick += BackClick;
-			area.Append(bottomButton);
+			_bottomButton.OnClick += BackClick;
+			area.Append(_bottomButton);
 
 			Append(area);
 		}
 
 		public override void OnActivate() {
-			updateRequired = true;
+			_updateRequired = true;
 		}
 
-		private bool updateRequired;
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
+			if (!_updateRequired) return;
 
-			if (!updateRequired)
-				return;
-			updateRequired = false;
-
-			backPanel.RemoveAllChildren();
+			_updateRequired = false;
+			_backPanel.RemoveAllChildren();
 
 			int i = 0;
 
@@ -81,12 +77,12 @@ namespace Terraria.ModLoader.UI
 					Height = { Percent = .2f },
 					Top = { Percent = (i++) / 4f + 0.05f },
 				}.WithPadding(6);
-				backPanel.Append(msgBox);
-				msgBox.OnActivate();
+				_backPanel.Append(msgBox);
+				msgBox.Activate();
 				return msgBox;
 			}
 
-			UITextPanel<string> AddButton(UIElement elem, string text, Action clickAction) {
+			void AddButton(UIElement elem, string text, Action clickAction) {
 				var button = new UITextPanel<string>(text) {
 					Top = { Pixels = -2 },
 					Left = { Pixels = -2 },
@@ -94,8 +90,8 @@ namespace Terraria.ModLoader.UI
 					VAlign = 1
 				}.WithFadedMouseOver();
 				button.OnClick += (evt, _) => clickAction();
+				button.Activate();
 				elem.Append(button);
-				return button;
 			}
 
 			bool frameworkCheck = ModCompile.RoslynCompatibleFrameworkCheck(out var dotNetMsg);
@@ -128,21 +124,21 @@ namespace Terraria.ModLoader.UI
 				if (ModCompile.PlatformSupportsVisualStudio)
 					AddButton(refAssemMsgBox, Language.GetTextValue("tModLoader.DMVisualStudio"), DevelopingWithVisualStudio);
 
-				var icon = UICommon.buttonExclamationTexture;
-				refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
+				var icon = UICommon.ButtonExclamationTexture;
+				_refAssemDirectDlButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.DMReferenceAssembliesDownload")) {
 					Left = { Pixels = -1 },
 					Top = { Pixels = -1 },
 					VAlign = 1,
 				};
-				refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
-				refAssemMsgBox.Append(refAssemDirectDlButton);
+				_refAssemDirectDlButton.OnClick += (evt, _) => DirectDownloadRefAssemblies();
+				refAssemMsgBox.Append(_refAssemDirectDlButton);
 			}
 
 			var tutorialMsgBox = AddMessageBox(Language.GetTextValue("tModLoader.DMTutorialWelcome"));
 			AddButton(tutorialMsgBox, Language.GetTextValue("tModLoader.DMTutorial"), OpenTutorial);
 
-			allChecksSatisfied = frameworkCheck && modCompileCheck && refAssemCheck;
-			bottomButton.SetText(allChecksSatisfied ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("UI.Back"));
+			_allChecksSatisfied = frameworkCheck && modCompileCheck && refAssemCheck;
+			_bottomButton.SetText(_allChecksSatisfied ? Language.GetTextValue("tModLoader.Continue") : Language.GetTextValue("UI.Back"));
 		}
 
 		private void DevelopingWithVisualStudio() {
@@ -177,7 +173,7 @@ namespace Terraria.ModLoader.UI
 					File.Copy("tModLoader-kick", kickPath, true);
 
 				monoStartScriptsUpdated = true;
-				updateRequired = true;
+				_updateRequired = true;
 			}
 			catch (Exception e) {
 				Logging.tML.Error(e);
@@ -207,7 +203,7 @@ namespace Terraria.ModLoader.UI
 					string correctPDBFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.pdb");
 					File.Copy(originalPDBFile, correctPDBFile, true);
 					File.Delete(originalPDBFile);
-					updateRequired = true;
+					_updateRequired = true;
 				}
 				catch (Exception e) {
 					Logging.tML.Error($"Problem during extracting of mod compile files for", e);
@@ -257,13 +253,13 @@ namespace Terraria.ModLoader.UI
 			downloadFile.OnComplete += downloadModCompileComplete;
 			Interface.downloadProgress.gotoMenu = Interface.developerModeHelpID;
 			Interface.downloadProgress.OnCancel += () => {
-				Interface.developerModeHelp.updateRequired = true;
+				Interface.developerModeHelp._updateRequired = true;
 			};
 			Interface.downloadProgress.HandleDownloads(downloadFile);
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			if (allChecksSatisfied) {
+			if (_allChecksSatisfied) {
 				Main.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
 			}

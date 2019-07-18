@@ -68,7 +68,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_backgroundElement = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground,
+				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
 			_rootElement.Append(_backgroundElement);
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			HeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15f);
 			_backgroundElement.Append(HeaderTextPanel);
 

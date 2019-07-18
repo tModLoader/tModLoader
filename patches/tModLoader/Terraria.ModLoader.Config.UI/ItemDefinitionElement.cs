@@ -166,14 +166,14 @@ namespace Terraria.ModLoader.Config.UI
 					if (ItemID.Sets.Deprecated[item.itemType])
 						continue;
 					// Should this be the localized item name?
-					if (Lang.GetItemNameValue(item.itemType).IndexOf(chooserFilter.currentString, StringComparison.OrdinalIgnoreCase) == -1)
+					if (Lang.GetItemNameValue(item.itemType).IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 						continue;
 					string modname = "Terraria";
 					if (item.itemType > ItemID.Count)
 					{
 						modname = ItemLoader.GetItem(item.itemType).mod.DisplayName; // or internal name?
 					}
-					if (modname.IndexOf(chooserFilterMod.currentString, StringComparison.OrdinalIgnoreCase) == -1)
+					if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 						continue;
 					passed.Add(item);
 				}

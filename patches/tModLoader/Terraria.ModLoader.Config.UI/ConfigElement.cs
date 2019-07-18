@@ -22,12 +22,12 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
 		protected Texture2D deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-		protected Texture2D plusTexture = UICommon.buttonPlusTexture;
+		protected Texture2D plusTexture = UICommon.ButtonPlusTexture;
 		//protected Texture2D upArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png"));
 		//protected Texture2D downArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png"));
-		protected Texture2D upDownTexture = UICommon.buttonUpDownTexture;
-		protected Texture2D collapsedTexture = UICommon.buttonCollapsedTexture;
-		protected Texture2D expandedTexture = UICommon.buttonExpandedTexture;
+		protected Texture2D upDownTexture = UICommon.ButtonUpDownTexture;
+		protected Texture2D collapsedTexture = UICommon.ButtonCollapsedTexture;
+		protected Texture2D expandedTexture = UICommon.ButtonExpandedTexture;
 
 		// Provides access to the field/property contained in the item
 		protected PropertyFieldWrapper memberInfo;
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.Config.UI
 			this.item = item;
 			this.list = array;
 			this.index = index;
-			this.backgroundColor = UICommon.defaultUIBlue;
+			this.backgroundColor = UICommon.DefaultUIBlue;
 		}
 
 		public virtual void OnBind() {

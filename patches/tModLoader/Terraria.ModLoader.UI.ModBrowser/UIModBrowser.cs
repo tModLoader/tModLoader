@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			get => _specialModPackFilter;
 			set {
 				if (_specialModPackFilter != null && value == null) {
-					_backgroundElement.BackgroundColor = UICommon.mainPanelBackground;
+					_backgroundElement.BackgroundColor = UICommon.MainPanelBackground;
 					_rootElement.RemoveChild(_clearButton);
 					_rootElement.RemoveChild(_downloadAllButton);
 				}

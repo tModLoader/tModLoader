@@ -11,18 +11,18 @@ namespace Terraria.ModLoader.UI
 {
 	public static class UICommon
 	{
-		public static Color defaultUIBlue = new Color(73, 94, 171);
-		public static Color defaultUIBlueMouseOver = new Color(63, 82, 151) * 0.7f;
-		public static Color mainPanelBackground = new Color(33, 43, 79) * 0.8f;
+		public static Color DefaultUIBlue = new Color(73, 94, 171);
+		public static Color DefaultUIBlueMouseOver = new Color(63, 82, 151) * 0.7f;
+		public static Color MainPanelBackground = new Color(33, 43, 79) * 0.8f;
 
 		public static StyleDimension MaxPanelWidth = new StyleDimension(600, 0);
 
-		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default(Color), Color outColor = default(Color)) where T : UIPanel {
-			if (overColor == default(Color))
-				overColor = defaultUIBlue;
+		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel {
+			if (overColor == default)
+				overColor = DefaultUIBlue;
 
-			if (outColor == default(Color))
-				outColor = defaultUIBlueMouseOver;
+			if (outColor == default)
+				outColor = DefaultUIBlueMouseOver;
 
 			elem.OnMouseOver += (evt, _) => {
 				Main.PlaySound(SoundID.MenuTick);
@@ -66,44 +66,44 @@ namespace Terraria.ModLoader.UI
 			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 
-		internal static Texture2D buttonErrorTexture;
-		internal static Texture2D buttonConfigTexture;
-		internal static Texture2D buttonPlusTexture;
-		internal static Texture2D buttonUpDownTexture;
-		internal static Texture2D buttonCollapsedTexture;
-		internal static Texture2D buttonExpandedTexture;
-		internal static Texture2D modBrowserIconsTexture;
-		internal static Texture2D buttonExclamationTexture;
-		internal static Texture2D loaderTexture;
-		internal static Texture2D loaderBGTexture;
-		internal static Texture2D buttonDownloadTexture;
-		internal static Texture2D buttonDowngradeTexture;
-		internal static Texture2D buttonDownloadMultipleTexture;
-		internal static Texture2D buttonModInfoTexture;
-		internal static Texture2D buttonModConfigTexture;
+		internal static Texture2D ButtonErrorTexture;
+		internal static Texture2D ButtonConfigTexture;
+		internal static Texture2D ButtonPlusTexture;
+		internal static Texture2D ButtonUpDownTexture;
+		internal static Texture2D ButtonCollapsedTexture;
+		internal static Texture2D ButtonExpandedTexture;
+		internal static Texture2D ModBrowserIconsTexture;
+		internal static Texture2D ButtonExclamationTexture;
+		internal static Texture2D LoaderTexture;
+		internal static Texture2D LoaderBgTexture;
+		internal static Texture2D ButtonDownloadTexture;
+		internal static Texture2D ButtonDowngradeTexture;
+		internal static Texture2D ButtonDownloadMultipleTexture;
+		internal static Texture2D ButtonModInfoTexture;
+		internal static Texture2D ButtonModConfigTexture;
 
-		internal static Texture2D dividerTexture;
-		internal static Texture2D innerPanelTexture;
+		internal static Texture2D DividerTexture;
+		internal static Texture2D InnerPanelTexture;
 
 		internal static void LoadTextures() {
-			buttonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
-			buttonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
-			buttonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
-			buttonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown.png");
-			buttonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed.png");
-			buttonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded.png");
-			modBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons.png");
-			buttonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation.png");
-			loaderTexture = LoadEmbeddedTexture("UI.Loader.png");
-			loaderBGTexture = LoadEmbeddedTexture("UI.LoaderBG.png");
-			buttonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload.png");
-			buttonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade.png");
-			buttonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple.png");
-			buttonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo.png");
-			buttonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig.png");
+			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
+			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
+			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
+			ButtonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown.png");
+			ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed.png");
+			ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded.png");
+			ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons.png");
+			ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation.png");
+			LoaderTexture = LoadEmbeddedTexture("UI.Loader.png");
+			LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG.png");
+			ButtonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload.png");
+			ButtonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade.png");
+			ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple.png");
+			ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo.png");
+			ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig.png");
 
-			dividerTexture = TextureManager.Load("Images/UI/Divider");
-			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+			DividerTexture = TextureManager.Load("Images/UI/Divider");
+			InnerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 
 			Texture2D LoadEmbeddedTexture(string name) 
 				=> Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.{name}"));

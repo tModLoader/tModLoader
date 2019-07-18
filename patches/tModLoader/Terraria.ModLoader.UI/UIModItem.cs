@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		private UIHoverImage _keyImage;
 		private UIImage _configButton;
 		private UIText _modName;
-		private ModStateText _modStateText;
+		private UIModStateText _uiModStateText;
 		private UIHoverImage _modReferenceIcon;
 		private readonly LocalMod _mod;
 
@@ -77,14 +77,14 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(_modName);
 
-			_modStateText = new ModStateText(_mod.Enabled) {
+			_uiModStateText = new UIModStateText(_mod.Enabled) {
 				Top = { Pixels = 40 },
 				Left = { Pixels = _modIconAdjust }
 			};
-			_modStateText.OnClick += ToggleEnabled;
-			Append(_modStateText);
+			_uiModStateText.OnClick += ToggleEnabled;
+			Append(_uiModStateText);
 
-			_moreInfoButton = new UIImage(UICommon.buttonModInfoTexture) {
+			_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = -36, Precent = 1 },
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.UI
 
 			Mod loadedMod = ModLoader.GetMod(_mod.Name);
 			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) {
-				_configButton = new UIImage(UICommon.buttonModConfigTexture) {
+				_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 					Width = { Pixels = 36 },
 					Height = { Pixels = 36f },
 					Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1f },
@@ -111,9 +111,9 @@ namespace Terraria.ModLoader.UI
 			_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 			if (_modReferences.Length > 0 && !_mod.Enabled) {
 				string refs = string.Join(", ", _mod.properties.modReferences);
-				var icon = UICommon.buttonExclamationTexture;
+				var icon = UICommon.ButtonExclamationTexture;
 				_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
-					Left = new StyleDimension(_modStateText.Left.Pixels + _modStateText.Width.Pixels + PADDING, 0f),
+					Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 					Top = { Pixels = 42.5f }
 				};
 				_modReferenceIcon.OnClick += EnableDependencies;
@@ -126,7 +126,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 			}
 			if (ModLoader.badUnloaders.Contains(_mod.Name)) {
-				_keyImage = new UIHoverImage(UICommon.buttonErrorTexture, "This mod did not fully unload during last unload.") {
+				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This mod did not fully unload during last unload.") {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
 				};
@@ -159,8 +159,8 @@ namespace Terraria.ModLoader.UI
 
 			OnDoubleClick += (e, el) => {
 				// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
-				if (e.Target.GetType() != typeof(ModStateText))
-					_modStateText.Click(e);
+				if (e.Target.GetType() != typeof(UIModStateText))
+					_uiModStateText.Click(e);
 			};
 		}
 
@@ -195,22 +195,22 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
-			spriteBatch.Draw(UICommon.dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(UICommon.DividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + 10f + _modIconAdjust, innerDimensions.Y + 45f);
 
 			// TODO: These should just be UITexts
 			if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload)) {
 				if (_modReferenceIcon != null) {
-					drawPos += new Vector2(_modStateText.Width.Pixels + _modReferenceIcon.Width.Pixels + PADDING, 0f);
+					drawPos += new Vector2(_uiModStateText.Width.Pixels + _modReferenceIcon.Width.Pixels + PADDING, 0f);
 				}
 				else {
-					drawPos += new Vector2(_modStateText.Width.Pixels, 0f);
+					drawPos += new Vector2(_uiModStateText.Width.Pixels, 0f);
 				}
 				Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 			}
 			if (_mod.properties.side == ModSide.Server) {
 				drawPos += new Vector2(90f, -2f);
-				spriteBatch.Draw(UICommon.modBrowserIconsTexture, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(UICommon.ModBrowserIconsTexture, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 				if (new Rectangle((int)drawPos.X, (int)drawPos.Y, 32, 32).Contains(Main.MouseScreen.ToPoint()))
 					UICommon.DrawHoverStringInBounds(spriteBatch, "This is a server side mod");
 			}
@@ -221,7 +221,7 @@ namespace Terraria.ModLoader.UI
 			else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
 			}
-			else if (_modStateText?.IsMouseHovering == true) {
+			else if (_uiModStateText?.IsMouseHovering == true) {
 				_tooltip = ToggleModStateText;
 			} else if (_configButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
@@ -230,7 +230,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			BackgroundColor = UICommon.defaultUIBlue;
+			BackgroundColor = UICommon.DefaultUIBlue;
 			BorderColor = new Color(89, 116, 213);
 		}
 
@@ -248,13 +248,13 @@ namespace Terraria.ModLoader.UI
 		internal void Enable() {
 			Main.PlaySound(12);
 			_mod.Enabled = true;
-			_modStateText.SetEnabled();
+			_uiModStateText.SetEnabled();
 		}
 
 		internal void Disable() {
 			Main.PlaySound(12);
 			_mod.Enabled = false;
-			_modStateText.SetDisabled();
+			_uiModStateText.SetDisabled();
 		}
 
 		internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement) {
@@ -325,68 +325,6 @@ namespace Terraria.ModLoader.UI
 				case EnabledFilter.DisabledOnly:
 					return !_mod.Enabled;
 			}
-		}
-	}
-
-	internal class ModStateText : UIElement
-	{
-		private bool _enabled;
-
-		private string DisplayText
-			=> _enabled
-			? Language.GetTextValue("GameUI.Enabled")
-			: Language.GetTextValue("GameUI.Disabled");
-
-		private Color DisplayColor
-			=> _enabled ? Color.Green : Color.Red;
-
-		public ModStateText(bool enabled = true) {
-			_enabled = enabled;
-			PaddingLeft = PaddingRight = 5f;
-			PaddingBottom = PaddingTop = 10f;
-		}
-
-		public override void OnInitialize() {
-			OnClick += (evt, el) => {
-				if (_enabled) SetDisabled();
-				else SetEnabled();
-			};
-		}
-
-		public void SetEnabled() {
-			_enabled = true;
-			Recalculate();
-		}
-
-		public void SetDisabled() {
-			_enabled = false;
-			Recalculate();
-		}
-
-		public override void Recalculate() {
-			var textSize = new Vector2(Main.fontMouseText.MeasureString(DisplayText).X, 16f);
-			Width.Set(textSize.X + PaddingLeft + PaddingRight, 0f);
-			Height.Set(textSize.Y + PaddingTop + PaddingBottom, 0f);
-			base.Recalculate();
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			base.DrawSelf(spriteBatch);
-			DrawPanel(spriteBatch);
-			DrawEnabledText(spriteBatch);
-		}
-
-		private void DrawPanel(SpriteBatch spriteBatch) {
-			var position = GetDimensions().Position();
-			var width = Width.Pixels;
-			spriteBatch.Draw(UICommon.innerPanelTexture, position, new Rectangle(0, 0, 8, UICommon.innerPanelTexture.Height), Color.White);
-			spriteBatch.Draw(UICommon.innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, UICommon.innerPanelTexture.Height), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(UICommon.innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, UICommon.innerPanelTexture.Height), Color.White);
-		}
-
-		private void DrawEnabledText(SpriteBatch spriteBatch) {
-			var pos = GetDimensions().Position() + new Vector2(PaddingLeft, PaddingTop * 0.5f);
-			Utils.DrawBorderString(spriteBatch, DisplayText, pos, DisplayColor);
 		}
 	}
 }

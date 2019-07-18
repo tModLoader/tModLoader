@@ -81,8 +81,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Installed = installed;
 
 			BorderColor = new Color(89, 116, 213) * 0.7f;
-			_dividerTexture = UICommon.dividerTexture;
-			_innerPanelTexture = UICommon.innerPanelTexture;
+			_dividerTexture = UICommon.DividerTexture;
+			_innerPanelTexture = UICommon.InnerPanelTexture;
 			Height.Pixels = 90;
 			Width.Percent = 1f;
 			SetPadding(6f);
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			};
 			Append(_modName);
 
-			_moreInfoButton = new UIImage(UICommon.buttonModInfoTexture) {
+			_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = leftOffset },
@@ -116,14 +116,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Append(tMLUpdateRequired);
 			}
 			else if (hasUpdate || installed == null) {
-				_updateButton = new UIImage(UpdateIsDowngrade ? UICommon.buttonDowngradeTexture : UICommon.buttonDownloadTexture);
+				_updateButton = new UIImage(UpdateIsDowngrade ? UICommon.ButtonDowngradeTexture : UICommon.ButtonDownloadTexture);
 				_updateButton.CopyStyle(_moreInfoButton);
 				_updateButton.Left.Pixels += 36 + PADDING;
 				_updateButton.OnClick += DownloadMod;
 				Append(_updateButton);
 
 				if (_modReferences.Length > 0) {
-					_updateWithDepsButton = new UIImage(UICommon.buttonDownloadMultipleTexture);
+					_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
 					_updateWithDepsButton.CopyStyle(_updateButton);
 					_updateWithDepsButton.Left.Pixels += 36 + PADDING;
 					_updateWithDepsButton.OnClick += DownloadWithDeps;
@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 
 			if (modReferences.Length > 0) {
-				var icon = UICommon.buttonExclamationTexture;
+				var icon = UICommon.ButtonExclamationTexture;
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modReferences.Split(',').Select(x => x.Trim())))) {
 					Left = { Pixels = -icon.Width - PADDING, Percent = 1f }
 				};
@@ -357,7 +357,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			BackgroundColor = UICommon.defaultUIBlue;
+			BackgroundColor = UICommon.DefaultUIBlue;
 			BorderColor = new Color(89, 116, 213);
 		}
 

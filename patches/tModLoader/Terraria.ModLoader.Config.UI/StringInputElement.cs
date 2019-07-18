@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIInputTextField.Height.Set(20, 0);
 			uIInputTextField.OnTextChange += (a, b) =>
 			{
-				Value = uIInputTextField.currentString;
+				Value = uIInputTextField.CurrentString;
 			};
 			textBoxBackground.Append(uIInputTextField);
 		}
