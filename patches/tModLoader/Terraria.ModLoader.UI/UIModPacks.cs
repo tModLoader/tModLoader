@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -24,6 +25,7 @@ namespace Terraria.ModLoader.UI
 		private UIList _modPacks;
 		private UILoaderAnimatedImage _uiLoader;
 		private UIPanel _scrollPanel;
+		private CancellationTokenSource _cts;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -34,7 +36,7 @@ namespace Terraria.ModLoader.UI
 				HAlign = 0.5f
 			};
 
-			_uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f, 1f);
+			_uiLoader = new UILoaderAnimatedImage(0.5f, 0.5f);
 
 			_scrollPanel = new UIPanel {
 				Width = { Percent = 1f },
@@ -87,10 +89,10 @@ namespace Terraria.ModLoader.UI
 		private static UIVirtualKeyboard _virtualKeyboard;
 		private static UIVirtualKeyboard VirtualKeyboard =>
 			_virtualKeyboard ?? (_virtualKeyboard = new UIVirtualKeyboard(
-				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID, 0));
+				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID));
 
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
+			Main.PlaySound(11);
 			VirtualKeyboard.Text = "";
 			Main.MenuUI.SetState(VirtualKeyboard);
 			Main.menuMode = 888;
@@ -117,7 +119,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
+			Main.PlaySound(11);
 			Main.menuMode = Interface.modsMenuID;
 		}
 
@@ -133,15 +135,23 @@ namespace Terraria.ModLoader.UI
 		internal static bool IsValidModpackName(string name)
 			=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
+		public override void OnDeactivate() {
+			_cts?.Cancel(false);
+			_cts?.Dispose();
+			_cts = null;
+		}
+
 		public override void OnActivate() {
+			_cts = new CancellationTokenSource();
 			_scrollPanel.Append(_uiLoader);
 			_modPacks.Clear();
+
 			Task.Factory
 				.StartNew(delegate {
 					Mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 					Directory.CreateDirectory(ModPacksDirectory);
 					return Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
-				})
+				}, _cts.Token)
 				.ContinueWith(task => {
 					foreach (string modPackPath in task.Result) {
 						try {
@@ -160,7 +170,7 @@ namespace Terraria.ModLoader.UI
 						}
 					}
 					_scrollPanel.RemoveChild(_uiLoader);
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 }

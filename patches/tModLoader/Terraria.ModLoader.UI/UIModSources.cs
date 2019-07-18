@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -22,6 +23,7 @@ namespace Terraria.ModLoader.UI
 		private UIElement _uIElement;
 		private UIPanel _uIPanel;
 		private UILoaderAnimatedImage _uiLoader;
+		private CancellationTokenSource _cts;
 
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
@@ -149,11 +151,18 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			_cts = new CancellationTokenSource();
 			ModCompile.UpdateReferencesFolder();
 			_uIPanel.Append(_uiLoader);
 			_modList.Clear();
 			_items.Clear();
 			Populate();
+		}
+
+		public override void OnDeactivate() {
+			_cts?.Cancel(false);
+			_cts?.Dispose();
+			_cts = null;
 		}
 
 		internal void Populate() {
@@ -162,7 +171,7 @@ namespace Terraria.ModLoader.UI
 					var modSources = ModCompile.FindModSources();
 					var modFiles = ModOrganizer.FindMods();
 					return Tuple.Create(modSources, modFiles);
-				})
+				}, _cts.Token)
 				.ContinueWith(task => {
 					var modSources = task.Result.Item1;
 					var modFiles = task.Result.Item2;
@@ -171,7 +180,7 @@ namespace Terraria.ModLoader.UI
 						_items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
 					_updateNeeded = true;
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		public override void Update(GameTime gameTime) {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -39,6 +40,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonB;
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
+		private CancellationTokenSource _cts;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -314,6 +316,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			_cts = new CancellationTokenSource();
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
@@ -323,9 +326,15 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
+		public override void OnDeactivate() {
+			_cts?.Cancel(false);
+			_cts?.Dispose();
+			_cts = null;
+		}
+
 		internal void Populate() {
 			Task.Factory
-				.StartNew(ModOrganizer.FindMods)
+				.StartNew(ModOrganizer.FindMods, _cts.Token)
 				.ContinueWith(task => {
 					var mods = task.Result;
 					foreach (var mod in mods) {
@@ -336,7 +345,7 @@ namespace Terraria.ModLoader.UI
 					needToRemoveLoading = true;
 					updateNeeded = true;
 					loading = false;
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 

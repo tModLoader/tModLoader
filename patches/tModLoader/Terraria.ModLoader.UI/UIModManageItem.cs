@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.UI
 			_unpublishButton.Width.Pixels = 150;
 			_unpublishButton.Left.Pixels = 360;
 			_unpublishButton.WithFadedMouseOver();
-			_unpublishButton.OnClick += Unpublish;
+			_unpublishButton.OnClick += UnpublishMod;
 			Append(_unpublishButton);
 		}
 
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.UI
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 
-		internal void Unpublish(UIMouseEvent evt, UIElement listeningElement) {
+		internal void UnpublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
