@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -12,7 +13,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public int gotoMenu = 0;
 
 		protected UIProgressBar _progressBar;
-		protected UITextPanel<String> _cancelButton;
+		protected UITextPanel<string> _cancelButton;
 		private string _cachedText = "";
 
 		public string DisplayText {
@@ -55,6 +56,16 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public void Show() {
 			Main.menuMode = Interface.progressID;
+		}
+
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			// Sometimes the DisplayText may be set just before the UI initializes and the progressBar is ready
+			// In this case the text ends up empty but can be set on the next Update call
+			if (!string.IsNullOrEmpty(_cachedText) && _progressBar != null) {
+				DisplayText = _cachedText;
+				_cachedText = string.Empty;
+			}
 		}
 
 		public override void OnActivate() {
