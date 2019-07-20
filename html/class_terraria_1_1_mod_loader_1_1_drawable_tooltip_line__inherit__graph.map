@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.DrawableTooltipLine" name="Terraria.ModLoader.DrawableTooltipLine">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook. " alt="" coords="65,5,153,32"/>
+</map>

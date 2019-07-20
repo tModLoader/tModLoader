@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.WaterStyleLoader.DrawWaterfall" name="Terraria.ModLoader.WaterStyleLoader.DrawWaterfall">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_water_style.html#ab32a21465ad930bd6d3ff7ff42d54efb" title="The ID of the waterfall style the game should use when this water style is in use. " alt="" coords="240,5,451,47"/>
+</map>

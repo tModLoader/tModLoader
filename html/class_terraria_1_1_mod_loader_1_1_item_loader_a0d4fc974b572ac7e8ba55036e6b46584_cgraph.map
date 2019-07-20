@@ -1,0 +1,6 @@
+<map id="Terraria.ModLoader.ItemLoader.WingUpdate" name="Terraria.ModLoader.ItemLoader.WingUpdate">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="276,5,459,47"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac0256b1a5513250b598b495c4e814624" title="Allows for wing textures to do various things while in use. &quot;inUse&quot; is whether or not the jump button..." alt="" coords="276,71,459,112"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="507,5,736,47"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="784,5,1005,47"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ModContent.FileExists" name="Terraria.ModLoader.ModContent.FileExists">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod.html#ac6060b44af6ea4bf0db551886ea796d9" title="Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used h..." alt="" coords="294,5,493,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="283,71,504,112"/>
+</map>

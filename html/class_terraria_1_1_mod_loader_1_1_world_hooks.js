@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_world_hooks =
 [
     [ "ChooseWaterStyle", "class_terraria_1_1_mod_loader_1_1_world_hooks.html#aea14ab9f4f7eb78bc10e93acfe8e895b", null ],
+    [ "ModifyHardmodeTasks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html#a20ff815a2a8b095b807c3f51ce409588", null ],
     [ "ModifyWorldGenTasks", "class_terraria_1_1_mod_loader_1_1_world_hooks.html#aeaa74cf9e43464087675aec49a714f33", null ],
     [ "PostDrawTiles", "class_terraria_1_1_mod_loader_1_1_world_hooks.html#ad2a51d34d159dcab668a3a546648bd6b", null ],
     [ "PostUpdate", "class_terraria_1_1_mod_loader_1_1_world_hooks.html#a9216806d65e8d1bf13e682f141efb28d", null ],

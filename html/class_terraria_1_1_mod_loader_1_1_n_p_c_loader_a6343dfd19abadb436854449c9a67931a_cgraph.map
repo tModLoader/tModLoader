@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.TownNPCAttackMagic" name="Terraria.ModLoader.NPCLoader.TownNPCAttackMagic">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="275,5,462,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a068df531f0b46bcf56521532277bce2e" title="Allows you to control the brightness of the light emitted by a town NPC&#39;s aura when it performs a mag..." alt="" coords="275,71,463,112"/>
+</map>

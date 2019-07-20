@@ -31,5 +31,6 @@ var class_terraria_1_1_mod_loader_1_1_wall_loader =
     [ "HookPreDraw", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a594f30835e931eec3218c2748d8a489e", null ],
     [ "HookRandomUpdate", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a986ab927e9ba60ae8b0013f72ccb08ee", null ],
     [ "loaded", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a26945400102ee133ead362be72521b85", null ],
-    [ "nextWall", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5", null ]
+    [ "nextWall", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#ab7cc408e65dc7999f965375ab31d5ed5", null ],
+    [ "WallCount", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a54e97031b1ca6ebd5e426adfc5c20c23", null ]
 ];

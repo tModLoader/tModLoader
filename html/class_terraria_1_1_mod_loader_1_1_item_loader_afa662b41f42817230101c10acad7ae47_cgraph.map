@@ -1,0 +1,9 @@
+<map id="Terraria.ModLoader.ItemLoader.ArmorSetShadows" name="Terraria.ModLoader.ItemLoader.ArmorSetShadows">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a8de3969ef1244999f9a92e5fa8bc87af" title="Allows you to determine special visual effects this vanity set has on the player without having to co..." alt="" coords="276,5,467,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#aa0157164b6840e3d0fdcb1fc2e297c20" title="Allows you to determine special visual effects a vanity has on the player without having to code them..." alt="" coords="278,71,465,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="280,136,463,177"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#acd4647b2d645c915743daa3b734919f7" title="Returns whether or not the head armor, body armor, and leg armor textures make up a set..." alt="" coords="280,201,463,243"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_global_item.html#afc66c0f98cbc3d51a577b847d011d711" title="Returns whether or not the head armor, body armor, and leg armor textures make up a set..." alt="" coords="278,267,465,308"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="515,136,744,177"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="792,136,1013,177"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Terraria.ModLoader.ItemLoader.ArmorArmGlowMask" name="Terraria.ModLoader.ItemLoader.ArmorArmGlowMask">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a8d753403d74729f61cd386373f1ae365" title="Allows you to modify which glow mask and in what color is drawn on the player&#39;s arms. Note that this is only called for body equipment textures. By default this will call the associated ModItem&#39;s ArmorArmGlowMask if there is an associated ModItem. " alt="" coords="276,5,479,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="286,71,469,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="527,71,756,112"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="804,71,1025,112"/>
+</map>

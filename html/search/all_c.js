@@ -1,7 +1,8 @@
 var searchData=
 [
   ['label',['label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()']]],
-  ['labelattribute',['LabelAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html',1,'Terraria.ModLoader.Config.LabelAttribute'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a9158d168365140d97f18f42b3599cc40',1,'Terraria.ModLoader.Config.LabelAttribute.LabelAttribute()']]],
+  ['labelattribute',['LabelAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['labelattribute',['LabelAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a9158d168365140d97f18f42b3599cc40',1,'Terraria::ModLoader::Config::LabelAttribute']]],
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
   ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],
   ['legarmorshader',['legArmorShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a1d80d2ea2666e65cdf0f95e7626b6fee',1,'Terraria::ModLoader::PlayerDrawInfo']]],
@@ -24,7 +25,7 @@ var searchData=
   ['loadedmods',['LoadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria::ModLoader::ModLoader']]],
   ['loadlegacy',['LoadLegacy',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a6c7c3fba18af6c5dbd2d37c33a2934d3',1,'Terraria.ModLoader.GlobalItem.LoadLegacy()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#a40be9291015b233a975e12ee6862da0f',1,'Terraria.ModLoader.ModItem.LoadLegacy()'],['../class_terraria_1_1_mod_loader_1_1_mod_player.html#a2fbcf53dbe08da1b5cb6adb78b93641e',1,'Terraria.ModLoader.ModPlayer.LoadLegacy()'],['../class_terraria_1_1_mod_loader_1_1_mod_world.html#af48790520c83765471a8b7a16888d605',1,'Terraria.ModLoader.ModWorld.LoadLegacy()'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a0fc1412d46dee67b9a2031f05e5d0560',1,'Terraria.ModLoader.IO.ItemIO.LoadLegacy()']]],
   ['loadlegacyinventory',['LoadLegacyInventory',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a99a595a8f7b87afad6adef7eff286d17',1,'Terraria::ModLoader::IO::ItemIO']]],
-  ['loadmodcontent',['LoadModContent',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a5b13b15051009ce957e96bada101ee81',1,'Terraria::ModLoader::ModContent']]],
+  ['loadmodcontent',['LoadModContent',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#ab8f5e4b534c8f229782d0ca611a3c70b',1,'Terraria::ModLoader::ModContent']]],
   ['loadmusic',['LoadMusic',['../class_terraria_1_1_mod_loader_1_1_mod.html#ab5f0fb99dd5954d669980456e3f2f473',1,'Terraria::ModLoader::Mod']]],
   ['loadresource',['LoadResource',['../class_terraria_1_1_mod_loader_1_1_mod.html#a06060e108c1ffa96c6893671cffe20d3',1,'Terraria::ModLoader::Mod']]],
   ['loadresourcefromstream',['LoadResourceFromStream',['../class_terraria_1_1_mod_loader_1_1_mod.html#a5f3343389eaa5fc6680de4f2ddc6e0c6',1,'Terraria::ModLoader::Mod']]],

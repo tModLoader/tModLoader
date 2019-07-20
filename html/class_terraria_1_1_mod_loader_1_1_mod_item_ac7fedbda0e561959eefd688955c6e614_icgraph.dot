@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModItem.AnglerQuestChat"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node11 [label="Terraria.ModLoader.ModItem.\lAnglerQuestChat",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node12 [label="Terraria.ModLoader.ItemLoader.\lAnglerChat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a0a03eaf7855989f2f2b7ffbb3682d6d5"];
-}

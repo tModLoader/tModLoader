@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.EquipTexture.DrawLegs" name="Terraria.ModLoader.EquipTexture.DrawLegs">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#ae9b78c43cf2796a560a267c89264d762" title="Calls the item&#39;s leg equipment texture&#39;s DrawLegs hook, then the item&#39;s shoe equipment texture&#39;s Draw..." alt="" coords="236,5,459,47"/>
+</map>

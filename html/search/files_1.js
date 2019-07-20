@@ -5,5 +5,6 @@ var searchData=
   ['backupio_2ecs',['BackupIO.cs',['../_backup_i_o_8cs.html',1,'']]],
   ['bigendian_2ecs',['BigEndian.cs',['../_big_endian_8cs.html',1,'']]],
   ['binaryio_2ecs',['BinaryIO.cs',['../_binary_i_o_8cs.html',1,'']]],
-  ['buffloader_2ecs',['BuffLoader.cs',['../_buff_loader_8cs.html',1,'']]]
+  ['buffloader_2ecs',['BuffLoader.cs',['../_buff_loader_8cs.html',1,'']]],
+  ['buildexception_2ecs',['BuildException.cs',['../_build_exception_8cs.html',1,'']]]
 ];

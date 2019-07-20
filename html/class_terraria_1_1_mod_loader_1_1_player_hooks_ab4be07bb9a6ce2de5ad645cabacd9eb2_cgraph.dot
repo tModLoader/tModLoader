@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.PlayerHooks.NaturalLifeRegen"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node102 [label="Terraria.ModLoader.Player\lHooks.NaturalLifeRegen",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node102 -> Node103 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node103 [label="Terraria.ModLoader.ModPlayer.\lNaturalLifeRegen",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_player.html#ae8dbfbc03aeba36009cca97321fb8754"];
-}

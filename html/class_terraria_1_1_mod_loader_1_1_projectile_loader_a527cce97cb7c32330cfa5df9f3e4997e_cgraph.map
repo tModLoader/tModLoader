@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.CanHitPvp" name="Terraria.ModLoader.ProjectileLoader.CanHitPvp">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a96b688c76e4ce10649982a3ab222eff5" title="Allows you to determine whether a projectile can hit the given opponent player. Return false to block..." alt="" coords="259,5,445,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="259,71,445,112"/>
+</map>

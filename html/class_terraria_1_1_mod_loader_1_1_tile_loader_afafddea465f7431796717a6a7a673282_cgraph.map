@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.TileLoader.CanExplode" name="Terraria.ModLoader.TileLoader.CanExplode">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#acd427d94acdae7d4be76653ee4dd7de2" title="Whether or not the tile at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it. " alt="" coords="268,5,467,47"/>
+</map>

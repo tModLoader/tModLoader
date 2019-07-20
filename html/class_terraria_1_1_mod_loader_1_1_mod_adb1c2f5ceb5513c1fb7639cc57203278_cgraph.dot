@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.Mod.AutoloadWaterStyle"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node184 [label="Terraria.ModLoader.Mod.Autoload\lWaterStyle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node184 -> Node185 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node185 [label="Terraria.ModLoader.ModWater\lStyle.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a46cab03a2cd47c509f6025f5d0718bd8",tooltip="Allows you to automatically add a ModWaterStyle instead of using Mod.AddWaterStyle. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. BlockTexture is initialized to texture with \"_Block\" added at the end. Use this to either force or stop an autoload, change the name that identifies this type of ModWaterStyle, and/or change the texture paths used by this ModWaterStyle. "];
-}

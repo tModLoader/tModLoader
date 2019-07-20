@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.TileLoader.TileFrame"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node173 [label="Terraria.ModLoader.TileLoader.\lTileFrame",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node173 -> Node174 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node174 [label="Terraria.ModLoader.ModTile.\lTileFrame",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf",tooltip="Called whenever this tile updates due to being placed or being next to a tile that is changed..."];
-}

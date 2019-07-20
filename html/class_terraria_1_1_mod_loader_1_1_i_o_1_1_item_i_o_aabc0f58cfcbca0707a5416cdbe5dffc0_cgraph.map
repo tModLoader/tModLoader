@@ -1,0 +1,14 @@
+<map id="Terraria.ModLoader.IO.ItemIO.FromBase64" name="Terraria.ModLoader.IO.ItemIO.FromBase64">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a5bb8177c2bd4cf1f285823c4a93a3c25" title="Terraria.ModLoader.IO.Tag\lIO.FromStream" alt="" coords="249,235,433,276"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#a6d85be6826465184a0c159ff793b69b6" title="Terraria.ModLoader.IO.Item\lIO.Load" alt="" coords="245,300,437,341"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac05f361e74b11d7fddaf60e4c3ab3fd7" title="Terraria.ModLoader.IO.Tag\lCompound.GetString" alt="" coords="514,5,698,47"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a8c222cd0a447787c97371c5ad36cfb0b" title="Terraria.ModLoader.IO.Tag\lCompound.GetInt" alt="" coords="514,71,698,112"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ad91adb77a4aee9dea9f7eaaedb0d4864" title="Terraria.ModLoader.IO.Tag\lCompound.ContainsKey" alt="" coords="514,136,698,177"/>
+<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#aada15ef3bf3bc4f1d2b8cb0a3963108f" title="Terraria.ModLoader.IO.Tag\lCompound.GetByteArray" alt="" coords="514,201,698,243"/>
+<area shape="rect" id="node8" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a1290e4b50bd24212af9de7fbb5b3827f" title="Terraria.ModLoader.IO.Tag\lCompound.GetBool" alt="" coords="514,267,698,308"/>
+<area shape="rect" id="node9" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="495,332,717,373"/>
+<area shape="rect" id="node10" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2" title="Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with th..." alt="" coords="489,398,723,425"/>
+<area shape="rect" id="node11" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a753b1f987e208031a74ee33546612fb3" title="Terraria.ModLoader.IO.Tag\lCompound.GetCompound" alt="" coords="511,449,701,491"/>
+<area shape="rect" id="node12" href="$class_terraria_1_1_mod_loader_1_1_mod.html#a46c19d75d1146f44a411115349b88334" title="Gets the internal ID / type of the ModPrefix corresponding to the name. Returns 0 if no ModPrefix wit..." alt="" coords="485,515,727,542"/>
+<area shape="rect" id="node13" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac14565446fdd2b4080a9eeaac2c5da3e" title="Terraria.ModLoader.IO.Tag\lCompound.GetByte" alt="" coords="514,567,698,608"/>
+</map>

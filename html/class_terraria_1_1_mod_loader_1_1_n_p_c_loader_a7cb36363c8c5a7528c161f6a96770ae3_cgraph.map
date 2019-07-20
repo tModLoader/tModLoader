@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.TownNPCAttackShoot" name="Terraria.ModLoader.NPCLoader.TownNPCAttackShoot">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="276,5,463,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa0c7388db7dc4d7dd7d920e9cf55ce8a" title="Allows you to tell the game that a town NPC has already created a projectile and will still create mo..." alt="" coords="275,71,464,112"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Mod.AutoloadNPC" name="Terraria.ModLoader.Mod.AutoloadNPC">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa43d4aa4654be6dc8805520434a8a761" title="Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading..." alt="" coords="316,5,521,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax, etc. " alt="" coords="569,5,775,47"/>
+</map>

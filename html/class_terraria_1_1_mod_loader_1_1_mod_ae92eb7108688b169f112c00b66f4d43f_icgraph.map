@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Mod.GetFileStream" name="Terraria.ModLoader.Mod.GetFileStream">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a7d35872c47802050843cea0404e40112" title="Terraria.ModLoader.ModContent.\lOpenRead" alt="" coords="255,5,484,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#ab6f127b36eee38dca1af8bf878be624f" title="Terraria.ModLoader.Audio.\lMusicStreaming.EnsureLoaded" alt="" coords="532,5,752,47"/>
+</map>

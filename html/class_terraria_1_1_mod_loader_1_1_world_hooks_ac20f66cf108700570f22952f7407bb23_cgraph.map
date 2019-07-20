@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.WorldHooks.PreUpdate" name="Terraria.ModLoader.WorldHooks.PreUpdate">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_world.html#ad1e9ea8fc667b3e439e26edf7289cdaf" title="Use this method to have things happen in the world. In vanilla Terraria, a good example of code suita..." alt="" coords="235,5,447,47"/>
+</map>

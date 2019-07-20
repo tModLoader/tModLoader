@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.GlobalProjectile.ModifyDamageHitbox"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node82 [label="Terraria.ModLoader.Global\lProjectile.ModifyDamageHitbox",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node82 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node83 [label="Terraria.ModLoader.Projectile\lLoader.ModifyDamageHitbox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a97e93c7d38e82c47718f9e16140424eb"];
-}

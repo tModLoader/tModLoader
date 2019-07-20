@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.PlayerHooks.CanBuyItem" name="Terraria.ModLoader.PlayerHooks.CanBuyItem">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_player.html#afe56f8028f1b08008b42cfb2ec63eaff" title="Return false to prevent a transaction. Called before the transaction. " alt="" coords="240,5,456,47"/>
+</map>

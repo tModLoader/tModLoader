@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ModGore.GetGoreSlot" name="Terraria.ModLoader.ModGore.GetGoreSlot">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="263,5,492,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="540,5,761,47"/>
+</map>

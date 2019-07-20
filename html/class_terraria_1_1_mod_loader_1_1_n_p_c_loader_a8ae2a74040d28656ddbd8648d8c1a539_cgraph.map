@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.TownNPCAttackProjSpeed" name="Terraria.ModLoader.NPCLoader.TownNPCAttackProjSpeed">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a864f48a10f6273f77c6a089b9baa8e4c" title="Terraria.ModLoader.Global\lNPC.Instance" alt="" coords="289,5,476,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a845c65ddf34cc2b4074cc91af4088182" title="Allows you to determine the speed at which a town NPC throws a projectile when it attacks..." alt="" coords="275,71,491,112"/>
+</map>

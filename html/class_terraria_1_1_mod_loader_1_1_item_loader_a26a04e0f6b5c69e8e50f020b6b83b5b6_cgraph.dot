@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ItemLoader.OpenBossBag"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node241 [label="Terraria.ModLoader.ItemLoader.\lOpenBossBag",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node241 -> Node242 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node242 [label="Terraria.ModLoader.ModItem.\lOpenBossBag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c",tooltip="Allows you to give items to the given player when this item is right-clicked in the inventory if the ..."];
-}

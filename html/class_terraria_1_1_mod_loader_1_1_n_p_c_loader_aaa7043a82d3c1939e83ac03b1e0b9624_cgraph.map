@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.NPCLoader.ChooseSpawn" name="Terraria.ModLoader.NPCLoader.ChooseSpawn">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af1732616b382d9e346a26763475188b0" title="Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter ma..." alt="" coords="284,5,471,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae7713bbbd313012944b958e8eafc35e0" title="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc..." alt="" coords="275,71,480,112"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Terraria.ModLoader.ItemLoader.DrawHands" name="Terraria.ModLoader.ItemLoader.DrawHands">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#ad1b4b94ba023f04cf4d545a55bce7921" title="Allows you to determine whether the skin/shirt on the player&#39;s arms and hands are drawn when this bod..." alt="" coords="276,5,459,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID. " alt="" coords="276,71,459,112"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_mod_content.html#a9345ee7cb92de23652666ed25d1d0059" title="Gets the texture with the specified name. The name is in the format of &quot;ModFolder/OtherFolders/FileNa..." alt="" coords="507,71,736,112"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="784,71,1005,112"/>
+</map>

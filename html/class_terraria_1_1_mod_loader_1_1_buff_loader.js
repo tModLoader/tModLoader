@@ -14,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_buff_loader =
     [ "ReApply", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a2480c76a6a1b157f3f8c0da67461071f", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a9273dd93983098b09e74fe0d289ecda0", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac7626b3ca2e3263deafd992bc2fdf7b4", null ],
+    [ "BuffCount", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019", null ],
     [ "HookCustomBuffTipSize", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a641f4dc836223d6e5153b5de8ae47e75", null ],
     [ "HookDrawCustomBuffTip", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a5600d78deae3683a3fa943974e8dcb6e", null ],
     [ "HookModifyBuffTip", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a1382f83d211a83b6983a5022e83ead34", null ],

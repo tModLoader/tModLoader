@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.WallLoader.AnimateWalls" name="Terraria.ModLoader.WallLoader.AnimateWalls">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d" title="Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has bee..." alt="" coords="272,5,475,47"/>
+</map>

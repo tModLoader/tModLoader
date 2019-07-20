@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModMountData.Autoload"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node4 [label="Terraria.ModLoader.ModMount\lData.Autoload",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 [label="Terraria.ModLoader.ModMount\lData.SetDefaults",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a8e3ebc48dd36afa551e7b6f86d0ac340",tooltip="Allows you to set the properties of this type of mount. "];
-}

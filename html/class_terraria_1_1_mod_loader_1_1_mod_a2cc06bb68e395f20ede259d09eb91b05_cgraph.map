@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.Mod.AutoloadProjectile" name="Terraria.ModLoader.Mod.AutoloadProjectile">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a05e6dad20e2fbd133a830013f14f1083" title="Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allo..." alt="" coords="288,5,524,47"/>
+</map>

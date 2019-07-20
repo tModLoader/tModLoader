@@ -1,0 +1,3 @@
+<map id="Terraria.ModLoader.TileLoader.Dangersense" name="Terraria.ModLoader.TileLoader.Dangersense">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_tile.html#a2d7b38e3d7eb90b24f7c295fac0719e7" title="Allows you to determine whether this block glows red when the given player has the Dangersense buff..." alt="" coords="268,5,467,47"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.CombinedHooks.GetWeaponDamage" name="Terraria.ModLoader.CombinedHooks.GetWeaponDamage">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a53a8e7c32465eaef772fd8340f48c3e6" title="Calls ModItem.GetWeaponDamage, then all GlobalItem.GetWeaponDamage hooks. " alt="" coords="265,5,488,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_player_hooks.html#afe66f9234da873de80165013e2a26a5e" title="Terraria.ModLoader.Player\lHooks.GetWeaponDamage" alt="" coords="279,71,474,112"/>
+</map>
