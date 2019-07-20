@@ -179,16 +179,15 @@ namespace Terraria.ModLoader.UI
 				SizeSuffixes[mag]);
 		}
 
-		// TODO Unused code
-		//		public static long GetAvailableMemory() {
-		//			var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
-		//			return pc.RawValue;
-		//		}
-		//
-		//		public static long GetTotalMemory() {
-		//			var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
-		//			return pc.RawValue;
-		//		}
+		public static long GetAvailableMemory() {
+			var pc = new PerformanceCounter("Mono Memory", "Available Physical Memory");
+			return pc.RawValue;
+		}
+
+		public static long GetTotalMemory() {
+			var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
+			return pc.RawValue;
+		}
 
 		/*
 		[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
