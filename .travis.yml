@@ -26,10 +26,10 @@ addons:
       - doxygen-doc
       - graphviz
 
-before_install:
-    - sudo apt-add-repository -y ppa:mikepurvis/docs
-    - sudo apt-get update
-    - sudo apt-get install doxygen
+#before_install:
+#    - sudo apt-add-repository -y ppa:mikepurvis/docs
+#    - sudo apt-get update
+#    - sudo apt-get install doxygen
       
 # Build your code e.g. by calling make
 script:
