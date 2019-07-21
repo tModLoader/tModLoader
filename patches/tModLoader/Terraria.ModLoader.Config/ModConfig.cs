@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Config
 				ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 				if (reloadRequired != null)
 				{
-					if (!variable.GetValue(this).Equals(variable.GetValue(pendingConfig)))
+					if (!object.Equals(variable.GetValue(this), variable.GetValue(pendingConfig)))
 					{
 						return true;
 					}
