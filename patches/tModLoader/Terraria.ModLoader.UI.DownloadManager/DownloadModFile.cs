@@ -1,4 +1,6 @@
-﻿using Terraria.Localization;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Terraria.Localization;
 using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Terraria.ModLoader.UI.DownloadManager

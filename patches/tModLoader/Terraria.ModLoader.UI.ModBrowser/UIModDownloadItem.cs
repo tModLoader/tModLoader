@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -376,15 +377,27 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuTick);
-			var modDownload = GetModDownload();
-			var mods = _modReferences.Split(',')
+			var downloads = new HashSet<DownloadModFile> { GetModDownload() };
+			GetDependenciesRecursive(this, ref downloads);
+			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
+			Interface.downloadProgress.HandleDownloads(downloads.ToArray());
+		}
+
+		private IEnumerable<DownloadModFile> GetDependencies() {
+			return _modReferences.Split(',')
 				.Select(Interface.modBrowser.FindModDownloadItem)
 				.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)))
-				.Select(x => x.GetModDownload())
-				.ToList();
-			mods.Add(modDownload);
-			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
-			Interface.downloadProgress.HandleDownloads(mods.ToArray());
+				.Select(x => x.GetModDownload());
+		}
+
+		private void GetDependenciesRecursive(UIModDownloadItem item, ref HashSet<DownloadModFile> set) {
+			var deps = item.GetDependencies();
+			set.UnionWith(deps);
+			// Cyclic dependency should never happen, as it's not allowed
+			// TODO: What if the same mod is a dependency twice, but different versions?
+			foreach (var dep in deps) {
+				GetDependenciesRecursive(dep.ModBrowserItem, ref set);
+			}
 		}
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
