@@ -1,8 +1,0 @@
---- src/Terraria\Terraria.ID\GoreID.cs
-+++ src/tModLoader\Terraria.ID\GoreID.cs
-@@ -1,3 +_,4 @@
-+using ReLogic.Reflection;
- using System;
- 
- namespace Terraria.ID
-

@@ -1,8 +1,0 @@
---- src/Terraria\Terraria.ID\GlowMaskID.cs
-+++ src/tModLoader\Terraria.ID\GlowMaskID.cs
-@@ -1,3 +_,4 @@
-+using ReLogic.Reflection;
- using System;
- 
- namespace Terraria.ID
-
