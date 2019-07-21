@@ -265,8 +265,8 @@ namespace Terraria.ModLoader
 			if (args.Exception == previousException ||
 				args.Exception is ThreadAbortException ||
 				ignoreSources.Contains(args.Exception.Source) ||
-				ignoreMessages.Any(str => args.Exception.Message.Contains(str)) ||
-				ignoreStackTraces.Any(str => args.Exception.StackTrace.Contains(str)))
+				ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
+				ignoreStackTraces.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
 				return;
 
 			var stackTrace = new StackTrace(true);
