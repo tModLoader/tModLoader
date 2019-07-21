@@ -1,5 +1,27 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
+@@ -205,6 +_,11 @@
+ 								num2 -= 16;
+ 							}
+ 							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
++							for (int i = 0; i < list3[l].Text.Length; i++) {
++								// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
++								if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
++									num3 = i;
++							}
+ 							if (num3 < 0)
+ 							{
+ 								num3 = 0;
+@@ -218,7 +_,8 @@
+ 							{
+ 								num4 = 0;
+ 								int num5 = 0;
+-								while (num5 < array3.Length && num4 + array3[num5].Length <= num3)
++								// `num4 == 0 ||` solves the longworld + small word problem.
++								while (num4 == 0 || num5 < array3.Length && num4 + array3[num5].Length <= num3)
+ 								{
+ 									num4 += array3[num5].Length + 1;
+ 									num5++;
 @@ -467,9 +_,72 @@
  			return array;
  		}
