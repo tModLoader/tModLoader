@@ -336,8 +336,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 		/// </summary>
 		internal void DownloadMods(IEnumerable<string> modNames) {
-			Main.PlaySound(SoundID.MenuTick);
-
 			var downloads = new List<DownloadFile>();
 
 			foreach (string desiredMod in modNames) {
@@ -351,6 +349,10 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 			}
 
+			// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
+			if (downloads.Count <= 0) return;
+
+			Main.PlaySound(SoundID.MenuTick);
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.OnDownloadsComplete += () => {
 				if (_missingMods.Count > 0) {
