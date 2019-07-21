@@ -230,8 +230,7 @@ namespace Terraria.ModLoader.UI
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			// To prevent entering the game with Configs that violate ReloadRequired
-			if (ConfigManager.AnyModNeedsReload())
-			{
+			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
@@ -270,6 +269,10 @@ namespace Terraria.ModLoader.UI
 			foreach (UIModItem modItem in items) {
 				modItem.Disable();
 			}
+		}
+
+		public UIModItem FindUIModItem(string modName) {
+			return items.FirstOrDefault(m => m.ModName == modName);
 		}
 
 		public override void Update(GameTime gameTime) {

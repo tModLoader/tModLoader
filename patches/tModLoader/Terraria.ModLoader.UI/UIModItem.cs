@@ -34,6 +34,8 @@ namespace Terraria.ModLoader.UI
 
 		private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
 
+		public string ModName => _mod.Name;
+
 		public UIModItem(LocalMod mod) {
 			_mod = mod;
 			BorderColor = new Color(89, 116, 213) * 0.7f;
@@ -223,7 +225,8 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (_uiModStateText?.IsMouseHovering == true) {
 				_tooltip = ToggleModStateText;
-			} else if (_configButton?.IsMouseHovering == true) {
+			}
+			else if (_configButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
 			}
 		}
@@ -259,21 +262,35 @@ namespace Terraria.ModLoader.UI
 
 		internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement) {
 			var modList = ModOrganizer.FindMods();
-			var missing = new List<string>();
-			foreach (var modRef in _modReferences) {
-				ModLoader.EnableMod(modRef);
-				if (modList.All(m => m.Name != modRef))
-					missing.Add(modRef);
-			}
+			var missingRefs = new List<string>();
 
-			Main.menuMode = Interface.modsMenuID;
-			if (missing.Any()) {
-				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missing)), Interface.modsMenuID);
+			EnableDepsRecursive(modList, _modReferences, missingRefs);
+
+			if (missingRefs.Any()) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
+			}
+		}
+
+		private void EnableDepsRecursive(LocalMod[] modList, string[] modRefs, List<string> missingRefs) {
+			foreach (var modRef in modRefs) {
+				// To enable the ref, its own refs must also be enabled
+				var refLocalMod = modList.FirstOrDefault(m => m.Name == modRef);
+				if (refLocalMod != null) {
+					// Enable refs recursively
+					// This might trigger multiple "Enabling mod X" logs, but the enabled is a hash set so there will be no problems
+					var modRefsOfModRef = refLocalMod.properties.modReferences.Select(x => x.mod).ToArray();
+					EnableDepsRecursive(modList, modRefsOfModRef, missingRefs);
+				}
+				else {
+					missingRefs.Add(modRef);
+				}
+				ModLoader.EnableMod(modRef);
+				Interface.modsMenu.FindUIModItem(modRef)?.Enable();
 			}
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			Main.PlaySound(SoundID.MenuOpen);
 			Interface.modInfo.Show(_mod.Name, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
 		}
 
