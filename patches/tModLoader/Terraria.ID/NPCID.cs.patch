@@ -9,48 +9,35 @@
  
  namespace Terraria.ID
  {
-@@ -1777,6 +_,7 @@
- 		public const short DD2LightningBugT3 = 578;
- 		public const short BartenderUnconscious = 579;
- 		public const short Count = 580;
-+		public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
- 		private static readonly int[] NetIdMap = new int[]
- 		{
- 			81,
-@@ -3759,5 +_,36 @@
+@@ -3759,5 +_,31 @@
  			}
  			return id;
  		}
 +
-+		public static string GetReadableUniqueKey(int npcType) {
-+			if ( NPCID.Search.ContainsId(npcType) ) {
-+				return "Terraria " + NPCID.Search.GetName(npcType);
++		public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
++
++		public static string GetUniqueKey(int type) {
++			if (type < -65 || type >= NPCLoader.NPCCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + NPCID.Search.GetName(type);
 +			}
-+
-+			var npc = new NPC();
-+			npc.SetDefaults(npcType);
-+
-+			if ( npc.modNPC != null ) {
-+				return NPCID.GetReadableUniqueKey(npc.modNPC);
-+			}
-+
-+			throw new ArgumentOutOfRangeException("Invalid `NPC.type` value.");
++			var modNPC = NPCLoader.GetNPC(type);
++			return $"{modNPC.mod.Name} {modNPC.Name}";
 +		}
 +
-+		public static string GetReadableUniqueKey(NPC npc) {
-+			if ( NPCID.Search.ContainsId(npc.type) ) {
-+				return "Terraria " + NPCID.Search.GetName(npc.type);
++		public static string GetUniqueKey(NPC npc) => GetUniqueKey(npc.type);
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!NPCID.Search.ContainsName(parts[1]))
++					return 0;
++				return NPCID.Search.GetId(parts[1]);
 +			}
-+
-+			if ( npc.modNPC != null ) {
-+				return NPCID.GetReadableUniqueKey(npc.modNPC);
-+			}
-+
-+			throw new ArgumentException("Invalid `NPC`.");
-+		}
-+
-+		public static string GetReadableUniqueKey(ModNPC modNpc) {
-+			return modNpc.mod.Name + " " + modNpc.Name;
++			return ModLoader.ModLoader.GetMod(parts[0])?.NPCType(parts[1]) ?? 0;
 +		}
  	}
  }

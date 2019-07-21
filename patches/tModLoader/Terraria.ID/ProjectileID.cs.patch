@@ -7,42 +7,35 @@
  
  namespace Terraria.ID
  {
-@@ -1199,5 +_,38 @@
+@@ -1199,5 +_,31 @@
  		public const short BookStaffShot = 712;
  		public const short DD2Win = 713;
  		public const short Count = 714;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
 +
-+		public static string GetReadableUniqueKey(int projType) {
-+			if ( ProjectileID.Search.ContainsId(projType) ) {
-+				return "Terraria " + ProjectileID.Search.GetName(projType);
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= ProjectileLoader.ProjectileCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + ProjectileID.Search.GetName(type);
 +			}
-+
-+			var proj = new Projectile();
-+			proj.SetDefaults(projType);
-+
-+			if ( proj.modProjectile != null ) {
-+				return ProjectileID.GetReadableUniqueKey(proj.modProjectile);
-+			}
-+
-+			throw new ArgumentOutOfRangeException("Invalid `Projectile.type` value.");
++			var modProjectile = ProjectileLoader.GetProjectile(type);
++			return $"{modProjectile.mod.Name} {modProjectile.Name}";
 +		}
 +
-+		public static string GetReadableUniqueKey(Projectile proj) {
-+			if ( ProjectileID.Search.ContainsId(proj.type) ) {
-+				return "Terraria " + ProjectileID.Search.GetName(proj.type);
++		public static string GetUniqueKey(Projectile projectile) => GetUniqueKey(projectile.type);
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!ProjectileID.Search.ContainsName(parts[1]))
++					return 0;
++				return ProjectileID.Search.GetId(parts[1]);
 +			}
-+
-+			if ( proj.modProjectile != null ) {
-+				return ProjectileID.GetReadableUniqueKey(proj.modProjectile);
-+			}
-+
-+			throw new ArgumentException("Invalid `Projectile`.");
-+		}
-+
-+		public static string GetReadableUniqueKey(ModProjectile modProj) {
-+			return modProj.mod.Name + " " + modProj.Name;
++			return ModLoader.ModLoader.GetMod(parts[0])?.ProjectileType(parts[1]) ?? 0;
 +		}
  	}
  }

@@ -60,28 +60,34 @@
  				});
  			public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(new int[]
  				{
-@@ -1148,5 +_,24 @@
+@@ -1148,5 +_,30 @@
  		public const ushort FakeContainers2 = 468;
  		public const ushort Tables2 = 469;
  		public const ushort Count = 470;
 +
-+		public static readonly IdDictionary Search = IdDictionary.Create<TileID, short>();
++		public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
 +
-+		public static string GetReadableUniqueKey(int tileType) {
-+			if ( TileID.Search.ContainsId(tileType) ) {
-+				return "Terraria " + TileID.Search.GetName(tileType);
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= TileLoader.TileCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + TileID.Search.GetName(type);
 +			}
-+
-+			ModTile modTile = TileLoader.GetTile(tileType);
-+			if ( modTile != null ) {
-+				return TileID.GetReadableUniqueKey(modTile);
-+			}
-+
-+			throw new ArgumentOutOfRangeException("Invalid tile type value.");
++			var modTile = TileLoader.GetTile(type);
++			return $"{modTile.mod.Name} {modTile.Name}";
 +		}
 +
-+		public static string GetReadableUniqueKey(ModTile tile) {
-+			return tile.mod.Name + " " + tile.Name;
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!TileID.Search.ContainsName(parts[1]))
++					return 0;
++				return TileID.Search.GetId(parts[1]);
++			}
++			// Should probably return -1 if not found since 0 is Dirt, but TileType also does 0.
++			return ModLoader.ModLoader.GetMod(parts[0])?.TileType(parts[1]) ?? 0;
 +		}
  	}
  }

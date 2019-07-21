@@ -5,12 +5,4 @@
  using System;
  
  namespace Terraria.ID
-@@ -258,5 +_,7 @@
- 		public const short ArkhalisPants_Female = 250;
- 		public const short ArkhalisWings = 251;
- 		public const short Count = 252;
-+
-+		//public static readonly IdDictionary Search = IdDictionary.Create<GlowMaskID, short>();	Can't use with `static` classes!
- 	}
- }
 

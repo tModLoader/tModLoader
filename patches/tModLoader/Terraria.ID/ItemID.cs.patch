@@ -25,40 +25,33 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
-@@ -7655,5 +_,36 @@
+@@ -7655,5 +_,29 @@
  			}
  			return 0;
  		}
 +
-+		public static string GetReadableUniqueKey(int itemType) {
-+			if ( ItemID.Search.ContainsId(itemType) ) {
-+				return "Terraria " + ItemID.Search.GetName(itemType);
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= ItemLoader.ItemCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if ( type < Count ) {
++				return "Terraria " + ItemID.Search.GetName(type);
 +			}
-+
-+			var item = new Item();
-+			item.SetDefaults(itemType, true);
-+
-+			if ( item.modItem != null ) {
-+				return ItemID.GetReadableUniqueKey(item.modItem);
-+			}
-+
-+			throw new ArgumentOutOfRangeException("Invalid `Item.type` value.");
++			var modItem = ItemLoader.GetItem(type);
++			return $"{modItem.mod.Name} {modItem.Name}";
 +		}
 +
-+		public static string GetReadableUniqueKey(Item item) {
-+			if ( ItemID.Search.ContainsId(item.type) ) {
-+				return "Terraria " + ItemID.Search.GetName(item.type);
-+			}
-+			
-+			if ( item.modItem != null ) {
-+				return ItemID.GetReadableUniqueKey(item.modItem);
-+			}
++		public static string GetUniqueKey(Item item) => GetUniqueKey(item.type);
 +
-+			throw new ArgumentException("Invalid `Item`.");
-+		}
-+
-+		public static string GetReadableUniqueKey(ModItem modItem) {
-+			return modItem.mod.Name + " " + modItem.Name;
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!ItemID.Search.ContainsName(parts[1]))
++					return 0;
++				return ItemID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.ItemType(parts[1]) ?? 0;
 +		}
  	}
  }
