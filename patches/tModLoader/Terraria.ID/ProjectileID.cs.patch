@@ -1,0 +1,42 @@
+--- src/Terraria\Terraria.ID\ProjectileID.cs
++++ src/tModLoader\Terraria.ID\ProjectileID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -1199,5 +_,31 @@
+ 		public const short BookStaffShot = 712;
+ 		public const short DD2Win = 713;
+ 		public const short Count = 714;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
++
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= ProjectileLoader.ProjectileCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + ProjectileID.Search.GetName(type);
++			}
++			var modProjectile = ProjectileLoader.GetProjectile(type);
++			return $"{modProjectile.mod.Name} {modProjectile.Name}";
++		}
++
++		public static string GetUniqueKey(Projectile projectile) => GetUniqueKey(projectile.type);
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!ProjectileID.Search.ContainsName(parts[1]))
++					return 0;
++				return ProjectileID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.ProjectileType(parts[1]) ?? 0;
++		}
+ 	}
+ }
+

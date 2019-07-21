@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.ID\ItemID.cs
 +++ src/tModLoader\Terraria.ID\ItemID.cs
+@@ -1,6 +_,7 @@
+ using ReLogic.Reflection;
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
 @@ -306,7 +_,7 @@
  					1103,
  					0,
@@ -17,4 +25,34 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
+@@ -7655,5 +_,29 @@
+ 			}
+ 			return 0;
+ 		}
++
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= ItemLoader.ItemCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if ( type < Count ) {
++				return "Terraria " + ItemID.Search.GetName(type);
++			}
++			var modItem = ItemLoader.GetItem(type);
++			return $"{modItem.mod.Name} {modItem.Name}";
++		}
++
++		public static string GetUniqueKey(Item item) => GetUniqueKey(item.type);
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!ItemID.Search.ContainsName(parts[1]))
++					return 0;
++				return ItemID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.ItemType(parts[1]) ?? 0;
++		}
+ 	}
+ }
 

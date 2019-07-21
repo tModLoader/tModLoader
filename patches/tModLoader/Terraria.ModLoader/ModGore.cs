@@ -12,6 +12,7 @@ namespace Terraria.ModLoader
 	public class ModGore
 	{
 		private static int nextGore = GoreID.Count;
+		public static int GoreCount => nextGore;
 		internal static readonly IDictionary<string, int> gores = new Dictionary<string, int>();
 		internal static readonly IDictionary<int, ModGore> modGores = new Dictionary<int, ModGore>();
 

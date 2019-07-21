@@ -1,0 +1,39 @@
+--- src/Terraria\Terraria.ID\PrefixID.cs
++++ src/tModLoader\Terraria.ID\PrefixID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -88,5 +_,28 @@
+ 		public const int Unreal = 82;
+ 		public const int Mythical = 83;
+ 		public const int Count = 84;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
++		public static string GetUniqueKey(byte type) {
++			if (type < 1 || type >= ModPrefix.PrefixCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + PrefixID.Search.GetName(type);
++			}
++			var modPrefix = ModPrefix.GetPrefix(type);
++			return $"{modPrefix.mod.Name} {modPrefix.Name}";
++		}
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!PrefixID.Search.ContainsName(parts[1]))
++					return 0;
++				return PrefixID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.PrefixType(parts[1]) ?? 0;
++		}
+ 	}
+ }
+
