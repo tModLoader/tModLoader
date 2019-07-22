@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11.2.2
+set version=v0.11.3
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
