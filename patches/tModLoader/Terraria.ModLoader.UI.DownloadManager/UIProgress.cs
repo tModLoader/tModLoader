@@ -52,7 +52,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Main.PlaySound(ID.SoundID.MenuOpen);
 			Main.menuMode = gotoMenu;
 			OnCancel?.Invoke();
-			_cancelButton.Remove(); // Prevent multiple clicks and cancel propagations
 		}
 
 		public void Show() {
