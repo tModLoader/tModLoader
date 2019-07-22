@@ -245,7 +245,7 @@ namespace Terraria.ModLoader.Core
 				mod.UpdateWeakRefs();
 		}
 
-		private static Mod Instantiate(LoadedMod mod, CancellationToken token) {
+		private static Mod Instantiate(LoadedMod mod) {
 			try {
 				Type modType = mod.assembly.GetTypes().SingleOrDefault(t => t.IsSubclassOf(typeof(Mod)));
 				if (modType == null)
@@ -260,7 +260,6 @@ namespace Terraria.ModLoader.Core
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
 				m.tModLoaderVersion = mod.properties.buildVersion;
-				token.ThrowIfCancellationRequested();
 				return m;
 			}
 			catch (Exception e) {
@@ -305,7 +304,10 @@ namespace Terraria.ModLoader.Core
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 				Interface.loadModsProgress.SetLoadStage("tModLoader.MSInstantiating");
 				MemoryTracking.Checkpoint();
-				return modList.Select(mod => Instantiate(mod, token)).ToList();
+				return modList.Select(mod => {
+					token.ThrowIfCancellationRequested();
+					return Instantiate(mod);
+				}).ToList();
 			}
 			catch (AggregateException ae) {
 				ae.Data["mods"] = ae.InnerExceptions.Select(e => (string)e.Data["mod"]).ToArray();

@@ -304,8 +304,7 @@ namespace Terraria.ModLoader
 			CacheVanillaState();
 
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
-			var loadingMods = new List<Mod>();
-			LoadModContent(token, ref loadingMods, mod => {
+			LoadModContent(token, mod => {
 				mod.loading = true;
 				mod.AutoloadConfig();
 				mod.LoadResources();
@@ -319,7 +318,7 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
-			LoadModContent(token, ref loadingMods, mod => {
+			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
 			});
@@ -335,7 +334,7 @@ namespace Terraria.ModLoader
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
 			PlayerInput.reinitialize = true;
-			SetupRecipes();
+			SetupRecipes(token);
 		}
 
 		private static void CacheVanillaState() {
@@ -343,20 +342,18 @@ namespace Terraria.ModLoader
 		}
 
 		internal static Mod LoadingMod { get; private set; }
-		private static void LoadModContent(CancellationToken token, ref List<Mod> mods, Action<Mod> loadAction) {
+		private static void LoadModContent(CancellationToken token, Action<Mod> loadAction) {
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
+				token.ThrowIfCancellationRequested();
 				Interface.loadModsProgress.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
-					if (!mods.Contains(mod)) mods.Add(mod);
-					token.ThrowIfCancellationRequested();
 					LoadingMod = mod;
 					loadAction(mod);
-					token.ThrowIfCancellationRequested();
 				}
 				catch (Exception e) {
-					e.Data["mods"] = mods.Select(x => x.Name).ToArray();
+					e.Data["mod"] = mod.Name;
 					throw;
 				}
 				finally {
@@ -366,10 +363,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void SetupRecipes() {
+		private static void SetupRecipes(CancellationToken token) {
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSAddingRecipes");
-			for (int k = 0; k < Recipe.maxRecipes; k++)
+			for (int k = 0; k < Recipe.maxRecipes; k++) {
+				token.ThrowIfCancellationRequested();
 				Main.recipe[k] = new Recipe();
+			}
 
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();

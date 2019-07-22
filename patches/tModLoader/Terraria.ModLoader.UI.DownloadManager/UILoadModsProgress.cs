@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				SetLoadStage("Loading Cancelled");
 				_cts.Cancel();
 			};
-			gotoMenu = 0;
+			gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
 			ModLoader.BeginLoad(_cts.Token);
 			GLCallLocker.ActionsAreSpeedrun = true;
 		}

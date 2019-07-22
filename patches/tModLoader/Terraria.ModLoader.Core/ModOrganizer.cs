@@ -82,15 +82,9 @@ namespace Terraria.ModLoader.Core
 			//}
 			Interface.loadModsProgress.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
-
-			// Throw early if requested
-			if (token.IsCancellationRequested) {
-				Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
-				token.ThrowIfCancellationRequested();
-			}
 			
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
-			if (Main.oldKeyState.PressingShift() || ModLoader.skipLoad) {
+			if (Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 				ModLoader.skipLoad = false;
 				modsToLoad.Clear();
 				Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
