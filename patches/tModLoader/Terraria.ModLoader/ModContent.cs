@@ -376,8 +376,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
+			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
+					if (Main.dedServ)
+						Console.WriteLine($"Unloading {mod.DisplayName}...");
+					else
+						Interface.unloadModsProgress.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}

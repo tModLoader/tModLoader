@@ -191,8 +191,12 @@ namespace Terraria.ModLoader
 		private static bool Unload() {
 			try {
 				Logging.tML.Info("Unloading mods");
-				if (Main.dedServ)
+				if (Main.dedServ) {
 					Console.WriteLine("Unloading mods...");
+				} else {
+					Main.menuMode = Interface.unloadModsID;
+					Interface.unloadModsProgress.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
+				}
 
 				ModContent.UnloadModContent();
 				Mods = new Mod[0];

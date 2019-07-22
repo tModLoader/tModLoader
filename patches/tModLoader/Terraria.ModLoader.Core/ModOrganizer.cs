@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.Core
 			if (Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 				ModLoader.skipLoad = false;
 				modsToLoad.Clear();
-				Interface.loadModsProgress.SetLoadStage("Loading Cancelled");
+				Interface.loadModsProgress.SetLoadStage("Cancelling loading...");
 			}
 
 			VerifyNames(modsToLoad);

@@ -40,6 +40,7 @@ namespace Terraria.ModLoader
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
+		internal const int unloadModsID = 10027;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadModsProgress loadModsProgress = new UILoadModsProgress();
 		private static UIModSources modSources = new UIModSources();
@@ -61,6 +62,7 @@ namespace Terraria.ModLoader
 		internal static UICreateMod createMod = new UICreateMod();
 		internal static UIProgress progress = new UIProgress();
 		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+		internal static UIUnloadModsProgress unloadModsProgress = new UIUnloadModsProgress();
 
 		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
@@ -202,6 +204,10 @@ namespace Terraria.ModLoader
 			}
 			else if (Main.menuMode == downloadProgressID) {
 				Main.MenuUI.SetState(downloadProgress);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == unloadModsID) {
+				Main.MenuUI.SetState(unloadModsProgress);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == tModLoaderSettingsID) {
