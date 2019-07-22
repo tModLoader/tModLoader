@@ -487,36 +487,40 @@ namespace Terraria.ModLoader.Core
 				mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
 
 				// read mod assembly using cecil for verification and pdb processing
-				var asm = AssemblyDefinition.ReadAssembly(dllPath, new ReaderParameters { InMemory = true, ReadSymbols = mod.properties.includePDB });
-				VerifyModAssembly(mod.Name, asm);
+				using (var asmResolver = new DefaultAssemblyResolver()) {
+					asmResolver.AddSearchDirectory(Path.GetDirectoryName(dllPath));
 
-				if (!mod.properties.includePDB)
-					return;
+					var asm = AssemblyDefinition.ReadAssembly(dllPath, new ReaderParameters { InMemory = true, ReadSymbols = mod.properties.includePDB, AssemblyResolver = asmResolver });
+					VerifyModAssembly(mod.Name, asm);
 
-				// when reading and writing a module with cecil, the debug sequence points need regenerating, even if the methods are not changed
-				// write out the pdb file using cecil because doing it at runtime is difficult
-				var tempDllPath = Path.Combine(tempDir, dllName); //use the temp dir to avoid overwriting a precompiled dll
-				
-				// force the native pdb writer when possible, to support stack traces on older .NET frameworks
-				asm.Write(tempDllPath, new WriterParameters {
-					WriteSymbols = true,
-					SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
-				});
+					if (!mod.properties.includePDB)
+						return;
 
-				mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
+					// when reading and writing a module with cecil, the debug sequence points need regenerating, even if the methods are not changed
+					// write out the pdb file using cecil because doing it at runtime is difficult
+					var tempDllPath = Path.Combine(tempDir, dllName); //use the temp dir to avoid overwriting a precompiled dll
 
-				if (dllPath == tempDllPath) { // load the cecil produced dll, which has the correct debug header
-					mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
-				}
-				else { // with a pre-loaded dll, the symbols won't match cecil symbols unless we splice in the cecil debug header
-					using (var cecilAsmDef = AssemblyDefinition.ReadAssembly(tempDllPath))
-						mod.modFile.AddFile(dllName+".cecildebugheader", cecilAsmDef.MainModule.GetDebugHeader().GetBytes());
-				}
+					// force the native pdb writer when possible, to support stack traces on older .NET frameworks
+					asm.Write(tempDllPath, new WriterParameters {
+						WriteSymbols = true,
+						SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
+					});
 
-				// make an mdb for FNA
-				if (!xna) {
-					asm.Write(tempDllPath, new WriterParameters { WriteSymbols = true, SymbolWriterProvider = new MdbWriterProvider() });
-					mod.modFile.AddFile(dllName+".mdb", File.ReadAllBytes(tempDllPath + ".mdb"));
+					mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
+
+					if (dllPath == tempDllPath) { // load the cecil produced dll, which has the correct debug header
+						mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
+					}
+					else { // with a pre-loaded dll, the symbols won't match cecil symbols unless we splice in the cecil debug header
+						using (var cecilAsmDef = AssemblyDefinition.ReadAssembly(tempDllPath))
+							mod.modFile.AddFile(dllName + ".cecildebugheader", cecilAsmDef.MainModule.GetDebugHeader().GetBytes());
+					}
+
+					// make an mdb for FNA
+					if (!xna) {
+						asm.Write(tempDllPath, new WriterParameters { WriteSymbols = true, SymbolWriterProvider = new MdbWriterProvider() });
+						mod.modFile.AddFile(dllName + ".mdb", File.ReadAllBytes(tempDllPath + ".mdb"));
+					}
 				}
 			}
 			finally {
