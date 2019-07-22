@@ -18,6 +18,14 @@ namespace ExampleMod.Items.Accessories
 			item.rare = ItemRarityID.Green;
 		}
 
+		public override void AddRecipes() {
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.SunStone, 1);
+			recipe.AddTile(TileID.Anvils);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+
 		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeUpdateAccessory()
 		public sealed override void UpdateAccessory(Player player, bool hideVisual) {
 			SafeUpdateAccessory(player, hideVisual);
