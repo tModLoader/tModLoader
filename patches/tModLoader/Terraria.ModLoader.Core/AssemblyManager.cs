@@ -293,13 +293,15 @@ namespace Terraria.ModLoader.Core
 			}
 
 			try {
-				//load all the assemblies in parallel.
+				// can no longer load assemblies in parallel due to cecil assembly resolver during ModuleDefinition.Write requiring dependencies
+				// could use a topological parallel load but I doubt the performance is worth the development effort - Chicken Bones
 				Interface.loadModsProgress.SetLoadStage("tModLoader.MSSandboxing", modsToLoad.Count);
 				int i = 0;
-				Parallel.ForEach(modList, new ParallelOptions() { CancellationToken = token }, mod => {
+				foreach (var mod in modList) {
+					token.ThrowIfCancellationRequested();
 					Interface.loadModsProgress.SetCurrentMod(i++, mod.Name);
 					mod.LoadAssemblies();
-				});
+				}
 
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 				Interface.loadModsProgress.SetLoadStage("tModLoader.MSInstantiating");
