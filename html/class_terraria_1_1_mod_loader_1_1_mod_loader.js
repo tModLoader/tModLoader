@@ -14,7 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "MusicExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aca67430e13537a0395b4259855cef974", null ],
     [ "SoundExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a166119387b99ba4ecb7ba613471fc625", null ],
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a", null ],
-    [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa54932655d63761842ee92641848e469", null ],
+    [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#affd4c994370635d0acbc426b6b8e6d94", null ],
     [ "_enabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a", null ],
     [ "beta", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3dabc9061f57772c53ab2d7cbf9a6685", null ],
     [ "branchName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380", null ],
