@@ -32,14 +32,20 @@ namespace ExampleMod.Items.Accessories
 			player.GetModPlayer<ExamplePlayer>().exclusiveAccessory = true;
 		}
 
-		public override bool CanEquipAccessory(Player player, int slot) {
+		public sealed override bool CanEquipAccessory(Player player, int slot) {
 			// Here we return false if the player has one of our accessories equipped, true otherwise
-			return !player.GetModPlayer<ExamplePlayer>().exclusiveAccessory;
+			// This criteria takes priority over whatever is returned in SafeCanEquipAccessory()
+			return !player.GetModPlayer<ExamplePlayer>().exclusiveAccessory && SafeCanEquipAccessory(player, slot);
 		}
 
-		// Custom accessories should override this to do things
+		// Inheriting accessories should override this to do things
 		public virtual void SafeUpdateAccessory(Player player, bool hideVisual) {
 
+		}
+
+		// Inheriting accessories should override this to further restrict the equipability
+		public virtual bool SafeCanEquipAccessory(Player player, int slot) {
+			return true;
 		}
 	}
 
