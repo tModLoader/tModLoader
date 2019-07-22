@@ -2,11 +2,10 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-// PR NOTE, REMOVE THIS IF IT'S MERGED: some of the comments in here are taken from ExampleDamageItem
+// PR NOTE, REMOVE THIS IF IT'S MERGED: some of the comments in here are taken from ExampleDamageItem and SixColorShield
 namespace ExampleMod.Items.Accessories
 {
 	// This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
-	// (similar to wings in vanilla, but you can't swap them directly)
 	// It also shows two different ways on how you can interact with inherited methods
 	public abstract class ExclusiveAccessory : ModItem
 	{
@@ -26,39 +25,44 @@ namespace ExampleMod.Items.Accessories
 			recipe.AddRecipe();
 		}
 
-		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeUpdateAccessory()
-		public sealed override void UpdateAccessory(Player player, bool hideVisual) {
-			SafeUpdateAccessory(player, hideVisual);
-			player.GetModPlayer<ExamplePlayer>().exclusiveAccessory = true;
-		}
-
 		public sealed override bool CanEquipAccessory(Player player, int slot) {
-			// Here we return false if the player has one of our accessories equipped, true otherwise
-			// This criteria takes priority over whatever is returned in SafeCanEquipAccessory()
-			return !player.GetModPlayer<ExamplePlayer>().exclusiveAccessory && SafeCanEquipAccessory(player, slot);
+			// To prevent the accessory from being equipped, we need to return false if there is one already in another slot
+			// Therefore we go through each accessory slot ignoring vanity slots
+			if (slot < 10) // This allows the accessory to equip in vanity slots with no reservations
+			{
+				int maxAccessoryIndex = 5 + player.extraAccessorySlots;
+				for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
+					// We need "slot != i" because we don't care what is currently in the slot we will be replacing
+					// "is ExclusiveAccessory" is a way of performing pattern matching
+					// Here, inheritance helps us determine if the given item is indeed one of our ExclusiveAccessory ones
+					if (slot != i && player.armor[i].modItem is ExclusiveAccessory) {
+						return false;
+					}
+				}
+			}
+			// Here we want to respect individual items having custom conditions for equipability
+			return SafeCanEquipAccessory(player, slot);
 		}
 
-		// Inheriting accessories should override this to do things
-		public virtual void SafeUpdateAccessory(Player player, bool hideVisual) {
-
-		}
-
-		// Inheriting accessories should override this to further restrict the equipability
+		// Inheriting accessories should override this to further restrict the equipability if necessary
 		public virtual bool SafeCanEquipAccessory(Player player, int slot) {
 			return true;
 		}
 	}
 
+	// Here we add our accessories, note that they inherit from ExclusiveAccessory, and not ModItem
+
 	public class GreenExclusiveAccessory : ExclusiveAccessory
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("You can't equip this when 'Yellow Exclusive Accessory' is already equipped!"
-				+ "\nIncreases damage by 50%");
+				+ "\nIncreases melee and ranged damage by 50%");
 		}
 
-		public override void SafeUpdateAccessory(Player player, bool hideVisual) {
-			// 50% damage increase
-			player.allDamage += 0.5f;
+		public override void UpdateAccessory(Player player, bool hideVisual) {
+			// 50% melee and ranged damage increase
+			player.meleeDamage += 0.5f;
+			player.rangedDamage += 0.5f;
 		}
 	}
 
@@ -66,7 +70,7 @@ namespace ExampleMod.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("You can't equip this when 'Green Exclusive Accessory' is already equipped!"
-				+ "\nIncreases melee damage by 100%");
+				+ "\nIncreases melee damage by 100% at day, and ranged damage at night");
 		}
 
 		public override void SetDefaults() {
@@ -76,9 +80,15 @@ namespace ExampleMod.Items.Accessories
 			item.rare = ItemRarityID.Yellow;
 		}
 
-		public override void SafeUpdateAccessory(Player player, bool hideVisual) {
-			// 100% melee damage decrease
-			player.meleeDamage += 1f;
+		public override void UpdateAccessory(Player player, bool hideVisual) {
+			if (Main.dayTime) {
+				// 100% melee damage decrease
+				player.meleeDamage += 1f;
+			}
+			else {
+				// 100% ranged damage decrease
+				player.rangedDamage += 1f;
+			}
 		}
 	}
 }

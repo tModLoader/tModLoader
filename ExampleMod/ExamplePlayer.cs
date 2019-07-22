@@ -43,7 +43,6 @@ namespace ExampleMod
 		public bool infinity;
 		public bool strongBeesUpgrade;
 		public bool manaHeart;
-		public bool exclusiveAccessory;
 		public int manaHeartCounter;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
@@ -78,7 +77,6 @@ namespace ExampleMod
 				manaHeartCounter = 0;
 			}
 			manaHeart = false;
-			exclusiveAccessory = false;
 			blockyAccessoryPrevious = blockyAccessory;
 			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 
