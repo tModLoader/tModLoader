@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace ExampleMod.Items.Accessories
 {
@@ -26,6 +25,7 @@ namespace ExampleMod.Items.Accessories
 			recipe.AddRecipe();
 		}
 
+		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeCanEquipAccessory()
 		public sealed override bool CanEquipAccessory(Player player, int slot) {
 			// To prevent the accessory from being equipped, we need to return false if there is one already in another slot
 			// Therefore we go through each accessory slot ignoring vanity slots
@@ -50,7 +50,8 @@ namespace ExampleMod.Items.Accessories
 			return true;
 		}
 
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeModifyTooltips()
+		public sealed override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
 			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
 			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
@@ -60,6 +61,12 @@ namespace ExampleMod.Items.Accessories
 					break;
 				}
 			}
+			SafeModifyTooltips(tooltips);
+		}
+
+		// Inheriting accessories should override this to further modify tooltips if necessary
+		public virtual void SafeModifyTooltips(List<TooltipLine> tooltips) {
+
 		}
 	}
 
