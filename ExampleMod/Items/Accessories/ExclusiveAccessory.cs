@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,6 +8,11 @@ namespace ExampleMod.Items.Accessories
 {
 	// This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
 	// It also shows two different ways on how you can interact with inherited methods
+	// Additionally, it takes advantage of delegates to make code more compact
+
+	// First, we create an abstract class that all our exclusive accessories will be based on
+	// This class won't be autoloaded by tModLoader, meaning it won't "exist" in the game, and we don't need to provide it a texture
+	// Further down below will be the actual items (Green/Yellow Exclusive Accessory)
 	public abstract class ExclusiveAccessory : ModItem
 	{
 		public override void SetDefaults() {
@@ -28,21 +34,19 @@ namespace ExampleMod.Items.Accessories
 		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeCanEquipAccessory()
 		public sealed override bool CanEquipAccessory(Player player, int slot) {
 			// To prevent the accessory from being equipped, we need to return false if there is one already in another slot
-			// Therefore we go through each accessory slot ignoring vanity slots
+			// Therefore we go through each accessory slot ignoring vanity slots using FindDifferentEquippedExclusiveAccessory()
+			bool canEquipAccessory = true;
 			if (slot < 10) // This allows the accessory to equip in vanity slots with no reservations
 			{
-				int maxAccessoryIndex = 5 + player.extraAccessorySlots;
-				for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
-					// We need "slot != i" because we don't care what is currently in the slot we will be replacing
-					// "is ExclusiveAccessory" is a way of performing pattern matching
-					// Here, inheritance helps us determine if the given item is indeed one of our ExclusiveAccessory ones
-					if (slot != i && player.armor[i].modItem is ExclusiveAccessory) {
-						return false;
-					}
-				}
+				// "(int i, Item foundItem) => { //code }" is a so called lambda. Here we pass a chunk of code into the method 
+				// that will be executed if it successfully found a different ExclusiveAccessory
+				FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
+					// If an item is found and slot is the same as its index in armor[], we allow it to be replaced
+					canEquipAccessory = slot == i;
+				});
 			}
 			// Here we want to respect individual items having custom conditions for equipability
-			return SafeCanEquipAccessory(player, slot);
+			return canEquipAccessory && SafeCanEquipAccessory(player, slot);
 		}
 
 		// Inheriting accessories should override this to further restrict the equipability if necessary
@@ -53,20 +57,63 @@ namespace ExampleMod.Items.Accessories
 		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeModifyTooltips()
 		public sealed override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
-			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
-			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
-				// We use "IsNotTheSameAs()" so the tooltip won't show up on the item if it's already equipped
-				if (item.IsNotTheSameAs(Main.LocalPlayer.armor[i]) && Main.LocalPlayer.armor[i].modItem is ExclusiveAccessory) {
-					tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + Main.LocalPlayer.armor[i].Name + "' is already equipped!"));
-					break;
-				}
-			}
+			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
+				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + foundItem.Name + "' is already equipped!"));
+			});
 			SafeModifyTooltips(tooltips);
 		}
 
 		// Inheriting accessories should override this to further modify tooltips if necessary
 		public virtual void SafeModifyTooltips(List<TooltipLine> tooltips) {
 
+		}
+
+		public sealed override bool CanRightClick() {
+			// Only allow right clicking if there is a different ExclusiveAccessory equipped
+			bool canRightClick = false;
+			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => canRightClick = true);
+			return canRightClick && SafeCanRightClick();
+		}
+
+		// Inheriting accessories should override this to further restrict right click capabilities
+		public virtual bool SafeCanRightClick() {
+			return true;
+		}
+
+		public sealed override void RightClick(Player player) {
+			SafeRightClick();
+			// Here we want to implement the "swapping" when right clicked to equip this item inplace of another one
+			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
+				Main.LocalPlayer.QuickSpawnClonedItem(foundItem);
+				// We need to use i instead of foundItem because we directly want to alter the equipped accessory
+				Main.LocalPlayer.armor[i] = item.Clone();
+			});
+		}
+
+		// Inheriting accessories should override this to further make things happen on right click
+		public virtual void SafeRightClick() {
+			
+		}
+
+		// We make our own method for compacting the code because we will need to check equipped accessories often
+		// This method also has a delegate as an argument, which allows us to pass entire methods instead of just variables
+		// To understand what an Action delegate is, see here: https://www.tutorialsteacher.com/csharp/csharp-action-delegate
+		private void FindDifferentEquippedExclusiveAccessory(Action<int, Item> whenFound) {
+			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
+			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
+				// IsAir makes sure we don't check for "empty" slots
+				// IsTheSameAs() compares two items and returns true if their types match
+				// "is ExclusiveAccessory" is a way of performing pattern matching
+				// Here, inheritance helps us determine if the given item is indeed one of our ExclusiveAccessory ones
+				if (!Main.LocalPlayer.armor[i].IsAir &&
+					!item.IsTheSameAs(Main.LocalPlayer.armor[i]) &&
+					Main.LocalPlayer.armor[i].modItem is ExclusiveAccessory) {
+					// If we find an item that matches these criteria, execute the code inside it
+					// The second argument is just for convenience, technically we don't need it since we can get the item from just i
+					// But it is needed in RightClick()
+					whenFound.Invoke(i, Main.LocalPlayer.armor[i]);
+				}
+			}
 		}
 	}
 
@@ -96,6 +143,16 @@ namespace ExampleMod.Items.Accessories
 			// Not calling base.SetDefaults() will override everything
 			// Here we inherit all the properties from our abstract item and just change the rarity
 			item.rare = ItemRarityID.Yellow;
+		}
+
+		public override void AddRecipes() {
+			// because we don't call base.AddRecipes(), we erase the previously defined recipe and can now make a different one
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.SunStone, 1);
+			recipe.AddIngredient(ItemID.MoonStone, 1);
+			recipe.AddTile(TileID.Anvils);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
