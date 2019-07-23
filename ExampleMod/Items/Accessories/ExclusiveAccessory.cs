@@ -1,8 +1,9 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
-// PR NOTE, REMOVE THIS IF IT'S MERGED: some of the comments in here are taken from ExampleDamageItem and SixColorShield
 namespace ExampleMod.Items.Accessories
 {
 	// This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
@@ -48,6 +49,18 @@ namespace ExampleMod.Items.Accessories
 		public virtual bool SafeCanEquipAccessory(Player player, int slot) {
 			return true;
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
+			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
+			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
+				// We use "IsNotTheSameAs()" so the tooltip won't show up on the item if it's already equipped
+				if (item.IsNotTheSameAs(Main.LocalPlayer.armor[i]) && Main.LocalPlayer.armor[i].modItem is ExclusiveAccessory) {
+					tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + Main.LocalPlayer.armor[i].Name + "' is already equipped!"));
+					break;
+				}
+			}
+		}
 	}
 
 	// Here we add our accessories, note that they inherit from ExclusiveAccessory, and not ModItem
@@ -55,8 +68,7 @@ namespace ExampleMod.Items.Accessories
 	public class GreenExclusiveAccessory : ExclusiveAccessory
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("You can't equip this when 'Yellow Exclusive Accessory' is already equipped!"
-				+ "\nIncreases melee and ranged damage by 50%");
+			Tooltip.SetDefault("Increases melee and ranged damage by 50%");
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -69,8 +81,7 @@ namespace ExampleMod.Items.Accessories
 	public class YellowExclusiveAccessory : ExclusiveAccessory
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("You can't equip this when 'Green Exclusive Accessory' is already equipped!"
-				+ "\nIncreases melee damage by 100% at day, and ranged damage at night");
+			Tooltip.SetDefault("Increases melee damage by 100% at day, and ranged damage at night");
 		}
 
 		public override void SetDefaults() {
