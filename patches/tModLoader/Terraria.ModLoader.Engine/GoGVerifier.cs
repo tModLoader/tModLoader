@@ -73,6 +73,7 @@ namespace Terraria.ModLoader.Engine
 			var steamAPIhash = new byte[] { 123, 133, 124, 137, 123, 198, 147, 19, 228, 147, 109, 195, 220, 206, 81, 147 };
 			if (!HashMatchesFile(steamAPIhash, "steam_api.dll")) {
 				Logging.tML.Fatal("Steam API hash mismatch, assumed pirated");
+				System.Windows.Forms.MessageBox.Show("Steam API hash mismatch, assumed pirated", "Terraria: Error" + $" ({ModLoader.versionedName})");
 				Environment.Exit(1);
 			}
 		}
