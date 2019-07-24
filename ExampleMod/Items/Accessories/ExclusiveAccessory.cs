@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +8,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Items.Accessories
 {
 	// This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
-	// It also shows two different ways on how you can interact with inherited methods
+	// It also shows how you can interact with inherited methods
 	// Additionally, it takes advantage of delegates to make code more compact
 
 	// First, we create an abstract class that all our exclusive accessories will be based on
@@ -31,10 +32,10 @@ namespace ExampleMod.Items.Accessories
 			recipe.AddRecipe();
 		}
 
-		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeCanEquipAccessory()
-		public sealed override bool CanEquipAccessory(Player player, int slot) {
+		public override bool CanEquipAccessory(Player player, int slot) {
 			// To prevent the accessory from being equipped, we need to return false if there is one already in another slot
 			// Therefore we go through each accessory slot ignoring vanity slots using FindDifferentEquippedExclusiveAccessory()
+			// which we declared in this class below
 			bool canEquipAccessory = true;
 			if (slot < 10) // This allows the accessory to equip in vanity slots with no reservations
 			{
@@ -46,53 +47,32 @@ namespace ExampleMod.Items.Accessories
 				});
 			}
 			// Here we want to respect individual items having custom conditions for equipability
-			return canEquipAccessory && SafeCanEquipAccessory(player, slot);
+			return canEquipAccessory;
 		}
 
-		// Inheriting accessories should override this to further restrict the equipability if necessary
-		public virtual bool SafeCanEquipAccessory(Player player, int slot) {
-			return true;
-		}
-
-		// By making the override sealed, we prevent derived classes from further overriding the method and enforcing the use of SafeModifyTooltips()
-		public sealed override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
 			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
-				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + foundItem.Name + "' is already equipped!"));
+				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + foundItem.Name + "' is already equipped!") {
+					overrideColor = Color.OrangeRed
+				});
 			});
-			SafeModifyTooltips(tooltips);
 		}
 
-		// Inheriting accessories should override this to further modify tooltips if necessary
-		public virtual void SafeModifyTooltips(List<TooltipLine> tooltips) {
-
-		}
-
-		public sealed override bool CanRightClick() {
+		public override bool CanRightClick() {
 			// Only allow right clicking if there is a different ExclusiveAccessory equipped
 			bool canRightClick = false;
 			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => canRightClick = true);
-			return canRightClick && SafeCanRightClick();
+			return canRightClick;
 		}
 
-		// Inheriting accessories should override this to further restrict right click capabilities
-		public virtual bool SafeCanRightClick() {
-			return true;
-		}
-
-		public sealed override void RightClick(Player player) {
-			SafeRightClick();
+		public override void RightClick(Player player) {
 			// Here we want to implement the "swapping" when right clicked to equip this item inplace of another one
 			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
 				Main.LocalPlayer.QuickSpawnClonedItem(foundItem);
 				// We need to use i instead of foundItem because we directly want to alter the equipped accessory
 				Main.LocalPlayer.armor[i] = item.Clone();
 			});
-		}
-
-		// Inheriting accessories should override this to further make things happen on right click
-		public virtual void SafeRightClick() {
-			
 		}
 
 		// We make our own method for compacting the code because we will need to check equipped accessories often
@@ -110,7 +90,6 @@ namespace ExampleMod.Items.Accessories
 					Main.LocalPlayer.armor[i].modItem is ExclusiveAccessory) {
 					// If we find an item that matches these criteria, execute the code inside it
 					// The second argument is just for convenience, technically we don't need it since we can get the item from just i
-					// But it is needed in RightClick()
 					whenFound.Invoke(i, Main.LocalPlayer.armor[i]);
 				}
 			}
@@ -129,6 +108,17 @@ namespace ExampleMod.Items.Accessories
 			// 50% melee and ranged damage increase
 			player.meleeDamage += 0.5f;
 			player.rangedDamage += 0.5f;
+		}
+
+		public override void RightClick(Player player) {
+			// In order to preserve its expected behavior (right click swaps this and the currently equipped accessory)
+			// we need to call the parent method via base.Method(arguments)
+			// You can try to remove this line and see if you can swap this item with another one
+			base.RightClick(player);
+
+			// Here we add additional things that happen on right clicking this item
+			// Beware that this hook is only called if CanRightClick() returns true (which we defined as only returning true when we can swap items)
+			Main.NewText("I just equipped " + item.Name + "!");
 		}
 	}
 
