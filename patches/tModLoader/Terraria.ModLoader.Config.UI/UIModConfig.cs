@@ -41,6 +41,7 @@ namespace Terraria.ModLoader.Config.UI
 		private ModConfig modConfig;
 		// the clone we modify. 
 		private ModConfig pendingConfig;
+		public int updateCount;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement();
@@ -291,6 +292,7 @@ namespace Terraria.ModLoader.Config.UI
 		bool netUpdate;
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
+			updateCount++;
 			if (pendingChangesUIUpdate) {
 				uIElement.Append(saveConfigButton);
 				uIElement.Append(revertConfigButton);
@@ -426,6 +428,12 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			else if (type == typeof(ItemDefinition)) {
 				e = new ItemDefinitionElement();
+			}
+			else if (type == typeof(ProjectileDefinition)) {
+				e = new ProjectileDefinitionElement();
+			}
+			else if (type == typeof(NPCDefinition)) {
+				e = new NPCDefinitionElement();
 			}
 			else if (type == typeof(Color)) {
 				e = new ColorElement();

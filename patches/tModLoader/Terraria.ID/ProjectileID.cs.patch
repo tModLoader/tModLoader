@@ -7,7 +7,7 @@
  
  namespace Terraria.ID
  {
-@@ -1199,5 +_,31 @@
+@@ -1199,5 +_,35 @@
  		public const short BookStaffShot = 712;
  		public const short DD2Win = 713;
  		public const short Count = 714;
@@ -30,12 +30,16 @@
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
 +				return 0;
-+			if (parts[0] == "Terraria") {
-+				if (!ProjectileID.Search.ContainsName(parts[1]))
++			return TypeFromUniqueKey(parts[0], parts[1]);
++		}
++
++		public static int TypeFromUniqueKey(string mod, string name) {
++			if (mod == "Terraria") {
++				if (!ProjectileID.Search.ContainsName(name))
 +					return 0;
-+				return ProjectileID.Search.GetId(parts[1]);
++				return ProjectileID.Search.GetId(name);
 +			}
-+			return ModLoader.ModLoader.GetMod(parts[0])?.ProjectileType(parts[1]) ?? 0;
++			return ModLoader.ModLoader.GetMod(mod)?.ProjectileType(name) ?? 0;
 +		}
  	}
  }

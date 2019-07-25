@@ -9,7 +9,7 @@
  
  namespace Terraria.ID
  {
-@@ -3759,5 +_,31 @@
+@@ -3759,5 +_,34 @@
  			}
  			return id;
  		}
@@ -32,12 +32,15 @@
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
 +				return 0;
-+			if (parts[0] == "Terraria") {
-+				if (!NPCID.Search.ContainsName(parts[1]))
++			return TypeFromUniqueKey(parts[0], parts[1]);
++		}
++		public static int TypeFromUniqueKey(string mod, string name) {
++			if (mod == "Terraria") {
++				if (!NPCID.Search.ContainsName(name))
 +					return 0;
-+				return NPCID.Search.GetId(parts[1]);
++				return NPCID.Search.GetId(name);
 +			}
-+			return ModLoader.ModLoader.GetMod(parts[0])?.NPCType(parts[1]) ?? 0;
++			return ModLoader.ModLoader.GetMod(mod)?.NPCType(name) ?? 0;
 +		}
  	}
  }

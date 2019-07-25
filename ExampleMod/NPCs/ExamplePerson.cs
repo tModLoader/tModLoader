@@ -246,7 +246,7 @@ namespace ExampleMod.NPCs
 				{
 					if (item.IsUnloaded)
 						continue;
-					shop.item[nextSlot].SetDefaults(item.GetID());
+					shop.item[nextSlot].SetDefaults(item.Type);
 					shop.item[nextSlot].shopCustomPrice = 0;
 					shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 					nextSlot++;

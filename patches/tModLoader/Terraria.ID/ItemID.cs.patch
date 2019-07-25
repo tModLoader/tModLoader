@@ -25,7 +25,7 @@
  		}
  
  		public const short YellowPhasesaberOld = -24;
-@@ -7655,5 +_,29 @@
+@@ -7655,5 +_,32 @@
  			}
  			return 0;
  		}
@@ -46,12 +46,15 @@
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
 +				return 0;
-+			if (parts[0] == "Terraria") {
-+				if (!ItemID.Search.ContainsName(parts[1]))
++			return TypeFromUniqueKey(parts[0], parts[1]);
++		}
++		public static int TypeFromUniqueKey(string mod, string name) {
++			if (mod == "Terraria") {
++				if (!ItemID.Search.ContainsName(name))
 +					return 0;
-+				return ItemID.Search.GetId(parts[1]);
++				return ItemID.Search.GetId(name);
 +			}
-+			return ModLoader.ModLoader.GetMod(parts[0])?.ItemType(parts[1]) ?? 0;
++			return ModLoader.ModLoader.GetMod(mod)?.ItemType(name) ?? 0;
 +		}
  	}
  }

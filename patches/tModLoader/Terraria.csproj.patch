@@ -125,7 +125,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,235 @@
+@@ -339,6 +_,238 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -134,13 +134,16 @@
 +    <Compile Include="Terraria.ModLoader.Config.UI\CollectionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ColorElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ConfigElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\DefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\DictionaryElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\EnumElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\FloatElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\IntegerElements.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ItemDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ListElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\NPCDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ObjectElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\ProjectileDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\PropertyFieldWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\RangeElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\SetElement.cs" />
@@ -149,7 +152,7 @@
 +    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfig.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\UIModConfigList.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\Vector2Element.cs" />
-+    <Compile Include="Terraria.ModLoader.Config\ItemDefinition.cs" />
++    <Compile Include="Terraria.ModLoader.Config\EntityDefinition.cs" />
 +    <Compile Include="Terraria.ModLoader.Config\ConfigAttributes.cs" />
 +    <Compile Include="Terraria.ModLoader.Config\ModConfig.cs" />
 +    <Compile Include="Terraria.ModLoader.Config\ConfigManager.cs" />
