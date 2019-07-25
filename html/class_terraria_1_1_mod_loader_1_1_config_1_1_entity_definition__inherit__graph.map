@@ -1,0 +1,6 @@
+<map id="Terraria.ModLoader.Config.EntityDefinition" name="Terraria.ModLoader.Config.EntityDefinition">
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html" title="ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig..." alt="" coords="408,5,599,47"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html" title="Terraria.ModLoader.Config.\lNPCDefinition" alt="" coords="408,71,599,112"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html" title="Terraria.ModLoader.Config.\lProjectileDefinition" alt="" coords="408,136,599,177"/>
+<area shape="rect" id="node2" href="$interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html" title="TagSerializable" alt="" coords="5,78,121,105"/>
+</map>

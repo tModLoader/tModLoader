@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Terraria ModLoader: /home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/ItemDefinition.cs File Reference</title>
+<title>Terraria ModLoader: /home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader.Config/EntityDefinition.cs File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -87,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('_item_definition_8cs.html','');});
+$(document).ready(function(){initNavTree('_entity_definition_8cs.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -109,17 +109,25 @@ $(document).ready(function(){initNavTree('_item_definition_8cs.html','');});
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">ItemDefinition.cs File Reference</div>  </div>
+<div class="title">EntityDefinition.cs File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a href="_item_definition_8cs_source.html">Go to the source code of this file.</a></p>
+<p><a href="_entity_definition_8cs_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html">Terraria.ModLoader.Config.ItemDefinition</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html">Terraria.ModLoader.Config.EntityDefinition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Classes implementing <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html" title="Classes implementing EntityDefinition serve to function as a way to save and load the identities of v...">EntityDefinition</a> serve to function as a way to save and load the identities of various <a class="el" href="namespace_terraria.html">Terraria</a> objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>, but can be saved and loaded in a TagCompound as well.  <a href="class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>Terraria.ModLoader.Config.ItemDefinitionConverter</b></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>Terraria.ModLoader.Config.EntityDefinitionConverter&lt; T &gt;</b></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html">Terraria.ModLoader.Config.ItemDefinition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html" title="ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig...">ItemDefinition</a> represents an Item identity. A typical use for this class is usage in <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>, perhapse to facilitate an Item tweaking mod.  <a href="class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html">Terraria.ModLoader.Config.NPCDefinition</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html">Terraria.ModLoader.Config.ProjectileDefinition</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -132,7 +140,7 @@ Namespaces</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_b2dee0249ca1c6e98736e679cc6a5269.html">patches</a></li><li class="navelem"><a class="el" href="dir_33550c180f9cedd6db1017f362610614.html">tModLoader</a></li><li class="navelem"><a class="el" href="dir_95e31f3f5d6a475696026a3990020e73.html">Terraria.ModLoader.Config</a></li><li class="navelem"><a class="el" href="_item_definition_8cs.html">ItemDefinition.cs</a></li>
+    <li class="navelem"><a class="el" href="dir_b2dee0249ca1c6e98736e679cc6a5269.html">patches</a></li><li class="navelem"><a class="el" href="dir_33550c180f9cedd6db1017f362610614.html">tModLoader</a></li><li class="navelem"><a class="el" href="dir_95e31f3f5d6a475696026a3990020e73.html">Terraria.ModLoader.Config</a></li><li class="navelem"><a class="el" href="_entity_definition_8cs.html">EntityDefinition.cs</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>

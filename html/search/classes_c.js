@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['npcdefinition',['NPCDefinition',['../class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html',1,'Terraria::ModLoader::Config']]],
   ['npcheadloader',['NPCHeadLoader',['../class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html',1,'Terraria::ModLoader']]],
   ['npcloader',['NPCLoader',['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html',1,'Terraria::ModLoader']]],
   ['npcspawnhelper',['NPCSpawnHelper',['../class_terraria_1_1_mod_loader_1_1_n_p_c_spawn_helper.html',1,'Terraria::ModLoader']]],

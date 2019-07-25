@@ -19,8 +19,11 @@ var dir_95e31f3f5d6a475696026a3990020e73 =
     [ "ConfigManager.cs", "_config_manager_8cs.html", [
       [ "ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager" ]
     ] ],
-    [ "ItemDefinition.cs", "_item_definition_8cs.html", [
-      [ "ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition" ]
+    [ "EntityDefinition.cs", "_entity_definition_8cs.html", [
+      [ "EntityDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition" ],
+      [ "ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition" ],
+      [ "NPCDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition" ],
+      [ "ProjectileDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition" ]
     ] ],
     [ "ModConfig.cs", "_mod_config_8cs.html", "_mod_config_8cs" ]
 ];

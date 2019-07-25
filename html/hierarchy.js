@@ -74,7 +74,6 @@ var hierarchy =
     [ "IOException", "class_i_o_exception.html", [
       [ "Terraria.ModLoader.Exceptions.CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", null ]
     ] ],
-    [ "Terraria.ModLoader.Config.ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
     [ "Terraria.ModLoader.EffectsTracker.KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", [
@@ -147,7 +146,13 @@ var hierarchy =
     [ "Terraria.ModLoader.SurfaceBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html", null ],
     [ "Terraria.ModLoader.IO.TagIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html", null ],
     [ "Terraria.ModLoader.IO.TagPrinter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html", null ],
-    [ "Terraria.ModLoader.IO.TagSerializable", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html", null ],
+    [ "Terraria.ModLoader.IO.TagSerializable", "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html", [
+      [ "Terraria.ModLoader.Config.EntityDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html", [
+        [ "Terraria.ModLoader.Config.ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],
+        [ "Terraria.ModLoader.Config.NPCDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html", null ],
+        [ "Terraria.ModLoader.Config.ProjectileDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html", null ]
+      ] ]
+    ] ],
     [ "Terraria.ModLoader.IO.TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
       [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ]
     ] ],

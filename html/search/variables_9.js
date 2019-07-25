@@ -21,7 +21,7 @@ var searchData=
   ['isnetsynced',['IsNetSynced',['../class_terraria_1_1_mod_loader_1_1_mod.html#a85bbf627eb7bd116ac182667bc443770',1,'Terraria::ModLoader::Mod']]],
   ['ispaused',['IsPaused',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html#a460a68aeb186be0a67f2a501a91552c3',1,'Terraria.ModLoader.Audio.MusicCue.IsPaused()'],['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a94dfeaf094670c80959109c525abb0d4',1,'Terraria.ModLoader.Audio.MusicStreaming.IsPaused()']]],
   ['isplaying',['IsPlaying',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html#a7069d1000ca56be3807ed48e4a9038c3',1,'Terraria.ModLoader.Audio.MusicCue.IsPlaying()'],['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#ab621f3abf829f901fec22417eb23cbc7',1,'Terraria.ModLoader.Audio.MusicStreaming.IsPlaying()']]],
-  ['isunloaded',['IsUnloaded',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a39dff77bb9dd568ccce876c9b4423da6',1,'Terraria::ModLoader::Config::ItemDefinition']]],
+  ['isunloaded',['IsUnloaded',['../class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html#a0107dbbf72d3f2098b64c6a02bcad271',1,'Terraria::ModLoader::Config::EntityDefinition']]],
   ['itemcount',['ItemCount',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#adcc689c75a1f9a0b98ff4856710d8364',1,'Terraria::ModLoader::ItemLoader']]],
   ['itemlocation',['itemLocation',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#ad6908bcfde8e7f3ad472d42f840d9427',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['items',['items',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a81185c5e3280ba8404b1d63c0d538a7f',1,'Terraria::ModLoader::RecipeFinder']]]
