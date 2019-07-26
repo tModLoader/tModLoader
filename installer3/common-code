@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Originally created by Written by Ethan "flibitijibibo" Lee
+# Improved by Jacob Hrbek (github.com/kreyren)
+
+# Relevant https://mywiki.wooledge.org/BashFAQ/028
+
+# Error handling
+if ! command -v einfo > /dev/null; then	einfo()	{	printf "INFO: %s\n" "$1"	1>&2	;	} fi
+if ! command -v warn > /dev/null; then	warn()	{	printf "WARN: %s\n" "$1"	1>&2	;	} fi
+if ! command -v die > /dev/null; then	die()	{
+	case $1 in
+		# Syntax err
+		2)	([ -n "$2" ] && printf "FATAL: %s\n" "$2" 1>&2 ; exit "$1") || (printf "FATAL: Syntax error" 1>&2 ; exit "$1") ;;
+		# Permission issue
+		3)	([ -n "$2" ] && printf "FATAL: %s\n" "$2" 1>&2 ; exit "$1") || (printf "FATAL: Unable to elevate root access from $([ -n "$EUID" ] && printf "EUID ($EUID)")"	1>&2	;	exit "$1")	;;
+		# Custom
+		*)	([ -n "$2" ] && printf "FATAL: Syntax error $([ -n "${FUNCNAME[0]}" ] && printf "in ${FUNCNAME[0]}")\n%s\n" "$2"	1>&2	;	exit "$1") || (printf "FATAL: Syntax error detected" 1>&2 ; exit "$1")
+	esac
+} fi
+
+# Export required variables depending on system
+if [[ "$(uname)" == "Darwin" ]]; then
+	export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:./osx/"
+	[[ -n "$STEAM_DYLD_INSERT_LIBRARIES" && -n "$DYLD_INSERT_LIBRARIES" ]] &&	export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
+elif [[ "$(uname)" == "Linux" ]]; then
+	export LD_LIBRARY_PATH="lib:lib64"
+else
+	die 2 "Unexpected error: Expecting Linux or Darwin architecture, but found $(uname)"
+fi
+
+# Prepare kickstart mono libraries to a sys/ folder to remove conflicts
+mono_files=( "Mono.Posix.dll" "System.Data.dll" "System.Runtime.Serialization.dll" "System.Xml.dll" "Mono.Security.dll" "System.dll" "System.Security.dll" "System.Xml.Linq.dll" "System.Configuration.dll" "System.Drawing.dll" "System.Windows.Forms.dll" "WindowsBase.dll" "System.Core.dll" "System.Numerics.dll" "System.Windows.Forms.dll.config" )
+
+for f in "${mono_files[@]}"; do [[ -e "$f" && ! -e "sys/$f" ]] && mv "$f" sys; done

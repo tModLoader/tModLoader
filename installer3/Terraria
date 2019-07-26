@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Originally created by Written by Ethan "flibitijibibo" Lee
+# Improved by Jacob Hrbek (github.com/kreyren)
+
+source common-code
+
+# Run terraria
+env MONO_IOMAP=all mono "tModLoader.exe" "$@"

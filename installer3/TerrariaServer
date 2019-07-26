@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# MonoKickstart Shell Script
+# Originally created by Written by Ethan "flibitijibibo" Lee
+# Improved by Jacob Hrbek (github.com/kreyren)
+
+source common-code
+
+KICKSTART=./${BASENAME}.bin.${ext}
+
+env MONO_IOMAP=all mono "tModLoadererver.exe" "$@"
