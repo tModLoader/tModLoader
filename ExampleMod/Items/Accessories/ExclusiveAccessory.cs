@@ -41,7 +41,7 @@ namespace ExampleMod.Items.Accessories
 			{
 				// "(int i, Item foundItem) => { //code }" is a so called lambda. Here we pass a chunk of code into the method 
 				// that will be executed if it successfully found a different ExclusiveAccessory
-				FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
+				FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
 					// If an item is found and slot is the same as its index in armor[], we allow it to be replaced
 					canEquipAccessory = slot == i;
 				});
@@ -52,24 +52,39 @@ namespace ExampleMod.Items.Accessories
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
-			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
-				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + foundItem.Name + "' is already equipped!") {
+			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + accessory.Name + "' is already equipped!") {
 					overrideColor = Color.OrangeRed
 				});
 			});
 		}
 
 		public override bool CanRightClick() {
-			// Only allow right clicking if there is a different ExclusiveAccessory equipped
+			// An intricacy of vanilla is that it directly swaps the items on right click if the items are the same and just their prefixes differ,
+			// even in vanity slots. For this, FindDifferentEquippedExclusiveAccessory() doesn't find these items
+			// That means, if for whatever reason you have Green equipped, Yellow in a vanity slot, and then right click a Yellow item in your inventory
+			// that has a different prefix than the vanity Yellow, it will swap with the vanity Yellow instead of the equipped Green
+			// Therefore we need to reimplement this behavior by doing the following check
+
+			// Check vanity accessory slots for the same item type equipped and return false (so vanilla handles it)
+			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
+			for (int i = 13; i < 13 + maxAccessoryIndex; i++) {
+				if (Main.LocalPlayer.armor[i].type == item.type) return false;
+			}
+
 			bool canRightClick = false;
-			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => canRightClick = true);
+			// Only allow right clicking if there is a different ExclusiveAccessory equipped
+			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+				canRightClick = true;
+			});
+			// If this hook returns true, the item is consumed (just like crates and boss bags)
 			return canRightClick;
 		}
 
 		public override void RightClick(Player player) {
-			// Here we want to implement the "swapping" when right clicked to equip this item inplace of another one
-			FindDifferentEquippedExclusiveAccessory((int i, Item foundItem) => {
-				Main.LocalPlayer.QuickSpawnClonedItem(foundItem);
+			// Here we implement the "swapping" when right clicked to equip this item inplace of another one
+			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+				Main.LocalPlayer.QuickSpawnClonedItem(accessory);
 				// We need to use i instead of foundItem because we directly want to alter the equipped accessory
 				Main.LocalPlayer.armor[i] = item.Clone();
 			});
@@ -78,19 +93,21 @@ namespace ExampleMod.Items.Accessories
 		// We make our own method for compacting the code because we will need to check equipped accessories often
 		// This method also has a delegate as an argument, which allows us to pass entire methods instead of just variables
 		// To understand what an Action delegate is, see here: https://www.tutorialsteacher.com/csharp/csharp-action-delegate
-		private void FindDifferentEquippedExclusiveAccessory(Action<int, Item> whenFound) {
+		protected void FindDifferentEquippedExclusiveAccessory(Action<int, Item> whenFound) {
 			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
 			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
+				Item accessory = Main.LocalPlayer.armor[i];
 				// IsAir makes sure we don't check for "empty" slots
 				// IsTheSameAs() compares two items and returns true if their types match
 				// "is ExclusiveAccessory" is a way of performing pattern matching
 				// Here, inheritance helps us determine if the given item is indeed one of our ExclusiveAccessory ones
-				if (!Main.LocalPlayer.armor[i].IsAir &&
-					!item.IsTheSameAs(Main.LocalPlayer.armor[i]) &&
-					Main.LocalPlayer.armor[i].modItem is ExclusiveAccessory) {
+				if (!accessory.IsAir &&
+					!item.IsTheSameAs(accessory) &&
+					accessory.modItem is ExclusiveAccessory) {
 					// If we find an item that matches these criteria, execute the code inside it
 					// The second argument is just for convenience, technically we don't need it since we can get the item from just i
-					whenFound.Invoke(i, Main.LocalPlayer.armor[i]);
+					whenFound.Invoke(i, accessory);
+					break;
 				}
 			}
 		}
@@ -111,14 +128,23 @@ namespace ExampleMod.Items.Accessories
 		}
 
 		public override void RightClick(Player player) {
-			// In order to preserve its expected behavior (right click swaps this and the currently equipped accessory)
+			// This is an example of working with methods in the inheritance chain (you don't need this RightClick() override for your accessory otherwise)
+
+			// Here, before the parent's code is executed, we retrieve the name of the previously equipped item
+			// We know guaranteed that there will be an item to be replaced, since otherwise this hook wouldn't run (condition in CanRightClick())
+			string previousItemName = "";
+			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+				previousItemName = accessory.Name;
+			});
+
+			// In order to preserve its expected behavior (right click swaps this and a different currently equipped accessory)
 			// we need to call the parent method via base.Method(arguments)
-			// You can try to remove this line and see if you can swap this item with another one
+			// Removing this line will cause this item to just vanish when right clicked
 			base.RightClick(player);
 
 			// Here we add additional things that happen on right clicking this item
-			// Beware that this hook is only called if CanRightClick() returns true (which we defined as only returning true when we can swap items)
-			Main.NewText("I just equipped " + item.Name + "!");
+			Main.NewText("I just equipped " + item.Name + " in place of " + previousItemName + "!");
+			Main.PlaySound(SoundID.MaxMana, (int)player.position.X, (int)player.position.Y);
 		}
 	}
 
