@@ -111,13 +111,15 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_conf
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.Config.DefaultListValueAttribute Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines the default value to be added when using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI to add elements to a List  
+<p>Defines the default value to be added when using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.  
  <a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Terraria.ModLoader.Config.DefaultListValueAttribute:</div>
@@ -142,24 +144,131 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_conf
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a98ee7ca85e5b9a197ca9f80fafa53df0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a98ee7ca85e5b9a197ca9f80fafa53df0">DefaultListValueAttribute</a> (int <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>)</td></tr>
-<tr class="separator:a98ee7ca85e5b9a197ca9f80fafa53df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad507aa78ff3ae3f4511860ed1d6dba5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ad507aa78ff3ae3f4511860ed1d6dba5a">DefaultListValueAttribute</a> (float <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>)</td></tr>
-<tr class="separator:ad507aa78ff3ae3f4511860ed1d6dba5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac69402e23d4ab9920a6106497b7cfabb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ac69402e23d4ab9920a6106497b7cfabb">DefaultListValueAttribute</a> (object <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>)</td></tr>
-<tr class="separator:ac69402e23d4ab9920a6106497b7cfabb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad171d40827711c618d22f9fb2232765f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ad171d40827711c618d22f9fb2232765f">DefaultListValueAttribute</a> (Type type, string <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:ad171d40827711c618d22f9fb2232765f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5faa77cdf0c65796e099f47e7cbdfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a1c5faa77cdf0c65796e099f47e7cbdfd">DefaultListValueAttribute</a> (char <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a1c5faa77cdf0c65796e099f47e7cbdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5fa1ea5f301518607784421fa70d22"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a2c5fa1ea5f301518607784421fa70d22">DefaultListValueAttribute</a> (byte <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a2c5fa1ea5f301518607784421fa70d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0740d8103a34a84bc097a79f252a7e15"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a0740d8103a34a84bc097a79f252a7e15">DefaultListValueAttribute</a> (short <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a0740d8103a34a84bc097a79f252a7e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3adaec11ae154522dc8397e4c09dc10b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a3adaec11ae154522dc8397e4c09dc10b">DefaultListValueAttribute</a> (int <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a3adaec11ae154522dc8397e4c09dc10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3d0dbb69a090431aac273046d6bc42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#aac3d0dbb69a090431aac273046d6bc42">DefaultListValueAttribute</a> (long <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:aac3d0dbb69a090431aac273046d6bc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca6cdedfa726dedc3e98ce2f8a01f788"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#aca6cdedfa726dedc3e98ce2f8a01f788">DefaultListValueAttribute</a> (float <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:aca6cdedfa726dedc3e98ce2f8a01f788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c1923278fe887a07ab3c4aaf8b3166f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a5c1923278fe887a07ab3c4aaf8b3166f">DefaultListValueAttribute</a> (double <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a5c1923278fe887a07ab3c4aaf8b3166f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a59344682b60417f335ffc6306ef79d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a7a59344682b60417f335ffc6306ef79d">DefaultListValueAttribute</a> (bool <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a7a59344682b60417f335ffc6306ef79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ae10a5681d47892ec2897c07215f5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#af6ae10a5681d47892ec2897c07215f5f">DefaultListValueAttribute</a> (string <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:af6ae10a5681d47892ec2897c07215f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a307c9f641cbfa4edabf1205b152d7856"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a307c9f641cbfa4edabf1205b152d7856">DefaultListValueAttribute</a> (object <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:a307c9f641cbfa4edabf1205b152d7856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f746e7abfb1dc59f0997ebb7873a7b9"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a0f746e7abfb1dc59f0997ebb7873a7b9">Equals</a> (object obj)</td></tr>
+<tr class="separator:a0f746e7abfb1dc59f0997ebb7873a7b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c0df5fce240ba5b8c4bdd50d51e0398"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a1c0df5fce240ba5b8c4bdd50d51e0398">GetHashCode</a> ()</td></tr>
+<tr class="separator:a1c0df5fce240ba5b8c4bdd50d51e0398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a375e397d9bc1e16438752863bed04d86"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a></td></tr>
-<tr class="separator:a375e397d9bc1e16438752863bed04d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a586914e66232b282543221c07ecb43c9"><td class="memItemLeft" align="right" valign="top">virtual object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a586914e66232b282543221c07ecb43c9">Value</a> =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a></td></tr>
+<tr class="separator:a586914e66232b282543221c07ecb43c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae49003138915cd64352786de3d2f5e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ae49003138915cd64352786de3d2f5e09">SetValue</a> (object <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>)</td></tr>
+<tr class="separator:ae49003138915cd64352786de3d2f5e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab1dbbfca00bfdd836cd59f92c1164ee8"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a></td></tr>
+<tr class="separator:ab1dbbfca00bfdd836cd59f92c1164ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines the default value to be added when using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI to add elements to a List </p>
+<div class="textblock"><p>Defines the default value to be added when using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it. </p>
 
-<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00104">104</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00108">108</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a98ee7ca85e5b9a197ca9f80fafa53df0"></a>
+<a class="anchor" id="ad171d40827711c618d22f9fb2232765f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00111">111</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                                                  {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a> = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>);</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            }</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">catch</span> {</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                Logging.tML.Error(<span class="stringliteral">&quot;Default value attribute of type &quot;</span> + type.FullName + <span class="stringliteral">&quot; threw converting from the string &#39;&quot;</span> + <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a> + <span class="stringliteral">&quot;&#39;.&quot;</span>);</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            }</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_ab1dbbfca00bfdd836cd59f92c1164ee8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">Terraria.ModLoader.Config.DefaultListValueAttribute.value</a></div><div class="ttdeci">object value</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00110">ConfigAttributes.cs:110</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1c5faa77cdf0c65796e099f47e7cbdfd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2c5fa1ea5f301518607784421fa70d22"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0740d8103a34a84bc097a79f252a7e15"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3adaec11ae154522dc8397e4c09dc10b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -167,18 +276,31 @@ Public Attributes</h2></td></tr>
           <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>defaultValue</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00107">107</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>;</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_a375e397d9bc1e16438752863bed04d86"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">Terraria.ModLoader.Config.DefaultListValueAttribute.defaultValue</a></div><div class="ttdeci">object defaultValue</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00106">ConfigAttributes.cs:106</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ad507aa78ff3ae3f4511860ed1d6dba5a"></a>
+<a class="anchor" id="aac3d0dbb69a090431aac273046d6bc42"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aca6cdedfa726dedc3e98ce2f8a01f788"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -186,18 +308,63 @@ Public Attributes</h2></td></tr>
           <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>defaultValue</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00112">112</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_a375e397d9bc1e16438752863bed04d86"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">Terraria.ModLoader.Config.DefaultListValueAttribute.defaultValue</a></div><div class="ttdeci">object defaultValue</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00106">ConfigAttributes.cs:106</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ac69402e23d4ab9920a6106497b7cfabb"></a>
+<a class="anchor" id="a5c1923278fe887a07ab3c4aaf8b3166f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7a59344682b60417f335ffc6306ef79d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af6ae10a5681d47892ec2897c07215f5f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a307c9f641cbfa4edabf1205b152d7856"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -205,29 +372,137 @@ Public Attributes</h2></td></tr>
           <td class="memname">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute </td>
           <td>(</td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>defaultValue</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00117">117</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">defaultValue</a>;</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_a375e397d9bc1e16438752863bed04d86"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a375e397d9bc1e16438752863bed04d86">Terraria.ModLoader.Config.DefaultListValueAttribute.defaultValue</a></div><div class="ttdeci">object defaultValue</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00106">ConfigAttributes.cs:106</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a375e397d9bc1e16438752863bed04d86"></a>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a0f746e7abfb1dc59f0997ebb7873a7b9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">object Terraria.ModLoader.Config.DefaultListValueAttribute.defaultValue</td>
+          <td class="memname">override bool Terraria.ModLoader.Config.DefaultListValueAttribute.Equals </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00106">106</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00133">133</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+
+<p>References <a class="el" href="_config_attributes_8cs_source.html#l00133">Terraria.ModLoader.Config.DefaultListValueAttribute.Equals()</a>.</p>
+
+<p>Referenced by <a class="el" href="_config_attributes_8cs_source.html#l00133">Terraria.ModLoader.Config.DefaultListValueAttribute.Equals()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                                                {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">if</span> (obj == <span class="keyword">this</span>) {</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            }</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            var other = obj as <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ad171d40827711c618d22f9fb2232765f">DefaultListValueAttribute</a>;</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            <span class="keywordflow">if</span> (other != null) {</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a586914e66232b282543221c07ecb43c9">Value</a> != null) {</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a586914e66232b282543221c07ecb43c9">Value</a>.Equals(other.Value);</div><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                }</div><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <span class="keywordflow">else</span> {</div><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    <span class="keywordflow">return</span> (other.Value == null);</div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                }</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            }</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_a586914e66232b282543221c07ecb43c9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#a586914e66232b282543221c07ecb43c9">Terraria.ModLoader.Config.DefaultListValueAttribute.Value</a></div><div class="ttdeci">virtual object Value</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00131">ConfigAttributes.cs:131</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_ad171d40827711c618d22f9fb2232765f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ad171d40827711c618d22f9fb2232765f">Terraria.ModLoader.Config.DefaultListValueAttribute.DefaultListValueAttribute</a></div><div class="ttdeci">DefaultListValueAttribute(Type type, string value)</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00111">ConfigAttributes.cs:111</a></div></div>
+</div><!-- fragment -->
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_cgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_cgraph" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_cgraph">
+</map>
+</div>
+</p>
+
+<p><div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_icgraph" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_a0f746e7abfb1dc59f0997ebb7873a7b9_icgraph">
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a1c0df5fce240ba5b8c4bdd50d51e0398"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override int Terraria.ModLoader.Config.DefaultListValueAttribute.GetHashCode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae49003138915cd64352786de3d2f5e09"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.ModLoader.Config.DefaultListValueAttribute.SetValue </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00151">151</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                                              {</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            this.<a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a>;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute_html_ab1dbbfca00bfdd836cd59f92c1164ee8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">Terraria.ModLoader.Config.DefaultListValueAttribute.value</a></div><div class="ttdeci">object value</div><div class="ttdef"><b>Definition:</b> <a href="_config_attributes_8cs_source.html#l00110">ConfigAttributes.cs:110</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ab1dbbfca00bfdd836cd59f92c1164ee8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">object Terraria.ModLoader.Config.DefaultListValueAttribute.value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00110">110</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a586914e66232b282543221c07ecb43c9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual object Terraria.ModLoader.Config.DefaultListValueAttribute.Value =&gt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ab1dbbfca00bfdd836cd59f92c1164ee8">value</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_config_attributes_8cs_source.html#l00131">131</a> of file <a class="el" href="_config_attributes_8cs_source.html">ConfigAttributes.cs</a>.</p>
 
 </div>
 </div>

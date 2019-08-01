@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Config.ConfigManager.ObjectEquals" name="Terraria.ModLoader.Config.ConfigManager.ObjectEquals">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html#a1de9a257270cc9cd66d82632893ebfa9" title="Terraria.ModLoader.Config.\lReferenceDefaultsPreservingResolver.\lCreateProperties" alt="" coords="257,5,519,61"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ab905bc1e570eded8e8c4daa4fb50d53e" title="Whether or not a reload is required. The default implementation compares properties and fields annota..." alt="" coords="293,85,483,126"/>
+</map>

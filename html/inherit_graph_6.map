@@ -1,8 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html" title="Terraria.ModLoader.Audio.\lMusicStreaming" alt="" coords="240,71,427,112"/>
-<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html" title="Terraria.ModLoader.Audio.\lMusicStreamingMP3" alt="" coords="475,5,661,47"/>
-<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html" title="Terraria.ModLoader.Audio.\lMusicStreamingOGG" alt="" coords="475,71,661,112"/>
-<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_w_a_v.html" title="Terraria.ModLoader.Audio.\lMusicStreamingWAV" alt="" coords="475,136,661,177"/>
-<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html" title="Terraria.ModLoader.Audio.\lMusic" alt="" coords="5,132,192,173"/>
-<area shape="rect" id="node7" href="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_cue.html" title="Terraria.ModLoader.Audio.\lMusicCue" alt="" coords="240,136,427,177"/>
+<area shape="rect" id="node1" href="$class_i_o_exception.html" title="IOException" alt="" coords="5,13,103,39"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html" title="Terraria.ModLoader.Exceptions.\lCustomModDataException" alt="" coords="151,5,371,47"/>
 </map>

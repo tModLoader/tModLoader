@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.Config.PrefixDefinition" name="Terraria.ModLoader.Config.PrefixDefinition">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html" title="Classes implementing EntityDefinition serve to function as a way to save and load the identities of v..." alt="" coords="41,80,160,107"/>
+<area shape="rect" id="node3" href="$interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html" title="TagSerializable" alt="" coords="43,5,159,32"/>
+</map>

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['objectequals',['ObjectEquals',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a99dbb5217d2aee243219084220d1739a',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['oldhookexception',['OldHookException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html#a82660b139ed7f9db5ef74010301a3f87',1,'Terraria::ModLoader::Exceptions::OldHookException']]],
   ['onchanged',['OnChanged',['../class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#acbce44070d04b87a726ea8cf94079398',1,'Terraria::ModLoader::Config::ModConfig']]],
   ['onchatbuttonclicked',['OnChatButtonClicked',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a9dc1f2fadc19db07e55dcb2f061aad',1,'Terraria.ModLoader.GlobalNPC.OnChatButtonClicked()'],['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2',1,'Terraria.ModLoader.ModNPC.OnChatButtonClicked()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a866e9f26ad79ed221f9278ca65b39f9e',1,'Terraria.ModLoader.NPCLoader.OnChatButtonClicked()']]],

@@ -7,5 +7,6 @@ var searchData=
   ['ioexception',['IOException',['../class_i_o_exception.html',1,'']]],
   ['itemdefinition',['ItemDefinition',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html',1,'Terraria::ModLoader::Config']]],
   ['itemio',['ItemIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html',1,'Terraria::ModLoader::IO']]],
-  ['itemloader',['ItemLoader',['../class_terraria_1_1_mod_loader_1_1_item_loader.html',1,'Terraria::ModLoader']]]
+  ['itemloader',['ItemLoader',['../class_terraria_1_1_mod_loader_1_1_item_loader.html',1,'Terraria::ModLoader']]],
+  ['ivalueprovider',['IValueProvider',['../class_i_value_provider.html',1,'']]]
 ];

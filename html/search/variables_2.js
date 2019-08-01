@@ -7,6 +7,7 @@ var searchData=
   ['banner',['banner',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a47e6b54fb0926e906276e95c15cd0fd8',1,'Terraria::ModLoader::ModNPC']]],
   ['banneritem',['bannerItem',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6e6c5d4d8db4f78b7143df8dfd8b5f29',1,'Terraria::ModLoader::ModNPC']]],
   ['bartender',['Bartender',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a37b37d93f856ee1ecefe6a514c74f761',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['baseprovider',['baseProvider',['../class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html#a3ab12660df9788f25e79be33d191a85b',1,'Terraria::ModLoader::Config::ReferenceDefaultsPreservingResolver::ValueProviderDecorator']]],
   ['basescale',['baseScale',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#acbe56b8589c1a8356fdeefa690680bcd',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['beachangler',['BeachAngler',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae472cd43fc4d9848b595348be7b3804d',1,'Terraria::ModLoader::SpawnCondition']]],
   ['bed',['bed',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a20eb169106fcf5771e14c757c3de2185',1,'Terraria::ModLoader::ModTile']]],

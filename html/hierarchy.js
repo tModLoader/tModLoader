@@ -5,12 +5,18 @@ var hierarchy =
       [ "Terraria.ModLoader.AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", null ],
       [ "Terraria.ModLoader.AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", null ],
       [ "Terraria.ModLoader.Config.BackgroundColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.CustomAddMethodAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_add_method_attribute.html", null ],
       [ "Terraria.ModLoader.Config.CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.DefaultDictionaryValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_value_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DrawTicksAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html", null ],
       [ "Terraria.ModLoader.Config.HeaderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html", null ],
       [ "Terraria.ModLoader.Config.IncrementAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.JsonDefaultDictionaryValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_value_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.JsonDefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.JsonDefaultValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html", null ],
       [ "Terraria.ModLoader.Config.LabelAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.NullAllowedAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_null_allowed_attribute.html", null ],
       [ "Terraria.ModLoader.Config.OptionStringsAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_option_strings_attribute.html", null ],
       [ "Terraria.ModLoader.Config.RangeAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html", null ],
       [ "Terraria.ModLoader.Config.ReloadRequiredAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html", null ],
@@ -33,6 +39,9 @@ var hierarchy =
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
     [ "Terraria.ModLoader.Config.ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", null ],
+    [ "DefaultContractResolver", "class_default_contract_resolver.html", [
+      [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html", null ]
+    ] ],
     [ "Terraria.ModLoader.DrawLayer< InfoType >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", null ],
     [ "Terraria.ModLoader.DrawLayer< PlayerDrawInfo >", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", [
       [ "Terraria.ModLoader.PlayerLayer", "class_terraria_1_1_mod_loader_1_1_player_layer.html", null ]
@@ -76,6 +85,11 @@ var hierarchy =
     ] ],
     [ "Terraria.ModLoader.IO.ItemIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html", null ],
     [ "Terraria.ModLoader.ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", null ],
+    [ "IValueProvider", "class_i_value_provider.html", [
+      [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver.ValueProviderDecorator", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html", [
+        [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver.NullToDefaultValueProvider", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html", null ]
+      ] ]
+    ] ],
     [ "Terraria.ModLoader.EffectsTracker.KeyCache", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", [
       [ "Terraria.ModLoader.EffectsTracker.KeyCache< K, V >", "class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html", null ]
     ] ],
@@ -150,6 +164,7 @@ var hierarchy =
       [ "Terraria.ModLoader.Config.EntityDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html", [
         [ "Terraria.ModLoader.Config.ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],
         [ "Terraria.ModLoader.Config.NPCDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html", null ],
+        [ "Terraria.ModLoader.Config.PrefixDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_prefix_definition.html", null ],
         [ "Terraria.ModLoader.Config.ProjectileDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html", null ]
       ] ]
     ] ],
@@ -192,7 +207,9 @@ var hierarchy =
       [ "Terraria.ModLoader.DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", null ]
     ] ],
     [ "Terraria.ModLoader.TopoSort< T >", "class_terraria_1_1_mod_loader_1_1_topo_sort.html", null ],
-    [ "TypeConverter", "class_type_converter.html", null ],
+    [ "TypeConverter", "class_type_converter.html", [
+      [ "Terraria.ModLoader.Config.ToFromStringConverter< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_to_from_string_converter.html", null ]
+    ] ],
     [ "Terraria.ModLoader.UgBgStyleLoader", "class_terraria_1_1_mod_loader_1_1_ug_bg_style_loader.html", null ],
     [ "Terraria.ModLoader.IO.UploadFile", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html", null ],
     [ "Terraria.ModLoader.WallLoader", "class_terraria_1_1_mod_loader_1_1_wall_loader.html", null ],

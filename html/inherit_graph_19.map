@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html" title="Terraria.ModLoader.Effects\lTracker.KeyCache" alt="" coords="5,29,196,71"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_draw_layer.html" title="Terraria.ModLoader.DrawLayer\l\&lt; PlayerDrawInfo \&gt;" alt="" coords="5,5,220,47"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_player_layer.html" title="This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData. " alt="" coords="268,5,455,47"/>
 </map>

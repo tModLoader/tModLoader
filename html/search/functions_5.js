@@ -18,6 +18,7 @@ var searchData=
   ['frombase64',['FromBase64',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html#aabc0f58cfcbca0707a5416cdbe5dffc0',1,'Terraria::ModLoader::IO::ItemIO']]],
   ['fromfile',['FromFile',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#acce7382a98854f9ee3af15557fc23405',1,'Terraria::ModLoader::IO::TagIO']]],
   ['fromstream',['FromStream',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o.html#a5bb8177c2bd4cf1f285823c4a93a3c25',1,'Terraria::ModLoader::IO::TagIO']]],
+  ['fromstring',['FromString',['../class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html#a665f7039c3555527472274af1c98eb7d',1,'Terraria.ModLoader.Config.ItemDefinition.FromString()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html#abf13cb377666d7b8e2db2ded0a8a4156',1,'Terraria.ModLoader.Config.ProjectileDefinition.FromString()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html#a196f36c6b077f067e9099e9d8b76082c',1,'Terraria.ModLoader.Config.NPCDefinition.FromString()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_prefix_definition.html#aec781b36b175bdb8ccc389c093688e0b',1,'Terraria.ModLoader.Config.PrefixDefinition.FromString()']]],
   ['fromtile',['FromTile',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa',1,'Terraria::ModLoader::MapLegend']]],
   ['fromtype',['FromType',['../class_terraria_1_1_mod_loader_1_1_map_legend.html#a86f5d3202ae0e1b0c1e77ff1e6d7aad0',1,'Terraria::ModLoader::MapLegend']]]
 ];

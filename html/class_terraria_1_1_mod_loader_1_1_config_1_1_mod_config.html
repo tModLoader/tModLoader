@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:acbce44070d04b87a726ea8cf94079398"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called anytime new config values have been set and are ready to take effect. This will always be called right after OnLoaded and anytime new configuration values are ready to be used. The hook won't be called with values that violate NeedsReload. Use this hook to integrate with other code in your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> to apply the effects of the configuration values. If your NeedsReload is correctly implemented, you should be able to apply the settings without error in this hook. Be aware that this hook can be called in-game and in the main menu, as well as in single player and multiplayer situations.  <a href="#acbce44070d04b87a726ea8cf94079398">More...</a><br /></td></tr>
 <tr class="separator:acbce44070d04b87a726ea8cf94079398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada380c28debc7eb6dad55d0abc2f4029"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html#ada380c28debc7eb6dad55d0abc2f4029">OnLoaded</a> ()</td></tr>
-<tr class="memdesc:ada380c28debc7eb6dad55d0abc2f4029"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called when the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> has been loaded for the first time. This happens before regular Autoloading and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a>. You can use this hook to assign a static reference to this instance for easy access.  <a href="#ada380c28debc7eb6dad55d0abc2f4029">More...</a><br /></td></tr>
+<tr class="memdesc:ada380c28debc7eb6dad55d0abc2f4029"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called when the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> has been loaded for the first time. This happens before regular Autoloading and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a>. You can use this hook to assign a static reference to this instance for easy access. tModLoader will automatically assign (and later unload) this instance to a static field named Instance in the class prior to calling this method, if it exists.  <a href="#ada380c28debc7eb6dad55d0abc2f4029">More...</a><br /></td></tr>
 <tr class="separator:ada380c28debc7eb6dad55d0abc2f4029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -152,7 +152,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html" title="This attribute sets a label for the property, field, or class for use in the ModConfig UI...">LabelAttribute</a>. </p>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00014">14</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00018">18</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ad95681316cad05de293e30db467c3a73"></a>
 <div class="memitem">
@@ -203,8 +203,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return false to reject client changes</dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00049">49</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00054">54</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4b6a5a9ea0f2d6d71a361efb458bce19"></a>
@@ -255,6 +255,20 @@ Properties</h2></td></tr>
 <p>tModLoader will call Clone on <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> to facilitate proper implementation of the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> user interface and detecting when a reload is required. Modders need to override this method if their config contains reference types. Failure to do so will lead to bugs. See ModConfigShowcaseDataTypes.Clone for examples and explanations. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
+<p>Referenced by <a class="el" href="_config_manager_8cs_source.html#l00283">Terraria.ModLoader.Config.ConfigManager.GeneratePopulatedClone()</a>.</p>
+
+<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab0db241120779a9a5a0cd9d8119389ed_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab0db241120779a9a5a0cd9d8119389ed_icgraph" alt=""/></div>
+<map name="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab0db241120779a9a5a0cd9d8119389ed_icgraph" id="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab0db241120779a9a5a0cd9d8119389ed_icgraph">
+<area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a0826f3929bcf66e9b34b3618e39c0e75" title="Terraria.ModLoader.Config.\lConfigManager.GeneratePopulatedClone" alt="" coords="244,5,525,47"/>
+</map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ab905bc1e570eded8e8c4daa4fb50d53e"></a>
@@ -288,18 +302,19 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00066">66</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00071">71</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 
-<p>References <a class="el" href="_config_manager_8cs_source.html#l00253">Terraria.ModLoader.Config.ConfigManager.GetFieldsAndProperties()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">foreach</span> (PropertyFieldWrapper variable <span class="keywordflow">in</span> ConfigManager.GetFieldsAndProperties(<span class="keyword">this</span>))</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            {</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute&lt;ReloadRequiredAttribute&gt;(variable, <span class="keyword">this</span>, null);</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keywordflow">if</span> (reloadRequired != null)</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <span class="keywordflow">if</span> (!<span class="keywordtype">object</span>.Equals(variable.GetValue(<span class="keyword">this</span>), variable.GetValue(pendingConfig)))</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    }</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                }</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="_config_manager_8cs_source.html#l00268">Terraria.ModLoader.Config.ConfigManager.GetFieldsAndProperties()</a>, and <a class="el" href="_config_manager_8cs_source.html#l00336">Terraria.ModLoader.Config.ConfigManager.ObjectEquals()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">foreach</span> (PropertyFieldWrapper variable <span class="keywordflow">in</span> ConfigManager.GetFieldsAndProperties(<span class="keyword">this</span>))</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute&lt;ReloadRequiredAttribute&gt;(variable, <span class="keyword">this</span>, null);</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keywordflow">if</span> (reloadRequired != null)</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                {</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    <span class="comment">// Do we need to implement nested ReloadRequired? Right now only top level fields will trigger it.</span></div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="keywordflow">if</span> (!ConfigManager.ObjectEquals(variable.GetValue(<span class="keyword">this</span>), variable.GetValue(pendingConfig))) {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    }</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                }</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            }</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab905bc1e570eded8e8c4daa4fb50d53e_cgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab905bc1e570eded8e8c4daa4fb50d53e_cgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab905bc1e570eded8e8c4daa4fb50d53e_cgraph" id="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_ab905bc1e570eded8e8c4daa4fb50d53e_cgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a3d6379c15d1fb9a5720e6d618d64eff7" title="Terraria.ModLoader.Config.\lConfigManager.GetFieldsAndProperties" alt="" coords="244,5,513,47"/>
+<area shape="rect" id="node3" href="class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a99dbb5217d2aee243219084220d1739a" title="Terraria.ModLoader.Config.\lConfigManager.ObjectEquals" alt="" coords="277,71,481,112"/>
 </map>
 </div>
 </p>
@@ -329,15 +344,15 @@ Properties</h2></td></tr>
 
 <p>This hook is called anytime new config values have been set and are ready to take effect. This will always be called right after OnLoaded and anytime new configuration values are ready to be used. The hook won't be called with values that violate NeedsReload. Use this hook to integrate with other code in your <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> to apply the effects of the configuration values. If your NeedsReload is correctly implemented, you should be able to apply the settings without error in this hook. Be aware that this hook can be called in-game and in the main menu, as well as in single player and multiplayer situations. </p>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00038">38</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00043">43</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_net_8cs_source.html#l00116">Terraria.ModLoader.ModNet.SendServerConfigs()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div></div><!-- fragment -->
-<p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div></div><!-- fragment -->
+<p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_acbce44070d04b87a726ea8cf94079398_icgraph.png" border="0" usemap="#class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_acbce44070d04b87a726ea8cf94079398_icgraph" alt=""/></div>
 <map name="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_acbce44070d04b87a726ea8cf94079398_icgraph" id="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config_acbce44070d04b87a726ea8cf94079398_icgraph">
 <area shape="rect" id="node2" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a7b38b5f2ca6cd52e273d8ecca1624a05" title="Terraria.ModLoader.ModNet.\lSendServerConfigs" alt="" coords="244,5,445,47"/>
@@ -368,10 +383,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This method is called when the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> has been loaded for the first time. This happens before regular Autoloading and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a>. You can use this hook to assign a static reference to this instance for easy access. </p>
+<p>This method is called when the <a class="el" href="class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> has been loaded for the first time. This happens before regular Autoloading and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load</a>. You can use this hook to assign a static reference to this instance for easy access. tModLoader will automatically assign (and later unload) this instance to a static field named Instance in the class prior to calling this method, if it exists. </p>
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00031">31</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00036">36</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -393,7 +408,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00017">17</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00021">21</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00219">Terraria.ModLoader.Mod.AddConfig()</a>.</p>
 
@@ -417,7 +432,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00023">23</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00027">27</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 
 </div>
 </div>
@@ -439,7 +454,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00020">20</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_config_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_config_8cs_source.html">ModConfig.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l00219">Terraria.ModLoader.Mod.AddConfig()</a>.</p>
 

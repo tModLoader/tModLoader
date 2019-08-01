@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_background_texture_loader.html" title="This is the class that keeps track of all modded background textures and their slots/IDs. " alt="" coords="5,5,228,47"/>
+<area shape="rect" id="node1" href="$class_i_value_provider.html" title="IValueProvider" alt="" coords="5,20,117,47"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html" title="Terraria.ModLoader.Config.\lReferenceDefaultsPreservingResolver.\lValueProviderDecorator" alt="" coords="165,5,427,61"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html" title="Terraria.ModLoader.Config.\lReferenceDefaultsPreservingResolver.\lNullToDefaultValueProvider" alt="" coords="475,5,736,61"/>
 </map>

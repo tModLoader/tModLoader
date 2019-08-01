@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['keycache',['KeyCache',['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html',1,'Terraria.ModLoader.EffectsTracker.KeyCache'],['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html',1,'Terraria.ModLoader.EffectsTracker.KeyCache&lt; K, V &gt;']]]
+  ['jsondefaultdictionaryvalueattribute',['JsonDefaultDictionaryValueAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_value_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['jsondefaultlistvalueattribute',['JsonDefaultListValueAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['jsondefaultvalueattribute',['JsonDefaultValueAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html',1,'Terraria::ModLoader::Config']]]
 ];
