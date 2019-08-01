@@ -38,6 +38,7 @@ namespace Terraria.ModLoader.Config.UI
 					memberInfo.SetValue(item, current);
 				else
 					array[index] = current;
+				Interface.modConfig.SetPendingChanges();
 			}
 			public Vector2Object(PropertyFieldWrapper memberInfo, object item) {
 				this.item = item;

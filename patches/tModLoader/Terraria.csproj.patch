@@ -125,7 +125,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,238 @@
+@@ -339,6 +_,239 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -143,6 +143,7 @@
 +    <Compile Include="Terraria.ModLoader.Config.UI\ListElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\NPCDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ObjectElement.cs" />
++    <Compile Include="Terraria.ModLoader.Config.UI\PrefixDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\ProjectileDefinitionElement.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\PropertyFieldWrapper.cs" />
 +    <Compile Include="Terraria.ModLoader.Config.UI\RangeElement.cs" />

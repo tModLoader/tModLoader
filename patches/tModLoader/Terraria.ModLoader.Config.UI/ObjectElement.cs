@@ -10,10 +10,8 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ObjectElement : ConfigElement
+	class ObjectElement : ConfigElement<object>
 	{
-		private Func<object> _GetValue;
-		private Action<object> _SetValue;
 		protected Func<string> AbridgedTextDisplayFunction;
 
 		//SeparatePageAttribute separatePageAttribute;
@@ -29,8 +27,6 @@ namespace Terraria.ModLoader.Config.UI
 		UITextPanel<FuncStringWrapper> separatePageButton;
 		bool expanded = true;
 
-		bool AllowNull => list == null; // nulls don't make sense for a collection, but a standalone might be useful. NonNull attribute might be nice.
-
 		// Label:
 		//  Members
 		//  Members
@@ -40,15 +36,8 @@ namespace Terraria.ModLoader.Config.UI
 
 		public override void OnBind() {
 			base.OnBind();
-			_GetValue = () => memberInfo.GetValue(this.item);
-			_SetValue = (object value) => {
-				if (!memberInfo.CanWrite) return;
-				memberInfo.SetValue(this.item, value);
-			};
 
 			if (list != null) {
-				_GetValue = () => list[index];
-				_SetValue = (object value) => { list[index] = value; Interface.modConfig.SetPendingChanges(); };
 				// TODO: only do this if ToString is overriden. 
 
 				var listType = memberInfo.Type.GetGenericArguments()[0];
@@ -65,20 +54,18 @@ namespace Terraria.ModLoader.Config.UI
 			else {
 				bool hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
 				if (hasToString) {
-					TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (_GetValue() == null ? "" : ": " + _GetValue().ToString());
-					AbridgedTextDisplayFunction = () => _GetValue()?.ToString() ?? "";
+					TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (Value == null ? "" : ": " + Value.ToString());
+					AbridgedTextDisplayFunction = () => Value?.ToString() ?? "";
 				}
 			}
 
-			if(_GetValue() == null && !AllowNull) {
+			// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
+			if (Value == null && list != null) {
+				// This should never actually happen, but I guess a bad Json file could.
 				object data = Activator.CreateInstance(memberInfo.Type);
-				JsonConvert.PopulateObject("{}", data, ConfigManager.serializerSettings);
-				//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-				//if (jsonDefaultValueAttribute != null)
-				//{
-				//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-				//}
-				_SetValue(data);
+				string json = jsonDefaultValueAttribute?.json ?? "{}";
+				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
+				Value = data;
 			}
 
 			separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(memberInfo, item, list) != null;
@@ -139,16 +126,9 @@ namespace Terraria.ModLoader.Config.UI
 			initializeButton.OnClick += (a, b) => {
 				Main.PlaySound(21);
 				object data = Activator.CreateInstance(memberInfo.Type);
-				// Crashes JSONItem
-				JsonConvert.PopulateObject("{}", data, ConfigManager.serializerSettings); // Seems to fail on all data structures?
-
-				//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-				//if (jsonDefaultValueAttribute != null)
-				//{
-				//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-				//}
-
-				_SetValue(data);
+				string json = jsonDefaultValueAttribute?.json ?? "{}";
+				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
+				Value = data;
 
 				//SeparatePageAttribute here?
 
@@ -173,8 +153,8 @@ namespace Terraria.ModLoader.Config.UI
 			deleteButton = new UIModConfigHoverImage(deleteTexture, "Clear");
 			deleteButton.Top.Set(4, 0f);
 			deleteButton.Left.Set(-25, 1f);
-			deleteButton.OnClick += (a, b) => { 
-				_SetValue(null);
+			deleteButton.OnClick += (a, b) => {
+				Value = null;
 				pendingChanges = true;
 
 				SetupList();
@@ -182,7 +162,7 @@ namespace Terraria.ModLoader.Config.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			if (_GetValue() != null) {
+			if (Value != null) {
 				//Append(expandButton);
 				//Append(deleteButton);
 				SetupList();
@@ -211,12 +191,12 @@ namespace Terraria.ModLoader.Config.UI
 			RemoveChild(dataList);
 			if (separatePage && !ignoreSeparatePage)
 				RemoveChild(separatePageButton);
-			if (_GetValue() == null) {
+			if (Value == null) {
 				Append(initializeButton);
 				drawLabel = true;
 			}
 			else {
-				if(AllowNull && !(separatePage && ignoreSeparatePage))
+				if(list == null && !(separatePage && ignoreSeparatePage) && nullAllowed)
 					Append(deleteButton);
 				if (!separatePage || ignoreSeparatePage) {
 					if (!ignoreSeparatePage)
@@ -241,7 +221,7 @@ namespace Terraria.ModLoader.Config.UI
 		private void SetupList() {
 			dataList.Clear();
 
-			object data = _GetValue();
+			object data = Value;
 			if (data != null) {
 				if (separatePage && !ignoreSeparatePage) {
 					separatePagePanel = UIModConfig.MakeSeparateListPanel(item, data, memberInfo, list, index, AbridgedTextDisplayFunction);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.ComponentModel;
 
 namespace Terraria.ModLoader.Config
 {
@@ -10,8 +11,7 @@ namespace Terraria.ModLoader.Config
 	public class BackgroundColorAttribute : Attribute
 	{
 		public Color color;
-		public BackgroundColorAttribute(int r, int g, int b, int a = 255)
-		{
+		public BackgroundColorAttribute(int r, int g, int b, int a = 255) {
 			this.color = new Color(r, g, b, a);
 		}
 	}
@@ -44,16 +44,11 @@ namespace Terraria.ModLoader.Config
 	public class LabelAttribute : Attribute
 	{
 		readonly string label;
-		public LabelAttribute(string label)
-		{
+		public LabelAttribute(string label) {
 			this.label = label;
 		}
 		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
 	}
-
-	// [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	// public class StringRepresentationAttribute : Attribute
-	// TODO
 
 	/// <summary>
 	/// This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
@@ -63,8 +58,7 @@ namespace Terraria.ModLoader.Config
 	public class TooltipAttribute : Attribute
 	{
 		readonly string tooltip;
-		public TooltipAttribute(string tooltip)
-		{
+		public TooltipAttribute(string tooltip) {
 			this.tooltip = tooltip;
 		}
 		public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
@@ -91,32 +85,153 @@ namespace Terraria.ModLoader.Config
 	public class CustomModConfigItemAttribute : Attribute
 	{
 		public Type t;
-		public CustomModConfigItemAttribute(Type t)
-		{
+		public CustomModConfigItemAttribute(Type t) {
 			this.t = t;
 		}
 	}
 
 	/// <summary>
-	/// Defines the default value to be added when using the ModConfig UI to add elements to a List
+	/// Similar to DefaultValueAttribute but for reference types. It uses a json string that will be used populate this element when initialized. Defines the default value, expressed as json, to be used to populate an object with the NullAllowed attribute. Modders should only use this in conjuction with NullAllowed, as simply initializing the field with a default value is preferred.
+	/// </summary>
+	public class JsonDefaultValueAttribute : Attribute
+	{
+		public string json;
+		public JsonDefaultValueAttribute(string json) {
+			this.json = json;
+		}
+	}
+
+	/// <summary>
+	/// Defines the default value to be added when using the ModConfig UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class DefaultListValueAttribute : Attribute
 	{
-		public object defaultValue;
-		public DefaultListValueAttribute(int defaultValue)
-		{
-			this.defaultValue = defaultValue;
+		private object value;
+		public DefaultListValueAttribute(Type type, string value) {
+			try {
+				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+			}
+			catch {
+				Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
+			}
 		}
 
-		public DefaultListValueAttribute(float defaultValue)
-		{
-			this.defaultValue = defaultValue;
+		public DefaultListValueAttribute(char value) => this.value = value;
+		public DefaultListValueAttribute(byte value) => this.value = value;
+		public DefaultListValueAttribute(short value) => this.value = value;
+		public DefaultListValueAttribute(int value) => this.value = value;
+		public DefaultListValueAttribute(long value) => this.value = value;
+		public DefaultListValueAttribute(float value) => this.value = value;
+		public DefaultListValueAttribute(double value) => this.value = value;
+		public DefaultListValueAttribute(bool value) => this.value = value;
+		public DefaultListValueAttribute(string value) => this.value = value;
+		public DefaultListValueAttribute(object value) => this.value = value;
+
+		public virtual object Value => value;
+
+		public override bool Equals(object obj) {
+			if (obj == this) {
+				return true;
+			}
+			var other = obj as DefaultListValueAttribute;
+			if (other != null) {
+				if (Value != null) {
+					return Value.Equals(other.Value);
+				}
+				else {
+					return (other.Value == null);
+				}
+			}
+			return false;
 		}
 
-		public DefaultListValueAttribute(object defaultValue)
-		{
-			this.defaultValue = defaultValue;
+		public override int GetHashCode() => base.GetHashCode();
+
+		protected void SetValue(object value) {
+			this.value = value;
+		}
+	}
+
+	/// <summary>
+	/// Defines the default value to be added when using the ModConfig UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class DefaultDictionaryValueAttribute : Attribute
+	{
+		private object value;
+		public DefaultDictionaryValueAttribute(Type type, string value) {
+			try {
+				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+			}
+			catch {
+				Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
+			}
+		}
+
+		public DefaultDictionaryValueAttribute(char value) => this.value = value;
+		public DefaultDictionaryValueAttribute(byte value) => this.value = value;
+		public DefaultDictionaryValueAttribute(short value) => this.value = value;
+		public DefaultDictionaryValueAttribute(int value) => this.value = value;
+		public DefaultDictionaryValueAttribute(long value) => this.value = value;
+		public DefaultDictionaryValueAttribute(float value) => this.value = value;
+		public DefaultDictionaryValueAttribute(double value) => this.value = value;
+		public DefaultDictionaryValueAttribute(bool value) => this.value = value;
+		public DefaultDictionaryValueAttribute(string value) => this.value = value;
+		public DefaultDictionaryValueAttribute(object value) => this.value = value;
+
+		public virtual object Value => value;
+
+		public override bool Equals(object obj) {
+			if (obj == this) {
+				return true;
+			}
+			var other = obj as DefaultDictionaryValueAttribute;
+			if (other != null) {
+				if (Value != null) {
+					return Value.Equals(other.Value);
+				}
+				else {
+					return (other.Value == null);
+				}
+			}
+			return false;
+		}
+
+		public override int GetHashCode() => base.GetHashCode();
+
+		protected void SetValue(object value) {
+			this.value = value;
+		}
+	}
+
+	/// <summary>
+	/// Similar to DefaultListValueAttribute but for reference types. It uses a json string that will be used populate new instances list elements. Defines the default value, expressed as json, to be added when using the ModConfig UI to add elements to a List.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class JsonDefaultListValueAttribute : Attribute
+	{
+		public string json;
+		public JsonDefaultListValueAttribute(string json) {
+			this.json = json;
+		}
+	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class CustomAddMethodAttribute : Attribute
+	{
+		public string methodName;
+		public CustomAddMethodAttribute(string methodName) {
+			this.methodName = methodName;
+		}
+	}
+
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class JsonDefaultDictionaryValueAttribute : Attribute
+	{
+		public string json;
+		public JsonDefaultDictionaryValueAttribute(string json) {
+			this.json = json;
 		}
 	}
 
@@ -127,8 +242,7 @@ namespace Terraria.ModLoader.Config
 	public class OptionStringsAttribute : Attribute
 	{
 		public string[] optionLabels { get; set; }
-		public OptionStringsAttribute(string[] optionLabels)
-		{
+		public OptionStringsAttribute(string[] optionLabels) {
 			this.optionLabels = optionLabels;
 		}
 	}
@@ -141,20 +255,16 @@ namespace Terraria.ModLoader.Config
 	public class IncrementAttribute : Attribute
 	{
 		public object increment;
-		public IncrementAttribute(int increment)
-		{
+		public IncrementAttribute(int increment) {
 			this.increment = increment;
 		}
-		public IncrementAttribute(float increment)
-		{
+		public IncrementAttribute(float increment) {
 			this.increment = increment;
 		}
-		public IncrementAttribute(uint increment)
-		{
+		public IncrementAttribute(uint increment) {
 			this.increment = increment;
 		}
-		public IncrementAttribute(byte increment)
-		{
+		public IncrementAttribute(byte increment) {
 			this.increment = increment;
 		}
 	}
@@ -168,24 +278,20 @@ namespace Terraria.ModLoader.Config
 		public object min;
 		public object max;
 
-		public RangeAttribute(int min, int max)
-		{
+		public RangeAttribute(int min, int max) {
 			this.min = min;
 			this.max = max;
 		}
 
-		public RangeAttribute(float min, float max)
-		{
+		public RangeAttribute(float min, float max) {
 			this.min = min;
 			this.max = max;
 		}
-		public RangeAttribute(uint min, uint max)
-		{
+		public RangeAttribute(uint min, uint max) {
 			this.min = min;
 			this.max = max;
 		}
-		public RangeAttribute(byte min, byte max)
-		{
+		public RangeAttribute(byte min, byte max) {
 			this.min = min;
 			this.max = max;
 		}
@@ -215,7 +321,15 @@ namespace Terraria.ModLoader.Config
 	{
 	}
 
-	// Unimplemented below:
+	/// <summary>
+	/// This attribute means the annotated item can possibly be null. This will allow the UI to make the item null. It is up to the modder to make sure the item isn't null in the ModConfig constructor and nested classes.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class NullAllowedAttribute : Attribute
+	{
+	}
+
+	// Unimplemented ideas below:
 
 	// Hide or Disable this item while in game.
 	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
@@ -224,39 +338,6 @@ namespace Terraria.ModLoader.Config
 	// Hide or Disable this item while a client?
 	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	//public class HideForClientAttribute : Attribute { }
-
-	//public class JsonDefaultValueAttribute : Attribute
-	//{
-	//	public string json;
-	//	public JsonDefaultValueAttribute(string json)
-	//	{
-	//		this.json = json;
-	//	}
-	//}
-
-	// Problem: shared reference.
-	//public class JsonDefaultValueAttribute : DefaultValueAttribute
-	//{
-	//	public string json;
-	//	public JsonDefaultValueAttribute(string json, Type type) : base(ConvertFromJson(json, type))
-	//	{
-	//		this.json = json;
-	//	}
-
-	//	private static object ConvertFromJson(string json, Type type)
-	//	{
-	//		//var value = Activator.CreateInstance(type);
-	//		//JsonConvert.PopulateObject(json, value, ConfigManager.serializerSettings);
-	//		//return value;
-	//		var value = JsonConvert.DeserializeObject(json, type, new JsonSerializerSettings
-	//		{
-	//			//MissingMemberHandling = MissingMemberHandling.Error,
-	//			//NullValueHandling = NullValueHandling.Include,
-	//			//DefaultValueHandling = DefaultValueHandling.Populate
-	//		});
-	//		return value;
-	//	}
-	//}
 
 	//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
 	//public class StringRepresentationAttribute : Attribute

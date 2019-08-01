@@ -66,7 +66,7 @@ namespace ExampleMod.Items
 					overrideColor = Color.Magenta
 				});
 			}
-			if (ExampleMod.exampleClientConfig.ShowModOriginTooltip)
+			if (ExampleConfigClient.Instance.ShowModOriginTooltip)
 			{
 				foreach (TooltipLine line3 in tooltips)
 				{

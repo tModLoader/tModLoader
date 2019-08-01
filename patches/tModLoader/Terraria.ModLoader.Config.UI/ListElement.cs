@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
@@ -12,20 +13,20 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void PrepareTypes() {
 			listType = memberInfo.Type.GetGenericArguments()[0];
+			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, listType);
 		}
 
 		protected override void AddItem() {
-			if (defaultListValueAttribute != null) {
-				((IList)data).Add(defaultListValueAttribute.defaultValue);
-			}
-			else {
-				((IList)data).Add(ConfigManager.AlternateCreateInstance(listType));
-			}
+			((IList)data).Add(CreateCollectionElementInstance(listType));
 		}
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
 			SetObject(data);
+		}
+
+		protected override void ClearCollection() {
+			((IList)data).Clear();
 		}
 
 		protected override void SetupList() {

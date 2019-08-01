@@ -33,6 +33,7 @@ namespace Terraria.ModLoader.Config.UI
 				selectionExpanded = !selectionExpanded;
 				updateNeeded = true;
 			};
+			TweakDefinitionOptionElement(optionChoice);
 			Append(optionChoice);
 
 			chooserPanel = new UIPanel();
@@ -135,6 +136,7 @@ namespace Terraria.ModLoader.Config.UI
 		protected abstract List<DefinitionOptionElement<T>> GetPassedOptionElements();
 		protected abstract List<DefinitionOptionElement<T>> CreateDefinitionOptionElementList();
 		protected abstract DefinitionOptionElement<T> CreateDefinitionOptionElement();
+		protected virtual void TweakDefinitionOptionElement(DefinitionOptionElement<T> optionElement) { }
 	}
 
 	class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
@@ -166,7 +168,7 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		public void SetScale(float scale) {
+		public virtual void SetScale(float scale) {
 			this.scale = scale;
 			this.Width.Set(defaultBackgroundTexture.Width * scale, 0f);
 			this.Height.Set(defaultBackgroundTexture.Height * scale, 0f);

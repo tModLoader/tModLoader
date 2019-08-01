@@ -31,6 +31,7 @@ namespace Terraria.ModLoader.Config
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
 			NullValueHandling = NullValueHandling.Ignore,
 			Converters = converters,
+			ContractResolver = new ReferenceDefaultsPreservingResolver()
 		};
 
 		internal static readonly JsonSerializerSettings serializerSettingsCompact = new JsonSerializerSettings
@@ -40,6 +41,7 @@ namespace Terraria.ModLoader.Config
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
 			NullValueHandling = NullValueHandling.Ignore,
 			Converters = converters,
+			ContractResolver = serializerSettings.ContractResolver
 		};
 
 		private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
@@ -59,6 +61,10 @@ namespace Terraria.ModLoader.Config
 				Configs.Add(config.mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
+			FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+			if (instance != null) {
+				instance.SetValue(null, config);
+			}
 			config.OnLoaded();
 			config.OnChanged();
 
@@ -66,7 +72,7 @@ namespace Terraria.ModLoader.Config
 			List<ModConfig> configList2;
 			if (!LoadTimeConfigs.TryGetValue(config.mod, out configList2))
 				LoadTimeConfigs.Add(config.mod, configList2 = new List<ModConfig>());
-			configList2.Add(config.Clone());
+			configList2.Add(GeneratePopulatedClone(config));
 		}
 
 		// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
@@ -120,6 +126,15 @@ namespace Terraria.ModLoader.Config
 
 		internal static void Unload()
 		{
+			serializerSettings.ContractResolver = new ReferenceDefaultsPreservingResolver();
+			serializerSettingsCompact.ContractResolver = serializerSettings.ContractResolver;
+
+			Configs.SelectMany(configList => configList.Value).ToList().ForEach(config => {
+				FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+				if (instance != null) {
+					instance.SetValue(null, null);
+				}
+			});
 			Configs.Clear();
 			LoadTimeConfigs.Clear();
 
@@ -210,7 +225,7 @@ namespace Terraria.ModLoader.Config
 				string json = reader.ReadString();
 				ModConfig config = GetConfig(ModLoader.GetMod(modname), configname);
 				ModConfig loadTimeConfig = GetLoadTimeConfig(ModLoader.GetMod(modname), configname);
-				ModConfig pendingConfig = config.Clone();
+				ModConfig pendingConfig = GeneratePopulatedClone(config);
 				JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 				bool success = true;
 				string message = "Accepted";
@@ -265,6 +280,13 @@ namespace Terraria.ModLoader.Config
 			return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 		}
 
+		public static ModConfig GeneratePopulatedClone(ModConfig original) {
+			string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
+			ModConfig properClone = original.Clone();
+			JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+			return properClone;
+		}
+
 		public static object AlternateCreateInstance(Type type)
 		{
 			if (type == typeof(string))
@@ -285,6 +307,18 @@ namespace Terraria.ModLoader.Config
 			// Member
 			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
 			return attribute;
+			// TODO: allow for inheriting from parent's parent? (could get attribute from parent ConfigElement)
+		}
+
+		public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute {
+			// Class
+			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
+
+			attribute = (T)Attribute.GetCustomAttribute(type, typeof(T), true) ?? attribute;
+
+			// Member
+			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
+			return attribute;
 		}
 
 		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) 
@@ -297,30 +331,103 @@ namespace Terraria.ModLoader.Config
 			// public api for modders.
 			Interface.modConfig.SetPendingChanges(changes);
 		}
+
+		// TODO: better home?
+		public static bool ObjectEquals(object a, object b) {
+			if (ReferenceEquals(a, b)) return true;
+			if (a == null || b == null) return false;
+			if (a is IEnumerable && b is IEnumerable && !(a is string) && !(b is string))
+				return EnumerableEquals((IEnumerable)a, (IEnumerable)b);
+			return a.Equals(b);
+		}
+
+		public static bool EnumerableEquals(IEnumerable a, IEnumerable b) {
+			IEnumerator enumeratorA = a.GetEnumerator();
+			IEnumerator enumeratorB = b.GetEnumerator();
+			bool hasNextA = enumeratorA.MoveNext();
+			bool hasNextB = enumeratorB.MoveNext();
+			while (hasNextA && hasNextB) {
+				if (!ObjectEquals(enumeratorA.Current, enumeratorB.Current)) return false;
+				hasNextA = enumeratorA.MoveNext();
+				hasNextB = enumeratorB.MoveNext();
+			}
+			return !hasNextA && !hasNextB;
+		}
 	}
 
-	//public class ColorJsonConverter : JsonConverter
-	//{
-	//	public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-	//	{
-	//		Color c = (Color)value;
-	//		writer.WriteValue($"{c.R}, {c.G}, {c.B}, {c.A}");
-	//	}
+	/// <summary>
+	/// Custom ContractResolver for facilitating refernce type defaults. 
+	/// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize. 
+	/// The ValueProvider code helps during deserialization to not 
+	/// </summary>
+	class ReferenceDefaultsPreservingResolver : DefaultContractResolver
+	{
+		// This approach largely based on https://stackoverflow.com/a/52684798. 
+		public abstract class ValueProviderDecorator : IValueProvider
+		{
+			readonly IValueProvider baseProvider;
 
-	//	public override bool CanConvert(Type objectType)
-	//	{
-	//		return objectType == typeof(Color);
-	//	}
+			public ValueProviderDecorator(IValueProvider baseProvider) {
+				if (baseProvider == null)
+					throw new ArgumentNullException();
+				this.baseProvider = baseProvider;
+			}
 
-	//	public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-	//	{
-	//		var colorStr = ((string)reader.Value).Split(',');
-	//		byte r = 255, g = 255, b = 255, a = 255;
-	//		if (colorStr.Length >= 1) r = byte.Parse(colorStr[0]);
-	//		if (colorStr.Length >= 2) g = byte.Parse(colorStr[1]);
-	//		if (colorStr.Length >= 3) b = byte.Parse(colorStr[2]);
-	//		if (colorStr.Length >= 4) a = byte.Parse(colorStr[3]);
-	//		return new Color(r, g, b, a);
-	//	}
-	//}
+			public virtual object GetValue(object target) { return baseProvider.GetValue(target); }
+
+			public virtual void SetValue(object target, object value) { baseProvider.SetValue(target, value); }
+		}
+		class NullToDefaultValueProvider : ValueProviderDecorator
+		{
+			//readonly object defaultValue;
+			readonly Func<object> defaultValueGenerator;
+
+			//public NullToDefaultValueProvider(IValueProvider baseProvider, object defaultValue) : base(baseProvider) {
+			//	this.defaultValue = defaultValue;
+			//}
+
+			public NullToDefaultValueProvider(IValueProvider baseProvider, Func<object> defaultValueGenerator) : base(baseProvider) {
+				this.defaultValueGenerator = defaultValueGenerator;
+			}
+
+			public override void SetValue(object target, object value) {
+				base.SetValue(target, value ?? defaultValueGenerator.Invoke());
+				//base.SetValue(target, value ?? defaultValue);
+			}
+		}
+
+		protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
+			IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
+			if (type.IsClass) {
+				ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
+				if (ctor != null) {
+					object referenceInstance = ctor.Invoke(null);
+					foreach (JsonProperty prop in props.Where(p => p.Readable)) {
+						if (!prop.PropertyType.IsValueType) {
+							var a = type.GetMember(prop.PropertyName); 
+							if (prop.Writable) {
+								if (prop.PropertyType.GetConstructor(Type.EmptyTypes) != null) {
+									// defaultValueCreator will create new instance, then get the value from a field in that object. Prevents deserialized nulls from sharing with other instances.
+									Func<object> defaultValueCreator = () => prop.ValueProvider.GetValue(ctor.Invoke(null));
+									prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
+								}
+								else if (prop.PropertyType.IsArray) {
+									Func<object> defaultValueCreator = () => (prop.ValueProvider.GetValue(referenceInstance) as Array).Clone();
+									prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
+								}
+							}
+							if (prop.ShouldSerialize == null)
+								prop.ShouldSerialize = instance =>
+								{
+									object val = prop.ValueProvider.GetValue(instance);
+									object refVal = prop.ValueProvider.GetValue(referenceInstance);
+									return !ConfigManager.ObjectEquals(val, refVal);
+								};
+						}
+					}
+				}
+			}
+			return props;
+		}
+	}
 }

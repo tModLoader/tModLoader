@@ -12,6 +12,10 @@ namespace Terraria.ModLoader.Config.UI
 			throw new NotImplementedException();
 		}
 
+		protected override void ClearCollection() {
+			throw new NotImplementedException();
+		}
+
 		protected override void InitializeCollection() {
 			throw new NotImplementedException();
 		}

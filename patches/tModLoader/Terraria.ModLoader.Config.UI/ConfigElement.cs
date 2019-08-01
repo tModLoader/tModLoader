@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Config.UI
 		public int index;
 
 		private Color backgroundColor; // TODO inherit parent object color?
-		protected Func<string> TextDisplayFunction;
+		protected internal Func<string> TextDisplayFunction;
 		protected Func<string> TooltipFunction;
 		protected bool drawLabel = true;
 
@@ -47,6 +47,8 @@ namespace Terraria.ModLoader.Config.UI
 		protected BackgroundColorAttribute backgroundColorAttribute;
 		protected RangeAttribute rangeAttribute;
 		protected IncrementAttribute incrementAttribute;
+		protected JsonDefaultValueAttribute jsonDefaultValueAttribute;
+		protected bool nullAllowed;
 
 		public ConfigElement()
 		{
@@ -81,6 +83,8 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, list);
 			incrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(memberInfo, item, list);
+			nullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(memberInfo, item, list) != null;
+			jsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(memberInfo, item, list);
 		}
 
 		protected virtual void SetObject(object value) {

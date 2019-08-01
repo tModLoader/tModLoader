@@ -27,8 +27,6 @@ namespace ExampleMod
 
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyId;
-		internal static ExampleConfigClient exampleClientConfig;
-		internal static ExampleConfigServer exampleServerConfig;
 		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
 		// You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static DynamicSpriteFont exampleFont;
@@ -156,8 +154,6 @@ namespace ExampleMod
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			Instance = null;
 			RandomBuffHotKey = null;
-			exampleClientConfig = null;
-			exampleServerConfig = null;
 		}
 
 		public override void PostSetupContent() {

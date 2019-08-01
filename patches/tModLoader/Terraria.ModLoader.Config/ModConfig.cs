@@ -1,4 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config
@@ -27,6 +31,7 @@ namespace Terraria.ModLoader.Config
 
 		/// <summary>
 		/// This method is called when the ModConfig has been loaded for the first time. This happens before regular Autoloading and Mod.Load. You can use this hook to assign a static reference to this instance for easy access.
+		/// tModLoader will automatically assign (and later unload) this instance to a static field named Instance in the class prior to calling this method, if it exists.
 		/// </summary>
 		public virtual void OnLoaded()
 		{
@@ -70,8 +75,8 @@ namespace Terraria.ModLoader.Config
 				ReloadRequiredAttribute reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 				if (reloadRequired != null)
 				{
-					if (!object.Equals(variable.GetValue(this), variable.GetValue(pendingConfig)))
-					{
+					// Do we need to implement nested ReloadRequired? Right now only top level fields will trigger it.
+					if (!ConfigManager.ObjectEquals(variable.GetValue(this), variable.GetValue(pendingConfig))) {
 						return true;
 					}
 				}

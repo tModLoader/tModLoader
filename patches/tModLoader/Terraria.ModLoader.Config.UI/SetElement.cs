@@ -57,21 +57,22 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void PrepareTypes() {
 			setType = memberInfo.Type.GetGenericArguments()[0];
+			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, setType);
 		}
 
 		protected override void AddItem() {
 			var addMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
-			if (defaultListValueAttribute != null) {
-				addMethod.Invoke(data, new object[] { defaultListValueAttribute.defaultValue });
-			}
-			else {
-				addMethod.Invoke(data, new object[] { ConfigManager.AlternateCreateInstance(setType) });
-			}
+			addMethod.Invoke(data, new object[] { CreateCollectionElementInstance(setType) });
 		}
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(setType));
 			SetObject(data);
+		}
+
+		protected override void ClearCollection() {
+			var clearMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Clear");
+			clearMethod.Invoke(data, new object[] { });
 		}
 
 		protected override void SetupList() {

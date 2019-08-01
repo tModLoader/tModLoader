@@ -14,10 +14,9 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	// TODO: Dictionary
-	// TODO: NPC UIElements w/special ui.	
 	// TODO: Revert individual button.	
-	// TODO: DefaultValue for new elements in Lists
+	// TODO: Collapse All button, or default to collapsed?
+	// TODO: Localization support
 	internal class UIModConfig : UIState
 	{
 		private UIElement uIElement;
@@ -30,6 +29,7 @@ namespace Terraria.ModLoader.Config.UI
 		private UITextPanel<string> revertConfigButton;
 		private UITextPanel<string> restoreDefaultsConfigButton;
 		private UIPanel uIPanel;
+		private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new List<Tuple<UIElement, UIElement>>();
 		private UIList mainConfigList;
 		private UIScrollbar uIScrollbar;
 		private Stack<UIPanel> configPanelStack = new Stack<UIPanel>();
@@ -43,6 +43,9 @@ namespace Terraria.ModLoader.Config.UI
 		private ModConfig pendingConfig;
 		public int updateCount;
 
+		private bool updateNeeded;
+		private UIFocusInputTextField filterTextField;
+
 		public override void OnInitialize() {
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
@@ -53,9 +56,32 @@ namespace Terraria.ModLoader.Config.UI
 
 			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
+			uIPanel.Height.Set(-140f, 1f);
+			uIPanel.Top.Set(30f, 0f);
 			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 			uIElement.Append(uIPanel);
+
+			UIPanel textBoxBackground = new UIPanel();
+			textBoxBackground.SetPadding(0);
+			filterTextField = new UIFocusInputTextField("Filter Options");
+			textBoxBackground.Top.Set(2f, 0f);
+			textBoxBackground.Left.Set(-190, 1f);
+			textBoxBackground.Width.Set(180, 0f);
+			textBoxBackground.Height.Set(30, 0f);
+			uIElement.Append(textBoxBackground);
+
+			filterTextField.SetText("");
+			filterTextField.Top.Set(5, 0f);
+			filterTextField.Left.Set(10, 0f);
+			filterTextField.Width.Set(-20, 1f);
+			filterTextField.Height.Set(20, 0);
+			filterTextField.OnTextChange += (a, b) => {
+				updateNeeded = true;
+			};
+			filterTextField.OnRightClick += (a, b) => {
+				filterTextField.SetText("");
+			};
+			textBoxBackground.Append(filterTextField);
 
 			// TODO: ModConfig Localization support
 			message = new UITextPanel<string>("Notification: ");
@@ -303,6 +329,16 @@ namespace Terraria.ModLoader.Config.UI
 				DoMenuModeState();
 				netUpdate = false;
 			}
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			mainConfigList.Clear();
+			mainConfigList.AddRange(mainConfigItems.Where(item => {
+				if (item.Item2 is ConfigElement configElement) {
+					return configElement.TextDisplayFunction().IndexOf(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
+				}
+				return true;
+			}).Select(x=>x.Item1));
+			Recalculate();
 		}
 
 		public static string tooltip;
@@ -340,10 +376,12 @@ namespace Terraria.ModLoader.Config.UI
 
 		static bool pendingRevertDefaults;
 		public override void OnActivate() {
+			filterTextField.SetText("");
+			updateNeeded = false;
 			SetMessage("", Color.White);
 			string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
-			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + configDisplayName);
-			pendingConfig = modConfig.Clone();
+			headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.mod.DisplayName : modConfig.mod.DisplayName + ": " + configDisplayName);
+			pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 			pendingChanges = pendingRevertDefaults;
 			if (pendingRevertDefaults) {
 				pendingRevertDefaults = false;
@@ -366,12 +404,12 @@ namespace Terraria.ModLoader.Config.UI
 
 			uIElement.RemoveChild(configPanelStack.Peek());
 			uIElement.Append(uIPanel);
+			mainConfigItems.Clear();
 			mainConfigList.Clear();
 			configPanelStack.Clear();
 			configPanelStack.Push(uIPanel);
 			subPageStack.Clear();
 			//currentConfigList = mainConfigList;
-			int i = 0;
 			int top = 0;
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
@@ -434,6 +472,9 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			else if (type == typeof(NPCDefinition)) {
 				e = new NPCDefinitionElement();
+			}
+			else if (type == typeof(PrefixDefinition)) {
+				e = new PrefixDefinitionElement();
 			}
 			else if (type == typeof(Color)) {
 				e = new ColorElement();
@@ -526,8 +567,12 @@ namespace Terraria.ModLoader.Config.UI
 					parent.Append(container);
 					parent.Height.Set(top, 0);
 				}
+				var tuple = new Tuple<UIElement, UIElement>(container, e);
+				if(parent == Interface.modConfig.mainConfigList) {
+					Interface.modConfig.mainConfigItems.Add(tuple);
+				}
 
-				return new Tuple<UIElement, UIElement>(container, e);
+				return tuple;
 			}
 			return null;
 		}
@@ -657,11 +702,6 @@ namespace Terraria.ModLoader.Config.UI
 			Interface.modConfig.subPageStack.Pop();
 			return uIPanel;
 		}
-
-		//private class UIDynamicText : UIText
-		//{
-
-		//}
 
 		internal static void SwitchToSubConfig(UIPanel separateListPanel) {
 			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
