@@ -94,6 +94,9 @@ namespace Terraria.ModLoader.UI
 					upgradeCSProjButton.OnClick += (s, e) => {
 						File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
 						string propertiesFolder = Path.Combine(_mod, "Properties");
+						string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
+						if (File.Exists(AssemblyInfoFile))
+							File.Delete(AssemblyInfoFile);
 						Directory.CreateDirectory(propertiesFolder);
 						File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
 						Main.PlaySound(SoundID.MenuOpen);
