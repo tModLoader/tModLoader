@@ -5648,14 +5648,17 @@
  				}
  				else if (sItem.useAmmo == AmmoID.Rocket)
  				{
-@@ -37548,7 +_,9 @@
+@@ -37548,7 +_,12 @@
  				{
  					if (item.damage > 0)
  					{
 -						Damage += (int)((float)item.damage * this.rangedDamage);
 +						// determine damage multiplier using item base damage and apply to ammo
 +						// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
-+						Damage += (int)(item.damage * Damage / (float)sItem.damage);
++						if(sItem.damage > 0) // coin gun fix.
++							Damage += (int)(item.damage * Damage / (float)sItem.damage);
++						else
++							Damage += item.damage;
  					}
  				}
  				else
