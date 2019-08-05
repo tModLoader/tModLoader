@@ -29,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> _modHomepageButton;
 		private UIAutoScaleTextTextPanel<string> _extractButton;
 		private UIAutoScaleTextTextPanel<string> _deleteButton;
+		private UIAutoScaleTextTextPanel<string> _fakeDeleteButton; // easier than making new OnMouseOver code.
 		private readonly UILoaderAnimatedImage _loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
 
 		private int _gotoMenu;
@@ -115,6 +116,15 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_deleteButton.OnClick += DeleteMod;
 
+			_fakeDeleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
+				Width = { Pixels = -10, Percent = 0.333f },
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				HAlign = 1f,
+				Top = { Pixels = -20 }
+			};
+			_fakeDeleteButton.BackgroundColor = Color.Gray;
+
 			Append(_uIElement);
 		}
 
@@ -146,6 +156,7 @@ namespace Terraria.ModLoader.UI
 			_url = string.Empty;
 			_modHomepageButton.Remove();
 			_deleteButton.Remove();
+			_fakeDeleteButton.Remove();
 			_extractButton.Remove();
 		}
 
@@ -178,6 +189,9 @@ namespace Terraria.ModLoader.UI
 			
 			if (_modHomepageButton.IsMouseHovering) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
+			}
+			if (_fakeDeleteButton.IsMouseHovering) {
+				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModInfoDisableModToDelete"));
 			}
 		}
 
@@ -224,7 +238,9 @@ namespace Terraria.ModLoader.UI
 				}
 
 				if (_localMod != null) {
-					_uIElement.AddOrRemoveChild(_deleteButton, ModLoader.Mods.All(x => x.Name != _localMod.Name));
+					bool realDeleteButton = ModLoader.Mods.All(x => x.Name != _localMod.Name);
+					_uIElement.AddOrRemoveChild(_deleteButton, realDeleteButton);
+					_uIElement.AddOrRemoveChild(_fakeDeleteButton, !realDeleteButton);
 					_uIElement.Append(_extractButton);
 				}
 				Recalculate();

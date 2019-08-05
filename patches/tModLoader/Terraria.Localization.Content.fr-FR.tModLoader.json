@@ -16,7 +16,7 @@
 		"ModsModPacks": "Packs de Mods",
 		"ModsDisable": "Désactiver",
 		"ModsEnable": "Activer",
-		// "ModsOpenConfig":  "Click to open config",
+		// "ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
@@ -98,6 +98,7 @@
 		"ModInfoExtract": "Extraire",
 		"ModInfoNoDescriptionAvailable": "Pas de description disponible",
 		"ModInfoProblemTryAgain": "Il y a eu un problème, réessayez",
+		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
 
 		// Mod Packs
 		"ModPacksHeader": "Packs de Mods",
@@ -303,6 +304,7 @@
 		"MSSandboxing": "Compatibilisation : {0}",
 		"MSIntializing": "Initialisation : ",
 		"MSLoading": "Lancement du Mod : ",
+		// "MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
 		"MSSettingUp": "Installation...",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",

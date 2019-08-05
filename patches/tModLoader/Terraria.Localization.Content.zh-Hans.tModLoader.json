@@ -17,7 +17,7 @@
 		"ModsModPacks": "模组整合包",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
-		// "ModsOpenConfig":  "Click to open config",
+		// "ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "旧模组,有风险",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n (点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
@@ -99,6 +99,7 @@
 		"ModInfoExtract": "提取",
 		"ModInfoNoDescriptionAvailable": "无可用描述",
 		"ModInfoProblemTryAgain": "出现问题,请重试",
+		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
 
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
@@ -304,6 +305,7 @@
 		"MSSandboxing": "增容中: {0}",
 		"MSIntializing": "初始化：",
 		"MSLoading": "加载中：",
+		// "MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "资源加载完成",
 		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",

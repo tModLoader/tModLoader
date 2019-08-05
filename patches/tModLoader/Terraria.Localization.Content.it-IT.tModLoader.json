@@ -18,7 +18,7 @@
 		"ModsModPacks": "Pacchetti di Mod",
 		"ModsDisable": "Disabilita",
 		"ModsEnable": "Abilita",
-		// "ModsOpenConfig":  "Click to open config",
+		// "ModsOpenConfig": "Click to open config",
 		// "ModOldWarning": "Old mod, enable at own risk",
 		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
@@ -100,6 +100,7 @@
 		// "ModInfoExtract": "Extract",
 		// "ModInfoNoDescriptionAvailable": "No description available",
 		// "ModInfoProblemTryAgain": "There was a problem, try again",
+		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
 
 		// Mod Packs
 		// "ModPacksHeader": "Mod Packs",
@@ -305,6 +306,7 @@
 		// "MSSandboxing": "Sandboxing: {0}",
 		"MSIntializing": "Inizializzazione: ",
 		"MSLoading": "Caricando Mod: ",
+		// "MSUnloading": "Unloading: {0}",
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
 		// "MSSettingUp": "Setting up...",
 		// "MSAddingRecipes": "Adding Recipes...",

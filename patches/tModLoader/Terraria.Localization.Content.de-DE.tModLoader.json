@@ -16,7 +16,7 @@
 		"ModsModPacks": "Mod Pakete",
 		"ModsDisable": "Deaktivieren",
 		"ModsEnable": "Aktivieren",
-		// "ModsOpenConfig":  "Click to open config",
+		// "ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		"ModDependencyClickTooltip": "Diese Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
@@ -98,6 +98,7 @@
 		"ModInfoExtract": "Extrahieren",
 		"ModInfoNoDescriptionAvailable": "Keine Beschreibung verfügbar",
 		"ModInfoProblemTryAgain": "Es gab ein Problem, versuche es nochmal",
+		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
 
 		// Mod Packs
 		"ModPacksHeader": "Mod Pakete",
@@ -303,6 +304,7 @@
 		"MSSandboxing": "Sandboxing: {0}",
 		"MSIntializing": "Initialisiere: ",
 		"MSLoading": "Lade Mod: ",
+		// "MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "STelle Ressourcen Ladevorgang fertig",
 		"MSSettingUp": "Erstelle...",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
