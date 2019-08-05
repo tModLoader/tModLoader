@@ -159,6 +159,7 @@
 		"MBShowAllMods": "显示全部模组",
 		"MBShowNotInstalledUpdates": "显示未安装及可更新的模组",
 		"MBShowUpdates": "只显示可更新的模组",
+		// "MBShowInstalled": "Show installed mods",
 		"MBShowMSAll": "显示全部模组",
 		"MBShowMSBoth": "只显示共同端的模组",
 		"MBShowMSClient": "只显示客户端的模组",

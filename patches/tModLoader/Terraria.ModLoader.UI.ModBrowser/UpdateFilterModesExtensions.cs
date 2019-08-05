@@ -12,6 +12,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					return Language.GetTextValue("tModLoader.MBShowNotInstalledUpdates");
 				case UpdateFilter.UpdateOnly:
 					return Language.GetTextValue("tModLoader.MBShowUpdates");
+				case UpdateFilter.InstalledOnly:
+					return Language.GetTextValue("tModLoader.MBShowInstalled");
 			}
 			return "Unknown Sort";
 		}

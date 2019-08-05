@@ -4,6 +4,7 @@
 	{
 		All,
 		Available,
-		UpdateOnly
+		UpdateOnly,
+		InstalledOnly
 	}
 }

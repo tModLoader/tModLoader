@@ -234,6 +234,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					return HasUpdate || Installed == null;
 				case UpdateFilter.UpdateOnly:
 					return HasUpdate;
+				case UpdateFilter.InstalledOnly:
+					return Installed != null;
 			}
 		}
 

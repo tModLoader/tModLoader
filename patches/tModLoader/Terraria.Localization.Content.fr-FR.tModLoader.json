@@ -158,6 +158,7 @@
 		"MBShowAllMods": "Tout montrer",
 		"MBShowNotInstalledUpdates": "Montrer uniquement les Mods non-installés ou à mettre à jour",
 		"MBShowUpdates": "Montrer uniquement les Mods à mettre à jour",
+		// "MBShowInstalled": "Show installed mods",
 		"MBShowMSAll": "Tout montrer",
 		"MBShowMSBoth": "Montrer uniquement les Mods côté normal",
 		"MBShowMSClient": "Montrer uniquement les Mods côté client",

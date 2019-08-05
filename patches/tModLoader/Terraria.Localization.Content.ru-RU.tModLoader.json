@@ -158,6 +158,7 @@
 		"MBShowAllMods": "Показать все моды",
 		"MBShowNotInstalledUpdates": "Показать неустановленные или необновлённые моды",
 		"MBShowUpdates": "Показать необновлённые моды",
+		// "MBShowInstalled": "Show installed mods",
 		"MBShowMSAll": "Показать все моды",
 		"MBShowMSBoth": "Показывать только моды для обеих сторон",
 		"MBShowMSClient": "Показывать только клиентосторонние моды",
