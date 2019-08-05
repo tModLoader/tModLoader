@@ -44,5 +44,11 @@ The tModLoader version should be notified in the bottom left corner when in the 
 ### Mods
 <!-- List all of the mods you are using when reproducing this issue. We'd appreciate it if you could also test this without mods enabled (if applicable) -->
 
+### Log File
+<!-- Please attach the log file here. You'll find the log files in the logs folder. Look for client.log. 
+Windows Logs: C:\Documents\My Games\Terraria\ModLoader\Logs
+Linux Logs: ~/.local/share/Terraria/ModLoader/Logs/ or $XDG_DATA_HOME/Terraria/ModLoader/Logs/
+Mac Logs: ~/Library/Application support/Terraria/ModLoader/Logs/  -->
+
 ### Additional Information
 <!-- Any additional information, configuration or data that might be necessary to reproduce the issue. -->
