@@ -53,7 +53,7 @@ namespace ExampleMod.Tiles
 			if (Main.drawToScreen) {
 				zero = Vector2.Zero;
 			}
-			int height = tile.frameY == 36 ? 18 : 16;
+			int height = tile.frameY % animationFrameHeight == 36 ? 18 : 16;
 			int animate = 0;
 			if (tile.frameY >= 56) {
 				animate = Main.tileFrame[Type] * animationFrameHeight;
