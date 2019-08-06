@@ -26,6 +26,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 	internal partial class UIModBrowser : UIState
 	{
 		public static bool AvoidGithub;
+		public static bool AvoidImgur;
 		public static bool PlatformSupportsTls12
 			=> FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
 

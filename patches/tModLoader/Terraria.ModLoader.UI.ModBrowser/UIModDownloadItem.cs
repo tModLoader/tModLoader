@@ -74,6 +74,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_modReferences = modReferences;
 			_modSide = modSide;
 			_modIconUrl = modIconUrl;
+			if (UIModBrowser.AvoidImgur)
+				_modIconUrl = null;
 			_downloads = downloads;
 			_hot = hot;
 			_timeStamp = timeStamp;
@@ -312,19 +314,25 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e) {
+			bool success = false;
 			try {
-				byte[] data = e.Result;
-				using (var buffer = new MemoryStream(data)) {
-					var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
-					_modIcon = new UIImage(iconTexture) {
-						Left = { Percent = 0f },
-						Top = { Percent = 0f }
-					};
-					_modIconStatus = ModIconStatus.READY;
+				if (!e.Cancelled && e.Error == null) {
+					byte[] data = e.Result;
+					using (var buffer = new MemoryStream(data)) {
+						var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+						_modIcon = new UIImage(iconTexture) {
+							Left = { Percent = 0f },
+							Top = { Percent = 0f }
+						};
+						_modIconStatus = ModIconStatus.READY;
+						success = true;
+					}
 				}
 			}
 			catch {
 				// country- wide imgur blocks, cannot load icon
+			}
+			if (!success) {
 				_modIconStatus = ModIconStatus.APPENDED;
 				_modName.Left.Pixels -= ModIconAdjust;
 				_moreInfoButton.Left.Pixels -= ModIconAdjust;
