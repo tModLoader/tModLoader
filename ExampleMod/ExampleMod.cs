@@ -36,6 +36,11 @@ namespace ExampleMod
 
 		internal UserInterface ExamplePersonUserInterface;
 		internal ExampleUI ExampleUI;
+		
+		
+		//ExampleEasyRecompile
+		ExampleEasyRecompile easyRecompile;
+		
 
 		// Your mod instance has a Logger field, use it.
 		// OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
@@ -139,6 +144,11 @@ namespace ExampleMod
 			text = CreateTranslation("VolcanoWarning");
 			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
 			AddTranslation(text);
+			
+			
+			
+			easyRecompile = new ExampleEasyRecompile();
+			easyRecompile.load();
 		}
 
 		public override void Unload() {
@@ -154,6 +164,9 @@ namespace ExampleMod
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			Instance = null;
 			RandomBuffHotKey = null;
+			
+			
+			easyRecompile.unload();
 		}
 
 		public override void PostSetupContent() {

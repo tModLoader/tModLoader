@@ -296,15 +296,25 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		private static SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
-@@ -2274,6 +_,8 @@
+@@ -2273,6 +_,18 @@
+ 			{
  				return Main.instance._achievements;
  			}
- 		}
++		}
 +
 +		public static ulong TileFrameSeed => Main._tileFrameSeed;
++
++		public static event EventHandler DoUpdateEvent;
++
++		public static void SetSelectedMenu(int menu) {
++			Main.instance.selectedMenu = menu;
++		}
++
++		public static void DoRecompileMods() {
++			Interface.buildMod.BuildAll(true);
+ 		}
  
  		public static Effect screenShader
- 		{
 @@ -2525,6 +_,8 @@
  				Main.itemAnimationsRegistered.Add(index);
  			}
@@ -1041,6 +1051,16 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
+@@ -11981,6 +_,9 @@
+ 				Player.StopMoneyTroughFromWorking--;
+ 			}
+ 			PlayerInput.SetZoom_UI();
++
++			DoUpdateEvent?.Invoke(null, null);
++
+ 			if (!Main.gameMenu || Main.menuMode != 888)
+ 			{
+ 				Main.MenuUI.SetState(null);
 @@ -11997,6 +_,7 @@
  			{
  				Main.InGameUI.Update(gameTime);
