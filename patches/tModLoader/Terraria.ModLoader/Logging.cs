@@ -1,22 +1,18 @@
-﻿using Ionic.Zip;
-using log4net;
+﻿using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
-using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MonoMod.Utils;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Microsoft.Xna.Framework;
@@ -59,8 +55,8 @@ namespace Terraria.ModLoader
 			LogFirstChanceExceptions();
 			EnablePortablePDBTraces();
 			AssemblyResolving.Init();
-			PrettifyStackTraceSources();
-			HookWebRequests();
+			LoggingHooks.Init();
+			LogArchiver.ArchiveLogs();
 		}
 
 		private static void ConfigureAppenders() {
@@ -84,7 +80,7 @@ namespace Terraria.ModLoader
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = LogPath = Path.Combine(LogDir, RollLogs(side)),
+				File = LogPath = Path.Combine(LogDir, GetNewLogFile(side)),
 				AppendToFile = false,
 				Encoding = Encoding.UTF8,
 				Layout = layout
@@ -95,7 +91,7 @@ namespace Terraria.ModLoader
 			BasicConfigurator.Configure(appenders.ToArray());
 		}
 
-		private static string RollLogs(string baseName) {
+		private static string GetNewLogFile(string baseName) {
 			var pattern = new Regex($"{baseName}(\\d*)\\.log");
 			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 
@@ -108,9 +104,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime))
-				Archive(existingLog);
-
-			DeleteOldArchives();
+				File.Move(existingLog, existingLog + ".old");
 
 			return $"{baseName}.log";
 		}
@@ -123,92 +117,6 @@ namespace Terraria.ModLoader
 			catch (IOException) {
 				return false;
 			}
-		}
-
-		private static void Archive(string logPath) {
-			var time = File.GetCreationTime(logPath);
-			int n = 1;
-
-			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
-			if (existingLogs.Count > 0)
-				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
-
-			using (var zip = new ZipFile(Path.Combine(LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
-				zip.AddFile(logPath, "");
-				zip.Save();
-			}
-
-			File.Delete(logPath);
-		}
-
-		private const int MAX_LOGS = 20;
-		private static void DeleteOldArchives() {
-			var pattern = new Regex(".*\\.zip");
-			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();
-			foreach (var f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
-				try {
-					File.Delete(f);
-				}
-				catch (IOException) { }
-			}
-		}
-
-		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
-		private delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request);
-		
-		private delegate void WebOperation_ctor(object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
-		private delegate void WebOperation_ctorHook(WebOperation_ctor orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
-		
-		private delegate bool SubmitRequest(object self, HttpWebRequest request, bool forcedsubmit);
-		private delegate bool SubmitRequestHook(SubmitRequest orig, object self, HttpWebRequest request, bool forcedsubmit);
-		
-		/// <summary>
-		/// Attempt to hook the .NET internal methods to log when requests are sent to web addresses.
-		/// Use the right internal methods to capture redirects
-		/// </summary>
-		private static void HookWebRequests()
-		{
-			try {
-				// .NET 4.7.2
-				MethodBase met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.Connection")
-					?.FindMethod("SubmitRequest");
-				if (met != null) {
-					new Hook(met, new SubmitRequestHook((orig, self, request, forcedsubmit) => {
-						tML.Debug($"Web Request: " + request.Address);
-						return orig(self, request, forcedsubmit);
-					}));
-					return;
-				}
-
-				// Mono 5.20
-				met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.WebOperation")
-					?.GetConstructors()[0];
-				if (met != null && met.GetParameters().Length == 4) {
-					new Hook(met, new WebOperation_ctorHook((orig, self, request, buffer, challenge, token) => {
-						tML.Debug($"Web Request: " + request.Address);
-						orig(self, request, buffer, challenge, token);
-					}));
-					return;
-				}
-
-				// Mono 4.6.1
-				met = typeof(HttpWebRequest).Assembly
-					.GetType("System.Net.WebConnection")
-					?.FindMethod("SendRequest");
-				if (met != null) {
-					new Hook(met, new SendRequestHook((orig, self, request) => {
-						tML.Debug($"Web Request: " + request.Address);
-						return orig(self, request);
-					}));
-					return;
-				}
-			}
-			catch { }
-
-			tML.Warn("HttpWebRequest send/submit method not found");
 		}
 
 		private static void LogFirstChanceExceptions() {
@@ -246,13 +154,9 @@ namespace Terraria.ModLoader
 			"Object name: 'SslStream'.", // System.Net.Security.SslState.InternalEndProcessAuthentication
 		};
 
-		private static List<string> ignoreStackTraces = new List<string> {
-			"at Terraria.Lighting.doColors_Mode0_Swipe", // vanilla lighting which bug randomly happens
-			"at Terraria.Lighting.doColors_Mode1_Swipe",
-			"at Terraria.Lighting.doColors_Mode2_Swipe",
-			"at Terraria.Lighting.doColors_Mode3_Swipe",
-			"System.Threading.CancellationToken.ThrowOperationCanceledException", // an operation (task) was deliberately cancelled
-			"System.Threading.CancellationToken.ThrowIfCancellationRequested", // an operation (task) was deliberately cancelled
+		private static List<string> ignoreThrowingMethods = new List<string> {
+			"at Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
+			"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 		};
 
 		public static void IgnoreExceptionContents(string source) {
@@ -266,7 +170,7 @@ namespace Terraria.ModLoader
 				args.Exception is ThreadAbortException ||
 				ignoreSources.Contains(args.Exception.Source) ||
 				ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
-				ignoreStackTraces.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
+				ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
 				return;
 
 			var stackTrace = new StackTrace(true);
@@ -335,34 +239,6 @@ namespace Terraria.ModLoader
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
-		// On .NET, hook the StackTrace constructor
-		private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
-		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
-		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
-			orig(self, e, fNeedFileInfo);
-			if (fNeedFileInfo)
-				PrettifyStackTraceSources(self.GetFrames());
-		}
-
-		// On Mono, hook Exception.StackTrace, generate a StackTrace, and edit it with source and line info
-		private static readonly Regex trimParamTypes = new Regex(@"([([,] ?)(?:[\w.+]+[.+])", RegexOptions.Compiled);
-		private static readonly Regex dropOffset = new Regex(@" \[.+?\](?![^:]+:-1)", RegexOptions.Compiled);
-		private static readonly Regex dropGenericTicks = new Regex(@"`\d+", RegexOptions.Compiled);
-
-		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
-		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
-		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo) {
-			var stackTrace = new StackTrace(self, true);
-			MdbManager.Symbolize(stackTrace.GetFrames());
-			PrettifyStackTraceSources(stackTrace.GetFrames());
-			var s = stackTrace.ToString();
-			s = trimParamTypes.Replace(s, "$1");
-			s = dropGenericTicks.Replace(s, "");
-			s = dropOffset.Replace(s, "");
-			s = s.Replace(":-1", "");
-			return s;
-		}
-
 		public static void PrettifyStackTraceSources(StackFrame[] frames) {
 			if (frames == null)
 				return;
@@ -387,16 +263,6 @@ namespace Terraria.ModLoader
 					f_fileName.SetValue(frame, filename);
 				}
 			}
-		}
-
-		private static void PrettifyStackTraceSources() {
-			if (f_fileName == null)
-				return;
-
-			if (FrameworkVersion.Framework == Framework.NetFramework)
-				new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
-			else if (FrameworkVersion.Framework == Framework.Mono)
-				new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
 		}
 
 		private static void EnablePortablePDBTraces() {
