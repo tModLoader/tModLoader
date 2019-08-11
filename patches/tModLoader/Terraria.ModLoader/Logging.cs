@@ -152,6 +152,7 @@ namespace Terraria.ModLoader
 			"Object name: 'System.Net.Sockets.NetworkStream'",// System.Net.Sockets.NetworkStream.UnsafeBeginWrite
 			"This operation cannot be performed on a completed asynchronous result object.", // System.Net.ContextAwareResult.get_ContextCopy()
 			"Object name: 'SslStream'.", // System.Net.Security.SslState.InternalEndProcessAuthentication
+			"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'" // Roslyn
 		};
 
 		private static List<string> ignoreThrowingMethods = new List<string> {
