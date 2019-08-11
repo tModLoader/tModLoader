@@ -141,6 +141,7 @@ namespace Terraria.ModLoader
 			"MethodBase.GetMethodBody",
 			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
+			"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
 		};
 
 		// there are a couple of annoying messages that happen during cancellation of asynchronous downloads

@@ -100,6 +100,7 @@ namespace Terraria.ModLoader
 			GLCallLocker.Init();
 			HiDefGraphicsIssues.Init();
 			MonoModHooks.Initialize();
+			ZipExtractFix.Init();
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));

@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,6 +42,7 @@ namespace Terraria.ModLoader
 			if (isInitialized)
 				return;
 
+			DynamicMethodDefinition.PreferRuntimeILCopy = true;
 			HookEndpointManager.OnGenerateCecilModule += AssemblyManager.GetMainModule;
 			HookEndpointManager.OnAdd += (m, d) => {
 				Logging.tML.Debug($"Hook On.{StringRep(m)} added by {GetOwnerName(d)}");

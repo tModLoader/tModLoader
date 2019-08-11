@@ -387,19 +387,24 @@ namespace Terraria.ModLoader.Core
 			private AssemblyDefinition FallbackResolve(AssemblyNameReference name) {
 				string resourceName = name.Name + ".dll";
 				resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
+				MemoryStream ms;
 				if (resourceName != null) {
 					Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-					using (var stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName))
-						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
+					using (var stream = typeof(Program).Assembly.GetManifestResourceStream(resourceName)) {
+						ms = new MemoryStream();
+						stream.CopyTo(ms);
+						ms.Position = 0;
+					}
 				}
-
-				if (assemblyBinaries.TryGetValue(name.Name, out var modAssemblyBytes)) {
+				else if (assemblyBinaries.TryGetValue(name.Name, out var modAssemblyBytes)) {
 					Logging.tML.DebugFormat("Generating ModuleDefinition for {0}", name);
-					using (var stream = new MemoryStream(modAssemblyBytes))
-						return AssemblyDefinition.ReadAssembly(stream, new ReaderParameters(ReadingMode.Immediate));
+					ms = new MemoryStream(modAssemblyBytes);
+				}
+				else {
+					return null;
 				}
 
-				return null;
+				return AssemblyDefinition.ReadAssembly(ms, new ReaderParameters(ReadingMode.Immediate));
 			}
 		}
 
