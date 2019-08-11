@@ -17,8 +17,6 @@ var searchData=
   ['waterstyleloader_2ecs',['WaterStyleLoader.cs',['../_water_style_loader_8cs.html',1,'']]],
   ['watersurface',['WaterSurface',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad04077a5e04bb5aeae4af21ba347e6c9',1,'Terraria::ModLoader::SpawnCondition']]],
   ['weakmodreferences',['weakModReferences',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3',1,'Terraria::ModLoader::ModLoader']]],
-  ['weboperation_5fctor',['WebOperation_ctor',['../class_terraria_1_1_mod_loader_1_1_logging.html#ab6578351f57b183e9c8fd3189812e507',1,'Terraria::ModLoader::Logging']]],
-  ['weboperation_5fctorhook',['WebOperation_ctorHook',['../class_terraria_1_1_mod_loader_1_1_logging.html#addda8a2005c9a67267ba4e9f9f7ae661',1,'Terraria::ModLoader::Logging']]],
   ['windows',['windows',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac0d1dcc0ee625f8883c8967e0e660a84',1,'Terraria::ModLoader::ModLoader']]],
   ['wings',['Wings',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a4f496f608b10704ccca7da3296bf4c9e',1,'Terraria.ModLoader.PlayerLayer.Wings()'],['../namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a703e7b3b4e2a07715552e466e0d231bd',1,'Terraria.ModLoader.Wings()']]],
   ['wingshader',['wingShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a171e1518ea671261ece3711ebd3b9eb4',1,'Terraria::ModLoader::PlayerDrawInfo']]],

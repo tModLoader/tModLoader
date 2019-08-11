@@ -112,9 +112,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_logg
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_logging-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -150,78 +148,33 @@ Properties</h2></td></tr>
 <tr class="memitem:a9fda502fa4ce1ca959c6e3377399768d"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">LogPath</a><code> [get, private set]</code></td></tr>
 <tr class="separator:a9fda502fa4ce1ca959c6e3377399768d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ad357dbd96b0ce612d355099b5f23fcae"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae">ctor_StackTrace</a> (StackTrace self, <a class="el" href="class_exception.html">Exception</a> e, bool fNeedFileInfo)</td></tr>
-<tr class="separator:ad357dbd96b0ce612d355099b5f23fcae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab77f1d28cd3c77d5cc506ab0d3039d86"><td class="memItemLeft" align="right" valign="top">delegate string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab77f1d28cd3c77d5cc506ab0d3039d86">hook_GetStackTrace</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e">orig_GetStackTrace</a> orig, <a class="el" href="class_exception.html">Exception</a> self, bool fNeedFileInfo)</td></tr>
-<tr class="separator:ab77f1d28cd3c77d5cc506ab0d3039d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6650a01a6e07478ed3117bc9ab5b149"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ac6650a01a6e07478ed3117bc9ab5b149">hook_StackTrace</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae">ctor_StackTrace</a> orig, StackTrace self, <a class="el" href="class_exception.html">Exception</a> e, bool fNeedFileInfo)</td></tr>
-<tr class="separator:ac6650a01a6e07478ed3117bc9ab5b149"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a702cc4c55ac7c6689955dc9ad5613b8e"><td class="memItemLeft" align="right" valign="top">delegate string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e">orig_GetStackTrace</a> (<a class="el" href="class_exception.html">Exception</a> self, bool fNeedFileInfo)</td></tr>
-<tr class="separator:a702cc4c55ac7c6689955dc9ad5613b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8017e35e0c101ef04295a75c53a77cb"><td class="memItemLeft" align="right" valign="top">delegate EventHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad8017e35e0c101ef04295a75c53a77cb">SendRequest</a> (object self, HttpWebRequest request)</td></tr>
-<tr class="separator:ad8017e35e0c101ef04295a75c53a77cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e45f59b75bf9443c68d8c5dbdaf1d8b"><td class="memItemLeft" align="right" valign="top">delegate EventHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a7e45f59b75bf9443c68d8c5dbdaf1d8b">SendRequestHook</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad8017e35e0c101ef04295a75c53a77cb">SendRequest</a> orig, object self, HttpWebRequest request)</td></tr>
-<tr class="separator:a7e45f59b75bf9443c68d8c5dbdaf1d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fa720b499665e9324baf9b26156aaf3"><td class="memItemLeft" align="right" valign="top">delegate bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3fa720b499665e9324baf9b26156aaf3">SubmitRequest</a> (object self, HttpWebRequest request, bool forcedsubmit)</td></tr>
-<tr class="separator:a3fa720b499665e9324baf9b26156aaf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad790406ac470cc3c45b904fcaea4ab10"><td class="memItemLeft" align="right" valign="top">delegate bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad790406ac470cc3c45b904fcaea4ab10">SubmitRequestHook</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3fa720b499665e9324baf9b26156aaf3">SubmitRequest</a> orig, object self, HttpWebRequest request, bool forcedsubmit)</td></tr>
-<tr class="separator:ad790406ac470cc3c45b904fcaea4ab10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6578351f57b183e9c8fd3189812e507"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab6578351f57b183e9c8fd3189812e507">WebOperation_ctor</a> (object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken)</td></tr>
-<tr class="separator:ab6578351f57b183e9c8fd3189812e507"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addda8a2005c9a67267ba4e9f9f7ae661"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#addda8a2005c9a67267ba4e9f9f7ae661">WebOperation_ctorHook</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab6578351f57b183e9c8fd3189812e507">WebOperation_ctor</a> orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken)</td></tr>
-<tr class="separator:addda8a2005c9a67267ba4e9f9f7ae661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
 <tr class="memitem:af388d5cf149211547236e376ffb42fa6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6">AddChatMessage</a> (string msg, Color color)</td></tr>
 <tr class="separator:af388d5cf149211547236e376ffb42fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95d4316559982c21c828d0e68e1721f9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9">Archive</a> (string logPath)</td></tr>
-<tr class="separator:a95d4316559982c21c828d0e68e1721f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6304b2b34e06e095a8a7ff99e1a6c0b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">CanOpen</a> (string fileName)</td></tr>
 <tr class="separator:ae6304b2b34e06e095a8a7ff99e1a6c0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bd5f56a76a41af81063b3f9d72cbab5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3bd5f56a76a41af81063b3f9d72cbab5">ConfigureAppenders</a> ()</td></tr>
 <tr class="separator:a3bd5f56a76a41af81063b3f9d72cbab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a616cf9d51b62c8f037297513a53a2387"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387">DeleteOldArchives</a> ()</td></tr>
-<tr class="separator:a616cf9d51b62c8f037297513a53a2387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab125db3972e9b4f88d1ea899214b2e3b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab125db3972e9b4f88d1ea899214b2e3b">EnablePortablePDBTraces</a> ()</td></tr>
 <tr class="separator:ab125db3972e9b4f88d1ea899214b2e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3344b4f3e4bbad63ca7714dc0b7a641f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f">FirstChanceExceptionHandler</a> (object sender, FirstChanceExceptionEventArgs args)</td></tr>
 <tr class="separator:a3344b4f3e4bbad63ca7714dc0b7a641f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ac4949b173937c6b5ce76e167fc63a0"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a2ac4949b173937c6b5ce76e167fc63a0">HookGetStackTrace</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e">orig_GetStackTrace</a> orig, <a class="el" href="class_exception.html">Exception</a> self, bool fNeedFileInfo)</td></tr>
-<tr class="separator:a2ac4949b173937c6b5ce76e167fc63a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2720c1a7de344283cd1e880da750ce6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#aa2720c1a7de344283cd1e880da750ce6">HookStackTraceEx</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae">ctor_StackTrace</a> orig, StackTrace self, <a class="el" href="class_exception.html">Exception</a> e, bool fNeedFileInfo)</td></tr>
-<tr class="separator:aa2720c1a7de344283cd1e880da750ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9467f6c7dae413ff8f88d1b21116dbf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#aa9467f6c7dae413ff8f88d1b21116dbf">HookWebRequests</a> ()</td></tr>
-<tr class="memdesc:aa9467f6c7dae413ff8f88d1b21116dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempt to hook the .NET internal methods to log when requests are sent to web addresses. Use the right internal methods to capture redirects  <a href="#aa9467f6c7dae413ff8f88d1b21116dbf">More...</a><br /></td></tr>
-<tr class="separator:aa9467f6c7dae413ff8f88d1b21116dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f4ae2a20dba1b5750703002e5e6c23"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a99f4ae2a20dba1b5750703002e5e6c23">GetNewLogFile</a> (string baseName)</td></tr>
+<tr class="separator:a99f4ae2a20dba1b5750703002e5e6c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69840616214e1e132c1da455230fb0a7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a69840616214e1e132c1da455230fb0a7">LogFirstChanceExceptions</a> ()</td></tr>
 <tr class="separator:a69840616214e1e132c1da455230fb0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">PrettifyStackTraceSources</a> ()</td></tr>
-<tr class="separator:a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac90d90b214c7cf93188279dddff2ef8"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8">RollLogs</a> (string baseName)</td></tr>
-<tr class="separator:aac90d90b214c7cf93188279dddff2ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a1cb7261c48401438e766f4a983fdf491"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1cb7261c48401438e766f4a983fdf491">MAX_LOGS</a> = 20</td></tr>
-<tr class="separator:a1cb7261c48401438e766f4a983fdf491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:a65761555203062c1839dc1375e7d39df"><td class="memItemLeft" align="right" valign="top">static readonly Regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a65761555203062c1839dc1375e7d39df">dropGenericTicks</a> = new Regex(@&quot;`\d+&quot;, RegexOptions.Compiled)</td></tr>
-<tr class="separator:a65761555203062c1839dc1375e7d39df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9245220dc271fbbf46ecd91735dcd21"><td class="memItemLeft" align="right" valign="top">static readonly Regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae9245220dc271fbbf46ecd91735dcd21">dropOffset</a> = new Regex(@&quot; \[.+?\](?![^:]+:-1)&quot;, RegexOptions.Compiled)</td></tr>
-<tr class="separator:ae9245220dc271fbbf46ecd91735dcd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1432597c1493444a35407bf959f73c2f"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a></td></tr>
 <tr class="separator:a1432597c1493444a35407bf959f73c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a027e8e274abc3f22be0eb95b30355a69"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69">ignoreMessages</a></td></tr>
 <tr class="separator:a027e8e274abc3f22be0eb95b30355a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0648aee4281f58ebb5986238ac493308"><td class="memItemLeft" align="right" valign="top">static HashSet&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308">ignoreSources</a></td></tr>
 <tr class="separator:a0648aee4281f58ebb5986238ac493308"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae67f65279dd0362110938bb75596e16a"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae67f65279dd0362110938bb75596e16a">ignoreStackTraces</a></td></tr>
-<tr class="separator:ae67f65279dd0362110938bb75596e16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b390ec6b67ea337575660e50436764b"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9b390ec6b67ea337575660e50436764b">ignoreThrowingMethods</a></td></tr>
+<tr class="separator:a9b390ec6b67ea337575660e50436764b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a265273fc6be533777124b395badc4d41"><td class="memItemLeft" align="right" valign="top">static HashSet&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">pastExceptions</a> = new HashSet&lt;string&gt;()</td></tr>
 <tr class="separator:a265273fc6be533777124b395badc4d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab83db5ee1ab51cef9dce3676ca890781"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_exception.html">Exception</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">previousException</a></td></tr>
@@ -230,12 +183,10 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a067ef79a2235a8e09142ea42fb6132d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a880bc761e6bd31f3263d31df7fe357c9"><td class="memItemLeft" align="right" valign="top">static readonly Assembly&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a880bc761e6bd31f3263d31df7fe357c9">TerrariaAssembly</a> = Assembly.GetExecutingAssembly()</td></tr>
 <tr class="separator:a880bc761e6bd31f3263d31df7fe357c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98e3e1564ad1b7e3fc8ed56ac24e9a16"><td class="memItemLeft" align="right" valign="top">static readonly Regex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a98e3e1564ad1b7e3fc8ed56ac24e9a16">trimParamTypes</a> = new Regex(@&quot;([([,] ?)(?:[\w.+]+[.+])&quot;, RegexOptions.Compiled)</td></tr>
-<tr class="separator:a98e3e1564ad1b7e3fc8ed56ac24e9a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00026">26</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00022">22</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="af388d5cf149211547236e376ffb42fa6"></a>
 <div class="memitem">
@@ -269,35 +220,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00300">300</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                                                                    {</div><div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <span class="keywordflow">if</span> (Main.gameMenu)</div><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordtype">float</span> soundVolume = Main.soundVolume;</div><div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            Main.soundVolume = 0f;</div><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            Main.NewText(msg, color);</div><div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            Main.soundVolume = soundVolume;</div><div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        }</div></div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a95d4316559982c21c828d0e68e1721f9"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging.Archive </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>logPath</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00128">128</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                                                    {</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            var time = File.GetCreationTime(logPath);</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordtype">int</span> n = 1;</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            var pattern = <span class="keyword">new</span> Regex($<span class="stringliteral">&quot;{time:yyyy-MM-dd}-(\\d+)\\.zip&quot;</span>);</div><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            var existingLogs = Directory.GetFiles(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>).Where(s =&gt; pattern.IsMatch(Path.GetFileName(s))).ToList();</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">if</span> (existingLogs.Count &gt; 0)</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                n = existingLogs.Select(s =&gt; <span class="keywordtype">int</span>.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keyword">using</span> (var zip = <span class="keyword">new</span> ZipFile(Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>, $<span class="stringliteral">&quot;{time:yyyy-MM-dd}-{n}.zip&quot;</span>), Encoding.UTF8)) {</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                zip.AddFile(logPath, <span class="stringliteral">&quot;&quot;</span>);</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                zip.Save();</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            }</div><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            File.Delete(logPath);</div><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00028">Logging.cs:28</a></div></div>
-</div><!-- fragment -->
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00206">206</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                                                                    {</div><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keywordflow">if</span> (Main.gameMenu)</div><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordtype">float</span> soundVolume = Main.soundVolume;</div><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            Main.soundVolume = 0f;</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            Main.NewText(msg, color);</div><div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            Main.soundVolume = soundVolume;</div><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae6304b2b34e06e095a8a7ff99e1a6c0b"></a>
@@ -322,8 +246,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00118">118</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                                                     {</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <span class="keyword">using</span> (<span class="keyword">new</span> FileStream(fileName, FileMode.Append)) ;</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            }</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_i_o_exception.html">IOException</a>) {</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div><div class="ttc" id="class_i_o_exception_html"><div class="ttname"><a href="class_i_o_exception.html">IOException</a></div></div>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00112">112</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                                     {</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keyword">using</span> (<span class="keyword">new</span> FileStream(fileName, FileMode.Append)) ;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            }</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_i_o_exception.html">IOException</a>) {</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            }</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div><div class="ttc" id="class_i_o_exception_html"><div class="ttname"><a href="class_i_o_exception.html">IOException</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -348,78 +272,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00066">66</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                                 {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            var layout = <span class="keyword">new</span> PatternLayout {</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                ConversionPattern = <span class="stringliteral">&quot;[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n&quot;</span></div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            };</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            layout.ActivateOptions();</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            var appenders = <span class="keyword">new</span> List&lt;IAppender&gt;();</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#if CLIENT</span></div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            appenders.Add(<span class="keyword">new</span> ConsoleAppender {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                Name = <span class="stringliteral">&quot;ConsoleAppender&quot;</span>,</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                Layout = layout</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            });</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            appenders.Add(<span class="keyword">new</span> DebugAppender {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                Name = <span class="stringliteral">&quot;DebugAppender&quot;</span>,</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                Layout = layout</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            });</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            var fileAppender = <span class="keyword">new</span> FileAppender {</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                Name = <span class="stringliteral">&quot;FileAppender&quot;</span>,</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                File = <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">LogPath</a> = Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>, <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8">RollLogs</a>(side)),</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                AppendToFile = <span class="keyword">false</span>,</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                Encoding = Encoding.UTF8,</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                Layout = layout</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            };</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            fileAppender.ActivateOptions();</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            appenders.Add(fileAppender);</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            BasicConfigurator.Configure(appenders.ToArray());</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a9fda502fa4ce1ca959c6e3377399768d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">Terraria.ModLoader.Logging.LogPath</a></div><div class="ttdeci">static string LogPath</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00029">Logging.cs:29</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_aac90d90b214c7cf93188279dddff2ef8"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#aac90d90b214c7cf93188279dddff2ef8">Terraria.ModLoader.Logging.RollLogs</a></div><div class="ttdeci">static string RollLogs(string baseName)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00098">Logging.cs:98</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00028">Logging.cs:28</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ad357dbd96b0ce612d355099b5f23fcae"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate void Terraria.ModLoader.Logging.ctor_StackTrace </td>
-          <td>(</td>
-          <td class="paramtype">StackTrace&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>e</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a616cf9d51b62c8f037297513a53a2387"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging.DeleteOldArchives </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00146">146</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                                                {</div><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            var pattern = <span class="keyword">new</span> Regex(<span class="stringliteral">&quot;.*\\.zip&quot;</span>);</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            var existingLogs = Directory.GetFiles(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>).Where(s =&gt; pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            <span class="keywordflow">foreach</span> (var f <span class="keywordflow">in</span> existingLogs.Take(existingLogs.Count - <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1cb7261c48401438e766f4a983fdf491">MAX_LOGS</a>)) {</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                <span class="keywordflow">try</span> {</div><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    File.Delete(f);</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                }</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">catch</span> (<a class="code" href="class_i_o_exception.html">IOException</a>) { }</div><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            }</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        }</div><div class="ttc" id="class_i_o_exception_html"><div class="ttname"><a href="class_i_o_exception.html">IOException</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00028">Logging.cs:28</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a1cb7261c48401438e766f4a983fdf491"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a1cb7261c48401438e766f4a983fdf491">Terraria.ModLoader.Logging.MAX_LOGS</a></div><div class="ttdeci">const int MAX_LOGS</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00145">Logging.cs:145</a></div></div>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00062">62</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                                 {</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            var layout = <span class="keyword">new</span> PatternLayout {</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                ConversionPattern = <span class="stringliteral">&quot;[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n&quot;</span></div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            };</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            layout.ActivateOptions();</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            var appenders = <span class="keyword">new</span> List&lt;IAppender&gt;();</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#if CLIENT</span></div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            appenders.Add(<span class="keyword">new</span> ConsoleAppender {</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                Name = <span class="stringliteral">&quot;ConsoleAppender&quot;</span>,</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                Layout = layout</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            });</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            appenders.Add(<span class="keyword">new</span> DebugAppender {</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                Name = <span class="stringliteral">&quot;DebugAppender&quot;</span>,</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                Layout = layout</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            });</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            var fileAppender = <span class="keyword">new</span> FileAppender {</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                Name = <span class="stringliteral">&quot;FileAppender&quot;</span>,</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                File = <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">LogPath</a> = Path.Combine(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>, <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a99f4ae2a20dba1b5750703002e5e6c23">GetNewLogFile</a>(side)),</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                AppendToFile = <span class="keyword">false</span>,</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                Encoding = Encoding.UTF8,</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                Layout = layout</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            };</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            fileAppender.ActivateOptions();</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            appenders.Add(fileAppender);</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            BasicConfigurator.Configure(appenders.ToArray());</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a9fda502fa4ce1ca959c6e3377399768d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">Terraria.ModLoader.Logging.LogPath</a></div><div class="ttdeci">static string LogPath</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00025">Logging.cs:25</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00024">Logging.cs:24</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a99f4ae2a20dba1b5750703002e5e6c23"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a99f4ae2a20dba1b5750703002e5e6c23">Terraria.ModLoader.Logging.GetNewLogFile</a></div><div class="ttdeci">static string GetNewLogFile(string baseName)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00094">Logging.cs:94</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -444,10 +300,10 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00402">402</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00270">270</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 <p>References <a class="el" href="_framework_version_8cs_source.html#l00017">Terraria.ModLoader.FrameworkVersion.Framework</a>, and <a class="el" href="_framework_version_8cs_source.html#l00018">Terraria.ModLoader.FrameworkVersion.Version</a>.</p>
-<div class="fragment"><div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                                                      {</div><div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;            <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.NetFramework &amp;&amp; FrameworkVersion.Version &gt;= <span class="keyword">new</span> Version(4, 7, 2))</div><div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                Type.GetType(<span class="stringliteral">&quot;System.AppContextSwitches&quot;</span>).GetField(<span class="stringliteral">&quot;_ignorePortablePDBsInStackTraces&quot;</span>, BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);</div><div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></div><div class="ttdeci">Framework</div><div class="ttdef"><b>Definition:</b> <a href="_framework_version_8cs_source.html#l00008">FrameworkVersion.cs:8</a></div></div>
+<div class="fragment"><div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                                                      {</div><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.NetFramework &amp;&amp; FrameworkVersion.Version &gt;= <span class="keyword">new</span> Version(4, 7, 2))</div><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                Type.GetType(<span class="stringliteral">&quot;System.AppContextSwitches&quot;</span>).GetField(<span class="stringliteral">&quot;_ignorePortablePDBsInStackTraces&quot;</span>, BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></div><div class="ttdeci">Framework</div><div class="ttdef"><b>Definition:</b> <a href="_framework_version_8cs_source.html#l00008">FrameworkVersion.cs:8</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -483,23 +339,23 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00264">264</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00170">170</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 <p>References <a class="el" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Terraria.ModLoader.Console</a>.</p>
-<div class="fragment"><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                                                                                                           {</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">if</span> (args.Exception == <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">previousException</a> ||</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                args.Exception is ThreadAbortException ||</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308">ignoreSources</a>.Contains(args.Exception.Source) ||</div><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69">ignoreMessages</a>.Any(str =&gt; args.Exception.Message?.Contains(str) ?? <span class="keyword">false</span>) ||</div><div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae67f65279dd0362110938bb75596e16a">ignoreStackTraces</a>.Any(str =&gt; args.Exception.StackTrace?.Contains(str) ?? <span class="keyword">false</span>))</div><div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            var stackTrace = <span class="keyword">new</span> StackTrace(<span class="keyword">true</span>);</div><div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">PrettifyStackTraceSources</a>(stackTrace.GetFrames());</div><div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            var traceString = stackTrace.ToString();</div><div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div><div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Any(traceString.Contains))</div><div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div><div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            traceString = traceString.Substring(traceString.IndexOf(<span class="charliteral">&#39;\n&#39;</span>));</div><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            var exString = args.Exception.GetType() + <span class="stringliteral">&quot;: &quot;</span> + args.Exception.Message + traceString;</div><div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            lock (<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">pastExceptions</a>) {</div><div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">pastExceptions</a>.Add(exString))</div><div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                    <span class="keywordflow">return</span>;</div><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            }</div><div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div><div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">previousException</a> = args.Exception;</div><div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            var msg = args.Exception.Message + <span class="stringliteral">&quot; &quot;</span> + Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.RuntimeErrorSeeLogsForFullTrace&quot;</span>, Path.GetFileName(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">LogPath</a>));</div><div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">#if CLIENT</span></div><div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">if</span> (ModCompile.activelyModding)</div><div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6">AddChatMessage</a>(msg, Color.OrangeRed);</div><div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.ForegroundColor = ConsoleColor.DarkMagenta;</div><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.WriteLine(msg);</div><div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.ResetColor();</div><div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            tML.Warn(Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.RuntimeErrorSilentlyCaughtException&quot;</span>) + <span class="charliteral">&#39;\n&#39;</span> + exString);</div><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a9fda502fa4ce1ca959c6e3377399768d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">Terraria.ModLoader.Logging.LogPath</a></div><div class="ttdeci">static string LogPath</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00029">Logging.cs:29</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a1432597c1493444a35407bf959f73c2f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">Terraria.ModLoader.Logging.ignoreContents</a></div><div class="ttdeci">static List&lt; string &gt; ignoreContents</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00229">Logging.cs:229</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ae67f65279dd0362110938bb75596e16a"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ae67f65279dd0362110938bb75596e16a">Terraria.ModLoader.Logging.ignoreStackTraces</a></div><div class="ttdeci">static List&lt; string &gt; ignoreStackTraces</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00249">Logging.cs:249</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a027e8e274abc3f22be0eb95b30355a69"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69">Terraria.ModLoader.Logging.ignoreMessages</a></div><div class="ttdeci">static List&lt; string &gt; ignoreMessages</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00240">Logging.cs:240</a></div></div>
+<div class="fragment"><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                                                                                                           {</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keywordflow">if</span> (args.Exception == <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">previousException</a> ||</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                args.Exception is ThreadAbortException ||</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308">ignoreSources</a>.Contains(args.Exception.Source) ||</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69">ignoreMessages</a>.Any(str =&gt; args.Exception.Message?.Contains(str) ?? <span class="keyword">false</span>) ||</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9b390ec6b67ea337575660e50436764b">ignoreThrowingMethods</a>.Any(str =&gt; args.Exception.StackTrace?.Contains(str) ?? <span class="keyword">false</span>))</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            var stackTrace = <span class="keyword">new</span> StackTrace(<span class="keyword">true</span>);</div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0e0ba2049a5c7e737d27373038e71d78">PrettifyStackTraceSources</a>(stackTrace.GetFrames());</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            var traceString = stackTrace.ToString();</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Any(traceString.Contains))</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            traceString = traceString.Substring(traceString.IndexOf(<span class="charliteral">&#39;\n&#39;</span>));</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            var exString = args.Exception.GetType() + <span class="stringliteral">&quot;: &quot;</span> + args.Exception.Message + traceString;</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            lock (<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">pastExceptions</a>) {</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">pastExceptions</a>.Add(exString))</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    <span class="keywordflow">return</span>;</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            }</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">previousException</a> = args.Exception;</div><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            var msg = args.Exception.Message + <span class="stringliteral">&quot; &quot;</span> + Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.RuntimeErrorSeeLogsForFullTrace&quot;</span>, Path.GetFileName(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">LogPath</a>));</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="preprocessor">#if CLIENT</span></div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">if</span> (ModCompile.activelyModding)</div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6">AddChatMessage</a>(msg, Color.OrangeRed);</div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.ForegroundColor = ConsoleColor.DarkMagenta;</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.WriteLine(msg);</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Console</a>.ResetColor();</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            tML.Warn(Language.GetTextValue(<span class="stringliteral">&quot;tModLoader.RuntimeErrorSilentlyCaughtException&quot;</span>) + <span class="charliteral">&#39;\n&#39;</span> + exString);</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a9fda502fa4ce1ca959c6e3377399768d"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a9fda502fa4ce1ca959c6e3377399768d">Terraria.ModLoader.Logging.LogPath</a></div><div class="ttdeci">static string LogPath</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00025">Logging.cs:25</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a1432597c1493444a35407bf959f73c2f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">Terraria.ModLoader.Logging.ignoreContents</a></div><div class="ttdeci">static List&lt; string &gt; ignoreContents</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00137">Logging.cs:137</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0e0ba2049a5c7e737d27373038e71d78"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0e0ba2049a5c7e737d27373038e71d78">Terraria.ModLoader.Logging.PrettifyStackTraceSources</a></div><div class="ttdeci">static void PrettifyStackTraceSources(StackFrame[] frames)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00244">Logging.cs:244</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a9b390ec6b67ea337575660e50436764b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a9b390ec6b67ea337575660e50436764b">Terraria.ModLoader.Logging.ignoreThrowingMethods</a></div><div class="ttdeci">static List&lt; string &gt; ignoreThrowingMethods</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00159">Logging.cs:159</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a027e8e274abc3f22be0eb95b30355a69"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69">Terraria.ModLoader.Logging.ignoreMessages</a></div><div class="ttdeci">static List&lt; string &gt; ignoreMessages</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00149">Logging.cs:149</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a51831af9dcf185fae859c62878081d26abccaa4aa80831b76c11240a16447975f">Terraria.ModLoader.CommandType.Console</a></div><div class="ttdoc">Command can be used in server console during MP.</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0648aee4281f58ebb5986238ac493308"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308">Terraria.ModLoader.Logging.ignoreSources</a></div><div class="ttdeci">static HashSet&lt; string &gt; ignoreSources</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00224">Logging.cs:224</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a265273fc6be533777124b395badc4d41"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">Terraria.ModLoader.Logging.pastExceptions</a></div><div class="ttdeci">static HashSet&lt; string &gt; pastExceptions</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00221">Logging.cs:221</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ab83db5ee1ab51cef9dce3676ca890781"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">Terraria.ModLoader.Logging.previousException</a></div><div class="ttdeci">static Exception previousException</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00263">Logging.cs:263</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af388d5cf149211547236e376ffb42fa6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6">Terraria.ModLoader.Logging.AddChatMessage</a></div><div class="ttdeci">static void AddChatMessage(string msg, Color color)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00300">Logging.cs:300</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">Terraria.ModLoader.Logging.PrettifyStackTraceSources</a></div><div class="ttdeci">static void PrettifyStackTraceSources()</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00392">Logging.cs:392</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0648aee4281f58ebb5986238ac493308"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308">Terraria.ModLoader.Logging.ignoreSources</a></div><div class="ttdeci">static HashSet&lt; string &gt; ignoreSources</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00132">Logging.cs:132</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a265273fc6be533777124b395badc4d41"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41">Terraria.ModLoader.Logging.pastExceptions</a></div><div class="ttdeci">static HashSet&lt; string &gt; pastExceptions</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00129">Logging.cs:129</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ab83db5ee1ab51cef9dce3676ca890781"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781">Terraria.ModLoader.Logging.previousException</a></div><div class="ttdeci">static Exception previousException</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00169">Logging.cs:169</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af388d5cf149211547236e376ffb42fa6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af388d5cf149211547236e376ffb42fa6">Terraria.ModLoader.Logging.AddChatMessage</a></div><div class="ttdeci">static void AddChatMessage(string msg, Color color)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00206">Logging.cs:206</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ab77f1d28cd3c77d5cc506ab0d3039d86"></a>
+<a class="anchor" id="a99f4ae2a20dba1b5750703002e5e6c23"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -507,190 +363,10 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">delegate string Terraria.ModLoader.Logging.hook_GetStackTrace </td>
+          <td class="memname">static string Terraria.ModLoader.Logging.GetNewLogFile </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e">orig_GetStackTrace</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ac6650a01a6e07478ed3117bc9ab5b149"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate void Terraria.ModLoader.Logging.hook_StackTrace </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae">ctor_StackTrace</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">StackTrace&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>e</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2ac4949b173937c6b5ce76e167fc63a0"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static string Terraria.ModLoader.Logging.HookGetStackTrace </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e">orig_GetStackTrace</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00354">354</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;                                                                                                             {</div><div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            var stackTrace = <span class="keyword">new</span> StackTrace(<span class="keyword">self</span>, <span class="keyword">true</span>);</div><div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            MdbManager.Symbolize(stackTrace.GetFrames());</div><div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">PrettifyStackTraceSources</a>(stackTrace.GetFrames());</div><div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            var s = stackTrace.ToString();</div><div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            s = <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a98e3e1564ad1b7e3fc8ed56ac24e9a16">trimParamTypes</a>.Replace(s, <span class="stringliteral">&quot;$1&quot;</span>);</div><div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            s = <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a65761555203062c1839dc1375e7d39df">dropGenericTicks</a>.Replace(s, <span class="stringliteral">&quot;&quot;</span>);</div><div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;            s = <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae9245220dc271fbbf46ecd91735dcd21">dropOffset</a>.Replace(s, <span class="stringliteral">&quot;&quot;</span>);</div><div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            s = s.Replace(<span class="stringliteral">&quot;:-1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            <span class="keywordflow">return</span> s;</div><div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ae9245220dc271fbbf46ecd91735dcd21"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ae9245220dc271fbbf46ecd91735dcd21">Terraria.ModLoader.Logging.dropOffset</a></div><div class="ttdeci">static readonly Regex dropOffset</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00349">Logging.cs:349</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a98e3e1564ad1b7e3fc8ed56ac24e9a16"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a98e3e1564ad1b7e3fc8ed56ac24e9a16">Terraria.ModLoader.Logging.trimParamTypes</a></div><div class="ttdeci">static readonly Regex trimParamTypes</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00348">Logging.cs:348</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a65761555203062c1839dc1375e7d39df"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a65761555203062c1839dc1375e7d39df">Terraria.ModLoader.Logging.dropGenericTicks</a></div><div class="ttdeci">static readonly Regex dropGenericTicks</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00350">Logging.cs:350</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">Terraria.ModLoader.Logging.PrettifyStackTraceSources</a></div><div class="ttdeci">static void PrettifyStackTraceSources()</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00392">Logging.cs:392</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aa2720c1a7de344283cd1e880da750ce6"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging.HookStackTraceEx </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad357dbd96b0ce612d355099b5f23fcae">ctor_StackTrace</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">StackTrace&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>e</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00341">341</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                                                                                                                     {</div><div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            orig(<span class="keyword">self</span>, e, fNeedFileInfo);</div><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            <span class="keywordflow">if</span> (fNeedFileInfo)</div><div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">PrettifyStackTraceSources</a>(<span class="keyword">self</span>.GetFrames());</div><div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a0c5b6f3e7a5ff0cefa5d7ab4bbc24467">Terraria.ModLoader.Logging.PrettifyStackTraceSources</a></div><div class="ttdeci">static void PrettifyStackTraceSources()</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00392">Logging.cs:392</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aa9467f6c7dae413ff8f88d1b21116dbf"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging.HookWebRequests </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>baseName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -701,12 +377,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Attempt to hook the .NET internal methods to log when requests are sent to web addresses. Use the right internal methods to capture redirects </p>
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00170">170</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        {</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">try</span> {</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <span class="comment">// .NET 4.7.2</span></div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                MethodBase met = typeof(HttpWebRequest).Assembly</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    .GetType(<span class="stringliteral">&quot;System.Net.Connection&quot;</span>)</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                    ?.FindMethod(<span class="stringliteral">&quot;SubmitRequest&quot;</span>);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                <span class="keywordflow">if</span> (met != null) {</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                    <span class="keyword">new</span> Hook(met, <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad790406ac470cc3c45b904fcaea4ab10">SubmitRequestHook</a>((orig, <span class="keyword">self</span>, request, forcedsubmit) =&gt; {</div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                        tML.Debug($<span class="stringliteral">&quot;Web Request: &quot;</span> + request.Address);</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                        <span class="keywordflow">return</span> orig(<span class="keyword">self</span>, request, forcedsubmit);</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                    }));</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                    <span class="keywordflow">return</span>;</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                }</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                <span class="comment">// Mono 5.20</span></div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                met = typeof(HttpWebRequest).Assembly</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                    .GetType(<span class="stringliteral">&quot;System.Net.WebOperation&quot;</span>)</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    ?.GetConstructors()[0];</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                <span class="keywordflow">if</span> (met != null &amp;&amp; met.GetParameters().Length == 4) {</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                    <span class="keyword">new</span> Hook(met, <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#addda8a2005c9a67267ba4e9f9f7ae661">WebOperation_ctorHook</a>((orig, <span class="keyword">self</span>, request, buffer, challenge, token) =&gt; {</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                        tML.Debug($<span class="stringliteral">&quot;Web Request: &quot;</span> + request.Address);</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                        orig(<span class="keyword">self</span>, request, buffer, challenge, token);</div><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    }));</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    <span class="keywordflow">return</span>;</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                }</div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                <span class="comment">// Mono 4.6.1</span></div><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                met = typeof(HttpWebRequest).Assembly</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                    .GetType(<span class="stringliteral">&quot;System.Net.WebConnection&quot;</span>)</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                    ?.FindMethod(<span class="stringliteral">&quot;SendRequest&quot;</span>);</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                <span class="keywordflow">if</span> (met != null) {</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                    <span class="keyword">new</span> Hook(met, <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a7e45f59b75bf9443c68d8c5dbdaf1d8b">SendRequestHook</a>((orig, <span class="keyword">self</span>, request) =&gt; {</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                        tML.Debug($<span class="stringliteral">&quot;Web Request: &quot;</span> + request.Address);</div><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                        <span class="keywordflow">return</span> orig(<span class="keyword">self</span>, request);</div><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                    }));</div><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                    <span class="keywordflow">return</span>;</div><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                }</div><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            }</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keywordflow">catch</span> { }</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            tML.Warn(<span class="stringliteral">&quot;HttpWebRequest send/submit method not found&quot;</span>);</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a7e45f59b75bf9443c68d8c5dbdaf1d8b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a7e45f59b75bf9443c68d8c5dbdaf1d8b">Terraria.ModLoader.Logging.SendRequestHook</a></div><div class="ttdeci">delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_addda8a2005c9a67267ba4e9f9f7ae661"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#addda8a2005c9a67267ba4e9f9f7ae661">Terraria.ModLoader.Logging.WebOperation_ctorHook</a></div><div class="ttdeci">delegate void WebOperation_ctorHook(WebOperation_ctor orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ad790406ac470cc3c45b904fcaea4ab10"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ad790406ac470cc3c45b904fcaea4ab10">Terraria.ModLoader.Logging.SubmitRequestHook</a></div><div class="ttdeci">delegate bool SubmitRequestHook(SubmitRequest orig, object self, HttpWebRequest request, bool forcedsubmit)</div></div>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00094">94</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                                             {</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            var pattern = <span class="keyword">new</span> Regex($<span class="stringliteral">&quot;{baseName}(\\d*)\\.log&quot;</span>);</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            var existingLogs = Directory.GetFiles(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>).Where(s =&gt; pattern.IsMatch(Path.GetFileName(s))).ToList();</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">if</span> (!existingLogs.All(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">CanOpen</a>)) {</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                <span class="keywordtype">int</span> n = existingLogs.Select(s =&gt; {</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    var tok = pattern.Match(Path.GetFileName(s)).Groups[1].Value;</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    <span class="keywordflow">return</span> tok.Length == 0 ? 1 : <span class="keywordtype">int</span>.Parse(tok);</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                }).Max();</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{baseName}{n + 1}.log&quot;</span>;</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            }</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">foreach</span> (var existingLog <span class="keywordflow">in</span> existingLogs.OrderBy(File.GetCreationTime))</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                File.Move(existingLog, existingLog + <span class="stringliteral">&quot;.old&quot;</span>);</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{baseName}.log&quot;</span>;</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00024">Logging.cs:24</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ae6304b2b34e06e095a8a7ff99e1a6c0b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">Terraria.ModLoader.Logging.CanOpen</a></div><div class="ttdeci">static bool CanOpen(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00112">Logging.cs:112</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -732,8 +405,8 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00258">258</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                                                                  {</div><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Contains(source))</div><div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Add(source);</div><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a1432597c1493444a35407bf959f73c2f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">Terraria.ModLoader.Logging.ignoreContents</a></div><div class="ttdeci">static List&lt; string &gt; ignoreContents</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00229">Logging.cs:229</a></div></div>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00164">164</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                                                                  {</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Contains(source))</div><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">ignoreContents</a>.Add(source);</div><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a1432597c1493444a35407bf959f73c2f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f">Terraria.ModLoader.Logging.ignoreContents</a></div><div class="ttdeci">static List&lt; string &gt; ignoreContents</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00137">Logging.cs:137</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -782,46 +455,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00214">214</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00122">122</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 <p>References <a class="el" href="_framework_version_8cs_source.html#l00017">Terraria.ModLoader.FrameworkVersion.Framework</a>.</p>
-<div class="fragment"><div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                                                       {</div><div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.Mono)</div><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                tML.Warn(<span class="stringliteral">&quot;First-chance exception reporting is not implemented on Mono&quot;</span>);</div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            AppDomain.CurrentDomain.FirstChanceException += <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f">FirstChanceExceptionHandler</a>;</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></div><div class="ttdeci">Framework</div><div class="ttdef"><b>Definition:</b> <a href="_framework_version_8cs_source.html#l00008">FrameworkVersion.cs:8</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a3344b4f3e4bbad63ca7714dc0b7a641f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f">Terraria.ModLoader.Logging.FirstChanceExceptionHandler</a></div><div class="ttdeci">static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00264">Logging.cs:264</a></div></div>
+<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                                       {</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.Mono)</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                tML.Warn(<span class="stringliteral">&quot;First-chance exception reporting is not implemented on Mono&quot;</span>);</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            AppDomain.CurrentDomain.FirstChanceException += <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f">FirstChanceExceptionHandler</a>;</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        }</div><div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></div><div class="ttdeci">Framework</div><div class="ttdef"><b>Definition:</b> <a href="_framework_version_8cs_source.html#l00008">FrameworkVersion.cs:8</a></div></div>
+<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a3344b4f3e4bbad63ca7714dc0b7a641f"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a3344b4f3e4bbad63ca7714dc0b7a641f">Terraria.ModLoader.Logging.FirstChanceExceptionHandler</a></div><div class="ttdeci">static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00170">Logging.cs:170</a></div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a702cc4c55ac7c6689955dc9ad5613b8e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate string Terraria.ModLoader.Logging.orig_GetStackTrace </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_exception.html">Exception</a>&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>fNeedFileInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <a class="anchor" id="a0e0ba2049a5c7e737d27373038e71d78"></a>
@@ -846,389 +485,12 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00366">366</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                                                                          {</div><div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            <span class="keywordflow">if</span> (frames == null)</div><div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div><div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <span class="keywordflow">foreach</span> (var frame <span class="keywordflow">in</span> frames) {</div><div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                <span class="keywordtype">string</span> filename = frame.GetFileName();</div><div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;                var assembly = frame.GetMethod()?.DeclaringType?.Assembly;</div><div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                <span class="keywordflow">if</span> (filename == null || assembly == null)</div><div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                    <span class="keywordflow">continue</span>;</div><div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div><div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;                <span class="keywordtype">string</span> trim;</div><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                <span class="keywordflow">if</span> (AssemblyManager.GetAssemblyOwner(assembly, out var modName))</div><div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                    trim = modName;</div><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (assembly == <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a880bc761e6bd31f3263d31df7fe357c9">TerrariaAssembly</a>)</div><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                    trim = <span class="stringliteral">&quot;tModLoader&quot;</span>;</div><div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                <span class="keywordflow">else</span></div><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                    <span class="keywordflow">continue</span>;</div><div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div><div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                <span class="keywordtype">int</span> idx = filename.LastIndexOf(trim, StringComparison.InvariantCultureIgnoreCase);</div><div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                <span class="keywordflow">if</span> (idx &gt; 0) {</div><div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                    filename = filename.Substring(idx);</div><div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                    f_fileName.SetValue(frame, filename);</div><div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                }</div><div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            }</div><div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a880bc761e6bd31f3263d31df7fe357c9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a880bc761e6bd31f3263d31df7fe357c9">Terraria.ModLoader.Logging.TerrariaAssembly</a></div><div class="ttdeci">static readonly Assembly TerrariaAssembly</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00336">Logging.cs:336</a></div></div>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00244">244</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                                                                          {</div><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            <span class="keywordflow">if</span> (frames == null)</div><div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">foreach</span> (var frame <span class="keywordflow">in</span> frames) {</div><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                <span class="keywordtype">string</span> filename = frame.GetFileName();</div><div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                var assembly = frame.GetMethod()?.DeclaringType?.Assembly;</div><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                <span class="keywordflow">if</span> (filename == null || assembly == null)</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                    <span class="keywordflow">continue</span>;</div><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div><div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                <span class="keywordtype">string</span> trim;</div><div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                <span class="keywordflow">if</span> (AssemblyManager.GetAssemblyOwner(assembly, out var modName))</div><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                    trim = modName;</div><div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (assembly == <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a880bc761e6bd31f3263d31df7fe357c9">TerrariaAssembly</a>)</div><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    trim = <span class="stringliteral">&quot;tModLoader&quot;</span>;</div><div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <span class="keywordflow">else</span></div><div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                    <span class="keywordflow">continue</span>;</div><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div><div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                <span class="keywordtype">int</span> idx = filename.LastIndexOf(trim, StringComparison.InvariantCultureIgnoreCase);</div><div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">if</span> (idx &gt; 0) {</div><div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    filename = filename.Substring(idx);</div><div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    f_fileName.SetValue(frame, filename);</div><div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                }</div><div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            }</div><div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a880bc761e6bd31f3263d31df7fe357c9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a880bc761e6bd31f3263d31df7fe357c9">Terraria.ModLoader.Logging.TerrariaAssembly</a></div><div class="ttdeci">static readonly Assembly TerrariaAssembly</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00242">Logging.cs:242</a></div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a0c5b6f3e7a5ff0cefa5d7ab4bbc24467"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Terraria.ModLoader.Logging.PrettifyStackTraceSources </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00392">392</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-
-<p>References <a class="el" href="_framework_version_8cs_source.html#l00017">Terraria.ModLoader.FrameworkVersion.Framework</a>.</p>
-<div class="fragment"><div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                                                        {</div><div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            <span class="keywordflow">if</span> (f_fileName == null)</div><div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                <span class="keywordflow">return</span>;</div><div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div><div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.NetFramework)</div><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                <span class="keyword">new</span> Hook(typeof(StackTrace).GetConstructor(<span class="keyword">new</span>[] { typeof(<a class="code" href="class_exception.html">Exception</a>), typeof(<span class="keywordtype">bool</span>) }), <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ac6650a01a6e07478ed3117bc9ab5b149">hook_StackTrace</a>(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#aa2720c1a7de344283cd1e880da750ce6">HookStackTraceEx</a>));</div><div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (FrameworkVersion.Framework == <a class="code" href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Framework</a>.Mono)</div><div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                <span class="keyword">new</span> Hook(typeof(<a class="code" href="class_exception.html">Exception</a>).FindMethod(<span class="stringliteral">&quot;GetStackTrace&quot;</span>), <span class="keyword">new</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab77f1d28cd3c77d5cc506ab0d3039d86">hook_GetStackTrace</a>(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a2ac4949b173937c6b5ce76e167fc63a0">HookGetStackTrace</a>));</div><div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        }</div><div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div></div>
-<div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a70a14621c40b95e8b411943e6f18666e"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e">Terraria.ModLoader.Framework</a></div><div class="ttdeci">Framework</div><div class="ttdef"><b>Definition:</b> <a href="_framework_version_8cs_source.html#l00008">FrameworkVersion.cs:8</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a2ac4949b173937c6b5ce76e167fc63a0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a2ac4949b173937c6b5ce76e167fc63a0">Terraria.ModLoader.Logging.HookGetStackTrace</a></div><div class="ttdeci">static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00354">Logging.cs:354</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ab77f1d28cd3c77d5cc506ab0d3039d86"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ab77f1d28cd3c77d5cc506ab0d3039d86">Terraria.ModLoader.Logging.hook_GetStackTrace</a></div><div class="ttdeci">delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ac6650a01a6e07478ed3117bc9ab5b149"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ac6650a01a6e07478ed3117bc9ab5b149">Terraria.ModLoader.Logging.hook_StackTrace</a></div><div class="ttdeci">delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)</div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_aa2720c1a7de344283cd1e880da750ce6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#aa2720c1a7de344283cd1e880da750ce6">Terraria.ModLoader.Logging.HookStackTraceEx</a></div><div class="ttdeci">static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00341">Logging.cs:341</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aac90d90b214c7cf93188279dddff2ef8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static string Terraria.ModLoader.Logging.RollLogs </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>baseName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00098">98</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                                                        {</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            var pattern = <span class="keyword">new</span> Regex($<span class="stringliteral">&quot;{baseName}(\\d*)\\.log&quot;</span>);</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            var existingLogs = Directory.GetFiles(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">LogDir</a>).Where(s =&gt; pattern.IsMatch(Path.GetFileName(s))).ToList();</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">if</span> (!existingLogs.All(<a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">CanOpen</a>)) {</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="keywordtype">int</span> n = existingLogs.Select(s =&gt; {</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    var tok = pattern.Match(Path.GetFileName(s)).Groups[1].Value;</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    <span class="keywordflow">return</span> tok.Length == 0 ? 1 : <span class="keywordtype">int</span>.Parse(tok);</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                }).Max();</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{baseName}{n + 1}.log&quot;</span>;</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            }</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">foreach</span> (var existingLog <span class="keywordflow">in</span> existingLogs.OrderBy(File.GetCreationTime))</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9">Archive</a>(existingLog);</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387">DeleteOldArchives</a>();</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{baseName}.log&quot;</span>;</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a616cf9d51b62c8f037297513a53a2387"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387">Terraria.ModLoader.Logging.DeleteOldArchives</a></div><div class="ttdeci">static void DeleteOldArchives()</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00146">Logging.cs:146</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_af0ea519b23a240d53aa30bf0a056b7d0"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0">Terraria.ModLoader.Logging.LogDir</a></div><div class="ttdeci">static readonly string LogDir</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00028">Logging.cs:28</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_ae6304b2b34e06e095a8a7ff99e1a6c0b"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#ae6304b2b34e06e095a8a7ff99e1a6c0b">Terraria.ModLoader.Logging.CanOpen</a></div><div class="ttdeci">static bool CanOpen(string fileName)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00118">Logging.cs:118</a></div></div>
-<div class="ttc" id="class_terraria_1_1_mod_loader_1_1_logging_html_a95d4316559982c21c828d0e68e1721f9"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_logging.html#a95d4316559982c21c828d0e68e1721f9">Terraria.ModLoader.Logging.Archive</a></div><div class="ttdeci">static void Archive(string logPath)</div><div class="ttdef"><b>Definition:</b> <a href="_logging_8cs_source.html#l00128">Logging.cs:128</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="ad8017e35e0c101ef04295a75c53a77cb"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate EventHandler Terraria.ModLoader.Logging.SendRequest </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a7e45f59b75bf9443c68d8c5dbdaf1d8b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate EventHandler Terraria.ModLoader.Logging.SendRequestHook </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ad8017e35e0c101ef04295a75c53a77cb">SendRequest</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a3fa720b499665e9324baf9b26156aaf3"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate bool Terraria.ModLoader.Logging.SubmitRequest </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>forcedsubmit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad790406ac470cc3c45b904fcaea4ab10"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate bool Terraria.ModLoader.Logging.SubmitRequestHook </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#a3fa720b499665e9324baf9b26156aaf3">SubmitRequest</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>forcedsubmit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ab6578351f57b183e9c8fd3189812e507"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate void Terraria.ModLoader.Logging.WebOperation_ctor </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>writeBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isNtlmChallenge</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">CancellationToken&#160;</td>
-          <td class="paramname"><em>cancellationToken</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="addda8a2005c9a67267ba4e9f9f7ae661"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">delegate void Terraria.ModLoader.Logging.WebOperation_ctorHook </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_logging.html#ab6578351f57b183e9c8fd3189812e507">WebOperation_ctor</a>&#160;</td>
-          <td class="paramname"><em>orig</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HttpWebRequest&#160;</td>
-          <td class="paramname"><em>request</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>writeBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isNtlmChallenge</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">CancellationToken&#160;</td>
-          <td class="paramname"><em>cancellationToken</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a65761555203062c1839dc1375e7d39df"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly Regex Terraria.ModLoader.Logging.dropGenericTicks = new Regex(@&quot;`\d+&quot;, RegexOptions.Compiled)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00350">350</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae9245220dc271fbbf46ecd91735dcd21"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly Regex Terraria.ModLoader.Logging.dropOffset = new Regex(@&quot; \[.+?\](?![^:]+:-1)&quot;, RegexOptions.Compiled)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00349">349</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a1432597c1493444a35407bf959f73c2f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1246,8 +508,8 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;System.Console.set_OutputEncoding&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Terraria.ModLoader.ModCompile&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;Delegate.CreateDelegateNoSecurityCheck&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;MethodBase.GetMethodBody&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;System.Diagnostics.Process.Kill&quot;</span>, </div><div class="line">        }</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00229">229</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;System.Console.set_OutputEncoding&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Terraria.ModLoader.ModCompile&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;Delegate.CreateDelegateNoSecurityCheck&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;MethodBase.GetMethodBody&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;System.Diagnostics.Process.Kill&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve&quot;</span>,</div><div class="line">        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00137">137</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1268,8 +530,8 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;A blocking operation was interrupted by a call to WSACancelBlockingCall&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;The request was aborted: The request was canceled.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;System.Net.Sockets.Socket&#39;.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;System.Net.Sockets.NetworkStream&#39;&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;This operation cannot be performed on a completed asynchronous result object.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;SslStream&#39;.&quot;</span>, </div><div class="line">        }</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00240">240</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;A blocking operation was interrupted by a call to WSACancelBlockingCall&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;The request was aborted: The request was canceled.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;System.Net.Sockets.Socket&#39;.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;System.Net.Sockets.NetworkStream&#39;&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;This operation cannot be performed on a completed asynchronous result object.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Object name: &#39;SslStream&#39;.&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;Unable to load DLL &#39;Microsoft.DiaSymReader.Native.x86.dll&#39;&quot;</span> </div><div class="line">        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00149">149</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1291,11 +553,11 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> HashSet&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;MP3Sharp&quot;</span></div><div class="line">        }</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00224">224</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00132">132</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae67f65279dd0362110938bb75596e16a"></a>
+<a class="anchor" id="a9b390ec6b67ea337575660e50436764b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1303,7 +565,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;string&gt; Terraria.ModLoader.Logging.ignoreStackTraces</td>
+          <td class="memname">List&lt;string&gt; Terraria.ModLoader.Logging.ignoreThrowingMethods</td>
         </tr>
       </table>
   </td>
@@ -1312,8 +574,8 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;at Terraria.Lighting.doColors_Mode0_Swipe&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;at Terraria.Lighting.doColors_Mode1_Swipe&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;at Terraria.Lighting.doColors_Mode2_Swipe&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;at Terraria.Lighting.doColors_Mode3_Swipe&quot;</span>,</div><div class="line">            <span class="stringliteral">&quot;System.Threading.CancellationToken.ThrowOperationCanceledException&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;System.Threading.CancellationToken.ThrowIfCancellationRequested&quot;</span>, </div><div class="line">        }</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00249">249</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt; {</div><div class="line">            <span class="stringliteral">&quot;at Terraria.Lighting.doColors_Mode&quot;</span>, </div><div class="line">            <span class="stringliteral">&quot;System.Threading.CancellationToken.Throw&quot;</span>, </div><div class="line">        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00159">159</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1335,31 +597,9 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00028">28</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00024">24</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_error_logger_8cs_source.html#l00097">Terraria.ModLoader.ErrorLogger.ClearLogs()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1cb7261c48401438e766f4a983fdf491"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int Terraria.ModLoader.Logging.MAX_LOGS = 20</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00145">145</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +621,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00221">221</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00129">129</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +643,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00263">263</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00169">169</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1425,7 +665,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00310">310</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00216">216</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1447,29 +687,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00336">336</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a98e3e1564ad1b7e3fc8ed56ac24e9a16"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly Regex Terraria.ModLoader.Logging.trimParamTypes = new Regex(@&quot;([([,] ?)(?:[\w.+]+[.+])&quot;, RegexOptions.Compiled)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00348">348</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00242">242</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>
@@ -1492,7 +710,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00029">29</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
+<p>Definition at line <a class="el" href="_logging_8cs_source.html#l00025">25</a> of file <a class="el" href="_logging_8cs_source.html">Logging.cs</a>.</p>
 
 </div>
 </div>

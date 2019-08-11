@@ -34,6 +34,5 @@ var searchData=
   ['openvanillabag',['OpenVanillaBag',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f',1,'Terraria.ModLoader.GlobalItem.OpenVanillaBag()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332',1,'Terraria.ModLoader.ItemLoader.OpenVanillaBag()']]],
   ['operator_20music',['operator Music',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music.html#a65c566d13c8ffa3dda40c4310199b36f',1,'Terraria::ModLoader::Audio::Music']]],
   ['optionstringsattribute',['OptionStringsAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_option_strings_attribute.html#a253e572d3f0087652b9af381405f6c82',1,'Terraria::ModLoader::Config::OptionStringsAttribute']]],
-  ['orig_5fgetstacktrace',['orig_GetStackTrace',['../class_terraria_1_1_mod_loader_1_1_logging.html#a702cc4c55ac7c6689955dc9ad5613b8e',1,'Terraria::ModLoader::Logging']]],
   ['outerthird',['OuterThird',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8501b4122cdbb03edc3639f81be8bc22',1,'Terraria::ModLoader::SpawnCondition']]]
 ];

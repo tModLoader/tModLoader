@@ -99,7 +99,6 @@ var searchData=
   ['delegateuseitemhitbox',['DelegateUseItemHitbox',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#ab845789a81fd62b2d7fb21ed44bac918',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegateverticalwingspeeds',['DelegateVerticalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a77ac99b17e4f7d1f6d0dd0942c6d66da',1,'Terraria::ModLoader::ItemLoader']]],
   ['deleteingredient',['DeleteIngredient',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a448e707c0f6e78ceb200ee7e8df9c4f9',1,'Terraria::ModLoader::RecipeEditor']]],
-  ['deleteoldarchives',['DeleteOldArchives',['../class_terraria_1_1_mod_loader_1_1_logging.html#a616cf9d51b62c8f037297513a53a2387',1,'Terraria::ModLoader::Logging']]],
   ['deleterecipe',['DeleteRecipe',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a4f495e75b86e3a31adb2d3b606b2432b',1,'Terraria::ModLoader::RecipeEditor']]],
   ['deletetile',['DeleteTile',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a9c2569159767cf327a30488b2e66f456',1,'Terraria::ModLoader::RecipeEditor']]],
   ['dependencies',['Dependencies',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#ab1814a04c5538ae6d8f942914eb83290',1,'Terraria::ModLoader::TopoSort']]],

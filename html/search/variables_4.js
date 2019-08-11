@@ -33,8 +33,6 @@ var searchData=
   ['dresser',['dresser',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a125b4cf8b3b5f6df2f741e04c594e056',1,'Terraria::ModLoader::ModTile']]],
   ['dresserdrop',['dresserDrop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6f7bde71246c41e527f49e1bcbf95b0b',1,'Terraria::ModLoader::ModTile']]],
   ['drop',['drop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a37295f3be76008d083ffdacebe0fa6a9',1,'Terraria.ModLoader.ModTile.drop()'],['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a7dc02bd5778a1411f4c5ceda311729ae',1,'Terraria.ModLoader.ModWall.drop()']]],
-  ['dropgenericticks',['dropGenericTicks',['../class_terraria_1_1_mod_loader_1_1_logging.html#a65761555203062c1839dc1375e7d39df',1,'Terraria::ModLoader::Logging']]],
-  ['dropoffset',['dropOffset',['../class_terraria_1_1_mod_loader_1_1_logging.html#ae9245220dc271fbbf46ecd91735dcd21',1,'Terraria::ModLoader::Logging']]],
   ['dungeon',['Dungeon',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a581fe329a29c04e6ed525e79e5742ce8',1,'Terraria::ModLoader::SpawnCondition']]],
   ['dungeonguardian',['DungeonGuardian',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a389bccc1dceb8ce9bbe3ae9e1c2e229f',1,'Terraria::ModLoader::SpawnCondition']]],
   ['dungeonnormal',['DungeonNormal',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a1933a310825df550a7f9aa0ee25cca73',1,'Terraria::ModLoader::SpawnCondition']]],
