@@ -123,7 +123,6 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Request.ProtocolVersion = ProtocolVersion;
 			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
 			Request.KeepAlive = true;
-			Request.Proxy = null;
 		}
 
 		// TODO Jof: HPKP / Expect-CT Manager
