@@ -1,5 +1,6 @@
 ﻿using ReLogic.OS;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -79,6 +80,7 @@ namespace Terraria.ModLoader.Engine
 			if (!HashMatchesFile(steamAPIhash, "steam_api.dll")) {
 				Logging.tML.Fatal("Steam API hash mismatch, assumed pirated");
 				System.Windows.Forms.MessageBox.Show("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", "Terraria: Error" + $" ({ModLoader.versionedName})");
+				Process.Start(@"https://terraria.org");
 				Environment.Exit(1);
 			}
 		}
