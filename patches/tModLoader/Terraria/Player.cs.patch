@@ -5636,7 +5636,7 @@
 -			this.reuseDelay = sItem.reuseDelay;
 +			this.itemAnimation = PlayerHooks.TotalMeleeTime(sItem.useAnimation, this, sItem);
 +			this.itemAnimationMax = this.itemAnimation;
-+			this.reuseDelay = PlayerHooks.TotalUseTime(sItem.reuseDelay, this, sItem);
++			this.reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse)
