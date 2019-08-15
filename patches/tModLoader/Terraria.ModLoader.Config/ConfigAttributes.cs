@@ -102,7 +102,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Defines the default value to be added when using the ModConfig UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
+	/// Defines the default value to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value). Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class DefaultListValueAttribute : Attribute
@@ -154,13 +154,13 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Defines the default value to be added when using the ModConfig UI to add elements to a List. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
+	/// Defines the default key value to be added when using the ModConfig UI to add elements to a Dictionary. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it. This attribute compliments DefaultListValueAttribute when used annotating a Dictionary.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class DefaultDictionaryValueAttribute : Attribute
+	public class DefaultDictionaryKeyValueAttribute : Attribute
 	{
 		private object value;
-		public DefaultDictionaryValueAttribute(Type type, string value) {
+		public DefaultDictionaryKeyValueAttribute(Type type, string value) {
 			try {
 				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
 			}
@@ -169,16 +169,16 @@ namespace Terraria.ModLoader.Config
 			}
 		}
 
-		public DefaultDictionaryValueAttribute(char value) => this.value = value;
-		public DefaultDictionaryValueAttribute(byte value) => this.value = value;
-		public DefaultDictionaryValueAttribute(short value) => this.value = value;
-		public DefaultDictionaryValueAttribute(int value) => this.value = value;
-		public DefaultDictionaryValueAttribute(long value) => this.value = value;
-		public DefaultDictionaryValueAttribute(float value) => this.value = value;
-		public DefaultDictionaryValueAttribute(double value) => this.value = value;
-		public DefaultDictionaryValueAttribute(bool value) => this.value = value;
-		public DefaultDictionaryValueAttribute(string value) => this.value = value;
-		public DefaultDictionaryValueAttribute(object value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(char value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(byte value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(short value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(int value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(long value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(float value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(double value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(bool value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(string value) => this.value = value;
+		public DefaultDictionaryKeyValueAttribute(object value) => this.value = value;
 
 		public virtual object Value => value;
 
@@ -186,7 +186,7 @@ namespace Terraria.ModLoader.Config
 			if (obj == this) {
 				return true;
 			}
-			var other = obj as DefaultDictionaryValueAttribute;
+			var other = obj as DefaultDictionaryKeyValueAttribute;
 			if (other != null) {
 				if (Value != null) {
 					return Value.Equals(other.Value);
@@ -206,7 +206,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Similar to DefaultListValueAttribute but for reference types. It uses a json string that will be used populate new instances list elements. Defines the default value, expressed as json, to be added when using the ModConfig UI to add elements to a List.
+	/// Similar to DefaultListValueAttribute but for reference types. It uses a json string that will be used populate new instances list elements. Defines the default value, expressed as json, to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value).
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class JsonDefaultListValueAttribute : Attribute
@@ -217,6 +217,7 @@ namespace Terraria.ModLoader.Config
 		}
 	}
 
+	/* TODO: Implement this
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class CustomAddMethodAttribute : Attribute
 	{
@@ -225,12 +226,16 @@ namespace Terraria.ModLoader.Config
 			this.methodName = methodName;
 		}
 	}
+	*/
 
+	/// <summary>
+	/// Similar to JsonDefaultListValueAttribute, but for assigning to the Dictionary Key rather than the Value.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class JsonDefaultDictionaryValueAttribute : Attribute
+	public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 	{
 		public string json;
-		public JsonDefaultDictionaryValueAttribute(string json) {
+		public JsonDefaultDictionaryKeyValueAttribute(string json) {
 			this.json = json;
 		}
 	}

@@ -312,6 +312,15 @@ namespace ExampleMod
 		// JsonDefaultListValue provides the default value for referece types/classes, expressed as JSON. If you are unsure of the JSON, you can copy from a saved config file itself.
 		[JsonDefaultListValue("{\"name\": \"GoldBar\"}")]
 		public List<ItemDefinition> ListOfItemDefinition = new List<ItemDefinition>();
+
+		// For Dictionaries, additional attributes (DefaultDictionaryKeyValue or JsonDefaultDictionaryKeyValue) are used to specify a default value for the Key of the Dictionary entry. The Value uses the DefaultListValue or JsonDefaultListValue as List and HashSet do.
+		[DefaultDictionaryKeyValue(0.3f)]
+		[DefaultListValue(10)]
+		public Dictionary<float, int> DictionaryDefaults = new Dictionary<float, int>();
+
+		[JsonDefaultDictionaryKeyValue("{\"name\": \"GoldBar\"}")]
+		[JsonDefaultListValue("{\"name\": \"SilverBar\"}")]
+		public Dictionary<ItemDefinition, ItemDefinition> DictionaryDefaults2 = new Dictionary<ItemDefinition, ItemDefinition>();
 	}
 
 	[BackgroundColor(148, 72, 188)]

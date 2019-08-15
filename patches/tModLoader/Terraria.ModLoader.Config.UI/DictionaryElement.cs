@@ -91,32 +91,31 @@ namespace Terraria.ModLoader.Config.UI
 		public List<IDictionaryElementWrapper> dataWrapperList;
 
 		// These 2 hold the default value of the dictionary value, hence ValueValue
-		protected DefaultDictionaryValueAttribute defaultDictionaryValueValueAttribute;
-		protected JsonDefaultDictionaryValueAttribute jsonDefaultDictionaryValueValueAttribute;
+		protected DefaultDictionaryKeyValueAttribute defaultDictionaryKeyValueAttribute;
+		protected JsonDefaultDictionaryKeyValueAttribute jsonDefaultDictionaryKeyValueAttribute;
 
 		protected override void PrepareTypes() {
 			keyType = memberInfo.Type.GetGenericArguments()[0];
 			valueType = memberInfo.Type.GetGenericArguments()[1];
-			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, keyType);
-			defaultDictionaryValueValueAttribute = ConfigManager.GetCustomAttribute<DefaultDictionaryValueAttribute>(memberInfo, null, null);
-			jsonDefaultDictionaryValueValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryValueAttribute>(memberInfo, null, null);
+			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, valueType);
+			defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<DefaultDictionaryKeyValueAttribute>(memberInfo, null, null);
+			jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryKeyValueAttribute>(memberInfo, null, null);
 		}
 
 		protected override void AddItem() {
 			try {
 				object value;
-				if (defaultDictionaryValueValueAttribute != null) {
-					value = defaultDictionaryValueValueAttribute.Value;
+				if (defaultDictionaryKeyValueAttribute != null) {
+					value = defaultDictionaryKeyValueAttribute.Value;
 				}
 				else {
 					value = ConfigManager.AlternateCreateInstance(valueType);
 					if (!valueType.IsValueType) {
-						string json = jsonDefaultDictionaryValueValueAttribute?.json ?? "{}";
+						string json = jsonDefaultDictionaryKeyValueAttribute?.json ?? "{}";
 						JsonConvert.PopulateObject(json, value, ConfigManager.serializerSettings);
 					}
 				}
-				((IDictionary)data).Add(CreateCollectionElementInstance(keyType), 
-					value);
+				((IDictionary)data).Add(value, CreateCollectionElementInstance(valueType));
 			}
 			catch (Exception e) {
 				Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
