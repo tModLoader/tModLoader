@@ -14,6 +14,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
@@ -177,6 +178,7 @@ namespace Terraria.ModLoader.UI
 				var values = new NameValueCollection
 				{
 					{ "displayname", bp.displayName },
+					{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x=> x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
 					{ "name", modFile.name },
 					{ "version", "v"+bp.version },
 					{ "author", bp.author },

@@ -10,6 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
@@ -31,6 +32,7 @@ namespace Terraria.ModLoader.UI
 		private int _modIconAdjust;
 		private string _tooltip;
 		private string[] _modReferences;
+		public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 
 		private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
 
@@ -42,6 +44,7 @@ namespace Terraria.ModLoader.UI
 			Height.Pixels = 90;
 			Width.Percent = 1f;
 			SetPadding(6f);
+			DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
 		}
 
 		public override void OnInitialize() {
@@ -95,7 +98,7 @@ namespace Terraria.ModLoader.UI
 			_moreInfoButton.OnClick += ShowMoreInfo;
 			Append(_moreInfoButton);
 
-			Mod loadedMod = ModLoader.GetMod(_mod.Name);
+			Mod loadedMod = ModLoader.GetMod(ModName);
 			if (loadedMod != null && ConfigManager.Configs.ContainsKey(loadedMod)) {
 				_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 					Width = { Pixels = 36 },
@@ -127,7 +130,7 @@ namespace Terraria.ModLoader.UI
 				};
 				Append(_keyImage);
 			}
-			if (ModLoader.badUnloaders.Contains(_mod.Name)) {
+			if (ModLoader.badUnloaders.Contains(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This mod did not fully unload during last unload.") {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
@@ -168,7 +171,7 @@ namespace Terraria.ModLoader.UI
 
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
 		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
-			Mod loadedMod = ModLoader.GetMod(_mod.Name);
+			Mod loadedMod = ModLoader.GetMod(ModName);
 			var dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
 			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
@@ -178,7 +181,7 @@ namespace Terraria.ModLoader.UI
 				.Concat(loadedMod.projectiles.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="));
 			//.Concat(loadedMod.tiles.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="))
 			//.Concat(loadedMod.walls.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="));
-			int index = $"Mods.{_mod.Name}.".Length;
+			int index = $"Mods.{ModName}.".Length;
 			result = result.Select(x => x.Remove(0, index));
 			ReLogic.OS.Platform.Current.Clipboard = string.Join("\n", result);
 		}
@@ -291,19 +294,19 @@ namespace Terraria.ModLoader.UI
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modInfo.Show(_mod.Name, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
+			Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
 		}
 
 		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			Interface.modConfig.SetMod(ModLoader.GetMod(_mod.Name));
+			Interface.modConfig.SetMod(ModLoader.GetMod(ModName));
 			Main.menuMode = Interface.modConfigID;
 		}
 
 		public override int CompareTo(object obj) {
 			var item = (UIModItem)obj;
-			string name = _mod.DisplayName;
-			string othername = item._mod.DisplayName;
+			string name = DisplayNameClean;
+			string othername = item.DisplayNameClean;
 			switch (Interface.modsMenu.sortMode) {
 				default:
 					return base.CompareTo(obj);
@@ -324,7 +327,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else {
-					if (_mod.DisplayName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1 && _mod.Name.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
+					if (DisplayNameClean.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1 && ModName.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
 						return false;
 					}
 				}
