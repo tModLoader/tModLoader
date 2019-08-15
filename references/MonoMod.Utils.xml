@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MonoMod.Utils</name>
+    </assembly>
+    <members>
+        <member name="M:MonoMod.Cil.ILContext.MakeReadOnly">
+            <summary>
+            Removes the ILProcessor and signifies to the the rest of MonoMod that the method contents have not been altered.
+            If the method is altered prior to MakeReadOnly, or after by using the MethodBody directly the results are undefined.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILContext.AddReference``1(``0)">
+            <summary>
+            Bind an arbitary object to an ILContext for static retrieval.
+            </summary>
+            <typeparam name="T">The type of the object. The combination of typeparam and id provides the unique static reference.</typeparam>
+            <param name="t">The object to store.</param>
+            <returns>The id to use in combination with the typeparam for object retrieval.</returns>
+        </member>
+        <member name="T:MonoMod.Cil.MoveType">
+            <summary>
+            Specifies where a MMILCursor should be positioned in relation to the target of a search function
+            </summary>
+        </member>
+        <member name="F:MonoMod.Cil.MoveType.Before">
+            <summary>
+             Move the cursor before the first instruction in the match
+            </summary>
+        </member>
+        <member name="F:MonoMod.Cil.MoveType.AfterLabel">
+            <summary>
+            Equivalent to Before with `cursor.MoveAfterLabels()` causing emitted instructions to become the target of incoming labels
+            </summary>
+        </member>
+        <member name="F:MonoMod.Cil.MoveType.After">
+            <summary>
+             Move the cursor after the last instruction in the match
+            </summary>
+        </member>
+        <member name="T:MonoMod.Cil.SearchTarget">
+            <summary>
+            Indicates whether the position of a MMILCursor is the result of a search function and 
+            if the next search should ignore the instruction preceeding or following this cursor.
+            <para />
+            SearchTarget.Next is the result of searching with MoveType.Before, and SearchTarget.Prev from MoveType.After 
+            </summary>
+        </member>
+        <member name="F:MonoMod.Cil.SearchTarget.Next">
+            <summary>
+            A foward searching function cannot match the Next instruction and must move the cursor forward
+            </summary>
+        </member>
+        <member name="F:MonoMod.Cil.SearchTarget.Prev">
+            <summary>
+            A reverse searching function cannot match the Next instruction and must move the cursor backward
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.Next">
+            <summary>
+            The instruction immediately following the cursor position or null if the cursor is at the end of the instruction list.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.Prev">
+            <summary>
+            The instruction immediately preceding the cursor position or null if the cursor is at the start of the instruction list.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.Previous">
+            <summary>
+            The instruction immediately preceding the cursor position or null if the cursor is at the start of the instruction list.
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.Index">
+            <summary>
+            The index of the instruction immediately following the cursor position. Range: 0 to <c>Instrs.Count</c>
+            Setter accepts negative indexing by adding <c>Instrs.Count</c> to the operand
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.SearchTarget">
+            <summary>
+            Indicates whether the position of a MMILCursor is the result of a search function and 
+            if the next search should ignore the instruction preceeding or following this cursor.
+            
+            See <see cref="!:Utils.SearchTarget"/>
+            </summary>
+        </member>
+        <member name="P:MonoMod.Cil.ILCursor.IncomingLabels">
+            <summary>
+            Enumerates all labels which point to the current instruction (<c>label.Target == Next</c>)
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.Goto(Mono.Cecil.Cil.Instruction,MonoMod.Cil.MoveType,System.Boolean)">
+            <summary>
+            Moves the cursor to a target instruction. All other movements go through this.
+            </summary>
+            <param name="insn">The target instruction</param>
+            <param name="moveType">Where to move in relation to the target instruction and incoming labels (branches)</param>
+            <param name="setTarget">Whether to set the `SearchTarget` and skip the target instruction with the next search function</param>
+            <returns>this</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.MoveAfterLabels">
+            <summary>
+            Move the cursor after incoming labels (branches). If an instruction is emitted, all labels which currently point to Next, will point to the newly emitted instruction.
+            </summary>
+            <returns>this</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.MoveBeforeLabels">
+            <summary>
+            Move the cursor before incoming labels (branches). This is the default behaviour. Emitted instructions will not cause labels to change targets.
+            </summary>
+            <returns>this</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.Goto(System.Int32,MonoMod.Cil.MoveType,System.Boolean)">
+            <summary>
+            Moves the cursor to a target index. Supports negative indexing. See <see cref="M:MonoMod.Cil.ILCursor.Goto(Mono.Cecil.Cil.Instruction,MonoMod.Cil.MoveType,System.Boolean)"/>
+            </summary>
+            <returns>this</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.GotoLabel(MonoMod.Cil.ILLabel,MonoMod.Cil.MoveType,System.Boolean)">
+            <summary>
+            Overload for <c>Goto(label.Target)</c>. <paramref name="moveType"/> defaults to MoveType.AfterLabel
+            </summary>
+            <returns>this</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.GotoNext(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches forward and moves the cursor to the next sequence of instructions matching the corresponding predicates. See also <seealso cref="M:MonoMod.Cil.ILCursor.TryGotoNext(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])"/>
+            </summary>
+            <returns>this</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no match is found</exception>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.TryGotoNext(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches forward and moves the cursor to the next sequence of instructions matching the corresponding predicates.
+            </summary>
+            <returns>True if a match was found</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.GotoPrev(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches backward and moves the cursor to the next sequence of instructions matching the corresponding predicates. See also <seealso cref="M:MonoMod.Cil.ILCursor.TryGotoPrev(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])"/>
+            </summary>
+            <returns>this</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no match is found</exception>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.TryGotoPrev(MonoMod.Cil.MoveType,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches backward and moves the cursor to the next sequence of instructions matching the corresponding predicates.
+            </summary>
+            <returns>True if a match was found</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.FindNext(MonoMod.Cil.ILCursor[]@,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Find the next occurences of a series of instructions matching the given set of predicates with gaps permitted.
+            </summary>
+            <param name="cursors">An array of cursors corresponding to each found instruction (MoveType.Before)</param>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no match is found</exception>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.TryFindNext(MonoMod.Cil.ILCursor[]@,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Find the next occurences of a series of instructions matching the given set of predicates with gaps permitted.
+            </summary>
+            <param name="cursors">An array of cursors corresponding to each found instruction (MoveType.Before)</param>
+            <returns>True if a match was found</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.FindPrev(MonoMod.Cil.ILCursor[]@,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches backwards for occurences of a series of instructions matching the given set of predicates with gaps permitted.
+            </summary>
+            <param name="cursors">An array of cursors corresponding to each found instruction (MoveType.Before)</param>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no match is found</exception>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.TryFindPrev(MonoMod.Cil.ILCursor[]@,System.Func{Mono.Cecil.Cil.Instruction,System.Boolean}[])">
+            <summary>
+            Searches backwards for occurences of a series of instructions matching the given set of predicates with gaps permitted.
+            </summary>
+            <param name="cursors">An array of cursors corresponding to each found instruction (MoveType.Before)</param>
+            <returns>True if a match was found</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.MarkLabel(MonoMod.Cil.ILLabel)">
+            <summary>
+            Sets the target of a label to the current position (<c>label.Target = Next</c>) and moves after it.
+            </summary>
+            <param name="label">The label to mark</param>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.MarkLabel">
+            <summary>
+            Creates a new label targetting the current position (<c>label.Target = Next</c>) and moves after it.
+            </summary>
+            <returns>The newly created label</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.DefineLabel">
+            <summary>
+            Create a new label for use with <see cref="M:MonoMod.Cil.ILCursor.MarkLabel(MonoMod.Cil.ILLabel)"/>
+            </summary>
+            <returns>A new label with no target</returns>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.Remove">
+            <summary>
+            Removes the Next instruction
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.RemoveRange(System.Int32)">
+            <summary>
+            Removes several instructions
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor._Retarget(Mono.Cecil.Cil.Instruction,MonoMod.Cil.MoveType)">
+            <summary>
+            Moves the cursor and all labels the cursor is positioned after to a target instruction
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.AddReference``1(``0)">
+            <summary>
+            Bind an arbitary object to an ILContext for static retrieval. See <see cref="M:MonoMod.Cil.ILContext.AddReference``1(``0)"/>
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.EmitGetReference``1(System.Int32)">
+            <summary>
+            Emits the IL to retrieve a stored reference of type <typeparamref name="T"/> with the given <paramref name="id"/> and place it on the stack.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.EmitReference``1(``0)">
+            <summary>
+            Store an object in the reference store, and emit the IL to retrieve it and place it on the stack.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Cil.ILCursor.EmitDelegate``1(``0)">
+            <summary>
+            Emit the IL to invoke a delegate as if it were a method. Stack behaviour matches OpCodes.Call
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.Stub(System.Reflection.Emit.DynamicMethod)">
+            <summary>
+            Fill the DynamicMethod with a stub.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.Stub(MonoMod.Utils.DynamicMethodDefinition)">
+            <summary>
+            Fill the DynamicMethod with a stub.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.EmitReference``1(System.Reflection.Emit.ILGenerator,``0)">
+            <summary>
+            Emit a reference to an arbitrary object. Note that the references "leak."
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.EmitReference``1(Mono.Cecil.Cil.ILProcessor,``0)">
+            <summary>
+            Emit a reference to an arbitrary object. Note that the references "leak."
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.EmitGetReference``1(System.Reflection.Emit.ILGenerator,System.Int32)">
+            <summary>
+            Emit a reference to an arbitrary object. Note that the references "leak."
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynamicMethodHelper.EmitGetReference``1(Mono.Cecil.Cil.ILProcessor,System.Int32)">
+            <summary>
+            Emit a reference to an arbitrary object. Note that the references "leak."
+            </summary>
+        </member>
+        <member name="F:MonoMod.Utils.DynDll.DllMap">
+            <summary>
+            Allows you to remap library paths / names. Useful for cross-platform compatibility. Applies only to DynDll.
+            </summary>
+        </member>
+        <member name="F:MonoMod.Utils.DynDll.DllFlags">
+            <summary>
+            Allows you to provide custom flags when loading libraries. Platform-dependant.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.OpenLibrary(System.String)">
+            <summary>
+            Open a given library and / or get its handle.
+            </summary>
+            <param name="name">The library name.</param>
+            <returns>The library handle, or null if it failed loading.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.GetFunction(System.IntPtr,System.String)">
+            <summary>
+            Get a function pointer for a function in the given library.
+            </summary>
+            <param name="lib">The library handle.</param>
+            <param name="name">The function name.</param>
+            <returns>The function pointer, or null if it wasn't found.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.AsDelegate``1(System.IntPtr)">
+            <summary>
+            Extension method wrapping Marshal.GetDelegateForFunctionPointer
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.DynDll.ResolveDynDllImports(System.Type)">
+            <summary>
+            Fill all delegate fields with the DynDllImport attribute.
+            Call this early on in the static constructor.
+            </summary>
+            <param name="type">The type containing the DynDllImport delegate fields.</param>
+        </member>
+        <member name="T:MonoMod.Utils.DynDllImportAttribute">
+            <summary>
+            Similar to DllImport, but requires you to run typeof(DeclaringType).ResolveDynDllImports();
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.ToHexadecimalString(System.Byte[])">
+            <summary>
+            Create a hexadecimal string for the given bytes.
+            </summary>
+            <param name="data">The input bytes.</param>
+            <returns>The output hexadecimal string.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.InvokePassing``1(System.MulticastDelegate,``0,System.Object[])">
+            <summary>
+            Invokes all delegates in the invocation list, passing on the result to the next.
+            </summary>
+            <typeparam name="T">Type of the result.</typeparam>
+            <param name="md">The multicast delegate.</param>
+            <param name="val">The initial value and first parameter.</param>
+            <param name="args">Any other arguments that may be passed.</param>
+            <returns>The result of all delegates.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.InvokeWhileTrue(System.MulticastDelegate,System.Object[])">
+            <summary>
+            Invokes all delegates in the invocation list, as long as the previously invoked delegate returns true.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.InvokeWhileFalse(System.MulticastDelegate,System.Object[])">
+            <summary>
+            Invokes all delegates in the invocation list, as long as the previously invoked delegate returns false.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.InvokeWhileNull``1(System.MulticastDelegate,System.Object[])">
+            <summary>
+            Invokes all delegates in the invocation list, as long as the previously invoked delegate returns null.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.SpacedPascalCase(System.String)">
+            <summary>
+            Split PascalCase words to become Pascal Case instead.
+            </summary>
+            <param name="input">PascalCaseString</param>
+            <returns>Pascal Case String</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.ReadNullTerminatedString(System.IO.BinaryReader)">
+            <summary>
+            Read the string from the BinaryReader BinaryWriter in a C-friendly format.
+            </summary>
+            <param name="stream">The input which the method reads from.</param>
+            <returns>The output string.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.WriteNullTerminatedString(System.IO.BinaryWriter,System.String)">
+            <summary>
+            Write the string to the BinaryWriter in a C-friendly format.
+            </summary>
+            <param name="stream">The output which the method writes to.</param>
+            <param name="text">The input string.</param>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CastDelegate``1(System.Delegate)">
+            <summary>
+            Cast a delegate from one type to another. Compatible with delegates holding an invocation list (combined delegates).
+            </summary>
+            <param name="source">The input delegate.</param>
+            <returns>The output delegate.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CastDelegate(System.Delegate,System.Type)">
+            <summary>
+            Cast a delegate from one type to another. Compatible with delegates holding an invocation list (combined delegates).
+            </summary>
+            <param name="source">The input delegate.</param>
+            <param name="type">The wanted output delegate type.</param>
+            <returns>The output delegate.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.LogDetailed(System.Exception,System.String)">
+            <summary>
+            Print the exception to the console, including extended loading / reflection data useful for mods.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CreateDelegate``1(System.Reflection.MethodBase)">
+            <summary>
+            Creates a delegate of the specified type from this method.
+            </summary>
+            <param name="method">The method to create the delegate from.</param>
+            <typeparam name="T">The type of the delegate to create.</typeparam>
+            <returns>The delegate for this method.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CreateDelegate``1(System.Reflection.MethodBase,System.Object)">
+            <summary>
+            Creates a delegate of the specified type with the specified target from this method.
+            </summary>
+            <param name="method">The method to create the delegate from.</param>
+            <typeparam name="T">The type of the delegate to create.</typeparam>
+            <param name="target">The object targeted by the delegate.</param>
+            <returns>The delegate for this method.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CreateDelegate(System.Reflection.MethodBase,System.Type)">
+            <summary>
+            Creates a delegate of the specified type from this method.
+            </summary>
+            <param name="method">The method to create the delegate from.</param>
+            <param name="delegateType">The type of the delegate to create.</param>
+            <returns>The delegate for this method.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.Extensions.CreateDelegate(System.Reflection.MethodBase,System.Type,System.Object)">
+            <summary>
+            Creates a delegate of the specified type with the specified target from this method.
+            </summary>
+            <param name="method">The method to create the delegate from.</param>
+            <param name="delegateType">The type of the delegate to create.</param>
+            <param name="target">The object targeted by the delegate.</param>
+            <returns>The delegate for this method.</returns>
+        </member>
+        <member name="T:MonoMod.Utils.FastReflectionHelper">
+            <summary>
+            Based on ReflectionHelper from http://theinstructionlimit.com/fast-net-reflection and FEZ. Thanks, Renaud!
+            </summary>
+        </member>
+        <member name="T:MonoMod.Utils.MonoModExt">
+            <summary>
+            Huge collection of MonoMod-related Mono.Cecil extensions.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.MonoModExt.HasMMAttribute(Mono.Cecil.ICustomAttributeProvider,System.String)">
+            <summary>
+            Determines if the attribute provider has got a specific MonoMod attribute.
+            </summary>
+            <returns><c>true</c> if the attribute provider contains the given MonoMod attribute, <c>false</c> otherwise.</returns>
+            <param name="cap">Attribute provider to check.</param>
+            <param name="attribute">Attribute.</param>
+        </member>
+        <member name="M:MonoMod.Utils.MonoModExt.HasCustomAttribute(Mono.Cecil.ICustomAttributeProvider,System.String)">
+            <summary>
+            Determines if the attribute provider has got a specific custom attribute.
+            </summary>
+            <returns><c>true</c> if the attribute provider contains the given custom attribute, <c>false</c> otherwise.</returns>
+            <param name="cap">Attribute provider to check.</param>
+            <param name="attribute">Attribute.</param>
+        </member>
+        <member name="T:MonoMod.Utils.Platform">
+            <summary>
+            Generic platform enum.
+            </summary>
+        </member>
+        <member name="M:MonoMod.Utils.StringInjectExtension.Inject(System.String,System.Collections.IDictionary)">
+            <summary>
+            Extension method that replaces keys in a string with the values of matching dictionary entries.
+            <remarks>Uses <see cref="!:string.Format()"/> internally; custom formats should match those used for that method.</remarks>
+            </summary>
+            <param name="formatString">The format string, containing keys like {foo} and {foo:SomeFormat}.</param>
+            <param name="dictionary">An <see cref="T:System.Collections.IDictionary"/> with keys and values to inject into the string</param>
+            <returns>A version of the formatString string with dictionary keys replaced by (formatted) key values.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.StringInjectExtension.Inject(System.String,System.Collections.Hashtable)">
+            <summary>
+            Extension method that replaces keys in a string with the values of matching hashtable entries.
+            <remarks>Uses <see cref="!:string.Format()"/> internally; custom formats should match those used for that method.</remarks>
+            </summary>
+            <param name="formatString">The format string, containing keys like {foo} and {foo:SomeFormat}.</param>
+            <param name="attributes">A <see cref="T:System.Collections.Hashtable"/> with keys and values to inject into the string</param>
+            <returns>A version of the formatString string with hastable keys replaced by (formatted) key values.</returns>
+        </member>
+        <member name="M:MonoMod.Utils.StringInjectExtension.InjectSingleValue(System.String,System.String,System.Object)">
+            <summary>
+            Replaces all instances of a 'key' (e.g. {foo} or {foo:SomeFormat}) in a string with an optionally formatted value, and returns the result.
+            </summary>
+            <param name="formatString">The string containing the key; unformatted ({foo}), or formatted ({foo:SomeFormat})</param>
+            <param name="key">The key name (foo)</param>
+            <param name="replacementValue">The replacement value; if null is replaced with an empty string</param>
+            <returns>The input string with any instances of the key replaced with the replacement value</returns>
+        </member>
+    </members>
+</doc>

@@ -203,6 +203,12 @@ namespace Terraria.ModLoader.UI
 					string correctPDBFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.pdb");
 					File.Copy(originalPDBFile, correctPDBFile, true);
 					File.Delete(originalPDBFile);
+					// Move the remaining XML documentation files to references folder.
+					if (!Directory.Exists(ModCompile.modReferencesPath))
+						Directory.CreateDirectory(ModCompile.modReferencesPath);
+					foreach(var xmlFile in Directory.GetFiles(ModCompile.modCompileDir, "*.xml")) {
+						File.Move(xmlFile, Path.Combine(ModCompile.modReferencesPath, Path.GetFileName(xmlFile)));
+					}
 					_updateRequired = true;
 				}
 				catch (Exception e) {

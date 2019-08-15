@@ -166,7 +166,7 @@ namespace Terraria.ModLoader.Core
 			return false;
 		}
 
-		private static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
+		internal static readonly string modReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static bool referencesUpdated = false;
 		internal static void UpdateReferencesFolder() {
 			if (referencesUpdated)
