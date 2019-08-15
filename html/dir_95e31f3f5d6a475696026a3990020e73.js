@@ -2,14 +2,13 @@ var dir_95e31f3f5d6a475696026a3990020e73 =
 [
     [ "ConfigAttributes.cs", "_config_attributes_8cs.html", [
       [ "BackgroundColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute" ],
-      [ "CustomAddMethodAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_add_method_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_add_method_attribute" ],
       [ "CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute" ],
-      [ "DefaultDictionaryValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_value_attribute" ],
+      [ "DefaultDictionaryKeyValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute" ],
       [ "DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute" ],
       [ "DrawTicksAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html", null ],
       [ "HeaderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute" ],
       [ "IncrementAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute" ],
-      [ "JsonDefaultDictionaryValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_value_attribute" ],
+      [ "JsonDefaultDictionaryKeyValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_key_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_key_value_attribute" ],
       [ "JsonDefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute" ],
       [ "JsonDefaultValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute" ],
       [ "LabelAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute" ],
