@@ -22,9 +22,6 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
-		public const string CaptiveElementHead = "ExampleMod/NPCs/Abomination/CaptiveElement_Head_Boss_";
-		public const string CaptiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
-
 		public static ModHotKey RandomBuffHotKey;
 		public static int FaceCustomCurrencyId;
 		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
@@ -60,12 +57,6 @@ namespace ExampleMod
 			Logger.InfoFormat("{0} example logging", Name);
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
 			// Replace that with above
-
-			// Adds boss head textures for the Abomination boss
-			for (int k = 1; k <= 4; k++) {
-				AddBossHeadTexture(CaptiveElementHead + k);
-				AddBossHeadTexture(CaptiveElement2Head + k);
-			}
 
 			// Registers a new hotkey
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v%3dxnagamestudio.41) for special keys

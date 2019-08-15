@@ -10,6 +10,16 @@ namespace ExampleMod.NPCs.Abomination
 	[AutoloadBossHead]
 	public class CaptiveElement2 : ModNPC
 	{
+		public const string CaptiveElement2Head = "ExampleMod/NPCs/Abomination/CaptiveElement2_Head_Boss_";
+
+		public override bool Autoload(ref string name) {
+			// Adds boss head textures for the Abomination boss
+			for (int k = 1; k <= 4; k++) {
+				mod.AddBossHeadTexture(CaptiveElement2Head + k);
+			}
+			return base.Autoload(ref name);
+		}
+
 		private static int hellLayer => Main.maxTilesY - 200;
 
 		private int captiveType {
@@ -428,7 +438,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void BossHeadSlot(ref int index) {
 			if (captiveType > 0) {
-				index = ModContent.GetModBossHeadSlot(ExampleMod.CaptiveElement2Head + captiveType);
+				index = ModContent.GetModBossHeadSlot(CaptiveElement2Head + captiveType);
 			}
 		}
 
