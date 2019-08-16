@@ -659,6 +659,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyOtherDamage(int damage, string context, ref float add, ref float mult, ref float flat);
+		private static HookList HookModifyOtherDamage = AddHook<DelegateModifyOtherDamage>(p => p.ModifyOtherDamage);
+
+		public static void ModifyOtherDamage(Player player, int damage, string context, ref float add, ref float mult, ref float flat) {
+			foreach (int index in HookModifyOtherDamage.arr) {
+				player.modPlayers[index].ModifyOtherDamage(damage, context, ref add, ref mult, ref flat);
+			}
+		}
+
 		private static HookList HookProcessTriggers = AddHook<Action<TriggersSet>>(p => p.ProcessTriggers);
 
 		public static void ProcessTriggers(Player player, TriggersSet triggersSet) {

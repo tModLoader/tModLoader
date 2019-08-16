@@ -685,6 +685,15 @@
  					if (this.buffType[k] == 1)
  					{
  						this.lavaImmune = true;
+@@ -6038,7 +_,7 @@
+ 						int num = 24;
+ 						float num2 = 200f;
+ 						bool flag = this.infernoCounter % 60 == 0;
+-						int damage = 10;
++						int damage = GetOtherDamage(10, "InfernoRing");
+ 						if (this.whoAmI == Main.myPlayer)
+ 						{
+ 							for (int l = 0; l < 200; l++)
 @@ -6083,11 +_,14 @@
  					}
  					else if (this.buffType[k] == 117)
@@ -3417,6 +3426,51 @@
  			float num4 = (float)this.statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			this.lifeRegen += (int)Math.Round((double)num2);
+@@ -15918,7 +_,7 @@
+ 				}
+ 				rect.Width = 2;
+ 				rect.Inflate(6, 12);
+-				float damage = 80f * this.minionDamage;
++				float damage = GetOtherDamage(80, "Mount");
+ 				float knockback = 10f;
+ 				int nPCImmuneTime = 30;
+ 				int playerImmuneTime = 6;
+@@ -15933,7 +_,7 @@
+ 				}
+ 				rect2.Width = 2;
+ 				rect2.Inflate(6, 12);
+-				float damage2 = 90f * this.minionDamage;
++				float damage2 = GetOtherDamage(90, "Mount");
+ 				float knockback2 = 10f;
+ 				int nPCImmuneTime2 = 30;
+ 				int playerImmuneTime2 = 6;
+@@ -16007,7 +_,7 @@
+ 						Rectangle rect2 = nPC.getRect();
+ 						if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(this.position, this.width, this.height, nPC.position, nPC.width, nPC.height)))
+ 						{
+-							float num = 40f * this.minionDamage;
++							float num = GetOtherDamage(40, "Mount");
+ 							float knockback = 5f;
+ 							int direction = this.direction;
+ 							if (this.velocity.X < 0f)
+@@ -16310,7 +_,7 @@
+ 							Rectangle rect = nPC.getRect();
+ 							if (rectangle.Intersects(rect) && (nPC.noTileCollide || this.CanHit(nPC)))
+ 							{
+-								float num = 30f * this.meleeDamage;
++								float num = GetOtherDamage(30, "MeleeDash");
+ 								float num2 = 9f;
+ 								bool crit = false;
+ 								if (this.kbGlove)
+@@ -16371,7 +_,7 @@
+ 								this.solarDashConsumedFlare = true;
+ 								this.ConsumeSolarFlare();
+ 							}
+-							float num4 = 150f * this.meleeDamage;
++							float num4 = GetOtherDamage(150, "MeleeDash");
+ 							float num5 = 9f;
+ 							bool crit2 = false;
+ 							if (this.kbGlove)
 @@ -17067,8 +_,10 @@
  			if (this.wingsLogic == 26)
  			{
@@ -3623,6 +3677,24 @@
  								{
  									if (this.wings == 30)
  									{
+@@ -22493,14 +_,14 @@
+ 								crit = true;
+ 							}
+ 							float num140 = Math.Abs(this.velocity.X) / this.maxRunSpeed;
+-							int damage2 = Main.DamageVar(25f + 55f * num140);
++							int damage2 = Main.DamageVar(GetOtherDamage(55, "Minecart"));
+ 							if (this.mount.Type == 11)
+ 							{
+-								damage2 = Main.DamageVar(50f + 100f * num140);
++								damage2 = Main.DamageVar(GetOtherDamage(100, "MinecartMech"));
+ 							}
+ 							if (this.mount.Type == 13)
+ 							{
+-								damage2 = Main.DamageVar(15f + 30f * num140);
++								damage2 = Main.DamageVar(GetOtherDamage(30, "MinecartWood"));
+ 							}
+ 							float knockback = 5f + 25f * num140;
+ 							int direction = 1;
 @@ -22983,6 +_,7 @@
  			{
  				this.velocity.Y = this.velocity.Y * 0.8f + (float)Math.Cos((double)(base.Center.X % 120f / 120f * 6.28318548f)) * 5f * 0.2f;
@@ -5510,7 +5582,7 @@
  		}
  
  		public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
-@@ -37374,73 +_,82 @@
+@@ -37374,73 +_,148 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
@@ -5559,6 +5631,11 @@
 -				}
 -			}
 -			return num;
++			if (item.damage <= 0 || item.modItem?.IgnoreDamageModifiers == true)
++			{
++				return item.damage;
++			}
++
 +			float add = allDamage;
 +			float mult = allDamageMult;
 +
@@ -5573,7 +5650,7 @@
 +				if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
 +					mult *= arrowDamage;
 +				}
-+				if (item.useAmmo == AmmoID.Arrow && archery) {
++				if ((item.useAmmo == AmmoID.Arrow || item.ammo == AmmoID.Arrow) && archery) {
 +					mult *= 1.2f;
 +				}
 +				if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn) {
@@ -5595,13 +5672,74 @@
 +				add += thrownDamage - 1;
 +				mult *= thrownDamageMult;
 +			}
++			// Vanilla weapons that deal damage but don't have a damage type aren't affected by global damage bonuses
++			if (item.type < ItemID.Count && !item.melee && !item.ranged && !item.magic && !item.summon && !item.thrown)	{
++				add = mult = 1f;
++			}
 +
-+			if (item.modItem?.IgnoreDamageModifiers == true)
-+				return item.damage;
 +			float flat = 0f;
 +			CombinedHooks.ModifyWeaponDamage(this, item, ref add, ref mult, ref flat);
 +			int damage = (int)(item.damage * add * mult + 5E-06f + flat);
 +			CombinedHooks.GetWeaponDamage(this, item, ref damage);
++			return Math.Max(0, damage);
++		}
++
++		public int GetOtherDamage(int damage, string context) {
++			if (damage <= 0) {
++				return damage;
++			}
++
++			float add = allDamage;
++			float mult = allDamageMult;
++			float flat = 0f;
++
++			switch (context) {
++				case "MeleeDash":
++				case "Melee":
++					add += meleeDamage - 1;
++					mult *= meleeDamageMult;
++					break;
++				case "Ranged":
++					add += rangedDamage - 1;
++					mult *= rangedDamageMult;
++					break;
++				case "ForbiddenStorm":
++					add += magicDamage + minionDamage - 2;
++					mult *= magicDamageMult * minionDamageMult;
++					break;
++				case "Magic":
++					add += magicDamage - 1;
++					mult *= magicDamageMult;
++					break;
++				case "StardustGuardian":
++				case "Mount":
++				case "Minion":
++					add += minionDamage - 1;
++					mult *= minionDamageMult;
++					break;
++				case "Thrown":
++					add += thrownDamage - 1;
++					mult *= thrownDamageMult;
++					break;
++				case "MinecartWood":
++					flat -= 10f;
++					goto case "Minecart";
++				case "MinecartMech":
++					flat += 25f;
++					goto case "Minecart";
++				case "Minecart":
++					flat += 25f;
++					add = 1f;
++					mult = Math.Abs(velocity.X) / maxRunSpeed;
++					break;
++				case "InfernoRing":
++				case "None":
++					add = mult = 1f;
++					break;
++			}
++
++			PlayerHooks.ModifyOtherDamage(this, damage, context, ref add, ref mult, ref flat);
++			damage = (int)(damage * add * mult + 5E-06f + flat);
 +			return Math.Max(0, damage);
  		}
  
@@ -5648,26 +5786,25 @@
  				}
  				else if (sItem.useAmmo == AmmoID.Rocket)
  				{
-@@ -37548,7 +_,12 @@
+@@ -37548,7 +_,9 @@
  				{
  					if (item.damage > 0)
  					{
 -						Damage += (int)((float)item.damage * this.rangedDamage);
-+						// determine damage multiplier using item base damage and apply to ammo
-+						// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
-+						if(sItem.damage > 0) // coin gun fix.
-+							Damage += (int)(item.damage * Damage / (float)sItem.damage);
-+						else
-+							Damage += item.damage;
++						// We get the damage of the ammo using GetWeaponDamage since original code multiplied ammo damage by ranged damage
++						// This would also allow modded ranged ammo to be affected by custom damage bonuses
++						Damage += this.GetWeaponDamage(item);
  					}
  				}
  				else
-@@ -37565,9 +_,11 @@
+@@ -37565,9 +_,13 @@
  							speed = 20f;
  						}
  					}
 -					Damage = (int)((double)((float)Damage) * 1.2);
-+					// archery buff damage moved into GetWeaponDamage
++					// Archery buff damage moved into GetWeaponDamage
++					// Added check in GetWeaponDamage for arrow ammo so it is affected by this bonus
++					// The above also fixes a vanilla bug where arrow ammo tooltip doesn't show archery damage bonus
 +					// Damage = (int)((double)((float)Damage) * 1.2);
  				}
  				KnockBack += item.knockBack;
@@ -6340,4 +6477,13 @@
  		}
  
  		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false)
+@@ -40203,7 +_,7 @@
+ 					projectile2.netUpdate = true;
+ 				}
+ 			}
+-			int damage = (int)(20f * (1f + this.magicDamage + this.minionDamage - 2f));
++			int damage = GetOtherDamage(20, "ForbiddenStorm");
+ 			Projectile arg_37A_0 = Main.projectile[Projectile.NewProjectile(this.MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer, 0f, 0f)];
+ 		}
+ 
 

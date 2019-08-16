@@ -591,6 +591,15 @@
  																								bool flag44 = player5.channel && flag43;
  																								if ((!flag42 && !flag44) || this.ai[0] == 180f)
  																								{
+@@ -26360,7 +_,7 @@
+ 																											num1032 = 20f;
+ 																											if (this.ai[1] == 10f && this.owner == Main.myPlayer)
+ 																											{
+-																												int num1033 = (int)(20f * Main.player[this.owner].minionDamage);
++																												int num1033 = Main.player[this.owner].GetOtherDamage(20, "StardustGuardian");
+ 																												Projectile.NewProjectile(base.Center.X, base.Center.Y, 0f, 0f, 624, num1033, 6f, this.owner, 0f, 5f);
+ 																											}
+ 																										}
 @@ -28233,7 +_,7 @@
  					Rectangle value = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  					if (rectangle.Intersects(value))
@@ -626,6 +635,15 @@
  					bool flag8 = player.channel && flag7 && !player.noItems && !player.CCed;
  					if (flag8)
  					{
+@@ -36937,7 +_,7 @@
+ 				{
+ 					num26 = 5f;
+ 				}
+-				this.damage = (int)((float)player.inventory[player.selectedItem].damage * player.magicDamage);
++				this.damage = player.GetWeaponDamage(player.inventory[player.selectedItem]);
+ 				this.ai[0] += 1f;
+ 				this.ai[1] += 1f;
+ 				bool flag9 = false;
 @@ -36999,7 +_,7 @@
  				}
  				if (flag10 && Main.myPlayer == this.owner)
