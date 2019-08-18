@@ -104,7 +104,13 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime))
-				File.Move(existingLog, existingLog + ".old");
+				try {
+					File.Move(existingLog, existingLog + ".old");
+				}
+				catch (IOException) {
+					// Archiving has failed. Old log will be truncated. Display message to server console since logging won't work. Useful for tail command utilization
+					Console.WriteLine($"The log file, {existingLog}, is in use and can't be archived. Old log data will be forgotten.");
+				}
 
 			return $"{baseName}.log";
 		}
