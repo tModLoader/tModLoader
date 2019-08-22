@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 			}
 			if (ModLoader.badUnloaders.Contains(ModName)) {
-				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This mod did not fully unload during last unload.") {
+				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This mod did not fully unload during last unload.\n(This is a message for the mod creator)") {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
 				};
