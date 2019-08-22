@@ -240,6 +240,9 @@ namespace ExampleMod
 		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
+		[Label("$Mods.ExampleMod.Common.LocalizedLabelDynamic")]
+		public int LocalizedLabelDynamic;
+
 		// The color of the config entry can be customized. R, G, B
 		[BackgroundColor(255, 0, 255)]
 		public Pair pairExample = new Pair();
