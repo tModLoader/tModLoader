@@ -215,7 +215,7 @@ namespace ExampleMod
 						while (!Main.tile[i, j].active() && (double)j < Main.worldSurface) {
 							j++;
 						}
-						if (Main.tile[i, j].type == TileID.Dirt) {
+						if (Main.tile[i, j].type == TileID.Grass) {
 							j--;
 							if (j > 150) {
 								bool placementOK = true;
