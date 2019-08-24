@@ -4002,12 +4002,14 @@
  			{
  				if (Main.player[Main.myPlayer].buffType[i] > 0)
  				{
-@@ -38013,7 +_,7 @@
+@@ -38012,8 +_,8 @@
+ 					int num3 = 76;
  					if (i >= num2)
  					{
- 						x = 32 + (i - num2) * 38;
+-						x = 32 + (i - num2) * 38;
 -						num3 += 50;
-+						num3 += 50; // could change Y to adapt to increased buff limit
++						x = 32 + Math.Abs(i % 11) * 38;
++						num3 += 50 * (i / 11);
  					}
  					num = Main.DrawBuffIcon(num, i, b, x, num3);
  				}
