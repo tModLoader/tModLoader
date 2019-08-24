@@ -6212,7 +6212,7 @@
  						BitsByte bb = 0;
  						for (int i = 0; i < 8; i++)
  						{
-@@ -38594,49 +_,52 @@
+@@ -38594,58 +_,50 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)
  						{
@@ -6267,15 +6267,22 @@
 -						for (int num4 = 0; num4 < 22; num4++)
 -						{
 -							if (Main.buffNoSave[player.buffType[num4]])
-+						// Could potentially have unintended side effects by editing player data structure
-+						// e.i.: create player with 22 maxBuffs, try to read it with 23 maxBuffs
-+						// possible solution: set maxBuffs within Player#LoadPlayer based on player data
-+						for (int num4 = 0; num4 < Player.maxBuffs; num4++) 
+-							{
+-								binaryWriter.Write(0);
+-								binaryWriter.Write(0);
+-							}
+-							else
+-							{
+-								binaryWriter.Write(player.buffType[num4]);
+-								binaryWriter.Write(player.buffTime[num4]);
+-							}
++						for (int num4 = 0; num4 < 22; num4++) 
 +						{
-+							if (Main.buffNoSave[player.buffType[num4]] || BuffLoader.IsModBuff(player.buffType[num4]))
- 							{
- 								binaryWriter.Write(0);
- 								binaryWriter.Write(0);
++							binaryWriter.Write(0);
++							binaryWriter.Write(0);
+ 						}
+ 						for (int num5 = 0; num5 < 200; num5++)
+ 						{
 @@ -38681,9 +_,11 @@
  						{
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
@@ -6310,12 +6317,8 @@
  							{
  								player.loadStatus = 1;
  								player.name = binaryReader.ReadString();
-@@ -39111,10 +_,10 @@
- 							}
- 							if (num >= 11)
- 							{
--								int num27 = 22;
-+								int num27 = Player.maxBuffs;
+@@ -39114,7 +_,7 @@
+ 								int num27 = 22;
  								if (num < 74)
  								{
 -									num27 = 10;

@@ -129,6 +129,15 @@
  		public static int renderCount = 99;
  		public static GraphicsDeviceManager graphics;
  		public static SpriteBatch spriteBatch;
+@@ -578,7 +_,7 @@
+ 		public static bool armorHide = false;
+ 		public static float craftingAlpha = 1f;
+ 		public static float armorAlpha = 1f;
+-		public static float[] buffAlpha = new float[206];
++		public static float[] buffAlpha = new float[Player.maxBuffs + 206];
+ 		public static bool hardMode = false;
+ 		public float chestLootScale = 1f;
+ 		public bool chestLootHover;
 @@ -598,6 +_,7 @@
  		public static bool maxQ = true;
  		public static float gfxQuality = 1f;

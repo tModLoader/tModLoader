@@ -7,10 +7,12 @@
  
  namespace Terraria.ID
  {
-@@ -210,5 +_,29 @@
+@@ -209,6 +_,30 @@
+ 		public const int BetsysCurse = 203;
  		public const int Oiled = 204;
  		public const int BallistaPanic = 205;
- 		public const int Count = 206;
+-		public const int Count = 206;
++		public static int Count = Player.maxBuffs + 206;
 +
 +		public static readonly IdDictionary Search = IdDictionary.Create<BuffID, int>();
 +

@@ -165,6 +165,12 @@ namespace Terraria.ModLoader.IO
 					});
 				}
 				else {
+					list.Add(new TagCompound {
+						["index"] = vanillaIndex,
+						["mod"] = "Vanilla",
+						["name"] = buff,
+						["time"] = player.buffTime[k]
+					});
 					vanillaIndex++;
 				}
 			}
@@ -179,8 +185,21 @@ namespace Terraria.ModLoader.IO
 
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse()) {
-				var mod = ModLoader.GetMod(tag.GetString("mod"));
-				int type = mod?.BuffType(tag.GetString("name")) ?? 0;
+				Mod mod;
+				int type;
+
+				// get the name beforehand so we know if it's vanilla
+				string modName = tag.GetString("mod");
+
+				if (modName != "Vanilla") {
+					mod = ModLoader.GetMod(modName);
+					type = mod?.BuffType(tag.GetString("name")) ?? 0;
+				}
+				else 
+				{
+					type = tag.GetInt("name");
+				}
+
 				if (type == 0)
 					continue;
 
