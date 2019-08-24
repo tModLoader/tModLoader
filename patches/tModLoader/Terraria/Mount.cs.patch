@@ -143,6 +143,15 @@
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					{
+@@ -2523,7 +_,7 @@
+ 			{
+ 				return;
+ 			}
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
+ 			{
+ 				if (mountedPlayer.buffType[i] == this._data.buff)
+ 				{
 @@ -2585,6 +_,7 @@
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  		{
