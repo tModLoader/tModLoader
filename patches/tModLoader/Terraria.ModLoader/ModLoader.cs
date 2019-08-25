@@ -105,8 +105,16 @@ namespace Terraria.ModLoader
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
-		internal static void Load(CancellationToken token = default) {
+		private static bool isLoading = false;
+		private static void Load(CancellationToken token = default) {
 			try {
+				if (isLoading)
+					throw new Exception("Load called twice");
+				isLoading = true;
+
+				if (!Unload())
+					return;
+
 				var modInstances = ModOrganizer.LoadMods(token);
 
 				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
@@ -158,6 +166,9 @@ namespace Terraria.ModLoader
 
 				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
+			finally {
+				isLoading = false;
+			}
 		}
 
 		private static void DotNet45Check() {
@@ -179,9 +190,6 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Reload() {
-			if (!Unload())
-				return;
-
 			if (Main.dedServ)
 				Load();
 			else
@@ -190,13 +198,15 @@ namespace Terraria.ModLoader
 
 		internal static List<string> badUnloaders = new List<string>();
 		private static bool Unload() {
+			if (Mods.Length == 0)
+				return true;
+
 			try {
 				Logging.tML.Info("Unloading mods");
 				if (Main.dedServ) {
 					Console.WriteLine("Unloading mods...");
 				} else {
-					Main.menuMode = Interface.unloadModsID;
-					Interface.unloadModsProgress.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
+					Interface.loadModsProgress.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 				}
 
 				ModContent.UnloadModContent();
