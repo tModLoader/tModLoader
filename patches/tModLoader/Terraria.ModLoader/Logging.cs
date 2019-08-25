@@ -142,7 +142,7 @@ namespace Terraria.ModLoader
 
 		private static List<string> ignoreContents = new List<string> {
 			"System.Console.set_OutputEncoding", // when the game is launched without a console handle (client outside dev environment)
-			"Terraria.ModLoader.ModCompile",
+			"Terraria.ModLoader.Core.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
 			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
