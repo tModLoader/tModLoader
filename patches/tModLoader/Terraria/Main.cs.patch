@@ -47,6 +47,14 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		private AchievementManager _achievements;
+@@ -184,6 +_,7 @@
+ 		public static ulong LobbyId = 0uL;
+ 		private static object _audioLock = new object();
+ 		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
++		public static bool playerLoaded { get { return Main.ActivePlayersCount > 0; } }
+ 		public static float expertLife = 2f;
+ 		public static float expertDamage = 2f;
+ 		public static float expertDebuffTime = 2f;
 @@ -211,11 +_,13 @@
  		public static bool UseHeatDistortion = true;
  		public static int npcStreamSpeed = 60;

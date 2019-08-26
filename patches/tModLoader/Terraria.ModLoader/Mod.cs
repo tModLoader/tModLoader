@@ -83,6 +83,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// The amount of extra buff slots this mod defines.
+		/// </summary>
+		public virtual uint ExtraBuffSlots { get; }
+
+		/// <summary>
 		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
 		/// </summary>
 		public virtual void AddRecipeGroups() {

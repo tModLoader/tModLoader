@@ -39,7 +39,7 @@
  			}
  		}
  
-+		public static int maxBuffs = 22;
++		internal static int maxBuffs { get { return 22 + BuffLoader.ExtraBuffCount; } }
 +
  		public const int maxSolarShields = 3;
  		public const int nebulaMaxLevel = 3;
