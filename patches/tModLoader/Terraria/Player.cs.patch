@@ -35,7 +35,23 @@
  			}
  		}
  
-@@ -304,7 +_,7 @@
+@@ -286,6 +_,8 @@
+ 			}
+ 		}
+ 
++		public static int maxBuffs { get { return 22 + BuffLoader.ExtraBuffCount; } }
++
+ 		public const int maxSolarShields = 3;
+ 		public const int nebulaMaxLevel = 3;
+ 		public const int SupportedSlotsArmor = 3;
+@@ -297,14 +_,13 @@
+ 		public const int miscSlotCart = 2;
+ 		public const int miscSlotMount = 3;
+ 		public const int miscSlotHook = 4;
+-		public const int maxBuffs = 22;
+ 		public const int defaultWidth = 20;
+ 		public const int defaultHeight = 42;
+ 		public const int shadowMax = 3;
  		public const int SHIELD_PARRY_DURATION = 20;
  		public const int SHIELD_PARRY_DURATION_DRAWING_TWEAKER = 20;
  		public const int SHIELD_PARRY_DAMAGE_BUFF_MULTIPLIER = 5;
@@ -133,19 +149,27 @@
  					this.inventory[this.selectedItem].stack--;
  				}
  				else
-@@ -1796,6 +_,11 @@
- 					NetMessage.SendData(21, -1, -1, null, num, 0f, 0f, 0f, 0, 0, 0);
- 				}
+@@ -1798,13 +_,18 @@
  			}
-+		}
-+
+ 		}
+ 
 +		public bool HasBuff(int type)
 +		{
 +			return FindBuffIndex(type) != -1;
- 		}
- 
++		}
++
  		public int FindBuffIndex(int type)
-@@ -1821,7 +_,7 @@
+ 		{
+ 			if (this.buffImmune[type])
+ 			{
+ 				return -1;
+ 			}
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
+ 			{
+ 				if (this.buffTime[i] >= 1 && this.buffType[i] == type)
+ 				{
+@@ -1821,14 +_,14 @@
  				return;
  			}
  			int num = time1;
@@ -154,7 +178,20 @@
  			{
  				num = (int)(Main.expertDebuffTime * (float)num);
  			}
-@@ -1846,7 +_,10 @@
+ 			if (!quiet && Main.netMode == 1)
+ 			{
+ 				bool flag = true;
+-				for (int i = 0; i < 22; i++)
++				for (int i = 0; i < Player.maxBuffs; i++)
+ 				{
+ 					if (this.buffType[i] == type)
+ 					{
+@@ -1842,11 +_,14 @@
+ 				}
+ 			}
+ 			int num2 = -1;
+-			for (int j = 0; j < 22; j++)
++			for (int j = 0; j < Player.maxBuffs; j++)
  			{
  				if (this.buffType[j] == type)
  				{
@@ -166,10 +203,80 @@
  					{
  						this.buffTime[j] += num;
  						if (this.buffTime[j] > Player.manaSickTimeMax)
-@@ -1961,6 +_,22 @@
- 			return num;
- 		}
+@@ -1864,7 +_,7 @@
+ 			}
+ 			if (Main.vanityPet[type] || Main.lightPet[type])
+ 			{
+-				for (int k = 0; k < 22; k++)
++				for (int k = 0; k < Player.maxBuffs; k++)
+ 				{
+ 					if (Main.vanityPet[type] && Main.vanityPet[this.buffType[k]])
+ 					{
+@@ -1879,7 +_,7 @@
+ 			while (num2 == -1)
+ 			{
+ 				int num3 = -1;
+-				for (int l = 0; l < 22; l++)
++				for (int l = 0; l < Player.maxBuffs; l++)
+ 				{
+ 					if (!Main.debuff[this.buffType[l]])
+ 					{
+@@ -1891,7 +_,7 @@
+ 				{
+ 					return;
+ 				}
+-				for (int m = num3; m < 22; m++)
++				for (int m = num3; m < Player.maxBuffs; m++)
+ 				{
+ 					if (this.buffType[m] == 0)
+ 					{
+@@ -1908,7 +_,7 @@
+ 			this.buffTime[num2] = num;
+ 			if (Main.meleeBuff[type])
+ 			{
+-				for (int n = 0; n < 22; n++)
++				for (int n = 0; n < Player.maxBuffs; n++)
+ 				{
+ 					if (n != num2 && Main.meleeBuff[this.buffType[n]])
+ 					{
+@@ -1922,11 +_,11 @@
+ 		{
+ 			this.buffTime[b] = 0;
+ 			this.buffType[b] = 0;
+-			for (int i = 0; i < 21; i++)
++			for (int i = 0; i < Player.maxBuffs - 1; i++)
+ 			{
+ 				if (this.buffTime[i] == 0 || this.buffType[i] == 0)
+ 				{
+-					for (int j = i + 1; j < 22; j++)
++					for (int j = i + 1; j < Player.maxBuffs; j++)
+ 					{
+ 						this.buffTime[j - 1] = this.buffTime[j];
+ 						this.buffType[j - 1] = this.buffType[j];
+@@ -1939,7 +_,7 @@
  
+ 		public void ClearBuff(int type)
+ 		{
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
+ 			{
+ 				if (this.buffType[i] == type)
+ 				{
+@@ -1951,7 +_,7 @@
+ 		public int CountBuffs()
+ 		{
+ 			int num = 0;
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
+ 			{
+ 				if (this.buffType[num] > 0)
+ 				{
+@@ -1959,6 +_,22 @@
+ 				}
+ 			}
+ 			return num;
++		}
++
 +		public int GetHealLife(Item item, bool quickHeal = false)
 +		{
 +			int healValue = item.healLife;
@@ -184,11 +291,9 @@
 +			ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
 +			PlayerHooks.GetHealMana(this, item, quickHeal, ref healValue);
 +			return healValue > 0 ? healValue : 0;
-+		}
-+
+ 		}
+ 
  		public void QuickHeal()
- 		{
- 			if (this.noItems)
 @@ -1990,8 +_,11 @@
  					this.AddBuff(21, this.potionDelay, true);
  				}
@@ -312,15 +417,34 @@
  				{
  					return this.inventory[i];
  				}
-@@ -2138,7 +_,7 @@
+@@ -2131,15 +_,15 @@
+ 			LegacySoundStyle legacySoundStyle = null;
+ 			for (int i = 0; i < 58; i++)
+ 			{
+-				if (this.CountBuffs() == 22)
++				if (this.CountBuffs() == Player.maxBuffs)
+ 				{
+ 					return;
+ 				}
  				if (this.inventory[i].stack > 0 && this.inventory[i].type > 0 && this.inventory[i].buffType > 0 && !this.inventory[i].summon && this.inventory[i].buffType != 90)
  				{
  					int num = this.inventory[i].buffType;
 -					bool flag = true;
+-					for (int j = 0; j < 22; j++)
 +					bool flag = ItemLoader.CanUseItem(this.inventory[i], this);
- 					for (int j = 0; j < 22; j++)
++					for (int j = 0; j < Player.maxBuffs; j++)
  					{
  						if (num == 27 && (this.buffType[j] == num || this.buffType[j] == 101 || this.buffType[j] == 102))
+ 						{
+@@ -2159,7 +_,7 @@
+ 					}
+ 					if (Main.lightPet[this.inventory[i].buffType] || Main.vanityPet[this.inventory[i].buffType])
+ 					{
+-						for (int k = 0; k < 22; k++)
++						for (int k = 0; k < Player.maxBuffs; k++)
+ 						{
+ 							if (Main.lightPet[this.buffType[k]] && Main.lightPet[this.inventory[i].buffType])
+ 							{
 @@ -2173,6 +_,10 @@
  					}
  					if (this.inventory[i].mana > 0 && flag)
@@ -677,6 +801,15 @@
  					{
  						this.cWings = (int)this.dye[num].dye;
  					}
+@@ -5802,7 +_,7 @@
+ 					this.ownedProjectileCounts[Main.projectile[j].type]++;
+ 				}
+ 			}
+-			for (int k = 0; k < 22; k++)
++			for (int k = 0; k < Player.maxBuffs; k++)
+ 			{
+ 				if (this.buffType[k] > 0 && this.buffTime[k] > 0)
+ 				{
 @@ -5810,6 +_,7 @@
  					{
  						this.buffTime[k]--;
@@ -700,6 +833,60 @@
  					}
  					else if (this.buffType[k] == 119)
  					{
+@@ -6134,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int n = 0; n < 22; n++)
++								for (int n = 0; n < Player.maxBuffs; n++)
+ 								{
+ 									if (this.buffType[n] >= 95 && this.buffType[n] <= 95 + num3 - 1)
+ 									{
+@@ -6169,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int num5 = 0; num5 < 22; num5++)
++								for (int num5 = 0; num5 < Player.maxBuffs; num5++)
+ 								{
+ 									if (this.buffType[num5] >= 170 && this.buffType[num5] <= 170 + num4 - 1)
+ 									{
+@@ -6199,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int num7 = 0; num7 < 22; num7++)
++								for (int num7 = 0; num7 < Player.maxBuffs; num7++)
+ 								{
+ 									if (this.buffType[num7] >= 98 && this.buffType[num7] <= 98 + num6 - 1)
+ 									{
+@@ -6236,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int num10 = 0; num10 < 22; num10++)
++								for (int num10 = 0; num10 < Player.maxBuffs; num10++)
+ 								{
+ 									if (this.buffType[num10] >= 176 && this.buffType[num10] <= 178 + num9 - 1)
+ 									{
+@@ -6267,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int num13 = 0; num13 < 22; num13++)
++								for (int num13 = 0; num13 < Player.maxBuffs; num13++)
+ 								{
+ 									if (this.buffType[num13] >= 173 && this.buffType[num13] <= 175 + num12 - 1)
+ 									{
+@@ -6299,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								for (int num16 = 0; num16 < 22; num16++)
++								for (int num16 = 0; num16 < Player.maxBuffs; num16++)
+ 								{
+ 									if (this.buffType[num16] >= 179 && this.buffType[num16] <= 181 + num15 - 1)
+ 									{
 @@ -6317,11 +_,14 @@
  							this.buffTime[k] = 480;
  						}
@@ -3177,6 +3364,42 @@
  			}
  			if (this.head == 22 && this.body == 14 && this.legs == 14)
  			{
+@@ -10030,7 +_,7 @@
+ 				}
+ 				if (num != this.beetleOrbs && this.beetleOrbs > 0)
+ 				{
+-					for (int j = 0; j < 22; j++)
++					for (int j = 0; j < Player.maxBuffs; j++)
+ 					{
+ 						if (this.buffType[j] >= 98 && this.buffType[j] <= 100 && this.buffType[j] != 97 + num)
+ 						{
+@@ -10049,7 +_,7 @@
+ 				{
+ 					if (this.beetleOrbs > 0 && this.beetleOrbs < 3)
+ 					{
+-						for (int k = 0; k < 22; k++)
++						for (int k = 0; k < Player.maxBuffs; k++)
+ 						{
+ 							if (this.buffType[k] >= 95 && this.buffType[k] <= 96)
+ 							{
+@@ -10198,7 +_,7 @@
+ 			}
+ 			else if (this.crystalLeaf)
+ 			{
+-				for (int n = 0; n < 22; n++)
++				for (int n = 0; n < Player.maxBuffs; n++)
+ 				{
+ 					if (this.buffType[n] == 60)
+ 					{
+@@ -10335,7 +_,7 @@
+ 				{
+ 					if (this.solarShields > 0 && this.solarShields < 3)
+ 					{
+-						for (int num12 = 0; num12 < 22; num12++)
++						for (int num12 = 0; num12 < Player.maxBuffs; num12++)
+ 						{
+ 							if (this.buffType[num12] >= 170 && this.buffType[num12] <= 171)
+ 							{
 @@ -10485,6 +_,7 @@
  				this.setMonkT2 = true;
  				this.maxTurrets++;
@@ -3202,14 +3425,17 @@
  			if (!this.dead)
  			{
  				Point point2 = base.Center.ToTileCoordinates();
-@@ -10924,6 +_,7 @@
+@@ -10924,8 +_,9 @@
  			this.yoraiz0rEye = 0;
  			this.yoraiz0rDarkness = false;
  			this.leinforsHair = false;
 +			PlayerHooks.UpdateDead(this);
  			this.gravDir = 1f;
- 			for (int i = 0; i < 22; i++)
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
  			{
+ 				if (this.buffType[i] <= 0 || !Main.persistentBuff[this.buffType[i]])
+ 				{
 @@ -11321,6 +_,7 @@
  				flag = true;
  			}
@@ -3532,6 +3758,15 @@
  			if (this.whoAmI == Main.myPlayer)
  			{
  				if (!this.onFire && !this.poisoned)
+@@ -19725,7 +_,7 @@
+ 			this.forceWerewolf = false;
+ 			if (this.whoAmI == Main.myPlayer)
+ 			{
+-				for (int num26 = 0; num26 < 22; num26++)
++				for (int num26 = 0; num26 < Player.maxBuffs; num26++)
+ 				{
+ 					if (this.buffType[num26] > 0 && this.buffTime[num26] <= 0)
+ 					{
 @@ -19797,6 +_,7 @@
  			}
  			this.UpdateArmorLights();
@@ -3557,6 +3792,15 @@
  			this.UpdateLifeRegen();
  			this.soulDrain = 0;
  			this.UpdateManaRegen();
+@@ -20078,7 +_,7 @@
+ 			this.runAcceleration *= this.moveSpeed;
+ 			this.maxRunSpeed *= this.moveSpeed;
+ 			this.UpdateJumpHeight();
+-			for (int num31 = 0; num31 < 22; num31++)
++			for (int num31 = 0; num31 < Player.maxBuffs; num31++)
+ 			{
+ 				if (this.buffType[num31] > 0 && this.buffTime[num31] > 0 && this.buffImmune[this.buffType[num31]])
+ 				{
 @@ -20095,11 +_,14 @@
  			}
  			if (this.witheredWeapon)
@@ -3623,6 +3867,24 @@
  								{
  									if (this.wings == 30)
  									{
+@@ -22383,7 +_,7 @@
+ 				}
+ 				if (flag23 && Main.myPlayer == this.whoAmI)
+ 				{
+-					for (int num137 = 0; num137 < 22; num137++)
++					for (int num137 = 0; num137 < Player.maxBuffs; num137++)
+ 					{
+ 						if (this.buffType[num137] == 38)
+ 						{
+@@ -22665,7 +_,7 @@
+ 			{
+ 				if (this.onFire && !this.lavaWet)
+ 				{
+-					for (int num142 = 0; num142 < 22; num142++)
++					for (int num142 = 0; num142 < Player.maxBuffs; num142++)
+ 					{
+ 						if (this.buffType[num142] == 24)
+ 						{
 @@ -22983,6 +_,7 @@
  			{
  				this.velocity.Y = this.velocity.Y * 0.8f + (float)Math.Cos((double)(base.Center.X % 120f / 120f * 6.28318548f)) * 5f * 0.2f;
@@ -4040,6 +4302,15 @@
  			this.dead = false;
  			this.immuneTime = 0;
  			this.active = true;
+@@ -28378,7 +_,7 @@
+ 			}
+ 			if (this.whoAmI == Main.myPlayer)
+ 			{
+-				for (int j = 0; j < 22; j++)
++				for (int j = 0; j < Player.maxBuffs; j++)
+ 				{
+ 					if (this.buffTime[j] > 0 && this.buffType[j] == 59)
+ 					{
 @@ -28485,6 +_,14 @@
  				this.ShadowDodge();
  				return 0.0;
@@ -4064,6 +4335,24 @@
  			if (Crit)
  			{
  				num *= 2;
+@@ -28508,7 +_,7 @@
+ 			{
+ 				if (this.invis)
+ 				{
+-					for (int i = 0; i < 22; i++)
++					for (int i = 0; i < Player.maxBuffs; i++)
+ 					{
+ 						if (this.buffType[i] == 10)
+ 						{
+@@ -28540,7 +_,7 @@
+ 					float num5 = 0.15f * (float)this.beetleOrbs;
+ 					num2 = (double)((int)((double)(1f - num5) * num2));
+ 					this.beetleOrbs--;
+-					for (int j = 0; j < 22; j++)
++					for (int j = 0; j < Player.maxBuffs; j++)
+ 					{
+ 						if (this.buffType[j] >= 95 && this.buffType[j] <= 97)
+ 						{
 @@ -28653,6 +_,7 @@
  					}
  					Projectile.NewProjectile(base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 565, 0, 0f, this.whoAmI, 0f, 0f);
@@ -5510,6 +5799,15 @@
  		}
  
  		public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
+@@ -37186,7 +_,7 @@
+ 				{
+ 					num = 102;
+ 				}
+-				for (int i = 0; i < 22; i++)
++				for (int i = 0; i < Player.maxBuffs; i++)
+ 				{
+ 					if (this.buffType[i] == 27 || this.buffType[i] == 101 || this.buffType[i] == 102)
+ 					{
 @@ -37374,73 +_,82 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
@@ -5857,7 +6155,15 @@
  			player.extraAccessory = this.extraAccessory;
  			player.MinionRestTargetPoint = this.MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = this.MinionAttackTargetNPC;
-@@ -38375,6 +_,7 @@
+@@ -38368,13 +_,14 @@
+ 				}
+ 			}
+ 			player.trashItem = this.trashItem.Clone();
+-			for (int j = 0; j < 22; j++)
++			for (int j = 0; j < Player.maxBuffs; j++)
+ 			{
+ 				player.buffType[j] = this.buffType[j];
+ 				player.buffTime[j] = this.buffTime[j];
  			}
  			this.DpadRadial.CopyTo(player.DpadRadial);
  			this.CircularRadial.CopyTo(player.CircularRadial);
@@ -5906,7 +6212,7 @@
  						BitsByte bb = 0;
  						for (int i = 0; i < 8; i++)
  						{
-@@ -38594,49 +_,49 @@
+@@ -38594,58 +_,50 @@
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++)
  						{
@@ -5958,13 +6264,25 @@
  							binaryWriter.Write(player.bank3.item[num3].stack);
  							binaryWriter.Write(player.bank3.item[num3].prefix);
  						}
- 						for (int num4 = 0; num4 < 22; num4++)
- 						{
+-						for (int num4 = 0; num4 < 22; num4++)
+-						{
 -							if (Main.buffNoSave[player.buffType[num4]])
-+							if (Main.buffNoSave[player.buffType[num4]] || BuffLoader.IsModBuff(player.buffType[num4]))
- 							{
- 								binaryWriter.Write(0);
- 								binaryWriter.Write(0);
+-							{
+-								binaryWriter.Write(0);
+-								binaryWriter.Write(0);
+-							}
+-							else
+-							{
+-								binaryWriter.Write(player.buffType[num4]);
+-								binaryWriter.Write(player.buffTime[num4]);
+-							}
++						for (int num4 = 0; num4 < 22; num4++) 
++						{
++							binaryWriter.Write(0);
++							binaryWriter.Write(0);
+ 						}
+ 						for (int num5 = 0; num5 < 200; num5++)
+ 						{
 @@ -38681,9 +_,11 @@
  						{
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
@@ -5999,6 +6317,15 @@
  							{
  								player.loadStatus = 1;
  								player.name = binaryReader.ReadString();
+@@ -39114,7 +_,7 @@
+ 								int num27 = 22;
+ 								if (num < 74)
+ 								{
+-									num27 = 10;
++									num27 = num27 - 12;
+ 								}
+ 								for (int num28 = 0; num28 < num27; num28++)
+ 								{
 @@ -39179,6 +_,7 @@
  								player.bartenderQuestLog = binaryReader.ReadInt32();
  							}
@@ -6079,11 +6406,15 @@
  			this.extraAccessorySlots = 2;
  			this.tankPet = -1;
  			this.solarShieldPos = new Vector2[3];
-@@ -39349,7 +_,7 @@
+@@ -39347,9 +_,9 @@
+ 			this.miscDyes = new Item[5];
+ 			this.trashItem = new Item();
  			this.ghostDir = 1f;
- 			this.buffType = new int[22];
- 			this.buffTime = new int[22];
+-			this.buffType = new int[22];
+-			this.buffTime = new int[22];
 -			this.buffImmune = new bool[206];
++			this.buffType = new int[Player.maxBuffs];
++			this.buffTime = new int[Player.maxBuffs];
 +			this.buffImmune = new bool[BuffLoader.BuffCount];
  			this.heldProj = -1;
  			this.breathMax = 200;
@@ -6294,12 +6625,10 @@
  			int type = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(type, false);
-@@ -40007,6 +_,45 @@
- 					NetMessage.SendData(21, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
- 				}
+@@ -40009,6 +_,45 @@
  			}
-+		}
-+
+ 		}
+ 
 +		public int GetManaCost(Item item) {
 +			float reduce = manaCost;
 +			float mult = 1;
@@ -6337,7 +6666,27 @@
 +				return true;
 +			}
 +			return false;
- 		}
- 
++		}
++
  		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false)
+ 		{
+ 			int num = (int)((float)amount * this.manaCost);
+@@ -40056,7 +_,7 @@
+ 				return true;
+ 			}
+ 			this.solarShields--;
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i < Player.maxBuffs; i++)
+ 			{
+ 				if (this.buffType[i] >= 170 && this.buffType[i] <= 172)
+ 				{
+@@ -40371,7 +_,7 @@
+ 			if (this.whoAmI == Main.myPlayer)
+ 			{
+ 				int time = 480;
+-				for (int i = 0; i < 22; i++)
++				for (int i = 0; i < Player.maxBuffs; i++)
+ 				{
+ 					if (this.buffType[i] >= type && this.buffType[i] < type + 3)
+ 					{
 

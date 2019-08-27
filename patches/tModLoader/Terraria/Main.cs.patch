@@ -47,6 +47,14 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		private AchievementManager _achievements;
+@@ -184,6 +_,7 @@
+ 		public static ulong LobbyId = 0uL;
+ 		private static object _audioLock = new object();
+ 		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
++		public static bool playerLoaded { get { return Main.ActivePlayersCount > 0; } }
+ 		public static float expertLife = 2f;
+ 		public static float expertDamage = 2f;
+ 		public static float expertDebuffTime = 2f;
 @@ -211,11 +_,13 @@
  		public static bool UseHeatDistortion = true;
  		public static int npcStreamSpeed = 60;
@@ -129,6 +137,15 @@
  		public static int renderCount = 99;
  		public static GraphicsDeviceManager graphics;
  		public static SpriteBatch spriteBatch;
+@@ -578,7 +_,7 @@
+ 		public static bool armorHide = false;
+ 		public static float craftingAlpha = 1f;
+ 		public static float armorAlpha = 1f;
+-		public static float[] buffAlpha = new float[206];
++		public static float[] buffAlpha = new float[Player.maxBuffs + 206];
+ 		public static bool hardMode = false;
+ 		public float chestLootScale = 1f;
+ 		public bool chestLootHover;
 @@ -598,6 +_,7 @@
  		public static bool maxQ = true;
  		public static float gfxQuality = 1f;
@@ -1088,6 +1105,15 @@
  				if (flag)
  				{
  					NetMessage.SendData(36, -1, -1, null, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+@@ -12468,7 +_,7 @@
+ 					NetMessage.SendData(42, -1, -1, null, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+ 				}
+ 				bool flag2 = false;
+-				for (int num4 = 0; num4 < 22; num4++)
++				for (int num4 = 0; num4 < Player.maxBuffs; num4++)
+ 				{
+ 					if (Main.player[Main.myPlayer].buffType[num4] != Main.clientPlayer.buffType[num4])
+ 					{
 @@ -12498,6 +_,7 @@
  				{
  					NetMessage.SendData(115, -1, -1, null, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
@@ -3736,8 +3762,12 @@
  				}
  			}
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(Main.screenWidth / 2 - Main.chatBackTexture.Width / 2, 100, Main.chatBackTexture.Width, (num2 + 2) * 30);
-@@ -34287,11 +_,15 @@
- 			for (int j = 0; j < 22; j++)
+@@ -34284,14 +_,18 @@
+ 			string focusText = "";
+ 			string focusText2 = "";
+ 			int num5 = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
+-			for (int j = 0; j < 22; j++)
++			for (int j = 0; j < Player.maxBuffs; j++)
  			{
  				int num6 = Main.player[Main.myPlayer].buffType[j];
 -				if (Main.debuff[num6] && Main.player[Main.myPlayer].buffTime[j] > 5 && num6 != 28 && num6 != 34 && num6 != 87 && num6 != 89 && num6 != 21 && num6 != 86 && num6 != 199)
@@ -3805,9 +3835,10 @@
  											Main.npcChatText = Lang.dialog(230, false);
  										}
 -										Main.player[Main.myPlayer].statLife = Main.player[Main.myPlayer].statLifeMax2;
+-										for (int l = 0; l < 22; l++)
 +										Main.player[Main.myPlayer].statLife += health;
 +										if (removeDebuffs) { // no indent for better patching
- 										for (int l = 0; l < 22; l++)
++										for (int l = 0; l < Player.maxBuffs; l++)
  										{
  											int num24 = Main.player[Main.myPlayer].buffType[l];
 -											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && num24 != 28 && num24 != 34 && num24 != 87 && num24 != 89 && num24 != 21 && num24 != 86 && num24 != 199)
@@ -3845,6 +3876,15 @@
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (Main.mouseX >= num && (float)Main.mouseX <= (float)num + (float)Main.inventoryBackTexture.Width * Main.inventoryScale && Main.mouseY >= num2 && (float)Main.mouseY <= (float)num2 + (float)Main.inventoryBackTexture.Height * Main.inventoryScale && !PlayerInput.IgnoreMouseInterface)
  			{
+@@ -36095,7 +_,7 @@
+ 					num24++;
+ 				}
+ 				int num26 = 46;
+-				for (int n = 0; n < 22; n++)
++				for (int n = 0; n < Player.maxBuffs; n++)
+ 				{
+ 					int num27 = Main.player[Main.myPlayer].buffType[n];
+ 					if (num27 != 0)
 @@ -36133,14 +_,13 @@
  							int num31 = (int)(Main.player[Main.myPlayer].manaSickReduction * 100f) + 1;
  							Main.buffString = Main.buffString + num31 + "%";
@@ -3970,6 +4010,26 @@
  							{
  								Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  								Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)Main.npc[k].position.X, (int)Main.npc[k].position.Y, Main.npc[k].width, Main.npc[k].height);
+@@ -38003,7 +_,7 @@
+ 			Main.recBigList = false;
+ 			int num = -1;
+ 			int num2 = 11;
+-			for (int i = 0; i < 22; i++)
++			for (int i = 0; i <	Player.maxBuffs; i++)
+ 			{
+ 				if (Main.player[Main.myPlayer].buffType[i] > 0)
+ 				{
+@@ -38012,8 +_,8 @@
+ 					int num3 = 76;
+ 					if (i >= num2)
+ 					{
+-						x = 32 + (i - num2) * 38;
+-						num3 += 50;
++						x = 32 + Math.Abs(i % 11) * 38;
++						num3 += 50 * (i / 11);
+ 					}
+ 					num = Main.DrawBuffIcon(num, i, b, x, num3);
+ 				}
 @@ -38028,6 +_,7 @@
  				if (num4 > 0)
  				{
