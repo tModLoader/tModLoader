@@ -274,7 +274,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00226">226</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_8cs_source.html#l00130">Terraria.ModLoader.Mod.Close()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00081">Terraria.ModLoader.ModLoader.GetMod()</a>.</p>
+<p>References <a class="el" href="_mod_8cs_source.html#l00135">Terraria.ModLoader.Mod.Close()</a>, and <a class="el" href="_mod_loader_8cs_source.html#l00081">Terraria.ModLoader.ModLoader.GetMod()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                                              {</div><div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a> = <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af8ec83e3ea88f98c0bb81c3613c03279">downloadQueue</a>.Dequeue();</div><div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">downloadingFile</a> = null;</div><div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            var p = <span class="keyword">new</span> ModPacket(MessageID.ModFile);</div><div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            p.Write(<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">downloadingMod</a>.name);</div><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            p.Send();</div><div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_af8ec83e3ea88f98c0bb81c3613c03279"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#af8ec83e3ea88f98c0bb81c3613c03279">Terraria.ModLoader.ModNet.downloadQueue</a></div><div class="ttdeci">static Queue&lt; ModHeader &gt; downloadQueue</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00067">ModNet.cs:67</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_a43e250ca8ddeced80d32cbcc773888a2"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#a43e250ca8ddeced80d32cbcc773888a2">Terraria.ModLoader.ModNet.downloadingMod</a></div><div class="ttdeci">static ModHeader downloadingMod</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00069">ModNet.cs:69</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_net_html_afdaa62eb30981b94122fd7d7560f9cd6"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_net.html#afdaa62eb30981b94122fd7d7560f9cd6">Terraria.ModLoader.ModNet.downloadingFile</a></div><div class="ttdeci">static FileStream downloadingFile</div><div class="ttdef"><b>Definition:</b> <a href="_mod_net_8cs_source.html#l00070">ModNet.cs:70</a></div></div>
@@ -633,7 +633,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00065">65</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01628">Terraria.ModLoader.Mod.GetPacket()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01633">Terraria.ModLoader.Mod.GetPacket()</a>.</p>
 
 </div>
 </div>
@@ -772,7 +772,7 @@ Static Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_net_8cs_source.html#l00052">52</a> of file <a class="el" href="_mod_net_8cs_source.html">ModNet.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00039">Terraria.ModLoader.ProjectileLoader.AddHook&lt; F &gt;()</a>, <a class="el" href="_buff_loader_8cs_source.html#l00032">Terraria.ModLoader.BuffLoader.BuffLoader()</a>, <a class="el" href="_item_loader_8cs_source.html#l00052">Terraria.ModLoader.ItemLoader.FindVanillaWings()</a>, <a class="el" href="_mount_loader_8cs_source.html#l00021">Terraria.ModLoader.MountLoader.GetMount()</a>, <a class="el" href="_mod_prefix_8cs_source.html#l00018">Terraria.ModLoader.ModPrefix.ModPrefix()</a>, and <a class="el" href="_n_p_c_loader_8cs_source.html#l00054">Terraria.ModLoader.NPCLoader.NPCLoader()</a>.</p>
+<p>Referenced by <a class="el" href="_projectile_loader_8cs_source.html#l00039">Terraria.ModLoader.ProjectileLoader.AddHook&lt; F &gt;()</a>, <a class="el" href="_buff_loader_8cs_source.html#l00041">Terraria.ModLoader.BuffLoader.BuffLoader()</a>, <a class="el" href="_item_loader_8cs_source.html#l00052">Terraria.ModLoader.ItemLoader.FindVanillaWings()</a>, <a class="el" href="_mount_loader_8cs_source.html#l00021">Terraria.ModLoader.MountLoader.GetMount()</a>, <a class="el" href="_mod_prefix_8cs_source.html#l00018">Terraria.ModLoader.ModPrefix.ModPrefix()</a>, and <a class="el" href="_n_p_c_loader_8cs_source.html#l00054">Terraria.ModLoader.NPCLoader.NPCLoader()</a>.</p>
 
 </div>
 </div>

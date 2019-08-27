@@ -718,7 +718,7 @@ Generating call graph for function Terraria.ModLoader.ItemLoader.SetMatch
 Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateArmorSet
 Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanity
 Generating call graph for function Terraria.ModLoader.ItemLoader.UpdateVanitySet
-Generating caller graph for function Terraria.Mod/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1500: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
+Generating caller graph for function Terraria.Mod/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1505: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
   parameter 'newFileStream'
 Loader.ItemLoader.UseTimeMultiplier
 Generating call graph for function Terraria.ModLoader.ItemLoader.VerticalWingSpeeds
@@ -2306,5 +2306,5 @@ Patching output file 157/160
 Patching output file 158/160
 Patching output file 159/160
 Patching output file 160/160
-lookup cache used 11622/131072 hits=101030 misses=12188
+lookup cache used 11629/131072 hits=101068 misses=12195
 finished...
