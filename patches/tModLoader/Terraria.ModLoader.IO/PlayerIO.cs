@@ -149,7 +149,6 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModBuffs(Player player) {
 			var list = new List<TagCompound>();
-			byte vanillaIndex = 0;
 			for (int k = 0; k < Player.maxBuffs; k++) {
 				int buff = player.buffType[k];
 				if (buff == 0 || Main.buffNoSave[buff])
@@ -158,7 +157,6 @@ namespace Terraria.ModLoader.IO
 				if (BuffLoader.IsModBuff(buff)) {
 					var modBuff = BuffLoader.GetBuff(buff);
 					list.Add(new TagCompound {
-						["index"] = vanillaIndex, //position of the loaded buff if there were no modBuffs before it
 						["mod"] = modBuff.mod.Name,
 						["name"] = modBuff.Name,
 						["time"] = player.buffTime[k]
@@ -166,12 +164,10 @@ namespace Terraria.ModLoader.IO
 				}
 				else {
 					list.Add(new TagCompound {
-						["index"] = vanillaIndex,
-						["mod"] = "Vanilla",
-						["name"] = buff,
+						["mod"] = "Terraria",
+						["id"] = buff,
 						["time"] = player.buffTime[k]
 					});
-					vanillaIndex++;
 				}
 			}
 			return list;
@@ -183,23 +179,28 @@ namespace Terraria.ModLoader.IO
 			while (buffCount > 0 && player.buffType[buffCount - 1] == 0)
 				buffCount--;
 
+			if (buffCount == 0) {
+				//always the case since vanilla buff saving was disabled, when extra buff slots were added
+				foreach (var tag in list) {
+					if (buffCount == Player.maxBuffs)
+						return;
+
+					var modName = tag.GetString("mod");
+					int type = modName == "Terraria" ? tag.GetInt("id") : ModLoader.GetMod(modName)?.BuffType(tag.GetString("name")) ?? 0;
+					if (type > 0) {
+						player.buffType[buffCount] = type;
+						player.buffTime[buffCount] = tag.GetInt("time");
+						buffCount++;
+					}
+				}
+				return;
+			}
+
+			//legacy code path
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse()) {
-				Mod mod;
-				int type;
-
-				// get the name beforehand so we know if it's vanilla
-				string modName = tag.GetString("mod");
-
-				if (modName != "Vanilla") {
-					mod = ModLoader.GetMod(modName);
-					type = mod?.BuffType(tag.GetString("name")) ?? 0;
-				}
-				else 
-				{
-					type = tag.GetInt("name");
-				}
-
+				var mod = ModLoader.GetMod(tag.GetString("mod"));
+				int type = mod?.BuffType(tag.GetString("name")) ?? 0;
 				if (type == 0)
 					continue;
 
