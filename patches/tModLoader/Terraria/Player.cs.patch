@@ -3480,6 +3480,15 @@
  					if (num13 != 0 && num14 != 0)
  					{
  						int num19 = item3 - (int)tile2.frameX % (num15 * num13 + num17) / num15;
+@@ -13830,7 +_,7 @@
+ 				for (int num22 = 0; num22 < 200; num22++)
+ 				{
+ 					NPC nPC = Main.npc[num22];
+-					if (nPC.active && nPC.townNPC && nPC.Hitbox.Intersects(value2))
++					if (nPC.active && nPC.townNPC && NPCLoader.CanChat(nPC, nPC.townNPC) && nPC.Hitbox.Intersects(value2))
+ 					{
+ 						Main.SmartInteractNPCsNearby.Add(num22);
+ 						if (!flag4)
 @@ -14168,6 +_,7 @@
  			if (this.controlTorch && this.itemAnimation == 0)
  			{
@@ -6264,8 +6273,8 @@
  							binaryWriter.Write(player.bank3.item[num3].stack);
  							binaryWriter.Write(player.bank3.item[num3].prefix);
  						}
--						for (int num4 = 0; num4 < 22; num4++)
--						{
+ 						for (int num4 = 0; num4 < 22; num4++)
+ 						{
 -							if (Main.buffNoSave[player.buffType[num4]])
 -							{
 -								binaryWriter.Write(0);
@@ -6276,8 +6285,6 @@
 -								binaryWriter.Write(player.buffType[num4]);
 -								binaryWriter.Write(player.buffTime[num4]);
 -							}
-+						for (int num4 = 0; num4 < 22; num4++) 
-+						{
 +							binaryWriter.Write(0);
 +							binaryWriter.Write(0);
  						}
