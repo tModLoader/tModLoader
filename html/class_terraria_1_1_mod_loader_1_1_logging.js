@@ -10,6 +10,7 @@ var class_terraria_1_1_mod_loader_1_1_logging =
     [ "IgnoreExceptionSource", "class_terraria_1_1_mod_loader_1_1_logging.html#ae5c7c0a302892df4428d57119c256fa5", null ],
     [ "LogFirstChanceExceptions", "class_terraria_1_1_mod_loader_1_1_logging.html#a69840616214e1e132c1da455230fb0a7", null ],
     [ "PrettifyStackTraceSources", "class_terraria_1_1_mod_loader_1_1_logging.html#a0e0ba2049a5c7e737d27373038e71d78", null ],
+    [ "handlerActive", "class_terraria_1_1_mod_loader_1_1_logging.html#aa2aabf324cf5ce531e1d2a99e7fbe445", null ],
     [ "ignoreContents", "class_terraria_1_1_mod_loader_1_1_logging.html#a1432597c1493444a35407bf959f73c2f", null ],
     [ "ignoreMessages", "class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69", null ],
     [ "ignoreSources", "class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308", null ],
