@@ -172,40 +172,54 @@ namespace Terraria.ModLoader
 				ignoreContents.Add(source);
 		}
 
+		private static ThreadLocal<bool> handlerActive = new ThreadLocal<bool>(() => false);
 		private static Exception previousException;
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
-			if (args.Exception == previousException ||
-				args.Exception is ThreadAbortException ||
-				ignoreSources.Contains(args.Exception.Source) ||
-				ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
-				ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
+			if (handlerActive.Value)
 				return;
 
-			var stackTrace = new StackTrace(true);
-			PrettifyStackTraceSources(stackTrace.GetFrames());
-			var traceString = stackTrace.ToString();
+			try {
+				handlerActive.Value = true;
 
-			if (ignoreContents.Any(traceString.Contains))
-				return;
-
-			traceString = traceString.Substring(traceString.IndexOf('\n'));
-			var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
-			lock (pastExceptions) {
-				if (!pastExceptions.Add(exString))
+				if (args.Exception == previousException ||
+					args.Exception is ThreadAbortException ||
+					ignoreSources.Contains(args.Exception.Source) ||
+					ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
+					ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
 					return;
-			}
 
-			previousException = args.Exception;
-			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-#if CLIENT
-			if (ModCompile.activelyModding)
-				AddChatMessage(msg, Color.OrangeRed);
-#else
-			Console.ForegroundColor = ConsoleColor.DarkMagenta;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-#endif
-			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+				var stackTrace = new StackTrace(true);
+				PrettifyStackTraceSources(stackTrace.GetFrames());
+				var traceString = stackTrace.ToString();
+
+				if (ignoreContents.Any(traceString.Contains))
+					return;
+
+				traceString = traceString.Substring(traceString.IndexOf('\n'));
+				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
+				lock (pastExceptions) {
+					if (!pastExceptions.Add(exString))
+						return;
+				}
+
+				previousException = args.Exception;
+				var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+	#if CLIENT
+				if (ModCompile.activelyModding)
+					AddChatMessage(msg, Color.OrangeRed);
+	#else
+				Console.ForegroundColor = ConsoleColor.DarkMagenta;
+				Console.WriteLine(msg);
+				Console.ResetColor();
+	#endif
+				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+			}
+			catch (Exception e) {
+				tML.Warn("FirstChanceExceptionHandler exception", e);
+			}
+			finally {
+				handlerActive.Value = false;
+			}
 		}
 
 		// Separate method to avoid triggering Main constructor
