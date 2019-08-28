@@ -664,7 +664,7 @@ namespace Terraria.ModLoader
 		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
-		/// </summary
+		/// </summary>
 		public virtual bool NewPreReforge() {
 			return true;
 		}

@@ -59,6 +59,10 @@ namespace Terraria.ModLoader.Engine
 
 			var vanillaPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location) != "Terraria.exe" ? "Terraria.exe" : "Terraria_v1.3.5.3.exe";
 			if (!File.Exists(vanillaPath)) {
+#if SERVER
+				return false;
+#else
+
 				Logging.tML.Info("Vanilla Terraria.exe not found.");
 				string message = $"{vanillaPath} not found.\n\nGoG installs must have the unmodified Terraria exe to function.\n\nPlease restore your Terraria install, then install tModLoader using the provided tModLoaderInstaller.jar or by following the README.txt instructions.";
 				Logging.tML.Fatal(message);
@@ -67,6 +71,7 @@ namespace Terraria.ModLoader.Engine
 #endif
 				Environment.Exit(1);
 				return false;
+#endif
 			}
 
 			if (!HashMatchesFile(vanillaGoGhash, vanillaPath)) {

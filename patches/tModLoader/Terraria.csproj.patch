@@ -35,7 +35,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
      <PlatformTarget>x86</PlatformTarget>
-@@ -38,13 +_,31 @@
+@@ -38,13 +_,33 @@
    <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
      <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
    </PropertyGroup>
@@ -48,6 +48,8 @@
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
++    <None Remove="Terraria.ModLoader.Core\update.bat" />
++    <None Remove="Terraria.ModLoader.Core\update.sh" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonDowngrade.png" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonModConfig.png" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonModInfo.png" />
@@ -411,12 +413,14 @@
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
-@@ -593,4 +_,147 @@
+@@ -593,4 +_,149 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
 +  <ItemGroup>
 +    <Content Include="Icon.ico" />
++    <EmbeddedResource Include="Terraria.ModLoader.Core\update.bat" />
++    <EmbeddedResource Include="Terraria.ModLoader.Core\update.sh" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDowngrade.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonUpDown.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonCollapsed.png" />

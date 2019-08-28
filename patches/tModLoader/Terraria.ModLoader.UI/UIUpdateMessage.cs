@@ -1,4 +1,5 @@
 using Ionic.Zip;
+using ReLogic.OS;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -62,9 +63,8 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			base.OnActivate();
 
-#if WINDOWS
-			_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
-#endif
+			if (FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20))
+				_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
 		}
 
 		internal void SetMessage(string text) {
@@ -98,70 +98,53 @@ namespace Terraria.ModLoader.UI
 		private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 
-			string currentExecutingFilePath = Assembly.GetExecutingAssembly().Location;
-			string installDirectory = Path.GetDirectoryName(currentExecutingFilePath);
-			string autoUpdateFilePath = Path.Combine(installDirectory, Path.GetFileNameWithoutExtension(currentExecutingFilePath) + "_AutoUpdate.exe");
+			string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);
 			string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
-			Logging.tML.Info("AutoUpdate started");
-			Logging.tML.Info($"AutoUpdate Paths: currentExecutingFilePath {currentExecutingFilePath}, installDirectory {installDirectory}, autoUpdateFilePath {autoUpdateFilePath}, zipFileName {zipFileName}, zipFilePath {zipFilePath}, autoUpdateURL {_autoUpdateUrl}");
+			Logging.tML.Info($"AutoUpdate started: {_autoUpdateUrl} -> {zipFilePath}");
 			var downloadFile = new DownloadFile(_autoUpdateUrl, zipFilePath, $"Auto update: {zipFileName}");
-			downloadFile.OnComplete += () => {
-				OnAutoUpdateDownloadComplete(zipFilePath, autoUpdateFilePath, installDirectory, currentExecutingFilePath);
-			};
+			downloadFile.OnComplete += () => OnAutoUpdateDownloadComplete(installDirectory, zipFilePath);
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(downloadFile);
 		}
 
-		private void OnAutoUpdateDownloadComplete(string zipFilePath, string autoUpdateFilePath, string installDirectory, string currentExecutingFilePath) {
+		private void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath) {
+			string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+			string extractDir = Path.Combine(installDirectory, "tModLoader_Update");
+			string updateScriptName = Platform.IsWindows ? "update.bat" : "update.sh";
+			string updateScript = Path.Combine(installDirectory, updateScriptName);
+
+			Logging.tML.Info($"AutoUpdate Paths: installDirectory {installDirectory}, executableName {executableName},  extractDir {extractDir}, autoUpdateScript {updateScript}");
 			try {
-				using (var zip = ZipFile.Read(zipFilePath))
-					for (int i = 0; i < zip.Count; i++) {
-						var current = zip[i];
-						if (current.FileName == "Terraria.exe") {
-							current.FileName = Path.GetFileName(autoUpdateFilePath);
-							Logging.tML.Info($"Saving AutoUpdate Terraria.exe to {current.FileName}");
-						}
-						current.Extract(ExtractExistingFileAction.OverwriteSilently);
-					}
+				if (Directory.Exists(extractDir))
+					Directory.Delete(extractDir, true);
+				Directory.CreateDirectory(extractDir);
+
+				using (var zip = ZipFile.Read(zipFilePath)) 
+					zip.ExtractAll(extractDir);
 				File.Delete(zipFilePath);
 
-				// Self deleting bat file techinque found here: https://stackoverflow.com/a/20333575
-				string autoUpdateScript = Path.Combine(installDirectory, "AutoUpdate.bat");
-				File.WriteAllText(autoUpdateScript, @"@ECHO OFF
-if [%1]==[] goto usage
-if [%2]==[] goto usage
+				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Core.{updateScriptName}"))
+				using (var fs = File.OpenWrite(updateScript))
+					stream.CopyTo(fs);
 
-ECHO Auto-update in progress. Waiting for tModLoader to close...
-:LOOP
-Timeout /T 5 /Nobreak
-copy %2 %1 /Y
-IF ERRORLEVEL 1 (
-  ECHO %1 is still running, waiting for tModLoader to close...
-  Timeout /T 5 /Nobreak
-  GOTO LOOP
-) ELSE (
-  GOTO CONTINUE
-)
+				if (Platform.IsWindows) {
+					File.Move(Path.Combine(extractDir, "Terraria.exe"), Path.Combine(extractDir, executableName));
+					Process.Start(updateScript, $"\"{executableName}\" tModLoader_Update");
+				}
+				else {
+					Process.Start("bash", $"-c 'chmod a+x \"{updateScript}\"'").WaitForExit();
+					Process.Start(updateScript, $"{Process.GetCurrentProcess().Id} tModLoader_Update");
+				}
 
-:CONTINUE
-echo Successfully updated, tModLoader will restart now.
-del %2
-start """" %1
-(goto) 2>nul & del ""%~f0""
-exit /B 0
-
-:usage
-echo Please do not run this file manually
-exit /B 1");
-				Process.Start(autoUpdateScript, $"\"{currentExecutingFilePath}\" \"{autoUpdateFilePath}\"");
-
-				Main.menuMode = Interface.exitID; // Environment.Exit(0); // Exit on main thread to avoid crash
+				Logging.tML.Info("AutoUpdate script started. Exiting");
+				// Exit on main thread to avoid crash
 				Interface.downloadProgress.gotoMenu = Interface.exitID;
+				Main.menuMode = Interface.exitID;
 			}
 			catch (Exception e) {
-				Logging.tML.Error($"Problem during autoupdate", e);
+				Logging.tML.Error("Problem during autoupdate", e);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
@@ -28,6 +29,14 @@ namespace Terraria.ModLoader
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
 		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
+
+		private static int _ExtraBuffCount;
+		internal static int ExtraBuffCount {
+			get {
+				if(Main.playerLoaded) return _ExtraBuffCount;
+				return _ExtraBuffCount = ModLoader.Mods.Sum(m => (int)m.ExtraBuffSlots);
+			}
+		}
 
 		static BuffLoader() {
 			for (int k = 0; k < BuffID.Count; k++) {

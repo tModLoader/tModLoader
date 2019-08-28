@@ -382,7 +382,7 @@ namespace Terraria.ModLoader
 					if (Main.dedServ)
 						Console.WriteLine($"Unloading {mod.DisplayName}...");
 					else
-						Interface.unloadModsProgress.SetCurrentMod(i++, mod.DisplayName);
+						Interface.loadModsProgress.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}

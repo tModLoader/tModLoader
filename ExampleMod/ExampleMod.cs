@@ -122,6 +122,9 @@ namespace ExampleMod
 			text = CreateTranslation("NPCTalk");
 			text.SetDefault("<{0}> {1}");
 			AddTranslation(text);
+			text = CreateTranslation("Common.LocalizedLabelDynamic");
+			text.SetDefault($"[i:{ItemType<Items.Weapons.SpectreGun>()}]  This dynamic label is added in ExampleMod.Load");
+			AddTranslation(text);
 
 			// Volcano warning is for the random volcano tremor
 			text = CreateTranslation("VolcanoWarning");

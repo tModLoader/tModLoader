@@ -275,7 +275,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Specifies a range for primative data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
+	/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class RangeAttribute : Attribute

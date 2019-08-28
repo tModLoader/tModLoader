@@ -154,7 +154,7 @@ namespace Terraria.ModLoader.Core
 				return true;
 
 			referenceAssembliesPath = Path.Combine(modCompileDir, "v4.5 Reference Assemblies");
-			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any())
+			if (Directory.Exists(referenceAssembliesPath) && Directory.EnumerateFiles(referenceAssembliesPath).Any(x => Path.GetExtension(x) != ".tmp"))
 				return true;
 
 			if (FrameworkVersion.Framework == Framework.Mono)

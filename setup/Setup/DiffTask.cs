@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public class DiffTask : Task
 	{
-		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json" };
+		public static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".bat", ".sh" };
 		public static string[] excluded = { "bin" + Path.DirectorySeparatorChar, "obj" + Path.DirectorySeparatorChar, "Properties" + Path.DirectorySeparatorChar};
 		public static readonly string RemovedFileList = "removed_files.list";
 		public static readonly string HunkOffsetRegex = @"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@";
