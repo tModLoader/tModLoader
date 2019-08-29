@@ -77,6 +77,7 @@ namespace ExampleMod.NPCs
 					Item.NewItem(npc.getRect(), mod.ItemType(type), stack);
 				}
 			}
+			// See BossBags.OpenVanillaBag to see how to handle adding items to the boss bags used in expert mode. You'll want to do both for most items added to boss drops.
 			if (npc.type == NPCID.DukeFishron && !Main.expertMode) {
 				Item.NewItem(npc.getRect(), mod.ItemType("Bubble"), Main.rand.Next(5, 8));
 			}
