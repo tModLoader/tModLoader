@@ -1058,11 +1058,12 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
-@@ -11997,6 +_,7 @@
+@@ -11997,6 +_,8 @@
  			{
  				Main.InGameUI.Update(gameTime);
  			}
 +			ModHooks.UpdateUI(gameTime);
++			PlayerInput.ScrollWheelDeltaForUI = 0;
  			PlayerInput.SetZoom_Unscaled();
  			Main.MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
