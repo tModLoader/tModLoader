@@ -14,15 +14,18 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void ProcessDownloadedMod() {
-			var mod = ModLoader.GetMod(ModBrowserItem.ModName);
-			if (mod != null) {
-				Interface.modBrowser.anEnabledModDownloaded = true;
-			}
+			bool modEnabled = ModLoader.GetMod(ModBrowserItem.ModName) != null;
+			bool newMod = !ModBrowserItem.HasUpdate;
 
-			if (!ModBrowserItem.HasUpdate) Interface.modBrowser.aNewModDownloaded = true;
-			else Interface.modBrowser.aModUpdated = true;
+			if (modEnabled)
+				Interface.modBrowser.anEnabledModUpdated = true;
+			else if (newMod)
+				Interface.modBrowser.aNewModDownloaded = true;
+			else
+				Interface.modBrowser.aDisabledModUpdated = true;
 
-			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) ModLoader.EnableMod(ModBrowserItem.ModName);
+			if (ModLoader.autoReloadAndEnableModsLeavingModBrowser && newMod)
+				ModLoader.EnableMod(ModBrowserItem.ModName);
 			Interface.modBrowser.RemoveItem(ModBrowserItem);
 			Interface.modBrowser.UpdateNeeded = true;
 		}
