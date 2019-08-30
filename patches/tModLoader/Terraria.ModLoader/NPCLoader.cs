@@ -831,25 +831,10 @@ namespace Terraria.ModLoader
 			return npc.modNPC?.UsesPartyHat() ?? true;
 		}
 
-		public static bool VanillaCanChat(NPC npc) {
-			switch (npc.type) {
-				case NPCID.BoundGoblin:
-				case NPCID.BoundWizard:
-				case NPCID.BoundMechanic:
-				case NPCID.WebbedStylist:
-				case NPCID.SleepingAngler:
-				case NPCID.BartenderUnconscious:
-				case NPCID.SkeletonMerchant:
-					return true;
-				default:
-					return npc.townNPC;
-			}
-		}
-
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-		public static bool CanChat(NPC npc) {
-			bool defaultCanChat = npc.modNPC?.CanChat() ?? VanillaCanChat(npc);
+		public static bool CanChat(NPC npc, bool vanillaCanChat) {
+			bool defaultCanChat = npc.modNPC?.CanChat() ?? vanillaCanChat;
 
 			foreach (GlobalNPC g in HookCanChat.arr) {
 				bool? canChat = g.Instance(npc).CanChat(npc);

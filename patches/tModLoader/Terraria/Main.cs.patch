@@ -4007,7 +4007,7 @@
  						{
  							bool flag3 = Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == k;
 -							if (Main.npc[k].townNPC || Main.npc[k].type == 105 || Main.npc[k].type == 106 || Main.npc[k].type == 123 || Main.npc[k].type == 354 || Main.npc[k].type == 376 || Main.npc[k].type == 579 || Main.npc[k].type == 453)
-+							if (NPCLoader.CanChat(Main.npc[k]))
++							if (NPCLoader.CanChat(Main.npc[k], Main.npc[k].townNPC || Main.npc[k].type == 105 || Main.npc[k].type == 106 || Main.npc[k].type == 123 || Main.npc[k].type == 354 || Main.npc[k].type == 376 || Main.npc[k].type == 579 || Main.npc[k].type == 453))
  							{
  								Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(Main.player[Main.myPlayer].position.X + (float)(Main.player[Main.myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(Main.player[Main.myPlayer].position.Y + (float)(Main.player[Main.myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  								Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)Main.npc[k].position.X, (int)Main.npc[k].position.Y, Main.npc[k].width, Main.npc[k].height);
