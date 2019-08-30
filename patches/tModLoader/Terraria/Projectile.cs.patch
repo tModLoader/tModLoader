@@ -596,7 +596,7 @@
  																											if (this.ai[1] == 10f && this.owner == Main.myPlayer)
  																											{
 -																												int num1033 = (int)(20f * Main.player[this.owner].minionDamage);
-+																												int num1033 = Main.player[this.owner].GetOtherDamage(20, "StardustGuardian");
++																												int num1033 = Main.player[this.owner].GetOtherDamage("StardustGuardian", 20, Main.player[this.owner].minionDamage, Main.player[this.owner].minionDamageMult);
  																												Projectile.NewProjectile(base.Center.X, base.Center.Y, 0f, 0f, 624, num1033, 6f, this.owner, 0f, 5f);
  																											}
  																										}

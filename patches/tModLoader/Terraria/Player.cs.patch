@@ -823,7 +823,7 @@
  						float num2 = 200f;
  						bool flag = this.infernoCounter % 60 == 0;
 -						int damage = 10;
-+						int damage = GetOtherDamage(10, "InfernoRing");
++						int damage = GetOtherDamage("InfernoRing", 10, 1f, 1f, 0, false);
  						if (this.whoAmI == Main.myPlayer)
  						{
  							for (int l = 0; l < 200; l++)
@@ -3657,7 +3657,7 @@
  				rect.Width = 2;
  				rect.Inflate(6, 12);
 -				float damage = 80f * this.minionDamage;
-+				float damage = GetOtherDamage(80, "Mount");
++				float damage = GetOtherDamage("Mount", 80, this.minionDamage, this.minionDamageMult);
  				float knockback = 10f;
  				int nPCImmuneTime = 30;
  				int playerImmuneTime = 6;
@@ -3666,7 +3666,7 @@
  				rect2.Width = 2;
  				rect2.Inflate(6, 12);
 -				float damage2 = 90f * this.minionDamage;
-+				float damage2 = GetOtherDamage(90, "Mount");
++				float damage2 = GetOtherDamage("Mount", 90, this.minionDamage, this.minionDamageMult);
  				float knockback2 = 10f;
  				int nPCImmuneTime2 = 30;
  				int playerImmuneTime2 = 6;
@@ -3675,7 +3675,7 @@
  						if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(this.position, this.width, this.height, nPC.position, nPC.width, nPC.height)))
  						{
 -							float num = 40f * this.minionDamage;
-+							float num = GetOtherDamage(40, "Mount");
++							float num = GetOtherDamage("Mount", 40, this.minionDamage, this.minionDamageMult);
  							float knockback = 5f;
  							int direction = this.direction;
  							if (this.velocity.X < 0f)
@@ -3684,7 +3684,7 @@
  							if (rectangle.Intersects(rect) && (nPC.noTileCollide || this.CanHit(nPC)))
  							{
 -								float num = 30f * this.meleeDamage;
-+								float num = GetOtherDamage(30, "MeleeDash");
++								float num = GetOtherDamage("MeleeDash", 30, this.meleeDamage, this.meleeDamageMult);
  								float num2 = 9f;
  								bool crit = false;
  								if (this.kbGlove)
@@ -3693,7 +3693,7 @@
  								this.ConsumeSolarFlare();
  							}
 -							float num4 = 150f * this.meleeDamage;
-+							float num4 = GetOtherDamage(150, "MeleeDash");
++							float num4 = GetOtherDamage("MeleeDash", 150, this.meleeDamage, this.meleeDamageMult);
  							float num5 = 9f;
  							bool crit2 = false;
  							if (this.kbGlove)
@@ -3935,16 +3935,16 @@
  							}
  							float num140 = Math.Abs(this.velocity.X) / this.maxRunSpeed;
 -							int damage2 = Main.DamageVar(25f + 55f * num140);
-+							int damage2 = Main.DamageVar(GetOtherDamage(55, "Minecart"));
++							int damage2 = Main.DamageVar(GetOtherDamage("Minecart", 55, 1f, num140, 25));
  							if (this.mount.Type == 11)
  							{
 -								damage2 = Main.DamageVar(50f + 100f * num140);
-+								damage2 = Main.DamageVar(GetOtherDamage(100, "MinecartMech"));
++								damage2 = Main.DamageVar(GetOtherDamage("Minecart", 100, 1f, num140, 50));
  							}
  							if (this.mount.Type == 13)
  							{
 -								damage2 = Main.DamageVar(15f + 30f * num140);
-+								damage2 = Main.DamageVar(GetOtherDamage(30, "MinecartWood"));
++								damage2 = Main.DamageVar(GetOtherDamage("Minecart", 30, 1f, num140, 15));
  							}
  							float knockback = 5f + 25f * num140;
  							int direction = 1;
@@ -5880,7 +5880,7 @@
  				{
  					if (this.buffType[i] == 27 || this.buffType[i] == 101 || this.buffType[i] == 102)
  					{
-@@ -37374,73 +_,148 @@
+@@ -37374,73 +_,102 @@
  			{
  				KnockBack *= 1f + (1f - this.stealth) * 0.5f;
  			}
@@ -5982,63 +5982,17 @@
 +			return Math.Max(0, damage);
 +		}
 +
-+		public int GetOtherDamage(int damage, string context) {
-+			if (damage <= 0) {
-+				return damage;
++		public int GetOtherDamage(string context, int baseDamage, float add = 1f, float mult = 1f, float flat = 0f, bool allDamageBonus = true) {
++			if (baseDamage <= 0) {
++				return baseDamage;
 +			}
-+
-+			float add = allDamage;
-+			float mult = allDamageMult;
-+			float flat = 0f;
-+
-+			switch (context) {
-+				case "MeleeDash":
-+				case "Melee":
-+					add += meleeDamage - 1;
-+					mult *= meleeDamageMult;
-+					break;
-+				case "Ranged":
-+					add += rangedDamage - 1;
-+					mult *= rangedDamageMult;
-+					break;
-+				case "ForbiddenStorm":
-+					add += magicDamage + minionDamage - 2;
-+					mult *= magicDamageMult * minionDamageMult;
-+					break;
-+				case "Magic":
-+					add += magicDamage - 1;
-+					mult *= magicDamageMult;
-+					break;
-+				case "StardustGuardian":
-+				case "Mount":
-+				case "Minion":
-+					add += minionDamage - 1;
-+					mult *= minionDamageMult;
-+					break;
-+				case "Thrown":
-+					add += thrownDamage - 1;
-+					mult *= thrownDamageMult;
-+					break;
-+				case "MinecartWood":
-+					flat -= 10f;
-+					goto case "Minecart";
-+				case "MinecartMech":
-+					flat += 25f;
-+					goto case "Minecart";
-+				case "Minecart":
-+					flat += 25f;
-+					add = 1f;
-+					mult = Math.Abs(velocity.X) / maxRunSpeed;
-+					break;
-+				case "InfernoRing":
-+				case "None":
-+					add = mult = 1f;
-+					break;
++			if (allDamageBonus)	{
++				add += allDamage - 1f;
++				mult *= allDamageMult;
 +			}
-+
-+			PlayerHooks.ModifyOtherDamage(this, damage, context, ref add, ref mult, ref flat);
-+			damage = (int)(damage * add * mult + 5E-06f + flat);
-+			return Math.Max(0, damage);
++			PlayerHooks.ModifyOtherDamage(this, context, baseDamage, ref add, ref mult, ref flat);
++			baseDamage = (int)(baseDamage * add * mult + 5E-06f + flat);
++			return Math.Max(0, baseDamage);
  		}
  
  		private void ApplyAnimation(Item sItem)
@@ -6820,7 +6774,7 @@
  				}
  			}
 -			int damage = (int)(20f * (1f + this.magicDamage + this.minionDamage - 2f));
-+			int damage = GetOtherDamage(20, "ForbiddenStorm");
++			int damage = GetOtherDamage("ForbiddenStorm", 20, 1f + this.magicDamage + this.minionDamage - 2f, this.magicDamageMult * this.minionDamageMult);
  			Projectile arg_37A_0 = Main.projectile[Projectile.NewProjectile(this.MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer, 0f, 0f)];
  		}
  

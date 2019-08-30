@@ -659,12 +659,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyOtherDamage(int damage, string context, ref float add, ref float mult, ref float flat);
+		private delegate void DelegateModifyOtherDamage(string context, int baseDamage, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyOtherDamage = AddHook<DelegateModifyOtherDamage>(p => p.ModifyOtherDamage);
 
-		public static void ModifyOtherDamage(Player player, int damage, string context, ref float add, ref float mult, ref float flat) {
+		public static void ModifyOtherDamage(Player player, string context, int baseDamage, ref float add, ref float mult, ref float flat) {
 			foreach (int index in HookModifyOtherDamage.arr) {
-				player.modPlayers[index].ModifyOtherDamage(damage, context, ref add, ref mult, ref flat);
+				player.modPlayers[index].ModifyOtherDamage(context, baseDamage, ref add, ref mult, ref flat);
 			}
 		}
 

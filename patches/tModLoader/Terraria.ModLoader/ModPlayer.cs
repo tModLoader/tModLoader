@@ -495,29 +495,21 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify the damage dealt by a player from special sources not tied to specific an specific item's damage. This is useful for modifying damage from vanilla mounts or dashes.
 		/// Contexts for damage sources are as follows:
 		/// <list type="bullet">
-		/// <item><description>"Melee" - Melee and global bonuses. To be used by mods.</description></item>
-		/// <item><description>"Magic" - Magic and global bonuses. To be used by mods.</description></item>
-		/// <item><description>"Ranged" - Ranged and global bonuses. To be used by mods.</description></item>
-		/// <item><description>"Minion" - Minion and global bonuses. To be used by mods.</description></item>
-		/// <item><description>"Thrown" - Thrown and global bonuses. To be used by mods.</description></item>
-		/// <item><description>"None" - Not affected by vanilla bonuses. To be used by mods.</description></item>
 		/// <item><description>"MeleeDash" - Shield of Cthulhu and Solar Armor dashes. Affected by melee and global bonuses.</description></item>
 		/// <item><description>"ForbiddenStorm" - Forbidden Armor Ancient Storm. Affected by magic, minion and global bonuses.</description></item>
 		/// <item><description>"StardustGuardian" - Attack from the Stardust Guardian. Affected by minion and global bonuses.</description></item>
 		/// <item><description>"Mount" - Unicorn and Basilisk Mount's running attacks, as well as Slime mount's jumping attack. Affected by minion and global bonuses.</description></item>
-		/// <item><description>"MinecartWood" - Wooden Minecart's collision damage. Affected by the player's horizontal velocity, and has a flat bonus of 15.</description></item>
-		/// <item><description>"MinecartMech" - Mechanical Cart's collision damage. Affected by the player's horizontal velocity, and has a flat bonus of 50.</description></item>
-		/// <item><description>"Minecart" - Normal and Modded Minecart's collision damage. Affected by the player's horizontal movement speed, and has a flat bonus of 25.</description></item>
+		/// <item><description>"Minecart" - Minecart's collision damage. Affected by the player's horizontal movement speed, and has a flat damage bonus dependant on the minecart type.</description></item>
 		/// <item><description>"InfernoRing" - Inferno Potion's ring of fire damage. Not affected by vanilla bonuses.</description></item>
 		/// </list>
 		/// Any other context provided by mods will be affected by global damage bonuses by default.
 		/// </summary>
-		/// <param name="damage">The damage dealt by the source</param>
 		/// <param name="context">A string that represents the source or type of the damage</param>
+		/// <param name="baseDamage">The base damage dealt by the source</param>
 		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
 		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg velocity based buffs)</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from dashes"</param>
-		public virtual void ModifyOtherDamage(int damage, string context, ref float add, ref float mult, ref float flat) {
+		public virtual void ModifyOtherDamage(string context, int baseDamage, ref float add, ref float mult, ref float flat) {
 		}
 
 		/// <summary>
