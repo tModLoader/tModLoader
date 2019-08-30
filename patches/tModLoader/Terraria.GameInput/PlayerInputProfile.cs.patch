@@ -28,20 +28,27 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -292,6 +_,18 @@
+@@ -292,6 +_,25 @@
  			this.CopyKeysFrom(profile, mode, keysToCopy);
  		}
  
 +		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode)
 +		{
-+			string[] keysToCopy = ModContent.modHotKeys.Select(x=>x.Value.displayName).ToArray();
-+			this.CopyKeysFrom(profile, mode, keysToCopy);
++			foreach (var modHotkey in ModContent.modHotKeys) {
++				this.InputModes[mode].KeyStatus[modHotkey.Value.displayName].Clear();
++				if (!string.IsNullOrEmpty(modHotkey.Value.defaultKey)) {
++					this.InputModes[mode].KeyStatus[modHotkey.Value.displayName].Add(modHotkey.Value.defaultKey);
++				}
++			}
 +		}
 +
 +		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string displayname)
 +		{
-+			string[] keysToCopy = new string[] { displayname };
-+			this.CopyKeysFrom(profile, mode, keysToCopy);
++			var modHotKey = ModContent.modHotKeys[displayname];
++			this.InputModes[mode].KeyStatus[modHotKey.displayName].Clear();
++			if (!string.IsNullOrEmpty(modHotKey.defaultKey)) {
++				this.InputModes[mode].KeyStatus[modHotKey.displayName].Add(modHotKey.defaultKey);
++			}
 +		}
 +
  		public void CopyGamepadSettingsFrom(PlayerInputProfile profile, InputMode mode)

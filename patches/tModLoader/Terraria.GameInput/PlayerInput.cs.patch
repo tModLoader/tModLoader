@@ -18,7 +18,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -332,6 +_,44 @@
+@@ -332,6 +_,45 @@
  			}
  		}
  
@@ -56,6 +56,7 @@
 +			playerInputProfile.Initialize(PresetProfiles.ConsoleXBox);
 +			PlayerInput.OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
 +			PlayerInput.Triggers.Initialize(); // Populates triggers with known hotkeys
++			PlayerInput.SetSelectedProfile("Custom");
 +			PlayerInput.Load(); // Loads the JSON into the Profiles above
 +			reinitialize = false;
 +		}
@@ -63,6 +64,16 @@
  		public static void Initialize()
  		{
  			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
+@@ -388,7 +_,8 @@
+ 
+ 		public static void Load()
+ 		{
+-			Main.InputProfiles.Load();
++			if (!Main.InputProfiles.Load())
++				return; // fixes strange bug caused by deleting input profiles.json in game and reloading mods.
+ 			Dictionary<string, PlayerInputProfile> dictionary = new Dictionary<string, PlayerInputProfile>();
+ 			string text = null;
+ 			Main.InputProfiles.Get<string>("Selected Profile", ref text);
 @@ -488,6 +_,9 @@
  
  		public static void UpdateInput()
@@ -122,16 +133,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1524,11 +_,18 @@
- 							c.KeyStatus["Hotbar10"].Add("D0");
- 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
- 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModContent.modHotKeys)
-+							{
-+								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
-+							}
- 							return;
- 						case InputMode.KeyboardUI:
+@@ -1529,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -151,16 +153,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1634,11 +_,18 @@
- 							c.KeyStatus["Hotbar10"].Add("D0");
- 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
- 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModContent.modHotKeys)
-+							{
-+								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
-+							}
- 							return;
- 						case InputMode.KeyboardUI:
+@@ -1639,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -180,16 +173,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1743,11 +_,18 @@
- 							c.KeyStatus["Hotbar10"].Add("D0");
- 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
- 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModContent.modHotKeys)
-+							{
-+								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
-+							}
- 							return;
- 						case InputMode.KeyboardUI:
+@@ -1748,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -209,16 +193,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1852,11 +_,18 @@
- 							c.KeyStatus["Hotbar10"].Add("D0");
- 							c.KeyStatus["ViewZoomOut"].Add("OemMinus");
- 							c.KeyStatus["ViewZoomIn"].Add("OemPlus");
-+							foreach (var item in ModContent.modHotKeys)
-+							{
-+								c.KeyStatus[item.Value.displayName].Add(item.Value.defaultKey);
-+							}
- 							return;
- 						case InputMode.KeyboardUI:
+@@ -1857,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
