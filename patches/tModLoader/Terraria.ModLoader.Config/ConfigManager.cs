@@ -241,6 +241,7 @@ namespace Terraria.ModLoader.Config
 				if (success)
 				{
 					// Apply to Servers Config
+					ConfigManager.Save(pendingConfig);
 					JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
 					config.OnChanged();
 					// Send new config to all clients
