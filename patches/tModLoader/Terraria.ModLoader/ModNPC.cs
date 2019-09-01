@@ -326,6 +326,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make things happen when this NPC is catched. Ran Serverside
+		/// </summary>
+		/// <param name="player">The player catching this NPC</param>
+		public virtual void OnCatchNPC(Player player) {
+		}
+
+		/// <summary>
 		/// Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops.
 		/// </summary>
 		/// <param name="name"></param>

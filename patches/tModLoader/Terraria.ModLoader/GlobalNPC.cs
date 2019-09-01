@@ -192,6 +192,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make things happen when an NPC is catched. Ran Serverside.
+		/// </summary>
+		/// <param name="npc">The catched NPC</param>
+		/// <param name="player">The player catching the NPC</param>
+		public virtual void OnCatchNPC(NPC npc, Player player) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.
 		/// </summary>
 		/// <param name="npc"></param>
