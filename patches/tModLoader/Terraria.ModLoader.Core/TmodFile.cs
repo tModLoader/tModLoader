@@ -256,16 +256,25 @@ namespace Terraria.ModLoader.Core
 				if (fileStream != null)
 					throw new Exception($"File already opened? {path}");
 
-				if (name == null)
-					Read();
-				else
-					Reopen();
+				try {
+					if (name == null)
+						Read();
+					else
+						Reopen();
+				}
+				catch {
+					try { Close(); } catch {}
+					throw;
+				}
 			}
 
 			return new DisposeWrapper(Close);
 		}
 
 		private void Close() {
+			if (openCounter == 0)
+				return;
+
 			if (--openCounter == 0) {
 				if (sharedEntryReadStream != null)
 					throw new IOException($"Previous entry read stream not closed: {sharedEntryReadStream.Name}");
