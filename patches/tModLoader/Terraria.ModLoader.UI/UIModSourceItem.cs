@@ -198,11 +198,8 @@ namespace Terraria.ModLoader.UI
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 				using (PatientWebClient client = new PatientWebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
-					Interface.uploadModProgress.SetDownloading(modFile.name);
-					Interface.uploadModProgress.SetCancel(() => {
-						client.CancelAsync();
-					});
-					client.UploadProgressChanged += (s, e) => Interface.uploadModProgress.SetProgress(e);
+					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
+					client.UploadProgressChanged += (s, e) => Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
 					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
 
 					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
@@ -211,7 +208,6 @@ namespace Terraria.ModLoader.UI
 					byte[] data = UploadFile.GetUploadFilesRequestData(files, values);
 					client.UploadDataAsync(new Uri(url), data);
 				}
-				Main.menuMode = Interface.uploadModProgressID;
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);

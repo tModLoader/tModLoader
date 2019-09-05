@@ -14,15 +14,9 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		protected UIProgressBar _progressBar;
 		protected UITextPanel<string> _cancelButton;
-		private string _cachedText = "";
 
-		public string DisplayText {
-			get => _progressBar?.DisplayText;
-			set {
-				if (_progressBar?.DisplayText == null) _cachedText = value;
-				else _progressBar.DisplayText = value;
-			}
-		}
+		// separate variable copied to progress bar in Update, allows for thread safety and setting display text before UI initialization
+		public string DisplayText;
 
 		public float Progress {
 			get => _progressBar?.Progress ?? 0f;
@@ -54,26 +48,25 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			OnCancel?.Invoke();
 		}
 
-		public void Show() {
-			Main.menuMode = Interface.progressID;
+		public void Show(string displayText = "", int gotoMenu = 0, Action cancel = null) {
+			if (Main.MenuUI.CurrentState == this)
+				Main.MenuUI.RefreshState();
+			else
+				Main.menuMode = Interface.progressID;
+
+			DisplayText = displayText;
+			this.gotoMenu = gotoMenu;
+			
+			if (cancel != null)
+				OnCancel += cancel;
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			// Sometimes the DisplayText may be set just before the UI initializes and the progressBar is ready
-			// In this case the text ends up empty but can be set on the next Update call
-			if (!string.IsNullOrEmpty(_cachedText) && _progressBar != null) {
-				DisplayText = _cachedText;
-				_cachedText = string.Empty;
-			}
-		}
-
-		public override void OnActivate() {
-			_progressBar.DisplayText = _cachedText;
+			_progressBar.DisplayText = DisplayText;
 		}
 
 		public override void OnDeactivate() {
-			_cachedText = string.Empty;
 			DisplayText = string.Empty;
 			OnCancel = null;
 			gotoMenu = 0;

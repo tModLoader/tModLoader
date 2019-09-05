@@ -265,9 +265,7 @@ namespace Terraria.ModLoader
 
 			try {
 				if (downloadingFile == null) {
-					Interface.progress.DisplayText = reader.ReadString();
-					Interface.progress.OnCancel += CancelDownload;
-					Interface.progress.Show();
+					Interface.progress.Show(displayText: reader.ReadString(), cancel: CancelDownload);
 
 					ModLoader.GetMod(downloadingMod.name)?.Close();
 					downloadingLength = reader.ReadInt64();
@@ -277,7 +275,7 @@ namespace Terraria.ModLoader
 
 				var bytes = reader.ReadBytes((int)Math.Min(downloadingLength - downloadingFile.Position, CHUNK_SIZE));
 				downloadingFile.Write(bytes, 0, bytes.Length);
-				Interface.progress.Progress = downloadingFile.Position / downloadingLength;
+				Interface.progress.Progress = downloadingFile.Position / (float)downloadingLength;
 
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
