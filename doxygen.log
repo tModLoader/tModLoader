@@ -2306,5 +2306,5 @@ Patching output file 157/160
 Patching output file 158/160
 Patching output file 159/160
 Patching output file 160/160
-lookup cache used 11632/131072 hits=101088 misses=12199
+lookup cache used 11630/131072 hits=101065 misses=12197
 finished...
