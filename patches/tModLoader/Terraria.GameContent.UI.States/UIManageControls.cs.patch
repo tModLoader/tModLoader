@@ -152,6 +152,7 @@
 +				left.Width.Precent = 0.68f;
 +				left.Height.Precent = 1f;
 +				container.Append(left);
++				// TODO: Clear instead of Reset to Defaults if no default specified.
 +				var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
 +				right.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
 +				{

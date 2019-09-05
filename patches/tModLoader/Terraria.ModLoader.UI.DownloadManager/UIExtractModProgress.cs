@@ -75,7 +75,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 						: mod.properties.hideResources;
 
 					if (hidden) {
-						log.Write($"[hidden] {name}");
+						log.WriteLine($"[hidden] {name}");
 						continue;
 					} else {
 						log.WriteLine(name);

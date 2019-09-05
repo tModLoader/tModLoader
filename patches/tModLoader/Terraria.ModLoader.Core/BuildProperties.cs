@@ -257,6 +257,9 @@ namespace Terraria.ModLoader.Core
 
 		internal static BuildProperties ReadFromStream(Stream stream) {
 			BuildProperties properties = new BuildProperties();
+			// While the intended defaults for these are false, Info will only have !hideCode and !hideResources entries, so this is necessary.
+			properties.hideCode = true;
+			properties.hideResources = true;
 			using (var reader = new BinaryReader(stream)) {
 				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString()) {
 					if (tag == "dllReferences") {
