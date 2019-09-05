@@ -489,6 +489,7 @@ namespace Terraria.ModLoader.Core
 				// read mod assembly using cecil for verification and pdb processing
 				using (var asmResolver = new DefaultAssemblyResolver()) {
 					asmResolver.AddSearchDirectory(Path.GetDirectoryName(dllPath));
+					asmResolver.AddSearchDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
 					var asm = AssemblyDefinition.ReadAssembly(dllPath, new ReaderParameters { InMemory = true, ReadSymbols = mod.properties.includePDB, AssemblyResolver = asmResolver });
 					VerifyModAssembly(mod.Name, asm);
