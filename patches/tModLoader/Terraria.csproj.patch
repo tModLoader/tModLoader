@@ -127,7 +127,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,241 @@
+@@ -339,6 +_,240 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -220,11 +220,10 @@
 +    <Compile Include="Terraria.ModLoader.Core\EntryReadStream.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\DownloadFile.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\DownloadModFile.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UILoadModsProgress.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UILoadMods.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIProgress.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIDownloadProgress.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIProgressBar.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIUnloadModsProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIProgressBar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\FixedUIScrollbar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.Elements\UIGrid.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.ModBrowser\ModBrowserSortMode.cs" />
@@ -241,7 +240,7 @@
 +    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UpdateFilter.cs" />
 +    <Compile Include="Terraria.ModLoader.UI.ModBrowser\UpdateFilterModesExtensions.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIAutoScaleTextTextPanel.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIBuildModProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIBuildMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICommon.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UICreateMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIDeveloperModeHelp.cs" />
@@ -254,7 +253,7 @@
 +    <Compile Include="Terraria.ModLoader.UI\UIInfoMessage.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIInputTextField.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UILoaderAnimatedImage.cs" />
-+    <Compile Include="Terraria.ModLoader.UI.DownloadManager\UIExtractModProgress.cs" />
++    <Compile Include="Terraria.ModLoader.UI\UIExtractMod.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIManagePublished.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMemoryBar.cs" />
 +    <Compile Include="Terraria.ModLoader.UI\UIMessageBox.cs" />

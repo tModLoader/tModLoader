@@ -384,7 +384,7 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private void Upgrade() {
-			Interface.loadModsProgress.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
+			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
 			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
 
 			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress, true))

@@ -303,7 +303,7 @@ namespace Terraria.ModLoader
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
-			Interface.loadModsProgress.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.loading = true;
 				mod.AutoloadConfig();
@@ -313,11 +313,11 @@ namespace Terraria.ModLoader
 				mod.loading = false;
 			});
 
-			Interface.loadModsProgress.SetLoadStage("tModLoader.MSSettingUp");
+			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			Interface.loadModsProgress.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
 				mod.PostSetupContent();
@@ -347,7 +347,7 @@ namespace Terraria.ModLoader
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadModsProgress.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
@@ -364,7 +364,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void SetupRecipes(CancellationToken token) {
-			Interface.loadModsProgress.SetLoadStage("tModLoader.MSAddingRecipes");
+			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				token.ThrowIfCancellationRequested();
 				Main.recipe[k] = new Recipe();
@@ -382,7 +382,7 @@ namespace Terraria.ModLoader
 					if (Main.dedServ)
 						Console.WriteLine($"Unloading {mod.DisplayName}...");
 					else
-						Interface.loadModsProgress.SetCurrentMod(i++, mod.DisplayName);
+						Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
 					mod.Close();
 					mod.UnloadContent();
 				}

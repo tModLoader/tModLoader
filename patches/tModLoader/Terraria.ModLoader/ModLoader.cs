@@ -193,7 +193,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				Load();
 			else
-				Main.menuMode = Interface.loadModsProgressID;
+				Main.menuMode = Interface.loadModsID;
 		}
 
 		internal static List<string> badUnloaders = new List<string>();
@@ -206,7 +206,7 @@ namespace Terraria.ModLoader
 				if (Main.dedServ) {
 					Console.WriteLine("Unloading mods...");
 				} else {
-					Interface.loadModsProgress.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
+					Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 				}
 
 				ModContent.UnloadModContent();
