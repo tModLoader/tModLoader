@@ -18,7 +18,7 @@ public class MacInfo {
                         "tModLoader-mono",
                         "I18N.dll",
                         "I18N.West.dll",
-                        "osx/libMonoPosixHelper.dylib"
+                        "libMonoPosixHelper.dylib"
                 };
         String[] filesToDelete = new String[]
                 {

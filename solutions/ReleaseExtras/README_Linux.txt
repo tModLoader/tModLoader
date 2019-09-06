@@ -11,9 +11,7 @@ Steam Manual Install:
 
 3.  Copy all of the files from the temporary folder (or zip archive) into the install folder. You'll need to make sure to replace files if asked: https://gfycat.com/EqualFaithfulAfricanharrierhawk
 
-4.  If you are updating from tModLoader v0.10.1.5 or earlier, you'll need to delete "MP3Sharp.dll", "Ionic.Zip.Reduced.dll", and "Mono.Cecil.dll" from the install folder.
-
-5. You need to give execute permissions to 2 files. Open a terminal in the install directory and run the following 2 commands:
+4. You need to give execute permissions to 2 files. Open a terminal in the install directory and run the following 2 commands:
     chmod +x tModLoaderServer
     chmod +x Terraria
 

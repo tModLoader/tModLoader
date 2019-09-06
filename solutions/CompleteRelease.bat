@@ -44,7 +44,8 @@ copy ReleaseExtras\start-tModLoaderServer.bat "%win%" /y
 copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%" /y
 copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%" /y
 
-call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%win%" "%win%.zip"
 
 :: Windows ModCompile
 :: TODO: investigate why this isn't working on my machine
@@ -58,7 +59,8 @@ copy ..\src\tModLoader\bin\WindowsRelease\net45\tModLoader.pdb "%mcfna%" /y
 copy ..\references\MonoMod.RuntimeDetour.xml "%mcfna%" /y
 copy ..\references\MonoMod.Utils.xml "%mcfna%" /y
 
-call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mcfna%" "%mcfna%.zip"
 
 :: Linux release
 copy ..\src\tModLoader\bin\LinuxRelease\net45\Terraria.exe "%lnx%\tModLoader.exe" /y
@@ -74,7 +76,9 @@ copy ..\references\I18N.West.dll "%lnx%\I18N.West.dll" /y
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
 
-call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
+call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
 
 :: Mac release
 copy "%lnx%" "%mac%"
@@ -83,10 +87,10 @@ copy ..\src\tModLoader\bin\MacServerRelease\net45\Terraria.exe "%mac%\tModLoader
 
 copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
-mkdir "%mac%\osx"
-copy ReleaseExtras\osx "%mac%\osx" /y
+copy ReleaseExtras\osx\libMonoPosixHelper.dylib "%mac%\libMonoPosixHelper.dylib" /y
 
-call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mac%" "%mac%.zip"
 
 :: Mono ModCompile
 copy "%mcfna%" "%mcxna%"
@@ -101,7 +105,8 @@ copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Game.dll
 copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Graphics.dll "%mcxna%" /y
 copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Xact.dll "%mcxna%" /y
 
-call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mcxna%" "%mcxna%.zip"
 
 :: CleanUp, Delete temp Folders
 rmdir "%win%" /S /Q
@@ -119,7 +124,8 @@ rmdir "%mcxna%" /S /Q
 rmdir ..\ExampleMod\bin /S /Q
 rmdir ..\ExampleMod\obj /S /Q
 :: TODO: ignore .vs folder
-call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
+::call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "..\ExampleMod" "%destinationFolder%\ExampleMod %version%.zip" ExampleMod\
 ::copy "%destinationFolder%\ExampleMod %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
 
 echo(

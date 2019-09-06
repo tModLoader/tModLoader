@@ -9,13 +9,9 @@ Steam Manual Install:
 
 2.  Back-up your vanilla Terraria.exe if you haven't already. To do this, rename the "Terraria.exe" file in the install folder to "Terraria_v1.3.5.3.exe".
 
-3.  Copy all of the files from the temporary folder (or zip archive) into the install folder using the special merge copy and paste (This is necessary since Mac will delete folders rather than merge folders when copy and pasting). To do this, hold down the Option key as you drag-and-drop all the files and folders from this folder and drop them into the folder mentioned above. If you do this, you’ll see a dialog with a Merge button and you can click it to merge folders like you would on Windows or Linux. You'll need to make sure to replace files if asked: https://gfycat.com/EqualFaithfulAfricanharrierhawk
+3.  Copy all of the files from the temporary folder (or zip archive) into the install folder. You'll need to make sure to replace files if asked: https://gfycat.com/EqualFaithfulAfricanharrierhawk
 
-3.B  If you messed up the merge copy and paste, you'll need to first "verify game integrity" to get the files back (see below) and then try step 3 again.
-
-4.  If you are updating from tModLoader v0.10.1.5 or earlier, you'll need to delete "MP3Sharp.dll", "Ionic.Zip.Reduced.dll", and "Mono.Cecil.dll" from the install folder.
-
-5. You need to give execute permissions to 2 files. Open a terminal in the install directory and run the following 2 commands:
+4. You need to give execute permissions to 2 files. Open a terminal in the install directory and run the following 2 commands:
     chmod +x tModLoaderServer
     chmod +x Terraria
 
