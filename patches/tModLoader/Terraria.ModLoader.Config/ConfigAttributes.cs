@@ -319,6 +319,26 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
+	/// Add this attribute to a Color item and Alpha will not be presented in the UI and will remain as 255 unless manually edited.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class ColorNoAlphaAttribute : Attribute
+	{
+	}
+
+	/// <summary>
+	/// Add this attribute to a Color item and the UI will present a Hue, Saturation, and Lightness sliders rather than Red, Green, and Blue sliders. Pass in false to skip Saturation and Lightness.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class ColorHSLSliderAttribute : Attribute
+	{
+		public bool showSaturationAndLightness;
+		public ColorHSLSliderAttribute(bool showSaturationAndLightness = true) {
+			this.showSaturationAndLightness = showSaturationAndLightness;
+		}
+	}
+
+	/// <summary>
 	/// This specifies that the annotated item will appear as a button that leads to a separate page in the UI. Use this to organize hierarchies.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]

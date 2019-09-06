@@ -515,6 +515,11 @@ namespace ExampleMod
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
 		public Corner corner;
 
+		// You can put multiple attributes in the same [] if you like.
+		// ColorHueSliderAttribute displayes Hue Saturation Lightness. Passing in false means only Hue is shown.
+		[DefaultValue(typeof(Color), "255, 0, 0, 255"), ColorHSLSlider(false), ColorNoAlpha]  
+		public Color hsl;
+
 		// In this example we inherit from a tmodloader config UIElement to slightly customize the colors.
 		[CustomModConfigItem(typeof(CustomFloatElement))]
 		public float tint;
