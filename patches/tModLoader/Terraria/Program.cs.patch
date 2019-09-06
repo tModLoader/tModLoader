@@ -12,7 +12,7 @@
  		public const bool IsServer = true;
  		#endif
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
-+		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes 
++		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
  		private static int ThingsToLoad = 0;
  		private static int ThingsLoaded = 0;
  		public static bool LoadedEverything = false;

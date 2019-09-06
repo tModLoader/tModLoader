@@ -39,8 +39,7 @@
 +
  			foreach (KeyValuePair<string, List<string>> current in dict)
  			{
--				if (this.KeyStatus.ContainsKey(current.Key))
-+				if (this.KeyStatus.ContainsKey(current.Key)) 
+ 				if (this.KeyStatus.ContainsKey(current.Key))
  				{
 -					this.KeyStatus[current.Key].Clear();
 -					foreach (string current2 in current.Value)
@@ -62,7 +61,7 @@
 -			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus)
 +
 +			// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
-+			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus.Where(x => x.Value.Count > 0)) 
++			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus.Where(x => x.Value.Count > 0))
  			{
 -				if (current.Value.Count > 0)
 -				{
@@ -80,7 +79,7 @@
 -					{
 -						"Mouse1"
 -					});
-+				dictionary["MouseLeft"] = new List<string> 
++				dictionary["MouseLeft"] = new List<string>
 +				{
 +					"Mouse1"
 +				};

@@ -130,7 +130,7 @@
 +						};
 +						return uIElement7;
 +					}
-+				case "ClearModHotkeys": 
++				case "ClearModHotkeys":
 +					{
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
@@ -140,7 +140,7 @@
  						};
  						return uIElement7;
  					}
-@@ -660,11 +_,39 @@
+@@ -660,11 +_,40 @@
  							}
  						}, 1008, color);
  			}

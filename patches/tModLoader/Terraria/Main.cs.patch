@@ -261,7 +261,7 @@
  		public static int selectedPlayer = 0;
  		public static int selectedWorld = 0;
 -		public static int menuMode = 0;
-+		public static int menuMode = Interface.loadModsProgressID;
++		public static int menuMode = Interface.loadModsID;
  		public static int menuSkip = 0;
  		private static bool _needsLanguageSelect = true;
 -		private static Item cpItem = new Item();
@@ -4127,7 +4127,7 @@
  				{
  					LanguageManager.Instance.SetLanguage(this.selectedMenu);
 -					Main.menuMode = 0;
-+					Main.menuMode = ModLoader.Interface.loadModsProgressID;
++					Main.menuMode = ModLoader.Interface.loadModsID;
  					Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  					Main.SaveSettings();
  				}
