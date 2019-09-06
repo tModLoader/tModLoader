@@ -5,6 +5,8 @@ var hierarchy =
       [ "Terraria.ModLoader.AutoloadEquip", "class_terraria_1_1_mod_loader_1_1_autoload_equip.html", null ],
       [ "Terraria.ModLoader.AutoloadHead", "class_terraria_1_1_mod_loader_1_1_autoload_head.html", null ],
       [ "Terraria.ModLoader.Config.BackgroundColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.ColorHSLSliderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_color_h_s_l_slider_attribute.html", null ],
+      [ "Terraria.ModLoader.Config.ColorNoAlphaAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_color_no_alpha_attribute.html", null ],
       [ "Terraria.ModLoader.Config.CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DefaultDictionaryKeyValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html", null ],
       [ "Terraria.ModLoader.Config.DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", null ],

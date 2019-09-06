@@ -2,6 +2,8 @@ var dir_95e31f3f5d6a475696026a3990020e73 =
 [
     [ "ConfigAttributes.cs", "_config_attributes_8cs.html", [
       [ "BackgroundColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute" ],
+      [ "ColorHSLSliderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_color_h_s_l_slider_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_color_h_s_l_slider_attribute" ],
+      [ "ColorNoAlphaAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_color_no_alpha_attribute.html", null ],
       [ "CustomModConfigItemAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_custom_mod_config_item_attribute" ],
       [ "DefaultDictionaryKeyValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute" ],
       [ "DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute" ],
