@@ -60,6 +60,8 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ConfigureAppenders() {
+			LogArchiver.ArchiveLogs(); // Strangly, client.log.old can sometimes exist at this point. 
+
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
