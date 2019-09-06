@@ -98,6 +98,12 @@ namespace Terraria.ModLoader.UI
 						string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
 						if (File.Exists(AssemblyInfoFile))
 							File.Delete(AssemblyInfoFile);
+						string objFolder = Path.Combine(_mod, "obj"); // Old files can cause some issues.
+						if (Directory.Exists(objFolder))
+							Directory.Delete(objFolder, true);
+						string binFolder = Path.Combine(_mod, "bin");
+						if (Directory.Exists(binFolder))
+							Directory.Delete(binFolder, true);
 						Directory.CreateDirectory(propertiesFolder);
 						File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
 						Main.PlaySound(SoundID.MenuOpen);
