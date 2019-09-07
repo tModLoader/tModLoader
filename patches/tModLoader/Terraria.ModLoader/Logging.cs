@@ -33,6 +33,7 @@ namespace Terraria.ModLoader
 		internal const string side = "server";
 #endif
 
+		private static List<string> initWarnings = new List<string>();
 		internal static void Init() {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
@@ -51,7 +52,10 @@ namespace Terraria.ModLoader
 			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
 
-			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
+			foreach (var line in initWarnings)
+				tML.Warn(line);
+
+				AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
 			LogFirstChanceExceptions();
 			EnablePortablePDBTraces();
 			AssemblyResolving.Init();
@@ -60,8 +64,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ConfigureAppenders() {
-			LogArchiver.ArchiveLogs(); // Strangly, client.log.old can sometimes exist at this point. 
-
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
@@ -94,7 +96,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static string GetNewLogFile(string baseName) {
-			var pattern = new Regex($"{baseName}(\\d*)\\.log");
+			var pattern = new Regex($"{baseName}(\\d*)\\.log$");
 			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 
 			if (!existingLogs.All(CanOpen)) {
@@ -105,14 +107,19 @@ namespace Terraria.ModLoader
 				return $"{baseName}{n + 1}.log";
 			}
 
-			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime))
+			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime)) {
+				var oldExt = ".old";
+				int n = 0;
+				while (File.Exists(existingLog + oldExt))
+					oldExt = $".old{++n}";
+
 				try {
-					File.Move(existingLog, existingLog + ".old");
+					File.Move(existingLog, existingLog + oldExt);
 				}
-				catch (IOException) {
-					// Archiving has failed. Old log will be truncated. Display message to server console since logging won't work. Useful for tail command utilization
-					Console.WriteLine($"The log file, {existingLog}, is in use and can't be archived. Old log data will be forgotten.");
+				catch (IOException e) {
+					initWarnings.Add($"Move failed during log initialization: {existingLog} -> {Path.GetFileName(existingLog)}{oldExt}\n{e}");
 				}
+			}
 
 			return $"{baseName}.log";
 		}

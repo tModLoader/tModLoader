@@ -6,10 +6,14 @@ using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader.Core
 {
+	/// <summary>
+	/// Log archiving is performed after log initialization in a separate class to avoid loading Ionic.Zip before logging initialises and it can be patched
+	/// Some CLRs will load all required assemblies when the class is entered, not necessarily just the method, so you've got to watch out
+	/// </summary>
 	internal static class LogArchiver
 	{
 		internal static void ArchiveLogs() {
-			foreach (var logFile in Directory.GetFiles(Logging.LogDir, "*.old"))
+			foreach (var logFile in Directory.GetFiles(Logging.LogDir, "*.old*"))
 				Archive(logFile, Path.GetFileNameWithoutExtension(logFile));
 
 			DeleteOldArchives();
