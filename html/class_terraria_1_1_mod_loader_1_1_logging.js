@@ -15,6 +15,7 @@ var class_terraria_1_1_mod_loader_1_1_logging =
     [ "ignoreMessages", "class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69", null ],
     [ "ignoreSources", "class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308", null ],
     [ "ignoreThrowingMethods", "class_terraria_1_1_mod_loader_1_1_logging.html#a9b390ec6b67ea337575660e50436764b", null ],
+    [ "initWarnings", "class_terraria_1_1_mod_loader_1_1_logging.html#a0d8d07a10473d5b0c0ced7a7590c793f", null ],
     [ "LogDir", "class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0", null ],
     [ "pastExceptions", "class_terraria_1_1_mod_loader_1_1_logging.html#a265273fc6be533777124b395badc4d41", null ],
     [ "previousException", "class_terraria_1_1_mod_loader_1_1_logging.html#ab83db5ee1ab51cef9dce3676ca890781", null ],
