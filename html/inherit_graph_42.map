@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html" title="Terraria.ModLoader.IO.Tag\lPrinter" alt="" coords="5,5,189,47"/>
+<area shape="rect" id="node1" href="$interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html" title="Terraria.ModLoader.IO.Tag\lSerializable" alt="" coords="5,104,189,145"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html" title="Classes implementing EntityDefinition serve to function as a way to save and load the identities of v..." alt="" coords="237,104,428,145"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html" title="ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig..." alt="" coords="476,5,667,47"/>
+<area shape="rect" id="node4" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_n_p_c_definition.html" title="Terraria.ModLoader.Config.\lNPCDefinition" alt="" coords="476,71,667,112"/>
+<area shape="rect" id="node5" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_prefix_definition.html" title="Terraria.ModLoader.Config.\lPrefixDefinition" alt="" coords="476,136,667,177"/>
+<area shape="rect" id="node6" href="$class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html" title="Terraria.ModLoader.Config.\lProjectileDefinition" alt="" coords="476,201,667,243"/>
 </map>

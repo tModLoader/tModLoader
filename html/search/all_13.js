@@ -15,7 +15,7 @@ var searchData=
   ['tagserializable',['TagSerializable',['../interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html',1,'Terraria::ModLoader::IO']]],
   ['tagserializable_2ecs',['TagSerializable.cs',['../_tag_serializable_8cs.html',1,'']]],
   ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a909b0d054a2e5c7b520c3146d58ce728',1,'Terraria::ModLoader::IO::TagSerializer']]],
-  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;']]],
+  ['tagserializer',['TagSerializer',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer&lt; T, S &gt;'],['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria.ModLoader.IO.TagSerializer']]],
   ['tagserializer_2ecs',['TagSerializer.cs',['../_tag_serializer_8cs.html',1,'']]],
   ['tagserializer_3c_20bool_2c_20byte_20_3e',['TagSerializer&lt; bool, byte &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria::ModLoader::IO']]],
   ['tagserializer_3c_20color_2c_20int_20_3e',['TagSerializer&lt; Color, int &gt;',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html',1,'Terraria::ModLoader::IO']]],

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['v',['V',['../class_terraria_1_1_mod_loader_1_1_effects_tracker_1_1_key_cache.html#ab8bcae1dd8ce9ed35e9592c5c89f6a7a',1,'Terraria::ModLoader::EffectsTracker::KeyCache']]],
   ['validateitem',['ValidateItem',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a24fc4d2c08a22c38dd7738adbbda9ca6',1,'Terraria::ModLoader::ModPrefix']]],
   ['validtile',['ValidTile',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a196c8616a4924fdf45458314fd0ec2b0',1,'Terraria::ModLoader::ModTileEntity']]],
   ['valueproviderdecorator',['ValueProviderDecorator',['../class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html#abaa52817f48e1c253b1d90d2622004e4',1,'Terraria::ModLoader::Config::ReferenceDefaultsPreservingResolver::ValueProviderDecorator']]],
