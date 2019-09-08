@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;

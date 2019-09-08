@@ -4,7 +4,7 @@ using System.Linq;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Engine
 {
 	internal static class EffectsTracker
 	{

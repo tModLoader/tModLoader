@@ -1,11 +1,9 @@
-﻿using Mono.Cecil;
-using MonoMod.RuntimeDetour;
+﻿using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
