@@ -433,13 +433,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player>>(g => g.OnCatchNPC);
+		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
 
-		public static void OnCatchNPC(NPC npc, Player player) {
-			npc.modNPC?.OnCatchNPC(player);
+		public static void OnCatchNPC(NPC npc, Player player, Item item) {
+			npc.modNPC?.OnCatchNPC(player, item);
 
 			foreach (GlobalNPC g in HookOnCatchNPC.arr) {
-				g.Instance(npc).OnCatchNPC(npc, player);
+				g.Instance(npc).OnCatchNPC(npc, player, item);
 			}
 		}
 

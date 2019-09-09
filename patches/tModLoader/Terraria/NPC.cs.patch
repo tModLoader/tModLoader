@@ -556,11 +556,13 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num77 = (int)Player.FindClosest(this.position, this.width, this.height);
-@@ -63308,6 +_,7 @@
+@@ -63307,7 +_,8 @@
+ 				}
  				Item item = new Item();
  				item.SetDefaults((int)Main.npc[i].catchItem, false);
- 				Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, (int)Main.npc[i].catchItem, 1, false, 0, true, false);
-+				NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who]);
+-				Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, (int)Main.npc[i].catchItem, 1, false, 0, true, false);
++				int itemWhoAmI = Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, (int)Main.npc[i].catchItem, 1, false, 0, true, false);
++				NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who], Main.item[itemWhoAmI]);
  				Main.npc[i].active = false;
  				NetMessage.SendData(23, -1, -1, null, i, 0f, 0f, 0f, 0, 0, 0);
  			}

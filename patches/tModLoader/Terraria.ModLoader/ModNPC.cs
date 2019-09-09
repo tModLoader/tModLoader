@@ -325,11 +325,12 @@ namespace Terraria.ModLoader
 		public virtual void NPCLoot() {
 		}
 
-		/// <summary>
-		/// Allows you to make things happen when this NPC is catched. Ran Serverside
-		/// </summary>
-		/// <param name="player">The player catching this NPC</param>
-		public virtual void OnCatchNPC(Player player) {
+        /// <summary>
+        /// Allows you to make things happen when this NPC is catched. Ran Serverside
+        /// </summary>
+        /// <param name="player">The player catching this NPC</param>
+        /// <param name="item">The item that will be spawned</param>
+        public virtual void OnCatchNPC(Player player, Item item) {
 		}
 
 		/// <summary>
