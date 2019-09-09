@@ -514,12 +514,11 @@ namespace Terraria.ModLoader
 		private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 		public static bool PreItemCheck(Player player) {
+			bool result = true;
 			foreach (int index in HookPreItemCheck.arr) {
-				if (!player.modPlayers[index].PreItemCheck()) {
-					return false;
-				}
+				result &= player.modPlayers[index].PreItemCheck();
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPostItemCheck = AddHook<Action>(p => p.PostItemCheck);

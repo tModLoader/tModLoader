@@ -167,15 +167,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreAI = AddHook<Func<Projectile, bool>>(g => g.PreAI);
 
 		public static bool PreAI(Projectile projectile) {
+			bool result = true;
 			foreach (GlobalProjectile g in HookPreAI.arr) {
-				if (!g.Instance(projectile).PreAI(projectile)) {
-					return false;
-				}
+				result &= g.Instance(projectile).PreAI(projectile);
 			}
-			if (projectile.modProjectile != null) {
+			if (result && projectile.modProjectile != null) {
 				return projectile.modProjectile.PreAI();
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookAI = AddHook<Action<Projectile>>(g => g.AI);
@@ -269,15 +268,14 @@ namespace Terraria.ModLoader
 		private static HookList HookOnTileCollide = AddHook<Func<Projectile, Vector2, bool>>(g => g.OnTileCollide);
 
 		public static bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
+			bool result = true;
 			foreach (GlobalProjectile g in HookOnTileCollide.arr) {
-				if (!g.Instance(projectile).OnTileCollide(projectile, oldVelocity)) {
-					return false;
-				}
+				result &= g.Instance(projectile).OnTileCollide(projectile, oldVelocity);
 			}
-			if (projectile.modProjectile != null) {
+			if (result && projectile.modProjectile != null) {
 				return projectile.modProjectile.OnTileCollide(oldVelocity);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookCanCutTiles = AddHook<Func<Projectile, bool?>>(g => g.CanCutTiles);
@@ -304,15 +302,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreKill = AddHook<Func<Projectile, int, bool>>(g => g.PreKill);
 
 		public static bool PreKill(Projectile projectile, int timeLeft) {
+			bool result = true;
 			foreach (GlobalProjectile g in HookPreKill.arr) {
-				if (!g.Instance(projectile).PreKill(projectile, timeLeft)) {
-					return false;
-				}
+				result &= g.Instance(projectile).PreKill(projectile, timeLeft);
 			}
-			if (projectile.modProjectile != null) {
+			if (result && projectile.modProjectile != null) {
 				return projectile.modProjectile.PreKill(timeLeft);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
@@ -520,29 +517,27 @@ namespace Terraria.ModLoader
 		private static HookList HookPreDrawExtras = AddHook<Func<Projectile, SpriteBatch, bool>>(g => g.PreDrawExtras);
 
 		public static bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+			bool result = true;
 			foreach (GlobalProjectile g in HookPreDrawExtras.arr) {
-				if (!g.Instance(projectile).PreDrawExtras(projectile, spriteBatch)) {
-					return false;
-				}
+				result &= g.Instance(projectile).PreDrawExtras(projectile, spriteBatch);
 			}
-			if (projectile.modProjectile != null) {
+			if (result && projectile.modProjectile != null) {
 				return projectile.modProjectile.PreDrawExtras(spriteBatch);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPreDraw = AddHook<Func<Projectile, SpriteBatch, Color, bool>>(g => g.PreDraw);
 
 		public static bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+			bool result = true;
 			foreach (GlobalProjectile g in HookPreDraw.arr) {
-				if (!g.Instance(projectile).PreDraw(projectile, spriteBatch, lightColor)) {
-					return false;
-				}
+				result &= g.Instance(projectile).PreDraw(projectile, spriteBatch, lightColor);
 			}
-			if (projectile.modProjectile != null) {
+			if (result && projectile.modProjectile != null) {
 				return projectile.modProjectile.PreDraw(spriteBatch, lightColor);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPostDraw = AddHook<Action<Projectile, SpriteBatch, Color>>(g => g.PostDraw);
