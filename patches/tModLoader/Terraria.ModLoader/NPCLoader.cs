@@ -255,15 +255,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreAI = AddHook<Func<NPC, bool>>(g => g.PreAI);
 
 		public static bool PreAI(NPC npc) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreAI.arr) {
-				if (!g.Instance(npc).PreAI(npc)) {
-					return false;
-				}
+				result &= g.Instance(npc).PreAI(npc);
 			}
 			if (npc.modNPC != null) {
-				return npc.modNPC.PreAI();
+				result &= npc.modNPC.PreAI();
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookAI = AddHook<Action<NPC>>(g => g.AI);
@@ -371,15 +370,14 @@ namespace Terraria.ModLoader
 		private static HookList HookCheckDead = AddHook<Func<NPC, bool>>(g => g.CheckDead);
 
 		public static bool CheckDead(NPC npc) {
-			if (npc.modNPC != null && !npc.modNPC.CheckDead()) {
-				return false;
+			bool result = true;
+			if (npc.modNPC != null) {
+				result &= npc.modNPC.CheckDead();
 			}
 			foreach (GlobalNPC g in HookCheckDead.arr) {
-				if (!g.Instance(npc).CheckDead(npc)) {
-					return false;
-				}
+				result &= g.Instance(npc).CheckDead(npc);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookSpecialNPCLoot = AddHook<Func<NPC, bool>>(g => g.SpecialNPCLoot);
@@ -399,16 +397,19 @@ namespace Terraria.ModLoader
 		private static HookList HookPreNPCLoot = AddHook<Func<NPC, bool>>(g => g.PreNPCLoot);
 
 		public static bool PreNPCLoot(NPC npc) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreNPCLoot.arr) {
-				if (!g.Instance(npc).PreNPCLoot(npc)) {
-					blockLoot.Clear();
-					return false;
-				}
+				result &= g.Instance(npc).PreNPCLoot(npc);
 			}
-			if (npc.modNPC != null && !npc.modNPC.PreNPCLoot()) {
+			if (npc.modNPC != null) {
+				result &= npc.modNPC.PreNPCLoot();
+			}
+
+			if (!result) {
 				blockLoot.Clear();
 				return false;
 			}
+
 			return true;
 		}
 
@@ -681,15 +682,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreDraw = AddHook<Func<NPC, SpriteBatch, Color, bool>>(g => g.PreDraw);
 
 		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.arr) {
-				if (!g.Instance(npc).PreDraw(npc, spriteBatch, drawColor)) {
-					return false;
-				}
+				result &= g.Instance(npc).PreDraw(npc, spriteBatch, drawColor);
 			}
 			if (npc.modNPC != null) {
-				return npc.modNPC.PreDraw(spriteBatch, drawColor);
+				result &= npc.modNPC.PreDraw(spriteBatch, drawColor);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPostDraw = AddHook<Action<NPC, SpriteBatch, Color>>(g => g.PostDraw);
@@ -876,12 +876,16 @@ namespace Terraria.ModLoader
 		public static bool PreChatButtonClicked(bool firstButton) {
 			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
 
+			bool result = true;
 			foreach (GlobalNPC g in HookPreChatButtonClicked.arr) {
-				if (!g.Instance(npc).PreChatButtonClicked(npc, firstButton)) {
-					Main.PlaySound(SoundID.MenuTick);
-					return false;
-				}
+				result &= g.Instance(npc).PreChatButtonClicked(npc, firstButton);
 			}
+
+			if (!result) {
+				Main.PlaySound(SoundID.MenuTick);
+				return false;
+			}
+
 			return true;
 		}
 
