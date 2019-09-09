@@ -576,7 +576,7 @@ namespace Terraria.ModLoader
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
 		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			bool result = false;
+			bool result = true;
 
 			foreach (var g in HookShoot.arr) {
 				result &= g.Instance(item).Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
