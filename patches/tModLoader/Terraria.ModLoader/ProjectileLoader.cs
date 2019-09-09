@@ -169,7 +169,7 @@ namespace Terraria.ModLoader
 		public static bool PreAI(Projectile projectile) {
 			bool result = true;
 			foreach (GlobalProjectile g in HookPreAI.arr) {
-				result &= g.Instance(projectile).PreAI(projectile));
+				result &= g.Instance(projectile).PreAI(projectile);
 			}
 			if (projectile.modProjectile != null) {
 				result &= projectile.modProjectile.PreAI();
