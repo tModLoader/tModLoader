@@ -171,8 +171,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreAI.arr) {
 				result &= g.Instance(projectile).PreAI(projectile);
 			}
-			if (projectile.modProjectile != null) {
-				result &= projectile.modProjectile.PreAI();
+			if (result && projectile.modProjectile != null) {
+				return projectile.modProjectile.PreAI();
 			}
 			return result;
 		}
@@ -272,8 +272,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookOnTileCollide.arr) {
 				result &= g.Instance(projectile).OnTileCollide(projectile, oldVelocity);
 			}
-			if (projectile.modProjectile != null) {
-				result &= projectile.modProjectile.OnTileCollide(oldVelocity);
+			if (result && projectile.modProjectile != null) {
+				return projectile.modProjectile.OnTileCollide(oldVelocity);
 			}
 			return result;
 		}
@@ -306,8 +306,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreKill.arr) {
 				result &= g.Instance(projectile).PreKill(projectile, timeLeft);
 			}
-			if (projectile.modProjectile != null) {
-				result &= projectile.modProjectile.PreKill(timeLeft);
+			if (result && projectile.modProjectile != null) {
+				return projectile.modProjectile.PreKill(timeLeft);
 			}
 			return result;
 		}
@@ -521,8 +521,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreDrawExtras.arr) {
 				result &= g.Instance(projectile).PreDrawExtras(projectile, spriteBatch);
 			}
-			if (projectile.modProjectile != null) {
-				result &= projectile.modProjectile.PreDrawExtras(spriteBatch);
+			if (result && projectile.modProjectile != null) {
+				return projectile.modProjectile.PreDrawExtras(spriteBatch);
 			}
 			return result;
 		}
@@ -534,8 +534,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookPreDraw.arr) {
 				result &= g.Instance(projectile).PreDraw(projectile, spriteBatch, lightColor);
 			}
-			if (projectile.modProjectile != null) {
-				result &= projectile.modProjectile.PreDraw(spriteBatch, lightColor);
+			if (result && projectile.modProjectile != null) {
+				return projectile.modProjectile.PreDraw(spriteBatch, lightColor);
 			}
 			return result;
 		}

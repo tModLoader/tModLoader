@@ -576,14 +576,17 @@ namespace Terraria.ModLoader
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
 		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			foreach (var g in HookShoot.arr)
-				if (!g.Instance(item).Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
-					return false;
+			bool result = false;
 
-			if (item.modItem != null && !item.modItem.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
-				return false;
+			foreach (var g in HookShoot.arr) {
+				result &= g.Instance(item).Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+			}
 
-			return true;
+			if (result && item.modItem != null) {
+				return item.modItem.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+			}
+
+			return result;
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
@@ -1069,11 +1072,14 @@ namespace Terraria.ModLoader
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
 		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
+			bool result = true;
 			foreach (var g in HookPreOpenVanillaBag.arr)
-				if (!g.PreOpenVanillaBag(context, player, arg)) {
-					NPCLoader.blockLoot.Clear(); // clear blockloot
-					return false;
-				}
+				result &= g.PreOpenVanillaBag(context, player, arg);
+
+			if (!result) {
+				NPCLoader.blockLoot.Clear(); // clear blockloot
+				return false;
+			}
 
 			return true;
 		}

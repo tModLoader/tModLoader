@@ -259,8 +259,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookPreAI.arr) {
 				result &= g.Instance(npc).PreAI(npc);
 			}
-			if (npc.modNPC != null) {
-				result &= npc.modNPC.PreAI();
+			if (result && npc.modNPC != null) {
+				return npc.modNPC.PreAI();
 			}
 			return result;
 		}
@@ -371,12 +371,15 @@ namespace Terraria.ModLoader
 
 		public static bool CheckDead(NPC npc) {
 			bool result = true;
+
 			if (npc.modNPC != null) {
-				result &= npc.modNPC.CheckDead();
+				result = npc.modNPC.CheckDead();
 			}
+
 			foreach (GlobalNPC g in HookCheckDead.arr) {
 				result &= g.Instance(npc).CheckDead(npc);
 			}
+
 			return result;
 		}
 
@@ -401,8 +404,9 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookPreNPCLoot.arr) {
 				result &= g.Instance(npc).PreNPCLoot(npc);
 			}
-			if (npc.modNPC != null) {
-				result &= npc.modNPC.PreNPCLoot();
+
+			if (result && npc.modNPC != null) {
+				result = npc.modNPC.PreNPCLoot();
 			}
 
 			if (!result) {
@@ -686,8 +690,8 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookPreDraw.arr) {
 				result &= g.Instance(npc).PreDraw(npc, spriteBatch, drawColor);
 			}
-			if (npc.modNPC != null) {
-				result &= npc.modNPC.PreDraw(spriteBatch, drawColor);
+			if (result && npc.modNPC != null) {
+				return npc.modNPC.PreDraw(spriteBatch, drawColor);
 			}
 			return result;
 		}
