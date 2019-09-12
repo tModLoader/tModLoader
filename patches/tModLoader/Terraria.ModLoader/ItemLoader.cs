@@ -1190,7 +1190,7 @@ namespace Terraria.ModLoader
 				return false;
 
 			foreach (var g in HookDrawBody.arr)
-				if (!g.DrawBody(player.head))
+				if (!g.DrawBody(player.body))
 					return false;
 
 			return true;
