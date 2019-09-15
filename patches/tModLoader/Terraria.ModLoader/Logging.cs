@@ -75,12 +75,11 @@ namespace Terraria.ModLoader
 				Name = "ConsoleAppender",
 				Layout = layout
 			});
-#else
+#endif
 			appenders.Add(new DebugAppender {
 				Name = "DebugAppender",
 				Layout = layout
 			});
-#endif
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
