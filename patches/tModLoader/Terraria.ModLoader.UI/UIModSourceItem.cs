@@ -211,7 +211,7 @@ namespace Terraria.ModLoader.UI
 					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);
 					client.Headers["Content-Type"] = "multipart/form-data; boundary=" + boundary;
 					//boundary = "--" + boundary;
-					byte[] data = UploadFile.GetUploadFilesRequestData(files, values);
+					byte[] data = UploadFile.GetUploadFilesRequestData(files, values, boundary);
 					client.UploadDataAsync(new Uri(url), data);
 				}
 			}

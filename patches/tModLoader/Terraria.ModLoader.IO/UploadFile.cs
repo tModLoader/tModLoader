@@ -42,8 +42,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static byte[] GetUploadFilesRequestData(IEnumerable<UploadFile> files, NameValueCollection values) {
-			var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
+		public static byte[] GetUploadFilesRequestData(IEnumerable<UploadFile> files, NameValueCollection values, string boundary) {
 			boundary = "--" + boundary;
 			using (var requestStream = new MemoryStream()) {
 				WriteValues(requestStream, values, boundary);
