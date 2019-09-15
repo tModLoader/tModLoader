@@ -97,12 +97,7 @@ namespace Terraria.ModLoader.Setup
   ""profiles"": {
     ""Terraria"": {
       ""commandName"": ""Executable"",
-      ""executablePath"": ""%steamdir%/tModLoaderDebug.exe"",
-      ""workingDirectory"": ""%steamdir%""
-    },
-    ""TerrariaServer"": {
-      ""commandName"": ""Executable"",
-      ""executablePath"": ""%steamdir%/tModLoaderServerDebug.exe"",
+      ""executablePath"": ""%steamdir%/$(OutputName).exe"",
       ""workingDirectory"": ""%steamdir%""
     }
   }
