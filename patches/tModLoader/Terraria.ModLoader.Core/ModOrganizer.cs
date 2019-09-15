@@ -281,7 +281,7 @@ namespace Terraria.ModLoader.Core
 					Logging.tML.Warn("Did not find enabled.json file");
 					return new HashSet<string>();
 				}
-				return JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path));
+				return JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(path)) ?? new HashSet<string>();
 			}
 			catch (Exception e) {
 				Logging.tML.Warn("Unknown error occurred when trying to read enabled.json", e);
