@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnDeactivate() {
-			DisplayText = string.Empty;
+			DisplayText = null;
 			OnCancel = null;
 			gotoMenu = 0;
 			Progress = 0f;
