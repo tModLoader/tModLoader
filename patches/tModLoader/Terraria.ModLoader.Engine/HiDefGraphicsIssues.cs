@@ -106,9 +106,11 @@ namespace Terraria.ModLoader.Engine
 		private static void ReportFatalEngineReload()
 		{
 			Logging.tML.Fatal("Graphics device reset after main engine load");
+			/*
 			Main.Support4K = false;
 			Main.SaveSettings();
 			Logging.tML.Debug("Disabled Main.Support4K");
+			*/
 
 			string reportStatus = "Unknown";
 			log4net.LogManager.Shutdown();
@@ -132,7 +134,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";
-			MessageBox.Show($"tML encountered a crash when testing some experimental graphics features. Experimental features will be disabled. \nPlease restart your game.\nReport Status: {reportStatus}", "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show($"tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {reportStatus}", "Graphics Engine Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			Environment.Exit(1);
 		}
 

@@ -25,6 +25,10 @@ namespace Terraria.ModLoader
 	public static class ModLoader
 	{
 		public static readonly Version version = new Version(0, 11, 4);
+		// Stores the most recent version of tModLoader launched. Can be used for migration.
+		public static Version LastLaunchedTModLoaderVersion;
+		// public static bool ShowWhatsNew;
+		public static bool ShowFirstLaunchWelcomeMessage;
 
 		public static readonly string branchName = "";
 		// beta > 0 cannot publish to mod browser
@@ -306,6 +310,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
+			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 		}
 
 		internal static void LoadConfiguration() {
@@ -320,6 +325,21 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
+		}
+
+		internal static void MigrateSettings() {
+			if (LastLaunchedTModLoaderVersion != null) return;
+
+			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
+			if(LastLaunchedTModLoaderVersion <= new Version(0, 11, 4))
+				Main.Configuration.Put("Support4K", true); // This reverts a potentially bad setting change. 
+			// Subsequent migrations here.
+			/*
+			if (LastLaunchedTModLoaderVersion < version)
+				ShowWhatsNew = true;
+			*/
+			if (LastLaunchedTModLoaderVersion == new Version(0, 0))
+				ShowFirstLaunchWelcomeMessage = true;
 		}
 
 		/// <summary>

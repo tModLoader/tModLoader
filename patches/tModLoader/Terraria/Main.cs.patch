@@ -465,7 +465,7 @@
  			Main.mouseBorderColorSlider.SetHSL(Main.MouseBorderColor);
  			Main.mouseBorderColorSlider.Alpha = (float)Main.MouseBorderColor.A / 255f;
 -			if (num2 != 193)
-+			if (num2 != 194)
++			if (num2 != 194 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
  			{
  				Main.SaveSettings();
  			}
@@ -764,7 +764,7 @@
  			{
  				if (TexturePackSupport.Enabled && typeof(T) == this.t2d)
  				{
-@@ -7468,12 +_,16 @@
+@@ -7468,13 +_,18 @@
  					}
  				}
  				result = base.Content.Load<T>(path);
@@ -779,8 +779,10 @@
  		{
 +			HiDefGraphicsIssues.OnLoadContent();
  			Main.Configuration.Load();
++			ModLoader.ModLoader.MigrateSettings();
  			Main.Configuration.Get<bool>("UseExperimentalFeatures", ref Main.UseExperimentalFeatures);
  			if (Main.UseExperimentalFeatures)
+ 			{
 @@ -7482,18 +_,16 @@
  			}
  			Main.Configuration.Get<bool>("Support4K", ref Main.Support4K);
