@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['label',['Label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()']]],
+  ['label',['label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()']]],
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['lastlaunchedtmodloaderversion',['LastLaunchedTModLoaderVersion',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad16ba87cca9484f916b19b6a5a8ef8be',1,'Terraria::ModLoader::ModLoader']]],
   ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],
   ['legarmorshader',['legArmorShader',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a1d80d2ea2666e65cdf0f95e7626b6fee',1,'Terraria::ModLoader::PlayerDrawInfo']]],
   ['legcolor',['legColor',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a24f060c7f3a5b3c1746666cdf365e1c1',1,'Terraria::ModLoader::PlayerDrawInfo']]],
