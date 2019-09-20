@@ -155,8 +155,8 @@ namespace ExampleMod
 			[new PrefixDefinition("ExampleMod", "ReallyAwesome")] = 0.8f
 		};
 
-        // Using a custom class as a key in a Dictionary (see the ClassUsedAsKey definition by Ctrl+Leftclick on the class name)
-        public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
+		// Using a custom class as a key in a Dictionary (see the ClassUsedAsKey definition by Ctrl+Leftclick on the class name)
+		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 
 		public ModConfigShowcaseDataTypes() {
 			// Doing the initialization of defaults for reference types in a constructor is also acceptable.
