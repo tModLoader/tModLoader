@@ -838,7 +838,7 @@ Generating docs for compound Terraria::ModLoader::ModPalmTree...
 Generating docs for compound Terraria::ModLoader::ModPlayer...
 Generating caller graph for function Terraria.ModLoader.ModPlayer.Autoload
 Generating caller graph for function Terraria.ModLoader.ModPlayer.CanBuyItem
-Generating caller graph for function Terraria.Mo/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:491: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
+Generating caller graph for function Terraria.Mo/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:502: warning: The following parameters of Terraria.ModLoader.ModTile.AutoSelect(int i, int j, Item item) are not documented:
   parameter 'item'
 /home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModTile.cs:295: warning: The following parameters of Terraria.ModLoader.ModTile.CanKillTile(int i, int j, ref bool blockDamaged) are not documented:
   parameter 'blockDamaged'
@@ -2299,5 +2299,5 @@ Patching output file 158/161
 Patching output file 159/161
 Patching output file 160/161
 Patching output file 161/161
-lookup cache used 11537/131072 hits=100612 misses=12093
+lookup cache used 11540/131072 hits=100653 misses=12096
 finished...
