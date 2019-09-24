@@ -809,13 +809,17 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update in if statements involving controluseTile and releaseUseTile
 		//  at end of type-check if else chain add TileLoader.RightClick(Player.tileTargetX, Player.tileTargetY);
-		public static void RightClick(int i, int j) {
+		public static bool RightClick(int i, int j) {
+			bool returnValue = false;
 			int type = Main.tile[i, j].type;
 			GetTile(type)?.RightClick(i, j);
+			if (GetTile(type)?.NewRightClick(i, j) ?? false)
+				returnValue = true;
 
 			foreach (var hook in HookRightClick) {
 				hook(i, j, type);
 			}
+			return returnValue;
 		}
 		//in Terraria.Player.Update after if statements setting showItemIcon call
 		//  TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);

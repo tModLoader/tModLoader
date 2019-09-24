@@ -170,20 +170,21 @@ namespace ExampleMod.Tiles
 			mod.GetTileEntity<TEScoreBoard>().Kill(i, j);
 		}
 
-		public override void RightClick(int i, int j) {
+		public override bool NewRightClick(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			int left = i - tile.frameX / 18;
 			int top = j - tile.frameY / 18;
 
 			int index = mod.GetTileEntity<TEScoreBoard>().Find(left, top);
 			if (index == -1) {
-				return;
+				return false;
 			}
 			Main.NewText("Scores:");
 			TEScoreBoard tEScoreBoard = (TEScoreBoard)TileEntity.ByID[index];
 			foreach (var item in tEScoreBoard.scores) {
 				Main.NewText(item.Key + ": " + item.Value);
 			}
+			return true;
 		}
 
 		public override void MouseOver(int i, int j) {

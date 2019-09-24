@@ -464,7 +464,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		[Obsolete("ModTile.RightClick will return a bool value later. This version is deprecated since v0.11.5, please use ModTile.NewRightClick instead and return true if a tile interaction has occurred.")]
 		public virtual void RightClick(int i, int j) {
+		}
+
+		/// <summary>
+		/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</returns>
+		public virtual bool NewRightClick(int i, int j) {
+			return false;
 		}
 
 		/// <summary>

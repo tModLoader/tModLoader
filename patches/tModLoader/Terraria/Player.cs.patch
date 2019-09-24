@@ -4100,11 +4100,13 @@
  												if (this.inventory[num67].stack <= 0)
  												{
  													this.inventory[num67] = new Item();
-@@ -24895,6 +_,8 @@
+@@ -24895,6 +_,10 @@
  							this.LaunchMinecartHook(myX, myY);
  						}
  					}
-+					TileLoader.RightClick(myX, myY);
++					if(TileLoader.RightClick(myX, myY)) {
++						flag2 = true;
++					}
 +					// todo check out this flag2. return? "this.releaseUseTile = false;"
  				}
  				if (flag2)
