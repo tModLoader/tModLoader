@@ -40,6 +40,9 @@ var hierarchy =
     [ "Terraria.ModLoader.CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", null ],
     [ "Terraria.ModLoader.CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", null ],
     [ "Terraria.ModLoader.Config.ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", null ],
+    [ "Terraria.ModLoader.ContentInstance.ContentEntry", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry.html", null ],
+    [ "Terraria.ModLoader.ContentInstance", "class_terraria_1_1_mod_loader_1_1_content_instance.html", null ],
+    [ "Terraria.ModLoader.ContentInstance< T >", "class_terraria_1_1_mod_loader_1_1_content_instance.html", null ],
     [ "DefaultContractResolver", "class_default_contract_resolver.html", [
       [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html", null ]
     ] ],

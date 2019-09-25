@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_wall_loader.html" title="This serves as the central class from which wall&#45;related functions are supported and carried out..." alt="" coords="5,5,220,32"/>
+<area shape="rect" id="node1" href="$class_terraria_1_1_mod_loader_1_1_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook. " alt="" coords="5,13,219,39"/>
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html" title="This class serves as a way to store information about a line that will be drawn of tooltip for an ite..." alt="" coords="267,5,473,47"/>
 </map>

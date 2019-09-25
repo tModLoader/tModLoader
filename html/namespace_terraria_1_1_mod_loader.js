@@ -12,6 +12,9 @@ var namespace_terraria_1_1_mod_loader =
     [ "CombinedHooks", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html", "class_terraria_1_1_mod_loader_1_1_combined_hooks" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],
     [ "CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", "class_terraria_1_1_mod_loader_1_1_command_manager" ],
+    [ "ContentInstance", "class_terraria_1_1_mod_loader_1_1_content_instance.html", [
+      [ "ContentEntry", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry.html", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry" ]
+    ] ],
     [ "DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line" ],
     [ "DrawLayer", "class_terraria_1_1_mod_loader_1_1_draw_layer.html", "class_terraria_1_1_mod_loader_1_1_draw_layer" ],
     [ "EquipLoader", "class_terraria_1_1_mod_loader_1_1_equip_loader.html", "class_terraria_1_1_mod_loader_1_1_equip_loader" ],

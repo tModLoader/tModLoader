@@ -229,7 +229,5 @@ var class_terraria_1_1_mod_loader_1_1_player_hooks =
     [ "HookUpdateLifeRegen", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#afbe3b0a0fa73238ed6b8c636ed59d13e", null ],
     [ "HookUpdateVanityAccessories", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a8776c45103de631f0c3494e19fc227ae", null ],
     [ "HookUseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a48cfd955e7941d3fabdb8c6c3c62ff99", null ],
-    [ "indexes", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#ad668aa929984715c3d439cc1051bcabb", null ],
-    [ "indexesByType", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a85d8d4670ddeaa3464a56c5ed11b95e9", null ],
     [ "players", "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4fbd579f2b8c6294bbdbb01418d7a399", null ]
 ];

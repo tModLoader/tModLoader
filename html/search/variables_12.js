@@ -37,6 +37,7 @@ var searchData=
   ['spritebatch',['spriteBatch',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a157ca091fcdb30a0a6c83643e7907538',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
   ['spriteeffects',['spriteEffects',['../struct_terraria_1_1_mod_loader_1_1_player_draw_info.html#a80d821ac2266c2c412d6dc359d1dba6e',1,'Terraria.ModLoader.PlayerDrawInfo.spriteEffects()'],['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a3e3ec364079b4e7db1ec709bc19e82c4',1,'Terraria.ModLoader.PlayerHeadDrawInfo.spriteEffects()']]],
   ['stardusttower',['StardustTower',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a2d840c057aa8f6ab9533ba0871b39be8',1,'Terraria::ModLoader::SpawnCondition']]],
+  ['staticupdate',['staticUpdate',['../class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry.html#ac1b128e45871899831ec32b761588ec0',1,'Terraria::ModLoader::ContentInstance::ContentEntry']]],
   ['statusregex',['statusRegex',['../class_terraria_1_1_mod_loader_1_1_logging.html#a067ef79a2235a8e09142ea42fb6132d7',1,'Terraria::ModLoader::Logging']]],
   ['steamid64',['steamID64',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#afc7651ad2b53d988265a0c1ddad6ff5e',1,'Terraria::ModLoader::ModLoader']]],
   ['stream',['stream',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#aebc435c9e00f1ba6e0f88b1bf24be19c',1,'Terraria::ModLoader::Audio::MusicStreaming']]],

@@ -23,6 +23,13 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "CommandManager.cs", "_command_manager_8cs.html", [
       [ "CommandManager", "class_terraria_1_1_mod_loader_1_1_command_manager.html", "class_terraria_1_1_mod_loader_1_1_command_manager" ]
     ] ],
+    [ "ContentInstance.cs", "_content_instance_8cs.html", [
+      [ "ContentEntry", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry.html", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry" ],
+      [ "ContentInstance", "class_terraria_1_1_mod_loader_1_1_content_instance.html", "class_terraria_1_1_mod_loader_1_1_content_instance" ],
+      [ "ContentInstance", "class_terraria_1_1_mod_loader_1_1_content_instance.html", [
+        [ "ContentEntry", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry.html", "class_terraria_1_1_mod_loader_1_1_content_instance_1_1_content_entry" ]
+      ] ]
+    ] ],
     [ "ConvertiblePlants.cs", "_convertible_plants_8cs.html", [
       [ "ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", "class_terraria_1_1_mod_loader_1_1_mod_cactus" ],
       [ "ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree" ],

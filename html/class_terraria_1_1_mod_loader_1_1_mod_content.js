@@ -5,6 +5,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_content =
     [ "FileExists", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a655c322bc2f38fc63ca0b275ea42fe53", null ],
     [ "GetEquipTexture", "class_terraria_1_1_mod_loader_1_1_mod_content.html#ad7c171271ffe1c8759c66ef6fe4ac9c6", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod_content.html#ae5711f0be2add40901c9ce9f42a67eb9", null ],
+    [ "GetInstance< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#abe5983856ca2c37d30b23302c9c9811c", null ],
     [ "GetModBackgroundSlot", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a46888003fe5336032846ce810db3ef4f", null ],
     [ "GetModBossHeadSlot", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a1ee05efa966f515db5c4f4185d3c07b4", null ],
     [ "GetModBuff", "class_terraria_1_1_mod_loader_1_1_mod_content.html#aba57585ce5500e513d9f4ff6e99d8629", null ],
