@@ -134,7 +134,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					item.GetGlobalItem<MysteryGlobalItem>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					item.GetGlobalItem<MysteryGlobalItem>().data.Add(tag);
 				}
 			}
 		}

@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  using Terraria.World.Generation;
  
-@@ -21,6 +_,32 @@
+@@ -21,6 +_,24 @@
  {
  	public class Projectile : Entity
  	{
@@ -21,22 +21,14 @@
 +		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 +
 +		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
-+		public GlobalProjectile GetGlobalProjectile(Mod mod, string name)
-+		{
-+			return ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
-+		}
++		public GlobalProjectile GetGlobalProjectile(Mod mod, string name) => ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
 +
 +		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile
-+		{
-+			return (T)GetGlobalProjectile(mod, typeof(T).Name);
-+		}
++		[Obsolete("Use GetGlobalProjectile<T>() instead", true)]
++		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile => (T)GetGlobalProjectile(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalProjectile<T>() where T : GlobalProjectile
-+		{
-+			return (T)ProjectileLoader.GetGlobalProjectile(this, typeof(T));
-+		}
++		public T GetGlobalProjectile<T>() where T : GlobalProjectile => (T) ModContent.GetInstance<T>().Instance(this);
 +
  		public static uint[][] perIDStaticNPCImmunity = new uint[714][];
  		public static int SentryLifeTime = 7200;

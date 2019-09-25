@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Item.cs
 +++ src/tModLoader\Terraria\Item.cs
-@@ -1,16 +_,44 @@
+@@ -1,16 +_,36 @@
  using Microsoft.Xna.Framework;
  using System;
 +using System.Linq;
@@ -26,22 +26,14 @@
 +		internal GlobalItem[] globalItems = new GlobalItem[0];
 +
 +		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
-+		public GlobalItem GetGlobalItem(Mod mod, string name)
-+		{
-+			return ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
-+		}
++		public GlobalItem GetGlobalItem(Mod mod, string name) => ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
 +
 +		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem
-+		{
-+			return (T)GetGlobalItem(mod, typeof(T).Name);
-+		}
++		[Obsolete("Use GetGlobalItem<T>() instead", true)]
++		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem => (T)GetGlobalItem(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalItem<T>() where T : GlobalItem
-+		{
-+			return (T)ItemLoader.GetGlobalItem(this, typeof(T));
-+		}
++		public T GetGlobalItem<T>() where T : GlobalItem => (T)ModContent.GetInstance<T>().Instance(this);
 +
  		public const int flaskTime = 72000;
  		public const int copper = 1;

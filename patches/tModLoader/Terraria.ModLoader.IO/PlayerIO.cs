@@ -143,7 +143,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
 				}
 			}
 		}
@@ -291,7 +291,7 @@ namespace Terraria.ModLoader.IO
 						["name"] = name,
 						["legacyData"] = data
 					};
-					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
 				}
 			}
 		}

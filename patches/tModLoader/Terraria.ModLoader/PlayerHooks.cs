@@ -20,8 +20,6 @@ namespace Terraria.ModLoader
 	public static class PlayerHooks
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
-		private static readonly IDictionary<string, int> indexes = new Dictionary<string, int>();
-		private static readonly IDictionary<Type, int> indexesByType = new Dictionary<Type, int>();
 
 		private class HookList
 		{
@@ -43,13 +41,6 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModPlayer player) {
 			player.index = players.Count;
-			indexes[player.mod.Name + ':' + player.Name] = players.Count;
-			if (indexesByType.ContainsKey(player.GetType())) {
-				indexesByType[player.GetType()] = -1;
-			}
-			else {
-				indexesByType[player.GetType()] = players.Count;
-			}
 			players.Add(player);
 		}
 
@@ -61,22 +52,10 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			players.Clear();
-			indexes.Clear();
-			indexesByType.Clear();
 		}
 
 		internal static void SetupPlayer(Player player) {
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
-		}
-
-		internal static ModPlayer GetModPlayer(Player player, Mod mod, string name) {
-			int index;
-			return indexes.TryGetValue(mod.Name + ':' + name, out index) ? player.modPlayers[index] : null;
-		}
-
-		internal static ModPlayer GetModPlayer(Player player, Type type) {
-			int index;
-			return indexesByType.TryGetValue(type, out index) ? (index > -1 ? player.modPlayers[index] : null) : null;
 		}
 
 		private static HookList HookResetEffects = AddHook<Action>(p => p.ResetEffects);

@@ -6381,7 +6381,7 @@
  				}
  				return playerFileData;
  			}
-@@ -39313,13 +_,31 @@
+@@ -39313,13 +_,25 @@
  			return -1;
  		}
  
@@ -6389,20 +6389,14 @@
 +		internal IList<string> usedMods;
 +		internal ModPlayer[] modPlayers = new ModPlayer[0];
 +
-+		public ModPlayer GetModPlayer(Mod mod, string name)
-+		{
-+			return PlayerHooks.GetModPlayer(this, mod, name);
-+		}
++		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
 +
-+		public T GetModPlayer<T>(Mod mod) where T : ModPlayer
-+		{
-+			return (T)GetModPlayer(mod, typeof(T).Name);
-+		}
++		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
 +
-+		public T GetModPlayer<T>() where T : ModPlayer
-+		{
-+			return (T)PlayerHooks.GetModPlayer(this, typeof(T));
-+		}
++		[Obsolete("Use GetModPlayer<T>() instead", true)]
++		public T GetModPlayer<T>(Mod mod) where T : ModPlayer => (T)GetModPlayer(mod, typeof(T).Name);
++
++		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +
 +		public Player(bool startupInventory = true)
  		{

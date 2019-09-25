@@ -23,9 +23,9 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class ModContent
 	{
-		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
-
 		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
+		
+		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
 		public static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
@@ -85,6 +85,7 @@ namespace Terraria.ModLoader
 			return mod.GetTexture(subName);
 		}
 
+		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		/// <summary>
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
@@ -306,6 +307,7 @@ namespace Terraria.ModLoader
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
+				ContentInstance.Register(mod);
 				mod.loading = true;
 				mod.AutoloadConfig();
 				mod.LoadResources();
@@ -398,6 +400,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
+			ContentInstance.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
