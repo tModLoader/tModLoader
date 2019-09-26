@@ -58,10 +58,10 @@
  			};
 +			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
 +			_ModBindings.Clear();
-+			foreach (var hotkey in ModContent.modHotKeys)
++			foreach (var hotkey in HotKeyLoader.HotKeys)
 +			{
-+				_ModBindings.Add(hotkey.Value.displayName);
-+				_BindingsFullLine.Add(hotkey.Value.displayName);
++				_ModBindings.Add(hotkey.uniqueName);
++				_BindingsFullLine.Add(hotkey.uniqueName);
 +			}
 +			_ModBindings.Add("ResetModHotkeys");
 +			_ModBindings.Add("ClearModHotkeys");
@@ -134,8 +134,8 @@
 +					{
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+							foreach (var modHotkey in ModContent.modHotKeys) {
-+								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modHotkey.Value.displayName].Clear();
++							foreach (var modHotkey in HotKeyLoader.HotKeys) {
++								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modHotkey.uniqueName].Clear();
 +							}
  						};
  						return uIElement7;
@@ -146,7 +146,7 @@
  			}
 +			if (_ModBindings.Contains(bind))
 +			{
-+				string defaultKey = ModContent.modHotKeys.Single(x => x.Key == bind).Value.defaultKey;
++				string defaultKey = HotKeyLoader.modHotKeys[bind].defaultKey;
 +				UIElement container = new UIElement();
 +				var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +				left.Width.Precent = 0.68f;

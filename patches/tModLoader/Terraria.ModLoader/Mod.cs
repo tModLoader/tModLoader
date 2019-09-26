@@ -1516,7 +1516,7 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception("RegisterHotKey can only be called from Mod.Load or Mod.Autoload");
 
-			return ModContent.RegisterHotKey(this, name, defaultKey);
+			return HotKeyLoader.RegisterHotKey(new ModHotKey(this, name, defaultKey));
 		}
 
 		/// <summary>

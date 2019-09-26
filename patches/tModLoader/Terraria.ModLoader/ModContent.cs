@@ -21,10 +21,8 @@ namespace Terraria.ModLoader
 	/// Manages content added by mods.
 	/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
 	/// </summary>
-	public class ModContent
+	public static class ModContent
 	{
-		internal static readonly IDictionary<string, ModHotKey> modHotKeys = new Dictionary<string, ModHotKey>();
-		
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
 		public static void SplitName(string name, out string domain, out string subName) {
@@ -296,12 +294,6 @@ namespace Terraria.ModLoader
 			return dict[value.Key];
 		}
 
-		internal static ModHotKey RegisterHotKey(Mod mod, string name, string defaultKey) {
-			string key = mod.Name + ": " + name;
-			modHotKeys[key] = new ModHotKey(mod, name, defaultKey);
-			return modHotKeys[key];
-		}
-
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
@@ -325,7 +317,7 @@ namespace Terraria.ModLoader
 				mod.SetupContent();
 				mod.PostSetupContent();
 			});
-			
+
 			MemoryTracking.Finish();
 
 			if (Main.dedServ)
@@ -433,7 +425,7 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
-			modHotKeys.Clear();
+			HotKeyLoader.Unload();
 			RecipeHooks.Unload();
 			CommandManager.Unload();
 			TagSerializer.Reload();

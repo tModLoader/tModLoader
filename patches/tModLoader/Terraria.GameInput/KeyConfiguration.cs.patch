@@ -22,9 +22,9 @@
  			{
  				this.KeyStatus.Add(current, new List<string>());
 +			}
-+			foreach (var current in ModContent.modHotKeys)
++			foreach (var current in HotKeyLoader.HotKeys)
 +			{
-+				this.KeyStatus.Add(current.Value.displayName, new List<string>());
++				this.KeyStatus.Add(current.uniqueName, new List<string>());
  			}
  		}
  
