@@ -284,6 +284,56 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static ModUgBgStyle GetModUgBgStyle(int style) => UgBgStyleLoader.GetUgBgStyle(style);
 
+		/// <summary>
+		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
+		/// </summary>
+		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.item.type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
+		/// </summary>
+		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
+		/// </summary>
+		public static int DustType<T>() where T : ModDust => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModTile by class. Assumes one instance per class.
+		/// </summary>
+		public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModTileEntity by class. Assumes one instance per class.
+		/// </summary>
+		public static int TileEntityType<T>() where T : ModTileEntity => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModWall by class. Assumes one instance per class.
+		/// </summary>
+		public static int WallType<T>() where T : ModWall => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModProjectile by class. Assumes one instance per class.
+		/// </summary>
+		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.projectile.type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModNPC by class. Assumes one instance per class.
+		/// </summary>
+		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.npc.type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModBuff by class. Assumes one instance per class.
+		/// </summary>
+		public static int BuffType<T>() where T : ModBuff => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of a ModMountData by class. Assumes one instance per class.
+		/// </summary>
+		public static int MountType<T>() where T : ModMountData => GetInstance<T>()?.Type ?? 0;
+
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
 			if (dict.ContainsKey(value.Key)) {
 				dict[value.Key].SetValue(value.Value);

@@ -282,7 +282,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int ItemType<T>() where T : ModItem => ItemType(typeof(T).Name);
+		[Obsolete("Use ModContent.ItemType<T> instead", true)]
+		public int ItemType<T>() where T : ModItem => ModContent.ItemType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalItem instance to this mod with the provided name.
@@ -470,7 +471,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public byte PrefixType<T>() where T : ModPrefix => PrefixType(typeof(T).Name);
+		[Obsolete("Use ModContent.PrefixType<T> instead", true)]
+		public byte PrefixType<T>() where T : ModPrefix => ModContent.PrefixType<T>();
 
 		/// <summary>
 		/// Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally, preferably through the constructor of an overriding class. Leave the texture as an empty string to use the vanilla dust sprite sheet.
@@ -519,7 +521,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int DustType<T>() where T : ModDust => DustType(typeof(T).Name);
+		[Obsolete("Use ModContent.DustType<T> instead", true)]
+		public int DustType<T>() where T : ModDust => ModContent.DustType<T>();
 
 		/// <summary>
 		/// Adds a type of tile to the game with the specified name and texture.
@@ -571,7 +574,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int TileType<T>() where T : ModTile => TileType(typeof(T).Name);
+		[Obsolete("Use ModContent.TileType<T> instead", true)]
+		public int TileType<T>() where T : ModTile => ModContent.TileType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalTile instance to this mod with the provided name.
@@ -651,7 +655,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int TileEntityType<T>() where T : ModTileEntity => TileEntityType(typeof(T).Name);
+		[Obsolete("Use ModContent.TileEntityType<T> instead", true)]
+		public int TileEntityType<T>() where T : ModTileEntity => ModContent.TileEntityType<T>();
 
 		/// <summary>
 		/// Adds a type of wall to the game with the specified name and texture.
@@ -695,7 +700,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int WallType<T>() where T : ModWall => WallType(typeof(T).Name);
+		[Obsolete("Use ModContent.WallType<T> instead", true)]
+		public int WallType<T>() where T : ModWall => ModContent.WallType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalWall instance to this mod with the provided name.
@@ -768,7 +774,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int ProjectileType<T>() where T : ModProjectile => ProjectileType(typeof(T).Name);
+		[Obsolete("Use ModContent.ProjectileType<T> instead", true)]
+		public int ProjectileType<T>() where T : ModProjectile => ModContent.ProjectileType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalProjectile instance to this mod with the provided name.
@@ -851,7 +858,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int NPCType<T>() where T : ModNPC => NPCType(typeof(T).Name);
+		[Obsolete("Use ModContent.NPCType<T> instead", true)]
+		public int NPCType<T>() where T : ModNPC => ModContent.NPCType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalNPC instance to this mod with the provided name.
@@ -1004,7 +1012,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int BuffType<T>() where T : ModBuff => BuffType(typeof(T).Name);
+		[Obsolete("Use ModContent.BuffType<T> instead", true)]
+		public int BuffType<T>() where T : ModBuff => ModContent.BuffType<T>();
 
 		/// <summary>
 		/// Adds the given GlobalBuff instance to this mod using the provided name.
@@ -1113,7 +1122,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public int MountType<T>() where T : ModMountData => MountType(typeof(T).Name);
+		[Obsolete("Use ModContent.MountType<T> instead", true)]
+		public int MountType<T>() where T : ModMountData => ModContent.MountType<T>();
 
 		/// <summary>
 		/// Adds a ModWorld to this mod with the given name.
