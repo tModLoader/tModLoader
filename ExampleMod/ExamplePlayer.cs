@@ -713,7 +713,7 @@ namespace ExampleMod
 		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
 		{
 			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
-			if (vendor.type == NPCType<ExamplePerson>() && (ExampleConfigServer.Instance.ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
+			if (vendor.type == NPCType<ExamplePerson>() && (GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
 			{
 				examplePersonGiftReceived = false;
 				item.TurnToAir();

@@ -32,10 +32,6 @@ namespace ExampleMod
 		// You MUST specify a ConfigScope.
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
-		// tModLoader will automatically populate a public static field named Instance with the active instance of this ModConfig. (It will unload it too.)
-		// This reduces code from "mod.GetConfig<ExampleConfigServer>().DisableExampleWings" to "ExampleConfigServer.Instance.DisableExampleWings". It's just a style choice.
-		public static ExampleConfigServer Instance;
-
 		// We will use attributes to annotate our fields or properties so tModLoader can properly handle them.
 
 		// First, we will learn about DefaultValue. You might assume "public bool BoolExample = true;" to work, 
@@ -99,8 +95,6 @@ namespace ExampleMod
 	public class ExampleConfigClient : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
-
-		public static ExampleConfigClient Instance; // See ExampleConfigServer.Instance for info.
 
 		[Label("Show the coin rate UI")]
 		public bool ShowCoinUI;

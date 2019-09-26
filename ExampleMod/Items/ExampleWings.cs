@@ -10,7 +10,7 @@ namespace ExampleMod.Items
 	{
 		public override bool Autoload(ref string name)
 		{
-			return !ExampleConfigServer.Instance.DisableExampleWings;
+			return !GetInstance<ExampleConfigServer>().DisableExampleWings;
 			//return !mod.GetConfig<ExampleConfigServer>().DisableExampleWings;
 		}
 

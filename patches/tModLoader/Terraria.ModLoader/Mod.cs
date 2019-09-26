@@ -227,6 +227,7 @@ namespace Terraria.ModLoader
 			mc.mod = this;
 
 			ConfigManager.Add(mc);
+			ContentInstance.Register(mc);
 		}
 
 		/// <summary>
