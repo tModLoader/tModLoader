@@ -6,7 +6,7 @@ var searchData=
   ['cavejellyfish',['CaveJellyfish',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a61f282fec3732ccc99bd6d82786297e9',1,'Terraria::ModLoader::SpawnCondition']]],
   ['cavepiranha',['CavePiranha',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ae5f1f48bc576a9d58575dc3c8f777d83',1,'Terraria::ModLoader::SpawnCondition']]],
   ['cavern',['Cavern',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a83185ce17199d7f97ae0b22bc376fab0',1,'Terraria::ModLoader::SpawnCondition']]],
-  ['chance',['chance',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853',1,'Terraria.ModLoader.SpawnCondition.chance()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a3fb51d4a60714c1c14ae7ebc31d2fd73',1,'Terraria.ModLoader.SpawnCondition.Chance()']]],
+  ['chance',['Chance',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a3fb51d4a60714c1c14ae7ebc31d2fd73',1,'Terraria.ModLoader.SpawnCondition.Chance()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#afe0654b0f537c5e3a31527e121d80853',1,'Terraria.ModLoader.SpawnCondition.chance()']]],
   ['channels',['channels',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a8f7ea0bf2b4e9ce771074aba6c152eb9',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['chest',['chest',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#ad96d2fbabfdc4c848c51a3029b4905ef',1,'Terraria::ModLoader::ModTile']]],
   ['chestdrop',['chestDrop',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a41cd13516f1d54f9c1d53ab583c76273',1,'Terraria::ModLoader::ModTile']]],

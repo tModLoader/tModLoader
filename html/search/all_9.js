@@ -61,6 +61,6 @@ var searchData=
   ['items',['items',['../class_terraria_1_1_mod_loader_1_1_recipe_finder.html#a81185c5e3280ba8404b1d63c0d538a7f',1,'Terraria::ModLoader::RecipeFinder']]],
   ['itemspace',['ItemSpace',['../class_terraria_1_1_mod_loader_1_1_global_item.html#af6ed20f0b7f9e7b84a84bb31ca269d3f',1,'Terraria.ModLoader.GlobalItem.ItemSpace()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a8acd1451d900c723702a74e214cdfb73',1,'Terraria.ModLoader.ItemLoader.ItemSpace()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#ae360f7809f0151bf1bdbc78dc5dae8c1',1,'Terraria.ModLoader.ModItem.ItemSpace()']]],
   ['itemtype',['ItemType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2',1,'Terraria::ModLoader::Mod']]],
-  ['itemtype_3c_20t_20_3e',['ItemType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a9c69a2521f46ffba1f4c1bb4bd831b11',1,'Terraria::ModLoader::Mod']]],
+  ['itemtype_3c_20t_20_3e',['ItemType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a9c69a2521f46ffba1f4c1bb4bd831b11',1,'Terraria.ModLoader.Mod.ItemType&lt; T &gt;()'],['../class_terraria_1_1_mod_loader_1_1_mod_content.html#af4a4deaf47be9d1f17b54ac81be036aa',1,'Terraria.ModLoader.ModContent.ItemType&lt; T &gt;()']]],
   ['ivalueprovider',['IValueProvider',['../class_i_value_provider.html',1,'']]]
 ];

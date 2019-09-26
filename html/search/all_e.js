@@ -65,7 +65,7 @@ var searchData=
   ['npcspawninfo',['NPCSpawnInfo',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html',1,'Terraria::ModLoader']]],
   ['npcspawninfo_2ecs',['NPCSpawnInfo.cs',['../_n_p_c_spawn_info_8cs.html',1,'']]],
   ['npctype',['NPCType',['../class_terraria_1_1_mod_loader_1_1_mod.html#af70124a3a68c60f4cd946a46d9a287bd',1,'Terraria::ModLoader::Mod']]],
-  ['npctype_3c_20t_20_3e',['NPCType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a9a6f710da16dc7e75077965a3737122d',1,'Terraria::ModLoader::Mod']]],
+  ['npctype_3c_20t_20_3e',['NPCType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a9a6f710da16dc7e75077965a3737122d',1,'Terraria.ModLoader.Mod.NPCType&lt; T &gt;()'],['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a75755ffd4d9f549d7ae024942ac35f20',1,'Terraria.ModLoader.ModContent.NPCType&lt; T &gt;()']]],
   ['nullallowedattribute',['NullAllowedAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_null_allowed_attribute.html',1,'Terraria::ModLoader::Config']]],
   ['nulltodefaultvalueprovider',['NullToDefaultValueProvider',['../class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html',1,'Terraria::ModLoader::Config::ReferenceDefaultsPreservingResolver']]],
   ['nulltodefaultvalueprovider',['NullToDefaultValueProvider',['../class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html#a2f8520576746f02bc7035b6d3d39af70',1,'Terraria::ModLoader::Config::ReferenceDefaultsPreservingResolver::NullToDefaultValueProvider']]],

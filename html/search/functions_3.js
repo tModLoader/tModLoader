@@ -141,5 +141,5 @@ var searchData=
   ['droptreewood',['DropTreeWood',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0c67fc49a30290353a4a2e569a52d92e',1,'Terraria::ModLoader::TileLoader']]],
   ['dropwood',['DropWood',['../class_terraria_1_1_mod_loader_1_1_mod_tree.html#a35ffba7080fe0aae709e2ef18480630c',1,'Terraria.ModLoader.ModTree.DropWood()'],['../class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76101e9e28d3be3668b7b3bc487f05f0',1,'Terraria.ModLoader.ModPalmTree.DropWood()']]],
   ['dusttype',['DustType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a8e36571c37bdeb431499f50edbc3c9cf',1,'Terraria::ModLoader::Mod']]],
-  ['dusttype_3c_20t_20_3e',['DustType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a8548df2a7b875b275917f30639937ed1',1,'Terraria::ModLoader::Mod']]]
+  ['dusttype_3c_20t_20_3e',['DustType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a8548df2a7b875b275917f30639937ed1',1,'Terraria.ModLoader.Mod.DustType&lt; T &gt;()'],['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a0a18149fd1bb4977f8090a8957497e75',1,'Terraria.ModLoader.ModContent.DustType&lt; T &gt;()']]]
 ];

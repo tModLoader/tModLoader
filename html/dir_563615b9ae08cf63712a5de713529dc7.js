@@ -79,6 +79,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "GlobalWall.cs", "_global_wall_8cs.html", [
       [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ]
     ] ],
+    [ "HotkeyLoader.cs", "_hotkey_loader_8cs.html", null ],
     [ "ItemLoader.cs", "_item_loader_8cs.html", [
       [ "HookList", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_item_loader_1_1_hook_list" ],
       [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ]

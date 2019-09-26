@@ -12,6 +12,6 @@ var searchData=
   ['buffloader',['BuffLoader',['../class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac99195b4bdba9f8c77e29f07dbc60bef',1,'Terraria::ModLoader::BuffLoader']]],
   ['bufftownnpc',['BuffTownNPC',['../class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad6815d7134a83a69d25be338163ad6fb',1,'Terraria.ModLoader.GlobalNPC.BuffTownNPC()'],['../class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae90339e990dbc9b5a350cc4c1550abe6',1,'Terraria.ModLoader.NPCLoader.BuffTownNPC()']]],
   ['bufftype',['BuffType',['../class_terraria_1_1_mod_loader_1_1_mod.html#a05e3499466a6248fde49e7643d987133',1,'Terraria::ModLoader::Mod']]],
-  ['bufftype_3c_20t_20_3e',['BuffType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a00596eb992453f702a1b7ba59eee2e45',1,'Terraria::ModLoader::Mod']]],
+  ['bufftype_3c_20t_20_3e',['BuffType&lt; T &gt;',['../class_terraria_1_1_mod_loader_1_1_mod.html#a00596eb992453f702a1b7ba59eee2e45',1,'Terraria.ModLoader.Mod.BuffType&lt; T &gt;()'],['../class_terraria_1_1_mod_loader_1_1_mod_content.html#aa2e0da9266a86d93450ac377bbd2809f',1,'Terraria.ModLoader.ModContent.BuffType&lt; T &gt;()']]],
   ['buildset',['BuildSet',['../class_terraria_1_1_mod_loader_1_1_topo_sort.html#a8fceff4c28a1bc57e154c14aaf4604be',1,'Terraria::ModLoader::TopoSort']]]
 ];
