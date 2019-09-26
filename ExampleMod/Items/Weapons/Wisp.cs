@@ -1,6 +1,8 @@
+using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -20,7 +22,7 @@ namespace ExampleMod.Items.Weapons
 			item.knockBack = 1f;
 			item.value = Item.sellPrice(0, 0, 1, 0);
 			item.rare = 8;
-			item.shoot = mod.ProjectileType("Wisp");
+			item.shoot = ProjectileType<Projectiles.Wisp>();
 			item.ammo = item.type; // The first item in an ammo class sets the AmmoID to it's type
 		}
 
@@ -39,11 +41,11 @@ namespace ExampleMod.Items.Weapons
 		}
 
 		public override bool RecipeAvailable() {
-			return Main.LocalPlayer.HasItem(mod.ItemType("SpectreGun"));
+			return Main.LocalPlayer.HasItem(ItemType<SpectreGun>());
 		}
 
 		public override int ConsumeItem(int type, int numRequired) {
-			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[mod.TileType("ExampleWorkbench")]) {
+			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[TileType<ExampleWorkbench>()]) {
 				Main.PlaySound(2, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
 				return Main.rand.NextBool() ? 0 : 1; //You have half chance to not consume your materials
 			}

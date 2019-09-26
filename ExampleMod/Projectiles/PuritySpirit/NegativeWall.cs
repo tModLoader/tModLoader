@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -60,7 +61,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 				}
 			}
 			projectile.timeLeft = 2;
-			if (!npc.active || npc.type != mod.NPCType("PuritySpirit")) {
+			if (!npc.active || npc.type != NPCType<NPCs.PuritySpirit.PuritySpirit>()) {
 				projectile.Kill();
 			}
 		}

@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -34,7 +35,7 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
+			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

@@ -4,6 +4,7 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -38,7 +39,7 @@ namespace ExampleMod.Tiles
 				Projectile.NewProjectile((i + 1.5f) * 16f, (j + 1.5f) * 16f, 0f, 0f, ProjectileID.Boulder, 70, 10f, Main.myPlayer, 0f, 0f);
 			}
 
-			//Item.NewItem(i * 16, j * 16, 48, 48, mod.ItemType("ExampleCutTileItem"));
+			//Item.NewItem(i * 16, j * 16, 48, 48, ItemType<ExampleCutTileItem>());
 		}
 	}
 
@@ -50,7 +51,7 @@ namespace ExampleMod.Tiles
 
 		public override void SetDefaults() {
 			item.CloneDefaults(ItemID.DartTrap);
-			item.createTile = mod.TileType("ExampleCutTileTile");
+			item.createTile = TileType<ExampleCutTileTile>();
 			item.value = 1000;
 		}
 

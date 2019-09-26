@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -31,7 +32,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType<Items.Placeable.ExampleLamp>());
+			Item.NewItem(i * 16, j * 16, 16, 48, ItemType<Items.Placeable.ExampleLamp>());
 		}
 
 		public override void HitWire(int i, int j) {

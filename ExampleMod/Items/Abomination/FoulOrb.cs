@@ -1,6 +1,9 @@
+using ExampleMod.NPCs.Abomination;
+using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Abomination
 {
@@ -27,11 +30,11 @@ namespace ExampleMod.Items.Abomination
 		// We use the CanUseItem hook to prevent a player from using this item while the boss is present in the world.
 		public override bool CanUseItem(Player player) {
 			// "player.ZoneUnderworldHeight" could also be written as "player.position.Y / 16f > Main.maxTilesY - 200"
-			return NPC.downedPlantBoss && player.ZoneUnderworldHeight && !NPC.AnyNPCs(mod.NPCType("Abomination")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement")) && !NPC.AnyNPCs(mod.NPCType("CaptiveElement2"));
+			return NPC.downedPlantBoss && player.ZoneUnderworldHeight && !NPC.AnyNPCs(NPCType<NPCs.Abomination.Abomination>()) && !NPC.AnyNPCs(NPCType<CaptiveElement>()) && !NPC.AnyNPCs(NPCType<CaptiveElement2>());
 		}
 
 		public override bool UseItem(Player player) {
-			NPC.SpawnOnPlayer(player.whoAmI, mod.NPCType("Abomination"));
+			NPC.SpawnOnPlayer(player.whoAmI, NPCType<NPCs.Abomination.Abomination>());
 			Main.PlaySound(SoundID.Roar, player.position, 0);
 			return true;
 		}
@@ -39,16 +42,16 @@ namespace ExampleMod.Items.Abomination
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.BeetleHusk);
-			recipe.AddIngredient(mod.ItemType("ScytheBlade"));
-			recipe.AddIngredient(mod.ItemType("Icicle"));
-			recipe.AddIngredient(mod.ItemType("Bubble"));
+			recipe.AddIngredient(ItemType<ScytheBlade>());
+			recipe.AddIngredient(ItemType<Icicle>());
+			recipe.AddIngredient(ItemType<Bubble>());
 			recipe.AddIngredient(ItemID.Ectoplasm, 5);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 			recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("BossItem"), 10);
-			recipe.AddTile(mod.TileType("ExampleWorkbench"));
+			recipe.AddIngredient(ItemType<BossItem>(), 10);
+			recipe.AddTile(TileType<ExampleWorkbench>());
 			recipe.SetResult(this, 20);
 			recipe.AddRecipe();
 		}

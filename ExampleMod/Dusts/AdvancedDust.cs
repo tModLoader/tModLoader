@@ -12,7 +12,7 @@ namespace ExampleMod.Dusts
 			Position must be fixed here because otherwise the first time the dust is drawn it'll draw in the incorrect place.
 			This dust is not used in ExampleMod yet, so you'll have to add some code somewhere. Try ExamplePlayer.DrawEffects.
 
-			Dust dust = Dust.NewDustDirect(player.Center, 0, 0, mod.DustType<Dusts.AdvancedDust>(), Scale: 2);
+			Dust dust = Dust.NewDustDirect(player.Center, 0, 0, DustType<Dusts.AdvancedDust>(), Scale: 2);
 			dust.rotation = Main.rand.NextFloat(6.28f);
 			dust.customData = player;
 			dust.position = player.Center + Vector2.UnitX.RotatedBy(dust.rotation, Vector2.Zero) * dust.scale * 50;

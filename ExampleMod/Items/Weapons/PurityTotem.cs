@@ -1,7 +1,9 @@
+using ExampleMod.Projectiles.Minions;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -26,9 +28,9 @@ namespace ExampleMod.Items.Weapons
 			item.value = Item.buyPrice(0, 30, 0, 0);
 			item.rare = 9;
 			item.UseSound = SoundID.Item44;
-			item.shoot = mod.ProjectileType("PurityWisp");
+			item.shoot = ProjectileType<PurityWisp>();
 			item.shootSpeed = 10f;
-			item.buffType = mod.BuffType("PurityWisp"); //The buff added to player after used the item
+			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
 			item.buffTime = 3600;               //The duration of the buff, here is 60 seconds
 		}
 

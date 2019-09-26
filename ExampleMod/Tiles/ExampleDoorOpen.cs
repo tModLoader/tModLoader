@@ -1,3 +1,5 @@
+using ExampleMod.Dusts;
+using ExampleMod.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -5,6 +7,7 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -60,10 +63,10 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Door");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Sparkle");
+			dustType = DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.OpenDoor };
-			closeDoorID = mod.TileType("ExampleDoorClosed");
+			closeDoorID = TileType<ExampleDoorClosed>();
 		}
 
 		public override bool HasSmartInteract() {
@@ -75,14 +78,14 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 48, mod.ItemType("ExampleDoor"));
+			Item.NewItem(i * 16, j * 16, 32, 48, ItemType<ExampleDoor>());
 		}
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;
-			player.showItemIcon2 = mod.ItemType("ExampleDoor");
+			player.showItemIcon2 = ItemType<ExampleDoor>();
 		}
 	}
 }

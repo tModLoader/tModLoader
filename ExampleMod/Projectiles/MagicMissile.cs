@@ -1,9 +1,10 @@
 using System;
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -30,7 +31,7 @@ namespace ExampleMod.Projectiles
 			}
 
 			Vector2 dustPosition = projectile.Center + new Vector2(Main.rand.Next(-4, 5), Main.rand.Next(-4, 5));
-			Dust dust = Dust.NewDustPerfect(dustPosition, mod.DustType<Dusts.Sparkle>(), null, 100, Color.Lime, 0.8f);
+			Dust dust = Dust.NewDustPerfect(dustPosition, DustType<Sparkle>(), null, 100, Color.Lime, 0.8f);
 			dust.velocity *= 0.3f;
 			dust.noGravity = true;
 
@@ -127,10 +128,10 @@ namespace ExampleMod.Projectiles
 
 			Main.PlaySound(SoundID.Item10, projectile.position);
 			for (int i = 0; i < 10; i++) {
-				Dust dust = Dust.NewDustDirect(projectile.position - projectile.velocity, projectile.width, projectile.height, mod.DustType<Dusts.Sparkle>(), 0, 0, 100, Color.Lime, 0.8f);
+				Dust dust = Dust.NewDustDirect(projectile.position - projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), 0, 0, 100, Color.Lime, 0.8f);
 				dust.noGravity = true;
 				dust.velocity *= 2f;
-				dust = Dust.NewDustDirect(projectile.position - projectile.velocity, projectile.width, projectile.height, mod.DustType<Dusts.Sparkle>(), 0f, 0f, 100, Color.Lime, 0.5f);
+				dust = Dust.NewDustDirect(projectile.position - projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), 0f, 0f, 100, Color.Lime, 0.5f);
 			}
 		}
 	}

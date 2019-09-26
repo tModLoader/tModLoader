@@ -1,9 +1,11 @@
+using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -52,7 +54,7 @@ namespace ExampleMod.Projectiles
 
 		public override void AI() {
 			NPC npc = Main.npc[octopus];
-			if (!npc.active || npc.type != mod.NPCType("Octopus")) {
+			if (!npc.active || npc.type != NPCType<Octopus>()) {
 				return;
 			}
 			projectile.timeLeft = 2;

@@ -1,3 +1,4 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -6,6 +7,7 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -23,7 +25,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new[] { mod.TileType("ExampleBlock") };
+			TileObjectData.newTile.AnchorValidTiles = new[] { TileType<ExampleBlock>() };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
@@ -34,7 +36,7 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Sapling");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Sparkle");
+			dustType = DustType<Sparkle>();
 			adjTiles = new int[] { TileID.Saplings };
 		}
 

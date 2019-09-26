@@ -41,7 +41,7 @@ namespace ExampleMod.Items
 			// Add a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
 			recipe.AddIngredient(mod, "EquipMaterial", 3);
 			// an alternate approach to the above.
-			recipe.AddIngredient(mod.ItemType("EquipMaterial"), 3);
+			recipe.AddIngredient(ItemType<EquipMaterial>(), 3);
 			// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 			recipe.AddRecipeGroup("Wood"); // check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
 			// Here is using a mod recipe group. Check out ExampleMod.AddRecipeGroups() to see how to register a recipe group.

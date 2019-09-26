@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.ExampleDamageClass
 {
@@ -22,7 +23,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 
 		private static float PlayerOnGetWeaponKnockback(On.Terraria.Player.orig_GetWeaponKnockback orig, Player self, Item sitem, float knockback)
 		{
-			bool isMundane = sitem.type == ExampleMod.Instance.ItemType<Mundane>();
+			bool isMundane = sitem.type == ItemType<Mundane>();
 			if (isMundane)sitem.ranged = true;
 
 			float kb = orig(self, sitem, knockback);
@@ -32,7 +33,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 
 		private static int PlayerOnGetWeaponDamage(On.Terraria.Player.orig_GetWeaponDamage orig, Player self, Item sitem)
 		{
-			bool isMundane = sitem.type == ExampleMod.Instance.ItemType<Mundane>();
+			bool isMundane = sitem.type == ItemType<Mundane>();
 			if (isMundane) sitem.ranged = true;
 			
 			int dmg = orig(self, sitem);

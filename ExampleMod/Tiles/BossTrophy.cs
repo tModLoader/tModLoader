@@ -1,7 +1,9 @@
+using ExampleMod.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -25,16 +27,16 @@ namespace ExampleMod.Tiles
 			int item = 0;
 			switch (frameX / 54) {
 				case 0:
-					item = mod.ItemType("AbominationTrophy");
+					item = ItemType<AbominationTrophy>();
 					break;
 				case 1:
-					item = mod.ItemType("PuritySpiritTrophy");
+					item = ItemType<PuritySpiritTrophy>();
 					break;
 				case 2:
-					item = mod.ItemType("BunnyTrophy");
+					item = ItemType<BunnyTrophy>();
 					break;
 				case 3:
-					item = mod.ItemType("TreeTrophy");
+					item = ItemType<TreeTrophy>();
 					break;
 			}
 			if (item > 0) {

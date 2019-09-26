@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -34,12 +35,12 @@ namespace ExampleMod.Items.Weapons
 
 			item.UseSound = SoundID.Item1;
 			item.value = Item.sellPrice(silver: 1);
-			item.shoot = mod.ProjectileType<ExampleYoyoProjectile>();
+			item.shoot = ProjectileType<ExampleYoyoProjectile>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
+			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
 			recipe.AddIngredient(ItemID.WoodYoyo);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

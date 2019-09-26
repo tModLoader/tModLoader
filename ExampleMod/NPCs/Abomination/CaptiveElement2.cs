@@ -1,8 +1,16 @@
+using ExampleMod.Dusts;
+using ExampleMod.Items;
+using ExampleMod.Items.Abomination;
+using ExampleMod.Items.Armor;
+using ExampleMod.Items.Placeable;
+using ExampleMod.Items.Weapons;
+using ExampleMod.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs.Abomination
 {
@@ -64,7 +72,7 @@ namespace ExampleMod.NPCs.Abomination
 			npc.HitSound = SoundID.NPCHit5;
 			npc.DeathSound = SoundID.NPCDeath7;
 			music = MusicID.Boss2;
-			bossBag = mod.ItemType("AbominationBag");
+			bossBag = ItemType<AbominationBag>();
 		}
 
 		public override void ScaleExpertStats(int numPlayers, float bossLifeScale) {
@@ -112,7 +120,7 @@ namespace ExampleMod.NPCs.Abomination
 				bool flag = true;
 				if (run == 1) {
 					for (int k = 0; k < 200; k++) {
-						if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2") && Main.npc[k].ai[2] == 0f) {
+						if (Main.npc[k].active && Main.npc[k].type == NPCType<CaptiveElement2>() && Main.npc[k].ai[2] == 0f) {
 							flag = false;
 							break;
 						}
@@ -136,7 +144,7 @@ namespace ExampleMod.NPCs.Abomination
 			//move
 			int count = 0;
 			for (int k = 0; k < 200; k++) {
-				if (Main.npc[k].active && Main.npc[k].type == mod.NPCType("CaptiveElement2")) {
+				if (Main.npc[k].active && Main.npc[k].type == NPCType<CaptiveElement2>()) {
 					count++;
 				}
 			}
@@ -227,7 +235,7 @@ namespace ExampleMod.NPCs.Abomination
 						if (captiveType != 1) {
 							speed = Main.expertMode ? 9f : 7f;
 						}
-						Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5f * (float)Math.Cos(npc.rotation), speed * (float)Math.Sin(npc.rotation), mod.ProjectileType("PixelBall"), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
+						Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5f * (float)Math.Cos(npc.rotation), speed * (float)Math.Sin(npc.rotation), ProjectileType<PixelBall>(), damage, 3f, Main.myPlayer, GetDebuff(), GetDebuffTime());
 					}
 					npc.TargetClosest(false);
 					npc.netUpdate = true;
@@ -258,7 +266,7 @@ namespace ExampleMod.NPCs.Abomination
 				Vector2 unit = new Vector2((float)Math.Cos(npc.rotation), (float)Math.Sin(npc.rotation));
 				Vector2 center = npc.Center;
 				for (int k = 0; k < 4; k++) {
-					int dust = Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("Pixel"), 0f, 0f, 0, color.Value);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustType<Pixel>(), 0f, 0f, 0, color.Value);
 					Vector2 offset = Main.dust[dust].position - center;
 					offset.X = (offset.X - (float)npc.width / 2f) / 2f;
 					Main.dust[dust].position = center + new Vector2(unit.X * offset.X - unit.Y * offset.Y, unit.Y * offset.X + unit.X * offset.Y);
@@ -295,7 +303,7 @@ namespace ExampleMod.NPCs.Abomination
 		public override void HitEffect(int hitDirection, double damage) {
 			if (npc.life <= 0) {
 				if (Main.expertMode) {
-					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height * 3 / 4, mod.NPCType("FreedElement"));
+					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height * 3 / 4, NPCType<FreedElement>());
 					Main.npc[next].ai[0] = captiveType;
 					Main.npc[next].netUpdate = true;
 				}
@@ -303,7 +311,7 @@ namespace ExampleMod.NPCs.Abomination
 					Color? color = GetColor();
 					if (color.HasValue) {
 						for (int k = 0; k < 75; k++) {
-							Dust.NewDust(npc.position, npc.width, npc.height, mod.DustType("PixelHurt"), 0f, 0f, 0, color.Value);
+							Dust.NewDust(npc.position, npc.width, npc.height, DustType<PixelHurt>(), 0f, 0f, 0, color.Value);
 						}
 					}
 				}
@@ -316,7 +324,7 @@ namespace ExampleMod.NPCs.Abomination
 					return false;
 				}
 			}
-			NPCLoader.blockLoot.Add(mod.ItemType("ExampleItem"));
+			NPCLoader.blockLoot.Add(ItemType<ExampleItem>());
 			return true;
 		}
 
@@ -343,18 +351,18 @@ namespace ExampleMod.NPCs.Abomination
 				}
 			}
 			if (Main.rand.NextBool(10)) {
-				Item.NewItem(npc.getRect(), mod.ItemType("AbominationTrophy"));
+				Item.NewItem(npc.getRect(), ItemType<AbominationTrophy>());
 			}
 			if (Main.expertMode) {
 				npc.DropBossBags();
 			}
 			else {
 				if (Main.rand.NextBool(7)) {
-					Item.NewItem(npc.getRect(), mod.ItemType("AbominationMask"));
+					Item.NewItem(npc.getRect(), ItemType<AbominationMask>());
 				}
-				Item.NewItem(npc.getRect(), mod.ItemType("MoltenDrill"));
-				Item.NewItem(npc.getRect(), mod.ItemType("ElementResidue"));
-				Item.NewItem(npc.getRect(), mod.ItemType("PurityTotem"));
+				Item.NewItem(npc.getRect(), ItemType<Items.Abomination.MoltenDrill>());
+				Item.NewItem(npc.getRect(), ItemType<ElementResidue>());
+				Item.NewItem(npc.getRect(), ItemType<PurityTotem>());
 			}
 			if (!ExampleWorld.downedAbomination) {
 				ExampleWorld.downedAbomination = true;
@@ -390,7 +398,7 @@ namespace ExampleMod.NPCs.Abomination
 				case 0:
 					return BuffID.Frostburn;
 				case 1:
-					return mod.BuffType<Buffs.EtherealFlames>();
+					return BuffType<Buffs.EtherealFlames>();
 				case 3:
 					return BuffID.Venom;
 				case 4:

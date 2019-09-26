@@ -1,16 +1,19 @@
+using ExampleMod.Buffs;
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Mounts
 {
 	public class Car : ModMountData
 	{
 		public override void SetDefaults() {
-			mountData.spawnDust = mod.DustType("Smoke");
-			mountData.buff = mod.BuffType("CarMount");
+			mountData.spawnDust = DustType<Smoke>();
+			mountData.buff = BuffType<CarMount>();
 			mountData.heightBoost = 20;
 			mountData.fallDamage = 0.5f;
 			mountData.runSpeed = 11f;
@@ -65,7 +68,7 @@ namespace ExampleMod.Mounts
 			}
 
 			Rectangle rect = player.getRect();
-			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, mod.DustType("Smoke"));
+			Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, DustType<Smoke>());
 		}
 	}
 }

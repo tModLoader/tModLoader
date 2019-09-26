@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Abomination
 {
@@ -29,7 +30,7 @@ namespace ExampleMod.Items.Abomination
 			item.rare = 9;
 			item.UseSound = SoundID.Item23;
 			item.autoReuse = true;
-			item.shoot = mod.ProjectileType("MoltenDrill");
+			item.shoot = ProjectileType<Projectiles.MoltenDrill>();
 			item.shootSpeed = 40f;
 		}
 	}

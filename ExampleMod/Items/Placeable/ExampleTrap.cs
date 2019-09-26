@@ -1,5 +1,6 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -9,7 +10,7 @@ namespace ExampleMod.Items.Placeable
 	public class ExampleTrap : ModItem
 	{
 		// Here I define some strings that will be used as the ModItem.Name, the internal name of the ModItem. 
-		// We use these in the ExampleMod.Tiles.ExampleTrap.Drop rather than mod.ItemType<Items.Placeable.ExampleTrap>() to retrieve the correct ItemID.
+		// We use these in the ExampleMod.Tiles.ExampleTrap.Drop rather than ItemType<Items.Placeable.ExampleTrap>() to retrieve the correct ItemID.
 		public const string ExampleTrapA = "ExampleTrapA";
 		public const string ExampleTrapB = "ExampleTrapB";
 
@@ -51,7 +52,7 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = mod.TileType<Tiles.ExampleTrap>();
+			item.createTile = TileType<Tiles.ExampleTrap>();
 			// With all the setup above, placeStyle will be either 0 or 1 for the 2 ExampleTrap instances we've loaded.
 			item.placeStyle = placeStyle;
 			item.width = 12;

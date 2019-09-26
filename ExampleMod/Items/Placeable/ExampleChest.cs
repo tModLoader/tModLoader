@@ -1,5 +1,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -20,13 +21,13 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = 1;
 			item.consumable = true;
 			item.value = 500;
-			item.createTile = mod.TileType("ExampleChest");
+			item.createTile = TileType<Tiles.ExampleChest>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Chest);
-			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 10);
+			recipe.AddIngredient(ItemType<ExampleBlock>(), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

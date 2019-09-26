@@ -1,8 +1,10 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -26,7 +28,7 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			// name.SetDefault("Example Clock"); // Automatic from .lang files
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Pixel");
+			dustType = DustType<Pixel>();
 			adjTiles = new int[] { TileID.GrandfatherClocks };
 		}
 
@@ -85,7 +87,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 48, 32, mod.ItemType("ExampleClock"));
+			Item.NewItem(i * 16, j * 16, 48, 32, ItemType<Items.Placeable.ExampleClock>());
 		}
 	}
 }

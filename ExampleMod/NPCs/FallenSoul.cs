@@ -3,6 +3,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -136,7 +137,7 @@ namespace ExampleMod.NPCs
 
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				if (Main.npc[i].active && Main.npc[i].type == NPCID.Wraith && projectile.Hitbox.Intersects(Main.npc[i].Hitbox)) {
-					Main.npc[i].Transform(mod.NPCType<FallenSoul>());
+					Main.npc[i].Transform(NPCType<FallenSoul>());
 				}
 			}
 		}

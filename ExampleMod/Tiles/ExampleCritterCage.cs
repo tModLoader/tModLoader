@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -25,7 +26,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 48, 32, mod.ItemType<ExampleCritterCageItem>());
+			Item.NewItem(i * 16, j * 16, 48, 32, ItemType<ExampleCritterCageItem>());
 		}
 
 		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
@@ -60,13 +61,13 @@ namespace ExampleMod.Tiles
 			//item.height = 12;
 
 			item.CloneDefaults(ItemID.GlowingSnailCage);
-			item.createTile = mod.TileType<ExampleCritterCage>();
+			item.createTile = TileType<ExampleCritterCage>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Terrarium);
-			recipe.AddIngredient(mod.ItemType<NPCs.ExampleCritterItem>());
+			recipe.AddIngredient(ItemType<NPCs.ExampleCritterItem>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

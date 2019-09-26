@@ -1,6 +1,8 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -45,10 +47,10 @@ namespace ExampleMod.Items
 		public override void HoldItem(Player player) {
 			Vector2 position = GetLightPosition(player) - new Vector2(20f, 20f);
 			if (Main.rand.NextBool(10)) {
-				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
+				Dust.NewDust(player.position, player.width, player.height, DustType<Sparkle>());
 			}
 			if (Main.rand.NextBool(3)) {
-				Dust.NewDust(position, 40, 40, mod.DustType("Sparkle"));
+				Dust.NewDust(position, 40, 40, DustType<Sparkle>());
 			}
 		}
 
@@ -61,7 +63,7 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
+			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

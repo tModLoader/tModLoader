@@ -1,3 +1,4 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -7,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -37,11 +39,11 @@ namespace ExampleMod.Tiles
 			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
 			name.SetDefault("Locked Example Chest");
 			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
-			dustType = mod.DustType("Sparkle");
+			dustType = DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Containers };
 			chest = "Example Chest";
-			chestDrop = mod.ItemType("ExampleChest");
+			chestDrop = ItemType<Items.Placeable.ExampleChest>();
 		}
 
 		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
@@ -126,7 +128,7 @@ namespace ExampleMod.Tiles
 			}
 			else {
 				if (isLocked) {
-					int key = mod.ItemType<Items.ExampleChestKey>();
+					int key = ItemType<Items.ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)){
 						if (Main.netMode == 1) {
 							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, (float)left, (float)top);
@@ -175,9 +177,9 @@ namespace ExampleMod.Tiles
 			else {
 				player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.showItemIconText == "Example Chest") {
-					player.showItemIcon2 = mod.ItemType("ExampleChest");
+					player.showItemIcon2 = ItemType<Items.Placeable.ExampleChest>();
 					if(Main.tile[left, top].frameX / 36 == 1)
-						player.showItemIcon2 = mod.ItemType<Items.ExampleChestKey>();
+						player.showItemIcon2 = ItemType<Items.ExampleChestKey>();
 					player.showItemIconText = "";
 				}
 			}

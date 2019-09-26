@@ -1,5 +1,7 @@
+using ExampleMod.Dusts;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Armor
 {
@@ -50,7 +52,7 @@ namespace ExampleMod.Items.Armor
 
 		public override void UpdateVanity(Player player, EquipType type) {
 			if (Main.rand.NextBool(20)) {
-				Dust.NewDust(player.position, player.width, player.height, mod.DustType<Dusts.Sparkle>());
+				Dust.NewDust(player.position, player.width, player.height, DustType<Sparkle>());
 			}
 		}
 	}

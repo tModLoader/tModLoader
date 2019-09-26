@@ -1,8 +1,11 @@
+using ExampleMod.Tiles;
+using ExampleMod.Walls;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -24,7 +27,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		public override void AI() {
-			int dustType = mod.DustType("ExampleSolution");
+			int dustType = DustType<Dusts.ExampleSolution>();
 			if (projectile.owner == Main.myPlayer) {
 				Convert((int)(projectile.position.X + (float)(projectile.width / 2)) / 16, (int)(projectile.position.Y + (float)(projectile.height / 2)) / 16, 2);
 			}
@@ -51,8 +54,8 @@ namespace ExampleMod.Projectiles
 					Dust dust = Main.dust[dustIndex];
 					dust.noGravity = true;
 					dust.scale *= 1.75f;
-					dust.velocity.X = dust.velocity.X * 2f;
-					dust.velocity.Y = dust.velocity.Y * 2f;
+					dust.velocity.X *= 2f;
+					dust.velocity.Y *= 2f;
 					dust.scale *= dustScale;
 				}
 			}
@@ -69,24 +72,24 @@ namespace ExampleMod.Projectiles
 						int type = (int)Main.tile[k, l].type;
 						int wall = (int)Main.tile[k, l].wall;
 						if (wall != 0) {
-							Main.tile[k, l].wall = (ushort)mod.WallType("ExampleWall");
+							Main.tile[k, l].wall = (ushort)WallType<ExampleWall>();
 							WorldGen.SquareWallFrame(k, l, true);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						if (TileID.Sets.Conversion.Stone[type]) {
-							Main.tile[k, l].type = (ushort)mod.TileType("ExampleBlock");
+							Main.tile[k, l].type = (ushort)TileType<ExampleBlock>();
 							WorldGen.SquareTileFrame(k, l, true);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						else if (type == TileID.Chairs && Main.tile[k, l - 1].type == TileID.Chairs) {
-							Main.tile[k, l].type = (ushort)mod.TileType("ExampleChair");
-							Main.tile[k, l - 1].type = (ushort)mod.TileType("ExampleChair");
+							Main.tile[k, l].type = (ushort)TileType<ExampleChair>();
+							Main.tile[k, l - 1].type = (ushort)TileType<ExampleChair>();
 							WorldGen.SquareTileFrame(k, l, true);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						else if (type == TileID.WorkBenches && Main.tile[k - 1, l].type == TileID.WorkBenches) {
-							Main.tile[k, l].type = (ushort)mod.TileType("ExampleWorkbench");
-							Main.tile[k - 1, l].type = (ushort)mod.TileType("ExampleWorkbench");
+							Main.tile[k, l].type = (ushort)TileType<ExampleWorkbench>();
+							Main.tile[k - 1, l].type = (ushort)TileType<ExampleWorkbench>();
 							WorldGen.SquareTileFrame(k, l, true);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}

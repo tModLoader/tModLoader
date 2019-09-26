@@ -1,5 +1,6 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -22,14 +23,14 @@ namespace ExampleMod.Items.Placeable
 			item.useTime = 10;
 			item.autoReuse = true;
 			item.consumable = true;
-			item.createTile = mod.TileType("ExampleBar");
+			item.createTile = TileType<Tiles.ExampleBar>();
 			item.placeStyle = 0;
 		}
 
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleOre"), 4);
+			recipe.AddIngredient(ItemType<ExampleOre>(), 4);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

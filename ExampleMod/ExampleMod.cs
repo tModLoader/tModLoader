@@ -17,6 +17,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -27,7 +28,6 @@ namespace ExampleMod
 		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
 		// You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static DynamicSpriteFont exampleFont;
-		internal static ExampleMod Instance;
 
 		private UserInterface _exampleUserInterface;
 
@@ -41,7 +41,6 @@ namespace ExampleMod
 		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
 		public ExampleMod() {
-			Instance = this;
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
 			//Properties = new ModProperties()
 			//{
@@ -62,7 +61,7 @@ namespace ExampleMod
 			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v%3dxnagamestudio.41) for special keys
 
 			// Registers a new custom currency
-			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ItemType<Items.Face>(), 999L));
+			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ModContent.ItemType<Items.Face>(), 999L));
 
 			Mundane.AddHacks();
 
@@ -93,8 +92,8 @@ namespace ExampleMod
 				SkyManager.Instance["ExampleMod:PuritySpirit"] = new PuritySpiritSky();
 				Filters.Scene["ExampleMod:MonolithVoid"] = new Filter(new ScreenShaderData("FilterMoonLord"), EffectPriority.Medium);
 				SkyManager.Instance["ExampleMod:MonolithVoid"] = new VoidSky();
-				GameShaders.Armor.BindShader(ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
-				GameShaders.Hair.BindShader(ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
+				GameShaders.Armor.BindShader(ModContent.ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
+				GameShaders.Hair.BindShader(ModContent.ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
 				
 				if (FontExists("Fonts/ExampleFont"))
@@ -123,7 +122,7 @@ namespace ExampleMod
 			text.SetDefault("<{0}> {1}");
 			AddTranslation(text);
 			text = CreateTranslation("Common.LocalizedLabelDynamic");
-			text.SetDefault($"[i:{ItemType<Items.Weapons.SpectreGun>()}]  This dynamic label is added in ExampleMod.Load");
+			text.SetDefault($"[i:{ModContent.ItemType<Items.Weapons.SpectreGun>()}]  This dynamic label is added in ExampleMod.Load");
 			AddTranslation(text);
 
 			// Volcano warning is for the random volcano tremor
@@ -142,7 +141,6 @@ namespace ExampleMod
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
-			Instance = null;
 			RandomBuffHotKey = null;
 		}
 
@@ -150,8 +148,8 @@ namespace ExampleMod
 			// Showcases mod support with Boss Checklist without referencing the mod
 			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
 			if (bossChecklist != null) {
-				bossChecklist.Call("AddBossWithInfo", "Abomination", 10.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Plantera has been defeated");
-				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ItemType<Items.Placeable.ElementalPurge>() + "]");
+				bossChecklist.Call("AddBossWithInfo", "Abomination", 10.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ModContent.ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Plantera has been defeated");
+				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ModContent.ItemType<Items.Placeable.ElementalPurge>() + "]");
 			}
 		}
 
@@ -168,7 +166,7 @@ namespace ExampleMod
 
 			// Modifying a vanilla recipe group. Now we can use Lava Snail to craft Snail Statue
 			RecipeGroup snailGroup = RecipeGroup.recipeGroups[RecipeGroup.recipeGroupIDs["Snails"]];
-			snailGroup.ValidItems.Add(ItemType<NPCs.ExampleCritterItem>());
+			snailGroup.ValidItems.Add(ModContent.ItemType<NPCs.ExampleCritterItem>());
 		}
 
 		// Learn how to do Recipes: https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes 
@@ -345,7 +343,7 @@ namespace ExampleMod
 				// This message sent by the server to initialize the Volcano Tremor on clients
 				case ExampleModMessageType.SetTremorTime:
 					int tremorTime = reader.ReadInt32();
-					ExampleWorld world = GetModWorld<ExampleWorld>();
+					ExampleWorld world = GetInstance<ExampleWorld>();
 					world.VolcanoTremorTime = tremorTime;
 					break;
 				// This message sent by the server to initialize the Volcano Rubble.

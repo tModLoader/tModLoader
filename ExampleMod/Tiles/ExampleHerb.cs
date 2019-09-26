@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -39,7 +40,7 @@ namespace ExampleMod.Tiles
 			{
 				2, //TileID.Grass
 				109, // TileId.HallowedGrass
-				mod.TileType<ExampleBlock>()
+				TileType<ExampleBlock>()
 			};
 			TileObjectData.newTile.AnchorAlternateTiles = new[]
 			{
@@ -47,7 +48,7 @@ namespace ExampleMod.Tiles
 				TileID.PlanterBox
 			};
 			TileObjectData.addTile(Type);
-			//drop = mod.ItemType()
+			//drop = ItemType()
 		}
 		//public override bool CanPlace(int i, int j)
 		//{
@@ -62,7 +63,7 @@ namespace ExampleMod.Tiles
 		public override bool Drop(int i, int j) {
 			int stage = Main.tile[i, j].frameX / 18;
 			if (stage == 2) {
-				Item.NewItem(i * 16, j * 16, 0, 0, mod.ItemType<Items.Placeable.ExampleHerbSeeds>());
+				Item.NewItem(i * 16, j * 16, 0, 0, ItemType<Items.Placeable.ExampleHerbSeeds>());
 			}
 			return false;
 		}

@@ -1,7 +1,9 @@
+using ExampleMod.Tiles;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -27,7 +29,7 @@ namespace ExampleMod.Items.Weapons
 			item.value = Item.sellPrice(silver : 50);
 			item.rare = 3;
 			item.UseSound = SoundID.Item9;
-			item.shoot = mod.ProjectileType<Projectiles.MagicMissile>();
+			item.shoot = ProjectileType<Projectiles.MagicMissile>();
 			item.shootSpeed = 10f;
 		}
 
@@ -49,8 +51,8 @@ namespace ExampleMod.Items.Weapons
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"), 20);
-			recipe.AddTile(mod.TileType("ExampleWorkbench"));
+			recipe.AddIngredient(ItemType<ExampleItem>(), 20);
+			recipe.AddTile(TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
