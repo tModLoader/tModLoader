@@ -360,6 +360,7 @@ namespace Terraria.ModLoader
 
 			ItemLoader.WriteNetGlobalOrder(p);
 			WorldHooks.WriteNetWorldOrder(p);
+			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
 		}
@@ -380,6 +381,11 @@ namespace Terraria.ModLoader
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			WorldHooks.ReadNetWorldOrder(reader);
+			int serverMaxBuffs = reader.ReadInt32();
+			if (serverMaxBuffs != Player.MaxBuffs) {
+				Netplay.disconnect = true;
+				Main.statusText = $"The server expects Player.MaxBuffs of {serverMaxBuffs}\nbut this client reports {Player.MaxBuffs}.\nSome mod is behaving poorly.";
+			}
 		}
 
 		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length) {

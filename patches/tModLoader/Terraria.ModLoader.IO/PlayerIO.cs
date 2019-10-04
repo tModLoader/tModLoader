@@ -150,7 +150,7 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModBuffs(Player player) {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < Player.maxBuffs; k++) {
+			for (int k = 0; k < Player.MaxBuffs; k++) {
 				int buff = player.buffType[k];
 				if (buff == 0 || Main.buffNoSave[buff])
 					continue;
@@ -176,14 +176,14 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadModBuffs(Player player, IList<TagCompound> list) {
 			//buffs list is guaranteed to be compacted
-			int buffCount = Player.maxBuffs;
+			int buffCount = Player.MaxBuffs;
 			while (buffCount > 0 && player.buffType[buffCount - 1] == 0)
 				buffCount--;
 
 			if (buffCount == 0) {
 				//always the case since vanilla buff saving was disabled, when extra buff slots were added
 				foreach (var tag in list) {
-					if (buffCount == Player.maxBuffs)
+					if (buffCount == Player.MaxBuffs)
 						return;
 
 					var modName = tag.GetString("mod");
@@ -206,8 +206,8 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				int index = Math.Min(tag.GetByte("index"), buffCount);
-				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.maxBuffs - index - 1);
-				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.maxBuffs - index - 1);
+				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.MaxBuffs - index - 1);
+				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.MaxBuffs - index - 1);
 				player.buffType[index] = type;
 				player.buffTime[index] = tag.GetInt("time");
 			}
@@ -307,7 +307,7 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				int type = mod == null ? 0 : mod.BuffType(name);
 				if (type > 0) {
-					for (int j = Player.maxBuffs - 1; j > index; j--) {
+					for (int j = Player.MaxBuffs - 1; j > index; j--) {
 						player.buffType[j] = player.buffType[j - 1];
 						player.buffTime[j] = player.buffTime[j - 1];
 					}
@@ -318,7 +318,7 @@ namespace Terraria.ModLoader.IO
 					minusIndex++;
 				}
 			}
-			for (int k = 1; k < Player.maxBuffs; k++) {
+			for (int k = 1; k < Player.MaxBuffs; k++) {
 				if (player.buffType[k] > 0) {
 					int j = k - 1;
 					while (player.buffType[j] == 0) {

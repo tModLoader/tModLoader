@@ -148,7 +148,7 @@
  				return;
  			}
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (mountedPlayer.buffType[i] == this._data.buff)
  				{

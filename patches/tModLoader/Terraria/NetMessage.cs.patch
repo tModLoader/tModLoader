@@ -177,7 +177,7 @@
 -						for (int num16 = 0; num16 < 22; num16++)
 -						{
 -							writer.Write((byte)Main.player[number].buffType[num16]);
-+						for (int num16 = 0; num16 < Player.maxBuffs; num16++)
++						for (int num16 = 0; num16 < Player.MaxBuffs; num16++)
 +						{
 +							if (ModNet.AllowVanillaClients)
 +								writer.Write((byte)Main.player[number].buffType[num16]);

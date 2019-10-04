@@ -380,7 +380,7 @@
 -						for (int num133 = 0; num133 < 22; num133++)
 -						{
 -							player12.buffType[num133] = (int)this.reader.ReadByte();
-+						for (int num133 = 0; num133 < Player.maxBuffs; num133++)
++						for (int num133 = 0; num133 < Player.MaxBuffs; num133++)
 +						{
 +							player12.buffType[num133] = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
  							if (player12.buffType[num133] > 0)

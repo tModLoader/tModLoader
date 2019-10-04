@@ -137,15 +137,6 @@
  		public static int renderCount = 99;
  		public static GraphicsDeviceManager graphics;
  		public static SpriteBatch spriteBatch;
-@@ -578,7 +_,7 @@
- 		public static bool armorHide = false;
- 		public static float craftingAlpha = 1f;
- 		public static float armorAlpha = 1f;
--		public static float[] buffAlpha = new float[206];
-+		public static float[] buffAlpha = new float[Player.maxBuffs + 206];
- 		public static bool hardMode = false;
- 		public float chestLootScale = 1f;
- 		public bool chestLootHover;
 @@ -598,6 +_,7 @@
  		public static bool maxQ = true;
  		public static float gfxQuality = 1f;
@@ -1113,7 +1104,7 @@
  				}
  				bool flag2 = false;
 -				for (int num4 = 0; num4 < 22; num4++)
-+				for (int num4 = 0; num4 < Player.maxBuffs; num4++)
++				for (int num4 = 0; num4 < Player.MaxBuffs; num4++)
  				{
  					if (Main.player[Main.myPlayer].buffType[num4] != Main.clientPlayer.buffType[num4])
  					{
@@ -3770,7 +3761,7 @@
  			string focusText2 = "";
  			int num5 = Main.player[Main.myPlayer].statLifeMax2 - Main.player[Main.myPlayer].statLife;
 -			for (int j = 0; j < 22; j++)
-+			for (int j = 0; j < Player.maxBuffs; j++)
++			for (int j = 0; j < Player.MaxBuffs; j++)
  			{
  				int num6 = Main.player[Main.myPlayer].buffType[j];
 -				if (Main.debuff[num6] && Main.player[Main.myPlayer].buffTime[j] > 5 && num6 != 28 && num6 != 34 && num6 != 87 && num6 != 89 && num6 != 21 && num6 != 86 && num6 != 199)
@@ -3841,7 +3832,7 @@
 -										for (int l = 0; l < 22; l++)
 +										Main.player[Main.myPlayer].statLife += health;
 +										if (removeDebuffs) { // no indent for better patching
-+										for (int l = 0; l < Player.maxBuffs; l++)
++										for (int l = 0; l < Player.MaxBuffs; l++)
  										{
  											int num24 = Main.player[Main.myPlayer].buffType[l];
 -											if (Main.debuff[num24] && Main.player[Main.myPlayer].buffTime[l] > 0 && num24 != 28 && num24 != 34 && num24 != 87 && num24 != 89 && num24 != 21 && num24 != 86 && num24 != 199)
@@ -3884,7 +3875,7 @@
  				}
  				int num26 = 46;
 -				for (int n = 0; n < 22; n++)
-+				for (int n = 0; n < Player.maxBuffs; n++)
++				for (int n = 0; n < Player.MaxBuffs; n++)
  				{
  					int num27 = Main.player[Main.myPlayer].buffType[n];
  					if (num27 != 0)
@@ -4018,7 +4009,7 @@
  			int num = -1;
  			int num2 = 11;
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i <	Player.maxBuffs; i++)
++			for (int i = 0; i <	Player.MaxBuffs; i++)
  			{
  				if (Main.player[Main.myPlayer].buffType[i] > 0)
  				{

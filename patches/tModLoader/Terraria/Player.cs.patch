@@ -39,7 +39,7 @@
  			}
  		}
  
-+		public static int maxBuffs { get { return 22 + BuffLoader.ExtraBuffCount; } }
++		public static int MaxBuffs => 22 + BuffLoader.extraPlayerBuffCount;
 +
  		public const int maxSolarShields = 3;
  		public const int nebulaMaxLevel = 3;
@@ -165,7 +165,7 @@
  				return -1;
  			}
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffTime[i] >= 1 && this.buffType[i] == type)
  				{
@@ -182,7 +182,7 @@
  			{
  				bool flag = true;
 -				for (int i = 0; i < 22; i++)
-+				for (int i = 0; i < Player.maxBuffs; i++)
++				for (int i = 0; i < Player.MaxBuffs; i++)
  				{
  					if (this.buffType[i] == type)
  					{
@@ -191,7 +191,7 @@
  			}
  			int num2 = -1;
 -			for (int j = 0; j < 22; j++)
-+			for (int j = 0; j < Player.maxBuffs; j++)
++			for (int j = 0; j < Player.MaxBuffs; j++)
  			{
  				if (this.buffType[j] == type)
  				{
@@ -208,7 +208,7 @@
  			if (Main.vanityPet[type] || Main.lightPet[type])
  			{
 -				for (int k = 0; k < 22; k++)
-+				for (int k = 0; k < Player.maxBuffs; k++)
++				for (int k = 0; k < Player.MaxBuffs; k++)
  				{
  					if (Main.vanityPet[type] && Main.vanityPet[this.buffType[k]])
  					{
@@ -217,7 +217,7 @@
  			{
  				int num3 = -1;
 -				for (int l = 0; l < 22; l++)
-+				for (int l = 0; l < Player.maxBuffs; l++)
++				for (int l = 0; l < Player.MaxBuffs; l++)
  				{
  					if (!Main.debuff[this.buffType[l]])
  					{
@@ -226,7 +226,7 @@
  					return;
  				}
 -				for (int m = num3; m < 22; m++)
-+				for (int m = num3; m < Player.maxBuffs; m++)
++				for (int m = num3; m < Player.MaxBuffs; m++)
  				{
  					if (this.buffType[m] == 0)
  					{
@@ -235,7 +235,7 @@
  			if (Main.meleeBuff[type])
  			{
 -				for (int n = 0; n < 22; n++)
-+				for (int n = 0; n < Player.maxBuffs; n++)
++				for (int n = 0; n < Player.MaxBuffs; n++)
  				{
  					if (n != num2 && Main.meleeBuff[this.buffType[n]])
  					{
@@ -244,12 +244,12 @@
  			this.buffTime[b] = 0;
  			this.buffType[b] = 0;
 -			for (int i = 0; i < 21; i++)
-+			for (int i = 0; i < Player.maxBuffs - 1; i++)
++			for (int i = 0; i < Player.MaxBuffs - 1; i++)
  			{
  				if (this.buffTime[i] == 0 || this.buffType[i] == 0)
  				{
 -					for (int j = i + 1; j < 22; j++)
-+					for (int j = i + 1; j < Player.maxBuffs; j++)
++					for (int j = i + 1; j < Player.MaxBuffs; j++)
  					{
  						this.buffTime[j - 1] = this.buffTime[j];
  						this.buffType[j - 1] = this.buffType[j];
@@ -258,7 +258,7 @@
  		public void ClearBuff(int type)
  		{
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffType[i] == type)
  				{
@@ -267,7 +267,7 @@
  		{
  			int num = 0;
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffType[num] > 0)
  				{
@@ -422,7 +422,7 @@
  			for (int i = 0; i < 58; i++)
  			{
 -				if (this.CountBuffs() == 22)
-+				if (this.CountBuffs() == Player.maxBuffs)
++				if (this.CountBuffs() == Player.MaxBuffs)
  				{
  					return;
  				}
@@ -432,7 +432,7 @@
 -					bool flag = true;
 -					for (int j = 0; j < 22; j++)
 +					bool flag = ItemLoader.CanUseItem(this.inventory[i], this);
-+					for (int j = 0; j < Player.maxBuffs; j++)
++					for (int j = 0; j < Player.MaxBuffs; j++)
  					{
  						if (num == 27 && (this.buffType[j] == num || this.buffType[j] == 101 || this.buffType[j] == 102))
  						{
@@ -441,7 +441,7 @@
  					if (Main.lightPet[this.inventory[i].buffType] || Main.vanityPet[this.inventory[i].buffType])
  					{
 -						for (int k = 0; k < 22; k++)
-+						for (int k = 0; k < Player.maxBuffs; k++)
++						for (int k = 0; k < Player.MaxBuffs; k++)
  						{
  							if (Main.lightPet[this.buffType[k]] && Main.lightPet[this.inventory[i].buffType])
  							{
@@ -806,7 +806,7 @@
  				}
  			}
 -			for (int k = 0; k < 22; k++)
-+			for (int k = 0; k < Player.maxBuffs; k++)
++			for (int k = 0; k < Player.MaxBuffs; k++)
  			{
  				if (this.buffType[k] > 0 && this.buffTime[k] > 0)
  				{
@@ -838,7 +838,7 @@
  							else
  							{
 -								for (int n = 0; n < 22; n++)
-+								for (int n = 0; n < Player.maxBuffs; n++)
++								for (int n = 0; n < Player.MaxBuffs; n++)
  								{
  									if (this.buffType[n] >= 95 && this.buffType[n] <= 95 + num3 - 1)
  									{
@@ -847,7 +847,7 @@
  							else
  							{
 -								for (int num5 = 0; num5 < 22; num5++)
-+								for (int num5 = 0; num5 < Player.maxBuffs; num5++)
++								for (int num5 = 0; num5 < Player.MaxBuffs; num5++)
  								{
  									if (this.buffType[num5] >= 170 && this.buffType[num5] <= 170 + num4 - 1)
  									{
@@ -856,7 +856,7 @@
  							else
  							{
 -								for (int num7 = 0; num7 < 22; num7++)
-+								for (int num7 = 0; num7 < Player.maxBuffs; num7++)
++								for (int num7 = 0; num7 < Player.MaxBuffs; num7++)
  								{
  									if (this.buffType[num7] >= 98 && this.buffType[num7] <= 98 + num6 - 1)
  									{
@@ -865,7 +865,7 @@
  							else
  							{
 -								for (int num10 = 0; num10 < 22; num10++)
-+								for (int num10 = 0; num10 < Player.maxBuffs; num10++)
++								for (int num10 = 0; num10 < Player.MaxBuffs; num10++)
  								{
  									if (this.buffType[num10] >= 176 && this.buffType[num10] <= 178 + num9 - 1)
  									{
@@ -874,7 +874,7 @@
  							else
  							{
 -								for (int num13 = 0; num13 < 22; num13++)
-+								for (int num13 = 0; num13 < Player.maxBuffs; num13++)
++								for (int num13 = 0; num13 < Player.MaxBuffs; num13++)
  								{
  									if (this.buffType[num13] >= 173 && this.buffType[num13] <= 175 + num12 - 1)
  									{
@@ -883,7 +883,7 @@
  							else
  							{
 -								for (int num16 = 0; num16 < 22; num16++)
-+								for (int num16 = 0; num16 < Player.maxBuffs; num16++)
++								for (int num16 = 0; num16 < Player.MaxBuffs; num16++)
  								{
  									if (this.buffType[num16] >= 179 && this.buffType[num16] <= 181 + num15 - 1)
  									{
@@ -3369,7 +3369,7 @@
  				if (num != this.beetleOrbs && this.beetleOrbs > 0)
  				{
 -					for (int j = 0; j < 22; j++)
-+					for (int j = 0; j < Player.maxBuffs; j++)
++					for (int j = 0; j < Player.MaxBuffs; j++)
  					{
  						if (this.buffType[j] >= 98 && this.buffType[j] <= 100 && this.buffType[j] != 97 + num)
  						{
@@ -3378,7 +3378,7 @@
  					if (this.beetleOrbs > 0 && this.beetleOrbs < 3)
  					{
 -						for (int k = 0; k < 22; k++)
-+						for (int k = 0; k < Player.maxBuffs; k++)
++						for (int k = 0; k < Player.MaxBuffs; k++)
  						{
  							if (this.buffType[k] >= 95 && this.buffType[k] <= 96)
  							{
@@ -3387,7 +3387,7 @@
  			else if (this.crystalLeaf)
  			{
 -				for (int n = 0; n < 22; n++)
-+				for (int n = 0; n < Player.maxBuffs; n++)
++				for (int n = 0; n < Player.MaxBuffs; n++)
  				{
  					if (this.buffType[n] == 60)
  					{
@@ -3396,7 +3396,7 @@
  					if (this.solarShields > 0 && this.solarShields < 3)
  					{
 -						for (int num12 = 0; num12 < 22; num12++)
-+						for (int num12 = 0; num12 < Player.maxBuffs; num12++)
++						for (int num12 = 0; num12 < Player.MaxBuffs; num12++)
  						{
  							if (this.buffType[num12] >= 170 && this.buffType[num12] <= 171)
  							{
@@ -3432,7 +3432,7 @@
 +			PlayerHooks.UpdateDead(this);
  			this.gravDir = 1f;
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffType[i] <= 0 || !Main.persistentBuff[this.buffType[i]])
  				{
@@ -3772,7 +3772,7 @@
  			if (this.whoAmI == Main.myPlayer)
  			{
 -				for (int num26 = 0; num26 < 22; num26++)
-+				for (int num26 = 0; num26 < Player.maxBuffs; num26++)
++				for (int num26 = 0; num26 < Player.MaxBuffs; num26++)
  				{
  					if (this.buffType[num26] > 0 && this.buffTime[num26] <= 0)
  					{
@@ -3806,7 +3806,7 @@
  			this.maxRunSpeed *= this.moveSpeed;
  			this.UpdateJumpHeight();
 -			for (int num31 = 0; num31 < 22; num31++)
-+			for (int num31 = 0; num31 < Player.maxBuffs; num31++)
++			for (int num31 = 0; num31 < Player.MaxBuffs; num31++)
  			{
  				if (this.buffType[num31] > 0 && this.buffTime[num31] > 0 && this.buffImmune[this.buffType[num31]])
  				{
@@ -3881,7 +3881,7 @@
  				if (flag23 && Main.myPlayer == this.whoAmI)
  				{
 -					for (int num137 = 0; num137 < 22; num137++)
-+					for (int num137 = 0; num137 < Player.maxBuffs; num137++)
++					for (int num137 = 0; num137 < Player.MaxBuffs; num137++)
  					{
  						if (this.buffType[num137] == 38)
  						{
@@ -3890,7 +3890,7 @@
  				if (this.onFire && !this.lavaWet)
  				{
 -					for (int num142 = 0; num142 < 22; num142++)
-+					for (int num142 = 0; num142 < Player.maxBuffs; num142++)
++					for (int num142 = 0; num142 < Player.MaxBuffs; num142++)
  					{
  						if (this.buffType[num142] == 24)
  						{
@@ -4318,7 +4318,7 @@
  			if (this.whoAmI == Main.myPlayer)
  			{
 -				for (int j = 0; j < 22; j++)
-+				for (int j = 0; j < Player.maxBuffs; j++)
++				for (int j = 0; j < Player.MaxBuffs; j++)
  				{
  					if (this.buffTime[j] > 0 && this.buffType[j] == 59)
  					{
@@ -4351,7 +4351,7 @@
  				if (this.invis)
  				{
 -					for (int i = 0; i < 22; i++)
-+					for (int i = 0; i < Player.maxBuffs; i++)
++					for (int i = 0; i < Player.MaxBuffs; i++)
  					{
  						if (this.buffType[i] == 10)
  						{
@@ -4360,7 +4360,7 @@
  					num2 = (double)((int)((double)(1f - num5) * num2));
  					this.beetleOrbs--;
 -					for (int j = 0; j < 22; j++)
-+					for (int j = 0; j < Player.maxBuffs; j++)
++					for (int j = 0; j < Player.MaxBuffs; j++)
  					{
  						if (this.buffType[j] >= 95 && this.buffType[j] <= 97)
  						{
@@ -5815,7 +5815,7 @@
  					num = 102;
  				}
 -				for (int i = 0; i < 22; i++)
-+				for (int i = 0; i < Player.maxBuffs; i++)
++				for (int i = 0; i < Player.MaxBuffs; i++)
  				{
  					if (this.buffType[i] == 27 || this.buffType[i] == 101 || this.buffType[i] == 102)
  					{
@@ -6171,7 +6171,7 @@
  			}
  			player.trashItem = this.trashItem.Clone();
 -			for (int j = 0; j < 22; j++)
-+			for (int j = 0; j < Player.maxBuffs; j++)
++			for (int j = 0; j < Player.MaxBuffs; j++)
  			{
  				player.buffType[j] = this.buffType[j];
  				player.buffTime[j] = this.buffTime[j];
@@ -6416,8 +6416,8 @@
 -			this.buffType = new int[22];
 -			this.buffTime = new int[22];
 -			this.buffImmune = new bool[206];
-+			this.buffType = new int[Player.maxBuffs];
-+			this.buffTime = new int[Player.maxBuffs];
++			this.buffType = new int[Player.MaxBuffs];
++			this.buffTime = new int[Player.MaxBuffs];
 +			this.buffImmune = new bool[BuffLoader.BuffCount];
  			this.heldProj = -1;
  			this.breathMax = 200;
@@ -6679,7 +6679,7 @@
  			}
  			this.solarShields--;
 -			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.maxBuffs; i++)
++			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffType[i] >= 170 && this.buffType[i] <= 172)
  				{
@@ -6688,7 +6688,7 @@
  			{
  				int time = 480;
 -				for (int i = 0; i < 22; i++)
-+				for (int i = 0; i < Player.maxBuffs; i++)
++				for (int i = 0; i < Player.MaxBuffs; i++)
  				{
  					if (this.buffType[i] >= type && this.buffType[i] < type + 3)
  					{
