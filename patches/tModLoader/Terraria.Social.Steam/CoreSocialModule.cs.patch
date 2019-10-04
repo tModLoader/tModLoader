@@ -1,0 +1,13 @@
+--- src/Terraria\Terraria.Social.Steam\CoreSocialModule.cs
++++ src/tModLoader\Terraria.Social.Steam\CoreSocialModule.cs
+@@ -29,7 +_,9 @@
+ #endif
+ 			if (!SteamAPI.Init())
+ 			{
++#if !MAC
+ 				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
++#endif
+ 				Environment.Exit(1);
+ 			}
+ 			this.IsSteamValid = true;
+
