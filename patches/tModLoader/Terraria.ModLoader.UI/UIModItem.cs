@@ -130,8 +130,8 @@ namespace Terraria.ModLoader.UI
 				};
 				Append(_keyImage);
 			}
-			if (ModLoader.badUnloaders.Contains(ModName)) {
-				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This mod did not fully unload during last unload.\n(This is a message for the mod creator)") {
+			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
+				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
 				};
@@ -217,7 +217,7 @@ namespace Terraria.ModLoader.UI
 				drawPos += new Vector2(90f, -2f);
 				spriteBatch.Draw(UICommon.ModBrowserIconsTexture, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 				if (new Rectangle((int)drawPos.X, (int)drawPos.Y, 32, 32).Contains(Main.MouseScreen.ToPoint()))
-					UICommon.DrawHoverStringInBounds(spriteBatch, "This is a server side mod");
+					UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 			}
 
 			if (_moreInfoButton?.IsMouseHovering == true) {

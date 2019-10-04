@@ -6,6 +6,7 @@
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Quelle",
 		"MenuEnableDeveloperMode": "Aktiviere Entwickler MoDus",
+		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 
 		// Mods Menu
 		"ModsModsList": "Mod Liste",
@@ -20,11 +21,13 @@
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		"ModDependencyClickTooltip": "Diese Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
+		// "ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
 		"BetaModCantPublish": "Diese Mod wurde in einer Beta-Version erstellt und kann nicht veröffentlicht werden.",
 		"BetaModCantPublishError": "Du kannst keine in der Beta-Version von tModLoader erstellten Mod veröffentlichen",
 		"OutdatedModCantPublishError": "Du kannst keine Mod die in einer alten tModLoader Version erstellt wurde veröffentlichen",
 		"ModReloadRequired": "Neuladen erforderlich",
 		"ModReloadForced": "Neuladen erzwingen",
+		// "ModIsServerSide": "This is a server side mod",
 		"ModsByline": "Mod von: {0}",
 		"ModsMoreInfo": "Mehr info",
 		"ModsOriginatedFromModBrowser": "Dieser Mod ist aus der Mod Suche",

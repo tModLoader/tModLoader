@@ -7,6 +7,7 @@
 		"MenuMods": "模组管理",
 		"MenuModSources": "模组源码",
 		"MenuEnableDeveloperMode": "启用开发者模式",
+		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -21,11 +22,13 @@
 		"ModOldWarning": "旧模组,有风险",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n (点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
+		// "ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
 		"BetaModCantPublish": "该模组生成于测试版本,不能发布",
 		"BetaModCantPublishError": "你无法发布生成于tModLoader测试版本的模组",
 		"OutdatedModCantPublishError": "你无法发布生成于tModLoader旧版本的模组",
 		"ModReloadRequired": "需要重新加载",
 		"ModReloadForced": "强制重新加载",
+		// "ModIsServerSide": "This is a server side mod",
 		"ModsByline": "作者: {0}",
 		"ModsMoreInfo": "更多信息",
 		"ModsOriginatedFromModBrowser": "该模组来源于模组浏览器",

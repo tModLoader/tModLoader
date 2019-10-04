@@ -6,6 +6,7 @@
 		"MenuMods": "Моды",
 		"MenuModSources": "Исходники модов",
 		// "MenuEnableDeveloperMode": "Enable Developer Mode",
+		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",
@@ -20,11 +21,13 @@
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModDependencyClickTooltip": "Этот мод зависит от: {0}\n (нажмите чтобы включить)",
 		"ModDependencyModsNotFound": "Следующие моды не были обнаружены: {0}",
+		// "ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
 		"BetaModCantPublish": "Этот мод был собран на бета версии и не может быть опубликован",
 		"BetaModCantPublishError": "Вы не можете опубликовать мод, который был создан в Бета версии tModLoader",
 		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"ModReloadRequired": "Требуется перезагрузка",
 		// "ModReloadForced": "Reload Forced",
+		// "ModIsServerSide": "This is a server side mod",
 		"ModsByline": "От: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из Браузера модов",
