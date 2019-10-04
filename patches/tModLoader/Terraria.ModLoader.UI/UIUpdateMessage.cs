@@ -102,7 +102,7 @@ namespace Terraria.ModLoader.UI
 			string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);
 			string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
-			Logging.tML.Info($"AutoUpdate started: {_autoUpdateUrl} -> {zipFilePath}");
+			Logging.tML.Info($"AutoUpdate: {_autoUpdateUrl} -> {zipFilePath}");
 			var downloadFile = new DownloadFile(_autoUpdateUrl, zipFilePath, $"Auto update: {zipFileName}");
 			downloadFile.OnComplete += () => OnAutoUpdateDownloadComplete(installDirectory, zipFilePath);
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
@@ -110,32 +110,34 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath) {
-			string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-			string extractDir = Path.Combine(installDirectory, "tModLoader_Update");
-			string updateScriptName = Platform.IsWindows ? "update.bat" : "update.sh";
-			string updateScript = Path.Combine(installDirectory, updateScriptName);
-
-			Logging.tML.Info($"AutoUpdate Paths: installDirectory {installDirectory}, executableName {executableName},  extractDir {extractDir}, autoUpdateScript {updateScript}");
 			try {
-				if (Directory.Exists(extractDir))
-					Directory.Delete(extractDir, true);
-				Directory.CreateDirectory(extractDir);
-
-				using (var zip = ZipFile.Read(zipFilePath)) 
-					zip.ExtractAll(extractDir);
-				File.Delete(zipFilePath);
-
+				string updateScriptName = Platform.IsWindows ? "update.bat" : "update.sh";
+				string updateScript = Path.Combine(installDirectory, updateScriptName);
+				Logging.tML.Info($"Writing Script: {updateScriptName}");
 				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Core.{updateScriptName}"))
 				using (var fs = File.OpenWrite(updateScript))
 					stream.CopyTo(fs);
 
 				if (Platform.IsWindows) {
+					string extractDir = Path.Combine(installDirectory, "tModLoader_Update");
+					if (Directory.Exists(extractDir))
+						Directory.Delete(extractDir, true);
+					Directory.CreateDirectory(extractDir);
+
+					Logging.tML.Info($"Extracting: {zipFilePath} -> {extractDir}");
+					using (var zip = ZipFile.Read(zipFilePath)) 
+						zip.ExtractAll(extractDir);
+					File.Delete(zipFilePath);
+
+					string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+					Logging.tML.Info($"Renaming Terraria.exe -> {executableName}");
 					File.Move(Path.Combine(extractDir, "Terraria.exe"), Path.Combine(extractDir, executableName));
+
 					Process.Start(updateScript, $"\"{executableName}\" tModLoader_Update");
 				}
 				else {
 					Process.Start("bash", $"-c 'chmod a+x \"{updateScript}\"'").WaitForExit();
-					Process.Start(updateScript, $"{Process.GetCurrentProcess().Id} tModLoader_Update");
+					Process.Start(updateScript, $"{Process.GetCurrentProcess().Id} \"{zipFilePath}\"");
 				}
 
 				Logging.tML.Info("AutoUpdate script started. Exiting");

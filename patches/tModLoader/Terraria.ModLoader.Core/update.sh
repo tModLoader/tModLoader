@@ -33,12 +33,22 @@ while kill -0 "$tpid"; do
 done
 
 echo "Updating..."
-chmod a+x $2/Terraria
-chmod a+x $2/tModLoader*
+rm -rf tModLoader_update
+mkdir tModLoader_update
 
-rm $2/README.txt $2/*Installer*
-mv $2/* .
-rmdir $2
+if [[ $2 == *.tar.gz ]]; then
+	tar xvzf "$2" -C tModLoader_update
+else #.zip
+	unzip "$2" -d tModLoader_update
+fi
+rm "$2"
+
+chmod a+x tModLoader_update/Terraria
+chmod a+x tModLoader_update/tModLoader*
+
+rm tModLoader_update/README.txt tModLoader_update/*Installer*
+mv tModLoader_update/* .
+rmdir tModLoader_update
 
 echo "Deleting update script"
 rm -- "$0"

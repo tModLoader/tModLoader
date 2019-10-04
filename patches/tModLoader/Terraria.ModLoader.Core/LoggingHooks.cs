@@ -14,6 +14,14 @@ namespace Terraria.ModLoader.Core
 		internal static void Init() {
 			PrettifyStackTraceSources();
 			HookWebRequests();
+			HookProcessStart();
+		}
+
+		private static void HookProcessStart() {
+			new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
+				Logging.tML.Debug($"Process.Start (UseShellExecute = {self.StartInfo.UseShellExecute}): \"{self.StartInfo.FileName}\" {self.StartInfo.Arguments}");
+				return orig(self);
+			}));
 		}
 
 		// On .NET, hook the StackTrace constructor
