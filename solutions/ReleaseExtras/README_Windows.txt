@@ -15,7 +15,7 @@ GOG Manual Install:
 For GOG installs, follow the Steam Manual Install instructions above but with the location of your GOG install of Terraria. This is likely C:\GOG Games\Terraria. Don't skip the backing up vanilla "Terraria.exe" step or it won't work.
 
 Run tModLoader:
-To run tModLoader, run Terraria as normal from Steam. Do not attempt to run it from the temporary folder.
+To run tModLoader, run Terraria as normal from Steam. Do not attempt to run it from the temporary folder. If you see Mods or Mod Browser on the main menu in Terraria, you have successfully installed tModLoader.
 
 Uninstall/Switch back to un-modded Terraria:
 If you want to play un-modded Terraria or join an un-modded Terraria server, you can't use tModLoader. You can simply launch the "Terraria_v1.3.5.3.exe" file in the install directory to launch the vanilla Terraria Client. If that file launches tModLoader or you wish to permanently revery to un-modded Terraria, you need to use steam to "verify game integrity" which will restore the files back to the un-modded Terraria. (You'll need to reinstall tModLoader later.) See this video to see how to do that: https://gfycat.com/RapidBelovedFrog

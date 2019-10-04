@@ -1,5 +1,5 @@
 Automatic Install:
-To install tModLoader, extract the zip achive containing this README.txt file to a temporary folder and then simply run the tModLoaderInstaller.jar file in that folder. Java 1.8 or higher is required for the installer to run. The installer will make a window pop up, informing you of either success or failure. If you have changed the steam library location or are on GOG, the installer might ask you where you installed Terraria. If for some reason the installer doesn't work, you'll need to follow the Manual Install instructions.
+To install tModLoader, extract the zip archive containing this README.txt file to a temporary folder and then simply run the tModLoaderInstaller.jar file in that folder. Java 1.8 or higher is required for the installer to run. The installer will make a window pop up, informing you of either success or failure. If you have changed the steam library location or are on GOG, the installer might ask you where you installed Terraria. If for some reason the installer doesn't work, you'll need to follow the Manual Install instructions.
 
 Manual Install:
 If the installer for some reason does not work, or if you do not want to install/upgrade Java, you may also do a manual install:
@@ -11,7 +11,7 @@ Steam Manual Install:
 
 3.  Copy all of the files from the temporary folder (or zip archive) into the install folder. You'll need to make sure to replace files if asked: https://gfycat.com/EqualFaithfulAfricanharrierhawk
 
-4. You need to give execute permissions to 2 files. Open a terminal in the install directory and run the following 2 commands:
+4. Run Terraria as normal. If it doesn't run, you might need to give execute permissions to 2 files. If so, open a terminal in the install directory and run the following 2 commands:
     chmod +x tModLoaderServer
     chmod +x Terraria
 
@@ -19,7 +19,7 @@ GOG Install:
 For GOG installs, follow the Steam Manual Install instructions above but with the location of your GOG install of Terraria. Don't skip the backing up vanilla "Terraria.exe" step or it won't work.
 
 Run tModLoader:
-To run tModLoader, run Terraria as normal from Steam. Do not attempt to run it from the temporary folder.
+To run tModLoader, run Terraria as normal from Steam. Do not attempt to run it from the temporary folder. If you see Mods or Mod Browser on the main menu in Terraria, you have successfully installed tModLoader.
 
 Why are there EXE files?:
 Don't worry about it, you didn't download the wrong thing.
