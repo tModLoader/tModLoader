@@ -57,7 +57,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 		}
 
 		public override void OnHitPlayer(Player target, int damage, bool crit) {
-			for (int k = 0; k < Player.maxBuffs; k++) {
+			for (int k = 0; k < Player.MaxBuffs; k++) {
 				if (target.buffType[k] > 0 && target.buffTime[k] > 0 && BuffLoader.CanBeCleared(target.buffType[k]) && Main.rand.NextBool()) {
 					target.DelBuff(k);
 					k--;

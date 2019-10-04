@@ -11,7 +11,6 @@ namespace ExampleMod.Items
 		public override bool Autoload(ref string name)
 		{
 			return !GetInstance<ExampleConfigServer>().DisableExampleWings;
-			//return !mod.GetConfig<ExampleConfigServer>().DisableExampleWings;
 		}
 
 		public override void SetStaticDefaults() {
