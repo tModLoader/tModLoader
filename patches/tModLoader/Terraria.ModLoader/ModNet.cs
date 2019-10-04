@@ -11,6 +11,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {

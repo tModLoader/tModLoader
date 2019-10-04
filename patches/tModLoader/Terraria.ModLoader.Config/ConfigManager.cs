@@ -10,6 +10,7 @@ using System.Reflection;
 using Terraria.ID;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config

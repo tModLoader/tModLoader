@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {

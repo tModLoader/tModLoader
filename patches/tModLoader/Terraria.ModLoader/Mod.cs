@@ -14,6 +14,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
@@ -1713,6 +1714,7 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
+		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
 		public T GetConfig<T>() where T : ModConfig => (T)GetConfig(typeof(T).Name);
 	}
 }

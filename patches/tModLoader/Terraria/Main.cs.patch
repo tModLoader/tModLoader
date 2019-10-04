@@ -10,7 +10,7 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -54,6 +_,11 @@
+@@ -54,6 +_,12 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -19,6 +19,7 @@
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.IO;
++using Terraria.ModLoader.UI;
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
@@ -4120,7 +4121,7 @@
  				{
  					LanguageManager.Instance.SetLanguage(this.selectedMenu);
 -					Main.menuMode = 0;
-+					Main.menuMode = ModLoader.Interface.loadModsID;
++					Main.menuMode = Interface.loadModsID;
  					Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  					Main.SaveSettings();
  				}

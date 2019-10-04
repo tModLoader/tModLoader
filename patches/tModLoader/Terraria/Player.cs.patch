@@ -1,12 +1,13 @@
 --- src/Terraria\Terraria\Player.cs
 +++ src/tModLoader\Terraria\Player.cs
-@@ -28,6 +_,9 @@
+@@ -28,6 +_,10 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.World.Generation;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
++using Terraria.ModLoader.UI;
  
  namespace Terraria
  {

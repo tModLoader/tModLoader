@@ -1,12 +1,13 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UICharacterListItem.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UICharacterListItem.cs
-@@ -6,6 +_,9 @@
+@@ -6,6 +_,10 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.UI;
 +using System.Reflection;
 +using Terraria.ModLoader;
 +using System.Linq;
++using Terraria.ModLoader.UI;
  
  namespace Terraria.GameContent.UI.Elements
  {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {

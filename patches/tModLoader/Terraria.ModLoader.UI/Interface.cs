@@ -9,7 +9,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.UI
 {
 	internal static class Interface
 	{

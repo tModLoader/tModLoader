@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Core
 {
