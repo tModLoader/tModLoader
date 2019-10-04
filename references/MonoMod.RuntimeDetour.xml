@@ -13,12 +13,12 @@
         </member>
         <member name="M:MonoMod.RuntimeDetour.Detour.Apply">
             <summary>
-            This is a no-op on fully managed detours.
+            Mark the detour as applied in the detour chain. This can be done automatically when creating an instance.
             </summary>
         </member>
         <member name="M:MonoMod.RuntimeDetour.Detour.Undo">
             <summary>
-            Permanently undo the detour, while also freeing any related unmanaged resources. This makes any further operations on this detour invalid.
+            Undo the detour without freeing it, allowing you to reapply it later.
             </summary>
         </member>
         <member name="M:MonoMod.RuntimeDetour.Detour.Free">
@@ -41,6 +41,53 @@
             Generate a new DynamicMethod with which you can invoke the previous state.
             </summary>
         </member>
+        <member name="M:MonoMod.RuntimeDetour.Hook.GenerateTrampoline``1">
+            <summary>
+            Generate a new DynamicMethod with which you can invoke the previous state.
+            </summary>
+        </member>
+        <member name="T:MonoMod.RuntimeDetour.NativeDetour">
+            <summary>
+            A "raw" native detour, acting as a wrapper around NativeDetourData with a few helpers.
+            Only one NativeDetour for a method to detour from can exist at any given time. NativeDetours cannot be layered.
+            If you don't need the trampoline generator or any of the management helpers, use DetourManager.Native directly.
+            Unless you're writing your own detour manager or need to detour native functions, it's better to create instances of Detour instead.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Apply">
+            <summary>
+            Apply the native detour. This can be done automatically when creating an instance.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Undo">
+            <summary>
+            Undo the native detour without freeing the detour native data, allowing you to reapply it later.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Free">
+            <summary>
+            Free the detour's data without undoing it. This makes any further operations on this detour invalid.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Dispose">
+            <summary>
+            Undo and free this temporary detour.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.GenerateTrampoline(System.Reflection.MethodBase)">
+            <summary>
+            Generate a new DynamicMethod with which you can invoke the previous state.
+            If the NativeDetour holds a reference to a managed method, a copy of the original method is returned.
+            If the NativeDetour holds a reference to a native function, an "undo-call-redo" trampoline with a matching signature is returned.
+            </summary>
+        </member>
+        <member name="M:MonoMod.RuntimeDetour.NativeDetour.GenerateTrampoline``1">
+            <summary>
+            Generate a new delegate with which you can invoke the previous state.
+            If the NativeDetour holds a reference to a managed method, a copy of the original method is returned.
+            If the NativeDetour holds a reference to a native function, an "undo-call-redo" trampoline with a matching signature is returned.
+            </summary>
+        </member>
         <member name="M:MonoMod.RuntimeDetour.DetourHelper.Write(System.IntPtr,System.Int32@,System.Byte)">
             <summary>
             Write the given value at the address to + offs, afterwards advancing offs by sizeof(byte).
@@ -59,12 +106,6 @@
         <member name="M:MonoMod.RuntimeDetour.DetourHelper.Write(System.IntPtr,System.Int32@,System.UInt64)">
             <summary>
             Write the given value at the address to + offs, afterwards advancing offs by sizeof(ulong).
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.DetourHelper.GetNativeStart(System.Reflection.MethodBase)">
-            <summary>
-            Get a pointer to the start of the executable section of the method. Normally, this is the JITed "native" function.
-            Note: DetourManager.GetNativeStart silently pins your method. If you want to skip pinning, use DetourManager.Runtime.GetNativeStart directly.
             </summary>
         </member>
         <member name="M:MonoMod.RuntimeDetour.DetourHelper.GenerateNativeProxy(System.IntPtr,System.Reflection.MethodBase)">
@@ -88,11 +129,6 @@
         <member name="M:MonoMod.RuntimeDetour.DetourHelper.EmitDetourApply(Mono.Cecil.Cil.ILProcessor,MonoMod.RuntimeDetour.NativeDetourData)">
             <summary>
             Emit a call to DetourManager.Native.Apply using a copy of the given data.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.Hook.GenerateTrampoline``1">
-            <summary>
-            Generate a new DynamicMethod with which you can invoke the previous state.
             </summary>
         </member>
         <member name="T:MonoMod.RuntimeDetour.NativeDetourData">
@@ -123,48 +159,6 @@
         <member name="F:MonoMod.RuntimeDetour.NativeDetourData.Extra">
             <summary>
             DetourManager.Native-specific data.
-            </summary>
-        </member>
-        <member name="T:MonoMod.RuntimeDetour.NativeDetour">
-            <summary>
-            A "raw" native detour, acting as a wrapper around NativeDetourData with a few helpers.
-            Only one NativeDetour for a method to detour from can exist at any given time. NativeDetours cannot be layered.
-            If you don't need the trampoline generator or any of the management helpers, use DetourManager.Native directly.
-            Unless you're writing your own detour manager or need to detour native functions, it's better to create instances of Detour instead.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Apply">
-            <summary>
-            Apply the native detour. This automatically happens when creating an instance.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Undo">
-            <summary>
-            Undo the native detour. Doesn't free the detour native data, allowing you to reapply it later.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Free">
-            <summary>
-            Free the detour's data without undoing it. This makes any further operations on this detour invalid.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.Dispose">
-            <summary>
-            Undo and free this temporary detour.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.GenerateTrampoline(System.Reflection.MethodBase)">
-            <summary>
-            Generate a new DynamicMethod with which you can invoke the previous state.
-            If the NativeDetour holds a reference to a managed method, a copy of the original method is returned.
-            If the NativeDetour holds a reference to a native function, an "undo-call-redo" trampoline with a matching signature is returned.
-            </summary>
-        </member>
-        <member name="M:MonoMod.RuntimeDetour.NativeDetour.GenerateTrampoline``1">
-            <summary>
-            Generate a new delegate with which you can invoke the previous state.
-            If the NativeDetour holds a reference to a managed method, a copy of the original method is returned.
-            If the NativeDetour holds a reference to a native function, an "undo-call-redo" trampoline with a matching signature is returned.
             </summary>
         </member>
     </members>
