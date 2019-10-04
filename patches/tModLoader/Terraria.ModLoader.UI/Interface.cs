@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Terraria.ID;
@@ -372,6 +373,17 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			Console.Clear();
+		}
+
+		internal static void MessageBoxShow(string text, string caption = null) {
+			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
+			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
+#if !MAC
+			System.Windows.Forms.MessageBox.Show(text, caption);
+#else
+			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
+			Process.Start("fake-messagebox.txt");
+#endif
 		}
 	}
 }

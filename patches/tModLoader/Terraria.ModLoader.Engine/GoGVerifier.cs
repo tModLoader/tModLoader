@@ -66,9 +66,7 @@ namespace Terraria.ModLoader.Engine
 				Logging.tML.Info("Vanilla Terraria.exe not found.");
 				string message = $"{vanillaPath} not found.\n\nGoG installs must have the unmodified Terraria exe to function.\n\nPlease restore your Terraria install, then install tModLoader using the provided tModLoaderInstaller.jar or by following the README.txt instructions.";
 				Logging.tML.Fatal(message);
-#if !MAC
-				System.Windows.Forms.MessageBox.Show(message, "Terraria: Error" + $" ({ModLoader.versionedName})");
-#endif
+				UI.Interface.MessageBoxShow(message);
 				Environment.Exit(1);
 				return false;
 #endif
@@ -77,9 +75,7 @@ namespace Terraria.ModLoader.Engine
 			if (!HashMatchesFile(vanillaGoGhash, vanillaPath)) {
 				string message = $"{vanillaPath} is not the unmodified Terraria executable.\n\nGoG installs must have the unmodified Terraria executable to function.\n\nPlease restore your Terraria install, then install tModLoader using the provided tModLoaderInstaller.jar or by following the README.txt instructions.";
 				Logging.tML.Fatal(message);
-#if !MAC
-				System.Windows.Forms.MessageBox.Show(message, "Terraria: Error" + $" ({ModLoader.versionedName})");
-#endif
+				UI.Interface.MessageBoxShow(message);
 				Environment.Exit(1);
 				return false;
 			}
@@ -92,9 +88,7 @@ namespace Terraria.ModLoader.Engine
 			if (!HashMatchesFile(steamAPIhash, steamAPIpath)) {
 				string message = "Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.";
 				Logging.tML.Fatal(message);
-#if !MAC
-				System.Windows.Forms.MessageBox.Show(message, "Terraria: Error" + $" ({ModLoader.versionedName})");
-#endif
+				UI.Interface.MessageBoxShow(message);
 				Process.Start(@"https://terraria.org");
 				Environment.Exit(1);
 			}
