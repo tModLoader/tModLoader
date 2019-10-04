@@ -210,7 +210,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "Version", "class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64", null ],
     [ "Code", "class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod.html#a38ac11ee561ed7c0b78c6618f886b9eb", null ],
-    [ "ExtraBuffSlots", "class_terraria_1_1_mod_loader_1_1_mod.html#aaa368a38bea53860fa78e722ca33a1f0", null ],
+    [ "ExtraPlayerBuffSlots", "class_terraria_1_1_mod_loader_1_1_mod.html#afd5a9885918f6a99f5c39c3a213cf341", null ],
     [ "File", "class_terraria_1_1_mod_loader_1_1_mod.html#abcf803a30ed15881f71d248320d3fe2a", null ],
     [ "Logger", "class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916", null ],
     [ "Properties", "class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea", null ],

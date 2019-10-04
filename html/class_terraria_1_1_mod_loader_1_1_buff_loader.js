@@ -14,7 +14,6 @@ var class_terraria_1_1_mod_loader_1_1_buff_loader =
     [ "ReApply", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a2480c76a6a1b157f3f8c0da67461071f", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a9273dd93983098b09e74fe0d289ecda0", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac7626b3ca2e3263deafd992bc2fdf7b4", null ],
-    [ "_ExtraBuffCount", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#afb210c8da6bf8669075d84d2d334edd7", null ],
     [ "BuffCount", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019", null ],
     [ "HookCustomBuffTipSize", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a641f4dc836223d6e5153b5de8ae47e75", null ],
     [ "HookDrawCustomBuffTip", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a5600d78deae3683a3fa943974e8dcb6e", null ],
@@ -25,6 +24,5 @@ var class_terraria_1_1_mod_loader_1_1_buff_loader =
     [ "HookUpdatePlayer", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#ae78209c5b78357bafbc9e01f0bcc33a0", null ],
     [ "nextBuff", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a0d4fbc2ff3a87979075643af15c2632e", null ],
     [ "vanillaCanBeCleared", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#ab2ac33171e48d29b67cb48eb18fc1d93", null ],
-    [ "vanillaLongerExpertDebuff", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a850e02183031de3bf2127baefd090982", null ],
-    [ "ExtraBuffCount", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a814a805a5304f4ad9ecd29f0504c9a75", null ]
+    [ "vanillaLongerExpertDebuff", "class_terraria_1_1_mod_loader_1_1_buff_loader.html#a850e02183031de3bf2127baefd090982", null ]
 ];
