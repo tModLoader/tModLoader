@@ -1172,6 +1172,15 @@
             <param name="context">The generic context provided to relink generic references.</param>
             <returns>A relinked reference.</returns>
         </member>
+        <member name="M:MonoMod.Utils.Extensions.Relink(Mono.Cecil.GenericParameterConstraint,MonoMod.Utils.Relinker,Mono.Cecil.IGenericParameterProvider)">
+            <summary>
+            Relink the given type reference.
+            </summary>
+            <param name="constraint">The reference to relink.</param>
+            <param name="relinker">The relinker to use during the relinking process.</param>
+            <param name="context">The generic context provided to relink generic references.</param>
+            <returns>A relinked reference.</returns>
+        </member>
         <member name="M:MonoMod.Utils.Extensions.Relink(Mono.Cecil.MethodReference,MonoMod.Utils.Relinker,Mono.Cecil.IGenericParameterProvider)">
             <summary>
             Relink the given method reference.
