@@ -189,6 +189,23 @@ namespace ExampleMod.NPCs
 			return base.PreAI();
 		}
 
+		public override void OnCatchNPC(Player player, Item item) {
+			item.stack = 2;
+
+			try {
+				var npcCenter = npc.Center.ToTileCoordinates();
+				if (!WorldGen.SolidTile(npcCenter.X, npcCenter.Y) && Main.tile[npcCenter.X, npcCenter.Y].liquid == 0) {
+					Main.tile[npcCenter.X, npcCenter.Y].liquid = (byte)Main.rand.Next(50, 150);
+					Main.tile[npcCenter.X, npcCenter.Y].lava(true);
+					Main.tile[npcCenter.X, npcCenter.Y].honey(false);
+					WorldGen.SquareTileFrame(npcCenter.X, npcCenter.Y, true);
+				}
+			}
+			catch {
+				return;
+			}
+		}
+
 		// TODO: Hooks for Collision_MoveSnailOnSlopes and npc.aiStyle = 67 problem
 	}
 
