@@ -192,9 +192,9 @@ namespace Terraria.ModLoader
 		}
 
         /// <summary>
-        /// Allows you to make things happen when an NPC is catched. Ran Serverside.
+        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
         /// </summary>
-        /// <param name="npc">The catched NPC</param>
+        /// <param name="npc">The caught NPC</param>
         /// <param name="player">The player catching the NPC</param>
         /// <param name="item">The item that will be spawned</param>
         public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
