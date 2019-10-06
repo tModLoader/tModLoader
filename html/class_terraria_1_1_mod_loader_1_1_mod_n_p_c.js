@@ -33,6 +33,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "ModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a72508ef67b142de2406b12d6b700973d", null ],
     [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab2c949eae5e0fe6621506ddf3ebb6e0d", null ],
     [ "NPCLoot", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0bba358ea97af556da502009e6a8388c", null ],
+    [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac5a8546208e826e46ccc68e96d532103", null ],
     [ "OnChatButtonClicked", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2", null ],
     [ "OnGoToStatue", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af12874ea363df07665bc18c3dbd34ee8", null ],
     [ "OnHitByItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af0133b98a2324f41df2a0e7766bb4c54", null ],

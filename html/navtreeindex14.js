@@ -1,5 +1,9 @@
 var NAVTREEINDEX14 =
 {
+"namespacemembers_enum.html":[0,1,1],
+"namespaces.html":[0,0],
+"pages.html":[],
+"struct_terraria_1_1_mod_loader_1_1_mod_properties.html":[1,0,0,0,48],
 "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a0244d40fda762b6bd1ba844fbd4bff0f":[1,0,0,0,48,3],
 "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b":[1,0,0,0,48,0],
 "struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a16c8e5757c9dc2222f6ba228f7e5904b":[1,0,0,0,48,2],
