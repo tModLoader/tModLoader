@@ -326,7 +326,7 @@ namespace Terraria.ModLoader
 		}
 
         /// <summary>
-        /// Allows you to make things happen when this NPC is catched. Ran Serverside
+        /// Allows you to make things happen when this NPC is caught. Ran Serverside
         /// </summary>
         /// <param name="player">The player catching this NPC</param>
         /// <param name="item">The item that will be spawned</param>
