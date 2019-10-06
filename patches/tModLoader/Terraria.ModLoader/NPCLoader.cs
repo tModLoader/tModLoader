@@ -438,6 +438,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
+
+		public static void OnCatchNPC(NPC npc, Player player, Item item) {
+			npc.modNPC?.OnCatchNPC(player, item);
+
+			foreach (GlobalNPC g in HookOnCatchNPC.arr) {
+				g.Instance(npc).OnCatchNPC(npc, player, item);
+			}
+		}
+
 		private delegate bool DelegateCanHitPlayer(NPC npc, Player target, ref int cooldownSlot);
 		private static HookList HookCanHitPlayer = AddHook<DelegateCanHitPlayer>(g => g.CanHitPlayer);
 
