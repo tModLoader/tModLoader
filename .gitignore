@@ -11,9 +11,11 @@ installer2/*.jar
 solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/**/*.zip
+solutions/**/*.tar.gz
 **/packages/
 **/.vs/
 **/.idea/
+/test/Terraria.xml
 /test/Test Local/Players
 /test/Test Local/Worlds
 /test/Test Local/Logs
