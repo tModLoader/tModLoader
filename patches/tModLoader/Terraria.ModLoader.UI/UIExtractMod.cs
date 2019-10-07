@@ -97,6 +97,12 @@ namespace Terraria.ModLoader.UI
 						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.version}.dll"), true);
 						log?.WriteLine("You can find this mod's .dll files under ModLoader\\references\\mods for easy mod collaboration!");
 					}
+					if (name == $"{mod.Name}.xml" && !mod.properties.hideCode) {
+						string modReferencesPath = Path.Combine(Program.SavePath, "references", "mods");
+						Directory.CreateDirectory(modReferencesPath);
+						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.version}.xml"), true);
+						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader\\references\\mods for easy mod collaboration!");
+					}
 				};
 			}
 			catch (OperationCanceledException e) {

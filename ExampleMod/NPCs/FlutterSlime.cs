@@ -91,7 +91,7 @@ namespace ExampleMod.NPCs
 			}
 			// In this state, a player has been targeted
 			else if (AI_State == State_Notice) {
-				/// If the targeted player is in attack range (250).
+				// If the targeted player is in attack range (250).
 				if (Main.player[npc.target].Distance(npc.Center) < 250f) {
 					// Here we use our Timer to wait .33 seconds before actually jumping. In FindFrame you'll notice AI_Timer also being used to animate the pre-jump crouch
 					AI_Timer++;
