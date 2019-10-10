@@ -163,7 +163,10 @@ namespace Terraria.ModLoader
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
 				else
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
-				
+
+				if (e is ReflectionTypeLoadException reflectionTypeLoadException)
+					msg += "\n\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message));
+
 				Logging.tML.Error(msg, e);
 
 				foreach (var mod in responsibleMods)
