@@ -556,7 +556,10 @@ Generating caller graph for function Terraria.ModLoader.EquipTexture.IsVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.PreUpdateVanitySet
 Generating caller graph for function Terraria.ModLoader.EquipTexture.SetMatch
 Generating caller graph for function Terraria.ModLoader.EquipTexture.UpdateVanity
-Generating caller graph for function Terra/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:499: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
+Generating caller graph for function Terra/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:116: warning: The following parameters of Terraria.ModLoader.GlobalItem.PrefixChance(Item item, int pre, UnifiedRandom rand) are not documented:
+  parameter 'item'
+  parameter 'rand'
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalItem.cs:517: warning: The following parameters of Terraria.ModLoader.GlobalItem.SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) are not documented:
   parameter 'male'
 warning: Caller graph for 'Terraria.ModLoader.GlobalNPC.Instance' not generated, too many nodes. Consider increasing DOT_GRAPH_MAX_NODES.
 ria.ModLoader.EquipTexture.UpdateVanitySet
@@ -665,7 +668,7 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.NumGrap
 Generatin/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:257: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
-/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1105: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1139: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
 g caller graph for function Terraria.ModLoader.GlobalProjectile.OnHitNPC
@@ -778,6 +781,8 @@ Generating caller graph for function Terraria.ModLoader.Mod.SoundExists
 Generating caller graph for function Terraria.ModLoader.Mod.TextureExists
 Generating caller graph for function Terraria.ModLoader.Mod.TileType
 Generating docs for compound Terraria::ModLo/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:207: warning: The following parameters of Terraria.ModLoader.ModItem.PrefixChance(int pre, UnifiedRandom rand) are not documented:
+  parameter 'rand'
 ader::ModBuff...
 Generating caller graph for function Terraria.ModLoader.ModBuff.Autoload
 Generating caller graph for function Terraria.ModLoader.ModBuff.SetDefaults
@@ -2309,5 +2314,5 @@ Patching output file 159/162
 Patching output file 160/162
 Patching output file 161/162
 Patching output file 162/162
-lookup cache used 11622/131072 hits=101277 misses=12182
+lookup cache used 11641/131072 hits=101343 misses=12201
 finished...

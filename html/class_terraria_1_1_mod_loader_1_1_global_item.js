@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_global_item =
 [
     [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_global_item.html#abc77f531e657c7561587879fe5608273", null ],
+    [ "AllowPrefix", "class_terraria_1_1_mod_loader_1_1_global_item.html#acd0f64e3642c07a8af6232caafe82755", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_global_item.html#a4fe938660707d4f0eed5068d4370078c", null ],
     [ "AnglerChat", "class_terraria_1_1_mod_loader_1_1_global_item.html#acdefaa97bddfa20a0fbdab7addd2e572", null ],
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_global_item.html#ab238d32d92b35a9d9d05be16853f7460", null ],
@@ -80,6 +81,7 @@ var class_terraria_1_1_mod_loader_1_1_global_item =
     [ "PreDrawInWorld", "class_terraria_1_1_mod_loader_1_1_global_item.html#a11a380e30b0c42412c0243ddad371dc2", null ],
     [ "PreDrawTooltip", "class_terraria_1_1_mod_loader_1_1_global_item.html#ae3801f74e43705337fa6be55a1c99bfa", null ],
     [ "PreDrawTooltipLine", "class_terraria_1_1_mod_loader_1_1_global_item.html#aa3aa4fe28c51e2a81a5f01e083099adb", null ],
+    [ "PrefixChance", "class_terraria_1_1_mod_loader_1_1_global_item.html#ac80eac566da6f4b8650c48acb2d52730", null ],
     [ "PreOpenVanillaBag", "class_terraria_1_1_mod_loader_1_1_global_item.html#a7ef23cc204f2c238cb3b016bbde72d33", null ],
     [ "PreReforge", "class_terraria_1_1_mod_loader_1_1_global_item.html#a4e6305c07fd338c6a3155a6d16716651", null ],
     [ "PreUpdateVanitySet", "class_terraria_1_1_mod_loader_1_1_global_item.html#a328445256465a355ab91e863b3ce48c6", null ],
