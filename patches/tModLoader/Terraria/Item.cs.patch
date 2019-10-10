@@ -38,6 +38,28 @@
  		public const int flaskTime = 72000;
  		public const int copper = 1;
  		public const int silver = 100;
+@@ -217,7 +_,12 @@
+ 			{
+ 				return false;
+ 			}
++
+ 			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
++			bool? applyPrefixOverride = ItemLoader.PrefixChance(this, pre, unifiedRandom);
++			if (!applyPrefixOverride ?? false)
++				return false;
++
+ 			int num = pre;
+ 			float num2 = 1f;
+ 			float num3 = 1f;
+@@ -237,7 +_,7 @@
+ 				num7 = 1f;
+ 				num8 = 0;
+ 				flag = false;
+-				if (num == -1 && unifiedRandom.Next(4) == 0)
++				if (num == -1 && ((applyPrefixOverride ?? false) || unifiedRandom.Next(4) == 0))
+ 				{
+ 					num = 0;
+ 				}
 @@ -247,9 +_,15 @@
  				}
  				if (num == -1 || num == -2 || num == -3)
@@ -145,7 +167,7 @@
  				if (num2 != 1f && Math.Round((double)((float)this.damage * num2)) == (double)this.damage)
  				{
  					flag = true;
-@@ -1195,6 +_,10 @@
+@@ -1195,11 +_,17 @@
  					flag = true;
  					num = -1;
  				}
@@ -156,6 +178,13 @@
  				if (pre == -2 && num == 0)
  				{
  					num = -1;
+ 					flag = true;
+ 				}
++				if (!flag && !ItemLoader.AllowPrefix(this, num))
++					flag = true;
+ 			}
+ 			this.damage = (int)Math.Round((double)((float)this.damage * num2));
+ 			this.useAnimation = (int)Math.Round((double)((float)this.useAnimation * num4));
 @@ -1210,6 +_,10 @@
  			this.scale *= num5;
  			this.shootSpeed *= num6;

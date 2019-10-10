@@ -259,6 +259,40 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 
+		private static HookList HookPrefixChance = AddHook<Func<Item, int, UnifiedRandom, bool?>>(g => g.PrefixChance);
+
+		/// <summary>
+		/// Allows for blocking, forcing and altering chance of prefix rolling.
+		/// False (block) takes precedence over True (force)
+		/// Null gives vanilla behaviour
+		/// </summary>
+		public static bool? PrefixChance(Item item, int pre, UnifiedRandom rand) {
+			bool? result = null;
+			foreach (var g in HookPrefixChance.arr) {
+				bool? r = g.Instance(item).PrefixChance(item, pre, rand);
+				if (r.HasValue)
+					result = r.Value && (result ?? true);
+			}
+			if (item.modItem != null) {
+				bool? r = item.modItem.PrefixChance(pre, rand);
+				if (r.HasValue)
+					result = r.Value && (result ?? true);
+			}
+			return result;
+		}
+
+		private static HookList HookAllowPrefix = AddHook<Func<Item, int, bool>>(g => g.AllowPrefix);
+		public static bool AllowPrefix(Item item, int pre) {
+			bool result = true;
+			foreach (var g in HookAllowPrefix.arr) {
+				result &= g.Instance(item).AllowPrefix(item, pre);
+			}
+			if (item.modItem != null) {
+				result &= item.modItem.AllowPrefix(pre);
+			}
+			return result;
+		}
+
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 		//in Terraria.Player.ItemCheck
 		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
