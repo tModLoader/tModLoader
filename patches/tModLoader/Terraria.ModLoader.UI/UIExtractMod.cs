@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -104,6 +105,7 @@ namespace Terraria.ModLoader.UI
 						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader\\references\\mods for easy mod collaboration!");
 					}
 				};
+				Process.Start(dir);
 			}
 			catch (OperationCanceledException e) {
 				log?.WriteLine("Extraction was cancelled.");
