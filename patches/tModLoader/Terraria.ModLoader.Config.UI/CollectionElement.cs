@@ -157,7 +157,7 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			else {
 				toAdd = ConfigManager.AlternateCreateInstance(type);
-				if (!type.IsValueType) {
+				if (!type.IsValueType && type != typeof(string)) {
 					string json = jsonDefaultListValueAttribute?.json ?? "{}";
 					JsonConvert.PopulateObject(json, toAdd, ConfigManager.serializerSettings);
 				}

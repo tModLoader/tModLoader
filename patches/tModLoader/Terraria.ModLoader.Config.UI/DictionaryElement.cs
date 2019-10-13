@@ -111,7 +111,7 @@ namespace Terraria.ModLoader.Config.UI
 				}
 				else {
 					keyValue = ConfigManager.AlternateCreateInstance(keyType);
-					if (!keyType.IsValueType) {
+					if (!keyType.IsValueType && keyType != typeof(string)) {
 						string json = jsonDefaultDictionaryKeyValueAttribute?.json ?? "{}";
 						JsonConvert.PopulateObject(json, keyValue, ConfigManager.serializerSettings);
 					}
