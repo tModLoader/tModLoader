@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -9,7 +8,7 @@ namespace ExampleMod.Items.Accessories
 {
 	// This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
 	// It also shows how you can interact with inherited methods
-	// Additionally, it takes advantage of delegates to make code more compact
+	// Additionally, it takes advantage of ValueTuple to make code more compact
 
 	// First, we create an abstract class that all our exclusive accessories will be based on
 	// This class won't be autoloaded by tModLoader, meaning it won't "exist" in the game, and we don't need to provide it a texture
@@ -39,24 +38,25 @@ namespace ExampleMod.Items.Accessories
 			bool canEquipAccessory = true;
 			if (slot < 10) // This allows the accessory to equip in vanity slots with no reservations
 			{
-				// "(int i, Item foundItem) => { //code }" is a so called lambda. Here we pass a chunk of code into the method 
-				// that will be executed if it successfully found a different ExclusiveAccessory
-				FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
-					// If an item is found and slot is the same as its index in armor[], we allow it to be replaced
-					canEquipAccessory = slot == i;
-				});
+				// Here we use named ValueTuples and retrieve the index of the item, since this is what we need here
+				int index = FindDifferentEquippedExclusiveAccessory().index;
+				if (index != -1) {
+					canEquipAccessory = slot == index;
+				}
 			}
 			// Here we want to respect individual items having custom conditions for equipability
 			return canEquipAccessory;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			// Here we want to add a tooltip to the item if it can't be equipped because another item of this type is already equipped
-			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
-				tooltips.Add(new TooltipLine(mod, "AlreadyEquipped", "You can't equip this when '" + accessory.Name + "' is already equipped!") {
+			// Here we want to add a tooltip to the item if it can be swapped with another one of its kind
+			// Therefore we retrieve the accessory from the ValueTuple, because the index isn't needed here
+			Item accessory = FindDifferentEquippedExclusiveAccessory().accessory;
+			if (accessory != null) {
+				tooltips.Add(new TooltipLine(mod, "Swap", "Right click to swap with '" + accessory.Name + "'!") {
 					overrideColor = Color.OrangeRed
 				});
-			});
+			}
 		}
 
 		public override bool CanRightClick() {
@@ -74,44 +74,47 @@ namespace ExampleMod.Items.Accessories
 
 			bool canRightClick = false;
 			// Only allow right clicking if there is a different ExclusiveAccessory equipped
-			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+			if (FindDifferentEquippedExclusiveAccessory().accessory != null) {
 				canRightClick = true;
-			});
+			}
 			// If this hook returns true, the item is consumed (just like crates and boss bags)
 			return canRightClick;
 		}
 
 		public override void RightClick(Player player) {
 			// Here we implement the "swapping" when right clicked to equip this item inplace of another one
-			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+			// Because we need both index and accessory, we "unpack" this ValueTuple like this:
+			var (index, accessory) = FindDifferentEquippedExclusiveAccessory();
+			if (accessory != null) {
 				Main.LocalPlayer.QuickSpawnClonedItem(accessory);
-				// We need to use i instead of foundItem because we directly want to alter the equipped accessory
-				Main.LocalPlayer.armor[i] = item.Clone();
-			});
+				// We need to use index instead of accessory because we directly want to alter the equipped accessory
+				Main.LocalPlayer.armor[index] = item.Clone();
+			}
 		}
 
 		// We make our own method for compacting the code because we will need to check equipped accessories often
-		// This method also has a delegate as an argument, which allows us to pass entire methods instead of just variables
-		// To understand what an Action delegate is, see here: https://www.tutorialsteacher.com/csharp/csharp-action-delegate
-		protected void FindDifferentEquippedExclusiveAccessory(Action<int, Item> whenFound) {
+		// This method returns a named ValueTuple, indicated by the (Type name1, Type name2, ...) as the return type
+		// This allows us to return more than one value from a method
+        protected (int index, Item accessory) FindDifferentEquippedExclusiveAccessory() {
 			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
 			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
-				Item accessory = Main.LocalPlayer.armor[i];
+				Item otherAccessory = Main.LocalPlayer.armor[i];
 				// IsAir makes sure we don't check for "empty" slots
 				// IsTheSameAs() compares two items and returns true if their types match
 				// "is ExclusiveAccessory" is a way of performing pattern matching
 				// Here, inheritance helps us determine if the given item is indeed one of our ExclusiveAccessory ones
-				if (!accessory.IsAir &&
-					!item.IsTheSameAs(accessory) &&
-					accessory.modItem is ExclusiveAccessory) {
-					// If we find an item that matches these criteria, execute the code inside it
+				if (!otherAccessory.IsAir &&
+					!item.IsTheSameAs(otherAccessory) &&
+					otherAccessory.modItem is ExclusiveAccessory) {
+					// If we find an item that matches these criteria, return both the index and the item itself
 					// The second argument is just for convenience, technically we don't need it since we can get the item from just i
-					whenFound.Invoke(i, accessory);
-					break;
+					return (i, otherAccessory);
 				}
 			}
+			// If no item is found, we return default values for index and item, always check one of them with this default when you call this method!
+			return (-1, null);
 		}
-	}
+    }
 
 	// Here we add our accessories, note that they inherit from ExclusiveAccessory, and not ModItem
 
@@ -133,9 +136,11 @@ namespace ExampleMod.Items.Accessories
 			// Here, before the parent's code is executed, we retrieve the name of the previously equipped item
 			// We know guaranteed that there will be an item to be replaced, since otherwise this hook wouldn't run (condition in CanRightClick())
 			string previousItemName = "";
-			FindDifferentEquippedExclusiveAccessory((int i, Item accessory) => {
+
+			Item accessory = FindDifferentEquippedExclusiveAccessory().accessory;
+			if (accessory != null) {
 				previousItemName = accessory.Name;
-			});
+			}
 
 			// In order to preserve its expected behavior (right click swaps this and a different currently equipped accessory)
 			// we need to call the parent method via base.Method(arguments)
