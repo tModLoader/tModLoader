@@ -124,7 +124,7 @@ namespace Terraria.ModLoader
 			p.Write(serverConfigs.Length);
 			foreach (var config in serverConfigs) {
 				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-				Logging.Terraria.Info($"Sending Server Config {config.Name}: {json}");
+				Logging.Terraria.Info($"Sending Server Config {config.mod.Name} {config.Name}: {json}");
 
 				p.Write(config.Name);
 				p.Write(json);
