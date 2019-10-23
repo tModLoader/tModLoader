@@ -109,7 +109,13 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 			try {
-				var a = JArray.Parse(response);
+				JArray a;
+				try {
+					a = JArray.Parse(response);
+				}
+				catch (Exception e) {
+					throw new Exception($"Manage Published Error Response: {response}", e);
+				}
 
 				foreach (JObject o in a.Children<JObject>()) {
 					var modItem = new UIModManageItem(

@@ -120,6 +120,10 @@ namespace Terraria.ModLoader.UI
 		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			Main.menuMode = Interface.managePublishedID;
+			if (ModLoader.modBrowserPassphrase == string.Empty) {
+				Main.menuMode = Interface.enterPassphraseMenuID;
+				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
+			}
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {

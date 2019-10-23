@@ -170,8 +170,8 @@ namespace Terraria.ModLoader.UI
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == managePublishedID) {
-				Main.MenuUI.SetState(managePublished);
 				Main.menuMode = 888;
+				Main.MenuUI.SetState(managePublished);
 			}
 			//else if (Main.menuMode == modControlsID)
 			//{
