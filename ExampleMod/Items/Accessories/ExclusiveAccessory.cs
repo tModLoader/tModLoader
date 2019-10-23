@@ -35,17 +35,16 @@ namespace ExampleMod.Items.Accessories
 			// To prevent the accessory from being equipped, we need to return false if there is one already in another slot
 			// Therefore we go through each accessory slot ignoring vanity slots using FindDifferentEquippedExclusiveAccessory()
 			// which we declared in this class below
-			bool canEquipAccessory = true;
 			if (slot < 10) // This allows the accessory to equip in vanity slots with no reservations
 			{
 				// Here we use named ValueTuples and retrieve the index of the item, since this is what we need here
 				int index = FindDifferentEquippedExclusiveAccessory().index;
 				if (index != -1) {
-					canEquipAccessory = slot == index;
+					return slot == index;
 				}
 			}
 			// Here we want to respect individual items having custom conditions for equipability
-			return canEquipAccessory;
+			return base.CanEquipAccessory(player, slot);
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -72,13 +71,12 @@ namespace ExampleMod.Items.Accessories
 				if (Main.LocalPlayer.armor[i].type == item.type) return false;
 			}
 
-			bool canRightClick = false;
 			// Only allow right clicking if there is a different ExclusiveAccessory equipped
 			if (FindDifferentEquippedExclusiveAccessory().accessory != null) {
-				canRightClick = true;
+				return true;
 			}
 			// If this hook returns true, the item is consumed (just like crates and boss bags)
-			return canRightClick;
+			return base.CanRightClick();
 		}
 
 		public override void RightClick(Player player) {
@@ -95,7 +93,7 @@ namespace ExampleMod.Items.Accessories
 		// We make our own method for compacting the code because we will need to check equipped accessories often
 		// This method returns a named ValueTuple, indicated by the (Type name1, Type name2, ...) as the return type
 		// This allows us to return more than one value from a method
-        protected (int index, Item accessory) FindDifferentEquippedExclusiveAccessory() {
+		protected (int index, Item accessory) FindDifferentEquippedExclusiveAccessory() {
 			int maxAccessoryIndex = 5 + Main.LocalPlayer.extraAccessorySlots;
 			for (int i = 3; i < 3 + maxAccessoryIndex; i++) {
 				Item otherAccessory = Main.LocalPlayer.armor[i];
@@ -114,7 +112,7 @@ namespace ExampleMod.Items.Accessories
 			// If no item is found, we return default values for index and item, always check one of them with this default when you call this method!
 			return (-1, null);
 		}
-    }
+	}
 
 	// Here we add our accessories, note that they inherit from ExclusiveAccessory, and not ModItem
 
