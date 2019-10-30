@@ -186,7 +186,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:adf427ac7f49f9c3a28ed60fde7b39909"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.  <a href="#adf427ac7f49f9c3a28ed60fde7b39909">More...</a><br /></td></tr>
 <tr class="separator:adf427ac7f49f9c3a28ed60fde7b39909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6ada2add80fed8a7a311044246cdefd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd">Kill</a> (int timeLeft)</td></tr>
-<tr class="memdesc:ab6ada2add80fed8a7a311044246cdefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo.  <a href="#ab6ada2add80fed8a7a311044246cdefd">More...</a><br /></td></tr>
+<tr class="memdesc:ab6ada2add80fed8a7a311044246cdefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)  <a href="#ab6ada2add80fed8a7a311044246cdefd">More...</a><br /></td></tr>
 <tr class="separator:ab6ada2add80fed8a7a311044246cdefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3549ea7beb59643c9a516fb576823435"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a3549ea7beb59643c9a516fb576823435">MinionContactDamage</a> ()</td></tr>
 <tr class="memdesc:a3549ea7beb59643c9a516fb576823435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet.  <a href="#a3549ea7beb59643c9a516fb576823435">More...</a><br /></td></tr>
@@ -195,7 +195,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a05d92282c478a458ce442424456686ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by this projectile for damaging players and NPCs.  <a href="#a05d92282c478a458ce442424456686ad">More...</a><br /></td></tr>
 <tr class="separator:a05d92282c478a458ce442424456686ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31486b528f94f87a6c463f14cd254bbf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a31486b528f94f87a6c463f14cd254bbf">ModifyHitNPC</a> (NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="memdesc:a31486b528f94f87a6c463f14cd254bbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this projectile does to an NPC.  <a href="#a31486b528f94f87a6c463f14cd254bbf">More...</a><br /></td></tr>
+<tr class="memdesc:a31486b528f94f87a6c463f14cd254bbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="#a31486b528f94f87a6c463f14cd254bbf">More...</a><br /></td></tr>
 <tr class="separator:a31486b528f94f87a6c463f14cd254bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abde91131a773044c36557d0076c2e416"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#abde91131a773044c36557d0076c2e416">ModifyHitPlayer</a> (Player target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:abde91131a773044c36557d0076c2e416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this hostile projectile does to a player.  <a href="#abde91131a773044c36557d0076c2e416">More...</a><br /></td></tr>
@@ -210,7 +210,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a78e9b87a32d174483c26885e5c27586d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.  <a href="#a78e9b87a32d174483c26885e5c27586d">More...</a><br /></td></tr>
 <tr class="separator:a78e9b87a32d174483c26885e5c27586d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cf8b666827b9631d052f1c16d91d08b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4cf8b666827b9631d052f1c16d91d08b">OnHitNPC</a> (NPC target, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:a4cf8b666827b9631d052f1c16d91d08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs).  <a href="#a4cf8b666827b9631d052f1c16d91d08b">More...</a><br /></td></tr>
+<tr class="memdesc:a4cf8b666827b9631d052f1c16d91d08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="#a4cf8b666827b9631d052f1c16d91d08b">More...</a><br /></td></tr>
 <tr class="separator:a4cf8b666827b9631d052f1c16d91d08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998ac23ae4b65473ccd41313a53ba5fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a998ac23ae4b65473ccd41313a53ba5fa">OnHitPlayer</a> (Player target, int damage, bool crit)</td></tr>
 <tr class="memdesc:a998ac23ae4b65473ccd41313a53ba5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this hostile projectile hits a player.  <a href="#a998ac23ae4b65473ccd41313a53ba5fa">More...</a><br /></td></tr>
@@ -965,7 +965,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. </p>
+<p>Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile) </p>
 
 <p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00251">251</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                                               {</div><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div></div><!-- fragment -->
@@ -1082,7 +1082,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. </p>
+<p>Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>
@@ -1326,7 +1326,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). </p>
+<p>Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>

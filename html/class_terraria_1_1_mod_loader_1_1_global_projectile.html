@@ -189,7 +189,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by a projectile for damaging players and NPCs.  <a href="#a8863ddeef94b1e985c64dd86fad6ed5b">More...</a><br /></td></tr>
 <tr class="separator:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78a58a0e560bf775d3ad11951906f73c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c">ModifyHitNPC</a> (Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="memdesc:a78a58a0e560bf775d3ad11951906f73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an NPC.  <a href="#a78a58a0e560bf775d3ad11951906f73c">More...</a><br /></td></tr>
+<tr class="memdesc:a78a58a0e560bf775d3ad11951906f73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="#a78a58a0e560bf775d3ad11951906f73c">More...</a><br /></td></tr>
 <tr class="separator:a78a58a0e560bf775d3ad11951906f73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a294bc7ef4586362ed1ef19df56d88e09"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a294bc7ef4586362ed1ef19df56d88e09">ModifyHitPlayer</a> (Projectile projectile, Player target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a294bc7ef4586362ed1ef19df56d88e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a hostile projectile does to a player.  <a href="#a294bc7ef4586362ed1ef19df56d88e09">More...</a><br /></td></tr>
@@ -204,7 +204,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab01ffa6483a27d73051ca9b30f249184"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.  <a href="#ab01ffa6483a27d73051ca9b30f249184">More...</a><br /></td></tr>
 <tr class="separator:ab01ffa6483a27d73051ca9b30f249184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c4760647ac0f9a454989e2b333c7b0c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6c4760647ac0f9a454989e2b333c7b0c">OnHitNPC</a> (Projectile projectile, NPC target, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:a6c4760647ac0f9a454989e2b333c7b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a projectile hits an NPC (for example, inflicting debuffs).  <a href="#a6c4760647ac0f9a454989e2b333c7b0c">More...</a><br /></td></tr>
+<tr class="memdesc:a6c4760647ac0f9a454989e2b333c7b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="#a6c4760647ac0f9a454989e2b333c7b0c">More...</a><br /></td></tr>
 <tr class="separator:a6c4760647ac0f9a454989e2b333c7b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dac12ff40a1dabbf0d4fb1442f6f832"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a2dac12ff40a1dabbf0d4fb1442f6f832">OnHitPlayer</a> (Projectile projectile, Player target, int damage, bool crit)</td></tr>
 <tr class="memdesc:a2dac12ff40a1dabbf0d4fb1442f6f832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a hostile projectile hits a player.  <a href="#a2dac12ff40a1dabbf0d4fb1442f6f832">More...</a><br /></td></tr>
@@ -1373,7 +1373,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that a projectile does to an NPC. </p>
+<p>Allows you to modify the damage, knockback, etc., that a projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1693,7 +1693,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when a projectile hits an NPC (for example, inflicting debuffs). </p>
+<p>Allows you to create special effects when a projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>

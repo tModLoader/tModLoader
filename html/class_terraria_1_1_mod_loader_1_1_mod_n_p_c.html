@@ -217,7 +217,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aadf9eeffd3975257af64313a257b5295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon.  <a href="#aadf9eeffd3975257af64313a257b5295">More...</a><br /></td></tr>
 <tr class="separator:aadf9eeffd3975257af64313a257b5295"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95122e1a8db39a14617a8d93c187efc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a95122e1a8db39a14617a8d93c187efc8">ModifyHitByProjectile</a> (Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="memdesc:a95122e1a8db39a14617a8d93c187efc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile.  <a href="#a95122e1a8db39a14617a8d93c187efc8">More...</a><br /></td></tr>
+<tr class="memdesc:a95122e1a8db39a14617a8d93c187efc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="#a95122e1a8db39a14617a8d93c187efc8">More...</a><br /></td></tr>
 <tr class="separator:a95122e1a8db39a14617a8d93c187efc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10bb42e54445d397e5a28277ed9c0d12"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a10bb42e54445d397e5a28277ed9c0d12">ModifyHitNPC</a> (NPC target, ref int damage, ref float knockback, ref bool crit)</td></tr>
 <tr class="memdesc:a10bb42e54445d397e5a28277ed9c0d12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.  <a href="#a10bb42e54445d397e5a28277ed9c0d12">More...</a><br /></td></tr>
@@ -1605,7 +1605,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. </p>
+<p>Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
