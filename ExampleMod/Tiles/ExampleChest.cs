@@ -70,7 +70,10 @@ namespace ExampleMod.Tiles
 				top--;
 			}
 			int chest = Chest.FindChest(left, top);
-			if (Main.chest[chest].name == "") {
+			if (chest < 0) {
+				return Lang.chestType[0].Value;
+			}
+			else if (Main.chest[chest].name == "") {
 				return name;
 			}
 			else {

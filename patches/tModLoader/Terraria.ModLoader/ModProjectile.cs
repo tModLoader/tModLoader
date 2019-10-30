@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. 
+		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
 		/// </summary>
 		public virtual void Kill(int timeLeft) {
 		}
@@ -281,7 +281,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC.
+		/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 		/// </summary>
 		/// <param name="target">The target.</param>
 		/// <param name="damage">The modifiable damage.</param>
@@ -292,7 +292,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs).
+		/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 		/// </summary>
 		/// <param name="target">The target.</param>
 		/// <param name="damage">The damage.</param>

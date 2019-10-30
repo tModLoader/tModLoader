@@ -440,7 +440,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile.
+		/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="damage"></param>
