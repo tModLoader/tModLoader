@@ -132,15 +132,18 @@ namespace Terraria.ModLoader
 
 				if (OnSuccessfulLoad != null) {
 					OnSuccessfulLoad();
-					OnSuccessfulLoad = null;
 				}
 				else {
 					Main.menuMode = 0;
 				}
 			}
 			catch when (token.IsCancellationRequested) {
-				if (Unload())
-					Main.menuMode = Interface.modsMenuID;
+				// cancel needs to reload with ModLoaderMod and all others skipped
+				skipLoad = true;
+				OnSuccessfulLoad += () => Main.menuMode = Interface.modsMenuID;
+
+				isLoading = false;
+				Load(); // don't provide a token, loading just ModLoaderMod should be quick
 			}
 			catch (Exception e) {
 				var responsibleMods = new List<string>();
@@ -172,10 +175,13 @@ namespace Terraria.ModLoader
 				foreach (var mod in responsibleMods)
 					DisableMod(mod);
 
+				isLoading = false; // disable loading flag, because server will just instantly retry reload
 				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
 			finally {
 				isLoading = false;
+				OnSuccessfulLoad = null;
+				skipLoad = false;
 			}
 		}
 
