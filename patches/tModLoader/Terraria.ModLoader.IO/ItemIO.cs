@@ -74,7 +74,7 @@ namespace Terraria.ModLoader.IO
 						item.modItem.Load(tag.GetCompound("data"));
 				}
 				else {
-					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
+					item.netDefaults(ModContent.ItemType<MysteryItem>());
 					((MysteryItem)item.modItem).Setup(tag);
 				}
 			}
@@ -207,7 +207,7 @@ namespace Terraria.ModLoader.IO
 					LoadLegacyModData(item, data, hasGlobalSaving);
 				}
 				else {
-					item.netDefaults(ModLoader.GetMod("ModLoader").ItemType("MysteryItem"));
+					item.netDefaults(ModContent.ItemType<MysteryItem>());
 					var tag = new TagCompound {
 						["mod"] = modName,
 						["name"] = itemName,

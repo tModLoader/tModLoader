@@ -6054,7 +6054,7 @@
  					}
  				}
  				else
-@@ -38199,22 +_,45 @@
+@@ -38199,22 +_,46 @@
  
  		public void DropItems()
  		{
@@ -6068,12 +6068,13 @@
 +				}
 +				startCounts[item.netID] += item.stack;
 +			}
++			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
  			for (int i = 0; i < 59; i++)
  			{
 -				if (this.inventory[i].stack > 0 && this.inventory[i].Name != "Copper Pickaxe" && this.inventory[i].Name != "Copper Axe" && this.inventory[i].Name != "Copper Shortsword")
 -				{
 +				Item item = this.inventory[i];
-+				if (item.stack > 0 && (!startCounts.ContainsKey(item.netID) || startCounts[item.netID] < item.stack) && item.type != ModLoader.ModLoader.GetMod("ModLoader").ItemType("StartBag"))
++				if (item.stack > 0 && (!startCounts.ContainsKey(item.netID) || startCounts[item.netID] < item.stack))
 +				{
 +					int stack = item.stack;
 +					if (startCounts.ContainsKey(item.netID))
