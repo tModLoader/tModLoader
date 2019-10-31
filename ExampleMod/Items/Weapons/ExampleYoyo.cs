@@ -51,6 +51,7 @@ namespace ExampleMod.Items.Weapons
 			// This will get the game stuck because it will try to reroll every time. Instead, make it have a chance to return true
 
 			if (Array.IndexOf(unwantedPrefixes, pre) > -1) {
+				// IndexOf returns a positive index of the element you search for. If not found, it's less than 0. Here check the opposite
 				// Rolled a prefix we don't want, reroll
 				return false;
 			}

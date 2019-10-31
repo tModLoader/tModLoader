@@ -15,7 +15,7 @@ namespace ExampleMod.Items
 	{
 		public override bool? PrefixChance(Item item, int pre, UnifiedRandom rand) {
 			// pre: The prefix being applied to the item, or the roll mode
-			// -1 is when an item is bought from a shop, crafted or generated in a chest
+			// -1 is when an item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy
 			// -2 is when an item is rolled in the tinkerer
 			// -3 determines if an item can be placed in the tinkerer slot
 
@@ -35,7 +35,7 @@ namespace ExampleMod.Items
 
 			// To prevent rolling of a prefix on spawn, return false when pre is -1
 			if (pre == -1) {
-				if (item.melee && item.modItem != null && item.modItem.mod.Name == mod.Name) {
+				if (item.melee && item.modItem?.mod == mod) {
 					// All melee weapons from ExampleMod won't have a prefix when they are crafted, bought, taken from a generated chest, opened, or dropped by an enemy
 					return false;
 				}
