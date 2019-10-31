@@ -373,7 +373,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa3aa4fe28c51e2a81a5f01e083099adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.  <a href="#aa3aa4fe28c51e2a81a5f01e083099adb">More...</a><br /></td></tr>
 <tr class="separator:aa3aa4fe28c51e2a81a5f01e083099adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac80eac566da6f4b8650c48acb2d52730"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac80eac566da6f4b8650c48acb2d52730">PrefixChance</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, int pre, UnifiedRandom rand)</td></tr>
-<tr class="memdesc:ac80eac566da6f4b8650c48acb2d52730"><td class="mdescLeft">&#160;</td><td class="mdescRight">To prevent putting the item in the tinkerer slot, return false when pre is -3 To prevent rolling of a prefix on spawn, return false when pre is -1 To force rolling of a prefix on spawn, return true when pre is -1  <a href="#ac80eac566da6f4b8650c48acb2d52730">More...</a><br /></td></tr>
+<tr class="memdesc:ac80eac566da6f4b8650c48acb2d52730"><td class="mdescLeft">&#160;</td><td class="mdescRight">To prevent putting the item in the tinkerer slot, return false when pre is -3. To prevent rolling of a prefix on spawn, return false when pre is -1. To force rolling of a prefix on spawn, return true when pre is -1.  <a href="#ac80eac566da6f4b8650c48acb2d52730">More...</a><br /></td></tr>
 <tr class="separator:ac80eac566da6f4b8650c48acb2d52730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ef23cc204f2c238cb3b016bbde72d33"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a7ef23cc204f2c238cb3b016bbde72d33">PreOpenVanillaBag</a> (string context, Player player, int arg)</td></tr>
 <tr class="memdesc:a7ef23cc204f2c238cb3b016bbde72d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make vanilla bags drop your own items and stop the default items from being dropped. Return false to stop the default items from being dropped; returns true by default. Context will either be "present", "bossBag", "crate", "lockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented.  <a href="#a7ef23cc204f2c238cb3b016bbde72d33">More...</a><br /></td></tr>
@@ -704,7 +704,7 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line">player.armorEffectDrawShadow = <span class="keyword">true</span>;</div></div><!-- fragment -->
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00502">502</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00995">Terraria.ModLoader.ItemLoader.ArmorSetShadows()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00998">Terraria.ModLoader.ItemLoader.ArmorSetShadows()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;                                                                       {</div><div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2247,7 +2247,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00443">443</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00922">Terraria.ModLoader.ItemLoader.UpdateArmorSet()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00925">Terraria.ModLoader.ItemLoader.UpdateArmorSet()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;                                                                          {</div><div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div><div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2308,7 +2308,7 @@ Properties</h2></td></tr>
 
 <p>References <a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.Item</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00995">Terraria.ModLoader.ItemLoader.ArmorSetShadows()</a>, <a class="el" href="_item_loader_8cs_source.html#l00944">Terraria.ModLoader.ItemLoader.PreUpdateVanitySet()</a>, and <a class="el" href="_item_loader_8cs_source.html#l00969">Terraria.ModLoader.ItemLoader.UpdateVanitySet()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00998">Terraria.ModLoader.ItemLoader.ArmorSetShadows()</a>, <a class="el" href="_item_loader_8cs_source.html#l00947">Terraria.ModLoader.ItemLoader.PreUpdateVanitySet()</a>, and <a class="el" href="_item_loader_8cs_source.html#l00972">Terraria.ModLoader.ItemLoader.UpdateVanitySet()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                                                                        {</div><div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> headItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            <span class="keywordflow">if</span> (head &gt;= 0) {</div><div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                headItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.headType[head], <span class="keyword">true</span>);</div><div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            }</div><div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> bodyItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <span class="keywordflow">if</span> (body &gt;= 0) {</div><div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;                bodyItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.bodyType[body], <span class="keyword">true</span>);</div><div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            }</div><div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;            <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> legItem = <span class="keyword">new</span> <a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>();</div><div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            <span class="keywordflow">if</span> (legs &gt;= 0) {</div><div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;                legItem.SetDefaults(<a class="code" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>.legType[legs], <span class="keyword">true</span>);</div><div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;            }</div><div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9ea562f4cb6d576abae4b59452e7bccd">IsArmorSet</a>(headItem, bodyItem, legItem);</div><div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_global_item_html_a9ea562f4cb6d576abae4b59452e7bccd"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9ea562f4cb6d576abae4b59452e7bccd">Terraria.ModLoader.GlobalItem.IsArmorSet</a></div><div class="ttdeci">virtual string IsArmorSet(Item head, Item body, Item legs)</div><div class="ttdoc">Allows you to determine whether the player is wearing an armor set, and return a name for this set...</div><div class="ttdef"><b>Definition:</b> <a href="_global_item_8cs_source.html#l00443">GlobalItem.cs:443</a></div></div>
 <div class="ttc" id="namespace_terraria_1_1_mod_loader_html_a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679"><div class="ttname"><a href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Terraria.ModLoader.SoundType.Item</a></div></div>
 </div><!-- fragment -->
@@ -4198,12 +4198,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>To prevent putting the item in the tinkerer slot, return false when pre is -3 To prevent rolling of a prefix on spawn, return false when pre is -1 To force rolling of a prefix on spawn, return true when pre is -1 </p>
-<p>To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time</p>
-<p>To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete. Use AllowPrefix to prevent rolling of a certain prefix </p>
+<p>To prevent putting the item in the tinkerer slot, return false when pre is -3. To prevent rolling of a prefix on spawn, return false when pre is -1. To force rolling of a prefix on spawn, return true when pre is -1. </p>
+<p>To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time. To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.</p>
+<p>To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete. Use AllowPrefix to prevent rolling of a certain prefix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pre</td><td>The prefix being applied to the item, or the roll mode. -1 is when an item is bought from a shop, crafted or generated in a chest. -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</td></tr>
+    <tr><td class="paramname">pre</td><td>The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</td></tr>
   </table>
   </dd>
 </dl>
@@ -4320,7 +4320,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00485">485</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00944">Terraria.ModLoader.ItemLoader.PreUpdateVanitySet()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00947">Terraria.ModLoader.ItemLoader.PreUpdateVanitySet()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                                                                          {</div><div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -4756,7 +4756,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00453">453</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00922">Terraria.ModLoader.ItemLoader.UpdateArmorSet()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00925">Terraria.ModLoader.ItemLoader.UpdateArmorSet()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;                                                                      {</div><div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -4885,7 +4885,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00493">493</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00969">Terraria.ModLoader.ItemLoader.UpdateVanitySet()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l00972">Terraria.ModLoader.ItemLoader.UpdateVanitySet()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;                                                                       {</div><div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -5232,7 +5232,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00056">56</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01756">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01759">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
 
 </div>
 </div>
@@ -5250,7 +5250,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00048">48</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01756">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01759">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
 
 </div>
 </div>

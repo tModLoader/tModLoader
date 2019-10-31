@@ -383,7 +383,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6f551ec97a311981a8c8a499706d340d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.  <a href="#a6f551ec97a311981a8c8a499706d340d">More...</a><br /></td></tr>
 <tr class="separator:a6f551ec97a311981a8c8a499706d340d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada6b45f94d2f68847942e110463d6adc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ada6b45f94d2f68847942e110463d6adc">PrefixChance</a> (int pre, UnifiedRandom rand)</td></tr>
-<tr class="memdesc:ada6b45f94d2f68847942e110463d6adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">To prevent putting the item in the tinkerer slot, return false when pre is -3 To prevent rolling of a prefix on spawn, return false when pre is -1 To force rolling of a prefix on spawn, return true when pre is -1  <a href="#ada6b45f94d2f68847942e110463d6adc">More...</a><br /></td></tr>
+<tr class="memdesc:ada6b45f94d2f68847942e110463d6adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">To prevent putting the item in the tinkerer slot, return false when pre is -3. To prevent rolling of a prefix on spawn, return false when pre is -1. To force rolling of a prefix on spawn, return true when pre is -1.  <a href="#ada6b45f94d2f68847942e110463d6adc">More...</a><br /></td></tr>
 <tr class="separator:ada6b45f94d2f68847942e110463d6adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff4f5fa502e17122315ddf771c6eb8ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aff4f5fa502e17122315ddf771c6eb8ec">PreReforge</a> ()</td></tr>
 <tr class="separator:aff4f5fa502e17122315ddf771c6eb8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2101,7 +2101,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00922">922</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01546">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01549">Terraria.ModLoader.ItemLoader.HoldoutOffset()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;                                                {</div><div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -2256,7 +2256,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00977">977</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01632">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01635">Terraria.ModLoader.ItemLoader.IsAnglerQuestAvailable()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;                                                     {</div><div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -3427,7 +3427,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00669">669</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01092">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01095">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;                                                       {</div><div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -4131,12 +4131,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>To prevent putting the item in the tinkerer slot, return false when pre is -3 To prevent rolling of a prefix on spawn, return false when pre is -1 To force rolling of a prefix on spawn, return true when pre is -1 </p>
-<p>To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time</p>
-<p>To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete. Use AllowPrefix to prevent rolling of a certain prefix </p>
+<p>To prevent putting the item in the tinkerer slot, return false when pre is -3. To prevent rolling of a prefix on spawn, return false when pre is -1. To force rolling of a prefix on spawn, return true when pre is -1. </p>
+<p>To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time. To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.</p>
+<p>To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete. Use AllowPrefix to prevent rolling of a certain prefix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pre</td><td>The prefix being applied to the item, or the roll mode. -1 is when an item is bought from a shop, crafted or generated in a chest. -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</td></tr>
+    <tr><td class="paramname">pre</td><td>The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</td></tr>
   </table>
   </dd>
 </dl>
@@ -5116,7 +5116,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00997">997</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01092">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01095">Terraria.ModLoader.ItemLoader.OpenBossBag()</a>.</p>
 
 </div>
 </div>
@@ -5272,7 +5272,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_item_8cs_source.html#l00026">26</a> of file <a class="el" href="_mod_item_8cs_source.html">ModItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00363">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00107">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00240">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_content_8cs_source.html#l00573">Terraria.ModLoader.ModContent.DisposeMusic()</a>, <a class="el" href="_item_loader_8cs_source.html#l01283">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00109">Terraria.ModLoader.Mod.LoadMusic()</a>, <a class="el" href="_mod_content_8cs_source.html#l00185">Terraria.ModLoader.ModContent.MusicExists()</a>, <a class="el" href="_mod_content_8cs_source.html#l00519">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00067">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l00363">Terraria.ModLoader.Mod.AddEquipTexture()</a>, <a class="el" href="_mod_recipe_8cs_source.html#l00107">Terraria.ModLoader.ModRecipe.AddIngredient()</a>, <a class="el" href="_mod_8cs_source.html#l00240">Terraria.ModLoader.Mod.AddItem()</a>, <a class="el" href="_mod_content_8cs_source.html#l00573">Terraria.ModLoader.ModContent.DisposeMusic()</a>, <a class="el" href="_item_loader_8cs_source.html#l01286">Terraria.ModLoader.ItemLoader.GetWing()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00109">Terraria.ModLoader.Mod.LoadMusic()</a>, <a class="el" href="_mod_content_8cs_source.html#l00185">Terraria.ModLoader.ModContent.MusicExists()</a>, <a class="el" href="_mod_content_8cs_source.html#l00519">Terraria.ModLoader.ModContent.RefreshModLanguage()</a>, and <a class="el" href="_mod_recipe_8cs_source.html#l00067">Terraria.ModLoader.ModRecipe.SetResult()</a>.</p>
 
 </div>
 </div>

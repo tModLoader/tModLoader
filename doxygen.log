@@ -668,7 +668,7 @@ Generating caller graph for function Terraria.ModLoader.GlobalProjectile.NumGrap
 Generatin/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/GlobalTile.cs:257: warning: The following parameters of Terraria.ModLoader.GlobalTile.SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) are not documented:
   parameter 'type'
   parameter 'spriteBatch'
-/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1139: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1142: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
 g caller graph for function Terraria.ModLoader.GlobalProjectile.OnHitNPC
@@ -2312,5 +2312,5 @@ Patching output file 159/162
 Patching output file 160/162
 Patching output file 161/162
 Patching output file 162/162
-lookup cache used 11648/131072 hits=101356 misses=12208
+lookup cache used 11648/131072 hits=101358 misses=12208
 finished...
