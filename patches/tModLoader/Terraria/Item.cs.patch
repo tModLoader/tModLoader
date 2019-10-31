@@ -56,7 +56,7 @@
  				num8 = 0;
  				flag = false;
 -				if (num == -1 && unifiedRandom.Next(4) == 0)
-+				if (num == -1 && ((applyPrefixOverride ?? false) || unifiedRandom.Next(4) == 0))
++				if (pre == -1 && !(applyPrefixOverride ?? false) && unifiedRandom.NextBool(4))
  				{
  					num = 0;
  				}
@@ -146,7 +146,7 @@
  					}
  					else
  					{
-@@ -833,7 +_,9 @@
+@@ -833,14 +_,16 @@
  						{
  							return false;
  						}
@@ -156,6 +156,14 @@
  					}
  				}
  				if (pre == -3)
+ 				{
+ 					return true;
+ 				}
+-				if (pre == -1 && (num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && unifiedRandom.Next(3) != 0)
++				if (pre == -1 && (num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && (!(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3)))
+ 				{
+ 					num = 0;
+ 				}
 @@ -1175,6 +_,10 @@
  					num2 = 1.05f;
  					num8 = 2;

@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace ExampleMod.Items.Accessories
 {
@@ -20,6 +21,11 @@ namespace ExampleMod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.GetModPlayer<ExamplePlayer>().manaHeart = true;
+		}
+
+		public override int ChoosePrefix(UnifiedRandom rand) {
+			// When the item is given a prefix, only roll the best modifiers for accessories
+			return rand.Next(new int[] { PrefixID.Arcane, PrefixID.Lucky, PrefixID.Menacing, PrefixID.Quick, PrefixID.Violent, PrefixID.Warding });
 		}
 
 		public override void AddRecipes() {
