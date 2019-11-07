@@ -4,6 +4,7 @@
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
+    <ApplicationIcon>../patches/tModLoader/Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="PatchReviewer\**" />
@@ -11,13 +12,16 @@
     <None Remove="PatchReviewer\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="5.0.1.5145" />
+    <PackageReference Include="Humanizer.Core" Version="2.7.9" />
     <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="19.9.1.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.Decompiler">
+      <HintPath>lib\ICSharpCode.Decompiler.dll</HintPath>
+    </Reference>
     <Reference Include="XnaToFna">
       <HintPath>lib\XnaToFna.exe</HintPath>
     </Reference>
