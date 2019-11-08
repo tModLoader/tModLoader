@@ -449,6 +449,7 @@ namespace ExampleMod
 				}
 				customDamage = true;
 			}
+            if (blockyAccessory) playSound = false;
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
@@ -456,7 +457,8 @@ namespace ExampleMod
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			if (elementShield && damage > 1.0) {
+            if (blockyAccessory) Main.PlaySound(SoundID.Frog, player.position);
+            if (elementShield && damage > 1.0) {
 				if (elementShields < 6) {
 					int k;
 					bool flag = false;
