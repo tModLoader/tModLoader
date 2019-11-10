@@ -114,6 +114,7 @@ namespace ExampleMod
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);
+			packet.Write(blockyAccessory);
 			packet.Write(nonStopParty); // While we sync nonStopParty in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
 			packet.Send(toWho, fromWho);
 		}
@@ -126,6 +127,7 @@ namespace ExampleMod
 				var packet = mod.GetPacket();
 				packet.Write((byte)ExampleModMessageType.NonStopPartyChanged);
 				packet.Write((byte)player.whoAmI);
+				packet.Write(blockyAccessory);
 				packet.Write(nonStopParty);
 				packet.Send();
 			}
