@@ -226,7 +226,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a48027ba9e2e4188d3b73b49fa60071f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this player's melee weapon special effects, such as creating light or dust.  <a href="#a48027ba9e2e4188d3b73b49fa60071f2">More...</a><br /></td></tr>
 <tr class="separator:a48027ba9e2e4188d3b73b49fa60071f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98ff1db7484c7cf96f7ca4d4a278a8d"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac98ff1db7484c7cf96f7ca4d4a278a8d">MeleeSpeedMultiplier</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
-<tr class="memdesc:ac98ff1db7484c7cf96f7ca4d4a278a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to multiply an item's regular melee speed. Returns 1f by default.  <a href="#ac98ff1db7484c7cf96f7ca4d4a278a8d">More...</a><br /></td></tr>
+<tr class="memdesc:ac98ff1db7484c7cf96f7ca4d4a278a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.  <a href="#ac98ff1db7484c7cf96f7ca4d4a278a8d">More...</a><br /></td></tr>
 <tr class="separator:ac98ff1db7484c7cf96f7ca4d4a278a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a131805446b4d3581cb1b2842bce1b76c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a131805446b4d3581cb1b2842bce1b76c">ModifyDrawHeadLayers</a> (List&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_head_layer.html">PlayerHeadLayer</a> &gt; layers)</td></tr>
 <tr class="memdesc:a131805446b4d3581cb1b2842bce1b76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the drawing of the player head on the minimap. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.  <a href="#a131805446b4d3581cb1b2842bce1b76c">More...</a><br /></td></tr>
@@ -440,7 +440,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aca9c4f67053ee8f250d4aa502d9a40d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()  <a href="#aca9c4f67053ee8f250d4aa502d9a40d0">More...</a><br /></td></tr>
 <tr class="separator:aca9c4f67053ee8f250d4aa502d9a40d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb5e4c7ee1acbfc31227fed71446a0a7"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#abb5e4c7ee1acbfc31227fed71446a0a7">UseTimeMultiplier</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
-<tr class="memdesc:abb5e4c7ee1acbfc31227fed71446a0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to multiply an item's regular use time. Returns 1f by default.  <a href="#abb5e4c7ee1acbfc31227fed71446a0a7">More...</a><br /></td></tr>
+<tr class="memdesc:abb5e4c7ee1acbfc31227fed71446a0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.  <a href="#abb5e4c7ee1acbfc31227fed71446a0a7">More...</a><br /></td></tr>
 <tr class="separator:abb5e4c7ee1acbfc31227fed71446a0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -1945,7 +1945,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to multiply an item's regular melee speed. Returns 1f by default. </p>
+<p>Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item.</td></tr>
@@ -5075,7 +5075,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to multiply an item's regular use time. Returns 1f by default. </p>
+<p>Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item.</td></tr>
