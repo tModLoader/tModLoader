@@ -244,7 +244,7 @@ namespace Terraria.ModLoader
 		/// Allows you to change the effective useTime of this item.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns>The multiplier on the usage speed. 1f by default.</returns>
+		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
 		public virtual float UseTimeMultiplier(Player player) {
 			return 1f;
 		}
@@ -253,7 +253,7 @@ namespace Terraria.ModLoader
 		/// Allows you to change the effective useAnimation of this item.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns>The multiplier on the animation speed. 1f by default.</returns>
+		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
 		public virtual float MeleeSpeedMultiplier(Player player) {
 			return 1f;
 		}

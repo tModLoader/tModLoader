@@ -74,6 +74,8 @@ namespace Terraria.ModLoader
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
 		public void AddIngredient(int itemID, int stack = 1) {
+			if (numIngredients == 14)
+				throw new RecipeException("Recipe already has maximum number of ingredients. 14 is the max.");
 			this.requiredItem[numIngredients].SetDefaults(itemID, false);
 			this.requiredItem[numIngredients].stack = stack;
 			numIngredients++;
@@ -130,6 +132,8 @@ namespace Terraria.ModLoader
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
 		public void AddTile(int tileID) {
+			if (numTiles == 14)
+				throw new RecipeException("Recipe already has maximum number of tiles. 14 is the max.");
 			if (tileID < 0 || tileID >= TileLoader.TileCount) {
 				throw new RecipeException("No tile has ID " + tileID);
 			}

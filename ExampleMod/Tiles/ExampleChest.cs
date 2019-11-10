@@ -71,7 +71,7 @@ namespace ExampleMod.Tiles
 			}
 			int chest = Chest.FindChest(left, top);
 			if (chest < 0) {
-				return Lang.chestType[0].Value;
+				return Language.GetTextValue("LegacyChestType.0");
 			}
 			else if (Main.chest[chest].name == "") {
 				return name;
@@ -132,7 +132,7 @@ namespace ExampleMod.Tiles
 			else {
 				if (isLocked) {
 					int key = ItemType<Items.ExampleChestKey>();
-					if (player.ConsumeItem(key) && Chest.Unlock(left, top)){
+					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == 1) {
 							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, (float)left, (float)top);
 						}
@@ -181,7 +181,7 @@ namespace ExampleMod.Tiles
 				player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.showItemIconText == "Example Chest") {
 					player.showItemIcon2 = ItemType<Items.Placeable.ExampleChest>();
-					if(Main.tile[left, top].frameX / 36 == 1)
+					if (Main.tile[left, top].frameX / 36 == 1)
 						player.showItemIcon2 = ItemType<Items.ExampleChestKey>();
 					player.showItemIconText = "";
 				}

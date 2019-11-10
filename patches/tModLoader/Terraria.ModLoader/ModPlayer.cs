@@ -400,7 +400,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular use time. Returns 1f by default.
+		/// Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <returns>The amount you wish to multiply with.</returns>
@@ -409,7 +409,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular melee speed. Returns 1f by default.
+		/// Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <returns>The amount you wish to multiply with.</returns>

@@ -112,6 +112,7 @@ namespace ExampleMod
 			}
 
 			// Register custom mod translations, lives left is for Spirit of Purity
+			// See the .lang files in the Localization folder for an easier to manage approach to translations. These few examples are here just to illustrate the concept.
 			ModTranslation text = CreateTranslation("LivesLeft");
 			text.SetDefault("{0} has {1} lives left!");
 			AddTranslation(text);
