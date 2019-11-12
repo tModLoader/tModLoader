@@ -31,7 +31,12 @@ namespace ExampleMod.Items.Weapons
 			item.shoot = ProjectileType<PurityWisp>();
 			item.shootSpeed = 10f;
 			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
-			item.buffTime = 3600;               //The duration of the buff, here is 60 seconds
+		}
+
+		public override void UseStyle(Player player) {
+			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
+				player.AddBuff(item.buffType, 2, true);
+			}
 		}
 
 		public override bool AltFunctionUse(Player player) {
