@@ -33,17 +33,12 @@ namespace ExampleMod.Items.Weapons
 			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
 		}
 
-		public override void UseStyle(Player player) {
-			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
-				player.AddBuff(item.buffType, 2, true);
-			}
-		}
-
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+			player.AddBuff(item.buffType, 2, true);
 			return player.altFunctionUse != 2;
 		}
 

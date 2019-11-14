@@ -15,21 +15,11 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 	 *     the icon you can click on to despawn the minion
 	 * - ModProjectile 
 	 *     the minion itself
-	 * - ModPlayer
-	 *     the storage of its "active" state
 	 *     
 	 * It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
 	 * To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
-	public class ExampleMinionPlayer : ModPlayer
-	{
-		public bool exampleMinion = false;
-
-		public override void ResetEffects() {
-			exampleMinion = false;
-		}
-	}
 
 	public class ExampleMinionBuff : ModBuff
 	{
@@ -42,17 +32,12 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 		public override void Update(Player player, ref int buffIndex) {
 
-			// The following five lines is all you need to change, namely ExampleMinionPlayer, ExampleMinion and exampleMinion
-			ExampleMinionPlayer modPlayer = player.GetModPlayer<ExampleMinionPlayer>();
 			if (player.ownedProjectileCounts[ProjectileType<ExampleMinion>()] > 0) {
-				modPlayer.exampleMinion = true;
-			}
-			if (!modPlayer.exampleMinion) {
-				player.DelBuff(buffIndex);
-				buffIndex--;
+				player.buffTime[buffIndex] = 18000;
 			}
 			else {
-				player.buffTime[buffIndex] = 18000;
+				player.DelBuff(buffIndex);
+				buffIndex--;
 			}
 		}
 	}
@@ -84,21 +69,18 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			item.shoot = ProjectileType<ExampleMinion>();
 		}
 
-		// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-		public override void UseStyle(Player player) {
-			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
-				player.AddBuff(item.buffType, 2, true);
-			}
-		}
-
 		public override bool AltFunctionUse(Player player) {
 			// Mandatory for right-click targeting
 			return true;
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
+			player.AddBuff(item.buffType, 2, true);
+
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
+
 			// Mandatory for right-click targeting
 			return player.altFunctionUse != 2;
 		}
@@ -178,19 +160,17 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 			#region Active check
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-			// You need to adjust these to the names you have in your own mod: ExampleMinionPlayer, exampleMinion
-			ExampleMinionPlayer modPlayer = player.GetModPlayer<ExampleMinionPlayer>();
 			if (player.dead || !player.active) {
-				modPlayer.exampleMinion = false;
+				player.ClearBuff(BuffType<ExampleMinionBuff>());
 			}
-			if (modPlayer.exampleMinion) {
+			if (player.HasBuff(BuffType<ExampleMinionBuff>())) {
 				projectile.timeLeft = 2;
 			}
 			#endregion
 
 			#region General behavior
 			Vector2 idlePosition = player.Center;
-			idlePosition.Y -= 50f; // Go up 50 coordinates (three tiles from the center of the player)
+			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
 
 			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
 			// The index is projectile.minionPos
@@ -242,7 +222,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 					foundTarget = true;
 				}
 			}
-			else {
+			if (!foundTarget) {
 				// This code is required either way, used for finding a target
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
