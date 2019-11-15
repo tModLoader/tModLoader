@@ -114,7 +114,6 @@ namespace ExampleMod
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);
-			packet.Write(blockyAccessory);
 			packet.Write(nonStopParty); // While we sync nonStopParty in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
 			packet.Send(toWho, fromWho);
 		}
@@ -127,7 +126,6 @@ namespace ExampleMod
 				var packet = mod.GetPacket();
 				packet.Write((byte)ExampleModMessageType.NonStopPartyChanged);
 				packet.Write((byte)player.whoAmI);
-				packet.Write(blockyAccessory);
 				packet.Write(nonStopParty);
 				packet.Send();
 			}
@@ -451,7 +449,7 @@ namespace ExampleMod
 				}
 				customDamage = true;
 			}
-            if (blockyAccessory) playSound = false;
+			if (blockyAccessory) playSound = false;
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
@@ -459,8 +457,8 @@ namespace ExampleMod
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-            if (blockyAccessory) Main.PlaySound(SoundID.Frog, player.position);
-            if (elementShield && damage > 1.0) {
+			if (blockyAccessory) Main.PlaySound(SoundID.Zombie, player.position, 13);
+			if (elementShield && damage > 1.0) {
 				if (elementShields < 6) {
 					int k;
 					bool flag = false;
