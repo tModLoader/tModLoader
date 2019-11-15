@@ -30,15 +30,12 @@ namespace ExampleMod.Items.Weapons
 			item.rare = 9;
 			item.UseSound = SoundID.Item44;
 			item.shoot = ProjectileType<PurityWisp>();
-			item.shootSpeed = 10f;
 			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			player.AddBuff(item.buffType, 2);
 			position = Main.MouseWorld;
-			speedX = 0;
-			speedY = 0;
 			return true;
 		}
 	}

@@ -75,10 +75,8 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(item.buffType, 2);
 
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position. We also zero out the initial velocity.
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
 			position = Main.MouseWorld;
-			speedX = 0;
-			speedY = 0;
 			return true;
 		}
 
@@ -122,8 +120,6 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			projectile.tileCollide = false;
 
 			// These below are needed for a minion weapon
-			// Needed for custom AI
-			projectile.aiStyle = -1;
 			// Only controls if it deals damage to enemies on contact (more on that later)
 			projectile.friendly = true;
 			// Only determines the damage type

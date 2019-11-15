@@ -18,7 +18,6 @@ namespace ExampleMod.Projectiles
 		public override void SetDefaults() {
 			projectile.width = 16;
 			projectile.height = 16;
-			projectile.aiStyle = -1;
 			projectile.friendly = true;
 			projectile.melee = true;
 			projectile.penetrate = 3;

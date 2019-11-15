@@ -17,7 +17,7 @@ namespace ExampleMod.NPCs
 		public override void SetDefaults() {
 			npc.width = 32;
 			npc.height = 32;
-			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1.
+			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			npc.damage = 7;
 			npc.defense = 2;
 			npc.lifeMax = 25;
