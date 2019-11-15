@@ -31,7 +31,6 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-
 			if (player.ownedProjectileCounts[ProjectileType<ExampleMinion>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
@@ -41,11 +40,14 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			}
 		}
 	}
+
 	public class ExampleMinionItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Minion Item");
 			Tooltip.SetDefault("Summons an example minion to fight for you");
+			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -69,28 +71,15 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			item.shoot = ProjectileType<ExampleMinion>();
 		}
 
-		public override bool AltFunctionUse(Player player) {
-			// Mandatory for right-click targeting
-			return true;
-		}
-
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-			player.AddBuff(item.buffType, 2, true);
+			player.AddBuff(item.buffType, 2);
 
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position. We also zero out the initial velocity.
 			position = Main.MouseWorld;
-
-			// Mandatory for right-click targeting
-			return player.altFunctionUse != 2;
-		}
-
-		public override bool UseItem(Player player) {
-			// Mandatory for right-click targeting
-			if (player.altFunctionUse == 2) {
-				player.MinionNPCTargetAim();
-			}
-			return base.UseItem(player);
+			speedX = 0;
+			speedY = 0;
+			return true;
 		}
 
 		public override void AddRecipes() {

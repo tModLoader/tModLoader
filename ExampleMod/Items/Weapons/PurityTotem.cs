@@ -7,11 +7,12 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
-	//imported from my tAPI mod because I'm lazy
 	public class PurityTotem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("Summons a purity wisp to fight for you.");
+			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true;
+			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -33,20 +34,12 @@ namespace ExampleMod.Items.Weapons
 			item.buffType = BuffType<Buffs.PurityWisp>(); //The buff added to player after used the item
 		}
 
-		public override bool AltFunctionUse(Player player) {
-			return true;
-		}
-
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			player.AddBuff(item.buffType, 2, true);
-			return player.altFunctionUse != 2;
-		}
-
-		public override bool UseItem(Player player) {
-			if (player.altFunctionUse == 2) {
-				player.MinionNPCTargetAim();
-			}
-			return base.UseItem(player);
+			player.AddBuff(item.buffType, 2);
+			position = Main.MouseWorld;
+			speedX = 0;
+			speedY = 0;
+			return true;
 		}
 	}
 }

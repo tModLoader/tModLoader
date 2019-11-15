@@ -6,7 +6,9 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.Minions
 {
-	//ported from my tAPI mod because I'm lazy
+	// PurityWisp uses inheritace as an example of how it can be useful in modding.
+	// HoverShooter and Minion classes help abstract common functionality away, which is useful for mods that have many similar behaviors.
+	// Inheritance is an advanced topic and could be confusing to new programmers, see ExampleSimpleMinion.cs for a simpler minion example.
 	public class PurityWisp : HoverShooter
 	{
 		public override void SetStaticDefaults() {
