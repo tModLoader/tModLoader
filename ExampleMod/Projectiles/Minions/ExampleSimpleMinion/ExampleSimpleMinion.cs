@@ -104,7 +104,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			// This is necessary for right-click targeting
 			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
 
-			// These below are needed for a minion weapon
+			// These below are needed for a minion
 			// Denotes that this projectile is a pet or minion
 			Main.projPet[projectile.type] = true;
 			// This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
@@ -164,7 +164,7 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 
 			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
 
-			// Teleport to player if is distance too big
+			// Teleport to player if distance is too big
 			Vector2 vectorToIdlePosition = idlePosition - projectile.Center;
 			float distanceToIdlePosition = vectorToIdlePosition.Length();
 			if (Main.myPlayer == player.whoAmI && distanceToIdlePosition > 2000f) {
