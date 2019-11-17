@@ -18,7 +18,7 @@
 
 ## About
 
-tModLoader is an API for Terraria that provides a way to create and load mods without having to work with Terraria's source code directly. This means you can easily make mods that are compatible with other mods and save yourself the trouble of having to decompile then recompile Terraria.exe. This also means players can use multiple mods at the same time without having to worry about compatibility issues. Traditionally most mods (standalone mods) that don't a sort of API like tModLoader to handle them, will be incompatible with each other. tModLoader is made to work for Terraria version 1.3 and above. To view _most_ of our releases you can go to the [releases page](https://github.com/tModLoader/tModLoader/releases) which will include the binaries required to install tModLoader. Certain older releases are not included on this page. (there is no real reason to use them either)
+tModLoader is an API for Terraria that provides a way to create and load mods without having to work with Terraria's source code directly. This means you can easily make mods that are compatible with other mods and save yourself the trouble of having to decompile then recompile Terraria.exe. This also means players can use multiple mods at the same time without having to worry about compatibility issues. Traditionally most mods (standalone mods) that don't have an API like tModLoader to handle them will be incompatible with each other. tModLoader is made to work for Terraria version 1.3 and above. To view our releases you can go to the [releases page](https://github.com/tModLoader/tModLoader/releases) which will include the binaries required to install tModLoader. 
 
 Our goal for tModLoader is to make it simple as possible to mod while giving the modder powerful control over the game. It is designed in a way as to minimize the effort required for us to update to future Terraria versions. If you either don't want to commit to this project or are not able to decompile Terraria, we are open to suggestions for hooks and/or modifications. Please use our [github issues section](https://github.com/tModLoader/tModLoader/issues) to do this (you can ignore the default format for suggestions) You can also contact us through our Discord server.
 
@@ -110,6 +110,19 @@ ___
     * src/Terraria/
     * src/tModLoader/
 6. To open up the tModLoader workspace, navigate to solutions/ and open tModLoader.sln
+
+## Getting Example Mod into the Mod Sources folder
+As you add features to tModLoader, you'll want to add examples of using those features to Example Mod. Example Mod, however, needs to be located in the Mod Sources folder to build and test the mod. While you could copy and paste the folder back and forth between your Mod Sources folder and this repository folder whenever you wish to push your changes, a better approach can be achieved by using a symbolic link. A symbolic link allows a single folder to exist in 2 places at once. By creating a symbolic link in Mod Sources pointing to the ExampleMod folder in this repository, you can easily keep ExampleMod up to date and push changes to Github. Here is the command for creating the symbolic link on Windows. 
+1. Open the Command Prompt as Administrator by right clicking on it in the start menu and selecting "Run as Administrator" 
+2. Find the path to both your Mod Sources folder and the ExampleMod folder within your local copy of this repo.
+3. Make sure the Mod Sources folder doesn't already have an old ExampleMod folder, delete it if it exists.
+4. Run the command using your folder paths: (Below is just an example)
+```cmd
+mklink /D "C:\Documents\My Games\Terraria\ModLoader\Mod Sources\ExampleMod" "C:\Users\MyNameHere\Source\Repos\tModLoader\ExampleMod"
+```
+![](https://i.imgur.com/UmiWFha.png)    
+5. You should see a message "symbolic link created for ..." in the command prompt. In Mod Sources, you'll see that the ExampleMod folder now has a little icon similar to desktop shortcuts. Now, you can edit ExampleMod and the changes will reflect wherever you cloned this repo to.    
+![](https://i.imgur.com/pHVnAYN.png)    
 
 ### Keeping your code up-to-date
 ___
