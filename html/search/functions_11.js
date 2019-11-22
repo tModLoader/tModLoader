@@ -29,6 +29,7 @@ var searchData=
   ['setmodcactus',['SetModCactus',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#ac95c5d3d5f2d4ff31c9694bde95d9161',1,'Terraria::ModLoader::ModTile']]],
   ['setmodpalmtree',['SetModPalmTree',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc',1,'Terraria::ModLoader::ModTile']]],
   ['setmodtree',['SetModTree',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a31b61333ecefc242829a37575eba1869',1,'Terraria::ModLoader::ModTile']]],
+  ['setmount',['SetMount',['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a621e10eca66b9559b0a8681b588187f5',1,'Terraria.ModLoader.ModMountData.SetMount()'],['../class_terraria_1_1_mod_loader_1_1_mount_loader.html#a4586b69b9dc61d59f8a0ed190e028c22',1,'Terraria.ModLoader.MountLoader.SetMount()']]],
   ['setneedhoney',['SetNeedHoney',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a428708455128f049047ca7ac9e57cb82',1,'Terraria::ModLoader::RecipeEditor']]],
   ['setneedlava',['SetNeedLava',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a2dfc10260c5b99f067abe0e64b4cc801',1,'Terraria::ModLoader::RecipeEditor']]],
   ['setneedwater',['SetNeedWater',['../class_terraria_1_1_mod_loader_1_1_recipe_editor.html#a663633422081356aeca0f47db74f8f51',1,'Terraria::ModLoader::RecipeEditor']]],

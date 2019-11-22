@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 </div><!--header-->
 <div class="contents">
 
-<p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>.  
+<p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>. Only one instance of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> will exist for each mount, so storing player specific data on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> is not good. Modders can use player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class to store player specific data relating to a mount. Use SetMount to assign these fields.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for Terraria.ModLoader.ModMountData:</div>
@@ -140,15 +140,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afc57113aa508c6a5b37ca97b2dbca7a3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#afc57113aa508c6a5b37ca97b2dbca7a3">Autoload</a> (ref string name, ref string texture, IDictionary&lt; <a class="el" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398">MountTextureType</a>, string &gt; extraTextures)</td></tr>
 <tr class="memdesc:afc57113aa508c6a5b37ca97b2dbca7a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically load a mount instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and extraTextures is initialized to a dictionary containing all MountTextureTypes as keys, with texture + "_" + the texture type name as values. Use this method to either force or stop an autoload, change the default display name and texture path, and to modify the extra mount textures.  <a href="#afc57113aa508c6a5b37ca97b2dbca7a3">More...</a><br /></td></tr>
 <tr class="separator:afc57113aa508c6a5b37ca97b2dbca7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af9ac809f2fa94cc08e5401a55bf3c2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a0af9ac809f2fa94cc08e5401a55bf3c2">Dismount</a> (Player player, ref bool skipDust)</td></tr>
+<tr class="memdesc:a0af9ac809f2fa94cc08e5401a55bf3c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this mount is de-spawned. Useful for player-specific cleanup, see SetMount. Custom dust spawning logic is also possible via the skipDust parameter.  <a href="#a0af9ac809f2fa94cc08e5401a55bf3c2">More...</a><br /></td></tr>
+<tr class="separator:a0af9ac809f2fa94cc08e5401a55bf3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab59c81264d136390e9ae9f9689bf80f8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#ab59c81264d136390e9ae9f9689bf80f8">Draw</a> (List&lt; DrawData &gt; playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)</td></tr>
+<tr class="memdesc:ab59c81264d136390e9ae9f9689bf80f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for complete customization of mount drawing. This method will be called once for each supported mount texture layer that exists. Use drawType to conditionally apply changes. drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well. Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData.  <a href="#ab59c81264d136390e9ae9f9689bf80f8">More...</a><br /></td></tr>
+<tr class="separator:ab59c81264d136390e9ae9f9689bf80f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad46fec0317eec744ae4067cdc331494f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#ad46fec0317eec744ae4067cdc331494f">JumpHeight</a> (ref int jumpHeight, float xVelocity)</td></tr>
-<tr class="memdesc:ad46fec0317eec744ae4067cdc331494f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the mount's jump height based on its state.  <a href="#ad46fec0317eec744ae4067cdc331494f">More...</a><br /></td></tr>
 <tr class="separator:ad46fec0317eec744ae4067cdc331494f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4fe2186c8caba078d1c815646ff12c3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#ac4fe2186c8caba078d1c815646ff12c3">JumpHeight</a> (Player mountedPlayer, ref int jumpHeight, float xVelocity)</td></tr>
+<tr class="memdesc:ac4fe2186c8caba078d1c815646ff12c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the mount's jump height based on its state.  <a href="#ac4fe2186c8caba078d1c815646ff12c3">More...</a><br /></td></tr>
+<tr class="separator:ac4fe2186c8caba078d1c815646ff12c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03222edacae1e7348ba37f1df15c5ac6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a03222edacae1e7348ba37f1df15c5ac6">JumpSpeed</a> (ref float jumpSeed, float xVelocity)</td></tr>
-<tr class="memdesc:a03222edacae1e7348ba37f1df15c5ac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the mount's jump speed based on its state.  <a href="#a03222edacae1e7348ba37f1df15c5ac6">More...</a><br /></td></tr>
 <tr class="separator:a03222edacae1e7348ba37f1df15c5ac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9488c60e737322dbd9fd3041e12f31f0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a9488c60e737322dbd9fd3041e12f31f0">JumpSpeed</a> (Player mountedPlayer, ref float jumpSeed, float xVelocity)</td></tr>
+<tr class="memdesc:a9488c60e737322dbd9fd3041e12f31f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the mount's jump speed based on its state.  <a href="#a9488c60e737322dbd9fd3041e12f31f0">More...</a><br /></td></tr>
+<tr class="separator:a9488c60e737322dbd9fd3041e12f31f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e3ebc48dd36afa551e7b6f86d0ac340"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a8e3ebc48dd36afa551e7b6f86d0ac340">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a8e3ebc48dd36afa551e7b6f86d0ac340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of this type of mount.  <a href="#a8e3ebc48dd36afa551e7b6f86d0ac340">More...</a><br /></td></tr>
 <tr class="separator:a8e3ebc48dd36afa551e7b6f86d0ac340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621e10eca66b9559b0a8681b588187f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a621e10eca66b9559b0a8681b588187f5">SetMount</a> (Player player, ref bool skipDust)</td></tr>
+<tr class="memdesc:a621e10eca66b9559b0a8681b588187f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class since <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter.  <a href="#a621e10eca66b9559b0a8681b588187f5">More...</a><br /></td></tr>
+<tr class="separator:a621e10eca66b9559b0a8681b588187f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9b9705018e05b80642cc731c90e512e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#ac9b9705018e05b80642cc731c90e512e">UpdateEffects</a> (Player player)</td></tr>
 <tr class="memdesc:ac9b9705018e05b80642cc731c90e512e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when mount is used (creating dust etc.) Can also be used for mount special abilities.  <a href="#ac9b9705018e05b80642cc731c90e512e">More...</a><br /></td></tr>
 <tr class="separator:ac9b9705018e05b80642cc731c90e512e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,9 +188,9 @@ Properties</h2></td></tr>
 <tr class="separator:a7dfae1ced2e211b0b9cce9ef57b6a228"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>. </p>
+<div class="textblock"><p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a9f844d58f1fc1cc6048d53729ec94821" title="Adds the given mount to the game with the given name and texture. The extraTextures dictionary should...">Mod.AddMount</a>. Only one instance of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> will exist for each mount, so storing player specific data on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> is not good. Modders can use player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class to store player specific data relating to a mount. Use SetMount to assign these fields. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00009">9</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00014">14</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3b657795b4bc72dd5a28c91aaa02bf6d"></a>
 <div class="memitem">
@@ -194,8 +207,8 @@ Properties</h2></td></tr>
 
 <p>Constructor </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00048">48</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                              {</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a99f6f4c4524b38853aebb3d434e5da6c">mountData</a> = <span class="keyword">new</span> Mount.MountData();</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_mount_data_html_a99f6f4c4524b38853aebb3d434e5da6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a99f6f4c4524b38853aebb3d434e5da6c">Terraria.ModLoader.ModMountData.mountData</a></div><div class="ttdeci">Mount.MountData mountData</div><div class="ttdoc">The vanilla MountData object that is controlled by this ModMountData. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_mount_data_8cs_source.html#l00016">ModMountData.cs:16</a></div></div>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00053">53</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                              {</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a99f6f4c4524b38853aebb3d434e5da6c">mountData</a> = <span class="keyword">new</span> Mount.MountData();</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_mount_data_html_a99f6f4c4524b38853aebb3d434e5da6c"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#a99f6f4c4524b38853aebb3d434e5da6c">Terraria.ModLoader.ModMountData.mountData</a></div><div class="ttdeci">Mount.MountData mountData</div><div class="ttdoc">The vanilla MountData object that is controlled by this ModMountData. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_mount_data_8cs_source.html#l00021">ModMountData.cs:21</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,8 +254,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00130">130</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                                                                             {</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00145">145</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                                                                             {</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="afc57113aa508c6a5b37ca97b2dbca7a3"></a>
@@ -294,10 +307,10 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00059">59</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00064">64</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
-<p>References <a class="el" href="_mod_mount_data_8cs_source.html#l00024">Terraria.ModLoader.ModMountData.mod</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00016">Terraria.ModLoader.ModMountData.mountData</a>, and <a class="el" href="_mod_mount_data_8cs_source.html#l00074">Terraria.ModLoader.ModMountData.SetDefaults()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                                                                                                               {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#abc494eb1829f342c103129e526293c43">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_mount_data_html_abc494eb1829f342c103129e526293c43"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#abc494eb1829f342c103129e526293c43">Terraria.ModLoader.ModMountData.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod which has added this ModMountData. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_mount_data_8cs_source.html#l00024">ModMountData.cs:24</a></div></div>
+<p>References <a class="el" href="_mod_mount_data_8cs_source.html#l00029">Terraria.ModLoader.ModMountData.mod</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00021">Terraria.ModLoader.ModMountData.mountData</a>, and <a class="el" href="_mod_mount_data_8cs_source.html#l00079">Terraria.ModLoader.ModMountData.SetDefaults()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                                                                                                               {</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#abc494eb1829f342c103129e526293c43">mod</a>.<a class="code" href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Properties</a>.<a class="code" href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Autoload</a>;</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div><div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_mount_data_html_abc494eb1829f342c103129e526293c43"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#abc494eb1829f342c103129e526293c43">Terraria.ModLoader.ModMountData.mod</a></div><div class="ttdeci">Mod mod</div><div class="ttdoc">The mod which has added this ModMountData. </div><div class="ttdef"><b>Definition:</b> <a href="_mod_mount_data_8cs_source.html#l00029">ModMountData.cs:29</a></div></div>
 <div class="ttc" id="class_terraria_1_1_mod_loader_1_1_mod_html_a65df4d7e3265342db3455483d65545ea"><div class="ttname"><a href="class_terraria_1_1_mod_loader_1_1_mod.html#a65df4d7e3265342db3455483d65545ea">Terraria.ModLoader.Mod.Properties</a></div><div class="ttdeci">ModProperties Properties</div><div class="ttdef"><b>Definition:</b> <a href="_mod_8cs_source.html#l00052">Mod.cs:52</a></div></div>
 <div class="ttc" id="struct_terraria_1_1_mod_loader_1_1_mod_properties_html_a087996f5753cf503e72090d39ab7e30b"><div class="ttname"><a href="struct_terraria_1_1_mod_loader_1_1_mod_properties.html#a087996f5753cf503e72090d39ab7e30b">Terraria.ModLoader.ModProperties.Autoload</a></div><div class="ttdeci">bool Autoload</div><div class="ttdoc">Whether or not this mod will autoload content by default. Autoloading content means you do not need t...</div><div class="ttdef"><b>Definition:</b> <a href="_mod_properties_8cs_source.html#l00011">ModProperties.cs:11</a></div></div>
 </div><!-- fragment -->
@@ -313,6 +326,181 @@ Properties</h2></td></tr>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="a0af9ac809f2fa94cc08e5401a55bf3c2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModMountData.Dismount </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>skipDust</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when this mount is de-spawned. Useful for player-specific cleanup, see SetMount. Custom dust spawning logic is also possible via the skipDust parameter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+    <tr><td class="paramname">skipDust</td><td>Set to true to skip the vanilla dust spawning logic</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00163">163</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                                                                       {</div><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab59c81264d136390e9ae9f9689bf80f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModMountData.Draw </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; DrawData &gt;&#160;</td>
+          <td class="paramname"><em>playerDrawData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>drawType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>drawPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Texture2D&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Texture2D&#160;</td>
+          <td class="paramname"><em>glowTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>drawPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>drawColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>glowColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>rotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref SpriteEffects&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>drawOrigin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>drawScale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>shadow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows for complete customization of mount drawing. This method will be called once for each supported mount texture layer that exists. Use drawType to conditionally apply changes. drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well. Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">playerDrawData</td><td></td></tr>
+    <tr><td class="paramname">drawType</td><td>Corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra</td></tr>
+    <tr><td class="paramname">drawPlayer</td><td></td></tr>
+    <tr><td class="paramname">texture</td><td></td></tr>
+    <tr><td class="paramname">glowTexture</td><td>The corresponding glow texture, if present</td></tr>
+    <tr><td class="paramname">drawPosition</td><td></td></tr>
+    <tr><td class="paramname">frame</td><td></td></tr>
+    <tr><td class="paramname">drawColor</td><td></td></tr>
+    <tr><td class="paramname">glowColor</td><td></td></tr>
+    <tr><td class="paramname">rotation</td><td></td></tr>
+    <tr><td class="paramname">spriteEffects</td><td></td></tr>
+    <tr><td class="paramname">drawOrigin</td><td></td></tr>
+    <tr><td class="paramname">drawScale</td><td></td></tr>
+    <tr><td class="paramname">shadow</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00187">187</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                                                                                                                                                                                                                                                                                                                                                            {</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ad46fec0317eec744ae4067cdc331494f"></a>
@@ -347,17 +535,60 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00083">83</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                                                            {</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ac4fe2186c8caba078d1c815646ff12c3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModMountData.JumpHeight </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>mountedPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>jumpHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xVelocity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p>Allows you to modify the mount's jump height based on its state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">mountedPlayer</td><td></td></tr>
     <tr><td class="paramname">jumpHeight</td><td></td></tr>
     <tr><td class="paramname">xVelocity</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00082">82</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                                                            {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00092">92</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                                                                                  {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a03222edacae1e7348ba37f1df15c5ac6"></a>
@@ -392,17 +623,60 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00096">96</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                                                           {</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a9488c60e737322dbd9fd3041e12f31f0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModMountData.JumpSpeed </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>mountedPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>jumpSeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xVelocity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p>Allows you to modify the mount's jump speed based on its state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">mountedPlayer</td><td></td></tr>
     <tr><td class="paramname">jumpSeed</td><td></td></tr>
     <tr><td class="paramname">xVelocity</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00090">90</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                                                           {</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00105">105</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                                                                                 {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8e3ebc48dd36afa551e7b6f86d0ac340"></a>
@@ -428,10 +702,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to set the properties of this type of mount. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00074">74</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00079">79</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_mount_data_8cs_source.html#l00059">Terraria.ModLoader.ModMountData.Autoload()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                                          {</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div></div><!-- fragment -->
+<p>Referenced by <a class="el" href="_mod_mount_data_8cs_source.html#l00064">Terraria.ModLoader.ModMountData.Autoload()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                          {</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -444,6 +718,51 @@ Properties</h2></td></tr>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="a621e10eca66b9559b0a8681b588187f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModMountData.SetMount </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>skipDust</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class since <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+    <tr><td class="paramname">skipDust</td><td>Set to true to skip the vanilla dust spawning logic</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00154">154</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                                                                       {</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac9b9705018e05b80642cc731c90e512e"></a>
@@ -476,8 +795,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00097">97</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                                         {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00112">112</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                                         {</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a5e25d1603f6fc7b8b87d3d17ba790a50"></a>
@@ -529,8 +848,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00107">107</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                                                                           {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                                                                           {</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af7f32254bdec07ce2b92a8e2d1a43fae"></a>
@@ -581,8 +900,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00122">122</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                                                                            {</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00137">137</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                                                                                            {</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -606,9 +925,9 @@ Properties</h2></td></tr>
 
 <p>The mod which has added this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a>. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00024">24</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00029">29</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01051">Terraria.ModLoader.Mod.AddMount()</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00059">Terraria.ModLoader.ModMountData.Autoload()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00509">Terraria.ModLoader.Mod.AutoloadMountData()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_8cs_source.html#l01051">Terraria.ModLoader.Mod.AddMount()</a>, <a class="el" href="_mod_mount_data_8cs_source.html#l00064">Terraria.ModLoader.ModMountData.Autoload()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00509">Terraria.ModLoader.Mod.AutoloadMountData()</a>.</p>
 
 </div>
 </div>
@@ -632,9 +951,9 @@ Properties</h2></td></tr>
 
 <p>The vanilla MountData object that is controlled by this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a>. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00016">16</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00021">21</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_mod_mount_data_8cs_source.html#l00059">Terraria.ModLoader.ModMountData.Autoload()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00109">Terraria.ModLoader.Mod.LoadMusic()</a>.</p>
+<p>Referenced by <a class="el" href="_mod_mount_data_8cs_source.html#l00064">Terraria.ModLoader.ModMountData.Autoload()</a>, and <a class="el" href="_mod_internals_8cs_source.html#l00109">Terraria.ModLoader.Mod.LoadMusic()</a>.</p>
 
 </div>
 </div>
@@ -658,7 +977,7 @@ Properties</h2></td></tr>
 
 <p>The name of this type of mount. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00040">40</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00045">45</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01051">Terraria.ModLoader.Mod.AddMount()</a>.</p>
 
@@ -684,7 +1003,7 @@ Properties</h2></td></tr>
 
 <p>The index of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount_data.html" title="This class serves as a place for you to place all your properties and hooks for each mount...">ModMountData</a> in the Mount.mounts array. </p>
 
-<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00032">32</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
+<p>Definition at line <a class="el" href="_mod_mount_data_8cs_source.html#l00037">37</a> of file <a class="el" href="_mod_mount_data_8cs_source.html">ModMountData.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_mod_8cs_source.html#l01051">Terraria.ModLoader.Mod.AddMount()</a>, <a class="el" href="_mod_internals_8cs_source.html#l00109">Terraria.ModLoader.Mod.LoadMusic()</a>, and <a class="el" href="_mod_content_8cs_source.html#l00185">Terraria.ModLoader.ModContent.MusicExists()</a>.</p>
 
