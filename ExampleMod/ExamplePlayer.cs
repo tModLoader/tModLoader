@@ -498,6 +498,12 @@ namespace ExampleMod
 					}
 				}
 			}
+			if (player.mount._mountSpecificData is Mounts.Car.CarSpecificData balloons) {
+				if (balloons.count > 0) {
+					balloons.count--;
+					Main.PlaySound(SoundID.Item38, player.position);
+				}
+			}
 		}
 
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {

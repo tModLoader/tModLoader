@@ -84,7 +84,7 @@
  
  		public bool Active
  		{
-@@ -1323,7 +_,7 @@
+@@ -1323,14 +_,14 @@
  
  		public static int GetHeightBoost(int MountType)
  		{
@@ -93,19 +93,32 @@
  			{
  				return 0;
  			}
-@@ -1348,6 +_,7 @@
+ 			return Mount.mounts[MountType].heightBoost;
+ 		}
+ 
+-		public int JumpHeight(float xVelocity)
++		public int JumpHeight(Player player, float xVelocity)
+ 		{
+ 			int num = this._data.jumpHeight;
+ 			switch (this._type)
+@@ -1348,10 +_,11 @@
  					}
  					break;
  			}
-+			MountLoader.JumpHeight(this._data, ref num, xVelocity);
++			MountLoader.JumpHeight(player, this._data, ref num, xVelocity);
  			return num;
  		}
  
+-		public float JumpSpeed(float xVelocity)
++		public float JumpSpeed(Player player, float xVelocity)
+ 		{
+ 			float num = this._data.jumpSpeed;
+ 			switch (this._type)
 @@ -1367,6 +_,7 @@
  					}
  					break;
  			}
-+			MountLoader.JumpSpeed(this._data, ref num, xVelocity);
++			MountLoader.JumpSpeed(player, this._data, ref num, xVelocity);
  			return num;
  		}
  
@@ -160,6 +173,32 @@
  			switch (this._type)
  			{
  				case 8:
+@@ -2900,6 +_,7 @@
+ 			IL_46D:
+ 			bool flag2 = false;
+ 			int type5 = this._type;
++			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num5, ref effect, ref origin, ref scale2, shadow);
+ 			if (!flag2)
+ 			{
+ 				DrawData item = new DrawData(texture2D, Position, new Rectangle?(value), drawColor, num5, origin, scale2, effect, 0);
+@@ -2968,6 +_,8 @@
+ 			bool cart = this.Cart;
+ 			this._active = false;
+ 			mountedPlayer.ClearBuff(this._data.buff);
++			bool skipDust = false;
++			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
+ 			this._mountSpecificData = null;
+ 			if (cart)
+ 			{
+@@ -2977,7 +_,7 @@
+ 			}
+ 			mountedPlayer.fullRotation = 0f;
+ 			mountedPlayer.fullRotationOrigin = Vector2.Zero;
+-			if (Main.netMode != 2)
++			if (Main.netMode != 2 && !skipDust)
+ 			{
+ 				for (int i = 0; i < 100; i++)
+ 				{
 @@ -3024,7 +_,7 @@
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
@@ -169,4 +208,15 @@
  			{
  				return;
  			}
+@@ -3090,7 +_,9 @@
+ 			{
+ 				this._mountSpecificData = new Mount.DrillMountData();
+ 			}
+-			if (Main.netMode != 2)
++			bool skipDust = false;
++			MountLoader.SetMount(this, mountedPlayer, ref skipDust);
++			if (Main.netMode != 2 && !skipDust)
+ 			{
+ 				for (int k = 0; k < 100; k++)
+ 				{
 

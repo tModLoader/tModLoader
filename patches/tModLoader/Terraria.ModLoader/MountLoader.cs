@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -53,15 +55,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void JumpHeight(Mount.MountData mount, ref int jumpHeight, float xVelocity) {
+		public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
 			if (IsModMountData(mount)) {
 				mount.modMountData.JumpHeight(ref jumpHeight, xVelocity);
+				mount.modMountData.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
 			}
 		}
 
-		public static void JumpSpeed(Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
+		public static void JumpSpeed(Player mountedPlayer, Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
 			if (IsModMountData(mount)) {
 				mount.modMountData.JumpSpeed(ref jumpSpeed, xVelocity);
+				mount.modMountData.JumpSpeed(mountedPlayer, ref jumpSpeed, xVelocity);
 			}
 		}
 
@@ -106,6 +110,42 @@ namespace Terraria.ModLoader
 			if (IsModMountData(mount._data)) {
 				mount._data.modMountData.AimAbility(player, mousePosition);
 			}
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a ModPlayer class since ModMountData is shared between all players.
+		/// Custom dust spawning logic is also possible via the skipDust parameter. 
+		/// </summary>
+		/// <param name="mount"></param>
+		/// <param name="player"></param>
+		/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
+		public static void SetMount(Mount mount, Player player, ref bool skipDust) {
+			if (IsModMountData(mount._data)) {
+				mount._data.modMountData.SetMount(player, ref skipDust);
+			}
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this mount is de-spawned. Useful for player-specific cleanup, see SetMount.
+		/// Custom dust spawning logic is also possible via the skipDust parameter.
+		/// </summary>
+		/// <param name="mount"></param>
+		/// <param name="player"></param>
+		/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
+		public static void Dismount(Mount mount, Player player, ref bool skipDust) {
+			if (IsModMountData(mount._data)) {
+				mount._data.modMountData.Dismount(player, ref skipDust);
+			}
+		}
+
+		/// <summary>
+		/// See <see cref="ModMountData.Draw(List{DrawData}, int, Player, ref Texture2D, ref Texture2D, ref Vector2, ref Rectangle, ref Color, ref Color, ref float, ref SpriteEffects, ref Vector2, ref float, float)"/>
+		/// </summary>
+		public static bool Draw(Mount mount, List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
+			if (IsModMountData(mount._data)) {
+				return mount._data.modMountData.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
+			}
+			return true;
 		}
 	}
 }

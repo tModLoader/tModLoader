@@ -3653,6 +3653,17 @@
  			float num4 = (float)this.statLifeMax2 / 400f * 0.85f + 0.15f;
  			num2 *= num4;
  			this.lifeRegen += (int)Math.Round((double)num2);
+@@ -15298,8 +_,8 @@
+ 		{
+ 			if (this.mount.Active)
+ 			{
+-				Player.jumpHeight = this.mount.JumpHeight(this.velocity.X);
+-				Player.jumpSpeed = this.mount.JumpSpeed(this.velocity.X);
++				Player.jumpHeight = this.mount.JumpHeight(this, this.velocity.X);
++				Player.jumpSpeed = this.mount.JumpSpeed(this, this.velocity.X);
+ 			}
+ 			else
+ 			{
 @@ -17067,8 +_,10 @@
  			if (this.wingsLogic == 26)
  			{
