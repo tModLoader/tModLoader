@@ -30,19 +30,19 @@ namespace ExampleMod
 		public static DynamicSpriteFont exampleFont;
 
 		private UserInterface _exampleUserInterface;
-        private UserInterface _exampleBarUserInterface;
+		private UserInterface _exampleBarUserInterface;
 
-        internal UserInterface ExamplePersonUserInterface;
+		internal UserInterface ExamplePersonUserInterface;
 		internal ExampleUI ExampleUI;
-        internal ExampleResourceBar ExampleResourceBar;
+		internal ExampleResourceBar ExampleResourceBar;
 
-        // Your mod instance has a Logger field, use it.
-        // OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
-        // You need to reference the log4net library to do this, this can be found in the tModLoader repository
-        // inside the references folder. You do not have to add this to build.txt as tML has it natively.
-        // internal ILog Logging = LogManager.GetLogger("ExampleMod");
+		// Your mod instance has a Logger field, use it.
+		// OPTIONAL: You can create your own logger this way, recommended is a custom logging class if you do a lot of logging
+		// You need to reference the log4net library to do this, this can be found in the tModLoader repository
+		// inside the references folder. You do not have to add this to build.txt as tML has it natively.
+		// internal ILog Logging = LogManager.GetLogger("ExampleMod");
 
-        public ExampleMod() {
+		public ExampleMod() {
 			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
 			//Properties = new ModProperties()
 			//{
@@ -97,9 +97,9 @@ namespace ExampleMod
 				GameShaders.Armor.BindShader(ModContent.ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
 				GameShaders.Hair.BindShader(ModContent.ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
-				
+
 				if (FontExists("Fonts/ExampleFont"))
-					exampleFont = GetFont("Fonts/ExampleFont"); 
+					exampleFont = GetFont("Fonts/ExampleFont");
 
 				// Custom UI
 				ExampleUI = new ExampleUI();
@@ -107,16 +107,16 @@ namespace ExampleMod
 				_exampleUserInterface = new UserInterface();
 				_exampleUserInterface.SetState(ExampleUI);
 
-                // Custom Resource Bar
-                ExampleResourceBar = new ExampleResourceBar();
-                ExampleResourceBar.Activate();
-                _exampleBarUserInterface = new UserInterface();
-                _exampleBarUserInterface.SetState(ExampleResourceBar);
-                ExampleResourceBar.visible = true;
+				// Custom Resource Bar
+				ExampleResourceBar = new ExampleResourceBar();
+				ExampleResourceBar.Activate();
+				_exampleBarUserInterface = new UserInterface();
+				_exampleBarUserInterface.SetState(ExampleResourceBar);
+				ExampleResourceBar.visible = true;
 
-                // UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
-                // We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
-                ExamplePersonUserInterface = new UserInterface();
+				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
+				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
+				ExamplePersonUserInterface = new UserInterface();
 				// We will call .SetState later in ExamplePerson.OnChatButtonClicked
 			}
 
@@ -146,9 +146,9 @@ namespace ExampleMod
 			if (!Main.dedServ) {
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
-                // Make sure to unload this all, or else you'll have issues.
-                ExampleResourceBar.visible = false;
-                ExampleResourceBar.barFrame = null;
+														  // Make sure to unload this all, or else you'll have issues.
+				ExampleResourceBar.visible = false;
+				ExampleResourceBar.barFrame = null;
 			}
 
 			// Unload static references
@@ -298,11 +298,11 @@ namespace ExampleMod
 			if (ExampleUI.Visible) {
 				_exampleUserInterface?.Update(gameTime);
 			}
-            if (ExampleResourceBar.visible) {
-                _exampleBarUserInterface?.Update(gameTime);
-            }
+			if (ExampleResourceBar.visible) {
+				_exampleBarUserInterface?.Update(gameTime);
+			}
 
-            ExamplePersonUserInterface?.Update(gameTime);
+			ExamplePersonUserInterface?.Update(gameTime);
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
@@ -333,22 +333,20 @@ namespace ExampleMod
 				);
 			}
 
-            int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
-            if (resourceBarIndex != -1)
-            {
-                layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
-                    "ExampleMod: Example Resource Bar",
-                    delegate {
-                        if (ExampleResourceBar.visible)
-                        {
-                            _exampleBarUserInterface.Draw(Main.spriteBatch, new GameTime());
-                        }
-                        return true;
-                    },
-                    InterfaceScaleType.UI)
-                );
-            }
-        }
+			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+			if (resourceBarIndex != -1) {
+				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
+					"ExampleMod: Example Resource Bar",
+					delegate {
+						if (ExampleResourceBar.visible) {
+							_exampleBarUserInterface.Draw(Main.spriteBatch, new GameTime());
+						}
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+			}
+		}
 
 		public static bool NoInvasion(NPCSpawnInfo spawnInfo) => !spawnInfo.invasion && (!Main.pumpkinMoon && !Main.snowMoon || spawnInfo.spawnTileY > Main.worldSurface || Main.dayTime) && (!Main.eclipse || spawnInfo.spawnTileY > Main.worldSurface || !Main.dayTime);
 
