@@ -1384,6 +1384,16 @@ namespace Terraria.ModLoader
 				g.Instance(item).Update(item, ref gravity, ref maxFallSpeed);
 		}
 
+		/// <summary>
+		/// Calls ModItem.CanBurnInLava.
+		/// </summary>
+		public static bool CanBurnInLava(Item item) {
+			if (item.modItem != null && item.modItem.CanBurnInLava()) {
+				return true;
+			}
+			return false;
+		}
+
 		private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
 		/// <summary>
 		/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
