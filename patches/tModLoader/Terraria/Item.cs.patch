@@ -353,6 +353,15 @@
  						this.velocity.Y = this.velocity.Y + num;
  						if (this.velocity.Y > num2)
  						{
+@@ -43431,7 +_,7 @@
+ 								NetMessage.SendData(21, -1, -1, null, i, 0f, 0f, 0f, 0, 0, 0);
+ 							}
+ 						}
+-						else if (this.owner == Main.myPlayer && this.type != 312 && this.type != 318 && this.type != 173 && this.type != 174 && this.type != 175 && this.type != 2701 && this.rare == 0)
++						else if (this.owner == Main.myPlayer && this.type != 312 && this.type != 318 && this.type != 173 && this.type != 174 && this.type != 175 && this.type != 2701 && this.rare == 0 || ItemLoader.CanBurnInLava(this))
+ 						{
+ 							this.active = false;
+ 							this.type = 0;
 @@ -43805,6 +_,7 @@
  					}
  					this.spawnTime++;
