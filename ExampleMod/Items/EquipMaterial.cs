@@ -16,5 +16,9 @@ namespace ExampleMod.Items
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
+
+		public override bool CanBurnInLava() {
+			return true;
+		}
 	}
 }
