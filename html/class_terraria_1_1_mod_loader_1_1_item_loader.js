@@ -9,6 +9,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "ArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afc7a52d4db0c80643c9537cf6d6cf653", null ],
     [ "ArmorSetShadows", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afa662b41f42817230101c10acad7ae47", null ],
     [ "AutoLightSelect", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a06d82afb38abd3ed06d0d1e4c024ad19", null ],
+    [ "CanBurnInLava", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a5936fa644bad3698a2786769eb52be1a", null ],
     [ "CanEquipAccessory", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a51bb59609c95145d8b110b5c4fdeda90", null ],
     [ "CanHitNPC", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0dfc3e350d4c6eec773e32b54940c5ab", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ab0eb7cbed29460d9a9e49f493c433218", null ],

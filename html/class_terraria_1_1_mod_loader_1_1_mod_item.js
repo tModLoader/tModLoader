@@ -11,6 +11,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "AutoLightSelect", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a585772b09b6212477f3334acc95e14b5", null ],
     [ "Autoload", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aba9ed6109a5d3b87eeae1da58970422b", null ],
     [ "AutoStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af", null ],
+    [ "CanBurnInLava", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a9b654c323945e675f58bb34ccc46def5", null ],
     [ "CanEquipAccessory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a8e098dc2a3a9a937baf7e16781ef1621", null ],
     [ "CanHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#afa5946db6c2cd1ea5165c59c90a7a77d", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#afc6b474a8fe5ac64453c3ecffbd538d1", null ],
