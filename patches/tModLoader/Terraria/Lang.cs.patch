@@ -39,11 +39,14 @@
  			{
  				return Lang._npcNameCache[netID];
  			}
-@@ -122,7 +_,7 @@
+@@ -121,8 +_,9 @@
+ 
  		public static LocalizedText GetItemName(int id)
  		{
- 			id = (int)ItemID.FromNetId((short)id);
+-			id = (int)ItemID.FromNetId((short)id);
 -			if (id > 0 && id < 3930 && Lang._itemNameCache[id] != null)
++			if(id < 0)
++				id = (int)ItemID.FromNetId((short)id);
 +			if (id > 0 && id < Lang._itemNameCache.Length && Lang._itemNameCache[id] != null)
  			{
  				return Lang._itemNameCache[id];
