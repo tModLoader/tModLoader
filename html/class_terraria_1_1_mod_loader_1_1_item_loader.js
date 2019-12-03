@@ -138,6 +138,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "HookAnglerChat", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4f44765f62ae697a52df24969ed742bb", null ],
     [ "HookArmorArmGlowMask", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a5f221f778af06af076b8dede35ead2cf", null ],
     [ "HookArmorSetShadows", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a20fa22de5eb13ffb412a57e02513ae9d", null ],
+    [ "HookCanBurnInLava", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a775c6399136b0d6568f5dd4f46e94fd5", null ],
     [ "HookCanEquipAccessory", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a6849e6c589815dc94afdbde0929925de", null ],
     [ "HookCanHitNPC", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ac418393ee335c15a2dbdc21d9e03ea55", null ],
     [ "HookCanHitPvp", "class_terraria_1_1_mod_loader_1_1_item_loader.html#add622e9ea167ca2ccddcd85ce051b8e6", null ],

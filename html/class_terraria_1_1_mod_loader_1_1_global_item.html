@@ -153,6 +153,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a593628480d957d47d4dc793cb390c0e8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a593628480d957d47d4dc793cb390c0e8">Autoload</a> (ref string name)</td></tr>
 <tr class="memdesc:a593628480d957d47d4dc793cb390c0e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to automatically load a <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this. ">GlobalItem</a> instead of using <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a01174f2a36e18d1ef4dca42cf40660de" title="Adds the given GlobalItem instance to this mod with the provided name. ">Mod.AddGlobalItem</a>. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.  <a href="#a593628480d957d47d4dc793cb390c0e8">More...</a><br /></td></tr>
 <tr class="separator:a593628480d957d47d4dc793cb390c0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a1575513e888ffea1a56920a2b8e0c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a34a1575513e888ffea1a56920a2b8e0c">CanBurnInLava</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item)</td></tr>
+<tr class="memdesc:a34a1575513e888ffea1a56920a2b8e0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.  <a href="#a34a1575513e888ffea1a56920a2b8e0c">More...</a><br /></td></tr>
+<tr class="separator:a34a1575513e888ffea1a56920a2b8e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8668939008987de1f97b8a8c7291651e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a8668939008987de1f97b8a8c7291651e">CanEquipAccessory</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a> item, Player player, int slot)</td></tr>
 <tr class="memdesc:a8668939008987de1f97b8a8c7291651e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.  <a href="#a8668939008987de1f97b8a8c7291651e">More...</a><br /></td></tr>
 <tr class="separator:a8668939008987de1f97b8a8c7291651e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -487,8 +490,8 @@ Properties</h2></td></tr>
 
 <p>This is essentially the same as <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4" title="This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance o...">ModItem.AddRecipes</a>. Use whichever method makes organizational sense for your mod. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00827">827</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                                         {</div><div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00834">834</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;                                         {</div><div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="acd0f64e3642c07a8af6232caafe82755"></a>
@@ -606,8 +609,8 @@ Properties</h2></td></tr>
 <p>Allows you to set what the Angler says when the Quest button is clicked in his chat. The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type. </p>
 <p>This method is not instanced. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00821">821</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;                                                                                            {</div><div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00828">828</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;                                                                                            {</div><div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab238d32d92b35a9d9d05be16853f7460"></a>
@@ -765,6 +768,34 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a34a1575513e888ffea1a56920a2b8e0c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanBurnInLava </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#a6da2ec2c957a412deb3c606b0f710f06a7d74f3b92b19da5e606d737d339a9679">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default. </p>
+
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00684">684</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                                                     {</div><div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a8668939008987de1f97b8a8c7291651e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -813,8 +844,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00785">785</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;                                                                                  {</div><div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00792">792</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;                                                                                  {</div><div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a802b47960934cec8f83b0bc6b5bb5d84"></a>
@@ -939,8 +970,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine whether or not the item can be picked up </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00703">703</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;                                                                {</div><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00710">710</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;                                                                {</div><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9d80b70c38916f2421d9467db61b5dd0"></a>
@@ -1043,8 +1074,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify how many of an item a player obtains when the player fishes that item. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00802">802</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;                                                                     {</div><div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00809">809</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;                                                                     {</div><div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab15e1c31f090d04da4d9c68432c7d77c"></a>
@@ -1525,8 +1556,8 @@ Properties</h2></td></tr>
 <p>Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. An extractType of 0 represents the default extraction (Silt and Slush). By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator. </p>
 <p>This method is not instanced. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00796">796</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;                                                                                                       {</div><div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00803">803</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;                                                                                                       {</div><div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9e7f8130872df2d2b2f9c7f54ff8da23"></a>
@@ -1563,8 +1594,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to determine the color and transparency in which an item is drawn. Return null to use the default color (normally light color). Returns null by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00724">724</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;                                                                    {</div><div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00731">731</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;                                                                    {</div><div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae3021ba84707ae5401b47179803b8998"></a>
@@ -1881,8 +1912,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify how close an item must be to the player in order to move towards the player. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00690">690</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;                                                                                   {</div><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00697">697</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;                                                                                   {</div><div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a8e17a066b619e5ed49b68c6c9e0b3c0f"></a>
@@ -1919,8 +1950,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify the way an item moves towards the player. Return false to allow the vanilla grab style to take place. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00696">696</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;                                                                {</div><div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00703">703</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;                                                                {</div><div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab680a7570915fd60f736de93f38ccc86"></a>
@@ -2024,8 +2055,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine the offset of an item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the item's default holdout offset; returns null by default. </p>
 <p>This method is not instanced. </p>
 <div class="fragment"><div class="line"><span class="keywordflow">return</span> <span class="keyword">new</span> Vector2(10, 0);</div></div><!-- fragment -->
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00764">764</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;                                                        {</div><div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00771">771</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;                                                        {</div><div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac5ecb5db7ece40e2fb1851e9b40c8f67"></a>
@@ -2053,8 +2084,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine the point on an item's sprite that the player holds onto when using the item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the item's default holdout origin; returns null by default. </p>
 <p>This method is not instanced. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00775">775</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;                                                        {</div><div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00782">782</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;                                                        {</div><div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a130204455ccbff761076bbc60eface4c"></a>
@@ -2200,8 +2231,8 @@ Properties</h2></td></tr>
 <p>Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.) Returns true by default. </p>
 <p>This method is not instanced. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00811">811</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                                                             {</div><div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00818">818</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;                                                             {</div><div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9ea562f4cb6d576abae4b59452e7bccd"></a>
@@ -2362,8 +2393,8 @@ Properties</h2></td></tr>
 
 <p>Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00717">717</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;                                                                {</div><div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00724">724</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;                                                                {</div><div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a28bc8cd5c11c8f01896e7f02f31654b4"></a>
@@ -2400,10 +2431,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to load custom data that you have saved for the given item. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00898">898</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00905">905</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_item_i_o_8cs_source.html#l00097">Terraria.ModLoader.IO.ItemIO.Load()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;                                                             {</div><div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;                                                             {</div><div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -2452,10 +2483,10 @@ Properties</h2></td></tr>
 
 <p>Allows you to load pre-v0.9 custom data that you have saved for the given item. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00904">904</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00911">911</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
 <p>Referenced by <a class="el" href="_item_i_o_8cs_source.html#l00190">Terraria.ModLoader.IO.ItemIO.LoadLegacy()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;                                                                       {</div><div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;        }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;                                                                       {</div><div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;        }</div></div><!-- fragment -->
 <p><div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -2764,8 +2795,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify all the tooltips that display for the given item. See here for information about <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item. You will create and manipulate objects of this class if you use the ModifyTooltips hook. ">TooltipLine</a>. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00878">878</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;                                                                                  {</div><div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00885">885</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;                                                                                  {</div><div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af8a9ae70d1564f3939c5f97296f31cd4"></a>
@@ -2917,8 +2948,8 @@ Properties</h2></td></tr>
 
 <p>Whether or not the given item needs to save custom data. Returning false will save on the memory used in saving an item, but returning true is necessary in order to save data across all items or vanilla items. Returns false by default. Note that the return value of this hook must be deterministic (randomness is not allowed). </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00884">884</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;                                                   {</div><div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00891">891</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                                                   {</div><div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div><div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a49149a9cd376fb371263a76482549daa"></a>
@@ -2955,8 +2986,8 @@ Properties</h2></td></tr>
 
 <p></p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00916">916</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;                                                                       {</div><div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00923">923</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;                                                                       {</div><div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a01815bc3155c57b3c770ef6af76f6694"></a>
@@ -2993,8 +3024,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to send custom data for the given item between client and server. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00910">910</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;                                                                    {</div><div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00917">917</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;                                                                    {</div><div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aca6b9eb4479997bf1ee082160d12d7d5"></a>
@@ -3220,8 +3251,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make anything happen when the player crafts the given item using the given recipe. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00833">833</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;                                                              {</div><div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00840">840</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;                                                              {</div><div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab13a7e5991436dcd79fd394ca9be3e45"></a>
@@ -3428,8 +3459,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00710">710</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;                                                               {</div><div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00717">717</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;                                                               {</div><div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a0eb343631d8090fa5bb7a85fcc9a784f"></a>
@@ -3687,8 +3718,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things in front of an item in the inventory. This method is called even if PreDrawInInventory returns false. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00752">752</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;                                                                           {</div><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00759">759</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;                                                                           {</div><div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a55ff7fdacf69c68a2cbd0ae2a62157cb"></a>
@@ -3755,8 +3786,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things in front of an item. This method is called even if PreDrawInWorld returns false. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00738">738</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;                                                                                                                                                             {</div><div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00745">745</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;                                                                                                                                                             {</div><div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a618622ab3006899995f5e3a095b73379"></a>
@@ -3800,8 +3831,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00853">853</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;                                                                                                      {</div><div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00860">860</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;                                                                                                      {</div><div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a46c39509d48b017cb7ae4c9bf9435964"></a>
@@ -3845,8 +3876,8 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00872">872</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;                                                                                     {</div><div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00879">879</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;                                                                                     {</div><div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a6d47e96fc33d54d4ebc8938461c2d9bc"></a>
@@ -3901,8 +3932,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00684">684</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;                                                  {</div><div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00691">691</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;                                                  {</div><div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a95034f07f36b4b69f4af6e0687e965e5"></a>
@@ -3975,8 +4006,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things behind an item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00744">744</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;                                                                           {</div><div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00751">751</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;                                                                           {</div><div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a11a380e30b0c42412c0243ddad371dc2"></a>
@@ -4043,8 +4074,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to draw things behind an item, or to modify the way an item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00731">731</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;                                                                                                                                                                    {</div><div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00738">738</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;                                                                                                                                                                    {</div><div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ae3801f74e43705337fa6be55a1c99bfa"></a>
@@ -4103,8 +4134,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to draw this tooltip</dd></dl>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00844">844</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;                                                                                                                   {</div><div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00851">851</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;                                                                                                                   {</div><div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="aa3aa4fe28c51e2a81a5f01e083099adb"></a>
@@ -4156,8 +4187,8 @@ Properties</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not to draw this tooltip line</dd></dl>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00863">863</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;                                                                                                     {</div><div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00870">870</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;                                                                                                     {</div><div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div><div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ac80eac566da6f4b8650c48acb2d52730"></a>
@@ -4442,8 +4473,8 @@ Properties</h2></td></tr>
 
 <p>Allows you to save custom data for the given item. Only called when NeedsCustomSaving returns true. Returns false by default. </p>
 
-<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00891">891</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                                                   {</div><div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00898">898</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;                                                   {</div><div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;            <span class="keywordflow">return</span> null;</div><div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="abfe83088472dacf3c9ead604d745f90a"></a>
@@ -5232,7 +5263,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00056">56</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01771">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01772">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
 
 </div>
 </div>
@@ -5250,7 +5281,7 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_global_item_8cs_source.html#l00048">48</a> of file <a class="el" href="_global_item_8cs_source.html">GlobalItem.cs</a>.</p>
 
-<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01771">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
+<p>Referenced by <a class="el" href="_item_loader_8cs_source.html#l01772">Terraria.ModLoader.ItemLoader.HasMethod()</a>.</p>
 
 </div>
 </div>
