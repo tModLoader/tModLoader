@@ -679,6 +679,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// </summary>
+		public virtual bool CanBurnInLava(Item item) {
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 		/// </summary>
 		public virtual void PostUpdate(Item item) {
