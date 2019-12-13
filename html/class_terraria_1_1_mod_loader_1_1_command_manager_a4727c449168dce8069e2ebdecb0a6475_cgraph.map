@@ -1,5 +1,5 @@
 <map id="Terraria.ModLoader.CommandManager.Matches" name="Terraria.ModLoader.CommandManager.Matches">
 <area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2" title="The code that is executed when the command is triggered." alt="" coords="268,5,513,47"/>
 <area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_mod_loader.html#aed988cac63e90351b6ed0bd72495f3af" title="Gets the instance of the Mod with the specified name. " alt="" coords="280,71,501,112"/>
-<area shape="rect" id="node4" href="$interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527" title="Terraria.ModLoader.Command\lCaller.Reply" alt="" coords="283,136,498,177"/>
+<area shape="rect" id="node4" href="$interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527" title="Use this to repond to the Player that invoked this command. This method handles writing to the consol..." alt="" coords="283,136,498,177"/>
 </map>
