@@ -112,6 +112,7 @@ var searchData=
   ['displayloaderror',['DisplayLoadError',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3685348d7daa3d5abf8f0f1b33b8a275',1,'Terraria::ModLoader::ModLoader']]],
   ['dispose',['Dispose',['../class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a2760cb9d1346019fbe1152d86f5a539e',1,'Terraria::ModLoader::Audio::MusicStreaming']]],
   ['disposemusic',['DisposeMusic',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a60eea5814ee1e397f921dd37943ccde7',1,'Terraria::ModLoader::ModContent']]],
+  ['do_5funload',['do_Unload',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a14f1d1cb08689b302a2da152ae0960cf',1,'Terraria::ModLoader::ModLoader']]],
   ['dotnet45check',['DotNet45Check',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#a848b591f5769ad571a1d1233a7d7a3c1',1,'Terraria::ModLoader::ModLoader']]],
   ['downloadnextmod',['DownloadNextMod',['../class_terraria_1_1_mod_loader_1_1_mod_net.html#ab82781355566bc2feb1334751ee47f67',1,'Terraria::ModLoader::ModNet']]],
   ['draw',['Draw',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#a4a6a12496e2480e1d52b29943af4140e',1,'Terraria.ModLoader.DrawLayer.Draw()'],['../class_terraria_1_1_mod_loader_1_1_mod_mount_data.html#ab59c81264d136390e9ae9f9689bf80f8',1,'Terraria.ModLoader.ModMountData.Draw()'],['../class_terraria_1_1_mod_loader_1_1_mount_loader.html#a457aae5b5fd346a5b909221bd5b3ed5c',1,'Terraria.ModLoader.MountLoader.Draw()']]],

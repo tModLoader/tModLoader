@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod_loader =
 [
     [ "DisplayLoadError", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3685348d7daa3d5abf8f0f1b33b8a275", null ],
+    [ "do_Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a14f1d1cb08689b302a2da152ae0960cf", null ],
     [ "DotNet45Check", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a848b591f5769ad571a1d1233a7d7a3c1", null ],
     [ "FileExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aeb0d9d1bfee842c0e232de398756f869", null ],
     [ "GetFileBytes", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a942be3cd0174b0a4e1c918a5466b5f8f", null ],
@@ -16,6 +17,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "SoundExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a166119387b99ba4ecb7ba613471fc625", null ],
     [ "TextureExists", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3e226e4e9271d3796407800df1d37d6a", null ],
     [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#affd4c994370635d0acbc426b6b8e6d94", null ],
+    [ "WarnModsStillLoaded", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae12223562c971b01a9dfe00c649001e0", null ],
     [ "_enabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a", null ],
     [ "beta", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3dabc9061f57772c53ab2d7cbf9a6685", null ],
     [ "branchName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380", null ],

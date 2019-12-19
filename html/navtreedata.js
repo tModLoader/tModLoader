@@ -35,13 +35,13 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a56b17bb4beac62418357a9aa563eb658",
 "class_terraria_1_1_mod_loader_1_1_mod.html#a558ede6f610fd43ad76df8764426e3c9",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#a04f28e9888bbe158d5980bdba17b21f5",
-"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac460c107f521d532eb9b7612fc9afd20",
-"class_terraria_1_1_mod_loader_1_1_mod_recipe.html#ab6ad59659e1a6297a652c7cd5368afcb",
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a05417aa6dbb2d0e3a95c1eb7c540e976",
-"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a5e970b19c5e212bbcc6b70c0b9040fb5",
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9d637a29c36a2bf7a4652fb6a0ddbfd1",
-"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7c46317fa3e2872724728809499ffab5",
-"index.html"
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac104a730758e08856600cdb299c5c950",
+"class_terraria_1_1_mod_loader_1_1_mod_recipe.html#aa08e23a05f2777ba929f5cb9762cf27f",
+"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a01c50764c4fa018c26aa42cefa52fdf7",
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a5cb7be7b009d81df5ac89b80268e39f5",
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a9889345513a2e7815c3bdab2f615ccb1",
+"class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7af6b404a5f8d38e51110b3013b22274",
+"functions_y.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
