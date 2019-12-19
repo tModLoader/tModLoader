@@ -210,33 +210,11 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		internal static List<string> badUnloaders = new List<string>();
 		private static bool Unload() {
-			if (Mods.Length == 0)
-				return true;
-
 			try {
-				Logging.tML.Info("Unloading mods");
-				if (Main.dedServ) {
-					Console.WriteLine("Unloading mods...");
-				} else {
-					Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
-				}
-
-				ModContent.UnloadModContent();
-				Mods = new Mod[0];
-				modsByName.Clear();
-				ModContent.Unload();
-			
-				MemoryTracking.Clear();
-				Thread.MemoryBarrier();
-				GC.Collect();
-				badUnloaders.Clear();
-				foreach (var mod in weakModReferences.Where(r => r.IsAlive).Select(r => (Mod)r.Target)) {
-					Logging.tML.WarnFormat("{0} not fully unloaded during unload.", mod.Name);
-					badUnloaders.Add(mod.Name);
-				}
-
+				// have to move unload logic to a separate method so the stack frame is cleared. Otherwise unloading can capture mod instances in local variables, even with memory barriers (thanks compiler weirdness)
+				do_Unload();
+				WarnModsStillLoaded();
 				return true;
 			}
 			catch (Exception e) {
@@ -250,6 +228,32 @@ namespace Terraria.ModLoader
 
 				return false;
 			}
+		}
+
+		private static void do_Unload() {
+			Logging.tML.Info("Unloading mods");
+			if (Main.dedServ) {
+				Console.WriteLine("Unloading mods...");
+			}
+			else {
+				Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
+			}
+
+			ModContent.UnloadModContent();
+			Mods = new Mod[0];
+			modsByName.Clear();
+			ModContent.Unload();
+
+			MemoryTracking.Clear();
+			Thread.MemoryBarrier();
+			GC.Collect();
+		}
+
+		internal static List<string> badUnloaders = new List<string>();
+		private static void WarnModsStillLoaded() {
+			badUnloaders = weakModReferences.Where(r => r.IsAlive).Select(r => ((Mod)r.Target).Name).ToList();
+			foreach (var modName in badUnloaders)
+				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", modName);
 		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false) {
