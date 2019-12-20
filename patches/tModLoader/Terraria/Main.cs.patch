@@ -746,6 +746,18 @@
  		}
  
  		private void ClientInitialize()
+@@ -7445,9 +_,11 @@
+ 			}
+ 			if (Main.autoJoin)
+ 			{
++				ModLoader.ModLoader.OnSuccessfulLoad += () => {
+ 				Main.LoadPlayers();
+ 				Main.menuMode = 1;
+ 				Main.menuMultiplayer = true;
++				};
+ 			}
+ 			Main.fpsTimer.Start();
+ 		}
 @@ -7455,7 +_,8 @@
  		public T OurLoad<T>(string path)
  		{
