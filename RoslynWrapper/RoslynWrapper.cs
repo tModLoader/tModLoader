@@ -42,7 +42,7 @@ namespace Terraria.ModLoader
 					IsWarning = d.Severity == DiagnosticSeverity.Warning,
 					ErrorText = d.GetMessage(),
 					FileName = loc.Path ?? "",
-					Line = loc.StartLinePosition.Line,
+					Line = loc.StartLinePosition.Line+1,
 					Column = loc.StartLinePosition.Character
 				});
 			}
