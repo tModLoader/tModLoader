@@ -4,7 +4,7 @@
  		private static int _crystalsDropping_toDrop = 0;
  		private static int _crystalsDropping_alreadyDropped = 0;
  		private static int _timeLeftUntilSpawningBegins = 0;
-+		internal static string TimeLeftBetweenWavesTimer = string.Format("{0}", TimeLeftBetweenWaves / 60);
++		public static string TimeLeftBetweenWavesTimer = string.Format("{0}", TimeLeftBetweenWaves / 60);
  
  		public static bool ReadyToFindBartender
  		{
