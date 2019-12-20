@@ -4120,6 +4120,21 @@
  							}
  							if ((!Main.expertMode || type != 266) && ((type != 439 && type != 440) || Main.npc[i].ai[0] != 5f))
  							{
+@@ -40733,13 +_,10 @@
+ 						if (Main.npc[i].type == 548 && !Main.npc[i].dontTakeDamageFromHostiles && DD2Event.TimeLeftBetweenWaves > 0 && !Main.hideUI)
+ 						{
+ 							Vector2 position = Main.npc[i].Bottom - Main.screenPosition + new Vector2(0f, -100f);
+-							int timeLeftBetweenWaves = DD2Event.TimeLeftBetweenWaves;
+-							int num24 = timeLeftBetweenWaves / 60;
+-							string text = string.Format("{0}", num24);
+ 							DynamicSpriteFont dynamicSpriteFont = Main.fontMouseText;
+ 							float scaleFactor = 1f;
+ 							Vector2 origin2 = dynamicSpriteFont.MeasureString(text) * scaleFactor * new Vector2(0.5f, 0.5f);
+-							ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, dynamicSpriteFont, text, position, Microsoft.Xna.Framework.Color.White, 0f, origin2, Vector2.One * scaleFactor, -1f, 2f);
++							ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, dynamicSpriteFont, DD2Event.TimeLeftBetweenWavesTimer, position, Microsoft.Xna.Framework.Color.White, 0f, origin2, Vector2.One * scaleFactor, -1f, 2f);
+ 						}
+ 						Main.npc[i].position -= Main.npc[i].visualOffset;
+ 					}
 @@ -41493,6 +_,7 @@
  						else
  						{
