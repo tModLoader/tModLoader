@@ -199,6 +199,14 @@ namespace Terraria.ModLoader.Core
 				if (pdb != null && FrameworkVersion.Framework == Framework.Mono)
 					MdbManager.RegisterMdb(GetMainModule(asm.GetName()), pdb);
 
+				if (Program.LaunchParameters.ContainsKey("-dumpasm")) {
+					var dumpdir = Path.Combine(Main.SavePath, "asmdump");
+					Directory.CreateDirectory(dumpdir);
+					File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName+".dll"), code);
+					if (pdb != null)
+						File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName+".pdb"), code);
+				}
+
 				return asm;
 			}
 		}
