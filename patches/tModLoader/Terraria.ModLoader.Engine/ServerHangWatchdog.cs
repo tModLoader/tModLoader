@@ -30,6 +30,12 @@ namespace Terraria.ModLoader.Engine
 			while (true) {
 				Thread.Sleep(1000);
 				if (DateTime.Now - lastCheckin.Value > TIMEOUT) {
+					if (FrameworkVersion.Framework == Framework.Mono) {
+						//Stacktrace.cs: [MonoLimitation ("Not possible to create StackTraces from other threads")]
+						Logging.ServerConsoleLine("Server hung for more than 10 seconds. Cannot determine cause on Mono", Level.Warn, log: Logging.tML);
+						Checkin();
+						continue;
+					}
 					var st = GetStackTrace(mainThread);
 					Logging.PrettifyStackTraceSources(st.GetFrames());
 					Logging.ServerConsoleLine("Server hung for more than 10 seconds:\n" + st, Level.Error, log: Logging.tML);
