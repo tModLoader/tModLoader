@@ -27,7 +27,12 @@ namespace Terraria.ModLoader.Core
 
 		internal static void UpdateFileAssociation() {
 			if (Platform.IsWindows && System.Environment.OSVersion.Version.Major >= 6) // Approached used apparently only applicable to Vista and later
-				EnsureAssociationsSet();
+				try {
+					// For some reason this has been reported as failing occasionally.
+					EnsureAssociationsSet();
+				}
+				catch (Exception) {
+				}
 		}
 
 		// Solution below adapted from https://stackoverflow.com/a/44816953
