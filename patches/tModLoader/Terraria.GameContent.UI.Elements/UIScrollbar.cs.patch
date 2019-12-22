@@ -1,9 +1,17 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIScrollbar.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIScrollbar.cs
-@@ -115,4 +_,30 @@
+@@ -114,5 +_,38 @@
+ 			base.MouseUp(evt);
  			this._isDragging = false;
  		}
- 	}
++
++		public override void ScrollWheel(UIScrollWheelEvent evt) {
++			base.ScrollWheel(evt);
++			if (evt.ScrollWheelValue != 0) {
++				Main.UiScrollHandled = true;
++			}
++		}
++	}
 +
 +	public class FixedUIScrollbar : UIScrollbar
 +	{
@@ -29,6 +37,6 @@
 +			base.MouseDown(evt);
 +			UserInterface.ActiveInstance = temp;
 +		}
-+	}
+ 	}
  }
 
