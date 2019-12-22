@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -65,7 +66,7 @@ namespace Terraria.ModLoader.Config.UI
 					base.ScrollWheel(evt);
 				}
 				if (evt.ScrollWheelValue != 0) {
-					Main.UiScrollHandled = true;
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
 		}

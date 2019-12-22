@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIScrollbar.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIScrollbar.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
++using Terraria.GameInput;
+ using Terraria.Graphics;
+ using Terraria.UI;
+ 
 @@ -114,5 +_,38 @@
  			base.MouseUp(evt);
  			this._isDragging = false;
@@ -8,7 +16,7 @@
 +		public override void ScrollWheel(UIScrollWheelEvent evt) {
 +			base.ScrollWheel(evt);
 +			if (evt.ScrollWheelValue != 0) {
-+				Main.UiScrollHandled = true;
++				PlayerInput.ScrollWheelDeltaForHotbar = 0;
 +			}
 +		}
 +	}
