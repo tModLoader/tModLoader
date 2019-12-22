@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.Elements
@@ -106,7 +107,7 @@ namespace Terraria.ModLoader.UI.Elements
 			if (this._scrollbar != null) {
 				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
 				if (evt.ScrollWheelValue != 0) {
-					Main.UiScrollHandled = true;
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
 		}
@@ -190,7 +191,7 @@ namespace Terraria.ModLoader.UI.Elements
 					base.ScrollWheel(evt);
 				}
 				if (evt.ScrollWheelValue != 0) {
-					Main.UiScrollHandled = true;
+					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
 			else
