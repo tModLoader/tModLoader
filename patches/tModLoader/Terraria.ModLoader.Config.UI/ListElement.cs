@@ -64,9 +64,9 @@ namespace Terraria.ModLoader.Config.UI
 				if (oldpos == _scrollbar.ViewPosition) {
 					base.ScrollWheel(evt);
 				}
-			}
-			else {
-				base.ScrollWheel(evt);
+				if (evt.ScrollWheelValue != 0) {
+					Main.UiScrollHandled = true;
+				}
 			}
 		}
 	}
