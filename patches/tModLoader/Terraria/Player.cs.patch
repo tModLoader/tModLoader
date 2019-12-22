@@ -4118,7 +4118,7 @@
 +
 +		public void HandleScroll()
 +		{
-+			if (!Main.UiScrollHandled && PlayerInput.ScrollWheelDelta != 0 && Main.hasFocus && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.blockInput && !Main.hairWindow)
++			if (!Main.UiScrollHandled && Main.hasFocus && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.blockInput && !Main.hairWindow)
 +			{
 +				if (!Main.playerInventory)
 +				{
