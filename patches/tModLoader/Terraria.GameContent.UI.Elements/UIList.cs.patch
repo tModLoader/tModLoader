@@ -37,4 +37,15 @@
  			this.UpdateOrder();
  			this._innerList.Recalculate();
  		}
+@@ -106,6 +_,10 @@
+ 			if (this._scrollbar != null)
+ 			{
+ 				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
++				if (evt.ScrollWheelValue != 0)
++				{
++					Main.UiScrollHandled = true;
++				}
+ 			}
+ 		}
+ 
 

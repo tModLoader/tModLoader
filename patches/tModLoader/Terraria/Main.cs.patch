@@ -32,7 +32,7 @@
  		public const ulong WorldGeneratorVersion = 828928688129uL;
  		private const string versionStringBecauseTheyreTheSame = "v1.3.5.2";
  		public const int offLimitBorderTiles = 40;
-@@ -166,13 +_,13 @@
+@@ -166,24 +_,26 @@
  		public static Main instance;
  		public static string versionNumber = "v1.3.5.2";
  		public static string versionNumber2 = "v1.3.5.2";
@@ -48,7 +48,12 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		private AchievementManager _achievements;
-@@ -184,6 +_,7 @@
+ 		private static List<SoundEffectInstance> ActiveSoundInstances = new List<SoundEffectInstance>(128);
+ 		public static UserInterface MenuUI = new UserInterface();
+ 		public static UserInterface InGameUI = new UserInterface();
++		public static bool UiScrollHandled = false;
+ 		private static Main.OnPlayerSelected _pendingCharacterSelect;
+ 		public static bool drawBackGore = false;
  		public static ulong LobbyId = 0uL;
  		private static object _audioLock = new object();
  		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
@@ -1064,11 +1069,12 @@
  				}
  				this._isDrawingOrUpdating = false;
  			}
-@@ -11997,6 +_,8 @@
+@@ -11997,6 +_,9 @@
  			{
  				Main.InGameUI.Update(gameTime);
  			}
 +			ModHooks.UpdateUI(gameTime);
++			Main.player[Main.myPlayer].HandleScroll();
 +			PlayerInput.ScrollWheelDeltaForUI = 0;
  			PlayerInput.SetZoom_Unscaled();
  			Main.MouseOversTryToClear();
