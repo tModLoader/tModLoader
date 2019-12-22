@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
+@@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.Collections.Generic;
++using Terraria.GameInput;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements
 @@ -33,9 +_,9 @@
  			}
  		}
@@ -43,7 +51,7 @@
  				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
 +				if (evt.ScrollWheelValue != 0)
 +				{
-+					Main.UiScrollHandled = true;
++					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 +				}
  			}
  		}
