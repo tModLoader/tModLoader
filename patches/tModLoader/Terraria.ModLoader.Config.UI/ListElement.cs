@@ -69,6 +69,9 @@ namespace Terraria.ModLoader.Config.UI
 					PlayerInput.ScrollWheelDeltaForHotbar = 0;
 				}
 			}
+			else {
+				base.ScrollWheel(evt);
+			}
 		}
 	}
 }
