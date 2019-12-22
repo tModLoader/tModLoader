@@ -193,6 +193,10 @@ namespace Terraria.ModLoader.UI.Elements
 					Main.UiScrollHandled = true;
 				}
 			}
+			else
+			{
+				base.ScrollWheel(evt);
+			}
 		}
 	}
 }
