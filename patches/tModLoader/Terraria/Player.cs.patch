@@ -3740,6 +3740,72 @@
  					if (this.controlInv)
  					{
  						if (this.releaseInventory)
+@@ -19192,65 +_,6 @@
+ 						{
+ 							CaptureManager.Instance.Scrolling();
+ 						}
+-						else if (!flag8)
+-						{
+-							if (!Main.playerInventory)
+-							{
+-								this.HandleHotbar();
+-							}
+-							else
+-							{
+-								int num8 = PlayerInput.ScrollWheelDelta / 120;
+-								bool flag9 = true;
+-								if (Main.recBigList)
+-								{
+-									int num9 = 42;
+-									int num10 = 340;
+-									int num11 = 310;
+-									PlayerInput.SetZoom_UI();
+-									int num12 = (Main.screenWidth - num11 - 280) / num9;
+-									int num13 = (Main.screenHeight - num10 - 20) / num9;
+-									if (new Rectangle(num11, num10, num12 * num9, num13 * num9).Contains(Main.MouseScreen.ToPoint()))
+-									{
+-										num8 *= -1;
+-										int num14 = Math.Sign(num8);
+-										while (num8 != 0)
+-										{
+-											if (num8 < 0)
+-											{
+-												Main.recStart -= num12;
+-												if (Main.recStart < 0)
+-												{
+-													Main.recStart = 0;
+-												}
+-											}
+-											else
+-											{
+-												Main.recStart += num12;
+-												if (Main.recStart > Main.numAvailableRecipes - num12)
+-												{
+-													Main.recStart = Main.numAvailableRecipes - num12;
+-												}
+-											}
+-											num8 -= num14;
+-										}
+-									}
+-									PlayerInput.SetZoom_World();
+-								}
+-								if (flag9)
+-								{
+-									Main.focusRecipe += num8;
+-									if (Main.focusRecipe > Main.numAvailableRecipes - 1)
+-									{
+-										Main.focusRecipe = Main.numAvailableRecipes - 1;
+-									}
+-									if (Main.focusRecipe < 0)
+-									{
+-										Main.focusRecipe = 0;
+-									}
+-								}
+-							}
+-						}
+ 					}
+ 					else
+ 					{
 @@ -19487,14 +_,6 @@
  						num22 = 0;
  					}
@@ -3984,6 +4050,72 @@
  			{
  				this.altFunctionUse = 1;
  				this.controlUseItem = true;
+@@ -23549,6 +_,65 @@
+ 			this.HotbarOffset = 0;
+ 		}
+ 
++		public void HandleRecipes()
++		{
++			int num8 = PlayerInput.ScrollWheelDelta / 120;
++			bool flag9 = true;
++			if (Main.recBigList) {
++				int num9 = 42;
++				int num10 = 340;
++				int num11 = 310;
++				PlayerInput.SetZoom_UI();
++				int num12 = (Main.screenWidth - num11 - 280) / num9;
++				int num13 = (Main.screenHeight - num10 - 20) / num9;
++				if (new Rectangle(num11, num10, num12 * num9, num13 * num9).Contains(Main.MouseScreen.ToPoint())) {
++					num8 *= -1;
++					int num14 = Math.Sign(num8);
++					while (num8 != 0) {
++						if (num8 < 0) {
++							Main.recStart -= num12;
++							if (Main.recStart < 0) {
++								Main.recStart = 0;
++							}
++						}
++						else {
++							Main.recStart += num12;
++							if (Main.recStart > Main.numAvailableRecipes - num12) {
++								Main.recStart = Main.numAvailableRecipes - num12;
++							}
++						}
++						num8 -= num14;
++					}
++				}
++				PlayerInput.SetZoom_World();
++			}
++			if (flag9) {
++				Main.focusRecipe += num8;
++				if (Main.focusRecipe > Main.numAvailableRecipes - 1) {
++					Main.focusRecipe = Main.numAvailableRecipes - 1;
++				}
++				if (Main.focusRecipe < 0) {
++					Main.focusRecipe = 0;
++				}
++			}
++		}
++
++		public void HandleScroll()
++		{
++			if (!Main.UiScrollHandled && PlayerInput.ScrollWheelDelta != 0 && Main.hasFocus && !Main.drawingPlayerChat && !Main.editSign && !Main.editChest && !Main.blockInput && !Main.hairWindow)
++			{
++				if (!Main.playerInventory)
++				{
++					this.HandleHotbar();
++				}
++				else
++				{
++					this.HandleRecipes();
++				}
++			}
++			Main.UiScrollHandled = false;
++		}
++
+ 		private void ItemCheckWrapped(int i)
+ 		{
+ 			LockOnHelper.SetUP();
 @@ -23576,6 +_,9 @@
  
  		public void ScrollHotbar(int Offset)
