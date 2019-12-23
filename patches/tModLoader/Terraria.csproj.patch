@@ -390,10 +390,11 @@
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -529,6 +_,21 @@
+@@ -528,6 +_,26 @@
+     </EmbeddedResource>
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
-     </EmbeddedResource>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\TerrariaHooks.XNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
 +      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
@@ -408,10 +409,14 @@
 +    <EmbeddedResource Include="..\..\references\Mono.Cecil.Mdb.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
 +    <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
-+    <EmbeddedResource Include="..\..\references\System.ValueTuple.dll" />
++    <EmbeddedResource Include="..\..\references\System.ValueTuple.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>System.ValueTuple.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\System.ValueTuple.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>System.ValueTuple.dll</LogicalName>
+     </EmbeddedResource>
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
-     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
 @@ -593,4 +_,149 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
