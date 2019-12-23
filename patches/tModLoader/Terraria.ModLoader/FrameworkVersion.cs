@@ -42,6 +42,8 @@ namespace Terraria.ModLoader
 
 		// Checking the version using >= will enable forward compatibility.
 		private static Version CheckFor45PlusVersion(int releaseKey) {
+			if (releaseKey >= 528040)
+				return new Version("4.8");
 			if (releaseKey >= 461808)
 				return new Version("4.7.2");
 			if (releaseKey >= 461308)
