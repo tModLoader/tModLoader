@@ -240,25 +240,44 @@
  				{
  					if (n != num2 && Main.meleeBuff[this.buffType[n]])
  					{
-@@ -1922,11 +_,11 @@
+@@ -1922,24 +_,30 @@
  		{
  			this.buffTime[b] = 0;
  			this.buffType[b] = 0;
 -			for (int i = 0; i < 21; i++)
++
++			//single pass compactor (vanilla is n^2)
++			int packedIdx = 0;
 +			for (int i = 0; i < Player.MaxBuffs - 1; i++)
  			{
  				if (this.buffTime[i] == 0 || this.buffType[i] == 0)
- 				{
+-				{
 -					for (int j = i + 1; j < 22; j++)
-+					for (int j = i + 1; j < Player.MaxBuffs; j++)
- 					{
- 						this.buffTime[j - 1] = this.buffTime[j];
- 						this.buffType[j - 1] = this.buffType[j];
-@@ -1939,7 +_,7 @@
+-					{
+-						this.buffTime[j - 1] = this.buffTime[j];
+-						this.buffType[j - 1] = this.buffType[j];
+-						this.buffTime[j] = 0;
+-						this.buffType[j] = 0;
+-					}
+-				}
++					continue;
++
++				if (packedIdx < i) {
++					this.buffTime[packedIdx] = this.buffTime[i];
++					this.buffType[packedIdx] = this.buffType[i];
++					this.buffTime[i] = 0;
++					this.buffType[i] = 0;
++				}
++				packedIdx++;
+ 			}
+ 		}
  
  		public void ClearBuff(int type)
  		{
 -			for (int i = 0; i < 22; i++)
++			if (type == 0)
++				return;
++
 +			for (int i = 0; i < Player.MaxBuffs; i++)
  			{
  				if (this.buffType[i] == type)
