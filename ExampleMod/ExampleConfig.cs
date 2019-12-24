@@ -149,7 +149,7 @@ namespace ExampleMod
 			[new PrefixDefinition("ExampleMod", "ReallyAwesome")] = 0.8f
 		};
 
-		// Using a custom class as a key in a Dictionary (see the ClassUsedAsKey definition by Ctrl+Leftclick on the class name)
+		// Using a custom class as a key in a Dictionary. When used as a Dictionary Key, special code must be used.
 		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 
 		public ModConfigShowcaseDataTypes() {
@@ -679,7 +679,6 @@ namespace ExampleMod
 		}
 	}
 
-
 	[TypeConverter(typeof(ToFromStringConverter<ClassUsedAsKey>))]
 	public class ClassUsedAsKey
 	{
@@ -710,7 +709,7 @@ namespace ExampleMod
 		}
 
 		// Here you need to create an object from the given string (reverting ToString basically)
-		// This has to be static
+		// This has to be static and it must be named FromString
 		public static ClassUsedAsKey FromString(string s)
 		{
 			// This following code depends on your implementation of ToString, here we just have two values separated by a ','
