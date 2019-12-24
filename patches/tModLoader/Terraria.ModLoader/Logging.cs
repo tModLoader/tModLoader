@@ -16,6 +16,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
@@ -221,6 +222,11 @@ namespace Terraria.ModLoader
 				Console.ResetColor();
 	#endif
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+
+				if (args.Exception is OutOfMemoryException) {
+					Interface.MessageBoxShow("Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it. (or go and find the 64bit version of tML)");
+					Environment.Exit(1);
+				}
 			}
 			catch (Exception e) {
 				tML.Warn("FirstChanceExceptionHandler exception", e);
