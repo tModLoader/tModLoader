@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TERM=xterm
+
 # Move to script's directory
 cd "`dirname "$0"`"
 

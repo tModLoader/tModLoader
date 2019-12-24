@@ -2,6 +2,8 @@
 # MonoKickstart Shell Script
 # Written by Ethan "flibitijibibo" Lee
 
+TERM=xterm
+
 # Move to script's directory
 cd "`dirname "$0"`"
 
