@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
+using System;
 using System.IO;
 using XnaToFna;
 
@@ -23,13 +24,21 @@ namespace HookGenWrapper
                 mm.Read();
                 mm.MapDependencies();
 				mm.DependencyCache["MonoMod.RuntimeDetour"] = ModuleDefinition.ReadModule(Path.Combine(refsDir, "MonoMod.RuntimeDetour.dll"));
-
-                HookGenerator gen = new HookGenerator(mm, "TerrariaHooks") {
+				mm.DependencyCache["MonoMod.Utils"] = ModuleDefinition.ReadModule(Path.Combine(refsDir, "MonoMod.Utils.dll"));
+				
+				HookGenerator gen = new HookGenerator(mm, "TerrariaHooks") {
                     HookPrivate = true,
                 };
                 gen.Generate();
-                gen.OutputModule.Write(outputPath);
+				RemoveModLoaderTypes(gen.OutputModule);
+				gen.OutputModule.Write(outputPath);
             }
+		}
+
+		private static void RemoveModLoaderTypes(ModuleDefinition module) {
+			for (int i = module.Types.Count-1; i >= 0; i--)
+				if (module.Types[i].FullName.Contains("Terraria.ModLoader"))
+					module.Types.RemoveAt(i);
 		}
 
 		public static void XnaToFna(string inputPath, string refsDir)

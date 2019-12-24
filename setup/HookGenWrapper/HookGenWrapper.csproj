@@ -26,12 +26,15 @@
   <ItemGroup>
     <Reference Include="Mono.Cecil">
       <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod">
       <HintPath>..\lib\MonoMod.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour.HookGen">
       <HintPath>..\lib\MonoMod.RuntimeDetour.HookGen.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,6 +46,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="XnaToFna">
       <HintPath>..\lib\XnaToFna.exe</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
