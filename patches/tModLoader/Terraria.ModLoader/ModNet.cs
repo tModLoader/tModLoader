@@ -398,10 +398,13 @@ namespace Terraria.ModLoader
 			var id = NetModCount < 256 ? reader.ReadByte() : reader.ReadInt16();
 			int start = (int)reader.BaseStream.Position;
 			int actualLength = length - 1 - (NetModCount < 256 ? 1 : 2);
-			GetMod(id)?.HandlePacket(reader, whoAmI);
-			if (reader.BaseStream.Position - start != actualLength) {
-				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+			try {
+				GetMod(id)?.HandlePacket(reader, whoAmI);
+				if (reader.BaseStream.Position - start != actualLength) {
+					throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+				}
 			}
+			catch { }
 
 			if (Main.netMode == 1) {
 				rxMsgType[id]++;
