@@ -658,7 +658,7 @@ namespace Terraria.ModLoader
 						if (split < 0)
 							continue; // lines witout a = are ignored
 						string key = line.Substring(0, split).Trim().Replace(" ", "_");
-						string value = line.Substring(split + 1).Trim();
+						string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
 						if (value.Length == 0) {
 							continue;
 						}

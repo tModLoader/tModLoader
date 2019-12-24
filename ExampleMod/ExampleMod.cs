@@ -95,9 +95,9 @@ namespace ExampleMod
 				GameShaders.Armor.BindShader(ModContent.ItemType<Items.ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
 				GameShaders.Hair.BindShader(ModContent.ItemType<Items.ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 				GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
-				
+
 				if (FontExists("Fonts/ExampleFont"))
-					exampleFont = GetFont("Fonts/ExampleFont"); 
+					exampleFont = GetFont("Fonts/ExampleFont");
 
 				// Custom UI
 				ExampleUI = new ExampleUI();
@@ -126,6 +126,10 @@ namespace ExampleMod
 			text.SetDefault($"[i:{ModContent.ItemType<Items.Weapons.SpectreGun>()}]  This dynamic label is added in ExampleMod.Load");
 			AddTranslation(text);
 
+			text = CreateTranslation("BossSpawnInfo.Abomination");
+			text.SetDefault("Use a [i:" + ModContent.ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Plantera has been defeated");
+			AddTranslation(text);
+
 			// Volcano warning is for the random volcano tremor
 			text = CreateTranslation("VolcanoWarning");
 			text.SetDefault("Did you hear something....A Volcano! Find Cover!");
@@ -149,8 +153,30 @@ namespace ExampleMod
 			// Showcases mod support with Boss Checklist without referencing the mod
 			Mod bossChecklist = ModLoader.GetMod("BossChecklist");
 			if (bossChecklist != null) {
-				bossChecklist.Call("AddBossWithInfo", "Abomination", 10.5f, (Func<bool>)(() => ExampleWorld.downedAbomination), "Use a [i:" + ModContent.ItemType<Items.Abomination.FoulOrb>() + "] in the underworld after Plantera has been defeated");
-				bossChecklist.Call("AddBossWithInfo", "Purity Spirit", 15.5f, (Func<bool>)(() => ExampleWorld.downedPuritySpirit), "Kill a [i:" + ItemID.Bunny + "] in front of [i:" + ModContent.ItemType<Items.Placeable.ElementalPurge>() + "]");
+				bossChecklist.Call(
+					"AddBoss",
+					10.5f,
+					new List<int> { ModContent.NPCType<NPCs.Abomination.Abomination>(), ModContent.NPCType<NPCs.Abomination.CaptiveElement2>() },
+					this, // Mod
+					"$Mods.ExampleMod.NPCName.Abomination",
+					(Func<bool>)(() => ExampleWorld.downedAbomination),
+					ModContent.ItemType<Items.Abomination.FoulOrb>(),
+					new List<int> { ModContent.ItemType<Items.Armor.AbominationMask>(), ModContent.ItemType<Items.Placeable.AbominationTrophy>() },
+					new List<int> { ModContent.ItemType<Items.Abomination.SixColorShield>(), ModContent.ItemType<Items.Abomination.MoltenDrill>() },
+					"$Mods.ExampleMod.BossSpawnInfo.Abomination"
+				);
+				bossChecklist.Call(
+					"AddBoss",
+					15.5f,
+					ModContent.NPCType<PuritySpirit>(),
+					this,
+					"Purity Spirit",
+					(Func<bool>)(() => ExampleWorld.downedPuritySpirit),
+					ItemID.Bunny,
+					new List<int> { ModContent.ItemType<Items.Armor.PuritySpiritMask>(), ModContent.ItemType<Items.Armor.BunnyMask>(), ModContent.ItemType<Items.Placeable.PuritySpiritTrophy>(), ModContent.ItemType<Items.Placeable.BunnyTrophy>(), ModContent.ItemType<Items.Placeable.TreeTrophy>() },
+					new List<int> { ModContent.ItemType<Items.PurityShield>(), ItemID.Bunny },
+					$"Kill a [i:{ItemID.Bunny}] in front of [i:{ModContent.ItemType<Items.Placeable.ElementalPurge>()}]"
+				);
 			}
 		}
 

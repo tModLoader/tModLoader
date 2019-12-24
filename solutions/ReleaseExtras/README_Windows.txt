@@ -7,7 +7,7 @@ If the installer for some reason does not work, or if you do not want to install
 Steam Manual Install:
 1.  Go to the Terraria install folder (the one containing Terraria.exe, not the Saves folder). For most people, this will be "C:\Program Files (x86)\Steam\SteamApps\common\Terraria". If you can't find it, view this video: https://gfycat.com/SelfreliantAssuredIsabellineshrike
 
-2.  Back-up your vanilla Terraria.exe if you haven't already. To do this, rename the "Terraria.exe" file in the install folder to "Terraria_v1.3.5.3.exe".
+2.  Back-up your vanilla Terraria.exe if you haven't already. To do this, rename the "Terraria.exe" file in the install folder to "Terraria_v1.3.5.3.exe". Make sure you don't accidentally rename it to "Terraria_v1.3.5.3.exe.exe", this is a common mistake because Windows hides file extensions by default. If you are unsure, enable file extensions to verify: https://gfycat.com/TheseSameGrasshopper
 
 3.  Copy all of the files from the temporary folder (or zip archive) into the install folder. You'll need to make sure to replace files if asked: https://gfycat.com/EqualFaithfulAfricanharrierhawk
 
