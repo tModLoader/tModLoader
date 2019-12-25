@@ -324,6 +324,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
+			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 		}
 
@@ -339,6 +340,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
+			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		}
 
 		internal static void MigrateSettings() {

@@ -27,6 +27,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 	{
 		public static bool AvoidGithub;
 		public static bool AvoidImgur;
+		public static bool EarlyAutoUpdate;
 		public static bool PlatformSupportsTls12
 			=> FrameworkVersion.Framework != Framework.Mono || FrameworkVersion.Version >= new Version(5, 20);
 
@@ -241,7 +242,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					var values = new NameValueCollection {
 						{"modloaderversion", ModLoader.versionedName},
 						{"platform", ModLoader.CompressedPlatformRepresentation},
-						{"netversion", FrameworkVersion.Version.ToString()}
+						{"netversion", FrameworkVersion.Version.ToString()},
+						{"EarlyAutoUpdate", EarlyAutoUpdate.ToString()}
 					};
 					using (var client = new WebClient()) {
 						ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => { return true; };
