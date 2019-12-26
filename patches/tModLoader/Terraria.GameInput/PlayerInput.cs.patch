@@ -18,10 +18,20 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -332,6 +_,45 @@
+@@ -105,6 +_,7 @@
+ 		public static int ScrollWheelValueOld;
+ 		public static int ScrollWheelDelta;
+ 		public static int ScrollWheelDeltaForUI;
++		public static int ScrollWheelDeltaForHotbar;
+ 		public static bool GamepadAllowScrolling;
+ 		public static int GamepadScrollValue;
+ 		public static Vector2 GamepadThumbstickLeft = Vector2.Zero;
+@@ -330,6 +_,45 @@
+ 				PlayerInput._selectedProfile = name;
+ 				PlayerInput._currentProfile = PlayerInput.Profiles[PlayerInput._selectedProfile];
  			}
- 		}
- 
++		}
++
 +		// To allow mod hotkeys to load, need to reinitialize after load.
 +		internal static bool reinitialize;
 +		private static void ReInitialize()
@@ -59,11 +69,9 @@
 +			PlayerInput.SetSelectedProfile("Custom");
 +			PlayerInput.Load(); // Loads the JSON into the Profiles above
 +			reinitialize = false;
-+		}
-+
+ 		}
+ 
  		public static void Initialize()
- 		{
- 			Main.InputProfiles.OnProcessText += new Preferences.TextProcessAction(PlayerInput.PrettyPrintProfiles);
 @@ -388,7 +_,8 @@
  
  		public static void Load()

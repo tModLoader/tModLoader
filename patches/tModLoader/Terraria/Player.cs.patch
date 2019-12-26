@@ -3759,6 +3759,15 @@
  					if (this.controlInv)
  					{
  						if (this.releaseInventory)
+@@ -19200,7 +_,7 @@
+ 							}
+ 							else
+ 							{
+-								int num8 = PlayerInput.ScrollWheelDelta / 120;
++								int num8 = PlayerInput.ScrollWheelDeltaForHotbar / 120;
+ 								bool flag9 = true;
+ 								if (Main.recBigList)
+ 								{
 @@ -19487,14 +_,6 @@
  						num22 = 0;
  					}
@@ -3933,10 +3942,11 @@
  			if (this.tongued)
  			{
  				this.position += this.velocity;
-@@ -23078,6 +_,7 @@
+@@ -23078,6 +_,8 @@
  			this.grappling[0] = -1;
  			this.grapCount = 0;
  			this.releaseUseTile = !this.tileInteractAttempted;
++			PlayerInput.ScrollWheelDeltaForHotbar = PlayerInput.ScrollWheelDelta;
 +			PlayerHooks.PostUpdate(this);
  		}
  
@@ -4003,6 +4013,15 @@
  			{
  				this.altFunctionUse = 1;
  				this.controlUseItem = true;
+@@ -23543,7 +_,7 @@
+ 			}
+ 			if (!Main.inFancyUI && !Main.ingameOptionsWindow)
+ 			{
+-				this.HotbarOffset += PlayerInput.ScrollWheelDelta / -120;
++				this.HotbarOffset += PlayerInput.ScrollWheelDeltaForHotbar / -120;
+ 			}
+ 			this.ScrollHotbar(this.HotbarOffset);
+ 			this.HotbarOffset = 0;
 @@ -23576,6 +_,9 @@
  
  		public void ScrollHotbar(int Offset)
