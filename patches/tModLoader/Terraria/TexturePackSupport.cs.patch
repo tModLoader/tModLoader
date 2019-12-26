@@ -58,7 +58,7 @@
 +			TexturePackSupport.texturePacks.Clear();
 +			if (Directory.Exists(texturePacksPath))
 +			{
-+				List<string> files = Directory.GetFiles(texturePacksPath).ToList();
++				List<string> files = Directory.GetFiles(texturePacksPath, "*.zip").ToList();
 +				files.Sort();
 +				foreach (string fileName in files)
 +				{
