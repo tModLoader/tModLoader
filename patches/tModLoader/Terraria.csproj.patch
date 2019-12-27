@@ -127,7 +127,7 @@
      <Compile Include="Terraria.ID\NPCID.cs" />
      <Compile Include="Terraria.ID\PlayerTextureID.cs" />
      <Compile Include="Terraria.ID\PlayerVariantID.cs" />
-@@ -339,6 +_,241 @@
+@@ -339,6 +_,242 @@
      <Compile Include="Terraria.Map\MapHelper.cs" />
      <Compile Include="Terraria.Map\MapTile.cs" />
      <Compile Include="Terraria.Map\WorldMap.cs" />
@@ -171,6 +171,7 @@
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Orian.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\PatreonItem.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\PatronModPlayer.cs" />
++    <Compile Include="Terraria.ModLoader.Default.Patreon\POCKETS.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Polyblank.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Glory.cs" />
 +    <Compile Include="Terraria.ModLoader.Default.Patreon\Squid.cs" />
@@ -417,7 +418,7 @@
      </EmbeddedResource>
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
-@@ -593,4 +_,149 @@
+@@ -593,4 +_,158 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
    </ItemGroup>
@@ -425,6 +426,15 @@
 +    <Content Include="Icon.ico" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Core\update.bat" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Core\update.sh" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Body_Arms.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Body_Body.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Head_Head.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Legs_Legs.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Wings.png" />
++    <EmbeddedResource Include="Terraria.ModLoader.Default.Patreon\POCKETS_Wings_Wings.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.UI\ButtonDowngrade.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonUpDown.png" />
 +    <EmbeddedResource Include="Terraria.ModLoader.Config.UI\ButtonCollapsed.png" />
