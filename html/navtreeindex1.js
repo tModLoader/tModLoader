@@ -92,9 +92,11 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_m_p3.html#aebd57ccbd1f9d33baeeb2d7668d8aaa4":[1,0,0,0,0,3,4],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html":[1,0,0,0,0,4],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a20469b0d846046927f27e6e50fa633c1":[1,0,0,0,0,4,5],
+"class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a3ddb8492fcbd9191fe97ae3e97c3dbd5":[1,0,0,0,0,4,7],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a4f741cd2e3285d38ba232abe25eb6d5c":[1,0,0,0,0,4,2],
+"class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a50ef81fec9ce7b39261bef9a2500846a":[1,0,0,0,0,4,8],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a5e14ea160f9b2af16604cec2f9f14dfa":[1,0,0,0,0,4,1],
-"class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a6d1d162243ab05c8ac481239b1ff937a":[1,0,0,0,0,4,7],
+"class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a6d1d162243ab05c8ac481239b1ff937a":[1,0,0,0,0,4,9],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#a740df534cc9cf096f37fcd55fbf918ac":[1,0,0,0,0,4,6],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#ac8210e0ede0bbb715491153fe17aa1b0":[1,0,0,0,0,4,3],
 "class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming_o_g_g.html#ad25df2f9a6f490d28d580832f07c1fd4":[1,0,0,0,0,4,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html#aec31a6fc089d0bb9754fe48c133ff42f":[1,0,0,0,1,13,0],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html":[1,0,0,0,1,14],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html#ab1d7cc54859ef98d13aefe73f02200e3":[1,0,0,0,1,14,0],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html#adfa23479ca77586ebcadb493d0c5d7d6":[1,0,0,0,1,14,1],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html":[1,0,0,0,1,15],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673":[1,0,0,0,1,15,1]
+"class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_value_attribute.html#adfa23479ca77586ebcadb493d0c5d7d6":[1,0,0,0,1,14,1]
 };
