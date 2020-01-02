@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11.6.1
+set version=v0.11.6.2
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -28,12 +28,14 @@ set mac=%destinationFolder%\tModLoader Mac %version%
 set lnx=%destinationFolder%\tModLoader Linux %version%
 set mcfna=%destinationFolder%\ModCompile_FNA
 set mcxna=%destinationFolder%\ModCompile_XNA
+set pdbs=%destinationFolder%\pdbs
 
 mkdir "%win%"
 mkdir "%mac%"
 mkdir "%lnx%"
 mkdir "%mcfna%"
 mkdir "%mcxna%"
+mkdir "%pdbs%"
 
 :: Windows release
 copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.exe "%win%\Terraria.exe" /y
@@ -108,12 +110,22 @@ copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Xact.dll
 ::call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
 call python ZipAndMakeExecutable.py "%mcxna%" "%mcxna%.zip"
 
+:: PDB backups
+copy ..\src\tModLoader\bin\WindowsRelease\net45\tModLoader.pdb "%pdbs%\WindowsRelease.pdb" /y
+copy ..\src\tModLoader\bin\WindowsServerRelease\net45\tModLoaderServer.pdb "%pdbs%\WindowsServerRelease.pdb" /y
+copy ..\src\tModLoader\bin\MacRelease\net45\tModLoader.pdb "%pdbs%\MacRelease.pdb" /y
+copy ..\src\tModLoader\bin\MacServerRelease\net45\tModLoaderServer.pdb "%pdbs%\MacServerRelease.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\tModLoader.pdb "%pdbs%\LinuxRelease.pdb" /y
+copy ..\src\tModLoader\bin\LinuxServerRelease\net45\tModLoaderServer.pdb "%pdbs%\LinuxServerRelease.pdb" /y
+call python ZipAndMakeExecutable.py "%pdbs%" "%pdbs%.zip"
+
 :: CleanUp, Delete temp Folders
 rmdir "%win%" /S /Q
 rmdir "%mac%" /S /Q
 rmdir "%lnx%" /S /Q
 rmdir "%mcfna%" /S /Q
 rmdir "%mcxna%" /S /Q
+rmdir "%pdbs%" /S /Q
 
 :: Copy to public DropBox Folder
 ::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"
