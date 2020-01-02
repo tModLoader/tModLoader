@@ -49,6 +49,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private UIImage _modIcon;
 		internal string tooltip;
 
+		private const int MaxImgurFails = 3;
+		private static int ModIconDownloadFailCount = 0;
 		private bool HasModIcon => _modIconUrl != null;
 		private float ModIconAdjust => 85f;
 		private bool IsInstalled => Installed != null;
@@ -249,6 +251,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			if (HasModIcon && _modIconStatus == ModIconStatus.UNKNOWN) {
 				_modIconStatus = ModIconStatus.WANTED;
+				if (ModIconDownloadFailCount >= MaxImgurFails)
+					AdjustPositioningFailedIcon();
 			}
 
 			CalculatedStyle innerDimensions = GetInnerDimensions();
@@ -336,12 +340,20 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				// country- wide imgur blocks, cannot load icon
 			}
 			if (!success) {
-				_modIconStatus = ModIconStatus.APPENDED;
-				_modName.Left.Pixels -= ModIconAdjust;
-				_moreInfoButton.Left.Pixels -= ModIconAdjust;
-				_updateButton.Left.Pixels -= ModIconAdjust;
-				_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
+				AdjustPositioningFailedIcon();
+				ModIconDownloadFailCount++;
+				if(ModIconDownloadFailCount == MaxImgurFails)
+					Logging.tML.Error("tModLoader has repeatedly failed to connect to imgur.com to download mod icons. If you know imgur is not accessibile in your country, you can set AvoidImgur found in congfig.json to true to avoid attempting to download mod icons in the future.");
 			}
+		}
+
+		private void AdjustPositioningFailedIcon() {
+			_modIconStatus = ModIconStatus.APPENDED;
+			_modName.Left.Pixels -= ModIconAdjust;
+			_moreInfoButton.Left.Pixels -= ModIconAdjust;
+			_updateButton.Left.Pixels -= ModIconAdjust;
+			if (_updateWithDepsButton != null)
+				_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 		}
 
 		private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos) {
