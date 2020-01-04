@@ -211,6 +211,8 @@ namespace Terraria.ModLoader.Audio
 	{
 		private VorbisReader reader;
 		private float[] floatBuf;
+		private int loopStart;
+		private int loopEnd;
 
 		public MusicStreamingOGG(string path) : base(path) {}
 
@@ -218,6 +220,14 @@ namespace Terraria.ModLoader.Audio
 			reader = new VorbisReader(stream, true);
 			sampleRate = reader.SampleRate;
 			channels = (AudioChannels)reader.Channels;
+
+			string[] comments = reader.Comments;
+			for (int i = 0; i < comments.Length; i++) {
+				if (comments[i].StartsWith("LOOPSTART"))
+					int.TryParse(comments[i].Split('=')[1], out loopStart);
+				else if (comments[i].StartsWith("LOOPEND"))
+					int.TryParse(comments[i].Split('=')[1], out loopEnd);
+			}
 		}
 
 		protected override void FillBuffer(byte[] buffer) {
@@ -225,8 +235,8 @@ namespace Terraria.ModLoader.Audio
 				floatBuf = new float[buffer.Length/2];
 
 			int read = reader.ReadSamples(floatBuf, 0, floatBuf.Length);
-			if (read < floatBuf.Length) {
-				Reset();
+			if ((loopEnd > 0 && reader.DecodedPosition >= loopEnd) || read < floatBuf.Length) {
+				reader.DecodedPosition = loopStart;
 				reader.ReadSamples(floatBuf, read, floatBuf.Length - read);
 			}
 

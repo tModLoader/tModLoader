@@ -627,6 +627,18 @@
  					bool flag12 = player.channel && flag11 && !player.noItems && !player.CCed;
  					if (flag12)
  					{
+@@ -37928,6 +_,11 @@
+ 			num7 /= (1f + Main.player[this.owner].meleeSpeed * 3f) / 4f;
+ 			num8 /= (1f + Main.player[this.owner].meleeSpeed * 3f) / 4f;
+ 			float num11 = 14f - num8 / 2f;
++			// Yoyos with effective top speed (boosted by melee speed) num8 > 26 will set num11 to be less than 1.
++			// This breaks the AI's acceleration vector math and stops the velocity from being correctly capped every frame.
++			// Providing a minimum value of 1.01 to num11 fixes this, allowing for very fast modded yoyos.
++			// See issue #751 for more details.
++			if (num11 < 1.01f) num11 = 1.01f;
+ 			float num12 = 5f + num8 / 2f;
+ 			if (flag)
+ 			{
 @@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])

@@ -58,7 +58,7 @@ namespace ExampleMod
 			// Replace that with above
 
 			// Registers a new hotkey
-			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v%3dxnagamestudio.41) for special keys
+			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v=xnagamestudio.41) for special keys
 
 			// Registers a new custom currency
 			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ModContent.ItemType<Items.Face>(), 999L));

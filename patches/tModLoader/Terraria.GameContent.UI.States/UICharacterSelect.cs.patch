@@ -46,7 +46,7 @@
 +			if (list.Count == 0)
 +			{
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
-+				if (Directory.Exists(vanillaPlayersPath))
++				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any())
 +				{
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
@@ -64,7 +64,7 @@
 +									.Where(s => s.EndsWith(".plr") || s.EndsWith(".tplr") || s.EndsWith(".bak"));
 +
 +								foreach (string file in vanillaPlayerFiles) {
-+									File.Copy(file, Path.Combine(Main.PlayerPath, Path.GetFileName(file)));
++									File.Copy(file, Path.Combine(Main.PlayerPath, Path.GetFileName(file)), true); // old .bak files might exist, need to have overwrite
 +								}
 +
 +								// Copy map files
@@ -76,7 +76,7 @@
 +										foreach (string mapFile in mapFiles) {
 +											string mapFileDir = Path.Combine(Main.PlayerPath, Directory.GetParent(mapFile).Name);
 +											Directory.CreateDirectory(mapFileDir);
-+											File.Copy(mapFile, Path.Combine(mapFileDir, Path.GetFileName(mapFile)));
++											File.Copy(mapFile, Path.Combine(mapFileDir, Path.GetFileName(mapFile)), true);
 +										}
 +									}
 +									catch (Exception e) {
