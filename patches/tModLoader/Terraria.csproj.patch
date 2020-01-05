@@ -35,7 +35,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
      <PlatformTarget>x86</PlatformTarget>
-@@ -38,13 +_,33 @@
+@@ -38,13 +_,35 @@
    <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
      <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
    </PropertyGroup>
@@ -48,6 +48,8 @@
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
++    <None Remove="dropbox-com.pem" />
++    <None Remove="github-com.pem" />
 +    <None Remove="Terraria.ModLoader.Core\update.bat" />
 +    <None Remove="Terraria.ModLoader.Core\update.sh" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonDowngrade.png" />
@@ -378,9 +380,12 @@
      <Compile Include="Terraria\Lang.cs" />
      <Compile Include="Terraria\Lighting.cs" />
      <Compile Include="Terraria\LinuxLaunch.cs" Condition="$(DefineConstants.Contains('LINUX'))" />
-@@ -509,8 +_,10 @@
+@@ -508,9 +_,13 @@
+     <Compile Include="Terraria\ZoomContext.cs" />
    </ItemGroup>
    <ItemGroup>
++    <EmbeddedResource Include="dropbox-com.pem" />
++    <EmbeddedResource Include="github-com.pem" />
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
 -    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />

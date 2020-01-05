@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
@@ -53,6 +56,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private bool _aborted;
+
 		private void AbortDownload(string filePath) {
 			_aborted = true;
 			Request?.Abort();
@@ -116,18 +120,41 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				Request.ServicePoint.ReceiveBufferSize = CHUNK_SIZE;
 			}
 
+			Request.Proxy = WebRequest.DefaultWebProxy;
 			Request.Method = WebRequestMethods.Http.Get;
 			Request.ProtocolVersion = ProtocolVersion;
 			Request.UserAgent = $"tModLoader/{ModLoader.versionTag}";
 			Request.KeepAlive = true;
 		}
 
+		private static readonly List<string> validCerts = new List<string> {
+			GetCertHashString("github-com.pem"),
+			GetCertHashString("dropbox-com.pem")
+		};
+
 		// TODO Jof: HPKP / Expect-CT Manager
+		// Do not simply 'return true' here, that will cause: The underlying connection was closed: Could not establish trust relationship for the SSL/TLS secure channel.
+		// It is simply a security risk, as ANY certificate will be accepted. Don't do it
 		private bool ServerCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) {
-			return errors == SslPolicyErrors.None;
+			return errors == SslPolicyErrors.None && validCerts.Contains(certificate.GetCertHashString());
 		}
 
 		internal virtual void PreCopy() {
+		}
+
+		private static string GetCertHashString(string certFile) {
+			try {
+				using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(certFile)) {
+					if (stream == null) throw new NullReferenceException($"Stream for certificate {certFile} was null");
+					var buf = new byte[stream.Length];
+					stream.ReadBytes(buf);
+					return new X509Certificate(buf).GetCertHashString();
+				}
+			}
+			catch(Exception exception) {
+				Logging.tML.Error("Problem getting certificate hash string", exception);
+				return string.Empty;
+			}
 		}
 	}
 }
