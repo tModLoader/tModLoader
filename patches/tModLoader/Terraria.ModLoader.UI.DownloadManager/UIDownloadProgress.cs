@@ -11,6 +11,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 	{
 		public event Action OnDownloadsComplete;
 
+		private DownloadFile _downloadFile;
 		private readonly List<DownloadFile> _downloads = new List<DownloadFile>();
 		internal CancellationTokenSource _cts;
 
@@ -37,6 +38,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				Logging.tML.Warn($"UIDownloadProgress was deactivated but download [{download.FilePath}] was still present.");
 			}
 
+			_downloadFile = null;
 			OnDownloadsComplete = null;
 			_cts?.Dispose();
 			_downloads.Clear();
@@ -49,6 +51,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					_downloads.Add(download);
 				}
 			}
+
 			Show();
 		}
 
@@ -57,25 +60,24 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void DownloadMods() {
-			var downloadFile = _downloads.First();
-			if (downloadFile == null) return;
+			_downloadFile = _downloads.First();
+			if (_downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
-			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", downloadFile.DisplayText);
-			var dlTask = downloadFile.Download(_cts.Token, _progressBar.UpdateProgress);
-			dlTask.ContinueWith(HandleNextDownload, _cts.Token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
-			dlTask.ContinueWith(task => {
-				Logging.tML.Error($"There was a problem downloading the mod {downloadFile.DisplayText}", task.Exception);
-				HandleNextDownload(task);
-			}, _cts.Token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.FromCurrentSynchronizationContext());
+			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", _downloadFile.DisplayText);
+			_downloadFile.Download(_cts.Token, _progressBar.UpdateProgress)
+				.ContinueWith(HandleNextDownload, _cts.Token);
 		}
 
 		private void HandleNextDownload(Task<DownloadFile> task) {
-			_downloads.Remove(task.Result);
-			if (_downloads.Count <= 0) {
+			bool hasError = task.Exception != null;
+			_downloads.Remove(_downloadFile);
+			if (_downloads.Count <= 0 || hasError) {
+				if (hasError) Logging.tML.Error($"There was a problem downloading the mod {_downloadFile.DisplayText}", task.Exception);
 				Main.menuMode = gotoMenu;
 				OnDownloadsComplete?.Invoke();
 				return;
 			}
+
 			DownloadMods();
 		}
 	}
