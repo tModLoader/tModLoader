@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			Show();
 		}
 
-		public new void Show() {
+		public void Show() {
 			Main.menuMode = Interface.downloadProgressID;
 		}
 
@@ -61,8 +61,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			if (downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
 			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", downloadFile.DisplayText);
-			downloadFile.Download(_cts.Token, _progressBar.UpdateProgress)
-				.ContinueWith(HandleNextDownload, _cts.Token);
+			var dlTask = downloadFile.Download(_cts.Token, _progressBar.UpdateProgress);
+			dlTask.ContinueWith(HandleNextDownload, _cts.Token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+			dlTask.ContinueWith(task => {
+				Logging.tML.Error($"There was a problem downloading the mod {downloadFile.DisplayText}", task.Exception);
+				HandleNextDownload(task);
+			}, _cts.Token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		private void HandleNextDownload(Task<DownloadFile> task) {
