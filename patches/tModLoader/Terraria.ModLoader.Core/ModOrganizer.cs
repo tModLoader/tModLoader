@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.Core
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 			
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
-			if (Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
+			if (Main.instance.IsActive && Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 				ModLoader.skipLoad = false;
 				modsToLoad.Clear();
 				Interface.loadMods.SetLoadStage("Cancelling loading...");
