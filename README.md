@@ -1,4 +1,5 @@
-# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/tModLoader/tModLoader.svg?branch=master)](https://travis-ci.org/tModLoader/tModLoader) [![Discord](https://discordapp.com/api/guilds/103110554649894912/widget.png?style=shield)](https://discord.me/tmodloader)
+# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/tModLoader/tModLoader.svg?branch=master)](https://travis-ci.org/tModLoader/tModLoader) [![Discord](https://img.shields.io/discord/103110554649894912.svg?style=flat-square)](https://tmodloader.net/discord)
+
 
 ## About
 
