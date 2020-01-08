@@ -5256,16 +5256,18 @@
  									{
  										num241 = 0;
  									}
-@@ -34971,6 +_,9 @@
+@@ -34971,7 +_,10 @@
  										{
  											int num242 = Player.tileTargetX;
  											int num243 = Player.tileTargetY;
-+											if (TileLoader.Slope(num242, num242, Main.tile[num242, num243].type))
+-											if (TileID.Sets.Platforms[(int)Main.tile[num242, num243].type])
++											if (TileLoader.Slope(num242, num243, Main.tile[num242, num243].type))
 +											{
 +											}
- 											if (TileID.Sets.Platforms[(int)Main.tile[num242, num243].type])
++											else if (TileID.Sets.Platforms[(int)Main.tile[num242, num243].type])
  											{
  												if (Main.tile[num242, num243].halfBrick())
+ 												{
 @@ -35468,14 +_,14 @@
  								{
  									this.hitTile.Prune();
