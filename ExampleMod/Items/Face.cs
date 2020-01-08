@@ -55,10 +55,6 @@ namespace ExampleMod.Items
 
 			// You can also remove a specific line, if you have access to that object:
 			//tooltips.Remove(tooltipLine);
-
-			// You can also remove a range from the list
-			// For example, this would remove the first 4 lines:
-			//tooltips.RemoveRange(0, 4);
 		}
 
 		public override void AddRecipes() {

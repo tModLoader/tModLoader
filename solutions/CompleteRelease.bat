@@ -80,7 +80,7 @@ copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
 
 ::call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
 call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
-call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
+:: call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
 
 :: Mac release
 copy "%lnx%" "%mac%"
