@@ -1562,7 +1562,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
+		public Stream GetFileSteam(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.FileExists(this.FileName(name)). Note that file extensions are used here.
