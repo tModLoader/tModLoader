@@ -307,7 +307,7 @@
 		// "MSInstantiating": "Instantiating Mods...",
 		// "MSSandboxing": "Sandboxing: {0}",
 		"MSIntializing": "Inicializando: ",
-		"MSLoading": "Cargando Mod: ",
+		"MSLoading": "Cargando Mod: {0}",
 		// "MSUnloading": "Unloading: {0}",
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
 		// "MSSettingUp": "Setting up...",
