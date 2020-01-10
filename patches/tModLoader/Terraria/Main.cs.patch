@@ -1052,18 +1052,21 @@
  				this.DoUpdate(gameTime);
  				CinematicManager.Instance.Update(gameTime);
  				if (Main.netMode == 2)
-@@ -11950,6 +_,11 @@
- 				else if (Main.netMode == 1)
+@@ -11951,8 +_,14 @@
  				{
  					Netplay.Connection.Socket.SendQueuedPackets();
-+				}
+ 				}
 +				}
 +				catch (Exception e)
 +				{
 +					Logging.Terraria.Error(e);
- 				}
++				}
  				this._isDrawingOrUpdating = false;
  			}
++			base.Update(gameTime); //Vanilla bug, moved from DoUpdate. Early returns fail to call base.Update, and prevent streaming audio from playing
+ 		}
+ 
+ 		public void UpdateViewZoomKeys()
 @@ -11997,6 +_,8 @@
  			{
  				Main.InGameUI.Update(gameTime);
@@ -1223,6 +1226,14 @@
  			if (Main.ignoreErrors)
  			{
  				try
+@@ -12937,7 +_,6 @@
+ 					Main.cameraLerp = 1f;
+ 				}
+ 			}
+-			base.Update(gameTime);
+ 		}
+ 
+ 		private static void DoUpdate_AnimateCursorColors()
 @@ -12982,7 +_,7 @@
  
  		private static void DoUpdate_Enter_ToggleChat()
