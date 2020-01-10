@@ -1907,9 +1907,7 @@ Running dot for graph 617/863
 Running dot for graph 618/863
 Running dot for graph 619/863
 Running dot for graph 620/863
-Runnierror: Image `/home/travis/build/tModLoader/tModLoader/code_docs/tModLoader/html/class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_i_o_1_1_payload_handler__inherit__graph.png' produced by dot is not a valid PNG!
-You should either select a different format (DOT_IMAGE_FORMAT in the config file) or install a more recent version of graphviz (1.7+)
-ng dot for graph 621/863
+Running dot for graph 621/863
 Running dot for graph 622/863
 Running dot for graph 623/863
 Running dot for graph 624/863
