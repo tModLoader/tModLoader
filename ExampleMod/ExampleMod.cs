@@ -154,6 +154,7 @@ namespace ExampleMod
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
 			RandomBuffHotKey = null;
+			NPCs.ExampleTravelingMerchant.shopItems.Clear();
 		}
 
 		public override void PostSetupContent() {
