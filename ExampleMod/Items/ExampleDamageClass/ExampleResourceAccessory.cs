@@ -18,9 +18,9 @@ namespace ExampleMod.Items.ExampleDamageClass
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			ExampleDamagePlayer modPlayer = ExampleDamagePlayer.ModPlayer(player);
-			//modPlayer.maximumResource2 += 50; // add 50 to the maximumResource2, which is our temporary increases to maximumResource.
-			modPlayer.resourceRegenRate -= 0.5f; // subtract 0.5f from the resourceRegenRate, halving the speed it takes for it to regen once.
+			var modPlayer = ExampleDamagePlayer.ModPlayer(player);
+			modPlayer.exampleResourceMax2 += 50; // add 50 to the exampleResourceMax2, which is our max for example resource.
+			modPlayer.exampleResourceRegenRate -= 0.5f; // subtract 0.5f from the resourceRegenRate, halving the speed it takes for it to regen once.
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace ExampleMod
 		public static DynamicSpriteFont exampleFont;
 
 		private UserInterface _exampleUserInterface;
-		private UserInterface _exampleBarUserInterface;
+		private UserInterface _exampleResourceBarUserInterface;
 
 		internal UserInterface ExamplePersonUserInterface;
 		internal ExampleUI ExampleUI;
@@ -109,10 +109,8 @@ namespace ExampleMod
 
 				// Custom Resource Bar
 				ExampleResourceBar = new ExampleResourceBar();
-				ExampleResourceBar.Activate();
-				_exampleBarUserInterface = new UserInterface();
-				_exampleBarUserInterface.SetState(ExampleResourceBar);
-				ExampleResourceBar.visible = true;
+				_exampleResourceBarUserInterface = new UserInterface();
+				_exampleResourceBarUserInterface.SetState(ExampleResourceBar);
 
 				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
 				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
@@ -146,9 +144,6 @@ namespace ExampleMod
 			if (!Main.dedServ) {
 				Main.tileFrame[TileID.Loom] = 0; // Reset the frame of the loom tile
 				Main.tileSetsLoaded[TileID.Loom] = false; // Causes the loom tile to reload its vanilla texture
-														  // Make sure to unload this all, or else you'll have issues.
-				ExampleResourceBar.visible = false;
-				ExampleResourceBar.barFrame = null;
 			}
 
 			// Unload static references
@@ -298,10 +293,7 @@ namespace ExampleMod
 			if (ExampleUI.Visible) {
 				_exampleUserInterface?.Update(gameTime);
 			}
-			if (ExampleResourceBar.visible) {
-				_exampleBarUserInterface?.Update(gameTime);
-			}
-
+			_exampleResourceBarUserInterface?.Update(gameTime);
 			ExamplePersonUserInterface?.Update(gameTime);
 		}
 
@@ -338,9 +330,7 @@ namespace ExampleMod
 				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
 					"ExampleMod: Example Resource Bar",
 					delegate {
-						if (ExampleResourceBar.visible) {
-							_exampleBarUserInterface.Draw(Main.spriteBatch, new GameTime());
-						}
+						_exampleResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)

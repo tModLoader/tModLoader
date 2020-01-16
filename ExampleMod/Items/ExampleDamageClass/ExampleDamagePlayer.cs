@@ -1,9 +1,10 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Items.ExampleDamageClass
 {
-	// This class stores necessary player info for our custom damage class, such as damage multipliers, additions to knockback and crit and our custom resource.
+	// This class stores necessary player info for our custom damage class, such as damage multipliers, additions to knockback and crit, and our custom resource that governs the usage of the weapons of this damage class.
 	public class ExampleDamagePlayer : ModPlayer
 	{
 		public static ExampleDamagePlayer ModPlayer(Player player) {
@@ -18,20 +19,30 @@ namespace ExampleMod.Items.ExampleDamageClass
 		public float exampleKnockback;
 		public int exampleCrit;
 
-		// Creating some variables to define the current value of our example resource as well as the maximum value.
-		// maximumResource2 will act as our own "statMaxLife2" for temporary changes to the maximum.
-		// Make sure to set these as floats if you want to have a resource bar for it.
-		public float currentResource;
-		public float maximumResource = 100;
-		public float maximumResource2;
-		// You can make something like this to easily refer to a combination of both, instead of adding them together every time.
-		public float OverallMaximumResource { get => maximumResource + maximumResource2; }
-		public float resourceRegenRate;
-		internal int resourceRegenTimer = 0;
+		// Here we include a custom resource, similar to mana or health.
+		// Creating some variables to define the current value of our example resource as well as the current maximum value. We also include a temporary max value, as well as some variables to handle the natural regeneration of this resource.
+		public int exampleResourceCurrent;
+		public const int DefaultExampleResourceMax = 100;
+		public int exampleResourceMax;
+		public int exampleResourceMax2;
+		public float exampleResourceRegenRate;
+		internal int exampleResourceRegenTimer = 0;
+		public static readonly Color HealExampleResource = new Color(187, 91, 201); // We can use this for CombatText, if you create an item that replenishes exampleResourceCurrent.
+
+		/*
+		In order to make the Example Resource example straightforward, several things have been left out that would be needed for a fully functional resource similar to mana and health. 
+		Here are additional things you might need to implement if you intend to make a custom resource:
+		- Multiplayer Syncing: The current example doesn't require MP code, but pretty much any additional functionality will require this. ModPlayer.SendClientChanges and clientClone will be necessary, as well as SyncPlayer if you allow the user to increase exampleResourceMax.
+		- Save/Load and increased max resource: You'll need to implement Save/Load to remember increases to your exampleResourceMax cap.
+		- Resouce replenishment item: Use GlobalNPC.NPCLoot to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
+		*/
+
+		public override void Initialize() {
+			exampleResourceMax = DefaultExampleResourceMax;
+		}
 
 		public override void ResetEffects() {
 			ResetVariables();
-			UpdateResource();
 		}
 
 		public override void UpdateDead() {
@@ -43,25 +54,27 @@ namespace ExampleMod.Items.ExampleDamageClass
 			exampleDamageMult = 1f;
 			exampleKnockback = 0f;
 			exampleCrit = 0;
-			maximumResource2 = 0f;
-			resourceRegenRate = 1f;
+			exampleResourceRegenRate = 1f;
+			exampleResourceMax2 = exampleResourceMax;
+		}
+
+		public override void PostUpdateMiscEffects() {
+			UpdateResource();
 		}
 
 		// Lets do all our logic for the custom resource here, such as limiting it, increasing it and so on.
 		private void UpdateResource() {
+			// For our resource lets make it regen slowly over time to keep it simple, let's use exampleResourceRegenTimer to count up to whatever value we want, then increase currentResource.
+			exampleResourceRegenTimer++; //Increase it by 60 per second, or 1 per tick.
 
-			// Limit the currentResource from going over the limit imposed by your maximumResource's.
-			if (currentResource > OverallMaximumResource)
-				currentResource = OverallMaximumResource;
-
-			// For our resource lets make it regen slowly over time to keep it simple, let's use resourceRegenTimer to count up to whatever value we want, then increase currentResource by our resourceRegenRate.
-			resourceRegenTimer++; //Increase it by 60 per second, or 1 per tick.
-
-			// A simple timer that goes up to 3 seconds, increases the currentResource by our resourceRegenRate and then resets back to 0. Add the extra check at the end to stop it flickering in the resource bar.
-			if ((resourceRegenTimer > 180 * resourceRegenRate) && currentResource < OverallMaximumResource) {
-				currentResource += 1;
-				resourceRegenTimer = 0;
+			// A simple timer that goes up to 3 seconds, increases the exampleResourceCurrent by 1 and then resets back to 0.
+			if (exampleResourceRegenTimer > 180 * exampleResourceRegenRate) {
+				exampleResourceCurrent += 1;
+				exampleResourceRegenTimer = 0;
 			}
+
+			// Limit exampleResourceCurrent from going over the limit imposed by exampleResourceMax.
+			exampleResourceCurrent = Utils.Clamp(exampleResourceCurrent, 0, exampleResourceMax2);
 		}
 	}
 }
