@@ -87,19 +87,22 @@ namespace ExampleMod.Projectiles
 				int tileX = (int)(projectile.position.X + projectile.width / 2) / 16;
 				int tileY = (int)(projectile.position.Y + projectile.width / 2) / 16;
 
-				if (Main.tile[tileX, tileY].halfBrick() && projectile.velocity.Y > 0f && System.Math.Abs(projectile.velocity.Y) > System.Math.Abs(projectile.velocity.X)) {
+				Tile tile = Main.tile[tileX, tileY];
+				Tile tileBelow = Main.tile[tileX, tileY + 1];
+
+				if (tile.halfBrick() && projectile.velocity.Y > 0f && System.Math.Abs(projectile.velocity.Y) > System.Math.Abs(projectile.velocity.X)) {
 					tileY--;
 				}
 
-				if (!Main.tile[tileX, tileY].active()) {
-					bool onMinecartTrack = tileY < Main.maxTilesY - 2 && Main.tile[tileX, tileY + 1] != null && Main.tile[tileX, tileY + 1].active() && Main.tile[tileX, tileY + 1].type == TileID.MinecartTrack;
+				if (!tile.active()) {
+					bool onMinecartTrack = tileY < Main.maxTilesY - 2 && tileBelow != null && tileBelow.active() && tileBelow.type == TileID.MinecartTrack;
 
 					if (!onMinecartTrack) {
 						WorldGen.PlaceTile(tileX, tileY, tileType, false, true, -1, 0);
 					}
 
-					if (!onMinecartTrack && Main.tile[tileX, tileY].active() && Main.tile[tileX, tileY].type == tileType) {
-						if (Main.tile[tileX, tileY + 1].halfBrick() || Main.tile[tileX, tileY + 1].slope() != 0) {
+					if (!onMinecartTrack && tile.active() && tile.type == tileType) {
+						if (tileBelow.halfBrick() || tileBelow.slope() != 0) {
 							WorldGen.SlopeTile(tileX, tileY + 1, 0);
 
 							if (Main.netMode == 2) {
