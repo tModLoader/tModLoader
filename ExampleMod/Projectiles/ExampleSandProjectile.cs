@@ -29,8 +29,9 @@ namespace ExampleMod.Projectiles
 		}
 
 		public override void AI() {
-			if (Main.rand.Next(2) == 0) {
-				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, 0f, 0f, 0, default, 1f);
+			//Change the 5 to determine how much dust will spawn. lower for more, higher for less
+			if (Main.rand.Next(5) == 0) {
+				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType);
 				Main.dust[dust].velocity.X *= 0.4f;
 			}
 
@@ -98,7 +99,7 @@ namespace ExampleMod.Projectiles
 					bool onMinecartTrack = tileY < Main.maxTilesY - 2 && tileBelow != null && tileBelow.active() && tileBelow.type == TileID.MinecartTrack;
 
 					if (!onMinecartTrack) {
-						WorldGen.PlaceTile(tileX, tileY, tileType, false, true, -1, 0);
+						WorldGen.PlaceTile(tileX, tileY, tileType, false, true);
 					}
 
 					if (!onMinecartTrack && tile.active() && tile.type == tileType) {
@@ -106,12 +107,12 @@ namespace ExampleMod.Projectiles
 							WorldGen.SlopeTile(tileX, tileY + 1, 0);
 
 							if (Main.netMode == 2) {
-								NetMessage.SendData(17, -1, -1, null, 14, tileX, tileY + 1, 0f, 0, 0, 0);
+								NetMessage.SendData(17, -1, -1, null, 14, tileX, tileY + 1);
 							}
 						}
 
 						if (Main.netMode != 0) {
-							NetMessage.SendData(17, -1, -1, null, 1, tileX, tileY, tileType, 0, 0, 0);
+							NetMessage.SendData(17, -1, -1, null, 1, tileX, tileY, tileType);
 						}
 					}
 				}
