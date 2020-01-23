@@ -10,14 +10,21 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleSandBlock : ModTile 
 	{
+		//Note: ExampleSandBlock requires ExampleSandProjectile to work.
+		//This is how the block works:
+		//TH block is placed on another solid block. When the block below it is destroyed , the original block gets destroyed and spawns a projectile
+		//That projectile spawns dust. When that projectile hits another tile, it will create the sand tile again.
+
+		//ExampleSandBlock (the item) is just used for placing the tile, this isn't needed and can be placed in other ways
+
 		public override void SetDefaults() {
-			Main.tileSolid[TileID.Mud] = true;
-			Main.tileBrick[TileID.Mud] = true;
-			Main.tileMergeDirt[TileID.Mud] = true;
-			Main.tileBlockLight[TileID.Mud] = true;
-			Main.tileSand[TileID.Mud] = true;
-			TileID.Sets.TouchDamageSands[TileID.Mud] = 15;
-			TileID.Sets.Falling[TileID.Mud] = true;
+			Main.tileSolid[Type] = true;
+			Main.tileBrick[Type] = true;
+			Main.tileMergeDirt[Type] = true;
+			Main.tileBlockLight[Type] = true;
+			Main.tileSand[Type] = true;
+			TileID.Sets.TouchDamageSands[Type] = 15;
+			TileID.Sets.Falling[Type] = true;
 			AddMapEntry(new Color(200, 200, 200));
 			dustType = ModContent.DustType<Sparkle>();
 			drop = ModContent.ItemType<Items.Placeable.ExampleSandBlock>();
@@ -28,8 +35,10 @@ namespace ExampleMod.Tiles
 				return true;
 			}
 
+			Tile tile = Main.tile[i, j + 1];
+
 			Tile above = Main.tile[i, j - 1];
-			Tile below = Main.tile[i, j + 1];
+			Tile below = tile;
 			bool canFall = true;
 
 			if (below == null || below.active()) {
