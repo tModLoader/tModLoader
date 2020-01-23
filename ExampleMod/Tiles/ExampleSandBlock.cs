@@ -35,10 +35,8 @@ namespace ExampleMod.Tiles
 				return true;
 			}
 
-			Tile tile = Main.tile[i, j + 1];
-
 			Tile above = Main.tile[i, j - 1];
-			Tile below = tile;
+			Tile below = Main.tile[i, j + 1];
 			bool canFall = true;
 
 			if (below == null || below.active()) {
