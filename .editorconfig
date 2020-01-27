@@ -9,45 +9,9 @@ indent_style = tab
 indent_size = 4
 
 #Formatting - new line options
-
-#place else statements on a new line
-csharp_new_line_before_else = true
-#place catch statements on a new line
-csharp_new_line_before_catch = true
-#place finally statements on a new line
-csharp_new_line_before_finally  = true
-
 #require braces to be on a new line for types (Allman)
 #everything else uses K&R
-csharp_new_line_before_open_brace = types
-
-#Formatting - spacing options
-
-#require NO space between a cast and the value
-csharp_space_after_cast = false
-#require a space before the colon for bases or interfaces in a type declaration
-csharp_space_after_colon_in_inheritance_clause = true
-#require a space after a keyword in a control flow statement such as a for loop
-csharp_space_after_keywords_in_control_flow_statements = true
-#require a space before the colon for bases or interfaces in a type declaration
-csharp_space_before_colon_in_inheritance_clause = true
-#remove space within empty argument list parentheses
-csharp_space_between_method_call_empty_parameter_list_parentheses = false
-#remove space between method call name and opening parenthesis
-csharp_space_between_method_call_name_and_opening_parenthesis = false
-#do not place space characters after the opening parenthesis and before the closing parenthesis of a method call
-csharp_space_between_method_call_parameter_list_parentheses = false
-#remove space within empty parameter list parentheses for a method declaration
-csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
-#place a space character after the opening parenthesis and before the closing parenthesis of a method declaration parameter list.
-csharp_space_between_method_declaration_parameter_list_parentheses = false
-
-#Formatting - wrapping options
-
-#leave code block on single line
-csharp_preserve_single_line_blocks = true
-#leave statements and member declarations on the same line
-csharp_preserve_single_line_statements = true
+csharp_new_line_before_open_brace = types, methods
 
 #Style - expression bodied member options
 
