@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['label',['Label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()']]],
+  ['label',['label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()']]],
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
   ['lastlaunchedtmodloaderversion',['LastLaunchedTModLoaderVersion',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad16ba87cca9484f916b19b6a5a8ef8be',1,'Terraria::ModLoader::ModLoader']]],
   ['layer',['layer',['../class_terraria_1_1_mod_loader_1_1_draw_layer.html#aa9055d5c3e7fb290ff972b73824082d1',1,'Terraria::ModLoader::DrawLayer']]],
@@ -20,7 +20,6 @@ var searchData=
   ['loadedmods',['LoadedMods',['../class_terraria_1_1_mod_loader_1_1_mod_loader.html#aac69e449f7df7b685a640b53c574c00f',1,'Terraria::ModLoader::ModLoader']]],
   ['loadtimeconfigs',['LoadTimeConfigs',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a14d4d57699807741b5058ee56980f1cc',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['logdir',['LogDir',['../class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0',1,'Terraria::ModLoader::Logging']]],
-  ['logexceptionlock',['logExceptionLock',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a9db819d470d381feb335d205add852ae',1,'Terraria::ModLoader::ErrorLogger']]],
   ['loglock',['logLock',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a660367139f86f703a14dd0bc63a379c0',1,'Terraria::ModLoader::ErrorLogger']]],
   ['logpath',['LogPath',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#aa9a8c718043dbefec4d9f3e44e39ccaa',1,'Terraria::ModLoader::ErrorLogger']]],
   ['longerexpertdebuff',['longerExpertDebuff',['../class_terraria_1_1_mod_loader_1_1_mod_buff.html#a8bef7bf37c676c76987291fe878f8ed0',1,'Terraria::ModLoader::ModBuff']]],

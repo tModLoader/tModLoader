@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['label',['Label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()']]],
+  ['label',['label',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a58a2956eadacdd800a19edcb0ca39673',1,'Terraria.ModLoader.Config.LabelAttribute.label()'],['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#ac2ac53b2a8c7b2bf2d25ba62e4c50570',1,'Terraria.ModLoader.Config.LabelAttribute.Label()']]],
   ['labelattribute',['LabelAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html',1,'Terraria::ModLoader::Config']]],
   ['labelattribute',['LabelAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_label_attribute.html#a9158d168365140d97f18f42b3599cc40',1,'Terraria::ModLoader::Config::LabelAttribute']]],
   ['lacbeetle',['LacBeetle',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af3a010466ec021f37571df001c1f079c',1,'Terraria::ModLoader::SpawnCondition']]],
@@ -38,7 +38,6 @@ var searchData=
   ['loadtimeconfigs',['LoadTimeConfigs',['../class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a14d4d57699807741b5058ee56980f1cc',1,'Terraria::ModLoader::Config::ConfigManager']]],
   ['log',['Log',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a389b47286140d38044d0f0470a556225',1,'Terraria.ModLoader.ErrorLogger.Log(string message)'],['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a482452c467e1a6f8005b2968a12c3930',1,'Terraria.ModLoader.ErrorLogger.Log(object param, bool alternateOutput=false)']]],
   ['logdir',['LogDir',['../class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0',1,'Terraria::ModLoader::Logging']]],
-  ['logexceptionlock',['logExceptionLock',['../class_terraria_1_1_mod_loader_1_1_error_logger.html#a9db819d470d381feb335d205add852ae',1,'Terraria::ModLoader::ErrorLogger']]],
   ['logfirstchanceexceptions',['LogFirstChanceExceptions',['../class_terraria_1_1_mod_loader_1_1_logging.html#a69840616214e1e132c1da455230fb0a7',1,'Terraria::ModLoader::Logging']]],
   ['logger',['Logger',['../class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916',1,'Terraria::ModLoader::Mod']]],
   ['logging',['Logging',['../class_terraria_1_1_mod_loader_1_1_logging.html',1,'Terraria::ModLoader']]],
