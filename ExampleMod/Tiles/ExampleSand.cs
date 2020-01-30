@@ -1,6 +1,6 @@
 using ExampleMod.Dusts;
 using ExampleMod.Projectiles;
-using ExampleMod.Tiles.Cacti;
+using ExampleMod.Tiles.Trees;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Tiles
 {
-	public class ExampleSand : ModTile 
+	public class ExampleSand : ModTile
 	{
 		//Note: ExampleSand requires ExampleSandProjectile to work.
 		//This is how the block works:
@@ -25,14 +25,17 @@ namespace ExampleMod.Tiles
 			Main.tileBlockLight[Type] = true;
 			Main.tileSand[Type] = true;
 			TileID.Sets.TouchDamageSands[Type] = 15;
+			TileID.Sets.Conversion.Sand[Type] = true; // Allows Clentaminator solutions to convert this tile to their respective Sand tiles.
+			TileID.Sets.ForAdvancedCollision.ForSandshark[Type] = true; // Allows Sandshark enemies to "swim" in this sand.
 			TileID.Sets.Falling[Type] = true;
 			AddMapEntry(new Color(200, 200, 200));
 			//Set the dust type to Sparkle
 			dustType = ModContent.DustType<Sparkle>();
 			//Drop the ExampleSandBlock
-			drop = ModContent.ItemType<Items.Placeable.ExampleSandBlock>();
+			drop = ModContent.ItemType<Items.Placeable.ExampleSand>();
 			//Make ExampleCactus able to grow on this tile
 			SetModCactus(new ExampleCactus());
+			SetModPalmTree(new ExamplePalmTree());
 		}
 
 		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
@@ -61,7 +64,7 @@ namespace ExampleMod.Tiles
 					Main.projectile[proj].ai[0] = 1f;
 					WorldGen.SquareTileFrame(i, j);
 				}
-				else if (Main.netMode == 2) {
+				else if (Main.netMode == NetmodeID.Server) {
 					Main.tile[i, j].active(false);
 					bool spawnProj = true;
 
@@ -90,5 +93,10 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
+
+		public override int SaplingGrowthType(ref int style) {
+			style = 1;
+			return ModContent.TileType<ExampleSapling>();
+		}
 	}
 }

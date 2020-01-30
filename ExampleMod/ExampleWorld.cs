@@ -405,7 +405,11 @@ namespace ExampleMod
 		}
 
 		public override void TileCountsAvailable(int[] tileCounts) {
+			// Here we count various tiles towards ZoneExample
 			exampleTiles = tileCounts[TileType<ExampleBlock>()] + tileCounts[TileType<ExampleSand>()];
+
+			// We can also add to vanilla biome counts if appropriate. Here we are adding to the ZoneDesert since we have a sand tile in the mod.
+			Main.sandTiles += tileCounts[TileType<ExampleSand>()];
 		}
 
 		public override void PreUpdate() {
