@@ -31,6 +31,10 @@ namespace ExampleMod.Tiles
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
 			TileObjectData.newTile.LavaDeath = true;
 			TileObjectData.newTile.RandomStyleRange = 3;
+			TileObjectData.newTile.StyleMultiplier = 3;
+			TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
+			TileObjectData.newSubTile.AnchorValidTiles = new int[] { TileType<ExampleSand>() };
+			TileObjectData.addSubTile(1);
 			TileObjectData.addTile(Type);
 			sapling = true;
 			ModTranslation name = CreateMapEntryName();
@@ -47,7 +51,13 @@ namespace ExampleMod.Tiles
 		public override void RandomUpdate(int i, int j) {
 			if (WorldGen.genRand.Next(20) == 0) {
 				bool isPlayerNear = WorldGen.PlayerLOS(i, j);
-				bool success = WorldGen.GrowTree(i, j);
+				Tile tile = Framing.GetTileSafely(i, j);
+				bool success;
+				// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
+				if (tile.frameX < 54)
+					success = WorldGen.GrowTree(i, j);
+				else
+					success = WorldGen.GrowPalmTree(i, j);
 				if (success && isPlayerNear) {
 					WorldGen.TreeGrowFXCheck(i, j);
 				}

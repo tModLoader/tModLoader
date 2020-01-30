@@ -16,7 +16,7 @@ namespace ExampleMod.Tiles
 			dustType = DustType<Sparkle>();
 			drop = ItemType<Items.Placeable.ExampleBlock>();
 			AddMapEntry(new Color(200, 200, 200));
-			SetModTree(new ExampleTree());
+			SetModTree(new Trees.ExampleTree());
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
