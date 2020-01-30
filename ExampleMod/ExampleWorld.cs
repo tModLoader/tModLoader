@@ -19,7 +19,6 @@ namespace ExampleMod
 {
 	public class ExampleWorld : ModWorld
 	{
-		private const int saveVersion = 0;
 		public static bool downedAbomination;
 		public static bool downedPuritySpirit;
 		public const int VolcanoProjectiles = 30;
