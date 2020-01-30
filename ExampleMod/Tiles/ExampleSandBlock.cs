@@ -12,7 +12,7 @@ namespace ExampleMod.Tiles
 	{
 		//Note: ExampleSandBlock requires ExampleSandProjectile to work.
 		//This is how the block works:
-		//TH block is placed on another solid block. When the block below it is destroyed , the original block gets destroyed and spawns a projectile
+		//The block is placed on another solid block. When the block below it is destroyed , the original block gets destroyed and spawns a projectile
 		//That projectile spawns dust. When that projectile hits another tile, it will create the sand tile again.
 
 		//ExampleSandBlock (the item) is just used for placing the tile, this isn't needed and can be placed in other ways
