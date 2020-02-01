@@ -1,0 +1,47 @@
+root = true
+
+[*.cs]
+
+#Core editorconfig formatting - indentation
+
+#use hard tabs for indentation
+indent_style = tab
+indent_size = 4
+
+#Formatting - new line options
+#require braces to be on a new line for types (Allman)
+#everything else uses K&R
+csharp_new_line_before_open_brace = types, methods
+
+#Style - expression bodied member options
+
+#prefer block bodies for constructors
+csharp_style_expression_bodied_constructors = false:suggestion
+#prefer expression-bodied members for methods when they will be a single line
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+#prefer expression-bodied members for properties when they will be a single line
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+#prefer expression-bodied members for indexers when they will be a single line
+csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
+#prefer expression-bodied members for accessors when they will be a single line
+csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
+
+#Style - expression level options
+
+#prefer out variables to be declared inline in the argument list of a method call when possible
+csharp_style_inlined_variable_declaration = true:suggestion
+#prefer the language keyword for member access expressions, instead of the type name, for types that have a keyword to represent them
+dotnet_style_predefined_type_for_member_access = true:suggestion
+
+#Style - implicit and explicit types
+
+#prefer explicit type over var to declare variables with built-in system types such as int
+csharp_style_var_for_built_in_types = false:suggestion
+#prefer explicit type over var when the type is already mentioned on the right-hand side of a declaration
+csharp_style_var_when_type_is_apparent = true:none
+
+[*.json]
+indent_style = tab
+# unfortuantely anything other than tab_width and indent_size 1 causes VS to become whimsical about indenting
+indent_size = 1
+tab_width = 1
