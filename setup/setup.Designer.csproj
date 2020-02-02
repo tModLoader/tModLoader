@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>

@@ -18,7 +18,7 @@ using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class DecompileTask : Task
+	public class DecompileTask : SetupOperation
 	{
 		private class EmbeddedAssemblyResolver : IAssemblyResolver
 		{
@@ -72,9 +72,8 @@ namespace Terraria.ModLoader.Setup
 
 		private readonly DecompilerSettings decompilerSettings = new DecompilerSettings(LanguageVersion.Latest)
 		{
-			AlwaysUseBraces = false,
 			RemoveDeadCode = true,
-			CSharpFormattingOptions = FormattingOptionsFactory.CreateAllman()
+			CSharpFormattingOptions = FormattingOptionsFactory.CreateKRStyle()
 		};
 
 		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface)

@@ -6,7 +6,7 @@ using XnaToFna;
 
 namespace Terraria.ModLoader.Setup
 {
-	internal class HookGenTask : Task
+	internal class HookGenTask : SetupOperation
 	{
 		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface) {
 		}

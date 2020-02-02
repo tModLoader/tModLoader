@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Setup
 		private CancellationTokenSource cancelSource;
 
 		private bool closeOnCancel;
-		private IDictionary<Button, Func<Task>> taskButtons = new Dictionary<Button, Func<Task>>();
+		private IDictionary<Button, Func<SetupOperation>> taskButtons = new Dictionary<Button, Func<SetupOperation>>();
 
 		public MainForm()
 		{
@@ -37,8 +37,6 @@ namespace Terraria.ModLoader.Setup
 				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }
 					.Select(b => taskButtons[b]()).ToArray());
 
-			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
-			menuItemSingleDecompileThread.Checked = Settings.Default.SingleDecompileThread;
 			SetPatchMode(Settings.Default.PatchMode);
 
 			Closing += (sender, args) =>
@@ -88,18 +86,6 @@ namespace Terraria.ModLoader.Setup
 			SelectTerrariaDialog();
 		}
 
-		private void menuItemWarnings_Click(object sender, EventArgs e)
-		{
-			Settings.Default.SuppressWarnings = menuItemWarnings.Checked;
-			Settings.Default.Save();
-		}
-
-		private void menuItemSingleDecompileThread_Click(object sender, EventArgs e)
-		{
-			Settings.Default.SingleDecompileThread = menuItemSingleDecompileThread.Checked;
-			Settings.Default.Save();
-		}
-
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
 			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
@@ -120,12 +106,16 @@ namespace Terraria.ModLoader.Setup
 			RunTask(new HookGenTask(this));
 		}
 
+		private void simplifierToolStripMenuItem_Click(object sender, EventArgs e) {
+			RunTask(new SimplifierTask(this));
+		}
+
 		private void buttonTask_Click(object sender, EventArgs e)
 		{
 			RunTask(taskButtons[(Button)sender]());
 		}
 
-		private void RunTask(Task task)
+		private void RunTask(SetupOperation task)
 		{
 			cancelSource = new CancellationTokenSource();
 			foreach (var b in taskButtons.Keys) b.Enabled = false;
@@ -134,17 +124,17 @@ namespace Terraria.ModLoader.Setup
 			new Thread(() => RunTaskThread(task)).Start();
 		}
 
-		private void RunTaskThread(Task task)
+		private void RunTaskThread(SetupOperation task)
 		{
 			var errorLogFile = Path.Combine(Program.logsDir, "error.log");
 			try
 			{
-				Task.DeleteFile(errorLogFile);
+				SetupOperation.DeleteFile(errorLogFile);
 
 				if (!task.ConfigurationDialog())
 					return;
 
-				if (!Settings.Default.SuppressWarnings && !task.StartupWarning())
+				if (!task.StartupWarning())
 					return;
 
 				try
@@ -165,7 +155,7 @@ namespace Terraria.ModLoader.Setup
 					return;
 				}
 
-				if ((task.Failed() || task.Warnings() && !Settings.Default.SuppressWarnings))
+				if (task.Failed() || task.Warnings())
 					task.FinishedDialog();
 
 				Invoke(new Action(() =>
@@ -182,7 +172,7 @@ namespace Terraria.ModLoader.Setup
 					labelStatus.Text = "Error: " + e.Message.Trim();
 				}));
 
-				Task.CreateDirectory(Program.logsDir);
+				SetupOperation.CreateDirectory(Program.logsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally

@@ -5,7 +5,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public class RegenSourceTask : CompositeTask
 	{
-		public RegenSourceTask(ITaskInterface taskInterface, params Task[] tasks) : base(taskInterface, tasks) { }
+		public RegenSourceTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface, tasks) { }
 
 		public override bool StartupWarning() {
 			if (Settings.Default.PatchMode == 2) {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.Setup
 {
-	public abstract class Task
+	public abstract class SetupOperation
 	{
 		protected class WorkItem
 		{
@@ -18,6 +18,8 @@ namespace Terraria.ModLoader.Setup
 				this.status = status;
 				this.action = action;
 			}
+
+			public WorkItem(string status, Func<Task> action) : this(status, () => action().GetAwaiter().GetResult()) { }
 		}
 
 		protected void ExecuteParallel(List<WorkItem> items, bool resetProgress = true, int maxDegree = 0) {
@@ -112,7 +114,7 @@ namespace Terraria.ModLoader.Setup
 		protected readonly ITaskInterface taskInterface;
 		protected int progress;
 
-		protected Task(ITaskInterface taskInterface) {
+		protected SetupOperation(ITaskInterface taskInterface) {
 			this.taskInterface = taskInterface;
 		}
 

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class DiffTask : Task
+	public class DiffTask : SetupOperation
 	{
 		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json" };
 		private static bool IsDiffable(string relPath) => extensions.Any(relPath.EndsWith);

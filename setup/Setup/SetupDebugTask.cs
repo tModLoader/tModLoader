@@ -6,7 +6,7 @@ using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class SetupDebugTask : Task
+	public class SetupDebugTask : SetupOperation
 	{
 		private bool compileFailed;
 

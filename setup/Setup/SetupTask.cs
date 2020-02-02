@@ -4,7 +4,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public class SetupTask : CompositeTask
 	{
-		public SetupTask(ITaskInterface taskInterface, params Task[] tasks) : base(taskInterface, tasks) {}
+		public SetupTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface, tasks) {}
 
 		public override bool StartupWarning() {
 			return MessageBox.Show(

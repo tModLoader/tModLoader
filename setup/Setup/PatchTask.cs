@@ -12,7 +12,7 @@ using PatchReviewer;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class PatchTask : Task
+	public class PatchTask : SetupOperation
 	{
 		private static string[] nonSourceDirs = { "bin", "obj", "Properties" };
 		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
