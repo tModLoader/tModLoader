@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Setup
 
 			public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax method) {
 				if (method.Body != null &&
-					IsSingleLineStatement(method.Body) &&
+					CanStripSurroundingBraces(method.Body) &&
 					method.Body.DescendantTrivia().All(IsWhitespaceTrivia) &&
 					method.Body.Statements[0] is ReturnStatementSyntax returnStatement &&
 					returnStatement.Expression != null) {
@@ -92,7 +92,7 @@ namespace Terraria.ModLoader.Setup
 
 				// lets not destroy the stack
 				while (true) {
-					if (!IsSingleLineStatement(ifStmt.Statement))
+					if (!CanStripSurroundingBraces(ifStmt.Statement))
 						return false;
 
 					var elseStmt = ifStmt.Else?.Statement;
@@ -102,19 +102,20 @@ namespace Terraria.ModLoader.Setup
 					if (elseStmt is IfStatementSyntax elseifStmt)
 						ifStmt = elseifStmt;
 					else
-						return IsSingleLineStatement(elseStmt);
+						return CanStripSurroundingBraces(elseStmt);
 				}
 			}
 
-			private static bool IsSingleLineStatement(StatementSyntax node) {
+			private static bool CanStripSurroundingBraces(StatementSyntax node) {
 				switch (node) {
 					case BlockSyntax block:
 						return block.Statements.Count == 1 &&
 							block.GetLeadingTrivia().All(IsWhitespaceTrivia) &&
 							block.GetTrailingTrivia().All(IsWhitespaceTrivia) &&
-							IsSingleLineStatement(block.Statements[0]);
-					case IfStatementSyntax _:
-						return false; // removing braces around if statements can change semantics
+							CanStripSurroundingBraces(block.Statements[0]);
+					case IfStatementSyntax _:  // removing braces around if statements can change semantics
+					case LocalDeclarationStatementSyntax _:  // removing braces around variable declarations is invalid
+						return false;
 					default:
 						return !SpansMultipleLines(node);
 				}

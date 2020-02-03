@@ -89,24 +89,18 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -4723,15 +_,10 @@
- 
- 		public void DedServ() {
+@@ -4725,9 +_,11 @@
  			rand = new UnifiedRandom();
--			if (autoShutdown) {
-+			if (autoShutdown)
+ 			if (autoShutdown) {
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
--				IntPtr intPtr = FindWindow(null, lpWindowName);
--				if (intPtr != IntPtr.Zero)
--					ShowWindow(intPtr, 0);
--			}
--			else {
-+			else
++#if WINDOWS
+ 				IntPtr intPtr = FindWindow(null, lpWindowName);
+ 				if (intPtr != IntPtr.Zero)
+ 					ShowWindow(intPtr, 0);
++#endif
+ 			}
+ 			else {
  				Console.Title = "Terraria Server " + versionNumber2;
--			}
- 
- 			dedServ = true;
- 			showSplash = false;
 @@ -5439,13 +_,17 @@
  
  		public Main() {
