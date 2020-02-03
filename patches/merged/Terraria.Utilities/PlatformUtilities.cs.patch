@@ -1,10 +1,9 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilities.cs
-@@ -1,15 +_,90 @@
+@@ -1,15 +_,89 @@
 +#if !WINDOWS
 +using SDL2;
-+#endif
-+#if !WINDOWS
++using System;
 +using System.IO;
 +using System.Runtime.InteropServices;
 +#endif
