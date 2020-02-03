@@ -250,7 +250,7 @@
  								}
  							}
 -							if (tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
-+							if ((tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) || (Main.tileSign[tile2.type]) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
++							if ((tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) || (Main.tileSign[tile2.type] && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0))
  							{
  								short num11 = (short)Sign.ReadSign(j, i, true);
  								if (num11 != -1)

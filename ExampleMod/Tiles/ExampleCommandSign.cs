@@ -11,13 +11,10 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleCommandSign : ModTile
 	{
-		public ExampleCommandSign()
-		{
-		}
-
 		public override void SetDefaults()
 		{
 			// Credits to Dark;Light for finding this flag
+			// Keep in mind that the max amount of signs is 1000 (the size of the tileSign array)
 			// The Main.tileSign flag will do the following:
 			//  *Automatically manages the sign for the specified tile
 			//   -Adds a right-click to the tile to bring up an edit sign window
@@ -71,6 +68,11 @@ namespace ExampleMod.Tiles
 		public override bool HasSmartInteract()
 		{
 			return true;
+		}
+
+		public override void PlaceInWorld(int i, int j, Item item)
+		{
+			Main.sign[Sign.ReadSign(i, j, true)].text = "Type in a command, right-click sign to activate it!";
 		}
 
 		public override void RightClick(int i, int j)
