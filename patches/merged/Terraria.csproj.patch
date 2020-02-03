@@ -117,7 +117,7 @@
 +  </Target>
 +  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-+    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
++    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\Debug\netcoreapp3.0\setup&quot; --steamdir" ConsoleToMsBuild="true">
 +      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
 +    </Exec>
 +    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\$(OutputName).exe" />
