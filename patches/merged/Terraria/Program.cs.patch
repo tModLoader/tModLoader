@@ -31,64 +31,58 @@
  
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  
-@@ -66,14 +_,22 @@
- 			for (int i = 0; i < array.Length; i++)
- 			{
- 				Type type = array[i];
+@@ -55,10 +_,18 @@
+ 		private static void ForceJITOnAssembly(Assembly assembly) {
+ 			Type[] types = assembly.GetTypes();
+ 			for (int i = 0; i < types.Length; i++) {
 +#if WINDOWS
- 				MethodInfo[] methods = type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+ 				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 +#else
 +				MethodInfo[] methods = type.GetMethods();
 +#endif
- 				MethodInfo[] array2 = methods;
- 				for (int j = 0; j < array2.Length; j++)
- 				{
- 					MethodInfo methodInfo = array2[j];
+ 				foreach (MethodInfo methodInfo in methods) {
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
- 					{
 +#if WINDOWS
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 +#else
 +						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 +#endif
- 					}
  				}
- 				Program.ThingsLoaded++;
-@@ -183,10 +_,12 @@
  
- 		private static void InitializeConsoleOutput()
- 		{
+ 				ThingsLoaded++;
+@@ -133,9 +_,11 @@
+ 		}
+ 
+ 		private static void InitializeConsoleOutput() {
 +#if CLIENT
  			if (Debugger.IsAttached)
- 			{
  				return;
- 			}
+ 
 +#endif
- 			try
- 			{
- 				Console.OutputEncoding = Encoding.Unicode;
-@@ -223,7 +_,11 @@
- 					SocialAPI.Initialize(null);
+ 			try {
+ 				Console.OutputEncoding = Encoding.UTF8;
+ 				if (Platform.IsWindows)
+@@ -168,7 +_,11 @@
+ 					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
- 					Main.OnEnginePreload += new Action(Program.StartForceLoad);
+ 					Main.OnEnginePreload += StartForceLoad;
 +#if CLIENT
  					main.Run();
 +#else
 +					main.DedServ();
 +#endif
  				}
- 				catch (Exception e)
- 				{
-@@ -242,7 +_,11 @@
- 					streamWriter.WriteLine(e);
+ 				catch (Exception e) {
+ 					DisplayException(e);
+@@ -184,7 +_,11 @@
  					streamWriter.WriteLine("");
  				}
+ 
 +#if CLIENT
  				MessageBox.Show(e.ToString(), "Terraria: Error");
 +#else
 +				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif
  			}
- 			catch
- 			{
-
+ 			catch {
+ 			}

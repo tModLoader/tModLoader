@@ -27,19 +27,18 @@
  		public static bool anyClients = false;
  
  		private static Thread ServerThread;
--
 +#if SERVER
 +		public static UPnPNAT upnpnat;
-+
+ 
 +		public static IStaticPortMappingCollection mappings;
 +#endif
  		public static string portForwardIP;
  
  		public static int portForwardPort;
-@@ -60,10 +_,38 @@
- 		{
- 			Netplay.portForwardIP = Netplay.GetLocalIPAddress();
- 			Netplay.portForwardPort = Netplay.ListenPort;
+@@ -59,9 +_,37 @@
+ 		private static void OpenPort() {
+ 			portForwardIP = GetLocalIPAddress();
+ 			portForwardPort = ListenPort;
 +#if SERVER
 +			if (Netplay.upnpnat == null)
 +			{
@@ -64,8 +63,7 @@
 +#endif
  		}
  
- 		public static void closePort()
- 		{
+ 		public static void closePort() {
 +#if SERVER
 +			if (Netplay.portForwardOpen)
 +			{
@@ -74,23 +72,23 @@
 +#endif
  		}
  
- 		public static string GetLocalIPAddress()
-@@ -202,6 +_,11 @@
+ 		public static string GetLocalIPAddress() {
+@@ -171,6 +_,11 @@
+ 					flag = false;
  				}
- 				catch
- 				{
+ 				catch {
 +#if MAC
 +					Thread.Sleep(200);
 +					Netplay.Connection.Socket.Close();
 +					Netplay.Connection.Socket = new TcpSocket();
 +#endif
- 					if (!Netplay.disconnect && Main.gameMenu)
- 					{
+ 					if (!disconnect && Main.gameMenu)
  						flag = true;
-@@ -744,8 +_,20 @@
+ 				}
+@@ -591,8 +_,20 @@
+ 		}
  
- 		public static void Initialize()
- 		{
+ 		public static void Initialize() {
 +#if CLIENT
  			NetMessage.buffer[256] = new MessageBuffer();
  			NetMessage.buffer[256].whoAmI = 256;
@@ -107,5 +105,4 @@
 +#endif
  		}
  
- 		public static int GetSectionX(int x)
-
+ 		public static int GetSectionX(int x) => x / 200;

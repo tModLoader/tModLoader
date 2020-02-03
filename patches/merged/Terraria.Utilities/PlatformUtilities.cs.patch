@@ -1,15 +1,13 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
 +++ src/merged\Terraria.Utilities\PlatformUtilities.cs
-@@ -1,17 +_,93 @@
+@@ -1,15 +_,91 @@
 +#if !WINDOWS
 +using SDL2;
 +#endif
- using System;
 +#if !WINDOWS
 +using System.IO;
 +using System.Runtime.InteropServices;
 +#endif
- 
  namespace Terraria.Utilities
  {
  	public static class PlatformUtilities
@@ -94,4 +92,3 @@
 +#endif
  	}
  }
-

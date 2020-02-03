@@ -20,7 +20,7 @@
  		private struct SpriteData
  		{
  			public Vector4 Source;
-@@ -32,9 +_,109 @@
+@@ -42,9 +_,109 @@
  		private Texture2D[] _spriteTextures;
  
  		private int _queuedSpriteCount;
@@ -130,9 +130,9 @@
  		private static Vector2 _vector2Zero;
  
  		private static Rectangle? _nullRectangle;
-@@ -382,5 +_,320 @@
- 				1f
- 			};
+@@ -334,5 +_,320 @@
+ 				count -= num3;
+ 			}
  		}
 +#else
 +		public void Begin()
@@ -451,4 +451,3 @@
 +#endif
  	}
  }
-

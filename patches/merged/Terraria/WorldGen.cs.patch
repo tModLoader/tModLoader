@@ -14,20 +14,19 @@
  
  namespace Terraria
  {
-@@ -47796,6 +_,7 @@
- 		public static bool UpdateMapTile(int i, int j, bool addToList = true)
- 		{
+@@ -38229,6 +_,7 @@
+ 
+ 		public static bool UpdateMapTile(int i, int j, bool addToList = true) {
  			bool result = false;
 +#if CLIENT
- 			if (Main.mapEnabled && !WorldGen.noMapUpdate && !WorldGen.gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList)
- 			{
+ 			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
  				result = true;
-@@ -47810,6 +_,7 @@
- 					Main.refreshMap = true;
+ 				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
+@@ -38241,6 +_,7 @@
  				}
  			}
+ 
 +#endif
  			return result;
  		}
  
-

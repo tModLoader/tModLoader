@@ -1,15 +1,16 @@
 --- src/decompiled\Terraria.Utilities\CrashDump.cs
 +++ src/merged\Terraria.Utilities\CrashDump.cs
-@@ -67,7 +_,11 @@
+@@ -57,7 +_,12 @@
+ 
+ 		private static string CreateDumpName() {
  			DateTime dateTime = DateTime.Now.ToLocalTime();
- 			return string.Format("{0}_{1}_{2}_{3}.dmp", new object[]
- 			{
 +#if CLIENT
- 				"Terraria",
++			const string name = "Terraria";
 +#else
-+				"TerrariaServer",
++			const string name = "TerrariaServer";
 +#endif
- 				Main.versionNumber,
- 				dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture),
- 				Thread.CurrentThread.ManagedThreadId
-
+-			return string.Format("{0}_{1}_{2}_{3}.dmp", "Terraria", Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
++			return string.Format("{0}_{1}_{2}_{3}.dmp", name, Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
+ 		}
+ 
+ 		private static bool Write(Options options, ExceptionInfo exceptionInfo, string outputDirectory) {
