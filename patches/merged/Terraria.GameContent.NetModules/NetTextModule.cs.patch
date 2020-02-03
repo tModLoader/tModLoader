@@ -7,7 +7,7 @@
 -		public override bool Deserialize(BinaryReader reader, int senderPlayerId) => DeserializeAsClient(reader, senderPlayerId);
 +		public override bool Deserialize(BinaryReader reader, int senderPlayerId) {
 +#if CLIENT
-+ 			return DeserializeAsClient(reader, senderPlayerId);
++			return DeserializeAsClient(reader, senderPlayerId);
 +#else
 +			return DeserializeAsServer(reader, senderPlayerId);
 +#endif

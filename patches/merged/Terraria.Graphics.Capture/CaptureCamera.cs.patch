@@ -43,24 +43,29 @@
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -208,6 +_,11 @@
+@@ -208,6 +_,12 @@
  					bitmap.Dispose();
  				}
  
 +#else
 +				using (FileStream fileStream = File.Create(filename)) {
-+					PlatformUtilities.SavePng(fileStream, width, height, width, height, this._outputData);
-+ 				}
++					PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
++				}
++
 +#endif
  				return true;
  			}
  			catch (Exception value) {
-@@ -220,19 +_,24 @@
+@@ -220,19 +_,30 @@
  			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
  			string filename2 = Path.Combine(text, filename);
  			Directory.CreateDirectory(text);
--			using (Bitmap bitmap = new Bitmap(width, height)) {
--				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
++#if WINDOWS
+ 			using (Bitmap bitmap = new Bitmap(width, height)) {
+ 				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
++#else
++			{//keep the formatter happy
++#endif
  				int elementCount = texture.Width * texture.Height * 4;
  				texture.GetData(_outputData, 0, elementCount);
  				int num = 0;
@@ -74,22 +79,19 @@
  						_outputData[num2 + 1] = _outputData[num + 1];
  						_outputData[num2 + 3] = _outputData[num + 3];
 +#else
-+						this._outputData[num2] = this._outputData[num];
-+						this._outputData[num2 + 1] = this._outputData[num + 1];
-+						this._outputData[num2 + 2] = this._outputData[num + 2];
-+						this._outputData[num2 + 3] = this._outputData[num + 3];
++						_outputData[num2] = _outputData[num];
++						_outputData[num2 + 1] = _outputData[num + 1];
++						_outputData[num2 + 2] = _outputData[num + 2];
++						_outputData[num2 + 3] = _outputData[num + 3];
 +#endif
  						num += 4;
  						num2 += 4;
  					}
-@@ -240,12 +_,22 @@
+@@ -240,12 +_,20 @@
  					num += texture.Width - width << 2;
  				}
  
 +#if WINDOWS
-+			using (Bitmap bitmap = new Bitmap(width, height))
-+			{
-+				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  				BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
  				IntPtr scan = bitmapData.Scan0;
  				Marshal.Copy(_outputData, 0, scan, width * height * 4);
@@ -97,10 +99,11 @@
  				bitmap.Save(filename2, imageFormat);
  			}
 +#else
-+			using (FileStream fileStream = File.Create(filename2))
-+			{
++			}
++
++			using (FileStream fileStream = File.Create(filename2)) {
 +				PlatformUtilities.SavePng(fileStream, width, height, width, height, this._outputData);
-+ 			}
++			}
 +#endif
  		}
  

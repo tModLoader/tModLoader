@@ -1,4 +1,4 @@
-﻿#if MAC
+#if MAC
 using System;
 using System.IO;
 using System.Reflection;

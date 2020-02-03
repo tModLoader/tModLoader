@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureInterface.cs
 +++ src/merged\Terraria.Graphics.Capture\CaptureInterface.cs
-@@ -918,7 +_,16 @@
+@@ -918,7 +_,17 @@
  					}
  
  					if (i == num2++ && flag2 && flag)
@@ -13,6 +13,7 @@
 +						});
 +#else
  						Process.Start(Path.Combine(Main.SavePath, "Captures"));
++
 +#endif
  
  					if (i == num2++ && flag2) {

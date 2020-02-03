@@ -1,4 +1,4 @@
-﻿#if LINUX
+#if LINUX
 using System;
 using System.IO;
 using System.Reflection;

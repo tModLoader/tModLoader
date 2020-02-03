@@ -60,17 +60,18 @@
  			SetDisplayMode(currentValue3, currentValue4, currentValue2);
  			Configuration.Get("SettingsUnlock_WorldEvil", ref SettingsUnlock_WorldEvil);
  			Configuration.Get("SettingsEnabled_MinersWobble", ref SettingsEnabled_MinersWobble);
-@@ -4354,9 +_,12 @@
+@@ -4354,9 +_,13 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
  
 -							if (num >= 91 && binaryReader.ReadBoolean())
-+								if (num >= 91 && binaryReader.ReadBoolean()) {
++							if (num >= 91 && binaryReader.ReadBoolean()) {
 +#if CLIENT && WINDOWS
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
  
 +#endif
-+								}
++							}
++
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
  								int height = binaryReader.ReadInt32();
@@ -88,18 +89,24 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -4725,9 +_,11 @@
+@@ -4723,15 +_,10 @@
+ 
+ 		public void DedServ() {
  			rand = new UnifiedRandom();
- 			if (autoShutdown) {
+-			if (autoShutdown) {
++			if (autoShutdown)
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
-+#if WINDOWS
- 				IntPtr intPtr = FindWindow(null, lpWindowName);
- 				if (intPtr != IntPtr.Zero)
- 					ShowWindow(intPtr, 0);
-+#endif
- 			}
- 			else {
+-				IntPtr intPtr = FindWindow(null, lpWindowName);
+-				if (intPtr != IntPtr.Zero)
+-					ShowWindow(intPtr, 0);
+-			}
+-			else {
++			else
  				Console.Title = "Terraria Server " + versionNumber2;
+-			}
+ 
+ 			dedServ = true;
+ 			showSplash = false;
 @@ -5439,13 +_,17 @@
  
  		public Main() {
@@ -143,10 +150,11 @@
  			WorldGen.RandomizeBackgrounds();
  			WorldGen.RandomizeCaveBackgrounds();
  			WorldGen.RandomizeMoonState();
-@@ -7918,13 +_,17 @@
+@@ -7918,13 +_,18 @@
  				ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(myPlayer);
  			}
++
 +#if CLIENT && WINDOWS
  			else {
  				IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
@@ -177,33 +185,28 @@
  			foreach (DisplayMode supportedDisplayMode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes) {
  				if (supportedDisplayMode.Width < minScreenW || supportedDisplayMode.Height < minScreenH || supportedDisplayMode.Width > maxScreenW || supportedDisplayMode.Height > maxScreenH)
  					continue;
-@@ -8637,6 +_,30 @@
+@@ -8637,6 +_,25 @@
  		}
  
  		protected void UpdateAudio() {
 +#if !WINDOWS
 +			if (Main.engine != null)
-+			{
 +				Main.engine.Update();
-+			}
-+			object audioLock = Main._audioLock;
-+			lock (audioLock)
-+			{
-+				for (int i = 0; i < Main.ActiveSoundInstances.Count; i++)
-+				{
-+					if (Main.ActiveSoundInstances[i] == null)
-+					{
++
++			lock (Main._audioLock) {
++				for (int i = 0; i < Main.ActiveSoundInstances.Count; i++) {
++					if (Main.ActiveSoundInstances[i] == null) {
 +						Main.ActiveSoundInstances.RemoveAt(i);
 +						i--;
 +					}
-+					else if (Main.ActiveSoundInstances[i].State == SoundState.Stopped)
-+					{
++					else if (Main.ActiveSoundInstances[i].State == SoundState.Stopped) {
 +						Main.ActiveSoundInstances[i].Dispose();
 +						Main.ActiveSoundInstances.RemoveAt(i);
 +						i--;
 +					}
 +				}
 +			}
++
 +#endif
  			if (!dedServ) {
  				bool flag = (!hasFocus || gamePaused) && netMode == 0;
@@ -289,7 +292,7 @@
 +#if WINDOWS
  			tileBatch.Begin();
 +#else
-+				tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
++			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
 +#endif
  			try {
  				drawWaters(bg: true);
@@ -346,27 +349,31 @@
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
-@@ -50270,6 +_,10 @@
+@@ -50270,6 +_,11 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
 +#if !WINDOWS
-+			object audioLock = Main._audioLock;
-+			lock (audioLock) {
++			// lock statement without creating a block. Formatter wants to indent the whole method if we wrap it with another block.
++			// could create another method _PlaySound or do_PlaySound, but we try to avoid annoying people who want to hook methods
++			Monitor.Enter(Main._audioLock);
 +#endif
  			int num = Style;
  			try {
  				if (dedServ)
-@@ -50845,6 +_,9 @@
+@@ -50843,6 +_,12 @@
  			}
+ 			catch {
+ 			}
++#if !WINDOWS
++			finally {
++				Monitor.Exit(Main._audioLock);
++			}
++
++#endif
  
  			return null;
-+#if !WINDOWS
-+			}
-+#endif
  		}
- 
- 		public static void ClearPendingPlayerSelectCallbacks() {
 @@ -50906,6 +_,7 @@
  
  			bool flag = false;

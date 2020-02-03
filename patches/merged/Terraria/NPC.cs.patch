@@ -8,10 +8,11 @@
  						if (flag76) {
  							MoonlordDeathDrama.AddExplosion(vector146);
  							for (float num1173 = 0f; num1173 < num1168 * 2f; num1173++) {
-@@ -24195,6 +_,7 @@
+@@ -24195,6 +_,8 @@
  								dust2.scale = num1171;
  							}
  						}
++
 +#endif
  
  						for (float num1174 = 0f; num1174 < this.ai[1] / 60f; num1174++) {

@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria\Tile.cs
 +++ src/merged\Terraria\Tile.cs
-@@ -1,6 +_,10 @@
+@@ -1,7 +_,11 @@
  using Microsoft.Xna.Framework;
 +using System.Runtime.InteropServices;
  
@@ -11,3 +11,4 @@
 +#endif
  	public class Tile
  	{
+ 		public ushort type;
