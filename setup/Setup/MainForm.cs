@@ -38,6 +38,7 @@ namespace Terraria.ModLoader.Setup
 					.Select(b => taskButtons[b]()).ToArray());
 
 			SetPatchMode(Settings.Default.PatchMode);
+			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
 
 			Closing += (sender, args) =>
 			{
@@ -205,6 +206,12 @@ namespace Terraria.ModLoader.Setup
 
 		private void fuzzyToolStripMenuItem_Click(object sender, EventArgs e) {
 			SetPatchMode(2);
+		}
+
+		private void formatDecompiledOutputToolStripMenuItem_Click(object sender, EventArgs e) {
+			Settings.Default.FormatAfterDecompiling ^= true;
+			Settings.Default.Save();
+			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
 		}
 	}
 }

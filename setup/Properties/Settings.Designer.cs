@@ -100,5 +100,17 @@ namespace Terraria.ModLoader.Properties {
                 this["PatchMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FormatAfterDecompiling {
+            get {
+                return ((bool)(this["FormatAfterDecompiling"]));
+            }
+            set {
+                this["FormatAfterDecompiling"] = value;
+            }
+        }
     }
 }

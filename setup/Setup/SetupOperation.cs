@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Setup
 				this.action = action;
 			}
 
-			public WorkItem(string status, Func<Task> action) : this(status, () => action().GetAwaiter().GetResult()) { }
+			public WorkItem(string status, Func<Task> action) : this(status, () => action().GetAwaiter().GetResult()) { } //todo sync|async barrier here, probably wraps exceptions
 		}
 
 		protected void ExecuteParallel(List<WorkItem> items, bool resetProgress = true, int maxDegree = 0) {

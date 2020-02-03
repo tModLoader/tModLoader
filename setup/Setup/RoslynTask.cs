@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -81,6 +82,13 @@ namespace Terraria.ModLoader.Setup
 				return document;
 
 			return document.WithSyntaxRoot(visitor.Visit(root));
+		}
+
+		private static Project adhocCSharpProject = new AdhocWorkspace().AddProject("", LanguageNames.CSharp);
+		public static async Task<string> TransformSource(string source, CancellationToken cancel, Func<Document, CancellationToken, Task<Document>> transform) {
+			var doc = adhocCSharpProject.AddDocument("", source);
+			doc = await transform(doc, cancel).ConfigureAwait(false);
+			return (await doc.GetTextAsync()).ToString();
 		}
 	}
 }

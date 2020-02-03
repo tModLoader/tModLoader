@@ -46,6 +46,7 @@ namespace Terraria.ModLoader.Setup
             this.menuItemOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemTerraria = new System.Windows.Forms.ToolStripMenuItem();
             this.resetTimeStampOptimizationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formatDecompiledOutputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.decompileServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formatCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -239,7 +240,8 @@ namespace Terraria.ModLoader.Setup
             // 
             this.menuItemOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemTerraria,
-            this.resetTimeStampOptimizationsToolStripMenuItem});
+            this.resetTimeStampOptimizationsToolStripMenuItem,
+            this.formatDecompiledOutputToolStripMenuItem});
             this.menuItemOptions.Name = "menuItemOptions";
             this.menuItemOptions.Size = new System.Drawing.Size(61, 20);
             this.menuItemOptions.Text = "Options";
@@ -257,6 +259,13 @@ namespace Terraria.ModLoader.Setup
             this.resetTimeStampOptimizationsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.resetTimeStampOptimizationsToolStripMenuItem.Text = "Reset TimeStamp Optimizations";
             this.resetTimeStampOptimizationsToolStripMenuItem.Click += new System.EventHandler(this.menuItemResetTimeStampOptmizations_Click);
+            // 
+            // formatDecompiledOutputToolStripMenuItem
+            // 
+            this.formatDecompiledOutputToolStripMenuItem.Name = "formatDecompiledOutputToolStripMenuItem";
+            this.formatDecompiledOutputToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.formatDecompiledOutputToolStripMenuItem.Text = "Format Decompiled Output";
+            this.formatDecompiledOutputToolStripMenuItem.Click += new System.EventHandler(this.formatDecompiledOutputToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -310,21 +319,21 @@ namespace Terraria.ModLoader.Setup
             // exactToolStripMenuItem
             // 
             this.exactToolStripMenuItem.Name = "exactToolStripMenuItem";
-            this.exactToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exactToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.exactToolStripMenuItem.Text = "Exact";
             this.exactToolStripMenuItem.Click += new System.EventHandler(this.exactToolStripMenuItem_Click);
             // 
             // offsetToolStripMenuItem
             // 
             this.offsetToolStripMenuItem.Name = "offsetToolStripMenuItem";
-            this.offsetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.offsetToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.offsetToolStripMenuItem.Text = "Offset";
             this.offsetToolStripMenuItem.Click += new System.EventHandler(this.offsetToolStripMenuItem_Click);
             // 
             // fuzzyToolStripMenuItem
             // 
             this.fuzzyToolStripMenuItem.Name = "fuzzyToolStripMenuItem";
-            this.fuzzyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fuzzyToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.fuzzyToolStripMenuItem.Text = "Fuzzy";
             this.fuzzyToolStripMenuItem.Click += new System.EventHandler(this.fuzzyToolStripMenuItem_Click);
             // 
@@ -398,6 +407,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem offsetToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fuzzyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem simplifierToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem formatDecompiledOutputToolStripMenuItem;
 	}
 }
 

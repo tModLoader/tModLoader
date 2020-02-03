@@ -67,6 +67,7 @@ namespace Terraria.ModLoader.Setup
 
 		private readonly string srcDir;
 		private readonly bool serverOnly;
+		private readonly bool formatOutput = Settings.Default.FormatAfterDecompiling;
 
 		private ExtendedProjectDecompiler projectDecompiler;
 
@@ -229,7 +230,7 @@ namespace Terraria.ModLoader.Setup
 				var path = Path.Combine(srcDir, src.Key);
 				CreateParentDirectory(path);
 
-				using (var w = new StreamWriter(path))
+				using (var w = new StringWriter())
 				{
 					if (conditional != null)
 						w.WriteLine("#if "+conditional);
@@ -240,6 +241,12 @@ namespace Terraria.ModLoader.Setup
 
 					if (conditional != null)
 						w.WriteLine("#endif");
+
+					string source = w.ToString();
+					if (formatOutput) //would be nice to change the title to "Formatting:" at this stage but meh
+						source = RoslynTask.TransformSource(source, taskInterface.CancellationToken, FormatTask.Format).GetAwaiter().GetResult(); //this will probably still wrap the exception, not ideal, but oh well
+
+					File.WriteAllText(path, source);
 				}
 			});
 		}

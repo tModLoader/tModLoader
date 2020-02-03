@@ -6,8 +6,8 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.Setup
@@ -19,14 +19,16 @@ namespace Terraria.ModLoader.Setup
 
 		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
 
-		protected override async Task<Document> Process(Document doc) {
+		protected override async Task<Document> Process(Document doc) => await Format(doc, taskInterface.CancellationToken);
+
+		public static async Task<Document> Format(Document doc, CancellationToken cancellationToken) {
 			doc = await Visit(doc, new RemoveBracesFromSingleStatementRewriter());
 			doc = await Visit(doc, new AddVisualNewlinesRewriter());
-			doc = await Format(doc);
+			doc = await	RoslynFormat(doc, cancellationToken);
 			return doc;
 		}
 
-		private async Task<Document> Format(Document document) {
+		private static async Task<Document> RoslynFormat(Document document, CancellationToken cancellationToken) {
 			OptionSet options = await document.GetOptionsAsync();
 			options = options.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false)
@@ -38,7 +40,7 @@ namespace Terraria.ModLoader.Setup
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
 
-			return await Formatter.FormatAsync(document, options, cancellationToken: taskInterface.CancellationToken);
+			return await Formatter.FormatAsync(document, options, cancellationToken);
 		}
 
 		private static bool SpansMultipleLines(StatementSyntax node) {
