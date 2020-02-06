@@ -157,10 +157,12 @@ namespace ExampleMod.Items
 			PressedLeft =  player.controlLeft  && player.releaseLeft;
 
 			//Set the "double-tap" bools
-			DoubleTapDown = PressedDown   && player.doubleTapCardinalTimer[Down]  > 0;
-			DoubleTapUp = PressedUp       && player.doubleTapCardinalTimer[Up]    > 0;
-			DoubleTapRight = PressedRight && player.doubleTapCardinalTimer[Right] > 0;
-			DoubleTapLeft = PressedLeft   && player.doubleTapCardinalTimer[Left]  > 0;
+			//Vanilla handles resetting the timers for us, so we just need to check if it's less than the max (15)
+			//The timers cannot be zero, since if they were, vanilla would have set them to 15 before this hook
+			DoubleTapDown = PressedDown   && player.doubleTapCardinalTimer[Down]  < 15;
+			DoubleTapUp = PressedUp       && player.doubleTapCardinalTimer[Up]    < 15;
+			DoubleTapRight = PressedRight && player.doubleTapCardinalTimer[Right] < 15;
+			DoubleTapLeft = PressedLeft   && player.doubleTapCardinalTimer[Left]  < 15;
 
 			//Finally, if any of the "DoubleTap" properties are true and the dash hasn't started, set the dash to being active
 			//Examples for alternate checks are the following:
