@@ -123,6 +123,10 @@ namespace Terraria.ModLoader.Setup
 
 		protected PEFile ReadModule(string path, Version version)
 		{
+			var versionedPath = path.Insert(path.LastIndexOf('.'), $"_v{version}");
+			if (File.Exists(versionedPath))
+				path = versionedPath;
+
 			taskInterface.SetStatus("Loading " + Path.GetFileName(path));
 			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
 			{
