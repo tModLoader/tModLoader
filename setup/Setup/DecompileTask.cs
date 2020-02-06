@@ -341,7 +341,7 @@ namespace Terraria.ModLoader.Setup
 				string wpath = path;
 				string cards = "";
 				while (wpath.Contains('/')) {
-					var parent = wpath.Substring(0, wpath.IndexOf('/'));
+					var parent = wpath.Substring(0, wpath.LastIndexOf('/'));
 					if (exclude.Any(e => e.StartsWith(parent)))
 						break; //can't use parent as a wildcard
 

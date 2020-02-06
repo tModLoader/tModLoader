@@ -11,7 +11,7 @@
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
      <Optimize>true</Optimize>
-+    <OutputName>Terraria</OutputName>
++	<OutputName>Terraria</OutputName>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
@@ -45,13 +45,13 @@
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Microsoft.Xna.Framework.Xact" />
++    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))">
++      <Private>true</Private>
++    </Reference>
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))">
 +      <Private>true</Private>
 +    </Reference>
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))">
-+      <Private>true</Private>
-+    </Reference>
-+    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))">
 +      <Private>true</Private>
 +    </Reference>
 +    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))">
@@ -81,7 +81,7 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
-     <EmbeddedResource Include="Terraria.Libraries/*" />
+     <EmbeddedResource Include="Terraria.Libraries/**" />
      <EmbeddedResource Include="Terraria.Localization.Content/*" />
 +    <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <LogicalName>ReLogic.dll</LogicalName>
