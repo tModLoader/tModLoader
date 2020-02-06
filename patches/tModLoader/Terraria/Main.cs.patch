@@ -5048,7 +5048,7 @@
  						{
  							int num7 = Main.rand.Next(3);
  							Main.soundInstanceDig[num7].Stop();
-@@ -60969,18 +_,60 @@
+@@ -60969,11 +_,35 @@
  							soundEffectInstance.Pan = num3;
  							Main.trackableSoundInstances[num] = soundEffectInstance;
  						}
@@ -5064,10 +5064,12 @@
 +						}
  						if (soundEffectInstance != null)
  						{
- 							soundEffectInstance.Pitch += pitchOffset;
- 							soundEffectInstance.Volume *= volumeScale;
+-							soundEffectInstance.Pitch += pitchOffset;
+-							soundEffectInstance.Volume *= volumeScale;
++							soundEffectInstance.Pitch = Utils.Clamp(soundEffectInstance.Pitch + pitchOffset, -1, 1);
++							soundEffectInstance.Volume = Utils.Clamp(soundEffectInstance.Volume * volumeScale, 0, 1);
  							Main.PlaySoundInstance(soundEffectInstance);
- 						}
++						}
 +						if ((type >= 30 && type <= 35) || type == 39)
 +						{
 +							if (Main.ambientError > 0)
@@ -5081,10 +5083,10 @@
 +							{
 +								Main.soundError--;
 +							}
-+						}
+ 						}
  						result = soundEffectInstance;
  						return result;
- 					}
+@@ -60981,6 +_,24 @@
  				}
  				catch
  				{
