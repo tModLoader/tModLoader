@@ -21,16 +21,14 @@ namespace Terraria.ModLoader.Setup
 			InitializeComponent();
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
-			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>

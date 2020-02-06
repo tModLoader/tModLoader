@@ -1,84 +1,15 @@
---- src/merged\Terraria\NetMessage.cs
-+++ src/Terraria\Terraria\NetMessage.cs
-@@ -367,7 +_,7 @@
- 					writer.Write((byte)number5);
- 					break;
- 				case 18:
--					writer.Write(Main.dayTime ? 1 : 0);
-+					writer.Write((byte)(Main.dayTime ? 1 : 0));
- 					writer.Write((int)Main.time);
- 					writer.Write(Main.sunModY);
- 					writer.Write(Main.moonModY);
-@@ -376,7 +_,7 @@
- 					writer.Write((byte)number);
- 					writer.Write((short)number2);
- 					writer.Write((short)number3);
--					writer.Write((number4 == 1f) ? 1 : 0);
-+					writer.Write((byte)((number4 == 1f) ? 1 : 0));
- 					break;
- 				case 20:
- 				{
-@@ -678,7 +_,7 @@
+--- src/decompiled\Terraria\NetMessage.cs
++++ src/merged\Terraria\NetMessage.cs
+@@ -1781,6 +_,12 @@
  					}
- 					else
- 					{
--						writer.Write(0);
-+						writer.Write((short)0);
- 					}
- 					break;
- 				case 35:
-@@ -1611,7 +_,7 @@
- 								{
- 									short[] arg_1FF_0 = array2;
- 									short expr_1F7 = num2;
--									num2 = expr_1F7 + 1;
-+									num2 = (short)(expr_1F7 + 1);
- 									arg_1FF_0[(int)expr_1F7] = num9;
- 								}
- 							}
-@@ -1622,7 +_,7 @@
- 								{
- 									short[] arg_240_0 = array2;
- 									short expr_238 = num2;
--									num2 = expr_238 + 1;
-+									num2 = (short)(expr_238 + 1);
- 									arg_240_0[(int)expr_238] = num10;
- 								}
- 							}
-@@ -1633,7 +_,7 @@
- 								{
- 									short[] arg_284_0 = array2;
- 									short expr_27C = num2;
--									num2 = expr_27C + 1;
-+									num2 = (short)(expr_27C + 1);
- 									arg_284_0[(int)expr_27C] = num11;
- 								}
- 							}
-@@ -1644,7 +_,7 @@
- 								{
- 									short[] arg_2C4_0 = array3;
- 									short expr_2BB = num3;
--									num3 = expr_2BB + 1;
-+									num3 = (short)(expr_2BB + 1);
- 									arg_2C4_0[(int)expr_2BB] = (short)num12;
- 								}
- 							}
-@@ -1655,7 +_,7 @@
- 								{
- 									short[] arg_304_0 = array3;
- 									short expr_2FB = num3;
--									num3 = expr_2FB + 1;
-+									num3 = (short)(expr_2FB + 1);
- 									arg_304_0[(int)expr_2FB] = (short)num13;
- 								}
- 							}
-@@ -1961,7 +_,7 @@
- 								}
- 								else
- 								{
--									tile.slope(b4 - 1);
-+									tile.slope((byte)(b4 - 1));
- 								}
- 							}
- 						}
-
+ 				}
+ 				catch {
++#if SERVER
++					if (num < NetMessage.buffer.Length - 100)
++					{
++						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
++					}
++#endif
+ 					num2 = 0;
+ 					num = 0;
+ 				}

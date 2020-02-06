@@ -1,39 +1,14 @@
---- src/merged\Terraria\Tile.cs
-+++ src/Terraria\Terraria\Tile.cs
-@@ -296,7 +_,7 @@
+--- src/decompiled\Terraria\Tile.cs
++++ src/merged\Terraria\Tile.cs
+@@ -1,7 +_,11 @@
+ using Microsoft.Xna.Framework;
++using System.Runtime.InteropServices;
  
- 		public byte wallColor()
- 		{
--			return this.bTileHeader & 31;
-+			return (byte)(this.bTileHeader & 31);
- 		}
- 
- 		public void wallColor(byte wallColor)
-@@ -305,7 +_,7 @@
- 			{
- 				wallColor = 30;
- 			}
--			this.bTileHeader = ((this.bTileHeader & 224) | wallColor);
-+			this.bTileHeader = (byte)((this.bTileHeader & 224) | wallColor);
- 		}
- 
- 		public bool lava()
-@@ -317,7 +_,7 @@
- 		{
- 			if (lava)
- 			{
--				this.bTileHeader = ((this.bTileHeader & 159) | 32);
-+				this.bTileHeader = (byte)((this.bTileHeader & 159) | 32);
- 				return;
- 			}
- 			this.bTileHeader &= 223;
-@@ -332,7 +_,7 @@
- 		{
- 			if (honey)
- 			{
--				this.bTileHeader = ((this.bTileHeader & 159) | 64);
-+				this.bTileHeader = (byte)((this.bTileHeader & 159) | 64);
- 				return;
- 			}
- 			this.bTileHeader &= 191;
-
+ namespace Terraria
+ {
++#if !WINDOWS
++	[StructLayout(LayoutKind.Sequential, Pack = 1)]
++#endif
+ 	public class Tile
+ 	{
+ 		public ushort type;
