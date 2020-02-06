@@ -336,6 +336,7 @@ namespace Terraria.ModLoader.Setup
             this.Controls.Add(this.buttonDecompile);
             this.Controls.Add(this.buttonSetup);
             this.Controls.Add(this.mainMenuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenuStrip;
             this.Name = "MainForm";
             this.Text = "tModLoader Dev Setup";
