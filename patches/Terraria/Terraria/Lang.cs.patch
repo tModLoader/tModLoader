@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Lang.cs
-+++ src/merged\Terraria\Lang.cs
++++ src/Terraria\Terraria\Lang.cs
 @@ -336,6 +_,7 @@
  		}
  

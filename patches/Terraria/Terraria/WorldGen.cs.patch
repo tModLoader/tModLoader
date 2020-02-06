@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\WorldGen.cs
-+++ src/merged\Terraria\WorldGen.cs
++++ src/Terraria\Terraria\WorldGen.cs
 @@ -15,10 +_,12 @@
  using Terraria.ID;
  using Terraria.IO;

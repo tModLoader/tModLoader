@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureInterface.cs
-+++ src/merged\Terraria.Graphics.Capture\CaptureInterface.cs
++++ src/Terraria\Terraria.Graphics.Capture\CaptureInterface.cs
 @@ -918,7 +_,17 @@
  					}
  

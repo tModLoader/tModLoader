@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria.csproj
-+++ src/merged\Terraria.csproj
++++ src/Terraria\Terraria.csproj
 @@ -6,11 +_,12 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © Re-Logic 2017</Copyright>

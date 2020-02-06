@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Player.cs
-+++ src/merged\Terraria\Player.cs
++++ src/Terraria\Terraria\Player.cs
 @@ -30881,9 +_,11 @@
  					int num4 = y;
  					bool num5 = Main.tile[x, num4].active();

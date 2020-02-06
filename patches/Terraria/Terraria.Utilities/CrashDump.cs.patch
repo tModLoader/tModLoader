@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria.Utilities\CrashDump.cs
-+++ src/merged\Terraria.Utilities\CrashDump.cs
++++ src/Terraria\Terraria.Utilities\CrashDump.cs
 @@ -57,7 +_,12 @@
  
  		private static string CreateDumpName() {

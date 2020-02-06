@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria.GameContent.NetModules\NetTextModule.cs
-+++ src/merged\Terraria.GameContent.NetModules\NetTextModule.cs
++++ src/Terraria\Terraria.GameContent.NetModules\NetTextModule.cs
 @@ -49,6 +_,12 @@
  			NetManager.Instance.Broadcast(SerializeServerMessage(NetworkText.FromLiteral(message.Text), messageColor));
  		}

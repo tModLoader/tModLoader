@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Netplay.cs
-+++ src/merged\Terraria\Netplay.cs
++++ src/Terraria\Terraria\Netplay.cs
 @@ -2,6 +_,9 @@
  using System.IO;
  using System.Net;

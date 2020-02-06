@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Mount.cs
-+++ src/merged\Terraria\Mount.cs
++++ src/Terraria\Terraria\Mount.cs
 @@ -951,10 +_,12 @@
  			}
  

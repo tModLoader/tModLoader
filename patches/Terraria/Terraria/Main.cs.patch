@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Main.cs
-+++ src/merged\Terraria\Main.cs
++++ src/Terraria\Terraria\Main.cs
 @@ -4,6 +_,9 @@
  using Microsoft.Xna.Framework.Content;
  using Microsoft.Xna.Framework.Graphics;

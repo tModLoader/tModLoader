@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Tile.cs
-+++ src/merged\Terraria\Tile.cs
++++ src/Terraria\Terraria\Tile.cs
 @@ -1,7 +_,11 @@
  using Microsoft.Xna.Framework;
 +using System.Runtime.InteropServices;

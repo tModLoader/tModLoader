@@ -1,5 +1,5 @@
 --- src/decompiled\Terraria\Program.cs
-+++ src/merged\Terraria\Program.cs
++++ src/Terraria\Terraria\Program.cs
 @@ -2,14 +_,18 @@
  using ReLogic.OS;
  using System;
