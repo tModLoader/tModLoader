@@ -270,7 +270,7 @@ namespace Terraria.ModLoader.Setup
 					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
 
 					w.WriteStartElement("PropertyGroup");
-					w.WriteElementString("TargetFramework", "net45");
+					w.WriteElementString("TargetFramework", "net40");
 					w.WriteElementString("OutputType", "WinExe");
 					w.WriteElementString("Version", new AssemblyName(module.FullName).Version.ToString());
 					
