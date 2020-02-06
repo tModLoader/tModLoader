@@ -82,25 +82,5 @@ namespace Terraria.ModLoader.Setup
 			else
 				DeleteFile(patchPath);
 		}
-
-		private static string StripDestHunkOffsets(string patchText) {
-			var lines = patchText.Split(new [] { Environment.NewLine }, StringSplitOptions.None);
-			for (int i = 0; i < lines.Length; i++)
-				if (lines[i].StartsWith("@@"))
-					lines[i] = HunkOffsetRegex.Replace(lines[i], "@@ -$1,$2 +_,$4 @@");
-
-			return string.Join(Environment.NewLine, lines);
-		}
-
-		private string CallDiff(string baseFile, string srcFile, string baseName, string srcName)
-		{
-			var output = new StringBuilder();
-			Program.RunCmd(Program.toolsDir, Path.Combine(Program.toolsDir, "py.exe"),
-				$"diff.py {baseFile} {srcFile} {baseName} {srcName}",
-				s => output.Append(s));
-
-			return output.ToString();
-		}
-
 	}
 }
