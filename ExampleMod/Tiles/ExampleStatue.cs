@@ -48,9 +48,10 @@ namespace ExampleMod.Tiles
 			int spawnX = x * 16 + 16;
 			int spawnY = (y + 3) * 16;
 
-			if (Main.rand.NextFloat() < .95f) // this is 95% chance for item spawn, 5% chance for npc spawn
+			// This example shows both item spawning code and npc spawning code, you can use whichever code suits your mod
+			if (Main.rand.NextFloat() < .95f) // There is a 95% chance for item spawn and a 5% chance for npc spawn
 			{
-				// If you want to make a NPC spawning statue, see below.
+				// If you want to make a item spawning statue, see below.
 				if (Wiring.CheckMech(x, y, 60) && Item.MechSpawn(spawnX, spawnY, ItemID.SilverCoin) && Item.MechSpawn(spawnX, spawnY, ItemID.GoldCoin) && Item.MechSpawn(spawnX, spawnY, ItemID.PlatinumCoin)) {
 					int id = ItemID.SilverCoin;
 					if (Main.rand.NextBool(100)) {
@@ -63,7 +64,7 @@ namespace ExampleMod.Tiles
 				}
 			}
 			else {
-				// If you want to make a NPC spawning statue, see below.
+				// If you want to make an NPC spawning statue, see below.
 				int npcIndex = -1;
 				// 30 is the time before it can be used again. NPC.MechSpawn checks nearby for other spawns to prevent too many spawns. 3 in immediate vicinity, 6 nearby, 10 in world.
 				if (Wiring.CheckMech(x, y, 30) && NPC.MechSpawn((float)spawnX, (float)spawnY, NPCID.Goldfish)) {
