@@ -1096,7 +1096,10 @@ Generating call graph for function Terraria.ModLoader.ProjectileLoader.OnTileCol
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.PostAI
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.PostDraw
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.PreAI
-Generating call graph for function Terraria.ModLoader.ProjectileLoader.PreDraw
+Generati/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeFinder.cs:63: warning: argument 'name' of command @param is not found in the argument list of Terraria.ModLoader.RecipeFinder::AddRecipeGroup(int recipeGroupID, int stack=1)
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/RecipeFinder.cs:67: warning: The following parameters of Terraria.ModLoader.RecipeFinder.AddRecipeGroup(int recipeGroupID, int stack=1) are not documented:
+  parameter 'recipeGroupID'
+ng call graph for function Terraria.ModLoader.ProjectileLoader.PreDraw
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.PreDrawExtras
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.PreKill
 Generating call graph for function Terraria.ModLoader.ProjectileLoader.ShouldUpdatePosition
@@ -2310,5 +2313,5 @@ Patching output file 159/162
 Patching output file 160/162
 Patching output file 161/162
 Patching output file 162/162
-lookup cache used 11694/131072 hits=101982 misses=12257
+lookup cache used 11694/131072 hits=102030 misses=12257
 finished...
