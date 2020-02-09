@@ -127,6 +127,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size. Vanilla recipe group IDs can be found in Terraria.ID.RecipeGroupID and modded recipe group IDs will be returned from RecipeGroup.RegisterGroup.
+		/// </summary>
+		/// <param name="recipeGroupID">The RecipeGroupID.</param>
+		/// <param name="stack">The stack.</param>
+		/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
+		public void AddRecipeGroup(int recipeGroupID, int stack = 1)
+		{
+			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupID)) {
+				throw new RecipeException("A recipe group with the ID " + recipeGroupID + " does not exist.");
+			}
+			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupID];
+			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
+			acceptedGroups.Add(recipeGroupID);
+		}
+
+		/// <summary>
 		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
 		/// </summary>
 		/// <param name="tileID">The tile identifier.</param>
