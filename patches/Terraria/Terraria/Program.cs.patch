@@ -38,14 +38,14 @@
 +#if WINDOWS
  				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 +#else
-+				MethodInfo[] methods = type.GetMethods();
++				MethodInfo[] methods = types[i].GetMethods();
 +#endif
  				foreach (MethodInfo methodInfo in methods) {
  					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
 +#if WINDOWS
  						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
 +#else
-+						Program.JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
 +#endif
  				}
  
