@@ -1,7 +1,8 @@
 --- src/decompiled\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -1,16 +_,17 @@
+@@ -1,16 +_,18 @@
  <Project Sdk="Microsoft.NET.Sdk">
++  <Import Project="..\TerrariaSteamPath.targets" />
    <PropertyGroup>
 -    <TargetFramework>net45</TargetFramework>
 +    <TargetFramework>net40</TargetFramework>
@@ -21,7 +22,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -23,25 +_,101 @@
+@@ -23,25 +_,98 @@
    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
      <Optimize>false</Optimize>
      <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
@@ -123,10 +124,7 @@
 +  </Target>
 +  <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
 +    <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-+    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\Debug\netcoreapp3.0\setup&quot; --steamdir" ConsoleToMsBuild="true">
-+      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
-+    </Exec>
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\$(OutputName).exe" />
-+    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(SteamDir)" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
 +  </Target>
  </Project>

@@ -44,6 +44,9 @@ namespace Terraria.ModLoader.Setup
 				return;
 			}
 
+			if (!File.Exists(targetsFilePath))
+				UpdateSteamDirTargetsFile();
+
 			Application.Run(new MainForm());
 		}
 
@@ -128,9 +131,21 @@ namespace Terraria.ModLoader.Setup
 				else {
 					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
 					Settings.Default.Save();
+					UpdateSteamDirTargetsFile();
 					return true;
 				}
 			}
+		}
+
+		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
+		private static void UpdateSteamDirTargetsFile() {
+			File.WriteAllText(targetsFilePath,
+$@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <PropertyGroup>
+    <TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
+  </PropertyGroup>
+</Project>");
 		}
 	}
 }

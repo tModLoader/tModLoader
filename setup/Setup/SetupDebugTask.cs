@@ -35,11 +35,6 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus("Updating ModCompile version");
 			UpdateModCompileVersion(modCompile);
 
-			taskInterface.SetStatus("Generating launchSettings.json");
-			var launchSettingsPath = "src/tModLoader/Properties/launchSettings.json";
-			CreateParentDirectory(launchSettingsPath);
-			File.WriteAllText(launchSettingsPath, DebugConfig);
-
 			taskInterface.SetStatus("Compiling tModLoaderMac.exe");
 			compileFailed = RunCmd("solutions", "msbuild",
 				"tModLoader.sln /restore /p:Configuration=MacRelease",
@@ -78,15 +73,5 @@ namespace Terraria.ModLoader.Setup
 				"Failed to compile tModLoaderMac.exe\r\nJust build it from the tModLoader solution.",
 				"Build Failed tModLoaderMac.exe", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
-
-		private static string DebugConfig => @"{
-  ""profiles"": {
-    ""Terraria"": {
-      ""commandName"": ""Executable"",
-      ""executablePath"": ""%steamdir%/$(OutputName).exe"",
-      ""workingDirectory"": ""%steamdir%""
-    }
-  }
-}".Replace("%steamdir%", SteamDir.Replace('\\', '/'));
 	}
 }
