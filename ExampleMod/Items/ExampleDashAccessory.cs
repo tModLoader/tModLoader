@@ -142,9 +142,9 @@ namespace ExampleMod.Items
 			else if(player.controlUp && player.releaseUp && player.doubleTapCardinalTimer[DashUp] < 15)
 				DashDir = DashUp;
 			else if(player.controlRight && player.releaseRight && player.doubleTapCardinalTimer[DashRight] < 15)
-				DashDir = DashUp;
+				DashDir = DashRight;
 			else if(player.controlLeft && player.releaseLeft && player.doubleTapCardinalTimer[DashLeft] < 15)
-				DashDir = DashUp;
+				DashDir = DashLeft;
 			else
 				return;	 //No dash was activated, return
 
