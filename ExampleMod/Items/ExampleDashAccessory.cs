@@ -44,18 +44,18 @@ namespace ExampleMod.Items
 				Vector2 newVelocity = player.velocity;
 					
 				//Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
-				if((mp.PressedUp && player.velocity.Y > -mp.DashVelocity) || (mp.PressedDown && player.velocity.Y < mp.DashVelocity))
+				if((mp.DashDir == ExampleDashPlayer.DashUp && player.velocity.Y > -mp.DashVelocity) || (mp.DashDir == ExampleDashPlayer.DashDown && player.velocity.Y < mp.DashVelocity))
 				{
 					//Y-velocity is set here
-					//If the direction requested was Up, then we adjust the velocity to make the dash appear "faster" due to gravity being immediately in effect
+					//If the direction requested was DashUp, then we adjust the velocity to make the dash appear "faster" due to gravity being immediately in effect
 					//This adjustment is roughly 1.3x the intended dash velocity
-					float dashDirection = mp.PressedDown ? 1 : -1.3f;
+					float dashDirection = mp.DashDir == ExampleDashPlayer.DashDown ? 1 : -1.3f;
 					newVelocity.Y = dashDirection * mp.DashVelocity;
 				}
-				else if((mp.PressedLeft && player.velocity.X > -mp.DashVelocity) || (mp.PressedRight && player.velocity.X < mp.DashVelocity))
+				else if((mp.DashDir == ExampleDashPlayer.DashLeft && player.velocity.X > -mp.DashVelocity) || (mp.DashDir == ExampleDashPlayer.DashRight && player.velocity.X < mp.DashVelocity))
 				{
 					//X-velocity is set here
-					int dashDirection = mp.PressedRight ? 1 : -1;
+					int dashDirection = mp.DashDir == ExampleDashPlayer.DashRight ? 1 : -1;
 					newVelocity.X = dashDirection * mp.DashVelocity;
 				}
 
@@ -88,31 +88,19 @@ namespace ExampleMod.Items
 	public class ExampleDashPlayer : ModPlayer
 	{
 		//These indicate what direction is what in the timer arrays used
-		private readonly int Down = 0;
-		private readonly int Up = 1;
-		private readonly int Right = 2;
-		private readonly int Left = 3;
+		public static readonly int DashDown = 0;
+		public static readonly int DashUp = 1;
+		public static readonly int DashRight = 2;
+		public static readonly int DashLeft = 3;
 
-		//Bools for if a direction was pressed in any of the cardinal directions
-		public bool PressedDown = false;
-		public bool PressedUp = false;
-		public bool PressedRight = false;
-		public bool PressedLeft = false;
-
-		//These are booleans that can be accessed from this ModPlayer which indicate if a double-tap happened in any of the cardinal directions
-		//Vanilla logic sets the "player.doubleTapCardinalTimer" array members based on whether the player has input a direction or not
-		//The values are set to 15 when the player first inputs the direction and decrements every frame to 0
-		//If the player taps a direction again while the "player.doubleTapCardinalTimer" member for that direction is > 0, then we know that a
-		// double-tap has happened
-		public bool DoubleTapDown;
-		public bool DoubleTapUp;
-		public bool DoubleTapRight;
-		public bool DoubleTapLeft;
+		//The direction the player is currently dashing towards.  Defaults to -1 if no dash is ocurring.
+		public int DashDir = -1;
 
 		//The fields related to the dash accessory
 		public bool DashActive = false;
 		public int DashDelay = MAX_DASH_DELAY;
 		public int DashTimer = MAX_DASH_TIMER;
+		//The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
 		public readonly float DashVelocity = 10f;
 		//These two fields are the max values for the delay between dashes and the length of the dash in that order
 		//The time is measured in frames
@@ -137,44 +125,33 @@ namespace ExampleMod.Items
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are
 				// one of the higher-priority ones
 				if(item.type == ItemType<ExampleDashAccessory>())
-				{
 					dashAccessoryEquipped = true;
-				}
-				else if(item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi) {
+				else if(item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi)
 					return;
-				}
 			}
 
 			//If we don't have the ExampleDashAccessory equipped or the player has the Solor armor set equipped, return immediately
-			//Also return if the player is currently on a mount, since dashes on a mount look weird
-			if(!dashAccessoryEquipped || player.setSolar || player.mount.Active)
+			//Also return if the player is currently on a mount, since dashes on a mount look weird, or if the dash was already activated
+			if(!dashAccessoryEquipped || player.setSolar || player.mount.Active || DashActive)
 				return;
 
-			//Set the "pressed" bools
-			PressedDown =  player.controlDown  && player.releaseDown;
-			PressedUp =    player.controlUp    && player.releaseUp;
-			PressedRight = player.controlRight && player.releaseRight;
-			PressedLeft =  player.controlLeft  && player.releaseLeft;
+			//When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
+			//If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
+			if(player.controlDown && player.releaseDown && player.doubleTapCardinalTimer[DashDown] < 15)
+				DashDir = DashDown;
+			else if(player.controlUp && player.releaseUp && player.doubleTapCardinalTimer[DashUp] < 15)
+				DashDir = DashUp;
+			else if(player.controlRight && player.releaseRight && player.doubleTapCardinalTimer[DashRight] < 15)
+				DashDir = DashUp;
+			else if(player.controlLeft && player.releaseLeft && player.doubleTapCardinalTimer[DashLeft] < 15)
+				DashDir = DashUp;
+			else
+				return;	 //No dash was activated, return
 
-			//Set the "double-tap" bools
-			//Vanilla handles resetting the timers for us, so we just need to check if it's less than the max (15)
-			//The timers cannot be zero, since if they were, vanilla would have set them to 15 before this hook
-			DoubleTapDown = PressedDown   && player.doubleTapCardinalTimer[Down]  < 15;
-			DoubleTapUp = PressedUp       && player.doubleTapCardinalTimer[Up]    < 15;
-			DoubleTapRight = PressedRight && player.doubleTapCardinalTimer[Right] < 15;
-			DoubleTapLeft = PressedLeft   && player.doubleTapCardinalTimer[Left]  < 15;
+			DashActive = true;
 
-			//Finally, if any of the "DoubleTap" properties are true and the dash hasn't started, set the dash to being active
-			//Examples for alternate checks are the following:
-			// Right/Left only:  if(!DashActive && (DoubleTapRight || DoubleTapLeft))
-			// Up only:          if(!DashActive && DoubleTapUp)
-			if(!DashActive && (DoubleTapDown || DoubleTapUp || DoubleTapRight || DoubleTapLeft))
-			{
-				DashActive = true;
-
-				//Here you'd be able to set an effect that happens when the dash first activates
-				//Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
-			}
+			//Here you'd be able to set an effect that happens when the dash first activates
+			//Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
 		}
 	}
 }
