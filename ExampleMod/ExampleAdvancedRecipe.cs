@@ -31,11 +31,11 @@ namespace ExampleMod
 			//If EoC was defeated we will try find out is there is required npc nearby player
 			foreach (NPC npc in Main.npc) {
 				//If npc isn't active or isn't our needed type, we will skip iteration
-				if (!npc.active && npc.type != NeededNPCType) {
+				if (!npc.active || npc.type != NeededNPCType) {
 					continue;
 				}
 				//Otherwise we will compare positions
-				if (Vector2.Distance(Main.LocalPlayer.Center, npc.Center) <= Range) {
+				if (Main.LocalPlayer.DistanceSQ(npc.Center) <= Range * Range) {
 					foundNPC = true;
 					break;
 				}
@@ -46,7 +46,7 @@ namespace ExampleMod
 
 		//OnCraft is called when we create item
 		public override void OnCraft(Item item) {
-			//And here a little surprise
+			//And here a little surprise 
 			Main.LocalPlayer.AddBuff(BuffID.OnFire, 120);
 		}
 	}
