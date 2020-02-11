@@ -46,7 +46,7 @@ namespace ExampleMod
 
 		//OnCraft is called when we create item
 		public override void OnCraft(Item item) {
-			//And here a little surprise 
+			//And here a little surprise
 			Main.LocalPlayer.AddBuff(BuffID.OnFire, 120);
 		}
 	}
