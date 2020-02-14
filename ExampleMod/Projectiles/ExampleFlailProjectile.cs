@@ -8,19 +8,17 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleFlailProjectile : ModProjectile
 	{
+		// The folder path to the flail chain sprite
 		private const string ChainTexturePath = "ExampleMod/Projectiles/ExampleFlailProjectileChain";
 
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Example Flail Ball");
-		}
+		public override void SetStaticDefaults() => DisplayName.SetDefault("Example Flail Ball"); // Set the projectile name to Example Flail Ball
 
 		public override void SetDefaults()
 		{
 			projectile.width = 22;
 			projectile.height = 22;
 			projectile.friendly = true;
-			projectile.penetrate = -1;
+			projectile.penetrate = -1; // Make the flail infinitely penetrate like other flails
 			projectile.melee = true;
 			//	projectile.aiStyle = 15; // The vanilla flails all use aiStyle 15, but we must not use it since we want to customize the range and behavior.
 		}
@@ -29,10 +27,11 @@ namespace ExampleMod.Projectiles
 		public override void AI()
 		{
 			// Spawn some dust visuals
-			Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 172, projectile.velocity.X * 0.4f, projectile.velocity.Y * 0.4f, 100, default(Color), 1.5f);
+			var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 172, projectile.velocity.X * 0.4f, projectile.velocity.Y * 0.4f, 100, default, 1.5f);
 			dust.noGravity = true;
 			dust.velocity /= 2f;
 
+			// The player variable
 			var player = Main.player[projectile.owner];
 
 			// If owner player dies, remove the flail.
@@ -60,7 +59,7 @@ namespace ExampleMod.Projectiles
 
 			// ai[0] == 0 means the projectile has neither hit any tiles yet or reached maxChainLength
 			if (projectile.ai[0] == 0f) {
-				// 
+				// This is how far the chain would go measured in pixels
 				float maxChainLength = 160f;
 				projectile.tileCollide = true;
 
@@ -133,36 +132,44 @@ namespace ExampleMod.Projectiles
 		{
 			// This custom OnTileCollide code makes the projectile bounce off tiles at 1/5th the original speed, and plays sound and spawns dust if the projectile was going fast enough.
 			bool shouldMakeSound = false;
+
 			if (oldVelocity.X != projectile.velocity.X) {
 				if (Math.Abs(oldVelocity.X) > 4f) {
 					shouldMakeSound = true;
 				}
+
 				projectile.position.X += projectile.velocity.X;
 				projectile.velocity.X = -oldVelocity.X * 0.2f;
 			}
+
 			if (oldVelocity.Y != projectile.velocity.Y) {
 				if (Math.Abs(oldVelocity.Y) > 4f) {
 					shouldMakeSound = true;
 				}
+
 				projectile.position.Y += projectile.velocity.Y;
 				projectile.velocity.Y = -oldVelocity.Y * 0.2f;
 			}
+
 			// ai[0] == 1 is used in AI to represent that the projectile has hit a tile since spawning
 			projectile.ai[0] = 1f;
+
 			if (shouldMakeSound) {
+				// if we should play the sound..
 				projectile.netUpdate = true;
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
-				Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y, 1, 1f, 0f);
+				// Play the sound
+				Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y);
 			}
-			//if (projectile.wet) {
-			//	wetVelocity = projectile.velocity;
-			//}
+
 			return false;
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
+			// The player variable
 			var player = Main.player[projectile.owner];
+
 			Vector2 mountedCenter = player.MountedCenter;
 			Texture2D chainTexture = ModContent.GetTexture(ChainTexturePath);
 
@@ -173,6 +180,7 @@ namespace ExampleMod.Projectiles
 
 			if (projectile.alpha == 0) {
 				int direction = -1;
+
 				if (projectile.Center.X < mountedCenter.X)
 					direction = 1;
 
@@ -194,7 +202,7 @@ namespace ExampleMod.Projectiles
 
 				// Finally, we draw the texture at the coordinates using the lighting information of the tile coordinates of the chain section
 				Color color = Lighting.GetColor((int)drawPosition.X / 16, (int)(drawPosition.Y / 16f));
-				Main.spriteBatch.Draw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 			}
 
 			return true;
