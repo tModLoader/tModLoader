@@ -8,6 +8,8 @@ namespace ExampleMod.Projectiles
 {
 	public class ExampleFlailProjectile : ModProjectile
 	{
+		private const string ChainTexturePath = "ExampleMod/Projectiles/ExampleFlailProjectileChain";
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Example Flail Ball");
@@ -17,65 +19,79 @@ namespace ExampleMod.Projectiles
 		{
 			projectile.width = 22;
 			projectile.height = 22;
-			projectile.aiStyle = 15;
 			projectile.friendly = true;
 			projectile.penetrate = -1;
 			projectile.melee = true;
+			//	projectile.aiStyle = 15; // The vanilla flails all use aiStyle 15, but we must not use it since we want to customize the range and behavior.
 		}
 
+		// This AI code is adapted from the aiStyle 15. We need to re-implement this to customize the behavior of our flail
 		public override void AI()
 		{
-			if (Main.player[projectile.owner].dead) {
+			// Spawn some dust visuals
+			Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 172, projectile.velocity.X * 0.4f, projectile.velocity.Y * 0.4f, 100, default(Color), 1.5f);
+			dust.noGravity = true;
+			dust.velocity /= 2f;
+
+			var player = Main.player[projectile.owner];
+
+			// If owner player dies, remove the flail.
+			if (player.dead) {
 				projectile.Kill();
 				return;
 			}
 
-			Main.player[projectile.owner].itemAnimation = 10;
-			Main.player[projectile.owner].itemTime = 10;
+			// This prevents the item from being able to be used again prior to this projectile dying
+			player.itemAnimation = 10;
+			player.itemTime = 10;
 
-			if (projectile.position.X + projectile.width / 2 > Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2) {
-				Main.player[projectile.owner].ChangeDir(1);
-				projectile.direction = 1;
-			}
-			else {
-				Main.player[projectile.owner].ChangeDir(-1);
-				projectile.direction = -1;
-			}
+			// Here we turn the player and projectile based on the relative positioning of the player and projectile.
+			int newDirection = projectile.Center.X > player.Center.X ? 1 : -1;
+			player.ChangeDir(newDirection);
+			projectile.direction = newDirection;
 
-			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
-			var position = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
-			float posX = mountedCenter.X - position.X;
-			float posY = mountedCenter.Y - position.Y;
-			float num = (float)Math.Sqrt(posX * posX + posY * posY);
+			// TODO: What are these?
+			Vector2 mountedCenter = player.MountedCenter;
+			var position = projectile.Center;
+			var vectorToPlayer = mountedCenter - position; //TODO: Rename
+			float currentChainLength = vectorToPlayer.Length();
 
+			// Here is what various ai[] values mean in this AI code:
+			// ai[0] == 0: Just spawned/being thrown out
+			// ai[0] == 1: Flail has hit a tile or has reached maxChainLength, and is now in the swinging mode
+			// ai[1] == 1 or !projectile.tileCollide: projectile is being forced to retract
+
+			// ai[0] == 0 means the projectile has neither hit any tiles yet or reached maxChainLength
 			if (projectile.ai[0] == 0f) {
-				// posibl the length
-				float num2 = 360f;
+				// 
+				float maxChainLength = 160f;
 				projectile.tileCollide = true;
 
-				if (num > num2) {
+				if (currentChainLength > maxChainLength) {
+					// If we reach maxChainLength, we change behavior.
 					projectile.ai[0] = 1f;
 					projectile.netUpdate = true;
 				}
-				else if (!Main.player[projectile.owner].channel) {
+				else if (!player.channel) {
+					// Once player lets go of the use button, let gravity take over and let air friction slow down the projectile
 					if (projectile.velocity.Y < 0f)
-						projectile.velocity.Y = projectile.velocity.Y * 0.9f;
+						projectile.velocity.Y *= 0.9f;
 
-					projectile.velocity.Y = projectile.velocity.Y + 1f;
-					projectile.velocity.X = projectile.velocity.X * 0.9f;
+					projectile.velocity.Y += 1f;
+					projectile.velocity.X *= 0.9f;
 				}
 			}
 			else if (projectile.ai[0] == 1f) {
-				float num3 = 14f / Main.player[projectile.owner].meleeSpeed;
-				float num4 = 0.9f / Main.player[projectile.owner].meleeSpeed;
-				float num5 = 300f;
-				Math.Abs(posX);
-				Math.Abs(posY);
-				
+				// When ai[0] == 1f, the projectile has either hit a tile or has reached maxChainLength, so now we retract the projectile
+				float elasticFactorA = 14f / player.meleeSpeed;
+				float elasticFactorB = 0.9f / player.meleeSpeed;
+				float maxStretchLength = 300f; // This is the furthest the flail can stretch before being forced to retract. Make sure that this is a bit less than maxChainLength so you don't accidentally reach maxStretchLength on the initial throw.
+
 				if (projectile.ai[1] == 1f)
 					projectile.tileCollide = false;
 
-				if (!Main.player[projectile.owner].channel || num > num5 || !projectile.tileCollide) {
+				// If the user lets go of the use button, or if the projectile is stuck behind some tiles as the player moves away, the projectile goes into a mode where it is forced to retract and no longer collides with tiles.
+				if (!player.channel || currentChainLength > maxStretchLength || !projectile.tileCollide) {
 					projectile.ai[1] = 1f;
 
 					if (projectile.tileCollide)
@@ -83,96 +99,105 @@ namespace ExampleMod.Projectiles
 
 					projectile.tileCollide = false;
 
-					if (num < 20f)
+					if (currentChainLength < 20f)
 						projectile.Kill();
 				}
 
 				if (!projectile.tileCollide)
-					num4 *= 2f;
+					elasticFactorB *= 2f;
 
-				int num6 = 60;
+				int restingChainLength = 60;
 
-				if (num > num6 || !projectile.tileCollide) {
-					num = num3 / num;
-					posX *= num;
-					posY *= num;
-					new Vector2(projectile.velocity.X, projectile.velocity.Y);
-					float num7 = posX - projectile.velocity.X;
-					float num8 = posY - projectile.velocity.Y;
-					float num9 = (float)Math.Sqrt(num7 * num7 + num8 * num8);
-					num9 = num4 / num9;
-					num7 *= num9;
-					num8 *= num9;
-					projectile.velocity.X = projectile.velocity.X * 0.98f;
-					projectile.velocity.Y = projectile.velocity.Y * 0.98f;
-					projectile.velocity.X = projectile.velocity.X + num7;
-					projectile.velocity.Y = projectile.velocity.Y + num8;
+				// If there is tension in the chain, or if the projectile is being forced to retract, give the projectile some velocity towards the player
+				if (currentChainLength > restingChainLength || !projectile.tileCollide) {
+					var elasticAcceleration = vectorToPlayer * elasticFactorA / currentChainLength - projectile.velocity;
+					elasticAcceleration *= elasticFactorB / elasticAcceleration.Length();
+					projectile.velocity *= 0.98f;
+					projectile.velocity += elasticAcceleration;
 				}
 				else {
+					// Otherwise, friction and gravity allow the projectile to rest.
 					if (Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y) < 6f) {
-						projectile.velocity.X = projectile.velocity.X * 0.96f;
-						projectile.velocity.Y = projectile.velocity.Y + 0.2f;
+						projectile.velocity.X *= 0.96f;
+						projectile.velocity.Y += 0.2f;
 					}
-
-					if (Main.player[projectile.owner].velocity.X == 0f)
-						projectile.velocity.X = projectile.velocity.X * 0.96f;
+					if (player.velocity.X == 0f)
+						projectile.velocity.X *= 0.96f;
 				}
 			}
 
-			projectile.rotation = (float)Math.Atan2(posY, posX) - projectile.velocity.X * 0.1f;
+			// Here we set the rotation based off of the direction to the player tweaked by the velocity, giving it a little spin as the flail turns around each swing 
+			projectile.rotation = vectorToPlayer.ToRotation() - projectile.velocity.X * 0.1f;
+
+			// Here is where a flail like Flower Pow could spawn additional projectiles or other custom behaviors
+		}
+
+		public override bool OnTileCollide(Vector2 oldVelocity)
+		{
+			// This custom OnTileCollide code makes the projectile bounce off tiles at 1/5th the original speed, and plays sound and spawns dust if the projectile was going fast enough.
+			bool shouldMakeSound = false;
+			if (oldVelocity.X != projectile.velocity.X) {
+				if (Math.Abs(oldVelocity.X) > 4f) {
+					shouldMakeSound = true;
+				}
+				projectile.position.X += projectile.velocity.X;
+				projectile.velocity.X = -oldVelocity.X * 0.2f;
+			}
+			if (oldVelocity.Y != projectile.velocity.Y) {
+				if (Math.Abs(oldVelocity.Y) > 4f) {
+					shouldMakeSound = true;
+				}
+				projectile.position.Y += projectile.velocity.Y;
+				projectile.velocity.Y = -oldVelocity.Y * 0.2f;
+			}
+			// ai[0] == 1 is used in AI to represent that the projectile has hit a tile since spawning
+			projectile.ai[0] = 1f;
+			if (shouldMakeSound) {
+				projectile.netUpdate = true;
+				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
+				Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y, 1, 1f, 0f);
+			}
+			//if (projectile.wet) {
+			//	wetVelocity = projectile.velocity;
+			//}
+			return false;
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
-			Texture2D chainTexture = ModContent.GetTexture("ExampleMod/Projectiles/ExampleFlailProjectileChain");
-			var position = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
-			float posX = mountedCenter.X - position.X;
-			float posY = mountedCenter.Y - position.Y;
-			float rotation = (float)Math.Atan2(posY, posX) - 1.57f;
+			var player = Main.player[projectile.owner];
+			Vector2 mountedCenter = player.MountedCenter;
+			Texture2D chainTexture = ModContent.GetTexture(ChainTexturePath);
+
+			var drawPosition = projectile.Center;
+			var remainingVectorToPlayer = mountedCenter - drawPosition;
+
+			float rotation = remainingVectorToPlayer.ToRotation() - MathHelper.PiOver2;
 
 			if (projectile.alpha == 0) {
-				int num = -1;
+				int direction = -1;
+				if (projectile.Center.X < mountedCenter.X)
+					direction = 1;
 
-				if (projectile.position.X + projectile.width / 2 < mountedCenter.X)
-					num = 1;
-
-				if (Main.player[projectile.owner].direction == 1)
-					Main.player[projectile.owner].itemRotation = (float)Math.Atan2(posY * num, posX * num);
-				else
-					Main.player[projectile.owner].itemRotation = (float)Math.Atan2(posY * num, posX * num);
+				player.itemRotation = (float)Math.Atan2(remainingVectorToPlayer.Y * direction, remainingVectorToPlayer.X * direction);
 			}
 
-			bool flag = true;
+			// This while loop draws the chain texture from the projectile to the player, looping to draw the chain texture along the path
+			while (true) {
+				float length = remainingVectorToPlayer.Length();
 
-			while (flag) {
-				float num2 = (float)Math.Sqrt(posX * posX + posY * posY);
+				// Once the remaining length is small enough, we terminate the loop
+				if (length < 25f || float.IsNaN(length))
+					break;
 
-				if (num2 < 25f)
-					flag = false;
-				else if (float.IsNaN(num2))
-					flag = false;
-				else {
-					num2 = 12f / num2;
-					posX *= num2;
-					posY *= num2;
-					position.X += posX;
-					position.Y += posY;
-					posX = mountedCenter.X - position.X;
-					posY = mountedCenter.Y - position.Y;
+				// drawPosition is advanced along the vector back to the player by 12 pixels
+				// 12 comes from the height of ExampleFlailProjectileChain.png and the spacing that we desired between links
+				drawPosition += remainingVectorToPlayer * 12 / length;
+				remainingVectorToPlayer = mountedCenter - drawPosition;
 
-					Color color = Lighting.GetColor((int)position.X / 16, (int)(position.Y / 16f));
-
-					Main.spriteBatch.Draw(chainTexture,
-						   new Vector2(position.X - Main.screenPosition.X, position.Y - Main.screenPosition.Y),
-						   new Rectangle?(new Rectangle(0, 0, chainTexture.Width, chainTexture.Height)),
-						   color,
-						   rotation,
-						   new Vector2(chainTexture.Width * 0.5f, chainTexture.Height * 0.5f),
-						   1f,
-						   SpriteEffects.None,
-						   0f);
-				}
+				// Finally, we draw the texture at the coordinates using the lighting information of the tile coordinates of the chain section
+				Color color = Lighting.GetColor((int)drawPosition.X / 16, (int)(drawPosition.Y / 16f));
+				Main.spriteBatch.Draw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 			}
 
 			return true;
