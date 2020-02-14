@@ -50,10 +50,7 @@ namespace ExampleMod.Projectiles
 			player.ChangeDir(newDirection);
 			projectile.direction = newDirection;
 
-			// TODO: What are these?
-			Vector2 mountedCenter = player.MountedCenter;
-			var position = projectile.Center;
-			var vectorToPlayer = mountedCenter - position; //TODO: Rename
+			var vectorToPlayer = player.MountedCenter - projectile.Center;
 			float currentChainLength = vectorToPlayer.Length();
 
 			// Here is what various ai[] values mean in this AI code:
