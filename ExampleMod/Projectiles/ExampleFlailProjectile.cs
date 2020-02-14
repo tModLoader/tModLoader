@@ -11,7 +11,10 @@ namespace ExampleMod.Projectiles
 		// The folder path to the flail chain sprite
 		private const string ChainTexturePath = "ExampleMod/Projectiles/ExampleFlailProjectileChain";
 
-		public override void SetStaticDefaults() => DisplayName.SetDefault("Example Flail Ball"); // Set the projectile name to Example Flail Ball
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Flail Ball"); // Set the projectile name to Example Flail Ball
+		}
 
 		public override void SetDefaults()
 		{
@@ -31,7 +34,6 @@ namespace ExampleMod.Projectiles
 			dust.noGravity = true;
 			dust.velocity /= 2f;
 
-			// The player variable
 			var player = Main.player[projectile.owner];
 
 			// If owner player dies, remove the flail.
@@ -167,7 +169,6 @@ namespace ExampleMod.Projectiles
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			// The player variable
 			var player = Main.player[projectile.owner];
 
 			Vector2 mountedCenter = player.MountedCenter;
