@@ -129,6 +129,7 @@ namespace ExampleMod.Tiles
 		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.FramesOnKillWall[Type] = true; // Necessary since we have a placement that uses AnchorWall
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			// We set processedCoordinates to true so our Hook_AfterPlacement gets top left coordinates, regardless of Origin.
