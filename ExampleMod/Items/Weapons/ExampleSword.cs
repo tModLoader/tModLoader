@@ -17,15 +17,15 @@ namespace ExampleMod.Items.Weapons
 		public override void SetDefaults() {
 			item.damage = 50; // The damage your item deals
 			item.melee = true; // Whether your item is part of the melee class
-			item.width = 40; // The item texture's width in 2x2
-			item.height = 40; // The item texture's height in 2x2
-			item.useTime = 20; //The time span of using the weapon. Remember in terraria, 60 frames is a second.
+			item.width = 40; // The item texture's width
+			item.height = 40; // The item texture's height
+			item.useTime = 20; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
 			item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
 			item.knockBack = 6; // The force of knockback of the weapon. Maximum is 20
 			item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins
-			item.rare = 2; //The rarity of the weapon, from -1 to 13. You can also use ItemRarityID.TheColorRarity
+			item.rare = 2; // The rarity of the weapon, from -1 to 13. You can also use ItemRarityID.TheColorRarity
 			item.UseSound = SoundID.Item1; // The sound when the weapon is being used
-			item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding left click
+			item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button
 			item.crit = 6; // The critical strike chance the weapon has. The player, by default, has 4 critical strike chance
 			
 			//The useStyle of the item. 
@@ -55,7 +55,7 @@ namespace ExampleMod.Items.Weapons
 		}
 
 		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit) {
-			// Add the Onfire buff to the NPC for 1 second
+			// Add the Onfire buff to the NPC for 1 second when the weapon hits an NPC
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 60);
 		}
