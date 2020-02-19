@@ -35,3 +35,10 @@ The money that we earn from our Patreon will be initially used to pay for server
 ## How to get in touch
 
 If you would like to contact us or tModLoader users, it's best to join our [Discord server](https://discord.me/tmodloader). Discord is a chat and voice application we've used for over 2 years to communicate with each other. It's similar to IRC chats. To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribution guide](CONTRIBUTING.md)].
+<a href="https://github.com/tModLoader/tModLoader/graphs/contributors"><img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" /></a>
