@@ -1,4 +1,4 @@
-# tModLoader, a Terraria modding API [![Financial Contributors on Open Collective](https://opencollective.com/tModLoader/all/badge.svg?label=financial+contributors)](https://opencollective.com/tModLoader) [![Build Status](https://travis-ci.org/tModLoader/tModLoader.svg?branch=master)](https://travis-ci.org/tModLoader/tModLoader) [![Discord](https://img.shields.io/discord/103110554649894912.svg?style=flat-square)](https://tmodloader.net/discord)
+# tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/tModLoader/tModLoader.svg?branch=master)](https://travis-ci.org/tModLoader/tModLoader) [![Discord](https://img.shields.io/discord/103110554649894912.svg?style=flat-square)](https://tmodloader.net/discord)
 
 
 ## About
@@ -40,28 +40,5 @@ If you would like to contact us or tModLoader users, it's best to join our [Disc
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribution guide](CONTRIBUTING.md)].
 <a href="https://github.com/tModLoader/tModLoader/graphs/contributors"><img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" /></a>
-
-### Financial Contributors
-
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/tModLoader/contribute)]
-
-#### Individuals
-
-<a href="https://opencollective.com/tModLoader"><img src="https://opencollective.com/tModLoader/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/tModLoader/contribute)]
-
-<a href="https://opencollective.com/tModLoader/organization/0/website"><img src="https://opencollective.com/tModLoader/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/1/website"><img src="https://opencollective.com/tModLoader/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/2/website"><img src="https://opencollective.com/tModLoader/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/3/website"><img src="https://opencollective.com/tModLoader/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/4/website"><img src="https://opencollective.com/tModLoader/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/5/website"><img src="https://opencollective.com/tModLoader/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/6/website"><img src="https://opencollective.com/tModLoader/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/7/website"><img src="https://opencollective.com/tModLoader/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/8/website"><img src="https://opencollective.com/tModLoader/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/tModLoader/organization/9/website"><img src="https://opencollective.com/tModLoader/organization/9/avatar.svg"></a>
