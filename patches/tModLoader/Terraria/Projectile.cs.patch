@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  using Terraria.World.Generation;
  
-@@ -21,6 +_,32 @@
+@@ -21,6 +_,24 @@
  {
  	public class Projectile : Entity
  	{
@@ -21,22 +21,14 @@
 +		internal GlobalProjectile[] globalProjectiles = new GlobalProjectile[0];
 +
 +		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
-+		public GlobalProjectile GetGlobalProjectile(Mod mod, string name)
-+		{
-+			return ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
-+		}
++		public GlobalProjectile GetGlobalProjectile(Mod mod, string name) => ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
 +
 +		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile
-+		{
-+			return (T)GetGlobalProjectile(mod, typeof(T).Name);
-+		}
++		[Obsolete("Use GetGlobalProjectile<T>() instead", true)]
++		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile => (T)GetGlobalProjectile(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalProjectile<T>() where T : GlobalProjectile
-+		{
-+			return (T)ProjectileLoader.GetGlobalProjectile(this, typeof(T));
-+		}
++		public T GetGlobalProjectile<T>() where T : GlobalProjectile => (T) ModContent.GetInstance<T>().Instance(this);
 +
  		public static uint[][] perIDStaticNPCImmunity = new uint[714][];
  		public static int SentryLifeTime = 7200;
@@ -530,11 +522,12 @@
  			if (num13 > 0)
  			{
  				if (Main.player[this.owner].sonarPotion)
-@@ -12665,6 +_,8 @@
+@@ -12665,6 +_,9 @@
  						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
  					case "Random":
  						return Main.rand.NextFloat();
 +					case "bluemagic123":
++					case "blushiemagic":
 +						return 0.55f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.1f;
  				}
  			}
@@ -581,6 +574,15 @@
  					if (num71 < 24f)
  					{
  						this.Kill();
+@@ -24282,7 +_,7 @@
+ 																							}
+ 																							if (Main.myPlayer == this.owner)
+ 																							{
+-																								bool flag43 = !flag41 || player5.CheckMana(player5.inventory[player5.selectedItem].mana, true, false);
++																								bool flag43 = !flag41 || player5.CheckMana(player5.inventory[player5.selectedItem], -1, true, false);
+ 																								bool flag44 = player5.channel && flag43;
+ 																								if ((!flag42 && !flag44) || this.ai[0] == 180f)
+ 																								{
 @@ -28233,7 +_,7 @@
  					Rectangle value = new Rectangle((int)Main.player[this.owner].position.X, (int)Main.player[this.owner].position.Y, Main.player[this.owner].width, Main.player[this.owner].height);
  					if (rectangle.Intersects(value))
@@ -598,6 +600,45 @@
  							item.newAndShiny = true;
  							Item item2 = Main.player[this.owner].GetItem(this.owner, item, false, false);
  							if (item2.stack > 0)
+@@ -36636,7 +_,7 @@
+ 				}
+ 				if (flag && Main.myPlayer == this.owner)
+ 				{
+-					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem].mana, true, false) && !player.noItems && !player.CCed;
++					bool flag2 = player.channel && player.CheckMana(player.inventory[player.selectedItem], -1, true, false) && !player.noItems && !player.CCed;
+ 					if (flag2)
+ 					{
+ 						float scaleFactor = player.inventory[player.selectedItem].shootSpeed * this.scale;
+@@ -36879,7 +_,7 @@
+ 				}
+ 				if (flag6 && Main.myPlayer == this.owner)
+ 				{
+-					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
++					bool flag7 = !flag4 || player.CheckMana(player.inventory[player.selectedItem], -1, true, false);
+ 					bool flag8 = player.channel && flag7 && !player.noItems && !player.CCed;
+ 					if (flag8)
+ 					{
+@@ -36999,7 +_,7 @@
+ 				}
+ 				if (flag10 && Main.myPlayer == this.owner)
+ 				{
+-					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
++					bool flag11 = !flag9 || player.CheckMana(player.inventory[player.selectedItem], -1, true, false);
+ 					bool flag12 = player.channel && flag11 && !player.noItems && !player.CCed;
+ 					if (flag12)
+ 					{
+@@ -37928,6 +_,11 @@
+ 			num7 /= (1f + Main.player[this.owner].meleeSpeed * 3f) / 4f;
+ 			num8 /= (1f + Main.player[this.owner].meleeSpeed * 3f) / 4f;
+ 			float num11 = 14f - num8 / 2f;
++			// Yoyos with effective top speed (boosted by melee speed) num8 > 26 will set num11 to be less than 1.
++			// This breaks the AI's acceleration vector math and stops the velocity from being correctly capped every frame.
++			// Providing a minimum value of 1.01 to num11 fixes this, allowing for very fast modded yoyos.
++			// See issue #751 for more details.
++			if (num11 < 1.01f) num11 = 1.01f;
+ 			float num12 = 5f + num8 / 2f;
+ 			if (flag)
+ 			{
 @@ -38602,7 +_,7 @@
  								Tile tileSafely2 = Framing.GetTileSafely(i, j - 1);
  								if (!tileSafely2.active() || !Main.tileSolid[(int)tileSafely2.type] || Main.tileSolidTop[(int)tileSafely2.type])

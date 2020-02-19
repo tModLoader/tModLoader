@@ -1,25 +1,35 @@
 ﻿using Microsoft.Win32;
+using ReLogic.OS;
 using System;
 using System.Reflection;
 
 namespace Terraria.ModLoader
 {
+	public enum Framework
+	{
+		NetFramework,
+		Mono,
+		Unknown
+	}
+
 	public static class FrameworkVersion
 	{
-		public static readonly string Framework;
+		public static readonly Framework Framework;
 		public static readonly Version Version;
 
 		static FrameworkVersion() {
 			var monoRuntimeType = Type.GetType("Mono.Runtime");
 			if (monoRuntimeType != null) {
 				string displayName = (string)monoRuntimeType.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
-				Framework = "Mono";
+				Framework = Framework.Mono;
 				Version = new Version(displayName.Substring(0, displayName.IndexOf(' ')));
 				return;
 			}
 
-#if WINDOWS
-			Framework = ".NET Framework";
+			if (!Platform.IsWindows)
+				Framework = Framework.Unknown;
+
+			Framework = Framework.NetFramework;
 
 			const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 			using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
@@ -28,15 +38,12 @@ namespace Terraria.ModLoader
 
 			if (Version == null)
 				Version = new Version(4, 0);
-
-			return;
-#endif
-
-			Framework = "Unknown";
 		}
 
 		// Checking the version using >= will enable forward compatibility.
 		private static Version CheckFor45PlusVersion(int releaseKey) {
+			if (releaseKey >= 528040)
+				return new Version("4.8");
 			if (releaseKey >= 461808)
 				return new Version("4.7.2");
 			if (releaseKey >= 461308)

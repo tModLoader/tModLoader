@@ -10,10 +10,8 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ObjectElement : ConfigElement
+	class ObjectElement : ConfigElement<object>
 	{
-		private Func<object> _GetValue;
-		private Action<object> _SetValue;
 		protected Func<string> AbridgedTextDisplayFunction;
 
 		//SeparatePageAttribute separatePageAttribute;
@@ -28,64 +26,54 @@ namespace Terraria.ModLoader.Config.UI
 		UIPanel separatePagePanel;
 		UITextPanel<FuncStringWrapper> separatePageButton;
 		bool expanded = true;
-		int index;
-
-		bool AllowNull => array == null; // nulls don't make sense for a collection, but a standalone might be useful. NonNull attribute might be nice.
 
 		// Label:
 		//  Members
 		//  Members
-		public ObjectElement(PropertyFieldWrapper memberInfo, object item, IList array = null, int index = -1, bool ignoreSeparatePage = false) : base(memberInfo, item, array)
-		{
-			this.index = index;
+		public ObjectElement(bool ignoreSeparatePage = false) {
 			this.ignoreSeparatePage = ignoreSeparatePage;
-			_GetValue = () => memberInfo.GetValue(this.item);
-			_SetValue = (object value) => {
-				if (!memberInfo.CanWrite) return;
-				memberInfo.SetValue(this.item, value);
-			};
+		}
 
-			if (array != null) {
-				_GetValue = () => array[index];
-				_SetValue = (object value) => { array[index] = value; Interface.modConfig.SetPendingChanges(); };
+		public override void OnBind() {
+			base.OnBind();
+
+			if (list != null) {
 				// TODO: only do this if ToString is overriden. 
 
 				var listType = memberInfo.Type.GetGenericArguments()[0];
 				bool hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
 
 				if (hasToString) {
-					_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
-					AbridgedTextDisplayFunction = () => (array[index]?.ToString() ?? "null");
+					TextDisplayFunction = () => index + 1 + ": " + (list[index]?.ToString() ?? "null");
+					AbridgedTextDisplayFunction = () => (list[index]?.ToString() ?? "null");
 				}
 				else {
-					_TextDisplayFunction = () => index + 1 + ": ";
+					TextDisplayFunction = () => index + 1 + ": ";
 				}
 			}
 			else {
 				bool hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
 				if (hasToString) {
-					_TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (_GetValue() == null ? "" : ": " + _GetValue().ToString());
-					AbridgedTextDisplayFunction = () => _GetValue()?.ToString() ?? "";
+					TextDisplayFunction = () => (labelAttribute == null ? memberInfo.Name : labelAttribute.Label) + (Value == null ? "" : ": " + Value.ToString());
+					AbridgedTextDisplayFunction = () => Value?.ToString() ?? "";
 				}
 			}
 
-			if(_GetValue() == null && !AllowNull) {
+			// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
+			if (Value == null && list != null) {
+				// This should never actually happen, but I guess a bad Json file could.
 				object data = Activator.CreateInstance(memberInfo.Type);
-				JsonConvert.PopulateObject("{}", data, ConfigManager.serializerSettings);
-				//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-				//if (jsonDefaultValueAttribute != null)
-				//{
-				//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-				//}
-				_SetValue(data);
+				string json = jsonDefaultValueAttribute?.json ?? "{}";
+				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
+				Value = data;
 			}
 
-			separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(memberInfo, item, array) != null;
+			separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(memberInfo, item, list) != null;
 			//separatePage = separatePage && !ignoreSeparatePage;
 			//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
 			if (separatePage && !ignoreSeparatePage) {
 				// TODO: UITextPanel doesn't update...
-				separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper() { func = _TextDisplayFunction });
+				separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper() { func = TextDisplayFunction });
 				separatePageButton.HAlign = 0.5f;
 				//e.Recalculate();
 				//elementHeight = (int)e.GetOuterDimensions().Height;
@@ -126,7 +114,7 @@ namespace Terraria.ModLoader.Config.UI
 			//{
 			//	name = labelAttribute.Label;
 			//}
-			if (array == null)
+			if (list == null)
 			{
 				// drawLabel = false; TODO uncomment
 			}
@@ -138,16 +126,9 @@ namespace Terraria.ModLoader.Config.UI
 			initializeButton.OnClick += (a, b) => {
 				Main.PlaySound(21);
 				object data = Activator.CreateInstance(memberInfo.Type);
-				// Crashes JSONItem
-				JsonConvert.PopulateObject("{}", data, ConfigManager.serializerSettings); // Seems to fail on all data structures?
-
-				//JsonDefaultValueAttribute jsonDefaultValueAttribute = (JsonDefaultValueAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(JsonDefaultValueAttribute));
-				//if (jsonDefaultValueAttribute != null)
-				//{
-				//	JsonConvert.PopulateObject(jsonDefaultValueAttribute.json, subitem, ConfigManager.serializerSettings);
-				//}
-
-				_SetValue(data);
+				string json = jsonDefaultValueAttribute?.json ?? "{}";
+				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
+				Value = data;
 
 				//SeparatePageAttribute here?
 
@@ -172,8 +153,8 @@ namespace Terraria.ModLoader.Config.UI
 			deleteButton = new UIModConfigHoverImage(deleteTexture, "Clear");
 			deleteButton.Top.Set(4, 0f);
 			deleteButton.Left.Set(-25, 1f);
-			deleteButton.OnClick += (a, b) => { 
-				_SetValue(null);
+			deleteButton.OnClick += (a, b) => {
+				Value = null;
 				pendingChanges = true;
 
 				SetupList();
@@ -181,7 +162,7 @@ namespace Terraria.ModLoader.Config.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			if (_GetValue() != null) {
+			if (Value != null) {
 				//Append(expandButton);
 				//Append(deleteButton);
 				SetupList();
@@ -210,12 +191,12 @@ namespace Terraria.ModLoader.Config.UI
 			RemoveChild(dataList);
 			if (separatePage && !ignoreSeparatePage)
 				RemoveChild(separatePageButton);
-			if (_GetValue() == null) {
+			if (Value == null) {
 				Append(initializeButton);
 				drawLabel = true;
 			}
 			else {
-				if(AllowNull && !(separatePage && ignoreSeparatePage))
+				if(list == null && !(separatePage && ignoreSeparatePage) && nullAllowed)
 					Append(deleteButton);
 				if (!separatePage || ignoreSeparatePage) {
 					if (!ignoreSeparatePage)
@@ -240,10 +221,10 @@ namespace Terraria.ModLoader.Config.UI
 		private void SetupList() {
 			dataList.Clear();
 
-			object data = _GetValue();
+			object data = Value;
 			if (data != null) {
 				if (separatePage && !ignoreSeparatePage) {
-					separatePagePanel = UIModConfig.MakeSeparateListPanel(item, data, memberInfo, array, index, AbridgedTextDisplayFunction);
+					separatePagePanel = UIModConfig.MakeSeparateListPanel(item, data, memberInfo, list, index, AbridgedTextDisplayFunction);
 				}
 				else {
 					int order = 0;
@@ -258,7 +239,7 @@ namespace Terraria.ModLoader.Config.UI
 							UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
 						}
 						var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
-						if (array != null) {
+						if (list != null) {
 							//wrapped.Item1.Left.Pixels -= 20;
 							wrapped.Item1.Width.Pixels += 20;
 						}

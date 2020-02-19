@@ -1,0 +1,40 @@
+--- src/Terraria\Terraria.ID\BuffID.cs
++++ src/tModLoader\Terraria.ID\BuffID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -210,5 +_,29 @@
+ 		public const int Oiled = 204;
+ 		public const int BallistaPanic = 205;
+ 		public const int Count = 206;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<BuffID, int>();
++
++		public static string GetUniqueKey(int type) {
++			if (type < 1 || type >= BuffLoader.BuffCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + BuffID.Search.GetName(type);
++			}
++			var modBuff = BuffLoader.GetBuff(type);
++			return $"{modBuff.mod.Name} {modBuff.Name}";
++		}
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!BuffID.Search.ContainsName(parts[1]))
++					return 0;
++				return BuffID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.BuffType(parts[1]) ?? 0;
++		}
+ 	}
+ }
+

@@ -9,10 +9,11 @@ namespace Terraria.ModLoader.UI
 	//TODO is this meaningfully different to EnterPassphraseMenu?
 	internal class UIEnterSteamIDMenu : UIState
 	{
-		string registerURL = "http://javid.ddns.net/tModLoader/register.php";
-		public UITextPanel<string> uITextPanel;
-		internal UIInputTextField steamIDTextField;
-		private int gotoMenu;
+		private const string REGISTER_URL = "http://javid.ddns.net/tModLoader/register.php";
+
+		public UITextPanel<string> UiTextPanel;
+		internal UIInputTextField SteamIdTextField;
+		private int _gotoMenu;
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -26,17 +27,17 @@ namespace Terraria.ModLoader.UI
 			var uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground,
+				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
 			uIElement.Append(uIPanel);
 
-			uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.EnterSteamID"), 0.8f, true) {
+			UiTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.EnterSteamID"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15f);
-			uIElement.Append(uITextPanel);
+			uIElement.Append(UiTextPanel);
 
 			var button = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = { Pixels = -10, Percent = 0.5f },
@@ -52,9 +53,10 @@ namespace Terraria.ModLoader.UI
 			button.CopyStyle(button);
 			button.HAlign = 1f;
 			button.WithFadedMouseOver();
-			button.OnClick += OKClick;
+			button.OnClick += SubmitSteamID;
 			uIElement.Append(button);
 
+			// TODO Commented code, yuck
 			//UITextPanel<string> button3 = new UITextPanel<string>("Visit Website to Generate Passphrase");
 			//button3.CopyStyle(button);
 			//button3.Width.Set(0f, 1f);
@@ -64,33 +66,33 @@ namespace Terraria.ModLoader.UI
 			//button3.OnClick += VisitRegisterWebpage;
 			//uIElement.Append(button3);
 
-			steamIDTextField = new UIInputTextField(Language.GetTextValue("tModLoader.PasteSteamID")) {
+			SteamIdTextField = new UIInputTextField(Language.GetTextValue("tModLoader.PasteSteamID")) {
 				HAlign = 0.5f,
 				VAlign = 0.5f,
 				Left = { Pixels = -100, Percent = 0 }
 			};
-			steamIDTextField.OnTextChange += OnTextChange;
-			uIPanel.Append(steamIDTextField);
+			SteamIdTextField.OnTextChange += OnTextChange;
+			uIPanel.Append(SteamIdTextField);
 
 			Append(uIElement);
 		}
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			ModLoader.SteamID64 = steamIDTextField.Text.Trim();
+		private void SubmitSteamID(UIMouseEvent evt, UIElement listeningElement) {
+			Main.PlaySound(10);
+			ModLoader.SteamID64 = SteamIdTextField.Text.Trim();
 			Main.SaveSettings();
-			Main.menuMode = this.gotoMenu;
+			Main.menuMode = _gotoMenu;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
-			Main.menuMode = this.gotoMenu;
+			Main.PlaySound(11);
+			Main.menuMode = _gotoMenu;
 		}
 
 		//TODO unused
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
-			Process.Start(registerURL);
+			Main.PlaySound(10);
+			Process.Start(REGISTER_URL);
 		}
 
 		//TODO unused
@@ -99,7 +101,7 @@ namespace Terraria.ModLoader.UI
 		
 		//TODO unused
 		internal void SetGotoMenu(int gotoMenu) {
-			this.gotoMenu = gotoMenu;
+			_gotoMenu = gotoMenu;
 		}
 	}
 }

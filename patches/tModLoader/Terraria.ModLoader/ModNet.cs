@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
@@ -9,13 +9,15 @@ using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
-	public class ModNet
+	public static class ModNet
 	{
-		private class ModHeader
+		internal class ModHeader
 		{
 			public string name;
 			public Version version;
@@ -41,8 +43,7 @@ namespace Terraria.ModLoader
 			public string configname;
 			public string json;
 
-			public NetConfig(string modname, string configname, string json)
-			{
+			public NetConfig(string modname, string configname, string json) {
 				this.modname = modname;
 				this.configname = configname;
 				this.json = json;
@@ -78,7 +79,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			netMods = null;
-			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatiblity restrictions when reloading on a client
+			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
 				AllowVanillaClients = false;
 		}
 
@@ -95,25 +96,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.hash);
 				p.Write(mod.File.ValidModBrowserSignature);
-				var modConfigs = ConfigManager.Configs.SingleOrDefault(x => x.Key == mod).Value?.Where(x => x.Mode == ConfigScope.ServerSide);
-				if (modConfigs == null)
-				//if (modConfigs.Equals(default(List<ModConfig>)))
-				{
-					p.Write(0);
-					Console.WriteLine($"No configs for {mod.Name}");
-				}
-				else
-				{
-					p.Write(modConfigs.Count());
-					foreach (var config in modConfigs)
-					{
-						string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-						Console.WriteLine($"Sending Server Config {config.Name}: {json}");
-
-						p.Write(config.Name);
-						p.Write(json);
-					}
-				}
+				SendServerConfigs(p, mod);
 			}
 
 			p.Send(clientIndex);
@@ -122,16 +105,36 @@ namespace Terraria.ModLoader
 		private static void AddNoSyncDeps(List<Mod> syncMods) {
 			var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
 			while (queue.Count > 0) {
-				var depNames = ModOrganizer.dependencyCache[queue.Dequeue().Name];
-				foreach (var dep in depNames.Select(ModLoader.GetMod).Where(m => m.Side == ModSide.NoSync && !syncMods.Contains(m))) {
-					syncMods.Add(dep);
-					queue.Enqueue(dep);
+				foreach (var dep in AssemblyManager.GetDependencies(queue.Dequeue())) {
+					if (dep.Side == ModSide.NoSync && !syncMods.Contains(dep)) {
+						syncMods.Add(dep);
+						queue.Enqueue(dep);
+					}
 				}
 			}
 		}
 
+		private static void SendServerConfigs(ModPacket p, Mod mod) {
+			if (!ConfigManager.Configs.TryGetValue(mod, out var configs)) {
+				p.Write(0);
+				return;
+			}
+
+			var serverConfigs = configs.Where(x => x.Mode == ConfigScope.ServerSide).ToArray();
+			p.Write(serverConfigs.Length);
+			foreach (var config in serverConfigs) {
+				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
+				Logging.Terraria.Info($"Sending Server Config {config.mod.Name} {config.Name}: {json}");
+
+				p.Write(config.Name);
+				p.Write(json);
+			}
+		}
+
 		internal static void SyncClientMods(BinaryReader reader) {
-			SyncClientMods(reader, out var needsReload);
+			if (!SyncClientMods(reader, out bool needsReload))
+				return; //error syncing can't connect to server
+
 			if (downloadQueue.Count > 0)
 				DownloadNextMod();
 			else
@@ -139,7 +142,7 @@ namespace Terraria.ModLoader
 		}
 
 		// This method is split so that the local variables aren't held by the GC when reloading
-		internal static void SyncClientMods(BinaryReader reader, out bool needsReload) {
+		internal static bool SyncClientMods(BinaryReader reader, out bool needsReload) {
 			AllowVanillaClients = reader.ReadBoolean();
 			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
@@ -159,29 +162,24 @@ namespace Terraria.ModLoader
 
 				int configCount = reader.ReadInt32();
 				for (int c = 0; c < configCount; c++)
-				{
 					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
-				}
 
 				var clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
-				if (clientMod != null) {
-					if (header.Matches(clientMod.File))
-						continue;
+				if (clientMod != null && header.Matches(clientMod.File))
+					continue;
 
-					header.path = clientMod.File.path;
-				}
-				else {
-					var disabledVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-					var matching = disabledVersions.FirstOrDefault(mod => header.Matches(mod.modFile));
-					if (matching != null) {
-						matching.Enabled = true;
-						needsReload = true;
-						continue;
-					}
+				needsReload = true;
 
-					if (disabledVersions.Length > 0)
-						header.path = disabledVersions[0].modFile.path;
+				var localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
+				var matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
+				if (matching != null) {
+					matching.Enabled = true;
+					continue;
 				}
+
+				// overwrite an existing version of the mod if there is one
+				if (localVersions.Length > 0)
+					header.path = localVersions[0].modFile.path;
 
 				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 					downloadQueue.Enqueue(header);
@@ -206,24 +204,44 @@ namespace Terraria.ModLoader
 
 				Logging.tML.Warn(msg);
 				Interface.errorMessage.Show(msg, 0);
+				return false;
 			}
+
+			// ready to connect, apply configs. Config manager will apply the configs on reload automatically
+			if (!needsReload) {
+				foreach (var pendingConfig in pendingConfigs)
+					JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
+
+				if (ConfigManager.AnyModNeedsReload()) {
+					needsReload = true;
+				}
+				else {
+					foreach (var pendingConfig in pendingConfigs)
+						ConfigManager.GetConfig(pendingConfig).OnChanged();
+				}
+			}
+
+			return true;
 		}
 
 		private static void DownloadNextMod() {
 			downloadingMod = downloadQueue.Dequeue();
 			downloadingFile = null;
-
 			var p = new ModPacket(MessageID.ModFile);
 			p.Write(downloadingMod.name);
 			p.Send();
 		}
 
-		private const int CHUNK_SIZE = 16384;
+		// Start sending the mod to the connecting client
+		// First, send the initial mod name and length of the file stream
+		// so the client knows what to expect
+		internal const int CHUNK_SIZE = 16384;
 		internal static void SendMod(string modName, int toClient) {
 			var mod = ModLoader.GetMod(modName);
 			var path = mod.File.path;
 			var fs = File.OpenRead(path);
-			{//send file length
+			{
+				//send file length
 				var p = new ModPacket(MessageID.ModFile);
 				p.Write(mod.DisplayName);
 				p.Write(fs.Length);
@@ -241,17 +259,16 @@ namespace Terraria.ModLoader
 			fs.Close();
 		}
 
+		// Receive a mod when connecting to server
 		internal static void ReceiveMod(BinaryReader reader) {
 			if (downloadingMod == null)
 				return;
 
 			try {
 				if (downloadingFile == null) {
-					Interface.downloadMod.SetDownloading(reader.ReadString());
-					Interface.downloadMod.SetCancel(CancelDownload);
-					Main.menuMode = Interface.downloadModID;
+					Interface.progress.Show(displayText: reader.ReadString(), cancel: CancelDownload);
 
-					ModLoader.GetMod(downloadingMod.name)?.File?.Close();
+					ModLoader.GetMod(downloadingMod.name)?.Close();
 					downloadingLength = reader.ReadInt64();
 					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 					return;
@@ -259,13 +276,12 @@ namespace Terraria.ModLoader
 
 				var bytes = reader.ReadBytes((int)Math.Min(downloadingLength - downloadingFile.Position, CHUNK_SIZE));
 				downloadingFile.Write(bytes, 0, bytes.Length);
-				Interface.downloadMod.SetProgress(downloadingFile.Position, downloadingLength);
+				Interface.progress.Progress = downloadingFile.Position / (float)downloadingLength;
 
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
 					var mod = new TmodFile(downloadingMod.path);
-					mod.Read();
-					mod.Close();
+					using (mod.Open()) { }
 
 					if (!downloadingMod.Matches(mod))
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
@@ -274,11 +290,8 @@ namespace Terraria.ModLoader
 						throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 					ModLoader.EnableMod(mod.name);
-
-					if (downloadQueue.Count > 0)
-						DownloadNextMod();
-					else
-						OnModsDownloaded(true);
+					if (downloadQueue.Count > 0) DownloadNextMod();
+					else OnModsDownloaded(true);
 				}
 			}
 			catch (Exception e) {
@@ -286,12 +299,14 @@ namespace Terraria.ModLoader
 					downloadingFile?.Close();
 					File.Delete(downloadingMod.path);
 				}
-				catch { }
-				
+				catch (Exception exc2) {
+					Logging.tML.Error("Unknown error during mod sync", exc2);
+				}
+
 				var msg = Language.GetTextValue("tModLoader.MPErrorModDownloadError", downloadingMod.name);
 				Logging.tML.Error(msg, e);
 				Interface.errorMessage.Show(msg + e, 0);
-				
+
 				Netplay.disconnect = true;
 				downloadingMod = null;
 			}
@@ -305,7 +320,6 @@ namespace Terraria.ModLoader
 			catch { }
 			downloadingMod = null;
 			Netplay.disconnect = true;
-			Main.menuMode = 0;
 		}
 
 		private static void OnModsDownloaded(bool needsReload) {
@@ -313,23 +327,6 @@ namespace Terraria.ModLoader
 				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
-			}
-
-			// 3 cases: Needs reload because different mod sets, needs reload because config, config matches up.
-			foreach (var pendingConfig in pendingConfigs)
-			{
-				var activeConfig = ConfigManager.GetConfig(pendingConfig);
-				JsonConvert.PopulateObject(pendingConfig.json, activeConfig, ConfigManager.serializerSettingsCompact);
-			}
-			if (ConfigManager.AnyModNeedsReload())
-			{
-				ModLoader.OnSuccessfulLoad = NetReload();
-				ModLoader.Reload();
-				return;
-			}
-			foreach (var pendingConfig in pendingConfigs) {
-				var activeConfig = ConfigManager.GetConfig(pendingConfig);
-				activeConfig.OnChanged();
 			}
 
 			downloadingMod = null;
@@ -364,6 +361,7 @@ namespace Terraria.ModLoader
 
 			ItemLoader.WriteNetGlobalOrder(p);
 			WorldHooks.WriteNetWorldOrder(p);
+			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
 		}
@@ -384,8 +382,15 @@ namespace Terraria.ModLoader
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			WorldHooks.ReadNetWorldOrder(reader);
+			int serverMaxBuffs = reader.ReadInt32();
+			if (serverMaxBuffs != Player.MaxBuffs) {
+				Netplay.disconnect = true;
+				Main.statusText = $"The server expects Player.MaxBuffs of {serverMaxBuffs}\nbut this client reports {Player.MaxBuffs}.\nSome mod is behaving poorly.";
+			}
 		}
 
+		// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a bandaid until they fix their code.
+		internal static bool ReadUnderflowBypass = false; // Remove by 0.11.7
 		internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length) {
 			if (netMods == null) {
 				ReadNetIDs(reader);
@@ -393,7 +398,16 @@ namespace Terraria.ModLoader
 			}
 
 			var id = NetModCount < 256 ? reader.ReadByte() : reader.ReadInt16();
-			GetMod(id)?.HandlePacket(reader, whoAmI);
+			int start = (int)reader.BaseStream.Position;
+			int actualLength = length - 1 - (NetModCount < 256 ? 1 : 2);
+			try {
+				ReadUnderflowBypass = false;
+				GetMod(id)?.HandlePacket(reader, whoAmI);
+				if (!ReadUnderflowBypass && reader.BaseStream.Position - start != actualLength) {
+					throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+				}
+			}
+			catch { }
 
 			if (Main.netMode == 1) {
 				rxMsgType[id]++;

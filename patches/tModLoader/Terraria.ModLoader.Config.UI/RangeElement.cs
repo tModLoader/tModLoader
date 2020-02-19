@@ -2,22 +2,70 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class RangeElement : ConfigElement
+	public abstract class PrimitiveRangeElement<T> : RangeElement where T : IComparable<T>
 	{
+		public T min;
+		public T max;
+		public T increment;
+		public IList<T> tList;
+
+		public override void OnBind() {
+			base.OnBind();
+			this.tList = (IList<T>)list;
+			TextDisplayFunction = () => memberInfo.Name + ": " + GetValue();
+
+			if (tList != null) {
+				TextDisplayFunction = () => index + 1 + ": " + tList[index];
+			}
+
+			if (labelAttribute != null) // Problem with Lists using ModConfig Label.
+			{
+				TextDisplayFunction = () => labelAttribute.Label + ": " + GetValue();
+			}
+			if (rangeAttribute != null && rangeAttribute.min is T && rangeAttribute.max is T) {
+				min = (T)rangeAttribute.min;
+				max = (T)rangeAttribute.max;
+			}
+			if (incrementAttribute != null && incrementAttribute.increment is T) {
+				this.increment = (T)incrementAttribute.increment;
+			}
+		}
+
+		protected virtual T GetValue() => (T)GetObject();
+
+		protected virtual void SetValue(object value) {
+			if(value is T t)
+				SetObject(Utils.Clamp(t, min, max));
+		}
+	}
+
+	public abstract class RangeElement : ConfigElement
+	{
+		protected Color sliderColor = Color.White;
+		protected Utils.ColorLerpMethod colorMethod;
 		internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
-		protected Func<float> _GetProportion;
-		protected Action<float> _SetProportion;
 
-		public RangeElement(PropertyFieldWrapper memberInfo, object item, IList array) : base(memberInfo, item, array)
-		{
+		protected abstract float Proportion {
+			get;
+			set;
+		}
+
+		public RangeElement() {
+			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.Black, sliderColor, percent));
+		}
+
+		public override void OnBind() {
+			base.OnBind();
 			drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+			sliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(memberInfo, item, list)?.color ?? Color.White;
 		}
 
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
@@ -87,19 +135,15 @@ namespace Terraria.ModLoader.Config.UI
 			base.DrawSelf(spriteBatch);
 			float num = 6f;
 			int num2 = 0;
-			//IngameOptions.rightHover = -1;
 			rightHover = null;
 			if (!Main.mouseLeft)
 			{
-				//IngameOptions.rightLock = -1;
 				rightLock = null;
 			}
-			//if (IngameOptions.rightLock == this._sliderIDInPage)
 			if (rightLock == this)
 			{
 				num2 = 1;
 			}
-			//else if (IngameOptions.rightLock != -1)
 			else if (rightLock != null)
 			{
 				num2 = 2;
@@ -123,22 +167,17 @@ namespace Terraria.ModLoader.Config.UI
 			Main.colorBarTexture.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
-			float obj = DrawValueBar(spriteBatch, 1f, this._GetProportion(), num2);
-			//if (IngameOptions.inBar || IngameOptions.rightLock == this._sliderIDInPage)
+			float obj = DrawValueBar(spriteBatch, 1f, Proportion, num2, colorMethod);
 			if (IngameOptions.inBar || rightLock == this)
 			{
 				rightHover = this;
-				//IngameOptions.rightHover = this._sliderIDInPage;
 				if (PlayerInput.Triggers.Current.MouseLeft && rightLock == this)
-				//if (PlayerInput.Triggers.Current.MouseLeft && IngameOptions.rightLock == this._sliderIDInPage)
 				{
-					this._SetProportion(obj);
+					Proportion = obj;
 				}
 			}
-			if (rightHover != null && rightLock == null)
-			//if (IngameOptions.rightHover != -1 && IngameOptions.rightLock == -1)
+			if (rightHover != null && rightLock == null && PlayerInput.Triggers.JustPressed.MouseLeft)
 			{
-				//IngameOptions.rightLock = IngameOptions.rightHover;
 				rightLock = rightHover;
 			}
 		}

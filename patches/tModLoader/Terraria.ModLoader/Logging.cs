@@ -1,10 +1,8 @@
-﻿using Ionic.Zip;
-using log4net;
+﻿using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
-using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,16 +13,16 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Utils;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
+using Microsoft.Xna.Framework;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		public static readonly string LogDir = Path.Combine(Main.SavePath, "Logs");
+		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
 		public static string LogPath { get; private set; }
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
@@ -36,34 +34,34 @@ namespace Terraria.ModLoader
 		internal const string side = "server";
 #endif
 
-		internal static void Init()
-		{
+		private static List<string> initWarnings = new List<string>();
+		internal static void Init() {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
-
-#if MONO
-			new Hook(typeof(Encoding).GetMethod(nameof(Encoding.GetEncoding), new[] { typeof(string) }), new hook_GetEncoding(HookGetEncoding));
-#endif
 
 			if (!Directory.Exists(LogDir))
 				Directory.CreateDirectory(LogDir);
 
 			ConfigureAppenders();
 
-			tML.InfoFormat("Starting {0}{1} {2}", ModLoader.versionedName, ModLoader.compressedPlatformRepresentation, side);
+			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));
 
-			HookModuleLoad();
-			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
-			PrettifyStackTraceSources();
-
-			if (ModCompile.DeveloperMode) {
+			if (ModCompile.DeveloperMode)
 				tML.Info("Developer mode enabled");
-				LogFirstChanceExceptions(true);
-			}
+
+			foreach (var line in initWarnings)
+				tML.Warn(line);
+
+				AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
+			LogFirstChanceExceptions();
+			EnablePortablePDBTraces();
+			AssemblyResolving.Init();
+			LoggingHooks.Init();
+			LogArchiver.ArchiveLogs();
 		}
 
 		private static void ConfigureAppenders() {
@@ -78,16 +76,15 @@ namespace Terraria.ModLoader
 				Name = "ConsoleAppender",
 				Layout = layout
 			});
-#else
+#endif
 			appenders.Add(new DebugAppender {
 				Name = "DebugAppender",
 				Layout = layout
 			});
-#endif
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = LogPath = Path.Combine(LogDir, RollLogs(side)),
+				File = LogPath = Path.Combine(LogDir, GetNewLogFile(side)),
 				AppendToFile = false,
 				Encoding = Encoding.UTF8,
 				Layout = layout
@@ -98,8 +95,8 @@ namespace Terraria.ModLoader
 			BasicConfigurator.Configure(appenders.ToArray());
 		}
 
-		private static string RollLogs(string baseName) {
-			var pattern = new Regex($"{baseName}(\\d*)\\.log");
+		private static string GetNewLogFile(string baseName) {
+			var pattern = new Regex($"{baseName}(\\d*)\\.log$");
 			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 
 			if (!existingLogs.All(CanOpen)) {
@@ -110,10 +107,19 @@ namespace Terraria.ModLoader
 				return $"{baseName}{n + 1}.log";
 			}
 
-			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime))
-				Archive(existingLog);
+			foreach (var existingLog in existingLogs.OrderBy(File.GetCreationTime)) {
+				var oldExt = ".old";
+				int n = 0;
+				while (File.Exists(existingLog + oldExt))
+					oldExt = $".old{++n}";
 
-			DeleteOldArchives();
+				try {
+					File.Move(existingLog, existingLog + oldExt);
+				}
+				catch (IOException e) {
+					initWarnings.Add($"Move failed during log initialization: {existingLog} -> {Path.GetFileName(existingLog)}{oldExt}\n{e}");
+				}
+			}
 
 			return $"{baseName}.log";
 		}
@@ -128,52 +134,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void Archive(string logPath) {
-			var time = File.GetCreationTime(logPath);
-			int n = 1;
+		private static void LogFirstChanceExceptions() {
+			if (FrameworkVersion.Framework == Framework.Mono)
+				tML.Warn("First-chance exception reporting is not implemented on Mono");
 
-			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
-			if (existingLogs.Count > 0)
-				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
-
-			using (var zip = new ZipFile(Path.Combine(LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
-				zip.AddFile(logPath, "");
-				zip.Save();
-			}
-
-			File.Delete(logPath);
-		}
-
-		private const int MAX_LOGS = 20;
-		private static void DeleteOldArchives() {
-			var pattern = new Regex(".*\\.zip");
-			var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();
-			foreach (var f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
-				try {
-					File.Delete(f);
-				}
-				catch (IOException) { }
-			}
-		}
-
-		private static void HookModuleLoad() {
-			AssemblyManager.AssemblyResolveEarly((sender, args) => {
-				tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);
-				return null;
-			});
-		}
-
-		internal static void LogFirstChanceExceptions(bool enabled) {
-			if (enabled) {
-				if (FrameworkVersion.Framework == "Mono")
-					tML.Warn("First-chance exception reporting is not implemented on Mono");
-
-				AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
-			}
-			else {
-				AppDomain.CurrentDomain.FirstChanceException -= FirstChanceExceptionHandler;
-			}
+			AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 		}
 
 		private static HashSet<string> pastExceptions = new HashSet<string>();
@@ -185,11 +150,30 @@ namespace Terraria.ModLoader
 		public static void IgnoreExceptionSource(string source) => ignoreSources.Add(source);
 
 		private static List<string> ignoreContents = new List<string> {
-			"Terraria.ModLoader.ModCompile",
+			"System.Console.set_OutputEncoding", // when the game is launched without a console handle (client outside dev environment)
+			"Terraria.ModLoader.Core.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
-			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", //client disconnects from server
-			"System.Diagnostics.Process.Kill",//attempt to kill non-started process when joining server
+			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
+			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
+			"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
+		};
+
+		// there are a couple of annoying messages that happen during cancellation of asynchronous downloads
+		// that have no other useful info to suppress by
+		private static List<string> ignoreMessages = new List<string> {
+			"A blocking operation was interrupted by a call to WSACancelBlockingCall", // c#.net abort for downloads
+			"The request was aborted: The request was canceled.", // System.Net.ConnectStream.IOError
+			"Object name: 'System.Net.Sockets.Socket'.", // System.Net.Sockets.Socket.BeginReceive
+			"Object name: 'System.Net.Sockets.NetworkStream'",// System.Net.Sockets.NetworkStream.UnsafeBeginWrite
+			"This operation cannot be performed on a completed asynchronous result object.", // System.Net.ContextAwareResult.get_ContextCopy()
+			"Object name: 'SslStream'.", // System.Net.Security.SslState.InternalEndProcessAuthentication
+			"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'" // Roslyn
+		};
+
+		private static List<string> ignoreThrowingMethods = new List<string> {
+			"at Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
+			"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 		};
 
 		public static void IgnoreExceptionContents(string source) {
@@ -197,42 +181,70 @@ namespace Terraria.ModLoader
 				ignoreContents.Add(source);
 		}
 
+		private static ThreadLocal<bool> handlerActive = new ThreadLocal<bool>(() => false);
 		private static Exception previousException;
 		private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
-			if (args.Exception == previousException ||
-				args.Exception is ThreadAbortException ||
-				ignoreSources.Contains(args.Exception.Source))
+			if (handlerActive.Value)
 				return;
 
-			var stackTrace = new StackTrace(true);
-			PrettifyStackTraceSources(stackTrace.GetFrames());
-			var traceString = stackTrace.ToString();
+			try {
+				handlerActive.Value = true;
 
-			if (ignoreContents.Any(traceString.Contains))
-				return;
-
-			traceString = traceString.Substring(traceString.IndexOf('\n'));
-			var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
-			lock (pastExceptions) {
-				if (!pastExceptions.Add(exString))
+				if (args.Exception == previousException ||
+					args.Exception is ThreadAbortException ||
+					ignoreSources.Contains(args.Exception.Source) ||
+					ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
+					ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
 					return;
-			}
 
-			previousException = args.Exception;
-			var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-#if CLIENT
-			if (Main.ContentLoaded) {
-				float soundVolume = Main.soundVolume;
-				Main.soundVolume = 0f;
-				Main.NewText(msg, Microsoft.Xna.Framework.Color.OrangeRed);
-				Main.soundVolume = soundVolume;
+				var stackTrace = new StackTrace(true);
+				PrettifyStackTraceSources(stackTrace.GetFrames());
+				var traceString = stackTrace.ToString();
+
+				if (ignoreContents.Any(traceString.Contains))
+					return;
+
+				traceString = traceString.Substring(traceString.IndexOf('\n'));
+				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
+				lock (pastExceptions) {
+					if (!pastExceptions.Add(exString))
+						return;
+				}
+
+				previousException = args.Exception;
+				var msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+	#if CLIENT
+				if (ModCompile.activelyModding)
+					AddChatMessage(msg, Color.OrangeRed);
+	#else
+				Console.ForegroundColor = ConsoleColor.DarkMagenta;
+				Console.WriteLine(msg);
+				Console.ResetColor();
+	#endif
+				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+
+				if (args.Exception is OutOfMemoryException) {
+					Interface.MessageBoxShow("Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it. (or go and find the 64bit version of tML)");
+					Environment.Exit(1);
+				}
 			}
-#else
-			Console.ForegroundColor = ConsoleColor.DarkMagenta;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-#endif
-			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+			catch (Exception e) {
+				tML.Warn("FirstChanceExceptionHandler exception", e);
+			}
+			finally {
+				handlerActive.Value = false;
+			}
+		}
+
+		// Separate method to avoid triggering Main constructor
+		private static void AddChatMessage(string msg, Color color) {
+			if (Main.gameMenu)
+				return;
+
+			float soundVolume = Main.soundVolume;
+			Main.soundVolume = 0f;
+			Main.NewText(msg, color);
+			Main.soundVolume = soundVolume;
 		}
 
 		private static Regex statusRegex = new Regex(@"(.+?)[: \d]*%$");
@@ -257,49 +269,12 @@ namespace Terraria.ModLoader
 			(log ?? Terraria).Logger.Log(null, level, msg, ex);
 		}
 
-		private delegate Encoding orig_GetEncoding(string name);
-		private delegate Encoding hook_GetEncoding(orig_GetEncoding orig, string name);
-		private static Encoding HookGetEncoding(orig_GetEncoding orig, string name) {
-			if (name == "IBM437")
-				return null;
-
-			return orig(name);
-		}
-
 		internal static readonly FieldInfo f_fileName =
 			typeof(StackFrame).GetField("strFileName", BindingFlags.Instance | BindingFlags.NonPublic) ??
 			typeof(StackFrame).GetField("fileName", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		private static readonly Assembly TerrariaAssembly = Assembly.GetExecutingAssembly();
 
-#if WINDOWS
-		private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
-		private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
-		private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
-			orig(self, e, fNeedFileInfo);
-			if (fNeedFileInfo)
-				PrettifyStackTraceSources(self.GetFrames());
-		}
-#else
-		private static readonly Regex trimParamTypes = new Regex(@"([([,] ?)(?:[\w.+]+[.+])", RegexOptions.Compiled);
-		private static readonly Regex dropOffset = new Regex(@" \[.+?\](?![^:]+:-1)", RegexOptions.Compiled);
-		private static readonly Regex dropGenericTicks = new Regex(@"`\d+", RegexOptions.Compiled);
-		
-		private delegate string orig_GetStackTrace(Exception self, bool fNeedFileInfo);
-		private delegate string hook_GetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo);
-		private static string HookGetStackTrace(orig_GetStackTrace orig, Exception self, bool fNeedFileInfo)
-		{
-			var stackTrace = new StackTrace(self, true);
-			MdbManager.Symbolize(stackTrace.GetFrames());
-			PrettifyStackTraceSources(stackTrace.GetFrames());
-			var s = stackTrace.ToString();
-			s = trimParamTypes.Replace(s, "$1");
-			s = dropGenericTicks.Replace(s, "");
-			s = dropOffset.Replace(s, "");
-			s = s.Replace(":-1", "");
-			return s;
-		}
-#endif
 		public static void PrettifyStackTraceSources(StackFrame[] frames) {
 			if (frames == null)
 				return;
@@ -326,15 +301,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void PrettifyStackTraceSources() {
-#if WINDOWS
-			if (f_fileName == null)
-				return;
-
-			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
-#else
-			new Hook(typeof(Exception).FindMethod("GetStackTrace"), new hook_GetStackTrace(HookGetStackTrace));
-#endif
+		private static void EnablePortablePDBTraces() {
+			if (FrameworkVersion.Framework == Framework.NetFramework && FrameworkVersion.Version >= new Version(4, 7, 2))
+				Type.GetType("System.AppContextSwitches").GetField("_ignorePortablePDBsInStackTraces", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, -1);
 		}
 	}
 }

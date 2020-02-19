@@ -1,14 +1,12 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
-@@ -1,6 +_,11 @@
+@@ -1,6 +_,9 @@
  using System;
-+using System.Collections.Generic;
  using System.Diagnostics;
-+using System.IO;
 +using System.Linq;
 +using System.Text.RegularExpressions;
  using Terraria.Localization;
-+using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
  using Terraria.Social;
  
  namespace Terraria.Initializers
@@ -88,19 +86,21 @@
  			string worldName;
  			if ((worldName = LaunchInitializer.TryParameter(new string[]
  				{
-@@ -171,6 +_,14 @@
- 				})) != null)
+@@ -172,6 +_,16 @@
  			{
  				game.NewMOTD(newMOTD);
-+			}
+ 			}
 +			string modPath;
 +			if ((modPath = LaunchInitializer.TryParameter(new string[]
 +				{
 +					"-modpath"
 +				})) != null)
 +			{
-+				ModLoader.ModLoader.modPath = modPath;
- 			}
++				ModOrganizer.modPath = modPath;
++			}
++			if (LaunchInitializer.HasParameter("-showserverconsole"))
++				Main.showServerConsole = true;
  			string banFilePath;
  			if ((banFilePath = LaunchInitializer.TryParameter(new string[]
+ 				{
 

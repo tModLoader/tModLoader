@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
@@ -14,6 +18,7 @@ namespace Terraria.ModLoader.Config.UI
 		protected NestedUIList dataList;
 		protected float scale = 1f;
 		protected DefaultListValueAttribute defaultListValueAttribute;
+		protected JsonDefaultListValueAttribute jsonDefaultListValueAttribute;
 
 		UIModConfigHoverImage initializeButton;
 		UIModConfigHoverImage addButton;
@@ -22,7 +27,8 @@ namespace Terraria.ModLoader.Config.UI
 		UIModConfigHoverImageSplit upDownButton;
 		bool expanded = true;
 
-		public CollectionElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null) {
+		public override void OnBind() {
+			base.OnBind();
 			data = memberInfo.GetValue(item);
 			defaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(memberInfo, null, null);
 
@@ -92,7 +98,10 @@ namespace Terraria.ModLoader.Config.UI
 				deleteButton.Left.Set(-25, 1f);
 				deleteButton.OnClick += (a, b) => {
 					Main.PlaySound(SoundID.Tink);
-					NullCollection();
+					if (nullAllowed)
+						NullCollection();
+					else
+						ClearCollection();
 					SetupList();
 					Interface.modConfig.RecalculateChildren();
 					Interface.modConfig.SetPendingChanges();
@@ -141,6 +150,21 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected virtual bool CanAdd => true;
 
+		protected object CreateCollectionElementInstance(Type type) {
+			object toAdd;
+			if (defaultListValueAttribute != null) {
+				toAdd = defaultListValueAttribute.Value;
+			}
+			else {
+				toAdd = ConfigManager.AlternateCreateInstance(type);
+				if (!type.IsValueType && type != typeof(string)) {
+					string json = jsonDefaultListValueAttribute?.json ?? "{}";
+					JsonConvert.PopulateObject(json, toAdd, ConfigManager.serializerSettings);
+				}
+			}
+			return toAdd;
+		}
+
 		// SetupList called in base.ctor, but children need Types.
 		protected abstract void PrepareTypes();
 
@@ -150,8 +174,9 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected virtual void NullCollection() {
 			data = null;
-			memberInfo.SetValue(item, data);
+			SetObject(data);
 		}
+		protected abstract void ClearCollection();
 
 		protected abstract void SetupList();
 

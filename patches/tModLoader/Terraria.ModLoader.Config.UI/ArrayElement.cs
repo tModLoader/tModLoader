@@ -5,13 +5,14 @@ namespace Terraria.ModLoader.Config.UI
 	internal class ArrayElement : CollectionElement
 	{
 		Type itemType;
-		public ArrayElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-			// TODO: Allow null maybe?
-		}
 
 		protected override bool CanAdd => false;
 
 		protected override void AddItem() {
+			throw new NotImplementedException();
+		}
+
+		protected override void ClearCollection() {
 			throw new NotImplementedException();
 		}
 

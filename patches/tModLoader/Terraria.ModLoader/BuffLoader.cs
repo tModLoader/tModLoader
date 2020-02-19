@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
@@ -12,6 +13,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class BuffLoader
 	{
+		internal static int extraPlayerBuffCount;
 		private static int nextBuff = BuffID.Count;
 		internal static readonly IList<ModBuff> buffs = new List<ModBuff>();
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
@@ -94,6 +96,7 @@ namespace Terraria.ModLoader
 				Lang._buffNameCache[k] = LocalizedText.Empty;
 				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
 			}
+			extraPlayerBuffCount = ModLoader.Mods.Any() ? ModLoader.Mods.Max(m => (int)m.ExtraPlayerBuffSlots) : 0;
 
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);

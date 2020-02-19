@@ -2,89 +2,97 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using Terraria.Graphics;
+using System.Threading.Tasks;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	class UIMemoryBar : UIElement
+	internal class UIMemoryBar : UIElement
 	{
 		private class MemoryBarItem
 		{
-			internal string tooltip;
-			internal long memory;
-			internal Color drawColor;
+			internal readonly string Tooltip;
+			internal readonly long Memory;
+			internal readonly Color DrawColor;
 
 			public MemoryBarItem(string tooltip, long memory, Color drawColor) {
-				this.tooltip = tooltip;
-				this.memory = memory;
-				this.drawColor = drawColor;
+				Tooltip = tooltip;
+				Memory = memory;
+				DrawColor = drawColor;
 			}
 		}
 
-		private readonly Texture2D innerPanelTexture;
-		internal static bool recalculateMemoryNeeded = true;
-		private List<MemoryBarItem> memoryBarItems;
-		private long maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
+		internal static bool RecalculateMemoryNeeded = true;
 
-		public UIMemoryBar() {
+		private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
+		private UIPanel _hoverPanel;
+		private long _maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
+
+		public override void OnInitialize() {
 			Width.Set(0f, 1f);
 			Height.Set(20f, 0f);
-			innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
-			memoryBarItems = new List<MemoryBarItem>();
 		}
 
 		public override void OnActivate() {
 			base.OnActivate();
-			recalculateMemoryNeeded = true;
-			ThreadPool.QueueUserWorkItem(_ => {
-				RecalculateMemory();
-			}, 1);
+			// moved from constructor to avoid texture loading on JIT thread
+			RecalculateMemoryNeeded = true;
+			Task.Run(RecalculateMemory);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if (recalculateMemoryNeeded) return;
+			if (RecalculateMemoryNeeded) return;
 
 			var rectangle = GetInnerDimensions().ToRectangle();
 
 			var mouse = new Point(Main.mouseX, Main.mouseY);
 			int xOffset = 0;
-			int width = 0;
-			for (int i = 0; i < memoryBarItems.Count; i++) {
-				var memoryBarData = memoryBarItems[i];
-				width = (int)(rectangle.Width * (memoryBarData.memory / (float)maxMemory));
-				if(i == memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
+			bool drawHover = false;
+			Rectangle hoverRect = Rectangle.Empty;
+			MemoryBarItem hoverData = null;
+
+			for (int i = 0; i < _memoryBarItems.Count; i++) {
+				var memoryBarData = _memoryBarItems[i];
+				int width = (int)(rectangle.Width * (memoryBarData.Memory / (float)_maxMemory));
+				if (i == _memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
 					width = rectangle.Right - xOffset - rectangle.X;
 				}
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
 				xOffset += width;
-				Main.spriteBatch.Draw(Main.magicPixel, drawArea, memoryBarData.drawColor);
-				if (drawArea.Contains(mouse)) {
-					Vector2 stringSize = Main.fontMouseText.MeasureString(memoryBarData.tooltip);
+				Main.spriteBatch.Draw(Main.magicPixel, drawArea, memoryBarData.DrawColor);
+
+				if (!drawHover && drawArea.Contains(mouse)) {
+					Vector2 stringSize = Main.fontMouseText.MeasureString(memoryBarData.Tooltip);
 					float x = stringSize.X;
 					Vector2 vector = Main.MouseScreen + new Vector2(16f);
-					if (vector.Y > Main.screenHeight - 30) {
-						vector.Y = Main.screenHeight - 30;
-					}
-					if (vector.X > Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40) {
-						vector.X = Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40;
-					}
+					vector.Y = Math.Min(vector.Y, Main.screenHeight - 30);
+					vector.X = Math.Min(vector.X, Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40);
 					var r = new Rectangle((int)vector.X, (int)vector.Y, (int)x, (int)stringSize.Y);
 					r.Inflate(5, 5);
-					Main.spriteBatch.Draw(Main.magicPixel, r, UICommon.defaultUIBlue);
-					Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, memoryBarData.tooltip, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+					drawHover = true;
+					hoverRect = r;
+					hoverData = memoryBarData;
 				}
 			}
-			return;
+
+			if (drawHover && hoverData != null) {
+				_hoverPanel.Parent = Parent;
+				_hoverPanel.Width.Set(hoverRect.Width + 5, 0);
+				_hoverPanel.Height.Set(hoverRect.Height + 5, 0);
+				_hoverPanel.Top.Set(Math.Abs(Parent.GetDimensions().Y - hoverRect.Y) - 10, 0);
+				_hoverPanel.Left.Set(Math.Abs(Parent.GetDimensions().X - hoverRect.X) - 20, 0);
+				_hoverPanel.Recalculate();
+				_hoverPanel.Draw(spriteBatch);
+				Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverData.Tooltip, hoverRect.X, hoverRect.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			}
 		}
 
-		private Color[] colors = {
+		private readonly Color[] _colors = {
 			new Color(232, 76, 61),//red
 			new Color(155, 88, 181),//purple
 			new Color(27, 188, 155),//aqua
@@ -94,11 +102,13 @@ namespace Terraria.ModLoader.UI
 		};
 
 		private void RecalculateMemory() {
-			memoryBarItems.Clear();
-			
-#if WINDOWS
-			maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
-			long availableMemory = maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
+			_memoryBarItems.Clear();
+			_hoverPanel = new UIPanel();
+			_hoverPanel.Activate();
+
+#if WINDOWS //TODO: 64bit?
+			_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
+			long availableMemory = _maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
 #else
 			long maxMemory = GetTotalMemory();
 			long availableMemory = GetAvailableMemory();
@@ -111,7 +121,7 @@ namespace Terraria.ModLoader.UI
 				var usage = entry.Value;
 				if (usage.total <= 0 || modName == "tModLoader")
 					continue;
-				
+
 				totalModMemory += usage.total;
 				var sb = new StringBuilder();
 				sb.Append(ModLoader.GetMod(modName).DisplayName);
@@ -124,24 +134,49 @@ namespace Terraria.ModLoader.UI
 					sb.Append($"\n Sounds: {SizeSuffix(usage.sounds)}");
 				if (usage.textures > 0)
 					sb.Append($"\n Textures: {SizeSuffix(usage.textures)}");
-				memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, colors[i++ % colors.Length]));
+				_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 			}
-			
+
 			long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
 			var nonModMemory = allocatedMemory - totalModMemory;
-			memoryBarItems.Add(new MemoryBarItem(
-				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}", 
+			_memoryBarItems.Add(new MemoryBarItem(
+				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}",
 				nonModMemory, Color.DeepSkyBlue));
-			
+
 			var remainingMemory = availableMemory - allocatedMemory;
-			memoryBarItems.Add(new MemoryBarItem(
-				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}", 
+			_memoryBarItems.Add(new MemoryBarItem(
+				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}",
 				remainingMemory, Color.Gray));
 
 			//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
 			//memoryBarItems.Add(new MemoryBarData($"Other programs: {SizeSuffix(maxMemory - availableMemory - meminuse)}", portion, Color.Black));
 
-			recalculateMemoryNeeded = false;
+			RecalculateMemoryNeeded = false;
+		}
+
+		private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+
+		private static string SizeSuffix(long value, int decimalPlaces = 1) {
+			if (value < 0) { return "-" + SizeSuffix(-value); }
+			if (value == 0) { return "0.0 bytes"; }
+
+			// mag is 0 for bytes, 1 for KB, 2, for MB, etc.
+			int mag = (int)Math.Log(value, 1024);
+
+			// 1L << (mag * 10) == 2 ^ (10 * mag) 
+			// [i.e. the number of bytes in the unit corresponding to mag]
+			decimal adjustedSize = (decimal)value / (1L << (mag * 10));
+
+			// make adjustment when the value is large enough that
+			// it would round up to 1000 or more
+			if (Math.Round(adjustedSize, decimalPlaces) >= 1000) {
+				mag += 1;
+				adjustedSize /= 1024;
+			}
+
+			return string.Format("{0:n" + decimalPlaces + "} {1}",
+				adjustedSize,
+				SizeSuffixes[mag]);
 		}
 
 		public static long GetAvailableMemory() {
@@ -185,29 +220,5 @@ namespace Terraria.ModLoader.UI
 			return Math.Max(0, availableMemory);
 		}
 		*/
-
-		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-		static string SizeSuffix(long value, int decimalPlaces = 1) {
-			if (value < 0) { return "-" + SizeSuffix(-value); }
-			if (value == 0) { return "0.0 bytes"; }
-
-			// mag is 0 for bytes, 1 for KB, 2, for MB, etc.
-			int mag = (int)Math.Log(value, 1024);
-
-			// 1L << (mag * 10) == 2 ^ (10 * mag) 
-			// [i.e. the number of bytes in the unit corresponding to mag]
-			decimal adjustedSize = (decimal)value / (1L << (mag * 10));
-
-			// make adjustment when the value is large enough that
-			// it would round up to 1000 or more
-			if (Math.Round(adjustedSize, decimalPlaces) >= 1000) {
-				mag += 1;
-				adjustedSize /= 1024;
-			}
-
-			return string.Format("{0:n" + decimalPlaces + "} {1}",
-				adjustedSize,
-				SizeSuffixes[mag]);
-		}
 	}
 }

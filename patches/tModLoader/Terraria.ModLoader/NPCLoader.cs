@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveNPCID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
 
 			int reserveID = nextNPC;
 			nextNPC++;
@@ -255,15 +255,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreAI = AddHook<Func<NPC, bool>>(g => g.PreAI);
 
 		public static bool PreAI(NPC npc) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreAI.arr) {
-				if (!g.Instance(npc).PreAI(npc)) {
-					return false;
-				}
+				result &= g.Instance(npc).PreAI(npc);
 			}
-			if (npc.modNPC != null) {
+			if (result && npc.modNPC != null) {
 				return npc.modNPC.PreAI();
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookAI = AddHook<Action<NPC>>(g => g.AI);
@@ -371,15 +370,17 @@ namespace Terraria.ModLoader
 		private static HookList HookCheckDead = AddHook<Func<NPC, bool>>(g => g.CheckDead);
 
 		public static bool CheckDead(NPC npc) {
-			if (npc.modNPC != null && !npc.modNPC.CheckDead()) {
-				return false;
+			bool result = true;
+
+			if (npc.modNPC != null) {
+				result = npc.modNPC.CheckDead();
 			}
+
 			foreach (GlobalNPC g in HookCheckDead.arr) {
-				if (!g.Instance(npc).CheckDead(npc)) {
-					return false;
-				}
+				result &= g.Instance(npc).CheckDead(npc);
 			}
-			return true;
+
+			return result;
 		}
 
 		private static HookList HookSpecialNPCLoot = AddHook<Func<NPC, bool>>(g => g.SpecialNPCLoot);
@@ -399,16 +400,20 @@ namespace Terraria.ModLoader
 		private static HookList HookPreNPCLoot = AddHook<Func<NPC, bool>>(g => g.PreNPCLoot);
 
 		public static bool PreNPCLoot(NPC npc) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreNPCLoot.arr) {
-				if (!g.Instance(npc).PreNPCLoot(npc)) {
-					blockLoot.Clear();
-					return false;
-				}
+				result &= g.Instance(npc).PreNPCLoot(npc);
 			}
-			if (npc.modNPC != null && !npc.modNPC.PreNPCLoot()) {
+
+			if (result && npc.modNPC != null) {
+				result = npc.modNPC.PreNPCLoot();
+			}
+
+			if (!result) {
 				blockLoot.Clear();
 				return false;
 			}
+
 			return true;
 		}
 
@@ -430,6 +435,16 @@ namespace Terraria.ModLoader
 		public static void BossBag(NPC npc, ref int bagType) {
 			if (npc.modNPC != null) {
 				bagType = npc.modNPC.bossBag;
+			}
+		}
+
+		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
+
+		public static void OnCatchNPC(NPC npc, Player player, Item item) {
+			npc.modNPC?.OnCatchNPC(player, item);
+
+			foreach (GlobalNPC g in HookOnCatchNPC.arr) {
+				g.Instance(npc).OnCatchNPC(npc, player, item);
 			}
 		}
 
@@ -681,15 +696,14 @@ namespace Terraria.ModLoader
 		private static HookList HookPreDraw = AddHook<Func<NPC, SpriteBatch, Color, bool>>(g => g.PreDraw);
 
 		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.arr) {
-				if (!g.Instance(npc).PreDraw(npc, spriteBatch, drawColor)) {
-					return false;
-				}
+				result &= g.Instance(npc).PreDraw(npc, spriteBatch, drawColor);
 			}
-			if (npc.modNPC != null) {
+			if (result && npc.modNPC != null) {
 				return npc.modNPC.PreDraw(spriteBatch, drawColor);
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPostDraw = AddHook<Action<NPC, SpriteBatch, Color>>(g => g.PostDraw);
@@ -831,25 +845,10 @@ namespace Terraria.ModLoader
 			return npc.modNPC?.UsesPartyHat() ?? true;
 		}
 
-		public static bool VanillaCanChat(NPC npc) {
-			switch (npc.type) {
-				case NPCID.BoundGoblin:
-				case NPCID.BoundWizard:
-				case NPCID.BoundMechanic:
-				case NPCID.WebbedStylist:
-				case NPCID.SleepingAngler:
-				case NPCID.BartenderUnconscious:
-				case NPCID.SkeletonMerchant:
-					return true;
-				default:
-					return npc.townNPC;
-			}
-		}
-
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-		public static bool CanChat(NPC npc) {
-			bool defaultCanChat = npc.modNPC?.CanChat() ?? VanillaCanChat(npc);
+		public static bool CanChat(NPC npc, bool vanillaCanChat) {
+			bool defaultCanChat = npc.modNPC?.CanChat() ?? vanillaCanChat;
 
 			foreach (GlobalNPC g in HookCanChat.arr) {
 				bool? canChat = g.Instance(npc).CanChat(npc);
@@ -891,12 +890,16 @@ namespace Terraria.ModLoader
 		public static bool PreChatButtonClicked(bool firstButton) {
 			NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
 
+			bool result = true;
 			foreach (GlobalNPC g in HookPreChatButtonClicked.arr) {
-				if (!g.Instance(npc).PreChatButtonClicked(npc, firstButton)) {
-					Main.PlaySound(SoundID.MenuTick);
-					return false;
-				}
+				result &= g.Instance(npc).PreChatButtonClicked(npc, firstButton);
 			}
+
+			if (!result) {
+				Main.PlaySound(SoundID.MenuTick);
+				return false;
+			}
+
 			return true;
 		}
 
@@ -943,6 +946,34 @@ namespace Terraria.ModLoader
 		public static void SetupTravelShop(int[] shop, ref int nextSlot) {
 			foreach (GlobalNPC g in HookSetupTravelShop.arr) {
 				g.SetupTravelShop(shop, ref nextSlot);
+			}
+		}
+
+		private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
+
+		public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo) {
+			bool defaultCanGo = npc.modNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
+
+			foreach (GlobalNPC g in HookCanGoToStatue.arr) {
+				bool? canGo = g.Instance(npc).CanGoToStatue(npc, toKingStatue);
+				if (canGo.HasValue) {
+					if (!canGo.Value) {
+						return false;
+					}
+					defaultCanGo = true;
+				}
+			}
+
+			return defaultCanGo;
+		}
+
+		private static HookList HookOnGoToStatue = AddHook<Action<NPC, bool>>(g => g.OnGoToStatue);
+
+		public static void OnGoToStatue(NPC npc, bool toKingStatue) {
+			npc.modNPC?.OnGoToStatue(toKingStatue);
+
+			foreach (GlobalNPC g in HookOnGoToStatue.arr) {
+				g.OnGoToStatue(npc, toKingStatue);
 			}
 		}
 

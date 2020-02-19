@@ -175,7 +175,7 @@
  						uIElement.ScrollWheel(new UIScrollWheelEvent(uIElement, this.MousePosition, PlayerInput.ScrollWheelDeltaForUI));
  					}
 -					PlayerInput.ScrollWheelDeltaForUI = 0;
-+					//PlayerInput.ScrollWheelDeltaForUI = 0;
++					// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after ModHooks.UpdateUI(gameTime);
  				}
  				this._wasMouseDown = flag;
 +				this._wasMouseRightDown = mouseRightDown;

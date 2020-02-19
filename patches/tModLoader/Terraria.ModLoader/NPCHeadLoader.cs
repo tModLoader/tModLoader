@@ -81,6 +81,6 @@ namespace Terraria.ModLoader
 		internal static int GetNPCHeadSlot(int type) => npcToHead.TryGetValue(type, out int slot) ? slot : -1;
 
 		//in Terraria.NPC.NumToType replace final return with this
-		internal static int GetNPCFromHeadSlot(int slot) => headToNPC.TryGetValue(slot, out int type) ? slot : -1;
+		internal static int GetNPCFromHeadSlot(int slot) => headToNPC.TryGetValue(slot, out int type) ? type : -1;
 	}
 }

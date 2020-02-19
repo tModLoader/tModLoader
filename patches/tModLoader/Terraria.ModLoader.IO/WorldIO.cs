@@ -165,7 +165,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryNPCs.Add(tag);
+					ModContent.GetInstance<MysteryWorld>().mysteryNPCs.Add(tag);
 				}
 			}
 		}
@@ -193,7 +193,7 @@ namespace Terraria.ModLoader.IO
 					NPC.killCount[type] = tag.GetInt("count");
 				}
 				else {
-					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).mysteryKillCounts.Add(tag);
+					ModContent.GetInstance<MysteryWorld>().mysteryKillCounts.Add(tag);
 				}
 			}
 		}
@@ -212,6 +212,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadAnglerQuest(TagCompound tag) {
+			// Don't try to load modded angler quest item if there isn't one
+			if (!tag.ContainsKey("mod")) {
+				return;
+			}
 			var mod = ModLoader.GetMod(tag.GetString("mod"));
 			int type = mod?.ItemType(tag.GetString("itemName")) ?? 0;
 			if (type > 0) {
@@ -290,7 +294,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
+					ModContent.GetInstance<MysteryWorld>().data.Add(tag);
 				}
 			}
 		}
@@ -306,7 +310,7 @@ namespace Terraria.ModLoader.IO
 					reader.SafeRead(r => modWorld.NetReceive(r));
 				}
 				catch (IOException) {
-					//TODO inform modder/user
+					Logging.tML.Error($"Above IOException error caused by {modWorld.Name} from the {modWorld.mod.Name} mod.");
 				}
 			}
 		}
@@ -444,7 +448,7 @@ namespace Terraria.ModLoader.IO
 						["name"] = name,
 						["legacyData"] = data
 					};
-					((MysteryWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryWorld")).data.Add(tag);
+					ModContent.GetInstance<MysteryWorld>().data.Add(tag);
 				}
 			}
 		}

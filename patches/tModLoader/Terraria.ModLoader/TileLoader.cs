@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
 
 			int reserveID = nextTile;
 			nextTile++;
@@ -475,7 +475,7 @@ namespace Terraria.ModLoader
 			tile.SetDefaults();
 			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1) {
 				TileObjectData.FixNewTile();
-				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
+				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
 			}
 			if (Main.tileLavaDeath[tile.Type]) {
 				Main.tileObsidianKill[tile.Type] = true;
@@ -809,13 +809,17 @@ namespace Terraria.ModLoader
 		}
 		//in Terraria.Player.Update in if statements involving controluseTile and releaseUseTile
 		//  at end of type-check if else chain add TileLoader.RightClick(Player.tileTargetX, Player.tileTargetY);
-		public static void RightClick(int i, int j) {
+		public static bool RightClick(int i, int j) {
+			bool returnValue = false;
 			int type = Main.tile[i, j].type;
 			GetTile(type)?.RightClick(i, j);
+			if (GetTile(type)?.NewRightClick(i, j) ?? false)
+				returnValue = true;
 
 			foreach (var hook in HookRightClick) {
 				hook(i, j, type);
 			}
+			return returnValue;
 		}
 		//in Terraria.Player.Update after if statements setting showItemIcon call
 		//  TileLoader.MouseOver(Player.tileTargetX, Player.tileTargetY);
@@ -1033,6 +1037,14 @@ namespace Terraria.ModLoader
 			}
 
 			GetTile(type)?.PlaceInWorld(i, j, item);
+		}
+
+		public static bool IsLockedChest(int i, int j, int type) {
+			return GetTile(type)?.IsLockedChest(i, j) ?? false;
+		}
+
+		public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
+			return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 		}
 	}
 }

@@ -12,7 +12,16 @@
  		private float _innerListHeight;
  		public float ListPadding = 5f;
  
-@@ -77,6 +_,15 @@
+@@ -73,10 +_,24 @@
+ 			}
+ 		}
+ 
++		public float ViewPosition {
++			get => this._scrollbar.ViewPosition;
++			set => this._scrollbar.ViewPosition = value;
++		}
++
+ 		public virtual void Add(UIElement item)
  		{
  			this._items.Add(item);
  			this._innerList.Append(item);

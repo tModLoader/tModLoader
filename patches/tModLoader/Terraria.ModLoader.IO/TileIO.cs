@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
 				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
+					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
@@ -116,7 +116,7 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
 				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile");
+					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
@@ -293,7 +293,7 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-				if (tile.type == ModLoader.GetMod("ModLoader").TileType("PendingMysteryTile")
+				if (tile.type == ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile")
 					&& tables.tileNames.ContainsKey(saveType)) {
 					MysteryTileInfo info;
 					if (tables.frameImportant[saveType]) {
@@ -303,7 +303,7 @@ namespace Terraria.ModLoader.IO
 					else {
 						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 					}
-					MysteryTilesWorld modWorld = (MysteryTilesWorld)ModLoader.GetMod("ModLoader").GetModWorld("MysteryTilesWorld");
+					MysteryTilesWorld modWorld = ModContent.GetInstance<MysteryTilesWorld>();
 					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0) {
 						pendingFrameID = modWorld.pendingInfos.Count;
@@ -620,7 +620,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					tileEntity = ModLoader.GetMod("ModLoader").GetTileEntity("MysteryTileEntity");
+					tileEntity = ModContent.GetInstance<ModLoaderMod>().GetTileEntity("MysteryTileEntity");
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));

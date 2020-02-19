@@ -170,11 +170,15 @@
  							break;
  						}
  					case 38:
-@@ -747,7 +_,10 @@
+@@ -745,9 +_,12 @@
+ 						}
+ 					case 50:
  						writer.Write((byte)number);
- 						for (int num16 = 0; num16 < 22; num16++)
- 						{
+-						for (int num16 = 0; num16 < 22; num16++)
+-						{
 -							writer.Write((byte)Main.player[number].buffType[num16]);
++						for (int num16 = 0; num16 < Player.MaxBuffs; num16++)
++						{
 +							if (ModNet.AllowVanillaClients)
 +								writer.Write((byte)Main.player[number].buffType[num16]);
 +							else
@@ -291,6 +295,21 @@
  							if ((b & 16) == 16)
  							{
  								tile.wallColor(reader.ReadByte());
+@@ -2050,12 +_,13 @@
+ 					NetMessage.buffer[i].totalData += streamLength;
+ 					NetMessage.buffer[i].checkBytes = true;
+ 				}
+-				catch
++				catch(Exception e)
+ 				{
+ 					if (Main.netMode == 1)
+ 					{
+ 						Main.menuMode = 15;
+ 						Main.statusText = Language.GetTextValue("Error.BadHeaderBufferOverflow");
++						Logging.Terraria.Error(Main.statusText, e);
+ 						Netplay.disconnect = true;
+ 					}
+ 					else
 @@ -2094,7 +_,7 @@
  #if SERVER
  					if (num < NetMessage.buffer.Length - 100)

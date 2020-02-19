@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
@@ -90,7 +91,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static string SaveHairDye(short hairDye) {
-			if (hairDye < EffectsTracker.vanillaHairShaderCount)
+			if (hairDye <= EffectsTracker.vanillaHairShaderCount)
 				return "";
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
@@ -142,15 +143,14 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
 				}
 			}
 		}
 
 		internal static List<TagCompound> SaveModBuffs(Player player) {
 			var list = new List<TagCompound>();
-			byte vanillaIndex = 0;
-			for (int k = 0; k < Player.maxBuffs; k++) {
+			for (int k = 0; k < Player.MaxBuffs; k++) {
 				int buff = player.buffType[k];
 				if (buff == 0 || Main.buffNoSave[buff])
 					continue;
@@ -158,14 +158,17 @@ namespace Terraria.ModLoader.IO
 				if (BuffLoader.IsModBuff(buff)) {
 					var modBuff = BuffLoader.GetBuff(buff);
 					list.Add(new TagCompound {
-						["index"] = vanillaIndex, //position of the loaded buff if there were no modBuffs before it
 						["mod"] = modBuff.mod.Name,
 						["name"] = modBuff.Name,
 						["time"] = player.buffTime[k]
 					});
 				}
 				else {
-					vanillaIndex++;
+					list.Add(new TagCompound {
+						["mod"] = "Terraria",
+						["id"] = buff,
+						["time"] = player.buffTime[k]
+					});
 				}
 			}
 			return list;
@@ -173,10 +176,28 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadModBuffs(Player player, IList<TagCompound> list) {
 			//buffs list is guaranteed to be compacted
-			int buffCount = Player.maxBuffs;
+			int buffCount = Player.MaxBuffs;
 			while (buffCount > 0 && player.buffType[buffCount - 1] == 0)
 				buffCount--;
 
+			if (buffCount == 0) {
+				//always the case since vanilla buff saving was disabled, when extra buff slots were added
+				foreach (var tag in list) {
+					if (buffCount == Player.MaxBuffs)
+						return;
+
+					var modName = tag.GetString("mod");
+					int type = modName == "Terraria" ? tag.GetInt("id") : ModLoader.GetMod(modName)?.BuffType(tag.GetString("name")) ?? 0;
+					if (type > 0) {
+						player.buffType[buffCount] = type;
+						player.buffTime[buffCount] = tag.GetInt("time");
+						buffCount++;
+					}
+				}
+				return;
+			}
+
+			//legacy code path
 			//iterate the list in reverse, insert each buff at its index and push the buffs after it up a slot
 			foreach (var tag in list.Reverse()) {
 				var mod = ModLoader.GetMod(tag.GetString("mod"));
@@ -185,8 +206,8 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				int index = Math.Min(tag.GetByte("index"), buffCount);
-				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.maxBuffs - index - 1);
-				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.maxBuffs - index - 1);
+				Array.Copy(player.buffType, index, player.buffType, index + 1, Player.MaxBuffs - index - 1);
+				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.MaxBuffs - index - 1);
 				player.buffType[index] = type;
 				player.buffTime[index] = tag.GetInt("time");
 			}
@@ -270,7 +291,7 @@ namespace Terraria.ModLoader.IO
 						["name"] = name,
 						["legacyData"] = data
 					};
-					player.GetModPlayer<MysteryPlayer>(ModLoader.GetMod("ModLoader")).data.Add(tag);
+					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
 				}
 			}
 		}
@@ -286,7 +307,7 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				int type = mod == null ? 0 : mod.BuffType(name);
 				if (type > 0) {
-					for (int j = Player.maxBuffs - 1; j > index; j--) {
+					for (int j = Player.MaxBuffs - 1; j > index; j--) {
 						player.buffType[j] = player.buffType[j - 1];
 						player.buffTime[j] = player.buffTime[j - 1];
 					}
@@ -297,7 +318,7 @@ namespace Terraria.ModLoader.IO
 					minusIndex++;
 				}
 			}
-			for (int k = 1; k < Player.maxBuffs; k++) {
+			for (int k = 1; k < Player.MaxBuffs; k++) {
 				if (player.buffType[k] > 0) {
 					int j = k - 1;
 					while (player.buffType[j] == 0) {

@@ -8,6 +8,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -32,6 +_,7 @@
+ 		public const bool IsServer = true;
+ 		#endif
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
++		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
+ 		private static int ThingsToLoad = 0;
+ 		private static int ThingsLoaded = 0;
+ 		public static bool LoadedEverything = false;
 @@ -63,6 +_,7 @@
  		{
  			Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
@@ -16,36 +24,7 @@
  		}
  
  		private static void ForceJITOnAssembly(Assembly assembly)
-@@ -139,8 +_,9 @@
- 
- 		private static void SetupLogging()
- 		{
-+			Logging.Init();
- 			bool flag = Program.LaunchParameters.ContainsKey("-logfile");
--			if (flag)
-+			if (false)
- 			{
- 				string text = Program.LaunchParameters["-logfile"];
- 				if (text == null || text.Trim() == "")
-@@ -175,7 +_,7 @@
- 				string text = "================\r\n";
- 				text += string.Format("{0}: First-Chance Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
- 				text += "================\r\n\r\n";
--				Console.Write(text);
-+				Console.WriteLine(text);
- 				if (useMiniDumps)
- 				{
- 					CrashDump.WriteException(CrashDump.Options.WithIndirectlyReferencedMemory, Path.Combine(Main.SavePath, "Dumps"));
-@@ -187,7 +_,7 @@
- 				string text = "================\r\n";
- 				text += string.Format("{0}: Unhandled Exception\r\nCulture: {1}\r\nException: {2}\r\n", DateTime.Now, Thread.CurrentThread.CurrentCulture.Name, arg);
- 				text += "================\r\n";
--				Console.Write(text);
-+				Console.WriteLine(text);
- 				if (useFullDumps)
- 				{
- 					CrashDump.WriteException(dumpOptions, Path.Combine(Main.SavePath, "Dumps"));
-@@ -205,20 +_,34 @@
+@@ -205,20 +_,45 @@
  #endif
  			try
  			{
@@ -74,6 +53,17 @@
  			}
 +
 +			LaunchParameters = Utils.ParseArguements(args);
++			SavePath =
++				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
++				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
++				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++
++			try {
++				Logging.Init();
++			} catch (Exception e) {
++				DisplayException(e);
++				return;
++			}
 +			LaunchGame_();
 +		}
 +
@@ -82,42 +72,53 @@
  			if (Platform.IsOSX)
  			{
  				Main.OnEngineLoad += delegate
-@@ -226,10 +_,14 @@
+@@ -226,13 +_,12 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
 -			Program.LaunchParameters = Utils.ParseArguements(args);
-+			Main.mainThreadId = Thread.CurrentThread.ManagedThreadId;
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
- 			Program.SetupLogging();
-+			FileAssociationSupport.UpdateFileAssociation();
-+#if !WINDOWS
-+			FNAThreading.Init();
-+#endif
- 			using (Main main = new Main())
- 			{
- 				try
-@@ -247,6 +_,7 @@
- 				}
- 				catch (Exception e)
+-			Program.SetupLogging();
+-			using (Main main = new Main())
+-			{
+-				try
++			//Program.SetupLogging();
++			try {
++				ModLoader.ModLoader.EngineInit();
++				using (Main main = new Main())
  				{
-+					Logging.Terraria.Fatal("Main engine crash", e);
- 					Program.DisplayException(e);
+ 					Program.InitializeConsoleOutput();
+ 					Lang.InitializeLegacyLocalization();
+@@ -245,10 +_,10 @@
+ 					main.DedServ();
+ #endif
  				}
+-				catch (Exception e)
+-				{
+-					Program.DisplayException(e);
+-				}
++			}
++			catch (Exception e) {
++				Logging.Terraria.Fatal("Main engine crash", e);
++				Program.DisplayException(e);
  			}
-@@ -264,8 +_,15 @@
+ 		}
+ 
+@@ -263,9 +_,16 @@
+ 					streamWriter.WriteLine("");
  				}
  #if CLIENT
- 				MessageBox.Show(e.ToString(), "Terraria: Error");
+-				MessageBox.Show(e.ToString(), "Terraria: Error");
 -#else
 -				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
 +				if (e.Message.Contains("CSteamworks"))
-+					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
 +				if (e.StackTrace.Contains("LaunchLocalServer"))
 +				{
-+					MessageBox.Show("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.", "Terraria: Error");
-+					Process.Start(@"https://github.com/blushiemagic/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
++					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
 +#else
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);

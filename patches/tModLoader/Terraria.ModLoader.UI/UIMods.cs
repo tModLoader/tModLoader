@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.ModLoader.Config;
+using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {
@@ -21,6 +23,7 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage uiLoader;
 		private bool needToRemoveLoading;
 		private UIList modList;
+		private float modListViewPosition;
 		private readonly List<UIModItem> items = new List<UIModItem>();
 		private bool updateNeeded;
 		public bool loading;
@@ -38,6 +41,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonB;
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
+		private CancellationTokenSource _cts;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -51,7 +55,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel = new UIPanel {
 				Width = { Percent = 1f },
 				Height = { Pixels = -110, Percent = 1f },
-				BackgroundColor = UICommon.mainPanelBackground,
+				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
 			uIElement.Append(uIPanel);
@@ -86,7 +90,7 @@ namespace Terraria.ModLoader.UI
 			var uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
-				BackgroundColor = UICommon.defaultUIBlue
+				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15f);
 			uIElement.Append(uIHeaderTexTPanel);
 
@@ -112,7 +116,7 @@ namespace Terraria.ModLoader.UI
 			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
 			buttonRM.CopyStyle(buttonEA);
 			buttonRM.HAlign = 1f;
-			buttonDA.WithFadedMouseOver();
+			buttonRM.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
 
@@ -130,7 +134,7 @@ namespace Terraria.ModLoader.UI
 			buttonOMF.OnClick += OpenModsFolder;
 			uIElement.Append(buttonOMF);
 
-			var texture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.UI.UIModBrowserIcons.png"));
+			var texture = UICommon.ModBrowserIconsTexture;
 			var upperMenuContainer = new UIElement {
 				Width = { Percent = 1f },
 				Height = { Pixels = 32 },
@@ -141,7 +145,7 @@ namespace Terraria.ModLoader.UI
 			for (int j = 0; j < 3; j++) {
 				if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
-					toggleImage.setCurrentState((int)sortMode);
+					toggleImage.SetCurrentState((int)sortMode);
 					toggleImage.OnClick += (a, b) => {
 						sortMode = sortMode.NextEnum();
 						updateNeeded = true;
@@ -153,7 +157,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (j == 1) {
 					toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
-					toggleImage.setCurrentState((int)enabledFilterMode);
+					toggleImage.SetCurrentState((int)enabledFilterMode);
 					toggleImage.OnClick += (a, b) => {
 						enabledFilterMode = enabledFilterMode.NextEnum();
 						updateNeeded = true;
@@ -165,7 +169,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else {
 					toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
-					toggleImage.setCurrentState((int)modSideFilterMode);
+					toggleImage.SetCurrentState((int)modSideFilterMode);
 					toggleImage.OnClick += (a, b) => {
 						modSideFilterMode = modSideFilterMode.NextEnum();
 						updateNeeded = true;
@@ -201,7 +205,7 @@ namespace Terraria.ModLoader.UI
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
 				Left = { Pixels = 545 }
 			};
-			SearchFilterToggle.setCurrentState((int)searchFilterMode);
+			SearchFilterToggle.SetCurrentState((int)searchFilterMode);
 			SearchFilterToggle.OnClick += (a, b) => {
 				searchFilterMode = searchFilterMode.NextEnum();
 				updateNeeded = true;
@@ -227,16 +231,11 @@ namespace Terraria.ModLoader.UI
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(11, -1, -1, 1);
 			// To prevent entering the game with Configs that violate ReloadRequired
-			if (ConfigManager.AnyModNeedsReload())
-			{
+			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
-			foreach (var activeConfigs in ConfigManager.Configs) {
-				foreach (var activeConfig in activeConfigs.Value) {
-					activeConfig.OnChanged();
-				}
-			}
+			ConfigManager.OnChangedAll();
 			Main.menuMode = 0;
 		}
 
@@ -273,6 +272,10 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		public UIModItem FindUIModItem(string modName) {
+			return items.FirstOrDefault(m => m.ModName == modName);
+		}
+
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			if (needToRemoveLoading) {
@@ -284,12 +287,14 @@ namespace Terraria.ModLoader.UI
 			filter = filterTextBox.Text;
 			modList.Clear();
 			modList.AddRange(items.Where(item => item.PassFilters()));
+			Recalculate();
+			modList.ViewPosition = modListViewPosition;
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			for (int i = 0; i < this._categoryButtons.Count; i++) {
-				if (this._categoryButtons[i].IsMouseHovering) {
+			for (int i = 0; i < _categoryButtons.Count; i++) {
+				if (_categoryButtons[i].IsMouseHovering) {
 					string text;
 					switch (i) {
 						case 0:
@@ -316,6 +321,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
+			_cts = new CancellationTokenSource();
 			Main.clrInput();
 			modList.Clear();
 			items.Clear();
@@ -325,19 +331,27 @@ namespace Terraria.ModLoader.UI
 			Populate();
 		}
 
+		public override void OnDeactivate() {
+			_cts?.Cancel(false);
+			_cts?.Dispose();
+			_cts = null;
+			modListViewPosition = modList.ViewPosition;
+		}
+
 		internal void Populate() {
 			Task.Factory
-				.StartNew(ModOrganizer.FindMods)
+				.StartNew(ModOrganizer.FindMods, _cts.Token)
 				.ContinueWith(task => {
 					var mods = task.Result;
 					foreach (var mod in mods) {
 						UIModItem modItem = new UIModItem(mod);
+						modItem.Activate();
 						items.Add(modItem);
 					}
 					needToRemoveLoading = true;
 					updateNeeded = true;
 					loading = false;
-				}, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 

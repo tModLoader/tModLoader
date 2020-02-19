@@ -139,13 +139,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a clone of this ModNPC. 
 		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Create a new instance of this ModNPC for an NPC instance. 
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -273,7 +273,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
+		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="hitDirection"></param>
 		/// <param name="damage"></param>
@@ -320,9 +320,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC dies (for example, dropping items).
+		/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
 		public virtual void NPCLoot() {
+		}
+
+        /// <summary>
+        /// Allows you to make things happen when this NPC is caught. Ran Serverside
+        /// </summary>
+        /// <param name="player">The player catching this NPC</param>
+        /// <param name="item">The item that will be spawned</param>
+        public virtual void OnCatchNPC(Player player, Item item) {
 		}
 
 		/// <summary>
@@ -432,7 +440,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile.
+		/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="damage"></param>
@@ -626,6 +634,22 @@ namespace Terraria.ModLoader
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
 		public virtual void SetupShop(Chest shop, ref int nextSlot) {
+		}
+
+		/// <summary>
+		/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
+		/// </summary>
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool CanGoToStatue(bool toKingStatue) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(bool toKingStatue) {
 		}
 
 		/// <summary>

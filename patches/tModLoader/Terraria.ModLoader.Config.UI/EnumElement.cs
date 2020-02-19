@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -14,15 +16,19 @@ namespace Terraria.ModLoader.Config.UI
 		public override int NumberTicks => valueStrings.Length;
 		public override float TickIncrement => 1f / (valueStrings.Length - 1);
 
-		public EnumElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item, null)
-		{
+		protected override float Proportion {
+			get => _GetIndex() / (float)(max - 1);
+			set => _SetValue((int)(Math.Round(value * (max - 1))));
+		}
 
+		public override void OnBind() {
+			base.OnBind();
 			valueStrings = Enum.GetNames(memberInfo.Type);
 			max = valueStrings.Length;
 
 			//valueEnums = Enum.GetValues(variable.Type);
 
-			_TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
+			TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
 			_GetValue = () => DefaultGetValue();
 			_GetValueString = () => DefaultGetStringValue();
 			_GetIndex = () => DefaultGetIndex();
@@ -37,11 +43,8 @@ namespace Terraria.ModLoader.Config.UI
 
 			if (labelAttribute != null)
 			{
-				this._TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
+				TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
 			}
-
-			this._GetProportion = () => DefaultGetProportion();
-			this._SetProportion = (float proportion) => DefaultSetProportion(proportion);
 		}
 
 		void DefaultSetValue(int index)
@@ -62,16 +65,6 @@ namespace Terraria.ModLoader.Config.UI
 		string DefaultGetStringValue()
 		{
 			return valueStrings[_GetIndex()];
-		}
-
-		float DefaultGetProportion()
-		{
-			return _GetIndex() / (float)(max - 1);
-		}
-
-		void DefaultSetProportion(float proportion)
-		{
-			_SetValue((int)(Math.Round(proportion * (max - 1))));
 		}
 	}
 }

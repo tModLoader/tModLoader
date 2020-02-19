@@ -26,6 +26,16 @@
  						if (num2 != 0)
  						{
  							WorldGen.loadFailed = true;
+@@ -355,6 +_,9 @@
+ 				{
+ 					return;
+ 				}
++				if (!BackupIO.archiveLock) {
++					BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
++				}
+ 				Stopwatch stopwatch = new Stopwatch();
+ 				stopwatch.Start();
+ 				byte[] array = null;
 @@ -402,6 +_,7 @@
  				{
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);

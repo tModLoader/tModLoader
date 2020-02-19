@@ -12,14 +12,14 @@ namespace Terraria.ModLoader
 	{
 		internal readonly Mod mod;
 		internal readonly string name; // name from modder: "Random Buff"
-		internal readonly string displayName; // display name: "Example Mod: Random Buff" -- unique AKA _keyName
+		internal readonly string uniqueName; // eg: "Example Mod: Random Buff" (currently also display name)
 		internal readonly string defaultKey; // from mod.Load
 
 		internal ModHotKey(Mod mod, string name, string defaultKey) {
 			this.mod = mod;
 			this.name = name;
 			this.defaultKey = defaultKey;
-			this.displayName = mod.Name + ": " + name;
+			this.uniqueName = mod.Name + ": " + name;
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 		/// <param name="mode">The InputMode. Choose between InputMode.Keyboard and InputMode.XBoxGamepad</param>
 		/// <returns></returns>
 		public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard) {
-			return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[displayName];
+			return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[uniqueName];
 		}
 
 		public bool RetroCurrent {
@@ -41,21 +41,21 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns true if this hotkey is pressed currently. Useful for createing a behavior that relies on the hotkey being held down.
 		/// </summary>
-		public bool Current => PlayerInput.Triggers.Current.KeyStatus[displayName];
+		public bool Current => PlayerInput.Triggers.Current.KeyStatus[uniqueName];
 
 		/// <summary>
 		/// Returns true if this hotkey was just released this update. This is a fire-once-per-press behavior.
 		/// </summary>
-		public bool JustPressed => PlayerInput.Triggers.JustPressed.KeyStatus[displayName];
+		public bool JustPressed => PlayerInput.Triggers.JustPressed.KeyStatus[uniqueName];
 
 		/// <summary>
 		/// Returns true if this hotkey was just released this update.
 		/// </summary>
-		public bool JustReleased => PlayerInput.Triggers.JustReleased.KeyStatus[displayName];
+		public bool JustReleased => PlayerInput.Triggers.JustReleased.KeyStatus[uniqueName];
 
 		/// <summary>
 		/// Returns true if this hotkey was pressed the previous update.
 		/// </summary>
-		public bool Old => PlayerInput.Triggers.Old.KeyStatus[displayName];
+		public bool Old => PlayerInput.Triggers.Old.KeyStatus[uniqueName];
 	}
 }

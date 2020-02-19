@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveWallID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding walls breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding walls breaks vanilla client compatibility");
 
 			int reserveID = nextWall;
 			nextWall++;

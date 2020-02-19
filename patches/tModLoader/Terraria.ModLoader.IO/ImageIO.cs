@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.IO
 {
@@ -100,7 +101,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static Task<Texture2D> PngToTexture2DAsync(GraphicsDevice graphicsDevice, Stream stream) {
-#if WINDOWS
+#if XNA
 			if (!(stream is MemoryStream)) {
 				var ms = new MemoryStream((int)stream.Length);
 				stream.CopyTo(ms);

@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
-		/// Useful for storing information on a projectile. Defaults to false. 
+		/// Useful for storing information on an npc. Defaults to false. 
 		/// Return true if you need to store information (have non-static fields).
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
@@ -133,7 +133,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="hitDirection"></param>
@@ -185,10 +185,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add drops to an NPC when it dies.
+		/// Allows you to make things happen when an NPC dies (for example, dropping items and setting ModWorld fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 		/// </summary>
 		/// <param name="npc"></param>
 		public virtual void NPCLoot(NPC npc) {
+		}
+
+        /// <summary>
+        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
+        /// </summary>
+        /// <param name="npc">The caught NPC</param>
+        /// <param name="player">The player catching the NPC</param>
+        /// <param name="item">The item that will be spawned</param>
+        public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
 		}
 
 		/// <summary>
@@ -498,6 +507,24 @@ namespace Terraria.ModLoader
 		/// <param name="shop"></param>
 		/// <param name="nextSlot"></param>
 		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
+		}
+
+		/// <summary>
+		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
+		public virtual bool? CanGoToStatue(NPC npc, bool toKingStatue) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
+		/// This method is only called server side.
+		/// </summary>
+		/// <param name="npc">The NPC</param>
+		/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
+		public virtual void OnGoToStatue(NPC npc, bool toKingStatue) {
 		}
 
 		/// <summary>

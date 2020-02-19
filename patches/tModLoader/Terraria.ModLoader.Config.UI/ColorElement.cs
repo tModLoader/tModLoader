@@ -45,6 +45,36 @@ namespace Terraria.ModLoader.Config.UI
 					Update();
 				}
 			}
+			[Label("Hue")]
+			public float Hue {
+				get { return Main.rgbToHsl(current).X; }
+				set {
+					byte a = A;
+					current = Main.hslToRgb(value, Saturation, Lightness);
+					current.A = a;
+					Update();
+				}
+			}
+			[Label("Saturation")]
+			public float Saturation {
+				get { return Main.rgbToHsl(current).Y; }
+				set {
+					byte a = A;
+					current = Main.hslToRgb(Hue, value, Lightness);
+					current.A = a;
+					Update();
+				}
+			}
+			[Label("Lightness")]
+			public float Lightness {
+				get { return Main.rgbToHsl(current).Z; }
+				set {
+					byte a = A;
+					current = Main.hslToRgb(Hue, Saturation, value);
+					current.A = a;
+					Update();
+				}
+			}
 			[Label("Alpha")]
 			public byte A
 			{
@@ -78,13 +108,16 @@ namespace Terraria.ModLoader.Config.UI
 
 		int height;
 		ColorObject c;
-		public ColorElement(PropertyFieldWrapper memberInfo, object item, IList<Color> array = null, int index = -1) : base(memberInfo, item, (IList)array)
-		{
-			if (array != null)
+		public IList<Color> colorList;
+
+		public override void OnBind() {
+			base.OnBind();
+			colorList = (IList<Color>)list;
+			if (colorList != null)
 			{
 				drawLabel = false;
 				height = 30;
-				c = new ColorObject(array, index);
+				c = new ColorObject(colorList, index);
 			}
 			else
 			{
@@ -92,12 +125,30 @@ namespace Terraria.ModLoader.Config.UI
 				c = new ColorObject(memberInfo, item);
 			}
 
+			// TODO: Draw the sliders in the same manner as vanilla.
+			var colorHSLSliderAttribute = ConfigManager.GetCustomAttribute<ColorHSLSliderAttribute>(memberInfo, item, list);
+			bool useHue = colorHSLSliderAttribute != null;
+			bool showSaturationAndLightness = colorHSLSliderAttribute?.showSaturationAndLightness ?? false;
+			bool noAlpha = ConfigManager.GetCustomAttribute<ColorNoAlphaAttribute>(memberInfo, item, list) != null;
+
+			List<string> skip = new List<string>();
+			if (noAlpha) skip.Add(nameof(ColorObject.A));
+			if (useHue)
+				skip.AddRange(new[] { nameof(ColorObject.R), nameof(ColorObject.G), nameof(ColorObject.B) });
+			else
+				skip.AddRange(new[] { nameof(ColorObject.Hue), nameof(ColorObject.Saturation), nameof(ColorObject.Lightness) });
+			if(useHue && !showSaturationAndLightness)
+				skip.AddRange(new[] { nameof(ColorObject.Saturation), nameof(ColorObject.Lightness) });
+
 			int order = 0;
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(c))
 			{
+				if(skip.Contains(variable.Name))
+					continue;
+
 				var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
 
-				if (array != null)
+				if (colorList != null)
 				{
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;

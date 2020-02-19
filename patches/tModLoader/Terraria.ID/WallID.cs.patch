@@ -1,0 +1,40 @@
+--- src/Terraria\Terraria.ID\WallID.cs
++++ src/tModLoader\Terraria.ID\WallID.cs
+@@ -1,4 +_,6 @@
++using ReLogic.Reflection;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -307,5 +_,29 @@
+ 		public const byte SillyBalloonPurpleWall = 229;
+ 		public const byte SillyBalloonGreenWall = 230;
+ 		public const byte Count = 231;
++
++		public static readonly IdDictionary Search = IdDictionary.Create<WallID, byte>();
++
++		public static string GetUniqueKey(int type) {
++			if (type < 0 || type >= WallLoader.WallCount)
++				throw new ArgumentOutOfRangeException("Invalid type: " + type);
++			if (type < Count) {
++				return "Terraria " + WallID.Search.GetName(type);
++			}
++			var modWall = WallLoader.GetWall(type);
++			return $"{modWall.mod.Name} {modWall.Name}";
++		}
++
++		public static int TypeFromUniqueKey(string key) {
++			string[] parts = key.Split(new char[] { ' ' }, 2);
++			if (parts.Length != 2)
++				return 0;
++			if (parts[0] == "Terraria") {
++				if (!WallID.Search.ContainsName(parts[1]))
++					return 0;
++				return WallID.Search.GetId(parts[1]);
++			}
++			return ModLoader.ModLoader.GetMod(parts[0])?.WallType(parts[1]) ?? 0;
++		}
+ 	}
+ }
+

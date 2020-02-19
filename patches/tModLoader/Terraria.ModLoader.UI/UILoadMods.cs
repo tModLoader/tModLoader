@@ -1,27 +1,23 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
+using System.Threading;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.UI;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UILoadMods : UIState
+	internal class UILoadMods : UIProgress
 	{
-		private UILoadProgress loadProgress;
+		public int modCount;
+
 		private UIText subProgress;
+		private string stageText;
+
+		private CancellationTokenSource _cts;
 
 		public override void OnInitialize() {
-			loadProgress = new UILoadProgress {
-				Width = { Percent = 0.8f },
-				MaxWidth = UICommon.MaxPanelWidth,
-				Height = { Pixels = 150 },
-				HAlign = 0.5f,
-				VAlign = 0.5f,
-				Top = { Pixels = 10 }
-			};
-			Append(loadProgress);
-
+			base.OnInitialize();
 			subProgress = new UIText("", 0.5f, true) {
 				Top = { Pixels = 65 },
 				HAlign = 0.5f,
@@ -31,11 +27,21 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void OnActivate() {
-			ModLoader.BeginLoad();
+			base.OnActivate();
+			_cts = new CancellationTokenSource();
+			OnCancel += () => {
+				SetLoadStage("Loading Cancelled");
+				_cts.Cancel();
+			};
+			gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
+			ModLoader.BeginLoad(_cts.Token);
 			GLCallLocker.ActionsAreSpeedrun = true;
 		}
 
 		public override void OnDeactivate() {
+			base.OnDeactivate();
+			_cts?.Dispose();
+			_cts = null;
 			GLCallLocker.ActionsAreSpeedrun = false;
 		}
 
@@ -48,29 +54,23 @@ namespace Terraria.ModLoader.UI
 			set => subProgress?.SetText(value);
 		}
 
-		public int modCount;
-		private string stageText;
 		public void SetLoadStage(string stageText, int modCount = -1) {
 			this.stageText = stageText;
 			this.modCount = modCount;
-			if (modCount < 0)
-				SetProgressText(Language.GetTextValue(stageText));
-
-			loadProgress?.SetProgress(0);
+			if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
+			Progress = 0;
 			SubProgressText = "";
 		}
 
 		private void SetProgressText(string text) {
 			Logging.tML.Info(text);
-			if (Main.dedServ)
-				Console.WriteLine(text);
-			else
-				loadProgress.SetText(text);
+			if (Main.dedServ) Console.WriteLine(text);
+			else DisplayText = text;
 		}
 
 		public void SetCurrentMod(int i, string mod) {
 			SetProgressText(Language.GetTextValue(stageText, mod));
-			loadProgress?.SetProgress(i / (float)modCount);
+			Progress = i / (float)modCount;
 		}
 	}
 }

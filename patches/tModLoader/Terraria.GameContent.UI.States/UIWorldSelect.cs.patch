@@ -26,7 +26,7 @@
 +			if (list.Count == 0)
 +			{
 +				string vanillaWorldsPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Worlds");
-+				if (Directory.Exists(vanillaWorldsPath))
++				if (Directory.Exists(vanillaWorldsPath) && Directory.GetFiles(vanillaWorldsPath, "*.wld").Any())
 +				{
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
@@ -44,7 +44,7 @@
 +									.Where(s => s.EndsWith(".wld") || s.EndsWith(".twld") || s.EndsWith(".bak"));
 +
 +								foreach (string file in vanillaWorldFiles) {
-+									File.Copy(file, Path.Combine(Main.WorldPath, Path.GetFileName(file)));
++									File.Copy(file, Path.Combine(Main.WorldPath, Path.GetFileName(file)), true);
 +								}
 +
 +								_currentlyMigratingFiles = false;

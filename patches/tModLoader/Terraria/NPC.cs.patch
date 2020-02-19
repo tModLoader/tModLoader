@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\NPC.cs
 +++ src/tModLoader\Terraria\NPC.cs
-@@ -16,11 +_,38 @@
+@@ -16,11 +_,30 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.World.Generation;
@@ -19,22 +19,14 @@
 +		internal GlobalNPC[] globalNPCs = new GlobalNPC[0];
 +
 +		/// <summary>Gets the global NPC. Use this overload when you dynamically add GlobalNPC manually.</summary>
-+		public GlobalNPC GetGlobalNPC(Mod mod, string name)
-+		{
-+			return NPCLoader.GetGlobalNPC(this, mod, name);
-+		}
++		public GlobalNPC GetGlobalNPC(Mod mod, string name) => NPCLoader.GetGlobalNPC(this, mod, name);
 +
 +		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		public T GetGlobalNPC<T>(Mod mod) where T : GlobalNPC
-+		{
-+			return (T)GetGlobalNPC(mod, typeof(T).Name);
-+		}
++		[Obsolete("Use GetGlobalNPC<T>() instead", true)]
++		public T GetGlobalNPC<T>(Mod mod) where T : GlobalNPC => (T)GetGlobalNPC(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
-+		public T GetGlobalNPC<T>() where T : GlobalNPC
-+		{
-+			return (T)NPCLoader.GetGlobalNPC(this, typeof(T));
-+		}
++		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)ModContent.GetInstance<T>().Instance(this);
 +
  		private const int NPC_TARGETS_START = 300;
  		public const int MaxMoonLordCountdown = 3600;
@@ -556,6 +548,17 @@
  			if (this.type != 16 && this.type != 81 && this.type != 121 && Main.rand.Next(6) == 0 && this.lifeMax > 1 && this.damage > 0)
  			{
  				int num77 = (int)Player.FindClosest(this.position, this.width, this.height);
+@@ -63307,7 +_,9 @@
+ 				}
+ 				Item item = new Item();
+ 				item.SetDefaults((int)Main.npc[i].catchItem, false);
+-				Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, (int)Main.npc[i].catchItem, 1, false, 0, true, false);
++				int itemWhoAmI = Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, (int)Main.npc[i].catchItem, 1, true, 0, true, false);
++				NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who], Main.item[itemWhoAmI]);
++				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
+ 				Main.npc[i].active = false;
+ 				NetMessage.SendData(23, -1, -1, null, i, 0f, 0f, 0f, 0, 0, 0);
+ 			}
 @@ -63380,6 +_,7 @@
  			{
  				itemType = 3860;

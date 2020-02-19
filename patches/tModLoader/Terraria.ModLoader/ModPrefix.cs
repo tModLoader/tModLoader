@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static byte ReservePrefixID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatiblity");
+			if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatibility");
 			if (nextPrefix == 0) throw new Exception("Prefix ID limit has been broken");
 
 			byte reserveID = nextPrefix;

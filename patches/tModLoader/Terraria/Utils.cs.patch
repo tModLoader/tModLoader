@@ -1,5 +1,27 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
+@@ -205,6 +_,11 @@
+ 								num2 -= 16;
+ 							}
+ 							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
++							for (int i = 0; i < list3[l].Text.Length; i++) {
++								// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
++								if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
++									num3 = i;
++							}
+ 							if (num3 < 0)
+ 							{
+ 								num3 = 0;
+@@ -218,7 +_,8 @@
+ 							{
+ 								num4 = 0;
+ 								int num5 = 0;
+-								while (num5 < array3.Length && num4 + array3[num5].Length <= num3)
++								// `num4 == 0 ||` solves the longworld + small word problem.
++								while (num4 == 0 || num5 < array3.Length && num4 + array3[num5].Length <= num3)
+ 								{
+ 									num4 += array3[num5].Length + 1;
+ 									num5++;
 @@ -467,9 +_,72 @@
  			return array;
  		}
@@ -123,4 +145,24 @@
  
  		public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f)
  		{
+@@ -1131,6 +_,7 @@
+ 				text.Substring(0, maxCharactersDisplayed);
+ 			}
+ 			DynamicSpriteFont fontDeathText = Main.fontDeathText;
++			/*
+ 			for (int i = -1; i < 2; i++)
+ 			{
+ 				for (int j = -1; j < 2; j++)
+@@ -1139,7 +_,10 @@
+ 				}
+ 			}
+ 			spriteBatch.DrawString(fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
+-			return fontDeathText.MeasureString(text) * scale;
++			*/
++			Vector2 vector = ChatManager.GetStringSize(fontDeathText, text, Vector2.One);
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
++			return vector * scale;
+ 		}
+ 
+ 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color))
 

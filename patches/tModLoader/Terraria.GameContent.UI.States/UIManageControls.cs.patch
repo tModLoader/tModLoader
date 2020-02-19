@@ -8,23 +8,25 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -37,7 +_,8 @@
+@@ -37,7 +_,9 @@
  			"sp10",
  			"sp11",
  			"sp12",
 -			"sp13"
 +			"sp13",
-+			"ResetModHotkeys"
++			"ResetModHotkeys",
++			"ClearModHotkeys"
  		};
  		private static List<string> _BindingsHalfSingleLine = new List<string>
  		{
-@@ -45,8 +_,10 @@
+@@ -45,8 +_,11 @@
  			"sp10",
  			"sp11",
  			"sp12",
 -			"sp13"
 +			"sp13",
-+			"ResetModHotkeys"
++			"ResetModHotkeys",
++			"ClearModHotkeys"
  		};
 +		private static List<string> _ModBindings = new List<string>();
  		private bool OnKeyboard = true;
@@ -50,18 +52,19 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -296,26 +_,39 @@
+@@ -296,26 +_,40 @@
  				"sp19",
  				"sp13"
  			};
 +			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
 +			_ModBindings.Clear();
-+			foreach (var hotkey in ModContent.modHotKeys)
++			foreach (var hotkey in HotKeyLoader.HotKeys)
 +			{
-+				_ModBindings.Add(hotkey.Value.displayName);
-+				_BindingsFullLine.Add(hotkey.Value.displayName);
++				_ModBindings.Add(hotkey.uniqueName);
++				_BindingsFullLine.Add(hotkey.uniqueName);
 +			}
 +			_ModBindings.Add("ResetModHotkeys");
++			_ModBindings.Add("ClearModHotkeys");
 +
  			InputMode currentInputMode = InputMode.Keyboard;
  			this._bindsKeyboard.Add(this.CreateBindingGroup(0, bindings, currentInputMode));
@@ -110,7 +113,7 @@
  			}
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f, false)
  			{
-@@ -549,6 +_,16 @@
+@@ -549,6 +_,26 @@
  						{
  							string copyableProfileName = UIManageControls.GetCopyableProfileName();
  							PlayerInput.CurrentProfile.CopyGamepadAdvancedSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
@@ -124,21 +127,32 @@
 +						{
 +							string copyableProfileName = UIManageControls.GetCopyableProfileName();
 +							PlayerInput.CurrentProfile.CopyModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
++						};
++						return uIElement7;
++					}
++				case "ClearModHotkeys":
++					{
++						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
++						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
++							foreach (var modHotkey in HotKeyLoader.HotKeys) {
++								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modHotkey.uniqueName].Clear();
++							}
  						};
  						return uIElement7;
  					}
-@@ -660,11 +_,39 @@
+@@ -660,11 +_,40 @@
  							}
  						}, 1008, color);
  			}
 +			if (_ModBindings.Contains(bind))
 +			{
-+				string defaultKey = ModContent.modHotKeys.Single(x => x.Key == bind).Value.defaultKey;
++				string defaultKey = HotKeyLoader.modHotKeys[bind].defaultKey;
 +				UIElement container = new UIElement();
 +				var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +				left.Width.Precent = 0.68f;
 +				left.Height.Precent = 1f;
 +				container.Append(left);
++				// TODO: Clear instead of Reset to Defaults if no default specified.
 +				var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
 +				right.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
 +				{

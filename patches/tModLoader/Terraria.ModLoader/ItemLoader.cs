@@ -248,15 +248,52 @@ namespace Terraria.ModLoader
 
 		public static int ChoosePrefix(Item item, UnifiedRandom rand) {
 			foreach (var g in HookChoosePrefix.arr) {
-				int pre = g.ChoosePrefix(item, rand);
-				if (pre >= 0) {
+				int pre = g.Instance(item).ChoosePrefix(item, rand);
+				if (pre > 0) {
 					return pre;
 				}
 			}
 			if (item.modItem != null) {
-				return item.modItem.ChoosePrefix(rand);
+				int pre = item.modItem.ChoosePrefix(rand);
+				if (pre > 0) {
+					return pre;
+				}
 			}
 			return -1;
+		}
+
+		private static HookList HookPrefixChance = AddHook<Func<Item, int, UnifiedRandom, bool?>>(g => g.PrefixChance);
+
+		/// <summary>
+		/// Allows for blocking, forcing and altering chance of prefix rolling.
+		/// False (block) takes precedence over True (force).
+		/// Null gives vanilla behaviour
+		/// </summary>
+		public static bool? PrefixChance(Item item, int pre, UnifiedRandom rand) {
+			bool? result = null;
+			foreach (var g in HookPrefixChance.arr) {
+				bool? r = g.Instance(item).PrefixChance(item, pre, rand);
+				if (r.HasValue)
+					result = r.Value && (result ?? true);
+			}
+			if (item.modItem != null) {
+				bool? r = item.modItem.PrefixChance(pre, rand);
+				if (r.HasValue)
+					result = r.Value && (result ?? true);
+			}
+			return result;
+		}
+
+		private static HookList HookAllowPrefix = AddHook<Func<Item, int, bool>>(g => g.AllowPrefix);
+		public static bool AllowPrefix(Item item, int pre) {
+			bool result = true;
+			foreach (var g in HookAllowPrefix.arr) {
+				result &= g.Instance(item).AllowPrefix(item, pre);
+			}
+			if (item.modItem != null) {
+				result &= item.modItem.AllowPrefix(pre);
+			}
+			return result;
 		}
 
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
@@ -381,11 +418,59 @@ namespace Terraria.ModLoader
 				g.Instance(item).GetHealMana(item, player, quickHeal, ref healValue);
 		}
 
+		private delegate void DelegateModifyManaCost(Item item, Player player, ref float reduce, ref float mult);
+		private static HookList HookModifyManaCost = AddHook<DelegateModifyManaCost>(g => g.ModifyManaCost);
+		/// <summary>
+		/// Calls ModItem.ModifyManaCost, then all GlobalItem.ModifyManaCost hooks.
+		/// </summary>
+		public static void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult) {
+			if (item.IsAir)
+				return;
+			
+			item.modItem?.ModifyManaCost(player, ref reduce, ref mult);
+
+			foreach (var g in HookModifyManaCost.arr) {
+				g.Instance(item).ModifyManaCost(item, player, ref reduce, ref mult);
+			}
+		}
+
+		private static HookList HookOnMissingMana = AddHook<Action<Item, Player, int>>(g => g.OnMissingMana);
+		/// <summary>
+		/// Calls ModItem.OnMissingMana, then all GlobalItem.OnMissingMana hooks.
+		/// </summary>
+		public static void OnMissingMana(Item item, Player player, int neededMana) {
+			if (item.IsAir)
+				return;
+			
+			item.modItem?.OnMissingMana(player, neededMana);
+
+			foreach (var g in HookOnMissingMana.arr) {
+				g.Instance(item).OnMissingMana(item, player, neededMana);
+			}
+		}
+
+		private static HookList HookOnConsumeMana = AddHook<Action<Item, Player, int>>(g => g.OnConsumeMana);
+		/// <summary>
+		/// Calls ModItem.OnConsumeMana, then all GlobalItem.OnConsumeMana hooks.
+		/// </summary>
+		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
+			if (item.IsAir)
+				return;
+			
+			item.modItem?.OnConsumeMana(player, manaConsumed);
+
+			foreach (var g in HookOnConsumeMana.arr) {
+				g.Instance(item).OnConsumeMana(item, player, manaConsumed);
+			}
+		}
+
 		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
+		[Obsolete]
 		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.GetWeaponDamage, then all GlobalItem.GetWeaponDamage hooks.
 		/// </summary>
+		[Obsolete]
 		public static void GetWeaponDamage(Item item, Player player, ref int damage) {
 			if (item.IsAir)
 				return;
@@ -394,6 +479,26 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookGetWeaponDamage.arr)
 				g.Instance(item).GetWeaponDamage(item, player, ref damage);
+		}
+
+		private delegate void DelegateModifyWeaponDamageOld(Item item, Player player, ref float add, ref float mult);
+		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
+		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
+		/// <summary>
+		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
+		/// </summary>
+		public static void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) {
+			if (item.IsAir)
+				return;
+
+			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult);
+			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult, ref flat);
+
+			foreach (var g in HookModifyWeaponDamageOld.arr)
+				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult);
+			foreach (var g in HookModifyWeaponDamage.arr)
+				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
 		}
 
 		private delegate void DelegateGetWeaponKnockback(Item item, Player player, ref float knockback);
@@ -434,16 +539,24 @@ namespace Terraria.ModLoader
 			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
-		private delegate void DelegatePickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
+		private delegate void DelegateOldPickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback); // deprecated
+		private static HookList HookOldPickAmmo = AddHook<DelegateOldPickAmmo>(g => g.PickAmmo); // deprecated
+
+		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 		/// <summary>
 		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 		/// </summary>
-		public static void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-			item.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback);
+		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+			ammo.modItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
+			ammo.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
-			foreach (var g in HookPickAmmo.arr)
-				g.Instance(item).PickAmmo(item, player, ref type, ref speed, ref damage, ref knockback);
+			foreach (var g in HookPickAmmo.arr) {
+				g.Instance(ammo).PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
+			}
+			foreach (var g in HookOldPickAmmo.arr) {
+				g.Instance(ammo).PickAmmo(ammo, player, ref type, ref speed, ref damage, ref knockback); // deprecated
+			}
 		}
 
 		private static HookList HookConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.ConsumeAmmo);
@@ -500,14 +613,17 @@ namespace Terraria.ModLoader
 		/// <param name="knockBack">The projectile knock back.</param>
 		/// <returns></returns>
 		public static bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			foreach (var g in HookShoot.arr)
-				if (!g.Instance(item).Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
-					return false;
+			bool result = true;
 
-			if (item.modItem != null && !item.modItem.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack))
-				return false;
+			foreach (var g in HookShoot.arr) {
+				result &= g.Instance(item).Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+			}
 
-			return true;
+			if (result && item.modItem != null) {
+				return item.modItem.Shoot(player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+			}
+
+			return result;
 		}
 
 		private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
@@ -993,11 +1109,14 @@ namespace Terraria.ModLoader
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
 		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
+			bool result = true;
 			foreach (var g in HookPreOpenVanillaBag.arr)
-				if (!g.PreOpenVanillaBag(context, player, arg)) {
-					NPCLoader.blockLoot.Clear(); // clear blockloot
-					return false;
-				}
+				result &= g.PreOpenVanillaBag(context, player, arg);
+
+			if (!result) {
+				NPCLoader.blockLoot.Clear(); // clear blockloot
+				return false;
+			}
 
 			return true;
 		}
@@ -1108,7 +1227,7 @@ namespace Terraria.ModLoader
 				return false;
 
 			foreach (var g in HookDrawBody.arr)
-				if (!g.DrawBody(player.head))
+				if (!g.DrawBody(player.body))
 					return false;
 
 			return true;
@@ -1209,7 +1328,7 @@ namespace Terraria.ModLoader
 				ref maxAscentMultiplier, ref constantAscend);
 
 			foreach (var g in HookVerticalWingSpeeds.arr)
-				g.VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
+				g.Instance(item).VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 					ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
 		}
 
@@ -1265,6 +1384,19 @@ namespace Terraria.ModLoader
 				g.Instance(item).Update(item, ref gravity, ref maxFallSpeed);
 		}
 
+		private static HookList HookCanBurnInLava = AddHook<Func<Item, bool>>(g => g.CanBurnInLava);
+		/// <summary>
+		/// Calls ModItem.CanBurnInLava.
+		/// </summary>
+		public static bool CanBurnInLava(Item item)
+		{
+			foreach (var g in HookCanBurnInLava.arr)
+				if (g.Instance(item).CanBurnInLava(item))
+					return true;
+
+			return item.modItem?.CanBurnInLava() ?? false;
+		}
+		
 		private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
 		/// <summary>
 		/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
@@ -1456,7 +1588,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			foreach (var g in HookHoldoutOrigin.arr) {
-				Vector2? modOrigin2 = g.HoldoutOrigin(item.type);
+				Vector2? modOrigin2 = g.Instance(item).HoldoutOrigin(item.type);
 				if (modOrigin2.HasValue) {
 					modOrigin = modOrigin2.Value;
 				}
@@ -1560,7 +1692,7 @@ namespace Terraria.ModLoader
 		public static void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines) {
 			item.modItem?.PostDrawTooltip(lines);
 			foreach (var g in HookPostDrawTooltip.arr)
-				g.PostDrawTooltip(item, lines);
+				g.Instance(item).PostDrawTooltip(item, lines);
 		}
 
 		private delegate bool DelegatePreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset);
@@ -1578,7 +1710,7 @@ namespace Terraria.ModLoader
 		public static void PostDrawTooltipLine(Item item, DrawableTooltipLine line) {
 			item.modItem?.PostDrawTooltipLine(line);
 			foreach (var g in HookPostDrawTooltipLine.arr)
-				g.PostDrawTooltipLine(item, line);
+				g.Instance(item).PostDrawTooltipLine(item, line);
 		}
 
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);

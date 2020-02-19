@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -89,17 +91,32 @@ namespace Terraria.ModLoader.Config.UI
 		internal UIText save;
 		public List<IDictionaryElementWrapper> dataWrapperList;
 
-		public DictionaryElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-		}
+		// These 2 hold the default value of the dictionary value, hence ValueValue
+		protected DefaultDictionaryKeyValueAttribute defaultDictionaryKeyValueAttribute;
+		protected JsonDefaultDictionaryKeyValueAttribute jsonDefaultDictionaryKeyValueAttribute;
 
 		protected override void PrepareTypes() {
 			keyType = memberInfo.Type.GetGenericArguments()[0];
 			valueType = memberInfo.Type.GetGenericArguments()[1];
+			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, valueType);
+			defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<DefaultDictionaryKeyValueAttribute>(memberInfo, null, null);
+			jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryKeyValueAttribute>(memberInfo, null, null);
 		}
 
 		protected override void AddItem() {
 			try {
-				((IDictionary)data).Add(ConfigManager.AlternateCreateInstance(keyType), ConfigManager.AlternateCreateInstance(valueType));
+				object keyValue;
+				if (defaultDictionaryKeyValueAttribute != null) {
+					keyValue = defaultDictionaryKeyValueAttribute.Value;
+				}
+				else {
+					keyValue = ConfigManager.AlternateCreateInstance(keyType);
+					if (!keyType.IsValueType && keyType != typeof(string)) {
+						string json = jsonDefaultDictionaryKeyValueAttribute?.json ?? "{}";
+						JsonConvert.PopulateObject(json, keyValue, ConfigManager.serializerSettings);
+					}
+				}
+				((IDictionary)data).Add(keyValue, CreateCollectionElementInstance(valueType));
 			}
 			catch (Exception e) {
 				Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
@@ -108,7 +125,11 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
-			memberInfo.SetValue(item, data);
+			SetObject(data);
+		}
+
+		protected override void ClearCollection() {
+			((IDictionary)data).Clear();
 		}
 
 		protected override void SetupList() {

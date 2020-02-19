@@ -1,0 +1,137 @@
+--- src/Terraria\Terraria.GameContent.Biomes\MahoganyTreeBiome.cs
++++ src/tModLoader\Terraria.GameContent.Biomes\MahoganyTreeBiome.cs
+@@ -8,25 +_,29 @@
+ {
+ 	public class MahoganyTreeBiome : MicroBiome
+ 	{
+-		public override bool Place(Point origin, StructureMap structures)
+-		{
++		public override bool Place(Point origin, StructureMap structures) {
+ 			Point origin2;
+ 			if (!WorldUtils.Find(new Point(origin.X - 3, origin.Y), Searches.Chain(new Searches.Down(200), new GenCondition[]
+ 					{
+ 						new Conditions.IsSolid().AreaAnd(6, 1)
+ 					}), out origin2))
+ 				return false;
++
+ 			Point point;
+ 			bool flag = WorldUtils.Find(new Point(origin2.X, origin2.Y - 5), Searches.Chain(new Searches.Up(120), new GenCondition[]
+ 					{
+ 						new Conditions.IsSolid().AreaOr(6, 1)
+ 					}), out point);
++
+ 			if (!flag || origin2.Y - 5 - point.Y > 60)
+ 				return false;
++
+ 			if (origin2.Y - point.Y < 30)
+ 				return false;
++
+ 			if (!structures.CanPlace(new Rectangle(origin2.X - 30, origin2.Y - 60, 60, 90), 0))
+ 				return false;
++
+ 			Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+ 			WorldUtils.Gen(new Point(origin2.X - 25, origin2.Y - 25), new Shapes.Rectangle(50, 50), new Actions.TileScanner(new ushort[]
+ 					{
+@@ -35,11 +_,13 @@
+ 						147,
+ 						1
+ 					}).Output(dictionary));
++
+ 			int num = dictionary[0] + dictionary[1];
+ 			int num2 = dictionary[59];
+ 			int num3 = dictionary[147];
+ 			if (num3 > num2 || num > num2 || num2 < 50)
+ 				return false;
++
+ 			int num4 = (origin2.Y - point.Y - 9) / 5;
+ 			int num5 = num4 * 5;
+ 			int num6 = 0;
+@@ -47,8 +_,8 @@
+ 			double num8 = _random.NextDouble() + 2.0;
+ 			if (_random.Next(2) == 0)
+ 				num8 = -num8;
+-			for (int i = 0; i < num4; i++)
+-			{
++
++			for (int i = 0; i < num4; i++) {
+ 				double num9 = (i + 1) / 12.0;
+ 				int num10 = (int)(Math.Sin(num9 * num7 * 3.1415927410125732) * num8);
+ 				int num11 = num10 < num6 ? num10 - num6 : 0;
+@@ -58,49 +_,57 @@
+ 							new Actions.SetTile(383, false, true),
+ 							new Actions.SetFrames(false)
+ 						}));
++
+ 				WorldUtils.Gen(new Point(origin2.X + num6 + num11 + 2, origin2.Y - (i + 1) * 5), new Shapes.Rectangle(2 + Math.Abs(num10 - num6), 5), Actions.Chain(new GenAction[]
+ 						{
+ 							new Actions.ClearTile(true),
+ 							new Actions.PlaceWall(78, true)
+ 						}));
++
+ 				WorldUtils.Gen(new Point(origin2.X + num6 + 2, origin2.Y - i * 5), new Shapes.Rectangle(2, 2), Actions.Chain(new GenAction[]
+ 						{
+ 							new Actions.ClearTile(true),
+ 							new Actions.PlaceWall(78, true)
+ 						}));
++
+ 				num6 = num10;
+ 			}
++
+ 			int num12 = 6;
+ 			if (num8 < 0.0)
+ 				num12 = 0;
++
+ 			List<Point> list = new List<Point>();
+-			for (int j = 0; j < 2; j++)
+-			{
++			for (int j = 0; j < 2; j++) {
+ 				double num13 = (j + 1.0) / 3.0;
+ 				int num14 = num12 + (int)(Math.Sin(num4 * num13 / 12.0 * num7 * 3.1415927410125732) * num8);
+ 				double num15 = _random.NextDouble() * 0.78539818525314331 - 0.78539818525314331 - 0.20000000298023224;
+ 				if (num12 == 0)
+ 					num15 -= 1.5707963705062866;
++
+ 				WorldUtils.Gen(new Point(origin2.X + num14, origin2.Y - (int)(num4 * 5 * num13)), new ShapeBranch(num15, _random.Next(12, 16)).OutputEndpoints(list), Actions.Chain(new GenAction[]
+ 						{
+ 							new Actions.SetTile(383, false, true),
+ 							new Actions.SetFrames(true)
+ 						}));
++
+ 				num12 = 6 - num12;
+ 			}
++
+ 			int num16 = (int)(Math.Sin(num4 / 12.0 * num7 * 3.1415927410125732) * num8);
+ 			WorldUtils.Gen(new Point(origin2.X + 6 + num16, origin2.Y - num5), new ShapeBranch(-0.68539818525314333, _random.Next(16, 22)).OutputEndpoints(list), Actions.Chain(new GenAction[]
+ 					{
+ 						new Actions.SetTile(383, false, true),
+ 						new Actions.SetFrames(true)
+ 					}));
++
+ 			WorldUtils.Gen(new Point(origin2.X + num16, origin2.Y - num5), new ShapeBranch(-2.45619455575943, _random.Next(16, 22)).OutputEndpoints(list), Actions.Chain(new GenAction[]
+ 					{
+ 						new Actions.SetTile(383, false, true),
+ 						new Actions.SetFrames(true)
+ 					}));
+-			foreach (Point current in list)
+-			{
++
++			foreach (Point current in list) {
+ 				WorldUtils.Gen(current, new Shapes.Circle(4), Actions.Chain(new GenAction[]
+ 						{
+ 							new Modifiers.Blotches(4, 2, 0.3),
+@@ -116,11 +_,12 @@
+ 							new Actions.SetFrames(true)
+ 						}));
+ 			}
+-			for (int k = 0; k < 4; k++)
+-			{
++
++			for (int k = 0; k < 4; k++) {
+ 				float angle = k / 3f * 2f + 0.57075f;
+ 				WorldUtils.Gen(origin2, new ShapeRoot(angle, _random.Next(40, 60), 4f, 1f), new Actions.SetTile(383, true, true));
+ 			}
++
+ 			WorldGen.AddBuriedChest(origin2.X + 3, origin2.Y - 1, _random.Next(4) == 0 ? 0 : WorldGen.GetNextJungleChestItem(), false, 10);
+ 			structures.AddStructure(new Rectangle(origin2.X - 30, origin2.Y - 30, 60, 60), 0);
+ 			return true;
+

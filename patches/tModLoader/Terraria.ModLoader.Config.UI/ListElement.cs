@@ -1,38 +1,33 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
 	internal class ListElement : CollectionElement
 	{
-		// does not apply?
-		//public override int NumberTicks => 0;
-		//public override float TickIncrement => 0;
-		//private List<object> dataAsList;
 		private Type listType;
-
-		public ListElement(PropertyFieldWrapper memberInfo, object item) : base(memberInfo, item) {
-		}
 
 		protected override void PrepareTypes() {
 			listType = memberInfo.Type.GetGenericArguments()[0];
+			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, listType);
 		}
 
 		protected override void AddItem() {
-			if (defaultListValueAttribute != null) {
-				((IList)data).Add(defaultListValueAttribute.defaultValue);
-			}
-			else {
-				((IList)data).Add(ConfigManager.AlternateCreateInstance(listType));
-			}
+			((IList)data).Add(CreateCollectionElementInstance(listType));
 		}
 
 		protected override void InitializeCollection() {
 			data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
-			memberInfo.SetValue(item, data);
+			SetObject(data);
+		}
+
+		protected override void ClearCollection() {
+			((IList)data).Clear();
 		}
 
 		protected override void SetupList() {

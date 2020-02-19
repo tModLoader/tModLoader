@@ -1,14 +1,15 @@
 --- src/Terraria\Terraria\TexturePackSupport.cs
 +++ src/tModLoader\Terraria\TexturePackSupport.cs
-@@ -5,6 +_,7 @@
+@@ -5,6 +_,8 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
 +using System.Linq;
++using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -12,7 +_,7 @@
+@@ -12,18 +_,16 @@
  	{
  		public static bool Enabled = false;
  		public static int ReplacedTextures = 0;
@@ -17,7 +18,37 @@
  		private static Dictionary<string, ZipEntry> entries = new Dictionary<string, ZipEntry>();
  		private static Stopwatch test = new Stopwatch();
  
-@@ -46,6 +_,7 @@
+-		public static bool FetchTexture(string path, out Texture2D tex)
+-		{
++		public static bool FetchTexture(string path, out Texture2D tex) {
+ 			ZipEntry zipEntry;
+-			if (TexturePackSupport.entries.TryGetValue(path, out zipEntry))
+-			{
+-				using (MemoryStream memoryStream = new MemoryStream())
+-				{
++			if (TexturePackSupport.entries.TryGetValue(path.Replace('\\', '/'), out zipEntry)) {
++				using (MemoryStream memoryStream = new MemoryStream()) {
+ 					zipEntry.Extract(memoryStream);
++					memoryStream.Position = 0; // required for FNA
+ 					tex = TexturePackSupport.FromStreamSlow(Main.instance.GraphicsDevice, memoryStream);
+ 					TexturePackSupport.ReplacedTextures++;
+ 					return true;
+@@ -33,19 +_,18 @@
+ 			return false;
+ 		}
+ 
+-		public static Texture2D FromStreamSlow(GraphicsDevice graphicsDevice, Stream stream)
+-		{
++		public static Texture2D FromStreamSlow(GraphicsDevice graphicsDevice, Stream stream) {
+ 			Texture2D texture2D = Texture2D.FromStream(graphicsDevice, stream);
+ 			Color[] array = new Color[texture2D.Width * texture2D.Height];
+ 			texture2D.GetData<Color>(array);
+-			for (int num = 0; num != array.Length; num++)
+-			{
++			for (int num = 0; num != array.Length; num++) {
+ 				array[num] = Color.FromNonPremultiplied(array[num].ToVector4());
+ 			}
+ 			texture2D.SetData<Color>(array);
  			return texture2D;
  		}
  
@@ -25,34 +56,30 @@
  		public static void FindTexturePack()
  		{
  			string savePath = Main.SavePath;
-@@ -61,5 +_,33 @@
+@@ -61,5 +_,29 @@
  				TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
  			}
  		}
 +		*/
 +
 +		// TODO: Implement a Priority System (similar to Mods UI menu), save priority? For now, alphabetical, so later in alphabet actually takes priority. Or, we can ignore entries that already exist in dictionary to keep it A to Z
-+		public static void FindTexturePacks()
-+		{
++		public static void FindTexturePacks() {
 +			string texturePacksPath = Path.Combine(Main.SavePath, "TexturePacks");
-+			if (Enabled)
-+			{
++			if (Enabled) {
 +				Directory.CreateDirectory(texturePacksPath);
 +			}
 +
 +			TexturePackSupport.entries.Clear();
 +			TexturePackSupport.texturePacks.Clear();
-+			if (Directory.Exists(texturePacksPath))
-+			{
-+				List<string> files = Directory.GetFiles(texturePacksPath).ToList();
++			if (Directory.Exists(texturePacksPath)) {
++				List<string> files = Directory.GetFiles(texturePacksPath, "*.zip").ToList();
 +				files.Sort();
-+				foreach (string fileName in files)
-+				{
++				foreach (string fileName in files) {
++					Logging.Terraria.Info("Loading Texture Pack: " + Path.GetFileName(fileName));
 +					ZipFile zipFile = ZipFile.Read(File.OpenRead(fileName));
 +					TexturePackSupport.texturePacks.Add(zipFile);
-+					foreach (ZipEntry current in zipFile.Entries)
-+					{
-+						TexturePackSupport.entries.Add(current.FileName.Replace("/", "\\"), current);
++					foreach (ZipEntry current in zipFile.Entries) {
++						TexturePackSupport.entries[current.FileName.Replace('\\', '/')] = current; // Switch add to accessor for multiple texture pack support
 +					}
 +				}
 +			}

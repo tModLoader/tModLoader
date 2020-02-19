@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check https://github.com/blushiemagic/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
+		/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check https://github.com/tModLoader/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
 		/// </summary>
 		/// <param name="layers">The layers.</param>
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
@@ -233,9 +233,9 @@ namespace Terraria.ModLoader
 
 		// Pretty much deprecated. 
 		internal static void HotKeyPressed() {
-			foreach (var modHotkey in ModContent.modHotKeys) {
-				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.Value.displayName]) {
-					modHotkey.Value.mod.HotKeyPressed(modHotkey.Value.name);
+			foreach (var modHotkey in HotKeyLoader.HotKeys) {
+				if (PlayerInput.Triggers.Current.KeyStatus[modHotkey.uniqueName]) {
+					modHotkey.mod.HotKeyPressed(modHotkey.name);
 				}
 			}
 		}

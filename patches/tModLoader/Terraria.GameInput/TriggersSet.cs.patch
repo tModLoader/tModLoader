@@ -56,9 +56,9 @@
  			{
  				this.KeyStatus.Add(current, false);
 +			}
-+			foreach (var current in ModContent.modHotKeys)
++			foreach (var hotkey in HotKeyLoader.HotKeys)
 +			{
-+				this.KeyStatus.Add(current.Value.displayName, false);
++				this.KeyStatus.Add(hotkey.uniqueName, false);
  			}
  		}
  

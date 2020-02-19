@@ -14,10 +14,9 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	// TODO: Dictionary
-	// TODO: NPC UIElements w/special ui.	
 	// TODO: Revert individual button.	
-	// TODO: DefaultValue for new elements in Lists
+	// TODO: Collapse All button, or default to collapsed?
+	// TODO: Localization support
 	internal class UIModConfig : UIState
 	{
 		private UIElement uIElement;
@@ -30,6 +29,7 @@ namespace Terraria.ModLoader.Config.UI
 		private UITextPanel<string> revertConfigButton;
 		private UITextPanel<string> restoreDefaultsConfigButton;
 		private UIPanel uIPanel;
+		private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new List<Tuple<UIElement, UIElement>>();
 		private UIList mainConfigList;
 		private UIScrollbar uIScrollbar;
 		private Stack<UIPanel> configPanelStack = new Stack<UIPanel>();
@@ -41,9 +41,12 @@ namespace Terraria.ModLoader.Config.UI
 		private ModConfig modConfig;
 		// the clone we modify. 
 		private ModConfig pendingConfig;
+		public int updateCount;
 
-		public override void OnInitialize()
-		{
+		private bool updateNeeded;
+		private UIFocusInputTextField filterTextField;
+
+		public override void OnInitialize() {
 			uIElement = new UIElement();
 			uIElement.Width.Set(0f, 0.8f);
 			uIElement.MaxWidth.Set(600f, 0f);
@@ -53,9 +56,32 @@ namespace Terraria.ModLoader.Config.UI
 
 			uIPanel = new UIPanel();
 			uIPanel.Width.Set(0f, 1f);
-			uIPanel.Height.Set(-110f, 1f);
-			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
+			uIPanel.Height.Set(-140f, 1f);
+			uIPanel.Top.Set(30f, 0f);
+			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 			uIElement.Append(uIPanel);
+
+			UIPanel textBoxBackground = new UIPanel();
+			textBoxBackground.SetPadding(0);
+			filterTextField = new UIFocusInputTextField("Filter Options");
+			textBoxBackground.Top.Set(2f, 0f);
+			textBoxBackground.Left.Set(-190, 1f);
+			textBoxBackground.Width.Set(180, 0f);
+			textBoxBackground.Height.Set(30, 0f);
+			uIElement.Append(textBoxBackground);
+
+			filterTextField.SetText("");
+			filterTextField.Top.Set(5, 0f);
+			filterTextField.Left.Set(10, 0f);
+			filterTextField.Width.Set(-20, 1f);
+			filterTextField.Height.Set(20, 0);
+			filterTextField.OnTextChange += (a, b) => {
+				updateNeeded = true;
+			};
+			filterTextField.OnRightClick += (a, b) => {
+				filterTextField.SetText("");
+			};
+			textBoxBackground.Append(filterTextField);
 
 			// TODO: ModConfig Localization support
 			message = new UITextPanel<string>("Notification: ");
@@ -86,7 +112,7 @@ namespace Terraria.ModLoader.Config.UI
 			headerTextPanel.HAlign = 0.5f;
 			headerTextPanel.Top.Set(-50f, 0f);
 			headerTextPanel.SetPadding(15f);
-			headerTextPanel.BackgroundColor = UICommon.defaultUIBlue;
+			headerTextPanel.BackgroundColor = UICommon.DefaultUIBlue;
 			uIElement.Append(headerTextPanel);
 
 			previousConfigButton = new UITextPanel<string>("<", 1f, false);
@@ -120,13 +146,11 @@ namespace Terraria.ModLoader.Config.UI
 			backButton.CopyStyle(saveConfigButton);
 			backButton.HAlign = 0;
 			backButton.WithFadedMouseOver();
-			backButton.OnMouseOver += (a, b) =>
-			{
+			backButton.OnMouseOver += (a, b) => {
 				if (pendingChanges)
 					backButton.BackgroundColor = Color.Red;
 			};
-			backButton.OnMouseOut += (a, b) =>
-			{
+			backButton.OnMouseOut += (a, b) => {
 				if (pendingChanges)
 					backButton.BackgroundColor = Color.Red * 0.7f;
 			};
@@ -148,19 +172,17 @@ namespace Terraria.ModLoader.Config.UI
 			restoreDefaultsConfigButton.OnClick += RestoreDefaults;
 			uIElement.Append(restoreDefaultsConfigButton);
 
-			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
+			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
 			Append(uIElement);
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modsMenuID;
 
 			//Main.menuMode = 1127;
-			if (!Main.gameMenu)
-			{
+			if (!Main.gameMenu) {
 				Main.InGameUI.SetState(Interface.modConfigList);
 			}
 			//IngameFancyUI.Close();
@@ -172,17 +194,17 @@ namespace Terraria.ModLoader.Config.UI
 
 		internal void Unload() {
 			mainConfigList?.Clear();
+			mainConfigItems?.Clear();
 			mod = null;
 			modConfigs = null;
 			modConfig = null;
 			pendingConfig = null;
-			while(configPanelStack.Count > 1)
+			while (configPanelStack.Count > 1)
 				uIElement.RemoveChild(configPanelStack.Pop());
 		}
 
 		// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
-		private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
@@ -191,8 +213,7 @@ namespace Terraria.ModLoader.Config.UI
 			DoMenuModeState();
 		}
 
-		private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void NextConfig(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
@@ -202,32 +223,27 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-		private void DoMenuModeState()
-		{
+		private void DoMenuModeState() {
 			if (Main.gameMenu)
 				Main.menuMode = Interface.modConfigID;
 			else
 				Main.InGameUI.SetState(Interface.modConfig);
 		}
 
-		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {
 			// Main Menu: Save, leave reload for later
 			// MP with ServerSide: Send request to server
 			// SP or MP with ClientSide: Apply immediately if !NeedsReload
-			if (Main.gameMenu)
-			{
+			if (Main.gameMenu) {
 				Main.PlaySound(SoundID.MenuOpen);
 				ConfigManager.Save(pendingConfig);
 				ConfigManager.Load(modConfig);
 				// modConfig.OnChanged(); delayed until ReloadRequired checked
 				// Reload will be forced by Back Button in UIMods if needed
 			}
-			else
-			{
+			else {
 				// If we are in game...
-				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient)
-				{
+				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
 					// TODO: Too 
 					SetMessage("Asking server to accept changes...", Color.Yellow);
 
@@ -244,14 +260,12 @@ namespace Terraria.ModLoader.Config.UI
 				}
 				// SP or MP with ClientSide
 				ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.mod, modConfig.Name);
-				if (loadTimeConfig.NeedsReload(pendingConfig))
-				{
+				if (loadTimeConfig.NeedsReload(pendingConfig)) {
 					Main.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
 					return;
 				}
-				else
-				{
+				else {
 					Main.PlaySound(SoundID.MenuOpen);
 					ConfigManager.Save(pendingConfig);
 					ConfigManager.Load(modConfig);
@@ -269,39 +283,33 @@ namespace Terraria.ModLoader.Config.UI
 			//}
 		}
 
-		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			pendingRevertDefaults = true;
 			DoMenuModeState();
 		}
 
-		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
-		{
+		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
 			DiscardChanges();
 		}
 
-		private void DiscardChanges()
-		{
+		private void DiscardChanges() {
 			DoMenuModeState();
 		}
 
 		bool pendingChanges;
 		bool pendingChangesUIUpdate;
-		public void SetPendingChanges(bool changes = true)
-		{
+		public void SetPendingChanges(bool changes = true) {
 			pendingChangesUIUpdate |= changes;
 			pendingChanges |= changes;
 		}
 
-		public void SetMessage(string text, Color color)
-		{
+		public void SetMessage(string text, Color color) {
 			message.TextScale = 1f;
 			message.SetText("Notification: " + text);
 			float width = Main.fontMouseText.MeasureString(text).X;
-			if (width > 400)
-			{
+			if (width > 400) {
 				message.TextScale = 400 / width;
 				message.Recalculate();
 			}
@@ -309,30 +317,36 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		bool netUpdate;
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (pendingChangesUIUpdate)
-			{
+			updateCount++;
+			if (pendingChangesUIUpdate) {
 				uIElement.Append(saveConfigButton);
 				uIElement.Append(revertConfigButton);
 				backButton.BackgroundColor = Color.Red * 0.7f;
 				pendingChangesUIUpdate = false;
 			}
-			if (netUpdate)
-			{
+			if (netUpdate) {
 				DoMenuModeState();
 				netUpdate = false;
 			}
+			if (!updateNeeded) return;
+			updateNeeded = false;
+			mainConfigList.Clear();
+			mainConfigList.AddRange(mainConfigItems.Where(item => {
+				if (item.Item2 is ConfigElement configElement) {
+					return configElement.TextDisplayFunction().IndexOf(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
+				}
+				return true;
+			}).Select(x=>x.Item1));
+			Recalculate();
 		}
 
 		public static string tooltip;
-		public override void Draw(SpriteBatch spriteBatch)
-		{
+		public override void Draw(SpriteBatch spriteBatch) {
 			tooltip = null;
 			base.Draw(spriteBatch);
-			if (!string.IsNullOrEmpty(tooltip))
-			{
+			if (!string.IsNullOrEmpty(tooltip)) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, tooltip, GetDimensions().ToRectangle());
 			}
 		}
@@ -342,15 +356,12 @@ namespace Terraria.ModLoader.Config.UI
 		// when we get new server configs from server...replace, don't save?
 		// reload manually, reload fresh server config?
 		// need some CopyTo method to preserve references....hmmm
-		internal void SetMod(Mod mod, ModConfig config = null)
-		{
+		internal void SetMod(Mod mod, ModConfig config = null) {
 			this.mod = mod;
-			if (ConfigManager.Configs.ContainsKey(mod))
-			{
+			if (ConfigManager.Configs.ContainsKey(mod)) {
 				modConfigs = ConfigManager.Configs[mod];
 				modConfig = modConfigs[0];
-				if (config != null)
-				{
+				if (config != null) {
 					modConfig = ConfigManager.Configs[mod].First(x => x == config);
 					// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
 				}
@@ -359,22 +370,21 @@ namespace Terraria.ModLoader.Config.UI
 				// if in game, maybe have all configs open
 
 			}
-			else
-			{
+			else {
 				throw new Exception($"There are no ModConfig for {mod.DisplayName}, how did this happen?");
 			}
 		}
 
 		static bool pendingRevertDefaults;
-		public override void OnActivate()
-		{
+		public override void OnActivate() {
+			filterTextField.SetText("");
+			updateNeeded = false;
 			SetMessage("", Color.White);
 			string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
-			headerTextPanel.SetText(modConfig.mod.DisplayName + ": " + configDisplayName);
-			pendingConfig = modConfig.Clone();
+			headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.mod.DisplayName : modConfig.mod.DisplayName + ": " + configDisplayName);
+			pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 			pendingChanges = pendingRevertDefaults;
-			if (pendingRevertDefaults)
-			{
+			if (pendingRevertDefaults) {
 				pendingRevertDefaults = false;
 				ConfigManager.Reset(pendingConfig);
 				pendingChangesUIUpdate = true;
@@ -383,7 +393,7 @@ namespace Terraria.ModLoader.Config.UI
 			int index = modConfigs.IndexOf(modConfig);
 			int count = modConfigs.Count;
 			//pendingChanges = false;
-			backButton.BackgroundColor = UICommon.defaultUIBlueMouseOver;
+			backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
 			uIElement.RemoveChild(saveConfigButton);
 			uIElement.RemoveChild(revertConfigButton);
 			uIElement.RemoveChild(previousConfigButton);
@@ -395,25 +405,24 @@ namespace Terraria.ModLoader.Config.UI
 
 			uIElement.RemoveChild(configPanelStack.Peek());
 			uIElement.Append(uIPanel);
+			mainConfigItems.Clear();
 			mainConfigList.Clear();
 			configPanelStack.Clear();
 			configPanelStack.Push(uIPanel);
 			subPageStack.Clear();
 			//currentConfigList = mainConfigList;
-			int i = 0;
 			int top = 0;
 			// load all mod config options into UIList
 			// TODO: Inheritance with ModConfig? DeclaredOnly?
 
-			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
+			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 			var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
 			if (backgroundColorAttribute != null) {
 				uIPanel.BackgroundColor = backgroundColorAttribute.color;
 			}
 
 			int order = 0;
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig))
-			{
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
 				if (variable.isProperty && variable.Name == "Mode")
 					continue;
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
@@ -427,132 +436,102 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object array = null, Type arrayType = null, int index = -1)
-		{
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
 			int elementHeight = 0;
 			Type type = memberInfo.Type;
-			if (arrayType != null)
-			{
+			if (arrayType != null) {
 				type = arrayType;
 			}
-			UIElement e = null;
+			UIElement e;
 
 			// TODO: Other common structs? -- Rectangle, Point
 			CustomModConfigItemAttribute customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
-			if (customUI != null)
-			{
+			if (customUI != null) {
 				Type customUIType = customUI.t;
-				ConstructorInfo ctor = customUIType.GetConstructor(new[] { typeof(PropertyFieldWrapper), typeof(object), typeof(int), typeof(IList), typeof(int) });
-				if (ctor != null)
-				{
-					object[] arguments = new object[] { memberInfo, item, 0, array, index };
-					object instance = ctor.Invoke(arguments);
-					e = instance as UIElement;
-					if (e != null)
-					{
-						//e.Recalculate();
-						//elementHeight = (int)e.GetOuterDimensions().Height;
-						//elementHeight = 400; //e.GetHeight();
+				if (typeof(ConfigElement).IsAssignableFrom(customUIType)) {
+					ConstructorInfo ctor = customUIType.GetConstructor(new Type[0]);
+					if (ctor != null) {
+						object instance = ctor.Invoke(new object[0]);
+						e = instance as UIElement;
 					}
-					else
-					{
-						e = new UIText($"CustomUI for {memberInfo.Name} does not inherit from UIElement.");
+					else {
+						e = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not have an empty constructor.");
 					}
 				}
-				else
-				{
-					e = new UIText($"CustomUI for {memberInfo.Name} does not have the correct constructor.");
+				else {
+					e = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not inherit from ConfigElement.");
 				}
 			}
-			else if (item.GetType() == typeof(HeaderAttribute)) { 
-				//e = new UIText($"{memberInfo.GetValue(item)}", .4f, true);
-				//e.SetPadding(6);
+			else if (item.GetType() == typeof(HeaderAttribute)) {
 				e = new HeaderElement((string)memberInfo.GetValue(item));
 			}
-			else if (type == typeof(ItemDefinition))
-			{
-				e = new ItemDefinitionElement(memberInfo, item, (IList<ItemDefinition>)array, index);
+			else if (type == typeof(ItemDefinition)) {
+				e = new ItemDefinitionElement();
 			}
-			else if (type == typeof(Color))
-			{
-				e = new ColorElement(memberInfo, item, (IList<Color>)array, index);
-				//elementHeight = (int)(e as UIModConfigColorItem).GetHeight();
+			else if (type == typeof(ProjectileDefinition)) {
+				e = new ProjectileDefinitionElement();
+			}
+			else if (type == typeof(NPCDefinition)) {
+				e = new NPCDefinitionElement();
+			}
+			else if (type == typeof(PrefixDefinition)) {
+				e = new PrefixDefinitionElement();
+			}
+			else if (type == typeof(Color)) {
+				e = new ColorElement();
 			}
 			else if (type == typeof(Vector2)) {
-				e = new Vector2Element(memberInfo, item, (IList<Vector2>)array, index);
+				e = new Vector2Element();
 			}
 			else if (type == typeof(bool)) // isassignedfrom?
 			{
-				e = new BooleanElement(memberInfo, item, (IList<bool>)array, index);
+				e = new BooleanElement();
 			}
-			else if (type == typeof(float))
-			{
-				e = new FloatElement(memberInfo, item,  (IList<float>)array, index);
+			else if (type == typeof(float)) {
+				e = new FloatElement();
 			}
-			else if (type == typeof(byte))
-			{
-				e = new ByteElement(memberInfo, item,  (IList<byte>)array, index);
+			else if (type == typeof(byte)) {
+				e = new ByteElement();
 			}
-			else if (type == typeof(uint))
-			{
-				e = new UIntElement(memberInfo, item,  (IList<uint>)array, index);
+			else if (type == typeof(uint)) {
+				e = new UIntElement();
 			}
-			else if (type == typeof(int))
-			{
-				RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(memberInfo, item, array);
-				if (rangeAttribute != null)
-					e = new IntRangeElement(memberInfo, item,(IList<int>)array, index);
+			else if (type == typeof(int)) {
+				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttribute<SliderAttribute>(memberInfo, item, list);
+				if (sliderAttribute != null)
+					e = new IntRangeElement();
 				else
-					e = new IntInputElement(memberInfo, item, (IList<int>)array, index);
+					e = new IntInputElement();
 			}
-			else if (type == typeof(string))
-			{
-				OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, array);
+			else if (type == typeof(string)) {
+				OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, list);
 				if (ost != null)
-				{
-					e = new StringOptionElement(memberInfo, item, (IList<string>)array, index);
-				}
+					e = new StringOptionElement();
 				else
-				{
-					e = new StringInputElement(memberInfo, item, (IList<string>)array, index);
-				}
+					e = new StringInputElement();
 			}
-			else if (type.IsEnum)
-			{
-				if (array != null)
-				{
+			else if (type.IsEnum) {
+				if (list != null)
 					e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
-				}
 				else
-				{
-					e = new EnumElement(memberInfo, item);
-				}
+					e = new EnumElement();
 			}
-			else if (type.IsArray)
-			{
-				e = new ArrayElement(memberInfo, item);
-				//elementHeight = 225;
+			else if (type.IsArray) {
+				e = new ArrayElement();
 			}
-			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-			{
-				e = new ListElement(memberInfo, item);
-				//elementHeight = 225;
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>)) {
+				e = new ListElement();
 			}
-			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>))
-			{
-				e = new SetElement(memberInfo, item);
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>)) {
+				e = new SetElement();
 			}
-			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-			{
-				e = new DictionaryElement(memberInfo, item);
-				//elementHeight = 300;
+			else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
+				e = new DictionaryElement();
 			}
-			else if (type.IsClass)
-			{
-				e = new ObjectElement(memberInfo, item, (IList)array, index/*, ignoreSeparatePage: ignoreSeparatePage*/);
+			else if (type.IsClass) {
+				e = new ObjectElement(/*, ignoreSeparatePage: ignoreSeparatePage*/);
 			}
-			else if (type.IsValueType && !type.IsPrimitive)
-			{
+			else if (type.IsValueType && !type.IsPrimitive) {
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}) Structs need special UI.");
 				//e.Top.Pixels += 6;
 				e.Height.Pixels += 6;
@@ -560,26 +539,27 @@ namespace Terraria.ModLoader.Config.UI
 
 				object subitem = memberInfo.GetValue(item);
 			}
-			else
-			{
+			else {
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name})");
 				e.Top.Pixels += 6;
 				e.Left.Pixels += 4;
 			}
-			if (e != null)
-			{
+			if (e != null) {
+				if (e is ConfigElement configElement) {
+					configElement.Bind(memberInfo, item, (IList)list, index);
+					configElement.OnBind();
+				}
 				e.Recalculate();
 				elementHeight = (int)e.GetOuterDimensions().Height;
 
 				var container = GetContainer(e, index == -1 ? order : index);
 				container.Height.Pixels = elementHeight;
-				UIList list = parent as UIList;
-				if (list != null)
-				{
-					list.Add(container);
-					float p = list.GetTotalHeight();
+				UIList uiList = parent as UIList;
+				if (uiList != null) {
+					uiList.Add(container);
+					float p = uiList.GetTotalHeight();
 				}
-				else { 
+				else {
 					// Only Vector2 and Color use this I think, but modders can use the non-UIList approach for custom UI and layout.
 					container.Top.Pixels = top;
 					container.Width.Pixels = -20;
@@ -588,14 +568,17 @@ namespace Terraria.ModLoader.Config.UI
 					parent.Append(container);
 					parent.Height.Set(top, 0);
 				}
+				var tuple = new Tuple<UIElement, UIElement>(container, e);
+				if(parent == Interface.modConfig.mainConfigList) {
+					Interface.modConfig.mainConfigItems.Add(tuple);
+				}
 
-				return new Tuple<UIElement, UIElement>(container, e);
+				return tuple;
 			}
 			return null;
 		}
 
-		internal static UIElement GetContainer(UIElement containee, int sortid)
-		{
+		internal static UIElement GetContainer(UIElement containee, int sortid) {
 			UIElement container = new UISortableElement(sortid);
 			container.Width.Set(0f, 1f);
 			container.Height.Set(30f, 0f);
@@ -607,7 +590,7 @@ namespace Terraria.ModLoader.Config.UI
 		internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction) {
 			UIPanel uIPanel = new UIPanel();
 			uIPanel.CopyStyle(Interface.modConfig.uIPanel);
-			uIPanel.BackgroundColor = UICommon.mainPanelBackground;
+			uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
 			BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
 			if (bca != null) {
@@ -720,11 +703,6 @@ namespace Terraria.ModLoader.Config.UI
 			Interface.modConfig.subPageStack.Pop();
 			return uIPanel;
 		}
-
-		//private class UIDynamicText : UIText
-		//{
-
-		//}
 
 		internal static void SwitchToSubConfig(UIPanel separateListPanel) {
 			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());

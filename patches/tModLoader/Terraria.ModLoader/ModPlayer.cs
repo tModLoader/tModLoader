@@ -400,7 +400,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular use time. Returns 1f by default.
+		/// Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <returns>The amount you wish to multiply with.</returns>
@@ -409,7 +409,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular melee speed. Returns 1f by default.
+		/// Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <returns>The amount you wish to multiply with.</returns>
@@ -436,11 +436,59 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
+		/// <param name="mult">Use to directly multiply the item's effective mana cost. Good for debuffs, or things which should stack separately (eg meteor armor set bonus).</param>
+		public virtual void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
+		/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
+		/// Only runs once per item use.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="neededMana">The mana needed to use the item.</param>
+		public virtual void OnMissingMana(Item item, int neededMana) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player consumes mana on use of an item.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="manaConsumed">The mana consumed from the player.</param>
+		public virtual void OnConsumeMana(Item item, int manaConsumed) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify a weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="item"></param>
 		/// <param name="damage"></param>
+		[Obsolete("Use ModifyWeaponDamage", true)]
 		public virtual void GetWeaponDamage(Item item, ref int damage) {
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
+		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		[Obsolete("Use ModifyWeaponDamage overload with the additional flat parameter")]
+		public virtual void ModifyWeaponDamage(Item item, ref float add, ref float mult) {
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// </summary>
+		/// <param name="item">The item being used</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
+		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
+		public virtual void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat) {
 		}
 
 		/// <summary>

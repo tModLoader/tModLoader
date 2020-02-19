@@ -373,11 +373,15 @@
  							NetMessage.SendData(3, this.whoAmI, -1, null, 0, 0f, 0f, 0f, 0, 0, 0);
  							return;
  						}
-@@ -2132,7 +_,7 @@
+@@ -2130,9 +_,9 @@
+ 							return;
+ 						}
  						Player player12 = Main.player[num132];
- 						for (int num133 = 0; num133 < 22; num133++)
- 						{
+-						for (int num133 = 0; num133 < 22; num133++)
+-						{
 -							player12.buffType[num133] = (int)this.reader.ReadByte();
++						for (int num133 = 0; num133 < Player.MaxBuffs; num133++)
++						{
 +							player12.buffType[num133] = (int)(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16());
  							if (player12.buffType[num133] > 0)
  							{

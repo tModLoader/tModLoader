@@ -44,5 +44,10 @@ namespace Terraria.ModLoader.Default.Patreon
 			item.width = 22;
 			item.height = 18;
 		}
+
+		public override void UpdateVanity(Player player, EquipType type)
+		{
+			player.shoe = 0;
+		}
 	}
 }

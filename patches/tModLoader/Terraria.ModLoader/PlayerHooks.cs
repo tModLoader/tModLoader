@@ -20,8 +20,6 @@ namespace Terraria.ModLoader
 	public static class PlayerHooks
 	{
 		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
-		private static readonly IDictionary<string, int> indexes = new Dictionary<string, int>();
-		private static readonly IDictionary<Type, int> indexesByType = new Dictionary<Type, int>();
 
 		private class HookList
 		{
@@ -43,13 +41,6 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModPlayer player) {
 			player.index = players.Count;
-			indexes[player.mod.Name + ':' + player.Name] = players.Count;
-			if (indexesByType.ContainsKey(player.GetType())) {
-				indexesByType[player.GetType()] = -1;
-			}
-			else {
-				indexesByType[player.GetType()] = players.Count;
-			}
 			players.Add(player);
 		}
 
@@ -61,22 +52,10 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			players.Clear();
-			indexes.Clear();
-			indexesByType.Clear();
 		}
 
 		internal static void SetupPlayer(Player player) {
 			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
-		}
-
-		internal static ModPlayer GetModPlayer(Player player, Mod mod, string name) {
-			int index;
-			return indexes.TryGetValue(mod.Name + ':' + name, out index) ? player.modPlayers[index] : null;
-		}
-
-		internal static ModPlayer GetModPlayer(Player player, Type type) {
-			int index;
-			return indexesByType.TryGetValue(type, out index) ? (index > -1 ? player.modPlayers[index] : null) : null;
 		}
 
 		private static HookList HookResetEffects = AddHook<Action>(p => p.ResetEffects);
@@ -156,16 +135,15 @@ namespace Terraria.ModLoader
 
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
-				for (int k = 0; k < items.Count; k++) {
+				for (int k = 0; k < items.Count && k < 49; k++)
 					player.inventory[k] = items[k];
-				}
 			}
 			else {
 				for (int k = 0; k < 49; k++) {
 					player.inventory[k] = items[k];
 				}
 				Item bag = new Item();
-				bag.SetDefaults(ModLoader.GetMod("ModLoader").ItemType("StartBag"));
+				bag.SetDefaults(ModContent.ItemType<StartBag>());
 				for (int k = 49; k < items.Count; k++) {
 					((StartBag)bag.modItem).AddItem(items[k]);
 				}
@@ -514,12 +492,11 @@ namespace Terraria.ModLoader
 		private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 		public static bool PreItemCheck(Player player) {
+			bool result = true;
 			foreach (int index in HookPreItemCheck.arr) {
-				if (!player.modPlayers[index].PreItemCheck()) {
-					return false;
-				}
+				result &= player.modPlayers[index].PreItemCheck();
 			}
-			return true;
+			return result;
 		}
 
 		private static HookList HookPostItemCheck = AddHook<Action>(p => p.PostItemCheck);
@@ -545,6 +522,10 @@ namespace Terraria.ModLoader
 			return UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
 		}
 
+		public static int TotalUseTime(float useTime, Player player, Item item) {
+			return Math.Max(2, (int)(useTime / TotalUseTimeMultiplier(player, item)));
+		}
+
 		private static HookList HookMeleeSpeedMultiplier = AddHook<Func<Item, float>>(p => p.MeleeSpeedMultiplier);
 
 		public static float MeleeSpeedMultiplier(Player player, Item item) {
@@ -559,6 +540,10 @@ namespace Terraria.ModLoader
 		public static float TotalMeleeSpeedMultiplier(Player player, Item item) {
 			return TotalUseTimeMultiplier(player, item) * MeleeSpeedMultiplier(player, item)
 				* ItemLoader.MeleeSpeedMultiplier(item, player);
+		}
+
+		public static int TotalMeleeTime(float useAnimation, Player player, Item item) {
+			return Math.Max(2, (int)(useAnimation / TotalMeleeSpeedMultiplier(player, item)));
 		}
 
 		private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);
@@ -585,15 +570,69 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
-		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
+		private delegate void DelegateModifyManaCost(Item item, ref float reduce, ref float mult);
+		private static HookList HookModifyManaCost = AddHook<DelegateModifyManaCost>(p => p.ModifyManaCost);
 
+		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
+			if (item.IsAir)
+				return;
+			
+			foreach (int index in HookModifyManaCost.arr) {
+				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
+			}
+		}
+
+		private static HookList HookOnMissingMana = AddHook<Action<Item, int>>(p => p.OnMissingMana);
+
+		public static void OnMissingMana(Player player, Item item, int manaNeeded) {
+			if (item.IsAir)
+				return;
+			
+			foreach (int index in HookOnMissingMana.arr) {
+				player.modPlayers[index].OnMissingMana(item, manaNeeded);
+			}
+		}
+
+		private static HookList HookOnConsumeMana = AddHook<Action<Item, int>>(p => p.OnConsumeMana);
+
+		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
+			if (item.IsAir)
+				return;
+			
+			foreach (int index in HookOnConsumeMana.arr) {
+				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
+			}
+		}
+
+		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
+		[Obsolete]
+		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
+		[Obsolete]
 		public static void GetWeaponDamage(Player player, Item item, ref int damage) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookGetWeaponDamage.arr) {
 				player.modPlayers[index].GetWeaponDamage(item, ref damage);
+			}
+		}
+
+		private delegate void DelegateModifyWeaponDamageOld(Item item, ref float add, ref float mult);
+		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat);
+		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
+		/// <summary>
+		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
+		/// </summary>
+		public static void ModifyWeaponDamage(Player player, Item item, ref float add, ref float mult, ref float flat) {
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookModifyWeaponDamageOld.arr) {
+				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult);
+			}
+			foreach (int index in HookModifyWeaponDamage.arr) {
+				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult, ref flat);
 			}
 		}
 

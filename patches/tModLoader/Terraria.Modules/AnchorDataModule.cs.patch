@@ -1,0 +1,32 @@
+--- src/Terraria\Terraria.Modules\AnchorDataModule.cs
++++ src/tModLoader\Terraria.Modules\AnchorDataModule.cs
+@@ -11,21 +_,16 @@
+ 		public AnchorData right;
+ 		public bool wall;
+ 
+-		public AnchorDataModule(AnchorDataModule copyFrom = null)
+-		{
+-			if (copyFrom == null)
+-			{
+-				top = default
+-				;
+-				bottom = default
+-				;
+-				left = default
+-				;
+-				right = default
+-				;
++		public AnchorDataModule(AnchorDataModule copyFrom = null) {
++			if (copyFrom == null) {
++				top = default;
++				bottom = default;
++				left = default;
++				right = default;
+ 				wall = false;
+ 				return;
+ 			}
++
+ 			top = copyFrom.top;
+ 			bottom = copyFrom.bottom;
+ 			left = copyFrom.left;
+

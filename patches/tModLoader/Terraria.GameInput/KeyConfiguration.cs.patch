@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameInput\KeyConfiguration.cs
 +++ src/tModLoader\Terraria.GameInput\KeyConfiguration.cs
-@@ -1,12 +_,14 @@
+@@ -1,12 +_,15 @@
  using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -10,8 +10,10 @@
  {
  	public class KeyConfiguration
  	{
- 		public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
-+		public Dictionary<string, List<string>> UnloadedModKeyStatus = new Dictionary<string, List<string>>();
+-		public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
++		// Make readonly so dicts aren't set to null or whatever, .Clear() is allowed
++		public readonly Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
++		public readonly Dictionary<string, List<string>> UnloadedModKeyStatus = new Dictionary<string, List<string>>();
  
  		public bool DoGrappleAndInteractShareTheSameKey
  		{
@@ -20,47 +22,79 @@
  			{
  				this.KeyStatus.Add(current, new List<string>());
 +			}
-+			foreach (var current in ModContent.modHotKeys)
++			foreach (var current in HotKeyLoader.HotKeys)
 +			{
-+				this.KeyStatus.Add(current.Value.displayName, new List<string>());
++				this.KeyStatus.Add(current.uniqueName, new List<string>());
  			}
  		}
  
-@@ -53,6 +_,7 @@
- 
+@@ -50,18 +_,19 @@
+ 				}
+ 			}
+ 		}
+-
  		public void ReadPreferences(Dictionary<string, List<string>> dict)
  		{
-+			UnloadedModKeyStatus = new Dictionary<string, List<string>>();
++			UnloadedModKeyStatus.Clear();
++
  			foreach (KeyValuePair<string, List<string>> current in dict)
  			{
  				if (this.KeyStatus.ContainsKey(current.Key))
-@@ -63,6 +_,14 @@
- 						this.KeyStatus[current.Key].Add(current2);
- 					}
- 				}
+ 				{
+-					this.KeyStatus[current.Key].Clear();
+-					foreach (string current2 in current.Value)
+-					{
+-						this.KeyStatus[current.Key].Add(current2);
+-					}
++					this.KeyStatus[current.Key] = new List<string>(current.Value);
++				}
 +				else if (current.Key.Contains(":")) // This preserves unloaded mod hotkey values
 +				{
-+					UnloadedModKeyStatus[current.Key] = new List<string>();
-+					foreach (string current2 in current.Value)
-+					{
-+						UnloadedModKeyStatus[current.Key].Add(current2);
-+					}
-+				}
++					UnloadedModKeyStatus[current.Key] = new List<string>(current.Value);
+ 				}
  			}
  		}
- 
-@@ -70,6 +_,13 @@
+@@ -69,26 +_,29 @@
+ 		public Dictionary<string, List<string>> WritePreferences()
  		{
  			Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
- 			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus)
-+			{
-+				if (current.Value.Count > 0)
-+				{
-+					dictionary.Add(current.Key, current.Value.ToList<string>());
-+				}
-+			}
-+			foreach (KeyValuePair<string, List<string>> current in UnloadedModKeyStatus)
+-			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus)
++
++			// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
++			foreach (KeyValuePair<string, List<string>> current in this.KeyStatus.Where(x => x.Value.Count > 0))
  			{
- 				if (current.Value.Count > 0)
- 				{
+-				if (current.Value.Count > 0)
+-				{
+-					dictionary.Add(current.Key, current.Value.ToList<string>());
+-				}
++				dictionary[current.Key] = current.Value.ToList<string>();
++			}
++			foreach (KeyValuePair<string, List<string>> current in UnloadedModKeyStatus.Where(x => x.Value.Count > 0))
++			{
++				dictionary[current.Key] = current.Value.ToList<string>();
+ 			}
+ 			if (!dictionary.ContainsKey("MouseLeft") || dictionary["MouseLeft"].Count == 0)
+ 			{
+-				dictionary.Add("MouseLeft", new List<string>
+-					{
+-						"Mouse1"
+-					});
++				dictionary["MouseLeft"] = new List<string>
++				{
++					"Mouse1"
++				};
+ 			}
+ 			if (!dictionary.ContainsKey("Inventory") || dictionary["Inventory"].Count == 0)
+ 			{
+-				dictionary.Add("Inventory", new List<string>
+-					{
+-						"Escape"
+-					});
++				dictionary["Inventory"] = new List<string>
++				{
++					"Escape"
++				};
+ 			}
+ 			return dictionary;
+ 		}
 

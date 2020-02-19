@@ -1,5 +1,13 @@
 --- src/Terraria\Terraria\IngameOptions.cs
 +++ src/tModLoader\Terraria\IngameOptions.cs
+@@ -4,6 +_,7 @@
+ using Terraria.GameContent;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader.UI;
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
 @@ -16,6 +_,7 @@
  		public const int height = 480;
  		public static float[] leftScale = new float[]
@@ -35,7 +43,7 @@
 +					Main.editChest = false;
 +					Main.npcChatText = "";
 +					Main.inFancyUI = true;
-+					Main.InGameUI.SetState(ModLoader.Interface.modConfigList);
++					Main.InGameUI.SetState(Interface.modConfigList);
  				}
  			}
  			num10++;

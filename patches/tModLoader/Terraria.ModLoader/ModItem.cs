@@ -101,7 +101,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether instances of this GlobalItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
+		/// Whether instances of this ModItem are created through Clone or constructor (by default implementations of NewInstance and Clone(Item, Item)). 
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
@@ -109,7 +109,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a clone of this ModItem. 
 		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalItem contains object references. 
+		/// By default this will return a memberwise clone; you will want to override this if your ModItem contains object references. 
 		/// Only called if CloneNewInstances is set to true.
 		/// Since several ModItem class fields are also set by the default implementation of this method, you'll most likely want to call base.Clone() as the first statement of your override.
 		/// </summary>
@@ -119,7 +119,7 @@ namespace Terraria.ModLoader
 		public virtual ModItem Clone() => (ModItem)MemberwiseClone();
 
 		/// <summary>
-		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
+		/// Create a copy of this instanced ModItem. Called when an item is cloned.
 		/// Defaults to NewInstance(item)
 		/// </summary>
 		/// <param name="item">The item being cloned</param>
@@ -127,7 +127,7 @@ namespace Terraria.ModLoader
 		public virtual ModItem Clone(Item item) => NewInstance(item);
 
 		/// <summary>
-		/// Create a new instance of this GlobalItem for an Item instance. 
+		/// Create a new instance of this ModItem for an Item instance. 
 		/// Called at the end of Item.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -189,9 +189,27 @@ namespace Terraria.ModLoader
 		/// Allows you to manually choose what prefix an item will get.
 		/// </summary>
 		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
-		public virtual int ChoosePrefix(UnifiedRandom rand) {
-			return -1;
-		}
+		public virtual int ChoosePrefix(UnifiedRandom rand) => -1;
+
+		/// <summary>
+		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
+		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
+		/// To force rolling of a prefix on spawn, return true when pre is -1.
+		/// 
+		/// To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time.
+		/// To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.
+		/// 
+		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
+		/// Use AllowPrefix to prevent rolling of a certain prefix.
+		/// </summary>
+		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <returns></returns>
+		public virtual bool? PrefixChance(int pre, UnifiedRandom rand) => null;
+
+		/// <summary>
+		/// Force a re-roll of a prefix by returning false.
+		/// </summary>
+		public virtual bool AllowPrefix(int pre) => true;
 
 		/// <summary>
 		/// Returns whether or not this item can be used. By default returns true.
@@ -226,7 +244,7 @@ namespace Terraria.ModLoader
 		/// Allows you to change the effective useTime of this item.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns>The multiplier on the usage speed. 1f by default.</returns>
+		/// <returns>The multiplier on the usage speed. 1f by default. Values greater than 1 increase the item speed.</returns>
 		public virtual float UseTimeMultiplier(Player player) {
 			return 1f;
 		}
@@ -235,7 +253,7 @@ namespace Terraria.ModLoader
 		/// Allows you to change the effective useAnimation of this item.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns>The multiplier on the animation speed. 1f by default.</returns>
+		/// <returns>The multiplier on the animation speed. 1f by default. Values greater than 1 increase the item speed.</returns>
 		public virtual float MeleeSpeedMultiplier(Player player) {
 			return 1f;
 		}
@@ -259,6 +277,33 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
+		/// <param name="mult">Use to directly multiply the item's effective mana cost. Good for debuffs, or things which should stack separately (eg meteor armor set bonus).</param>
+		public virtual void ModifyManaCost(Player player, ref float reduce, ref float mult) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
+		/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
+		/// Only runs once per item use.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="neededMana">The mana needed to use the item.</param>
+		public virtual void OnMissingMana(Player player, int neededMana) {
+		}
+
+		/// <summary>
+		/// Allows you to make stuff happen when a player consumes mana on use of this item.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="manaConsumed">The mana consumed from the player.</param>
+		public virtual void OnConsumeMana(Player player, int manaConsumed) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
 		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
@@ -267,7 +312,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="damage">The damage.</param>
+		[Obsolete("Use ModifyWeaponDamage", true)]
 		public virtual void GetWeaponDamage(Player player, ref int damage) {
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// </summary>
+		/// <param name="player">The player using the item</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
+		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		[Obsolete("Use ModifyWeaponDamage overload with the additional flat parameter")]
+		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
+		}
+
+		/// <summary>
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// </summary>
+		/// <param name="player">The player using the item</param>
+		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
+		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
+		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) {
 		}
 
 		/// <summary>
@@ -298,11 +364,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo.
 		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="type"></param>
-		/// <param name="speed"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockback"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="player">The player using the item</param>
+		/// <param name="type">The ID of the projectile shot</param>
+		/// <param name="speed">The speed of the projectile shot</param>
+		/// <param name="damage">The damage of the projectile shot</param>
+		/// <param name="knockback">The speed of the projectile shot</param>
+		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+		}
+		
+		[Obsolete("PickAmmo now has a weapon parameter that represents the item using the ammo.")]
 		public virtual void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 
@@ -611,7 +682,7 @@ namespace Terraria.ModLoader
 		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
-		/// </summary
+		/// </summary>
 		public virtual bool NewPreReforge() {
 			return true;
 		}
@@ -730,6 +801,14 @@ namespace Terraria.ModLoader
 		public virtual void Update(ref float gravity, ref float maxFallSpeed) {
 		}
 
+		/// <summary>
+		/// Returns whether or not this item burns when it is thrown into lava despite item.rare not being 0. Returns false by default.
+		/// </summary>
+		public virtual bool CanBurnInLava()
+		{
+			return false;
+		}
+		
 		/// <summary>
 		/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 		/// </summary>
@@ -924,6 +1003,11 @@ namespace Terraria.ModLoader
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
 		public virtual int BossBagNPC => BossBagNPC_Obsolete;
+
+		/// <summary>
+		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.
+		/// </summary>
+		public virtual bool IgnoreDamageModifiers => false;
 
 		/// <summary>
 		/// Allows you to save custom data for this item. Returns null by default.
