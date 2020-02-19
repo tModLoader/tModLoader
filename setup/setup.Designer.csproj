@@ -14,8 +14,6 @@
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.7.9" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.4.0" />
     <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="19.9.1.6" />
   </ItemGroup>
   <ItemGroup>

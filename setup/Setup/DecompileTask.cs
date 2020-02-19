@@ -248,7 +248,7 @@ namespace Terraria.ModLoader.Setup
 
 					string source = w.ToString();
 					if (formatOutput) //would be nice to change the title to "Formatting:" at this stage but meh
-						source = RoslynTask.TransformSource(source, taskInterface.CancellationToken, FormatTask.Format).GetAwaiter().GetResult(); //this will probably still wrap the exception, not ideal, but oh well
+						source = RoslynTask.TransformSource(source, taskInterface.CancellationToken, (doc, ct) => FormatTask.Format(doc, ct, true)).GetAwaiter().GetResult(); //this will probably still wrap the exception, not ideal, but oh well
 
 					File.WriteAllText(path, source);
 				}
@@ -265,7 +265,7 @@ namespace Terraria.ModLoader.Setup
 
 				using (var sw = new StreamWriter(path))
 				using (var w = new XmlTextWriter(sw)) {
-					w.Formatting = Formatting.Indented;
+					w.Formatting = System.Xml.Formatting.Indented;
 					w.WriteStartElement("Project");
 					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
 

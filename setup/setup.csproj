@@ -5,6 +5,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
     <ApplicationIcon>../patches/tModLoader/Icon.ico</ApplicationIcon>
+    <TieredCompilation>false</TieredCompilation> <!-- be nice if we didn't need this, but MonoMod.RuntimeDetour isn't compatible with tiered jit currently -->
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="PatchReviewer\**" />
@@ -16,7 +17,7 @@
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.4.0" />
-    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="19.9.1.6" />
+    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="20.2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
