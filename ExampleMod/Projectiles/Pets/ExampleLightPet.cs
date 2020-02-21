@@ -49,7 +49,7 @@ namespace ExampleMod.Projectiles.Pets
 			}
 			projectile.ai[1]++;
 			if (projectile.ai[1] > 1000 && (int)projectile.ai[0] % 100 == 0) {
-				for (int i = 0; i < Main.npc.Length; i++) {
+				for (int i = 0; i < Main.maxNPCs; i++) {
 					if (Main.npc[i].active && !Main.npc[i].friendly && player.Distance(Main.npc[i].Center) < rangeHypoteneus) {
 						Vector2 vectorToEnemy = Main.npc[i].Center - projectile.Center;
 						projectile.velocity += 10f * Vector2.Normalize(vectorToEnemy);

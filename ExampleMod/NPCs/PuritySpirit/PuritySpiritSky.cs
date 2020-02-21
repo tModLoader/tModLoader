@@ -27,7 +27,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				return true;
 			}
 			puritySpiritIndex = -1;
-			for (int i = 0; i < Main.npc.Length; i++) {
+			for (int i = 0; i < Main.maxNPCs; i++) {
 				if (Main.npc[i].active && Main.npc[i].type == puritySpiritType) {
 					puritySpiritIndex = i;
 					break;
