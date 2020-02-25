@@ -183,8 +183,9 @@ namespace ExampleMod.Projectiles
 
 			// Set the beam's velocity to point towards its current spread direction and sanity check it. It should have magnitude 1.
 			projectile.velocity = hostPrismDir.RotatedBy(sinusoidYOffset);
-			if (projectile.velocity.HasNaNs() || projectile.velocity == Vector2.Zero)
+			if (projectile.velocity.HasNaNs() || projectile.velocity == Vector2.Zero) {
 				projectile.velocity = -Vector2.UnitY;
+			}
 			projectile.rotation = projectile.velocity.ToRotation();
 
 			// Update the beam's length by performing a hitscan collision check.
@@ -201,12 +202,13 @@ namespace ExampleMod.Projectiles
 				ProduceBeamDust(beamColor);
 
 				// If the game is rendering (i.e. isn't a dedicated server), make the beam disturb water.
-				if (Main.netMode != NetmodeID.Server)
+				if (Main.netMode != NetmodeID.Server) {
 					ProduceWaterRipples(beamDims);
+				}
 			}
 
 			// Make the beam cast light along its length. The brightness of the light scales with the charge.
-			// v3_1 is an unnamed decompiled variable which is the color of the light cast by DelegateMethods.CastLight
+			// v3_1 is an unnamed decompiled variable which is the color of the light cast by DelegateMethods.CastLight.
 			DelegateMethods.v3_1 = beamColor.ToVector3() * BeamLightBrightness * chargeRatio;
 			Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity * BeamLength, beamDims.Y, new Utils.PerLinePoint(DelegateMethods.CastLight));
 		}
@@ -222,23 +224,27 @@ namespace ExampleMod.Projectiles
 		{
 			// By default, the hitscan interpolation starts at the projectile's center.
 			// If the host Prism is fully charged, the interpolation starts at the Prism's center instead.
+			Vector2 samplingPoint = projectile.Center;
+			if (fullCharge) {
+				samplingPoint = prism.Center;
+			}
+			
 			// Overriding that, if the player shoves the Prism into or through a wall, the interpolation starts at the player's center.
 			// This last part prevents the player from projecting beams through walls under any circumstances.
-			Vector2 samplingPoint = projectile.Center;
-			if (fullCharge)
-				samplingPoint = prism.Center;
-			if (!Collision.CanHitLine(Main.player[projectile.owner].Center, 0, 0, prism.Center, 0, 0))
-				samplingPoint = Main.player[projectile.owner].Center;
+			Player player = Main.player[projectile.owner];
+			if (!Collision.CanHitLine(player.Center, 0, 0, prism.Center, 0, 0)) {
+				samplingPoint = player.Center;
+			}
 
 			// Perform a laser scan to calculate the correct length of the beam.
 			// Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
-			// BeamLength = MaxBeamLength;
-
+			// return MaxBeamLength;
 			float[] laserScanResults = new float[NumSamplePoints];
 			Collision.LaserScan(samplingPoint, projectile.velocity, BeamTileCollisionWidth * projectile.scale, MaxBeamLength, laserScanResults);
 			float averageLengthSample = 0f;
-			for (int i = 0; i < laserScanResults.Length; ++i)
+			for (int i = 0; i < laserScanResults.Length; ++i) {
 				averageLengthSample += laserScanResults[i];
+			}
 			averageLengthSample /= NumSamplePoints;
 
 			return averageLengthSample;
@@ -248,8 +254,10 @@ namespace ExampleMod.Projectiles
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			// If the target is touching the beam's hitbox (which is a small rectangle vaguely overlapping the host Prism), that's good enough.
-			if (projHitbox.Intersects(targetHitbox))
+			if (projHitbox.Intersects(targetHitbox)) {
 				return true;
+			}
+			
 			// Otherwise, perform an AABB line collision check to check the whole beam.
 			float _ = float.NaN;
 			Vector2 beamEndPos = projectile.Center + projectile.velocity * BeamLength;
@@ -259,8 +267,9 @@ namespace ExampleMod.Projectiles
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
 			// If the beam doesn't have a defined direction, don't draw anything.
-			if (projectile.velocity == Vector2.Zero)
+			if (projectile.velocity == Vector2.Zero) {
 				return false;
+			}
 
 			Texture2D tex = Main.projectileTexture[projectile.type];
 			Vector2 centerFloored = projectile.Center.Floor() + projectile.velocity * projectile.scale * 10.5f;
@@ -278,26 +287,34 @@ namespace ExampleMod.Projectiles
 			// c_1 is an unnamed decompiled variable which is the render color of the beam drawn by DelegateMethods.RainbowLaserDraw.
 			Color outerBeamColor = GetBeamColor();
 			DelegateMethods.c_1 = outerBeamColor * OuterBeamOpacityMultiplier * projectile.Opacity;
-			Utils.DrawLaser(Main.spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
+			Utils.DrawLaser(spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
 
 			// Draw the inner beam, which is half size.
 			scaleVec *= 0.5f;
 			Color innerBeamColor = GetInnerBeamColor();
 			DelegateMethods.c_1 = innerBeamColor * InnerBeamOpacityMultiplier * projectile.Opacity;
-			Utils.DrawLaser(Main.spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
+			Utils.DrawLaser(spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
 			return false;
 		}
 
 		private Color GetBeamColor()
 		{
+			// This hue calculation produces a unique color for each beam based on its Beam ID.
+			// Hue ranges from 0f to 1f, both of which are pure red. This function uses modulus to range from 0.57 to 0.75,
+			// which winds up being a blue-to-purple gradient.
 			float hue = (BeamID / ExampleLastPrismHoldout.NumBeams) % 0.18f + 0.57f;
 			float saturation = 0.66f;
 			float lightness = 0.53f;
+			
+			// Main.hslToRgb converts Hue, Saturation, Lightness into a Color for general purpose use.
 			Color c = Main.hslToRgb(hue, saturation, lightness);
+			
+			// Manually reduce the opacity of the color so beams can overlap without completely overwriting each other.
 			c.A = 64;
 			return c;
 		}
 
+		// Inner beams are always pure white so that they act as a "blindingly bright" center to each laser.
 		private Color GetInnerBeamColor() => Color.White;
 
 		private void ProduceBeamDust(Color beamColor)
@@ -315,7 +332,7 @@ namespace ExampleMod.Projectiles
 			d.color = beamColor;
 			d.noGravity = true;
 
-			// If the projectile is large, make the dust faster and larger to match.
+			// If the beam is currently large, make the dust faster and larger to match.
 			if (projectile.scale > 1f) {
 				d.velocity *= projectile.scale;
 				d.scale *= projectile.scale;

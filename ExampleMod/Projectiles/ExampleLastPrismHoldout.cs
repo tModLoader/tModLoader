@@ -83,8 +83,9 @@ namespace ExampleMod.Projectiles
 			if (projectile.frameCounter >= framesPerAnimationUpdate)
 			{
 				projectile.frameCounter = 0;
-				if (++projectile.frame >= 5)
+				if (++projectile.frame >= 5) {
 					projectile.frame = 0;
+				}
 			}
 
 			// Make sound intermittently while the Prism is in use.
@@ -92,8 +93,9 @@ namespace ExampleMod.Projectiles
 			{
 				projectile.soundDelay = SoundInterval;
 				// On the very first frame, the sound playing is skipped. This way it doesn't overlap the starting hiss sound.
-				if (FrameCounter > 1f)
+				if (FrameCounter > 1f) {
 					Main.PlaySound(SoundID.Item15, projectile.position);
+				}
 			}
 
 			// Update the Prism's position in the world and relevant variables of the player holding it.
@@ -103,11 +105,11 @@ namespace ExampleMod.Projectiles
 			if (projectile.owner == Main.myPlayer)
 			{
 				// Slightly re-aim the Prism every frame so that it gradually sweeps to point towards the mouse.
-				UpdateAim(rrp, player.inventory[player.selectedItem].shootSpeed);
+				UpdateAim(rrp, player.HeldItem.shootSpeed);
 
 				// player.CheckMana returns true if the mana cost can be paid. Since the second argument is true, the mana is actually consumed.
 				// If mana shouldn't consumed this frame, the || operator short-circuits its evaluation player.CheckMana never executes.
-				bool manaIsAvailable = !ShouldConsumeMana() || player.CheckMana(player.inventory[player.selectedItem].mana, true, false);
+				bool manaIsAvailable = !ShouldConsumeMana() || player.CheckMana(player.HeldItem.mana, true, false);
 
 				// The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
 				bool prismStillinUse = player.channel && manaIsAvailable && !player.noItems && !player.CCed;
@@ -115,22 +117,26 @@ namespace ExampleMod.Projectiles
 				// The beams are only projected on the first frame.
 				if (prismStillinUse && FrameCounter == 1f)
 				{
+					// If for some reason the beam's velocity can't be correctly normalized, set it to a default value.
 					Vector2 beamVelocity = Vector2.Normalize(projectile.velocity);
-					if (beamVelocity.HasNaNs())
+					if (beamVelocity.HasNaNs()) {
 						beamVelocity = -Vector2.UnitY;
+					}
 
 					int damage = projectile.damage;
 					float kb = projectile.knockBack;
-					for (int b = 0; b < NumBeams; ++b)
+					for (int b = 0; b < NumBeams; ++b) {
 						Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, kb, projectile.owner, b, projectile.whoAmI);
+					}
 
 					// After creating the beams, mark the Prism as having an important network event.
 					projectile.netUpdate = true;
 				}
 
 				// If the Prism cannot continue to be used, then destroy it immediately.
-				else if (!prismStillinUse)
+				else if (!prismStillinUse) {
 					projectile.Kill();
+				}
 			}
 
 			// This ensures that the Prism never times out while in use.
@@ -140,7 +146,7 @@ namespace ExampleMod.Projectiles
 		private void UpdateDamageForManaSickness(Player player)
 		{
 			float ownerCurrentMagicDamage = player.allDamage + (player.magicDamage - 1f);
-			projectile.damage = (int)((player.HeldItem?.damage ?? 0) * ownerCurrentMagicDamage);
+			projectile.damage = (int)(player.HeldItem.damage * ownerCurrentMagicDamage);
 		}
 
 		private bool ShouldConsumeMana()
@@ -169,14 +175,16 @@ namespace ExampleMod.Projectiles
 		private void UpdateAim(Vector2 source, float speed)
 		{
 			Vector2 aimVector = Vector2.Normalize(Main.MouseWorld - source);
-			if (aimVector.HasNaNs())
+			if (aimVector.HasNaNs()) {
 				aimVector = -Vector2.UnitY;
+			}
 			// Change a portion of the Prism's current velocity so that it points to the mouse. This gives smooth movement over time.
 			aimVector = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(projectile.velocity), aimVector, AimResponsiveness));
 			aimVector *= speed;
 
-			if (aimVector != projectile.velocity)
+			if (aimVector != projectile.velocity) {
 				projectile.netUpdate = true;
+			}
 			projectile.velocity = aimVector;
 		}
 
@@ -202,14 +210,14 @@ namespace ExampleMod.Projectiles
 		{
 			SpriteEffects eff = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D tex = Main.projectileTexture[projectile.type];
-			int frameHeight = Main.projectileTexture[projectile.type].Height / Main.projFrames[projectile.type];
+			int frameHeight = tex.Height / Main.projFrames[projectile.type];
 			int texYOffset = frameHeight * projectile.frame;
 			Vector2 sheetInsertVec = (projectile.Center + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition).Floor();
 
 			// The Prism is always at full brightness, regardless of the surrounding light. This is equivalent to it being its own glowmask.
 			// It is drawn in a non-white color to distinguish it from the vanilla Last Prism.
 			Color drawColor = ExampleLastPrism.OverrideColor;
-			Main.spriteBatch.Draw(tex, sheetInsertVec, new Rectangle?(new Rectangle(0, texYOffset, tex.Width, frameHeight)), drawColor, projectile.rotation, new Vector2(tex.Width / 2f, frameHeight / 2f), projectile.scale, eff, 0f);
+			spriteBatch.Draw(tex, sheetInsertVec, new Rectangle?(new Rectangle(0, texYOffset, tex.Width, frameHeight)), drawColor, projectile.rotation, new Vector2(tex.Width / 2f, frameHeight / 2f), projectile.scale, eff, 0f);
 			return false;
 		}
 	}
