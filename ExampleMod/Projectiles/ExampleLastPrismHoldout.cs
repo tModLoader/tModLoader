@@ -22,9 +22,6 @@ namespace ExampleMod.Projectiles
 		// This value controls how many frames it takes for the beams to begin dealing damage. Before then they can't hit anything.
 		public const float DamageStart = 30f;
 
-		// This value controls how many frames it takes for the beams to being emitting dust on impact. Before then, no dust is produced.
-		private const float DustStart = 30f;
-
 		// This value controls how sluggish the Prism turns while being used. Vanilla Last Prism is 0.08f.
 		// Higher values make the Prism turn faster.
 		private const float AimResponsiveness = 0.08f;
