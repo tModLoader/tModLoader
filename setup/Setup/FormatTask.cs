@@ -19,15 +19,17 @@ namespace Terraria.ModLoader.Setup
 
 		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
 
-		protected override async Task<Document> Process(Document doc) => await Format(doc, taskInterface.CancellationToken, true);
+		protected override async Task<Document> Process(Document doc) => await Format(doc, taskInterface.CancellationToken, false);
 
 		public static async Task<Document> Format(Document doc, CancellationToken cancellationToken, bool agressive) {
-			doc = await Visit(doc, new RemoveBracesFromSingleStatementRewriter());
-			doc = await Visit(doc, new AddVisualNewlinesRewriter());
-			if (agressive)
+			if (agressive) {
 				doc = await Visit(doc, new NoNewlineBetweenFieldsRewriter());
+				doc = await Visit(doc, new RemoveBracesFromSingleStatementRewriter());
+			}
 
+			doc = await Visit(doc, new AddVisualNewlinesRewriter());
 			doc = await	RoslynFormat(doc, cancellationToken);
+			doc = await Visit(doc, new CollectionInitializerFormatter());
 			return doc;
 		}
 

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Terraria.ModLoader.Setup.Formatting
 {
-	public class NoNewlineBetweenFieldsRewriter : CSharpSyntaxRewriter
+	internal class NoNewlineBetweenFieldsRewriter : CSharpSyntaxRewriter
 	{
 		private HashSet<SyntaxToken> modifyTokens = new HashSet<SyntaxToken>();
 		public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node) {
@@ -28,11 +28,9 @@ namespace Terraria.ModLoader.Setup.Formatting
 		}
 
 		private void Tag(SyntaxToken token) {
-			if (token.HasLeadingTrivia && token.LeadingTrivia[0].IsKind(SyntaxKind.EndOfLineTrivia) && token.LeadingTrivia.All(IsWhitespaceTrivia))
+			if (token.HasLeadingTrivia && token.LeadingTrivia[0].IsKind(SyntaxKind.EndOfLineTrivia) && token.LeadingTrivia.All(SyntaxUtils.IsWhitespace))
 				modifyTokens.Add(token);
 		}
-
-		private static bool IsWhitespaceTrivia(SyntaxTrivia trivia) => trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia);
 
 		public override SyntaxToken VisitToken(SyntaxToken token) {
 			if (modifyTokens.Contains(token))

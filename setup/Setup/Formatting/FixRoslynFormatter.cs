@@ -62,6 +62,10 @@ namespace Terraria.ModLoader.Setup.Formatting
 			});
 		}
 
+		/// <summary>
+		/// Roslyn supresses all initializers from formatting. This IL edit changes the suprression span to not include the opening brace token.
+		/// Note that nested initializers won't be formatted because they're in the ignore span of the parent
+		/// </summary>
 		private static void HookSuppressOperations(ILContext il) {
 			var c = new ILCursor(il);
 			c.GotoNext(i => i.MatchCall<SyntaxToken>("GetPreviousToken"));

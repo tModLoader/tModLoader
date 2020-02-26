@@ -9,29 +9,25 @@ namespace Terraria.ModLoader.Setup.Formatting
 {
 	public class AddVisualNewlinesRewriter : CSharpSyntaxRewriter
 	{
+		private HashSet<SyntaxNode> modifyNodes = new HashSet<SyntaxNode>();
 		public override SyntaxNode VisitBlock(BlockSyntax node) {
-			node = node.ReplaceNodes(StatementsRequiringNewlines(node.Statements), (_, n) => EnsureStartsWithBlankLine(n));
+
+			var stmts = node.Statements;
+			for (int i = 0; i < stmts.Count - 1; i++) {
+				var prev = stmts[i];
+				var next = stmts[i + 1];
+				if (!prev.SpansSingleLine() && !next.GetLeadingTrivia().FirstOrDefault().IsKind(SyntaxKind.EndOfLineTrivia))
+					modifyNodes.Add(next);
+			}
+
 			return base.VisitBlock(node);
 		}
 
-		private SyntaxNode EnsureStartsWithBlankLine(StatementSyntax n) {
-			var trivia = n.GetLeadingTrivia();
-			if (trivia.FirstOrDefault().IsKind(SyntaxKind.EndOfLineTrivia))
-				return n;
+		public override SyntaxNode Visit(SyntaxNode node) {
+			if (modifyNodes.Remove(node))
+				node = node.WithLeadingTrivia(node.GetLeadingTrivia().Insert(0, SyntaxFactory.EndOfLine(Environment.NewLine)));
 
-			return n.WithLeadingTrivia(trivia.Insert(0, SyntaxFactory.EndOfLine(Environment.NewLine)));
-		}
-
-		private static bool SpansMultipleLines(StatementSyntax node) {
-			var lineSpan = node.SyntaxTree.GetLineSpan(node.Span);
-			return lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line;
-		}
-
-		private static IEnumerable<StatementSyntax> StatementsRequiringNewlines(SyntaxList<StatementSyntax> statements) {
-			for (int i = 0; i < statements.Count - 1; i++) {
-				if (SpansMultipleLines(statements[i]))
-					yield return statements[i + 1];
-			}
+			return base.Visit(node);
 		}
 	}
 }
