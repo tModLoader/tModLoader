@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Setup.Formatting
 		//	return lineSpan.StartLinePosition.Line == lineSpan.EndLinePosition.Line;
 		//}
 
-		public static bool SpansSingleLine(this SyntaxNode node) => !node.DescendantTrivia().Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia));
+		public static bool SpansSingleLine(this SyntaxNode node) => !node.DescendantTrivia(node.Span).Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia));
 
 		public static bool IsWhitespace(this SyntaxTrivia trivia) => trivia.IsKind(SyntaxKind.WhitespaceTrivia) || trivia.IsKind(SyntaxKind.EndOfLineTrivia);
 
