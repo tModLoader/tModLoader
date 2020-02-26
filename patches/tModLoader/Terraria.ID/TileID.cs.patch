@@ -7,72 +7,69 @@
  
  namespace Terraria.ID
  {
-@@ -294,6 +_,20 @@
- 					468
- 				});
- 			public static bool[] AllTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[0]);
-+			public static bool[] Stone = TileID.Sets.Factory.CreateBoolSet(new int[]
-+				{
-+					1,
-+					117,
-+					25,
-+					203
-+				});
-+			public static bool[] Grass = TileID.Sets.Factory.CreateBoolSet(new int[]
-+				{
-+					2,
-+					23,
-+					109,
-+					199
-+				});
- 			public static bool[] Mud = TileID.Sets.Factory.CreateBoolSet(new int[]
- 				{
- 					59
-@@ -385,6 +_,31 @@
- 					404,
- 					368,
- 					367
-+				});
-+			public static bool[] CanBeClearedDuringOreRunner = TileID.Sets.Factory.CreateBoolSet(new int[]
-+				{
-+					0,
-+					1,
-+					23,
-+					25,
-+					40,
-+					53,
-+					57,
-+					59,
-+					60,
-+					70,
-+					109,
-+					112,
-+					116,
-+					117,
-+					147,
-+					161,
-+					163,
-+					164,
-+					199,
-+					200,
-+					203,
-+					234
- 				});
- 			public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(new int[]
- 				{
-@@ -1148,5 +_,30 @@
+@@ -273,6 +_,18 @@
+ 				468
+ 			});
+ 			public static bool[] AllTiles = Factory.CreateBoolSet(true, new int[0]);
++			public static bool[] Stone = Factory.CreateBoolSet(new int[] {
++				1,
++				117,
++				25,
++				203
++			});
++			public static bool[] Grass = Factory.CreateBoolSet(new int[] {
++				2,
++				23,
++				109,
++				199
++			});
+ 			public static bool[] Mud = Factory.CreateBoolSet(new int[] {
+ 				59
+ 			});
+@@ -352,6 +_,30 @@
+ 				368,
+ 				367
+ 			});
++			public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(new int[] {
++				0,
++				1,
++				23,
++				25,
++				40,
++				53,
++				57,
++				59,
++				60,
++				70,
++				109,
++				112,
++				116,
++				117,
++				147,
++				161,
++				163,
++				164,
++				199,
++				200,
++				203,
++				234
++			});
+ 			public static bool[] Corrupt = Factory.CreateBoolSet(new int[] {
+ 				23,
+ 				25,
+@@ -1095,5 +_,33 @@
  		public const ushort FakeContainers2 = 468;
  		public const ushort Tables2 = 469;
  		public const ushort Count = 470;
-+
 +		public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
 +
 +		public static string GetUniqueKey(int type) {
 +			if (type < 0 || type >= TileLoader.TileCount)
 +				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+			if (type < Count) {
-+				return "Terraria " + TileID.Search.GetName(type);
-+			}
++
++			if (type < Count)
++				return "Terraria " + Search.GetName(type);
++
 +			var modTile = TileLoader.GetTile(type);
 +			return $"{modTile.mod.Name} {modTile.Name}";
 +		}
@@ -81,14 +78,16 @@
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
 +				return 0;
++
 +			if (parts[0] == "Terraria") {
-+				if (!TileID.Search.ContainsName(parts[1]))
++				if (!Search.ContainsName(parts[1]))
 +					return 0;
-+				return TileID.Search.GetId(parts[1]);
++
++				return Search.GetId(parts[1]);
 +			}
++
 +			// Should probably return -1 if not found since 0 is Dirt, but TileType also does 0.
 +			return ModLoader.ModLoader.GetMod(parts[0])?.TileType(parts[1]) ?? 0;
 +		}
  	}
  }
-

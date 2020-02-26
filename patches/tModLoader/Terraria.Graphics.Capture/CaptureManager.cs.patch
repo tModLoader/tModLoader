@@ -12,4 +12,3 @@
  		private CaptureInterface _interface;
  		private CaptureCamera _camera;
  
-

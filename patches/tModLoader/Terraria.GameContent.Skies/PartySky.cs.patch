@@ -1,21 +1,20 @@
 --- src/Terraria\Terraria.GameContent.Skies\PartySky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\PartySky.cs
-@@ -243,7 +_,7 @@
+@@ -195,7 +_,7 @@
  			}
  		}
  
--		internal override void Activate(Vector2 position, params object[] args)
-+		public override void Activate(Vector2 position, params object[] args)
- 		{
- 			if (this._active)
- 			{
-@@ -256,7 +_,7 @@
- 			this._leaving = false;
+-		internal override void Activate(Vector2 position, params object[] args) {
++		public override void Activate(Vector2 position, params object[] args) {
+ 			if (_active) {
+ 				_leaving = false;
+ 				GenerateBalloons(true);
+@@ -207,7 +_,7 @@
+ 			_leaving = false;
  		}
  
--		internal override void Deactivate(params object[] args)
-+		public override void Deactivate(params object[] args)
- 		{
- 			this._leaving = true;
+-		internal override void Deactivate(params object[] args) {
++		public override void Deactivate(params object[] args) {
+ 			_leaving = true;
  		}
-
+ 

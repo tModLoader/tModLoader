@@ -9,17 +9,17 @@
  
  namespace Terraria.GameInput
  {
-@@ -158,7 +_,7 @@
- 		{
+@@ -118,7 +_,7 @@
+ 		public Dictionary<string, object> Save() {
  			Dictionary<string, object> dictionary = new Dictionary<string, object>();
  			Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
 -			dictionary.Add("Last Launched Version", 193);
 +			dictionary.Add("Last Launched Version", 194);
- 			dictionary2.Add("Edittable", this.AllowEditting);
- 			dictionary2.Add("Gamepad - HotbarRadialHoldTime", this.HotbarRadialHoldTimeRequired);
- 			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", this.LeftThumbstickDeadzoneX);
-@@ -238,6 +_,9 @@
- 			{
+ 			dictionary2.Add("Edittable", AllowEditting);
+ 			dictionary2.Add("Gamepad - HotbarRadialHoldTime", HotbarRadialHoldTimeRequired);
+ 			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", LeftThumbstickDeadzoneX);
+@@ -183,6 +_,9 @@
+ 			string[] keysToCopy = new string[] {
  				"MouseLeft",
  				"MouseRight",
 +				"MouseMiddle",
@@ -28,30 +28,25 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -292,6 +_,25 @@
- 			this.CopyKeysFrom(profile, mode, keysToCopy);
+@@ -234,6 +_,21 @@
+ 			};
+ 
+ 			CopyKeysFrom(profile, mode, keysToCopy);
++		}
++
++		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode) {
++			foreach (var modHotkey in HotKeyLoader.HotKeys) {
++				InputModes[mode].KeyStatus[modHotkey.uniqueName].Clear();
++				if (!string.IsNullOrEmpty(modHotkey.defaultKey))
++					InputModes[mode].KeyStatus[modHotkey.uniqueName].Add(modHotkey.defaultKey);
++			}
++		}
++
++		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName) {
++			var modHotKey = HotKeyLoader.modHotKeys[uniqueName];
++			InputModes[mode].KeyStatus[uniqueName].Clear();
++			if (!string.IsNullOrEmpty(modHotKey.defaultKey))
++				InputModes[mode].KeyStatus[uniqueName].Add(modHotKey.defaultKey);
  		}
  
-+		public void CopyModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode)
-+		{
-+			foreach (var modHotkey in HotKeyLoader.HotKeys) {
-+				this.InputModes[mode].KeyStatus[modHotkey.uniqueName].Clear();
-+				if (!string.IsNullOrEmpty(modHotkey.defaultKey)) {
-+					this.InputModes[mode].KeyStatus[modHotkey.uniqueName].Add(modHotkey.defaultKey);
-+				}
-+			}
-+		}
-+
-+		public void CopyIndividualModHotkeySettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName)
-+		{
-+			var modHotKey = HotKeyLoader.modHotKeys[uniqueName];
-+			this.InputModes[mode].KeyStatus[uniqueName].Clear();
-+			if (!string.IsNullOrEmpty(modHotKey.defaultKey)) {
-+				this.InputModes[mode].KeyStatus[uniqueName].Add(modHotKey.defaultKey);
-+			}
-+		}
-+
- 		public void CopyGamepadSettingsFrom(PlayerInputProfile profile, InputMode mode)
- 		{
- 			string[] keysToCopy = new string[]
-
+ 		public void CopyGamepadSettingsFrom(PlayerInputProfile profile, InputMode mode) {

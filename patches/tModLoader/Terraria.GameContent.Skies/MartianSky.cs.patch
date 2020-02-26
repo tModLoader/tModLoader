@@ -1,21 +1,20 @@
 --- src/Terraria\Terraria.GameContent.Skies\MartianSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\MartianSky.cs
-@@ -300,7 +_,7 @@
+@@ -252,7 +_,7 @@
  			}
  		}
  
--		internal override void Activate(Vector2 position, params object[] args)
-+		public override void Activate(Vector2 position, params object[] args)
- 		{
- 			this._activeUfos = 0;
- 			this.GenerateUfos();
-@@ -309,7 +_,7 @@
- 			this._leaving = false;
+-		internal override void Activate(Vector2 position, params object[] args) {
++		public override void Activate(Vector2 position, params object[] args) {
+ 			_activeUfos = 0;
+ 			GenerateUfos();
+ 			Array.Sort(_ufos, (ufo1, ufo2) => ufo2.Depth.CompareTo(ufo1.Depth));
+@@ -260,7 +_,7 @@
+ 			_leaving = false;
  		}
  
--		internal override void Deactivate(params object[] args)
-+		public override void Deactivate(params object[] args)
- 		{
- 			this._leaving = true;
+-		internal override void Deactivate(params object[] args) {
++		public override void Deactivate(params object[] args) {
+ 			_leaving = true;
  		}
-
+ 

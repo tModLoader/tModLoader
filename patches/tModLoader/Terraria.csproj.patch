@@ -43,21 +43,21 @@
 +    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
 +  </PropertyGroup>
-   <ItemGroup>
--    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
--    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
--    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
--    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
++  <ItemGroup>
 +    <None Remove="Terraria.ModLoader.Core\update.bat" />
 +    <None Remove="Terraria.ModLoader.Core\update.sh" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonDowngrade.png" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonModConfig.png" />
 +    <None Remove="Terraria.ModLoader.UI\ButtonModInfo.png" />
 +  </ItemGroup>
-+  <ItemGroup>
+   <ItemGroup>
+-    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))">
+-    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 +      <Private>true</Private>
+-    <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
 +    </Reference>
+-    <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
 +    <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))">
 +      <Private>true</Private>
 +    </Reference>
@@ -73,18 +73,18 @@
      <Reference Include="Steamworks.NET">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\Steamworks.NET.Windows.dll</HintPath>
        <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\Steamworks.NET.OSX.dll</HintPath>
-@@ -57,11 +_,35 @@
+@@ -57,12 +_,36 @@
      </Reference>
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
 -    <Reference Include="Ionic.Zip.CF">
--      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
 +    <Reference Include="Ionic.Zip.Reduced">
+-      <HintPath>Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll</HintPath>
 +      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
      </Reference>
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
        <HintPath>..\..\references\FNA.dll</HintPath>
-+    </Reference>
+     </Reference>
 +    <Reference Include="Mono.Cecil">
 +      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
 +    </Reference>
@@ -108,9 +108,10 @@
 +    </Reference>
 +    <Reference Include="MonoMod.Utils">
 +      <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
-     </Reference>
++    </Reference>
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
+     </Reference>
 @@ -297,9 +_,15 @@
      <Compile Include="Terraria.ID\GoreID.cs" />
      <Compile Include="Terraria.ID\InvasionID.cs" />
@@ -383,19 +384,18 @@
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
 -    <EmbeddedResource Include="Terraria.Libraries\DotNetZip\Ionic.Zip.CF.dll" />
--    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
 +    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" />
 +    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
 +      <LogicalName>Newtonsoft.Json.dll</LogicalName>
 +    </EmbeddedResource>
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -528,6 +_,26 @@
-     </EmbeddedResource>
+@@ -529,6 +_,26 @@
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
+     </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\TerrariaHooks.XNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
 +      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
@@ -415,9 +415,10 @@
 +    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\System.ValueTuple.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
 +      <LogicalName>System.ValueTuple.dll</LogicalName>
-     </EmbeddedResource>
++    </EmbeddedResource>
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Game.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Items.json" />
+     <EmbeddedResource Include="Terraria.Localization.Content.de-DE.Main.json" />
 @@ -593,4 +_,158 @@
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Projectiles.json" />
      <EmbeddedResource Include="Terraria.Localization.Content.zh-Hans.Town.json" />
@@ -577,4 +578,3 @@
 +    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\ModCompile\tModLoader.FNA.exe" />
 +  </Target>
  </Project>
-

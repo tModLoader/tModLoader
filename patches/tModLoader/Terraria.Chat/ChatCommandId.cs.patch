@@ -7,6 +7,5 @@
 -		private readonly string _name;
 +		internal readonly string _name;
  
- 		private ChatCommandId(string name)
- 		{
-
+ 		private ChatCommandId(string name) {
+ 			_name = name;

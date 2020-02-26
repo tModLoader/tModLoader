@@ -8,16 +8,21 @@
  
  namespace Terraria
  {
-@@ -167,6 +_,8 @@
- 
- 		public static bool isLocked(int x, int y)
- 		{
-+			if (Main.tile[x, y]?.type >= TileID.Count)
-+				return TileLoader.IsLockedChest(x, y, Main.tile[x, y].type);
- 			return Main.tile[x, y] == null || ((Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106) || (Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178) || (Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006) || (Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330) || (Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402) || (Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474));
+@@ -157,7 +_,12 @@
+ 			return false;
  		}
  
-@@ -253,6 +_,17 @@
++		public static bool isLocked(int x, int y) {
++			if (Main.tile[x, y]?.type >= TileID.Count)
++				return TileLoader.IsLockedChest(x, y, Main.tile[x, y].type);
++
+-		public static bool isLocked(int x, int y) => Main.tile[x, y] == null || Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106 || Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178 || Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006 || Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330 || Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402 || Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474;
++			return Main.tile[x, y] == null || Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106 || Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178 || Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006 || Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330 || Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402 || Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474;
++		}
+ 
+ 		public static void ServerPlaceItem(int plr, int slot) {
+ 			Main.player[plr].inventory[slot] = PutItemInNearbyChest(Main.player[plr].inventory[slot], Main.player[plr].Center);
+@@ -223,6 +_,20 @@
  			int num2 = num;
  			short num3;
  			int type;
@@ -25,97 +30,97 @@
 +				num3 = -36;
 +				type = 11;
 +				bool manual = false;
-+				if(!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num3, ref type, ref manual))
++				if (!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num3, ref type, ref manual))
 +					return false;
++
 +				if (manual)
 +					return true;
++
 +				num3 *= -1;
 +				goto IL_B7;
 +			}
- 			switch (num2)
- 			{
- 				case 2:
-@@ -418,17 +_,25 @@
- 				}
++
+ 			switch (num2) {
+ 				case 2: {
+ 						num3 = 36;
+@@ -358,15 +_,21 @@
+ 
  				Main.chest[num] = chest;
  			}
--			else if (type == 21)
-+			else if (type == TileID.Containers)
- 			{
- 				NetMessage.SendData(34, -1, -1, null, 0, (float)x, (float)y, (float)style, 0, 0, 0);
+-			else if (type == 21) {
++			else if (type == TileID.Containers) {
+ 				NetMessage.SendData(34, -1, -1, null, 0, x, y, style, 0, 0, 0);
  			}
--			else if (type == 467)
-+			else if (type == TileID.Containers2)
- 			{
- 				NetMessage.SendData(34, -1, -1, null, 4, (float)x, (float)y, (float)style, 0, 0, 0);
+-			else if (type == 467) {
++			else if (type == TileID.Containers2) {
+ 				NetMessage.SendData(34, -1, -1, null, 4, x, y, style, 0, 0, 0);
  			}
--			else
-+			else if (type == TileID.Dressers)
- 			{
- 				NetMessage.SendData(34, -1, -1, null, 2, (float)x, (float)y, (float)style, 0, 0, 0);
+-			else {
++			else if (type == TileID.Dressers) {
+ 				NetMessage.SendData(34, -1, -1, null, 2, x, y, style, 0, 0, 0);
+ 			}
++			else if (TileID.Sets.BasicChest[type]) {
++				NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
 +			}
-+			else if (TileID.Sets.BasicChest[type])
-+			{
-+				NetMessage.SendData(34, -1, -1, null, 100, (float)x, (float)y, (float)style, 0, type, 0);
++			else if (TileLoader.IsDresser(type)) {
++				NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
 +			}
-+			else if (TileLoader.IsDresser(type))
-+			{
-+				NetMessage.SendData(34, -1, -1, null, 102, (float)x, (float)y, (float)style, 0, type, 0);
- 			}
+ 
  			return num;
  		}
-@@ -531,12 +_,12 @@
+@@ -449,10 +_,11 @@
  			}
  		}
  
--		public void AddShop(Item newItem)
-+		public int AddShop(Item newItem)
- 		{
+-		public void AddShop(Item newItem) {
++		public int AddShop(Item newItem) {
  			int i = 0;
- 			while (i < 39)
- 			{
--				if (this.item[i] == null || this.item[i].type == 0)
-+				if (this.item[i] == null || this.item[i].type == 0 || i == 38) // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
- 				{
- 					this.item[i] = newItem.Clone();
- 					this.item[i].favorited = false;
-@@ -549,7 +_,6 @@
- 					if (this.item[i].value < 1)
- 					{
- 						this.item[i].value = 1;
+ 			while (i < 39) {
+-				if (item[i] == null || item[i].type == 0) {
++				if (item[i] == null || item[i].type == 0 || i == 38) // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
++				{
+ 					item[i] = newItem.Clone();
+ 					item[i].favorited = false;
+ 					item[i].buyOnce = true;
+@@ -460,10 +_,8 @@
+ 						break;
+ 
+ 					item[i].value = item[i].value / 5;
+-					if (item[i].value < 1) {
++					if (item[i].value < 1)
+ 						item[i].value = 1;
 -						return;
- 					}
+-					}
+ 
  					break;
  				}
-@@ -558,6 +_,7 @@
+@@ -471,6 +_,8 @@
  					i++;
  				}
  			}
++
 +			return i;
  		}
  
- 		public static void SetupTravelShop()
-@@ -882,9 +_,11 @@
+ 		public static void SetupTravelShop() {
+@@ -730,9 +_,12 @@
  								Main.travelShop[num2++] = 3641;
  								break;
  						}
--					}
--				}
--			}
 +						//patch file: num2
-+					}
-+				}
-+			}
+ 					}
+ 				}
+ 			}
++
 +			NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
  		}
  
- 		public void SetupShop(int type)
-@@ -2229,6 +_,7 @@
- 					num++;
+ 		public void SetupShop(int type) {
+@@ -1976,6 +_,7 @@
  				}
  			}
+ 
 +			NPCLoader.SetupShop(type, this, ref num);
- 			if (Main.player[Main.myPlayer].discount)
- 			{
- 				for (int num7 = 0; num7 < num; num7++)
-
+ 			if (Main.player[Main.myPlayer].discount) {
+ 				for (int num7 = 0; num7 < num; num7++) {
+ 					item[num7].value = (int)(item[num7].value * 0.8f);

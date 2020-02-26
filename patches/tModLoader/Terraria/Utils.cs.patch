@@ -1,161 +1,108 @@
 --- src/Terraria\Terraria\Utils.cs
 +++ src/tModLoader\Terraria\Utils.cs
-@@ -205,6 +_,11 @@
+@@ -159,6 +_,12 @@
  								num2 -= 16;
- 							}
+ 
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
 +							for (int i = 0; i < list3[l].Text.Length; i++) {
 +								// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
 +								if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
 +									num3 = i;
 +							}
++
  							if (num3 < 0)
- 							{
  								num3 = 0;
-@@ -218,7 +_,8 @@
- 							{
+ 
+@@ -170,7 +_,8 @@
+ 							if (array3.Length > 1) {
  								num4 = 0;
  								int num5 = 0;
--								while (num5 < array3.Length && num4 + array3[num5].Length <= num3)
 +								// `num4 == 0 ||` solves the longworld + small word problem.
-+								while (num4 == 0 || num5 < array3.Length && num4 + array3[num5].Length <= num3)
- 								{
+-								while (num5 < array3.Length && num4 + array3[num5].Length <= num3) {
++								while (num4 == 0 || num5 < array3.Length && num4 + array3[num5].Length <= num3) {
  									num4 += array3[num5].Length + 1;
  									num5++;
-@@ -467,9 +_,72 @@
+ 								}
+@@ -388,7 +_,43 @@
  			return array;
  		}
  
-+		public static T NextEnum<T>(this T src) where T : struct
-+		{
-+			if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
-+
++		public static T NextEnum<T>(this T src) where T : struct {
++			if (!typeof(T).IsEnum) throw new ArgumentException(string.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
 +			T[] Arr = (T[])Enum.GetValues(src.GetType());
-+			int j = Array.IndexOf<T>(Arr, src) + 1;
-+			return (Arr.Length == j) ? Arr[0] : Arr[j];
++			int j = Array.IndexOf(Arr, src) + 1;
++			return Arr.Length == j ? Arr[0] : Arr[j];
 +		}
 +
-+		public static T PreviousEnum<T>(this T src) where T : struct
-+		{
-+			if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
-+
++		public static T PreviousEnum<T>(this T src) where T : struct {
++			if (!typeof(T).IsEnum) throw new ArgumentException(string.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
 +			T[] Arr = (T[])Enum.GetValues(src.GetType());
-+			int j = Array.IndexOf<T>(Arr, src) - 1;
-+			return (j < 0) ? Arr[Arr.Length - 1] : Arr[j];
++			int j = Array.IndexOf(Arr, src) - 1;
++			return j < 0 ? Arr[Arr.Length - 1] : Arr[j];
 +		}
 +
-+		public static T Next<T>(this UnifiedRandom r, T[] array)
-+		{
-+			return array[r.Next(array.Length)];
-+		}
-+
-+		public static T Next<T>(this UnifiedRandom r, IList<T> list)
-+		{
-+			return list[r.Next(list.Count)];
-+		}
-+
-+		public static bool NextBool(this UnifiedRandom r)
-+		{
-+			return r.NextDouble() < .5;
-+		}
++		public static T Next<T>(this UnifiedRandom r, T[] array) => array[r.Next(array.Length)];
++		public static T Next<T>(this UnifiedRandom r, IList<T> list) => list[r.Next(list.Count)];
++		public static bool NextBool(this UnifiedRandom r) => r.NextDouble() < .5;
 +
 +		// Returns true 1 out of X times.
-+		public static bool NextBool(this UnifiedRandom r, int consequent)
-+		{
++		public static bool NextBool(this UnifiedRandom r, int consequent) {
 +			if (consequent < 1)
-+			{
 +				throw new ArgumentOutOfRangeException("consequent", "consequent must be greater than or equal to 1.");
-+			}
++
 +			return r.Next(consequent) == 0;
 +		}
 +
 +		// Returns true X out of Y times.
-+		public static bool NextBool(this UnifiedRandom r, int antecedent, int consequent)
-+		{
++		public static bool NextBool(this UnifiedRandom r, int antecedent, int consequent) {
 +			if (antecedent > consequent)
-+			{
 +				throw new ArgumentOutOfRangeException("antecedent", "antecedent must be less than or equal to consequent.");
-+			}
++
 +			return r.Next(consequent) < antecedent;
 +		}
 +
- 		public static float NextFloat(this UnifiedRandom r)
- 		{
- 			return (float)r.NextDouble();
-+		}
-+
-+		public static float NextFloat(this UnifiedRandom r, float maxValue)
-+		{
-+			return (float)r.NextDouble() * maxValue;
-+		}
-+
-+		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue)
-+		{
-+			return (float)r.NextDouble() * (maxValue - minValue) + minValue;
- 		}
- 
- 		public static float NextFloatDirection(this UnifiedRandom r)
-@@ -695,6 +_,49 @@
- 		{
- 			return new Vector2((float)p.X, (float)p.Y);
- 		}
+ 		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
++		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
++		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
+ 		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
+ 		public static Vector2 NextVector2Square(this UnifiedRandom r, float min, float max) => new Vector2((max - min) * (float)r.NextDouble() + min, (max - min) * (float)r.NextDouble() + min);
+ 		public static Vector2 NextVector2Unit(this UnifiedRandom r, float startRotation = 0f, float rotationRange = 6.28318548f) => (startRotation + rotationRange * r.NextFloat()).ToRotationVector2();
+@@ -503,6 +_,19 @@
+ 		public static bool HasNaNs(this Vector2 vec) => float.IsNaN(vec.X) || float.IsNaN(vec.Y);
+ 		public static bool Between(this Vector2 vec, Vector2 minimum, Vector2 maximum) => vec.X >= minimum.X && vec.X <= maximum.X && vec.Y >= minimum.Y && vec.Y <= maximum.Y;
+ 		public static Vector2 ToVector2(this Point p) => new Vector2((float)p.X, (float)p.Y);
 +
 +		// Added these as it may prove useful to some modders, it does clutter this file a bit so I put them all in a region which is collapsible
 +		#region tML Helpers
-+		public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY)
-+		{
-+			return ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
-+		}
-+
-+		public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY)
-+		{
-+			return ToWorldCoordinates(p.ToVector2(), autoAddXY);
-+		}
-+
-+		public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f)
-+		{
-+			return ToWorldCoordinates(p.ToVector2(), new Vector2(autoAddX, autoAddY));
-+		}
-+
-+		public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f)
-+		{
-+			return ToWorldCoordinates(v, new Vector2(autoAddX, autoAddY));
-+		}
-+
-+		public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY)
-+		{
-+			return v * 16f + autoAddXY;
-+		}
-+
-+		public static Point ToPoint(this Point16 p)
-+		{
-+			return new Point((int)p.X, (int)p.Y);
-+		}
-+
-+		public static Point16 ToPoint16(this Vector2 v)
-+		{
-+			return new Point16((short)v.X, (short)v.Y);
-+		}
-+
-+		public static Vector2 ToVector2(this Point16 p)
-+		{
-+			return new Vector2((float)p.X, (float)p.Y);
-+		}
++		public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY) => ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
++		public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY) => p.ToVector2().ToWorldCoordinates(autoAddXY);
++		public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2().ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
++		public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f) => v.ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
++		public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY) => v * 16f + autoAddXY;
++		public static Point ToPoint(this Point16 p) => new Point(p.X, p.Y);
++		public static Point16 ToPoint16(this Vector2 v) => new Point16((short)v.X, (short)v.Y);
++		public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
 +		#endregion
- 
- 		public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f)
- 		{
-@@ -1131,6 +_,7 @@
++
+ 		public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
+ 		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
+ 		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
+@@ -802,14 +_,19 @@
  				text.Substring(0, maxCharactersDisplayed);
- 			}
+ 
  			DynamicSpriteFont fontDeathText = Main.fontDeathText;
 +			/*
- 			for (int i = -1; i < 2; i++)
- 			{
- 				for (int j = -1; j < 2; j++)
-@@ -1139,7 +_,10 @@
+-			for (int i = -1; i < 2; i++) {
++			for (int i = -1; i < 2; i++)
++			{
+-				for (int j = -1; j < 2; j++) {
++				for (int j = -1; j < 2; j++)
++				{
+-					spriteBatch.DrawString(fontDeathText, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
++					spriteBatch.DrawString(fontDeathText, text, pos + new Vector2((float)i, (float)j), Color.Black, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
  				}
  			}
+-
  			spriteBatch.DrawString(fontDeathText, text, pos, color, 0f, new Vector2(anchorx, anchory) * fontDeathText.MeasureString(text), scale, SpriteEffects.None, 0f);
 -			return fontDeathText.MeasureString(text) * scale;
 +			*/
@@ -164,5 +111,4 @@
 +			return vector * scale;
  		}
  
- 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color))
-
+ 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default) {

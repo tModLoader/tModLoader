@@ -7,5 +7,4 @@
 +	// @todo: if need be, we can add register tag handlers here
  	public static class ChatInitializer
  	{
- 		public static void Load()
-
+ 		public static void Load() {

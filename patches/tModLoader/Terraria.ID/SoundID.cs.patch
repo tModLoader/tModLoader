@@ -9,31 +9,19 @@
  		{
  			public readonly float PitchVariance;
  			public readonly float Volume;
-@@ -414,22 +_,22 @@
- 			return SoundID._trackableLegacySoundPathList[id];
+@@ -407,11 +_,11 @@
  		}
  
--		private static LegacySoundStyle CreateTrackable(string name, SoundID.SoundStyleDefaults defaults)
-+		public static LegacySoundStyle CreateTrackable(string name, SoundID.SoundStyleDefaults defaults)
- 		{
- 			return SoundID.CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
- 		}
+ 		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
+-		private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
++		public static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+-		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
++		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+-		private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
++		public static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
  
--		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundID.SoundStyleDefaults defaults)
-+		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundID.SoundStyleDefaults defaults)
- 		{
- 			return SoundID.CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
- 		}
+-		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound) {
++		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound) {
+ 			if (_trackableLegacySoundPathList == null)
+ 				_trackableLegacySoundPathList = new List<string>();
  
--		private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound)
-+		public static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound)
- 		{
- 			return SoundID.CreateTrackable(name, 1, type);
- 		}
- 
--		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound)
-+		public static LegacySoundStyle CreateTrackable(string name, int variations, SoundType type = SoundType.Sound)
- 		{
- 			if (SoundID._trackableLegacySoundPathList == null)
- 			{
-

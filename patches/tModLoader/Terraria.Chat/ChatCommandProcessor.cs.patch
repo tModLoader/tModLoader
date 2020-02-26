@@ -8,13 +8,13 @@
  
  namespace Terraria.Chat
  {
-@@ -85,6 +_,8 @@
+@@ -74,6 +_,9 @@
+ 		}
  
- 		public bool ProcessReceivedMessage(ChatMessage message, int clientId)
- 		{
+ 		public bool ProcessReceivedMessage(ChatMessage message, int clientId) {
 +			if (message.CommandId._name == "Say" && CommandManager.HandleCommand(message.Text, new PlayerCommandCaller(Main.player[clientId])))
 +				return true;
++
  			IChatCommand chatCommand;
- 			if (this._commands.TryGetValue(message.CommandId, out chatCommand))
- 			{
-
+ 			if (_commands.TryGetValue(message.CommandId, out chatCommand)) {
+ 				chatCommand.ProcessMessage(message.Text, (byte)clientId);

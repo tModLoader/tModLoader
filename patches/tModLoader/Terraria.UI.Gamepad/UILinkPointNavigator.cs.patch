@@ -8,4 +8,3 @@
  			public static int FANCYUI_HIGHEST_INDEX = 1;
  			public static int FANCYUI_SPECIAL_INSTRUCTIONS = 0;
  			public static int INFOACCCOUNT = 0;
-

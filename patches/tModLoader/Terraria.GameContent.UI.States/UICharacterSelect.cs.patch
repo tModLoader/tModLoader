@@ -22,10 +22,10 @@
  		private bool skipDraw;
 +		private static bool _currentlyMigratingFiles;
  
- 		public override void OnInitialize()
- 		{
-@@ -80,12 +_,7 @@
- 		{
+ 		public override void OnInitialize() {
+ 			UIElement uIElement = new UIElement();
+@@ -78,12 +_,7 @@
+ 		private void NewCharacterClick(UIMouseEvent evt, UIElement listeningElement) {
  			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
  			Player player = new Player();
 -			player.inventory[0].SetDefaults(3507, false);
@@ -38,16 +38,15 @@
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
-@@ -142,6 +_,68 @@
- 			foreach (PlayerFileData current in list)
- 			{
- 				this._playerList.Add(new UICharacterListItem(current, num++));
+@@ -129,6 +_,67 @@
+ 			int num = 0;
+ 			foreach (PlayerFileData current in list) {
+ 				_playerList.Add(new UICharacterListItem(current, num++));
 +			}
-+			if (list.Count == 0)
-+			{
++
++			if (list.Count == 0) {
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
-+				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any())
-+				{
++				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any()) {
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
 +					autoMigrateButton.Height.Set(50, 0);
@@ -90,21 +89,20 @@
 +							}, TaskCreationOptions.PreferFairness);
 +						}
 +					};
++
 +					autoMigrateButton.Append(migrateText);
 +					_playerList.Add(autoMigrateButton);
-+
 +					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
 +					noPlayersMessage.Width.Set(0, 1);
 +					noPlayersMessage.Height.Set(200, 0);
 +					noPlayersMessage.MarginTop = 20f;
-+					noPlayersMessage.OnClick += (a, b) =>
-+					{
++					noPlayersMessage.OnClick += (a, b) => {
 +						System.Diagnostics.Process.Start(Main.PlayerPath);
 +						System.Diagnostics.Process.Start(vanillaPlayersPath);
 +					};
++
 +					_playerList.Add(noPlayersMessage);
 +				}
  			}
  		}
  
-

@@ -8,12 +8,11 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria
-@@ -57,6 +_,7 @@
- 			{
- 				try
- 				{
+@@ -48,6 +_,7 @@
+ 			}
+ 			catch (Exception value) {
+ 				try {
 +					Logging.Terraria.Error("Client Read Thread", value);
- 					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true))
- 					{
+ 					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true)) {
  						streamWriter.WriteLine(DateTime.Now);
-
+ 						streamWriter.WriteLine(value);

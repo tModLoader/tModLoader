@@ -4,18 +4,17 @@
  	{
  		private static SetFactory factoryDust = new SetFactory(275);
  		private static SetFactory factoryGore = new SetFactory(1087);
--		private static readonly bool[] SafeGore = ChildSafety.factoryGore.CreateBoolSet(new int[]
-+		public static bool[] SafeGore = ChildSafety.factoryGore.CreateBoolSet(new int[]
- 			{
- 				11,
- 				12,
-@@ -211,7 +_,7 @@
- 				925,
- 				926
- 			});
--		private static readonly bool[] SafeDust = ChildSafety.factoryDust.CreateBoolSet(true, new int[]
-+		public static bool[] SafeDust = ChildSafety.factoryDust.CreateBoolSet(true, new int[]
- 			{
- 				5,
- 				227,
-
+-		private static readonly bool[] SafeGore = factoryGore.CreateBoolSet(new int[] {
++		public static bool[] SafeGore = factoryGore.CreateBoolSet(new int[] {
+ 			11,
+ 			12,
+ 			13,
+@@ -210,7 +_,7 @@
+ 			925,
+ 			926
+ 		});
+-		private static readonly bool[] SafeDust = factoryDust.CreateBoolSet(true, new int[] {
++		public static bool[] SafeDust = factoryDust.CreateBoolSet(true, new int[] {
+ 			5,
+ 			227,
+ 			273

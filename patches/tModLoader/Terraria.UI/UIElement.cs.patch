@@ -1,253 +1,185 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
 @@ -49,6 +_,22 @@
- 		public event UIElement.MouseEvent OnMouseOver;
- 		public event UIElement.MouseEvent OnMouseOut;
- 		public event UIElement.MouseEvent OnDoubleClick;
-+		public event UIElement.MouseEvent OnRightMouseDown;
-+		public event UIElement.MouseEvent OnRightMouseUp;
-+		public event UIElement.MouseEvent OnRightClick;
-+		public event UIElement.MouseEvent OnRightDoubleClick;
-+		public event UIElement.MouseEvent OnMiddleMouseDown;
-+		public event UIElement.MouseEvent OnMiddleMouseUp;
-+		public event UIElement.MouseEvent OnMiddleClick;
-+		public event UIElement.MouseEvent OnMiddleDoubleClick;
-+		public event UIElement.MouseEvent OnXButton1MouseDown;
-+		public event UIElement.MouseEvent OnXButton1MouseUp;
-+		public event UIElement.MouseEvent OnXButton1Click;
-+		public event UIElement.MouseEvent OnXButton1DoubleClick;
-+		public event UIElement.MouseEvent OnXButton2MouseDown;
-+		public event UIElement.MouseEvent OnXButton2MouseUp;
-+		public event UIElement.MouseEvent OnXButton2Click;
-+		public event UIElement.MouseEvent OnXButton2DoubleClick;
- 		public event UIElement.ScrollWheelEvent OnScrollWheel;
+ 		public event MouseEvent OnMouseOver;
+ 		public event MouseEvent OnMouseOut;
+ 		public event MouseEvent OnDoubleClick;
++		public event MouseEvent OnRightMouseDown;
++		public event MouseEvent OnRightMouseUp;
++		public event MouseEvent OnRightClick;
++		public event MouseEvent OnRightDoubleClick;
++		public event MouseEvent OnMiddleMouseDown;
++		public event MouseEvent OnMiddleMouseUp;
++		public event MouseEvent OnMiddleClick;
++		public event MouseEvent OnMiddleDoubleClick;
++		public event MouseEvent OnXButton1MouseDown;
++		public event MouseEvent OnXButton1MouseUp;
++		public event MouseEvent OnXButton1Click;
++		public event MouseEvent OnXButton1DoubleClick;
++		public event MouseEvent OnXButton2MouseDown;
++		public event MouseEvent OnXButton2MouseUp;
++		public event MouseEvent OnXButton2Click;
++		public event MouseEvent OnXButton2DoubleClick;
+ 		public event ScrollWheelEvent OnScrollWheel;
  
- 		public bool IsMouseHovering
-@@ -135,6 +_,11 @@
- 				current.Parent = null;
- 			}
- 			this.Elements.Clear();
-+		}
-+
-+		public bool HasChild(UIElement child)
-+		{
-+			return Elements.Contains(child);
+ 		public bool IsMouseHovering {
+@@ -118,6 +_,8 @@
+ 			Elements.Clear();
  		}
  
- 		public virtual void Draw(SpriteBatch spriteBatch)
-@@ -160,12 +_,14 @@
- 			{
++		public bool HasChild(UIElement child) => Elements.Contains(child);
++
+ 		public virtual void Draw(SpriteBatch spriteBatch) {
+ 			bool overflowHidden = OverflowHidden;
+ 			bool useImmediateMode = _useImmediateMode;
+@@ -138,12 +_,14 @@
+ 			if (overflowHidden) {
  				spriteBatch.End();
- 				Rectangle clippingRectangle = this.GetClippingRectangle(spriteBatch);
--				spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
+ 				Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
 +				Rectangle adjustedClippingRectangle = Rectangle.Intersect(clippingRectangle, spriteBatch.GraphicsDevice.ScissorRectangle);
+-				spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
 +				spriteBatch.GraphicsDevice.ScissorRectangle = adjustedClippingRectangle;
- 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, UIElement._overflowHiddenRasterizerState, null, Main.UIScaleMatrix);
+ 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, _overflowHiddenRasterizerState, null, Main.UIScaleMatrix);
  			}
- 			this.DrawChildren(spriteBatch);
- 			if (overflowHidden)
- 			{
+ 
+ 			DrawChildren(spriteBatch);
+ 			if (overflowHidden) {
 +				rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
  				spriteBatch.End();
  				spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
-@@ -404,6 +_,198 @@
- 			}
+@@ -324,6 +_,134 @@
+ 
+ 			if (Parent != null)
+ 				Parent.DoubleClick(evt);
++		}
++
++		public virtual void RightMouseDown(UIMouseEvent evt) {
++			if (OnRightMouseDown != null)
++				OnRightMouseDown(evt, this);
++
++			if (Parent != null)
++				Parent.RightMouseDown(evt);
++		}
++
++		public virtual void RightMouseUp(UIMouseEvent evt) {
++			if (OnRightMouseUp != null)
++				OnRightMouseUp(evt, this);
++
++			if (Parent != null)
++				Parent.RightMouseUp(evt);
++		}
++
++		public virtual void RightClick(UIMouseEvent evt) {
++			if (OnRightClick != null)
++				OnRightClick(evt, this);
++
++			if (Parent != null)
++				Parent.RightClick(evt);
++		}
++
++		public virtual void RightDoubleClick(UIMouseEvent evt) {
++			if (OnRightDoubleClick != null)
++				OnRightDoubleClick(evt, this);
++
++			if (Parent != null)
++				Parent.RightDoubleClick(evt);
++		}
++
++		public virtual void MiddleMouseDown(UIMouseEvent evt) {
++			if (OnMiddleMouseDown != null)
++				OnMiddleMouseDown(evt, this);
++
++			if (Parent != null)
++				Parent.MiddleMouseDown(evt);
++		}
++
++		public virtual void MiddleMouseUp(UIMouseEvent evt) {
++			if (OnMiddleMouseUp != null)
++				OnMiddleMouseUp(evt, this);
++
++			if (Parent != null)
++				Parent.MiddleMouseUp(evt);
++		}
++
++		public virtual void MiddleClick(UIMouseEvent evt) {
++			if (OnMiddleClick != null)
++				OnMiddleClick(evt, this);
++
++			if (Parent != null)
++				Parent.MiddleClick(evt);
++		}
++
++		public virtual void MiddleDoubleClick(UIMouseEvent evt) {
++			if (OnMiddleDoubleClick != null)
++				OnMiddleDoubleClick(evt, this);
++
++			if (Parent != null)
++				Parent.MiddleDoubleClick(evt);
++		}
++
++		public virtual void XButton1MouseDown(UIMouseEvent evt) {
++			if (OnXButton1MouseDown != null)
++				OnXButton1MouseDown(evt, this);
++
++			if (Parent != null)
++				Parent.XButton1MouseDown(evt);
++		}
++
++		public virtual void XButton1MouseUp(UIMouseEvent evt) {
++			if (OnXButton1MouseUp != null)
++				OnXButton1MouseUp(evt, this);
++
++			if (Parent != null)
++				Parent.XButton1MouseUp(evt);
++		}
++
++		public virtual void XButton1Click(UIMouseEvent evt) {
++			if (OnXButton1Click != null)
++				OnXButton1Click(evt, this);
++
++			if (Parent != null)
++				Parent.XButton1Click(evt);
++		}
++
++		public virtual void XButton1DoubleClick(UIMouseEvent evt) {
++			if (OnXButton1DoubleClick != null)
++				OnXButton1DoubleClick(evt, this);
++
++			if (Parent != null)
++				Parent.XButton1DoubleClick(evt);
++		}
++
++		public virtual void XButton2MouseDown(UIMouseEvent evt) {
++			if (OnXButton2MouseDown != null)
++				OnXButton2MouseDown(evt, this);
++
++			if (Parent != null)
++				Parent.XButton2MouseDown(evt);
++		}
++
++		public virtual void XButton2MouseUp(UIMouseEvent evt) {
++			if (OnXButton2MouseUp != null)
++				OnXButton2MouseUp(evt, this);
++
++			if (Parent != null)
++				Parent.XButton2MouseUp(evt);
++		}
++
++		public virtual void XButton2Click(UIMouseEvent evt) {
++			if (OnXButton2Click != null)
++				OnXButton2Click(evt, this);
++
++			if (Parent != null)
++				Parent.XButton2Click(evt);
++		}
++
++		public virtual void XButton2DoubleClick(UIMouseEvent evt) {
++			if (OnXButton2DoubleClick != null)
++				OnXButton2DoubleClick(evt, this);
++
++			if (Parent != null)
++				Parent.XButton2DoubleClick(evt);
  		}
  
-+		public virtual void RightMouseDown(UIMouseEvent evt)
-+		{
-+			if (this.OnRightMouseDown != null)
-+			{
-+				this.OnRightMouseDown(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.RightMouseDown(evt);
-+			}
-+		}
-+
-+		public virtual void RightMouseUp(UIMouseEvent evt)
-+		{
-+			if (this.OnRightMouseUp != null)
-+			{
-+				this.OnRightMouseUp(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.RightMouseUp(evt);
-+			}
-+		}
-+
-+		public virtual void RightClick(UIMouseEvent evt)
-+		{
-+			if (this.OnRightClick != null)
-+			{
-+				this.OnRightClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.RightClick(evt);
-+			}
-+		}
-+
-+		public virtual void RightDoubleClick(UIMouseEvent evt)
-+		{
-+			if (this.OnRightDoubleClick != null)
-+			{
-+				this.OnRightDoubleClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.RightDoubleClick(evt);
-+			}
-+		}
-+
-+		public virtual void MiddleMouseDown(UIMouseEvent evt)
-+		{
-+			if (this.OnMiddleMouseDown != null)
-+			{
-+				this.OnMiddleMouseDown(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.MiddleMouseDown(evt);
-+			}
-+		}
-+
-+		public virtual void MiddleMouseUp(UIMouseEvent evt)
-+		{
-+			if (this.OnMiddleMouseUp != null)
-+			{
-+				this.OnMiddleMouseUp(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.MiddleMouseUp(evt);
-+			}
-+		}
-+
-+		public virtual void MiddleClick(UIMouseEvent evt)
-+		{
-+			if (this.OnMiddleClick != null)
-+			{
-+				this.OnMiddleClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.MiddleClick(evt);
-+			}
-+		}
-+
-+		public virtual void MiddleDoubleClick(UIMouseEvent evt)
-+		{
-+			if (this.OnMiddleDoubleClick != null)
-+			{
-+				this.OnMiddleDoubleClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.MiddleDoubleClick(evt);
-+			}
-+		}
-+
-+		public virtual void XButton1MouseDown(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton1MouseDown != null)
-+			{
-+				this.OnXButton1MouseDown(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton1MouseDown(evt);
-+			}
-+		}
-+
-+		public virtual void XButton1MouseUp(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton1MouseUp != null)
-+			{
-+				this.OnXButton1MouseUp(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton1MouseUp(evt);
-+			}
-+		}
-+
-+		public virtual void XButton1Click(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton1Click != null)
-+			{
-+				this.OnXButton1Click(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton1Click(evt);
-+			}
-+		}
-+
-+		public virtual void XButton1DoubleClick(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton1DoubleClick != null)
-+			{
-+				this.OnXButton1DoubleClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton1DoubleClick(evt);
-+			}
-+		}
-+
-+		public virtual void XButton2MouseDown(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton2MouseDown != null)
-+			{
-+				this.OnXButton2MouseDown(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton2MouseDown(evt);
-+			}
-+		}
-+
-+		public virtual void XButton2MouseUp(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton2MouseUp != null)
-+			{
-+				this.OnXButton2MouseUp(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton2MouseUp(evt);
-+			}
-+		}
-+
-+		public virtual void XButton2Click(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton2Click != null)
-+			{
-+				this.OnXButton2Click(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton2Click(evt);
-+			}
-+		}
-+
-+		public virtual void XButton2DoubleClick(UIMouseEvent evt)
-+		{
-+			if (this.OnXButton2DoubleClick != null)
-+			{
-+				this.OnXButton2DoubleClick(evt, this);
-+			}
-+			if (this.Parent != null)
-+			{
-+				this.Parent.XButton2DoubleClick(evt);
-+			}
-+		}
-+
- 		public virtual void ScrollWheel(UIScrollWheelEvent evt)
- 		{
- 			if (this.OnScrollWheel != null)
-
+ 		public virtual void ScrollWheel(UIScrollWheelEvent evt) {

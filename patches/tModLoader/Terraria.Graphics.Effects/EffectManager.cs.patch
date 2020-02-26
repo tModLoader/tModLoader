@@ -7,6 +7,5 @@
 -		protected Dictionary<string, T> _effects = new Dictionary<string, T>();
 +		internal Dictionary<string, T> _effects = new Dictionary<string, T>();
  
- 		public bool IsLoaded
- 		{
-
+ 		public bool IsLoaded {
+ 			get {

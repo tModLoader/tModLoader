@@ -1,21 +1,20 @@
 --- src/Terraria\Terraria.GameContent.Skies\SolarSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\SolarSky.cs
-@@ -116,7 +_,7 @@
- 			return (1f - this._fadeOpacity) * 0.3f + 0.7f;
+@@ -98,7 +_,7 @@
+ 
+ 		public override float GetCloudAlpha() => (1f - _fadeOpacity) * 0.3f + 0.7f;
+ 
+-		internal override void Activate(Vector2 position, params object[] args) {
++		public override void Activate(Vector2 position, params object[] args) {
+ 			_fadeOpacity = 0.002f;
+ 			_isActive = true;
+ 			_meteors = new Meteor[150];
+@@ -121,7 +_,7 @@
+ 
+ 		private int SortMethod(Meteor meteor1, Meteor meteor2) => meteor2.Depth.CompareTo(meteor1.Depth);
+ 
+-		internal override void Deactivate(params object[] args) {
++		public override void Deactivate(params object[] args) {
+ 			_isActive = false;
  		}
  
--		internal override void Activate(Vector2 position, params object[] args)
-+		public override void Activate(Vector2 position, params object[] args)
- 		{
- 			this._fadeOpacity = 0.002f;
- 			this._isActive = true;
-@@ -146,7 +_,7 @@
- 			return meteor2.Depth.CompareTo(meteor1.Depth);
- 		}
- 
--		internal override void Deactivate(params object[] args)
-+		public override void Deactivate(params object[] args)
- 		{
- 			this._isActive = false;
- 		}
-

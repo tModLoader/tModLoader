@@ -9,4 +9,3 @@
  	{
  		private int _cursor;
  		private int _frameCount;
-

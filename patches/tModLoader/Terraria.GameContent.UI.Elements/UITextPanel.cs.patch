@@ -8,14 +8,13 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
-@@ -98,7 +_,8 @@
- 		public virtual void SetText(T text, float textScale, bool large)
- 		{
+@@ -78,7 +_,8 @@
+ 
+ 		public virtual void SetText(T text, float textScale, bool large) {
  			DynamicSpriteFont dynamicSpriteFont = large ? Main.fontDeathText : Main.fontMouseText;
 -			Vector2 textSize = new Vector2(dynamicSpriteFont.MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
 +			Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(textScale));
 +			textSize.Y = (large ? 32f : 16f) * textScale;
- 			this._text = text;
- 			this._textScale = textScale;
- 			this._textSize = textSize;
-
+ 			_text = text;
+ 			_textScale = textScale;
+ 			_textSize = textSize;

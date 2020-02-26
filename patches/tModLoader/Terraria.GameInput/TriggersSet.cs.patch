@@ -8,67 +8,58 @@
  
  namespace Terraria.GameInput
  {
-@@ -36,6 +_,42 @@
+@@ -30,6 +_,33 @@
  			}
  		}
  
-+		public bool MouseMiddle
-+		{
-+			get
-+			{
-+				return this.KeyStatus["MouseMiddle"];
++		public bool MouseMiddle {
++			get {
++				return KeyStatus["MouseMiddle"];
 +			}
-+			set
-+			{
-+				this.KeyStatus["MouseMiddle"] = value;
++			set {
++				KeyStatus["MouseMiddle"] = value;
 +			}
 +		}
 +
-+		public bool MouseXButton1
-+		{
-+			get
-+			{
-+				return this.KeyStatus["MouseXButton1"];
++		public bool MouseXButton1 {
++			get {
++				return KeyStatus["MouseXButton1"];
 +			}
-+			set
-+			{
-+				this.KeyStatus["MouseXButton1"] = value;
++			set {
++				KeyStatus["MouseXButton1"] = value;
 +			}
 +		}
 +
-+		public bool MouseXButton2
-+		{
-+			get
-+			{
-+				return this.KeyStatus["MouseXButton2"];
++		public bool MouseXButton2 {
++			get {
++				return KeyStatus["MouseXButton2"];
 +			}
-+			set
-+			{
-+				this.KeyStatus["MouseXButton2"] = value;
++			set {
++				KeyStatus["MouseXButton2"] = value;
 +			}
 +		}
 +
- 		public bool Up
- 		{
- 			get
-@@ -660,6 +_,10 @@
- 			foreach (string current in PlayerInput.KnownTriggers)
- 			{
- 				this.KeyStatus.Add(current, false);
-+			}
-+			foreach (var hotkey in HotKeyLoader.HotKeys)
-+			{
-+				this.KeyStatus.Add(hotkey.uniqueName, false);
+ 		public bool Up {
+ 			get {
+ 				return KeyStatus["Up"];
+@@ -501,6 +_,10 @@
+ 			foreach (string current in PlayerInput.KnownTriggers) {
+ 				KeyStatus.Add(current, false);
  			}
++
++			foreach (var hotkey in HotKeyLoader.HotKeys) {
++				KeyStatus.Add(hotkey.uniqueName, false);
++			}
  		}
  
-@@ -737,6 +_,8 @@
- 			{
- 				this.HotbarScrollCD--;
- 			}
-+			ModLoader.ModHooks.HotKeyPressed();
-+			ModLoader.PlayerHooks.ProcessTriggers(p, this);
+ 		public Vector2 GetNavigatorDirections() {
+@@ -562,6 +_,9 @@
+ 
+ 			if (HotbarScrollCD > 0 && (HotbarScrollCD != 1 || !flag || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
+ 				HotbarScrollCD--;
++
++			ModHooks.HotKeyPressed();
++			PlayerHooks.ProcessTriggers(p, this);
  		}
  
- 		public void CopyIntoDuringChat(Player p)
-
+ 		public void CopyIntoDuringChat(Player p) {

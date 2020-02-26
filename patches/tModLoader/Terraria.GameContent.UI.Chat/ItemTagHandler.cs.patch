@@ -11,90 +11,77 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -26,6 +_,7 @@
- 				Main.instance.MouseText(this._item.Name, this._item.rare, 0, -1, -1, -1, -1);
+@@ -23,6 +_,7 @@
+ 				Main.instance.MouseText(_item.Name, _item.rare, 0, -1, -1, -1, -1);
  			}
  
 +			//TODO possibly allow modders to custom draw here
- 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
- 			{
+ 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default, Color color = default, float scale = 1f) {
  				float num = 1f;
-@@ -74,7 +_,7 @@
- 		{
+ 				float num2 = 1f;
+@@ -60,14 +_,17 @@
+ 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
  			Item item = new Item();
  			int type;
 -			if (int.TryParse(text, out type))
 +			if (int.TryParse(text, out type) && type < ItemLoader.ItemCount)
- 			{
  				item.netDefaults(type);
- 			}
-@@ -83,8 +_,11 @@
+ 
+ 			if (item.type <= 0)
  				return new TextSnippet(text);
- 			}
+ 
  			item.stack = 1;
 +			// options happen here, we add MID (=ModItemData) options
- 			if (options != null)
- 			{
+ 			if (options != null) {
 +				// don't know why all these options here in vanilla,
 +				// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
- 				string[] array = options.Split(new char[]
- 					{
- 						','
-@@ -95,7 +_,12 @@
- 					{
+ 				string[] array = options.Split(new char[] {
+ 					','
+ 				});
+@@ -76,13 +_,17 @@
+ 					if (array[i].Length != 0) {
  						char c = array[i][0];
  						int value2;
--						if (c != 'p')
 +						// MID is present, we will override
-+						if (c == 'd')
-+						{
++						if (c == 'd') {
 +							item = ItemIO.FromBase64(array[i].Substring(1));
 +						}
-+						else if (c != 'p')
- 						{
+-						if (c != 'p') {
++						else if (c != 'p') {
  							int value;
  							if ((c == 's' || c == 'x') && int.TryParse(array[i].Substring(1), out value))
-@@ -105,7 +_,7 @@
+ 								item.stack = Utils.Clamp(value, 1, item.maxStack);
  						}
- 						else if (int.TryParse(array[i].Substring(1), out value2))
- 						{
--							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, 84)));
-+							item.Prefix((int)((byte)Utils.Clamp<int>(value2, 0, ModPrefix.PrefixCount)));
+ 						else if (int.TryParse(array[i].Substring(1), out value2)) {
+-							item.Prefix((byte)Utils.Clamp(value2, 0, 84));
++							item.Prefix((byte)Utils.Clamp(value2, 0, ModPrefix.PrefixCount));
  						}
  					}
  				}
-@@ -123,17 +_,29 @@
+@@ -99,13 +_,22 @@
  			};
  		}
  
 +		// we do not alter vanilla ways of doing things
 +		// this can lead to trouble in future patches
- 		public static string GenerateTag(Item I)
- 		{
+ 		public static string GenerateTag(Item I) {
  			string text = "[i";
--			if (I.prefix != 0)
 +			// assuming we have modded data, simply write the item as base64
 +			// do not write other option, base64 holds all the info.
-+			if (I.modItem != null || I.globalItems.Any())
- 			{
--				text = text + "/p" + I.prefix;
++			if (I.modItem != null || I.globalItems.Any()) {
 +				text = text + "/d" + ItemIO.ToBase64(I);
- 			}
--			if (I.stack != 1)
-+			else
- 			{
--				text = text + "/s" + I.stack;
++			}
++			else {
+-			if (I.prefix != 0)
 +				if (I.prefix != 0)
-+				{
+-				text = text + "/p" + I.prefix;
 +					text = text + "/p" + I.prefix;
-+				}
+ 
+-			if (I.stack != 1)
 +				if (I.stack != 1)
-+				{
+-				text = text + "/s" + I.stack;
 +					text = text + "/s" + I.stack;
-+				}
- 			}
-+
++			}
+ 
  			object obj = text;
- 			return string.Concat(new object[]
- 				{
-
+ 			return string.Concat(new object[] {

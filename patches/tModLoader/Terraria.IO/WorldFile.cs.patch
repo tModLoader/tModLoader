@@ -9,205 +9,197 @@
  
  namespace Terraria.IO
  {
-@@ -160,6 +_,7 @@
+@@ -154,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();
  			bool flag = loadFromCloud && SocialAPI.Cloud != null;
-+            //patch file: flag
- 			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen)
- 			{
- 				if (!flag)
-@@ -222,6 +_,8 @@
- 						}
++			//patch file: flag
+ 			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
+ 				if (!flag) {
+ 					for (int i = Main.worldPathName.Length - 1; i >= 0; i--) {
+@@ -201,6 +_,8 @@
+ 
  						binaryReader.Close();
  						memoryStream.Close();
 +						WorldHooks.SetupWorld();
 +						WorldIO.Load(Main.worldPathName, flag);
  						if (num2 != 0)
- 						{
  							WorldGen.loadFailed = true;
-@@ -355,6 +_,9 @@
- 				{
+ 						else
+@@ -309,6 +_,9 @@
+ 				if (Main.worldPathName == null)
  					return;
- 				}
-+				if (!BackupIO.archiveLock) {
+ 
++				if (!BackupIO.archiveLock)
 +					BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
-+				}
++
  				Stopwatch stopwatch = new Stopwatch();
  				stopwatch.Start();
  				byte[] array = null;
-@@ -402,6 +_,7 @@
- 				{
+@@ -349,6 +_,7 @@
+ 				if (text != null && array2 != null)
  					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
- 				}
+ 
 +				WorldIO.Save(Main.worldPathName, useCloudSaving);
  				WorldGen.saveLock = false;
  			}
- 			Main.serverGenLock = false;
-@@ -411,7 +_,7 @@
- 		{
+ 
+@@ -358,7 +_,7 @@
+ 		public static int LoadWorld_Version1(BinaryReader fileIO) {
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
- 			int num = WorldFile.versionNumber;
+ 			int num = versionNumber;
 -			if (num > 193)
 +			if (num > 194)
- 			{
  				return 1;
- 			}
-@@ -965,7 +_,7 @@
- 		{
+ 
+ 			Main.worldName = fileIO.ReadString();
+@@ -825,7 +_,7 @@
+ 		private static int SaveFileFormatHeader(BinaryWriter writer) {
  			short num = 470;
  			short num2 = 10;
 -			writer.Write(193);
 +			writer.Write(194);
  			Main.WorldFileMetadata.IncrementAndWrite(writer);
  			writer.Write(num2);
- 			for (int i = 0; i < (int)num2; i++)
-@@ -1002,7 +_,7 @@
- 		private static int SaveHeaderPointers(BinaryWriter writer, int[] pointers)
- 		{
+ 			for (int i = 0; i < num2; i++) {
+@@ -857,7 +_,7 @@
+ 
+ 		private static int SaveHeaderPointers(BinaryWriter writer, int[] pointers) {
  			writer.BaseStream.Position = 0L;
 -			writer.Write(193);
 +			writer.Write(194);
  			writer.BaseStream.Position += 20L;
  			writer.Write((short)pointers.Length);
- 			for (int i = 0; i < pointers.Length; i++)
-@@ -1109,7 +_,14 @@
- 				writer.Write(Main.anglerWhoFinishedToday[i]);
+ 			for (int i = 0; i < pointers.Length; i++) {
+@@ -963,7 +_,11 @@
  			}
+ 
  			writer.Write(NPC.savedAngler);
--			writer.Write(Main.anglerQuest);
 +			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
-+			{
+-			writer.Write(Main.anglerQuest);
 +				writer.Write(Main.anglerQuest);
-+			}
 +			else
-+			{
 +				writer.Write(0);
-+			}
++
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(Main.invasionSizeStart);
-@@ -1176,7 +_,7 @@
+@@ -1027,7 +_,7 @@
  					byte b2;
- 					byte b = b2 = (b3 = 0);
+ 					byte b = b2 = b3 = 0;
  					bool flag = false;
--					if (tile.active())
-+					if (tile.active() && tile.type < TileID.Count)
- 					{
+-					if (tile.active()) {
++					if (tile.active() && tile.type < TileID.Count) {
  						flag = true;
- 						if (tile.type == 127)
-@@ -1213,9 +_,11 @@
+ 						if (tile.type == 127) {
+ 							WorldGen.KillTile(i, j, false, false, false);
+@@ -1056,9 +_,11 @@
  						}
- 						if (Main.tileFrameImportant[(int)tile.type])
- 						{
--							array[num2] = (byte)(tile.frameX & 255);
+ 
+ 						if (Main.tileFrameImportant[tile.type]) {
 +							short frameX = tile.frameX;
 +							TileIO.VanillaSaveFrames(tile, ref frameX);
+-							array[num2] = (byte)(tile.frameX & 255);
 +							array[num2] = (byte)(frameX & 255);
  							num2++;
--							array[num2] = (byte)(((int)tile.frameX & 65280) >> 8);
-+							array[num2] = (byte)(((int)frameX & 65280) >> 8);
+-							array[num2] = (byte)((tile.frameX & 65280) >> 8);
++							array[num2] = (byte)((frameX & 65280) >> 8);
  							num2++;
  							array[num2] = (byte)(tile.frameY & 255);
  							num2++;
-@@ -1229,10 +_,10 @@
- 							num2++;
+@@ -1073,9 +_,9 @@
  						}
  					}
--					if (tile.wall != 0)
-+					if (tile.wall != 0 && tile.wall < WallID.Count)
- 					{
+ 
+-					if (tile.wall != 0) {
++					if (tile.wall != 0 && tile.wall < WallID.Count) {
  						b2 |= 4;
 -						array[num2] = tile.wall;
 +						array[num2] = (byte)tile.wall;
  						num2++;
- 						if (tile.wallColor() != 0)
- 						{
-@@ -1390,7 +_,7 @@
- 					for (int l = 0; l < 40; l++)
- 					{
+ 						if (tile.wallColor() != 0) {
+ 							b3 |= 16;
+@@ -1205,7 +_,7 @@
+ 					writer.Write(chest.name);
+ 					for (int l = 0; l < 40; l++) {
  						Item item = chest.item[l];
--						if (item == null)
-+						if (item == null || item.modItem != null)
- 						{
+-						if (item == null) {
++						if (item == null || item.modItem != null) {
  							writer.Write((short)0);
  						}
-@@ -1471,7 +_,7 @@
- 			for (int i = 0; i < Main.npc.Length; i++)
- 			{
+ 						else {
+@@ -1272,7 +_,7 @@
+ 		private static int SaveNPCs(BinaryWriter writer) {
+ 			for (int i = 0; i < Main.npc.Length; i++) {
  				NPC nPC = Main.npc[i];
--				if (nPC.active && nPC.townNPC && nPC.type != 368)
-+				if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC))
- 				{
+-				if (nPC.active && nPC.townNPC && nPC.type != 368) {
++				if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC)) {
  					writer.Write(nPC.active);
  					writer.Write(nPC.netID);
-@@ -1487,7 +_,7 @@
- 			for (int j = 0; j < Main.npc.Length; j++)
- 			{
+ 					writer.Write(nPC.GivenName);
+@@ -1287,7 +_,7 @@
+ 			writer.Write(false);
+ 			for (int j = 0; j < Main.npc.Length; j++) {
  				NPC nPC2 = Main.npc[j];
--				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type])
-+				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2))
- 				{
+-				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
++				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2)) {
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
-@@ -2302,7 +_,7 @@
- 			{
+ 					writer.WriteVector2(nPC2.position);
+@@ -1961,7 +_,7 @@
+ 			try {
  				Stream baseStream = fileIO.BaseStream;
  				int num = fileIO.ReadInt32();
--				if (num == 0 || num > 193)
-+				if (num == 0 || num > 194)
- 				{
+-				if (num == 0 || num > 193) {
++				if (num == 0 || num > 194) {
  					result = false;
  				}
-@@ -2538,6 +_,7 @@
+ 				else {
+@@ -2160,6 +_,7 @@
+ 				}
  			}
- 			catch (Exception value)
- 			{
+ 			catch (Exception value) {
 +				Logging.Terraria.Error("World Validation", value);
- 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true))
- 				{
+ 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true)) {
  					streamWriter.WriteLine(DateTime.Now);
-@@ -2562,7 +_,7 @@
- 					using (BinaryReader binaryReader = new BinaryReader(fileStream))
- 					{
+ 					streamWriter.WriteLine(value);
+@@ -2180,7 +_,7 @@
+ 				using (FileStream fileStream = new FileStream(WorldFileName, FileMode.Open)) {
+ 					using (BinaryReader binaryReader = new BinaryReader(fileStream)) {
  						int num = binaryReader.ReadInt32();
--						if (num > 0 && num <= 193)
-+						if (num > 0 && num <= 194)
- 						{
+-						if (num > 0 && num <= 193) {
++						if (num > 0 && num <= 194) {
  							string text;
  							string result;
-@@ -2615,7 +_,7 @@
- 						{
+ 							if (num <= 87) {
+@@ -2225,7 +_,7 @@
+ 						if (num >= 135)
  							binaryReader.BaseStream.Position += 20L;
- 						}
--						if (num >= 112 && num <= 193)
-+						if (num >= 112 && num <= 194)
- 						{
- 							binaryReader.ReadInt16();
- 							fileStream.Position = (long)binaryReader.ReadInt32();
-@@ -2671,7 +_,7 @@
- 						{
- 							worldFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.World);
- 						}
--						if (num <= 193)
-+						if (num <= 194)
- 						{
- 							binaryReader.ReadInt16();
- 							stream.Position = (long)binaryReader.ReadInt32();
-@@ -2880,10 +_,13 @@
  
- 		private static int SaveTileEntities(BinaryWriter writer)
- 		{
+-						if (num >= 112 && num <= 193) {
++						if (num >= 112 && num <= 194) {
+ 							binaryReader.ReadInt16();
+ 							fileStream.Position = binaryReader.ReadInt32();
+ 							binaryReader.ReadString();
+@@ -2269,7 +_,7 @@
+ 						else
+ 							worldFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.World);
+ 
+-						if (num <= 193) {
++						if (num <= 194) {
+ 							binaryReader.ReadInt16();
+ 							stream.Position = binaryReader.ReadInt32();
+ 							worldFileData.Name = binaryReader.ReadString();
+@@ -2448,9 +_,10 @@
+ 		}
+ 
+ 		private static int SaveTileEntities(BinaryWriter writer) {
 -			writer.Write(TileEntity.ByID.Count);
 +			writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
- 			foreach (KeyValuePair<int, TileEntity> current in TileEntity.ByID)
- 			{
--				TileEntity.Write(writer, current.Value, false);
+ 			foreach (KeyValuePair<int, TileEntity> current in TileEntity.ByID) {
 +				if (current.Value.type < ModTileEntity.numVanilla)
-+				{
+-				TileEntity.Write(writer, current.Value, false);
 +					TileEntity.Write(writer, current.Value, false);
-+				}
  			}
+ 
  			return (int)writer.BaseStream.Position;
- 		}
-

@@ -1,20 +1,15 @@
 --- src/Terraria\Terraria.Graphics.Effects\FilterManager.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\FilterManager.cs
-@@ -227,5 +_,16 @@
- 		{
- 			return this.HasActiveFilter() || this.OnPostDraw != null;
- 		}
+@@ -186,5 +_,12 @@
+ 
+ 		public bool HasActiveFilter() => _activeFilters.Count != 0;
+ 		public bool CanCapture() => HasActiveFilter() || OnPostDraw != null;
 +
-+		internal void DeactivateAll()
-+		{
-+			foreach (string key in this._effects.Keys)
-+			{
++		internal void DeactivateAll() {
++			foreach (string key in _effects.Keys) {
 +				if (this[key].IsActive())
-+				{
 +					this[key].Deactivate(new object[0]);
-+				}
 +			}
 +		}
  	}
  }
-

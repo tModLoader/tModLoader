@@ -9,4 +9,3 @@
  		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease send crashlog.txt to support@terraria.org",
  		"LoadFailed": "Load failed!",
  		"LoadFailedNoBackup": "Load failed!  No backup found.",
-

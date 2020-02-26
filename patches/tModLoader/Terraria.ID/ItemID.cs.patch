@@ -8,34 +8,36 @@
  
  namespace Terraria.ID
  {
-@@ -306,7 +_,7 @@
- 					1103,
- 					0,
- 					3347,
--					1
-+					3347
- 				});
- 			public static int[] StaffMinionSlotsRequired = ItemID.Sets.Factory.CreateIntSet(1, new int[0]);
- 			public static bool[] ExoticPlantsForDyeTrade = ItemID.Sets.Factory.CreateBoolSet(new int[]
-@@ -889,6 +_,7 @@
- 					431,
- 					432
- 				});
-+			public static bool[] IsAMaterial = ItemID.Sets.Factory.CreateBoolSet();
+@@ -294,7 +_,7 @@
+ 				1103,
+ 				0,
+ 				3347,
+-				1
++				3347
+ 			});
+ 			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1, new int[0]);
+ 			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(new int[] {
+@@ -857,6 +_,7 @@
+ 				431,
+ 				432
+ 			});
++			public static bool[] IsAMaterial = Factory.CreateBoolSet();
  		}
  
  		public const short YellowPhasesaberOld = -24;
-@@ -7655,5 +_,32 @@
- 			}
+@@ -5643,6 +_,37 @@
+ 				return result;
+ 
  			return 0;
- 		}
++		}
 +
 +		public static string GetUniqueKey(int type) {
 +			if (type < 0 || type >= ItemLoader.ItemCount)
 +				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+			if ( type < Count ) {
-+				return "Terraria " + ItemID.Search.GetName(type);
-+			}
++
++			if (type < Count)
++				return "Terraria " + Search.GetName(type);
++
 +			var modItem = ItemLoader.GetItem(type);
 +			return $"{modItem.mod.Name} {modItem.Name}";
 +		}
@@ -46,16 +48,18 @@
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
 +				return 0;
++
 +			return TypeFromUniqueKey(parts[0], parts[1]);
 +		}
 +		public static int TypeFromUniqueKey(string mod, string name) {
 +			if (mod == "Terraria") {
-+				if (!ItemID.Search.ContainsName(name))
++				if (!Search.ContainsName(name))
 +					return 0;
-+				return ItemID.Search.GetId(name);
++
++				return Search.GetId(name);
 +			}
++
 +			return ModLoader.ModLoader.GetMod(mod)?.ItemType(name) ?? 0;
-+		}
+ 		}
  	}
  }
-

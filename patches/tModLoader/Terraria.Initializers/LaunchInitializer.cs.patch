@@ -10,48 +10,39 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -37,6 +_,14 @@
- 			{
+@@ -30,6 +_,12 @@
+ 				"-port"
+ 			})) != null && int.TryParse(s, out listenPort))
  				Netplay.ListenPort = listenPort;
- 			}
++
 +			string modPack;
-+			if ((modPack = LaunchInitializer.TryParameter(new string[]
-+				{
-+					"-modpack"
-+				})) != null)
-+			{
++			if ((modPack = TryParameter(new string[] {
++				"-modpack"
++			})) != null)
 +				ModOrganizer.commandLineModPack = modPack;
-+			}
  		}
  
- 		private static void LoadClientParameters(Main game)
-@@ -66,6 +_,36 @@
- 				}))
- 			{
+ 		private static void LoadClientParameters(Main game) {
+@@ -53,6 +_,30 @@
+ 				"-host"
+ 			}))
  				game.AutoHost();
-+			}
 +
-+			if (LaunchInitializer.HasParameter("-skipselect"))
-+			{
-+				string skipSelectArgs = LaunchInitializer.TryParameter(new string[] { "-skipselect" });
-+
++			if (HasParameter("-skipselect")) {
++				string skipSelectArgs = TryParameter(new string[] { "-skipselect" });
 +				string playerName = null;
 +				string worldName = null;
-+
-+				if (skipSelectArgs != null)
-+				{
++				if (skipSelectArgs != null) {
 +					Regex cmdRegEx = new Regex(@"(?<name>.*?):(?<val>.*)");
 +					Match m = cmdRegEx.Match(skipSelectArgs);
-+					if (m.Success)
-+					{
++					if (m.Success) {
 +						playerName = m.Groups["name"].Value;
 +						worldName = m.Groups["val"].Value;
 +					}
 +				}
 +
 +				Main.showSplash = false;
-+				ModLoader.ModLoader.OnSuccessfulLoad += () =>
-+				{
++				ModLoader.ModLoader.OnSuccessfulLoad += () => {
 +					WorldGen.clearWorld();
 +					Main.LoadPlayers();
 +					(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
@@ -59,48 +50,42 @@
 +					(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
 +					WorldGen.playWorld();
 +				};
- 			}
++			}
  		}
  
-@@ -156,6 +_,23 @@
- 			{
+ 		private static void LoadServerParameters(Main game) {
+@@ -126,6 +_,18 @@
+ 			})) != null)
  				LanguageManager.Instance.SetLanguage(text);
- 			}
-+
+ 
 +			// We handle the build parameter this far in
 +			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			if ((text = LaunchInitializer.TryParameter(new string[]
-+				{
-+					"-build"
-+				})) != null)
-+			{
++			if ((text = TryParameter(new string[] {
++				"-build"
++			})) != null)
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(text);
-+			}
 +
-+			if ((text = TryParameter("-install")) != null) {
++			if ((text = TryParameter("-install")) != null)
 +				FileAssociationSupport.HandleFileAssociation(text);
-+			}
 +
  			string worldName;
- 			if ((worldName = LaunchInitializer.TryParameter(new string[]
- 				{
-@@ -172,6 +_,16 @@
- 			{
+ 			if ((worldName = TryParameter(new string[] {
+ 				"-worldname"
+@@ -137,6 +_,15 @@
+ 				"-motd"
+ 			})) != null)
  				game.NewMOTD(newMOTD);
- 			}
++
 +			string modPath;
-+			if ((modPath = LaunchInitializer.TryParameter(new string[]
-+				{
-+					"-modpath"
-+				})) != null)
-+			{
++			if ((modPath = TryParameter(new string[] {
++				"-modpath"
++			})) != null)
 +				ModOrganizer.modPath = modPath;
-+			}
-+			if (LaunchInitializer.HasParameter("-showserverconsole"))
++
++			if (HasParameter("-showserverconsole"))
 +				Main.showServerConsole = true;
+ 
  			string banFilePath;
- 			if ((banFilePath = LaunchInitializer.TryParameter(new string[]
- 				{
-
+ 			if ((banFilePath = TryParameter(new string[] {

@@ -16,68 +16,64 @@
 +		internal const int maxTypes = 23;
  		private int qualityMax;
  		private int currentMax;
- 		private WaterfallManager.WaterfallData[] waterfalls;
-@@ -243,7 +_,7 @@
+ 		private WaterfallData[] waterfalls;
+@@ -205,7 +_,7 @@
  			}
  		}
  
--		private void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f)
-+		internal void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f)
- 		{
+-		private void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
++		internal void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
  			float num = 0f;
  			float num2 = 99999f;
-@@ -419,6 +_,7 @@
- 					if (num29 < 2)
- 					{
+ 			float num3 = 99999f;
+@@ -352,6 +_,7 @@
+ 				for (int k = 0; k < num22; k++) {
+ 					if (num29 < 2) {
  						int num30 = num12;
 +						//patch file: num12, num30
- 						switch (num30)
- 						{
- 							case 1:
-@@ -500,6 +_,10 @@
- 								}
+ 						switch (num30) {
+ 							case 1: {
+ 									float num31 = 0.55f;
+@@ -424,6 +_,9 @@
  								break;
  						}
+ 
 +						if (num30 >= WaterfallStyleLoader.vanillaWaterfallCount)
-+						{
 +							WaterfallStyleLoader.GetWaterfallStyle(num30).AddLight(num13, num14);
-+						}
++
  						Tile tile2 = Main.tile[num13, num14];
- 						if (tile2 == null)
- 						{
-@@ -603,6 +_,7 @@
+ 						if (tile2 == null) {
+ 							tile2 = new Tile();
+@@ -515,10 +_,13 @@
  						}
- 						if (num40 != -1)
- 						{
+ 
+ 						if (num40 != -1) {
 +							//patch file: num40, num12
  							if (num40 == 160)
- 							{
  								num12 = 2;
-@@ -611,6 +_,7 @@
- 							{
+ 							else if (num40 >= 262 && num40 <= 268)
  								num12 = 15 + num40 - 262;
- 							}
++
 +							TileLoader.ChangeWaterfallStyle(num40, ref num12);
  						}
+ 
  						if (WorldGen.SolidTile(tile4) && !tile2.halfBrick())
- 						{
-@@ -673,6 +_,10 @@
- 							num42 = 255f * num41;
- 							num43 = 255f * num41;
+@@ -566,6 +_,9 @@
  							num44 = 255f * num41;
-+						}
-+						if (num12 >= WaterfallStyleLoader.vanillaWaterfallCount)
-+						{
-+							WaterfallStyleLoader.GetWaterfallStyle(num12).ColorMultiplier(ref num42, ref num43, ref num44, num41);
  						}
+ 
++						if (num12 >= WaterfallStyleLoader.vanillaWaterfallCount)
++							WaterfallStyleLoader.GetWaterfallStyle(num12).ColorMultiplier(ref num42, ref num43, ref num44, num41);
++
  						color5 = new Color((int)num42, (int)num43, (int)num44, (int)num45);
- 						if (num12 == 1)
-@@ -982,6 +_,7 @@
- 			{
- 				this.DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);
- 			}
+ 						if (num12 == 1) {
+ 							float num46 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
+@@ -802,6 +_,8 @@
+ 
+ 			if (Main.liquidAlpha[10] > 0f)
+ 				DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);
++
 +			WaterStyleLoader.DrawWaterfall(this, spriteBatch);
  		}
  	}
  }
-

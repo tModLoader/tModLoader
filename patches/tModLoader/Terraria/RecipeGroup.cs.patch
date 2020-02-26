@@ -8,19 +8,17 @@
  		public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  		public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
  		public static int nextRecipeGroupIndex = 0;
-@@ -25,5 +_,14 @@
- 			RecipeGroup.recipeGroupIDs.Add(name, num);
+@@ -22,6 +_,13 @@
+ 			recipeGroups.Add(num, rec);
+ 			recipeGroupIDs.Add(name, num);
  			return num;
- 		}
-+
-+		public bool ContainsItem(int type)
-+		{
-+			if (ValidItemsLookup == null)
-+			{
-+				return ValidItems.Contains(type);
-+			}
-+			return ValidItemsLookup[type];
 +		}
++
++		public bool ContainsItem(int type) {
++			if (ValidItemsLookup == null)
++				return ValidItems.Contains(type);
++
++			return ValidItemsLookup[type];
+ 		}
  	}
  }
-

@@ -1,21 +1,20 @@
 --- src/Terraria\Terraria.GameContent.Skies\VortexSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\VortexSky.cs
-@@ -120,7 +_,7 @@
- 			return (1f - this._fadeOpacity) * 0.3f + 0.7f;
- 		}
+@@ -102,7 +_,7 @@
  
--		internal override void Activate(Vector2 position, params object[] args)
-+		public override void Activate(Vector2 position, params object[] args)
- 		{
- 			this._fadeOpacity = 0.002f;
- 			this._isActive = true;
-@@ -131,7 +_,7 @@
+ 		public override float GetCloudAlpha() => (1f - _fadeOpacity) * 0.3f + 0.7f;
+ 
+-		internal override void Activate(Vector2 position, params object[] args) {
++		public override void Activate(Vector2 position, params object[] args) {
+ 			_fadeOpacity = 0.002f;
+ 			_isActive = true;
+ 			_bolts = new Bolt[500];
+@@ -111,7 +_,7 @@
  			}
  		}
  
--		internal override void Deactivate(params object[] args)
-+		public override void Deactivate(params object[] args)
- 		{
- 			this._isActive = false;
+-		internal override void Deactivate(params object[] args) {
++		public override void Deactivate(params object[] args) {
+ 			_isActive = false;
  		}
-
+ 

@@ -8,15 +8,12 @@
  
  namespace Terraria.Initializers
  {
-@@ -337,6 +_,10 @@
- 						{
- 							color = new Color(208, 80, 80);
- 						}
-+						else if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
-+						{
-+							color = WaterStyleLoader.GetWaterStyle(Main.waterStyle).BiomeHairColor();
-+						}
- 						else
- 						{
- 							color = new Color(28, 216, 94);
-
+@@ -295,6 +_,8 @@
+ 					color = new Color(200, 0, 0);
+ 				else if (Main.waterStyle == 10)
+ 					color = new Color(208, 80, 80);
++				else if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
++					color = WaterStyleLoader.GetWaterStyle(Main.waterStyle).BiomeHairColor();
+ 				else
+ 					color = new Color(28, 216, 94);
+ 

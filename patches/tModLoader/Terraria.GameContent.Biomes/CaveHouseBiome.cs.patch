@@ -1,21 +1,20 @@
 --- src/Terraria\Terraria.GameContent.Biomes\CaveHouseBiome.cs
 +++ src/tModLoader\Terraria.GameContent.Biomes\CaveHouseBiome.cs
-@@ -160,7 +_,7 @@
+@@ -146,7 +_,7 @@
  		}
  
  		private const int VERTICAL_EXIT_WIDTH = 3;
--		private static readonly bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[]
-+		public static bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[]
- 			{
- 				225,
- 				41,
-@@ -571,7 +_,7 @@
- 					}
+-		private static readonly bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[] {
++		public static bool[] _blacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[] {
+ 			225,
+ 			41,
+ 			43,
+@@ -507,7 +_,7 @@
  				}
+ 
  				int num18 = current11.Width / 8 + 3;
 -				WorldGen.SetupStatueList();
 +				// Commented out because it makes no sense: WorldGen.SetupStatueList();
- 				while (num18 > 0)
- 				{
- 					int num19 = GenBase._random.Next(current11.Width - 3) + 1 + current11.X;
-
+ 				while (num18 > 0) {
+ 					int num19 = _random.Next(current11.Width - 3) + 1 + current11.X;
+ 					int num20 = current11.Y + current11.Height - 2;

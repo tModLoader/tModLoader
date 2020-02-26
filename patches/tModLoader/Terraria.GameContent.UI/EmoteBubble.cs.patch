@@ -9,4 +9,3 @@
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  		private static List<int> toClean = new List<int>();
  		public static int NextID;
-

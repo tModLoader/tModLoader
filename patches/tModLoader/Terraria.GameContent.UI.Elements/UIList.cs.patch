@@ -1,40 +1,38 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
-@@ -33,9 +_,9 @@
+@@ -26,9 +_,9 @@
  			}
  		}
  
 -		protected List<UIElement> _items = new List<UIElement>();
 +		public List<UIElement> _items = new List<UIElement>();
  		protected UIScrollbar _scrollbar;
--		private UIElement _innerList = new UIList.UIInnerList();
-+		internal UIElement _innerList = new UIList.UIInnerList();
+-		private UIElement _innerList = new UIInnerList();
++		internal UIElement _innerList = new UIInnerList();
  		private float _innerListHeight;
  		public float ListPadding = 5f;
  
-@@ -73,10 +_,24 @@
+@@ -57,9 +_,23 @@
  			}
  		}
  
 +		public float ViewPosition {
-+			get => this._scrollbar.ViewPosition;
-+			set => this._scrollbar.ViewPosition = value;
++			get => _scrollbar.ViewPosition;
++			set => _scrollbar.ViewPosition = value;
 +		}
 +
- 		public virtual void Add(UIElement item)
- 		{
- 			this._items.Add(item);
- 			this._innerList.Append(item);
-+			this.UpdateOrder();
-+			this._innerList.Recalculate();
+ 		public virtual void Add(UIElement item) {
+ 			_items.Add(item);
+ 			_innerList.Append(item);
++			UpdateOrder();
++			_innerList.Recalculate();
 +		}
 +
-+		public virtual void AddRange(IEnumerable<UIElement> items)
-+		{
-+			this._items.AddRange(items);
++		public virtual void AddRange(IEnumerable<UIElement> items) {
++			_items.AddRange(items);
 +			foreach (var item in items)
-+				this._innerList.Append(item);
- 			this.UpdateOrder();
- 			this._innerList.Recalculate();
++				_innerList.Append(item);
++
+ 			UpdateOrder();
+ 			_innerList.Recalculate();
  		}
-

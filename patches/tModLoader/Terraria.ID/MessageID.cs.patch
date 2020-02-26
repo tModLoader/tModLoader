@@ -4,7 +4,6 @@
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;
--		public const byte Unknown1 = 1;
 +		//set by the client when the socket connects, client connection state 0->1
 +		//sends a string "Terraria{Main.curRelease}"
 +		//checks if a client is banned, and kicks if so
@@ -13,16 +12,17 @@
 +		//tModLoader changes the version string to ModLoader.versionedName
 +		//if the server accepts vanilla clients and the client sent a vanilla version tModLoader flags them as a vanilla client and communicates using an unmodified protocol
 +		//otherwise sends SyncMods instead of LoadPlayer
+-		public const byte Unknown1 = 1;
 +		public const byte ClientHello = 1;
 +		//kick with reason, displays the text "{ip} was booted: {reason}" in the server console
  		public const byte Kick = 2;
--		public const byte Unknown3 = 3;
 +		//sent once the server has accepted the player and assigned an id
 +		//client connection state 1->2
 +		//client sends SyncPlayer, ClientUUID, PlayerHealth, PlayerMana, PlayerBuffs and SyncEquipment
 +		//tModLoader calls PlayerHooks.SyncPlayer
 +		//client sends RequestWorldInfo
 +		//client connection state 2->3
+-		public const byte Unknown3 = 3;
 +		public const byte LoadPlayer = 3;
 +		//sends a player's name, visual configuration, accessory visibility, difficulty and extra accessory flag
 +		//kicks if the playername is empty, too long, or the same as another player on the server
@@ -33,10 +33,10 @@
 +		//packet will be ignored on the client unless they are quick-stacking to chests because clients have authority over their inventory
 +		//forwarded to other clients if it is not a bank, safe or trash slot
  		public const byte SyncEquipment = 5;
--		public const byte Unknown6 = 6;
 +		//sent by the client in response to LoadPlayer, after all player data has been sent, and the client state is transitioning from 2->3
 +		//server calls RemoteClient.ResetSections and state 1->2
 +		//server responds with WorldInfo and InvasionProgressReport
+-		public const byte Unknown6 = 6;
 +		public const byte RequestWorldInfo = 6;
 +		//time of day, weather, events, world size and name, biome info, killed bosses, etc
 +		//sent whenever any of the properties in the packet change (except time of day, which gets synced whenever other properties change anyway)
@@ -119,9 +119,6 @@
 +		//ItemIO.SendModData appends data to this packet
 +		//forwarded to other clients
  		public const byte SyncItem = 21;
--		public const byte Unknown22 = 22;
--		public const byte Unknown23 = 23;
--		public const byte Unknown24 = 24;
 +		//sets the owner of an item
 +		//if set to a player, sets Item.keepTime to 15
 +		//server rejects packets that don't try and set owner to the sender's playerID
@@ -131,8 +128,11 @@
 +		//sends all info about an NPC, position, velocity, and AI
 +		//NPCLoader.SendExtraAI appends data to this packet
 +		//forwarded to other clients
+-		public const byte Unknown22 = 22;
 +		public const byte SyncNPC = 23;
+-		public const byte Unknown23 = 23;
 +		//hit an NPC, presumably unused because it uses the item damage/knockback directly without the random variance
+-		public const byte Unknown24 = 24;
 +		public const byte UnusedStrikeNPC = 24;
 +		//a line of chat text, with sender and colour information
  		[Obsolete("Deprecated. Use NetTextModule instead.")]
@@ -421,4 +421,3 @@
 +		public const byte ModFile = 252;
  	}
  }
-

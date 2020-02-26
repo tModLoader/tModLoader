@@ -1,12 +1,11 @@
 --- src/Terraria\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
 +++ src/tModLoader\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
-@@ -82,7 +_,7 @@
+@@ -67,7 +_,7 @@
+ 		public static bool ValidTile(int x, int y) => Main.tile[x, y].active() && Main.tile[x, y].type == 395 && Main.tile[x, y].frameY == 0 && Main.tile[x, y].frameX % 36 == 0;
  
- 		public override void WriteExtraData(BinaryWriter writer, bool networkSend)
- 		{
--			writer.Write((short)this.item.netID);
-+			writer.Write((short)(this.item.netID >= ItemID.Count ? 0 : this.item.netID));
- 			writer.Write(this.item.prefix);
- 			writer.Write((short)this.item.stack);
+ 		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
+-			writer.Write((short)item.netID);
++			writer.Write((short)(item.netID >= ItemID.Count ? 0 : item.netID));
+ 			writer.Write(item.prefix);
+ 			writer.Write((short)item.stack);
  		}
-
