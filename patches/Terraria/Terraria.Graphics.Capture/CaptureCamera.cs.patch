@@ -15,7 +15,7 @@
  
  namespace Terraria.Graphics.Capture
  {
-@@ -178,10 +_,17 @@
+@@ -158,10 +_,17 @@
  					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
  					for (int i = 0; i < area.Height; i++) {
  						for (int j = 0; j < area.Width; j++) {
@@ -35,7 +35,7 @@
  							ptr2 += 4;
  							ptr4 += 4;
  						}
-@@ -198,6 +_,7 @@
+@@ -178,6 +_,7 @@
  		private bool SaveImage(int width, int height, ImageFormat imageFormat, string filename) {
  			try {
  				Directory.CreateDirectory(Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar);
@@ -43,7 +43,7 @@
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -208,6 +_,12 @@
+@@ -188,6 +_,12 @@
  					bitmap.Dispose();
  				}
  
@@ -56,7 +56,7 @@
  				return true;
  			}
  			catch (Exception value) {
-@@ -220,19 +_,30 @@
+@@ -200,19 +_,30 @@
  			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
  			string filename2 = Path.Combine(text, filename);
  			Directory.CreateDirectory(text);
@@ -87,7 +87,7 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -240,12 +_,20 @@
+@@ -220,12 +_,20 @@
  					num += texture.Width - width << 2;
  				}
  
@@ -108,7 +108,7 @@
  		}
  
  		private void FinishCapture() {
-@@ -276,6 +_,7 @@
+@@ -256,6 +_,7 @@
  		}
  
  		public void Dispose() {
@@ -116,7 +116,7 @@
  			Monitor.Enter(_captureLock);
  			if (!_isDisposed) {
  				_frameBuffer.Dispose();
-@@ -288,6 +_,7 @@
+@@ -268,6 +_,7 @@
  				_isDisposed = true;
  				Monitor.Exit(_captureLock);
  			}

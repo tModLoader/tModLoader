@@ -1,7 +1,7 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureManager.cs
 +++ src/Terraria\Terraria.Graphics.Capture\CaptureManager.cs
-@@ -11,7 +_,11 @@
- 
+@@ -9,7 +_,11 @@
+ 		private CaptureInterface _interface;
  		private CaptureCamera _camera;
  
 +#if CLIENT
@@ -12,7 +12,7 @@
  
  		public bool Active {
  			get {
-@@ -34,7 +_,9 @@
+@@ -32,7 +_,9 @@
  
  		public CaptureManager() {
  			_interface = new CaptureInterface();

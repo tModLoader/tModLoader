@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\CrashDump.cs
 +++ src/Terraria\Terraria.Utilities\CrashDump.cs
-@@ -57,7 +_,12 @@
+@@ -55,7 +_,12 @@
  
  		private static string CreateDumpName() {
  			DateTime dateTime = DateTime.Now.ToLocalTime();

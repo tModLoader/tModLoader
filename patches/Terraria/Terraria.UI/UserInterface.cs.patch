@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.UI\UserInterface.cs
 +++ src/Terraria\Terraria.UI\UserInterface.cs
-@@ -61,11 +_,13 @@
+@@ -47,11 +_,13 @@
  		}
  
  		private void ResetState() {

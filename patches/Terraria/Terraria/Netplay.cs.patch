@@ -23,19 +23,18 @@
  
  namespace Terraria
  {
-@@ -47,7 +_,11 @@
+@@ -31,6 +_,10 @@
+ 		public static bool spamCheck = false;
  		public static bool anyClients = false;
- 
  		private static Thread ServerThread;
 +#if SERVER
 +		public static UPnPNAT upnpnat;
- 
 +		public static IStaticPortMappingCollection mappings;
 +#endif
  		public static string portForwardIP;
- 
  		public static int portForwardPort;
-@@ -59,9 +_,37 @@
+ 		public static bool portForwardOpen;
+@@ -40,9 +_,37 @@
  		private static void OpenPort() {
  			portForwardIP = GetLocalIPAddress();
  			portForwardPort = ListenPort;
@@ -73,7 +72,7 @@
  		}
  
  		public static string GetLocalIPAddress() {
-@@ -171,6 +_,11 @@
+@@ -152,6 +_,11 @@
  					flag = false;
  				}
  				catch {
@@ -85,7 +84,7 @@
  					if (!disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -591,8 +_,20 @@
+@@ -572,8 +_,20 @@
  		}
  
  		public static void Initialize() {

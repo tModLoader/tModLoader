@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
 +++ src/Terraria\Terraria.Utilities\PlatformUtilities.cs
-@@ -1,15 +_,89 @@
+@@ -1,11 +_,85 @@
 +#if !WINDOWS
 +using SDL2;
 +using System;
@@ -41,13 +41,10 @@
 +#endif
 +#if WINDOWS
  		public const bool IsXNA = true;
- 
  		public const bool IsFNA = false;
- 
  		public const bool IsWindows = true;
 +#else
 +		public const bool IsXNA = false;
- 
 +		public const bool IsFNA = true;
 +
 +		public const bool IsWindows = false;
@@ -58,7 +55,6 @@
 +#else
  		public const bool IsOSX = false;
 +#endif
- 
 +#if LINUX
 +		public const bool IsLinux = true;
 +#else

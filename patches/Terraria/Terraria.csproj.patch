@@ -1,13 +1,12 @@
 --- src/decompiled\Terraria.csproj
 +++ src/Terraria\Terraria.csproj
-@@ -1,16 +_,18 @@
+@@ -1,4 +_,5 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +  <Import Project="..\TerrariaSteamPath.targets" />
    <PropertyGroup>
--    <TargetFramework>net45</TargetFramework>
-+    <TargetFramework>net40</TargetFramework>
+     <TargetFramework>net40</TargetFramework>
      <OutputType>WinExe</OutputType>
-     <Version>1.3.5.3</Version>
+@@ -6,11 +_,12 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © Re-Logic 2017</Copyright>
      <RootNamespace />

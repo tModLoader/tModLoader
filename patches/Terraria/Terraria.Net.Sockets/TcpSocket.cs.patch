@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Net.Sockets\TcpSocket.cs
 +++ src/Terraria\Terraria.Net.Sockets\TcpSocket.cs
-@@ -65,7 +_,13 @@
+@@ -57,7 +_,13 @@
  		}
  
  		private void SendCallback(IAsyncResult result) {
@@ -14,7 +14,7 @@
  			try {
  				_connection.GetStream().EndWrite(result);
  				tuple.Item1(tuple.Item2);
-@@ -79,7 +_,16 @@
+@@ -71,7 +_,16 @@
  		}
  
  		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {

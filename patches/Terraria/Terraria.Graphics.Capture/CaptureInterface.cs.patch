@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics.Capture\CaptureInterface.cs
 +++ src/Terraria\Terraria.Graphics.Capture\CaptureInterface.cs
-@@ -917,8 +_,19 @@
+@@ -881,8 +_,19 @@
  						ToggleCamera();
  					}
  

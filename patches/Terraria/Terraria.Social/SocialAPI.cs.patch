@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Social\SocialAPI.cs
 +++ src/Terraria\Terraria.Social\SocialAPI.cs
-@@ -25,7 +_,12 @@
+@@ -19,7 +_,12 @@
  		public static void Initialize(SocialMode? mode = null) {
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
@@ -13,7 +13,7 @@
  			}
  
  			_mode = mode.Value;
-@@ -63,7 +_,11 @@
+@@ -57,7 +_,11 @@
  			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();

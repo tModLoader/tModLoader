@@ -20,9 +20,9 @@
  		private struct SpriteData
  		{
  			public Vector4 Source;
-@@ -42,9 +_,92 @@
+@@ -32,7 +_,90 @@
+ 		private SpriteData[] _spriteDataQueue = new SpriteData[2048];
  		private Texture2D[] _spriteTextures;
- 
  		private int _queuedSpriteCount;
 +#else
 +		private class TextureComparer : IComparer<BatchDrawInfo>
@@ -106,14 +106,12 @@
 +
 +		private readonly GraphicsDevice _graphicsDevice;
 +#endif
- 
  		private SpriteBatch _spriteBatch;
- 
 +#if WINDOWS
  		private static Vector2 _vector2Zero;
- 
  		private static Rectangle? _nullRectangle;
-@@ -334,5 +_,281 @@
+ 		private DynamicVertexBuffer _vertexBuffer;
+@@ -316,5 +_,281 @@
  				count -= num3;
  			}
  		}

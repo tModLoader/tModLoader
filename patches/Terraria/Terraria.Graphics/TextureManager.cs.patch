@@ -1,6 +1,6 @@
 --- src/decompiled\Terraria.Graphics\TextureManager.cs
 +++ src/Terraria\Terraria.Graphics\TextureManager.cs
-@@ -36,6 +_,7 @@
+@@ -31,6 +_,7 @@
  		public static Texture2D Load(string name) {
  			if (!_textures.ContainsKey(name)) {
  				Texture2D texture2D = BlankTexture;
@@ -8,7 +8,7 @@
  				if (name != "" && name != null) {
  					try {
  						texture2D = Main.instance.OurLoad<Texture2D>(name);
-@@ -45,6 +_,7 @@
+@@ -40,6 +_,7 @@
  					}
  				}
  
