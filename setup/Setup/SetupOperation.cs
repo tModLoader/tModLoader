@@ -9,17 +9,20 @@ namespace Terraria.ModLoader.Setup
 {
 	public abstract class SetupOperation
 	{
+		protected delegate void UpdateStatus(string status);
+		protected delegate void Worker(UpdateStatus updateStatus);
+
 		protected class WorkItem
 		{
 			public readonly string status;
-			public readonly Action action;
+			public readonly Worker worker;
 
-			public WorkItem(string status, Action action) {
+			public WorkItem(string status, Worker worker) {
 				this.status = status;
-				this.action = action;
+				this.worker = worker;
 			}
 
-			public WorkItem(string status, Func<Task> action) : this(status, () => action().GetAwaiter().GetResult()) { } //todo sync|async barrier here, probably wraps exceptions
+			public WorkItem(string status, Action action) : this(status, _ => action()) { }
 		}
 
 		protected void ExecuteParallel(List<WorkItem> items, bool resetProgress = true, int maxDegree = 0) {
@@ -29,20 +32,30 @@ namespace Terraria.ModLoader.Setup
 					progress = 0;
 				}
 
-				var working = new List<string>();
-				void UpdateStatus() => taskInterface.SetStatus(string.Join("\r\n", working));
+				var working = new List<Ref<string>>();
+				void UpdateStatus() => taskInterface.SetStatus(string.Join("\r\n", working.Select(r => r.item)));
 
 				Parallel.ForEach(Partitioner.Create(items, EnumerablePartitionerOptions.NoBuffering),
 					new ParallelOptions { MaxDegreeOfParallelism = maxDegree > 0 ? maxDegree : Environment.ProcessorCount },
 					item => {
 						taskInterface.CancellationToken.ThrowIfCancellationRequested();
+						var status = new Ref<string>(item.status);
 						lock (working) {
-							working.Add(item.status);
+							working.Add(status);
 							UpdateStatus();
 						}
-						item.action();
+
+						void SetStatus(string s) {
+							lock(working) {
+								status.item = s;
+								UpdateStatus();
+							}
+						}
+
+						item.worker(SetStatus);
+
 						lock (working) {
-							working.Remove(item.status);
+							working.Remove(status);
 							taskInterface.SetProgress(++progress);
 							UpdateStatus();
 						}

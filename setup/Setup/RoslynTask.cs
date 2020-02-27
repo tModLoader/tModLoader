@@ -1,6 +1,5 @@
 ﻿using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.IO;
@@ -76,13 +75,6 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		protected abstract Task<Document> Process(Document doc);
-
-		public static async Task<Document> Visit(Document document, CSharpSyntaxVisitor<SyntaxNode> visitor) {
-			if (!(await document.GetSyntaxRootAsync() is SyntaxNode root))
-				return document;
-
-			return document.WithSyntaxRoot(visitor.Visit(root));
-		}
 
 		private static Project adhocCSharpProject = new AdhocWorkspace().AddProject("", LanguageNames.CSharp);
 		public static async Task<string> TransformSource(string source, CancellationToken cancel, Func<Document, CancellationToken, Task<Document>> transform) {

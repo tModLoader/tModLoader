@@ -229,7 +229,7 @@ namespace Terraria.ModLoader.Setup
 
 		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string conditional = null)
 		{
-			return new WorkItem("Decompiling: " + src.Key, () =>
+			return new WorkItem("Decompiling: " + src.Key, updateStatus =>
 			{
 				var path = Path.Combine(srcDir, src.Key);
 				CreateParentDirectory(path);
@@ -247,8 +247,10 @@ namespace Terraria.ModLoader.Setup
 						w.WriteLine("#endif");
 
 					string source = w.ToString();
-					if (formatOutput) //would be nice to change the title to "Formatting:" at this stage but meh
-						source = RoslynTask.TransformSource(source, taskInterface.CancellationToken, (doc, ct) => FormatTask.Format(doc, ct, true)).GetAwaiter().GetResult(); //this will probably still wrap the exception, not ideal, but oh well
+					if (formatOutput) {
+						updateStatus("Formatting: " + src.Key);
+						source = FormatTask.Format(source, taskInterface.CancellationToken, true);
+					}
 
 					File.WriteAllText(path, source);
 				}
