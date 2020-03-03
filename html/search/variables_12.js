@@ -22,7 +22,7 @@ var searchData=
   ['showsaturationandlightness',['showSaturationAndLightness',['../class_terraria_1_1_mod_loader_1_1_config_1_1_color_h_s_l_slider_attribute.html#ad42bac809c5ef8650840da2b1d644725',1,'Terraria::ModLoader::Config::ColorHSLSliderAttribute']]],
   ['skin',['Skin',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#af25eed4c94d182d5a7dd942c50b49918',1,'Terraria::ModLoader::PlayerLayer']]],
   ['skincolor',['skinColor',['../struct_terraria_1_1_mod_loader_1_1_player_head_draw_info.html#a368921a5f009d74435c2553070f7ba7f',1,'Terraria::ModLoader::PlayerHeadDrawInfo']]],
-  ['sky',['sky',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e',1,'Terraria.ModLoader.NPCSpawnInfo.sky()'],['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc',1,'Terraria.ModLoader.SpawnCondition.Sky()']]],
+  ['sky',['Sky',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#abf541c53347d08d639fe388daacee9fc',1,'Terraria.ModLoader.SpawnCondition.Sky()'],['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aaf1db6c1c5c57bc85b858ce0505c164e',1,'Terraria.ModLoader.NPCSpawnInfo.sky()']]],
   ['snailcritter',['SnailCritter',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#aae7f2e9393072a02b6ecd10ad5b9ff36',1,'Terraria::ModLoader::SpawnCondition']]],
   ['solareclipse',['SolarEclipse',['../class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a44309c3e80f43ed57cf9d1bd16902dc1',1,'Terraria::ModLoader::SpawnCondition']]],
   ['solarshield',['SolarShield',['../class_terraria_1_1_mod_loader_1_1_player_layer.html#a1424df92ca7322828d2e8b437a34d565',1,'Terraria::ModLoader::PlayerLayer']]],
