@@ -315,6 +315,17 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		public static void ValidateSigns() {
+			for (int i = 0; i < Main.sign.Length; i++) {
+				if (Main.sign[i] != null) {
+					Tile tile = Main.tile[Main.sign[i].x, Main.sign[i].y];
+					if (!(tile.active() && Main.tileSign[(int)tile.type])) {
+						Main.sign[i] = null;
+					}
+				}
+			}
+		}
+
 		private static void LoadLegacy(byte[] buffer) {
 			const int numByteFlags = 1;
 			using (MemoryStream stream = new MemoryStream(buffer)) {

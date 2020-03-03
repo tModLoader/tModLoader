@@ -653,6 +653,23 @@
  			}
  		}
  
+@@ -4375,8 +_,15 @@
+ 		{
+ 			while (!Netplay.disconnect)
+ 			{
++				string text = Console.ReadLine();
++				ExecuteCommand(text, new ConsoleCommandCaller());
++			}
++		}
++
++		public static void ExecuteCommand(string text, CommandCaller commandCaller)
++		{
++			{
+ 				Console.Write(": ");
+-				string text = Console.ReadLine();
+ 				string text2 = text;
+ 				text = text.ToLower();
+ 				try
 @@ -4423,13 +_,23 @@
  								num = text3.Length;
  							}
@@ -674,7 +691,7 @@
 +						foreach (var entry in modHelpList)
 +							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
 +					}
-+					else if (CommandManager.HandleCommand(text, new ConsoleCommandCaller())) {}
++					else if (CommandManager.HandleCommand(text, commandCaller)) {}
  					else if (text == Language.GetTextValue("CLI.Settle_Command"))
  					{
  						if (!Liquid.panicMode)
@@ -687,14 +704,21 @@
  					}
  					else
  					{
-@@ -4556,6 +_,7 @@
+@@ -4556,11 +_,12 @@
  							try
  							{
  								Console.Clear();
+-								continue;
 +								Logging.ResetPastExceptions(); // "CLI.Clear_Command" above.
- 								continue;
++								return;
  							}
  							catch
+ 							{
+-								continue;
++								return;
+ 							}
+ 						}
+ 						if (text == Language.GetTextValue("CLI.Playing_Command"))
 @@ -4761,7 +_,7 @@
  			Main.instance = this;
  #if CLIENT

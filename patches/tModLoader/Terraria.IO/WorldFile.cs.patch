@@ -150,6 +150,15 @@
  				{
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
+@@ -2181,7 +_,7 @@
+ 				int num3 = reader.ReadInt32();
+ 				Tile tile = Main.tile[num2, num3];
+ 				Sign sign;
+-				if (tile.active() && Main.tileSign[(int)tile.type])
++				if (true) //if (tile.active() && Main.tileSign[(int)tile.type])
+ 				{
+ 					sign = new Sign();
+ 					sign.text = text;
 @@ -2302,7 +_,7 @@
  			{
  				Stream baseStream = fileIO.BaseStream;

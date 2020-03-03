@@ -104,6 +104,7 @@ namespace Terraria.ModLoader.IO
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream))
 				ReadTileData(reader, tables);
+			WorldIO.ValidateSigns();
 		}
 
 		internal static void LoadLegacyTiles(BinaryReader reader) {

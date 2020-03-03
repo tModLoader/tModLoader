@@ -249,6 +249,15 @@
  							{
  								short num8 = (short)Chest.FindChest(j, i);
  								if (num8 != -1)
+@@ -1625,7 +_,7 @@
+ 									arg_240_0[(int)expr_238] = num10;
+ 								}
+ 							}
+-							if (tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
++							if ((tile2.type == 425 || tile2.type >= TileID.Count && Main.tileSign[tile2.type]) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0)
+ 							{
+ 								short num11 = (short)Sign.ReadSign(j, i, true);
+ 								if (num11 != -1)
 @@ -1679,7 +_,17 @@
  						if (tile2.wall != 0)
  						{
