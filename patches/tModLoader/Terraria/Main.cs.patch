@@ -695,16 +695,18 @@
  					}
  					else
  					{
-@@ -4556,11 +_,10 @@
+@@ -4556,11 +_,12 @@
  							try
  							{
  								Console.Clear();
 -								continue;
 +								Logging.ResetPastExceptions(); // "CLI.Clear_Command" above.
++								return;
  							}
  							catch
  							{
 -								continue;
++								return;
  							}
  						}
  						if (text == Language.GetTextValue("CLI.Playing_Command"))
