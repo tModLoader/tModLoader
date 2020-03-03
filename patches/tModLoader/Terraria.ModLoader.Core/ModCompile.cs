@@ -374,9 +374,9 @@ namespace Terraria.ModLoader.Core
 			status.SetProgress(packedResourceCount = 0, resources.Count);
 			Parallel.ForEach(resources, resource => AddResource(mod, resource));
 
-			// add dll references from the bin folder
+			// add dll references from the -eac bin folder
 			var libFolder = Path.Combine(mod.path, "lib");
-			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)))
+			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, null)))
 				if (!dllPath.StartsWith(libFolder))
 					mod.modFile.AddFile("lib/"+Path.GetFileName(dllPath), File.ReadAllBytes(dllPath));
 		}
@@ -554,7 +554,7 @@ namespace Terraria.ModLoader.Core
 				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
 
 			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
+			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, xna)));
 
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods) {
@@ -595,8 +595,18 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private string DllRefPath(BuildingMod mod, string dllName) {
+		private string DllRefPath(BuildingMod mod, string dllName, bool? xna) {
 			var path = Path.Combine(mod.path, "lib", dllName + ".dll");
+
+			if (xna.HasValue) { //check for platform specific dll
+				string pathPlat = path + (xna.Value ? ".XNA.dll" : ".FNA.dll");
+				if (File.Exists(pathPlat))
+					return pathPlat;
+			}
+
+			//fallback to main .dll
+			path += ".dll";
+
 			if (File.Exists(path))
 				return path;
 
