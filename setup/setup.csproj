@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>True</UseWindowsForms>
+    <UseWPF>True</UseWPF>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
     <ApplicationIcon>../patches/tModLoader/Icon.ico</ApplicationIcon>
     <TieredCompilation>false</TieredCompilation> <!-- be nice if we didn't need this, but MonoMod.RuntimeDetour isn't compatible with tiered jit currently -->
   </PropertyGroup>
   <ItemGroup>
+    <Page Remove="PatchReviewer\**" />
     <Compile Remove="PatchReviewer\**" />
     <EmbeddedResource Remove="PatchReviewer\**" />
     <None Remove="PatchReviewer\**" />
