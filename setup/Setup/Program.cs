@@ -139,6 +139,7 @@ namespace Terraria.ModLoader.Setup
 
 		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
 		private static void UpdateSteamDirTargetsFile() {
+			SetupOperation.CreateParentDirectory(targetsFilePath);
 			File.WriteAllText(targetsFilePath,
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">

@@ -1,1 +1,1 @@
-start setup\bin\Debug\netcoreapp3.0\setup.exe
+start setup\bin\Debug\netcoreapp3.1\setup.exe
