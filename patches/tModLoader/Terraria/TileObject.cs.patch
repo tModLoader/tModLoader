@@ -1,29 +1,29 @@
 --- src/Terraria\Terraria\TileObject.cs
 +++ src/tModLoader\Terraria\TileObject.cs
-@@ -135,7 +_,7 @@
+@@ -134,7 +_,7 @@
  			return true;
  		}
  
 -		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false) {
 +		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, bool checkStay = false) {
- 			TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
+ 			TileObjectData tileData = TileObjectData.GetTileData(type, style);
  			objectData = Empty;
  			if (tileData == null)
 @@ -277,7 +_,7 @@
- 					for (int j = 0; j < tileData2.Width; j++) {
- 						for (int k = 0; k < tileData2.Height; k++) {
- 							Tile tileSafely = Framing.GetTileSafely(num8 + j, num9 + k);
--							bool flag2 = !tileData2.LiquidPlace(tileSafely);
-+							bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
- 							bool flag3 = false;
- 							if (tileData2.AnchorWall) {
- 								num25 += 1f;
+ 				for (int i = 0; i < tileData2.Width; i++) {
+ 					for (int j = 0; j < tileData2.Height; j++) {
+ 						Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
+-						bool flag2 = !tileData2.LiquidPlace(tileSafely);
++						bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
+ 						bool flag3 = false;
+ 						if (tileData2.AnchorWall) {
+ 							num25 += 1f;
 @@ -288,7 +_,7 @@
- 							}
+ 						}
  
- 							bool flag4 = false;
--							if (tileSafely.active() && !Main.tileCut[tileSafely.type])
-+							if (tileSafely.active() && !Main.tileCut[tileSafely.type] && !checkStay)
- 								flag4 = true;
+ 						bool flag4 = false;
+-						if (tileSafely.active() && !Main.tileCut[tileSafely.type])
++						if (tileSafely.active() && !Main.tileCut[tileSafely.type] && !checkStay)
+ 							flag4 = true;
  
- 							if (flag4 || flag2 || flag3) {
+ 						if (flag4 || flag2 || flag3) {

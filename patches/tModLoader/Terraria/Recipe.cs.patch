@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\Recipe.cs
 +++ src/tModLoader\Terraria\Recipe.cs
-@@ -2,6 +_,7 @@
+@@ -1,6 +_,7 @@
  using System.Collections.Generic;
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
@@ -8,31 +8,31 @@
  
  namespace Terraria
  {
-@@ -34,7 +_,7 @@
+@@ -32,7 +_,7 @@
  
  		public bool ProcessGroupsForText(int type, out string theText) {
- 			foreach (int current in acceptedGroups) {
--				if (RecipeGroup.recipeGroups[current].ValidItems.Contains(type)) {
-+				if (RecipeGroup.recipeGroups[current].ContainsItem(type)) {
- 					theText = RecipeGroup.recipeGroups[current].GetText();
+ 			foreach (int acceptedGroup in acceptedGroups) {
+-				if (RecipeGroup.recipeGroups[acceptedGroup].ValidItems.Contains(type)) {
++				if (RecipeGroup.recipeGroups[acceptedGroup].ContainsItem(type)) {
+ 					theText = RecipeGroup.recipeGroups[acceptedGroup].GetText();
  					return true;
  				}
-@@ -46,7 +_,7 @@
+@@ -44,7 +_,7 @@
  
  		public bool AcceptedByItemGroups(int invType, int reqType) {
- 			foreach (int current in acceptedGroups) {
--				if (RecipeGroup.recipeGroups[current].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[current].ValidItems.Contains(reqType))
-+				if (RecipeGroup.recipeGroups[current].ContainsItem(invType) && RecipeGroup.recipeGroups[current].ContainsItem(reqType))
+ 			foreach (int acceptedGroup in acceptedGroups) {
+-				if (RecipeGroup.recipeGroups[acceptedGroup].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[acceptedGroup].ValidItems.Contains(reqType))
++				if (RecipeGroup.recipeGroups[acceptedGroup].ContainsItem(invType) && RecipeGroup.recipeGroups[current].ContainsItem(reqType))
  					return true;
  			}
  
-@@ -67,6 +_,10 @@
+@@ -68,6 +_,10 @@
  					break;
  
- 				int num = item.stack;
+ 				int num = item2.stack;
 +				ModRecipe modRecipe = this as ModRecipe;
 +				if (modRecipe != null)
-+					num = modRecipe.ConsumeItem(item.type, item.stack);
++					num = modRecipe.ConsumeItem(item2.type, item2.stack);
 +
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  					if (num > 1) {
@@ -170,13 +170,13 @@
  		}
  
  		public static void FindRecipes() {
-@@ -371,7 +_,7 @@
- 							flag2 = false;
+@@ -338,7 +_,7 @@
+ 							flag = false;
  					}
  
--					if (flag2) {
-+					if (flag2 && RecipeHooks.RecipeAvailable(Main.recipe[num4])) {
- 						Main.availableRecipe[Main.numAvailableRecipes] = num4;
+-					if (flag) {
++					if (flag && RecipeHooks.RecipeAvailable(Main.recipe[n])) {
+ 						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
 @@ -456,6 +_,8 @@

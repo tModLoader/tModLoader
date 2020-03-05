@@ -15,17 +15,17 @@
 +			0.7f,
  			0.7f
  		};
- 		public static float[] rightScale = new float[] {
-@@ -167,7 +_,7 @@
+ 		public static float[] rightScale = new float[15] {
+@@ -166,7 +_,7 @@
  			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num7 = flag5 ? 1 : 0;
 -			int num8 = 5 + num7 + 2;
 +			int num8 = 5 + num7 + 2 + 1; // Add 1 for ModConfig menu
- 			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + num3 * 5 / 2);
- 			Vector2 vector2 = new Vector2(0f, value2.Y - num3 * 5) / (num8 + 1);
+ 			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
+ 			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (num8 + 1);
  			if (flag)
-@@ -231,6 +_,20 @@
+@@ -230,6 +_,20 @@
  				if (flag4) {
  					Close();
  					IngameFancyUI.OpenKeybinds();

@@ -45,7 +45,7 @@
  			}
  		}
  
-@@ -655,6 +_,7 @@
+@@ -621,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
