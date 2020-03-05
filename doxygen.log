@@ -783,6 +783,7 @@ Generating docs for compound Terraria::ModLoader::ModBuff...
 Generating caller graph for function Terraria.ModLoad/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:122: warning: argument 'itemClone' of command @param is not found in the argument list of Terraria.ModLoader.ModItem::Clone(Item item)
 /home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModItem.cs:207: warning: The following parameters of Terraria.ModLoader.ModItem.PrefixChance(int pre, UnifiedRandom rand) are not documented:
   parameter 'rand'
+/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ModNPC.cs:532: warning: argument 'npc' of command @param is not found in the argument list of Terraria.ModLoader.ModNPC::DrawBehind(int index)
 er.ModBuff.Autoload
 Generating caller graph for function Terraria.ModLoader.ModBuff.SetDefaults
 Generating docs for compound Terraria::ModLoader::ModCactus...
@@ -2313,5 +2314,5 @@ Patching output file 159/162
 Patching output file 160/162
 Patching output file 161/162
 Patching output file 162/162
-lookup cache used 11697/131072 hits=102042 misses=12260
+lookup cache used 11703/131072 hits=102119 misses=12266
 finished...

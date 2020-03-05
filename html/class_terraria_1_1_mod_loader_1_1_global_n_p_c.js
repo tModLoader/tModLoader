@@ -15,6 +15,7 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "CheckActive", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6803569c436f2938d5ac711920e706ec", null ],
     [ "CheckDead", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f", null ],
     [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a", null ],
+    [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2e93b458e93b6de51dedfa5423ccf54d", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ace0105b7dd87ff07bd2af18fe0e9ac18", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adc16e7b8d69586c145c4aedcb1fd4793", null ],
     [ "DrawTownAttackGun", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#add58c2912ac317a9df0026b450795544", null ],

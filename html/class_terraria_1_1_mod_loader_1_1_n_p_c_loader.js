@@ -115,6 +115,7 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
     [ "HookCanHitPlayer", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a53dc5ffac37695e1ad7b18cba18ee858", null ],
     [ "HookCheckActive", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a9961afe343b09dce58e7ce93d402bb75", null ],
     [ "HookCheckDead", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a92ff86c7842a9f79f479a565e25f0d54", null ],
+    [ "HookDrawBehind", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a56bec8c74f47fba414891a45b6e31b56", null ],
     [ "HookDrawEffects", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a98978fd4fb410f56198db142c41d7098", null ],
     [ "HookDrawHealthBar", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae75568b559ec0be5138206afb811414c", null ],
     [ "HookDrawTownAttackGun", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a644833014c32f82027bbf29f3d5e2aca", null ],
