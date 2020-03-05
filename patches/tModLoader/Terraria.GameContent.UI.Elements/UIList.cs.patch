@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
-@@ -26,9 +_,9 @@
+@@ -25,9 +_,9 @@
  			}
  		}
  
@@ -12,8 +12,8 @@
  		private float _innerListHeight;
  		public float ListPadding = 5f;
  
-@@ -57,9 +_,23 @@
- 			}
+@@ -60,9 +_,23 @@
+ 			_scrollbar.ViewPosition = _items[num].Top.Pixels;
  		}
  
 +		public float ViewPosition {

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameInput\TriggerNames.cs
 +++ src/tModLoader\Terraria.GameInput\TriggerNames.cs
-@@ -6,6 +_,9 @@
+@@ -4,6 +_,9 @@
  	{
  		public const string MouseLeft = "MouseLeft";
  		public const string MouseRight = "MouseRight";

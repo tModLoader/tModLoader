@@ -1,9 +1,9 @@
 --- src/Terraria\Terraria.GameContent.UI\EmoteBubble.cs
 +++ src/tModLoader\Terraria.GameContent.UI\EmoteBubble.cs
-@@ -10,7 +_,7 @@
+@@ -9,7 +_,7 @@
+ {
  	public class EmoteBubble
  	{
- 		private const int frameSpeed = 8;
 -		private static int[] CountNPCs = new int[580];
 +		internal static int[] CountNPCs = new int[580];
  		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();

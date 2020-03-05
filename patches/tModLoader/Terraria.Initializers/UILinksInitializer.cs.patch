@@ -1,7 +1,7 @@
 --- src/Terraria\Terraria.Initializers\UILinksInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\UILinksInitializer.cs
-@@ -3,6 +_,9 @@
- using System.Collections.Generic;
+@@ -2,6 +_,9 @@
+ using System;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ModLoader;
@@ -10,41 +10,35 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -553,11 +_,11 @@
- 				}) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, new List<string>[] {
- 					PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]
- 				}) + PlayerInput.BuildCommand(Lang.misc[69].Value, true, new List<string>[] {
--					PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]
-+						PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]
--				});
-+					});
+@@ -490,7 +_,7 @@
+ 				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
  			};
  
 -			for (int num8 = 600; num8 <= 650; num8++) {
 +			for (int num8 = 600; num8 <= 698; num8++) {
- 				UILinkPoint value11 = new UILinkPoint(num8, true, num8 + 10, num8 - 10, num8 - 1, num8 + 1);
- 				cp8.LinkMap.Add(num8, value11);
+ 				UILinkPoint value11 = new UILinkPoint(num8, enabled: true, num8 + 10, num8 - 10, num8 - 1, num8 + 1);
+ 				cp13.LinkMap.Add(num8, value11);
  			}
-@@ -567,7 +_,7 @@
- 				if (num24 == 0)
- 					num24 = 100;
+@@ -500,7 +_,7 @@
+ 				if (num50 == 0)
+ 					num50 = 100;
  
--				for (int num25 = 0; num25 < 50; num25++) {
-+				for (int num25 = 0; num25 < 98; num25++) {
- 					cp8.LinkMap[600 + num25].Up = num25 % num24 == 0 ? -1 : 600 + num25 - 1;
- 					if (cp8.LinkMap[600 + num25].Up == -1) {
- 						if (num25 >= num24 * 2)
-@@ -1570,6 +_,13 @@
- 					return;
+-				for (int num51 = 0; num51 < 50; num51++) {
++				for (int num51 = 0; num51 < 98; num51++) {
+ 					cp13.LinkMap[600 + num51].Up = ((num51 % num50 == 0) ? (-1) : (600 + num51 - 1));
+ 					if (cp13.LinkMap[600 + num51].Up == -1) {
+ 						if (num51 >= num50 * 2)
+@@ -1370,6 +_,13 @@
+ 					break;
  				case 6:
  					UIVirtualKeyboard.Cancel();
-+					return;
++					break;
 +				case 100:
 +					Main.PlaySound(11, -1, -1, 1, 1f, 0f);
 +					Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
-+					return;
++					break;
 +				case 101:
 +					Interface.modBrowser.BackClick(null, null);
- 					return;
- 				default:
- 					return;
+ 					break;
+ 			}
+ 		}

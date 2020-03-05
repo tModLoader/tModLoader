@@ -85,7 +85,7 @@
  			get {
  				if (_alternates == null)
  					return _baseObject.Alternates;
-@@ -526,7 +_,7 @@
+@@ -530,7 +_,7 @@
  			}
  		}
  
@@ -94,7 +94,7 @@
  			get {
  				if (_subTiles == null)
  					return _baseObject.SubTiles;
-@@ -1237,6 +_,18 @@
+@@ -1234,6 +_,18 @@
  				if (_liquidDeath.water)
  					WaterPlacement = LiquidPlacement.NotAllowed;
  			}
@@ -113,7 +113,7 @@
  		}
  
  		private void WriteCheck() {
-@@ -1244,7 +_,7 @@
+@@ -1241,13 +_,15 @@
  				throw new FieldAccessException("Tile data is locked and only accessible during startup.");
  		}
  
@@ -122,24 +122,24 @@
  			if (checkTile == null)
  				return false;
  
-@@ -1252,12 +_,16 @@
+ 			if (checkTile.liquid > 0) {
  				switch (checkTile.liquidType()) {
+ 					case 1:
++						if (checkStay && !LavaDeath)
++							break;
+ 						if (LavaPlacement == LiquidPlacement.NotAllowed)
+ 							return false;
+ 						if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
+@@ -1255,6 +_,8 @@
+ 						break;
  					case 0:
  					case 2:
 +						if (checkStay && !WaterDeath)
 +							break;
  						if (WaterPlacement == LiquidPlacement.NotAllowed)
  							return false;
- 						if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != 255)
- 							return false;
- 						break;
- 					case 1:
-+						if (checkStay && !LavaDeath)
-+							break;
- 						if (LavaPlacement == LiquidPlacement.NotAllowed)
- 							return false;
- 						if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != 255)
-@@ -1362,13 +_,17 @@
+ 						if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
+@@ -1358,13 +_,17 @@
  			newTile = new TileObjectData(_baseObject);
  		}
  
@@ -159,7 +159,7 @@
  			newSubTile.Calculate();
  			List<TileObjectData> list;
  			if (!newTile._hasOwnSubTiles) {
-@@ -1390,7 +_,7 @@
+@@ -1386,7 +_,7 @@
  			newSubTile = new TileObjectData(_baseObject);
  		}
  
@@ -168,7 +168,7 @@
  			newAlternate.Calculate();
  			if (!newTile._hasOwnAlternates)
  				newTile.Alternates = new List<TileObjectData>();
-@@ -3288,7 +_,6 @@
+@@ -3278,7 +_,6 @@
  
  			addAlternate(27);
  			addTile(20);
@@ -176,10 +176,10 @@
  		}
  
  		public static bool CustomPlace(int type, int style) {
-@@ -3475,6 +_,68 @@
- 				return;
- 
- 			baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);
+@@ -3432,6 +_,68 @@
+ 			TileObjectData tileData = GetTileData(type, style);
+ 			if (tileData != null)
+ 				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);
 +		}
 +
 +		public static int GetTileStyle(Tile getTile) {

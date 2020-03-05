@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\MoonLordSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\MoonLordSky.cs
-@@ -60,11 +_,11 @@
+@@ -59,11 +_,11 @@
  
  		public override float GetCloudAlpha() => 0f;
  

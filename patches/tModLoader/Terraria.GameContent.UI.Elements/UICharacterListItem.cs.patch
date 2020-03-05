@@ -19,8 +19,8 @@
 +		private Texture2D _configTexture;
  		private UIImageButton _deleteButton;
  
- 		public bool IsFavorite {
-@@ -41,6 +_,8 @@
+ 		public bool IsFavorite => _data.IsFavorite;
+@@ -37,6 +_,8 @@
  			_buttonFavoriteInactiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteInactive");
  			_buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			_buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
@@ -29,7 +29,7 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -86,15 +_,82 @@
+@@ -82,15 +_,82 @@
  			if (!_data.IsFavorite)
  				Append(uIImageButton4);
  
@@ -100,21 +100,21 @@
 +
 +			//	buttonLabelLeft += 24;
 +			//}
- 			_buttonLabel = new UIText("", 1f, false);
+ 			_buttonLabel = new UIText("");
  			_buttonLabel.VAlign = 1f;
 -			_buttonLabel.Left.Set(80f, 0f);
 +			_buttonLabel.Left.Set(buttonLabelLeft, 0f);
  			_buttonLabel.Top.Set(-3f, 0f);
  			Append(_buttonLabel);
- 			_deleteButtonLabel = new UIText("", 1f, false);
+ 			_deleteButtonLabel = new UIText("");
  			_deleteButtonLabel.VAlign = 1f;
  			_deleteButtonLabel.HAlign = 1f;
 -			_deleteButtonLabel.Left.Set(-30f, 0f);
 +			_deleteButtonLabel.Left.Set(data.customDataFail == null ? -30f : -54f, 0f);
  			_deleteButtonLabel.Top.Set(-3f, 0f);
  			Append(_deleteButtonLabel);
- 			uIImageButton.SetSnapPoint("Play", snapPointIndex, null, null);
-@@ -128,6 +_,14 @@
+ 			uIImageButton.SetSnapPoint("Play", snapPointIndex);
+@@ -120,6 +_,14 @@
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
  
@@ -129,8 +129,8 @@
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText("");
  		}
-@@ -188,6 +_,13 @@
- 				uIList.UpdateOrder();
+@@ -181,6 +_,13 @@
+ 			(Parent.Parent as UIList)?.UpdateOrder();
  		}
  
 +		private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -142,18 +142,18 @@
 +
  		public override int CompareTo(object obj) {
  			UICharacterListItem uICharacterListItem = obj as UICharacterListItem;
- 			if (uICharacterListItem == null)
-@@ -236,11 +_,11 @@
+ 			if (uICharacterListItem != null) {
+@@ -230,11 +_,11 @@
  			DrawPanel(spriteBatch, vector2, num2);
  			spriteBatch.Draw(Main.heartTexture, vector2 + new Vector2(5f, 2f), Color.White);
  			vector2.X += 10f + (float)Main.heartTexture.Width;
--			Utils.DrawBorderString(spriteBatch, _data.Player.statLifeMax + " HP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
-+			Utils.DrawBorderString(spriteBatch, _data.Player.statLifeMax2 + " HP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
+-			Utils.DrawBorderString(spriteBatch, _data.Player.statLifeMax + " HP", vector2 + new Vector2(0f, 3f), Color.White);
++			Utils.DrawBorderString(spriteBatch, _data.Player.statLifeMax2 + " HP", vector2 + new Vector2(0f, 3f), Color.White);
  			vector2.X += 65f;
  			spriteBatch.Draw(Main.manaTexture, vector2 + new Vector2(5f, 2f), Color.White);
  			vector2.X += 10f + (float)Main.manaTexture.Width;
--			Utils.DrawBorderString(spriteBatch, _data.Player.statManaMax + " MP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
-+			Utils.DrawBorderString(spriteBatch, _data.Player.statManaMax2 + " MP", vector2 + new Vector2(0f, 3f), Color.White, 1f, 0f, 0f, -1);
+-			Utils.DrawBorderString(spriteBatch, _data.Player.statManaMax + " MP", vector2 + new Vector2(0f, 3f), Color.White);
++			Utils.DrawBorderString(spriteBatch, _data.Player.statManaMax2 + " MP", vector2 + new Vector2(0f, 3f), Color.White);
  			vector.X += num2 + 5f;
  			Vector2 vector3 = vector;
  			float num3 = 140f;

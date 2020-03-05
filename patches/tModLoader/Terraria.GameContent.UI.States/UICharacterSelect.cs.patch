@@ -26,22 +26,22 @@
  			UIElement uIElement = new UIElement();
 @@ -78,12 +_,7 @@
  		private void NewCharacterClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
+ 			Main.PlaySound(10);
  			Player player = new Player();
--			player.inventory[0].SetDefaults(3507, false);
+-			player.inventory[0].SetDefaults(3507);
 -			player.inventory[0].Prefix(-1);
--			player.inventory[1].SetDefaults(3509, false);
+-			player.inventory[1].SetDefaults(3509);
 -			player.inventory[1].Prefix(-1);
--			player.inventory[2].SetDefaults(3506, false);
+-			player.inventory[2].SetDefaults(3506);
 -			player.inventory[2].Prefix(-1);
 +			PlayerHooks.SetupStartInventory(player);
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
-@@ -129,6 +_,67 @@
+@@ -126,6 +_,67 @@
  			int num = 0;
- 			foreach (PlayerFileData current in list) {
- 				_playerList.Add(new UICharacterListItem(current, num++));
+ 			foreach (PlayerFileData item in list) {
+ 				_playerList.Add(new UICharacterListItem(item, num++));
 +			}
 +
 +			if (list.Count == 0) {

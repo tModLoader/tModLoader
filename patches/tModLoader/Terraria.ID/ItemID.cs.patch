@@ -1,32 +1,32 @@
 --- src/Terraria\Terraria.ID\ItemID.cs
 +++ src/tModLoader\Terraria.ID\ItemID.cs
-@@ -1,6 +_,7 @@
+@@ -1,5 +_,6 @@
  using ReLogic.Reflection;
- using System;
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
  namespace Terraria.ID
  {
-@@ -294,7 +_,7 @@
- 				1103,
- 				0,
- 				3347,
--				1
-+				3347
+@@ -44,7 +_,8 @@
+ 			public static bool[] NeverShiny = Factory.CreateBoolSet(71, 72, 73, 74);
+ 			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
+ 			public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581);
++			// Paired with a change in Player.ExtractinatorUse, non default extractType goes by itemId so DesertFossil is 3347 rather than 1 now
+-			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1);
++			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 3347);
+ 			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
+ 			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
+ 			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
+@@ -77,6 +_,7 @@
+ 				0.4f
  			});
- 			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1, new int[0]);
- 			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(new int[] {
-@@ -857,6 +_,7 @@
- 				431,
- 				432
- 			});
+ 			public static bool[] SingleUseInGamepad = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432);
 +			public static bool[] IsAMaterial = Factory.CreateBoolSet();
  		}
  
- 		public const short YellowPhasesaberOld = -24;
-@@ -5643,6 +_,37 @@
- 				return result;
+ 		private static Dictionary<string, short> _legacyItemLookup;
+@@ -4872,6 +_,37 @@
+ 				return value;
  
  			return 0;
 +		}

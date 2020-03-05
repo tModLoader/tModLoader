@@ -8,19 +8,19 @@
  using Terraria.Utilities;
  
  namespace Terraria.IO
-@@ -133,6 +_,7 @@
- 
- 			string worldPathFromName = Main.GetWorldPathFromName(Name, true);
- 			if (FileUtilities.MoveToCloud(Path, worldPathFromName)) {
-+				WorldIO.MoveToCloud(Path, worldPathFromName);
- 				Main.LocalFavoriteData.ClearEntry(this);
- 				_isCloudSave = true;
- 				_path = worldPathFromName;
-@@ -146,6 +_,7 @@
- 
- 			string worldPathFromName = Main.GetWorldPathFromName(Name, false);
- 			if (FileUtilities.MoveToLocal(Path, worldPathFromName)) {
-+				WorldIO.MoveToLocal(Path, worldPathFromName);
- 				Main.CloudFavoritesData.ClearEntry(this);
- 				_isCloudSave = false;
- 				_path = worldPathFromName;
+@@ -111,6 +_,7 @@
+ 			if (!base.IsCloudSave) {
+ 				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);
+ 				if (FileUtilities.MoveToCloud(base.Path, worldPathFromName)) {
++					WorldIO.MoveToCloud(Path, worldPathFromName);
+ 					Main.LocalFavoriteData.ClearEntry(this);
+ 					_isCloudSave = true;
+ 					_path = worldPathFromName;
+@@ -123,6 +_,7 @@
+ 			if (base.IsCloudSave) {
+ 				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: false);
+ 				if (FileUtilities.MoveToLocal(base.Path, worldPathFromName)) {
++					WorldIO.MoveToLocal(Path, worldPathFromName);
+ 					Main.CloudFavoritesData.ClearEntry(this);
+ 					_isCloudSave = false;
+ 					_path = worldPathFromName;

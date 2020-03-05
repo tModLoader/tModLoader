@@ -1,13 +1,13 @@
 --- src/Terraria\Terraria.ID\BuffID.cs
 +++ src/tModLoader\Terraria.ID\BuffID.cs
-@@ -1,4 +_,6 @@
+@@ -1,3 +_,6 @@
 +using ReLogic.Reflection;
- using System;
 +using Terraria.ModLoader;
- 
++
  namespace Terraria.ID
  {
-@@ -210,5 +_,32 @@
+ 	public class BuffID
+@@ -208,5 +_,32 @@
  		public const int Oiled = 204;
  		public const int BallistaPanic = 205;
  		public const int Count = 206;

@@ -9,17 +9,8 @@
  
  namespace Terraria.GameInput
  {
-@@ -118,7 +_,7 @@
- 		public Dictionary<string, object> Save() {
- 			Dictionary<string, object> dictionary = new Dictionary<string, object>();
- 			Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
--			dictionary.Add("Last Launched Version", 193);
-+			dictionary.Add("Last Launched Version", 194);
- 			dictionary2.Add("Edittable", AllowEditting);
- 			dictionary2.Add("Gamepad - HotbarRadialHoldTime", HotbarRadialHoldTimeRequired);
- 			dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", LeftThumbstickDeadzoneX);
-@@ -183,6 +_,9 @@
- 			string[] keysToCopy = new string[] {
+@@ -174,6 +_,9 @@
+ 			string[] keysToCopy = new string[18] {
  				"MouseLeft",
  				"MouseRight",
 +				"MouseMiddle",
@@ -28,7 +19,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -234,6 +_,21 @@
+@@ -225,6 +_,21 @@
  			};
  
  			CopyKeysFrom(profile, mode, keysToCopy);

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.DataStructures\PlayerDeathReason.cs
 +++ src/tModLoader\Terraria.DataStructures\PlayerDeathReason.cs
-@@ -6,14 +_,14 @@
+@@ -5,14 +_,14 @@
  {
  	public class PlayerDeathReason
  	{

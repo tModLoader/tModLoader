@@ -1,7 +1,6 @@
 --- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
 +++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
-@@ -1,6 +_,9 @@
- using System;
+@@ -1,5 +_,8 @@
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
@@ -10,22 +9,20 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -30,6 +_,12 @@
- 				"-port"
- 			})) != null && int.TryParse(s, out listenPort))
- 				Netplay.ListenPort = listenPort;
+@@ -23,6 +_,10 @@
+ 			string s;
+ 			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
+ 				Netplay.ListenPort = result;
 +
 +			string modPack;
-+			if ((modPack = TryParameter(new string[] {
-+				"-modpack"
-+			})) != null)
++			if ((modPack = TryParameter("-modpack")) != null)
 +				ModOrganizer.commandLineModPack = modPack;
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -53,6 +_,30 @@
- 				"-host"
- 			}))
+@@ -38,6 +_,30 @@
+ 
+ 			if (HasParameter("-host"))
  				game.AutoHost();
 +
 +			if (HasParameter("-skipselect")) {
@@ -54,15 +51,13 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -126,6 +_,18 @@
- 			})) != null)
- 				LanguageManager.Instance.SetLanguage(text);
+@@ -96,6 +_,16 @@
+ 			if ((s3 = TryParameter("-language")) != null)
+ 				LanguageManager.Instance.SetLanguage(s3);
  
 +			// We handle the build parameter this far in
 +			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			if ((text = TryParameter(new string[] {
-+				"-build"
-+			})) != null)
++			if ((text = TryParameter("-build")) != null)
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(text);
@@ -71,11 +66,11 @@
 +				FileAssociationSupport.HandleFileAssociation(text);
 +
  			string worldName;
- 			if ((worldName = TryParameter(new string[] {
- 				"-worldname"
-@@ -137,6 +_,15 @@
- 				"-motd"
- 			})) != null)
+ 			if ((worldName = TryParameter("-worldname")) != null)
+ 				game.SetWorldName(worldName);
+@@ -103,6 +_,15 @@
+ 			string newMOTD;
+ 			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
 +
 +			string modPath;
@@ -88,4 +83,4 @@
 +				Main.showServerConsole = true;
  
  			string banFilePath;
- 			if ((banFilePath = TryParameter(new string[] {
+ 			if ((banFilePath = TryParameter("-banlist")) != null)

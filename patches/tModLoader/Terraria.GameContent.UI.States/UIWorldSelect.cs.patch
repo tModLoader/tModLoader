@@ -18,10 +18,10 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -118,6 +_,49 @@
+@@ -115,6 +_,49 @@
  			int num = 0;
- 			foreach (WorldFileData current in list) {
- 				_worldList.Add(new UIWorldListItem(current, num++));
+ 			foreach (WorldFileData item in list) {
+ 				_worldList.Add(new UIWorldListItem(item, num++));
 +			}
 +
 +			if (list.Count == 0) {

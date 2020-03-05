@@ -16,7 +16,7 @@
  		}
  
  		public static void PlaceEntityNet(int x, int y, int type) {
-@@ -74,6 +_,9 @@
+@@ -68,6 +_,9 @@
  					break;
  				case 2:
  					tileEntity = new TELogicSensor();

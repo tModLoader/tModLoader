@@ -27,7 +27,7 @@
  		private double _clickDisabledTimeRemaining;
  		public bool IsVisible;
  		private UIState _currentState;
-@@ -33,7 +_,9 @@
+@@ -29,7 +_,9 @@
  		public void ResetLasts() {
  			_lastElementHover = null;
  			_lastElementDown = null;
@@ -37,16 +37,13 @@
  		}
  
  		public UserInterface() {
-@@ -56,14 +_,28 @@
- 
+@@ -50,14 +_,25 @@
+ #if CLIENT
+ 			MousePosition = new Vector2(Main.mouseX, Main.mouseY);
  			_wasMouseDown = Main.mouseLeft;
- 
 +			_wasMouseRightDown = Main.mouseRight;
-+
 +			_wasMouseMiddleDown = Main.mouseMiddle;
-+
 +			_wasMouseXButton1Down = Main.mouseXButton1;
-+
 +			_wasMouseXButton2Down = Main.mouseXButton2;
 +
  			if (_lastElementHover != null)
@@ -66,119 +63,117 @@
  			_clickDisabledTimeRemaining = Math.Max(_clickDisabledTimeRemaining, 200.0);
  		}
  
-@@ -71,6 +_,10 @@
- 			if (_currentState != null) {
- 				MousePosition = new Vector2(Main.mouseX, Main.mouseY);
- 				bool flag = Main.mouseLeft && Main.hasFocus;
-+				bool mouseRightDown = Main.mouseRight && Main.hasFocus;
-+				bool mouseMiddleDown = Main.mouseMiddle && Main.hasFocus;
-+				bool mouseXButton1Down = Main.mouseXButton1 && Main.hasFocus;
-+				bool mouseXButton2Down = Main.mouseXButton2 && Main.hasFocus;
- 				UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
- 				_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
- 				bool flag2 = _clickDisabledTimeRemaining > 0.0;
-@@ -105,14 +_,102 @@
- 					_lastElementDown = null;
- 				}
+@@ -67,6 +_,10 @@
  
-+				// tModLoader added functionality, right, middle, extra button 1 & 2 click Events
-+				if (mouseRightDown && !_wasMouseRightDown && uIElement != null && !flag2) {
-+					_lastElementRightDown = uIElement;
-+					uIElement.RightMouseDown(new UIMouseEvent(uIElement, MousePosition));
-+					if (_lastElementRightClicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseRightDownTime < 500.0) {
-+						uIElement.RightDoubleClick(new UIMouseEvent(uIElement, MousePosition));
-+						_lastElementRightClicked = null;
-+					}
-+
-+					_lastMouseRightDownTime = time.TotalGameTime.TotalMilliseconds;
-+				}
-+				else if (!mouseRightDown && _wasMouseRightDown && _lastElementRightDown != null && !flag2) {
-+					UIElement lastElementRightDown = _lastElementRightDown;
-+					if (lastElementRightDown.ContainsPoint(MousePosition)) {
-+						lastElementRightDown.RightClick(new UIMouseEvent(lastElementRightDown, MousePosition));
-+						_lastElementRightClicked = _lastElementRightDown;
-+					}
-+
-+					lastElementRightDown.RightMouseUp(new UIMouseEvent(lastElementRightDown, MousePosition));
-+					_lastElementRightDown = null;
-+				}
-+
-+				if (mouseMiddleDown && !_wasMouseMiddleDown && uIElement != null && !flag2) {
-+					_lastElementMiddleDown = uIElement;
-+					uIElement.MiddleMouseDown(new UIMouseEvent(uIElement, MousePosition));
-+					if (_lastElementMiddleClicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseMiddleDownTime < 500.0) {
-+						uIElement.MiddleDoubleClick(new UIMouseEvent(uIElement, MousePosition));
-+						_lastElementMiddleClicked = null;
-+					}
-+
-+					_lastMouseMiddleDownTime = time.TotalGameTime.TotalMilliseconds;
-+				}
-+				else if (!mouseMiddleDown && _wasMouseMiddleDown && _lastElementMiddleDown != null && !flag2) {
-+					UIElement lastElementMiddleDown = _lastElementMiddleDown;
-+					if (lastElementMiddleDown.ContainsPoint(MousePosition)) {
-+						lastElementMiddleDown.MiddleClick(new UIMouseEvent(lastElementMiddleDown, MousePosition));
-+						_lastElementMiddleClicked = _lastElementMiddleDown;
-+					}
-+
-+					lastElementMiddleDown.MiddleMouseUp(new UIMouseEvent(lastElementMiddleDown, MousePosition));
-+					_lastElementMiddleDown = null;
-+				}
-+
-+				if (mouseXButton1Down && !_wasMouseXButton1Down && uIElement != null && !flag2) {
-+					_lastElementXButton1Down = uIElement;
-+					uIElement.XButton1MouseDown(new UIMouseEvent(uIElement, MousePosition));
-+					if (_lastElementXButton1Clicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseXButton1DownTime < 500.0) {
-+						uIElement.XButton1DoubleClick(new UIMouseEvent(uIElement, MousePosition));
-+						_lastElementXButton1Clicked = null;
-+					}
-+
-+					_lastMouseXButton1DownTime = time.TotalGameTime.TotalMilliseconds;
-+				}
-+				else if (!mouseXButton1Down && _wasMouseXButton1Down && _lastElementXButton1Down != null && !flag2) {
-+					UIElement lastElementXButton1Down = _lastElementXButton1Down;
-+					if (lastElementXButton1Down.ContainsPoint(MousePosition)) {
-+						lastElementXButton1Down.XButton1Click(new UIMouseEvent(lastElementXButton1Down, MousePosition));
-+						_lastElementXButton1Clicked = _lastElementXButton1Down;
-+					}
-+
-+					lastElementXButton1Down.XButton1MouseUp(new UIMouseEvent(lastElementXButton1Down, MousePosition));
-+					_lastElementXButton1Down = null;
-+				}
-+
-+				if (mouseXButton2Down && !_wasMouseXButton2Down && uIElement != null && !flag2) {
-+					_lastElementXButton2Down = uIElement;
-+					uIElement.XButton2MouseDown(new UIMouseEvent(uIElement, MousePosition));
-+					if (_lastElementXButton2Clicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseXButton2DownTime < 500.0) {
-+						uIElement.XButton2DoubleClick(new UIMouseEvent(uIElement, MousePosition));
-+						_lastElementXButton2Clicked = null;
-+					}
-+
-+					_lastMouseXButton2DownTime = time.TotalGameTime.TotalMilliseconds;
-+				}
-+				else if (!mouseXButton2Down && _wasMouseXButton2Down && _lastElementXButton2Down != null && !flag2) {
-+					UIElement lastElementXButton2Down = _lastElementXButton2Down;
-+					if (lastElementXButton2Down.ContainsPoint(MousePosition)) {
-+						lastElementXButton2Down.XButton2Click(new UIMouseEvent(lastElementXButton2Down, MousePosition));
-+						_lastElementXButton2Clicked = _lastElementXButton2Down;
-+					}
-+
-+					lastElementXButton2Down.XButton2MouseUp(new UIMouseEvent(lastElementXButton2Down, MousePosition));
-+					_lastElementXButton2Down = null;
-+				}
-+
- 				if (PlayerInput.ScrollWheelDeltaForUI != 0) {
- 					if (uIElement != null)
- 						uIElement.ScrollWheel(new UIScrollWheelEvent(uIElement, MousePosition, PlayerInput.ScrollWheelDeltaForUI));
--
--					PlayerInput.ScrollWheelDeltaForUI = 0;
-+					// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after ModHooks.UpdateUI(gameTime);
- 				}
- 
- 				_wasMouseDown = flag;
-+				_wasMouseRightDown = mouseRightDown;
-+				_wasMouseMiddleDown = mouseMiddleDown;
-+				_wasMouseXButton1Down = mouseXButton1Down;
-+				_wasMouseXButton2Down = mouseXButton2Down;
- 				if (_currentState != null)
- 					_currentState.Update(time);
+ 			MousePosition = new Vector2(Main.mouseX, Main.mouseY);
+ 			bool flag = Main.mouseLeft && Main.hasFocus;
++			bool mouseRightDown = Main.mouseRight && Main.hasFocus;
++			bool mouseMiddleDown = Main.mouseMiddle && Main.hasFocus;
++			bool mouseXButton1Down = Main.mouseXButton1 && Main.hasFocus;
++			bool mouseXButton2Down = Main.mouseXButton2 && Main.hasFocus;
+ 			UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
+ 			_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
+ 			bool flag2 = _clickDisabledTimeRemaining > 0.0;
+@@ -99,12 +_,101 @@
+ 				_lastElementDown = null;
  			}
+ 
++			// tModLoader added functionality, right, middle, extra button 1 & 2 click Events
++			if (mouseRightDown && !_wasMouseRightDown && uIElement != null && !flag2) {
++				_lastElementRightDown = uIElement;
++				uIElement.RightMouseDown(new UIMouseEvent(uIElement, MousePosition));
++				if (_lastElementRightClicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseRightDownTime < 500.0) {
++					uIElement.RightDoubleClick(new UIMouseEvent(uIElement, MousePosition));
++					_lastElementRightClicked = null;
++				}
++
++				_lastMouseRightDownTime = time.TotalGameTime.TotalMilliseconds;
++			}
++			else if (!mouseRightDown && _wasMouseRightDown && _lastElementRightDown != null && !flag2) {
++				UIElement lastElementRightDown = _lastElementRightDown;
++				if (lastElementRightDown.ContainsPoint(MousePosition)) {
++					lastElementRightDown.RightClick(new UIMouseEvent(lastElementRightDown, MousePosition));
++					_lastElementRightClicked = _lastElementRightDown;
++				}
++
++				lastElementRightDown.RightMouseUp(new UIMouseEvent(lastElementRightDown, MousePosition));
++				_lastElementRightDown = null;
++			}
++
++			if (mouseMiddleDown && !_wasMouseMiddleDown && uIElement != null && !flag2) {
++				_lastElementMiddleDown = uIElement;
++				uIElement.MiddleMouseDown(new UIMouseEvent(uIElement, MousePosition));
++				if (_lastElementMiddleClicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseMiddleDownTime < 500.0) {
++					uIElement.MiddleDoubleClick(new UIMouseEvent(uIElement, MousePosition));
++					_lastElementMiddleClicked = null;
++				}
++
++				_lastMouseMiddleDownTime = time.TotalGameTime.TotalMilliseconds;
++			}
++			else if (!mouseMiddleDown && _wasMouseMiddleDown && _lastElementMiddleDown != null && !flag2) {
++				UIElement lastElementMiddleDown = _lastElementMiddleDown;
++				if (lastElementMiddleDown.ContainsPoint(MousePosition)) {
++					lastElementMiddleDown.MiddleClick(new UIMouseEvent(lastElementMiddleDown, MousePosition));
++					_lastElementMiddleClicked = _lastElementMiddleDown;
++				}
++
++				lastElementMiddleDown.MiddleMouseUp(new UIMouseEvent(lastElementMiddleDown, MousePosition));
++				_lastElementMiddleDown = null;
++			}
++
++			if (mouseXButton1Down && !_wasMouseXButton1Down && uIElement != null && !flag2) {
++				_lastElementXButton1Down = uIElement;
++				uIElement.XButton1MouseDown(new UIMouseEvent(uIElement, MousePosition));
++				if (_lastElementXButton1Clicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseXButton1DownTime < 500.0) {
++					uIElement.XButton1DoubleClick(new UIMouseEvent(uIElement, MousePosition));
++					_lastElementXButton1Clicked = null;
++				}
++
++				_lastMouseXButton1DownTime = time.TotalGameTime.TotalMilliseconds;
++			}
++			else if (!mouseXButton1Down && _wasMouseXButton1Down && _lastElementXButton1Down != null && !flag2) {
++				UIElement lastElementXButton1Down = _lastElementXButton1Down;
++				if (lastElementXButton1Down.ContainsPoint(MousePosition)) {
++					lastElementXButton1Down.XButton1Click(new UIMouseEvent(lastElementXButton1Down, MousePosition));
++					_lastElementXButton1Clicked = _lastElementXButton1Down;
++				}
++
++				lastElementXButton1Down.XButton1MouseUp(new UIMouseEvent(lastElementXButton1Down, MousePosition));
++				_lastElementXButton1Down = null;
++			}
++
++			if (mouseXButton2Down && !_wasMouseXButton2Down && uIElement != null && !flag2) {
++				_lastElementXButton2Down = uIElement;
++				uIElement.XButton2MouseDown(new UIMouseEvent(uIElement, MousePosition));
++				if (_lastElementXButton2Clicked == uIElement && time.TotalGameTime.TotalMilliseconds - _lastMouseXButton2DownTime < 500.0) {
++					uIElement.XButton2DoubleClick(new UIMouseEvent(uIElement, MousePosition));
++					_lastElementXButton2Clicked = null;
++				}
++
++				_lastMouseXButton2DownTime = time.TotalGameTime.TotalMilliseconds;
++			}
++			else if (!mouseXButton2Down && _wasMouseXButton2Down && _lastElementXButton2Down != null && !flag2) {
++				UIElement lastElementXButton2Down = _lastElementXButton2Down;
++				if (lastElementXButton2Down.ContainsPoint(MousePosition)) {
++					lastElementXButton2Down.XButton2Click(new UIMouseEvent(lastElementXButton2Down, MousePosition));
++					_lastElementXButton2Clicked = _lastElementXButton2Down;
++				}
++
++				lastElementXButton2Down.XButton2MouseUp(new UIMouseEvent(lastElementXButton2Down, MousePosition));
++				_lastElementXButton2Down = null;
++			}
++
+ 			if (PlayerInput.ScrollWheelDeltaForUI != 0) {
+ 				uIElement?.ScrollWheel(new UIScrollWheelEvent(uIElement, MousePosition, PlayerInput.ScrollWheelDeltaForUI));
+-				PlayerInput.ScrollWheelDeltaForUI = 0;
++				// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after ModHooks.UpdateUI(gameTime);
+ 			}
+ 
+ 			_wasMouseDown = flag;
++			_wasMouseRightDown = mouseRightDown;
++			_wasMouseMiddleDown = mouseMiddleDown;
++			_wasMouseXButton1Down = mouseXButton1Down;
++			_wasMouseXButton2Down = mouseXButton2Down;
+ 			if (_currentState != null)
+ 				_currentState.Update(time);
+ 		}

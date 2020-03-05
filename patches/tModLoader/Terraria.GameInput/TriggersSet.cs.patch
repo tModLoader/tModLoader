@@ -1,14 +1,14 @@
 --- src/Terraria\Terraria.GameInput\TriggersSet.cs
 +++ src/tModLoader\Terraria.GameInput\TriggersSet.cs
-@@ -2,6 +_,7 @@
- using System;
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
  using System.Collections.Generic;
  using System.Linq;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameInput
  {
-@@ -30,6 +_,33 @@
+@@ -29,6 +_,33 @@
  			}
  		}
  
@@ -42,9 +42,9 @@
  		public bool Up {
  			get {
  				return KeyStatus["Up"];
-@@ -501,6 +_,10 @@
- 			foreach (string current in PlayerInput.KnownTriggers) {
- 				KeyStatus.Add(current, false);
+@@ -496,6 +_,10 @@
+ 			foreach (string knownTrigger in PlayerInput.KnownTriggers) {
+ 				KeyStatus.Add(knownTrigger, value: false);
  			}
 +
 +			foreach (var hotkey in HotKeyLoader.HotKeys) {
@@ -53,9 +53,9 @@
  		}
  
  		public Vector2 GetNavigatorDirections() {
-@@ -562,6 +_,9 @@
+@@ -557,6 +_,9 @@
  
- 			if (HotbarScrollCD > 0 && (HotbarScrollCD != 1 || !flag || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
+ 			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  				HotbarScrollCD--;
 +
 +			ModHooks.HotKeyPressed();

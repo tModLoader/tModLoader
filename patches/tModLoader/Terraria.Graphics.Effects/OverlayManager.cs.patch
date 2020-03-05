@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\OverlayManager.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\OverlayManager.cs
-@@ -72,11 +_,11 @@
+@@ -74,11 +_,11 @@
  			}
  		}
  
@@ -14,7 +14,7 @@
  			for (int i = 0; i < _activeOverlays.Length; i++) {
  				for (LinkedListNode<Overlay> linkedListNode = _activeOverlays[i].First; linkedListNode != null; linkedListNode = linkedListNode.Next) {
  					Overlay value = linkedListNode.Value;
-@@ -91,7 +_,7 @@
+@@ -93,7 +_,7 @@
  				}
  			}
  

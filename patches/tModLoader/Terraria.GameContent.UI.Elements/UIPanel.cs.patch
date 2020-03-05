@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIPanel.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIPanel.cs
-@@ -15,13 +_,16 @@
+@@ -14,13 +_,16 @@
  		public Color BorderColor = Color.Black;
  		public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
  

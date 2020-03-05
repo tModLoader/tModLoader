@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
 +++ src/tModLoader\Terraria.Graphics.Shaders\ArmorShaderDataSet.cs
-@@ -6,9 +_,9 @@
+@@ -5,9 +_,9 @@
  {
  	public class ArmorShaderDataSet
  	{

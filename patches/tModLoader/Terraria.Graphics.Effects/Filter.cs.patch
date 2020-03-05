@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Graphics.Effects\Filter.cs
 +++ src/tModLoader\Terraria.Graphics.Effects\Filter.cs
-@@ -26,13 +_,13 @@
+@@ -25,13 +_,13 @@
  
  		public ScreenShaderData GetShader() => _shader;
  

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.ID\SoundID.cs
 +++ src/tModLoader\Terraria.ID\SoundID.cs
-@@ -6,7 +_,7 @@
+@@ -5,7 +_,7 @@
  {
  	public static class SoundID
  	{
@@ -9,8 +9,8 @@
  		{
  			public readonly float PitchVariance;
  			public readonly float Volume;
-@@ -407,11 +_,11 @@
- 		}
+@@ -402,11 +_,11 @@
+ 		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
  
  		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
 -		private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);

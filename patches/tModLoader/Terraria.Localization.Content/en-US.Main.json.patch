@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Localization.Content.en-US.Main.json
-+++ src/tModLoader\Terraria.Localization.Content.en-US.Main.json
+--- src/Terraria\Terraria.Localization.Content\en-US.Main.json
++++ src/tModLoader\Terraria.Localization.Content\en-US.Main.json
 @@ -1,7 +_,7 @@
  {
  	"Error": {
@@ -9,4 +9,3 @@
  		"ServerCrash": "Server crash: {0}\n{1}\n\nPlease send crashlog.txt to support@terraria.org",
  		"LoadFailed": "Load failed!",
  		"LoadFailedNoBackup": "Load failed!  No backup found.",
-

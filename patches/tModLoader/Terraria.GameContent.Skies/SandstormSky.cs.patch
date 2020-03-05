@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\SandstormSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\SandstormSky.cs
-@@ -44,12 +_,12 @@
+@@ -43,12 +_,12 @@
  			}
  		}
  

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
 +++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
-@@ -5,6 +_,8 @@
+@@ -4,6 +_,8 @@
  using Terraria.Graphics;
  using Terraria.IO;
  using Terraria.Localization;
@@ -9,15 +9,15 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -25,6 +_,7 @@
+@@ -24,6 +_,7 @@
  		private Texture2D _buttonPlayTexture;
  		private Texture2D _buttonSeedTexture;
  		private Texture2D _buttonDeleteTexture;
 +		private Texture2D _configTexture;
  		private UIImageButton _deleteButton;
  
- 		public bool IsFavorite {
-@@ -84,6 +_,17 @@
+ 		public bool IsFavorite => _data.IsFavorite;
+@@ -79,6 +_,17 @@
  				num += 24f;
  			}
  
@@ -35,7 +35,7 @@
  			UIImageButton uIImageButton5 = new UIImageButton(_buttonDeleteTexture);
  			uIImageButton5.VAlign = 1f;
  			uIImageButton5.HAlign = 1f;
-@@ -121,6 +_,7 @@
+@@ -116,6 +_,7 @@
  			_buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
  			_buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
  			_buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
@@ -43,7 +43,7 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -158,6 +_,10 @@
+@@ -149,6 +_,10 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", _data.SeedText));
  		}
  
@@ -54,22 +54,23 @@
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
-@@ -210,8 +_,28 @@
- 			else
- 				Main.menuMode = 10;
+@@ -205,9 +_,29 @@
+ 				else
+ 					Main.menuMode = 10;
  
-+			if (!Main.menuMultiplayer) {
-+				ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
-+				if (ConfigManager.AnyModNeedsReload()) {
-+					ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
-+					ModLoader.ModLoader.Reload();
-+					return;
+-				if (!Main.menuMultiplayer)
++				if (!Main.menuMultiplayer) {
++					ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
++					if (ConfigManager.AnyModNeedsReload()) {
++						ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
++						ModLoader.ModLoader.Reload();
++						return;
++					}
++	
++					ConfigManager.OnChangedAll();
+ 					WorldGen.playWorld();
 +				}
-+
--			if (!Main.menuMultiplayer)
-+				ConfigManager.OnChangedAll();
- 				WorldGen.playWorld();
-+			}
+ 			}
 +		}
 +
 +		internal static Action PlayReload() {
@@ -84,7 +85,7 @@
  		}
  
  		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
-@@ -235,6 +_,9 @@
+@@ -229,6 +_,9 @@
  		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			Platform.Current.Clipboard = _data.SeedText;
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\StyleDimension.cs
 +++ src/tModLoader\Terraria.UI\StyleDimension.cs
-@@ -9,6 +_,11 @@
+@@ -7,6 +_,11 @@
  		public float Pixels;
  		public float Precent;
  

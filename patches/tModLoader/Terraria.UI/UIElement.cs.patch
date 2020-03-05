@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\UIElement.cs
 +++ src/tModLoader\Terraria.UI\UIElement.cs
-@@ -49,6 +_,22 @@
+@@ -51,6 +_,22 @@
  		public event MouseEvent OnMouseOver;
  		public event MouseEvent OnMouseOut;
  		public event MouseEvent OnDoubleClick;
@@ -22,8 +22,8 @@
 +		public event MouseEvent OnXButton2DoubleClick;
  		public event ScrollWheelEvent OnScrollWheel;
  
- 		public bool IsMouseHovering {
-@@ -118,6 +_,8 @@
+ 		public UIElement() {
+@@ -114,6 +_,8 @@
  			Elements.Clear();
  		}
  
@@ -32,7 +32,7 @@
  		public virtual void Draw(SpriteBatch spriteBatch) {
  			bool overflowHidden = OverflowHidden;
  			bool useImmediateMode = _useImmediateMode;
-@@ -138,12 +_,14 @@
+@@ -134,12 +_,14 @@
  			if (overflowHidden) {
  				spriteBatch.End();
  				Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
@@ -48,7 +48,7 @@
  				spriteBatch.End();
  				spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
-@@ -324,6 +_,134 @@
+@@ -319,6 +_,134 @@
  
  			if (Parent != null)
  				Parent.DoubleClick(evt);

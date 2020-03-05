@@ -13,10 +13,10 @@
 +		internal byte _shaderDataCount;
  
  		public T BindShader<T>(int itemId, T shaderData) where T : HairShaderData {
- 			if (_shaderDataCount == 255)
+ 			if (_shaderDataCount == byte.MaxValue)
  				throw new Exception("Too many shaders bound.");
  
- 			_shaderLookupDictionary[itemId] = _shaderDataCount += 1;
+ 			_shaderLookupDictionary[itemId] = ++_shaderDataCount;
 +			_reverseShaderLookupDictionary[_shaderLookupDictionary[itemId]] = itemId;
  			_shaderData.Add(shaderData);
  			return shaderData;

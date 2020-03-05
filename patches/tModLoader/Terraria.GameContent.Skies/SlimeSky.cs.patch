@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\SlimeSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\SlimeSky.cs
-@@ -181,13 +_,13 @@
+@@ -174,13 +_,13 @@
  			}
  		}
  

@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.Social.Steam\CoreSocialModule.cs
 +++ src/tModLoader\Terraria.Social.Steam\CoreSocialModule.cs
-@@ -28,7 +_,7 @@
+@@ -27,7 +_,7 @@
  
  #endif
  			if (!SteamAPI.Init()) {

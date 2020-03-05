@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\SolarSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\SolarSky.cs
-@@ -98,7 +_,7 @@
+@@ -91,7 +_,7 @@
  
  		public override float GetCloudAlpha() => (1f - _fadeOpacity) * 0.3f + 0.7f;
  
@@ -9,7 +9,7 @@
  			_fadeOpacity = 0.002f;
  			_isActive = true;
  			_meteors = new Meteor[150];
-@@ -121,7 +_,7 @@
+@@ -114,7 +_,7 @@
  
  		private int SortMethod(Meteor meteor1, Meteor meteor2) => meteor2.Depth.CompareTo(meteor1.Depth);
  

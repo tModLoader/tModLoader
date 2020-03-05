@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Skies\BlizzardSky.cs
 +++ src/tModLoader\Terraria.GameContent.Skies\BlizzardSky.cs
-@@ -43,12 +_,12 @@
+@@ -42,12 +_,12 @@
  			}
  		}
  

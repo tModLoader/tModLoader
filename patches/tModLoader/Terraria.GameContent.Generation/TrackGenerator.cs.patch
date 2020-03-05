@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.GameContent.Generation\TrackGenerator.cs
 +++ src/tModLoader\Terraria.GameContent.Generation\TrackGenerator.cs
-@@ -80,7 +_,7 @@
+@@ -79,7 +_,7 @@
  			if (y > Main.maxTilesY - 200 || x < 0 || y < (int)Main.worldSurface || x > Main.maxTilesX - 5)
  				return false;
  

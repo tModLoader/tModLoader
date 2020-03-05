@@ -17,29 +17,29 @@
  		private Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.English;
  
-@@ -69,6 +_,9 @@
- 			}
+@@ -67,6 +_,9 @@
+ 				}
  
- 			LoadLanguage(culture);
-+			if (ActiveCulture != null)
-+				ModContent.RefreshModLanguage(culture);
+ 				LoadLanguage(culture);
++				if (ActiveCulture != null)
++					ModContent.RefreshModLanguage(culture);
 +
- 			ActiveCulture = culture;
- 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
- 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -117,10 +_,13 @@
- 			return result;
+ 				ActiveCulture = culture;
+ 				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 				Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+@@ -111,10 +_,13 @@
+ 			}
  		}
  
 -		private void ProcessCopyCommandsInTexts() {
 +		internal void ProcessCopyCommandsInTexts() {
 -			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
 +			Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
- 			foreach (KeyValuePair<string, LocalizedText> current in _localizedTexts) {
- 				LocalizedText value = current.Value;
+ 			foreach (KeyValuePair<string, LocalizedText> localizedText in _localizedTexts) {
+ 				LocalizedText value = localizedText.Value;
 +				if (value.Value == null)
 +					continue;
 +
  				for (int i = 0; i < 100; i++) {
- 					string text = regex.Replace(value.Value, (match) => GetTextValue(match.Groups[1].ToString()));
+ 					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  					if (text == value.Value)

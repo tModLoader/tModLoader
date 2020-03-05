@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria.UI\IngameFancyUI.cs
 +++ src/tModLoader\Terraria.UI\IngameFancyUI.cs
-@@ -4,7 +_,9 @@
+@@ -3,7 +_,9 @@
  using Terraria.Achievements;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
@@ -10,7 +10,7 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI
-@@ -73,6 +_,12 @@
+@@ -71,6 +_,12 @@
  
  						if (Main.tile[player.chestX, player.chestY].type == 88)
  							Main.defaultChestName = Lang.dresserType[Main.tile[player.chestX, player.chestY].frameX / 54].Value;
