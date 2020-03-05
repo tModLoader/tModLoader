@@ -2591,6 +2591,14 @@
  		}
  
  		private static Microsoft.Xna.Framework.Color buffColor(Microsoft.Xna.Framework.Color newColor, float R, float G, float B, float A)
+@@ -29831,6 +_,7 @@
+ 					{
+ 						this.DrawCacheNPCsBehindNonSolidTiles.Add(i);
+ 					}
++					NPCLoader.DrawBehind(Main.npc[i], i);
+ 				}
+ 			}
+ 		}
 @@ -29885,6 +_,7 @@
  							this.DrawCacheProjsBehindProjectiles.Add(i);
  						}

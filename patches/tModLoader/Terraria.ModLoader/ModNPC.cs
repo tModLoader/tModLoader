@@ -529,6 +529,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="index"></param>
+		public virtual void DrawBehind(int index)
+		{
+		}
+
+		/// <summary>
 		/// Allows you to control how the health bar for this NPC is drawn. The hbPosition parameter is the same as Main.hbPosition; it determines whether the health bar gets drawn above or below the NPC by default. The scale parameter is the health bar's size. By default, it will be the normal 1f; most bosses set this to 1.5f. Return null to let the normal vanilla health-bar-drawing code to run. Return false to stop the health bar from being drawn. Return true to draw the health bar in the position specified by the position parameter (note that this is the world position, not screen position).
 		/// </summary>
 		/// <param name="hbPosition"></param>
