@@ -293,6 +293,9 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModPlayer))) {
 					AutoloadPlayer(type);
 				}
+				else if (type.IsSubclassOf(typeof(ModDoubleJump))) {
+					AutoloadDoubleJump(type);
+				}
 				else if (type.IsSubclassOf(typeof(ModBuff))) {
 					AutoloadBuff(type);
 				}
@@ -485,6 +488,16 @@ namespace Terraria.ModLoader
 			string name = type.Name;
 			if (player.Autoload(ref name)) {
 				AddPlayer(name, player);
+			}
+		}
+
+		private void AutoloadDoubleJump(Type type)
+		{
+			ModDoubleJump doubleJump = (ModDoubleJump)Activator.CreateInstance(type);
+			doubleJump.mod = this;
+			string name = type.Name;
+			if (doubleJump.Autoload(ref name)) {
+				AddDoubleJump(name, doubleJump);
 			}
 		}
 
