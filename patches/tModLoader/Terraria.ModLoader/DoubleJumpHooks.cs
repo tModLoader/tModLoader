@@ -14,11 +14,11 @@ namespace Terraria.ModLoader
 		private static readonly IList<ModDoubleJump> doubleJumps = new List<ModDoubleJump>();
 
 		/// <summary>
-		/// This is the index of the jump that will be executed next
+		/// This is the jump that will be executed next
 		/// </summary>
 		//It's okay to have it static here because all the jumping logic happens player-by-player which is reset to -1 when the next player jumping logic happens.
 		//Also to reduce patch size having it here instead of as a local variable in Player.cs
-		private static int nextJump = -1;
+		private static ModDoubleJump activeJump;
 
 		private class HookList
 		{
@@ -75,26 +75,26 @@ namespace Terraria.ModLoader
 				ModDoubleJump doubleJump = player.modDoubleJumps[index];
 				if (doubleJump.IsMidJump) {
 					player.modDoubleJumps[index].MidJump();
-					return; // Only one jump active at a time
+					return;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Do the jump if a valid <see cref="nextJump"/> is found in SetNextJump
+		/// Do the jump if a valid <see cref="activeJump"/> is found in <see cref="SetNextJump(Player)"/>
 		/// </summary>
 		/// <param name="player">Jumping player</param>
 		/// <param name="playSound">if left on true, will play the default double jump sound</param>
 		/// <returns>Jump height multiplier</returns>
-		internal static float Jump(Player player, ref bool playSound)
+		internal static float Jump(ref bool playSound)
 		{
-			if (nextJump != -1) {
-				ModDoubleJump doubleJump = player.modDoubleJumps[nextJump];
-				nextJump = -1;
-				doubleJump.effect = true;
-				return doubleJump.Jump(ref playSound);
+			float mult = 1f;
+			if (activeJump != null) {
+				activeJump.effect = true;
+				mult = activeJump.Jump(ref playSound);
+				activeJump = null;
 			}
-			return 1f;
+			return mult;
 		}
 
 		/// <summary>
@@ -136,12 +136,7 @@ namespace Terraria.ModLoader
 		/// <param name="player">Jumping player</param>
 		internal static bool AnyJumpAgain(Player player)
 		{
-			foreach (ModDoubleJump doubleJump in player.modDoubleJumps) {
-				if (doubleJump.again) {
-					return true;
-				}
-			}
-			return false;
+			return player.modDoubleJumps.Any(doubleJump => doubleJump.again);
 		}
 
 		/// <summary>
@@ -176,15 +171,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Sets <see cref="nextJump"/> to the next jump that occurs, in order of modded jumps, alphabetically per mod, then disables the jump for the duration if not otherwise specified
+		/// Sets <see cref="activeJump"/> to the next jump that occurs, in order of modded jumps, alphabetically per mod, then disables the jump for the duration if not otherwise specified
 		/// </summary>
 		/// <param name="player">Jumping player</param>
 		internal static bool SetNextJump(Player player)
 		{
-			nextJump = -1;
 			foreach (ModDoubleJump doubleJump in player.modDoubleJumps) {
 				if (doubleJump.CanJump) {
-					nextJump = doubleJump.index;
+					activeJump = doubleJump;
 					doubleJump.again = doubleJump.JumpAgain();
 					return true;
 				}

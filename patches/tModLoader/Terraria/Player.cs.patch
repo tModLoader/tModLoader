@@ -3748,7 +3748,7 @@
 +					else if (modDoubleJump)
 +					{
 +						bool playSound = true;
-+						float mult = DoubleJumpHooks.Jump(this, ref playSound);
++						float mult = DoubleJumpHooks.Jump(ref playSound);
 +						if (playSound)
 +						{
 +							Main.PlaySound(SoundID.DoubleJump, (int)this.position.X, (int)this.position.Y);
