@@ -45,6 +45,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModNPC> npcs = new Dictionary<string, ModNPC>();
 		internal readonly IDictionary<string, GlobalNPC> globalNPCs = new Dictionary<string, GlobalNPC>();
 		internal readonly IDictionary<string, ModPlayer> players = new Dictionary<string, ModPlayer>();
+		internal readonly IDictionary<string, ModDoubleJump> doubleJumps = new Dictionary<string, ModDoubleJump>();
 		internal readonly IDictionary<string, ModMountData> mountDatas = new Dictionary<string, ModMountData>();
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();

@@ -3640,6 +3640,14 @@
  			this.meleeCrit = 4;
  			this.rangedCrit = 4;
  			this.magicCrit = 4;
+@@ -14774,6 +_,7 @@
+ 			this.doubleJumpBlizzard = false;
+ 			this.doubleJumpFart = false;
+ 			this.doubleJumpUnicorn = false;
++			DoubleJumpHooks.ResetAllEnable(this);
+ 			this.defendedByPaladin = false;
+ 			this.hasPaladinShield = false;
+ 			this.autoJump = false;
 @@ -14806,6 +_,7 @@
  				Player.tileRangeY = 4;
  			}
@@ -3683,6 +3691,93 @@
  			}
  			else
  			{
+@@ -16061,7 +_,7 @@
+ 						}
+ 					}
+ 				}
+-				else if ((this.sliding || this.velocity.Y == 0f || flag || this.jumpAgainCloud || this.jumpAgainSandstorm || this.jumpAgainBlizzard || this.jumpAgainFart || this.jumpAgainSail || this.jumpAgainUnicorn || (this.wet && this.accFlipper && (!this.mount.Active || !this.mount.Cart))) && (this.releaseJump || (this.autoJump && (this.velocity.Y == 0f || this.sliding))))
++				else if ((this.sliding || this.velocity.Y == 0f || flag || this.jumpAgainCloud || this.jumpAgainSandstorm || this.jumpAgainBlizzard || this.jumpAgainFart || this.jumpAgainSail || this.jumpAgainUnicorn || DoubleJumpHooks.AnyJumpAgain(this) || (this.wet && this.accFlipper && (!this.mount.Active || !this.mount.Cart))) && (this.releaseJump || (this.autoJump && (this.velocity.Y == 0f || this.sliding))))
+ 				{
+ 					if (this.sliding || this.velocity.Y == 0f)
+ 					{
+@@ -16081,6 +_,8 @@
+ 					bool flag5 = false;
+ 					bool flag6 = false;
+ 					bool flag7 = false;
++					bool cloud = false;
++					bool modDoubleJump = false;
+ 					if (!flag)
+ 					{
+ 						if (this.jumpAgainUnicorn)
+@@ -16108,13 +_,20 @@
+ 							this.jumpAgainSail = false;
+ 							flag6 = true;
+ 						}
+-						else
++						else if (this.jumpAgainCloud)
+ 						{
+ 							this.jumpAgainCloud = false;
++							cloud = true;
++						}
++						// Mod jumps are AFTER vanilla jumps here, maybe modder wants to specify before/after?
++						else if(DoubleJumpHooks.SetNextJump(this))
++						{
++							modDoubleJump = true;
+ 						}
+ 					}
+ 					this.canRocket = false;
+ 					this.rocketRelease = false;
++					DoubleJumpHooks.SetJumpState(this, this.velocity.Y == 0f || this.sliding || (this.autoJump && this.justJumped));
+ 					if ((this.velocity.Y == 0f || this.sliding || (this.autoJump && this.justJumped)) && this.doubleJumpCloud)
+ 					{
+ 						this.jumpAgainCloud = true;
+@@ -16259,7 +_,7 @@
+ 							}
+ 						}
+ 					}
+-					else
++					else if (cloud)
+ 					{
+ 						this.dJumpEffectCloud = true;
+ 						int num9 = this.height;
+@@ -16285,6 +_,17 @@
+ 						num11 = Gore.NewGore(new Vector2(this.position.X + (float)this.width + 4f, this.position.Y + (float)num9 - 16f), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(11, 14), 1f);
+ 						Main.gore[num11].velocity.X = Main.gore[num11].velocity.X * 0.1f - this.velocity.X * 0.1f;
+ 						Main.gore[num11].velocity.Y = Main.gore[num11].velocity.Y * 0.1f - this.velocity.Y * 0.05f;
++					}
++					else if (modDoubleJump)
++					{
++						bool playSound = true;
++						float mult = DoubleJumpHooks.Jump(this, ref playSound);
++						if (playSound)
++						{
++							Main.PlaySound(SoundID.DoubleJump, (int)this.position.X, (int)this.position.Y);
++						}
++						this.velocity.Y = -Player.jumpSpeed * this.gravDir;
++						this.jump = (int)(Player.jumpHeight * mult);
+ 					}
+ 				}
+ 				this.releaseJump = false;
+@@ -16841,7 +_,7 @@
+ 		public void CarpetMovement()
+ 		{
+ 			bool flag = false;
+-			if (this.grappling[0] == -1 && this.carpet && !this.jumpAgainCloud && !this.jumpAgainSandstorm && !this.jumpAgainBlizzard && !this.jumpAgainFart && !this.jumpAgainSail && !this.jumpAgainUnicorn && this.jump == 0 && this.velocity.Y != 0f && this.rocketTime == 0 && this.wingTime == 0f && !this.mount.Active)
++			if (this.grappling[0] == -1 && this.carpet && !this.jumpAgainCloud && !this.jumpAgainSandstorm && !this.jumpAgainBlizzard && !this.jumpAgainFart && !this.jumpAgainSail && !this.jumpAgainUnicorn && !DoubleJumpHooks.AnyJumpAgain(this) && this.jump == 0 && this.velocity.Y != 0f && this.rocketTime == 0 && this.wingTime == 0f && !this.mount.Active)
+ 			{
+ 				if (this.controlJump && this.canCarpet)
+ 				{
+@@ -17019,6 +_,10 @@
+ 					Main.dust[num15].noLight = true;
+ 				}
+ 			}
++			if ((this.gravDir == 1f && this.velocity.Y < 0f) || (this.gravDir == -1f && this.velocity.Y > 0f))
++			{
++				DoubleJumpHooks.MidJump(this);
++			}
+ 		}
+ 
+ 		public void WingMovement()
 @@ -17067,8 +_,10 @@
  			if (this.wingsLogic == 26)
  			{
@@ -3710,6 +3805,14 @@
  				float num10;
  				if (num8 > num9)
  				{
+@@ -17647,6 +_,7 @@
+ 						{
+ 							this.jumpAgainUnicorn = true;
+ 						}
++						DoubleJumpHooks.SetJumpState(this);
+ 						this.grappling[0] = 0;
+ 						this.grapCount = 0;
+ 						for (int k = 0; k < 1000; k++)
 @@ -18228,6 +_,7 @@
  			this.slippy = (num3 == 161 || num3 == 162 || num3 == 163 || num3 == 164 || num3 == 200 || num3 == 127);
  			this.slippy2 = (num3 == 197);
@@ -3856,6 +3959,30 @@
  			}
  			this.lastTileRangeX = Player.tileRangeX;
  			this.lastTileRangeY = Player.tileRangeY;
+@@ -20111,6 +_,7 @@
+ 				this.jumpAgainFart = false;
+ 				this.jumpAgainSail = false;
+ 				this.jumpAgainUnicorn = false;
++				DoubleJumpHooks.ResetAllJumps(this);
+ 			}
+ 			else
+ 			{
+@@ -20162,6 +_,7 @@
+ 				{
+ 					this.jumpAgainUnicorn = true;
+ 				}
++				DoubleJumpHooks.ToggleJumpState(this, this.velocity.Y == 0f || this.sliding);
+ 			}
+ 			if (!this.carpet)
+ 			{
+@@ -20200,6 +_,7 @@
+ 				this.dJumpEffectFart = false;
+ 				this.dJumpEffectSail = false;
+ 				this.dJumpEffectUnicorn = false;
++				DoubleJumpHooks.ResetAllEffects(this);
+ 				int num32 = (int)(this.position.X + (float)(this.width / 2)) / 16;
+ 				int num33 = (int)(this.position.Y - 8f) / 16;
+ 				bool flag15 = false;
 @@ -20615,6 +_,7 @@
  					{
  						this.accRunSpeed = 7f;
@@ -3872,7 +3999,19 @@
  				this.HorizontalMovement();
  				if (this.gravControl)
  				{
-@@ -20855,6 +_,7 @@
+@@ -20807,6 +_,7 @@
+ 					this.dJumpEffectFart = false;
+ 					this.dJumpEffectSail = false;
+ 					this.dJumpEffectUnicorn = false;
++					DoubleJumpHooks.ResetAllEffects(this);
+ 				}
+ 				this.DashMovement();
+ 				this.WallslideMovement();
+@@ -20852,9 +_,11 @@
+ 					this.dJumpEffectFart = false;
+ 					this.dJumpEffectSail = false;
+ 					this.dJumpEffectUnicorn = false;
++					DoubleJumpHooks.ResetAllEffects(this);
  				}
  				else
  				{
@@ -4318,6 +4457,14 @@
  						return;
  					}
  					if (this.shieldRaised)
+@@ -27697,6 +_,7 @@
+ 						this.dJumpEffectFart = false;
+ 						this.dJumpEffectSail = false;
+ 						this.dJumpEffectUnicorn = false;
++						DoubleJumpHooks.ResetAllEffects(this);
+ 						Vector2 vector = new Vector2(this.position.X + (float)this.width * 0.5f, this.position.Y + (float)this.height * 0.5f);
+ 						float num19 = 0f;
+ 						float num20 = 0f;
 @@ -27967,6 +_,8 @@
  			{
  				this.armorEffectDrawOutlines = true;
@@ -6413,7 +6560,7 @@
  				}
  				return playerFileData;
  			}
-@@ -39313,13 +_,25 @@
+@@ -39313,13 +_,35 @@
  			return -1;
  		}
  
@@ -6429,6 +6576,16 @@
 +		public T GetModPlayer<T>(Mod mod) where T : ModPlayer => (T)GetModPlayer(mod, typeof(T).Name);
 +
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
++
++		internal ModDoubleJump[] modDoubleJumps = new ModDoubleJump[0];
++
++		private ModDoubleJump GetModDoubleJump(int? index) => index.HasValue ? modDoubleJumps[index.Value] : null;
++
++		public ModDoubleJump GetModDoubleJump(Mod mod, string name) => GetModDoubleJump(mod.GetDoubleJump(name)?.index);
++
++		public T GetModDoubleJump<T>() where T : ModDoubleJump => (T)GetModDoubleJump(ModContent.GetInstance<T>()?.index);
++
++		public void EnableDoubleJump<T>() where T : ModDoubleJump => GetModDoubleJump<T>().enable = true;
 +
 +		public Player(bool startupInventory = true)
  		{
@@ -6475,7 +6632,7 @@
  			this.meleeSpeed = 1f;
  			this.thrownVelocity = 1f;
  			this.moveSpeed = 1f;
-@@ -39442,13 +_,14 @@
+@@ -39442,13 +_,15 @@
  			this.talkNPC = -1;
  			this.potionDelayTime = Item.potionDelay;
  			this.restorationDelayTime = Item.restorationDelay;
@@ -6489,6 +6646,7 @@
  			this._stormShaderObstruction = 1f;
  			this._shaderObstructionInternalValue = 1f;
 +			PlayerHooks.SetupPlayer(this);
++			DoubleJumpHooks.SetupPlayer(this);
  			int[] array2 = new int[2];
  			this.hurtCooldowns = array2;
  			this.width = 20;

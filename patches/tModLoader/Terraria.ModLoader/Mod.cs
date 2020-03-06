@@ -968,6 +968,31 @@ namespace Terraria.ModLoader
 		public T GetPlayer<T>() where T : ModPlayer => ModContent.GetInstance<T>();
 
 		/// <summary>
+		/// Adds a type of ModDoubleJump to this mod. All ModDoubleJump types will be newly created and attached to each player that is loaded.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="player">The player.</param>
+		public void AddDoubleJump(string name, ModDoubleJump doubleJump)
+		{
+			if (!loading)
+				throw new Exception("AddDoubleJump can only be called from Mod.Load or Mod.Autoload");
+
+			doubleJump.mod = this;
+			doubleJump.Name = name;
+
+			doubleJumps[name] = doubleJump;
+			DoubleJumpHooks.Add(doubleJump);
+			ContentInstance.Register(doubleJump);
+		}
+
+		/// <summary>
+		/// Gets the ModDoubleJump of this mod corresponding to the given name. Returns null if no ModDoubleJump with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public ModDoubleJump GetDoubleJump(string name) => doubleJumps.TryGetValue(name, out var doubleJump) ? doubleJump : null;
+
+		/// <summary>
 		/// Adds a type of buff to the game with the specified internal name and texture.
 		/// </summary>
 		/// <param name="name">The name.</param>
