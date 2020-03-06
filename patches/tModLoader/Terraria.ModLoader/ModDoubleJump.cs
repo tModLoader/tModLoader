@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 
 		internal bool effect;
 
-		public bool IsMidJump => enable && effect /*&& !again*/; // Compatibility with JumpAgain()
+		public bool IsMidJump => enable && effect; // No '&& !again' for compatibility with JumpAgain()
 
 		public bool CanJump => again;
 

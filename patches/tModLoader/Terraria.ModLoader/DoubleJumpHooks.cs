@@ -75,6 +75,7 @@ namespace Terraria.ModLoader
 				ModDoubleJump doubleJump = player.modDoubleJumps[index];
 				if (doubleJump.IsMidJump) {
 					player.modDoubleJumps[index].MidJump();
+					return; // Only one jump active at a time
 				}
 			}
 		}

@@ -455,6 +455,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
 			PlayerHooks.Unload();
+			DoubleJumpHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			ModGore.Unload();
@@ -504,6 +505,7 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
+			DoubleJumpHooks.RebuildHooks();
 			BackgroundTextureLoader.ResizeAndFillArrays();
 			UgBgStyleLoader.ResizeAndFillArrays();
 			SurfaceBgStyleLoader.ResizeAndFillArrays();
