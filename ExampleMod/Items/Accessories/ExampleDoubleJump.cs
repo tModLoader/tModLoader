@@ -13,7 +13,7 @@ namespace ExampleMod.Items.Accessories
 	public abstract class ExampleDoubleJump : ModDoubleJump
 	{
 		// Optional field we use in our inheritance below, to not override the same hooks again just to adjust one number.
-		// It represents the jump height increase and the amount of dust we spawn
+		// It represents the jump intensity and the amount of dust we spawn
 		public abstract int Power { get; }
 
 		public override float Jump(ref bool playSound) {
@@ -21,7 +21,7 @@ namespace ExampleMod.Items.Accessories
 			for (int i = 0; i < 20 * Power; i++) {
 				Dust dust = Dust.NewDustDirect(new Vector2(player.position.X, player.Center.Y), player.width, player.height / 2, DustID.Fire);
 				dust.noLight = true;
-				dust.velocity.Y *= Math.Sign(dust.velocity.Y); // To flip dusts going up, down (up is -1)
+				dust.velocity.Y *= Math.Sign(dust.velocity.Y); // Turns dusts' velocity around vertically so they will fly down
 				dust.velocity *= 4f;
 				dust.scale += Main.rand.NextFloat(0.5f, 0.8f);
 			}
@@ -39,6 +39,13 @@ namespace ExampleMod.Items.Accessories
 				Dust dust = Dust.NewDustDirect(new Vector2(player.position.X, player.Center.Y + 6), player.width, 0, DustID.Fire);
 				dust.noLight = true;
 			}
+		}
+
+		public override void HorizontalJumpSpeed(ref float runAccelerationMult, ref float maxRunSpeedMult)
+		{
+			// Here we increase horizontal movement speed while jumping, similar to most double jumps
+			runAccelerationMult = Power;
+			maxRunSpeedMult = 0.5f + Power;
 		}
 	}
 
