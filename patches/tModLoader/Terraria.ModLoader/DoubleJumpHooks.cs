@@ -32,9 +32,7 @@ namespace Terraria.ModLoader
 		/// <param name="player">Jumping player</param>
 		public static void MidJump(Player player)
 		{
-			if (player.activeJump?.IsMidJump == true) {
-				player.activeJump.MidJump();
-			}
+			player.activeJump?.MidJump();
 		}
 
 		/// <summary>
@@ -60,7 +58,7 @@ namespace Terraria.ModLoader
 		/// <returns>Jump height multiplier</returns>
 		internal static float Jump(Player player, ref bool playSound)
 		{
-			return player.activeJump != null ? player.activeJump.Jump(ref playSound) : 1f;
+			return player.activeJump?.Jump(ref playSound) ?? 1f; // activeJump shouldn't be null here, but in case it is
 		}
 
 		/// <summary>
@@ -87,7 +85,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Resets active modded jump (on a rope, mounted, CCed or grappled)
+		/// Resets active modded jump (finished jumping, on a rope, mounted, CCed or grappled)
 		/// </summary>
 		/// <param name="player">Jumping player</param>
 		internal static void ResetActiveJump(Player player)
@@ -136,7 +134,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Sets <see cref="activeJump"/> to the next modded jump that occurs, alphabetically per mod and then per jump, then disables the jump for the duration if not otherwise specified in <see cref="ModDoubleJump.JumpAgain"/>
+		/// Sets <see cref="Player.activeJump"/> to the next modded jump that occurs, alphabetically per mod and then per jump, then disables the jump for the duration if not otherwise specified in <see cref="ModDoubleJump.JumpAgain"/>
 		/// </summary>
 		/// <param name="player">Jumping player</param>
 		internal static bool SetNextJump(Player player)

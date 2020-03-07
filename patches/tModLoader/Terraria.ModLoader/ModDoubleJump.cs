@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The name of this ModDoubleJump. Used for distinguishing between multiple ModDoubleJump added by a single Mod, in addition to the argument passed to Player.GetModDoubleJump.
+		/// The name of this ModDoubleJump. Used for distinguishing between multiple ModDoubleJump added by a single Mod, in addition to the argument passed to <see cref="Player.GetModDoubleJump"/>.
 		/// </summary>
 		public string Name {
 			get;
@@ -89,6 +89,7 @@ namespace Terraria.ModLoader
 		{
 
 		}
+
 		/// <summary>
 		/// Allows you to modify the horizontal acceleration and max speed during the jump (sandstorm uses 1.5f and 2f, blizzard uses 3f and 1.5f)
 		/// </summary>
