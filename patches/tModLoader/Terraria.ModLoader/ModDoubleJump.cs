@@ -37,10 +37,14 @@ namespace Terraria.ModLoader
 
 		internal bool again;
 
-		internal bool effect;
+		/// <summary>
+		/// If this jump is the currently used one by the player
+		/// </summary>
+		public bool IsMidJump => enable && player.activeJump == this; // No '&& !again' for compatibility with JumpAgain()
 
-		public bool IsMidJump => enable && effect; // No '&& !again' for compatibility with JumpAgain()
-
+		/// <summary>
+		/// If this jump is enabled, but yet to be activated
+		/// </summary>
 		public bool CanJump => again;
 
 		internal ModDoubleJump CreateFor(Player newPlayer)
@@ -82,6 +86,15 @@ namespace Terraria.ModLoader
 		/// Allows you to create visuals while the jump is happening
 		/// </summary>
 		public virtual void MidJump()
+		{
+
+		}
+		/// <summary>
+		/// Allows you to modify the horizontal acceleration and max speed during the jump (sandstorm uses 1.5f and 2f, blizzard uses 3f and 1.5f)
+		/// </summary>
+		/// <param name="runAccelerationMult">Horizontal acceleration multiplier</param>
+		/// <param name="maxRunSpeedMult">Max speed multiplier</param>
+		public virtual void HorizontalJumpSpeed(ref float runAccelerationMult, ref float maxRunSpeedMult)
 		{
 
 		}

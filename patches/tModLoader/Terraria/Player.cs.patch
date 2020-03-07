@@ -3748,7 +3748,7 @@
 +					else if (modDoubleJump)
 +					{
 +						bool playSound = true;
-+						float mult = DoubleJumpHooks.Jump(ref playSound);
++						float mult = DoubleJumpHooks.Jump(this, ref playSound);
 +						if (playSound)
 +						{
 +							Main.PlaySound(SoundID.DoubleJump, (int)this.position.X, (int)this.position.Y);
@@ -3979,7 +3979,7 @@
  				this.dJumpEffectFart = false;
  				this.dJumpEffectSail = false;
  				this.dJumpEffectUnicorn = false;
-+				DoubleJumpHooks.ResetAllEffects(this);
++				DoubleJumpHooks.ResetActiveJump(this);
  				int num32 = (int)(this.position.X + (float)(this.width / 2)) / 16;
  				int num33 = (int)(this.position.Y - 8f) / 16;
  				bool flag15 = false;
@@ -3991,6 +3991,14 @@
  				}
  				if (this.sticky)
  				{
+@@ -20689,6 +_,7 @@
+ 					this.runAcceleration *= 1.25f;
+ 					this.maxRunSpeed *= 1.5f;
+ 				}
++				DoubleJumpHooks.HorizontalJumpSpeed(this);
+ 				if (this.inventory[this.selectedItem].type == 3106 && this.stealth < 1f)
+ 				{
+ 					float num46 = this.maxRunSpeed / 2f * (1f - this.stealth);
 @@ -20732,6 +_,7 @@
  						this.mount.UpdateDrill(this, this.controlUp, this.controlDown);
  					}
@@ -4003,7 +4011,7 @@
  					this.dJumpEffectFart = false;
  					this.dJumpEffectSail = false;
  					this.dJumpEffectUnicorn = false;
-+					DoubleJumpHooks.ResetAllEffects(this);
++					DoubleJumpHooks.ResetActiveJump(this);
  				}
  				this.DashMovement();
  				this.WallslideMovement();
@@ -4011,7 +4019,7 @@
  					this.dJumpEffectFart = false;
  					this.dJumpEffectSail = false;
  					this.dJumpEffectUnicorn = false;
-+					DoubleJumpHooks.ResetAllEffects(this);
++					DoubleJumpHooks.ResetActiveJump(this);
  				}
  				else
  				{
@@ -4461,7 +4469,7 @@
  						this.dJumpEffectFart = false;
  						this.dJumpEffectSail = false;
  						this.dJumpEffectUnicorn = false;
-+						DoubleJumpHooks.ResetAllEffects(this);
++						DoubleJumpHooks.ResetActiveJump(this);
  						Vector2 vector = new Vector2(this.position.X + (float)this.width * 0.5f, this.position.Y + (float)this.height * 0.5f);
  						float num19 = 0f;
  						float num20 = 0f;
@@ -6560,7 +6568,7 @@
  				}
  				return playerFileData;
  			}
-@@ -39313,13 +_,35 @@
+@@ -39313,13 +_,40 @@
  			return -1;
  		}
  
@@ -6578,6 +6586,11 @@
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +
 +		internal ModDoubleJump[] modDoubleJumps = new ModDoubleJump[0];
++
++		/// <summary>
++		/// This is the jump that will be executed next/is currently in progress
++		/// </summary>
++		internal ModDoubleJump activeJump;
 +
 +		private ModDoubleJump GetModDoubleJump(int? index) => index.HasValue ? modDoubleJumps[index.Value] : null;
 +

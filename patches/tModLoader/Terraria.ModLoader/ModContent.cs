@@ -505,7 +505,6 @@ namespace Terraria.ModLoader
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
-			DoubleJumpHooks.RebuildHooks();
 			BackgroundTextureLoader.ResizeAndFillArrays();
 			UgBgStyleLoader.ResizeAndFillArrays();
 			SurfaceBgStyleLoader.ResizeAndFillArrays();
