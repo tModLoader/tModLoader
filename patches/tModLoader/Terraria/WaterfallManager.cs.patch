@@ -17,7 +17,7 @@
  		private int qualityMax;
  		private int currentMax;
  		private WaterfallData[] waterfalls;
-@@ -205,7 +_,7 @@
+@@ -201,7 +_,7 @@
  			}
  		}
  
@@ -68,7 +68,7 @@
  						color5 = new Color((int)num42, (int)num43, (int)num44, (int)num45);
  						if (num12 == 1) {
  							float num46 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
-@@ -802,6 +_,8 @@
+@@ -809,6 +_,8 @@
  
  			if (Main.liquidAlpha[10] > 0f)
  				DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);

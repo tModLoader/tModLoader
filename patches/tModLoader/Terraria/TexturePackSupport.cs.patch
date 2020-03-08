@@ -1,6 +1,6 @@
 --- src/Terraria\Terraria\TexturePackSupport.cs
 +++ src/tModLoader\Terraria\TexturePackSupport.cs
-@@ -5,6 +_,8 @@
+@@ -4,6 +_,8 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
@@ -9,7 +9,7 @@
  
  namespace Terraria
  {
-@@ -12,15 +_,16 @@
+@@ -11,14 +_,15 @@
  	{
  		public static bool Enabled = false;
  		public static int ReplacedTextures = 0;
@@ -19,16 +19,15 @@
  		private static Stopwatch test = new Stopwatch();
  
  		public static bool FetchTexture(string path, out Texture2D tex) {
- 			ZipEntry zipEntry;
--			if (entries.TryGetValue(path, out zipEntry)) {
-+			if (entries.TryGetValue(path.Replace('\\', '/'), out zipEntry)) {
- 				using (MemoryStream memoryStream = new MemoryStream()) {
- 					zipEntry.Extract(memoryStream);
+-			if (entries.TryGetValue(path, out ZipEntry value)) {
++			if (entries.TryGetValue(path.Replace('\\', '/'), out value)) {
+ 				using (MemoryStream stream = new MemoryStream()) {
+ 					value.Extract(stream);
 +					memoryStream.Position = 0; // required for FNA
- 					tex = TexturePackSupport.FromStreamSlow(Main.instance.GraphicsDevice, memoryStream);
+ 					tex = FromStreamSlow(Main.instance.GraphicsDevice, stream);
  					ReplacedTextures++;
  					return true;
-@@ -43,16 +_,43 @@
+@@ -41,15 +_,42 @@
  			return texture2D;
  		}
  
@@ -36,8 +35,7 @@
 -		public static void FindTexturePack() {
 +		public static void FindTexturePack()
 +		{
- 			string savePath = Main.SavePath;
- 			string path = savePath + "/Texture Pack.zip";
+ 			string path = Main.SavePath + "/Texture Pack.zip";
  			if (!File.Exists(path))
 +			{
  				return;
@@ -59,8 +57,8 @@
  
  			entries.Clear();
 -			texturePack = ZipFile.Read(File.OpenRead(path));
--			foreach (ZipEntry current in texturePack.Entries) {
--				entries.Add(current.FileName.Replace("/", "\\"), current);
+-			foreach (ZipEntry entry in texturePack.Entries) {
+-				entries.Add(entry.FileName.Replace("/", "\\"), entry);
 +			texturePacks.Clear();
 +			if (Directory.Exists(texturePacksPath)) {
 +				List<string> files = Directory.GetFiles(texturePacksPath, "*.zip").ToList();

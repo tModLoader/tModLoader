@@ -22,7 +22,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -25,11 +_,12 @@
+@@ -25,10 +_,12 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
@@ -30,15 +30,14 @@
  #else
  		public const bool IsServer = true;
  #endif
--
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
 +		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
  		private static int ThingsToLoad = 0;
  		private static int ThingsLoaded = 0;
  		public static bool LoadedEverything = false;
-@@ -56,6 +_,7 @@
+@@ -53,6 +_,7 @@
  		public static void ForceLoadThread(object ThreadContext) {
- 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
+ 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
 +			Logging.Terraria.Info("JIT loading finished");
  		}
@@ -104,7 +103,7 @@
  					InitializeConsoleOutput();
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize(null);
-@@ -201,9 +_,10 @@
+@@ -187,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -118,7 +117,7 @@
  			}
  		}
  
-@@ -216,9 +_,18 @@
+@@ -202,9 +_,18 @@
  				}
  
  #if CLIENT

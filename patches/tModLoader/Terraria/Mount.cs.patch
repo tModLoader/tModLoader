@@ -23,19 +23,21 @@
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -138,7 +_,7 @@
- 		public const float drillRotationChange = 0.05235988f;
- 		public const float maxDrillLength = 48f;
- 		public static int currentShader = 0;
+@@ -134,8 +_,8 @@
+ 		public const int DrawBackExtra = 1;
+ 		public const int DrawFront = 2;
+ 		public const int DrawFrontExtra = 3;
 -		private static MountData[] mounts;
 +		public static MountData[] mounts;
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
+ 		public const int scutlixBaseDamage = 50;
  		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -147,28 +_,28 @@
+@@ -146,28 +_,28 @@
  		public static int drillPickPower = 210;
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
+ 		public const float maxDrillLength = 48f;
 -		private MountData _data;
 +		public MountData _data;
 -		private int _type;
@@ -80,9 +82,8 @@
 -		private bool _active;
 +		public bool _active;
  
- 		public bool Active {
- 			get {
-@@ -1252,13 +_,13 @@
+ 		public bool Active => _active;
+@@ -1179,13 +_,13 @@
  		}
  
  		public static int GetHeightBoost(int MountType) {
@@ -98,7 +99,7 @@
  			int num = _data.jumpHeight;
  			switch (_type) {
  				case 0:
-@@ -1273,10 +_,11 @@
+@@ -1200,10 +_,11 @@
  					break;
  			}
  
@@ -111,7 +112,7 @@
  			float num = _data.jumpSpeed;
  			switch (_type) {
  				case 0:
-@@ -1289,6 +_,7 @@
+@@ -1216,6 +_,7 @@
  					break;
  			}
  
@@ -119,7 +120,7 @@
  			return num;
  		}
  
-@@ -1638,6 +_,9 @@
+@@ -1536,6 +_,9 @@
  		}
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
@@ -129,17 +130,16 @@
  			if (_frameState != state) {
  				_frameState = state;
  				_frameCounter = 0f;
-@@ -2039,6 +_,7 @@
+@@ -1891,5 +_,6 @@
  
  		public void UpdateEffects(Player mountedPlayer) {
  			mountedPlayer.autoJump = AutoJump;
 +			MountLoader.UpdateEffects(mountedPlayer);
  			switch (_type) {
- 				case 8:
- 					if (mountedPlayer.ownedProjectileCounts[453] < 1) {
-@@ -2186,11 +_,14 @@
+ 				case 9: {
+@@ -1955,11 +_,14 @@
  						else
- 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * (float)mountedPlayer.direction * 20f, value3.X, value3.Y, value3.Z);
+ 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector4.X, vector4.Y, vector4.Z);
  
 +						mountedPlayer.allDamage += 0.15f;
 +						/*
@@ -152,41 +152,42 @@
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  						mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -2235,7 +_,7 @@
+@@ -2081,8 +_,8 @@
  			if (_type == -1)
  				return;
  
 -			for (int i = 0; i < 22; i++) {
 +			for (int i = 0; i < Player.MaxBuffs; i++) {
- 				if (mountedPlayer.buffType[i] == _data.buff)
+ 				if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
  					return;
+ 			}
  
-@@ -2286,6 +_,7 @@
+@@ -2129,5 +_,6 @@
  
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
  			_aiming = true;
 +			MountLoader.AimAbility(this, mountedPlayer, mousePosition);
  			switch (_type) {
- 				case 8: {
- 						Vector2 vector = ClampToDeadZone(mountedPlayer, mousePosition);
-@@ -2552,6 +_,7 @@
- 			bool flag2 = false;
- 
- 			int type5 = _type;
-+			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num5, ref effect, ref origin, ref scale2, shadow);
+ 				case 9: {
+@@ -2398,6 +_,7 @@
+ 			type = _type;
+ 			_ = 8;
+ 			DrawData item;
++			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num6, ref effect, ref origin, ref scale, shadow);
  			if (!flag2) {
- 				DrawData item = new DrawData(texture2D, Position, new Rectangle?(value), drawColor, num5, origin, scale2, effect, 0);
+ 				item = new DrawData(texture2D, Position, value, drawColor, num6, origin, scale, effect, 0);
  				item.shader = currentShader;
-@@ -2612,6 +_,8 @@
+@@ -2456,7 +_,9 @@
  			bool cart = Cart;
  			_active = false;
  			mountedPlayer.ClearBuff(_data.buff);
 +			bool skipDust = false;
 +			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
  			_mountSpecificData = null;
+ 			_ = _type;
  			if (cart) {
  				mountedPlayer.ClearBuff(_data.extraBuff);
-@@ -2621,7 +_,7 @@
+@@ -2466,7 +_,7 @@
  
  			mountedPlayer.fullRotation = 0f;
  			mountedPlayer.fullRotationOrigin = Vector2.Zero;
@@ -195,16 +196,21 @@
  				for (int i = 0; i < 100; i++) {
  					if (_type == 6 || _type == 11 || _type == 13) {
  						if (i % 10 == 0) {
-@@ -2659,7 +_,7 @@
+@@ -2505,12 +_,10 @@
  		}
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false) {
--			if (_type == m || m <= -1 || m >= 15)
+-			if (_type == m)
 +			if (_type == m || m <= -1 || m >= mounts.Length)
  				return;
  
- 			if (m == 5 && mountedPlayer.wet)
-@@ -2718,7 +_,9 @@
+ 			switch (m) {
+-				default:
+-					return;
+ 				case 5:
+ 					if (mountedPlayer.wet)
+ 						return;
+@@ -2581,7 +_,9 @@
  			if (_type == 8)
  				_mountSpecificData = new DrillMountData();
  
