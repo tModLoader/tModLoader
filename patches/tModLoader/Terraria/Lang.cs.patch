@@ -1,15 +1,17 @@
 --- src/Terraria\Terraria\Lang.cs
 +++ src/tModLoader\Terraria\Lang.cs
-@@ -6,6 +_,8 @@
+@@ -5,7 +_,10 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
-+
- #if CLIENT
++#if CLIENT
  using Terraria.Map;
- #endif
-@@ -34,14 +_,14 @@
++#endif
+ using Terraria.UI;
+ 
+ namespace Terraria
+@@ -31,14 +_,14 @@
  		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[2];
  		public static LocalizedText[] prefix = new LocalizedText[84];
@@ -31,7 +33,7 @@
  
  		public static string GetMapObjectName(int id) {
  			if (_mapLegendCache != null)
-@@ -90,7 +_,7 @@
+@@ -87,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
  		public static LocalizedText GetNPCName(int netID) {
@@ -40,7 +42,7 @@
  				return _npcNameCache[netID];
  
  			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -102,8 +_,10 @@
+@@ -99,8 +_,10 @@
  		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
  		public static LocalizedText GetItemName(int id) {
@@ -53,23 +55,21 @@
  				return _itemNameCache[id];
  
  			return LocalizedText.Empty;
-@@ -229,6 +_,10 @@
+@@ -201,5 +_,9 @@
  
- 			int num = Main.anglerQuestItemNetIDs[Main.anglerQuest];
- 			Main.npcChatCornerItem = num;
-+			string modText = ItemLoader.AnglerChat(num);
+ 			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
++			string modText = ItemLoader.AnglerChat(id);
 +			if (modText != null)
 +				return modText;
 +
- 			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(num), obj);
+ 			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -355,7 +_,7 @@
+@@ -320,6 +_,6 @@
  
  		public static void BuildMapAtlas() {
  #if CLIENT
 -			_mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
 +			_mapLegendCache = new MapLegend(MapHelper.LookupCount());
- 
  			for (int i = 0; i < _mapLegendCache.Length; i++) {
  				_mapLegendCache[i] = LocalizedText.Empty;
