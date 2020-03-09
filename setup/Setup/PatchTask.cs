@@ -87,14 +87,15 @@ namespace Terraria.ModLoader.Setup
 			cutoff.Set(DateTime.Now);
 
 			if (fuzzy > 0)
-				taskInterface.Invoke(new Action(() => {
-					var w = new ReviewWindow(results) {
-						AutoHeaders = true,
-						ItemLabeller = GetTitle
-					};
-					ElementHost.EnableModelessKeyboardInterop(w);
-					w.ShowDialog();
-				}));
+				taskInterface.Invoke(new Action(() => ShowReviewWindow(results)));
+		}
+
+		private void ShowReviewWindow(IEnumerable<FilePatcher> results) {
+			var w = new ReviewWindow(results, commonBasePath: baseDir+'/') {
+				AutoHeaders = true,
+			};
+			ElementHost.EnableModelessKeyboardInterop(w);
+			w.ShowDialog();
 		}
 
 		public override bool Failed() => failures > 0;
@@ -131,15 +132,13 @@ namespace Terraria.ModLoader.Setup
 			}
 			
 			var log = new StringBuilder();
-			log.AppendLine($"{GetTitle(patcher)},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
+			log.AppendLine($"{patcher.patchFile.basePath},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
 
 			foreach (var res in patcher.results)
 				log.AppendLine(res.Summary());
 
 			Log(log.ToString());
 		}
-
-		private string GetTitle(FilePatcher patcher) => RelPath(baseDir, patcher.patchFile.basePath);
 
 		private void Log(string text)
 		{
