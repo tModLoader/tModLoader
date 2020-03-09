@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.DataStructures\TileEntity.cs
-+++ src/tModLoader\Terraria.DataStructures\TileEntity.cs
+--- src/Terraria/Terraria.DataStructures/TileEntity.cs
++++ src/tModLoader/Terraria.DataStructures/TileEntity.cs
 @@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using System.IO;

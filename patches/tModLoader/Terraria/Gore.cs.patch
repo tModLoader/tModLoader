@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Gore.cs
-+++ src/tModLoader\Terraria\Gore.cs
+--- src/Terraria/Terraria/Gore.cs
++++ src/tModLoader/Terraria/Gore.cs
 @@ -5,11 +_,17 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;

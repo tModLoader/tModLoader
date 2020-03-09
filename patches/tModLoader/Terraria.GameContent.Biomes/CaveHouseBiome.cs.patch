@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Biomes\CaveHouseBiome.cs
-+++ src/tModLoader\Terraria.GameContent.Biomes\CaveHouseBiome.cs
+--- src/Terraria/Terraria.GameContent.Biomes/CaveHouseBiome.cs
++++ src/tModLoader/Terraria.GameContent.Biomes/CaveHouseBiome.cs
 @@ -146,7 +_,7 @@
  		}
  

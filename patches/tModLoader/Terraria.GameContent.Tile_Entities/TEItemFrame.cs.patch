@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
-+++ src/tModLoader\Terraria.GameContent.Tile_Entities\TEItemFrame.cs
+--- src/Terraria/Terraria.GameContent.Tile_Entities/TEItemFrame.cs
++++ src/tModLoader/Terraria.GameContent.Tile_Entities/TEItemFrame.cs
 @@ -64,7 +_,7 @@
  		}
  

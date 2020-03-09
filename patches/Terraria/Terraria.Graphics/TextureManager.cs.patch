@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.Graphics\TextureManager.cs
-+++ src/Terraria\Terraria.Graphics\TextureManager.cs
+--- src/decompiled/Terraria.Graphics/TextureManager.cs
++++ src/Terraria/Terraria.Graphics/TextureManager.cs
 @@ -31,6 +_,7 @@
  		public static Texture2D Load(string name) {
  			if (!_textures.ContainsKey(name)) {

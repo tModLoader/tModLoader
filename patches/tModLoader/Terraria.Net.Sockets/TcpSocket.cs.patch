@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Net.Sockets\TcpSocket.cs
-+++ src/tModLoader\Terraria.Net.Sockets\TcpSocket.cs
+--- src/Terraria/Terraria.Net.Sockets/TcpSocket.cs
++++ src/tModLoader/Terraria.Net.Sockets/TcpSocket.cs
 @@ -4,6 +_,7 @@
  using System.Net.Sockets;
  using System.Threading;

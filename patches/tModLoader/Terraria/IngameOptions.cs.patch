@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\IngameOptions.cs
-+++ src/tModLoader\Terraria\IngameOptions.cs
+--- src/Terraria/Terraria/IngameOptions.cs
++++ src/tModLoader/Terraria/IngameOptions.cs
 @@ -4,6 +_,7 @@
  using Terraria.GameContent;
  using Terraria.GameInput;

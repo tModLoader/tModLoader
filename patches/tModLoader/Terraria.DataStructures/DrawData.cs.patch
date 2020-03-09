@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.DataStructures\DrawData.cs
-+++ src/tModLoader\Terraria.DataStructures\DrawData.cs
+--- src/Terraria/Terraria.DataStructures/DrawData.cs
++++ src/tModLoader/Terraria.DataStructures/DrawData.cs
 @@ -91,7 +_,7 @@
  			effect = SpriteEffects.None;
  			shader = 0;

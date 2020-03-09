@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Graphics.Effects\SimpleOverlay.cs
-+++ src/tModLoader\Terraria.Graphics.Effects\SimpleOverlay.cs
+--- src/Terraria/Terraria.Graphics.Effects/SimpleOverlay.cs
++++ src/tModLoader/Terraria.Graphics.Effects/SimpleOverlay.cs
 @@ -35,12 +_,12 @@
  			_shader.Update(gameTime);
  		}

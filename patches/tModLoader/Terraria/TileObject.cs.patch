@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\TileObject.cs
-+++ src/tModLoader\Terraria\TileObject.cs
+--- src/Terraria/Terraria/TileObject.cs
++++ src/tModLoader/Terraria/TileObject.cs
 @@ -134,7 +_,7 @@
  			return true;
  		}

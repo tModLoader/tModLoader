@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.UI\UserInterface.cs
-+++ src/tModLoader\Terraria.UI\UserInterface.cs
+--- src/Terraria/Terraria.UI/UserInterface.cs
++++ src/tModLoader/Terraria.UI/UserInterface.cs
 @@ -16,10 +_,26 @@
  		private List<UIState> _history = new List<UIState>();
  		public Vector2 MousePosition;

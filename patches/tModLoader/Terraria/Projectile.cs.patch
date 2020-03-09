@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Projectile.cs
-+++ src/tModLoader\Terraria\Projectile.cs
+--- src/Terraria/Terraria/Projectile.cs
++++ src/tModLoader/Terraria/Projectile.cs
 @@ -14,6 +_,7 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;

@@ -1,5 +1,5 @@
---- src/decompiled\Terraria\Minecart.cs
-+++ src/Terraria\Terraria\Minecart.cs
+--- src/decompiled/Terraria/Minecart.cs
++++ src/Terraria/Terraria/Minecart.cs
 @@ -55,9 +_,11 @@
  		private static int[][] _tileHeight;
  

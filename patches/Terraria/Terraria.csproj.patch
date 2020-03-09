@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.csproj
-+++ src/Terraria\Terraria.csproj
+--- src/decompiled/Terraria.csproj
++++ src/Terraria/Terraria.csproj
 @@ -1,4 +_,5 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +  <Import Project="..\TerrariaSteamPath.targets" />

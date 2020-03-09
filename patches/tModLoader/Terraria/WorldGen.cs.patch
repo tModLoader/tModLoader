@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\WorldGen.cs
-+++ src/tModLoader\Terraria\WorldGen.cs
+--- src/Terraria/Terraria/WorldGen.cs
++++ src/tModLoader/Terraria/WorldGen.cs
 @@ -18,6 +_,8 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;

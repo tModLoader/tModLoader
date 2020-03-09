@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent\ChildSafety.cs
-+++ src/tModLoader\Terraria.GameContent\ChildSafety.cs
+--- src/Terraria/Terraria.GameContent/ChildSafety.cs
++++ src/tModLoader/Terraria.GameContent/ChildSafety.cs
 @@ -6,8 +_,8 @@
  	{
  		private static SetFactory factoryDust = new SetFactory(275);

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Skies\VortexSky.cs
-+++ src/tModLoader\Terraria.GameContent.Skies\VortexSky.cs
+--- src/Terraria/Terraria.GameContent.Skies/VortexSky.cs
++++ src/tModLoader/Terraria.GameContent.Skies/VortexSky.cs
 @@ -97,7 +_,7 @@
  
  		public override float GetCloudAlpha() => (1f - _fadeOpacity) * 0.3f + 0.7f;

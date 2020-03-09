@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Graphics.Effects\FilterManager.cs
-+++ src/tModLoader\Terraria.Graphics.Effects\FilterManager.cs
+--- src/Terraria/Terraria.Graphics.Effects/FilterManager.cs
++++ src/tModLoader/Terraria.Graphics.Effects/FilterManager.cs
 @@ -183,5 +_,12 @@
  
  			return true;

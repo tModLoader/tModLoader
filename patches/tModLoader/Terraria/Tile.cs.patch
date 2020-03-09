@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Tile.cs
-+++ src/tModLoader\Terraria\Tile.cs
+--- src/Terraria/Terraria/Tile.cs
++++ src/tModLoader/Terraria/Tile.cs
 @@ -19,9 +_,10 @@
  		public const int Liquid_Lava = 1;
  		public const int Liquid_Honey = 2;

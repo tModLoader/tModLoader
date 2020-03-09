@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.ID\SoundID.cs
-+++ src/tModLoader\Terraria.ID\SoundID.cs
+--- src/Terraria/Terraria.ID/SoundID.cs
++++ src/tModLoader/Terraria.ID/SoundID.cs
 @@ -5,7 +_,7 @@
  {
  	public static class SoundID

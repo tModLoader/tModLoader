@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.ID\MountID.cs
-+++ src/tModLoader\Terraria.ID\MountID.cs
+--- src/Terraria/Terraria.ID/MountID.cs
++++ src/tModLoader/Terraria.ID/MountID.cs
 @@ -8,6 +_,21 @@
  			public static bool[] Cart = Factory.CreateBoolSet(6, 11, 13);
  		}

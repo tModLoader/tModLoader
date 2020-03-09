@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Social.Steam\CoreSocialModule.cs
-+++ src/tModLoader\Terraria.Social.Steam\CoreSocialModule.cs
+--- src/Terraria/Terraria.Social.Steam/CoreSocialModule.cs
++++ src/tModLoader/Terraria.Social.Steam/CoreSocialModule.cs
 @@ -27,7 +_,7 @@
  
  #endif

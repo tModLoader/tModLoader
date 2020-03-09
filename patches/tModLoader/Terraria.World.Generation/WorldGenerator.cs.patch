@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.World.Generation\WorldGenerator.cs
-+++ src/tModLoader\Terraria.World.Generation\WorldGenerator.cs
+--- src/Terraria/Terraria.World.Generation/WorldGenerator.cs
++++ src/tModLoader/Terraria.World.Generation/WorldGenerator.cs
 @@ -7,9 +_,9 @@
  {
  	public class WorldGenerator

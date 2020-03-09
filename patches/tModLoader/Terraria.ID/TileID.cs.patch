@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.ID\TileID.cs
-+++ src/tModLoader\Terraria.ID\TileID.cs
+--- src/Terraria/Terraria.ID/TileID.cs
++++ src/tModLoader/Terraria.ID/TileID.cs
 @@ -1,3 +_,6 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;

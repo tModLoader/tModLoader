@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Item.cs
-+++ src/tModLoader\Terraria\Item.cs
+--- src/Terraria/Terraria/Item.cs
++++ src/tModLoader/Terraria/Item.cs
 @@ -1,16 +_,35 @@
  using Microsoft.Xna.Framework;
  using System;

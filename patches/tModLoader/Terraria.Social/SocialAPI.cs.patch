@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Social\SocialAPI.cs
-+++ src/tModLoader\Terraria.Social\SocialAPI.cs
+--- src/Terraria/Terraria.Social/SocialAPI.cs
++++ src/tModLoader/Terraria.Social/SocialAPI.cs
 @@ -1,4 +_,5 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader.Engine;

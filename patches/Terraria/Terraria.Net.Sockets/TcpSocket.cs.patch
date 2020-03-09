@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.Net.Sockets\TcpSocket.cs
-+++ src/Terraria\Terraria.Net.Sockets\TcpSocket.cs
+--- src/decompiled/Terraria.Net.Sockets/TcpSocket.cs
++++ src/Terraria/Terraria.Net.Sockets/TcpSocket.cs
 @@ -57,7 +_,13 @@
  		}
  

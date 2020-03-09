@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.ID\ItemID.cs
-+++ src/tModLoader\Terraria.ID\ItemID.cs
+--- src/Terraria/Terraria.ID/ItemID.cs
++++ src/tModLoader/Terraria.ID/ItemID.cs
 @@ -1,5 +_,6 @@
  using ReLogic.Reflection;
  using System.Collections.Generic;

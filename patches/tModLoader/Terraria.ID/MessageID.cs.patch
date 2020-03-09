@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.ID\MessageID.cs
-+++ src/tModLoader\Terraria.ID\MessageID.cs
+--- src/Terraria/Terraria.ID/MessageID.cs
++++ src/tModLoader/Terraria.ID/MessageID.cs
 @@ -5,78 +_,293 @@
  	public class MessageID
  	{

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Collision.cs
-+++ src/tModLoader\Terraria\Collision.cs
+--- src/Terraria/Terraria/Collision.cs
++++ src/tModLoader/Terraria/Collision.cs
 @@ -2045,7 +_,7 @@
  
  			for (int i = num; i < num2; i++) {

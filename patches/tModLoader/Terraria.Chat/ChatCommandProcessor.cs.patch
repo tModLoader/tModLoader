@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Chat\ChatCommandProcessor.cs
-+++ src/tModLoader\Terraria.Chat\ChatCommandProcessor.cs
+--- src/Terraria/Terraria.Chat/ChatCommandProcessor.cs
++++ src/tModLoader/Terraria.Chat/ChatCommandProcessor.cs
 @@ -3,6 +_,7 @@
  using System.Linq;
  using Terraria.Chat.Commands;

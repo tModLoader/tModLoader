@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UIList.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UIList.cs
+--- src/Terraria/Terraria.GameContent.UI.Elements/UIList.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UIList.cs
 @@ -25,9 +_,9 @@
  			}
  		}

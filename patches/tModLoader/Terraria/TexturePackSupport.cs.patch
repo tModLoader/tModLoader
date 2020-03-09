@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\TexturePackSupport.cs
-+++ src/tModLoader\Terraria\TexturePackSupport.cs
+--- src/Terraria/Terraria/TexturePackSupport.cs
++++ src/tModLoader/Terraria/TexturePackSupport.cs
 @@ -4,6 +_,8 @@
  using System.Collections.Generic;
  using System.Diagnostics;

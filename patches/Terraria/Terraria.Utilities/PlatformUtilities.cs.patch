@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.Utilities\PlatformUtilities.cs
-+++ src/Terraria\Terraria.Utilities\PlatformUtilities.cs
+--- src/decompiled/Terraria.Utilities/PlatformUtilities.cs
++++ src/Terraria/Terraria.Utilities/PlatformUtilities.cs
 @@ -1,11 +_,85 @@
 +#if !WINDOWS
 +using SDL2;

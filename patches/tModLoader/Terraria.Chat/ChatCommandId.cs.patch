@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Chat\ChatCommandId.cs
-+++ src/tModLoader\Terraria.Chat\ChatCommandId.cs
+--- src/Terraria/Terraria.Chat/ChatCommandId.cs
++++ src/tModLoader/Terraria.Chat/ChatCommandId.cs
 @@ -7,7 +_,7 @@
  {
  	public struct ChatCommandId

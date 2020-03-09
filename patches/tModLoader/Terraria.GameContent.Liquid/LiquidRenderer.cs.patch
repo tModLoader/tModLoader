@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Liquid\LiquidRenderer.cs
-+++ src/tModLoader\Terraria.GameContent.Liquid\LiquidRenderer.cs
+--- src/Terraria/Terraria.GameContent.Liquid/LiquidRenderer.cs
++++ src/tModLoader/Terraria.GameContent.Liquid/LiquidRenderer.cs
 @@ -74,9 +_,13 @@
  			0
  		};

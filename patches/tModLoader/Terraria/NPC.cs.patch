@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\NPC.cs
-+++ src/tModLoader\Terraria\NPC.cs
+--- src/Terraria/Terraria/NPC.cs
++++ src/tModLoader/Terraria/NPC.cs
 @@ -16,11 +_,29 @@
  using Terraria.Localization;
  using Terraria.Utilities;

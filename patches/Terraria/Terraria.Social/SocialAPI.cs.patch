@@ -1,5 +1,5 @@
---- src/decompiled\Terraria.Social\SocialAPI.cs
-+++ src/Terraria\Terraria.Social\SocialAPI.cs
+--- src/decompiled/Terraria.Social/SocialAPI.cs
++++ src/Terraria/Terraria.Social/SocialAPI.cs
 @@ -19,7 +_,12 @@
  		public static void Initialize(SocialMode? mode = null) {
  			if (!mode.HasValue) {

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UIKeybindingListItem.cs
+--- src/Terraria/Terraria.GameContent.UI.Elements/UIKeybindingListItem.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UIKeybindingListItem.cs
 @@ -104,6 +_,12 @@
  					return Lang.menu[162].Value;
  				case "MouseRight":

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Lighting.cs
-+++ src/tModLoader\Terraria\Lighting.cs
+--- src/Terraria/Terraria/Lighting.cs
++++ src/tModLoader/Terraria/Lighting.cs
 @@ -8,6 +_,7 @@
  using Terraria.Graphics;
  using Terraria.ID;

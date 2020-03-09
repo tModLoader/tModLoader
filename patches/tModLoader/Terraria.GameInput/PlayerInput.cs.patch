@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameInput\PlayerInput.cs
-+++ src/tModLoader\Terraria.GameInput\PlayerInput.cs
+--- src/Terraria/Terraria.GameInput/PlayerInput.cs
++++ src/tModLoader/Terraria.GameInput/PlayerInput.cs
 @@ -7,6 +_,7 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameContent.UI.States;

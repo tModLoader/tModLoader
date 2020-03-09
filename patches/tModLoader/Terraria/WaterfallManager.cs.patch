@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\WaterfallManager.cs
-+++ src/tModLoader\Terraria\WaterfallManager.cs
+--- src/Terraria/Terraria/WaterfallManager.cs
++++ src/tModLoader/Terraria/WaterfallManager.cs
 @@ -2,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;

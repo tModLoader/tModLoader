@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UITextPanel.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UITextPanel.cs
+--- src/Terraria/Terraria.GameContent.UI.Elements/UITextPanel.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UITextPanel.cs
 @@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;

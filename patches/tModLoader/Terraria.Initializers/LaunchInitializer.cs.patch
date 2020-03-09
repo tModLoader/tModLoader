@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Initializers\LaunchInitializer.cs
-+++ src/tModLoader\Terraria.Initializers\LaunchInitializer.cs
+--- src/Terraria/Terraria.Initializers/LaunchInitializer.cs
++++ src/tModLoader/Terraria.Initializers/LaunchInitializer.cs
 @@ -1,5 +_,8 @@
  using System.Diagnostics;
 +using System.Linq;

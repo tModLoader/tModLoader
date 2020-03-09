@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Main.cs
-+++ src/tModLoader\Terraria\Main.cs
+--- src/Terraria/Terraria/Main.cs
++++ src/tModLoader/Terraria/Main.cs
 @@ -26,7 +_,9 @@
  using System.Runtime.InteropServices;
  using System.Text;

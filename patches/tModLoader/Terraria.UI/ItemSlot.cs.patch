@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.UI\ItemSlot.cs
-+++ src/tModLoader\Terraria.UI\ItemSlot.cs
+--- src/Terraria/Terraria.UI/ItemSlot.cs
++++ src/tModLoader/Terraria.UI/ItemSlot.cs
 @@ -6,6 +_,7 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameInput;

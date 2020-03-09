@@ -73,7 +73,10 @@ namespace Terraria.ModLoader.Setup
 
 		private void Diff(string relPath)
 		{
-			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(), Path.Combine(baseDir, relPath), Path.Combine(patchedDir, relPath));
+			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(), 
+				Path.Combine(baseDir, relPath).Replace('\\', '/'), 
+				Path.Combine(patchedDir, relPath).Replace('\\', '/'));
+
 			var patchPath = Path.Combine(patchDir, relPath + ".patch");
 			if (!patchFile.IsEmpty) {
 				CreateParentDirectory(patchPath);

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Player.cs
-+++ src/tModLoader\Terraria\Player.cs
+--- src/Terraria/Terraria/Player.cs
++++ src/tModLoader/Terraria/Player.cs
 @@ -28,6 +_,10 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;

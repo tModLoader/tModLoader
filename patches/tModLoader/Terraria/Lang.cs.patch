@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Lang.cs
-+++ src/tModLoader\Terraria\Lang.cs
+--- src/Terraria/Terraria/Lang.cs
++++ src/tModLoader/Terraria/Lang.cs
 @@ -5,7 +_,10 @@
  using Terraria.GameInput;
  using Terraria.ID;

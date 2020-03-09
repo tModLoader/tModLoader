@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Wiring.cs
-+++ src/tModLoader\Terraria\Wiring.cs
+--- src/Terraria/Terraria/Wiring.cs
++++ src/tModLoader/Terraria/Wiring.cs
 @@ -6,6 +_,7 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Skies\NebulaSky.cs
-+++ src/tModLoader\Terraria.GameContent.Skies\NebulaSky.cs
+--- src/Terraria/Terraria.GameContent.Skies/NebulaSky.cs
++++ src/tModLoader/Terraria.GameContent.Skies/NebulaSky.cs
 @@ -90,7 +_,7 @@
  
  		public override float GetCloudAlpha() => (1f - _fadeOpacity) * 0.3f + 0.7f;

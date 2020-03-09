@@ -1,5 +1,5 @@
---- src/decompiled\Terraria\NetMessage.cs
-+++ src/Terraria\Terraria\NetMessage.cs
+--- src/decompiled/Terraria/NetMessage.cs
++++ src/Terraria/Terraria/NetMessage.cs
 @@ -1780,6 +_,12 @@
  					}
  				}

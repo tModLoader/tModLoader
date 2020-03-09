@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Map\MapHelper.cs
-+++ src/tModLoader\Terraria.Map\MapHelper.cs
+--- src/Terraria/Terraria.Map/MapHelper.cs
++++ src/tModLoader/Terraria.Map/MapHelper.cs
 @@ -4,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.Skies\MartianSky.cs
-+++ src/tModLoader\Terraria.GameContent.Skies\MartianSky.cs
+--- src/Terraria/Terraria.GameContent.Skies/MartianSky.cs
++++ src/tModLoader/Terraria.GameContent.Skies/MartianSky.cs
 @@ -250,7 +_,7 @@
  			}
  		}

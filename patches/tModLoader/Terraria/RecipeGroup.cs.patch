@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\RecipeGroup.cs
-+++ src/tModLoader\Terraria\RecipeGroup.cs
+--- src/Terraria/Terraria/RecipeGroup.cs
++++ src/tModLoader/Terraria/RecipeGroup.cs
 @@ -8,6 +_,7 @@
  		public Func<string> GetText;
  		public List<int> ValidItems;

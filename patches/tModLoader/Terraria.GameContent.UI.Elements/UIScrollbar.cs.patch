@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UIScrollbar.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UIScrollbar.cs
+--- src/Terraria/Terraria.GameContent.UI.Elements/UIScrollbar.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UIScrollbar.cs
 @@ -99,4 +_,27 @@
  			_isDragging = false;
  		}

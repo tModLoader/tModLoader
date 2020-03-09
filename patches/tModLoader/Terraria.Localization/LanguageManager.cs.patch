@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Localization\LanguageManager.cs
-+++ src/tModLoader\Terraria.Localization\LanguageManager.cs
+--- src/Terraria/Terraria.Localization/LanguageManager.cs
++++ src/tModLoader/Terraria.Localization/LanguageManager.cs
 @@ -8,6 +_,7 @@
  using System.Reflection;
  using System.Text.RegularExpressions;

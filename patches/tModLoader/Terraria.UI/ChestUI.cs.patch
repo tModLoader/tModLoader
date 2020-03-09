@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.UI\ChestUI.cs
-+++ src/tModLoader\Terraria.UI\ChestUI.cs
+--- src/Terraria/Terraria.UI/ChestUI.cs
++++ src/tModLoader/Terraria.UI/ChestUI.cs
 @@ -3,6 +_,8 @@
  using Microsoft.Xna.Framework.Input;
  using System.Collections.Generic;

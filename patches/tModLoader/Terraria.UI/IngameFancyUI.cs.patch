@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.UI\IngameFancyUI.cs
-+++ src/tModLoader\Terraria.UI\IngameFancyUI.cs
+--- src/Terraria/Terraria.UI/IngameFancyUI.cs
++++ src/tModLoader/Terraria.UI/IngameFancyUI.cs
 @@ -3,7 +_,9 @@
  using Terraria.Achievements;
  using Terraria.GameContent.UI.States;

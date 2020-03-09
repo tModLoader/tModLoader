@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Initializers\UILinksInitializer.cs
-+++ src/tModLoader\Terraria.Initializers\UILinksInitializer.cs
+--- src/Terraria/Terraria.Initializers/UILinksInitializer.cs
++++ src/tModLoader/Terraria.Initializers/UILinksInitializer.cs
 @@ -2,6 +_,9 @@
  using System;
  using Terraria.GameContent.UI.States;

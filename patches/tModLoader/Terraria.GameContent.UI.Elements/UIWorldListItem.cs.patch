@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
+--- src/Terraria/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
 @@ -4,6 +_,8 @@
  using Terraria.Graphics;
  using Terraria.IO;

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.csproj
-+++ src/tModLoader\Terraria.csproj
+--- src/Terraria/Terraria.csproj
++++ src/tModLoader/Terraria.csproj
 @@ -1,7 +_,7 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="..\TerrariaSteamPath.targets" />

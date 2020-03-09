@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI\EmoteBubble.cs
-+++ src/tModLoader\Terraria.GameContent.UI\EmoteBubble.cs
+--- src/Terraria/Terraria.GameContent.UI/EmoteBubble.cs
++++ src/tModLoader/Terraria.GameContent.UI/EmoteBubble.cs
 @@ -9,7 +_,7 @@
  {
  	public class EmoteBubble
