@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -16,26 +_,26 @@
+@@ -14,28 +_,28 @@
  		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -26,6 +26,7 @@
  		private static Dictionary<Point16, bool> _GatesDone;
  		private static Dictionary<Point16, byte> _PixelBoxTriggers;
 -		private static Vector2[] _teleport;
+ 		private const int MaxPump = 20;
 +		public static Vector2[] _teleport;
 -		private static int[] _inPumpX;
 +		public static int[] _inPumpX;
@@ -38,6 +39,7 @@
 -		private static int[] _outPumpY;
 +		public static int[] _outPumpY;
 -		private static int _numOutPump;
+ 		private const int MaxMech = 1000;
 +		public static int _numOutPump;
  		private static int[] _mechX;
  		private static int[] _mechY;
@@ -48,7 +50,7 @@
  		private static int CurrentUser = 254;
  
  		public static void SetCurrentUser(int plr = -1) {
-@@ -291,7 +_,7 @@
+@@ -280,7 +_,7 @@
  			}
  		}
  
@@ -57,7 +59,7 @@
  			for (int k = 0; k < _numMechs; k++) {
  				if (_mechX[k] == i && _mechY[k] == j)
  					return false;
-@@ -355,7 +_,7 @@
+@@ -344,7 +_,7 @@
  			}
  		}
  
@@ -171,16 +173,15 @@
  															}
  														}
  													}
-@@ -2130,6 +_,8 @@
- 						}
+@@ -2016,6 +_,7 @@
+ 						break;
  					}
- 				}
-+
-+				TileLoader.HitWire(i, j, type);
  			}
++			TileLoader.HitWire(i, j, type);
  		}
  
-@@ -2186,7 +_,7 @@
+ 		private static void Teleport() {
+@@ -2071,7 +_,7 @@
  			}
  		}
  
@@ -189,12 +190,12 @@
  			if (!Main.tile[i, j].active())
  				return;
  
-@@ -2218,7 +_,7 @@
- 				NetMessage.SendTileSquare(-1, i, j, 1, TileChangeType.None);
+@@ -2088,7 +_,7 @@
+ 			}
  		}
  
 -		private static void ReActive(int i, int j) {
 +		public static void ReActive(int i, int j) {
- 			Main.tile[i, j].inActive(false);
- 			WorldGen.SquareTileFrame(i, j, false);
+ 			Main.tile[i, j].inActive(inActive: false);
+ 			WorldGen.SquareTileFrame(i, j, resetFrame: false);
  			if (Main.netMode != 1)

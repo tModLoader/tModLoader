@@ -37,136 +37,120 @@
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  					if (num > 1) {
  						int num2 = 0;
-@@ -145,112 +_,31 @@
+@@ -146,96 +_,116 @@
+ 		}
+ 
+ 		public bool useWood(int invType, int reqType) {
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Wood];
++			return anyWood && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
++			/*
  			if (!anyWood)
  				return false;
  
--			if (reqType <= 621) {
--				if (reqType == 9)
--					goto IL_59;
--
--				switch (reqType) {
--					case 619:
--					case 620:
--					case 621:
--						goto IL_59;
--				}
--			}
--			else {
--				if (reqType == 911 || reqType == 1729)
--					goto IL_59;
--
--				switch (reqType) {
--					case 2503:
--					case 2504:
--						goto IL_59;
--				}
--			}
--
--			return false;
--		IL_59:
--			if (invType <= 621) {
--				if (invType == 9)
--					return true;
--
--				switch (invType) {
--					case 619:
--					case 620:
--					case 621:
--						return true;
--				}
--			}
--			else {
--				if (invType == 911 || invType == 1729)
--					return true;
--
--				switch (invType) {
--					case 2503:
--					case 2504:
--						return true;
--				}
--			}
--
--			return false;
--		}
--
--		public bool useIronBar(int invType, int reqType) => anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
--		public bool useSand(int invType, int reqType) => (reqType == 169 || reqType == 408 || reqType == 1246 || reqType == 370 || reqType == 3272) && anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272);
--		public bool useFragment(int invType, int reqType) => (reqType == 3458 || reqType == 3456 || reqType == 3457 || reqType == 3459) && anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459);
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Wood];
-+			return rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+		}
-+
-+		public bool useIronBar(int invType, int reqType) {
+ 			switch (reqType) {
+ 				default:
+ 					return false;
+ 				case 9:
+ 				case 619:
+ 				case 620:
+ 				case 621:
+ 				case 911:
+ 				case 1729:
+ 				case 2503:
+ 				case 2504:
+ 					switch (invType) {
+ 						default:
+ 							return false;
+ 						case 9:
+ 						case 619:
+ 						case 620:
+ 						case 621:
+ 						case 911:
+ 						case 1729:
+ 						case 2503:
+ 						case 2504:
+ 							return true;
+ 					}
+ 			}
++			*/
+ 		}
+ 
+ 		public bool useIronBar(int invType, int reqType) {
 +			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.IronBar];
-+			return anyIronBar && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+		}
-+
-+		public bool useSand(int invType, int reqType) {
++			return this.anyIronBar && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
++			/*
+ 			if (!anyIronBar)
+ 				return false;
+ 
+ 			if (reqType != 22 && reqType != 704)
+ 				return false;
+ 
+ 			if (invType != 22 && invType != 704)
+ 				return false;
+ 
+ 			return true;
++			*/
+ 		}
+ 
+ 		public bool useSand(int invType, int reqType) {
 +			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Sand];
-+			return anySand && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+		}
-+
-+		public bool useFragment(int invType, int reqType) {
++			return this.anySand && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
++			/*
+ 			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272)
+ 				return false;
+ 
+ 			if (anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272))
+ 				return true;
+ 
+ 			return false;
++			*/
+ 		}
+ 
+ 		public bool useFragment(int invType, int reqType) {
 +			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Fragment];
-+			return anyFragment && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+		}
++			return this.anyFragment && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
++			/*
+ 			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
+ 				return false;
+ 
+ 			if (anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459))
+ 				return true;
+ 
+ 			return false;
++			*/
+ 		}
  
  		public bool usePressurePlate(int invType, int reqType) {
++			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate];
++			return anyPressurePlate && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
++			/*
  			if (!anyPressurePlate)
  				return false;
  
--			if (reqType <= 543) {
--				if (reqType == 529)
--					goto IL_54;
--
--				switch (reqType) {
--					case 541:
--					case 542:
--					case 543:
--						goto IL_54;
--				}
--			}
--			else {
--				switch (reqType) {
--					case 852:
--					case 853:
--						goto IL_54;
--					default:
--						if (reqType == 1151)
--							goto IL_54;
--						break;
--				}
--			}
--
--			return false;
--		IL_54:
--			if (invType <= 543) {
--				if (invType == 529)
--					return true;
--
--				switch (invType) {
--					case 541:
--					case 542:
--					case 543:
--						return true;
--				}
--			}
--			else {
--				switch (invType) {
--					case 852:
--					case 853:
--						return true;
--					default:
--						if (invType == 1151)
--							return true;
--						break;
--				}
--			}
--
--			return false;
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate];
-+			return rec.ContainsItem(invType) && rec.ContainsItem(reqType);
+ 			switch (reqType) {
+ 				default:
+ 					return false;
+ 				case 529:
+ 				case 541:
+ 				case 542:
+ 				case 543:
+ 				case 852:
+ 				case 853:
+ 				case 1151:
+ 					switch (invType) {
+ 						default:
+ 							return false;
+ 						case 529:
+ 						case 541:
+ 						case 542:
+ 						case 543:
+ 						case 852:
+ 						case 853:
+ 						case 1151:
+ 							return true;
+ 					}
+ 			}
++			*/
  		}
  
  		public static void FindRecipes() {
@@ -179,22 +163,21 @@
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
-@@ -456,6 +_,8 @@
- 			});
- 
+@@ -381,6 +_,8 @@
+ 			RecipeGroupID.Fireflies = RecipeGroup.RegisterGroup("Fireflies", rec);
+ 			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[95].Value, 2006, 2007);
  			RecipeGroupID.Snails = RecipeGroup.RegisterGroup("Snails", rec);
 +			RecipeGroupHelper.AddOldVanillaGroups();
 +			RecipeGroupHelper.AddRecipeGroups();
  		}
  
  		public static void SetupRecipes() {
-@@ -10810,6 +_,9 @@
+@@ -10738,5 +_,8 @@
  			AddRecipe();
  			WallReturn();
  			PlatformReturn();
 +			RecipeHooks.AddRecipes();
 +			RecipeHooks.PostAddRecipes();
 +			Item.PopulateMaterialCache();
- 			for (int num6 = 0; num6 < numRecipes; num6++) {
- 				int num7 = 0;
- 				while (Main.recipe[num6].requiredItem[num7].type > 0) {
+ 			for (int num9 = 0; num9 < numRecipes; num9++) {
+ 				for (int num10 = 0; Main.recipe[num9].requiredItem[num10].type > 0; num10++) {

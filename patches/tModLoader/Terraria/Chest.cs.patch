@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -5,6 +_,7 @@
+@@ -4,6 +_,7 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
@@ -103,10 +103,9 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -730,9 +_,12 @@
- 								Main.travelShop[num2++] = 3641;
- 								break;
- 						}
+@@ -711,8 +_,11 @@
+ 							Main.travelShop[num2++] = 3641;
+ 							break;
 +						//patch file: num2
  					}
  				}
@@ -116,11 +115,11 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -1976,6 +_,7 @@
- 				}
+@@ -1908,6 +_,7 @@
+ 					}
  			}
  
 +			NPCLoader.SetupShop(type, this, ref num);
  			if (Main.player[Main.myPlayer].discount) {
- 				for (int num7 = 0; num7 < num; num7++) {
- 					item[num7].value = (int)(item[num7].value * 0.8f);
+ 				for (int num8 = 0; num8 < num; num8++) {
+ 					item[num8].value = (int)((float)item[num8].value * 0.8f);

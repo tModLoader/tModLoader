@@ -15,17 +15,17 @@
  		public bool firstFrame;
 +		internal int realType = -1;
  
- 		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default, float Scale = 1f) {
+ 		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
  			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -161,6 +_,7 @@
- 					if (dust.type == 80)
- 						dust.alpha = 50;
+@@ -158,6 +_,7 @@
+ 				if (dust.type == 80)
+ 					dust.alpha = 50;
  
-+					ModDust.SetupDust(dust);
- 					if (dust.type != 34 && dust.type != 35 && dust.type != 152)
- 						break;
- 
-@@ -253,6 +_,9 @@
++				ModDust.SetupDust(dust);
+ 				if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
+ 					dust.velocity *= 0.1f;
+ 					dust.velocity.Y = -0.5f;
+@@ -233,6 +_,9 @@
  		}
  
  		public static int dustWater() {
@@ -35,39 +35,39 @@
  			switch (Main.waterStyle) {
  				case 2:
  					return 98;
-@@ -288,6 +_,13 @@
- 				if (i < Main.maxDustToDraw) {
- 					if (dust.active) {
- 						dCount += 1f;
-+						ModDust.SetupUpdateType(dust);
-+						ModDust modDust = ModDust.GetDust(dust.type);
-+						if (modDust != null && !modDust.Update(dust)) {
-+							ModDust.TakeDownUpdateType(dust);
-+							continue;
-+						}
-+
- 						if (dust.scale > 10f)
- 							dust.active = false;
+@@ -270,6 +_,13 @@
+ 						continue;
  
-@@ -1564,7 +_,7 @@
- 
- 							Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num106 * 0.7f, num106, num106 * 0.8f);
- 						}
--						else {
-+						else if (modDust == null || !modDust.MidUpdate(dust)) {
- 							Dust expr_446A_cp_0 = dust;
- 							expr_446A_cp_0.velocity.X = expr_446A_cp_0.velocity.X * 0.99f;
- 						}
-@@ -1765,6 +_,8 @@
- 
- 						if (dust.scale < num114)
- 							dust.active = false;
-+
+ 					dCount += 1f;
++					ModDust.SetupUpdateType(dust);
++					ModDust modDust = ModDust.GetDust(dust.type);
++					if (modDust != null && !modDust.Update(dust)) {
 +						ModDust.TakeDownUpdateType(dust);
++						continue;
++					}
++
+ 					if (dust.scale > 10f)
+ 						dust.active = false;
+ 
+@@ -1485,7 +_,7 @@
+ 
+ 						Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num106 * 0.7f, num106, num106 * 0.8f);
  					}
+-					else {
++					else if (modDust == null || !modDust.MidUpdate(dust)) {
+ 						dust.velocity.X *= 0.99f;
+ 					}
+ 
+@@ -1684,6 +_,8 @@
+ 
+ 					if (dust.scale < num114)
+ 						dust.active = false;
++
++					ModDust.TakeDownUpdateType(dust);
  				}
  				else {
-@@ -1802,6 +_,13 @@
+ 					dust.active = false;
+@@ -1706,6 +_,13 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -78,6 +78,6 @@
 +					return modColor.Value;
 +			}
 +
- 			float num = (255 - alpha) / 255f;
+ 			float num = (float)(255 - alpha) / 255f;
  			if (type == 259)
  				return new Color(230, 230, 230, 230);
