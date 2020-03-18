@@ -1,8 +1,8 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -19,9 +_,10 @@
- 		public const int Liquid_Lava = 1;
- 		public const int Liquid_Honey = 2;
+@@ -9,9 +_,10 @@
+ 	public class Tile
+ 	{
  		public ushort type;
 -		public byte wall;
 +		public ushort wall;
@@ -13,82 +13,82 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -324,7 +_,7 @@
+@@ -326,7 +_,7 @@
  			if (color > 30)
  				color = 30;
  
--			sTileHeader = (short)(sTileHeader & 65504 | color);
-+			sTileHeader = (ushort)(sTileHeader & 65504 | color);
+-			sTileHeader = (short)((sTileHeader & 0xFFE0) | color);
++			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);
  		}
  
- 		public bool active() => (sTileHeader & 32) == 32;
+ 		public bool active() => (sTileHeader & 0x20) == 32;
 @@ -335,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 65503);
-+			sTileHeader = (ushort)(sTileHeader & 65503);
+ 			if (active)
+ 				sTileHeader |= 32;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFFDF);
++				sTileHeader = (ushort)(sTileHeader & 0xFFDF);
  		}
  
- 		public bool inActive() => (sTileHeader & 64) == 64;
-@@ -346,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 65471);
-+			sTileHeader = (ushort)(sTileHeader & 65471);
+ 		public bool inActive() => (sTileHeader & 0x40) == 64;
+@@ -344,7 +_,7 @@
+ 			if (inActive)
+ 				sTileHeader |= 64;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFFBF);
++				sTileHeader = (ushort)(sTileHeader & 0xFFBF);
  		}
  
- 		public bool wire() => (sTileHeader & 128) == 128;
-@@ -357,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 65407);
-+			sTileHeader = (ushort)(sTileHeader & 65407);
+ 		public bool wire() => (sTileHeader & 0x80) == 128;
+@@ -353,7 +_,7 @@
+ 			if (wire)
+ 				sTileHeader |= 128;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFF7F);
++				sTileHeader = (ushort)(sTileHeader & 0xFF7F);
  		}
  
- 		public bool wire2() => (sTileHeader & 256) == 256;
-@@ -368,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 65279);
-+			sTileHeader = (ushort)(sTileHeader & 65279);
+ 		public bool wire2() => (sTileHeader & 0x100) == 256;
+@@ -362,7 +_,7 @@
+ 			if (wire2)
+ 				sTileHeader |= 256;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFEFF);
++				sTileHeader = (ushort)(sTileHeader & 0xFEFF);
  		}
  
- 		public bool wire3() => (sTileHeader & 512) == 512;
-@@ -379,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 65023);
-+			sTileHeader = (ushort)(sTileHeader & 65023);
+ 		public bool wire3() => (sTileHeader & 0x200) == 512;
+@@ -371,7 +_,7 @@
+ 			if (wire3)
+ 				sTileHeader |= 512;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFDFF);
++				sTileHeader = (ushort)(sTileHeader & 0xFDFF);
  		}
  
- 		public bool halfBrick() => (sTileHeader & 1024) == 1024;
-@@ -390,7 +_,7 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 64511);
-+			sTileHeader = (ushort)(sTileHeader & 64511);
+ 		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
+@@ -380,7 +_,7 @@
+ 			if (halfBrick)
+ 				sTileHeader |= 1024;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xFBFF);
++				sTileHeader = (ushort)(sTileHeader & 0xFBFF);
  		}
  
- 		public bool actuator() => (sTileHeader & 2048) == 2048;
-@@ -401,13 +_,13 @@
- 				return;
- 			}
- 
--			sTileHeader = (short)(sTileHeader & 63487);
-+			sTileHeader = (ushort)(sTileHeader & 63487);
+ 		public bool actuator() => (sTileHeader & 0x800) == 2048;
+@@ -389,13 +_,13 @@
+ 			if (actuator)
+ 				sTileHeader |= 2048;
+ 			else
+-				sTileHeader = (short)(sTileHeader & 0xF7FF);
++				sTileHeader = (ushort)(sTileHeader & 0xF7FF);
  		}
  
- 		public byte slope() => (byte)((sTileHeader & 28672) >> 12);
+ 		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
  
  		public void slope(byte slope) {
--			sTileHeader = (short)(sTileHeader & 36863 | (slope & 7) << 12);
-+			sTileHeader = (ushort)(sTileHeader & 36863 | (slope & 7) << 12);
+-			sTileHeader = (short)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
++			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
  		}
  
  		public static void SmoothSlope(int x, int y, bool applyToNeighbors = true) {
