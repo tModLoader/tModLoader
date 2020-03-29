@@ -718,7 +718,7 @@ namespace ExampleMod
 
 			if (player.HeldItem.type == ModContent.ItemType<Items.Weapons.ExampleGlowSword>() && player.itemAnimation != 0) //We want to make sure that our layer only draws when the player is swinging our specific item.
 			{
-				Texture2D tex = ModContent.GetTexture("ExampleMod/Items/ExampleGlowSwordGlow"); //The texture of our glowmask.
+				Texture2D tex = ModContent.GetTexture("ExampleMod/Items/Weapons/ExampleGlowSwordGlow"); //The texture of our glowmask.
 
 				//Draws via adding to Main.playerDrawData. Always do this and not Main.spriteBatch.Draw().
 				Main.playerDrawData.Add(
@@ -742,7 +742,7 @@ namespace ExampleMod
 
 			if (player.HeldItem.type == ModContent.ItemType<Items.Weapons.ExampleAnimatedSword>() && player.itemAnimation != 0) //We want to make sure that our layer only draws when the player is swinging our specific item.
 			{
-				Texture2D tex = ModContent.GetTexture("ExampleMod/Items/ExampleAnimatedSword"); //The texture of our animated sword.
+				Texture2D tex = ModContent.GetTexture("ExampleMod/Items/Weapons/ExampleAnimatedSword"); //The texture of our animated sword.
 				Rectangle frame = Main.itemAnimations[ModContent.ItemType<Items.Weapons.ExampleAnimatedSword>()].GetFrame(tex);//the animation frame that we want should be passed as the source rectangle. this is the region if your sprite the game will read to draw.
 																												//special note that this requires your item's animation to be set up correctly in the inventory. If you want your item to be animated ONLY when you swing you will have to find the frame another way.
 
