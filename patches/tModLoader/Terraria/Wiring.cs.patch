@@ -68,111 +68,102 @@
  			if (Main.netMode == 1)
  				return;
  
-@@ -760,7 +_,8 @@
- 						}
- 					}
+@@ -765,6 +_,9 @@
+ 			if (!tile.active())
+ 				return;
  
--				IL_320:;
-+				IL_320:
-+					;
- 				}
- 			}
- 
-@@ -776,6 +_,9 @@
- 				ActuateForced(i, j);
- 
- 			if (tile.active()) {
-+				if (!TileLoader.PreHitWire(i, j, type))
-+					return;
++			if (!TileLoader.PreHitWire(i, j, type))
++				return;
 +
- 				if (type == 144) {
+ 			switch (type) {
+ 				case 144:
  					HitSwitch(i, j);
- 					WorldGen.SquareTileFrame(i, j, true);
-@@ -1139,13 +_,13 @@
- 									return;
- 								}
+@@ -1111,11 +_,11 @@
+ 						NetMessage.SendData(19, -1, -1, null, 4 + flag11.ToInt(), i, j);
+ 						break;
+ 					}
+-				case 11:
++				case int _ when TileLoader.CloseDoorID(Main.tile[i, j]) >= 0:
+ 					if (WorldGen.CloseDoor(i, j, forced: true))
+ 						NetMessage.SendData(19, -1, -1, null, 1, i, j);
+ 					break;
+-				case 10: {
++				case int _ when TileLoader.OpenDoorID(Main.tile[i, j]) >= 0: {
+ 						int num73 = 1;
+ 						if (Main.rand.Next(2) == 0)
+ 							num73 = -1;
+@@ -1187,7 +_,7 @@
  
--								if (type == 11) {
-+								if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0) {
- 									if (WorldGen.CloseDoor(i, j, true)) {
- 										NetMessage.SendData(19, -1, -1, null, 1, i, j, 0f, 0, 0, 0);
- 										return;
- 									}
- 								}
--								else if (type == 10) {
-+								else if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0) {
- 									int num69 = 1;
- 									if (Main.rand.Next(2) == 0)
- 										num69 = -1;
-@@ -1226,7 +_,7 @@
- 										}
- 									}
- 									else {
--										if (type == 4) {
-+										if (TileLoader.IsTorch(type)) {
- 											if (tile.frameX < 66) {
- 												Tile expr_F96 = tile;
- 												expr_F96.frameX += 66;
-@@ -1710,7 +_,7 @@
- 												}
+ 						break;
+ 					}
+-				case 4:
++				case int _ when TileLoader.IsTorch(type):
+ 					if (tile.frameX < 66)
+ 						tile.frameX += 66;
+ 					else
+@@ -1603,6 +_,7 @@
+ 					}
+ 				case 35:
+ 				case 139:
++				case int _ when TileLoader.IsModMusicBox(tile):
+ 					WorldGen.SwitchMB(i, j);
+ 					break;
+ 				case 207:
+@@ -1934,14 +_,13 @@
+ 										if (!CheckMech(num53, num52, 300))
+ 											break;
+ 
+-										int[] array2 = new int[10];
++										List<int> array2 = new List<int();
+ 										int num64 = 0;
+ 										for (int num65 = 0; num65 < 200; num65++) {
+-											if (Main.npc[num65].active && (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550)) {
+-												array2[num64] = num65;
++											bool vanillaCanGo = (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550);
++											if (Main.npc[num65].active && NPCLoader.CanGoToStatue(Main.npc[num65], true, vanillaCanGo)) {
++												array.Add(num65);
+ 												num64++;
+-												if (num64 >= 9)
+-													break;
  											}
- 											else {
--												if (type == 139 || type == 35) {
-+												if (type == 139 || type == 35 || TileLoader.IsModMusicBox(tile)) {
- 													WorldGen.SwitchMB(i, j);
- 													return;
- 												}
-@@ -2044,14 +_,13 @@
- 														}
- 														else if (num132 == 40) {
- 															if (CheckMech(num131, num130, 300)) {
--																int[] array = new int[10];
-+																List<int> array = new List<int>();
- 																int num139 = 0;
- 																for (int num140 = 0; num140 < 200; num140++) {
--																	if (Main.npc[num140].active && (Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550)) {
--																		array[num139] = num140;
-+																	bool vanillaCanGo = Main.npc[num140].type == 17 || Main.npc[num140].type == 19 || Main.npc[num140].type == 22 || Main.npc[num140].type == 38 || Main.npc[num140].type == 54 || Main.npc[num140].type == 107 || Main.npc[num140].type == 108 || Main.npc[num140].type == 142 || Main.npc[num140].type == 160 || Main.npc[num140].type == 207 || Main.npc[num140].type == 209 || Main.npc[num140].type == 227 || Main.npc[num140].type == 228 || Main.npc[num140].type == 229 || Main.npc[num140].type == 358 || Main.npc[num140].type == 369 || Main.npc[num140].type == 550;
-+																	if (Main.npc[num140].active && NPCLoader.CanGoToStatue(Main.npc[num140], true, vanillaCanGo)) {
-+																		array.Add(num140);
- 																		num139++;
--																		if (num139 >= 9)
--																			break;
- 																	}
- 																}
+ 										}
  
-@@ -2060,18 +_,18 @@
- 																	Main.npc[num141].position.X = num133 - Main.npc[num141].width / 2;
- 																	Main.npc[num141].position.Y = num134 - Main.npc[num141].height - 1;
- 																	NetMessage.SendData(23, -1, -1, null, num141, 0f, 0f, 0f, 0, 0, 0);
-+																	NPCLoader.OnGoToStatue(Main.npc[num141], true);
- 																}
- 															}
- 														}
- 														else if (num132 == 41 && CheckMech(num131, num130, 300)) {
--															int[] array2 = new int[10];
-+															List<int> array2 = new List<int>();
- 															int num142 = 0;
- 															for (int num143 = 0; num143 < 200; num143++) {
--																if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353)) {
--																	array2[num142] = num143;
-+																bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353;
-+																if (Main.npc[num143].active && NPCLoader.CanGoToStatue(Main.npc[num143], false, vanillaCanGo)) {
-+																	array2.Add(num143);
- 																	num142++;
--																	if (num142 >= 9)
--																		break;
- 																}
- 															}
+@@ -1950,22 +_,22 @@
+ 											Main.npc[num66].position.X = num55 - Main.npc[num66].width / 2;
+ 											Main.npc[num66].position.Y = num56 - Main.npc[num66].height - 1;
+ 											NetMessage.SendData(23, -1, -1, null, num66);
++											NPCLoader.OnGoToStatue(Main.npc[num66], true);
+ 										}
  
-@@ -2080,6 +_,7 @@
- 																Main.npc[num144].position.X = num133 - Main.npc[num144].width / 2;
- 																Main.npc[num144].position.Y = num134 - Main.npc[num144].height - 1;
- 																NetMessage.SendData(23, -1, -1, null, num144, 0f, 0f, 0f, 0, 0, 0);
-+																NPCLoader.OnGoToStatue(Main.npc[num144], false);
- 															}
- 														}
- 													}
+ 										break;
+ 									}
+ 								case 41: {
+ 										if (!CheckMech(num53, num52, 300))
+ 											break;
+ 
+-										int[] array = new int[10];
++										List<int> array = new List<int();
+ 										int num59 = 0;
+ 										for (int num60 = 0; num60 < 200; num60++) {
+-											if (Main.npc[num60].active && (Main.npc[num60].type == 18 || Main.npc[num60].type == 20 || Main.npc[num60].type == 124 || Main.npc[num60].type == 178 || Main.npc[num60].type == 208 || Main.npc[num60].type == 353)) {
+-												array[num59] = num60;
++											bool vanillaCanGo = (Main.npc[num60].type == 18 || Main.npc[num60].type == 20 || Main.npc[num60].type == 124 || Main.npc[num60].type == 178 || Main.npc[num60].type == 208 || Main.npc[num60].type == 353);
++											if (Main.npc[num60].active && NPCLoader.CanGoToStatue(Main.npc[num60], false, vanillaCanGo)) {
++												array.Add(num60);
+ 												num59++;
+-												if (num59 >= 9)
+-													break;
+ 											}
+ 										}
+ 
+@@ -1974,6 +_,7 @@
+ 											Main.npc[num61].position.X = num55 - Main.npc[num61].width / 2;
+ 											Main.npc[num61].position.Y = num56 - Main.npc[num61].height - 1;
+ 											NetMessage.SendData(23, -1, -1, null, num61);
++											NPCLoader.OnGoToStatue(Main.npc[num61], false);
+ 										}
+ 
+ 										break;
 @@ -2016,6 +_,7 @@
  						break;
  					}
