@@ -6,6 +6,10 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Armor
 {
+	// This class serves as an example for a glowmask on an equipable item. Realized via PlayerLayer
+	// This glowmask is stored as a separate texture (ExampleBreastplate_Body_Glowmask and ExampleBreastplate_FemaleBody_Glowmask), and drawn in ExamplePlayer
+	// Not including these textures and the code from ExamplePlayer will just leave this class as a basic, functional breastplate example
+	// (You will find the code that handles the drawing if you search for "ExampleBreastplateGlowmask" in ExampleMod)
 	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{

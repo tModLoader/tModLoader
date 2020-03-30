@@ -14,6 +14,7 @@ using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -634,6 +635,94 @@ namespace ExampleMod
 			}
 		}
 
+		// This is an example of a glowmask on an equipable item. Realized via PlayerLayer
+		// You'll find the associated armor for this by searching for "ExampleBreastplate" in ExampleMod
+
+		// We start off by declaring a PlayerLayer, and give it our mods name, the layers name, its parent layer, and then a method that contains our drawing code
+		// This PlayerLayer we create will be added to the list of visible PlayerLayers in the ModifyDrawLayers hook below
+		public static readonly PlayerLayer ExampleBreastplateGlowmask = new PlayerLayer("ExampleMod", "ExampleBreastplateGlowmask", PlayerLayer.Body, delegate (PlayerDrawInfo drawInfo) {
+			
+			// We don't want the glowmask to draw if the player is cloaked or dead
+			if (drawInfo.shadow != 0f || drawInfo.drawPlayer.dead) {
+				return;
+			}
+
+			Player drawPlayer = drawInfo.drawPlayer;
+			Mod mod = ModLoader.GetMod("ExampleMod");
+
+			// Because we have a breastplate glowmask, and breastplates have different textures depending on if the player is male or female, we have to use two textures here
+			string gender = "";
+			if (!drawPlayer.Male) {
+				gender = "Female";
+			}
+
+			// The texture we want to display on our player
+			Texture2D texture = mod.GetTexture("Items/Armor/ExampleBreastplate_" + gender + "Body_Glowmask");
+
+			// The following variables (until drawData) are all copied 1:1 from vanilla code that handles breastplate drawing.
+			// It is advised to always copy the vanilla code that handles a particular EquipType, if you wish to make a glowmask for it,
+			// so it seamlessly overlaps
+			float drawX = (int)drawInfo.position.X + drawPlayer.width / 2;
+			float drawY = (int)drawInfo.position.Y + drawPlayer.height - drawPlayer.bodyFrame.Height / 2 + 4f;
+
+			// The rotation origin of the texture
+			// Because we are drawing a breastplate and it has the same alignment as the players' body, we use bodyOrigin
+			Vector2 origin = drawInfo.bodyOrigin;
+
+			// The position this texture will be drawn at on the screen
+			// Because we are drawing a breastplate and it has the same alignment as the players' body, we use bodyPosition
+			Vector2 position = new Vector2(drawX, drawY) + drawPlayer.bodyPosition - Main.screenPosition;
+
+			// The alpha of the texture when the player is blinking (immune)
+			// Should stay like that
+			float alpha = (255 - drawPlayer.immuneAlpha) / 255f;
+
+			// The color of the glowmask, pick what you want
+			Color color = Color.White;
+
+			// The frame that gets cut out from our texture that then will be drawn
+			// Because we are drawing a breastplate and it has the same alignment as the players' body, we use bodyFrame
+			Rectangle frame = drawPlayer.bodyFrame;
+
+			// The texture rotation around the origin
+			// Because we are drawing a breastplate and it's tied to players' body, we use bodyRotation
+			float rotation = drawPlayer.bodyRotation;
+
+			// The horizontal/vertical flipping (based on direction, gravity)
+			// Should stay like that
+			SpriteEffects spriteEffects = drawInfo.spriteEffects;
+
+			DrawData drawData = new DrawData(texture, position, frame, color * alpha, rotation, origin, 1f, spriteEffects, 0);
+
+			// The shader that's applied to the texture
+			// Depending on what EquipType this glowmask is representing, you need to assign the proper shader to it
+			// (This references the dye)
+			// Because this is a breastplate, we want to use the dye that is in the breastplate slot
+			drawData.shader = drawInfo.bodyArmorShader;
+
+			// Finally we register our glowmask so it will be drawn later by the game
+			Main.playerDrawData.Add(drawData);
+
+			// Here we generate visual dust while our glowmask is visible
+			if (Main.rand.NextBool(10)) {
+				int index = Dust.NewDust(drawPlayer.position, drawPlayer.width, drawPlayer.height, 135);
+				Dust dust = Main.dust[index];
+				dust.noGravity = true;
+				dust.noLight = true;
+				dust.fadeIn = Main.rand.NextFloat(0.5f, 0.8f);
+
+				// Same deal as before with drawData.shader
+				dust.shader = GameShaders.Armor.GetSecondaryShader(drawInfo.bodyArmorShader, drawPlayer);
+
+				Main.playerDrawDust.Add(index);
+			}
+
+			// Final words
+			// If your glowmask is supposed to be tied to something else (wings, boots), you will, in addition to copying vanilla draw parameters, have to make use of VS autocomplete function
+			// to figure out suitable replacements for drawInfo.bodyArmorShader, drawInfo.bodyFrame and the like.
+			// For wings, that would be: drawInfo.wingShader, drawInfo.wingFrame
+		});
+
 		public static readonly PlayerLayer MiscEffectsBack = new PlayerLayer("ExampleMod", "MiscEffectsBack", PlayerLayer.MiscEffectsBack, delegate (PlayerDrawInfo drawInfo) {
 			if (drawInfo.shadow != 0f) {
 				return;
@@ -686,6 +775,19 @@ namespace ExampleMod
 		});
 
 		public override void ModifyDrawLayers(List<PlayerLayer> layers) {
+			// To figure out when we should draw our ExampleBreastplate glowmask, we make use of GetEquipSlot.
+			// It takes in the name of the item that comes with an equip texture, and then its EquipType.
+			// By comparing that to player.body, which represents the currently visible body armor, we make sure it's safe to draw ours
+			if (player.body == mod.GetEquipSlot("ExampleBreastplate", EquipType.Body)) {
+				// We have to find the layer that we want our glowmask to insert to, which is PlayerLayer.Body in this example. For a full list of vanilla layers, check the docs
+				int bodyLayer = layers.FindIndex(l => l == PlayerLayer.Body);
+
+				if (bodyLayer > -1) {
+					// We add the glowmask ontop of the existing armor texture, hence + 1
+					layers.Insert(bodyLayer + 1, ExampleBreastplateGlowmask);
+				}
+			}
+
 			MiscEffectsBack.visible = true;
 			layers.Insert(0, MiscEffectsBack);
 			MiscEffects.visible = true;
