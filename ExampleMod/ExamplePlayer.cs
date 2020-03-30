@@ -650,6 +650,15 @@ namespace ExampleMod
 			Player drawPlayer = drawInfo.drawPlayer;
 			Mod mod = ModLoader.GetMod("ExampleMod");
 
+
+			// To figure out when we should draw our ExampleBreastplate glowmask, we make use of GetEquipSlot.
+			// It takes in the name of the item that comes with an equip texture, and then its EquipType.
+			// By comparing that to drawPlayer.body, which represents the currently visible body armor, we make sure it's safe to draw ours
+			// Here we abort if the currently equipped body armor isn't what we need for our glowmask
+			if (drawPlayer.body != mod.GetEquipSlot("ExampleBreastplate", EquipType.Body)) {
+				return;
+			}
+
 			// Because we have a breastplate glowmask, and breastplates have different textures depending on if the player is male or female, we have to use two textures here
 			string gender = "";
 			if (!drawPlayer.Male) {
@@ -775,17 +784,12 @@ namespace ExampleMod
 		});
 
 		public override void ModifyDrawLayers(List<PlayerLayer> layers) {
-			// To figure out when we should draw our ExampleBreastplate glowmask, we make use of GetEquipSlot.
-			// It takes in the name of the item that comes with an equip texture, and then its EquipType.
-			// By comparing that to player.body, which represents the currently visible body armor, we make sure it's safe to draw ours
-			if (player.body == mod.GetEquipSlot("ExampleBreastplate", EquipType.Body)) {
-				// We have to find the layer that we want our glowmask to insert to, which is PlayerLayer.Body in this example. For a full list of vanilla layers, check the docs
-				int bodyLayer = layers.FindIndex(l => l == PlayerLayer.Body);
+			// We have to find the layer that we want our glowmask to insert to, which is PlayerLayer.Body in this example. For a full list of vanilla layers, check the docs
+			int bodyLayer = layers.FindIndex(l => l == PlayerLayer.Body);
 
-				if (bodyLayer > -1) {
-					// We add the glowmask ontop of the existing armor texture, hence + 1
-					layers.Insert(bodyLayer + 1, ExampleBreastplateGlowmask);
-				}
+			if (bodyLayer > -1) {
+				// We add the glowmask ontop of the existing armor texture, hence + 1
+				layers.Insert(bodyLayer + 1, ExampleBreastplateGlowmask);
 			}
 
 			MiscEffectsBack.visible = true;
