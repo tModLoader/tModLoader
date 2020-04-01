@@ -43,19 +43,7 @@
  		}
  
  		private static void ForceJITOnAssembly(Assembly assembly) {
-@@ -167,29 +_,53 @@
- 
- #endif
- 			try {
--				Console.OutputEncoding = Encoding.Unicode;
-+				Console.OutputEncoding = Encoding.UTF8;
-+				if (Platform.IsWindows)
--				Console.InputEncoding = Encoding.Unicode;
-+					Console.InputEncoding = Encoding.Unicode;
-+				else
-+					Console.InputEncoding = Encoding.UTF8;
- 			}
- 			catch {
+@@ -160,22 +_,43 @@
  			}
  		}
  
@@ -102,7 +90,7 @@
 +				using (Main main = new Main()) {
  					InitializeConsoleOutput();
  					Lang.InitializeLegacyLocalization();
- 					SocialAPI.Initialize(null);
+ 					SocialAPI.Initialize();
 @@ -187,9 +_,10 @@
  					main.DedServ();
  #endif
