@@ -132,7 +132,7 @@
  						if (num13 == 0)
  							num = 36;
  
-@@ -652,19 +_,22 @@
+@@ -644,22 +_,25 @@
  
  						if (num13 == 13)
  							num = 61;
@@ -140,7 +140,7 @@
 +						ModPrefix.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
  					}
  					else {
- 						if (!accessory || type == 267 || type == 562 || type == 563 || type == 564 || type == 565 || type == 566 || type == 567 || type == 568 || type == 569 || type == 570 || type == 571 || type == 572 || type == 573 || type == 574 || type == 576 || type == 1307 || type >= 1596 && type < 1610 || vanity)
+ 						if (!accessory || type == 267 || type == 562 || type == 563 || type == 564 || type == 565 || type == 566 || type == 567 || type == 568 || type == 569 || type == 570 || type == 571 || type == 572 || type == 573 || type == 574 || type == 576 || type == 1307 || (type >= 1596 && type < 1610) || vanity)
  							return false;
  
  						num = unifiedRandom.Next(62, 81);
@@ -148,20 +148,23 @@
  					}
  				}
  
- 				if (pre == -3)
- 					return true;
+ 				switch (pre) {
+ 					case -3:
+ 						return true;
+ 					case -1:
+-						if ((num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && unifiedRandom.Next(3) != 0)
++						if ((num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && !(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3))
+ 							num = 0;
+ 						break;
+ 				}
  
--				if (pre == -1 && (num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && unifiedRandom.Next(3) != 0)
-+				if (pre == -1 && (num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && !(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3))
- 					num = 0;
- 
- 				if (num == 1) {
+ 				switch (num) {
 @@ -930,7 +_,10 @@
  						num2 = 1.05f;
  						num8 = 2;
  						break;
  				}
-+				else if (num >= PrefixID.Count) {
++				if (num >= PrefixID.Count) {
 +					ModPrefix.GetPrefix((byte)num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
 +				}
  
@@ -213,7 +216,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1044,6 +_,13 @@
+@@ -1038,7 +_,14 @@
  				}
  			}
  
@@ -224,39 +227,43 @@
 +				}
 +			}
 +
- 			int num2 = type;
- 			if (num2 <= 543) {
- 				if (num2 != 529) {
-@@ -1341,6 +_,9 @@
- 			else
- 				result = 1615 + banner - 1;
+ 			switch (type) {
+ 				case 529:
+ 				case 541:
+ 				case 542:
+@@ -1210,5 +_,8 @@
  
+ 		public static int BannerToItem(int banner) {
 +			if (NPCLoader.bannerToItem.ContainsKey(banner))
 +				return NPCLoader.bannerToItem[banner];
 +
- 			return result;
- 		}
- 
-@@ -2008,6 +_,9 @@
+ 			int num = 0;
+ 			if (banner >= 257)
+ 				return 3837 + banner - 257;
+@@ -1894,8 +_,9 @@
+ 				case 578:
  					return 266;
+-				default:
+-					return 0;
  			}
- 
 +			if (i >= NPCID.Count) // in NPCtoBanner method
 +				return NPCLoader.GetNPC(i).banner;
-+
- 			return 0;
++			return 0;
  		}
  
-@@ -2533,6 +_,9 @@
+ 		public static int BannerToNPC(int i) {
+@@ -2419,8 +_,9 @@
+ 				case 266:
  					return 578;
+-				default:
+-					return 0;
  			}
- 
 +			if (i >= NPCID.Count) // in BannerToNPC method
 +				return i;
-+
- 			return 0;
++			return 0;
  		}
  
+ 		public void SetDefaults1(int type) {
 @@ -37311,6 +_,16 @@
  			}
  		}
@@ -307,7 +314,7 @@
  			sentry = false;
  			DD2Summon = false;
  			shopSpecialCurrency = -1;
-@@ -42061,6 +_,10 @@
+@@ -37590,7 +_,11 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -315,27 +322,28 @@
 +			if (modColor.HasValue)
 +				return modColor.Value;
 +
- 			int num = type;
- 			if (num > 1332) {
- 				if (num <= 2765) {
-@@ -42548,6 +_,7 @@
+ 			switch (type) {
+ 				case 75:
+ 				case 3065:
+ 				case 3858:
+@@ -37909,6 +_,7 @@
  						}
  					}
  
 +					ItemLoader.Update(this, ref num, ref num2);
  					if (ItemID.Sets.ItemNoGravity[type]) {
- 						velocity.X = velocity.X * 0.95f;
- 						if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -42558,6 +_,7 @@
- 							velocity.Y = 0f;
+ 						base.velocity.X *= 0.95f;
+ 						if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
+@@ -37919,6 +_,7 @@
+ 							base.velocity.Y = 0f;
  					}
  					else {
 +						//patch file: num, num2
- 						velocity.Y = velocity.Y + num;
- 						if (velocity.Y > num2)
- 							velocity.Y = num2;
-@@ -42681,7 +_,7 @@
- 								NetMessage.SendData(21, -1, -1, null, i, 0f, 0f, 0f, 0, 0, 0);
+ 						base.velocity.Y += num;
+ 						if (base.velocity.Y > num2)
+ 							base.velocity.Y = num2;
+@@ -38036,7 +_,7 @@
+ 								NetMessage.SendData(21, -1, -1, null, i);
  							}
  						}
 -						else if (owner == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 175 && type != 2701 && rare == 0) {
@@ -361,7 +369,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -43107,14 +_,17 @@
+@@ -38461,14 +_,17 @@
  			owner = 255;
  			float num2 = 999999f;
  			for (int i = 0; i < 255; i++) {
@@ -370,19 +378,19 @@
  					float num3 = Math.Abs(Main.player[i].position.X + (float)(Main.player[i].width / 2) - position.X - (float)(width / 2)) + Math.Abs(Main.player[i].position.Y + (float)(Main.player[i].height / 2) - position.Y - (float)height);
 +					int grabRange = Player.defaultItemGrabRange;
  					if (Main.player[i].manaMagnet && (type == 184 || type == 1735 || type == 1868))
--						num3 -= manaGrabRange;
+-						num3 -= (float)manaGrabRange;
 +						grabRange += manaGrabRange;
  
  					if (Main.player[i].lifeMagnet && (type == 58 || type == 1734 || type == 1867))
--						num3 -= lifeGrabRange;
+-						num3 -= (float)lifeGrabRange;
 +						grabRange += lifeGrabRange;
  
 +					ItemLoader.GrabRange(Main.item[whoAmI], Main.player[i], ref grabRange);
 +					num3 -= grabRange;
- 					if (num3 < NPC.sWidth && num3 < num2) {
+ 					if (num3 < (float)NPC.sWidth && num3 < num2) {
  						num2 = num3;
  						owner = i;
-@@ -43129,7 +_,22 @@
+@@ -38483,5 +_,20 @@
  			}
  		}
  
@@ -404,8 +412,6 @@
 +		}
 +
  		public Item DeepClone() => (Item)MemberwiseClone();
- 		public bool IsTheSameAs(Item compareItem) => netID == compareItem.netID && type == compareItem.type;
- 		public bool IsNotTheSameAs(Item compareItem) => netID != compareItem.netID || stack != compareItem.stack || prefix != compareItem.prefix;
 @@ -38512,6 +_,8 @@
  			type = 0;
  			stack = 0;
