@@ -34,25 +34,25 @@
  
  				if (NPC.AnyNPCs(i)) {
  					Main.townNPCCanSpawn[i] = false;
-@@ -823,6 +_,9 @@
+@@ -832,7 +_,9 @@
+ 			return false;
  		}
  
  		public static bool CheckSpecialTownNPCSpawningConditions(int type) {
 +			if (!NPCLoader.CheckConditions(type))
 +				return false;
-+
- 			if (type != 160)
- 				return true;
- 
-@@ -1397,7 +_,7 @@
- 			if (num6 > Main.maxTilesY)
- 				num6 = Main.maxTilesY - 1;
+ 			if (type == 160) {
+ 				if ((double)roomY2 > Main.worldSurface)
+ 					return false;
+@@ -1363,7 +_,7 @@
+ 			if (num7 > Main.maxTilesY)
+ 				num7 = Main.maxTilesY - 1;
  
 -			int[] tileTypeCounts = new int[470];
 +			int[] tileTypeCounts = new int[TileLoader.TileCount];
- 			CountTileTypesInArea(tileTypeCounts, num3 + 1, num4 - 1, num5 + 2, num6 + 1);
- 			int num7 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
- 			if (num7 < 50)
+ 			CountTileTypesInArea(tileTypeCounts, num4 + 1, num5 - 1, num6 + 2, num7 + 1);
+ 			int num8 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
+ 			if (num8 < 50)
 @@ -1507,7 +_,7 @@
  			roomY2 = y;
  			numRoomTiles = 0;
@@ -62,16 +62,16 @@
  				houseTile[i] = false;
  			}
  
-@@ -1626,7 +_,7 @@
- 				if (Main.tileSolid[Main.tile[x, y].type])
+@@ -1579,6 +_,8 @@
+ 			if (Main.tile[x, y].nactive()) {
+ 				houseTile[Main.tile[x, y].type] = true;
+ 				if (Main.tileSolid[Main.tile[x, y].type] || (Main.tile[x, y].type == 11 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126)) || Main.tile[x, y].type == 389 || (Main.tile[x, y].type == 386 && ((Main.tile[x, y].frameX < 36 && Main.tile[x, y].frameY == 18) || (Main.tile[x, y].frameX >= 36 && Main.tile[x, y].frameY == 0))))
  					return;
- 
--				if (Main.tile[x, y].type == 11 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126))
 +				if (TileLoader.CloseDoorID(Main.tile[x, y]) >= 0 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126))
- 					return;
++					return;
+ 			}
  
- 				if (Main.tile[x, y].type == 389)
-@@ -1897,10 +_,20 @@
+@@ -1835,10 +_,20 @@
  		}
  
  		public static void worldGenCallBack(object threadContext) {
@@ -84,20 +84,20 @@
 +		}
 +
 +		public static void do_worldGenCallBack(object threadContext) {
- 			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
+ 			Main.PlaySound(10);
  			clearWorld();
  			generateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
- 			WorldFile.saveWorld(Main.ActiveWorldFileData.IsCloudSave, true);
+ 			WorldFile.saveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
 +			BackupIO.archiveLock = false;
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
-@@ -1950,10 +_,21 @@
+@@ -1888,10 +_,21 @@
  
  		public static void SaveAndQuit(Action callback = null) {
- 			Main.PlaySound(11, -1, -1, 1, 1f, 0f);
+ 			Main.PlaySound(11);
 +			ModHooks.PreSaveAndQuit();
- 			ThreadPool.QueueUserWorkItem(new WaitCallback(SaveAndQuitCallBack), callback);
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
  		public static void playWorldCallBack(object threadContext) {
@@ -114,12 +114,35 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
-@@ -1984,13 +_,20 @@
+@@ -1921,13 +_,20 @@
  					}
- 					else {
- 						if (!worldBackup) {
--							Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
-+							string message = Language.GetTextValue("Error.LoadFailedNoBackup");
+ 
+ 					if (!worldBackup) {
+-						Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
++						string message = Language.GetTextValue("Error.LoadFailedNoBackup");
++						if (WorldIO.customDataFail != null) {
++							message = WorldIO.customDataFail.modName + " " + message;
++							message += "\n" + WorldIO.customDataFail.InnerException;
++						}
++
++						Console.WriteLine(message);
+ 						return;
+ 					}
+ 
+ 					FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave);
+ 					FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave);
+ 					FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
++					WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
+ 					WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
+ 					if (loadFailed || !loadSuccess) {
+ 						WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
+@@ -1935,7 +_,14 @@
+ 							FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave);
+ 							FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave);
+ 							FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
+-							Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
++							WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
++							string message = Language.GetTextValue("Error.LoadFailed");
 +							if (WorldIO.customDataFail != null) {
 +								message = WorldIO.customDataFail.modName + " " + message;
 +								message += "\n" + WorldIO.customDataFail.InnerException;
@@ -128,30 +151,7 @@
 +							Console.WriteLine(message);
  							return;
  						}
- 
- 						FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave, true);
- 						FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave, true);
- 						FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
-+						WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
- 						WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
- 						if (loadFailed || !loadSuccess) {
- 							WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
-@@ -1998,7 +_,14 @@
- 								FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave, true);
- 								FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave, true);
- 								FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
--								Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
-+								WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
-+								string message = Language.GetTextValue("Error.LoadFailed");
-+								if (WorldIO.customDataFail != null) {
-+									message = WorldIO.customDataFail.modName + " " + message;
-+									message += "\n" + WorldIO.customDataFail.InnerException;
-+								}
-+
-+								Console.WriteLine(message);
- 								return;
- 							}
- 						}
+ 					}
 @@ -1962,6 +_,12 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
@@ -214,74 +214,75 @@
  			AddGenerationPass("Reset", delegate (GenerationProgress progress) {
  				Liquid.ReInit();
  				noTileActions = true;
-@@ -6209,7 +_,7 @@
- 								int num12 = genRand.Next(num - m, num + m + 1);
- 								int num13 = genRand.Next(num2 - num6, num2 + num6 - 2);
- 								PlaceTile(num12, num13, 4, true, false, -1, 3);
--								if (Main.tile[num12, num13].type == 4)
-+								if (TileLoader.IsTorch(Main.tile[num12, num13].type))
- 									flag3 = true;
+@@ -5971,7 +_,7 @@
+ 								int num386 = genRand.Next(num371 - num378, num371 + num378 + 1);
+ 								int num387 = genRand.Next(num372 - num379, num372 + num379 - 2);
+ 								PlaceTile(num386, num387, 4, mute: true, forced: false, -1, 3);
+-								if (Main.tile[num386, num387].type == 4)
++								if (TileLoader.IsTorch(Main.tile[num386, num387].type))
+ 									flag29 = true;
  							}
  
-@@ -8493,7 +_,7 @@
+@@ -8113,7 +_,7 @@
  							}
  						}
  
--						if (TileID.Sets.BasicChest[Main.tile[k, l].type]) {
-+						if (TileID.Sets.BasicChest[Main.tile[k, l].type] && Main.tile[k, l].type < TileID.Count) {
- 							int num26 = Main.tile[k, l].frameX / 18;
- 							int num27 = 0;
- 							int num28 = k;
-@@ -8672,7 +_,7 @@
+-						if (TileID.Sets.BasicChest[Main.tile[num21, num22].type]) {
++						if (TileID.Sets.BasicChest[Main.tile[num21, num22].type] && Main.tile[num21, num22].type < TileID.Count) {
+ 							int num50 = Main.tile[num21, num22].frameX / 18;
+ 							int num51 = 0;
+ 							int num52 = num21;
+@@ -8287,7 +_,7 @@
  			});
  
- 			WorldGen.AddGenerationPass("Micro Biomes", delegate (GenerationProgress progress) {
+ 			AddGenerationPass("Micro Biomes", delegate (GenerationProgress progress) {
 -				progress.Message = Lang.gen[76].Value;
 +				progress.Message = Lang.gen[76].Value + "..Thin Ice";
  				float num = (float)(Main.maxTilesX * Main.maxTilesY) / 5040000f;
  				float num2 = (float)Main.maxTilesX / 4200f;
  				int num3 = (int)((float)genRand.Next(3, 6) * num);
-@@ -8683,6 +_,7 @@
+@@ -8298,7 +_,8 @@
  				}
  
  				progress.Set(0.1f);
 +				progress.Message = Lang.gen[76] + "..Enchanted Swords";
- 				int num4 = (int)Math.Ceiling((double)num);
- 				int l = 0;
- 				while (l < num4) {
-@@ -8698,6 +_,7 @@
+ 				int num5 = (int)Math.Ceiling(num);
+ 				int num6 = 0;
+ 				Point origin = default(Point);
+ 				while (num6 < num5) {
+@@ -8313,6 +_,7 @@
  				}
  
  				progress.Set(0.2f);
 +				progress.Message = Lang.gen[76] + "..Campsites";
- 				int num5 = (int)((float)genRand.Next(6, 12) * num);
- 				int m = 0;
- 				while (m < num5) {
-@@ -8705,6 +_,8 @@
- 						m++;
+ 				int num7 = (int)((float)genRand.Next(6, 12) * num);
+ 				int num8 = 0;
+ 				while (num8 < num7) {
+@@ -8320,6 +_,8 @@
+ 						num8++;
  				}
  
 +				progress.Message = Lang.gen[76] + "..Mining Explosives";
 +				progress.Set(0.25f);
- 				int num6 = (int)((float)genRand.Next(14, 30) * num);
- 				int n = 0;
- 				while (n < num6) {
-@@ -8712,6 +_,7 @@
- 						n++;
+ 				int num9 = (int)((float)genRand.Next(14, 30) * num);
+ 				int num10 = 0;
+ 				while (num10 < num9) {
+@@ -8327,6 +_,7 @@
+ 						num10++;
  				}
  
 +				progress.Message = Lang.gen[76] + "..Mahogany Trees";
  				progress.Set(0.3f);
- 				int num7 = (int)((float)genRand.Next(6, 12) * num2);
- 				int num8 = 0;
-@@ -8723,6 +_,7 @@
- 					num9++;
+ 				int num11 = (int)((float)genRand.Next(6, 12) * num2);
+ 				int num12 = 0;
+@@ -8338,6 +_,7 @@
+ 					num13++;
  				}
  
 +				progress.Message = Lang.gen[76] + "..Corruption Pits";
  				progress.Set(0.4f);
  				if (!crimson) {
- 					int num10 = (int)((float)genRand.Next(1, 3) * num);
+ 					int num14 = (int)((float)genRand.Next(1, 3) * num);
 @@ -8348,6 +_,8 @@
  					}
  				}
@@ -303,16 +304,13 @@
  		}
  
  		public static Point RandomRectanglePoint(Rectangle rectangle) => new Point(genRand.Next(rectangle.X, rectangle.X + rectangle.Width), genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height));
-@@ -8783,7 +_,7 @@
- 
+@@ -8394,4 +_,4 @@
  		public static bool GrowPalmTree(int i, int y) {
- 			int num = y;
--			while (Main.tile[i, num].type == 20) {
-+			while (TileLoader.IsSapling(Main.tile[i, num].type)) {
- 				num++;
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
  			}
- 
-@@ -8795,7 +_,7 @@
+@@ -8404,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;
  
@@ -320,98 +318,92 @@
 +			if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112 && !TileLoader.CanGrowModPalmTree(tile.type))
  				return false;
  
- 			if (!EmptyTileCheck(i - 1, i + 1, num - 30, num - 1, 20))
-@@ -8845,11 +_,11 @@
+ 			if (!EmptyTileCheck(i - 1, i + 1, j - 30, j - 1, 20))
+@@ -8456,10 +_,10 @@
  
  		public static bool GrowEpicTree(int i, int y) {
- 			int num = y;
--			while (Main.tile[i, num].type == 20) {
-+			while (TileLoader.IsSapling(Main.tile[i, num].type)) {
- 				num++;
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
  			}
  
--			if (Main.tile[i, num].active() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && Main.tile[i, num].type == 2 && Main.tile[i, num - 1].wall == 0 && Main.tile[i, num - 1].liquid == 0 && (Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109) || Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))) {
-+			if (Main.tile[i, num].active() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && Main.tile[i, num].type == 2 && Main.tile[i, num - 1].wall == 0 && Main.tile[i, num - 1].liquid == 0 && (Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)) || Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))) {
- 				int num2 = 2;
- 				if (EmptyTileCheck(i - num2, i + num2, num - 55, num - 1, 20)) {
+-			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109)))) {
++			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))) {
+ 				int num = 2;
+ 				if (EmptyTileCheck(i - num, i + num, j - 55, j - 1, 20)) {
  					bool flag = false;
-@@ -9086,10 +_,10 @@
+@@ -8683,10 +_,10 @@
+ 					int num5 = genRand.Next(3);
+ 					bool flag3 = false;
+ 					bool flag4 = false;
+-					if (Main.tile[i - 1, j].active() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109))
++					if (Main.tile[i - 1, j].active() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)))
+ 						flag3 = true;
+ 
+-					if (Main.tile[i + 1, j].active() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109))
++					if (Main.tile[i + 1, j].active() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))
+ 						flag4 = true;
+ 
+ 					if (!flag3) {
+@@ -9613,6 +_,14 @@
+ 						num4 = 2;
+ 				}
+ 
++				TileLoader.TreeGrowthFXGore(type, ref num2);
++				if (num2 > 0)
++					break;
++
++				TileLoader.PalmTreeGrowthFXGore(type, ref num2);
++				if (num2 > 0)
++					break;
++
+ 				switch (tile3.type) {
+ 					case 2:
+ 						num2 = 910;
+@@ -9722,13 +_,13 @@
+ 
+ 		public static bool GrowTree(int i, int y) {
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type; j++) {
+ 			}
+ 
+ 			if ((Main.tile[i - 1, j - 1].liquid != 0 || Main.tile[i, j - 1].liquid != 0 || Main.tile[i + 1, j - 1].liquid != 0) && Main.tile[i, j].type != 60)
+ 				return false;
+ 
+-			if (Main.tile[i, j].nactive() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && (Main.tile[i, j].type == 2 || Main.tile[i, j].type == 23 || Main.tile[i, j].type == 60 || Main.tile[i, j].type == 109 || Main.tile[i, j].type == 147 || Main.tile[i, j].type == 199 || Main.tile[i, j].type == 70) && (Main.tile[i, j - 1].wall == 0 || Main.tile[i, j - 1].wall == 106 || Main.tile[i, j - 1].wall == 107 || (Main.tile[i, j - 1].wall >= 138 && Main.tile[i, j - 1].wall <= 141) || Main.tile[i, j - 1].wall == 145 || Main.tile[i, j - 1].wall == 150 || Main.tile[i, j - 1].wall == 152) && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || Main.tile[i - 1, j].type == 70)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || Main.tile[i + 1, j].type == 70)))) {
++			if (Main.tile[i, j].nactive() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && (Main.tile[i, j].type == 2 || Main.tile[i, j].type == 23 || Main.tile[i, j].type == 60 || Main.tile[i, j].type == 109 || Main.tile[i, j].type == 147 || Main.tile[i, j].type == 199 || Main.tile[i, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i, j].type)) && (Main.tile[i, j - 1].wall == 0 || Main.tile[i, j - 1].wall == 106 || Main.tile[i, j - 1].wall == 107 || Main.tile[i, j - 1].wall >= 138 && Main.tile[i, j - 1].wall <= 141 || Main.tile[i, j - 1].wall == 145 || Main.tile[i, j - 1].wall == 150 || Main.tile[i, j - 1].wall == 152) && (Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || Main.tile[i - 1, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)) || Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || Main.tile[i + 1, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))) {
+ 				int num = 2;
+ 				int num2 = 16;
+ 				if (Main.tile[i, j].type == 60)
+@@ -9956,10 +_,10 @@
  					int num6 = genRand.Next(3);
  					bool flag3 = false;
  					bool flag4 = false;
--					if (Main.tile[i - 1, num].active() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109))
-+					if (Main.tile[i - 1, num].active() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)))
+-					if (Main.tile[i - 1, j].nactive() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199))
++					if (Main.tile[i - 1, j].nactive() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)))
  						flag3 = true;
  
--					if (Main.tile[i + 1, num].active() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))
-+					if (Main.tile[i + 1, num].active() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))
+-					if (Main.tile[i + 1, j].nactive() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199))
++					if (Main.tile[i + 1, j].nactive() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))
  						flag4 = true;
  
  					if (!flag3) {
-@@ -10058,8 +_,17 @@
- 					}
+@@ -10614,12 +_,12 @@
  
- 					ushort type = tile3.type;
-+					TileLoader.TreeGrowthFXGore(type, ref num2);
-+					if (num2 > 0)
-+						break;
-+
-+					TileLoader.PalmTreeGrowthFXGore(type, ref num2);
-+					if (num2 > 0)
-+						break;
-+
- 					if (type <= 70) {
- 						if (type <= 23) {
-+							//patch file: num2
- 							if (type == 2) {
- 								num2 = 910;
  								break;
-@@ -10193,14 +_,14 @@
- 
- 		public static bool GrowTree(int i, int y) {
- 			int num = y;
--			while (Main.tile[i, num].type == 20) {
-+			while (TileLoader.IsSapling(Main.tile[i, num].type)) {
- 				num++;
- 			}
- 
- 			if ((Main.tile[i - 1, num - 1].liquid != 0 || Main.tile[i, num - 1].liquid != 0 || Main.tile[i + 1, num - 1].liquid != 0) && Main.tile[i, num].type != 60)
- 				return false;
- 
--			if (Main.tile[i, num].nactive() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && (Main.tile[i, num].type == 2 || Main.tile[i, num].type == 23 || Main.tile[i, num].type == 60 || Main.tile[i, num].type == 109 || Main.tile[i, num].type == 147 || Main.tile[i, num].type == 199 || Main.tile[i, num].type == 70) && (Main.tile[i, num - 1].wall == 0 || Main.tile[i, num - 1].wall == 106 || Main.tile[i, num - 1].wall == 107 || Main.tile[i, num - 1].wall >= 138 && Main.tile[i, num - 1].wall <= 141 || Main.tile[i, num - 1].wall == 145 || Main.tile[i, num - 1].wall == 150 || Main.tile[i, num - 1].wall == 152) && (Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || Main.tile[i - 1, num].type == 70) || Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || Main.tile[i + 1, num].type == 70))) {
-+			if (Main.tile[i, num].nactive() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && (Main.tile[i, num].type == 2 || Main.tile[i, num].type == 23 || Main.tile[i, num].type == 60 || Main.tile[i, num].type == 109 || Main.tile[i, num].type == 147 || Main.tile[i, num].type == 199 || Main.tile[i, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i, num].type)) && (Main.tile[i, num - 1].wall == 0 || Main.tile[i, num - 1].wall == 106 || Main.tile[i, num - 1].wall == 107 || Main.tile[i, num - 1].wall >= 138 && Main.tile[i, num - 1].wall <= 141 || Main.tile[i, num - 1].wall == 145 || Main.tile[i, num - 1].wall == 150 || Main.tile[i, num - 1].wall == 152) && (Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || Main.tile[i - 1, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)) || Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || Main.tile[i + 1, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))) {
- 				int num2 = 2;
- 				int num3 = 16;
- 				if (Main.tile[i, num].type == 60)
-@@ -10441,10 +_,10 @@
- 					int num7 = genRand.Next(3);
- 					bool flag3 = false;
- 					bool flag4 = false;
--					if (Main.tile[i - 1, num].nactive() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199))
-+					if (Main.tile[i - 1, num].nactive() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)))
- 						flag3 = true;
- 
--					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199))
-+					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))
- 						flag4 = true;
- 
- 					if (!flag3) {
-@@ -11119,11 +_,11 @@
- 							if (type2 != 71)
- 								return false;
- 						}
--						else if (ignoreID == 20) {
-+						else if (TileLoader.IsSapling(ignoreID)) {
- 							ushort type3 = Main.tile[i, j].type;
--							if (type3 <= 74) {
--								if (type3 <= 24) {
--									if (type3 == 3 || type3 == 20 || type3 == 24)
-+							if (type3 <= 74 || TileLoader.IsSapling(type3)) {
-+								if (type3 <= 24 || TileLoader.IsSapling(type3)) {
-+									if (type3 == 3 || TileLoader.IsSapling(type3) || type3 == 24)
- 										goto IL_159;
- 								}
- 								else {
+ 							}
+-						case 20:
++						case int _ when TileLoader.IsSapling(ignoreID):
+ 							switch (Main.tile[i, j].type) {
+ 								default:
+ 									return false;
+ 								case 3:
+-								case 20:
++								case int _ when TileLoader.IsSapling(Main.tile[i, j].type):
+ 								case 24:
+ 								case 32:
+ 								case 61:
 @@ -10655,6 +_,7 @@
  		}
  
