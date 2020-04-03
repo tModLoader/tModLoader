@@ -1,8 +1,3 @@
----
-name: New Feature
-about: Submit a PR that adds new features
----
-
 ### What is the new feature?
 
 ### Why should this be part of tModLoader?
