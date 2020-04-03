@@ -1,11 +1,12 @@
-**Please use one of the following links for your PR**:
+**Please update your link based on your PR:**
 
 Want to PR a bug fix? <br>
-Use: https://github.com/tModLoader/tModLoader/compare/master...master?template=bug_fix.md
+Append `?template=bug_fix.md` to your URL.
 
 Want to PR a new feature? <br>
-Use: https://github.com/tModLoader/tModLoader/compare/master...master?template=new_feature.md
+Append `?template=new_feature.md` to your URL.
 
 Want to PR changes to ExampleMod? <br>
-Use: https://github.com/tModLoader/tModLoader/compare/master...master?template=example_mod.md
+Append `?template=example_mod.md` to your URL.
 
+**We are much more likely to look at your PR if you use one of our templates.**
