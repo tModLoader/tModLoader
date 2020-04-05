@@ -591,7 +591,7 @@ namespace Terraria.ModLoader.Core
 
 			if (results.HasErrors) {
 				var firstError = results.Cast<CompilerError>().First(e => !e.IsWarning);
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, firstError));
+				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 		}
 

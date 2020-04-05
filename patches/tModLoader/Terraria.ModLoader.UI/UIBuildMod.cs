@@ -81,6 +81,7 @@ namespace Terraria.ModLoader.UI
 				else 
 					msg += $"\n\n{e}";
 
+				Interface.errorMessage.modName = (string)mod;
 				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
 				return Task.FromResult(false);
 			}

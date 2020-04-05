@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
+using System.IO;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -16,12 +18,14 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> exitAndDisableAllButton;
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
+		private UITextPanel<string> retryButton;
 		
 		private string message;
 		private int gotoMenu;
 		private string webHelpURL;
 		private bool showRetry;
 		private bool showSkip;
+		internal string modName;
 
 		public override void OnInitialize() {
 			area = new UIElement {
@@ -74,7 +78,19 @@ namespace Terraria.ModLoader.UI
 			exitAndDisableAllButton.WithFadedMouseOver();
 			exitAndDisableAllButton.OnClick += ExitAndDisableAll;
 
+			retryButton = new UITextPanel<string>("Retry", 0.7f, true);
+			retryButton.CopyStyle(continueButton);
+			retryButton.Top.Set(-50f, 1f);
+			retryButton.WithFadedMouseOver();
+			retryButton.OnClick += RetryBuild;
+
 			Append(area);
+		}
+
+		private void RetryBuild(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Interface.buildMod.Build(Path.Combine(ModCompile.ModSourcePath, modName), true);
+			modName = null;
 		}
 
 		public override void OnActivate() {
@@ -89,6 +105,7 @@ namespace Terraria.ModLoader.UI
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
+			area.AddOrRemoveChild(retryButton, modName != null);
 		}
 
 		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool showRetry = false, bool showSkip = false) {
