@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.Default
 {
 	class MysteryTilesWorld : ModWorld
 	{
-		private List<MysteryTileInfo> infos = new List<MysteryTileInfo>();
+		internal List<MysteryTileInfo> infos = new List<MysteryTileInfo>();
 		internal List<MysteryTileInfo> pendingInfos = new List<MysteryTileInfo>();
 
 		public override void Initialize() {
