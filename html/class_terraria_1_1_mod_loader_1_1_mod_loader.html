@@ -219,6 +219,10 @@ Static Private Attributes</h2></td></tr>
 <tr class="memitem:a90cd23cb256c959b05d8a943f71fff5a"><td class="memItemLeft" align="right" valign="top">static HashSet&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a">_enabledMods</a></td></tr>
 <tr class="memdesc:a90cd23cb256c959b05d8a943f71fff5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file. <a href="#a90cd23cb256c959b05d8a943f71fff5a">More...</a><br /></td></tr>
 <tr class="separator:a90cd23cb256c959b05d8a943f71fff5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1340015914b83a41b0318ec97f5e73"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#acd1340015914b83a41b0318ec97f5e73">_needsSavingEnabledMods</a></td></tr>
+<tr class="separator:acd1340015914b83a41b0318ec97f5e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c6ff3e0438141c95a9c2a6005e02ac"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#ab7c6ff3e0438141c95a9c2a6005e02ac">_pauseSavingEnabledMods</a></td></tr>
+<tr class="separator:ab7c6ff3e0438141c95a9c2a6005e02ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3b492f47b9c59aae5d667c9c6ad0df2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac3b492f47b9c59aae5d667c9c6ad0df2">isLoading</a> = false</td></tr>
 <tr class="separator:ac3b492f47b9c59aae5d667c9c6ad0df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f3885f31513af7aa4fdc29f16cb6758"><td class="memItemLeft" align="right" valign="top">static readonly IDictionary&lt; string, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0f3885f31513af7aa4fdc29f16cb6758">modsByName</a> = new Dictionary&lt;string, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&gt;(StringComparer.OrdinalIgnoreCase)</td></tr>
@@ -822,7 +826,51 @@ Static Private Attributes</h2></td></tr>
 
 <p>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</p>
 
+<p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00309">309</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acd1340015914b83a41b0318ec97f5e73"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.ModLoader._needsSavingEnabledMods</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00296">296</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab7c6ff3e0438141c95a9c2a6005e02ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.ModLoader.ModLoader._pauseSavingEnabledMods</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_mod_loader_8cs_source.html#l00295">295</a> of file <a class="el" href="_mod_loader_8cs_source.html">ModLoader.cs</a>.</p>
 
 </div>
 </div>

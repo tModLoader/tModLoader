@@ -19,6 +19,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "Unload", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#affd4c994370635d0acbc426b6b8e6d94", null ],
     [ "WarnModsStillLoaded", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae12223562c971b01a9dfe00c649001e0", null ],
     [ "_enabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a90cd23cb256c959b05d8a943f71fff5a", null ],
+    [ "_needsSavingEnabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#acd1340015914b83a41b0318ec97f5e73", null ],
+    [ "_pauseSavingEnabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ab7c6ff3e0438141c95a9c2a6005e02ac", null ],
     [ "beta", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3dabc9061f57772c53ab2d7cbf9a6685", null ],
     [ "branchName", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#af6313a23f41ec4f8e13343d900014380", null ],
     [ "compressedPlatformRepresentation", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac488859bd72975ab52aba41c3fd4f0d7", null ],
@@ -39,5 +41,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "weakModReferences", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ae6a2329f3bb1010552ab35f64146ebe3", null ],
     [ "windows", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ac0d1dcc0ee625f8883c8967e0e660a84", null ],
     [ "Mods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5", null ],
+    [ "PauseSavingEnabledMods", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0d6cd94e1efcb73482ac141e9cc5d23e", null ],
     [ "SteamID64", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a734c915242ff947b30c8edd7e003ed06", null ]
 ];
