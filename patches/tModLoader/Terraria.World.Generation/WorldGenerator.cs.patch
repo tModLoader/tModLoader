@@ -13,4 +13,28 @@
  
  		public WorldGenerator(int seed)
  		{
+@@ -44,7 +_,22 @@
+ 				Main.rand = new UnifiedRandom(this._seed);
+ 				stopwatch.Start();
+ 				progress.Start(current2.Weight);
+-				current2.Apply(progress);
++				try
++				{
++					current2.Apply(progress);
++				}
++				catch(Exception e)
++				{
++					string message = string.Join
++					(
++						"\n",
++						Localization.Language.GetTextValue("tModLoader.WorldGenError"),
++						current2.Name,
++						e.Message
++					);
++					Main.MenuUI.SetState(new ModLoader.UI.UIWorldLoadCrash(message));
++					throw e;
++				}
+ 				progress.End();
+ 				stopwatch.Reset();
+ 			}
 

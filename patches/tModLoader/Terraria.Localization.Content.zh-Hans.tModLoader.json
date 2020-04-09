@@ -95,6 +95,7 @@
 		"Retry": "重试",
 		"Exit": "退出",
 		"ExitAndDisableAll": "退出并禁用全部模组",
+		// "BackToMainMenu": "Back to Main Menu",
 
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",

@@ -94,6 +94,7 @@
 		"Retry": "Réessayer",
 		"Exit": "Quitter",
 		"ExitAndDisableAll": "Quitter et tout désactiver",
+		// "BackToMainMenu": "Back to Main Menu",
 
 		// Mod Info
 		"ModInfoHeader": "Détails : ",
