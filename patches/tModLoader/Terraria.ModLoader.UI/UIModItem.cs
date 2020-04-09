@@ -277,6 +277,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void EnableDepsRecursive(LocalMod[] modList, string[] modRefs, List<string> missingRefs) {
+			ModLoader.PauseSavingEnabledMods = true;
 			foreach (var modRef in modRefs) {
 				// To enable the ref, its own refs must also be enabled
 				var refLocalMod = modList.FirstOrDefault(m => m.Name == modRef);
@@ -292,6 +293,7 @@ namespace Terraria.ModLoader.UI
 				ModLoader.EnableMod(modRef);
 				Interface.modsMenu.FindUIModItem(modRef)?.Enable();
 			}
+			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
