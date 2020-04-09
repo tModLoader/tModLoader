@@ -247,18 +247,20 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(12);
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = !_mod.Enabled;
 		}
 
 		internal void Enable() {
-			Main.PlaySound(12);
+			if(_mod.Enabled){return;}
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = true;
 			_uiModStateText.SetEnabled();
 		}
 
 		internal void Disable() {
-			Main.PlaySound(12);
+			if(!_mod.Enabled){return;}
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = false;
 			_uiModStateText.SetDisabled();
 		}
