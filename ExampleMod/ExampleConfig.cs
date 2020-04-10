@@ -21,7 +21,7 @@ namespace ExampleMod
 	// This file contains 2 real ModConfigs (and also a bunch of fake ModConfigs showcasing various ideas). One is set to ConfigScope.ServerSide and the other ConfigScope.ClientSide
 	// ModConfigs contain Public Fields and Properties that represent the choices available to the user. 
 	// Those Fields or Properties will be presented to users in the Config menu.
-	// DONT use static members anywhere in this class (except for a variable named Instance, see below), tModLoader maintains several instances of ModConfig classes which will not work well with static properties or fields.
+	// DONT use static members anywhere in this class (except for an automatically assigned field named Instance with the same Type as the ModConfig class, if you'd rather write "MyConfigClass.Instance" instead of "ModContent.GetInstance<MyConfigClass>()"), tModLoader maintains several instances of ModConfig classes which will not work well with static properties or fields.
 
 	/// <summary>
 	/// ExampleConfigServer has Server-wide effects. Things that happen on the server, on the world, or influence autoload go here
