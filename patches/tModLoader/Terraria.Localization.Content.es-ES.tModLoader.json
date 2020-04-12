@@ -171,7 +171,7 @@
 		"MBOfflineWithReason": "SIN CONEXIÓN ({0})",
 		"MBBusy": "Ocupado",
 		"MBUnknown": "Desconocido",
-		/"MBOfflineTroubleshooting": "No se puede acceder al Navegador de Mods. Esto puede deberse a diversas razones.\n 1. Revisa tu conexión a Internet.\n 2. El Navegador de Mods podría estar sin conexión. Si funcionaba antes, espera unas horas.\n 3. Haz doble clic en este mensaje para abrir el sitio web del Navegador de Mods. Puedes usarlo para descargar manualmente los mods. Si esto funciona, verifica tu firewall para permitir el acceso de Terraria.exe o intenta deshabilitar tu VPN si usas uno.\n 4. Si ese sitio web no funciona, el servidor del Navegador de Mods podría estar bloqueado por tu Gobierno, Proveedor de Servicios de Internet, Router, o Filtro Web. Si ese es el caso, tendrás que averiguarlo por tu cuenta.",
+		"MBOfflineTroubleshooting": "No se puede acceder al Navegador de Mods. Esto puede deberse a diversas razones.\n 1. Revisa tu conexión a Internet.\n 2. El Navegador de Mods podría estar sin conexión. Si funcionaba antes, espera unas horas.\n 3. Haz doble clic en este mensaje para abrir el sitio web del Navegador de Mods. Puedes usarlo para descargar manualmente los mods. Si esto funciona, verifica tu firewall para permitir el acceso de Terraria.exe o intenta deshabilitar tu VPN si usas uno.\n 4. Si ese sitio web no funciona, el servidor del Navegador de Mods podría estar bloqueado por tu Gobierno, Proveedor de Servicios de Internet, Router, o Filtro Web. Si ese es el caso, tendrás que averiguarlo por tu cuenta.",
 		"MBClickToViewDependencyMods": "Ver mods necesarios:\n{0}",
 		"MBModsNotFoundOnline": "Los siguientes mods no se encuentran en el Navegador de Mods: {0}",
 		"MBFilterDependencies": "Dependencias",
