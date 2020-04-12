@@ -412,12 +412,12 @@
  			IsGeneratingHardMode = true;
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
-@@ -11215,8 +_,15 @@
- 				num3 = (int)(Main.maxTilesX * (1f - num2));
+@@ -10687,8 +_,15 @@
+ 				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
  
--			GERunner(num3, 0, 3 * num5, 5f, true);
--			GERunner(num4, 0, 3 * -(float)num5, 5f, false);
+-			GERunner(num3, 0, 3 * num5, 5f);
+-			GERunner(num4, 0, 3 * -num5, 5f, good: false);
 +			hardmodetasks.Add(new PassLegacy("Hardmode Good", delegate (GenerationProgress progress) {
 +				GERunner(num3, 0, 3 * num5, 5f, true);
 +			}));
@@ -427,10 +427,10 @@
 +			}));
 +
 +			hardmodetasks.Add(new PassLegacy("Hardmode Walls", delegate (GenerationProgress progress) {
- 			float num7 = Main.maxTilesX / 4200f;
- 			int i = (int)(25f * num7);
+ 			float num7 = (float)Main.maxTilesX / 4200f;
+ 			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
-@@ -11282,13 +_,22 @@
+@@ -10718,13 +_,22 @@
  					shapeData.Clear();
  				}
  			}
@@ -438,9 +438,9 @@
  
 +			hardmodetasks.Add(new PassLegacy("Hardmode Announcment", delegate (GenerationProgress progress) {
  			if (Main.netMode == 0)
- 				Main.NewText(Lang.misc[15].Value, 50, 255, 130, false);
+ 				Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
  			else if (Main.netMode == 2)
- 				NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key, new object[0]), new Color(50, 255, 130), -1);
+ 				NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key), new Color(50, 255, 130));
  
  			AchievementsHelper.NotifyProgressionEvent(9);
 +			}));
@@ -453,7 +453,7 @@
  			if (Main.netMode == 2)
  				Netplay.ResetSections();
  
-@@ -11333,7 +_,7 @@
+@@ -10766,7 +_,7 @@
  
  			int frameX = Main.tile[i, j].frameX;
  			Tile tile = Main.tile[i, j];
@@ -461,33 +461,33 @@
 +			if (TileLoader.CloseDoorID(Main.tile[i, j]) < 0)
  				return false;
  
- 			int k = tile.frameY;
-@@ -11379,13 +_,14 @@
+ 			int num4 = tile.frameY;
+@@ -10813,13 +_,14 @@
  				}
  			}
  
 +			ushort closeDoorID = (ushort)TileLoader.CloseDoorID(tile);
- 			for (int m = num7; m < num7 + 2; m++) {
- 				for (int n = num5; n < num5 + 3; n++) {
- 					if (m == num2) {
- 						if (Main.tile[m, n] == null)
- 							Main.tile[m, n] = new Tile();
+ 			for (int l = num7; l < num7 + 2; l++) {
+ 				for (int m = num3; m < num3 + 3; m++) {
+ 					if (l == num2) {
+ 						if (Main.tile[l, m] == null)
+ 							Main.tile[l, m] = new Tile();
  
--						Main.tile[m, n].type = 10;
-+						Main.tile[m, n].type = closeDoorID;
- 						Main.tile[m, n].frameX = (short)(genRand.Next(3) * 18 + num4);
+-						Main.tile[l, m].type = 10;
++						Main.tile[l, m].type = closeDoorID;
+ 						Main.tile[l, m].frameX = (short)(genRand.Next(3) * 18 + num6);
  					}
  					else {
-@@ -11551,7 +_,7 @@
+@@ -10977,7 +_,7 @@
  							bool flag2 = false;
- 							for (int j = num7 - 8; j < num7 + 8; j++) {
- 								for (int k = num8 - 8; k < num8 + 8; k++) {
--									if (Main.tile[j, k].active() && Main.tile[j, k].type == 4) {
-+									if (Main.tile[j, k].active() && TileLoader.IsTorch(Main.tile[j, k].type)) {
+ 							for (int k = num6 - 8; k < num6 + 8; k++) {
+ 								for (int l = num7 - 8; l < num7 + 8; l++) {
+-									if (Main.tile[k, l].active() && Main.tile[k, l].type == 4) {
++									if (Main.tile[k, l].active() && TileLoader.IsTorch(Main.tile[k, l].type)) {
  										flag2 = true;
  										break;
  									}
-@@ -17067,10 +_,7 @@
+@@ -16527,10 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
  			Tile tile = Main.tile[i, j];
@@ -498,63 +498,63 @@
 +			if (TileLoader.OpenDoorID(Main.tile[i, j]) < 0)
  				return false;
  
- 			short num = 0;
-@@ -17132,8 +_,9 @@
+ 			short num2 = 0;
+@@ -16592,8 +_,9 @@
  
- 			int num7 = num2 % 36 * 54;
- 			Main.PlaySound(8, i * 16, j * 16, 1, 1f, 0f);
+ 			int num8 = num4 % 36 * 54;
+ 			Main.PlaySound(8, i * 16, j * 16);
 +			ushort openDoorID = (ushort)TileLoader.OpenDoorID(Main.tile[i, j]);
- 			Main.tile[num5, num4].active(true);
--			Main.tile[num5, num4].type = 11;
-+			Main.tile[num5, num4].type = openDoorID;
- 			Main.tile[num5, num4].frameY = (short)num7;
- 			Main.tile[num5, num4].frameX = num;
- 			Main.tile[num5, num4].color(color);
-@@ -17141,7 +_,7 @@
- 				Main.tile[num5 + 1, num4] = new Tile();
+ 			Main.tile[num6, num].active(active: true);
+-			Main.tile[num6, num].type = 11;
++			Main.tile[num6, num].type = openDoorID;
+ 			Main.tile[num6, num].frameY = (short)num8;
+ 			Main.tile[num6, num].frameX = num2;
+ 			Main.tile[num6, num].color(color);
+@@ -16601,7 +_,7 @@
+ 				Main.tile[num6 + 1, num] = new Tile();
  
- 			Main.tile[num5 + 1, num4].active(true);
--			Main.tile[num5 + 1, num4].type = 11;
-+			Main.tile[num5 + 1, num4].type = openDoorID;
- 			Main.tile[num5 + 1, num4].frameY = (short)num7;
- 			Main.tile[num5 + 1, num4].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4].color(color);
-@@ -17149,7 +_,7 @@
- 				Main.tile[num5, num4 + 1] = new Tile();
+ 			Main.tile[num6 + 1, num].active(active: true);
+-			Main.tile[num6 + 1, num].type = 11;
++			Main.tile[num6 + 1, num].type = openDoorID;
+ 			Main.tile[num6 + 1, num].frameY = (short)num8;
+ 			Main.tile[num6 + 1, num].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num].color(color);
+@@ -16609,7 +_,7 @@
+ 				Main.tile[num6, num + 1] = new Tile();
  
- 			Main.tile[num5, num4 + 1].active(true);
--			Main.tile[num5, num4 + 1].type = 11;
-+			Main.tile[num5, num4 + 1].type = openDoorID;
- 			Main.tile[num5, num4 + 1].frameY = (short)(num7 + 18);
- 			Main.tile[num5, num4 + 1].frameX = num;
- 			Main.tile[num5, num4 + 1].color(color2);
-@@ -17157,7 +_,7 @@
- 				Main.tile[num5 + 1, num4 + 1] = new Tile();
+ 			Main.tile[num6, num + 1].active(active: true);
+-			Main.tile[num6, num + 1].type = 11;
++			Main.tile[num6, num + 1].type = openDoorID;
+ 			Main.tile[num6, num + 1].frameY = (short)(num8 + 18);
+ 			Main.tile[num6, num + 1].frameX = num2;
+ 			Main.tile[num6, num + 1].color(color2);
+@@ -16617,7 +_,7 @@
+ 				Main.tile[num6 + 1, num + 1] = new Tile();
  
- 			Main.tile[num5 + 1, num4 + 1].active(true);
--			Main.tile[num5 + 1, num4 + 1].type = 11;
-+			Main.tile[num5 + 1, num4 + 1].type = openDoorID;
- 			Main.tile[num5 + 1, num4 + 1].frameY = (short)(num7 + 18);
- 			Main.tile[num5 + 1, num4 + 1].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4 + 1].color(color2);
-@@ -17165,7 +_,7 @@
- 				Main.tile[num5, num4 + 2] = new Tile();
+ 			Main.tile[num6 + 1, num + 1].active(active: true);
+-			Main.tile[num6 + 1, num + 1].type = 11;
++			Main.tile[num6 + 1, num + 1].type = openDoorID;
+ 			Main.tile[num6 + 1, num + 1].frameY = (short)(num8 + 18);
+ 			Main.tile[num6 + 1, num + 1].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num + 1].color(color2);
+@@ -16625,7 +_,7 @@
+ 				Main.tile[num6, num + 2] = new Tile();
  
- 			Main.tile[num5, num4 + 2].active(true);
--			Main.tile[num5, num4 + 2].type = 11;
-+			Main.tile[num5, num4 + 2].type = openDoorID;
- 			Main.tile[num5, num4 + 2].frameY = (short)(num7 + 36);
- 			Main.tile[num5, num4 + 2].frameX = num;
- 			Main.tile[num5, num4 + 2].color(color3);
-@@ -17173,7 +_,7 @@
- 				Main.tile[num5 + 1, num4 + 2] = new Tile();
+ 			Main.tile[num6, num + 2].active(active: true);
+-			Main.tile[num6, num + 2].type = 11;
++			Main.tile[num6, num + 2].type = openDoorID;
+ 			Main.tile[num6, num + 2].frameY = (short)(num8 + 36);
+ 			Main.tile[num6, num + 2].frameX = num2;
+ 			Main.tile[num6, num + 2].color(color3);
+@@ -16633,7 +_,7 @@
+ 				Main.tile[num6 + 1, num + 2] = new Tile();
  
- 			Main.tile[num5 + 1, num4 + 2].active(true);
--			Main.tile[num5 + 1, num4 + 2].type = 11;
-+			Main.tile[num5 + 1, num4 + 2].type = openDoorID;
- 			Main.tile[num5 + 1, num4 + 2].frameY = (short)(num7 + 36);
- 			Main.tile[num5 + 1, num4 + 2].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4 + 2].color(color3);
+ 			Main.tile[num6 + 1, num + 2].active(active: true);
+-			Main.tile[num6 + 1, num + 2].type = 11;
++			Main.tile[num6 + 1, num + 2].type = openDoorID;
+ 			Main.tile[num6 + 1, num + 2].frameY = (short)(num8 + 36);
+ 			Main.tile[num6 + 1, num + 2].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num + 2].color(color3);
 @@ -17232,6 +_,9 @@
  						KillTile(x, num4 + l, false, false, false);
  				}
