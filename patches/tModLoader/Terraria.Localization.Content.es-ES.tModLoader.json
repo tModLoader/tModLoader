@@ -8,7 +8,7 @@
 		"MenuEnableDeveloperMode": "Activar modo Desarrollador",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que deseas descargar. Usa el menú de Mods para cambiar los mods que están actualmente activos. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
 		"tModLoaderSettings": "Configuración de tModLoader",
-		
+
 		// Mods Menu
 		"ModsModsList": "Lista de mods",
 		"ModsEnableAll": "Activar todos",
