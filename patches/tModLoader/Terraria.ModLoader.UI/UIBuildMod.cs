@@ -76,13 +76,17 @@ namespace Terraria.ModLoader.UI
 
 				var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
 				var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
+				bool isBuildError = false;
 				if (e is BuildException)
+				{
 					msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
-				else 
+					isBuildError = true;
+					Interface.errorMessage.modName = (string)mod;
+				}
+				else
 					msg += $"\n\n{e}";
 
-				Interface.errorMessage.modName = (string)mod;
-				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink);
+				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink, showRetry: isBuildError);
 				return Task.FromResult(false);
 			}
 			return Task.FromResult(true);

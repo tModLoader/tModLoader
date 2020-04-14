@@ -23,8 +23,9 @@ namespace Terraria.ModLoader.UI
 		private string message;
 		private int gotoMenu;
 		private string webHelpURL;
-		private bool showRetry;
+		private bool continueIsRetry;
 		private bool showSkip;
+		private bool showRetry;
 		internal string modName;
 
 		public override void OnInitialize() {
@@ -90,7 +91,6 @@ namespace Terraria.ModLoader.UI
 		private void RetryBuild(UIMouseEvent evt, UIElement listeningElement)
 		{
 			Interface.buildMod.Build(Path.Combine(ModCompile.ModSourcePath, modName), true);
-			modName = null;
 		}
 
 		public override void OnActivate() {
@@ -98,22 +98,23 @@ namespace Terraria.ModLoader.UI
 
 			messageBox.SetText(message);
 
-			var continueKey = gotoMenu < 0 ? "Exit" : showRetry ? "Retry" : "Continue";
+			var continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
 			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 			
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
-			area.AddOrRemoveChild(retryButton, modName != null);
+			area.AddOrRemoveChild(retryButton, showRetry);
 		}
 
-		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool showRetry = false, bool showSkip = false) {
+		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, bool showRetry = false) {
 			this.message = message;
 			this.gotoMenu = gotoMenu;
 			this.webHelpURL = webHelpURL;
-			this.showRetry = showRetry;
+			this.continueIsRetry = continueIsRetry;
 			this.showSkip = showSkip;
+			this.showRetry = showRetry;
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}
