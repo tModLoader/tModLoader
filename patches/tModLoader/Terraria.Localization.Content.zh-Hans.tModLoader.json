@@ -8,6 +8,7 @@
 		"MenuModSources": "模组源码",
 		"MenuEnableDeveloperMode": "启用开发者模式",
 		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
+		// "tModLoaderSettings": "tModLoader Settings",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",

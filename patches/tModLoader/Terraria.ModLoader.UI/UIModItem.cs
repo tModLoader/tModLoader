@@ -247,18 +247,20 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(12);
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = !_mod.Enabled;
 		}
 
 		internal void Enable() {
-			Main.PlaySound(12);
+			if(_mod.Enabled){return;}
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = true;
 			_uiModStateText.SetEnabled();
 		}
 
 		internal void Disable() {
-			Main.PlaySound(12);
+			if(!_mod.Enabled){return;}
+			Main.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = false;
 			_uiModStateText.SetDisabled();
 		}
@@ -275,6 +277,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void EnableDepsRecursive(LocalMod[] modList, string[] modRefs, List<string> missingRefs) {
+			ModLoader.PauseSavingEnabledMods = true;
 			foreach (var modRef in modRefs) {
 				// To enable the ref, its own refs must also be enabled
 				var refLocalMod = modList.FirstOrDefault(m => m.Name == modRef);
@@ -290,6 +293,7 @@ namespace Terraria.ModLoader.UI
 				ModLoader.EnableMod(modRef);
 				Interface.modsMenu.FindUIModItem(modRef)?.Enable();
 			}
+			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {

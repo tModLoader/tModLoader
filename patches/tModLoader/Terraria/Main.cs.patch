@@ -4350,7 +4350,7 @@
  							Main.menuMode = 1213;
 +						}
 +						num21++;
-+						array9[num21] = "tModLoader " + Lang.menu[14].Value; //"tModLoader Settings"
++						array9[num21] = Language.GetTextValue("tModLoader.tModLoaderSettings");
 +						if (this.selectedMenu == num21)
 +						{
 +							Main.PlaySound(SoundID.MenuOpen);

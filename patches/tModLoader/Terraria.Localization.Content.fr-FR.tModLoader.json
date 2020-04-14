@@ -7,6 +7,7 @@
 		"MenuModSources": "Mods source",
 		"MenuEnableDeveloperMode": "Activer le mode Développeur",
 		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
+		// "tModLoaderSettings": "tModLoader Settings",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",

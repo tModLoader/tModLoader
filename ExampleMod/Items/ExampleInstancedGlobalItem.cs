@@ -62,7 +62,7 @@ namespace ExampleMod.Items
 				}*/
 			}
 			if (examplePersonFreeGift) {
-				tooltips.Add(new TooltipLine(mod, "FreeGift", "This is a free gift from ExampleServerConfig") {
+				tooltips.Add(new TooltipLine(mod, "FreeGift", "This is a free gift from ExampleConfigServer") {
 					overrideColor = Color.Magenta
 				});
 			}

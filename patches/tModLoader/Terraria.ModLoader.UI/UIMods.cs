@@ -260,16 +260,20 @@ namespace Terraria.ModLoader.UI
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
+			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Enable();
 			}
+			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(12, -1, -1, 1);
+			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Disable();
 			}
+			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		public UIModItem FindUIModItem(string modName) {
