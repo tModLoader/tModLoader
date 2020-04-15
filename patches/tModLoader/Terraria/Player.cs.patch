@@ -607,7 +607,7 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode)
  			{
  				int number = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, 602, 1, false, 0, false, false);
-@@ -3363,6 +_,33 @@
+@@ -3363,6 +_,32 @@
  					}
  				}
  			}
@@ -623,14 +623,13 @@
 +		{
 +			int index = Item.NewItem((int)this.position.X, (int)this.position.Y, this.width, this.height, item.type, stack, false, -1, false, false);
 +			Main.item[index] = item.Clone();
-+			Main.item[index].whoAmI = index;
++			Main.item[index].whoAmI = index; // Is this necessary? item.whoAmI is never used
 +			Main.item[index].position = this.position;
 +			if (stack != Main.item[index].stack)
 +				Main.item[index].stack = stack;
 +
 +			// Sync the item for mp
-+			if (Main.netMode == NetmodeID.MultiplayerClient)
-+			{
++			if (Main.netMode == NetmodeID.MultiplayerClient) {
 +				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
 +			}
 +		}
