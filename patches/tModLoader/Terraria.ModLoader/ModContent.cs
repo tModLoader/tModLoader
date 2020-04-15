@@ -584,7 +584,7 @@ namespace Terraria.ModLoader
 			// Clear references to ModPlayer instances
 			for (int i = 0; i < Main.player.Length; i++) {
 				Main.player[i] = new Player();
-				// projectile.whoAmI is only set for active players
+				// player.whoAmI is only set for active players
 			}
 
 			Main.clientPlayer = new Player(false);
