@@ -9,6 +9,8 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
+	//A plant with 3 stages, planted, growing and grown.
+	//Sadly, modded plants are unable to be grown by the flower boots
 	public class ExampleHerb : ModTile
 	{
 		private static readonly byte pixelsPerStage = 18; //a field for readibilty and to kick out those magic numbers
