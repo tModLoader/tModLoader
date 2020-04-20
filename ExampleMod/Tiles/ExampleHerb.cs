@@ -9,6 +9,14 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
+	//An enum on the 3 stages of herb growth.
+	public enum PlantStage : byte
+	{
+		Planted,
+		Growing,
+		Grown
+	}
+
 	//A plant with 3 stages, planted, growing and grown.
 	//Sadly, modded plants are unable to be grown by the flower boots
 	public class ExampleHerb : ModTile
@@ -78,14 +86,5 @@ namespace ExampleMod.Tiles
 			Tile tile = Framing.GetTileSafely(i, j); //Always use Framing.GetTileSafely instead of Main.tile as it prevents any errors caused from other mods
 			return (PlantStage)(tile.frameX / FrameWidth);
 		}
-	}
-
-
-	//An enum on the 3 stages of herb growth.
-	public enum PlantStage : byte
-	{
-		Planted,
-		Growing,
-		Grown
 	}
 }
