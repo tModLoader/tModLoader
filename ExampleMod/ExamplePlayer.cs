@@ -650,25 +650,25 @@ namespace ExampleMod
 			Player drawPlayer = drawInfo.drawPlayer;
 			Mod mod = ModLoader.GetMod("ExampleMod");
 
-
-			// To figure out when we should draw our ExampleBreastplate glowmask, we make use of GetEquipSlot.
-			// It takes in the name of the item that comes with an equip texture, and then its EquipType.
+			// To figure out when we should draw our ExampleBreastplate glowmask, we make use of GetEquipSlot
+			// It takes in the name of the item that comes with an equip texture, and then its EquipType
 			// By comparing that to drawPlayer.body, which represents the currently visible body armor, we make sure it's safe to draw ours
 			// Here we abort if the currently equipped body armor isn't what we need for our glowmask
 			if (drawPlayer.body != mod.GetEquipSlot("ExampleBreastplate", EquipType.Body)) {
 				return;
 			}
 
+			// The texture we want to display on our player
+			Texture2D texture;
 			// Because we have a breastplate glowmask, and breastplates have different textures depending on if the player is male or female, we have to use two textures here
-			string gender = "";
-			if (!drawPlayer.Male) {
-				gender = "Female";
+			if (drawPlayer.Male) {
+				texture = mod.GetTexture("Items/Armor/ExampleBreastplate_Body_Glowmask");
+			}
+			else {
+				texture = mod.GetTexture("Items/Armor/ExampleBreastplate_FemaleBody_Glowmask");
 			}
 
-			// The texture we want to display on our player
-			Texture2D texture = mod.GetTexture("Items/Armor/ExampleBreastplate_" + gender + "Body_Glowmask");
-
-			// The following variables (until drawData) are all copied 1:1 from vanilla code that handles breastplate drawing.
+			// The following variables (until drawData) are all copied 1:1 from vanilla code that handles breastplate drawing
 			// It is advised to always copy the vanilla code that handles a particular EquipType, if you wish to make a glowmask for it,
 			// so it seamlessly overlaps
 			float drawX = (int)drawInfo.position.X + drawPlayer.width / 2;
@@ -686,7 +686,7 @@ namespace ExampleMod
 			// Should stay like that
 			float alpha = (255 - drawPlayer.immuneAlpha) / 255f;
 
-			// The color of the glowmask, pick what you want
+			// The "tint" of the glowmask. It should stay white, because any other color will tint it instead
 			Color color = Color.White;
 
 			// The frame that gets cut out from our texture that then will be drawn
@@ -707,6 +707,7 @@ namespace ExampleMod
 			// Depending on what EquipType this glowmask is representing, you need to assign the proper shader to it
 			// (This references the dye)
 			// Because this is a breastplate, we want to use the dye that is in the breastplate slot
+			// You can also choose to use a different shader for fancier effects
 			drawData.shader = drawInfo.bodyArmorShader;
 
 			// Finally we register our glowmask so it will be drawn later by the game
@@ -721,6 +722,7 @@ namespace ExampleMod
 				dust.fadeIn = Main.rand.NextFloat(0.5f, 0.8f);
 
 				// Same deal as before with drawData.shader
+				// Gives the dust the same shader effect that is equipped for the armor
 				dust.shader = GameShaders.Armor.GetSecondaryShader(drawInfo.bodyArmorShader, drawPlayer);
 
 				Main.playerDrawDust.Add(index);
@@ -728,7 +730,7 @@ namespace ExampleMod
 
 			// Final words
 			// If your glowmask is supposed to be tied to something else (wings, boots), you will, in addition to copying vanilla draw parameters, have to make use of VS autocomplete function
-			// to figure out suitable replacements for drawInfo.bodyArmorShader, drawInfo.bodyFrame and the like.
+			// to figure out suitable replacements for drawInfo.bodyArmorShader, drawInfo.bodyFrame and the like
 			// For wings, that would be: drawInfo.wingShader, drawInfo.wingFrame
 		});
 
