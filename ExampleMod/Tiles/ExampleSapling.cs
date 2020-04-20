@@ -13,8 +13,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleSapling : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
@@ -50,8 +49,7 @@ namespace ExampleMod.Tiles
 
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
-		public override void RandomUpdate(int i, int j)
-		{
+		public override void RandomUpdate(int i, int j) {
 			// A random chance to slow down growth
 			if (WorldGen.genRand.Next(20) == 0)
 			{
@@ -74,8 +72,7 @@ namespace ExampleMod.Tiles
 			}
 		}
 
-		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects)
-		{
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects) {
 			if (i % 2 == 1)
 				effects = SpriteEffects.FlipHorizontally;
 		}
