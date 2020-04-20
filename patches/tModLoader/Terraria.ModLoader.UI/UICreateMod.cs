@@ -185,9 +185,6 @@ namespace {modNameTrimmed}
 {{
 	public class {modNameTrimmed} : Mod
 	{{
-		public {modNameTrimmed}()
-		{{
-		}}
 	}}
 }}";
 		}
