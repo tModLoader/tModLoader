@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 				Interface.errorMessage.Show(msg,
 					gotoMenu: fatal ? -1 : Interface.reloadModsID,
 					webHelpURL: e.HelpLink,
-					showRetry: continueIsRetry,
+					continueIsRetry: continueIsRetry,
 					showSkip: !fatal);
 			}
 		}

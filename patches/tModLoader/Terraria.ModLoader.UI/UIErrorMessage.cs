@@ -25,8 +25,7 @@ namespace Terraria.ModLoader.UI
 		private string webHelpURL;
 		private bool continueIsRetry;
 		private bool showSkip;
-		private bool showRetry;
-		internal string modName;
+		private Action retryAction;
 
 		public override void OnInitialize() {
 			area = new UIElement {
@@ -83,14 +82,9 @@ namespace Terraria.ModLoader.UI
 			retryButton.CopyStyle(continueButton);
 			retryButton.Top.Set(-50f, 1f);
 			retryButton.WithFadedMouseOver();
-			retryButton.OnClick += RetryBuild;
+			retryButton.OnClick += (evt, elem) => retryAction();
 
 			Append(area);
-		}
-
-		private void RetryBuild(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Interface.buildMod.Build(Path.Combine(ModCompile.ModSourcePath, modName), true);
 		}
 
 		public override void OnActivate() {
@@ -105,16 +99,20 @@ namespace Terraria.ModLoader.UI
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
-			area.AddOrRemoveChild(retryButton, showRetry);
+			area.AddOrRemoveChild(retryButton, retryAction != null);
 		}
 
-		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, bool showRetry = false) {
+		public override void OnDeactivate() {
+			retryAction = null; //release references for the GC
+		}
+
+		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null) {
 			this.message = message;
 			this.gotoMenu = gotoMenu;
 			this.webHelpURL = webHelpURL;
 			this.continueIsRetry = continueIsRetry;
 			this.showSkip = showSkip;
-			this.showRetry = showRetry;
+			this.retryAction = retryAction;
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}

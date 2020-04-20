@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.UI
 		internal void BuildAll(bool reload)
 			=> Build(mc => mc.BuildAll(), reload);
 
-		private void Build(Action<ModCompile> buildAction, bool reload) {
+		internal void Build(Action<ModCompile> buildAction, bool reload) {
 			Main.menuMode = Interface.buildModID;
 			Task.Run(() => BuildMod(buildAction, reload));
 		}
@@ -76,17 +76,17 @@ namespace Terraria.ModLoader.UI
 
 				var mod = e.Data.Contains("mod") ? e.Data["mod"] : null;
 				var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
-				bool isBuildError = false;
+
+				Action retry = null;
 				if (e is BuildException)
 				{
 					msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
-					isBuildError = true;
-					Interface.errorMessage.modName = (string)mod;
+					retry = () => Interface.buildMod.Build(buildAction, reload);
 				}
 				else
 					msg += $"\n\n{e}";
 
-				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink, showRetry: isBuildError);
+				Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink, retryAction: retry);
 				return Task.FromResult(false);
 			}
 			return Task.FromResult(true);
