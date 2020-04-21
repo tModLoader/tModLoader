@@ -659,15 +659,11 @@ namespace ExampleMod
 			}
 
 			// The texture we want to display on our player
-			Texture2D texture;
 			// Because we have a breastplate glowmask, and breastplates have different textures depending on if the player is male or female, we have to use two textures here
-			if (drawPlayer.Male) {
-				texture = mod.GetTexture("Items/Armor/ExampleBreastplate_Body_Glowmask");
-			}
-			else {
-				texture = mod.GetTexture("Items/Armor/ExampleBreastplate_FemaleBody_Glowmask");
-			}
-
+			Texture2D texture = drawPlayer.Male ?
+				mod.GetTexture("Items/Armor/ExampleBreastplate_Body_Glowmask") :
+				mod.GetTexture("Items/Armor/ExampleBreastplate_FemaleBody_Glowmask");
+			
 			// The following variables (until drawData) are all copied 1:1 from vanilla code that handles breastplate drawing
 			// It is advised to always copy the vanilla code that handles a particular EquipType, if you wish to make a glowmask for it,
 			// so it seamlessly overlaps
