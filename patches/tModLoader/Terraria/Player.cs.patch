@@ -3924,30 +3924,35 @@
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
-@@ -22440,8 +_,12 @@
- 							if (gravDir == -1f) {
- 								bodyFrame.Y = bodyFrame.Height * 2;
- 								return;
-+								//patch file
- 							}
- 						}
-+					}
-+					else if (ItemLoader.UseItemFrame(inventory[selectedItem], this)) {
-+						return;
+@@ -22152,9 +_,13 @@
+ 					if ((double)num18 > 0.6) {
+ 						bodyFrame.Y = bodyFrame.Height * 4;
+ 						if (gravDir == -1f)
+ 							bodyFrame.Y = bodyFrame.Height * 2;
++							//patch file
  					}
  				}
++				else if (ItemLoader.UseItemFrame(inventory[selectedItem], this)) {
++					return;
++				}
  			}
-@@ -22477,6 +_,9 @@
- 						return;
- 					}
- 
-+					if (ItemLoader.HoldItemFrame(inventory[selectedItem], this))
-+						return;
-+
- 					if (shieldRaised) {
- 						bodyFrame.Y = bodyFrame.Height * 10;
- 						return;
-@@ -22399,6 +_,8 @@
+ 			else if (mount.Active) {
+ 				bodyFrameCounter = 0.0;
+@@ -22172,11 +_,13 @@
+ 			else if (inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
+ 				bodyFrame.Y = bodyFrame.Height * 2;
+ 			}
+ 			else if (inventory[selectedItem].holdStyle == 3) {
+ 				bodyFrame.Y = bodyFrame.Height * 3;
+ 			}
++			else if (ItemLoader.HoldItemFrame(inventory[selectedItem], this)) {
++			}
+ 			else if (shieldRaised) {
+ 				bodyFrame.Y = bodyFrame.Height * 10;
+ 			}
+ 			else if (grappling[0] >= 0) {
+ 				sandStorm = false;
+@@ -22403,6 +_,8 @@
  			if (drawPlayer.body == 36 && drawPlayer.head == 56)
  				armorEffectDrawOutlines = true;
  
@@ -3956,7 +3961,7 @@
  			if (drawPlayer.stoned || drawPlayer.stealth != 1f) {
  				armorEffectDrawOutlines = false;
  				armorEffectDrawShadow = false;
-@@ -22504,6 +_,7 @@
+@@ -22508,6 +_,7 @@
  				}
  			}
  
@@ -3964,7 +3969,7 @@
  			return num;
  		}
  
-@@ -22617,6 +_,9 @@
+@@ -22621,6 +_,9 @@
  			}
  
  			immune = true;
