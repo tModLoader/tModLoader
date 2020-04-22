@@ -4,7 +4,7 @@
 Before you create a pull request, please review the following guidelines for your contribution. Thank you in advance
 
 ## Your files use tab indendation (keep tabs) of size 4
-In our project, we use tab indentation with a size of 4. Please have you settings abide this rule.
+In our project, we use tab indentation with a size of 4. Please have your settings abide this rule.
 
 **Note**: Most editors support our provided [.editorconfig](https://github.com/tModLoader/tModLoader/blob/master/.editorconfig) file, but certain functionalities (for example ones provided by plugins or addons) sometimes do not abide it. Please be careful and considerate with your actions!
 
