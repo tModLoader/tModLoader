@@ -21,7 +21,7 @@ namespace ExampleMod.Tiles
 	//Sadly, modded plants are unable to be grown by the flower boots
 	public class ExampleHerb : ModTile
 	{
-		private const byte FrameWidth = 18; //a field for readibilty and to kick out those magic numbers
+		private const int FrameWidth = 18; //a field for readibilty and to kick out those magic numbers
 
 		public override void SetDefaults()
 		{
