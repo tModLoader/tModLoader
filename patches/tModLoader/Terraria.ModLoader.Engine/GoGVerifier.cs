@@ -52,35 +52,58 @@ namespace Terraria.ModLoader.Engine
 
 		private static bool GoGCheck() {
 			GetPlatformCheckInfo(out var steamAPIpath, out var steamAPIhash, out var vanillaGoGhash);
+
+			const string ContentDirectory = "Content";
+			const string InstallInstructions = "Please restore your Terraria install, then install tModLoader using the provided installer or by following the README.txt instructions.";
+
+			void Exit(string errorMessage)
+			{
+				Logging.tML.Fatal(errorMessage);
+				UI.Interface.MessageBoxShow(errorMessage);
+				Environment.Exit(1);
+			}
+
+#if !SERVER
+			if(!Directory.Exists(ContentDirectory)) {
+				Logging.tML.Info($"{ContentDirectory} could not be found.");
+
+				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader into Terraria's install directory?\r\n\r\n{InstallInstructions}");
+
+				return false;
+			}
+#endif
+
 			if (File.Exists(steamAPIpath)) {
 				VerifySteamAPI(steamAPIpath, steamAPIhash);
+
 				return false;
 			}
 
-			var vanillaPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location) != "Terraria.exe" ? "Terraria.exe" : "Terraria_v1.3.5.3.exe";
+			const string DefaultExe = "Terraria.exe";
+			const string CheckExe = "Terraria_v1.3.5.3.exe"; //TODO: Use Main.versionNumber here after porting to 1.3.5.3
+
+			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
+
 			if (!File.Exists(vanillaPath)) {
 #if SERVER
 				return false;
 #else
+				Logging.tML.Info($"{vanillaPath} could not be found.");
 
-				Logging.tML.Info("Vanilla Terraria.exe not found.");
-				string message = $"{vanillaPath} not found.\n\nGoG installs must have the unmodified Terraria exe to function.\n\nPlease restore your Terraria install, then install tModLoader using the provided tModLoaderInstaller.jar or by following the README.txt instructions.";
-				Logging.tML.Fatal(message);
-				UI.Interface.MessageBoxShow(message);
-				Environment.Exit(1);
+				Exit($"{vanillaPath} could not be found.\r\n\r\nGoG installs must have the unmodified Terraria executable to function.\r\n\r\n{InstallInstructions}");
+
 				return false;
 #endif
 			}
 
 			if (!HashMatchesFile(vanillaGoGhash, vanillaPath)) {
-				string message = $"{vanillaPath} is not the unmodified Terraria executable.\n\nGoG installs must have the unmodified Terraria executable to function.\n\nPlease restore your Terraria install, then install tModLoader using the provided tModLoaderInstaller.jar or by following the README.txt instructions.";
-				Logging.tML.Fatal(message);
-				UI.Interface.MessageBoxShow(message);
-				Environment.Exit(1);
+				Exit($"{vanillaPath} is not the unmodified Terraria executable.\r\n\r\nGoG installs must have the unmodified Terraria executable to function.\r\n\r\n{InstallInstructions}");
+				
 				return false;
 			}
 
 			Logging.tML.Info("GoG detected. Disabled steam check.");
+
 			return true;
 		}
 
