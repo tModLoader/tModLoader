@@ -7,7 +7,7 @@ using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModPrefix
+	public abstract class ModPrefix:ModType
 	{
 		private static byte nextPrefix = PrefixID.Count;
 
@@ -79,16 +79,6 @@ namespace Terraria.ModLoader
 			prefix = wr.Get();
 		}
 
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		public string Name {
-			get;
-			internal set;
-		}
-
 		public byte Type {
 			get;
 			internal set;
@@ -123,9 +113,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddPrefix(name, this);
 
 		public virtual void AutoDefaults() {
 			if (DisplayName.IsDefault())

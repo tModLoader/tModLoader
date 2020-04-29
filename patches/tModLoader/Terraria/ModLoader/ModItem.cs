@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public class ModItem
+	public class ModItem:ModType
 	{
 		//add modItem property to Terraria.Item (internal set)
 		//set modItem to null at beginning of Terraria.Item.ResetStats		
@@ -26,25 +27,6 @@ namespace Terraria.ModLoader
 		/// The item.
 		/// </value>
 		public Item item {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Gets the mod.
-		/// </summary>
-		/// <value>
-		/// The mod that added this ModItem.
-		/// </value>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this ModItem.
-		/// </summary>
-		public string Name {
 			get;
 			internal set;
 		}
@@ -92,14 +74,14 @@ namespace Terraria.ModLoader
 			item = new Item { modItem = this };
 		}
 
-		/// <summary>
-		/// Allows you to automatically load an item instead of using Mod.AddItem. 
-		/// Return true to allow autoloading; by default returns the mod's autoload property. 
-		/// Use this method to force or stop an autoload or change the internal name.
-		/// </summary>
-		/// <param name="name">The name, initialized to the name of this type.</param>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void AddInstance(string name) {
+			mod.AddItem(name, this);
+			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
+			if (autoloadEquip != null) {
+				foreach (var equip in autoloadEquip.equipTypes) {
+					mod.AddEquipTexture(this, equip, Name, Texture + '_' + equip, Texture + "_Arms", Texture + "_FemaleBody");
+				}
+			}
 		}
 
 		/// <summary>

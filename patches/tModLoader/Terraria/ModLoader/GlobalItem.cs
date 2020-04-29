@@ -12,33 +12,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public class GlobalItem
+	public class GlobalItem:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalItem belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalItem instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		internal int index;
 		internal int instanceIndex;
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddGlobalItem(name, this);
 
 		/// <summary>
 		/// Whether to create a new GlobalItem instance for every Item that exists. 

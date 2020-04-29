@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public class ModProjectile
+	public class ModProjectile:ModType
 	{
 		//add modProjectile property to Terraria.Projectile (internal set)
 		//set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
@@ -22,28 +22,6 @@ namespace Terraria.ModLoader
 		/// The projectile.
 		/// </value>
 		public Projectile projectile {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The mod object that this ModProjectile originates from.
-		/// </summary>
-		/// <value>
-		/// The mod.
-		/// </value>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this ModProjectile.
-		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
-		public string Name {
 			get;
 			internal set;
 		}
@@ -93,14 +71,8 @@ namespace Terraria.ModLoader
 			projectile = new Projectile();
 			projectile.modProjectile = this;
 		}
-		/// <summary>
-		/// Allows you to automatically load a projectile instead of using Mod.AddProjectile. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or to change the default internal name.
-		/// </summary>
-		/// <param name="name">The internal name.</param>
-		/// <returns>Whether or not to autoload.</returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+
+		protected sealed override void AddInstance(string name) => mod.AddProjectile(name, this);
 
 		/// <summary>
 		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.

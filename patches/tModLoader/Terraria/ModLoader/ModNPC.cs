@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public class ModNPC
+	public class ModNPC:ModType
 	{
 		//add modNPC property to Terraria.NPC (internal set)
 		//set modNPC to null at beginning of Terraria.NPC.SetDefaults
@@ -20,22 +21,6 @@ namespace Terraria.ModLoader
 		/// The NPC object that this ModNPC controls.
 		/// </summary>
 		public NPC npc {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The mod that added this ModNPC.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this NPC.
-		/// </summary>
-		public string Name {
 			get;
 			internal set;
 		}
@@ -110,13 +95,17 @@ namespace Terraria.ModLoader
 			npc.modNPC = this;
 		}
 
-		/// <summary>
-		/// Allows you to automatically load an NPC instead of using Mod.AddNPC. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and altTextures is initialized to null. Use this method to either force or stop an autoload, or to change the default display name.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		protected sealed override void AddInstance(string name) {
+			mod.AddNPC(name, this);
+			Type type = GetType();
+			var autoloadHead = type.GetAttribute<AutoloadHead>();
+			if (autoloadHead != null) {
+				mod.AddNPCHeadTexture(npc.type, HeadTexture);
+			}
+			var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
+			if (autoloadBossHead != null) {
+				mod.AddBossHeadTexture(BossHeadTexture, npc.type);
+			}
 		}
 
 		internal void SetupNPC(NPC npc) {

@@ -3,24 +3,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to define a new buff and how that buff behaves.
 	/// </summary>
-	public class ModBuff
+	public class ModBuff:ModTexturedType
 	{
-		/// <summary>
-		/// The mod that added this ModBuff.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this type of buff.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The buff id of this buff.
 		/// </summary>
@@ -51,12 +35,7 @@ namespace Terraria.ModLoader
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		/// <summary>
-		/// Allows you to automatically load a buff instead of using Mod.AddBuff. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name and texture is initialized to the namespace and overriding class name with periods replaced with slashes. Use this method to either force or stop an autoload, and to change the default display name and texture path.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name, string texture) => mod.AddBuff(name, this, texture);
 
 		/// <summary>
 		/// This is where all buff related assignments go. For example:
