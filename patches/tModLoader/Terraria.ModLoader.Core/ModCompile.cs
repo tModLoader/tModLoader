@@ -596,22 +596,22 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private string DllRefPath(BuildingMod mod, string dllName, bool? xna) {
-			var path = Path.Combine(mod.path, "lib", dllName + ".dll");
+			string pathWithoutExtension = Path.Combine(mod.path, "lib", dllName);
+			string path = pathWithoutExtension + ".dll";
 
 			if (xna.HasValue) { //check for platform specific dll
-				string pathPlat = path + (xna.Value ? ".XNA.dll" : ".FNA.dll");
-				if (File.Exists(pathPlat))
-					return pathPlat;
-			}
+				string engineSpecificPath = pathWithoutExtension + (xna.Value ? ".XNA.dll" : ".FNA.dll");
 
-			//fallback to main .dll
-			path += ".dll";
+				if (File.Exists(engineSpecificPath))
+					return engineSpecificPath;
+			}
 
 			if (File.Exists(path))
 				return path;
 
 			if (Program.LaunchParameters.TryGetValue("-eac", out var eacPath)) {
 				var outputCopiedPath = Path.Combine(Path.GetDirectoryName(eacPath), dllName + ".dll");
+
 				if (File.Exists(outputCopiedPath))
 					return outputCopiedPath;
 			}
