@@ -8,30 +8,9 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModWorld instance represents an extension of a World. You can store fields in the ModWorld classes to keep track of mod-specific information on the world. It also contains hooks to insert your code into the world generation process.
 	/// </summary>
-	public class ModWorld
+	public class ModWorld:ModType
 	{
-		/// <summary>
-		/// The mod that added this type of ModWorld.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this ModWorld. Used for distinguishing between multiple ModWorlds added by a single Mod.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Allows you to automatically add a ModWorld instead of using Mod.AddModWorld. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModWorld.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddModWorld(name, this);
 
 		/// <summary>
 		/// Called whenever the world is loaded. This can be used to initialize data structures, etc.

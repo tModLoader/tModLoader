@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
 	/// </summary>
-	public class ModDust
+	public class ModDust:ModTexturedType
 	{
 		private static int nextDust = DustID.Count;
 		internal static readonly IList<ModDust> dusts = new List<ModDust>();
@@ -18,25 +18,9 @@ namespace Terraria.ModLoader
 		public int updateType = -1;
 
 		/// <summary>
-		/// The internal name of this type of dust.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
 		/// The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust.
 		/// </summary>
 		public Texture2D Texture {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The mod that added this type of dust.
-		/// </summary>
-		public Mod mod {
 			get;
 			internal set;
 		}
@@ -112,12 +96,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Allows you to automatically add a type of dust without having to use Mod.AddDust. By default returns the mod's Autoload property. Return true to automatically add the dust. Name will be initialized to the dust's class name, and Texture will be initialized to the dust's namespace and overriding class name with periods replaced with slashes. The name parameter determines the internal name and the texture parameter determines the texture path.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name, string texture) => mod.AddDust(name, this, texture);
 
 		/// <summary>
 		/// Allows you to set this ModDust's updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.

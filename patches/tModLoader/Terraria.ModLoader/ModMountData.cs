@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// Only one instance of ModMountData will exist for each mount, so storing player specific data on the ModMountData is not good. 
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public class ModMountData
+	public class ModMountData:IAutoloadable
 	{
 		internal string texture;
 
@@ -53,6 +53,24 @@ namespace Terraria.ModLoader
 		public ModMountData() {
 			mountData = new Mount.MountData();
 		}
+
+		bool IAutoloadable.Autoload(Mod mod) {
+			Type type = GetType();
+			this.mod = mod;
+			string name = type.Name;
+			string texture = type.FullName.Replace('.', '/');
+			var extraTextures = new Dictionary<MountTextureType, string>();
+			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
+				extraTextures[textureType] = texture + "_" + textureType.ToString();
+			}
+			if (Autoload(ref name, ref texture, extraTextures)) {
+				mod.AddMount(name, this, texture, extraTextures);
+				return true;
+			}
+			return false;
+		}
+
+		void IAutoloadable.Unload(){}
 
 		/// <summary>
 		/// Allows you to automatically load a mount instead of using Mod.AddMount. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and extraTextures is initialized to a dictionary containing all MountTextureTypes as keys, with texture + "_" + the texture type name as values. Use this method to either force or stop an autoload, change the default display name and texture path, and to modify the extra mount textures.

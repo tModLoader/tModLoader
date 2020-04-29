@@ -38,12 +38,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a chat or console command. Use the CommandType to specify the scope of the command.
 	/// </summary>
-	public abstract class ModCommand
+	public abstract class ModCommand:ModType
 	{
-		/// <summary>The Mod this ModCommand belongs to.</summary>
-		public Mod mod { get; internal set; }
-		/// <summary>Internal name of this command.</summary>
-		public string Name { get; internal set; }
 		/// <summary>The desired text to trigger this command.</summary>
 		public abstract string Command { get; }
 		/// <summary>A flag enum representing context where this command operates.</summary>
@@ -52,8 +48,8 @@ namespace Terraria.ModLoader
 		public virtual string Usage => "/" + Command;
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
-		/// <summary>Autoload this command, defaults to Mod.Properties.Autoload.</summary>
-		public virtual bool Autoload(ref string name) => mod.Properties.Autoload;
+		
+		protected sealed override void AddInstance(string name) => mod.AddCommand(name, this);
 		/// <summary>The code that is executed when the command is triggered.</summary>
 		public abstract void Action(CommandCaller caller, string input, string[] args);
 	}

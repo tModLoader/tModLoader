@@ -9,24 +9,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public class ModTile
+	public class ModTile:ModTexturedType
 	{
-		/// <summary>
-		/// The mod which has added this type of ModTile.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of tile.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The internal ID of this type of tile.
 		/// </summary>
@@ -213,15 +197,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		/// <summary>
-		/// Allows you to modify the name and texture path of this tile when it is autoloaded. Return true to autoload this tile. When a tile is autoloaded, that means you do not need to manually call Mod.AddTile. By default returns the mod's autoload property.
-		/// </summary>
-		/// <param name="name">The internal name.</param>
-		/// <param name="texture">The texture path.</param>
-		/// <returns>Whether or not to autoload this tile.</returns>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name, string texture) => mod.AddTile(name, this, texture);
 
 		/// <summary>
 		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.

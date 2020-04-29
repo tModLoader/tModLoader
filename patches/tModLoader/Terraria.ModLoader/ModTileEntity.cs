@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
-	public abstract class ModTileEntity : TileEntity
+	public abstract class ModTileEntity : TileEntity, IAutoloadable
 	{
 		public const int numVanilla = 3;
 		private static int nextTileEntity = numVanilla;
@@ -192,6 +192,19 @@ namespace Terraria.ModLoader
 		public sealed override void ReadExtraData(BinaryReader reader, bool networkSend) {
 			NetReceive(reader, networkSend);
 		}
+
+		bool IAutoloadable.Autoload(Mod mod) {
+			Type type = GetType();
+			this.mod = mod;
+			string name = type.Name;
+			if (Autoload(ref name)) {
+				mod.AddTileEntity(name, this);
+				return true;
+			}
+			return false;
+		}
+
+		void IAutoloadable.Unload(){}
 
 		/// <summary>
 		/// Allows you to automatically load a tile entity instead of using Mod.AddTileEntity. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name.

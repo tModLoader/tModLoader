@@ -5,24 +5,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 	/// </summary>
-	public abstract class ModUgBgStyle
+	public abstract class ModUgBgStyle:ModType
 	{
-		/// <summary>
-		/// The mod that added this underground background style.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this underground background style.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
@@ -31,12 +15,7 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		/// <summary>
-		/// Allows you to automatically add a ModUgBgStyle instead of using Mod.AddUgBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModUgBgStyle.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddUgBgStyle(name, this);
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -54,24 +33,8 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
-	public abstract class ModSurfaceBgStyle
+	public abstract class ModSurfaceBgStyle:ModType
 	{
-		/// <summary>
-		/// The mod that added this surface background style.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this surface background style.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The ID of this surface background style.
 		/// </summary>
@@ -80,12 +43,7 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
-		/// <summary>
-		/// Allows you to automatically add a ModSurfaceBgStyle instead of using Mod.AddSurfaceBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModSurfaceBgStyle.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddSurfaceBgStyle(name, this);
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -136,30 +94,9 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 	/// </summary>
-	public class GlobalBgStyle
+	public class GlobalBgStyle:ModType
 	{
-		/// <summary>
-		/// That mod that added this global background style.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this global background style.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Allows you to automatically add a GlobalBgStyle instead of using Mod.AddGlobalBgStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of GlobalBgStyle.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
-		}
+		protected sealed override void AddInstance(string name) => mod.AddGlobalBgStyle(name, this);
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.
