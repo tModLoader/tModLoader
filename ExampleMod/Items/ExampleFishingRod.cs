@@ -52,6 +52,7 @@ namespace ExampleMod.Items
 		}
 
 		//Overrides the default shooting method to fire multiple bobbers
+		//NOTE: This will allow the fishing rod to summon multiple Duke Fishrons with multiple Truffle Worms in the inventory
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			int bobberAmount = Main.rand.Next(3,6); //3 to 5 bobbers
 			float spreadAmount = 75f;
