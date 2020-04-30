@@ -597,7 +597,6 @@ namespace Terraria.ModLoader.Core
 
 		private string DllRefPath(BuildingMod mod, string dllName, bool? xna) {
 			string pathWithoutExtension = Path.Combine(mod.path, "lib", dllName);
-			string path = pathWithoutExtension + ".dll";
 
 			if (xna.HasValue) { //check for platform specific dll
 				string engineSpecificPath = pathWithoutExtension + (xna.Value ? ".XNA.dll" : ".FNA.dll");
@@ -605,6 +604,8 @@ namespace Terraria.ModLoader.Core
 				if (File.Exists(engineSpecificPath))
 					return engineSpecificPath;
 			}
+
+			string path = pathWithoutExtension + ".dll";
 
 			if (File.Exists(path))
 				return path;
@@ -616,7 +617,7 @@ namespace Terraria.ModLoader.Core
 					return outputCopiedPath;
 			}
 
-			throw new BuildException("Missing dll reference: "+path);
+			throw new BuildException("Missing dll reference: " + path);
 		}
 
 		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {
