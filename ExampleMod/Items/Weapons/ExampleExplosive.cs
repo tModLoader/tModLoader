@@ -24,7 +24,9 @@ namespace ExampleMod.Items.Weapons
 				i => i.MatchLdcI4(166)))
 				return;
 			//Move to the start of the if statement 
-			cursor.Index -= 7;
+			if (!cursor.TryGotoPrev(MoveType.Before,
+			i => i.MatchLdsfld(typeof(Main).GetField(nameof(Main.player)))))
+				return;
 			//We need to create another cursor to jump to when our check is true
 			ILCursor retCursor = cursor.Clone();
 			//Push the player field onto the stack
