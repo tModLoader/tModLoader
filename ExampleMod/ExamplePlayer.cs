@@ -50,6 +50,7 @@ namespace ExampleMod
 		public bool strongBeesUpgrade;
 		public bool manaHeart;
 		public int manaHeartCounter;
+		public bool exampleExplosive;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
 		public bool blockyAccessory;
