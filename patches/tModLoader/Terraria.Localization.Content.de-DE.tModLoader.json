@@ -5,7 +5,7 @@
 		"MenuModBrowser": "Mod Suche",
 		"MenuMods": "Mods",
 		"MenuModSources": "Mod Quelle",
-		"MenuEnableDeveloperMode": "Aktiviere Entwickler MoDus",
+		"MenuEnableDeveloperMode": "Aktiviere Entwickler Modus",
 		// "FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		// "tModLoaderSettings": "tModLoader Settings",
 
@@ -101,13 +101,13 @@
 		"ModInfoVisitHomepage": "Besuche die Homepage für mehr Infos:",
 		"ModInfoExtract": "Extrahieren",
 		"ModInfoNoDescriptionAvailable": "Keine Beschreibung verfügbar",
-		"ModInfoProblemTryAgain": "Es gab ein Problem, versuche es nochmal",
+		"ModInfoProblemTryAgain": "Es gab ein Problem, versuch es nochmal",
 		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
 
 		// Mod Packs
 		"ModPacksHeader": "Mod Pakete",
 		"ModPacksSaveEnabledAsNewPack": "Speichere Aktivierte als neues Modpaket",
-		"ModPacksEnterModPackName": "GIb einen Name für das Modpaket ein:",
+		"ModPacksEnterModPackName": "Gib einen Name für das Modpaket ein:",
 		"ModPackViewList": "Mod Liste",
 		"ModPackEnableThisList": "AKtiviere diese Liste",
 		"ModPackEnableOnlyThisList": "Aktiviere nur diese Liste",
@@ -262,7 +262,7 @@
 		"MSCreateMod": "Erstelle Mod",
 
 		// Developer Mode UI
-		"DMModCompileMissing": "Extra Ordner sind für Mods benötigt. (Fehlender ModCompile Ordner)",
+		"DMModCompileMissing": "Ein extra Ordner ist für Mods benötigt. (Fehlender ModCompile Ordner)",
 		"DMModCompileUpdate": "ModCompile ordner ist nicht auf dem neusten Stand.",
 		"DMModCompileDev": "Benutze das tModLoader development setup tool und generiere/update den ModCompile Ordner(SetupDebugging).",
 		"DMModCompileSatisfied": "ModCompile Ordner ist zu neu.",
