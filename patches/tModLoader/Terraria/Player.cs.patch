@@ -912,94 +912,31 @@
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
  
-@@ -6207,13 +_,18 @@
+@@ -6207,11 +_,18 @@
  
  				if (type == 3624)
  					autoActuator = true;
 +
 +				ItemLoader.UpdateInventory(item, this);
  			}
--
--			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
--				if (armor[k].expertOnly && !Main.expertMode)
--					continue;
--
--				int type2 = armor[k].type;
 +		}
-+
+ 
 +		public void VanillaUpdateEquip(Item item) {
-+			//for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
+-			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
++			// for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
++			// fake array and loop to keep patches small
++			var armor = new [] {item}; int k = 0;
 +			{
-+				if (!item.expertOnly || Main.expertMode)
+ 				if (armor[k].expertOnly && !Main.expertMode)
+-					continue;
 +					return;
-+				int type2 = item.type;
-+				// TODO: fake armor[k] to make these patches go away
+ 
+ 				int type2 = armor[k].type;
  				if ((type2 == 15 || type2 == 707) && accWatch < 1)
- 					accWatch = 1;
- 
-@@ -6265,7 +_,7 @@
- 				if (type2 == 3619)
- 					InfoAccMechShowWires = true;
- 
--				if (armor[k].type == 3017 && whoAmI == Main.myPlayer && velocity.Y == 0f && grappling[0] == -1) {
-+				if (item.type == 3017 && whoAmI == Main.myPlayer && velocity.Y == 0f && grappling[0] == -1) {
- 					int num = (int)base.Center.X / 16;
- 					int num2 = (int)(position.Y + (float)height - 1f) / 16;
- 					if (Main.tile[num, num2] == null)
-@@ -6327,12 +_,13 @@
- 					}
- 				}
- 
--				statDefense += armor[k].defense;
--				lifeRegen += armor[k].lifeRegen;
--				if (armor[k].shieldSlot > 0)
-+				statDefense += item.defense;
-+				lifeRegen += item.lifeRegen;
-+				if (item.shieldSlot > 0)
- 					hasRaisableShield = true;
- 
--				switch (armor[k].type) {
-+				int type3 = item.type;
-+				switch (type3) {
- 					case 3797:
- 						maxTurrets++;
- 						manaCost -= 0.1f;
-@@ -6438,34 +_,37 @@
- 						break;
- 				}
- 
--				if (armor[k].type == 268)
-+				if (item.type == 268)
- 					accDivingHelm = true;
- 
--				if (armor[k].type == 238)
-+				if (item.type == 238)
- 					magicDamage += 0.15f;
- 
--				if (armor[k].type == 3770)
-+				if (item.type == 3770)
- 					slowFall = true;
- 
--				if (armor[k].type == 3776) {
-+				if (item.type == 3776) {
- 					magicDamage += 0.15f;
- 					minionDamage += 0.15f;
- 				}
- 
--				if (armor[k].type == 3777)
-+				if (item.type == 3777)
- 					statManaMax2 += 80;
- 
--				if (armor[k].type == 3778)
-+				if (item.type == 3778)
- 					maxMinions += 2;
- 
--				if (armor[k].type == 3212)
-+				if (item.type == 3212)
+@@ -6462,10 +_,13 @@
  					armorPenetration += 5;
  
--				if (armor[k].type == 2277) {
-+				if (item.type == 2277) {
+ 				if (armor[k].type == 2277) {
 +					allDamage += 0.05f;
 +					/*
  					magicDamage += 0.05f;
@@ -1010,81 +947,10 @@
  					magicCrit += 5;
  					rangedCrit += 5;
  					meleeCrit += 5;
-@@ -6474,166 +_,169 @@
- 					moveSpeed += 0.1f;
- 				}
- 
--				if (armor[k].type == 2279) {
-+				if (item.type == 2279) {
- 					magicDamage += 0.06f;
- 					magicCrit += 6;
- 					manaCost -= 0.1f;
- 				}
- 
--				if (armor[k].type == 3109)
-+				if (item.type == 3109)
- 					nightVision = true;
- 
--				if (armor[k].type == 256)
-+				if (item.type == 256)
- 					thrownVelocity += 0.15f;
- 
--				if (armor[k].type == 257)
-+				if (item.type == 257)
- 					thrownDamage += 0.15f;
- 
--				if (armor[k].type == 258)
-+				if (item.type == 258)
- 					thrownCrit += 10;
- 
--				if (armor[k].type == 3374)
-+				if (item.type == 3374)
- 					thrownVelocity += 0.2f;
- 
--				if (armor[k].type == 3375)
-+				if (item.type == 3375)
- 					thrownDamage += 0.2f;
- 
--				if (armor[k].type == 3376)
-+				if (item.type == 3376)
- 					thrownCrit += 15;
- 
--				if (armor[k].type == 2275) {
-+				if (item.type == 2275) {
- 					magicDamage += 0.07f;
- 					magicCrit += 7;
- 				}
- 
--				if (armor[k].type == 123 || armor[k].type == 124 || armor[k].type == 125)
-+				if (item.type == 123 || item.type == 124 || item.type == 125)
- 					magicDamage += 0.07f;
- 
--				if (armor[k].type == 151 || armor[k].type == 152 || armor[k].type == 153 || armor[k].type == 959)
-+				if (item.type == 151 || item.type == 152 || item.type == 153 || item.type == 959)
- 					rangedDamage += 0.05f;
- 
--				if (armor[k].type == 111 || armor[k].type == 228 || armor[k].type == 229 || armor[k].type == 230 || armor[k].type == 960 || armor[k].type == 961 || armor[k].type == 962)
-+				if (item.type == 111 || item.type == 228 || item.type == 229 || item.type == 230 || item.type == 960 || item.type == 961 || item.type == 962)
- 					statManaMax2 += 20;
- 
--				if (armor[k].type == 228 || armor[k].type == 960)
-+				if (item.type == 228 || item.type == 960)
- 					statManaMax2 += 20;
- 
--				if (armor[k].type == 228 || armor[k].type == 229 || armor[k].type == 230 || armor[k].type == 960 || armor[k].type == 961 || armor[k].type == 962)
-+				if (item.type == 228 || item.type == 229 || item.type == 230 || item.type == 960 || item.type == 961 || item.type == 962)
- 					magicCrit += 4;
- 
--				if (armor[k].type == 100 || armor[k].type == 101 || armor[k].type == 102)
-+				if (item.type == 100 || item.type == 101 || item.type == 102)
+@@ -6528,10 +_,13 @@
  					meleeSpeed += 0.07f;
  
--				if (armor[k].type == 956 || armor[k].type == 957 || armor[k].type == 958)
-+				if (item.type == 956 || item.type == 957 || item.type == 958)
- 					meleeSpeed += 0.07f;
- 
--				if (armor[k].type == 792 || armor[k].type == 793 || armor[k].type == 794) {
-+				if (item.type == 792 || item.type == 793 || item.type == 794) {
+ 				if (armor[k].type == 792 || armor[k].type == 793 || armor[k].type == 794) {
 +					allDamage += 0.02f;
 +					/*
  					meleeDamage += 0.02f;
@@ -1094,591 +960,11 @@
 +					*/
  				}
  
--				if (armor[k].type == 371) {
-+				if (item.type == 371) {
- 					magicCrit += 9;
- 					statManaMax2 += 40;
+ 				if (armor[k].type == 371) {
+@@ -7028,35 +_,47 @@
  				}
  
--				if (armor[k].type == 372) {
-+				if (item.type == 372) {
- 					moveSpeed += 0.07f;
- 					meleeSpeed += 0.12f;
- 				}
- 
--				if (armor[k].type == 373) {
-+				if (item.type == 373) {
- 					rangedDamage += 0.1f;
- 					rangedCrit += 6;
- 				}
- 
--				if (armor[k].type == 374) {
-+				if (item.type == 374) {
- 					magicCrit += 3;
- 					meleeCrit += 3;
- 					rangedCrit += 3;
- 				}
- 
--				if (armor[k].type == 375)
-+				if (item.type == 375)
- 					moveSpeed += 0.1f;
- 
--				if (armor[k].type == 376) {
-+				if (item.type == 376) {
- 					magicDamage += 0.15f;
- 					statManaMax2 += 60;
- 				}
- 
--				if (armor[k].type == 377) {
-+				if (item.type == 377) {
- 					meleeCrit += 5;
- 					meleeDamage += 0.1f;
- 				}
- 
--				if (armor[k].type == 378) {
-+				if (item.type == 378) {
- 					rangedDamage += 0.12f;
- 					rangedCrit += 7;
- 				}
- 
--				if (armor[k].type == 379) {
-+				if (item.type == 379) {
- 					rangedDamage += 0.05f;
- 					meleeDamage += 0.05f;
- 					magicDamage += 0.05f;
- 				}
- 
--				if (armor[k].type == 380) {
-+				if (item.type == 380) {
- 					magicCrit += 3;
- 					meleeCrit += 3;
- 					rangedCrit += 3;
- 				}
- 
--				if (armor[k].type >= 2367 && armor[k].type <= 2369)
-+				if (item.type >= 2367 && item.type <= 2369)
- 					fishingSkill += 5;
- 
--				if (armor[k].type == 400) {
-+				if (item.type == 400) {
- 					magicDamage += 0.11f;
- 					magicCrit += 11;
- 					statManaMax2 += 80;
- 				}
- 
--				if (armor[k].type == 401) {
-+				if (item.type == 401) {
- 					meleeCrit += 7;
- 					meleeDamage += 0.14f;
- 				}
- 
--				if (armor[k].type == 402) {
-+				if (item.type == 402) {
- 					rangedDamage += 0.14f;
- 					rangedCrit += 8;
- 				}
- 
--				if (armor[k].type == 403) {
-+				if (item.type == 403) {
- 					rangedDamage += 0.06f;
- 					meleeDamage += 0.06f;
- 					magicDamage += 0.06f;
- 				}
- 
--				if (armor[k].type == 404) {
-+				if (item.type == 404) {
- 					magicCrit += 4;
- 					meleeCrit += 4;
- 					rangedCrit += 4;
- 					moveSpeed += 0.05f;
- 				}
- 
--				if (armor[k].type == 1205) {
-+				if (item.type == 1205) {
- 					meleeDamage += 0.08f;
- 					meleeSpeed += 0.12f;
- 				}
- 
--				if (armor[k].type == 1206) {
-+				if (item.type == 1206) {
- 					rangedDamage += 0.09f;
- 					rangedCrit += 9;
- 				}
- 
--				if (armor[k].type == 1207) {
-+				if (item.type == 1207) {
- 					magicDamage += 0.07f;
- 					magicCrit += 7;
- 					statManaMax2 += 60;
- 				}
- 
--				if (armor[k].type == 1208) {
-+				if (item.type == 1208) {
- 					meleeDamage += 0.03f;
- 					rangedDamage += 0.03f;
- 					magicDamage += 0.03f;
-@@ -6642,7 +_,7 @@
- 					rangedCrit += 2;
- 				}
- 
--				if (armor[k].type == 1209) {
-+				if (item.type == 1209) {
- 					meleeDamage += 0.02f;
- 					rangedDamage += 0.02f;
- 					magicDamage += 0.02f;
-@@ -6651,49 +_,49 @@
- 					rangedCrit++;
- 				}
- 
--				if (armor[k].type == 1210) {
-+				if (item.type == 1210) {
- 					meleeDamage += 0.07f;
- 					meleeSpeed += 0.07f;
- 					moveSpeed += 0.07f;
- 				}
- 
--				if (armor[k].type == 1211) {
-+				if (item.type == 1211) {
- 					rangedCrit += 15;
- 					moveSpeed += 0.08f;
- 				}
- 
--				if (armor[k].type == 1212) {
-+				if (item.type == 1212) {
- 					magicCrit += 18;
- 					statManaMax2 += 80;
- 				}
- 
--				if (armor[k].type == 1213) {
-+				if (item.type == 1213) {
- 					magicCrit += 6;
- 					meleeCrit += 6;
- 					rangedCrit += 6;
- 				}
- 
--				if (armor[k].type == 1214)
-+				if (item.type == 1214)
- 					moveSpeed += 0.11f;
- 
--				if (armor[k].type == 1215) {
-+				if (item.type == 1215) {
- 					meleeDamage += 0.08f;
- 					meleeCrit += 8;
- 					meleeSpeed += 0.08f;
- 				}
- 
--				if (armor[k].type == 1216) {
-+				if (item.type == 1216) {
- 					rangedDamage += 0.16f;
- 					rangedCrit += 7;
- 				}
- 
--				if (armor[k].type == 1217) {
-+				if (item.type == 1217) {
- 					magicDamage += 0.16f;
- 					magicCrit += 7;
- 					statManaMax2 += 100;
- 				}
- 
--				if (armor[k].type == 1218) {
-+				if (item.type == 1218) {
- 					meleeDamage += 0.04f;
- 					rangedDamage += 0.04f;
- 					magicDamage += 0.04f;
-@@ -6702,7 +_,7 @@
- 					rangedCrit += 3;
- 				}
- 
--				if (armor[k].type == 1219) {
-+				if (item.type == 1219) {
- 					meleeDamage += 0.03f;
- 					rangedDamage += 0.03f;
- 					magicDamage += 0.03f;
-@@ -6712,53 +_,53 @@
- 					moveSpeed += 0.06f;
- 				}
- 
--				if (armor[k].type == 558) {
-+				if (item.type == 558) {
- 					magicDamage += 0.12f;
- 					magicCrit += 12;
- 					statManaMax2 += 100;
- 				}
- 
--				if (armor[k].type == 559) {
-+				if (item.type == 559) {
- 					meleeCrit += 10;
- 					meleeDamage += 0.1f;
- 					meleeSpeed += 0.1f;
- 				}
- 
--				if (armor[k].type == 553) {
-+				if (item.type == 553) {
- 					rangedDamage += 0.15f;
- 					rangedCrit += 8;
- 				}
- 
--				if (armor[k].type == 551) {
-+				if (item.type == 551) {
- 					magicCrit += 7;
- 					meleeCrit += 7;
- 					rangedCrit += 7;
- 				}
- 
--				if (armor[k].type == 552) {
-+				if (item.type == 552) {
- 					rangedDamage += 0.07f;
- 					meleeDamage += 0.07f;
- 					magicDamage += 0.07f;
- 					moveSpeed += 0.08f;
- 				}
- 
--				if (armor[k].type == 1001) {
-+				if (item.type == 1001) {
- 					meleeDamage += 0.16f;
- 					meleeCrit += 6;
- 				}
- 
--				if (armor[k].type == 1002) {
-+				if (item.type == 1002) {
- 					rangedDamage += 0.16f;
- 					ammoCost80 = true;
- 				}
- 
--				if (armor[k].type == 1003) {
-+				if (item.type == 1003) {
- 					statManaMax2 += 80;
- 					manaCost -= 0.17f;
- 					magicDamage += 0.16f;
- 				}
- 
--				if (armor[k].type == 1004) {
-+				if (item.type == 1004) {
- 					meleeDamage += 0.05f;
- 					magicDamage += 0.05f;
- 					rangedDamage += 0.05f;
-@@ -6767,365 +_,382 @@
- 					rangedCrit += 7;
- 				}
- 
--				if (armor[k].type == 1005) {
-+				if (item.type == 1005) {
- 					magicCrit += 8;
- 					meleeCrit += 8;
- 					rangedCrit += 8;
- 					moveSpeed += 0.05f;
- 				}
- 
--				if (armor[k].type == 2189) {
-+				if (item.type == 2189) {
- 					statManaMax2 += 60;
- 					manaCost -= 0.13f;
- 					magicDamage += 0.05f;
- 					magicCrit += 5;
- 				}
- 
--				if (armor[k].type == 1503)
-+				if (item.type == 1503)
- 					magicDamage -= 0.4f;
- 
--				if (armor[k].type == 1504) {
-+				if (item.type == 1504) {
- 					magicDamage += 0.07f;
- 					magicCrit += 7;
- 				}
- 
--				if (armor[k].type == 1505) {
-+				if (item.type == 1505) {
- 					magicDamage += 0.08f;
- 					moveSpeed += 0.08f;
- 				}
- 
--				if (armor[k].type == 1546) {
-+				if (item.type == 1546) {
- 					rangedCrit += 5;
- 					arrowDamage += 0.15f;
- 				}
- 
--				if (armor[k].type == 1547) {
-+				if (item.type == 1547) {
- 					rangedCrit += 5;
- 					bulletDamage += 0.15f;
- 				}
- 
--				if (armor[k].type == 1548) {
-+				if (item.type == 1548) {
- 					rangedCrit += 5;
- 					rocketDamage += 0.15f;
- 				}
- 
--				if (armor[k].type == 1549) {
-+				if (item.type == 1549) {
- 					rangedCrit += 13;
- 					rangedDamage += 0.13f;
- 					ammoCost80 = true;
- 				}
- 
--				if (armor[k].type == 1550) {
-+				if (item.type == 1550) {
- 					rangedCrit += 7;
- 					moveSpeed += 0.12f;
- 				}
- 
--				if (armor[k].type == 1282) {
-+				if (item.type == 1282) {
- 					statManaMax2 += 20;
- 					manaCost -= 0.05f;
- 				}
- 
--				if (armor[k].type == 1283) {
-+				if (item.type == 1283) {
- 					statManaMax2 += 40;
- 					manaCost -= 0.07f;
- 				}
- 
--				if (armor[k].type == 1284) {
-+				if (item.type == 1284) {
- 					statManaMax2 += 40;
- 					manaCost -= 0.09f;
- 				}
- 
--				if (armor[k].type == 1285) {
-+				if (item.type == 1285) {
- 					statManaMax2 += 60;
- 					manaCost -= 0.11f;
- 				}
- 
--				if (armor[k].type == 1286) {
-+				if (item.type == 1286) {
- 					statManaMax2 += 60;
- 					manaCost -= 0.13f;
- 				}
- 
--				if (armor[k].type == 1287) {
-+				if (item.type == 1287) {
- 					statManaMax2 += 80;
- 					manaCost -= 0.15f;
- 				}
- 
--				if (armor[k].type == 1316 || armor[k].type == 1317 || armor[k].type == 1318)
-+				if (item.type == 1316 || item.type == 1317 || item.type == 1318)
- 					aggro += 250;
- 
--				if (armor[k].type == 1316)
-+				if (item.type == 1316)
- 					meleeDamage += 0.06f;
- 
--				if (armor[k].type == 1317) {
-+				if (item.type == 1317) {
- 					meleeDamage += 0.08f;
- 					meleeCrit += 8;
- 				}
- 
--				if (armor[k].type == 1318)
-+				if (item.type == 1318)
- 					meleeCrit += 4;
- 
--				if (armor[k].type == 2199 || armor[k].type == 2202)
-+				if (item.type == 2199 || item.type == 2202)
- 					aggro += 250;
- 
--				if (armor[k].type == 2201)
-+				if (item.type == 2201)
- 					aggro += 400;
- 
--				if (armor[k].type == 2199)
-+				if (item.type == 2199)
- 					meleeDamage += 0.06f;
- 
--				if (armor[k].type == 2200) {
-+				if (item.type == 2200) {
- 					meleeDamage += 0.08f;
- 					meleeCrit += 8;
- 					meleeSpeed += 0.06f;
- 					moveSpeed += 0.06f;
- 				}
- 
--				if (armor[k].type == 2201) {
-+				if (item.type == 2201) {
- 					meleeDamage += 0.05f;
- 					meleeCrit += 5;
- 				}
- 
--				if (armor[k].type == 2202) {
-+				if (item.type == 2202) {
- 					meleeSpeed += 0.06f;
- 					moveSpeed += 0.06f;
- 				}
- 
--				if (armor[k].type == 684) {
-+				if (item.type == 684) {
- 					rangedDamage += 0.16f;
- 					meleeDamage += 0.16f;
- 				}
- 
--				if (armor[k].type == 685) {
-+				if (item.type == 685) {
- 					meleeCrit += 11;
- 					rangedCrit += 11;
- 				}
- 
--				if (armor[k].type == 686) {
-+				if (item.type == 686) {
- 					moveSpeed += 0.08f;
- 					meleeSpeed += 0.07f;
- 				}
- 
--				if (armor[k].type == 2361) {
-+				if (item.type == 2361) {
- 					maxMinions++;
- 					minionDamage += 0.04f;
- 				}
- 
--				if (armor[k].type == 2362) {
-+				if (item.type == 2362) {
- 					maxMinions++;
- 					minionDamage += 0.04f;
- 				}
- 
--				if (armor[k].type == 2363)
-+				if (item.type == 2363)
- 					minionDamage += 0.05f;
- 
--				if (armor[k].type >= 1158 && armor[k].type <= 1161)
-+				if (item.type >= 1158 && item.type <= 1161)
- 					maxMinions++;
- 
--				if (armor[k].type >= 1159 && armor[k].type <= 1161)
-+				if (item.type >= 1159 && item.type <= 1161)
- 					minionDamage += 0.1f;
- 
--				if (armor[k].type >= 2370 && armor[k].type <= 2371) {
-+				if (item.type >= 2370 && item.type <= 2371) {
- 					minionDamage += 0.05f;
- 					maxMinions++;
- 				}
- 
--				if (armor[k].type == 2372) {
-+				if (item.type == 2372) {
- 					minionDamage += 0.06f;
- 					maxMinions++;
- 				}
- 
--				if (armor[k].type == 3381 || armor[k].type == 3382 || armor[k].type == 3383) {
--					if (armor[k].type != 3381)
-+				if (item.type == 3381 || item.type == 3382 || item.type == 3383) {
-+					if (item.type != 3381)
- 						maxMinions++;
- 
- 					maxMinions++;
- 					minionDamage += 0.22f;
- 				}
- 
--				if (armor[k].type == 2763) {
-+				if (item.type == 2763) {
- 					aggro += 300;
- 					meleeCrit += 17;
- 				}
- 
--				if (armor[k].type == 2764) {
-+				if (item.type == 2764) {
- 					aggro += 300;
- 					meleeDamage += 0.22f;
- 				}
- 
--				if (armor[k].type == 2765) {
-+				if (item.type == 2765) {
- 					aggro += 300;
- 					meleeSpeed += 0.15f;
- 					moveSpeed += 0.15f;
- 				}
- 
--				if (armor[k].type == 2757) {
-+				if (item.type == 2757) {
- 					rangedCrit += 7;
- 					rangedDamage += 0.16f;
- 				}
- 
--				if (armor[k].type == 2758) {
-+				if (item.type == 2758) {
- 					ammoCost75 = true;
- 					rangedCrit += 12;
- 					rangedDamage += 0.12f;
- 				}
- 
--				if (armor[k].type == 2759) {
-+				if (item.type == 2759) {
- 					rangedCrit += 8;
- 					rangedDamage += 0.08f;
- 					moveSpeed += 0.1f;
- 				}
- 
--				if (armor[k].type == 2760) {
-+				if (item.type == 2760) {
- 					statManaMax2 += 60;
- 					manaCost -= 0.15f;
- 					magicCrit += 7;
- 					magicDamage += 0.07f;
- 				}
- 
--				if (armor[k].type == 2761) {
-+				if (item.type == 2761) {
- 					magicDamage += 0.09f;
- 					magicCrit += 9;
- 				}
- 
--				if (armor[k].type == 2762) {
-+				if (item.type == 2762) {
- 					moveSpeed += 0.1f;
- 					magicDamage += 0.1f;
- 				}
- 
--				if (armor[k].type >= 1832 && armor[k].type <= 1834)
-+				if (item.type >= 1832 && item.type <= 1834)
- 					maxMinions++;
- 
--				if (armor[k].type >= 1832 && armor[k].type <= 1834)
-+				if (item.type >= 1832 && item.type <= 1834)
- 					minionDamage += 0.11f;
- 
--				if (armor[k].prefix == 62)
-+				if (item.prefix == 62)
- 					statDefense++;
- 
--				if (armor[k].prefix == 63)
-+				if (item.prefix == 63)
- 					statDefense += 2;
- 
--				if (armor[k].prefix == 64)
-+				if (item.prefix == 64)
- 					statDefense += 3;
- 
--				if (armor[k].prefix == 65)
-+				if (item.prefix == 65)
- 					statDefense += 4;
- 
--				if (armor[k].prefix == 66)
-+				if (item.prefix == 66)
- 					statManaMax2 += 20;
- 
--				if (armor[k].prefix == 67) {
-+				if (item.prefix == 67) {
- 					meleeCrit += 2;
- 					rangedCrit += 2;
- 					magicCrit += 2;
- 					thrownCrit += 2;
- 				}
- 
--				if (armor[k].prefix == 68) {
-+				if (item.prefix == 68) {
- 					meleeCrit += 4;
- 					rangedCrit += 4;
- 					magicCrit += 4;
- 					thrownCrit += 4;
- 				}
- 
--				if (armor[k].prefix == 69) {
-+				if (item.prefix == 69) {
+ 				if (armor[k].prefix == 69) {
 +					allDamage += 0.01f;
 +					/*
  					meleeDamage += 0.01f;
@@ -1689,8 +975,7 @@
 +					*/
  				}
  
--				if (armor[k].prefix == 70) {
-+				if (item.prefix == 70) {
+ 				if (armor[k].prefix == 70) {
 +					allDamage += 0.02f;
 +					/*
  					meleeDamage += 0.02f;
@@ -1701,8 +986,7 @@
 +					*/
  				}
  
--				if (armor[k].prefix == 71) {
-+				if (item.prefix == 71) {
+ 				if (armor[k].prefix == 71) {
 +					allDamage += 0.03f;
 +					/*
  					meleeDamage += 0.03f;
@@ -1713,8 +997,7 @@
 +					*/
  				}
  
--				if (armor[k].prefix == 72) {
-+				if (item.prefix == 72) {
+ 				if (armor[k].prefix == 72) {
 +					allDamage += 0.04f;
 +					/*
  					meleeDamage += 0.04f;
@@ -1725,64 +1008,32 @@
 +					*/
  				}
  
--				if (armor[k].prefix == 73)
-+				if (item.prefix == 73)
- 					moveSpeed += 0.01f;
+ 				if (armor[k].prefix == 73)
+@@ -7082,14 +_,18 @@
  
--				if (armor[k].prefix == 74)
-+				if (item.prefix == 74)
- 					moveSpeed += 0.02f;
- 
--				if (armor[k].prefix == 75)
-+				if (item.prefix == 75)
- 					moveSpeed += 0.03f;
- 
--				if (armor[k].prefix == 76)
-+				if (item.prefix == 76)
- 					moveSpeed += 0.04f;
- 
--				if (armor[k].prefix == 77)
-+				if (item.prefix == 77)
- 					meleeSpeed += 0.01f;
- 
--				if (armor[k].prefix == 78)
-+				if (item.prefix == 78)
- 					meleeSpeed += 0.02f;
- 
--				if (armor[k].prefix == 79)
-+				if (item.prefix == 79)
- 					meleeSpeed += 0.03f;
- 
--				if (armor[k].prefix == 80)
-+				if (item.prefix == 80)
+ 				if (armor[k].prefix == 80)
  					meleeSpeed += 0.04f;
 +
-+				ItemLoader.UpdateEquip(item, this);
++				ItemLoader.UpdateEquip(armor[k], this);
  			}
--
++		}
+ 
 -			bool flag = false;
 -			bool flag2 = false;
 -			bool flag3 = false;
 -			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
--				if (armor[l].expertOnly && !Main.expertMode)
--					continue;
--
--				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
-+		}
-+
 +		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			//for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
++			// for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
++			// fake array and loop to keep patches small
++			var armor = new[] { item }; int l = 0;
 +			{
-+				if (item.expertOnly && !Main.expertMode)
+ 				if (armor[l].expertOnly && !Main.expertMode)
+-					continue;
 +					return;
-+
-+				if (item.type == 3810 || item.type == 3809 || item.type == 3812 || item.type == 3811)
- 					dd2Accessory = true;
  
--				if (armor[l].type == 3015) {
-+				if (item.type == 3015) {
- 					aggro -= 400;
- 					meleeCrit += 5;
+ 				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
+ 					dd2Accessory = true;
+@@ -7100,11 +_,14 @@
  					magicCrit += 5;
  					rangedCrit += 5;
  					thrownCrit += 5;
@@ -1796,192 +1047,26 @@
 +					*/
  				}
  
--				if (armor[l].type == 3016)
-+				if (item.type == 3016)
- 					aggro += 400;
- 
--				if (armor[l].type == 2373)
-+				if (item.type == 2373)
- 					accFishingLine = true;
- 
--				if (armor[l].type == 2374)
-+				if (item.type == 2374)
- 					fishingSkill += 10;
- 
--				if (armor[l].type == 2375)
-+				if (item.type == 2375)
- 					accTackleBox = true;
- 
--				if (armor[l].type == 3721) {
-+				if (item.type == 3721) {
- 					accFishingLine = true;
- 					accTackleBox = true;
- 					fishingSkill += 10;
+ 				if (armor[l].type == 3016)
+@@ -7159,7 +_,7 @@
  				}
  
--				if (armor[l].type == 3090) {
-+				if (item.type == 3090) {
- 					npcTypeNoAggro[1] = true;
- 					npcTypeNoAggro[16] = true;
- 					npcTypeNoAggro[59] = true;
-@@ -7149,389 +_,392 @@
- 					npcTypeNoAggro[537] = true;
- 				}
- 
--				if (armor[l].stringColor > 0)
-+				if (item.stringColor > 0)
- 					yoyoString = true;
- 
--				if (armor[l].type == 3366) {
-+				if (item.type == 3366) {
- 					counterWeight = 556 + Main.rand.Next(6);
- 					yoyoGlove = true;
- 					yoyoString = true;
- 				}
- 
--				if (armor[l].type >= 3309 && armor[l].type <= 3314)
+ 				if (armor[l].type >= 3309 && armor[l].type <= 3314)
 -					counterWeight = 556 + armor[l].type - 3309;
-+				if (item.type >= 3309 && item.type <= 3314)
-+						counterWeight = 556 + item.type - 3309;
++						counterWeight = 556 + armor[l].type - 3309;
  
--				if (armor[l].type == 3334)
-+				if (item.type == 3334)
+ 				if (armor[l].type == 3334)
  					yoyoGlove = true;
- 
--				if (armor[l].type == 3337)
-+				if (item.type == 3337)
- 					shinyStone = true;
- 
--				if (armor[l].type == 3336) {
-+				if (item.type == 3336) {
- 					SporeSac();
- 					sporeSac = true;
- 				}
- 
--				if (armor[l].type == 2423) {
-+				if (item.type == 2423) {
- 					autoJump = true;
- 					jumpSpeedBoost += 2.4f;
- 					extraFall += 15;
- 				}
- 
--				if (armor[l].type == 857)
-+				if (item.type == 857)
- 					doubleJumpSandstorm = true;
- 
--				if (armor[l].type == 983) {
-+				if (item.type == 983) {
- 					doubleJumpSandstorm = true;
- 					jumpBoost = true;
- 				}
- 
--				if (armor[l].type == 987)
-+				if (item.type == 987)
- 					doubleJumpBlizzard = true;
- 
--				if (armor[l].type == 1163) {
-+				if (item.type == 1163) {
- 					doubleJumpBlizzard = true;
- 					jumpBoost = true;
- 				}
- 
--				if (armor[l].type == 1724)
-+				if (item.type == 1724)
- 					doubleJumpFart = true;
- 
--				if (armor[l].type == 1863) {
-+				if (item.type == 1863) {
- 					doubleJumpFart = true;
- 					jumpBoost = true;
- 				}
- 
--				if (armor[l].type == 1164) {
-+				if (item.type == 1164) {
- 					doubleJumpCloud = true;
- 					doubleJumpSandstorm = true;
- 					doubleJumpBlizzard = true;
- 					jumpBoost = true;
- 				}
- 
--				if (armor[l].type == 1250) {
-+				if (item.type == 1250) {
- 					jumpBoost = true;
- 					doubleJumpCloud = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 1252) {
-+				if (item.type == 1252) {
- 					doubleJumpSandstorm = true;
- 					jumpBoost = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 1251) {
-+				if (item.type == 1251) {
- 					doubleJumpBlizzard = true;
- 					jumpBoost = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 3250) {
-+				if (item.type == 3250) {
- 					doubleJumpFart = true;
- 					jumpBoost = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 3252) {
-+				if (item.type == 3252) {
- 					doubleJumpSail = true;
- 					jumpBoost = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 3251) {
-+				if (item.type == 3251) {
- 					jumpBoost = true;
- 					bee = true;
- 					noFallDmg = true;
- 				}
- 
--				if (armor[l].type == 1249) {
-+				if (item.type == 1249) {
- 					jumpBoost = true;
- 					bee = true;
- 				}
- 
--				if (armor[l].type == 3241) {
-+				if (item.type == 3241) {
- 					jumpBoost = true;
+@@ -7255,7 +_,7 @@
  					doubleJumpSail = true;
  				}
  
 -				if (armor[l].type == 1253 && (double)statLife <= (double)statLifeMax2 * 0.5)
-+				if (item.type == 1253 && statLife <= statLifeMax2 * 0.5)
++				if (armor[l].type == 1253 && statLife <= statLifeMax2 * 0.5)
  					AddBuff(62, 5);
  
--				if (armor[l].type == 1290)
-+				if (item.type == 1290)
- 					panic = true;
- 
--				if ((armor[l].type == 1300 || armor[l].type == 1858) && (inventory[selectedItem].useAmmo == AmmoID.Bullet || inventory[selectedItem].useAmmo == AmmoID.CandyCorn || inventory[selectedItem].useAmmo == AmmoID.Stake || inventory[selectedItem].useAmmo == 23))
-+				if ((item.type == 1300 || item.type == 1858) && (inventory[selectedItem].useAmmo == AmmoID.Bullet || inventory[selectedItem].useAmmo == AmmoID.CandyCorn || inventory[selectedItem].useAmmo == AmmoID.Stake || inventory[selectedItem].useAmmo == 23))
- 					scope = true;
- 
--				if (armor[l].type == 1858) {
-+				if (item.type == 1858) {
- 					rangedCrit += 10;
- 					rangedDamage += 0.1f;
- 				}
- 
--				if (armor[l].type == 1303 && wet)
-+				if (item.type == 1303 && wet)
- 					Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
- 
--				if (armor[l].type == 1301) {
-+				if (item.type == 1301) {
- 					meleeCrit += 8;
+ 				if (armor[l].type == 1290)
+@@ -7277,11 +_,14 @@
  					rangedCrit += 8;
  					magicCrit += 8;
  					thrownCrit += 8;
@@ -1995,223 +1080,9 @@
 +					*/
  				}
  
--				if (armor[l].type == 982) {
-+				if (item.type == 982) {
- 					statManaMax2 += 20;
- 					manaRegenDelayBonus++;
- 					manaRegenBonus += 25;
- 				}
- 
--				if (armor[l].type == 1595) {
-+				if (item.type == 1595) {
- 					statManaMax2 += 20;
- 					magicCuffs = true;
- 				}
- 
--				if (armor[l].type == 2219)
-+				if (item.type == 2219)
- 					manaMagnet = true;
- 
--				if (armor[l].type == 2220) {
-+				if (item.type == 2220) {
- 					manaMagnet = true;
- 					magicDamage += 0.15f;
- 				}
- 
--				if (armor[l].type == 2221) {
-+				if (item.type == 2221) {
- 					manaMagnet = true;
- 					magicCuffs = true;
- 				}
- 
--				if (whoAmI == Main.myPlayer && armor[l].type == 1923) {
-+				if (whoAmI == Main.myPlayer && item.type == 1923) {
- 					tileRangeX++;
- 					tileRangeY++;
- 				}
- 
--				if (armor[l].type == 1247) {
-+				if (item.type == 1247) {
- 					starCloak = true;
- 					bee = true;
- 				}
- 
--				if (armor[l].type == 1248) {
-+				if (item.type == 1248) {
- 					meleeCrit += 10;
- 					rangedCrit += 10;
- 					magicCrit += 10;
- 					thrownCrit += 10;
- 				}
- 
--				if (armor[l].type == 854)
-+				if (item.type == 854)
- 					discount = true;
- 
--				if (armor[l].type == 855)
-+				if (item.type == 855)
- 					coins = true;
- 
--				if (armor[l].type == 3033)
-+				if (item.type == 3033)
- 					goldRing = true;
- 
--				if (armor[l].type == 3034) {
-+				if (item.type == 3034) {
- 					goldRing = true;
- 					coins = true;
- 				}
- 
--				if (armor[l].type == 3035) {
-+				if (item.type == 3035) {
- 					goldRing = true;
- 					coins = true;
- 					discount = true;
- 				}
- 
--				if (armor[l].type == 53)
-+				if (item.type == 53)
- 					doubleJumpCloud = true;
- 
--				if (armor[l].type == 3201)
-+				if (item.type == 3201)
- 					doubleJumpSail = true;
- 
--				if (armor[l].type == 54)
-+				if (item.type == 54)
- 					accRunSpeed = 6f;
- 
--				if (armor[l].type == 3068)
-+				if (item.type == 3068)
- 					cordage = true;
- 
--				if (armor[l].type == 1579) {
-+				if (item.type == 1579) {
- 					accRunSpeed = 6f;
- 					coldDash = true;
- 				}
- 
--				if (armor[l].type == 3200) {
-+				if (item.type == 3200) {
- 					accRunSpeed = 6f;
- 					sailDash = true;
- 				}
- 
--				if (armor[l].type == 128)
-+				if (item.type == 128)
- 					rocketBoots = 1;
- 
--				if (armor[l].type == 156)
-+				if (item.type == 156)
- 					noKnockback = true;
- 
--				if (armor[l].type == 158)
-+				if (item.type == 158)
- 					noFallDmg = true;
- 
--				if (armor[l].type == 934)
-+				if (item.type == 934)
- 					carpet = true;
- 
--				if (armor[l].type == 953)
-+				if (item.type == 953)
- 					spikedBoots++;
- 
--				if (armor[l].type == 975)
-+				if (item.type == 975)
- 					spikedBoots++;
- 
--				if (armor[l].type == 976)
-+				if (item.type == 976)
- 					spikedBoots += 2;
- 
--				if (armor[l].type == 977)
-+				if (item.type == 977)
- 					dash = 1;
- 
--				if (armor[l].type == 3097)
-+				if (item.type == 3097)
- 					dash = 2;
- 
--				if (armor[l].type == 963)
-+				if (item.type == 963)
- 					blackBelt = true;
- 
--				if (armor[l].type == 984) {
-+				if (item.type == 984) {
- 					blackBelt = true;
- 					dash = 1;
- 					spikedBoots = 2;
- 				}
- 
--				if (armor[l].type == 1131)
-+				if (item.type == 1131)
- 					gravControl2 = true;
- 
--				if (armor[l].type == 1132)
-+				if (item.type == 1132)
- 					bee = true;
- 
--				if (armor[l].type == 1578) {
-+				if (item.type == 1578) {
- 					bee = true;
- 					panic = true;
- 				}
- 
--				if (armor[l].type == 3224)
-+				if (item.type == 3224)
- 					endurance += 0.17f;
- 
--				if (armor[l].type == 3223)
-+				if (item.type == 3223)
- 					brainOfConfusion = true;
- 
--				if (armor[l].type == 950)
-+				if (item.type == 950)
- 					iceSkate = true;
- 
--				if (armor[l].type == 159)
-+				if (item.type == 159)
- 					jumpBoost = true;
- 
--				if (armor[l].type == 3225)
-+				if (item.type == 3225)
- 					jumpBoost = true;
- 
--				if (armor[l].type == 187)
-+				if (item.type == 187)
- 					accFlipper = true;
- 
--				if (armor[l].type == 211)
-+				if (item.type == 211)
- 					meleeSpeed += 0.12f;
- 
--				if (armor[l].type == 223)
-+				if (item.type == 223)
- 					manaCost -= 0.06f;
- 
--				if (armor[l].type == 285)
-+				if (item.type == 285)
- 					moveSpeed += 0.05f;
- 
--				if (armor[l].type == 212)
-+				if (item.type == 212)
- 					moveSpeed += 0.1f;
- 
--				if (armor[l].type == 267)
-+				if (item.type == 267)
- 					killGuide = true;
- 
--				if (armor[l].type == 1307)
-+				if (item.type == 1307)
- 					killClothier = true;
- 
--				if (armor[l].type == 193)
-+				if (item.type == 193)
- 					fireWalk = true;
- 
--				if (armor[l].type == 861) {
-+				if (item.type == 861) {
+ 				if (armor[l].type == 982) {
+@@ -7456,7 +_,7 @@
+ 				if (armor[l].type == 861) {
  					accMerman = true;
  					wolfAcc = true;
 -					if (hideVisual[l]) {
@@ -2219,214 +1090,17 @@
  						hideMerman = true;
  						hideWolf = true;
  					}
- 				}
+@@ -7489,7 +_,7 @@
  
--				if (armor[l].type == 862) {
-+				if (item.type == 862) {
- 					starCloak = true;
- 					longInvince = true;
- 				}
- 
--				if (armor[l].type == 860)
-+				if (item.type == 860)
- 					pStone = true;
- 
--				if (armor[l].type == 863)
-+				if (item.type == 863)
- 					waterWalk2 = true;
- 
--				if (armor[l].type == 907) {
-+				if (item.type == 907) {
- 					waterWalk2 = true;
- 					fireWalk = true;
- 				}
- 
--				if (armor[l].type == 908) {
-+				if (item.type == 908) {
- 					waterWalk = true;
- 					fireWalk = true;
- 					lavaMax += 420;
- 				}
- 
--				if (armor[l].type == 906)
-+				if (item.type == 906)
- 					lavaMax += 420;
- 
--				if (armor[l].type == 485) {
-+				if (item.type == 485) {
+ 				if (armor[l].type == 485) {
  					wolfAcc = true;
 -					if (hideVisual[l])
 +					if (hideVisual)
  						hideWolf = true;
  				}
  
--				if (armor[l].type == 486)
-+				if (item.type == 486)
- 					rulerLine = true;
- 
--				if (armor[l].type == 2799)
-+				if (item.type == 2799)
- 					rulerGrid = true;
- 
--				if (armor[l].type == 394) {
-+				if (item.type == 394) {
- 					accFlipper = true;
- 					accDivingHelm = true;
- 				}
- 
--				if (armor[l].type == 396) {
-+				if (item.type == 396) {
- 					noFallDmg = true;
- 					fireWalk = true;
- 				}
- 
--				if (armor[l].type == 397) {
-+				if (item.type == 397) {
- 					noKnockback = true;
- 					fireWalk = true;
- 				}
- 
--				if (armor[l].type == 399) {
-+				if (item.type == 399) {
- 					jumpBoost = true;
- 					doubleJumpCloud = true;
- 				}
- 
--				if (armor[l].type == 405) {
-+				if (item.type == 405) {
- 					accRunSpeed = 6f;
- 					rocketBoots = 2;
- 				}
- 
--				if (armor[l].type == 1860) {
-+				if (item.type == 1860) {
- 					accFlipper = true;
- 					accDivingHelm = true;
- 					if (wet)
- 						Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.9f, 0.2f, 0.6f);
- 				}
- 
--				if (armor[l].type == 1861) {
-+				if (item.type == 1861) {
- 					arcticDivingGear = true;
- 					accFlipper = true;
- 					accDivingHelm = true;
-@@ -7540,71 +_,71 @@
- 						Lighting.AddLight((int)base.Center.X / 16, (int)base.Center.Y / 16, 0.2f, 0.8f, 0.9f);
- 				}
- 
--				if (armor[l].type == 2214)
-+				if (item.type == 2214)
- 					flag2 = true;
- 
--				if (armor[l].type == 2215)
-+				if (item.type == 2215)
- 					flag3 = true;
- 
--				if (armor[l].type == 2216)
-+				if (item.type == 2216)
- 					autoPaint = true;
- 
--				if (armor[l].type == 2217)
-+				if (item.type == 2217)
- 					flag = true;
- 
--				if (armor[l].type == 3061) {
-+				if (item.type == 3061) {
- 					flag = true;
- 					flag2 = true;
- 					autoPaint = true;
- 					flag3 = true;
- 				}
- 
--				if (armor[l].type == 3624)
-+				if (item.type == 3624)
- 					autoActuator = true;
- 
--				if (armor[l].type == 897) {
-+				if (item.type == 897) {
- 					kbGlove = true;
- 					meleeSpeed += 0.12f;
- 				}
- 
--				if (armor[l].type == 1343) {
-+				if (item.type == 1343) {
- 					kbGlove = true;
- 					meleeSpeed += 0.1f;
- 					meleeDamage += 0.1f;
- 					magmaStone = true;
- 				}
- 
--				if (armor[l].type == 1167) {
-+				if (item.type == 1167) {
- 					minionKB += 2f;
- 					minionDamage += 0.15f;
- 				}
- 
--				if (armor[l].type == 1864) {
-+				if (item.type == 1864) {
- 					minionKB += 2f;
- 					minionDamage += 0.15f;
- 					maxMinions++;
- 				}
- 
--				if (armor[l].type == 1845) {
-+				if (item.type == 1845) {
- 					minionDamage += 0.1f;
- 					maxMinions++;
- 				}
- 
--				if (armor[l].type == 1321) {
-+				if (item.type == 1321) {
- 					magicQuiver = true;
- 					arrowDamage += 0.1f;
- 				}
- 
--				if (armor[l].type == 1322)
-+				if (item.type == 1322)
- 					magmaStone = true;
- 
--				if (armor[l].type == 1323)
-+				if (item.type == 1323)
- 					lavaRose = true;
- 
--				if (armor[l].type == 3333)
-+				if (item.type == 3333)
- 					strongBees = true;
- 
--				if (armor[l].type == 938) {
-+				if (item.type == 938) {
- 					noKnockback = true;
- 					if ((float)statLife > (float)statLifeMax2 * 0.25f) {
- 						hasPaladinShield = true;
-@@ -7620,283 +_,281 @@
- 					}
- 				}
- 
--				if (armor[l].type == 936) {
-+				if (item.type == 936) {
- 					kbGlove = true;
- 					meleeSpeed += 0.12f;
- 					meleeDamage += 0.12f;
- 				}
- 
--				if (armor[l].type == 898) {
-+				if (item.type == 898) {
- 					accRunSpeed = 6.75f;
- 					rocketBoots = 2;
- 					moveSpeed += 0.08f;
- 				}
- 
--				if (armor[l].type == 1862) {
-+				if (item.type == 1862) {
- 					accRunSpeed = 6.75f;
- 					rocketBoots = 3;
- 					moveSpeed += 0.08f;
- 					iceSkate = true;
- 				}
- 
--				if (armor[l].type == 3110) {
-+				if (item.type == 3110) {
+@@ -7642,7 +_,7 @@
+ 				if (armor[l].type == 3110) {
  					accMerman = true;
  					wolfAcc = true;
 -					if (hideVisual[l]) {
@@ -2434,10 +1108,7 @@
  						hideMerman = true;
  						hideWolf = true;
  					}
- 				}
- 
--				if (armor[l].type == 1865 || armor[l].type == 3110) {
-+				if (item.type == 1865 || item.type == 3110) {
+@@ -7652,16 +_,17 @@
  					lifeRegen += 2;
  					statDefense += 4;
  					meleeSpeed += 0.1f;
@@ -2460,8 +1131,7 @@
  					thrownCrit += 2;
  				}
  
--				if (armor[l].type == 899 && Main.dayTime) {
-+				if (item.type == 899 && Main.dayTime) {
+@@ -7669,16 +_,17 @@
  					lifeRegen += 2;
  					statDefense += 4;
  					meleeSpeed += 0.1f;
@@ -2484,8 +1154,7 @@
  					thrownCrit += 2;
  				}
  
--				if (armor[l].type == 900 && (!Main.dayTime || Main.eclipse)) {
-+				if (item.type == 900 && (!Main.dayTime || Main.eclipse)) {
+@@ -7686,16 +_,17 @@
  					lifeRegen += 2;
  					statDefense += 4;
  					meleeSpeed += 0.1f;
@@ -2508,310 +1177,32 @@
  					thrownCrit += 2;
  				}
  
--				if (armor[l].type == 407)
-+				if (item.type == 407)
- 					blockRange = 1;
- 
--				if (armor[l].type == 489)
-+				if (item.type == 489)
- 					magicDamage += 0.15f;
- 
--				if (armor[l].type == 490)
-+				if (item.type == 490)
- 					meleeDamage += 0.15f;
- 
--				if (armor[l].type == 491)
-+				if (item.type == 491)
- 					rangedDamage += 0.15f;
- 
--				if (armor[l].type == 2998)
-+				if (item.type == 2998)
+@@ -7714,13 +_,8 @@
+ 				if (armor[l].type == 2998)
  					minionDamage += 0.15f;
  
 -				if (armor[l].type == 935) {
++				if (armor[l].type == 935)
 -					magicDamage += 0.12f;
++						allDamage += 0.12f;
 -					meleeDamage += 0.12f;
 -					rangedDamage += 0.12f;
 -					minionDamage += 0.12f;
-+				if (item.type == 935)
 -					thrownDamage += 0.12f;
-+						allDamage += 0.12f;
 -				}
  
--				if (armor[l].type == 492)
-+				if (item.type == 492)
+ 				if (armor[l].type == 492)
  					wingTimeMax = 100;
+@@ -7925,7 +_,7 @@
  
--				if (armor[l].type == 493)
-+				if (item.type == 493)
- 					wingTimeMax = 100;
- 
--				if (armor[l].type == 748)
-+				if (item.type == 748)
- 					wingTimeMax = 115;
- 
--				if (armor[l].type == 749)
-+				if (item.type == 749)
- 					wingTimeMax = 130;
- 
--				if (armor[l].type == 761)
-+				if (item.type == 761)
- 					wingTimeMax = 130;
- 
--				if (armor[l].type == 785)
-+				if (item.type == 785)
- 					wingTimeMax = 140;
- 
--				if (armor[l].type == 786)
-+				if (item.type == 786)
- 					wingTimeMax = 140;
- 
--				if (armor[l].type == 821)
-+				if (item.type == 821)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 822)
-+				if (item.type == 822)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 823)
-+				if (item.type == 823)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 2280)
-+				if (item.type == 2280)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 2494)
-+				if (item.type == 2494)
- 					wingTimeMax = 100;
- 
--				if (armor[l].type == 2609) {
-+				if (item.type == 2609) {
- 					wingTimeMax = 180;
- 					ignoreWater = true;
- 				}
- 
--				if (armor[l].type == 948)
-+				if (item.type == 948)
- 					wingTimeMax = 180;
- 
--				if (armor[l].type == 1162)
-+				if (item.type == 1162)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 1165)
-+				if (item.type == 1165)
- 					wingTimeMax = 140;
- 
--				if (armor[l].type == 1515)
-+				if (item.type == 1515)
- 					wingTimeMax = 130;
- 
--				if (armor[l].type == 665)
-+				if (item.type == 665)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 1583)
-+				if (item.type == 1583)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 1584)
-+				if (item.type == 1584)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 1585)
-+				if (item.type == 1585)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 1586)
-+				if (item.type == 1586)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3228)
-+				if (item.type == 3228)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3580)
-+				if (item.type == 3580)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3582)
-+				if (item.type == 3582)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3588)
-+				if (item.type == 3588)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3592)
-+				if (item.type == 3592)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3924)
-+				if (item.type == 3924)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 3928)
-+				if (item.type == 3928)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 1797)
-+				if (item.type == 1797)
- 					wingTimeMax = 180;
- 
--				if (armor[l].type == 1830)
-+				if (item.type == 1830)
- 					wingTimeMax = 180;
- 
--				if (armor[l].type == 1866)
-+				if (item.type == 1866)
- 					wingTimeMax = 170;
- 
--				if (armor[l].type == 1871)
-+				if (item.type == 1871)
- 					wingTimeMax = 170;
- 
--				if (armor[l].type == 2770)
-+				if (item.type == 2770)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 3468)
-+				if (item.type == 3468)
- 					wingTimeMax = 180;
- 
--				if (armor[l].type == 3469)
-+				if (item.type == 3469)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 3470)
-+				if (item.type == 3470)
- 					wingTimeMax = 160;
- 
--				if (armor[l].type == 3471)
-+				if (item.type == 3471)
- 					wingTimeMax = 180;
- 
--				if (armor[l].type == 3883)
-+				if (item.type == 3883)
- 					wingTimeMax = 150;
- 
--				if (armor[l].type == 885)
-+				if (item.type == 885)
- 					buffImmune[30] = true;
- 
--				if (armor[l].type == 886)
-+				if (item.type == 886)
- 					buffImmune[36] = true;
- 
--				if (armor[l].type == 887)
-+				if (item.type == 887)
- 					buffImmune[20] = true;
- 
--				if (armor[l].type == 888)
-+				if (item.type == 888)
- 					buffImmune[22] = true;
- 
--				if (armor[l].type == 889)
-+				if (item.type == 889)
- 					buffImmune[32] = true;
- 
--				if (armor[l].type == 890)
-+				if (item.type == 890)
- 					buffImmune[35] = true;
- 
--				if (armor[l].type == 891)
-+				if (item.type == 891)
- 					buffImmune[23] = true;
- 
--				if (armor[l].type == 892)
-+				if (item.type == 892)
- 					buffImmune[33] = true;
- 
--				if (armor[l].type == 893)
-+				if (item.type == 893)
- 					buffImmune[31] = true;
- 
--				if (armor[l].type == 3781)
-+				if (item.type == 3781)
- 					buffImmune[156] = true;
- 
--				if (armor[l].type == 901) {
-+				if (item.type == 901) {
- 					buffImmune[33] = true;
- 					buffImmune[36] = true;
- 				}
- 
--				if (armor[l].type == 902) {
-+				if (item.type == 902) {
- 					buffImmune[30] = true;
- 					buffImmune[20] = true;
- 				}
- 
--				if (armor[l].type == 903) {
-+				if (item.type == 903) {
- 					buffImmune[32] = true;
- 					buffImmune[31] = true;
- 				}
- 
--				if (armor[l].type == 904) {
-+				if (item.type == 904) {
- 					buffImmune[35] = true;
- 					buffImmune[23] = true;
- 				}
- 
--				if (armor[l].type == 1921) {
-+				if (item.type == 1921) {
- 					buffImmune[46] = true;
- 					buffImmune[47] = true;
- 				}
- 
--				if (armor[l].type == 1612) {
-+				if (item.type == 1612) {
- 					buffImmune[33] = true;
- 					buffImmune[36] = true;
- 					buffImmune[30] = true;
-@@ -7908,7 +_,7 @@
- 					buffImmune[22] = true;
- 				}
- 
--				if (armor[l].type == 1613) {
-+				if (item.type == 1613) {
- 					buffImmune[46] = true;
- 					noKnockback = true;
- 					fireWalk = true;
-@@ -7923,33 +_,33 @@
- 					buffImmune[22] = true;
- 				}
- 
--				if (armor[l].type == 497) {
-+				if (item.type == 497) {
+ 				if (armor[l].type == 497) {
  					accMerman = true;
 -					if (hideVisual[l])
 +					if (hideVisual)
  						hideMerman = true;
  				}
  
--				if (armor[l].type == 535)
-+				if (item.type == 535)
- 					pStone = true;
- 
--				if (armor[l].type == 536)
-+				if (item.type == 536)
- 					kbGlove = true;
- 
--				if (armor[l].type == 532)
-+				if (item.type == 532)
- 					starCloak = true;
- 
--				if (armor[l].type == 554)
-+				if (item.type == 554)
- 					longInvince = true;
- 
--				if (armor[l].type == 555) {
-+				if (item.type == 555) {
- 					manaFlower = true;
- 					manaCost -= 0.08f;
+@@ -7947,9 +_,9 @@
  				}
  
  				if (Main.myPlayer != whoAmI)
@@ -2819,127 +1210,28 @@
 +					goto postMusicBoxes; // TODO: double check wings logic, etc.
  
 -				if (armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 41) {
-+				if (item.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0) {
++				if (armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0) {
  					int num5 = 0;
  					if (Main.curMusic == 1)
  						num5 = 0;
-@@ -7991,103 +_,107 @@
- 						num5 = 12;
- 
- 					if (Main.curMusic == 28)
--						armor[l].SetDefaults(1963);
-+						item.SetDefaults(1963, false);
- 					else if (Main.curMusic == 29)
--						armor[l].SetDefaults(1610);
-+						item.SetDefaults(1610, false);
- 					else if (Main.curMusic == 30)
--						armor[l].SetDefaults(1963);
-+						item.SetDefaults(1963, false);
- 					else if (Main.curMusic == 31)
--						armor[l].SetDefaults(1964);
-+						item.SetDefaults(1964, false);
- 					else if (Main.curMusic == 32)
--						armor[l].SetDefaults(1965);
-+						item.SetDefaults(1965, false);
- 					else if (Main.curMusic == 33)
--						armor[l].SetDefaults(2742);
-+						item.SetDefaults(2742, false);
- 					else if (Main.curMusic == 34)
--						armor[l].SetDefaults(3370);
-+						item.SetDefaults(3370, false);
- 					else if (Main.curMusic == 35)
--						armor[l].SetDefaults(3236);
-+						item.SetDefaults(3236, false);
- 					else if (Main.curMusic == 36)
--						armor[l].SetDefaults(3237);
-+						item.SetDefaults(3237, false);
- 					else if (Main.curMusic == 37)
--						armor[l].SetDefaults(3235);
-+						item.SetDefaults(3235, false);
- 					else if (Main.curMusic == 38)
--						armor[l].SetDefaults(3044);
-+						item.SetDefaults(3044, false);
- 					else if (Main.curMusic == 39)
--						armor[l].SetDefaults(3371);
-+						item.SetDefaults(3371, false);
- 					else if (Main.curMusic == 40)
--						armor[l].SetDefaults(3796);
-+						item.SetDefaults(3796, false);
+@@ -8018,10 +_,12 @@
+ 						armor[l].SetDefaults(3796);
  					else if (Main.curMusic == 41)
--						armor[l].SetDefaults(3869);
+ 						armor[l].SetDefaults(3869);
 -					else if (Main.curMusic > 13)
--						armor[l].SetDefaults(1596 + Main.curMusic - 14);
--					else
--						armor[l].SetDefaults(num5 + 562);
-+						item.SetDefaults(3869, false);
 +					else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
-+						item.SetDefaults(1596 + Main.curMusic - 14, false);
+ 						armor[l].SetDefaults(1596 + Main.curMusic - 14);
+-					else
 +					else if (Main.curMusic < Main.maxMusic)
-+						item.SetDefaults(num5 + 562, false);
+ 						armor[l].SetDefaults(num5 + 562);
 +					else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+						item.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
++						armor[l].SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
  				}
  
--				if (armor[l].type >= 562 && armor[l].type <= 574)
-+				if (item.type >= 562 && item.type <= 574)
--					Main.musicBox2 = armor[l].type - 562;
-+					Main.musicBox2 = item.type - 562;
+ 				if (armor[l].type >= 562 && armor[l].type <= 574)
+@@ -8068,26 +_,28 @@
  
--				if (armor[l].type >= 1596 && armor[l].type <= 1609)
-+				if (item.type >= 1596 && item.type <= 1609)
--					Main.musicBox2 = armor[l].type - 1596 + 13;
-+					Main.musicBox2 = item.type - 1596 + 13;
- 
--				if (armor[l].type == 1610)
-+				if (item.type == 1610)
- 					Main.musicBox2 = 27;
- 
--				if (armor[l].type == 1963)
-+				if (item.type == 1963)
- 					Main.musicBox2 = 28;
- 
--				if (armor[l].type == 1964)
-+				if (item.type == 1964)
- 					Main.musicBox2 = 29;
- 
--				if (armor[l].type == 1965)
-+				if (item.type == 1965)
- 					Main.musicBox2 = 30;
- 
--				if (armor[l].type == 2742)
-+				if (item.type == 2742)
- 					Main.musicBox2 = 31;
- 
--				if (armor[l].type == 3044)
-+				if (item.type == 3044)
- 					Main.musicBox2 = 32;
- 
--				if (armor[l].type == 3235)
-+				if (item.type == 3235)
- 					Main.musicBox2 = 33;
- 
--				if (armor[l].type == 3236)
-+				if (item.type == 3236)
- 					Main.musicBox2 = 34;
- 
--				if (armor[l].type == 3237)
-+				if (item.type == 3237)
- 					Main.musicBox2 = 35;
- 
--				if (armor[l].type == 3370)
-+				if (item.type == 3370)
- 					Main.musicBox2 = 36;
- 
--				if (armor[l].type == 3371)
-+				if (item.type == 3371)
- 					Main.musicBox2 = 37;
- 
--				if (armor[l].type == 3796)
-+				if (item.type == 3796)
- 					Main.musicBox2 = 38;
- 
--				if (armor[l].type == 3869)
-+				if (item.type == 3869)
+ 				if (armor[l].type == 3869)
  					Main.musicBox2 = 39;
 -			}
 -
@@ -2962,19 +1254,19 @@
 -				if (armor[n].wingSlot > 0)
 -					wings = armor[n].wingSlot;
 +
-+				if (SoundLoader.itemToMusic.ContainsKey(item.type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[item.type];
++				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
 +			}
 +			postMusicBoxes:
 +
-+			if (item.wingSlot > 0) {
++			if (armor[l].wingSlot > 0) {
 +				if (!hideVisual || velocity.Y != 0f && !mount.Active)
-+					wings = item.wingSlot;
++					wings = armor[l].wingSlot;
 +
-+				wingsLogic = item.wingSlot;
++				wingsLogic = armor[l].wingSlot;
 +			}
 +
-+			ItemLoader.UpdateAccessory(item, this, hideVisual);
++			ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
 +		}
 +
 +		public void VanillaUpdateVanityAccessory(Item item) {
@@ -3030,14 +1322,10 @@
  				setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
 +				allDamage += 0.1f;
 +				/*
--				meleeDamage += 0.1f;
-+				this.meleeDamage += 0.1f;
--				magicDamage += 0.1f;
-+				this.magicDamage += 0.1f;
--				rangedDamage += 0.1f;
-+				this.rangedDamage += 0.1f;
--				thrownDamage += 0.1f;
-+				this.thrownDamage += 0.1f;
+ 				meleeDamage += 0.1f;
+ 				magicDamage += 0.1f;
+ 				rangedDamage += 0.1f;
+ 				thrownDamage += 0.1f;
 +				*/
  			}
  
