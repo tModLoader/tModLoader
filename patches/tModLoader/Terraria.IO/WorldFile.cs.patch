@@ -88,7 +88,7 @@
 +					if (tile.wall != 0 && tile.wall < WallID.Count) {
  						b3 = (byte)(b3 | 4);
 -						array[num3] = tile.wall;
-+						array[num2] = (byte)tile.wall;
++						array[num3] = (byte)tile.wall;
  						num3++;
  						if (tile.wallColor() != 0) {
  							b = (byte)(b | 0x10);

@@ -79,7 +79,7 @@
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -100,6 +_,26 @@
+@@ -100,6 +_,27 @@
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
@@ -89,6 +89,7 @@
 +    <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
 +      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
 +    <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
 +    <EmbeddedResource Include="..\..\references\NVorbis.dll" />
 +    <EmbeddedResource Include="..\..\references\log4net.dll" />
