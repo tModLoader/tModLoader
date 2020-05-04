@@ -23,7 +23,7 @@
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -134,8 +_,8 @@
+@@ -134,7 +_,7 @@
  		public const int DrawBackExtra = 1;
  		public const int DrawFront = 2;
  		public const int DrawFrontExtra = 3;
@@ -32,9 +32,7 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public const int scutlixBaseDamage = 50;
- 		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -146,28 +_,28 @@
- 		public static int drillPickPower = 210;
+@@ -147,28 +_,28 @@
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
  		public const float maxDrillLength = 48f;
@@ -83,6 +81,7 @@
 +		public bool _active;
  
  		public bool Active => _active;
+ 
 @@ -1179,13 +_,13 @@
  		}
  
@@ -130,13 +129,14 @@
  			if (_frameState != state) {
  				_frameState = state;
  				_frameCounter = 0f;
-@@ -1891,5 +_,6 @@
+@@ -1891,6 +_,7 @@
  
  		public void UpdateEffects(Player mountedPlayer) {
  			mountedPlayer.autoJump = AutoJump;
 +			MountLoader.UpdateEffects(mountedPlayer);
  			switch (_type) {
  				case 9: {
+ 						Vector2 center = mountedPlayer.Center;
 @@ -1955,11 +_,14 @@
  						else
  							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector4.X, vector4.Y, vector4.Z);
@@ -152,7 +152,7 @@
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  						mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -2081,8 +_,8 @@
+@@ -2081,7 +_,7 @@
  			if (_type == -1)
  				return;
  
@@ -161,14 +161,14 @@
  				if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
  					return;
  			}
- 
-@@ -2129,5 +_,6 @@
+@@ -2129,6 +_,7 @@
  
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
  			_aiming = true;
 +			MountLoader.AimAbility(this, mountedPlayer, mousePosition);
  			switch (_type) {
  				case 9: {
+ 						int frameExtra = _frameExtra;
 @@ -2398,6 +_,7 @@
  			type = _type;
  			_ = 8;
@@ -177,7 +177,7 @@
  			if (!flag2) {
  				item = new DrawData(texture2D, Position, value, drawColor, num6, origin, scale, effect, 0);
  				item.shader = currentShader;
-@@ -2456,7 +_,9 @@
+@@ -2456,6 +_,8 @@
  			bool cart = Cart;
  			_active = false;
  			mountedPlayer.ClearBuff(_data.buff);
@@ -186,7 +186,6 @@
  			_mountSpecificData = null;
  			_ = _type;
  			if (cart) {
- 				mountedPlayer.ClearBuff(_data.extraBuff);
 @@ -2466,7 +_,7 @@
  
  			mountedPlayer.fullRotation = 0f;

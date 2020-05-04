@@ -55,7 +55,8 @@
  				return _itemNameCache[id];
  
  			return LocalizedText.Empty;
-@@ -201,5 +_,9 @@
+@@ -200,6 +_,10 @@
+ 				return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
 +			string modText = ItemLoader.AnglerChat(id);
@@ -65,7 +66,7 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -320,6 +_,6 @@
+@@ -320,7 +_,7 @@
  
  		public static void BuildMapAtlas() {
  #if CLIENT
@@ -73,3 +74,4 @@
 +			_mapLegendCache = new MapLegend(MapHelper.LookupCount());
  			for (int i = 0; i < _mapLegendCache.Length; i++) {
  				_mapLegendCache[i] = LocalizedText.Empty;
+ 			}

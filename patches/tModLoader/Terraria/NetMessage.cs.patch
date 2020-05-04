@@ -6,7 +6,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using System;
-@@ -11,5 +_,7 @@
+@@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
@@ -14,6 +14,7 @@
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.Social;
+ 
 @@ -19,7 +_,7 @@
  	public class NetMessage
  	{
@@ -153,7 +154,7 @@
  						break;
  					case 35:
  					case 66:
-@@ -600,5 +_,8 @@
+@@ -600,6 +_,9 @@
  							writer.Write(player2.zone2);
  							writer.Write(player2.zone3);
  							writer.Write(player2.zone4);
@@ -162,29 +163,27 @@
 +
  							break;
  						}
-@@ -652,11 +_,14 @@
+ 					case 38:
+@@ -651,8 +_,11 @@
+ 						}
  					case 50: {
  							writer.Write((byte)number);
 -							for (int num20 = 0; num20 < 22; num20++) {
 +							for (int num20 = 0; num20 < Player.MaxBuffs; num20++) {
--								writer.Write((byte)Main.player[number].buffType[num20]);
 +								if (ModNet.AllowVanillaClients)
+-								writer.Write((byte)Main.player[number].buffType[num20]);
 +									writer.Write((byte)Main.player[number].buffType[num20]);
 +								else
 +									writer.Write((ushort)Main.player[number].buffType[num20]);
  							}
  
  							break;
- 						}
- 					case 51:
- 						writer.Write((byte)number);
- 						writer.Write((byte)number2);
-@@ -668,21 +_,30 @@
+@@ -668,13 +_,19 @@
  						break;
  					case 53:
  						writer.Write((short)number);
--						writer.Write((byte)number2);
 +						if (ModNet.AllowVanillaClients)
+-						writer.Write((byte)number2);
 +							writer.Write((byte)number2);
 +						else
 +							writer.Write((ushort)number2);
@@ -193,20 +192,20 @@
  					case 54: {
  							writer.Write((short)number);
  							for (int num19 = 0; num19 < 5; num19++) {
--								writer.Write((byte)Main.npc[number].buffType[num19]);
 +								if (ModNet.AllowVanillaClients)
+-								writer.Write((byte)Main.npc[number].buffType[num19]);
 +									writer.Write((byte)Main.npc[number].buffType[num19]);
 +								else
 +									writer.Write((ushort)Main.npc[number].buffType[num19]);
  								writer.Write((short)Main.npc[number].buffTime[num19]);
  							}
  
- 							break;
+@@ -682,7 +_,10 @@
  						}
  					case 55:
  						writer.Write((byte)number);
--						writer.Write((byte)number2);
 +						if (ModNet.AllowVanillaClients)
+-						writer.Write((byte)number2);
 +							writer.Write((byte)number2);
 +						else
 +							writer.Write((ushort)number2);
@@ -234,8 +233,7 @@
  			Tile tile = null;
  			for (int i = yStart; i < yStart + height; i++) {
  				for (int j = xStart; j < xStart + width; j++) {
-@@ -1397,8 +_,8 @@
- 								num = (short)(num + 1);
+@@ -1398,7 +_,7 @@
  							}
  						}
  
@@ -244,7 +242,7 @@
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;
-@@ -1456,6 +_,15 @@
+@@ -1456,7 +_,16 @@
  
  					if (tile2.wall != 0) {
  						b = (byte)(b | 4);
@@ -261,6 +259,7 @@
 +
  						num5++;
  						if (tile2.wallColor() != 0) {
+ 							b2 = (byte)(b2 | 0x10);
 @@ -1541,6 +_,14 @@
  				writer.Write(sign.text);
  			}
@@ -316,8 +315,7 @@
  				WorldFile.saveWorld();
  				Netplay.disconnect = true;
  			}
-@@ -2015,10 +_,11 @@
- 				for (int m = 0; m < Main.player[plr].miscDyes.Length; m++) {
+@@ -2016,11 +_,12 @@
  					SendData(5, toWho, fromWho, null, plr, 58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
@@ -329,7 +327,9 @@
 -						Console.WriteLine(Lang.mp[19].Format(Main.player[plr].name));
 +						Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
  				}
-@@ -2032,6 +_,6 @@
+ 
+ 				return;
+@@ -2032,7 +_,7 @@
  				Netplay.Clients[plr].IsAnnouncementCompleted = false;
  				BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)
@@ -337,3 +337,4 @@
 +					Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
  
  				Netplay.Clients[plr].Name = "Anonymous";
+ 			}

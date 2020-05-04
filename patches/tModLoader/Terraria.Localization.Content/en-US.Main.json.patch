@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Localization.Content\en-US.Main.json
-+++ src/tModLoader\Terraria.Localization.Content\en-US.Main.json
+--- src/Terraria/Terraria.Localization.Content/en-US.Main.json
++++ src/tModLoader/Terraria.Localization.Content/en-US.Main.json
 @@ -1,7 +_,7 @@
  {
  	"Error": {

@@ -132,7 +132,7 @@
  						if (num13 == 0)
  							num = 36;
  
-@@ -644,22 +_,25 @@
+@@ -644,12 +_,15 @@
  
  						if (num13 == 13)
  							num = 61;
@@ -148,7 +148,7 @@
  					}
  				}
  
- 				switch (pre) {
+@@ -657,7 +_,7 @@
  					case -3:
  						return true;
  					case -1:
@@ -157,10 +157,7 @@
  							num = 0;
  						break;
  				}
- 
- 				switch (num) {
-@@ -930,7 +_,10 @@
- 						num2 = 1.05f;
+@@ -931,6 +_,9 @@
  						num8 = 2;
  						break;
  				}
@@ -216,7 +213,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1038,7 +_,14 @@
+@@ -1038,6 +_,13 @@
  				}
  			}
  
@@ -230,8 +227,8 @@
  			switch (type) {
  				case 529:
  				case 541:
- 				case 542:
-@@ -1210,5 +_,8 @@
+@@ -1209,6 +_,9 @@
+ 		}
  
  		public static int BannerToItem(int banner) {
 +			if (NPCLoader.bannerToItem.ContainsKey(banner))
@@ -240,7 +237,8 @@
  			int num = 0;
  			if (banner >= 257)
  				return 3837 + banner - 257;
-@@ -1894,8 +_,9 @@
+@@ -1893,9 +_,10 @@
+ 					return 265;
  				case 578:
  					return 266;
 -				default:
@@ -252,7 +250,8 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2419,8 +_,9 @@
+@@ -2418,9 +_,10 @@
+ 					return 561;
  				case 266:
  					return 578;
 -				default:
@@ -314,7 +313,7 @@
  			sentry = false;
  			DD2Summon = false;
  			shopSpecialCurrency = -1;
-@@ -37590,7 +_,11 @@
+@@ -37590,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -325,7 +324,6 @@
  			switch (type) {
  				case 75:
  				case 3065:
- 				case 3858:
 @@ -37909,6 +_,7 @@
  						}
  					}
@@ -390,7 +388,7 @@
  					if (num3 < (float)NPC.sWidth && num3 < num2) {
  						num2 = num3;
  						owner = i;
-@@ -38483,5 +_,20 @@
+@@ -38483,7 +_,22 @@
  			}
  		}
  
@@ -412,6 +410,8 @@
 +		}
 +
  		public Item DeepClone() => (Item)MemberwiseClone();
+ 
+ 		public bool IsTheSameAs(Item compareItem) {
 @@ -38512,6 +_,8 @@
  			type = 0;
  			stack = 0;
