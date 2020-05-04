@@ -1,6 +1,10 @@
 --- src/Terraria/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
 +++ src/tModLoader/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
-@@ -4,6 +_,8 @@
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.OS;
++using System;
  using Terraria.Graphics;
  using Terraria.IO;
  using Terraria.Localization;

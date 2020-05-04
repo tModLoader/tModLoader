@@ -114,7 +114,7 @@
  											break;
  
 -										int[] array2 = new int[10];
-+										List<int> array2 = new List<int();
++										List<int> array2 = new List<int>();
  										int num64 = 0;
  										for (int num65 = 0; num65 < 200; num65++) {
 -											if (Main.npc[num65].active && (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550)) {
@@ -128,7 +128,7 @@
  											}
  										}
  
-@@ -1950,22 +_,22 @@
+@@ -1950,6 +_,7 @@
  											Main.npc[num66].position.X = num55 - Main.npc[num66].width / 2;
  											Main.npc[num66].position.Y = num56 - Main.npc[num66].height - 1;
  											NetMessage.SendData(23, -1, -1, null, num66);
@@ -136,13 +136,12 @@
  										}
  
  										break;
- 									}
- 								case 41: {
+@@ -1958,14 +_,13 @@
  										if (!CheckMech(num53, num52, 300))
  											break;
  
 -										int[] array = new int[10];
-+										List<int> array = new List<int();
++										List<int> array = new List<int>();
  										int num59 = 0;
  										for (int num60 = 0; num60 < 200; num60++) {
 -											if (Main.npc[num60].active && (Main.npc[num60].type == 18 || Main.npc[num60].type == 20 || Main.npc[num60].type == 124 || Main.npc[num60].type == 178 || Main.npc[num60].type == 208 || Main.npc[num60].type == 353)) {

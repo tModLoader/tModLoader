@@ -61,7 +61,7 @@
  							}
  
  							Recipe.FindRecipes();
-@@ -491,20 +_,26 @@
+@@ -491,20 +_,24 @@
  			if (inv[slot].type <= 0)
  				return;
  
@@ -71,9 +71,7 @@
 +			else if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
-+					if (inv[slot].type >= 71 && inv[slot].type <= 74 || !PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot]))
-+						return;
-+					
++				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
  					if (player.SellItem(inv[slot].value, inv[slot].stack)) {
 -						chest.AddShop(inv[slot]);
 +						int soldItemIndex = chest.AddShop(inv[slot]);
