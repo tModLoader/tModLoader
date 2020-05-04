@@ -54,6 +54,9 @@ namespace Terraria.ModLoader.Setup.Formatting
 						StatementIsSingleLine(block.Statements[0]);
 				case IfStatementSyntax _:
 					return false; // removing braces around if statements can change semantics
+				case LabeledStatementSyntax _:
+				case LocalDeclarationStatementSyntax _:
+					return false; // single line statements cannot be labelled or contain declarations
 				default:
 					return node.SpansSingleLine();
 			}
