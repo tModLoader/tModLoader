@@ -107,16 +107,13 @@
    </ItemGroup>
    <Target Name="EditBin" AfterTargets="Build">
      <PropertyGroup>
-@@ -118,5 +_,12 @@
+@@ -118,5 +_,9 @@
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
      <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
      <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
 +  </Target>
 +  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
 +    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
-+    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
-+      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
-+    </Exec>
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\ModCompile\tModLoader.FNA.exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\ModCompile\tModLoader.FNA.exe" />
    </Target>
  </Project>

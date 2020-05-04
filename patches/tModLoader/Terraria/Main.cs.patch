@@ -1,15 +1,5 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
-@@ -26,7 +_,9 @@
- using System.Runtime.InteropServices;
- using System.Text;
- using System.Threading;
-+#if WINDOWS
- using System.Windows.Forms;
-+#endif
- using Terraria.Achievements;
- using Terraria.Audio;
- using Terraria.Chat;
 @@ -51,6 +_,12 @@
  using Terraria.IO;
  using Terraria.Localization;
