@@ -57,15 +57,15 @@ namespace Terraria.ModLoader.Setup
 			ExecuteParallel(workItems.ToList());
 		}
 
-		public static void FormatFile(string path, CancellationToken cancellationToken, bool agressive) {
+		public static void FormatFile(string path, CancellationToken cancellationToken, bool aggressive) {
 			string source = File.ReadAllText(path);
-			string formatted = Format(source, cancellationToken, agressive);
+			string formatted = Format(source, cancellationToken, aggressive);
 			if (source != formatted)
 				File.WriteAllText(path, formatted);
 		}
 
-		public static SyntaxNode Format(SyntaxNode node, CancellationToken cancellationToken, bool agressive) {
-			if (agressive) {
+		public static SyntaxNode Format(SyntaxNode node, CancellationToken cancellationToken, bool aggressive) {
+			if (aggressive) {
 				node = new NoNewlineBetweenFieldsRewriter().Visit(node);
 				node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
 			}
@@ -76,9 +76,9 @@ namespace Terraria.ModLoader.Setup
 			return node;
 		}
 
-		public static string Format(string source, CancellationToken cancellationToken, bool agressive) {
+		public static string Format(string source, CancellationToken cancellationToken, bool aggressive) {
 			var tree = CSharpSyntaxTree.ParseText(source);
-			return Format(tree.GetRoot(), cancellationToken, agressive).ToFullString();
+			return Format(tree.GetRoot(), cancellationToken, aggressive).ToFullString();
 		}
 	}
 }

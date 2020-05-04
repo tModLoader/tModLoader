@@ -49,7 +49,7 @@ namespace Terraria.ModLoader.Setup
 					var before = await doc.GetTextAsync();
 					var after = await newDoc.GetTextAsync();
 					if (before != after)
-						File.WriteAllText(newDoc.FilePath, after.ToString());
+						await File.WriteAllTextAsync(newDoc.FilePath, after.ToString());
 				}));
 
 				ExecuteParallel(workItems.ToList(), maxDegree: MaxDegreeOfParallelism);
