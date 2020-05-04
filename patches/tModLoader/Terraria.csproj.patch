@@ -75,7 +75,7 @@
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
      <EmbeddedResource Include="Terraria.Libraries/**" />
      <EmbeddedResource Include="Terraria.Localization.Content/*" />
-+    <EmbeddedResource Include="**.png" />
++    <EmbeddedResource Include="**\*.png" />
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
