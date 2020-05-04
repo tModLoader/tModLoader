@@ -716,6 +716,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookDrawBehind = AddHook<Action<NPC, int>>(g => g.DrawBehind);
+
+		internal static void DrawBehind(NPC npc, int index)
+		{
+			npc.modNPC?.DrawBehind(index);
+
+			foreach (GlobalNPC g in HookDrawBehind.arr) {
+				g.Instance(npc).DrawBehind(npc, index);
+			}
+		}
+
 		private delegate bool? DelegateDrawHealthBar(NPC npc, byte bhPosition, ref float scale, ref Vector2 position);
 		private static HookList HookDrawHealthBar = AddHook<DelegateDrawHealthBar>(g => g.DrawHealthBar);
 

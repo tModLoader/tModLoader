@@ -374,9 +374,9 @@ namespace Terraria.ModLoader.Core
 			status.SetProgress(packedResourceCount = 0, resources.Count);
 			Parallel.ForEach(resources, resource => AddResource(mod, resource));
 
-			// add dll references from the bin folder
+			// add dll references from the -eac bin folder
 			var libFolder = Path.Combine(mod.path, "lib");
-			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)))
+			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, null)))
 				if (!dllPath.StartsWith(libFolder))
 					mod.modFile.AddFile("lib/"+Path.GetFileName(dllPath), File.ReadAllBytes(dllPath));
 		}
@@ -554,7 +554,7 @@ namespace Terraria.ModLoader.Core
 				.Where(path => !path.EndsWith("Thunk.dll") && !path.EndsWith("Wrapper.dll")));
 
 			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
+			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName, xna)));
 
 			//all dlls included in all referenced mods
 			foreach (var refMod in refMods) {
@@ -591,22 +591,33 @@ namespace Terraria.ModLoader.Core
 
 			if (results.HasErrors) {
 				var firstError = results.Cast<CompilerError>().First(e => !e.IsWarning);
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, firstError));
+				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", Path.GetFileName(outputPath), numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 		}
 
-		private string DllRefPath(BuildingMod mod, string dllName) {
-			var path = Path.Combine(mod.path, "lib", dllName + ".dll");
+		private string DllRefPath(BuildingMod mod, string dllName, bool? xna) {
+			string pathWithoutExtension = Path.Combine(mod.path, "lib", dllName);
+
+			if (xna.HasValue) { //check for platform specific dll
+				string engineSpecificPath = pathWithoutExtension + (xna.Value ? ".XNA.dll" : ".FNA.dll");
+
+				if (File.Exists(engineSpecificPath))
+					return engineSpecificPath;
+			}
+
+			string path = pathWithoutExtension + ".dll";
+
 			if (File.Exists(path))
 				return path;
 
 			if (Program.LaunchParameters.TryGetValue("-eac", out var eacPath)) {
 				var outputCopiedPath = Path.Combine(Path.GetDirectoryName(eacPath), dllName + ".dll");
+
 				if (File.Exists(outputCopiedPath))
 					return outputCopiedPath;
 			}
 
-			throw new BuildException("Missing dll reference: "+path);
+			throw new BuildException("Missing dll reference: " + path);
 		}
 
 		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {

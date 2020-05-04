@@ -112,8 +112,13 @@ namespace Terraria.ModLoader.Core
 
 				try {
 					using (modFile.Open()) {
-						foreach (var dll in properties.dllReferences)
-							LoadAssembly(EncapsulateReferences(modFile.GetBytes("lib/" + dll + ".dll")));
+						const string suffixPlat = PlatformUtilities.IsXNA ? ".XNA.dll" : ".FNA.dll";
+						foreach (var dll in properties.dllReferences) {
+							byte[] dllBytes = modFile.GetBytes("lib/" + dll + suffixPlat) ??
+							                  modFile.GetBytes("lib/" + dll + ".dll");
+
+							LoadAssembly(EncapsulateReferences(dllBytes));
+						}
 
 						if (eacEnabled && HasEaC) //load the unmodified dll and EaC pdb
 							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));

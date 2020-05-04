@@ -129,6 +129,7 @@ namespace ExampleMod.Tiles
 		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.FramesOnKillWall[Type] = true; // Necessary since we have a placement that uses AnchorWall
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			// We set processedCoordinates to true so our Hook_AfterPlacement gets top left coordinates, regardless of Origin.
@@ -173,7 +174,7 @@ namespace ExampleMod.Tiles
 
 		public override bool NewRightClick(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int left = i - tile.frameX / 18;
+			int left = i - tile.frameX % 36 / 18;
 			int top = j - tile.frameY / 18;
 
 			int index = GetInstance<TEScoreBoard>().Find(left, top);

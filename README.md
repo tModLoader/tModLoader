@@ -1,20 +1,18 @@
 # tModLoader, a Terraria modding API [![Build Status](https://travis-ci.org/tModLoader/tModLoader.svg?branch=master)](https://travis-ci.org/tModLoader/tModLoader) [![Discord](https://img.shields.io/discord/103110554649894912.svg?style=flat-square)](https://tmodloader.net/discord)
 
+tModLoader (TML) is an open-source, community-driven, modification and expansion of the Terraria game that makes it possible to make and play mods. TML expands your Terraria adventures with new content to explore created by the Terraria community! TML allows players to create and play Terraria mods and is designed in such a way so that you can play alone or together with friends, with one mod or with multiple mods: choose to play however you like! It is however required that all your friends also install TML if you want to play together; it is not possible for vanilla users to play with TML users. Find the instructions below to learn how to install TML.
 
-## About
-
-tModLoader is an API for Terraria that provides a way to create and load mods without having to work with Terraria's source code directly. This means you can easily make mods that are compatible with other mods and save yourself the trouble of having to decompile then recompile Terraria.exe. This also means players can use multiple mods at the same time without having to worry about compatibility issues. Traditionally most mods (standalone mods) that don't have an API like tModLoader to handle them will be incompatible with each other. tModLoader is made to work for Terraria version 1.3 and above. To view our releases you can go to the [releases page](https://github.com/tModLoader/tModLoader/releases) which will include the binaries required to install tModLoader. 
-
-Our goal for tModLoader is to make it simple as possible to mod while giving the modder powerful control over the game. It is designed in a way as to minimize the effort required for us to update to future Terraria versions. If you either don't want to commit to this project or are not able to decompile Terraria, we are open to suggestions for hooks and/or modifications. Please use our [github issues section](https://github.com/tModLoader/tModLoader/issues) to do this (you can ignore the default format for suggestions) You can also contact us through our Discord server.
-
-**NOTE**: this repository will be ahead of the current released version.
+**Note**: the code on this GitHub repository will be ahead of the current released version.
 
 ___
 
 
 ## Instructions
 
+Want to play or create mods? Or do you want to contribute to tModLoader perhaps?
 Click the text that applies to you.
+
+### [Get tModLoader on Steam](https://store.steampowered.com/app/1281930/tModLoader/)
 
 ### [I am a **player**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players) (Play mods)
 
@@ -27,11 +25,23 @@ ___
 
 ## Support us
 
-The best way to support us is by becoming a patron on our [Patreon page](https://www.patreon.com/tModLoader).
-You can choose whatever amount of money you'd like to support us with (starting from $1, capping at $15000) either as a monthly 'subscription' or as a one-time payment. We highly appreciate it if you do. Supporting us also comes with various rewards, such as being included in our credits section.
+First and foremost, TML is largely a community endavour: built by the community; used by the community. Without all the contributions people in the community have made over the years, TML would not be in the state it is in. TML is a free-to-use modification of the game, and will stay that way. However, if you would like to buy us a coffee, or maybe even multiple, you can choose to pledge some money to support us financially. We'd like to kindly express once again that TML was not created with the purpose of creating a profit. All of the core team members continue their best efforts to improve and maintain TML despite their real life obligations, free of charge or any request from the community.
 
-The money that we earn from our Patreon will be initially used to pay for server costs (for the Mod Browser), if the amount grows big enough we might get our own web host for a website. For now, the revenue will be used just to pay for Mod Browser uptime and availability. Thank you in advance for supporting us, whether you decide to become a patron or not!
+The preferred method of supporting the core team is by [choosing a pledge through Patreon](https://www.patreon.com/tmodloader). All of the money donated this way is equally shared amongst the core members to those who wish to receive part of it. This truly is the right way to support us financially if you want to do so. By becoming a patron you can receive a special role on our Discord server, if desired. You should be able to couple your Discord account to your Patreon account and automatically receive your role.
 
-## How to get in touch
+If you do not want to use a Patreon subscription, it is best that you contact one of the core team members through the Discord server to find an appropriate method of supporting us. Thanks again!
 
-If you would like to contact us or tModLoader users, it's best to join our [Discord server](https://discord.me/tmodloader). Discord is a chat and voice application we've used for over 2 years to communicate with each other. It's similar to IRC chats. To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+## Get in touch
+
+If you would like to contact us or TML users, it's best to join our [Discord server](https://discord.me/tmodloader). To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+
+## Contributors
+### Core team
+TML is largely created and maintained by a core team of contributors: **Blushiemagic, Chicken-Bones, Jopojelly and Jofairden**
+
+This project exists in its current state thanks to all the people who have contributed:
+
+<a href="https://github.com/tModLoader/tModLoader/graphs/contributors"><img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" /></a>
+
+## License
+TML is licensed under the [MIT license](https://github.com/tModLoader/tModLoader/blob/master/LICENSE)

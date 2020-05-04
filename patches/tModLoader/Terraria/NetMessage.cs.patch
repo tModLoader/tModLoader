@@ -242,6 +242,15 @@
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;
+@@ -1418,7 +_,7 @@
+ 								array2[num2++] = num10;
+ 						}
+ 
+-						if (tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
++						if ((tile2.type == 425 || tile2.type >= TileID.Count && Main.tileSign[tile2.type]) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
+ 							short num11 = (short)Sign.ReadSign(j, i);
+ 							if (num11 != -1)
+ 								array2[num2++] = num11;
 @@ -1456,7 +_,16 @@
  
  					if (tile2.wall != 0) {

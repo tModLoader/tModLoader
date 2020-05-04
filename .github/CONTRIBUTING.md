@@ -4,7 +4,7 @@
 Before you create a pull request, please review the following guidelines for your contribution. Thank you in advance
 
 ## Your files use tab indendation (keep tabs) of size 4
-In our project, we use tab indentation with a size of 4. Please have you settings abide this rule.
+In our project, we use tab indentation with a size of 4. Please have your settings abide this rule.
 
 **Note**: Most editors support our provided [.editorconfig](https://github.com/tModLoader/tModLoader/blob/master/.editorconfig) file, but certain functionalities (for example ones provided by plugins or addons) sometimes do not abide it. Please be careful and considerate with your actions!
 
@@ -55,4 +55,4 @@ Before you propose your contribution, inspect your patches. Please make sure tha
 ![Diff example](https://i.imgur.com/jwu2GOG.png "Diff example")
 
 ## Helpful tips for contributions
-Because tModLoader is a big project, we want to make sure contributions don't introduce unecessary code or code that is fundamentally flawed by design. But please don't be discouraged! If you are unsure about your contribution, still feel free to propose it and in your proposal ask us for feedback. If you do, please add "WIP:" in the title of your proposal. It is also helpful if you are specific about what you want feedback on. We will always try to provide you feedback in a passive and helpful manner.
+Because tModLoader is a big project, we want to make sure contributions don't introduce unnecessary code or code that is fundamentally flawed by design. But please don't be discouraged! If you are unsure about your contribution, still feel free to propose it and in your proposal ask us for feedback. If you do, please add "WIP:" in the title of your proposal. It is also helpful if you are specific about what you want feedback on. We will always try to provide you feedback in a passive and helpful manner.

@@ -119,6 +119,15 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
+@@ -1811,7 +_,7 @@
+ 				int num3 = reader.ReadInt32();
+ 				Tile tile = Main.tile[num2, num3];
+ 				Sign sign;
+-				if (tile.active() && Main.tileSign[tile.type]) {
++				if (true) {//if (tile.active() && Main.tileSign[tile.type]) {
+ 					sign = new Sign();
+ 					sign.text = text;
+ 					sign.x = num2;
 @@ -2083,6 +_,7 @@
  				return result;
  			}

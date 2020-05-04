@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 				Interface.errorMessage.Show(msg,
 					gotoMenu: fatal ? -1 : Interface.reloadModsID,
 					webHelpURL: e.HelpLink,
-					showRetry: continueIsRetry,
+					continueIsRetry: continueIsRetry,
 					showSkip: !fatal);
 			}
 		}
@@ -292,6 +292,19 @@ namespace Terraria.ModLoader
 			return f.VerifySignature(mod.hash, mod.signature);
 		}
 
+		private static bool _pauseSavingEnabledMods;
+		private static bool _needsSavingEnabledMods;
+		internal static bool PauseSavingEnabledMods {
+			get=>_pauseSavingEnabledMods;
+			set {
+				if(_pauseSavingEnabledMods == value) {return;}
+				if(!value && _needsSavingEnabledMods) {
+					ModOrganizer.SaveEnabledMods();
+					_needsSavingEnabledMods = false;
+				}
+				_pauseSavingEnabledMods = value;
+			}
+		}
 		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
 		private static HashSet<string> _enabledMods;
 		internal static HashSet<string> EnabledMods => _enabledMods ?? (_enabledMods = ModOrganizer.LoadEnabledMods());
@@ -308,8 +321,12 @@ namespace Terraria.ModLoader
 				EnabledMods.Remove(modName);
 				Logging.tML.InfoFormat("Disabling Mod: {0}", modName);
 			}
-
-			ModOrganizer.SaveEnabledMods();
+			if(PauseSavingEnabledMods) {
+				_needsSavingEnabledMods = true;
+			}
+			else {
+				ModOrganizer.SaveEnabledMods();
+			}
 		}
 
 		internal static void SaveConfiguration() {

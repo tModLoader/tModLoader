@@ -3,24 +3,23 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// NOTE: This class is deprecated. Use <see cref="Terraria.ModLoader.Logging"/> instead (see ExampleMod for example)
+	/// NOTE: This class is deprecated. Use <see cref="Logging"/> instead (see ExampleMod for example)
 	/// This class consists of functions that write error messages to text files for you to read. It also lets you write logs to text files.
 	/// </summary>
 	[Obsolete("This class is deprecated. Use Terraria.ModLoader.Logging instead (see ExampleMod for example)", false)]
 	public static class ErrorLogger
 	{
 		/// <summary>
-		/// NOTE: Deprecated. Use <see cref="Terraria.ModLoader.Logging.LogDir"/> instead
+		/// NOTE: Deprecated. Use <see cref="Logging.LogDir"/> instead
 		/// The file path to which logs are written and stored.
 		/// </summary>
 		[Obsolete("Please use Terraria.ModLoader.Logging.LogDir instead", false)]
 		public static readonly string LogPath = Logging.LogDir;
-
-		private static Object logExceptionLock = new Object();
 
 		private static Object logLock = new Object();
 		/// <summary>
@@ -28,14 +27,13 @@ namespace Terraria.ModLoader
 		/// You can use this method for your own testing purposes. The message will be added to the Logs.txt file in the Logs folder.
 		/// </summary>
 		[Obsolete("Please use your own ILog instead, see ExampleMod for an example", false)]
-		public static void Log(string message) {
-			string callerName = GetCallerName();
-			Mod callerMod = ModLoader.GetMod(callerName);
-			if (callerMod == null) {
-				Logging.tML.WarnFormat("Tried to forward ErrorLogger.Log for mod {0} but failed (mod not found!)", callerName);
+		public static void Log(string message)
+		{
+			if (AssemblyManager.FirstModInStackTrace(new StackTrace(), out string modName) && ModLoader.GetMod(modName) is Mod mod) {
+				mod.Logger.Info(message);
 			}
 			else {
-				callerMod.Logger.Info(message);
+				Logging.tML.WarnFormat("Tried to forward ErrorLogger.Log for mod {0} but failed (mod not found!)", modName);
 			}
 		}
 
@@ -72,28 +70,14 @@ namespace Terraria.ModLoader
 				return sb.ToString();
 			}
 
-			string callerName = GetCallerName();
-			Mod callerMod = ModLoader.GetMod(callerName);
-			if (callerMod == null) {
-				Logging.tML.WarnFormat("Tried to forward ErrorLogger.Log for mod {0} but failed (mod not found!)", callerName);
-			}
-			else {
-				callerMod.Logger.Info(!alternateOutput ? param.ToString() : getParamString());
-			}
-		}
-
-		private static string GetCallerName() {
-			StackTrace stackTrace = new StackTrace();
-			Assembly asm = stackTrace.GetFrame(2).GetMethod().DeclaringType.Assembly;
-			string name = asm.GetName().Name;
-			return name.Contains("_") ? name.Split('_')[0] : name;
+			Log(!alternateOutput ? param.ToString() : getParamString());
 		}
 
 		/// <summary>
 		/// NOTE: Deprecated.
 		/// Deletes all log files.
 		/// </summary>
-		[Obsolete("Please ue Terraria.ModLoader.Logging instead", false)]
+		[Obsolete("Please use Terraria.ModLoader.Logging instead", false)]
 		public static void ClearLogs() {
 			lock (logLock) {
 				if (!Directory.Exists(Logging.LogDir))

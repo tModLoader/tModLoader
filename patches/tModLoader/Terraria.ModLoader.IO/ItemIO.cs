@@ -52,13 +52,14 @@ namespace Terraria.ModLoader.IO
 			return tag;
 		}
 
-		public static void Load(Item item, TagCompound tag) {
-			if (tag.Count == 0) {
+		public static void Load(Item item, TagCompound tag)
+		{
+			string modName = tag.GetString("mod");
+			if (modName == "") {
 				item.netDefaults(0);
 				return;
 			}
 
-			string modName = tag.GetString("mod");
 			if (modName == "Terraria") {
 				item.netDefaults(tag.GetInt("id"));
 				if (tag.ContainsKey("legacyData"))

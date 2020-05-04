@@ -60,6 +60,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Adds a recipe group ingredient with the given RecipeGroupID and stack size to the search criteria.
+		/// </summary>
+		/// <param name="name">The RecipeGroupID of the recipegroup to accept.</param>
+		/// <param name="stack">The stack of the recipegroup to accept.</param>
+		public void AddRecipeGroup(int recipeGroupID, int stack = 1)
+		{
+			if (!RecipeGroup.recipeGroupIDs.ContainsValue(recipeGroupID)) {
+				throw new RecipeException("No recipe group has the RecipeGroupID " + recipeGroupID);
+			}
+			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupID];
+			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
+			groups.Add(recipeGroupID);
+		}
+
+		/// <summary>
 		/// Sets the search criteria's result to the given item type and stack size.
 		/// </summary>
 		/// <param name="itemID">The item ID of the item to set as result.</param>

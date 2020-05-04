@@ -598,6 +598,22 @@
  			}
  		}
  
+@@ -3819,8 +_,14 @@
+ 
+ 		public static void startDedInputCallBack(object threadContext) {
+ 			while (!Netplay.disconnect) {
+-				Console.Write(": ");
+ 				string text = Console.ReadLine();
++				ExecuteCommand(text, new ConsoleCommandCaller());
++			}
++		}
++
++		public static void ExecuteCommand(string text, CommandCaller commandCaller) {
++			do { // use a do {...} while (false); loop so we don't have to change all the continue; statements to return; when moving the loop body into a separate function
++				Console.Write(": ");
+ 				string text2 = text;
+ 				text = text.ToLower();
+ 				try {
 @@ -3862,12 +_,21 @@
  								num = text3.Length;
  						}
@@ -616,7 +632,7 @@
 +						foreach (var entry in modHelpList)
 +							Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
  					}
-+					else if (CommandManager.HandleCommand(text, new ConsoleCommandCaller())) { }
++					else if (CommandManager.HandleCommand(text, commandCaller)) { }
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
@@ -634,6 +650,15 @@
  						}
  						catch {
  						}
+@@ -4078,7 +_,7 @@
+ 				catch {
+ 					Console.WriteLine(Language.GetTextValue("CLI.InvalidCommand"));
+ 				}
+-			}
++			} while (false);
+ 		}
+ 
+ 		public static void Sundialing() {
 @@ -4105,7 +_,7 @@
  			instance = this;
  #if CLIENT
@@ -2358,6 +2383,14 @@
  		}
  
  		private static Microsoft.Xna.Framework.Color buffColor(Microsoft.Xna.Framework.Color newColor, float R, float G, float B, float A) {
+@@ -24548,6 +_,7 @@
+ 				else if (npc[i].type == 548) {
+ 					DrawCacheNPCsBehindNonSolidTiles.Add(i);
+ 				}
++				NPCLoader.DrawBehind(Main.npc[i], i);
+ 			}
+ 		}
+ 
 @@ -24573,7 +_,7 @@
  					DrawCacheProjsBehindNPCs.Add(i);
  
@@ -3933,7 +3966,7 @@
  					}
  
  					num21++;
-+					array9[num21] = "tModLoader " + Lang.menu[14].Value; //"tModLoader Settings"
++					array9[num21] = Language.GetTextValue("tModLoader.tModLoaderSettings");
 +					if (selectedMenu == num21) {
 +						PlaySound(SoundID.MenuOpen);
 +						menuMode = Interface.tModLoaderSettingsID;
@@ -4622,7 +4655,7 @@
  						case 0: {
  								int num16 = rand.Next(3);
  								soundInstanceDig[num16].Stop();
-@@ -49570,6 +_,15 @@
+@@ -49570,18 +_,49 @@
  							soundEffectInstance.Pan = num3;
  							trackableSoundInstances[num] = soundEffectInstance;
  							break;
@@ -4638,7 +4671,10 @@
  					}
  
  					if (soundEffectInstance != null) {
-@@ -49578,10 +_,32 @@
+-						soundEffectInstance.Pitch += pitchOffset;
+-						soundEffectInstance.Volume *= volumeScale;
++						soundEffectInstance.Pitch = Utils.Clamp(soundEffectInstance.Pitch + pitchOffset, -1, 1);
++						soundEffectInstance.Volume = Utils.Clamp(soundEffectInstance.Volume * volumeScale, 0, 1);
  						PlaySoundInstance(soundEffectInstance);
  					}
  

@@ -7,6 +7,7 @@
 		"MenuModSources": "Mod Sources",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
+		"tModLoaderSettings": "tModLoader Settings",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
@@ -49,7 +50,7 @@
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
-		"LoadErrorDisabled": "The mod(s) have been automatically been disabled.",
+		"LoadErrorDisabled": "The mod(s) have been automatically disabled.",
 		"LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
