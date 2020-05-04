@@ -9,8 +9,12 @@
  
  namespace Terraria.GameInput
  {
-@@ -174,6 +_,9 @@
- 			string[] keysToCopy = new string[18] {
+@@ -171,9 +_,12 @@
+ 		}
+ 
+ 		public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {
+-			string[] keysToCopy = new string[18] {
++			string[] keysToCopy = new string[] {
  				"MouseLeft",
  				"MouseRight",
 +				"MouseMiddle",

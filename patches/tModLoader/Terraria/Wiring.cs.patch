@@ -121,7 +121,7 @@
 -												array2[num64] = num65;
 +											bool vanillaCanGo = (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550);
 +											if (Main.npc[num65].active && NPCLoader.CanGoToStatue(Main.npc[num65], true, vanillaCanGo)) {
-+												array.Add(num65);
++												array2.Add(num65);
  												num64++;
 -												if (num64 >= 9)
 -													break;

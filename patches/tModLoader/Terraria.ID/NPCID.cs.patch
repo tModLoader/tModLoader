@@ -1,8 +1,9 @@
 --- src/Terraria/Terraria.ID/NPCID.cs
 +++ src/tModLoader/Terraria.ID/NPCID.cs
-@@ -1,5 +_,7 @@
+@@ -1,5 +_,8 @@
  using Microsoft.Xna.Framework;
 +using ReLogic.Reflection;
++using System;
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  

@@ -87,7 +87,7 @@
  					break;
  			}
  
-+			NPCLoader.BossHeadRotation(this, ref rot);
++			NPCLoader.BossHeadRotation(this, ref result);
  			return result;
  		}
  
@@ -282,7 +282,7 @@
  					}
  				}
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num33, ref knockBack2);
++				NPCLoader.TownNPCAttackStrength(this, ref num32, ref knockBack2);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num35, ref maxValue3);
 +				NPCLoader.TownNPCAttackProj(this, ref num31, ref num34);
 +				NPCLoader.TownNPCAttackProjSpeed(this, ref num33, ref num36, ref num37);
@@ -535,6 +535,14 @@
  					return;
  
  				if (Type == 148) {
+@@ -50796,6 +_,7 @@
+ 			int num7;
+ 			int num8;
+ 			bool flag14;
++			NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
+ 			while (true) {
+ 				if (num5 >= 255)
+ 					return;
 @@ -50814,10 +_,11 @@
  					flag10 = false;
  					flag11 = false;
@@ -560,7 +568,7 @@
  						}
  					}
  
-+					NPCLoader.EditSpawnRate(Main.player[j], ref spawnRate, ref maxSpawns);
++					NPCLoader.EditSpawnRate(Main.player[num5], ref spawnRate, ref maxSpawns);
  					num7 = (int)(Main.player[num5].position.X + (float)(Main.player[num5].width / 2)) / 16;
  					num8 = (int)(Main.player[num5].position.Y + (float)(Main.player[num5].height / 2)) / 16;
  					if (Main.wallHouse[Main.tile[num7, num8].wall])
@@ -571,12 +579,11 @@
  						flag3 = true;
  
  					flag14 = false;
-@@ -51086,6 +_,9 @@
+@@ -51086,6 +_,8 @@
  							safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num9);
  						}
  
-+						NPCLoader.EditSpawnRange(Main.player[j], ref spawnRangeX, ref spawnRangeY,
-+							ref safeRangeX, ref safeRangeY);
++						NPCLoader.EditSpawnRange(Main.player[num5], ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 +
  						int num10 = (int)(Main.player[num5].position.X / 16f) - spawnRangeX;
  						int num11 = (int)(Main.player[num5].position.X / 16f) + spawnRangeX;
@@ -589,13 +596,7 @@
  										flag14 = true;
  								}
  							}
-@@ -51196,23 +_,29 @@
- 						}
- 					}
- 
-+					NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
- 					if (flag) {
- 						if (Main.player[num5].ZoneDungeon && (!Main.tileDungeon[Main.tile[num, num2].type] || Main.tile[num, num2 - 1].wall == 0))
+@@ -51201,18 +_,23 @@
  							flag = false;
  
  						if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
@@ -674,7 +675,7 @@
  
 +			endVanillaSpawn: //this ugly code is just to minimize the diff file
 +			if (spawn != 0)
-+				num46 = NPCLoader.SpawnNPC(spawn, num, num2);
++				newNPC = NPCLoader.SpawnNPC(spawn, num, num2);
 +
  			if (Main.npc[newNPC].type == 1 && Main.rand.Next(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);

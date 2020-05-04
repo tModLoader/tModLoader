@@ -8,14 +8,16 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
-@@ -23,6 +_,7 @@
- 			0.7f,
- 			0.7f,
- 			0.7f,
+@@ -14,7 +_,8 @@
+ 	{
+ 		public const int width = 670;
+ 		public const int height = 480;
+-		public static float[] leftScale = new float[9] {
++		public static float[] leftScale = new float[] {
 +			0.7f,
- 			0.7f
- 		};
- 		public static float[] rightScale = new float[15] {
+ 			0.7f,
+ 			0.7f,
+ 			0.7f,
 @@ -166,7 +_,7 @@
  			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();

@@ -10,7 +10,8 @@
  
  namespace Terraria
  {
-@@ -78,12 +_,12 @@
+@@ -77,13 +_,13 @@
+ 			int num = 0;
  			num = start + 1;
  			b = (byte)(messageType = readBuffer[start]);
 -			if (b >= 120)
@@ -28,7 +29,7 @@
  			if (Main.netMode == 1 && Netplay.Connection.StatusMax > 0)
  				Netplay.Connection.StatusCount++;
  
-@@ -101,12 +_,15 @@
+@@ -101,13 +_,16 @@
  				return;
  			}
  
@@ -45,12 +46,13 @@
 +
  			switch (b) {
  				case 15:
-@@ -127,18 +_,27 @@
+ 				case 25:
+@@ -127,9 +_,15 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
-+						string clientVersion = reader.ReadString();
 -						if (reader.ReadString() == "Terraria" + 194) {
++						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == ModLoader.ModLoader.versionedName;
 +						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 194 && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
@@ -62,16 +64,15 @@
  								NetMessage.SendData(3, whoAmI);
  							}
  							else {
- 								Netplay.Clients[whoAmI].State = -1;
- 								NetMessage.SendData(37, whoAmI);
+@@ -138,7 +_,10 @@
  							}
  						}
  						else {
+-							NetMessage.SendData(2, whoAmI, -1, Lang.mp[4].ToNetworkText());
 +							if (clientVersion.StartsWith("tModLoader"))
 +								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {ModLoader.ModLoader.versionedName})"));
 +							else
 +								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + "\n(You cannot connect to a tModLoader Server with an unmodded client.)"));
--							NetMessage.SendData(2, whoAmI, -1, Lang.mp[4].ToNetworkText());
  						}
  					}
  					break;
@@ -79,7 +80,7 @@
  							NetMessage.SendData(5, -1, -1, null, num127, 58 + player12.armor.Length + player12.dye.Length + player12.miscEquips.Length + player12.miscDyes.Length + player12.bank.item.Length + player12.bank2.item.Length + 2 + num135, (int)player12.bank3.item[num135].prefix);
  						}
  
-+						PlayerHooks.SyncPlayer(player, -1, -1, true);
++						PlayerHooks.SyncPlayer(player12, -1, -1, true);
  						NetMessage.SendData(6);
  						if (Netplay.Connection.State == 2)
  							Netplay.Connection.State = 3;
@@ -153,7 +154,7 @@
  							if (b == 90) {
  								item2.instanced = true;
  								item2.owner = Main.myPlayer;
-@@ -1043,7 +_,8 @@
+@@ -1043,6 +_,7 @@
  							obj6.position = position3;
  							obj6.velocity = velocity5;
  							obj6.active = true;
@@ -161,7 +162,6 @@
  							obj6.owner = Main.myPlayer;
  							if (flag9) {
  								NetMessage.SendData(21, -1, -1, null, num217);
- 								if (num218 == 0) {
 @@ -1155,9 +_,10 @@
  						if (num110 == 245)
  							NPC.golemBoss = num107;
@@ -190,13 +190,14 @@
  						if (Main.netMode == 2) {
  							num80 = whoAmI;
  							if (Main.projHostile[num81])
-@@ -1242,5 +_,6 @@
+@@ -1242,6 +_,7 @@
  							Main.projectileIdentity[num80, num83] = num84;
  						}
  
 +						ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
  						projectile.ProjectileFixDesperation();
  						if (Main.netMode == 2)
+ 							NetMessage.SendData(27, -1, whoAmI, null, num84);
 @@ -1250,7 +_,7 @@
  					}
  				case 28: {
@@ -214,8 +215,7 @@
  						Recipe.FindRecipes();
  						break;
  					}
-@@ -1412,7 +_,8 @@
- 
+@@ -1413,6 +_,7 @@
  						break;
  					}
  				case 34: {
@@ -235,16 +235,16 @@
  						if (Main.netMode == 2) {
  							switch (b2) {
 -								case 0: {
-+								case int _ when b2 % 100 == 0: {
+-										int num23 = WorldGen.PlaceChest(num19, num20, 21, notNearOtherChests: false, num21);
++								case byte _ when b2 % 100 == 0: {
 +										if (modType == 0)
 +											modType = TileID.Containers;
 +
--										int num23 = WorldGen.PlaceChest(num19, num20, 21, notNearOtherChests: false, num21);
 +										int num23 = WorldGen.PlaceChest(num19, num20, modType, notNearOtherChests: false, num21);
  										if (num23 == -1) {
 -											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num23);
-+											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num23, modType);
 -											Item.NewItem(num19 * 16, num20 * 16, 32, 32, Chest.chestItemSpawn[num21], 1, noBroadcast: true);
++											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num23, modType);
 +											int itemSpawn = b2 < 100 ? Chest.chestItemSpawn[num21] : TileLoader.GetTile(modType).chestDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num19 * 16, num20 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
@@ -262,19 +262,21 @@
  										Tile tile = Main.tile[num19, num20];
  										if (tile.frameX % 36 != 0)
  											num19--;
-@@ -1457,19 +_,24 @@
+@@ -1455,20 +_,25 @@
+ 							}
+ 
  							switch (b2) {
 -								case 2: {
-+								case int _ when b2 % 100 == 2: {
+-										int num24 = WorldGen.PlaceChest(num19, num20, 88, notNearOtherChests: false, num21);
++								case byte _ when b2 % 100 == 2: {
 +										if (modType == 0)
 +											modType = TileID.Dressers;
 +
--										int num24 = WorldGen.PlaceChest(num19, num20, 88, notNearOtherChests: false, num21);
 +										int num24 = WorldGen.PlaceChest(num19, num20, modType, notNearOtherChests: false, num21);
  										if (num24 == -1) {
 -											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num24);
-+											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num24, modType);
 -											Item.NewItem(num19 * 16, num20 * 16, 32, 32, Chest.dresserItemSpawn[num21], 1, noBroadcast: true);
++											NetMessage.SendData(34, whoAmI, -1, null, b2, num19, num20, num21, num24, modType);
 +											int itemSpawn = b2 < 100 ? Chest.dresserItemSpawn[num21] : TileLoader.GetTile(modType).dresserDrop;
 +											if (itemSpawn > 0)
 +												Item.NewItem(num19 * 16, num20 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
@@ -292,14 +294,12 @@
  										Tile tile2 = Main.tile[num19, num20];
  										num19 -= tile2.frameX % 54 / 18;
  										if (tile2.frameY % 36 != 0)
- 											num20--;
-@@ -1517,26 +_,36 @@
- 							break;
+@@ -1518,17 +_,27 @@
  						}
  
  						switch (b2) {
 -							case 0:
-+							case int _ when b2 % 100 == 0:
++							case byte _ when b2 % 100 == 0:
  								if (num22 == -1)
  									WorldGen.KillTile(num19, num20);
  								else
@@ -312,7 +312,7 @@
 +								}
  								break;
 -							case 2:
-+							case int _ when b2 % 100 == 2:
++							case byte _ when b2 % 100 == 2:
  								if (num22 == -1)
  									WorldGen.KillTile(num19, num20);
  								else
@@ -326,15 +326,7 @@
  								break;
  							case 4:
  								if (num22 == -1)
- 									WorldGen.KillTile(num19, num20);
- 								else
- 									WorldGen.PlaceChestDirect(num19, num20, 467, num21, num22);
- 								break;
- 							default:
- 								Chest.DestroyChestDirect(num19, num20, num22);
- 								WorldGen.KillTile(num19, num20);
- 								break;
-@@ -1568,4 +_,7 @@
+@@ -1568,6 +_,9 @@
  						obj5.zone2 = reader.ReadByte();
  						obj5.zone3 = reader.ReadByte();
  						obj5.zone4 = reader.ReadByte();
@@ -342,8 +334,9 @@
 +							PlayerHooks.ReceiveCustomBiomes(obj5, reader);
 +
  						if (Main.netMode == 2)
-@@ -1588,11 +_,16 @@
- 				case 38:
+ 							NetMessage.SendData(36, -1, whoAmI, null, num195);
+ 
+@@ -1589,6 +_,11 @@
  					if (Main.netMode == 2) {
  						if (reader.ReadString() == Netplay.ServerPassword) {
  							Netplay.Clients[whoAmI].State = 1;
@@ -355,10 +348,6 @@
  							NetMessage.SendData(3, whoAmI);
  						}
  						else {
- 							NetMessage.SendData(2, whoAmI, -1, Lang.mp[1].ToNetworkText());
- 						}
- 					}
- 					break;
 @@ -1771,8 +_,8 @@
  							break;
  
@@ -379,7 +368,7 @@
  						int time = reader.ReadInt16();
  						Main.npc[num18].AddBuff(type2, time, quiet: true);
  						if (Main.netMode == 2)
-@@ -1845,6 +_,6 @@
+@@ -1845,14 +_,14 @@
  						int num225 = reader.ReadInt16();
  						NPC nPC2 = Main.npc[num225];
  						for (int num226 = 0; num226 < 5; num226++) {
@@ -387,7 +376,6 @@
 +							nPC2.buffType[num226] = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16();
  							nPC2.buffTime[num226] = reader.ReadInt16();
  						}
-@@ -1851,7 +_,7 @@
  					}
  					break;
  				case 55: {
@@ -396,13 +384,17 @@
 +						int num207 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadUInt16();
  						int num208 = reader.ReadInt32();
  						if (Main.netMode != 2 || num206 == whoAmI || Main.pvpBuff[num207]) {
-@@ -2190,4 +_,5 @@
+ 							if (Main.netMode == 1 && num206 == Main.myPlayer)
+@@ -2189,6 +_,7 @@
+ 					break;
  				case 74:
  					if (Main.netMode == 1) {
 +						Netplay.syncingWorld = false;
  						Main.anglerQuest = reader.ReadByte();
  						Main.anglerQuestFinished = reader.ReadBoolean();
-@@ -2277,6 +_,6 @@
+ 					}
+@@ -2276,7 +_,7 @@
+ 					if (Main.netMode == 1) {
  						int num141 = reader.ReadInt16();
  						int num142 = reader.ReadInt32();
 -						if (num141 >= 0 && num141 < 267)
@@ -410,7 +402,8 @@
  							NPC.killCount[num141] = num142;
  					}
  					break;
-@@ -2307,7 +_,7 @@
+@@ -2306,7 +_,7 @@
+ 
  						int num78 = reader.ReadInt32();
  						if (!reader.ReadBoolean()) {
 -							if (TileEntity.ByID.TryGetValue(num78, out TileEntity value2) && (value2 is TETrainingDummy || value2 is TEItemFrame || value2 is TELogicSensor)) {
@@ -418,9 +411,7 @@
  								TileEntity.ByID.Remove(num78);
  								TileEntity.ByPosition.Remove(value2.Position);
  							}
- 						}
-@@ -2760,8 +_,29 @@
- 							NetMessage.SendPlayerDeath(num2, playerDeathReason, num3, num4, pvp, -1, whoAmI);
+@@ -2761,6 +_,27 @@
  
  						break;
  					}
@@ -448,4 +439,3 @@
  			}
  		}
  	}
- }

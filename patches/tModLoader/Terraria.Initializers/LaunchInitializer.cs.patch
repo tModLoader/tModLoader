@@ -51,19 +51,21 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -96,6 +_,16 @@
+@@ -96,6 +_,18 @@
  			if ((s3 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s3);
  
 +			// We handle the build parameter this far in
 +			// so vanilla can take care of loading the appropriate localization keys beforehand
-+			if ((text = TryParameter("-build")) != null)
++			string build;
++			if ((build = TryParameter("-build")) != null)
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
-+				ModCompile.BuildModCommandLine(text);
++				ModCompile.BuildModCommandLine(build);
 +
-+			if ((text = TryParameter("-install")) != null)
-+				FileAssociationSupport.HandleFileAssociation(text);
++			string install;
++			if ((install = TryParameter("-install")) != null)
++				FileAssociationSupport.HandleFileAssociation(install);
 +
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)

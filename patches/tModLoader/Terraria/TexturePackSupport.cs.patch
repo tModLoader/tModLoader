@@ -20,10 +20,10 @@
  
  		public static bool FetchTexture(string path, out Texture2D tex) {
 -			if (entries.TryGetValue(path, out ZipEntry value)) {
-+			if (entries.TryGetValue(path.Replace('\\', '/'), out value)) {
++			if (entries.TryGetValue(path.Replace('\\', '/'), out ZipEntry value)) {
  				using (MemoryStream stream = new MemoryStream()) {
  					value.Extract(stream);
-+					memoryStream.Position = 0; // required for FNA
++					stream.Position = 0; // required for FNA
  					tex = FromStreamSlow(Main.instance.GraphicsDevice, stream);
  					ReplacedTextures++;
  					return true;

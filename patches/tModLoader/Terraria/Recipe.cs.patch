@@ -22,7 +22,7 @@
  		public bool AcceptedByItemGroups(int invType, int reqType) {
  			foreach (int acceptedGroup in acceptedGroups) {
 -				if (RecipeGroup.recipeGroups[acceptedGroup].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[acceptedGroup].ValidItems.Contains(reqType))
-+				if (RecipeGroup.recipeGroups[acceptedGroup].ContainsItem(invType) && RecipeGroup.recipeGroups[current].ContainsItem(reqType))
++				if (RecipeGroup.recipeGroups[acceptedGroup].ContainsItem(invType) && RecipeGroup.recipeGroups[acceptedGroup].ContainsItem(reqType))
  					return true;
  			}
  
@@ -37,7 +37,7 @@
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  					if (num > 1) {
  						int num2 = 0;
-@@ -146,96 +_,116 @@
+@@ -146,6 +_,9 @@
  		}
  
  		public bool useWood(int invType, int reqType) {
@@ -47,28 +47,7 @@
  			if (!anyWood)
  				return false;
  
- 			switch (reqType) {
- 				default:
- 					return false;
- 				case 9:
- 				case 619:
- 				case 620:
- 				case 621:
- 				case 911:
- 				case 1729:
- 				case 2503:
- 				case 2504:
- 					switch (invType) {
- 						default:
- 							return false;
- 						case 9:
- 						case 619:
- 						case 620:
- 						case 621:
- 						case 911:
- 						case 1729:
- 						case 2503:
- 						case 2504:
+@@ -174,9 +_,13 @@
  							return true;
  					}
  			}
@@ -82,10 +61,7 @@
  			if (!anyIronBar)
  				return false;
  
- 			if (reqType != 22 && reqType != 704)
- 				return false;
- 
- 			if (invType != 22 && invType != 704)
+@@ -187,9 +_,13 @@
  				return false;
  
  			return true;
@@ -99,7 +75,7 @@
  			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272)
  				return false;
  
- 			if (anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272))
+@@ -197,9 +_,13 @@
  				return true;
  
  			return false;
@@ -113,7 +89,7 @@
  			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
  				return false;
  
- 			if (anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459))
+@@ -207,9 +_,13 @@
  				return true;
  
  			return false;
@@ -127,26 +103,7 @@
  			if (!anyPressurePlate)
  				return false;
  
- 			switch (reqType) {
- 				default:
- 					return false;
- 				case 529:
- 				case 541:
- 				case 542:
- 				case 543:
- 				case 852:
- 				case 853:
- 				case 1151:
- 					switch (invType) {
- 						default:
- 							return false;
- 						case 529:
- 						case 541:
- 						case 542:
- 						case 543:
- 						case 852:
- 						case 853:
- 						case 1151:
+@@ -236,6 +_,7 @@
  							return true;
  					}
  			}
@@ -172,7 +129,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -10738,5 +_,8 @@
+@@ -10738,6 +_,9 @@
  			AddRecipe();
  			WallReturn();
  			PlatformReturn();
@@ -181,3 +138,4 @@
 +			Item.PopulateMaterialCache();
  			for (int num9 = 0; num9 < numRecipes; num9++) {
  				for (int num10 = 0; Main.recipe[num9].requiredItem[num10].type > 0; num10++) {
+ 					Main.recipe[num9].requiredItem[num10].checkMat();

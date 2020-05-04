@@ -155,7 +155,7 @@
  			if (friendly && owner == Main.myPlayer && !npcProj) {
  				if ((aiStyle == 16 && type != 338 && type != 339 && type != 340 && type != 341 && (timeLeft <= 1 || type == 108 || type == 164)) || (type == 286 && localAI[1] == -1f)) {
  					int myPlayer = Main.myPlayer;
-@@ -7192,8 +_,25 @@
+@@ -7192,8 +_,27 @@
  			if (owner == Main.myPlayer) {
  				if (damage > 0) {
  					for (int i = 0; i < 200; i++) {
@@ -166,6 +166,8 @@
 +
 +						bool immunityTimerInactive = !usesLocalNPCImmunity && !usesIDStaticNPCImmunity || usesLocalNPCImmunity && localNPCImmunity[i] == 0 || usesIDStaticNPCImmunity && IsNPCImmune(type, i);
 +						if (!immunityTimerInactive)
++							continue;
++
 +						bool? modCanHit = ProjectileLoader.CanHitNPC(this, Main.npc[i]);
 +						if (modCanHit.HasValue && !modCanHit.Value)
 +							continue;
@@ -216,7 +218,7 @@
  						}
  
 +						float knockback = knockBack;
-+						int hitDirection = direction;
++						int hitDirection = this.direction;
 +						if (type == 697 || type == 699 || type == 707 || type == 708)
 +							hitDirection = Main.player[owner].Center.X < Main.npc[i].Center.X ? 1 : -1;
 +
@@ -315,7 +317,7 @@
  				return;
 +				
 +			if (!ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer2]) || !PlayerHooks.CanBeHitByProjectile(Main.player[myPlayer2], this))
-+				continue;
++				return;
  
  			int direction = base.direction;
  			direction = ((!(Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
@@ -560,7 +562,7 @@
  				if (flag5 && Main.myPlayer == owner) {
  					bool flag6 = false;
 -					flag6 = (!flag3 || player.CheckMana(player.inventory[player.selectedItem].mana, pay: true));
-+					flag6 = (!flag9 || player.CheckMana(player.inventory[player.selectedItem], pay: true));
++					flag6 = (!flag3 || player.CheckMana(player.inventory[player.selectedItem], pay: true));
  					if (player.channel && flag6 && !player.noItems && !player.CCed) {
  						if (ai[0] == 180f) {
  							Vector2 center = base.Center;

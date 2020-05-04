@@ -27,14 +27,17 @@
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
-@@ -1566,6 +_,7 @@
+@@ -1566,7 +_,9 @@
  				}
  			}
  
-+			MapLoader.ModMapOption(ref num16, i, j);
- 			return MapTile.Create((ushort)(num3 + num4), (byte)num2, (byte)num);
+-			return MapTile.Create((ushort)(num3 + num4), (byte)num2, (byte)num);
++			ushort mapType = (ushort)(num3 + num4);
++			MapLoader.ModMapOption(ref mapType, i, j);
++			return MapTile.Create(mapType, (byte)num2, (byte)num);
  		}
  
+ 		public static void SaveMap() {
 @@ -1679,7 +_,7 @@
  										byte b5 = 0;
  										int num7;

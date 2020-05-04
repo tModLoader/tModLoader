@@ -30,7 +30,7 @@
 +
 +			writer.Write(count);
  			foreach (Tuple<int, Point> roomLocationPair in _roomLocationPairs) {
-+				if (current.Item1 >= Main.maxNPCTypes)
++				if (roomLocationPair.Item1 >= Main.maxNPCTypes)
 +					continue;
 +
  				writer.Write(roomLocationPair.Item1);

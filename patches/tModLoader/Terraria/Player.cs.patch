@@ -596,7 +596,7 @@
  			if (type == 3862)
  				num9 = 564;
  
-+			ItemLoader.OpenBossBag(type, this, ref num15);
++			ItemLoader.OpenBossBag(type, this, ref num9);
 -			if (num9 <= 0)
 +			if (num9 <= 0) {
 +				NPCLoader.blockLoot.Clear(); // clear blockloot
@@ -919,17 +919,19 @@
 +
 +				ItemLoader.UpdateInventory(item, this);
  			}
-+		}
- 
+-
 -			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
 -				if (armor[k].expertOnly && !Main.expertMode)
+-					continue;
+-
+-				int type2 = armor[k].type;
++		}
++
 +		public void VanillaUpdateEquip(Item item) {
 +			//for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
 +			{
 +				if (!item.expertOnly || Main.expertMode)
- 					continue;
--
--				int type2 = armor[k].type;
++					return;
 +				int type2 = item.type;
 +				// TODO: fake armor[k] to make these patches go away
  				if ((type2 == 15 || type2 == 707) && accWatch < 1)
@@ -1355,7 +1357,7 @@
  					meleeDamage += 0.05f;
  					magicDamage += 0.05f;
  					rangedDamage += 0.05f;
-@@ -6767,365 +_,381 @@
+@@ -6767,365 +_,382 @@
  					rangedCrit += 7;
  				}
  
@@ -1757,19 +1759,23 @@
 +
 +				ItemLoader.UpdateEquip(item, this);
  			}
-+		}
- 
+-
 -			bool flag = false;
 -			bool flag2 = false;
 -			bool flag3 = false;
 -			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
+-				if (armor[l].expertOnly && !Main.expertMode)
+-					continue;
+-
+-				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
++		}
++
 +		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
 +			//for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
 +			{
- 				if (armor[l].expertOnly && !Main.expertMode)
- 					continue;
--
--				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
++				if (item.expertOnly && !Main.expertMode)
++					return;
++
 +				if (item.type == 3810 || item.type == 3809 || item.type == 3812 || item.type == 3811)
  					dd2Accessory = true;
  
@@ -2869,7 +2875,7 @@
 +					else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
 +						item.SetDefaults(1596 + Main.curMusic - 14, false);
 +					else if (Main.curMusic < Main.maxMusic)
-+						item.SetDefaults(num7 + 562, false);
++						item.SetDefaults(num5 + 562, false);
 +					else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
 +						item.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
  				}
@@ -4242,7 +4248,7 @@
 +								TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
 +						}
 +
-+						flag3 = TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out tileObject, false);
++						flag3 = TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out objectData, false);
  						int num25 = 0;
  						int num26 = 0;
  						int x = 0;
@@ -4270,7 +4276,7 @@
  												int num83 = num81;
 +												if (ItemLoader.ConsumeItem(inventory[num83], this))
 -												inventory[num83].stack--;
-+													inventory[num84].stack--;
++													inventory[num83].stack--;
 +
  												if (inventory[num83].stack <= 0)
  													inventory[num83].SetDefaults();
@@ -4389,7 +4395,7 @@
  			if (num5 > 0) {
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
  				int number = Item.NewItem((int)vector.X, (int)vector.Y, 1, 1, num5, num6, noBroadcast: false, -1);
-@@ -24810,10 +_,13 @@
+@@ -24810,19 +_,24 @@
  		public int FishingLevel() {
  			int num = 0;
  			int fishingPole = inventory[selectedItem].fishingPole;
@@ -4404,11 +4410,23 @@
  				}
  			}
  
++			Item baitItem = null;
+ 			for (int j = 0; j < 58; j++) {
+ 				if (inventory[j].stack > 0 && inventory[j].bait > 0) {
+ 					if (inventory[j].type == 2673)
+ 						return -1;
+ 
+-					num = inventory[j].bait;
++					baitItem = inventory[j];
++					num = baitItem.bait;
+ 					break;
+ 				}
+ 			}
 @@ -24858,6 +_,7 @@
  			if (Main.moonPhase == 4)
  				num2 = (int)((float)num2 * 0.9f);
  
-+			PlayerHooks.GetFishingLevel(this, inventory[bestFishingPoleIndex], inventory[j], ref num2);
++			PlayerHooks.GetFishingLevel(this, inventory[bestFishingPoleIndex], baitItem, ref num2);
  			return num2;
  		}
  
@@ -4416,7 +4434,7 @@
  				return;
  			}
  
-+			if (ItemLoader.ConsumeItem(inventory[i], this))
++			if (ItemLoader.ConsumeItem(inventory[num], this))
 -			inventory[num].stack--;
 +				inventory[num].stack--;
  			if (inventory[num].stack <= 0)
@@ -4455,7 +4473,7 @@
 +						TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
 +				}
 +
-+				TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out tileObject, true);
++				TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out _, true);
 +			}
  
  			if (itemAnimation == 0 && altFunctionUse == 2)

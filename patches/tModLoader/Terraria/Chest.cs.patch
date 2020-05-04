@@ -18,7 +18,7 @@
  
  			if ((Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106) || (Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178) || (Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006) || (Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330) || (Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402) || (Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474))
  				return true;
-@@ -228,36 +_,48 @@
+@@ -228,6 +_,17 @@
  
  			short num;
  			int type;
@@ -36,30 +36,7 @@
  			switch (Main.tile[X, Y].frameX / 36) {
  				case 2:
  					num = 36;
- 					type = 11;
- 					AchievementsHelper.NotifyProgressionEvent(19);
- 					break;
- 				case 4:
- 					num = 36;
- 					type = 11;
- 					break;
- 				case 23:
- 				case 24:
- 				case 25:
- 				case 26:
- 				case 27:
- 					if (!NPC.downedPlantBoss)
- 						return false;
- 					num = 180;
- 					type = 11;
- 					AchievementsHelper.NotifyProgressionEvent(20);
- 					break;
- 				case 36:
- 				case 38:
- 				case 40:
- 					num = 36;
- 					type = 11;
- 					break;
+@@ -258,6 +_,7 @@
  				default:
  					return false;
  			}
@@ -92,7 +69,7 @@
  				}
  			}
  
-@@ -441,11 +_,11 @@
+@@ -441,10 +_,10 @@
  			}
  		}
  
@@ -100,12 +77,20 @@
 +		public int AddShop(Item newItem) {
  			int num = 0;
  			while (true) {
- 				if (num < 39) {
--					if (item[num] == null || item[num].type == 0)
-+					if (item[num] == null || item[num].type == 0 || num == 38) // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
+-				if (num < 39) {
++				if (num < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
+ 					if (item[num] == null || item[num].type == 0)
  						break;
  
- 					num++;
+@@ -452,7 +_,7 @@
+ 					continue;
+ 				}
+ 
+-				return;
++				break;
+ 			}
+ 
+ 			item[num] = newItem.Clone();
 @@ -463,6 +_,8 @@
  				if (item[num].value < 1)
  					item[num].value = 1;
@@ -115,7 +100,8 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -711,8 +_,11 @@
+@@ -710,9 +_,12 @@
+ 							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
 +						//patch file: num2

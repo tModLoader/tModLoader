@@ -348,11 +348,11 @@
  						num4 = 2;
  				}
  
-+				TileLoader.TreeGrowthFXGore(type, ref num2);
++				TileLoader.TreeGrowthFXGore(tile3.type, ref num2);
 +				if (num2 > 0)
 +					break;
 +
-+				TileLoader.PalmTreeGrowthFXGore(type, ref num2);
++				TileLoader.PalmTreeGrowthFXGore(tile3.type, ref num2);
 +				if (num2 > 0)
 +					break;
 +
@@ -399,7 +399,7 @@
  									return false;
  								case 3:
 -								case 20:
-+								case int _ when TileLoader.IsSapling(Main.tile[i, j].type):
++								case ushort _ when TileLoader.IsSapling(Main.tile[i, j].type):
  								case 24:
  								case 32:
  								case 61:
@@ -828,7 +828,7 @@
  
  			num2 = j - num2 / 18;
 -			if (TileID.Sets.BasicChest[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChest[Main.tile[num + 1, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + 1, num2 - 1].type] || Main.tile[num, num2 - 1].type == 88 || Main.tile[num + 1, num2 - 1].type == 88)
-+			if (TileID.Sets.BasicChest[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChest[Main.tile[num + 1, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + 1, num2 - 1].type] || TileLoader.IsDresser(Main.tile[num, num2 - 1]) || TileLoader.IsDresser(Main.tile[num + 1, num2 - 1]))
++			if (TileID.Sets.BasicChest[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChest[Main.tile[num + 1, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + 1, num2 - 1].type] || TileLoader.IsDresser(Main.tile[num, num2 - 1].type) || TileLoader.IsDresser(Main.tile[num + 1, num2 - 1].type))
  				return true;
  
  			return false;
@@ -1335,7 +1335,7 @@
  					case 26:
  					case 72:
  					case 88:
-+					case int _ when TileLoader.IsDresser(num):
++					case int t when TileLoader.IsDresser(t):
  						if (tile.type != type)
  							return false;
  						break;
@@ -1343,7 +1343,7 @@
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
-+				case int _ when TileLoader.IsDresser(num):
++				case ushort t when TileLoader.IsDresser(t):
  				case 88:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
  						return false;
