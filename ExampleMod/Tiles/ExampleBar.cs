@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -29,7 +30,7 @@ namespace ExampleMod.Tiles
 			int style = t.frameX / 18;
 			if (style == 0) // It can be useful to share a single tile with multiple styles. This code will let you drop the appropriate bar if you had multiple.
 			{
-				Item.NewItem(i * 16, j * 16, 16, 16, mod.ItemType("ExampleBar"));
+				Item.NewItem(i * 16, j * 16, 16, 16, ItemType<Items.Placeable.ExampleBar>());
 			}
 			return base.Drop(i, j);
 		}

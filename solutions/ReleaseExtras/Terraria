@@ -1,41 +1,7 @@
 #!/bin/bash
-# MonoKickstart Shell Script
-# Written by Ethan "flibitijibibo" Lee
 
 # Move to script's directory
 cd "`dirname "$0"`"
 
-# Get the system architecture
-UNAME=`uname`
-ARCH=`uname -m`
-BASENAME=`basename "$0"`
-
-# MonoKickstart picks the right libfolder, so just execute the right binary.
-if [ "$UNAME" == "Darwin" ]; then
-	ext=osx
-else
-	if [ "$ARCH" == "x86_64" ]; then
-		ext=x86_64
-	else
-		ext=x86
-	fi
-	for arg in "$@" 
-	do
-		case "$arg" in
-		-x86)	ext=x86
-			;;
-		-x64)	ext=x86_64
-			;;
-		esac
-	done
-fi
-
-KICKSTART=./tModLoader.bin.${ext}
-
-if [ ! -f KICKSTART ]; then
-    cp ./Terraria.bin.${ext} $KICKSTART
-fi
-
-export MONO_IOMAP=all
-$KICKSTART $@
-
+# simple forwarder for running tModLoader via steam
+bash tModLoader $@

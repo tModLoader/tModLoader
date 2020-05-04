@@ -1,3 +1,5 @@
+using ExampleMod.Dusts;
+using ExampleMod.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -5,6 +7,7 @@ using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs.Abomination
 {
@@ -77,7 +80,7 @@ namespace ExampleMod.NPCs.Abomination
 		public override void AI() {
 			if (Main.netMode != 1 && npc.localAI[0] == 0f) {
 				for (int k = 0; k < 5; k++) {
-					int captive = NPC.NewNPC((int)npc.position.X, (int)npc.position.Y, mod.NPCType("CaptiveElement"));
+					int captive = NPC.NewNPC((int)npc.position.X, (int)npc.position.Y, NPCType<CaptiveElement>());
 					Main.npc[captive].ai[0] = npc.whoAmI;
 					Main.npc[captive].ai[1] = k;
 					Main.npc[captive].ai[2] = 50 * (k + 1);
@@ -166,7 +169,7 @@ namespace ExampleMod.NPCs.Abomination
 				if (Main.expertMode) {
 					damage = (int)(damage / Main.expertDamage);
 				}
-				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, mod.ProjectileType("ElementBall"), damage, 3f, Main.myPlayer, BuffID.OnFire, 600f);
+				Projectile.NewProjectile(npc.Center.X, npc.Center.Y, delta.X, delta.Y, ProjectileType<ElementBall>(), damage, 3f, Main.myPlayer, BuffID.OnFire, 600f);
 				npc.netUpdate = true;
 			}
 			if (Main.expertMode) {
@@ -175,7 +178,7 @@ namespace ExampleMod.NPCs.Abomination
 			if (Main.rand.NextBool()) {
 				float radius = (float)Math.Sqrt(Main.rand.Next(sphereRadius * sphereRadius));
 				double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
-				Dust.NewDust(new Vector2(npc.Center.X + radius * (float)Math.Cos(angle), npc.Center.Y + radius * (float)Math.Sin(angle)), 0, 0, mod.DustType("Sparkle"), 0f, 0f, 0, default(Color), 1.5f);
+				Dust.NewDust(new Vector2(npc.Center.X + radius * (float)Math.Cos(angle), npc.Center.Y + radius * (float)Math.Sin(angle)), 0, 0, DustType<Sparkle>(), 0f, 0f, 0, default(Color), 1.5f);
 			}
 		}
 
@@ -190,7 +193,7 @@ namespace ExampleMod.NPCs.Abomination
 					}
 					else {
 						for (laser1Index = 0; laser1Index < 200; laser1Index++) {
-							if (Main.npc[laser1Index].type == mod.NPCType("CaptiveElement") && laser1 == Main.npc[laser1Index].ai[1]) {
+							if (Main.npc[laser1Index].type == NPCType<CaptiveElement>() && laser1 == Main.npc[laser1Index].ai[1]) {
 								break;
 							}
 						}
@@ -200,7 +203,7 @@ namespace ExampleMod.NPCs.Abomination
 					}
 					else {
 						for (laser2Index = 0; laser2Index < 200; laser2Index++) {
-							if (Main.npc[laser2Index].type == mod.NPCType("CaptiveElement") && laser2 == Main.npc[laser2Index].ai[1]) {
+							if (Main.npc[laser2Index].type == NPCType<CaptiveElement>() && laser2 == Main.npc[laser2Index].ai[1]) {
 								break;
 							}
 						}
@@ -210,7 +213,7 @@ namespace ExampleMod.NPCs.Abomination
 					if (Main.expertMode) {
 						damage = (int)(damage / Main.expertDamage);
 					}
-					Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, mod.ProjectileType("ElementLaser"), damage, 0f, Main.myPlayer, laser1Index, laser2Index);
+					Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, ProjectileType<ElementLaser>(), damage, 0f, Main.myPlayer, laser1Index, laser2Index);
 				}
 				else {
 					npc.localAI[0] = 2f;
@@ -260,7 +263,7 @@ namespace ExampleMod.NPCs.Abomination
 			}
 			if (Main.netMode != 1 && npc.life <= 0) {
 				Vector2 spawnAt = npc.Center + new Vector2(0f, (float)npc.height / 2f);
-				NPC.NewNPC((int)spawnAt.X, (int)spawnAt.Y, mod.NPCType("AbominationRun"));
+				NPC.NewNPC((int)spawnAt.X, (int)spawnAt.Y, NPCType<AbominationRun>());
 			}
 		}
 

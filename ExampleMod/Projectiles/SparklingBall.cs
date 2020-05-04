@@ -1,7 +1,9 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -19,7 +21,7 @@ namespace ExampleMod.Projectiles
 		public override void AI() {
 			projectile.velocity.Y += projectile.ai[0];
 			if (Main.rand.NextBool(3)) {
-				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f);
+				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f);
 			}
 		}
 
@@ -44,7 +46,7 @@ namespace ExampleMod.Projectiles
 
 		public override void Kill(int timeLeft) {
 			for (int k = 0; k < 5; k++) {
-				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, mod.DustType("Sparkle"), projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
+				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
 			}
 			Main.PlaySound(SoundID.Item25, projectile.position);
 		}

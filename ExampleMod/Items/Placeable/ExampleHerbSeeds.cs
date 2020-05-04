@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -16,12 +17,12 @@ namespace ExampleMod.Items.Placeable
 			item.width = 12;
 			item.height = 14;
 			item.value = 80;
-			item.createTile = mod.TileType<Tiles.ExampleHerb>();
+			item.createTile = TileType<Tiles.ExampleHerb>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType<ExampleBlock>(), 1);
+			recipe.AddIngredient(ItemType<ExampleBlock>(), 1);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

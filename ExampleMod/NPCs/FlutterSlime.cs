@@ -17,7 +17,7 @@ namespace ExampleMod.NPCs
 		public override void SetDefaults() {
 			npc.width = 32;
 			npc.height = 32;
-			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1.
+			npc.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			npc.damage = 7;
 			npc.defense = 2;
 			npc.lifeMax = 25;
@@ -91,7 +91,7 @@ namespace ExampleMod.NPCs
 			}
 			// In this state, a player has been targeted
 			else if (AI_State == State_Notice) {
-				/// If the targeted player is in attack range (250).
+				// If the targeted player is in attack range (250).
 				if (Main.player[npc.target].Distance(npc.Center) < 250f) {
 					// Here we use our Timer to wait .33 seconds before actually jumping. In FindFrame you'll notice AI_Timer also being used to animate the pre-jump crouch
 					AI_Timer++;

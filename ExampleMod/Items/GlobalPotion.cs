@@ -1,9 +1,11 @@
+using ExampleMod.Buffs;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
-	public class Potion : GlobalItem
+	public class GlobalPotion : GlobalItem
 	{
 		public override bool UseItem(Item item, Player player) {
 			if (item.healLife > 0) {
@@ -14,7 +16,7 @@ namespace ExampleMod.Items
 						heal = damage;
 					}
 					if (heal > 0) {
-						player.AddBuff(mod.BuffType("Undead2"), 2 * heal, false);
+						player.AddBuff(BuffType<Undead2>(), 2 * heal, false);
 					}
 				}
 			}

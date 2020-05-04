@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -140,7 +141,7 @@ namespace ExampleMod.Projectiles
 			item.CloneDefaults(ItemID.NebulaBlaze);
 			item.mana = 3;
 			item.damage = 3;
-			item.shoot = mod.ProjectileType<ExampleAnimatedPierce>();
+			item.shoot = ProjectileType<ExampleAnimatedPierce>();
 		}
 	}
 }

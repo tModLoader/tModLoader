@@ -5,9 +5,6 @@
     <Setting Name="SteamDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\terraria</Value>
     </Setting>
-    <Setting Name="MergedDiffCutoff" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2015-01-01</Value>
-    </Setting>
     <Setting Name="TerrariaDiffCutoff" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2015-01-01</Value>
     </Setting>
@@ -25,6 +22,12 @@
     </Setting>
     <Setting Name="FormatAfterDecompiling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SteamClientWinMD5" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">3179a1ec67d5f80bfb77175c403d59c7</Value>
+    </Setting>
+    <Setting Name="GoGClientWinMD5" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">b92f242bc874dddbf08f705661b313a9</Value>
     </Setting>
   </Settings>
 </SettingsFile>

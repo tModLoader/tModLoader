@@ -1,10 +1,10 @@
-﻿using MonoMod.RuntimeDetour.HookGen;
+﻿using MonoMod.Cil;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-// This shortens `c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);` to simply `c.Emit(Ldarg_0);`
+// This shortens `c.Emit(OpCodes.Ldarg_0);` to simply `c.Emit(Ldarg_0);`
 using static Mono.Cecil.Cil.OpCodes;
 
 namespace ExampleMod.Items.Accessories
@@ -13,24 +13,23 @@ namespace ExampleMod.Items.Accessories
 	class WaspNest : ModItem
 	{
 		public override bool Autoload(ref string name)
-		{
-			IL.Terraria.Player.beeType += HookBeeType;
-			return base.Autoload(ref name);
+        {
+            IL.Terraria.Player.beeType += HookBeeType;
+            return base.Autoload(ref name);
 		}
 
-		private void HookBeeType(HookIL il)
+		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/tModLoader/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade
+		private static int implementation;
+		private void HookBeeType(ILContext il)
 		{
-			// Start the Cursor at the start
-			var c = il.At(0);
+			var c = new ILCursor(il);
 
 			// Try to find where 566 is placed onto the stack
 			if (!c.TryGotoNext(i => i.MatchLdcI4(566)))
 				return; // Patch unable to be applied
 
-			// Choose a random implementation of the patch. This is just to show different patch approaches.
-			var random = new Terraria.Utilities.UnifiedRandom();
-			int choice = random.Next(3); // Main.rand is null during mod loading.
-			if (choice == 0)
+            // Showcase different patch approaches
+            if (implementation == 0)
 			{
 				// Move the cursor after 566 and onto the ret op.
 				c.Index++;
@@ -45,10 +44,10 @@ namespace ExampleMod.Items.Accessories
 					return returnValue;
 				});
 			}
-			else if (choice == 1)
+			else if (implementation == 1)
 			{
 				// Make a label to use later
-				var label = il.DefineLabel();
+				var label = c.DefineLabel();
 				// Push the Player instance onto the stack
 				c.Emit(Ldarg_0);
 				// Call a delegate popping the Player from the stack and pushing a bool
@@ -63,7 +62,7 @@ namespace ExampleMod.Items.Accessories
 			}
 			else
 			{
-				var label = il.DefineLabel();
+				var label = c.DefineLabel();
 
 				// Here we simply adapt the dnSpy output. This approach is tedious but easier if you don't understand IL instructions.
 				c.Emit(Ldarg_0);
@@ -88,9 +87,13 @@ namespace ExampleMod.Items.Accessories
 				// All the branches in the dnspy output jumped to this instruction, so we set the label to this instruction.
 				c.MarkLabel(label);
 			}
-		}
 
-		public override void SetStaticDefaults()
+
+            // change implementation every time the mod is reloaded
+            implementation = (implementation+1)%3;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");

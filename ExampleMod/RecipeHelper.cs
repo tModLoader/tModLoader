@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -55,8 +56,8 @@ namespace ExampleMod
 			// Useful for those who program in an IDE who wish to avoid spelling mistakes.
 			// What's also neat is that the references to classes can be automatically included in refactors, string literals cannot. (unless you have ReSharper)
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType<Items.BossItem>(), 10); // Items is our namespace (ExampleMod.Items), BossItem our class
-			recipe.AddTile(mod.TileType<Tiles.ExampleWorkbench>()); // Tiles is our namespace (ExampleMod.Tiles), ExampleWorkbench our class
+			recipe.AddIngredient(ItemType<Items.BossItem>(), 10); // Items is our namespace (ExampleMod.Items), BossItem our class
+			recipe.AddTile(TileType<Tiles.ExampleWorkbench>()); // Tiles is our namespace (ExampleMod.Tiles), ExampleWorkbench our class
 			recipe.SetResult(ItemID.LihzahrdPowerCell, 20);
 			recipe.AddRecipe();
 		}

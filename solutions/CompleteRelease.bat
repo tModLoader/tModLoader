@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11 Beta 3
+set version=v0.11.6.2
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -26,84 +26,106 @@ mkdir "%destinationFolder%"
 set win=%destinationFolder%\tModLoader Windows %version%
 set mac=%destinationFolder%\tModLoader Mac %version%
 set lnx=%destinationFolder%\tModLoader Linux %version%
-set winmc=%destinationFolder%\ModCompile_Windows
-set monomc=%destinationFolder%\ModCompile_Mono
+set mcfna=%destinationFolder%\ModCompile_FNA
+set mcxna=%destinationFolder%\ModCompile_XNA
+set pdbs=%destinationFolder%\pdbs
 
 mkdir "%win%"
 mkdir "%mac%"
 mkdir "%lnx%"
-mkdir "%winmc%"
-mkdir "%monomc%"
-mkdir "%mac%\mono"
-
-:: TODO: Automatically create version string file. Or have setup.sln copy it to ReleaseExtras
+mkdir "%mcfna%"
+mkdir "%mcxna%"
+mkdir "%pdbs%"
 
 :: Windows release
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%win%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\WindowsServerRelease\Terraria.exe "%win%\tModLoaderServer.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.exe "%win%\Terraria.exe" /y
+copy ..\src\tModLoader\bin\WindowsServerRelease\net45\Terraria.exe "%win%\tModLoaderServer.exe" /y
 copy ..\installer2\WindowsInstaller.jar "%win%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Windows.txt "%win%\README.txt" /y
-copy ReleaseExtras\start-tModLoaderServer.bat "%win%\start-tModLoaderServer.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%\start-tModLoaderServer-steam-friends.bat" /y
-copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%\start-tModLoaderServer-steam-private.bat" /y
+copy ReleaseExtras\start-tModLoaderServer.bat "%win%" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-friends.bat "%win%" /y
+copy ReleaseExtras\start-tModLoaderServer-steam-private.bat "%win%" /y
 
-call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%win%" -destination "%win%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%win%" "%win%.zip"
 
 :: Windows ModCompile
-copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%winmc%\tModLoaderMac.exe" /y
-copy ..\references\FNA.dll "%winmc%\FNA.dll" /y
-copy ..\references\Mono.Cecil.Pdb.dll "%winmc%\Mono.Cecil.Pdb.dll" /y
-copy ..\RoslynWrapper\bin\Release\RoslynWrapper.dll "%winmc%\RoslynWrapper.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Reflection.Metadata.dll "%winmc%\System.Reflection.Metadata.dll" /y
-copy ..\RoslynWrapper\bin\Release\System.Collections.Immutable.dll "%winmc%\System.Collections.Immutable.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.dll "%winmc%\Microsoft.CodeAnalysis.dll" /y
-copy ..\RoslynWrapper\bin\Release\Microsoft.CodeAnalysis.CSharp.dll "%winmc%\Microsoft.CodeAnalysis.CSharp.dll" /y
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%winmc%\Terraria.xml" /y
-copy ReleaseExtras\version "%winmc%\version" /y
+:: TODO: investigate why this isn't working on my machine
+:: for /f %%i in ('..\setup\bin\setup --steamdir') do set steamdir=%%i
+set steamdir=C:\Program Files (x86)\Steam\steamapps\common\Terraria
+:: Make sure to clear out ModCompile and run Setup Debugging so ModCompile folder is clean from old versions.
+copy "%steamdir%\ModCompile" "%mcfna%"
+del "%mcfna%"\buildlock 2>nul
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.xml "%mcfna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\tModLoader.pdb "%mcfna%" /y
+copy ..\references\MonoMod.RuntimeDetour.xml "%mcfna%" /y
+copy ..\references\MonoMod.Utils.xml "%mcfna%" /y
 
-call zipjs.bat zipDirItems -source "%winmc%" -destination "%winmc%.zip" -keep yes -force yes
-
-:: Mac release
-copy ..\src\tModLoader\bin\x86\MacRelease\Terraria.exe "%mac%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\MacServerRelease\Terraria.exe "%mac%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Mac "%mac%\tModLoaderServer" /y
-
-copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
-copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
-copy ReleaseExtras\Terraria.exe.config "%mac%\Terraria.exe.config" /y
-
-copy ReleaseExtras\macconfig "%mac%\mono\config" /y
-
-call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%mcfna%" -destination "%mcfna%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mcfna%" "%mcfna%.zip"
 
 :: Linux release
-copy ..\src\tModLoader\bin\x86\LinuxRelease\Terraria.exe "%lnx%\Terraria.exe" /y
-copy ..\src\tModLoader\bin\x86\LinuxServerRelease\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
-copy ReleaseExtras\tModLoaderServer_Linux "%lnx%\tModLoaderServer" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\Terraria.exe "%lnx%\tModLoader.exe" /y
+copy ..\src\tModLoader\bin\LinuxServerRelease\net45\Terraria.exe "%lnx%\tModLoaderServer.exe" /y
+copy ReleaseExtras\tModLoader-mono "%lnx%\tModLoader-mono" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader-kick" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoader" /y
+copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
+copy ReleaseExtras\Terraria "%lnx%\Terraria" /y
+copy ..\references\I18N.dll "%lnx%\I18N.dll" /y
+copy ..\references\I18N.West.dll "%lnx%\I18N.West.dll" /y
 
 copy ..\installer2\LinuxInstaller.jar "%lnx%\tModLoaderInstaller.jar" /y
 copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
-copy ReleaseExtras\Terraria.exe.config "%lnx%\Terraria.exe.config" /y
 
-call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
+:: call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
+
+:: Mac release
+copy "%lnx%" "%mac%"
+copy ..\src\tModLoader\bin\MacRelease\net45\Terraria.exe "%mac%\tModLoader.exe" /y
+copy ..\src\tModLoader\bin\MacServerRelease\net45\Terraria.exe "%mac%\tModLoaderServer.exe" /y
+
+copy ..\installer2\MacInstaller.jar "%mac%\tModLoaderInstaller.jar" /y
+copy ReleaseExtras\README_Mac.txt "%mac%\README.txt" /y
+copy ReleaseExtras\osx\libMonoPosixHelper.dylib "%mac%\libMonoPosixHelper.dylib" /y
+
+::call zipjs.bat zipDirItems -source "%mac%" -destination "%mac%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mac%" "%mac%.zip"
 
 :: Mono ModCompile
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.exe "%monomc%\tModLoaderWindows.exe" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.dll "%monomc%\Microsoft.Xna.Framework.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Game.dll "%monomc%\Microsoft.Xna.Framework.Game.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Graphics.dll "%monomc%\Microsoft.Xna.Framework.Graphics.dll" /y
-copy ReleaseExtras\Microsoft.Xna.Framework.Xact.dll "%monomc%\Microsoft.Xna.Framework.Xact.dll" /y
-copy ..\src\tModLoader\bin\x86\WindowsRelease\Terraria.xml "%monomc%\Terraria.xml" /y
-copy ReleaseExtras\version "%monomc%\version" /y
+copy "%mcfna%" "%mcxna%"
+del "%mcxna%\tModLoader.FNA.exe"
+del "%mcxna%\FNA.dll"
+del "%mcxna%\tModLoader.pdb"
+copy ..\src\tModLoader\bin\MacRelease\net45\tModLoader.pdb "%mcxna%\tModLoader_Mac.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\tModLoader.pdb "%mcxna%\tModLoader_Linux.pdb" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Terraria.exe "%mcxna%\tModLoader.XNA.exe" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Game.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Graphics.dll "%mcxna%" /y
+copy ..\src\tModLoader\bin\WindowsRelease\net45\Microsoft.Xna.Framework.Xact.dll "%mcxna%" /y
 
-call zipjs.bat zipDirItems -source "%monomc%" -destination "%monomc%.zip" -keep yes -force yes
+::call zipjs.bat zipDirItems -source "%mcxna%" -destination "%mcxna%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "%mcxna%" "%mcxna%.zip"
+
+:: PDB backups
+copy ..\src\tModLoader\bin\WindowsRelease\net45\tModLoader.pdb "%pdbs%\WindowsRelease.pdb" /y
+copy ..\src\tModLoader\bin\WindowsServerRelease\net45\tModLoaderServer.pdb "%pdbs%\WindowsServerRelease.pdb" /y
+copy ..\src\tModLoader\bin\MacRelease\net45\tModLoader.pdb "%pdbs%\MacRelease.pdb" /y
+copy ..\src\tModLoader\bin\MacServerRelease\net45\tModLoaderServer.pdb "%pdbs%\MacServerRelease.pdb" /y
+copy ..\src\tModLoader\bin\LinuxRelease\net45\tModLoader.pdb "%pdbs%\LinuxRelease.pdb" /y
+copy ..\src\tModLoader\bin\LinuxServerRelease\net45\tModLoaderServer.pdb "%pdbs%\LinuxServerRelease.pdb" /y
+call python ZipAndMakeExecutable.py "%pdbs%" "%pdbs%.zip"
 
 :: CleanUp, Delete temp Folders
 rmdir "%win%" /S /Q
 rmdir "%mac%" /S /Q
 rmdir "%lnx%" /S /Q
-rmdir "%winmc%" /S /Q
-rmdir "%monomc%" /S /Q
+rmdir "%mcfna%" /S /Q
+rmdir "%mcxna%" /S /Q
+rmdir "%pdbs%" /S /Q
 
 :: Copy to public DropBox Folder
 ::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"
@@ -114,7 +136,8 @@ rmdir "%monomc%" /S /Q
 rmdir ..\ExampleMod\bin /S /Q
 rmdir ..\ExampleMod\obj /S /Q
 :: TODO: ignore .vs folder
-call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
+::call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "..\ExampleMod" "%destinationFolder%\ExampleMod %version%.zip" ExampleMod\
 ::copy "%destinationFolder%\ExampleMod %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
 
 echo(

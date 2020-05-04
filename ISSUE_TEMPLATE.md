@@ -1,28 +1,32 @@
 <!-- 
+The tModLoader software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the software developers be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
-PLEASE use the following template when creating an issue. We can't exactly know what every issue is about before it's posted, so we set a baseline of information required to suit most issues.
+PLEASE ONLY REPORT AN ISSUE IF YOU'RE CERTAIN THERE'S A PROBLEM WITH TMODLOADER
 
-PLEASE DO NOT create issues for the following problems: problem installing tModLoader, forums offline, a specific mod crash.
-Do you have any of these issues? Or doo you want to ask a question? Are you looking for support? Our discord server is more suitable for this: http://discord.me/tmodloader 
+Please look at the faq. Your issue might be well known with an easy fix. https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ 
 
-You should only create an issue thread to report an actual issue related to the tModLoader API.
-If you think something is mod related, report to the mod's respective author(s)
+If you still need help, join our Discord chat, and read the pinned posts in #support https://tmodloader.net/discord
 
-Prerequisites
- * Checked the FAQs for common issues and their solutions: http://forums.terraria.org/index.php?threads/.28901/
- * Checked that your issue isn't already filed: https://github.com/bluemagic123/tModLoader/issues
+You are free to discard this template if you have a suggestion, but please kindly use the template to report issues with tML.
 -->
+
 ### Description
 <!-- Describe your issue(s) here. What is the issue?
 Please keep this as concise as possible, preferably a single line describing the issue. For example:
 "When I press X button in menu Y, the component Z becomes unclickable" -->
+
+### Log File
+<!-- Please attach the log file here. You'll find the log files in the logs folder. Look for client.log. 
+Windows Logs: C:\Documents\My Games\Terraria\ModLoader\Logs
+Linux Logs: ~/.local/share/Terraria/ModLoader/Logs/ or $XDG_DATA_HOME/Terraria/ModLoader/Logs/
+Mac Logs: ~/Library/Application support/Terraria/ModLoader/Logs/  -->
 
 ### Steps to Reproduce
 <!-- Please describe the steps to reproduce this issue -->
 
 1. [First Step]
 2. [Second Step]
-3. [and so on...]
+3. [And so on...]
 
 ### Expected behavior 
 <!-- What should be happening? If you don't know, leave what you think should happen -->
@@ -32,13 +36,6 @@ Please keep this as concise as possible, preferably a single line describing the
 
 ### Reproduction frequency
 <!-- How often are you reliably able to reproduce this issue? -->
-
-### Versions
-<!-- Which versions are applicable for this issue?
-The tModLoader version should be notified in the bottom left corner when in the main menu. Follow this format: `vX.X.X.X tModLoader` or `tModLoader vX.X.X.X` (MAJOR.MINOR.BUILD.REVISION) -->
-
-### Mods
-<!-- List all of the mods you are using when reproducing this issue. We'd appreciate it if you could also test this without mods enabled (if applicable) -->
 
 ### Additional Information
 <!-- Any additional information, configuration or data that might be necessary to reproduce the issue. -->

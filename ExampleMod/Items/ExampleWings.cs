@@ -1,5 +1,7 @@
+using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -8,8 +10,7 @@ namespace ExampleMod.Items
 	{
 		public override bool Autoload(ref string name)
 		{
-			return !ExampleMod.exampleServerConfig.DisableExampleWings;
-			//return !mod.GetConfig<ExampleConfigServer>().DisableExampleWings;
+			return !GetInstance<ExampleConfigServer>().DisableExampleWings;
 		}
 
 		public override void SetStaticDefaults() {
@@ -44,8 +45,8 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("EquipMaterial"), 60);
-			recipe.AddTile(mod.TileType("ExampleWorkbench"));
+			recipe.AddIngredient(ItemType<EquipMaterial>(), 60);
+			recipe.AddTile(TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

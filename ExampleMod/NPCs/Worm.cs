@@ -3,6 +3,7 @@ using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.NPCs
 {
@@ -88,9 +89,9 @@ namespace ExampleMod.NPCs
 		public override void Init() {
 			minLength = 6;
 			maxLength = 12;
-			tailType = mod.NPCType<ExampleWormTail>();
-			bodyType = mod.NPCType<ExampleWormBody>();
-			headType = mod.NPCType<ExampleWormHead>();
+			tailType = NPCType<ExampleWormTail>();
+			bodyType = NPCType<ExampleWormBody>();
+			headType = NPCType<ExampleWormHead>();
 			speed = 5.5f;
 			turnSpeed = 0.045f;
 		}

@@ -1,6 +1,8 @@
+using ExampleMod.Items.Abomination;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -18,13 +20,13 @@ namespace ExampleMod.Items.Placeable
 			item.consumable = true;
 			item.rare = 10;
 			item.value = Item.buyPrice(0, 20, 0, 0);
-			item.createTile = mod.TileType("ElementalPurge");
+			item.createTile = TileType<Tiles.ElementalPurge>();
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("VoidMonolith"));
-			recipe.AddIngredient(mod.ItemType("ElementResidue"));
+			recipe.AddIngredient(ItemType<VoidMonolith>());
+			recipe.AddIngredient(ItemType<ElementResidue>());
 			recipe.AddTile(TileID.CrystalBall);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

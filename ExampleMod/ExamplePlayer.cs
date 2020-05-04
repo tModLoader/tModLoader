@@ -1,5 +1,10 @@
+using ExampleMod.Buffs;
+using ExampleMod.Dusts;
 using ExampleMod.Items;
+using ExampleMod.Items.Abomination;
+using ExampleMod.NPCs;
 using ExampleMod.NPCs.PuritySpirit;
+using ExampleMod.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,6 +17,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -19,7 +25,6 @@ namespace ExampleMod
 	// several effects and items in ExampleMod. See SimpleModPlayer for a very simple example of how ModPlayer classes work.
 	public class ExamplePlayer : ModPlayer
 	{
-		private const int saveVersion = 0;
 		public int score;
 		public bool eFlames;
 		public bool elementShield;
@@ -43,6 +48,8 @@ namespace ExampleMod
 		public bool exampleShield;
 		public bool infinity;
 		public bool strongBeesUpgrade;
+		public bool manaHeart;
+		public int manaHeartCounter;
 		// These 5 relate to ExampleCostume.
 		public bool blockyAccessoryPrevious;
 		public bool blockyAccessory;
@@ -52,7 +59,7 @@ namespace ExampleMod
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 		public bool examplePersonGiftReceived;
 
-		private const int maxExampleLifeFruits = 10;
+		public const int maxExampleLifeFruits = 10;
 		public int exampleLifeFruits;
 
 		public bool ZoneExample;
@@ -72,6 +79,10 @@ namespace ExampleMod
 			exampleShield = false;
 			infinity = false;
 			strongBeesUpgrade = false;
+			if (!manaHeart) {
+				manaHeartCounter = 0;
+			}
+			manaHeart = false;
 			blockyAccessoryPrevious = blockyAccessory;
 			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 
@@ -80,7 +91,7 @@ namespace ExampleMod
 
 		public override void OnEnterWorld(Player player) {
 			// We can refresh UI using OnEnterWorld. OnEnterWorld happens after Load, so nonStopParty is the correct value.
-			ExampleMod.Instance.ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
+			GetInstance<ExampleMod>().ExampleUI.ExampleButton.HoverText = "SendClientChanges Example: Non-Stop Party " + (nonStopParty ? "On" : "Off");
 		}
 
 		// In MP, other clients need accurate information about your player or else bugs happen.
@@ -126,7 +137,7 @@ namespace ExampleMod
 		}
 
 		public override TagCompound Save() {
-			// Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
+			// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
 			return new TagCompound {
 				// {"somethingelse", somethingelse}, // To save more data, add additional lines
 				{"score", score},
@@ -143,7 +154,7 @@ namespace ExampleMod
 		public override void Load(TagCompound tag) {
 			score = tag.GetInt("score");
 			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
-			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/blushiemagic/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
+			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
 			nonStopParty = tag.GetBool("nonStopParty");
 			examplePersonGiftReceived = tag.GetBool(nameof(examplePersonGiftReceived));
 		}
@@ -155,7 +166,7 @@ namespace ExampleMod
 
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
 			Item item = new Item();
-			item.SetDefaults(mod.ItemType("ExampleItem"));
+			item.SetDefaults(ItemType<ExampleItem>());
 			item.stack = 5;
 			items.Add(item);
 		}
@@ -193,7 +204,7 @@ namespace ExampleMod
 		}
 
 		public override void UpdateBiomeVisuals() {
-			bool usePurity = NPC.AnyNPCs(mod.NPCType("PuritySpirit"));
+			bool usePurity = NPC.AnyNPCs(NPCType<PuritySpirit>());
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
 			bool useVoidMonolith = voidMonolith && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
@@ -208,10 +219,12 @@ namespace ExampleMod
 
 		public override void UpdateBadLifeRegen() {
 			if (eFlames) {
+				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
 				if (player.lifeRegen > 0) {
 					player.lifeRegen = 0;
 				}
 				player.lifeRegenTime = 0;
+				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second.
 				player.lifeRegen -= 16;
 			}
 			if (healHurt > 0) {
@@ -235,7 +248,7 @@ namespace ExampleMod
 				bool flag = false;
 				for (int k = 0; k < 200; k++) {
 					NPC npc = Main.npc[k];
-					if (npc.active && npc.type == mod.NPCType("PuritySpirit")) {
+					if (npc.active && npc.type == NPCType<PuritySpirit>()) {
 						flag = true;
 						PuritySpiritTeleport(npc);
 						break;
@@ -245,13 +258,13 @@ namespace ExampleMod
 					heroLives = 0;
 				}
 				if (heroLives == 1) {
-					player.AddBuff(mod.BuffType<Buffs.HeroOne>(), 2); // Consider using this alternate method call for maintainable code.
+					player.AddBuff(BuffType<Buffs.HeroOne>(), 2);
 				}
 				else if (heroLives == 2) {
-					player.AddBuff(mod.BuffType("HeroTwo"), 2);
+					player.AddBuff(BuffType<Buffs.HeroTwo>(), 2);
 				}
 				else if (heroLives == 3) {
-					player.AddBuff(mod.BuffType("HeroThree"), 3);
+					player.AddBuff(BuffType<Buffs.HeroThree>(), 3);
 				}
 			}
 			if (purityDebuffCooldown > 0) {
@@ -330,10 +343,10 @@ namespace ExampleMod
 				}
 			}
 			if (flag || Main.expertMode || Main.rand.NextBool()) {
-				player.AddBuff(mod.BuffType("Undead"), 1800, false);
+				player.AddBuff(BuffType<Buffs.Undead>(), 1800, false);
 			}
 			for (int k = 0; k < 25; k++) {
-				Dust.NewDust(player.position, player.width, player.height, mod.DustType("Negative"), 0f, -1f, 0, default(Color), 2f);
+				Dust.NewDust(player.position, player.width, player.height, DustType<Dusts.Negative>(), 0f, -1f, 0, default(Color), 2f);
 			}
 		}
 
@@ -346,7 +359,7 @@ namespace ExampleMod
 		public override void UpdateVanityAccessories() {
 			for (int n = 13; n < 18 + player.extraAccessorySlots; n++) {
 				Item item = player.armor[n];
-				if (item.type == mod.ItemType<Items.Armor.ExampleCostume>()) {
+				if (item.type == ItemType<Items.Armor.ExampleCostume>()) {
 					blockyHideVanity = false;
 					blockyForceVanity = true;
 				}
@@ -356,7 +369,7 @@ namespace ExampleMod
 		public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
 			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
 			if (player.townNPCs >= 1 && blockyAccessory) {
-				player.AddBuff(mod.BuffType<Buffs.Blocky>(), 60, true);
+				player.AddBuff(BuffType<Buffs.Blocky>(), 60, true);
 			}
 		}
 
@@ -436,6 +449,7 @@ namespace ExampleMod
 				}
 				customDamage = true;
 			}
+			if (blockyAccessory) playSound = false;
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
@@ -443,18 +457,19 @@ namespace ExampleMod
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+			if (blockyAccessory) Main.PlaySound(SoundID.Zombie, player.position, 13);
 			if (elementShield && damage > 1.0) {
 				if (elementShields < 6) {
 					int k;
 					bool flag = false;
 					for (k = 3; k < 8 + player.extraAccessorySlots; k++) {
-						if (player.armor[k].type == mod.ItemType("SixColorShield")) {
+						if (player.armor[k].type == ItemType<SixColorShield>()) {
 							flag = true;
 							break;
 						}
 					}
 					if (flag) {
-						Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, mod.ProjectileType("ElementShield"), player.GetWeaponDamage(player.armor[k]), player.GetWeaponKnockback(player.armor[k], 2f), player.whoAmI, elementShields++);
+						Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ProjectileType<ElementShield>(), player.GetWeaponDamage(player.armor[k]), player.GetWeaponKnockback(player.armor[k], 2f), player.whoAmI, elementShields++);
 					}
 				}
 				elementShieldTimer = 600;
@@ -462,7 +477,7 @@ namespace ExampleMod
 			if (heroLives > 0) {
 				for (int k = 0; k < 200; k++) {
 					NPC npc = Main.npc[k];
-					if (npc.active && npc.type == mod.NPCType("PuritySpirit")) {
+					if (npc.active && npc.type == NPCType<PuritySpirit>()) {
 						PuritySpirit modNPC = (PuritySpirit)npc.modNPC;
 						if (modNPC.attack >= 0) {
 							double proportion = damage / player.statLifeMax2;
@@ -481,6 +496,12 @@ namespace ExampleMod
 							}
 						}
 					}
+				}
+			}
+			if (player.mount._mountSpecificData is Mounts.Car.CarSpecificData balloons) {
+				if (balloons.count > 0) {
+					balloons.count--;
+					Main.PlaySound(SoundID.Item38, player.position);
 				}
 			}
 		}
@@ -518,6 +539,25 @@ namespace ExampleMod
 			return exampleShield ? 1.5f : 1f;
 		}
 
+		public override void OnConsumeMana(Item item, int manaConsumed) {
+			if (manaHeart) {
+				manaHeartCounter += manaConsumed;
+				if (manaHeartCounter >= 200) { 					
+					if (Main.netMode != NetmodeID.Server) {
+						Main.PlaySound(SoundID.Item4, player.position);
+						player.statLife += 20;
+						if (Main.myPlayer == player.whoAmI) {
+							player.HealEffect(20, true);
+						}
+						if (player.statLife > player.statLifeMax2) {
+							player.statLife = player.statLifeMax2;
+						}
+					}
+					manaHeartCounter -= 200;
+				}
+			}
+		}
+
 		public override void AnglerQuestReward(float quality, List<Item> rewardItems) {
 			if (voidMonolith) {
 				Item sticky = new Item();
@@ -539,15 +579,15 @@ namespace ExampleMod
 				return;
 			}
 			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.NextBool(3)) {
-				caughtType = mod.ItemType("SparklingSphere");
+				caughtType = ItemType<SparklingSphere>();
 			}
-			if (player.gravDir == -1f && questFish == mod.ItemType("ExampleQuestFish") && Main.rand.NextBool()) {
-				caughtType = mod.ItemType("ExampleQuestFish");
+			if (player.gravDir == -1f && questFish == ItemType<ExampleQuestFish>() && Main.rand.NextBool()) {
+				caughtType = ItemType<ExampleQuestFish>();
 			}
 		}
 
 		public override void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel) {
-			if (player.FindBuffIndex(mod.BuffType("CarMount")) > -1) {
+			if (player.FindBuffIndex(BuffType<CarMount>()) > -1) {
 				fishingLevel = (int)(fishingLevel * 1.1f);
 			}
 		}
@@ -572,7 +612,7 @@ namespace ExampleMod
 		public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 			if (eFlames) {
 				if (Main.rand.NextBool(4) && drawInfo.shadow == 0f) {
-					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, mod.DustType("EtherealFlame"), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
+					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, DustType<EtherealFlame>(), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default(Color), 3f);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 1.8f;
 					Main.dust[dust].velocity.Y -= 0.5f;
@@ -638,7 +678,7 @@ namespace ExampleMod
 				DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Lighting.GetColor((int)((drawInfo.position.X + drawPlayer.width / 2f) / 16f), (int)((drawInfo.position.Y - 4f - texture.Height / 2f) / 16f)), 0f, new Vector2(texture.Width / 2f, texture.Height), 1f, SpriteEffects.None, 0);
 				Main.playerDrawData.Add(data);
 				for (int k = 0; k < 2; k++) {
-					int dust = Dust.NewDust(new Vector2(drawInfo.position.X + drawPlayer.width / 2f - texture.Width / 2f, drawInfo.position.Y - 4f - texture.Height), texture.Width, texture.Height, mod.DustType("Smoke"), 0f, 0f, 0, Color.Black);
+					int dust = Dust.NewDust(new Vector2(drawInfo.position.X + drawPlayer.width / 2f - texture.Width / 2f, drawInfo.position.Y - 4f - texture.Height), texture.Width, texture.Height, DustType<Smoke>(), 0f, 0f, 0, Color.Black);
 					Main.dust[dust].velocity += drawPlayer.velocity * 0.25f;
 					Main.playerDrawDust.Add(dust);
 				}
@@ -665,7 +705,7 @@ namespace ExampleMod
 		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
 		{
 			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
-			if (vendor.type == mod.NPCType("Example Person") && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
+			if (vendor.type == NPCType<ExamplePerson>() && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
 			{
 				examplePersonGiftReceived = true;
 				foreach (var shopItem in shop)
@@ -681,7 +721,7 @@ namespace ExampleMod
 		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
 		{
 			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
-			if (vendor.type == mod.NPCType("Example Person") && (ExampleMod.exampleServerConfig.ExamplePersonFreeGiftList?.Any(x => x.GetID() == item.type) ?? false))
+			if (vendor.type == NPCType<ExamplePerson>() && (GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
 			{
 				examplePersonGiftReceived = false;
 				item.TurnToAir();

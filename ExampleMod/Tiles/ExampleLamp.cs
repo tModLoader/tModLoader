@@ -6,10 +6,11 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
-	// This class shows off many things common to Lamp tiles in Terraria. The process for creating this example is detailed in: https://github.com/blushiemagic/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#examplelamp-tile
+	// This class shows off many things common to Lamp tiles in Terraria. The process for creating this example is detailed in: https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#examplelamp-tile
 	// If you can't figure out how to recreate a vanilla tile, see that guide for instructions on how to figure it out yourself.
 	internal class ExampleLamp : ModTile
 	{
@@ -31,7 +32,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType<Items.Placeable.ExampleLamp>());
+			Item.NewItem(i * 16, j * 16, 16, 48, ItemType<Items.Placeable.ExampleLamp>());
 		}
 
 		public override void HitWire(int i, int j) {
@@ -107,7 +108,7 @@ namespace ExampleMod.Tiles
 			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 			var flameTexture = mod.GetTexture("Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 
-			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(ulong)i);
+			ulong num190 = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i);
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref num190, -10, 11) * 0.15f;

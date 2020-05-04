@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -13,7 +14,7 @@ namespace ExampleMod.Items
 		public override void SetStaticDefaults() {
 			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
 			Tooltip.SetDefault("How are you feeling today?"
-				+ $"\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{item.type}][i:{mod.ItemType<CarKey>()}][i/s123:{ItemID.Ectoplasm}]");
+				+ $"\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{item.type}][i:{ItemType<CarKey>()}][i/s123:{ItemID.Ectoplasm}]");
 
 			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.ItemNoGravity[item.type] = true;
@@ -54,15 +55,11 @@ namespace ExampleMod.Items
 
 			// You can also remove a specific line, if you have access to that object:
 			//tooltips.Remove(tooltipLine);
-
-			// You can also remove a range from the list
-			// For example, this would remove the first 4 lines:
-			//tooltips.RemoveRange(0, 4);
 		}
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"));
+			recipe.AddIngredient(ItemType<ExampleItem>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

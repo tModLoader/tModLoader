@@ -1,5 +1,7 @@
+using ExampleMod.Tiles;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Weapons
 {
@@ -30,11 +32,15 @@ namespace ExampleMod.Items.Weapons
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"), 10);
-			recipe.AddTile(mod.TileType("ExampleWorkbench"));
+			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
+			recipe.AddTile(TileType<ExampleWorkbench>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
+
+		/*
+		 * Feel free to uncomment any of the examples below to see what they do
+		 */
 
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
@@ -138,7 +144,7 @@ namespace ExampleMod.Items.Weapons
 		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
 		{
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
-			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, mod.ProjectileType<Projectiles.ExampleBullet>() });
+			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ProjectileType<Projectiles.ExampleBullet>() });
 			return true;
 		}*/
 	}

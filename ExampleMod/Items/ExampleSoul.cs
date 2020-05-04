@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -51,7 +52,7 @@ namespace ExampleMod.Items
 	{
 		public override void NPCLoot(NPC npc) {
 			if (Main.player[(int)Player.FindClosest(npc.position, npc.width, npc.height)].GetModPlayer<ExamplePlayer>().ZoneExample) {
-				Item.NewItem(npc.getRect(), mod.ItemType("ExampleSoul"), 1);
+				Item.NewItem(npc.getRect(), ItemType<ExampleSoul>(), 1);
 			}
 		}
 	}

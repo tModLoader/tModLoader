@@ -23,7 +23,7 @@ namespace ExampleMod.Projectiles
 			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
 			projectile.penetrate = 5;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
 			projectile.timeLeft = 600;          //The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			projectile.alpha = 255;             //The transparency of the projectile, 255 for completely transparent. (aiStyle 1 quickly fades the projectile in)
+			projectile.alpha = 255;             //The transparency of the projectile, 255 for completely transparent. (aiStyle 1 quickly fades the projectile in) Make sure to delete this if you aren't using an aiStyle that fades in. You'll wonder why your projectile is invisible.
 			projectile.light = 0.5f;            //How much light emit around the projectile
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?

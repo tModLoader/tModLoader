@@ -1,8 +1,10 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.PuritySpirit
 {
@@ -30,7 +32,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public override void AI() {
 			NPC source = Main.npc[(int)projectile.ai[0]];
-			if (!source.active || source.type != mod.NPCType("PuritySpirit")) {
+			if (!source.active || source.type != NPCType<NPCs.PuritySpirit.PuritySpirit>()) {
 				projectile.Kill();
 				return;
 			}
@@ -93,7 +95,7 @@ namespace ExampleMod.Projectiles.PuritySpirit
 
 		public void CreateDust(Vector2 pos) {
 			if (Main.rand.NextBool(5)) {
-				int dust = Dust.NewDust(pos, projectile.width, projectile.height, mod.DustType("Smoke"), 0f, 0f, 0, new Color(0, 180, 0));
+				int dust = Dust.NewDust(pos, projectile.width, projectile.height, DustType<Smoke>(), 0f, 0f, 0, new Color(0, 180, 0));
 				Main.dust[dust].scale = 2f;
 				Main.dust[dust].velocity *= 0.5f;
 				Main.dust[dust].noLight = true;

@@ -1,3 +1,4 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -6,6 +7,7 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -36,8 +38,8 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Torch");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Sparkle");
-			drop = mod.ItemType("ExampleTorch");
+			dustType = DustType<Sparkle>();
+			drop = ItemType<Items.Placeable.ExampleTorch>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Torches };
 			torch = true;
@@ -67,7 +69,7 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(ulong)i);
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i);
 			Color color = new Color(100, 100, 100, 0);
 			int frameX = Main.tile[i, j].frameX;
 			int frameY = Main.tile[i, j].frameY;

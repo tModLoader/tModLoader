@@ -1,3 +1,6 @@
+using ExampleMod.Items;
+using ExampleMod.NPCs;
+using ExampleMod.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -10,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
 {
@@ -34,6 +38,7 @@ namespace ExampleMod
 			downedPuritySpirit = false;
 			VolcanoCountdown = 0;
 			VolcanoTremorTime = 0;
+			ExampleTravelingMerchant.spawnTime = double.MaxValue;
 		}
 
 		public override TagCompound Save() {
@@ -48,6 +53,7 @@ namespace ExampleMod
 
 			return new TagCompound {
 				["downed"] = downed,
+				["traveler"] = ExampleTravelingMerchant.Save()
 			};
 		}
 
@@ -55,6 +61,7 @@ namespace ExampleMod
 			var downed = tag.GetList<string>("downed");
 			downedAbomination = downed.Contains("abomination");
 			downedPuritySpirit = downed.Contains("puritySpirit");
+			ExampleTravelingMerchant.Load(tag.GetCompound("traveler"));
 		}
 
 		public override void LoadLegacy(BinaryReader reader) {
@@ -70,7 +77,7 @@ namespace ExampleMod
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			BitsByte flags = new BitsByte();
+			var flags = new BitsByte();
 			flags[0] = downedAbomination;
 			flags[1] = downedPuritySpirit;
 			writer.Write(flags);
@@ -162,7 +169,7 @@ namespace ExampleMod
 				int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY); // WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place. Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, (double)WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), mod.TileType("ExampleOre"), false, 0f, 0f, false, true);
+				WorldGen.TileRunner(x, y, (double)WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), TileType<ExampleOre>(), false, 0f, 0f, false, true);
 
 				// Alternately, we could check the tile already present in the coordinate we are interested. Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
 				// Tile tile = Framing.GetTileSafely(x, y);
@@ -182,7 +189,7 @@ namespace ExampleMod
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++) {
 				bool placeSuccessful = false;
 				Tile tile;
-				int tileToPlace = mod.TileType<Tiles.ExampleCutTileTile>();
+				int tileToPlace = TileType<ExampleCutTileTile>();
 				while (!placeSuccessful) {
 					int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 					int y = WorldGen.genRand.Next(0, Main.maxTilesY);
@@ -366,14 +373,14 @@ namespace ExampleMod
 			//}
 
 			// Here we spawn Example Person just like the Guide.
-			int num = NPC.NewNPC((Main.spawnTileX + 5) * 16, Main.spawnTileY * 16, mod.NPCType("Example Person"), 0, 0f, 0f, 0f, 0f, 255);
+			int num = NPC.NewNPC((Main.spawnTileX + 5) * 16, Main.spawnTileY * 16, NPCType<ExamplePerson>(), 0, 0f, 0f, 0f, 0f, 255);
 			Main.npc[num].homeTileX = Main.spawnTileX + 5;
 			Main.npc[num].homeTileY = Main.spawnTileY;
 			Main.npc[num].direction = 1;
 			Main.npc[num].homeless = true;
 
 			// Place some items in Ice Chests
-			int[] itemsToPlaceInIceChests = { mod.ItemType("CarKey"), mod.ItemType("ExampleLightPet"), ItemID.PinkJellyfishJar };
+			int[] itemsToPlaceInIceChests = { ItemType<CarKey>(), ItemType<ExampleLightPet>(), ItemID.PinkJellyfishJar };
 			int itemsToPlaceInIceChestsChoice = 0;
 			for (int chestIndex = 0; chestIndex < 1000; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
@@ -398,7 +405,12 @@ namespace ExampleMod
 		}
 
 		public override void TileCountsAvailable(int[] tileCounts) {
-			exampleTiles = tileCounts[mod.TileType("ExampleBlock")];
+			exampleTiles = tileCounts[TileType<ExampleBlock>()];
+		}
+
+		public override void PreUpdate() {
+			// Update everything about spawning the traveling merchant from the methods we have in the Traveling Merchant's class
+			ExampleTravelingMerchant.UpdateTravelingMerchant();
 		}
 
 		public override void PostUpdate() {
@@ -406,7 +418,7 @@ namespace ExampleMod
 				if (VolcanoCooldown > 0) {
 					VolcanoCooldown--;
 				}
-				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !ExampleMod.exampleServerConfig.DisableVolcanos) {
+				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !GetInstance<ExampleConfigServer>().DisableVolcanos) {
 					string key = "Mods.ExampleMod.VolcanoWarning";
 					Color messageColor = Color.Orange;
 					if (Main.netMode == 2) // Server
@@ -438,11 +450,11 @@ namespace ExampleMod
 							int speed = 12;
 							float spawnX = Main.rand.Next(1000) - 500 + player.Center.X;
 							float spawnY = -1000 + player.Center.Y;
-							Vector2 baseSpawn = new Vector2(spawnX, spawnY);
+							var baseSpawn = new Vector2(spawnX, spawnY);
 							Vector2 baseVelocity = player.Center - baseSpawn;
 							baseVelocity.Normalize();
 							baseVelocity = baseVelocity * speed;
-							List<int> identities = new List<int>();
+							var identities = new List<int>();
 							for (int i = 0; i < VolcanoProjectiles; i++) {
 								Vector2 spawn = baseSpawn;
 								spawn.X = spawn.X + i * 30 - VolcanoProjectiles * 15;
@@ -472,17 +484,17 @@ namespace ExampleMod
 		// In ExampleMod, we use PostDrawTiles to draw the TEScoreBoard area. PostDrawTiles draws before players, npc, and projectiles, so it works well.
 		public override void PostDrawTiles() {
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.instance.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-			Rectangle screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-			screenRect.Inflate(Tiles.TEScoreBoard.drawBorderWidth, Tiles.TEScoreBoard.drawBorderWidth);
-			int scoreBoardType = mod.TileEntityType<Tiles.TEScoreBoard>();
+			var screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			screenRect.Inflate(TEScoreBoard.drawBorderWidth, TEScoreBoard.drawBorderWidth);
+			int scoreBoardType = TileEntityType<TEScoreBoard>();
 			foreach (var item in TileEntity.ByID) {
 				if (item.Value.type == scoreBoardType) {
-					var scoreBoard = item.Value as Tiles.TEScoreBoard;
+					var scoreBoard = item.Value as TEScoreBoard;
 					Rectangle scoreBoardArea = scoreBoard.GetPlayArea();
 					// We only want to draw while the area is visible. 
 					if (screenRect.Intersects(scoreBoardArea)) {
 						scoreBoardArea.Offset((int)-Main.screenPosition.X, (int)-Main.screenPosition.Y);
-						DrawBorderedRect(Main.spriteBatch, Color.LightBlue * 0.1f, Color.Blue * 0.3f, scoreBoardArea.TopLeft(), scoreBoardArea.Size(), Tiles.TEScoreBoard.drawBorderWidth);
+						DrawBorderedRect(Main.spriteBatch, Color.LightBlue * 0.1f, Color.Blue * 0.3f, scoreBoardArea.TopLeft(), scoreBoardArea.Size(), TEScoreBoard.drawBorderWidth);
 					}
 				}
 			}

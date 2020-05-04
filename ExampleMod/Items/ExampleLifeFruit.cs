@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -24,7 +25,7 @@ namespace ExampleMod.Items
 		public override bool CanUseItem(Player player) {
 			// Any mod that changes statLifeMax to be greater than 500 is broken and needs to fix their code.
 			// This check also prevents this item from being used before vanilla health upgrades are maxed out.
-			return player.statLifeMax == 500 && player.GetModPlayer<ExamplePlayer>().exampleLifeFruits < 10;
+			return player.statLifeMax == 500 && player.GetModPlayer<ExamplePlayer>().exampleLifeFruits < ExamplePlayer.maxExampleLifeFruits;
 		}
 
 		public override bool UseItem(Player player) {
@@ -45,7 +46,7 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType<ExampleItem>());
+			recipe.AddIngredient(ItemType<ExampleItem>());
 			recipe.SetResult(this, 11);
 			recipe.AddRecipe();
 		}

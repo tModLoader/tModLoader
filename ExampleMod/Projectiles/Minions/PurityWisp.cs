@@ -1,10 +1,14 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles.Minions
 {
-	//ported from my tAPI mod because I'm lazy
+	// PurityWisp uses inheritace as an example of how it can be useful in modding.
+	// HoverShooter and Minion classes help abstract common functionality away, which is useful for mods that have many similar behaviors.
+	// Inheritance is an advanced topic and could be confusing to new programmers, see ExampleSimpleMinion.cs for a simpler minion example.
 	public class PurityWisp : HoverShooter
 	{
 		public override void SetStaticDefaults() {
@@ -27,7 +31,7 @@ namespace ExampleMod.Projectiles.Minions
 			projectile.tileCollide = false;
 			projectile.ignoreWater = true;
 			inertia = 20f;
-			shoot = mod.ProjectileType("PurityBolt");
+			shoot = ProjectileType<PurityBolt>();
 			shootSpeed = 12f;
 		}
 
@@ -45,7 +49,7 @@ namespace ExampleMod.Projectiles.Minions
 		public override void CreateDust() {
 			if (projectile.ai[0] == 0f) {
 				if (Main.rand.NextBool(5)) {
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, mod.DustType("PuriumFlame"));
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height / 2, DustType<PuriumFlame>());
 					Main.dust[dust].velocity.Y -= 1.2f;
 				}
 			}
@@ -55,7 +59,7 @@ namespace ExampleMod.Projectiles.Minions
 					if (dustVel != Vector2.Zero) {
 						dustVel.Normalize();
 					}
-					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, mod.DustType("PuriumFlame"));
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustType<PuriumFlame>());
 					Main.dust[dust].velocity -= 1.2f * dustVel;
 				}
 			}

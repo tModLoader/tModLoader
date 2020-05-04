@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 using Terraria.ModLoader.Properties;
 using static Terraria.ModLoader.Setup.Program;
 
@@ -87,7 +88,6 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
-			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.Save();

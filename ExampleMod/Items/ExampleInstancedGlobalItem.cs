@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -14,8 +14,6 @@ namespace ExampleMod.Items
 		public string originalOwner;
 		public byte awesome;
 		public bool examplePersonFreeGift;
-
-		private static readonly string saveOriginalOwner;
 
 		public ExampleInstancedGlobalItem() {
 			originalOwner = "";
@@ -68,7 +66,7 @@ namespace ExampleMod.Items
 					overrideColor = Color.Magenta
 				});
 			}
-			if (ExampleMod.exampleClientConfig.ShowModOriginTooltip)
+			if (GetInstance<ExampleConfigClient>().ShowModOriginTooltip)
 			{
 				foreach (TooltipLine line3 in tooltips)
 				{

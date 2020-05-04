@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -15,7 +16,7 @@ namespace ExampleMod.Tiles
 			// This tile is special because we need it to preserve the hidden mine tiles.
 			Main.tileFrameImportant[Type] = true; 
 			Main.tileSolid[Type] = true; // TODO: tModLoader hook for allowing non solid tiles to be hammer-able.
-			drop = mod.ItemType<MinesweeperItem>();
+			drop = ItemType<MinesweeperItem>();
 		}
 
 		public override bool Dangersense(int i, int j, Player player) => IsMine(i, j);
@@ -138,7 +139,7 @@ namespace ExampleMod.Tiles
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.DirtBlock);
-			item.createTile = mod.TileType<Minesweeper>();
+			item.createTile = TileType<Minesweeper>();
 		}
 	}
 }

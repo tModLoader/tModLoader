@@ -1,3 +1,4 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -7,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -34,18 +36,18 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Dresser");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Sparkle");
+			dustType = DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Dressers };
 			dresser = "Example Dresser";
-			dresserDrop = mod.ItemType("ExampleDresser");
+			dresserDrop = ItemType<Items.Placeable.ExampleDresser>();
 		}
 
 		public override bool HasSmartInteract() {
 			return true;
 		}
 
-		public override void RightClick(int i, int j) {
+		public override bool NewRightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			if (Main.tile[Player.tileTargetX, Player.tileTargetY].frameY == 0) {
 				Main.CancelClothesWindow(true);
@@ -118,6 +120,7 @@ namespace ExampleMod.Tiles
 				Main.dresserY = Player.tileTargetY;
 				Main.OpenClothesWindow();
 			}
+			return true;
 		}
 
 		public override void MouseOverFar(int i, int j) {
@@ -142,7 +145,7 @@ namespace ExampleMod.Tiles
 					player.showItemIconText = chest;
 				}
 				if (player.showItemIconText == chest) {
-					player.showItemIcon2 = mod.ItemType("ExampleDresser");
+					player.showItemIcon2 = ItemType<Items.Placeable.ExampleDresser>();
 					player.showItemIconText = "";
 				}
 			}
@@ -176,7 +179,7 @@ namespace ExampleMod.Tiles
 					player.showItemIconText = chest;
 				}
 				if (player.showItemIconText == chest) {
-					player.showItemIcon2 = mod.ItemType("ExampleDresser");
+					player.showItemIcon2 = ItemType<Items.Placeable.ExampleDresser>();
 					player.showItemIconText = "";
 				}
 			}

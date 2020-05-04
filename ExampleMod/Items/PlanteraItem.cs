@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items
 {
@@ -9,6 +10,7 @@ namespace ExampleMod.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
+			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know this is a boss summoning item.
 		}
 
 		public override void SetDefaults() {
@@ -35,8 +37,8 @@ namespace ExampleMod.Items
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("BossItem"), 10);
-			recipe.AddTile(mod.TileType("ExampleWorkbench"));
+			recipe.AddIngredient(ItemType<BossItem>(), 10);
+			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
 			recipe.SetResult(this, 20);
 			recipe.AddRecipe();
 		}

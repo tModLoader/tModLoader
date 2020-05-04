@@ -16,7 +16,7 @@ env:
   global:
     - GH_REPO_NAME: tModLoader
     - DOXYFILE: $TRAVIS_BUILD_DIR/solutions/documentation/Doxyfile
-    - GH_REPO_REF: github.com/bluemagic123/tModLoader.git
+    - GH_REPO_REF: github.com/tModLoader/tModLoader.git
 
 # Install dependencies
 addons:
@@ -26,10 +26,10 @@ addons:
       - doxygen-doc
       - graphviz
 
-before_install:
-    - sudo apt-add-repository -y ppa:mikepurvis/docs
-    - sudo apt-get update
-    - sudo apt-get install doxygen
+#before_install:
+#    - sudo apt-add-repository -y ppa:mikepurvis/docs
+#    - sudo apt-get update
+#    - sudo apt-get install doxygen
       
 # Build your code e.g. by calling make
 script:

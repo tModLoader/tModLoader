@@ -1,7 +1,9 @@
+using ExampleMod.Buffs;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Projectiles
 {
@@ -22,7 +24,7 @@ namespace ExampleMod.Projectiles
 							heal = damage;
 						}
 						if (heal > 0) {
-							player.AddBuff(mod.BuffType("Undead2"), 2 * heal, false);
+							player.AddBuff(BuffType<Undead2>(), 2 * heal, false);
 						}
 					}
 				}

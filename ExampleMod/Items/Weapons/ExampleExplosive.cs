@@ -1,6 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+
 namespace ExampleMod.Items.Weapons
 {
 	internal class ExampleExplosive : ModItem
@@ -15,7 +17,7 @@ namespace ExampleMod.Items.Weapons
 		public override void SetDefaults() {
 			item.useStyle = 1;
 			item.shootSpeed = 12f;
-			item.shoot = mod.ProjectileType<Projectiles.ExampleExplosive>();
+			item.shoot = ProjectileType<Projectiles.ExampleExplosive>();
 			item.width = 8;
 			item.height = 28;
 			item.maxStack = 30;
@@ -31,7 +33,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod.ItemType("ExampleItem"));
+			recipe.AddIngredient(ItemType<ExampleItem>());
 			recipe.AddIngredient(ItemID.Dynamite);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this);

@@ -63,5 +63,13 @@ namespace ExampleMod.Items
 		public override bool ConsumeAmmo(Item item, Player player) {
 			return !player.GetModPlayer<ExamplePlayer>().infinity;
 		}
+
+		// Replenishes the mana of the player has soon as they need some, by exactly the amount they need, and stops the mana flower from triggering.
+		public override void OnMissingMana(Item item, Player player, int neededMana)
+		{
+			if (player.GetModPlayer<ExamplePlayer>().infinity) {
+				player.statMana += neededMana;
+			}
+		}
 	}
 }

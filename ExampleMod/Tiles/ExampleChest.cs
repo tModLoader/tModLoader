@@ -1,3 +1,4 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -7,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -34,14 +36,26 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Chest");
 			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
-			dustType = mod.DustType("Sparkle");
+			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+			name.SetDefault("Locked Example Chest");
+			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
+			dustType = DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Containers };
 			chest = "Example Chest";
-			chestDrop = mod.ItemType("ExampleChest");
+			chestDrop = ItemType<Items.Placeable.ExampleChest>();
 		}
 
-		public override bool HasSmartInteract() {
+		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
+
+		public override bool HasSmartInteract() => true;
+
+		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
+
+		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
+			if (Main.dayTime)
+				return false;
+			dustType = this.dustType;
 			return true;
 		}
 
@@ -56,7 +70,10 @@ namespace ExampleMod.Tiles
 				top--;
 			}
 			int chest = Chest.FindChest(left, top);
-			if (Main.chest[chest].name == "") {
+			if (chest < 0) {
+				return Language.GetTextValue("LegacyChestType.0");
+			}
+			else if (Main.chest[chest].name == "") {
 				return name;
 			}
 			else {
@@ -73,7 +90,7 @@ namespace ExampleMod.Tiles
 			Chest.DestroyChest(i, j);
 		}
 
-		public override void RightClick(int i, int j) {
+		public override bool NewRightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			Main.mouseRightRelease = false;
@@ -100,7 +117,8 @@ namespace ExampleMod.Tiles
 				NetMessage.SendData(33, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f, 0f, 0f, 0, 0, 0);
 				player.editedChestName = false;
 			}
-			if (Main.netMode == 1) {
+			bool isLocked = IsLockedChest(left, top);
+			if (Main.netMode == 1 && !isLocked) {
 				if (left == player.chestX && top == player.chestY && player.chest >= 0) {
 					player.chest = -1;
 					Recipe.FindRecipes();
@@ -112,24 +130,35 @@ namespace ExampleMod.Tiles
 				}
 			}
 			else {
-				int chest = Chest.FindChest(left, top);
-				if (chest >= 0) {
-					Main.stackSplit = 600;
-					if (chest == player.chest) {
-						player.chest = -1;
-						Main.PlaySound(SoundID.MenuClose);
+				if (isLocked) {
+					int key = ItemType<Items.ExampleChestKey>();
+					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
+						if (Main.netMode == 1) {
+							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, (float)left, (float)top);
+						}
 					}
-					else {
-						player.chest = chest;
-						Main.playerInventory = true;
-						Main.recBigList = false;
-						player.chestX = left;
-						player.chestY = top;
-						Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+				}
+				else {
+					int chest = Chest.FindChest(left, top);
+					if (chest >= 0) {
+						Main.stackSplit = 600;
+						if (chest == player.chest) {
+							player.chest = -1;
+							Main.PlaySound(SoundID.MenuClose);
+						}
+						else {
+							player.chest = chest;
+							Main.playerInventory = true;
+							Main.recBigList = false;
+							player.chestX = left;
+							player.chestY = top;
+							Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+						}
+						Recipe.FindRecipes();
 					}
-					Recipe.FindRecipes();
 				}
 			}
+			return true;
 		}
 
 		public override void MouseOver(int i, int j) {
@@ -151,7 +180,9 @@ namespace ExampleMod.Tiles
 			else {
 				player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.showItemIconText == "Example Chest") {
-					player.showItemIcon2 = mod.ItemType("ExampleChest");
+					player.showItemIcon2 = ItemType<Items.Placeable.ExampleChest>();
+					if (Main.tile[left, top].frameX / 36 == 1)
+						player.showItemIcon2 = ItemType<Items.ExampleChestKey>();
 					player.showItemIconText = "";
 				}
 			}

@@ -1,4 +1,5 @@
 ﻿using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -17,7 +18,7 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.maxStack = 999;
 			item.consumable = true;
-			item.createTile = mod.TileType<Tiles.ScoreBoard>();
+			item.createTile = TileType<Tiles.ScoreBoard>();
 			item.width = 28;
 			item.height = 28;
 		}

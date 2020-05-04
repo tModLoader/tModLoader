@@ -1,8 +1,10 @@
+using ExampleMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
@@ -18,7 +20,7 @@ namespace ExampleMod.Tiles
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Example Bed");
 			AddMapEntry(new Color(200, 200, 200), name);
-			dustType = mod.DustType("Sparkle");
+			dustType = DustType<Sparkle>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Beds };
 			bed = true;
@@ -33,10 +35,10 @@ namespace ExampleMod.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 64, 32, mod.ItemType("ExampleBed"));
+			Item.NewItem(i * 16, j * 16, 64, 32, ItemType<Items.Placeable.ExampleBed>());
 		}
 
-		public override void RightClick(int i, int j) {
+		public override bool NewRightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			int spawnX = i - tile.frameX / 18;
@@ -54,13 +56,14 @@ namespace ExampleMod.Tiles
 				player.ChangeSpawn(spawnX, spawnY);
 				Main.NewText("Spawn point set!", 255, 240, 20, false);
 			}
+			return true;
 		}
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;
-			player.showItemIcon2 = mod.ItemType("ExampleBed");
+			player.showItemIcon2 = ItemType<Items.Placeable.ExampleBed>();
 		}
 	}
 }
