@@ -179,6 +179,6 @@ namespace Terraria.ModLoader.Recipes
 		/// <summary>Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.</summary>
 		/// <returns></returns>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		private void Build() => _recipe.AddRecipe();
+		public void Build() => _recipe.AddRecipe();
 	}
 }
