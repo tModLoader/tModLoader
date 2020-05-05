@@ -12,7 +12,7 @@ ___
 Want to play or create mods? Or do you want to contribute to tModLoader perhaps?
 Click the text that applies to you.
 
-### [Get tModLoader on Steam](https://store.steampowered.com/app/1281930/tModLoader/)
+### [I want to **install**](https://github.com/tModLoader/tModLoader/wiki/How-to-install-tModLoader)
 
 ### [I am a **player**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players) (Play mods)
 
