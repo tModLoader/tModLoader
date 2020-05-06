@@ -741,7 +741,7 @@
  		}
  
  		private void ClientInitialize() {
-@@ -6674,41 +_,48 @@
+@@ -6674,41 +_,58 @@
  			}
  
  			if (autoJoin) {
@@ -760,16 +760,30 @@
  
  		public T OurLoad<T>(string path) {
 -			lock (globalTextureLocker) {
+-				if (TexturePackSupport.Enabled && typeof(T) == t2d && TexturePackSupport.FetchTexture(path + ".png", out Texture2D tex))
+-					return (T)(object)tex;
+-
+-				return base.Content.Load<T>(path);
 +			GLCallLocker.Enter(globalTextureLocker);
 +			try {
- 				if (TexturePackSupport.Enabled && typeof(T) == t2d && TexturePackSupport.FetchTexture(path + ".png", out Texture2D tex))
- 					return (T)(object)tex;
- 
- 				return base.Content.Load<T>(path);
- 			}
++				T content;
++
++				if (TexturePackSupport.Enabled && typeof(T) == t2d && TexturePackSupport.FetchTexture(path + ".png", out Texture2D tex)) {
++					content = (T)(object)tex;
++				} else {
++					content = base.Content.Load<T>(path);
++				}
++
++				if(content is GraphicsResource graphicsResource) {
++					graphicsResource.Name = path;
++					graphicsResource.Tag = "Terraria";
++				}
++
++				return content;
++			}
 +			finally {
 +				Monitor.Exit(globalTextureLocker);
-+			}
+ 			}
  		}
  
  		protected override void LoadContent() {

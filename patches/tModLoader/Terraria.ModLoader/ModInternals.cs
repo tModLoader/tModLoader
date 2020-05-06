@@ -69,7 +69,10 @@ namespace Terraria.ModLoader
 							Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), t.Exception);
 
 					var tex = t.Result;
+					
 					tex.Name = Name + "/" + path;
+					tex.Tag = Name;
+
 					lock (textures)
 						textures[path] = tex;
 				}));
