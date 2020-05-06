@@ -218,7 +218,7 @@ namespace Terraria.ModLoader.Core
 					name = Path.GetFileNameWithoutExtension(path);
 				if (Path.GetDirectoryName(path) == modReferencesPath)
 					path = "$(MSBuildThisFileDirectory)" + Path.GetFileName(path);
-				return $"    <Reference Include=\"{name}\">\n      <HintPath>{path}</HintPath>\n    </Reference>";
+				return $"    <Reference Include=\"{System.Security.SecurityElement.Escape(name)}\">\n      <HintPath>{System.Security.SecurityElement.Escape(path)}</HintPath>\n    </Reference>";
 			}
 			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
 			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
@@ -226,10 +226,10 @@ namespace Terraria.ModLoader.Core
 			var tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
-    <TerrariaSteamPath>{tMLDir}</TerrariaSteamPath>
-    <tMLPath>{tMLPath}</tMLPath>
-    <tMLServerPath>{tMLServerPath}</tMLServerPath>
-    <tMLBuildServerPath>{tMLBuildServerPath}</tMLBuildServerPath>
+    <TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
+    <tMLPath>{System.Security.SecurityElement.Escape(tMLPath)}</tMLPath>
+    <tMLServerPath>{System.Security.SecurityElement.Escape(tMLServerPath)}</tMLServerPath>
+    <tMLBuildServerPath>{System.Security.SecurityElement.Escape(tMLBuildServerPath)}</tMLBuildServerPath>
   </PropertyGroup>
   <ItemGroup>
 {string.Join("\n", referencesXMLList)}
