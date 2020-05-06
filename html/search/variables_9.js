@@ -6,7 +6,6 @@ var searchData=
   ['ignoremessages',['ignoreMessages',['../class_terraria_1_1_mod_loader_1_1_logging.html#a027e8e274abc3f22be0eb95b30355a69',1,'Terraria::ModLoader::Logging']]],
   ['ignoresources',['ignoreSources',['../class_terraria_1_1_mod_loader_1_1_logging.html#a0648aee4281f58ebb5986238ac493308',1,'Terraria::ModLoader::Logging']]],
   ['ignorethrowingmethods',['ignoreThrowingMethods',['../class_terraria_1_1_mod_loader_1_1_logging.html#a9b390ec6b67ea337575660e50436764b',1,'Terraria::ModLoader::Logging']]],
-  ['imagepath',['ImagePath',['../class_terraria_1_1_mod_loader_1_1_mod_content.html#a177941f839c1b12fe3c27cd30d26eeae',1,'Terraria::ModLoader::ModContent']]],
   ['increment',['increment',['../class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html#ad6e228163084eabb72870b97646cb874',1,'Terraria::ModLoader::Config::IncrementAttribute']]],
   ['indent',['indent',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#aee0f3a1ba8fc9b8a5d59fdb38b03602c',1,'Terraria::ModLoader::IO::TagPrinter']]],
   ['index',['index',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a91f4dbe5ede1242c5cf5b7a9764ed832',1,'Terraria::ModLoader::DrawableTooltipLine']]],
