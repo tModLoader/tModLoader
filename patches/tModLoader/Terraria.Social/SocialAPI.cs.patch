@@ -19,3 +19,13 @@
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
+@@ -59,7 +_,8 @@
+ 		private static void LoadSteam() {
+ 			LoadModule<CoreSocialModule>();
+ 			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
++			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
+-			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++			// Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
+ 			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
+ 			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
+ #if CLIENT

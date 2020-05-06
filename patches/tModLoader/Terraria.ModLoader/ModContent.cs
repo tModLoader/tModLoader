@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			if (modName == "Terraria")
-				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
+				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.TextureExists(subName);

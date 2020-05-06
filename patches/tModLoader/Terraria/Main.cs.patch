@@ -667,16 +667,17 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,8 +_,30 @@
+@@ -4105,7 +_,31 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
 -			base.Content.RootDirectory = "Content";
- #endif
++#endif
 +		}
 +
 +		internal void PostSocialInitialize()
 +		{
++#if CLIENT
 +			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
@@ -696,9 +697,9 @@
 +
 +			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 +			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+ #endif
  		}
  
- 		protected void SetTitle() {
 @@ -4118,7 +_,7 @@
  
  		public static void InitLifeBytes() {

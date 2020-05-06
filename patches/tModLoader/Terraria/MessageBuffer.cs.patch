@@ -318,7 +318,7 @@
  								else
 +								{
 +									if (modType == 0)
-+										modType = TileID.Containers;
++										modType = TileID.Dressers;
 +
 -									WorldGen.PlaceDresserDirect(num19, num20, 88, num21, num22);
 +									WorldGen.PlaceDresserDirect(num19, num20, modType, num21, num22);
