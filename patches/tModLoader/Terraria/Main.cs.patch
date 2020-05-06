@@ -37,6 +37,14 @@
  		public static float expertLife = 2f;
  		public static float expertDamage = 2f;
  		public static float expertDebuffTime = 2f;
+@@ -141,6 +_,7 @@
+ 		private static ulong _tileFrameSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 		private static ulong _drawCycleCounter = 0uL;
+ 		public static ContentManager ShaderContentManager;
++		internal static TMLContentManager AlternateContentManager;
+ 		public static Ref<Effect> ScreenShaderRef = new Ref<Effect>();
+ 		public static Ref<Effect> PixelShaderRef = new Ref<Effect>();
+ 		public static Ref<Effect> TileShaderRef = new Ref<Effect>();
 @@ -149,6 +_,8 @@
  		public static bool UseHeatDistortion = true;
  		public static int npcStreamSpeed = 60;
@@ -659,15 +667,38 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,7 @@
+@@ -4105,8 +_,30 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
 -			base.Content.RootDirectory = "Content";
-+			base.Content = new TMLContentManager(Content.ServiceProvider, "Content");
  #endif
++		}
++
++		internal void PostSocialInitialize()
++		{
++			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
++			if (!Directory.Exists(vanillaContentFolder)) {
++				vanillaContentFolder = "../Content"; // Nested Manual Install
++			}
++			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
++				var appID = new Steamworks.AppId_t(105600u);
++				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++				if (appInstalled) { 
++					Steamworks.SteamApps.GetAppInstallDir(appID, out vanillaContentFolder, 1000);
++					vanillaContentFolder = Path.Combine(vanillaContentFolder, "Content"); // Steam Install
++				}
++			}
++			if (!Directory.Exists(vanillaContentFolder)) {
++				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Environment.Exit(1);
++			}
++
++			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
++			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  		}
  
+ 		protected void SetTitle() {
 @@ -4118,7 +_,7 @@
  
  		public static void InitLifeBytes() {
@@ -765,7 +796,7 @@
  			TextureManager.Initialize();
  			mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
 -			ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-+			ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++			ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory, AlternateContentManager);
  			PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  			TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
  			ScreenShaderRef.Value = ShaderContentManager.Load<Effect>("ScreenShader");
@@ -779,7 +810,7 @@
  		}
  
  		private void LoadFonts() {
-@@ -7140,6 +_,8 @@
+@@ -7140,12 +_,14 @@
  					npcAltTextures[num35][num37] = OurLoad<Texture2D>("Images" + Path.DirectorySeparatorChar.ToString() + "NPC_" + num35 + "_Alt_" + num37);
  				}
  			}
@@ -788,6 +819,15 @@
  		}
  
  		private static void LoadMusic() {
+-			engine = new AudioEngine("Content" + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
++			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
+-			soundBank = new SoundBank(engine, "Content" + Path.DirectorySeparatorChar + "Sound Bank.xsb");
++			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
+-			waveBank = new WaveBank(engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
++			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb");
+ 			for (int i = 1; i < 42; i++) {
+ 				music[i] = soundBank.GetCue("Music_" + i);
+ 			}
 @@ -7320,6 +_,9 @@
  		}
  

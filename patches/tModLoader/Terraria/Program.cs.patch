@@ -43,7 +43,7 @@
  		}
  
  		private static void ForceJITOnAssembly(Assembly assembly) {
-@@ -160,22 +_,43 @@
+@@ -160,25 +_,47 @@
  			}
  		}
  
@@ -91,6 +91,10 @@
  					InitializeConsoleOutput();
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
++					main.PostSocialInitialize();
+ 					LaunchInitializer.LoadParameters(main);
+ 					Main.OnEnginePreload += StartForceLoad;
+ #if CLIENT
 @@ -187,9 +_,10 @@
  					main.DedServ();
  #endif

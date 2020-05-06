@@ -84,7 +84,6 @@ namespace Terraria.ModLoader
 			return mod.GetTexture(subName);
 		}
 
-		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		/// <summary>
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
@@ -96,7 +95,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			if (modName == "Terraria")
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
+				return (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
@@ -117,7 +116,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 			if (modName == "Terraria") {
-				if (File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb")) {
+				if((Main.instance.Content as TMLContentManager).ImageExists(subName)) { 
 					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
 					return true;
 				}
