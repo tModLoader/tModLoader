@@ -10,13 +10,6 @@ namespace Terraria.ModLoader.Recipes
 		private readonly ModRecipe _recipe;
 
 
-		/// <summary>Creates a new instance with no ingredients and no result.</summary>
-		/// <seealso cref="Requires(int,int)"/>
-		/// <seealso cref="Build"/>
-		public RecipeBuilder()
-		{
-		}
-
 		/// <summary>Creates a new instance with no ingredients with the given item and stack as a result.</summary>
 		/// <param name="mod">The mod who owns the recipe.</param>
 		/// <param name="item">The item type.</param>
@@ -89,13 +82,8 @@ namespace Terraria.ModLoader.Recipes
 		/// <param name="type3">The third item type.</param>
 		/// <param name="types">The remaining item types.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(int type1, int type2, int type3, params int[] types)
+		public RecipeBuilder Requires(params int[] types)
 		{
-			Requires(type1);
-			Requires(type2);
-			Requires(type3);
-
-
 			for (int i = 0; i < types.Length; i++)
 				Requires(types[i]);
 
