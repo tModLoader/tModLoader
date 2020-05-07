@@ -2171,6 +2171,15 @@
  										spriteBatch.Draw(treeBranchAltTexture[num317, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									else
  										spriteBatch.Draw(treeBranchTexture[num317], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+@@ -16544,7 +_,7 @@
+ 					}
+ 
+ 					if (type4 != 323 || frameX < 88 || frameX > 132)
+-						continue;
++						goto SpecialDraw;
+ 
+ 					int num330 = 0;
+ 					switch (frameX) {
 @@ -16562,7 +_,12 @@
  					int num334 = 80;
  					int num335 = 32;
@@ -2184,7 +2193,7 @@
  						if (Main.tile[num300, num337].type == 53) {
  							num332 = 0;
  							break;
-@@ -16586,16 +_,20 @@
+@@ -16586,16 +_,22 @@
  
  					int frameY3 = Main.tile[num300, num301].frameY;
  					int y3 = num332 * 82;
@@ -2202,6 +2211,8 @@
  				}
  				catch {
  				}
++
++				SpecialDraw:
 +
 +				TileLoader.SpecialDraw(type4, num300, num301, spriteBatch);
  			}
