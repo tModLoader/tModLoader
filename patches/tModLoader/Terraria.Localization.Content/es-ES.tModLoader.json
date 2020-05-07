@@ -5,10 +5,10 @@
 		"MenuModBrowser": "Navegador de Mods",
 		"MenuMods": "Mods",
 		"MenuModSources": "Fuentes de Mods",
-		"MenuEnableDeveloperMode": "Activar modo Desarrollador",
+		"MenuEnableDeveloperMode": "Activar modo desarrollador",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que deseas descargar. Usa el menú de Mods para cambiar los mods que están actualmente activos. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
 		"tModLoaderSettings": "Configuración de tModLoader",
-
+		
 		// Mods Menu
 		"ModsModsList": "Lista de mods",
 		"ModsEnableAll": "Activar todos",
@@ -28,7 +28,7 @@
 		"OutdatedModCantPublishError": "No puedes publicar un Mod construido sobre una versión antigua de tModLoader",
 		"ModReloadRequired": "Reinicio necesario",
 		"ModReloadForced": "Reinicio forzado",
-		"ModIsServerSide": "Este es un Mod del lado del servidor",
+		"ModIsServerSide": "Este es un mod del lado del servidor",
 		"ModsByline": "De: {0}",
 		"ModsMoreInfo": "Información",
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
@@ -45,7 +45,7 @@
 		"ModsXNPCs": "{0} NPCs",
 		"ModsXTiles": "{0} bloques",
 		"ModsXWalls": "{0} paredes",
-		"ModsXBuffs": "{0} buffs",
+		"ModsXBuffs": "{0} estados",
 		"ModsXMounts": "{0} monturas",
 
 		// Mod Errors
@@ -82,11 +82,11 @@
 		"LoadErrorSoundFailedToLoadAudioDeviceHint": "(Asegúrate de que tu ordenador tiene los altavoces conectados y los dispositivos de audio habilitados)",
 		"LoadErrorFontFailedToLoad": "El archivo fuente en {0} falló al cargarse",
 		"LoadErrorEffectFailedToLoad": "El archivo de efectos en {0} falló al cargarse",
-		"LoadErrorUnknownXNBFileHint": "Archivo XNB desconocido: {0}. Tal vez debería estar en \\Fonts o \\Effects",
+		"LoadErrorUnknownXNBFileHint": "Archivo XNB desconocido: {0}. Tal vez debería estar en /Fonts o /Effects",
 		"LoadErrorCannotLoadCompressedEffects": "No se pueden cargar los efectos comprimidos.",
 		"LoadErrorAddItemOnlyInLoad": "AddItem solo puede ser invocado desde Mod.Load o Mod.Autoload",
 		"LoadError2ModItemSameName": "Has intentado añadir 2 ModItems con el mismo nombre: {0}. Tal vez 2 clases comparten un nombre de clase pero en diferentes espacios de nombres mientras se cargan automáticamente, o quizá llamaste manualmente al AddItem con 2 ítems con el mismo nombre.",
-		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n    {0}\nSuposición más aproximada: (¿Hay un error de ortografía o de colocación de la carpeta?)\n    {1}",
+		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n    {0}\nSuposición más probable: (¿Hay un error de ortografía o de colocación de la carpeta?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Excepción silenciosa: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(ver {0} para el ver registro completo)",
 		"OpenLogs": "Abrir registros",
@@ -97,17 +97,17 @@
 		"ExitAndDisableAll": "Salir y desactivar todos",
 
 		// Mod Info
-		"ModInfoHeader": "Info del Mod: ",
+		"ModInfoHeader": "Info del mod: ",
 		"ModInfoVisitHomepage": "Visita la página Web de Mod para más información.",
 		"ModInfoExtract": "Extraer",
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
-		"ModInfoDisableModToDelete": "Desactiva el Mod para borrar",
+		"ModInfoDisableModToDelete": "Desactiva el mod para borrarlo",
 
 		// Mod Packs
 		"ModPacksHeader": "Packs de mods",
-		"ModPacksSaveEnabledAsNewPack": "Guardar los mods habilitados como nuevo Pack de mods",
-		"ModPacksEnterModPackName": "Introduce el nombre del Pack",
+		"ModPacksSaveEnabledAsNewPack": "Guardar los mods activados como nuevo pack de mods",
+		"ModPacksEnterModPackName": "Introduce el nombre del pack",
 		"ModPackViewList": "Ver lista",
 		"ModPackEnableThisList": "Activar esta lista",
 		"ModPackEnableOnlyThisList": "Activar solo esta lista",
@@ -119,8 +119,8 @@
 		"ModPackMissing": " - Faltante(s)",
 		"ModPackDisabled": " - Desactivado(s)",
 		"ModPackLoadingSpecifiedModPack": "Cargando el pack especificado: {0}",
-		"ModPackDoesNotExist": "El pack de mods {0} no existe.",
-		"ModPackMalformed": "El pack de mods {0} no se ha leído correctamente, podría estar dañado.",
+		"ModPackDoesNotExist": "El pack {0} no existe.",
+		"ModPackMalformed": "El pack {0} no se ha leído correctamente, podría estar dañado.",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Sincronizando mods",
@@ -140,7 +140,7 @@
 		"MBDownloadAll": "Descargar todos",
 		"MBDownloadingMod": "Descargando: {0}",
 		"MBInstallingMod": "Instalando: {0}",
-		"MBDownloadFileProblem": "Fallo al gestionar {0}",
+		"MBDownloadFileProblem": "Error al gestionar {0}",
 		"MBReleaseFileHandle": "Liberando la gestión de archivos para {0}",
 		"MBDownloadFinished": "La descarga de mods ha finalizado, volviendo al navegador",
 		"MBUploadingMod": "Subiendo: {0}",
@@ -154,7 +154,7 @@
 		"MBUpdateAll": "Actualizar todos",
 		"MBReloadBrowser": "Recargar Navegador",
 		"MBGettingData": "Obteniendo datos...",
-		"MBPopulatingBrowser": "Rellenando navegador...",
+		"MBPopulatingBrowser": "Completando navegador...",
 		"MBSortByRecentlyUpdated": "Ordenar por actualizaciones recientes",
 		"MBSortByPopularity": "Ordenar por popularidad",
 		"MBSortDownloadDesc": "Ordenar por descargas (Descendiente)",
