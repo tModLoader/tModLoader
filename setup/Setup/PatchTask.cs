@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.Setup
 
 			taskInterface.SetStatus("Deleting Old Src");
 
-			if(Directory.Exists(patchedDir)) {
+			if (Directory.Exists(patchedDir)) {
 				//Delete directories' files without deleting the directories themselves. This prevents weird UnauthorizedAccessExceptions from the directory being in a state of limbo.
 				EmptyDirectoryRecursive(patchedDir);
 			}
