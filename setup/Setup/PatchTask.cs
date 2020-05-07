@@ -51,9 +51,12 @@ namespace Terraria.ModLoader.Setup
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 
 			taskInterface.SetStatus("Deleting Old Src");
-			if (Directory.Exists(patchedDir))
-				Directory.Delete(patchedDir, true);
-			
+
+			if (Directory.Exists(patchedDir)) {
+				//Delete directories' files without deleting the directories themselves. This prevents weird UnauthorizedAccessExceptions from the directory being in a state of limbo.
+				EmptyDirectoryRecursive(patchedDir);
+			}
+
 			var removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
 			var noCopy = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
 
@@ -71,7 +74,10 @@ namespace Terraria.ModLoader.Setup
 			foreach (var (file, relPath) in EnumerateSrcFiles(baseDir))
 				if (!noCopy.Contains(relPath))
 					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchedDir, relPath))));
-			
+
+			//Delete empty directories, since the directory was recursively wiped instead of being deleted.
+			DeleteEmptyDirs(patchedDir);
+
 			try
 			{
 				CreateDirectory(Program.logsDir);
