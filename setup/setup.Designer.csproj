@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.7.9" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
-    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="19.9.1.6" />
+    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="20.5.6.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
