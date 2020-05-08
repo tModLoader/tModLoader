@@ -660,7 +660,9 @@ namespace Terraria.ModLoader
 		private static HookList HookGetWeaponCrit = AddHook<DelegateGetWeaponCrit>(p => p.GetWeaponCrit);
 
 		public static void GetWeaponCrit(Player player, Item item, ref int crit) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookGetWeaponCrit.arr) {
 				player.modPlayers[index].GetWeaponCrit(item, ref crit);
 			}
@@ -669,6 +671,9 @@ namespace Terraria.ModLoader
 		private static HookList HookConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.ConsumeAmmo);
 
 		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo) {
+			if (weapon.IsAir)
+				return false;
+
 			foreach (int index in HookConsumeAmmo.arr) {
 				if (!player.modPlayers[index].ConsumeAmmo(weapon, ammo)) {
 					return false;
@@ -680,6 +685,9 @@ namespace Terraria.ModLoader
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item>>(p => p.OnConsumeAmmo);
 
 		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
+			if (weapon.IsAir)
+				return;
+
 			foreach (int index in HookOnConsumeAmmo.arr)
 				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
 		}
@@ -688,6 +696,9 @@ namespace Terraria.ModLoader
 		private static HookList HookShoot = AddHook<DelegateShoot>(p => p.Shoot);
 
 		public static bool Shoot(Player player, Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+			if (item.IsAir)
+				return false;
+
 			foreach (int index in HookShoot.arr) {
 				if (!player.modPlayers[index].Shoot(item, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack)) {
 					return false;
@@ -699,6 +710,9 @@ namespace Terraria.ModLoader
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);
 
 		public static void MeleeEffects(Player player, Item item, Rectangle hitbox) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookMeleeEffects.arr) {
 				player.modPlayers[index].MeleeEffects(item, hitbox);
 			}
@@ -715,6 +729,9 @@ namespace Terraria.ModLoader
 		private static HookList HookCanHitNPC = AddHook<Func<Item, NPC, bool?>>(p => p.CanHitNPC);
 
 		public static bool? CanHitNPC(Player player, Item item, NPC target) {
+			if (item.IsAir)
+				return false;
+
 			bool? flag = null;
 			foreach (int index in HookCanHitNPC.arr) {
 				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
@@ -732,6 +749,9 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
 		public static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookModifyHitNPC.arr) {
 				player.modPlayers[index].ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
 			}
@@ -740,6 +760,9 @@ namespace Terraria.ModLoader
 		private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, int, float, bool>>(p => p.OnHitNPC);
 
 		public static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookOnHitNPC.arr) {
 				player.modPlayers[index].OnHitNPC(item, target, damage, knockback, crit);
 			}
@@ -793,6 +816,9 @@ namespace Terraria.ModLoader
 		private static HookList HookCanHitPvp = AddHook<Func<Item, Player, bool>>(p => p.CanHitPvp);
 
 		public static bool CanHitPvp(Player player, Item item, Player target) {
+			if (item.IsAir)
+				return false;
+
 			foreach (int index in HookCanHitPvp.arr) {
 				if (!player.modPlayers[index].CanHitPvp(item, target)) {
 					return false;
@@ -805,6 +831,9 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(p => p.ModifyHitPvp);
 
 		public static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookModifyHitPvp.arr) {
 				player.modPlayers[index].ModifyHitPvp(item, target, ref damage, ref crit);
 			}
@@ -813,6 +842,9 @@ namespace Terraria.ModLoader
 		private static HookList HookOnHitPvp = AddHook<Action<Item, Player, int, bool>>(p => p.OnHitPvp);
 
 		public static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookOnHitPvp.arr) {
 				player.modPlayers[index].OnHitPvp(item, target, damage, crit);
 			}
@@ -1150,6 +1182,9 @@ namespace Terraria.ModLoader
 
 		// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
 		public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			if (item.IsAir)
+				return false;
+
 			foreach (int index in HookCanSellItem.arr) {
 				if (!player.modPlayers[index].CanSellItem(npc, shopInventory, item))
 					return false;
@@ -1160,6 +1195,9 @@ namespace Terraria.ModLoader
 		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
 
 		public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			if (item.IsAir)
+				return;
+
 			foreach (int index in HookPostBuyItem.arr) {
 				player.modPlayers[index].PostBuyItem(npc, shopInventory, item);
 			}
@@ -1168,6 +1206,9 @@ namespace Terraria.ModLoader
 		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
 
 		public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
+			if (item.IsAir)
+				return false;
+
 			foreach (int index in HookCanBuyItem.arr) {
 				if (!player.modPlayers[index].CanBuyItem(npc, shopInventory, item))
 					return false;
