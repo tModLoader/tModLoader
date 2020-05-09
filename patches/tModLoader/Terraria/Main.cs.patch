@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -27,6 +_,7 @@
+ using System.Text;
+ using System.Threading;
+ using System.Windows.Forms;
++using Steamworks;
+ using Terraria.Achievements;
+ using Terraria.Audio;
+ using Terraria.Chat;
 @@ -51,6 +_,12 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -4002,7 +4010,24 @@
  				int num12 = 0;
  				num5 = 5;
  				num4 = 60;
-@@ -35743,6 +_,7 @@
+@@ -35734,15 +_,18 @@
+ 					menuMode = 12;
+ 				}
+ 
++				if (Steam.IsSteamApp) {
+-				num12++;
++					num12++;
+-				array9[num12] = Lang.menu[131].Value;
++					array9[num12] = Lang.menu[131].Value;
+-				if (selectedMenu == num12) {
++					if (selectedMenu == num12) {
+-					PlaySound(10);
++						PlaySound(10);
+-					MenuUI.SetState(AchievementsMenu);
++						MenuUI.SetState(AchievementsMenu);
+-					menuMode = 888;
++						menuMode = 888;
++					}
  				}
  
  				num12++;
@@ -4086,15 +4111,13 @@
  				spriteBatch.DrawString(fontMouseText, text5, new Vector2((float)screenWidth - origin2.X + (float)num106 - 10f, (float)screenHeight - origin2.Y + (float)num107 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
  			}
  
-@@ -38155,10 +_,28 @@
+@@ -38155,10 +_,26 @@
  				if (num108 == 3)
  					num110 = 2;
  
 +				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +				string patreonShortURL = @"patreon.com/tModLoader";
-+				// TODO maybe an if to show it on non steam release? if (!IsSteam)
-+				// bool showPatreon = menuMode == 0;
-+				bool showPatreon = false;
++				bool showPatreon = !SteamApps.BIsAppInstalled(new AppId_t(1281930));
 +				string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 -				Vector2 origin3 = fontMouseText.MeasureString(versionNumber);
 +				Vector2 origin3 = fontMouseText.MeasureString(drawVersion);
