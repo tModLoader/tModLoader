@@ -23,6 +23,7 @@ namespace Terraria.ModLoader
 	public static class Logging
 	{
 		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
+		public static readonly string LogArchiveDir = Path.Combine(Path.Combine(Program.SavePath, "Logs"), "Old");
 		public static string LogPath { get; private set; }
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
