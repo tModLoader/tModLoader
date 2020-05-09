@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,6 +58,7 @@ namespace ExampleMod.Projectiles
 		{
 			DisplayName.SetDefault("Example Last Prism");
 			Main.projFrames[projectile.type] = 5;
+			ProjectileID.Sets.NeedsUUID[projectile.type] = true;
 		}
 
 		public override void SetDefaults()
@@ -126,7 +126,7 @@ namespace ExampleMod.Projectiles
 					int damage = projectile.damage;
 					float kb = projectile.knockBack;
 					for (int b = 0; b < NumBeams; ++b) {
-						Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, kb, projectile.owner, b, projectile.whoAmI);
+						Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, kb, projectile.owner, b, Projectile.GetByUUID(projectile.owner, projectile.whoAmI));
 					}
 
 					// After creating the beams, mark the Prism as having an important network event.
