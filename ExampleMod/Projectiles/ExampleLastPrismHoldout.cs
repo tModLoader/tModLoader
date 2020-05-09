@@ -202,7 +202,9 @@ namespace ExampleMod.Projectiles
 			player.heldProj = projectile.whoAmI;
 			player.itemTime = 2;
 			player.itemAnimation = 2;
-			player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * projectile.direction, projectile.velocity.X * projectile.direction);
+
+			// If you do not multiply by projectile.direction, the player's hand will point the wrong direction while facing left.
+			player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
 		}
 
 		// Completely custom drawcode because the Prism is a holdout projectile.
