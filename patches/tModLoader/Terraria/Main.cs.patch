@@ -4086,13 +4086,15 @@
  				spriteBatch.DrawString(fontMouseText, text5, new Vector2((float)screenWidth - origin2.X + (float)num106 - 10f, (float)screenHeight - origin2.Y + (float)num107 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
  			}
  
-@@ -38155,10 +_,26 @@
+@@ -38155,10 +_,28 @@
  				if (num108 == 3)
  					num110 = 2;
  
 +				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +				string patreonShortURL = @"patreon.com/tModLoader";
-+				bool showPatreon = menuMode == 0;
++				// TODO maybe an if to show it on non steam release? if (!IsSteam)
++				// bool showPatreon = menuMode == 0;
++				bool showPatreon = false;
 +				string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 -				Vector2 origin3 = fontMouseText.MeasureString(versionNumber);
 +				Vector2 origin3 = fontMouseText.MeasureString(drawVersion);
