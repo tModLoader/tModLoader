@@ -667,7 +667,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,31 @@
+@@ -4105,7 +_,35 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
@@ -686,8 +686,12 @@
 +				var appID = new Steamworks.AppId_t(105600u);
 +				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
 +				if (appInstalled) { 
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out vanillaContentFolder, 1000);
-+					vanillaContentFolder = Path.Combine(vanillaContentFolder, "Content"); // Steam Install
++					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
++					Logging.Terraria.Info("Found Terraria steamapp install at: "+ steamInstallFolder);
++
++					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
++					if (!Directory.Exists(vanillaContentFolder))
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
 +				}
 +			}
 +			if (!Directory.Exists(vanillaContentFolder)) {

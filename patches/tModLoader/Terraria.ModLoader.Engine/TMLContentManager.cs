@@ -14,8 +14,14 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		protected override Stream OpenStream(string assetName) {
-			if (!assetName.StartsWith("tmod:"))
-				return base.OpenStream(assetName);
+			if (!assetName.StartsWith("tmod:")) {
+				try {
+					return alternateContentManager.OpenStream(assetName);
+				}
+				catch {
+					return base.OpenStream(assetName);
+				}
+			}
 
 			if (!assetName.EndsWith(".xnb"))
 				assetName += ".xnb";
@@ -28,10 +34,6 @@ namespace Terraria.ModLoader.Engine
 			// Mods use Mod.GetFont/GetEffect rather than ContentManager.Load directly anyway, so Load should only be called once per mod load by tML.
 			if (assetName.StartsWith("tmod:"))
 				return ReadAsset<T>(assetName, null);
-
-			// Prioritize loading from alternateContentManager since it contains 1.3.5 assets, assets that are missing or different resolutions in 1.4
-			if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb")))
-				return alternateContentManager.Load<T>(assetName); // Funky approach because RootDirectory is enforced and can't change on the fly.
 
 			return base.Load<T>(assetName);
 		}
