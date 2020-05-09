@@ -58,7 +58,7 @@
  			}
  
 -			if (flag5)
-+			if (flag5 && Steam.IsSteamApp) {
++			if (flag5 && !Steam.IsSteamApp) {
  				num10++;
 -
 -			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {

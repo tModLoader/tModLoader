@@ -4014,7 +4014,7 @@
  					menuMode = 12;
  				}
  
-+				if (Steam.IsSteamApp) {
++				if (!Steam.IsSteamApp) {
 -				num12++;
 +					num12++;
 -				array9[num12] = Lang.menu[131].Value;
@@ -4117,7 +4117,7 @@
  
 +				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +				string patreonShortURL = @"patreon.com/tModLoader";
-+				bool showPatreon = !SteamApps.BIsAppInstalled(new AppId_t(1281930));
++				bool showPatreon = !Steam.IsSteamApp;
 +				string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 -				Vector2 origin3 = fontMouseText.MeasureString(versionNumber);
 +				Vector2 origin3 = fontMouseText.MeasureString(drawVersion);
