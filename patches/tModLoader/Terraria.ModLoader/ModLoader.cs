@@ -37,14 +37,14 @@ namespace Terraria.ModLoader
 		// beta > 0 cannot publish to mod browser
 		public static readonly int beta = 1;
 
-		public static readonly string versionedName = SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
-			$"tModLoader v{version}" +
-				(branchName.Length == 0 ? "" : $" {branchName}") +
-				(beta == 0 ? "" : $" Beta {beta}");
+		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
+		public static readonly string versionedName = $"tModLoader v{version}" +
+													  (branchName.Length == 0 ? "" : $" {branchName}") +
+													  (beta == 0 ? "" : $" Beta {beta}");
 
 		public static readonly string versionTag = $"v{version}" +
-				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
-				(beta == 0 ? "" : $"-beta{beta}");
+													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
+													(beta == 0 ? "" : $"-beta{beta}");
 
 		[Obsolete("Use Platform.IsWindows")]
 		public static readonly bool windows = Platform.IsWindows;
