@@ -125,9 +125,7 @@ var dir_563615b9ae08cf63712a5de713529dc7 =
     [ "ModItem.cs", "_mod_item_8cs.html", [
       [ "ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", "class_terraria_1_1_mod_loader_1_1_mod_item" ]
     ] ],
-    [ "ModLoader.cs", "_mod_loader_8cs.html", [
-      [ "ModLoader", "class_terraria_1_1_mod_loader_1_1_mod_loader.html", "class_terraria_1_1_mod_loader_1_1_mod_loader" ]
-    ] ],
+    [ "ModLoader.cs", "_mod_loader_8cs.html", "_mod_loader_8cs" ],
     [ "ModMountData.cs", "_mod_mount_data_8cs.html", [
       [ "ModMountData", "class_terraria_1_1_mod_loader_1_1_mod_mount_data.html", "class_terraria_1_1_mod_loader_1_1_mod_mount_data" ]
     ] ],
