@@ -14,12 +14,11 @@ namespace Terraria.ModLoader.Core
 	{
 		internal static void ArchiveLogs() {
 			if (!Directory.Exists(Logging.LogArchiveDir)) {
-				var pattern = new Regex(".*\\.zip");
-				var existingOldLogs = Directory.GetFiles(Logging.LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
+				string[] existingOldLogs = Directory.GetFiles(Logging.LogDir, "*.zip");
 
-				foreach (string f in existingOldLogs) {
+				for (int i = 0; i < existingOldLogs.Length; i++) {
 					try {
-						File.Delete(f);
+						File.Delete(existingOldLogs[i]);
 					}
 					catch (IOException) { }
 				}
@@ -27,8 +26,9 @@ namespace Terraria.ModLoader.Core
 				Directory.CreateDirectory(Logging.LogArchiveDir);
 			}
 
-			foreach (var logFile in Directory.GetFiles(Logging.LogDir, "*.old*"))
+			foreach (string logFile in Directory.GetFiles(Logging.LogDir, "*.old*")) {
 				Archive(logFile, Path.GetFileNameWithoutExtension(logFile));
+			}
 
 			DeleteOldArchives();
 		}
@@ -53,10 +53,11 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private const int MAX_LOGS = 20;
+
 		private static void DeleteOldArchives() {
-			var pattern = new Regex(".*\\.zip");
-			var existingLogs = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();
-			foreach (var f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
+			var existingLogs = Directory.GetFiles(Logging.LogArchiveDir, "*.zip").OrderBy(File.GetCreationTime).ToList();
+
+			foreach (string f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
 				try {
 					File.Delete(f);
 				}
