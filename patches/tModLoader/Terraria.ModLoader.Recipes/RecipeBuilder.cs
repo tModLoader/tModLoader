@@ -10,6 +10,13 @@ namespace Terraria.ModLoader.Recipes
 		private readonly ModRecipe _recipe;
 
 
+		/// <summary>Creates a new instance with no ingredients and no result.</summary>
+		/// <seealso cref="Requires(int,int)"/>
+		/// <seealso cref="Build"/>
+		public RecipeBuilder()
+		{
+		}
+
 		/// <summary>Creates a new instance with no ingredients with the given item and stack as a result.</summary>
 		/// <param name="mod">The mod who owns the recipe.</param>
 		/// <param name="item">The item type.</param>
@@ -82,8 +89,13 @@ namespace Terraria.ModLoader.Recipes
 		/// <param name="type3">The third item type.</param>
 		/// <param name="types">The remaining item types.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(params int[] types)
+		public RecipeBuilder Requires(int type1, int type2, int type3, params int[] types)
 		{
+			Requires(type1);
+			Requires(type2);
+			Requires(type3);
+
+
 			for (int i = 0; i < types.Length; i++)
 				Requires(types[i]);
 
@@ -100,10 +112,16 @@ namespace Terraria.ModLoader.Recipes
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
 		public RecipeBuilder Requires(Mod mod, string itemName, int stack = 1)
 		{
-			_recipe.AddIngredient(mod ?? _recipe.mod, itemName, stack);
+			_recipe.AddIngredient(mod, itemName, stack);
 
 			return this;
 		}
+
+		/// <summary>Adds an ingredient to this recipe of the given type and stack size.</summary>
+		/// <typeparam name="T">The type.</typeparam>
+		/// <param name="stack">The stack.</param>
+		/// <returns></returns>
+		public RecipeBuilder Requires<T>(int stack = 1) where T : ModItem => Requires(ModContent.ItemType<T>(), stack);
 
 
 		/// <summary>Adds an ingredient to this recipe of the given type of item and stack size.</summary>
