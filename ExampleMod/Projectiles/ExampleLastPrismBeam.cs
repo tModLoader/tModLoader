@@ -56,6 +56,15 @@ namespace ExampleMod.Projectiles
 		// The maximum brightness of the light emitted by the beams. Brightness scales from 0 to this value as the Prism's charge increases.
 		private const float BeamLightBrightness = 0.75f;
 
+		// These variables control the beam's potential coloration.
+		// As a value, hue ranges from 0f to 1f, both of which are pure red. The laser beams vary from 0.57 to 0.75, which winds up being a blue-to-purple gradient.
+		// Saturation ranges from 0f to 1f and controls how greyed out the color is. 0 is fully grayscale, 1 is vibrant, intense color.
+		// Lightness ranges from 0f to 1f and controls how dark or light the color is. 0 is pitch black. 1 is pure white.
+		private const float BeamColorHue = 0.57f;
+		private const float BeamHueVariance = 0.18f;
+		private const float BeamColorSaturation = 0.66f;
+		private const float BeamColorLightness = 0.53f;
+
 		// This property encloses the internal AI variable projectile.ai[0]. It makes the code easier to read.
 		private float BeamID {
 			get => projectile.ai[0];
@@ -75,7 +84,10 @@ namespace ExampleMod.Projectiles
 			set => projectile.localAI[1] = value;
 		}
 
-		public override void SetStaticDefaults() => DisplayName.SetDefault("Example Prism Beam");
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Example Prism Beam");
+		}
 
 		public override void SetDefaults()
 		{
@@ -196,7 +208,7 @@ namespace ExampleMod.Projectiles
 			Vector2 beamDims = new Vector2(projectile.velocity.Length() * BeamLength, projectile.width * projectile.scale);
 
 			// Only produce dust and cause water ripples if the beam is above a certain charge level.
-			Color beamColor = GetBeamColor();
+			Color beamColor = GetOuterBeamColor();
 			if (chargeRatio >= VisualEffectThreshold)
 			{
 				ProduceBeamDust(beamColor);
@@ -271,43 +283,44 @@ namespace ExampleMod.Projectiles
 				return false;
 			}
 
-			Texture2D tex = Main.projectileTexture[projectile.type];
+			Texture2D texture = Main.projectileTexture[projectile.type];
 			Vector2 centerFloored = projectile.Center.Floor() + projectile.velocity * projectile.scale * 10.5f;
-			Vector2 scaleVec = new Vector2(projectile.scale);
+			Vector2 drawScale = new Vector2(projectile.scale);
 
 			// Reduce the beam length proportional to its square area to reduce block penetration.
 			float visualBeamLength = BeamLength - 14.5f * projectile.scale * projectile.scale;
 
 			DelegateMethods.f_1 = 1f; // f_1 is an unnamed decompiled variable whose function is unknown. Leave it at 1.
-			Vector2 beamStartPos = centerFloored - Main.screenPosition;
-			Vector2 beamEndPos = beamStartPos + projectile.velocity * visualBeamLength;
-			Utils.LaserLineFraming llf = new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw);
+			Vector2 startPosition = centerFloored - Main.screenPosition;
+			Vector2 endPosition = startPosition + projectile.velocity * visualBeamLength;
 
 			// Draw the outer beam.
-			// c_1 is an unnamed decompiled variable which is the render color of the beam drawn by DelegateMethods.RainbowLaserDraw.
-			Color outerBeamColor = GetBeamColor();
-			DelegateMethods.c_1 = outerBeamColor * OuterBeamOpacityMultiplier * projectile.Opacity;
-			Utils.DrawLaser(spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
+			DrawBeam(spriteBatch, texture, startPosition, endPosition, drawScale, GetOuterBeamColor() * OuterBeamOpacityMultiplier * projectile.Opacity);
 
 			// Draw the inner beam, which is half size.
-			scaleVec *= 0.5f;
-			Color innerBeamColor = GetInnerBeamColor();
-			DelegateMethods.c_1 = innerBeamColor * InnerBeamOpacityMultiplier * projectile.Opacity;
-			Utils.DrawLaser(spriteBatch, tex, beamStartPos, beamEndPos, scaleVec, llf);
+			drawScale *= 0.5f;
+			DrawBeam(spriteBatch, texture, startPosition, endPosition, drawScale, GetInnerBeamColor() * InnerBeamOpacityMultiplier * projectile.Opacity);
+
+			// Returning false prevents Terraria from trying to draw the projectile itself.
 			return false;
 		}
 
-		private Color GetBeamColor()
+		private void DrawBeam(SpriteBatch spriteBatch, Texture2D texture, Vector2 startPosition, Vector2 endPosition, Vector2 drawScale, Color beamColor)
+		{
+			Utils.LaserLineFraming lineFraming = new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw);
+
+			// c_1 is an unnamed decompiled variable which is the render color of the beam drawn by DelegateMethods.RainbowLaserDraw.
+			DelegateMethods.c_1 = beamColor;
+			Utils.DrawLaser(spriteBatch, texture, startPosition, endPosition, drawScale, lineFraming);
+		}
+
+		private Color GetOuterBeamColor()
 		{
 			// This hue calculation produces a unique color for each beam based on its Beam ID.
-			// Hue ranges from 0f to 1f, both of which are pure red. This function uses modulus to range from 0.57 to 0.75,
-			// which winds up being a blue-to-purple gradient.
-			float hue = (BeamID / ExampleLastPrismHoldout.NumBeams) % 0.18f + 0.57f;
-			float saturation = 0.66f;
-			float lightness = 0.53f;
+			float hue = (BeamID / ExampleLastPrismHoldout.NumBeams) % BeamHueVariance + BeamColorHue;
 			
 			// Main.hslToRgb converts Hue, Saturation, Lightness into a Color for general purpose use.
-			Color c = Main.hslToRgb(hue, saturation, lightness);
+			Color c = Main.hslToRgb(hue, BeamColorSaturation, BeamColorLightness);
 			
 			// Manually reduce the opacity of the color so beams can overlap without completely overwriting each other.
 			c.A = 64;
@@ -320,28 +333,28 @@ namespace ExampleMod.Projectiles
 		private void ProduceBeamDust(Color beamColor)
 		{
 			// Create one dust per frame a small distance from where the beam ends.
-			const int dustType = 15;
-			Vector2 laserEndPos = projectile.Center + projectile.velocity * (BeamLength - 14.5f * projectile.scale);
+			const int type = 15;
+			Vector2 endPosition = projectile.Center + projectile.velocity * (BeamLength - 14.5f * projectile.scale);
 
 			// 50% chance for the dust to come off on either side of the beam.
-			float dustAngle = projectile.rotation + (Main.rand.NextBool() ? 1f : -1f) * MathHelper.PiOver2;
-			float dustStartDist = Main.rand.NextFloat(1f, 1.8f);
+			float angle = projectile.rotation + (Main.rand.NextBool() ? 1f : -1f) * MathHelper.PiOver2;
+			float startDistance = Main.rand.NextFloat(1f, 1.8f);
 			float scale = Main.rand.NextFloat(0.7f, 1.1f);
-			Vector2 dustVel = dustAngle.ToRotationVector2() * dustStartDist;
-			Dust d = Dust.NewDustDirect(laserEndPos, 0, 0, dustType, dustVel.X, dustVel.Y, 0, beamColor, scale);
-			d.color = beamColor;
-			d.noGravity = true;
+			Vector2 velocity = angle.ToRotationVector2() * startDistance;
+			Dust dust = Dust.NewDustDirect(endPosition, 0, 0, type, velocity.X, velocity.Y, 0, beamColor, scale);
+			dust.color = beamColor;
+			dust.noGravity = true;
 
 			// If the beam is currently large, make the dust faster and larger to match.
 			if (projectile.scale > 1f) {
-				d.velocity *= projectile.scale;
-				d.scale *= projectile.scale;
+				dust.velocity *= projectile.scale;
+				dust.scale *= projectile.scale;
 			}
 		}
 
 		private void ProduceWaterRipples(Vector2 beamDims)
 		{
-			WaterShaderData wsd = (WaterShaderData)Filters.Scene["WaterDistortion"].GetShader();
+			WaterShaderData shaderData = (WaterShaderData)Filters.Scene["WaterDistortion"].GetShader();
 
 			// A universal time-based sinusoid which updates extremely rapidly. GlobalTime is 0 to 3600, measured in seconds.
 			float waveSine = 0.1f * (float)Math.Sin(Main.GlobalTime * 20f);
@@ -349,7 +362,7 @@ namespace ExampleMod.Projectiles
 
 			// WaveData is encoded as a Color. Not really sure why.
 			Color waveData = new Color(0.5f, 0.1f * Math.Sign(waveSine) + 0.5f, 0f, 1f) * Math.Abs(waveSine);
-			wsd.QueueRipple(ripplePos, waveData, beamDims, RippleShape.Square, projectile.rotation);
+			shaderData.QueueRipple(ripplePos, waveData, beamDims, RippleShape.Square, projectile.rotation);
 		}
 		
 

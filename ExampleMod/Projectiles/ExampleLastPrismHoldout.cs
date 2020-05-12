@@ -11,6 +11,9 @@ namespace ExampleMod.Projectiles
 	public class ExampleLastPrismHoldout : ModProjectile
 	{
 		public override string Texture => "Terraria/Projectile_" + ProjectileID.LastPrism;
+
+		// The vanilla Last Prism is an animated item with 5 frames of animation. We copy that here.
+		private const int NumAnimationFrames = 5;
 		
 		// This controls how many individual beams are fired by the Prism.
 		public const int NumBeams = 10;
@@ -57,12 +60,16 @@ namespace ExampleMod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Example Last Prism");
-			Main.projFrames[projectile.type] = 5;
+			Main.projFrames[projectile.type] = NumAnimationFrames;
+
+			// Signals to Terraria that this projectile requires a unique identifier beyond its index in the projectile array.
+			// This prevents the issue with the vanilla Last Prism where the beams are invisible in multiplayer.
 			ProjectileID.Sets.NeedsUUID[projectile.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
+			// Use CloneDefaults to clone all basic projectile statistics from the vanilla Last Prism.
 			projectile.CloneDefaults(ProjectileID.LastPrism);
 		}
 
@@ -77,26 +84,9 @@ namespace ExampleMod.Projectiles
 			// Update the frame counter.
 			FrameCounter += 1f;
 
-			// Update the Prism's animation, with the animation accelerating as the Prism charges.
-			projectile.frameCounter++;
-			int framesPerAnimationUpdate = FrameCounter >= MaxCharge ? 2 : FrameCounter >= (MaxCharge * 0.66f) ? 3 : 4;
-			if (projectile.frameCounter >= framesPerAnimationUpdate)
-			{
-				projectile.frameCounter = 0;
-				if (++projectile.frame >= 5) {
-					projectile.frame = 0;
-				}
-			}
-
-			// Make sound intermittently while the Prism is in use.
-			if (projectile.soundDelay <= 0)
-			{
-				projectile.soundDelay = SoundInterval;
-				// On the very first frame, the sound playing is skipped. This way it doesn't overlap the starting hiss sound.
-				if (FrameCounter > 1f) {
-					Main.PlaySound(SoundID.Item15, projectile.position);
-				}
-			}
+			// Update projectile visuals and sound.
+			UpdateAnimation();
+			PlaySounds();
 
 			// Update the Prism's position in the world and relevant variables of the player holding it.
 			UpdatePlayerVisuals(player, rrp);
@@ -112,29 +102,16 @@ namespace ExampleMod.Projectiles
 				bool manaIsAvailable = !ShouldConsumeMana() || player.CheckMana(player.HeldItem.mana, true, false);
 
 				// The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
-				bool prismStillinUse = player.channel && manaIsAvailable && !player.noItems && !player.CCed;
+				// player.channel indicates whether the player is still holding down the mouse button to use the item.
+				bool stillInUse = player.channel && manaIsAvailable && !player.noItems && !player.CCed;
 
-				// The beams are only projected on the first frame.
-				if (prismStillinUse && FrameCounter == 1f)
-				{
-					// If for some reason the beam's velocity can't be correctly normalized, set it to a default value.
-					Vector2 beamVelocity = Vector2.Normalize(projectile.velocity);
-					if (beamVelocity.HasNaNs()) {
-						beamVelocity = -Vector2.UnitY;
-					}
-
-					int damage = projectile.damage;
-					float kb = projectile.knockBack;
-					for (int b = 0; b < NumBeams; ++b) {
-						Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, kb, projectile.owner, b, Projectile.GetByUUID(projectile.owner, projectile.whoAmI));
-					}
-
-					// After creating the beams, mark the Prism as having an important network event.
-					projectile.netUpdate = true;
+				// Spawn in the Prism's lasers on the first frame if the player is capable of using the item.
+				if (stillInUse && FrameCounter == 1f) {
+					FireBeams();
 				}
 
 				// If the Prism cannot continue to be used, then destroy it immediately.
-				else if (!prismStillinUse) {
+				else if (!stillInUse) {
 					projectile.Kill();
 				}
 			}
@@ -147,6 +124,54 @@ namespace ExampleMod.Projectiles
 		{
 			float ownerCurrentMagicDamage = player.allDamage + (player.magicDamage - 1f);
 			projectile.damage = (int)(player.HeldItem.damage * ownerCurrentMagicDamage);
+		}
+
+		private void UpdateAnimation()
+		{
+			projectile.frameCounter++;
+
+			// As the Prism charges up and focuses the beams, its animation plays faster.
+			int framesPerAnimationUpdate = FrameCounter >= MaxCharge ? 2 : FrameCounter >= (MaxCharge * 0.66f) ? 3 : 4;
+
+			// If necessary, change which specific frame of the animation is displayed.
+			if (projectile.frameCounter >= framesPerAnimationUpdate) {
+				projectile.frameCounter = 0;
+				if (++projectile.frame >= NumAnimationFrames) {
+					projectile.frame = 0;
+				}
+			}
+		}
+
+		private void PlaySounds()
+		{
+			// The Prism makes sound intermittently while in use, using the vanilla projectile variable soundDelay.
+			if (projectile.soundDelay <= 0) {
+				projectile.soundDelay = SoundInterval;
+
+				// On the very first frame, the sound playing is skipped. This way it doesn't overlap the starting hiss sound.
+				if (FrameCounter > 1f) {
+					Main.PlaySound(SoundID.Item15, projectile.position);
+				}
+			}
+		}
+
+		private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
+		{
+			// Place the Prism directly into the player's hand at all times.
+			projectile.Center = playerHandPos;
+			// The beams emit from the tip of the Prism, not the side. As such, rotate the sprite by pi/2 (90 degrees).
+			projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			projectile.spriteDirection = projectile.direction;
+
+			// The Prism is a holdout projectile, so change the player's variables to reflect that.
+			// Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
+			player.ChangeDir(projectile.direction);
+			player.heldProj = projectile.whoAmI;
+			player.itemTime = 2;
+			player.itemAnimation = 2;
+
+			// If you do not multiply by projectile.direction, the player's hand will point the wrong direction while facing left.
+			player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
 		}
 
 		private bool ShouldConsumeMana()
@@ -171,55 +196,58 @@ namespace ExampleMod.Projectiles
 			return consume;
 		}
 
-		
 		private void UpdateAim(Vector2 source, float speed)
 		{
-			Vector2 aimVector = Vector2.Normalize(Main.MouseWorld - source);
-			if (aimVector.HasNaNs()) {
-				aimVector = -Vector2.UnitY;
+			// Get the player's current aiming direction as a normalized vector.
+			Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
+			if (aim.HasNaNs()) {
+				aim = -Vector2.UnitY;
 			}
-			// Change a portion of the Prism's current velocity so that it points to the mouse. This gives smooth movement over time.
-			aimVector = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(projectile.velocity), aimVector, AimResponsiveness));
-			aimVector *= speed;
 
-			if (aimVector != projectile.velocity) {
+			// Change a portion of the Prism's current velocity so that it points to the mouse. This gives smooth movement over time.
+			aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(projectile.velocity), aim, AimResponsiveness));
+			aim *= speed;
+
+			if (aim != projectile.velocity) {
 				projectile.netUpdate = true;
 			}
-			projectile.velocity = aimVector;
+			projectile.velocity = aim;
 		}
 
-		private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
+		private void FireBeams()
 		{
-			// Place the Prism directly into the player's hand at all times.
-			projectile.Center = playerHandPos;
-			// The beams emit from the tip of the Prism, not the side. As such, rotate the sprite by pi/2 (90 degrees).
-			projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			projectile.spriteDirection = projectile.direction;
+			// If for some reason the beam velocity can't be correctly normalized, set it to a default value.
+			Vector2 beamVelocity = Vector2.Normalize(projectile.velocity);
+			if (beamVelocity.HasNaNs()) {
+				beamVelocity = -Vector2.UnitY;
+			}
 
-			// The Prism is a holdout projectile, so change the player's variables to reflect that.
-			// Constantly resetting player.itemTime and player.itemAnimation prevents the player from switching items or doing anything else.
-			player.ChangeDir(projectile.direction);
-			player.heldProj = projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
+			// This UUID will be the same between all players in multiplayer, ensuring that the beams are properly anchored on the Prism on everyone's screen.
+			int uuid = Projectile.GetByUUID(projectile.owner, projectile.whoAmI);
 
-			// If you do not multiply by projectile.direction, the player's hand will point the wrong direction while facing left.
-			player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
+			int damage = projectile.damage;
+			float knockback = projectile.knockBack;
+			for (int b = 0; b < NumBeams; ++b) {
+				Projectile.NewProjectile(projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, knockback, projectile.owner, b, uuid);
+			}
+
+			// After creating the beams, mark the Prism as having an important network event. This will make Terraria sync its data to other players ASAP.
+			projectile.netUpdate = true;
 		}
 
-		// Completely custom drawcode because the Prism is a holdout projectile.
+		// Because the Prism is a holdout projectile and stays glued to its user, it needs custom drawcode.
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			SpriteEffects eff = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Texture2D tex = Main.projectileTexture[projectile.type];
-			int frameHeight = tex.Height / Main.projFrames[projectile.type];
-			int texYOffset = frameHeight * projectile.frame;
-			Vector2 sheetInsertVec = (projectile.Center + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition).Floor();
+			SpriteEffects effects = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			Texture2D texture = Main.projectileTexture[projectile.type];
+			int frameHeight = texture.Height / Main.projFrames[projectile.type];
+			int spriteSheetOffset = frameHeight * projectile.frame;
+			Vector2 sheetInsertPosition = (projectile.Center + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition).Floor();
 
 			// The Prism is always at full brightness, regardless of the surrounding light. This is equivalent to it being its own glowmask.
 			// It is drawn in a non-white color to distinguish it from the vanilla Last Prism.
 			Color drawColor = ExampleLastPrism.OverrideColor;
-			spriteBatch.Draw(tex, sheetInsertVec, new Rectangle?(new Rectangle(0, texYOffset, tex.Width, frameHeight)), drawColor, projectile.rotation, new Vector2(tex.Width / 2f, frameHeight / 2f), projectile.scale, eff, 0f);
+			spriteBatch.Draw(texture, sheetInsertPosition, new Rectangle?(new Rectangle(0, spriteSheetOffset, texture.Width, frameHeight)), drawColor, projectile.rotation, new Vector2(texture.Width / 2f, frameHeight / 2f), projectile.scale, effects, 0f);
 			return false;
 		}
 	}
