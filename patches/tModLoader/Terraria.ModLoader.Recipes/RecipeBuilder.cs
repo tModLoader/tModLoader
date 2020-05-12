@@ -82,20 +82,12 @@ namespace Terraria.ModLoader.Recipes
 		/// <summary>
 		/// Adds the specified ingredients to this recipe with the given item types.
 		/// Ex.: 
-		/// <example>recipe.AddIngredient(ItemID.IronAxe)</example>
+		/// <example>recipe.AddIngredient(ItemID.IronAxe, ItemID.IronPickaxe)</example>
 		/// </summary>
-		/// <param name="type1">The first item type.</param>
-		/// <param name="type2">The second item type.</param>
-		/// <param name="type3">The third item type.</param>
-		/// <param name="types">The remaining item types.</param>
+		/// <param name="types">The item types.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(int type1, int type2, int type3, params int[] types)
+		public RecipeBuilder Requires(params int[] types)
 		{
-			Requires(type1);
-			Requires(type2);
-			Requires(type3);
-
-
 			for (int i = 0; i < types.Length; i++)
 				Requires(types[i]);
 
