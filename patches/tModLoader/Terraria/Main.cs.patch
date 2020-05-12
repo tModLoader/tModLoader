@@ -1,5 +1,13 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -27,6 +_,7 @@
+ using System.Text;
+ using System.Threading;
+ using System.Windows.Forms;
++using Steamworks;
+ using Terraria.Achievements;
+ using Terraria.Audio;
+ using Terraria.Chat;
 @@ -51,6 +_,12 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -37,6 +45,14 @@
  		public static float expertLife = 2f;
  		public static float expertDamage = 2f;
  		public static float expertDebuffTime = 2f;
+@@ -141,6 +_,7 @@
+ 		private static ulong _tileFrameSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 		private static ulong _drawCycleCounter = 0uL;
+ 		public static ContentManager ShaderContentManager;
++		internal static TMLContentManager AlternateContentManager;
+ 		public static Ref<Effect> ScreenShaderRef = new Ref<Effect>();
+ 		public static Ref<Effect> PixelShaderRef = new Ref<Effect>();
+ 		public static Ref<Effect> TileShaderRef = new Ref<Effect>();
 @@ -149,6 +_,8 @@
  		public static bool UseHeatDistortion = true;
  		public static int npcStreamSpeed = 60;
@@ -659,12 +675,40 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,7 @@
+@@ -4105,7 +_,35 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
 -			base.Content.RootDirectory = "Content";
-+			base.Content = new TMLContentManager(Content.ServiceProvider, "Content");
++#endif
++		}
++
++		internal void PostSocialInitialize()
++		{
++#if CLIENT
++			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
++			if (!Directory.Exists(vanillaContentFolder)) {
++				vanillaContentFolder = "../Content"; // Nested Manual Install
++			}
++			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
++				var appID = new Steamworks.AppId_t(105600u);
++				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++				if (appInstalled) { 
++					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
++					Logging.Terraria.Info("Found Terraria steamapp install at: "+ steamInstallFolder);
++
++					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
++					if (!Directory.Exists(vanillaContentFolder))
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
++				}
++			}
++			if (!Directory.Exists(vanillaContentFolder)) {
++				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Environment.Exit(1);
++			}
++
++			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
++			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  #endif
  		}
  
@@ -765,7 +809,7 @@
  			TextureManager.Initialize();
  			mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
 -			ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-+			ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++			ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory, AlternateContentManager);
  			PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  			TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
  			ScreenShaderRef.Value = ShaderContentManager.Load<Effect>("ScreenShader");
@@ -779,7 +823,7 @@
  		}
  
  		private void LoadFonts() {
-@@ -7140,6 +_,8 @@
+@@ -7140,12 +_,14 @@
  					npcAltTextures[num35][num37] = OurLoad<Texture2D>("Images" + Path.DirectorySeparatorChar.ToString() + "NPC_" + num35 + "_Alt_" + num37);
  				}
  			}
@@ -788,6 +832,15 @@
  		}
  
  		private static void LoadMusic() {
+-			engine = new AudioEngine("Content" + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
++			engine = new AudioEngine(Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "TerrariaMusic.xgs");
+-			soundBank = new SoundBank(engine, "Content" + Path.DirectorySeparatorChar + "Sound Bank.xsb");
++			soundBank = new SoundBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Sound Bank.xsb");
+-			waveBank = new WaveBank(engine, "Content" + Path.DirectorySeparatorChar + "Wave Bank.xwb");
++			waveBank = new WaveBank(engine, Main.instance.Content.RootDirectory + Path.DirectorySeparatorChar + "Wave Bank.xwb");
+ 			for (int i = 1; i < 42; i++) {
+ 				music[i] = soundBank.GetCue("Music_" + i);
+ 			}
 @@ -7320,6 +_,9 @@
  		}
  
@@ -2130,6 +2183,15 @@
  										spriteBatch.Draw(treeBranchAltTexture[num317, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									else
  										spriteBatch.Draw(treeBranchTexture[num317], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+@@ -16544,7 +_,7 @@
+ 					}
+ 
+ 					if (type4 != 323 || frameX < 88 || frameX > 132)
+-						continue;
++						goto SpecialDraw;
+ 
+ 					int num330 = 0;
+ 					switch (frameX) {
 @@ -16562,7 +_,12 @@
  					int num334 = 80;
  					int num335 = 32;
@@ -2143,7 +2205,7 @@
  						if (Main.tile[num300, num337].type == 53) {
  							num332 = 0;
  							break;
-@@ -16586,16 +_,20 @@
+@@ -16586,16 +_,22 @@
  
  					int frameY3 = Main.tile[num300, num301].frameY;
  					int y3 = num332 * 82;
@@ -2161,6 +2223,8 @@
  				}
  				catch {
  				}
++
++				SpecialDraw:
 +
 +				TileLoader.SpecialDraw(type4, num300, num301, spriteBatch);
  			}
@@ -3946,7 +4010,24 @@
  				int num12 = 0;
  				num5 = 5;
  				num4 = 60;
-@@ -35743,6 +_,7 @@
+@@ -35734,15 +_,18 @@
+ 					menuMode = 12;
+ 				}
+ 
++				if (!Steam.IsSteamApp) {
+-				num12++;
++					num12++;
+-				array9[num12] = Lang.menu[131].Value;
++					array9[num12] = Lang.menu[131].Value;
+-				if (selectedMenu == num12) {
++					if (selectedMenu == num12) {
+-					PlaySound(10);
++						PlaySound(10);
+-					MenuUI.SetState(AchievementsMenu);
++						MenuUI.SetState(AchievementsMenu);
+-					menuMode = 888;
++						menuMode = 888;
++					}
  				}
  
  				num12++;
@@ -4036,7 +4117,7 @@
  
 +				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +				string patreonShortURL = @"patreon.com/tModLoader";
-+				bool showPatreon = menuMode == 0;
++				bool showPatreon = !Steam.IsSteamApp;
 +				string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 -				Vector2 origin3 = fontMouseText.MeasureString(versionNumber);
 +				Vector2 origin3 = fontMouseText.MeasureString(drawVersion);

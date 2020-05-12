@@ -1527,8 +1527,8 @@
  					if (Main.netMode == 2)
  						NetMessage.SendTileSquare(-1, num60, num61, 3);
  				}
-+				TileLoader.RandomUpdate(num6, num7, Main.tile[num7, num8].type);
-+				WallLoader.RandomUpdate(num6, num7, Main.tile[num7, num8].wall);
++				TileLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].type);
++				WallLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].wall);
  			}
  
  			for (int num62 = 0; (float)num62 < (float)(Main.maxTilesX * Main.maxTilesY) * num3; num62++) {

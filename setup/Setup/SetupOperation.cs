@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ICSharpCode.Decompiler.Util;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -99,18 +100,34 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		public static void DeleteFile(string path) {
-			if (File.Exists(path))
+			if (File.Exists(path)) {
+				File.SetAttributes(path,FileAttributes.Normal);
 				File.Delete(path);
+			}
 		}
 
 		public static void Copy(string from, string to) {
 			CreateParentDirectory(to);
+
+			if (File.Exists(to)) {
+				File.SetAttributes(to,FileAttributes.Normal);
+			}
+
 			File.Copy(from, to, true);
 		}
 
 		public static IEnumerable<(string file, string relPath)> EnumerateFiles(string dir) =>
 			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
 			.Select(path => (file: path, relPath: RelPath(dir, path)));
+
+		public static void EmptyDirectoryRecursive(string dir) {
+			foreach (string directory in Directory.EnumerateDirectories(dir,"*",new EnumerationOptions { RecurseSubdirectories = true })) {
+				foreach (string file in Directory.GetFiles(dir)) {
+					File.SetAttributes(file,FileAttributes.Normal);
+					File.Delete(file);
+				}
+			}
+		}
 
 		public static bool DeleteEmptyDirs(string dir) {
 			bool allEmpty = true;

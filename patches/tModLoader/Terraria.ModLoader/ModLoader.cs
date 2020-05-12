@@ -11,12 +11,14 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
+using Version = System.Version;
 
 namespace Terraria.ModLoader
 {
@@ -25,7 +27,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11, 6, 2);
+		public static readonly Version version = new Version(0, 11, 7);
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
@@ -33,14 +35,16 @@ namespace Terraria.ModLoader
 
 		public static readonly string branchName = "";
 		// beta > 0 cannot publish to mod browser
-		public static readonly int beta = 0;
+		public static readonly int beta = 2;
 
+		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
 		public static readonly string versionedName = $"tModLoader v{version}" +
-				(branchName.Length == 0 ? "" : $" {branchName}") +
-				(beta == 0 ? "" : $" Beta {beta}");
+													  (branchName.Length == 0 ? "" : $" {branchName}") +
+													  (beta == 0 ? "" : $" Beta {beta}");
+
 		public static readonly string versionTag = $"v{version}" +
-				(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
-				(beta == 0 ? "" : $"-beta{beta}");
+													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
+													(beta == 0 ? "" : $"-beta{beta}");
 
 		[Obsolete("Use Platform.IsWindows")]
 		public static readonly bool windows = Platform.IsWindows;
@@ -83,7 +87,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the instance of the Mod with the specified name.
 		/// </summary>
-		public static Mod GetMod(string name) {
+		public static Mod GetMod(string name)
+		{
 			modsByName.TryGetValue(name, out Mod m);
 			return m;
 		}
@@ -99,7 +104,8 @@ namespace Terraria.ModLoader
 		[Obsolete("Use ModLoader.Mods.Select(m => m.Name)", true)]
 		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
-		internal static void EngineInit() {
+		internal static void EngineInit()
+		{
 			DotNet45Check();
 			FileAssociationSupport.UpdateFileAssociation();
 			GLCallLocker.Init();
@@ -111,7 +117,8 @@ namespace Terraria.ModLoader
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
 		private static bool isLoading = false;
-		private static void Load(CancellationToken token = default) {
+		private static void Load(CancellationToken token = default)
+		{
 			try {
 				if (isLoading)
 					throw new Exception("Load called twice");
@@ -185,7 +192,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void DotNet45Check() {
+		private static void DotNet45Check()
+		{
 			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
 				return;
 
@@ -203,14 +211,16 @@ namespace Terraria.ModLoader
 			Environment.Exit(-1);
 		}
 
-		internal static void Reload() {
+		internal static void Reload()
+		{
 			if (Main.dedServ)
 				Load();
 			else
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		private static bool Unload() {
+		private static bool Unload()
+		{
 			try {
 				// have to move unload logic to a separate method so the stack frame is cleared. Otherwise unloading can capture mod instances in local variables, even with memory barriers (thanks compiler weirdness)
 				do_Unload();
@@ -230,7 +240,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void do_Unload() {
+		private static void do_Unload()
+		{
 			Logging.tML.Info("Unloading mods");
 			if (Main.dedServ) {
 				Console.WriteLine("Unloading mods...");
@@ -250,13 +261,15 @@ namespace Terraria.ModLoader
 		}
 
 		internal static List<string> badUnloaders = new List<string>();
-		private static void WarnModsStillLoaded() {
+		private static void WarnModsStillLoaded()
+		{
 			badUnloaders = weakModReferences.Where(r => r.IsAlive).Select(r => ((Mod)r.Target).Name).ToList();
 			foreach (var modName in badUnloaders)
 				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", modName);
 		}
 
-		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false) {
+		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
+		{
 			msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
 
 			if (Main.dedServ) {
@@ -283,7 +296,8 @@ namespace Terraria.ModLoader
 		}
 
 		// TODO: This doesn't work on mono for some reason. Investigate.
-		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey) {
+		public static bool IsSignedBy(TmodFile mod, string xmlPublicKey)
+		{
 			var f = new RSAPKCS1SignatureDeformatter();
 			var v = AsymmetricAlgorithm.Create("RSA");
 			f.SetHashAlgorithm("SHA1");
@@ -295,10 +309,10 @@ namespace Terraria.ModLoader
 		private static bool _pauseSavingEnabledMods;
 		private static bool _needsSavingEnabledMods;
 		internal static bool PauseSavingEnabledMods {
-			get=>_pauseSavingEnabledMods;
+			get => _pauseSavingEnabledMods;
 			set {
-				if(_pauseSavingEnabledMods == value) {return;}
-				if(!value && _needsSavingEnabledMods) {
+				if (_pauseSavingEnabledMods == value) { return; }
+				if (!value && _needsSavingEnabledMods) {
 					ModOrganizer.SaveEnabledMods();
 					_needsSavingEnabledMods = false;
 				}
@@ -312,7 +326,8 @@ namespace Terraria.ModLoader
 		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
 		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-		internal static void SetModEnabled(string modName, bool active) {
+		internal static void SetModEnabled(string modName, bool active)
+		{
 			if (active) {
 				EnabledMods.Add(modName);
 				Logging.tML.InfoFormat("Enabling Mod: {0}", modName);
@@ -321,7 +336,7 @@ namespace Terraria.ModLoader
 				EnabledMods.Remove(modName);
 				Logging.tML.InfoFormat("Disabling Mod: {0}", modName);
 			}
-			if(PauseSavingEnabledMods) {
+			if (PauseSavingEnabledMods) {
 				_needsSavingEnabledMods = true;
 			}
 			else {
@@ -329,7 +344,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal static void SaveConfiguration() {
+		internal static void SaveConfiguration()
+		{
 			Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
 			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
@@ -345,7 +361,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 		}
 
-		internal static void LoadConfiguration() {
+		internal static void LoadConfiguration()
+		{
 			Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
 			Main.Configuration.Get("SteamID64", ref steamID64);
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
@@ -360,13 +377,14 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		}
 
-		internal static void MigrateSettings() {
+		internal static void MigrateSettings()
+		{
 			if (LastLaunchedTModLoaderVersion != null) return;
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
-			if(LastLaunchedTModLoaderVersion <= new Version(0, 11, 4))
+			if (LastLaunchedTModLoaderVersion <= new Version(0, 11, 4))
 				Main.Configuration.Put("Support4K", true); // This reverts a potentially bad setting change. 
-			// Subsequent migrations here.
+														   // Subsequent migrations here.
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;
@@ -378,21 +396,25 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>
-		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) {
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
+		{
 			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
-		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) {
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
+		{
 			return BuildGlobalHook(providers, Method(expr));
 		}
 
-		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method) {
+		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
+		{
 			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
 			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
 			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
 		}
 
-		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr) {
+		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
+		{
 			MethodInfo method;
 			try {
 				var convert = expr.Body as UnaryExpression;

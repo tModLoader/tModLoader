@@ -1,9 +1,14 @@
 --- src/Terraria/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
-@@ -4,6 +_,7 @@
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
++using Steamworks;
  using Terraria.GameContent;
  using Terraria.GameInput;
  using Terraria.Localization;
++using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.UI;
  using Terraria.Social;
  using Terraria.UI;
@@ -27,14 +32,10 @@
  			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
  			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (num8 + 1);
  			if (flag)
-@@ -230,6 +_,20 @@
- 				if (flag4) {
- 					Close();
- 					IngameFancyUI.OpenKeybinds();
-+				}
-+			}
-+
-+			num10++;
+@@ -234,6 +_,20 @@
+ 			}
+ 
+ 			num10++;
 +			if (DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
 +				leftHover = num10;
 +				if (flag4) {
@@ -45,6 +46,29 @@
 +					Main.npcChatText = "";
 +					Main.inFancyUI = true;
 +					Main.InGameUI.SetState(Interface.modConfigList);
++				}
++			}
++
++			num10++;
+ 			if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4) {
+@@ -245,6 +_,7 @@
+ 			if (flag5)
+ 				num10++;
+ 
++			if(!Steam.IsSteamApp) {
+ 			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4) {
+@@ -252,8 +_,9 @@
+ 					IngameFancyUI.OpenAchievements();
  				}
  			}
- 
+-
+ 			num10++;
++			}
++
+ 			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4)

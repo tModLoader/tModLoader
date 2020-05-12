@@ -4,8 +4,9 @@ tModLoader (TML) is an open-source, community-driven, modification and expansion
 
 **Note**: the code on this GitHub repository will be ahead of the current released version.
 
-___
-
+<p align="center" >
+<img src="http://i.imgur.com/kdcROYP.png"/>
+</p>
 
 ## Instructions
 
@@ -19,9 +20,6 @@ Click the text that applies to you.
 ### [I am a **developer**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers) (Create mods)
 
 ### [I am a **contributor**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-contributors) (Help create tModLoader)
-
-___
-
 
 ## Support us
 

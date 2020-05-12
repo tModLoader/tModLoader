@@ -63,6 +63,8 @@ namespace Terraria.ModLoader.Engine
 				Environment.Exit(1);
 			}
 
+			// TODO: Fix all these messages to the new installation pattern
+			/* 
 #if !SERVER
 			if(!Directory.Exists(ContentDirectory)) {
 				Logging.tML.Info($"{ContentDirectory} could not be found.");
@@ -72,6 +74,7 @@ namespace Terraria.ModLoader.Engine
 				return false;
 			}
 #endif
+			*/
 
 			if (File.Exists(steamAPIpath)) {
 				VerifySteamAPI(steamAPIpath, steamAPIhash);

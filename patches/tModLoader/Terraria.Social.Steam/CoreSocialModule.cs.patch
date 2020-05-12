@@ -1,6 +1,23 @@
 --- src/Terraria/Terraria.Social.Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria.Social.Steam/CoreSocialModule.cs
-@@ -27,7 +_,7 @@
+@@ -9,7 +_,7 @@
+ 	public class CoreSocialModule : ISocialModule
+ 	{
+ 		private static CoreSocialModule _instance;
+-		public const int SteamAppId = 105600;
++		public const int SteamAppId = 1281930;
+ 		private bool IsSteamValid;
+ 		private object _steamTickLock = new object();
+ 		private object _steamCallbackLock = new object();
+@@ -20,14 +_,14 @@
+ 		public void Initialize() {
+ 			_instance = this;
+ #if CLIENT
+-			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
++			if (SteamAPI.RestartAppIfNecessary(new AppId_t(1281930u))) {
+ 				Environment.Exit(1);
+ 				return;
+ 			}
  
  #endif
  			if (!SteamAPI.Init()) {
