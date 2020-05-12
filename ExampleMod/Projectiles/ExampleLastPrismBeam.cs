@@ -336,7 +336,8 @@ namespace ExampleMod.Projectiles
 			const int type = 15;
 			Vector2 endPosition = projectile.Center + projectile.velocity * (BeamLength - 14.5f * projectile.scale);
 
-			// 50% chance for the dust to come off on either side of the beam.
+			// Main.rand.NextBool is used to give a 50/50 chance for the angle to point to the left or right.
+			// This gives the dust a 50/50 chance to fly off on either side of the beam.
 			float angle = projectile.rotation + (Main.rand.NextBool() ? 1f : -1f) * MathHelper.PiOver2;
 			float startDistance = Main.rand.NextFloat(1f, 1.8f);
 			float scale = Main.rand.NextFloat(0.7f, 1.1f);
