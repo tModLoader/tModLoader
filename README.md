@@ -39,7 +39,9 @@ TML is largely created and maintained by a core team of contributors: **Blushiem
 
 This project exists in its current state thanks to all the people who have contributed:
 
-<a href="https://github.com/tModLoader/tModLoader/graphs/contributors"><img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/tModLoader/tModLoader/graphs/contributors">
+<img src="https://opencollective.com/tModLoader/contributors.svg?height=215&width=890&button=false" />
+</a>
 
 ## License
 TML is licensed under the [MIT license](https://github.com/tModLoader/tModLoader/blob/master/LICENSE)
