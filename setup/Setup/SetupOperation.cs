@@ -130,7 +130,11 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		public static bool DeleteEmptyDirs(string dir) {
+			if (!Directory.Exists(dir))
+				return true;
+
 			bool allEmpty = true;
+
 			foreach (var subDir in Directory.EnumerateDirectories(dir))
 				allEmpty &= DeleteEmptyDirs(subDir);
 			
