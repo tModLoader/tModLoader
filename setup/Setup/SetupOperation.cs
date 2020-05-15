@@ -138,7 +138,7 @@ namespace Terraria.ModLoader.Setup
 			foreach (string subDir in Directory.EnumerateDirectories(dir))
 				allEmpty &= DeleteEmptyDirs(subDir);
 
-			if (!allEmpty || Directory.GetFiles(dir).Length>0)
+			if (!allEmpty || Directory.EnumerateFiles(dir).Any())
 				return false;
 
 			Directory.Delete(dir);
