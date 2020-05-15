@@ -129,25 +129,21 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		public static bool DeleteEmptyDirs(string directory) {
-			if (!Directory.Exists(directory))
+		public static bool DeleteEmptyDirs(string dir) {
+			if (!Directory.Exists(dir))
 				return true;
 
-			static bool Recursion(string dir) {
-				bool allEmpty = true;
+			bool allEmpty = true;
 
-				foreach(string subDir in Directory.EnumerateDirectories(dir))
-					allEmpty &= Recursion(subDir);
+			foreach (string subDir in Directory.EnumerateDirectories(dir))
+				allEmpty &= DeleteEmptyDirs(subDir);
 
-				if(!allEmpty || Directory.EnumerateFiles(dir).Any())
-					return false;
+			if (!allEmpty || Directory.GetFiles(dir).Length>0)
+				return false;
 
-				Directory.Delete(dir);
+			Directory.Delete(dir);
 
-				return true;
-			}
-
-			return Recursion(directory);
+			return true;
 		}
 
 		protected readonly ITaskInterface taskInterface;
