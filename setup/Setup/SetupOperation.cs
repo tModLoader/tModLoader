@@ -133,10 +133,14 @@ namespace Terraria.ModLoader.Setup
 			if (!Directory.Exists(dir))
 				return true;
 
+			return DeleteEmptyDirsRecursion(dir);
+		}
+
+		private static bool DeleteEmptyDirsRecursion(string dir) {
 			bool allEmpty = true;
 
 			foreach (string subDir in Directory.EnumerateDirectories(dir))
-				allEmpty &= DeleteEmptyDirs(subDir);
+				allEmpty &= DeleteEmptyDirsRecursion(subDir);
 
 			if (!allEmpty || Directory.EnumerateFiles(dir).Any())
 				return false;
