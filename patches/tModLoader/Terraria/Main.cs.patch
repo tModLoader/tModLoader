@@ -2438,15 +2438,15 @@
  					}
  
  					if (projectile.type == 106)
-@@ -24487,6 +_,8 @@
- 				PlaySound(SoundID.Item59);
- 				Recipe.FindRecipes();
+@@ -24446,6 +_,8 @@
+ 				}
  			}
-+
-+			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
- 		}
  
- 		private static Microsoft.Xna.Framework.Color buffColor(Microsoft.Xna.Framework.Color newColor, float R, float G, float B, float A) {
++			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
++
+ 			if (projectile.type != 525 || (gamePaused && !gameMenu))
+ 				return;
+ 
 @@ -24548,6 +_,7 @@
  				else if (npc[i].type == 548) {
  					DrawCacheNPCsBehindNonSolidTiles.Add(i);
