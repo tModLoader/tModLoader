@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.UI
 				_upgradePotentialChecked = true;
 				string modFolderName = Path.GetFileName(_mod);
 				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
-				if (!File.Exists(csprojFile) || !File.ReadAllText(csprojFile).Contains("tModLoader.targets")) {
+				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
 						Left = { Pixels = -26, Percent = 1f },
