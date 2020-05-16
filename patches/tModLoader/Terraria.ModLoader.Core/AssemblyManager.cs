@@ -398,6 +398,8 @@ namespace Terraria.ModLoader.Core
 			}
 
 			private AssemblyDefinition FallbackResolve(AssemblyNameReference name) {
+				if (name.Name == "Terraria")
+					return ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly;
 				string resourceName = name.Name + ".dll";
 				resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
 				MemoryStream ms;
