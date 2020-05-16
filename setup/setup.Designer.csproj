@@ -4,7 +4,7 @@
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
-    <ApplicationIcon>../patches/tModLoader/Icon.ico</ApplicationIcon>
+    <ApplicationIcon>../patches/tModLoader/tModLoader.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="PatchReviewer\**" />

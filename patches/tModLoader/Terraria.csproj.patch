@@ -21,7 +21,14 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -46,7 +_,9 @@
+@@ -40,13 +_,15 @@
+   </PropertyGroup>
+   <PropertyGroup>
+     <PdbFile>bin\$(OutputName)</PdbFile>
+-    <ApplicationIcon>Icon.ico</ApplicationIcon>
++    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
+   </PropertyGroup>
+   <ItemGroup>
      <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
        <HintPath>..\..\references\FNA.dll</HintPath>
      </Reference>
