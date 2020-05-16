@@ -188,27 +188,40 @@ namespace Terraria.ModLoader
 			if (handlerActive.Value)
 				return;
 
+			bool ignoreable = true;
+
+			//In case of OOM, unload the Main.tile array and do immediate garbage collection.
+			//If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
+			if (args.Exception is OutOfMemoryException) {
+				Main.tile = null;
+
+				GC.Collect();
+
+				ignoreable = false;
+			}
+
 			try {
 				handlerActive.Value = true;
 
-				if (args.Exception == previousException ||
-					args.Exception is ThreadAbortException ||
-					ignoreSources.Contains(args.Exception.Source) ||
-					ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
-					ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
-					return;
+				if (ignoreable)
+					if (args.Exception == previousException ||
+						args.Exception is ThreadAbortException ||
+						ignoreSources.Contains(args.Exception.Source) ||
+						ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
+						ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
+						return;
 
 				var stackTrace = new StackTrace(true);
 				PrettifyStackTraceSources(stackTrace.GetFrames());
 				var traceString = stackTrace.ToString();
 
-				if (ignoreContents.Any(traceString.Contains))
+				if (ignoreable && ignoreContents.Any(traceString.Contains))
 					return;
 
 				traceString = traceString.Substring(traceString.IndexOf('\n'));
 				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 				lock (pastExceptions) {
-					if (!pastExceptions.Add(exString))
+					if (!pastExceptions.Add(exString) && ignoreable)
 						return;
 				}
 
