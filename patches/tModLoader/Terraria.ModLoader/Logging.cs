@@ -196,8 +196,6 @@ namespace Terraria.ModLoader
 				Main.tile = null;
 
 				GC.Collect();
-
-				oom = false;
 			}
 
 			try {
