@@ -13,8 +13,22 @@ namespace Terraria.ModLoader.Core
 	internal static class LogArchiver
 	{
 		internal static void ArchiveLogs() {
-			foreach (var logFile in Directory.GetFiles(Logging.LogDir, "*.old*"))
+			if (!Directory.Exists(Logging.LogArchiveDir)) {
+				string[] existingOldLogs = Directory.GetFiles(Logging.LogDir, "*.zip");
+
+				Directory.CreateDirectory(Logging.LogArchiveDir);
+
+				for (int i = 0; i < existingOldLogs.Length; i++) {
+					try {
+						File.Move(existingOldLogs[i], Path.Combine(Logging.LogArchiveDir, Path.GetFileName(existingOldLogs[i])));
+					}
+					catch (IOException) { }
+				}
+			}
+
+			foreach (string logFile in Directory.GetFiles(Logging.LogDir, "*.old*")) {
 				Archive(logFile, Path.GetFileNameWithoutExtension(logFile));
+			}
 
 			DeleteOldArchives();
 		}
@@ -24,11 +38,11 @@ namespace Terraria.ModLoader.Core
 			int n = 1;
 
 			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-			var existingLogs = Directory.GetFiles(Logging.LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
+			var existingLogs = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 			if (existingLogs.Count > 0)
 				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
 
-			using (var zip = new ZipFile(Path.Combine(Logging.LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
+			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
 				using (var stream = File.OpenRead(logFile)) {
 					zip.AddEntry(entryName, stream);
 					zip.Save();
@@ -39,10 +53,11 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private const int MAX_LOGS = 20;
+
 		private static void DeleteOldArchives() {
-			var pattern = new Regex(".*\\.zip");
-			var existingLogs = Directory.GetFiles(Logging.LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();
-			foreach (var f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
+			var existingLogs = Directory.GetFiles(Logging.LogArchiveDir, "*.zip").OrderBy(File.GetCreationTime).ToList();
+
+			foreach (string f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
 				try {
 					File.Delete(f);
 				}
