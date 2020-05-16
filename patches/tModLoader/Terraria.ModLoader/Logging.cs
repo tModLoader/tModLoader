@@ -201,7 +201,7 @@ namespace Terraria.ModLoader
 			try {
 				handlerActive.Value = true;
 
-				if (oom)
+				if (!oom)
 					if (args.Exception == previousException ||
 						args.Exception is ThreadAbortException ||
 						ignoreSources.Contains(args.Exception.Source) ||
@@ -213,13 +213,13 @@ namespace Terraria.ModLoader
 				PrettifyStackTraceSources(stackTrace.GetFrames());
 				var traceString = stackTrace.ToString();
 
-				if (oom && ignoreContents.Any(traceString.Contains))
+				if (!oom && ignoreContents.Any(traceString.Contains))
 					return;
 
 				traceString = traceString.Substring(traceString.IndexOf('\n'));
 				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 				lock (pastExceptions) {
-					if (!pastExceptions.Add(exString) && oom)
+					if (!pastExceptions.Add(exString) && !oom)
 						return;
 				}
 
