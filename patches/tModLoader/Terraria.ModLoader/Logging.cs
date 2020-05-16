@@ -201,13 +201,14 @@ namespace Terraria.ModLoader
 			try {
 				handlerActive.Value = true;
 
-				if (!oom)
+				if (!oom) {
 					if (args.Exception == previousException ||
 						args.Exception is ThreadAbortException ||
 						ignoreSources.Contains(args.Exception.Source) ||
 						ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false) ||
 						ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false))
 						return;
+				}
 
 				var stackTrace = new StackTrace(true);
 				PrettifyStackTraceSources(stackTrace.GetFrames());
