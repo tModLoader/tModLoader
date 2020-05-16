@@ -4112,7 +4112,7 @@
 +					var textSize = fontMouseText.MeasureString(text);
 +					var pos = new Vector2(screenWidth - 10f + num106, screenHeight - 2f + num107);
 +					var d_color = color12;
-+					if (num106 == 4) // final draw
++					if (num105 == 4) // final draw
 +					{
 +						var rect = new Microsoft.Xna.Framework.Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
 +						bool mouseover = rect.Contains(mouseX, mouseY);
