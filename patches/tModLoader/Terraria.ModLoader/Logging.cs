@@ -188,22 +188,22 @@ namespace Terraria.ModLoader
 			if (handlerActive.Value)
 				return;
 
-			bool ignoreable = true;
+			bool oom = args.Exception is OutOfMemoryException;
 
 			//In case of OOM, unload the Main.tile array and do immediate garbage collection.
 			//If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
-			if (args.Exception is OutOfMemoryException) {
+			if (oom) {
 				Main.tile = null;
 
 				GC.Collect();
 
-				ignoreable = false;
+				oom = false;
 			}
 
 			try {
 				handlerActive.Value = true;
 
-				if (ignoreable)
+				if (oom)
 					if (args.Exception == previousException ||
 						args.Exception is ThreadAbortException ||
 						ignoreSources.Contains(args.Exception.Source) ||
@@ -215,13 +215,13 @@ namespace Terraria.ModLoader
 				PrettifyStackTraceSources(stackTrace.GetFrames());
 				var traceString = stackTrace.ToString();
 
-				if (ignoreable && ignoreContents.Any(traceString.Contains))
+				if (oom && ignoreContents.Any(traceString.Contains))
 					return;
 
 				traceString = traceString.Substring(traceString.IndexOf('\n'));
 				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 				lock (pastExceptions) {
-					if (!pastExceptions.Add(exString) && ignoreable)
+					if (!pastExceptions.Add(exString) && oom)
 						return;
 				}
 
@@ -237,7 +237,7 @@ namespace Terraria.ModLoader
 	#endif
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
-				if (args.Exception is OutOfMemoryException) {
+				if (oom) {
 					Interface.MessageBoxShow("Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it. (or go and find the 64bit version of tML)");
 					Environment.Exit(1);
 				}
