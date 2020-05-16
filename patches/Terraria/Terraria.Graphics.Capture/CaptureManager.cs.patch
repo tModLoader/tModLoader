@@ -1,0 +1,24 @@
+--- src/decompiled/Terraria.Graphics.Capture/CaptureManager.cs
++++ src/Terraria/Terraria.Graphics.Capture/CaptureManager.cs
+@@ -9,7 +_,11 @@
+ 		private CaptureInterface _interface;
+ 		private CaptureCamera _camera;
+ 
++#if CLIENT
+ 		public bool IsCapturing => _camera.IsCapturing;
++#else
++		public bool IsCapturing => false;
++#endif
+ 
+ 		public bool Active {
+ 			get {
+@@ -32,7 +_,9 @@
+ 
+ 		public CaptureManager() {
+ 			_interface = new CaptureInterface();
++#if CLIENT
+ 			_camera = new CaptureCamera(Main.instance.GraphicsDevice);
++#endif
+ 		}
+ 
+ 		public void Scrolling() {

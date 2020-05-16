@@ -1,0 +1,14 @@
+--- src/decompiled/Terraria.Utilities/FileUtilities.cs
++++ src/Terraria/Terraria.Utilities/FileUtilities.cs
+@@ -20,7 +_,11 @@
+ 			if (cloud && SocialAPI.Cloud != null)
+ 				SocialAPI.Cloud.Delete(path);
+ 			else
++#if WINDOWS
+ 				FileOperationAPIWrapper.MoveToRecycleBin(path);
++#else
++				File.Delete(path);
++#endif
+ 		}
+ 
+ 		public static string GetFullPath(string path, bool cloud) {

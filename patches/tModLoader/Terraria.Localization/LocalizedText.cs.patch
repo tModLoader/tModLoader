@@ -1,29 +1,24 @@
---- src/Terraria\Terraria.Localization\LocalizedText.cs
-+++ src/tModLoader\Terraria.Localization\LocalizedText.cs
-@@ -9,11 +_,23 @@
+--- src/Terraria/Terraria.Localization/LocalizedText.cs
++++ src/tModLoader/Terraria.Localization/LocalizedText.cs
+@@ -8,10 +_,19 @@
  		public static readonly LocalizedText Empty = new LocalizedText("", "");
  		private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  		public readonly string Key;
 +		public LocalizedText Override;
 +		private string value;
  
- 		public string Value
- 		{
+ 		public string Value {
 -			get;
 -			private set;
-+			get
-+			{
++			get {
 +				if (Override != null)
-+				{
 +					return Override.Value;
-+				}
++
 +				return value;
 +			}
-+			private set
-+			{
++			private set {
 +				this.value = value;
 +			}
  		}
  
- 		internal LocalizedText(string key, string text)
-
+ 		internal LocalizedText(string key, string text) {

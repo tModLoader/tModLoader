@@ -1,2 +1,1 @@
-cd setup\bin
-start setup.exe ..\..
+start setup\bin\Debug\netcoreapp3.1\setup.exe

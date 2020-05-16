@@ -1,6 +1,20 @@
---- src/Terraria\Terraria\Program.cs
-+++ src/tModLoader\Terraria\Program.cs
-@@ -18,6 +_,7 @@
+--- src/Terraria/Terraria/Program.cs
++++ src/tModLoader/Terraria/Program.cs
+@@ -2,6 +_,7 @@
+ using ReLogic.OS;
+ using System;
+ using System.Collections.Generic;
++
+ #if CLIENT
+ using System.Diagnostics;
+ #endif
+@@ -11,11 +_,13 @@
+ using System.Runtime.ExceptionServices;
+ using System.Text;
+ using System.Threading;
++
+ #if CLIENT
+ using System.Windows.Forms;
  #endif
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -8,50 +22,38 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -32,6 +_,7 @@
+@@ -25,10 +_,12 @@
+ 	{
+ #if CLIENT
+ 		public const bool IsServer = false;
++
+ #else
  		public const bool IsServer = true;
- 		#endif
+ #endif
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
 +		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
  		private static int ThingsToLoad = 0;
  		private static int ThingsLoaded = 0;
  		public static bool LoadedEverything = false;
-@@ -63,6 +_,7 @@
- 		{
- 			Program.ForceLoadAssembly(Assembly.GetExecutingAssembly(), true);
- 			Program.LoadedEverything = true;
+@@ -53,6 +_,7 @@
+ 		public static void ForceLoadThread(object ThreadContext) {
+ 			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
+ 			LoadedEverything = true;
 +			Logging.Terraria.Info("JIT loading finished");
  		}
  
- 		private static void ForceJITOnAssembly(Assembly assembly)
-@@ -205,20 +_,45 @@
- #endif
- 			try
- 			{
--				Console.OutputEncoding = Encoding.Unicode;
--				Console.InputEncoding = Encoding.Unicode;
-+				Console.OutputEncoding = Encoding.UTF8;
-+
-+				if (Platform.IsWindows)
-+					Console.InputEncoding = Encoding.Unicode;
-+				else
-+					Console.InputEncoding = Encoding.UTF8;
- 			}
- 			catch
- 			{
+ 		private static void ForceJITOnAssembly(Assembly assembly) {
+@@ -160,25 +_,47 @@
  			}
  		}
  
 +		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
 +		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
 +		// moving arg parsing to a separate function avoids this
- 		public static void LaunchGame(string[] args, bool monoArgs = false)
- 		{
+ 		public static void LaunchGame(string[] args, bool monoArgs = false) {
  			if (monoArgs)
- 			{
  				args = Utils.ConvertMonoArgsToDotNet(args);
- 			}
-+
+ 
 +			LaunchParameters = Utils.ParseArguements(args);
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
@@ -60,69 +62,71 @@
 +
 +			try {
 +				Logging.Init();
-+			} catch (Exception e) {
++			}
++			catch (Exception e) {
 +				DisplayException(e);
 +				return;
 +			}
++
 +			LaunchGame_();
 +		}
 +
-+		public static void LaunchGame_()
-+		{
- 			if (Platform.IsOSX)
- 			{
- 				Main.OnEngineLoad += delegate
-@@ -226,13 +_,12 @@
++		public static void LaunchGame_() {
+ 			if (Platform.IsOSX) {
+ 				Main.OnEngineLoad += delegate {
  					Main.instance.IsMouseVisible = false;
  				};
  			}
--			Program.LaunchParameters = Utils.ParseArguements(args);
+ 
+-			LaunchParameters = Utils.ParseArguements(args);
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.English);
--			Program.SetupLogging();
--			using (Main main = new Main())
--			{
--				try
+-			SetupLogging();
+-			using (Main main = new Main()) {
+-				try {
 +			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
-+				using (Main main = new Main())
- 				{
- 					Program.InitializeConsoleOutput();
++				using (Main main = new Main()) {
+ 					InitializeConsoleOutput();
  					Lang.InitializeLegacyLocalization();
-@@ -245,10 +_,10 @@
+ 					SocialAPI.Initialize();
++					main.PostSocialInitialize();
+ 					LaunchInitializer.LoadParameters(main);
+ 					Main.OnEnginePreload += StartForceLoad;
+ #if CLIENT
+@@ -187,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
--				catch (Exception e)
--				{
--					Program.DisplayException(e);
+-				catch (Exception e) {
+-					DisplayException(e);
 -				}
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Main engine crash", e);
-+				Program.DisplayException(e);
++				DisplayException(e);
  			}
  		}
  
-@@ -263,9 +_,16 @@
- 					streamWriter.WriteLine("");
+@@ -202,9 +_,18 @@
  				}
+ 
  #if CLIENT
 -				MessageBox.Show(e.ToString(), "Terraria: Error");
--#else
--				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
++
 +				if (e.Message.Contains("CSteamworks"))
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
-+				if (e.StackTrace.Contains("LaunchLocalServer"))
-+				{
++
++				if (e.StackTrace.Contains("LaunchLocalServer")) {
 +					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
++
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
 +				}
-+#else
+ #else
+-				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
  #endif
  			}
- 			catch
-
+ 			catch {

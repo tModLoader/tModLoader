@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Net.Sockets\TcpSocket.cs
-+++ src/tModLoader\Terraria.Net.Sockets\TcpSocket.cs
+--- src/Terraria/Terraria.Net.Sockets/TcpSocket.cs
++++ src/tModLoader/Terraria.Net.Sockets/TcpSocket.cs
 @@ -4,6 +_,7 @@
  using System.Net.Sockets;
  using System.Threading;
@@ -8,13 +8,12 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -156,7 +_,7 @@
- 				try
- 				{
- 					ISocket socket = new TcpSocket(this._listener.AcceptTcpClient());
+@@ -125,7 +_,7 @@
+ 			while (_isListening && !Netplay.disconnect) {
+ 				try {
+ 					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
 -					Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
 +					Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
- 					this._listenerCallback(socket);
+ 					_listenerCallback(socket);
  				}
- 				catch (Exception)
-
+ 				catch (Exception) {

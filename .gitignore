@@ -1,7 +1,9 @@
 /src
-/logs
+/setup/logs
 **/bin/
 **/obj/
+**/packages/
+.vs
 *.user
 *.suo
 *.cache

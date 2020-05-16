@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Lighting.cs
-+++ src/tModLoader\Terraria\Lighting.cs
+--- src/Terraria/Terraria/Lighting.cs
++++ src/tModLoader/Terraria/Lighting.cs
 @@ -8,6 +_,7 @@
  using Terraria.Graphics;
  using Terraria.ID;
@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -121,7 +_,7 @@
+@@ -112,7 +_,7 @@
  		private static int firstToLightY;
  		private static int lastToLightX;
  		private static int lastToLightY;
@@ -17,7 +17,7 @@
  		private static float negLight2 = 0.16f;
  		private static float wetLightR = 0.16f;
  		private static float wetLightG = 0.16f;
-@@ -129,7 +_,7 @@
+@@ -120,7 +_,7 @@
  		private static float honeyLightR = 0.16f;
  		private static float honeyLightG = 0.16f;
  		private static float honeyLightB = 0.16f;
@@ -26,121 +26,108 @@
  		private static int blueDir = 1;
  		private static int minX7;
  		private static int maxX7;
-@@ -609,6 +_,7 @@
- 				Main.player[Main.myPlayer].NPCBannerBuff[m] = false;
+@@ -513,6 +_,7 @@
  			}
+ 
  			Main.player[Main.myPlayer].hasBanner = false;
 +			WorldHooks.ResetNearbyTileEffects();
  			int[] screenTileCounts = Main.screenTileCounts;
  			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
- 			num4 = Utils.Clamp<int>(Lighting.firstToLightX, 5, Main.maxTilesX - 1);
-@@ -622,6 +_,7 @@
- 			for (int n = num4; n < num5; n++)
- 			{
- 				Lighting.LightingState[] array3 = Lighting.states[n - Lighting.firstToLightX];
+ 			num4 = Utils.Clamp(firstToLightX, 5, Main.maxTilesX - 1);
+@@ -525,6 +_,7 @@
+ 			Main.monolithType = -1;
+ 			for (int n = num4; n < num5; n++) {
+ 				LightingState[] array3 = states[n - firstToLightX];
 +				//patch file: n, num17
- 				for (int num17 = num6; num17 < num7; num17++)
- 				{
- 					Lighting.LightingState lightingState3 = array3[num17 - Lighting.firstToLightY];
-@@ -773,7 +_,7 @@
- 							lightingState3.b2 = num20;
- 						}
+ 				for (int num17 = num6; num17 < num7; num17++) {
+ 					LightingState lightingState2 = array3[num17 - firstToLightY];
+ 					Tile tile = Main.tile[n, num17];
+@@ -737,7 +_,9 @@
+ 							break;
  					}
--					byte wall = tile.wall;
-+					ushort wall = tile.wall;
- 					if (wall <= 137)
- 					{
- 						if (wall != 33)
-@@ -880,8 +_,10 @@
- 								break;
- 						}
- 					}
-+					WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
- 					if (tile.active())
- 					{
+ 
++					WallLoader.ModifyLight(n, num17, tile.wall, ref num18, ref num19, ref num20);
+ 					if (tile.active()) {
 +						bool closer = false;
- 						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16)
- 						{
- 							screenTileCounts[(int)tile.type]++;
-@@ -916,6 +_,7 @@
+ 						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16) {
+ 							screenTileCounts[tile.type]++;
+ 							if (tile.type == 215 && tile.frameY < 36)
+@@ -765,6 +_,8 @@
  									Main.player[Main.myPlayer].hasBanner = true;
  								}
  							}
++
 +							closer = true;
  						}
- 						ushort type = tile.type;
- 						if (type != 139)
-@@ -969,6 +_,11 @@
- 						{
- 							Main.musicBox = (int)(tile.frameY / 36);
+ 
+ 						switch (tile.type) {
+@@ -811,6 +_,10 @@
+ 								break;
  						}
+ 
 +						if (TileLoader.IsModMusicBox(tile) && tile.frameX >= 36)
-+						{
 +							Main.musicBox = SoundLoader.tileToMusic[tile.type][tile.frameY / 36 * 36];
-+						}
-+						TileLoader.NearbyEffects(n, num17, type, closer);
- 						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
- 						{
- 							lightingState3.stopLight = true;
-@@ -2495,16 +_,19 @@
++
++						TileLoader.NearbyEffects(n, num17, tile.type, closer);
+ 						if (Main.tileBlockLight[tile.type] && (lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
+ 							lightingState2.stopLight = true;
+ 
+@@ -1967,13 +_,17 @@
  						}
  					}
- 					IL_347B:
+ 
 +					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
- 					if (Lighting.RGB)
- 					{
- 						if (lightingState3.r2 < num18)
- 						{
- 							lightingState3.r2 = num18;
- 						}
++
+ 					if (RGB) {
+ 						if (lightingState2.r2 < num18)
+ 							lightingState2.r2 = num18;
+ 
 +						//patch file: num18, num19
- 						if (lightingState3.g2 < num19)
- 						{
- 							lightingState3.g2 = num19;
- 						}
+ 						if (lightingState2.g2 < num19)
+ 							lightingState2.g2 = num19;
+ 
 +						//patch file: num19, num20
- 						if (lightingState3.b2 < num20)
- 						{
- 							lightingState3.b2 = num20;
-@@ -2639,7 +_,7 @@
- 			if (Main.player[Main.myPlayer].accOreFinder)
- 			{
- 				Main.player[Main.myPlayer].bestOre = -1;
--				for (int num63 = 0; num63 < 470; num63++)
-+				for (int num63 = 0; num63 < Main.tileValue.Length; num63++)
- 				{
- 					if (screenTileCounts[num63] > 0 && Main.tileValue[num63] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num63] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
- 					{
-@@ -2647,6 +_,7 @@
+ 						if (lightingState2.b2 < num20)
+ 							lightingState2.b2 = num20;
  					}
+@@ -2076,12 +_,13 @@
+ 			Main.partyMonoliths = screenTileCounts[455];
+ 			if (Main.player[Main.myPlayer].accOreFinder) {
+ 				Main.player[Main.myPlayer].bestOre = -1;
+-				for (int num58 = 0; num58 < 470; num58++) {
++				for (int num58 = 0; num58 < Main.tileValue.Length; num58++) {
+ 					if (screenTileCounts[num58] > 0 && Main.tileValue[num58] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num58] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+ 						Main.player[Main.myPlayer].bestOre = num58;
  				}
  			}
+ 
 +			WorldHooks.TileCountsAvailable(screenTileCounts);
  			if (Main.holyTiles < 0)
- 			{
  				Main.holyTiles = 0;
-@@ -2776,6 +_,7 @@
- 							Lighting.wetLightB = 0f;
+ 
+@@ -2200,6 +_,8 @@
+ 							wetLightB = 0f;
  							break;
  					}
-+					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref Lighting.wetLightR, ref Lighting.wetLightG, ref Lighting.wetLightB);
++
++					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref wetLightR, ref wetLightG, ref wetLightB);
  				}
- 				else
- 				{
-@@ -2803,6 +_,7 @@
- 					Lighting.negLight *= 0.85f;
- 					Lighting.negLight2 *= 0.85f;
+ 				else {
+ 					negLight = 0.9f;
+@@ -2226,6 +_,8 @@
+ 					negLight *= 0.85f;
+ 					negLight2 *= 0.85f;
  				}
-+				ModHooks.ModifyLightingBrightness(ref negLight,ref negLight2);
++
++				ModHooks.ModifyLightingBrightness(ref negLight, ref negLight2);
  			}
- 			else
- 			{
-@@ -2828,6 +_,7 @@
- 					Lighting.negLight += 0.09f;
- 					Lighting.negLight2 += 0.18f;
+ 			else {
+ 				negLight = 0.04f;
+@@ -2250,6 +_,7 @@
+ 					negLight2 += 0.18f;
  				}
-+				ModHooks.ModifyLightingBrightness(ref negLight,ref negLight2);
- 				Lighting.wetLightR = Lighting.negLight * 1.2f;
- 				Lighting.wetLightG = Lighting.negLight * 1.1f;
+ 
++				ModHooks.ModifyLightingBrightness(ref negLight, ref negLight2);
+ 				wetLightR = negLight * 1.2f;
+ 				wetLightG = negLight * 1.1f;
  			}
-

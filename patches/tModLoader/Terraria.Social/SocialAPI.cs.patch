@@ -1,23 +1,31 @@
---- src/Terraria\Terraria.Social\SocialAPI.cs
-+++ src/tModLoader\Terraria.Social\SocialAPI.cs
-@@ -1,5 +_,6 @@
- using System;
+--- src/Terraria/Terraria.Social/SocialAPI.cs
++++ src/tModLoader/Terraria.Social/SocialAPI.cs
+@@ -1,4 +_,5 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  
-@@ -29,7 +_,11 @@
- 			{
- 				mode = new SocialMode?(SocialMode.None);
+@@ -20,7 +_,11 @@
+ 			if (!mode.HasValue) {
+ 				mode = SocialMode.None;
  #if CLIENT
--				mode = new SocialMode?(SocialMode.Steam);
 +#if DEBUG
-+                if (!Program.LaunchParameters.ContainsKey("-nosteam"))
++				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
 +				if (!GoGVerifier.IsGoG)
-+					mode = new SocialMode?(SocialMode.Steam);
+-				mode = SocialMode.Steam;
++					mode = SocialMode.Steam;
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
- 				{
-
+ 					mode = SocialMode.Steam;
+@@ -59,7 +_,8 @@
+ 		private static void LoadSteam() {
+ 			LoadModule<CoreSocialModule>();
+ 			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
++			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
+-			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++			// Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
+ 			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
+ 			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
+ #if CLIENT

@@ -1,6 +1,6 @@
---- src/Terraria\Terraria.IO\PlayerFileData.cs
-+++ src/tModLoader\Terraria.IO\PlayerFileData.cs
-@@ -3,6 +_,8 @@
+--- src/Terraria/Terraria.IO/PlayerFileData.cs
++++ src/tModLoader/Terraria.IO/PlayerFileData.cs
+@@ -2,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;
  using System.Linq;
@@ -9,34 +9,33 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -14,6 +_,7 @@
+@@ -13,6 +_,7 @@
  		private TimeSpan _playTime = TimeSpan.Zero;
  		private Stopwatch _timer = new Stopwatch();
  		private bool _isTimerActive;
-+        public CustomModDataException customDataFail = null;
++		public CustomModDataException customDataFail = null;
  
- 		public Player Player
- 		{
-@@ -68,6 +_,7 @@
- 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, true);
- 			if (FileUtilities.MoveToCloud(base.Path, playerPathFromName))
- 			{
-+				PlayerIO.MoveToCloud(base.Path, playerPathFromName);
- 				string fileName = base.GetFileName(false);
- 				string path = string.Concat(new object[]
- 					{
-@@ -108,10 +_,12 @@
- 			string playerPathFromName = Main.GetPlayerPathFromName(this.Name, false);
- 			if (FileUtilities.MoveToLocal(base.Path, playerPathFromName))
- 			{
-+				PlayerIO.MoveToLocal(base.Path, playerPathFromName);
- 				string fileName = base.GetFileName(false);
- 				string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
- 				IEnumerable<string> enumerable = from path in SocialAPI.Cloud.GetFiles()
--				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase) && path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase)
-+				                                 where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase)
-+													&& (path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || path.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
- 				                                 select path;
- 				foreach (string current in enumerable)
- 				{
-
+ 		public Player Player {
+ 			get {
+@@ -57,6 +_,7 @@
+ 			if (!FileUtilities.MoveToCloud(base.Path, playerPathFromName))
+ 				return;
+ 
++			PlayerIO.MoveToCloud(Path, playerPathFromName);
+ 			string fileName = GetFileName(includeExtension: false);
+ 			string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
+ 			if (Directory.Exists(path)) {
+@@ -81,10 +_,12 @@
+ 			if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
+ 				return;
+ 
++			PlayerIO.MoveToLocal(Path, playerPathFromName);
+ 			string fileName = GetFileName(includeExtension: false);
+ 			string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
+ 			foreach (string item in from path in SocialAPI.Cloud.GetFiles()
+-									where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase) && path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase)
++									where path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase)
++									&& (path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || path.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
+ 									select path) {
+ 				string localPath = System.IO.Path.Combine(Main.PlayerPath, fileName, FileUtilities.GetFileName(item));
+ 				FileUtilities.MoveToLocal(item, localPath);

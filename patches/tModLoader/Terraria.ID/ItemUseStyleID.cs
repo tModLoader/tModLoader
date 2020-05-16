@@ -1,4 +1,4 @@
-﻿namespace Terraria.ID
+namespace Terraria.ID
 {
 	/// <summary>Enumerates the values used with Item.useStyle</summary>
 	public static class ItemUseStyleID

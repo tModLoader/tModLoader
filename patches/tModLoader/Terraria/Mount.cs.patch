@@ -1,5 +1,5 @@
---- src/Terraria\Terraria\Mount.cs
-+++ src/tModLoader\Terraria\Mount.cs
+--- src/Terraria/Terraria/Mount.cs
++++ src/tModLoader/Terraria/Mount.cs
 @@ -6,6 +_,7 @@
  using Terraria.GameContent.Achievements;
  using Terraria.Graphics.Shaders;
@@ -8,16 +8,14 @@
  
  namespace Terraria
  {
-@@ -42,8 +_,14 @@
+@@ -39,8 +_,13 @@
  			}
  		}
  
 -		private class MountData
--		{
 +		public class MountData
-+		{
-+			public ModMountData modMountData
-+			{
+ 		{
++			public ModMountData modMountData {
 +				get;
 +				set;
 +			}
@@ -25,126 +23,124 @@
  			public Texture2D backTexture;
  			public Texture2D backTextureGlow;
  			public Texture2D backTextureExtra;
-@@ -141,7 +_,7 @@
- 		public const float drillRotationChange = 0.05235988f;
- 		public const float maxDrillLength = 48f;
- 		public static int currentShader = 0;
--		private static Mount.MountData[] mounts;
-+		public static Mount.MountData[] mounts;
+@@ -134,7 +_,7 @@
+ 		public const int DrawBackExtra = 1;
+ 		public const int DrawFront = 2;
+ 		public const int DrawFrontExtra = 3;
+-		private static MountData[] mounts;
++		public static MountData[] mounts;
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
- 		public static Vector2 drillDiodePoint1 = new Vector2(36f, -6f);
-@@ -150,28 +_,28 @@
- 		public static int drillPickPower = 210;
+ 		public const int scutlixBaseDamage = 50;
+@@ -147,28 +_,28 @@
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
--		private Mount.MountData _data;
+ 		public const float maxDrillLength = 48f;
+-		private MountData _data;
++		public MountData _data;
 -		private int _type;
--		private bool _flipDraw;
--		private int _frame;
--		private float _frameCounter;
--		private int _frameExtra;
--		private float _frameExtraCounter;
--		private int _frameState;
--		private int _flyTime;
--		private int _idleTime;
--		private int _idleTimeNext;
--		private float _fatigue;
--		private float _fatigueMax;
--		private bool _abilityCharging;
--		private int _abilityCharge;
--		private int _abilityCooldown;
--		private int _abilityDuration;
--		private bool _abilityActive;
--		private bool _aiming;
-+		public Mount.MountData _data;
 +		public int _type;
+-		private bool _flipDraw;
 +		public bool _flipDraw;
+-		private int _frame;
 +		public int _frame;
+-		private float _frameCounter;
 +		public float _frameCounter;
+-		private int _frameExtra;
 +		public int _frameExtra;
+-		private float _frameExtraCounter;
 +		public float _frameExtraCounter;
+-		private int _frameState;
 +		public int _frameState;
+-		private int _flyTime;
 +		public int _flyTime;
+-		private int _idleTime;
 +		public int _idleTime;
+-		private int _idleTimeNext;
 +		public int _idleTimeNext;
+-		private float _fatigue;
 +		public float _fatigue;
+-		private float _fatigueMax;
 +		public float _fatigueMax;
+-		private bool _abilityCharging;
 +		public bool _abilityCharging;
+-		private int _abilityCharge;
 +		public int _abilityCharge;
+-		private int _abilityCooldown;
 +		public int _abilityCooldown;
+-		private int _abilityDuration;
 +		public int _abilityDuration;
+-		private bool _abilityActive;
 +		public bool _abilityActive;
+-		private bool _aiming;
 +		public bool _aiming;
  		public List<DrillDebugDraw> _debugDraw;
 -		private object _mountSpecificData;
--		private bool _active;
 +		public object _mountSpecificData;
+-		private bool _active;
 +		public bool _active;
  
- 		public bool Active
- 		{
-@@ -1323,14 +_,14 @@
+ 		public bool Active => _active;
  
- 		public static int GetHeightBoost(int MountType)
- 		{
+@@ -1179,13 +_,13 @@
+ 		}
+ 
+ 		public static int GetHeightBoost(int MountType) {
 -			if (MountType <= -1 || MountType >= 15)
-+			if (MountType <= -1 || MountType >= Mount.mounts.Length)
- 			{
++			if (MountType <= -1 || MountType >= mounts.Length)
  				return 0;
- 			}
- 			return Mount.mounts[MountType].heightBoost;
+ 
+ 			return mounts[MountType].heightBoost;
  		}
  
--		public int JumpHeight(float xVelocity)
-+		public int JumpHeight(Player player, float xVelocity)
- 		{
- 			int num = this._data.jumpHeight;
- 			switch (this._type)
-@@ -1348,10 +_,11 @@
- 					}
+-		public int JumpHeight(float xVelocity) {
++		public int JumpHeight(Player player, float xVelocity) {
+ 			int num = _data.jumpHeight;
+ 			switch (_type) {
+ 				case 0:
+@@ -1200,10 +_,11 @@
  					break;
  			}
-+			MountLoader.JumpHeight(player, this._data, ref num, xVelocity);
+ 
++			MountLoader.JumpHeight(player, _data, ref num, xVelocity);
  			return num;
  		}
  
--		public float JumpSpeed(float xVelocity)
-+		public float JumpSpeed(Player player, float xVelocity)
- 		{
- 			float num = this._data.jumpSpeed;
- 			switch (this._type)
-@@ -1367,6 +_,7 @@
- 					}
+-		public float JumpSpeed(float xVelocity) {
++		public float JumpSpeed(Player player, float xVelocity) {
+ 			float num = _data.jumpSpeed;
+ 			switch (_type) {
+ 				case 0:
+@@ -1216,6 +_,7 @@
  					break;
  			}
-+			MountLoader.JumpSpeed(player, this._data, ref num, xVelocity);
+ 
++			MountLoader.JumpSpeed(player, _data, ref num, xVelocity);
  			return num;
  		}
  
-@@ -1802,6 +_,10 @@
+@@ -1536,6 +_,9 @@
+ 		}
  
- 		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
- 		{
+ 		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
 +			if (!MountLoader.UpdateFrame(mountedPlayer, state, velocity))
-+			{
 +				return;
-+			}
- 			if (this._frameState != state)
- 			{
- 				this._frameState = state;
-@@ -2287,6 +_,7 @@
- 		public void UpdateEffects(Player mountedPlayer)
- 		{
- 			mountedPlayer.autoJump = this.AutoJump;
++
+ 			if (_frameState != state) {
+ 				_frameState = state;
+ 				_frameCounter = 0f;
+@@ -1891,6 +_,7 @@
+ 
+ 		public void UpdateEffects(Player mountedPlayer) {
+ 			mountedPlayer.autoJump = AutoJump;
 +			MountLoader.UpdateEffects(mountedPlayer);
- 			switch (this._type)
- 			{
- 				case 8:
-@@ -2461,11 +_,14 @@
- 						{
- 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * (float)mountedPlayer.direction * 20f, value3.X, value3.Y, value3.Z);
- 						}
+ 			switch (_type) {
+ 				case 9: {
+ 						Vector2 center = mountedPlayer.Center;
+@@ -1955,11 +_,14 @@
+ 						else
+ 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector4.X, vector4.Y, vector4.Z);
+ 
 +						mountedPlayer.allDamage += 0.15f;
 +						/*
  						mountedPlayer.meleeDamage += 0.15f;
@@ -155,68 +151,72 @@
 +						*/
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
- 					{
-@@ -2523,7 +_,7 @@
- 			{
+ 						mountedPlayer.MountFishronSpecialCounter = 60f;
+@@ -2081,7 +_,7 @@
+ 			if (_type == -1)
  				return;
+ 
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < Player.MaxBuffs; i++) {
+ 				if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
+ 					return;
  			}
--			for (int i = 0; i < 22; i++)
-+			for (int i = 0; i < Player.MaxBuffs; i++)
- 			{
- 				if (mountedPlayer.buffType[i] == this._data.buff)
- 				{
-@@ -2585,6 +_,7 @@
- 		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
- 		{
- 			this._aiming = true;
-+			MountLoader.AimAbility(this,mountedPlayer, mousePosition);
- 			switch (this._type)
- 			{
- 				case 8:
-@@ -2900,6 +_,7 @@
- 			IL_46D:
- 			bool flag2 = false;
- 			int type5 = this._type;
-+			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num5, ref effect, ref origin, ref scale2, shadow);
- 			if (!flag2)
- 			{
- 				DrawData item = new DrawData(texture2D, Position, new Rectangle?(value), drawColor, num5, origin, scale2, effect, 0);
-@@ -2968,6 +_,8 @@
- 			bool cart = this.Cart;
- 			this._active = false;
- 			mountedPlayer.ClearBuff(this._data.buff);
+@@ -2129,6 +_,7 @@
+ 
+ 		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
+ 			_aiming = true;
++			MountLoader.AimAbility(this, mountedPlayer, mousePosition);
+ 			switch (_type) {
+ 				case 9: {
+ 						int frameExtra = _frameExtra;
+@@ -2398,6 +_,7 @@
+ 			type = _type;
+ 			_ = 8;
+ 			DrawData item;
++			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num6, ref effect, ref origin, ref scale, shadow);
+ 			if (!flag2) {
+ 				item = new DrawData(texture2D, Position, value, drawColor, num6, origin, scale, effect, 0);
+ 				item.shader = currentShader;
+@@ -2456,6 +_,8 @@
+ 			bool cart = Cart;
+ 			_active = false;
+ 			mountedPlayer.ClearBuff(_data.buff);
 +			bool skipDust = false;
 +			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
- 			this._mountSpecificData = null;
- 			if (cart)
- 			{
-@@ -2977,7 +_,7 @@
- 			}
+ 			_mountSpecificData = null;
+ 			_ = _type;
+ 			if (cart) {
+@@ -2466,7 +_,7 @@
+ 
  			mountedPlayer.fullRotation = 0f;
  			mountedPlayer.fullRotationOrigin = Vector2.Zero;
--			if (Main.netMode != 2)
-+			if (Main.netMode != 2 && !skipDust)
- 			{
- 				for (int i = 0; i < 100; i++)
- 				{
-@@ -3024,7 +_,7 @@
+-			if (Main.netMode != 2) {
++			if (Main.netMode != 2 && !skipDust) {
+ 				for (int i = 0; i < 100; i++) {
+ 					if (_type == 6 || _type == 11 || _type == 13) {
+ 						if (i % 10 == 0) {
+@@ -2505,12 +_,10 @@
+ 		}
  
- 		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
- 		{
--			if (this._type == m || m <= -1 || m >= 15)
-+			if (this._type == m || m <= -1 || m >= mounts.Length)
- 			{
+ 		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false) {
+-			if (_type == m)
++			if (_type == m || m <= -1 || m >= mounts.Length)
  				return;
- 			}
-@@ -3090,7 +_,9 @@
- 			{
- 				this._mountSpecificData = new Mount.DrillMountData();
- 			}
--			if (Main.netMode != 2)
+ 
+ 			switch (m) {
+-				default:
+-					return;
+ 				case 5:
+ 					if (mountedPlayer.wet)
+ 						return;
+@@ -2581,7 +_,9 @@
+ 			if (_type == 8)
+ 				_mountSpecificData = new DrillMountData();
+ 
+-			if (Main.netMode != 2) {
 +			bool skipDust = false;
 +			MountLoader.SetMount(this, mountedPlayer, ref skipDust);
-+			if (Main.netMode != 2 && !skipDust)
- 			{
- 				for (int k = 0; k < 100; k++)
- 				{
-
++			if (Main.netMode != 2 && !skipDust) {
+ 				for (int k = 0; k < 100; k++) {
+ 					if (_type == 6 || _type == 11 || _type == 13) {
+ 						if (k % 10 == 0) {

@@ -1,15 +1,15 @@
---- src/Terraria\Terraria\WorldGen.cs
-+++ src/tModLoader\Terraria\WorldGen.cs
+--- src/Terraria/Terraria/WorldGen.cs
++++ src/tModLoader/Terraria/WorldGen.cs
 @@ -18,6 +_,8 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.World.Generation;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
- 
  #if CLIENT
  using Terraria.Map;
-@@ -572,7 +_,13 @@
+ #endif
+@@ -454,7 +_,13 @@
  		private static int lAltarY;
  		public static int tileReframeCount = 0;
  		public static bool noMapUpdate = false;
@@ -23,1980 +23,1819 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
-@@ -942,7 +_,7 @@
- 				return true;
+@@ -804,7 +_,7 @@
  			}
- 			int num2 = -1;
--			for (int i = 0; i < 580; i++)
-+			for (int i = 0; i < Main.townNPCCanSpawn.Length; i++)
- 			{
- 				if (Main.townNPCCanSpawn[i] && WorldGen.CheckSpecialTownNPCSpawningConditions(i))
- 				{
-@@ -974,6 +_,10 @@
  
- 		public static bool CheckSpecialTownNPCSpawningConditions(int type)
- 		{
+ 			int num2 = -1;
+-			for (int i = 0; i < 580; i++) {
++			for (int i = 0; i < Main.townNPCCanSpawn.Length; i++) {
+ 				if (!Main.townNPCCanSpawn[i] || !CheckSpecialTownNPCSpawningConditions(i))
+ 					continue;
+ 
+@@ -833,6 +_,8 @@
+ 		}
+ 
+ 		public static bool CheckSpecialTownNPCSpawningConditions(int type) {
 +			if (!NPCLoader.CheckConditions(type))
-+			{
 +				return false;
-+			}
- 			if (type != 160)
- 			{
- 				return true;
-@@ -1676,7 +_,7 @@
- 			{
- 				num6 = Main.maxTilesY - 1;
- 			}
+ 			if (type == 160) {
+ 				if ((double)roomY2 > Main.worldSurface)
+ 					return false;
+@@ -1363,7 +_,7 @@
+ 			if (num7 > Main.maxTilesY)
+ 				num7 = Main.maxTilesY - 1;
+ 
 -			int[] tileTypeCounts = new int[470];
 +			int[] tileTypeCounts = new int[TileLoader.TileCount];
- 			WorldGen.CountTileTypesInArea(tileTypeCounts, num3 + 1, num4 - 1, num5 + 2, num6 + 1);
- 			int num7 = -WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
- 			if (num7 < 50)
-@@ -1875,7 +_,7 @@
- 			WorldGen.roomY2 = y;
- 			WorldGen.numRoomTiles = 0;
- 			WorldGen.roomCeilingsCount = 0;
--			for (int i = 0; i < 470; i++)
-+			for (int i = 0; i < WorldGen.houseTile.Length; i++)
- 			{
- 				WorldGen.houseTile[i] = false;
+ 			CountTileTypesInArea(tileTypeCounts, num4 + 1, num5 - 1, num6 + 2, num7 + 1);
+ 			int num8 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
+ 			if (num8 < 50)
+@@ -1507,7 +_,7 @@
+ 			roomY2 = y;
+ 			numRoomTiles = 0;
+ 			roomCeilingsCount = 0;
+-			for (int i = 0; i < 470; i++) {
++			for (int i = 0; i < houseTile.Length; i++) {
+ 				houseTile[i] = false;
  			}
-@@ -1961,7 +_,7 @@
- 				{
- 					return;
- 				}
--				if (Main.tile[x, y].type == 11 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126))
-+				if (TileLoader.CloseDoorID(Main.tile[x, y]) >= 0 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126))
- 				{
- 					return;
- 				}
-@@ -2305,10 +_,23 @@
  
- 		public static void worldGenCallBack(object threadContext)
- 		{
-+			try
-+			{
+@@ -1580,6 +_,8 @@
+ 				houseTile[Main.tile[x, y].type] = true;
+ 				if (Main.tileSolid[Main.tile[x, y].type] || (Main.tile[x, y].type == 11 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126)) || Main.tile[x, y].type == 389 || (Main.tile[x, y].type == 386 && ((Main.tile[x, y].frameX < 36 && Main.tile[x, y].frameY == 18) || (Main.tile[x, y].frameX >= 36 && Main.tile[x, y].frameY == 0))))
+ 					return;
++				if (TileLoader.CloseDoorID(Main.tile[x, y]) >= 0 && (Main.tile[x, y].frameX == 0 || Main.tile[x, y].frameX == 54 || Main.tile[x, y].frameX == 72 || Main.tile[x, y].frameX == 126))
++					return;
+ 			}
+ 
+ 			if (x < roomX1)
+@@ -1835,10 +_,20 @@
+ 		}
+ 
+ 		public static void worldGenCallBack(object threadContext) {
++			try {
 +				do_worldGenCallBack(threadContext);
 +			}
-+			catch (Exception e)
-+			{
++			catch (Exception e) {
 +				Logging.Terraria.Error(Language.GetTextValue("tModLoader.WorldGenError"), e);
 +			}
 +		}
 +
-+		public static void do_worldGenCallBack(object threadContext)
-+		{
- 			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
- 			WorldGen.clearWorld();
- 			WorldGen.generateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
- 			WorldFile.saveWorld(Main.ActiveWorldFileData.IsCloudSave, true);
++		public static void do_worldGenCallBack(object threadContext) {
+ 			Main.PlaySound(10);
+ 			clearWorld();
+ 			generateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
+ 			WorldFile.saveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
 +			BackupIO.archiveLock = false;
  			if (Main.menuMode == 10 || Main.menuMode == 888)
- 			{
  				Main.menuMode = 6;
-@@ -2367,11 +_,25 @@
- 		public static void SaveAndQuit(Action callback = null)
- 		{
- 			Main.PlaySound(11, -1, -1, 1, 1f, 0f);
+ 
+@@ -1888,10 +_,21 @@
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
+ 			Main.PlaySound(11);
 +			ModHooks.PreSaveAndQuit();
- 			ThreadPool.QueueUserWorkItem(new WaitCallback(WorldGen.SaveAndQuitCallBack), callback);
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
- 		public static void playWorldCallBack(object threadContext)
- 		{
-+			try
-+			{
+ 		public static void playWorldCallBack(object threadContext) {
++			try {
 +				Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
 +				do_playWorldCallBack(threadContext);
 +			}
-+			catch (Exception e)
-+			{
++			catch (Exception e) {
 +				Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerLoadWorldFail"), e);
 +			}
 +		}
 +
-+		public static void do_playWorldCallBack(object threadContext)
-+		{
++		public static void do_playWorldCallBack(object threadContext) {
  			if (Main.rand == null)
- 			{
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
-@@ -2413,12 +_,19 @@
- 					{
- 						if (!WorldGen.worldBackup)
- 						{
--							Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
-+							string message = Language.GetTextValue("Error.LoadFailedNoBackup");
-+							if (WorldIO.customDataFail != null)
-+							{
+ 
+@@ -1921,13 +_,20 @@
+ 					}
+ 
+ 					if (!worldBackup) {
+-						Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
++						string message = Language.GetTextValue("Error.LoadFailedNoBackup");
++						if (WorldIO.customDataFail != null) {
++							message = WorldIO.customDataFail.modName + " " + message;
++							message += "\n" + WorldIO.customDataFail.InnerException;
++						}
++
++						Console.WriteLine(message);
+ 						return;
+ 					}
+ 
+ 					FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave);
+ 					FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave);
+ 					FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
++					WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
+ 					WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
+ 					if (loadFailed || !loadSuccess) {
+ 						WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
+@@ -1935,7 +_,14 @@
+ 							FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave);
+ 							FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave);
+ 							FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
+-							Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
++							WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
++							string message = Language.GetTextValue("Error.LoadFailed");
++							if (WorldIO.customDataFail != null) {
 +								message = WorldIO.customDataFail.modName + " " + message;
 +								message += "\n" + WorldIO.customDataFail.InnerException;
 +							}
++
 +							Console.WriteLine(message);
  							return;
  						}
- 						FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave, true);
- 						FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave, true);
- 						FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
-+						WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
- 						WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
- 						if (WorldGen.loadFailed || !WorldGen.loadSuccess)
- 						{
-@@ -2428,7 +_,14 @@
- 								FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave, true);
- 								FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave, true);
- 								FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
--								Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
-+								WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
-+								string message = Language.GetTextValue("Error.LoadFailed");
-+								if (WorldIO.customDataFail != null)
-+								{
-+									message = WorldIO.customDataFail.modName + " " + message;
-+									message += "\n" + WorldIO.customDataFail.InnerException;
-+								}
-+								Console.WriteLine(message);
- 								return;
- 							}
- 						}
-@@ -2467,6 +_,14 @@
- 			{
+ 					}
+@@ -1962,6 +_,12 @@
+ 			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
- 			}
-+
+ 
 +			// Move rest of method to main thread to fix concurrent modification exceptions
 +			Main.OnTick += FinishPlayWorld;
 +		}
 +
 +		internal static void FinishPlayWorld() {
 +			Main.OnTick -= FinishPlayWorld;
-+
  			Main.player[Main.myPlayer].Spawn();
  			Main.player[Main.myPlayer].Update(Main.myPlayer);
  			Main.ActivePlayerFileData.StartPlayTimer();
-@@ -2505,6 +_,7 @@
+@@ -1994,6 +_,7 @@
+ 		}
  
- 		public static void serverLoadWorldCallBack(object threadContext)
- 		{
+ 		public static void serverLoadWorldCallBack(object threadContext) {
 +			Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave);
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.loadWorld(Main.ActiveWorldFileData.IsCloudSave);
- 			if (WorldGen.loadFailed || !WorldGen.loadSuccess)
-@@ -2771,6 +_,7 @@
- 				Main.liquidBuffer[num10] = new LiquidBuffer();
+ 			if (loadFailed || !loadSuccess) {
+@@ -2227,6 +_,7 @@
  			}
- 			WorldGen.setWorldSize();
+ 
+ 			setWorldSize();
 +			WorldHooks.SetupWorld();
- 			WorldGen.worldCleared = true;
+ 			worldCleared = true;
  		}
  
-@@ -4566,17 +_,18 @@
+@@ -3691,17 +_,18 @@
+ 		}
  
- 		public static void generateWorld(int seed, GenerationProgress customProgressObject = null)
- 		{
+ 		public static void generateWorld(int seed, GenerationProgress customProgressObject = null) {
 +			Logging.Terraria.InfoFormat("Generating World: {0}", Main.ActiveWorldFileData.Name);
- 			WorldGen._lastSeed = seed;
- 			WorldGen._generator = new WorldGenerator(seed);
+ 			_lastSeed = seed;
+ 			_generator = new WorldGenerator(seed);
  			Main.rand = new UnifiedRandom(seed);
  			MicroBiome.ResetAll();
 -			StructureMap structures = new StructureMap();
--			double worldSurface = 0.0;
 +			structures = new StructureMap();
+-			double worldSurface = 0.0;
 +			worldSurface = 0.0;
- 			WorldGen.worldSurfaceLow = 0.0;
+ 			worldSurfaceLow = 0.0;
 -			double worldSurfaceHigh = 0.0;
--			double rockLayer = 0.0;
--			double rockLayerLow = 0.0;
--			double rockLayerHigh = 0.0;
 +			worldSurfaceHigh = 0.0;
+-			double rockLayer = 0.0;
 +			rockLayer = 0.0;
+-			double rockLayerLow = 0.0;
 +			rockLayerLow = 0.0;
+-			double rockLayerHigh = 0.0;
 +			rockLayerHigh = 0.0;
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
-@@ -4617,6 +_,7 @@
- 					}
+@@ -3736,6 +_,7 @@
  				}
  			}
+ 
 +			WorldHooks.PreWorldGen();
- 			WorldGen.AddGenerationPass("Reset", delegate(GenerationProgress progress)
- 				{
- 					Liquid.ReInit();
-@@ -7468,7 +_,7 @@
- 									int num12 = WorldGen.genRand.Next(num - m, num + m + 1);
- 									int num13 = WorldGen.genRand.Next(num2 - num6, num2 + num6 - 2);
- 									WorldGen.PlaceTile(num12, num13, 4, true, false, -1, 3);
--									if (Main.tile[num12, num13].type == 4)
-+									if (TileLoader.IsTorch(Main.tile[num12, num13].type))
- 									{
- 										flag3 = true;
- 									}
-@@ -10250,7 +_,7 @@
- 									Main.tile[num22, l + 2].halfBrick(false);
- 								}
+ 			AddGenerationPass("Reset", delegate (GenerationProgress progress) {
+ 				Liquid.ReInit();
+ 				noTileActions = true;
+@@ -5971,7 +_,7 @@
+ 								int num386 = genRand.Next(num371 - num378, num371 + num378 + 1);
+ 								int num387 = genRand.Next(num372 - num379, num372 + num379 - 2);
+ 								PlaceTile(num386, num387, 4, mute: true, forced: false, -1, 3);
+-								if (Main.tile[num386, num387].type == 4)
++								if (TileLoader.IsTorch(Main.tile[num386, num387].type))
+ 									flag29 = true;
  							}
--							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type])
-+							if (TileID.Sets.BasicChest[(int)Main.tile[k, l].type] && Main.tile[k, l].type < TileID.Count)
- 							{
- 								int num26 = (int)(Main.tile[k, l].frameX / 18);
- 								int num27 = 0;
-@@ -10448,7 +_,7 @@
- 				});
- 			WorldGen.AddGenerationPass("Micro Biomes", delegate(GenerationProgress progress)
- 				{
--					progress.Message = Lang.gen[76].Value;
-+					progress.Message = Lang.gen[76].Value + "..Thin Ice";
- 					float num = (float)(Main.maxTilesX * Main.maxTilesY) / 5040000f;
- 					float num2 = (float)Main.maxTilesX / 4200f;
- 					int num3 = (int)((float)WorldGen.genRand.Next(3, 6) * num);
-@@ -10461,6 +_,7 @@
- 						}
- 					}
- 					progress.Set(0.1f);
-+					progress.Message = Lang.gen[76] + "..Enchanted Swords";
- 					int num4 = (int)Math.Ceiling((double)num);
- 					int l = 0;
- 					while (l < num4)
-@@ -10481,6 +_,7 @@
- 						}
- 					}
- 					progress.Set(0.2f);
-+					progress.Message = Lang.gen[76] + "..Campsites";
- 					int num5 = (int)((float)WorldGen.genRand.Next(6, 12) * num);
- 					int m = 0;
- 					while (m < num5)
-@@ -10490,6 +_,8 @@
- 							m++;
- 						}
- 					}
-+					progress.Message = Lang.gen[76] + "..Mining Explosives";
-+					progress.Set(0.25f);
- 					int num6 = (int)((float)WorldGen.genRand.Next(14, 30) * num);
- 					int n = 0;
- 					while (n < num6)
-@@ -10499,6 +_,7 @@
- 							n++;
- 						}
- 					}
-+					progress.Message = Lang.gen[76] + "..Mahogany Trees";
- 					progress.Set(0.3f);
- 					int num7 = (int)((float)WorldGen.genRand.Next(6, 12) * num2);
- 					int num8 = 0;
-@@ -10511,6 +_,7 @@
- 						}
- 						num9++;
- 					}
-+					progress.Message = Lang.gen[76] + "..Corruption Pits";
- 					progress.Set(0.4f);
- 					if (!WorldGen.crimson)
- 					{
-@@ -10524,6 +_,8 @@
+ 
+@@ -8113,7 +_,7 @@
  							}
  						}
+ 
+-						if (TileID.Sets.BasicChest[Main.tile[num21, num22].type]) {
++						if (TileID.Sets.BasicChest[Main.tile[num21, num22].type] && Main.tile[num21, num22].type < TileID.Count) {
+ 							int num50 = Main.tile[num21, num22].frameX / 18;
+ 							int num51 = 0;
+ 							int num52 = num21;
+@@ -8287,7 +_,7 @@
+ 			});
+ 
+ 			AddGenerationPass("Micro Biomes", delegate (GenerationProgress progress) {
+-				progress.Message = Lang.gen[76].Value;
++				progress.Message = Lang.gen[76].Value + "..Thin Ice";
+ 				float num = (float)(Main.maxTilesX * Main.maxTilesY) / 5040000f;
+ 				float num2 = (float)Main.maxTilesX / 4200f;
+ 				int num3 = (int)((float)genRand.Next(3, 6) * num);
+@@ -8298,6 +_,7 @@
+ 				}
+ 
+ 				progress.Set(0.1f);
++				progress.Message = Lang.gen[76] + "..Enchanted Swords";
+ 				int num5 = (int)Math.Ceiling(num);
+ 				int num6 = 0;
+ 				Point origin = default(Point);
+@@ -8313,6 +_,7 @@
+ 				}
+ 
+ 				progress.Set(0.2f);
++				progress.Message = Lang.gen[76] + "..Campsites";
+ 				int num7 = (int)((float)genRand.Next(6, 12) * num);
+ 				int num8 = 0;
+ 				while (num8 < num7) {
+@@ -8320,6 +_,8 @@
+ 						num8++;
+ 				}
+ 
++				progress.Message = Lang.gen[76] + "..Mining Explosives";
++				progress.Set(0.25f);
+ 				int num9 = (int)((float)genRand.Next(14, 30) * num);
+ 				int num10 = 0;
+ 				while (num10 < num9) {
+@@ -8327,6 +_,7 @@
+ 						num10++;
+ 				}
+ 
++				progress.Message = Lang.gen[76] + "..Mahogany Trees";
+ 				progress.Set(0.3f);
+ 				int num11 = (int)((float)genRand.Next(6, 12) * num2);
+ 				int num12 = 0;
+@@ -8338,6 +_,7 @@
+ 					num13++;
+ 				}
+ 
++				progress.Message = Lang.gen[76] + "..Corruption Pits";
+ 				progress.Set(0.4f);
+ 				if (!crimson) {
+ 					int num14 = (int)((float)genRand.Next(1, 3) * num);
+@@ -8348,6 +_,8 @@
  					}
-+					progress.Message = Lang.gen[76] + "..Minecart Tracks";
-+					progress.Set(0.5f);
- 					TrackGenerator.Run((int)(10f * num), (int)(num * 25f) + 250);
- 					progress.Set(1f);
- 				});
-@@ -10575,8 +_,11 @@
- 					WorldGen.gen = false;
- 					Main.AnglerQuestSwap();
- 				});
-+			WorldHooks.ModifyWorldGenTasks(WorldGen._generator._passes, ref WorldGen._generator._totalLoadWeight);
- 			WorldGen._generator.GenerateWorld(customProgressObject);
+ 				}
+ 
++				progress.Message = Lang.gen[76] + "..Minecart Tracks";
++				progress.Set(0.5f);
+ 				TrackGenerator.Run((int)(10f * num), (int)(num * 25f) + 250);
+ 				progress.Set(1f);
+ 			});
+@@ -8382,8 +_,11 @@
+ 				Main.AnglerQuestSwap();
+ 			});
+ 
++			WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
+ 			_generator.GenerateWorld(customProgressObject);
 +			WorldHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
 +			BackupIO.archiveLock = true;
  		}
  
- 		public static Point RandomRectanglePoint(Rectangle rectangle)
-@@ -10602,7 +_,7 @@
- 		public static bool GrowPalmTree(int i, int y)
- 		{
- 			int num = y;
--			while (Main.tile[i, num].type == 20)
-+			while (TileLoader.IsSapling(Main.tile[i, num].type))
- 			{
- 				num++;
+ 		public static Point RandomRectanglePoint(Rectangle rectangle) => new Point(genRand.Next(rectangle.X, rectangle.X + rectangle.Width), genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height));
+@@ -8393,7 +_,7 @@
+ 
+ 		public static bool GrowPalmTree(int i, int y) {
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
  			}
-@@ -10616,7 +_,7 @@
- 			{
+ 
+ 			Tile tile = Main.tile[i, j];
+@@ -8404,7 +_,7 @@
+ 			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;
- 			}
+ 
 -			if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112)
 +			if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112 && !TileLoader.CanGrowModPalmTree(tile.type))
- 			{
  				return false;
- 			}
-@@ -10674,11 +_,11 @@
- 		public static bool GrowEpicTree(int i, int y)
- 		{
- 			int num = y;
--			while (Main.tile[i, num].type == 20)
-+			while (TileLoader.IsSapling(Main.tile[i, num].type))
- 			{
- 				num++;
- 			}
--			if (Main.tile[i, num].active() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && Main.tile[i, num].type == 2 && Main.tile[i, num - 1].wall == 0 && Main.tile[i, num - 1].liquid == 0 && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109)) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))))
-+			if (Main.tile[i, num].active() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && Main.tile[i, num].type == 2 && Main.tile[i, num - 1].wall == 0 && Main.tile[i, num - 1].liquid == 0 && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type))) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))))
- 			{
- 				int num2 = 2;
- 				if (WorldGen.EmptyTileCheck(i - num2, i + num2, num - 55, num - 1, 20))
-@@ -10944,11 +_,11 @@
- 					int num6 = WorldGen.genRand.Next(3);
- 					bool flag3 = false;
- 					bool flag4 = false;
--					if (Main.tile[i - 1, num].active() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109))
-+					if (Main.tile[i - 1, num].active() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)))
- 					{
- 						flag3 = true;
- 					}
--					if (Main.tile[i + 1, num].active() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109))
-+					if (Main.tile[i + 1, num].active() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))
- 					{
- 						flag4 = true;
- 					}
-@@ -12099,10 +_,21 @@
- 						}
- 					}
- 					ushort type = tile3.type;
-+					TileLoader.TreeGrowthFXGore(type, ref num2);
-+					if (num2 > 0)
-+					{
-+						break;
-+					}
-+					TileLoader.PalmTreeGrowthFXGore(type, ref num2);
-+					if (num2 > 0)
-+					{
-+						break;
-+					}
- 					if (type <= 70)
- 					{
- 						if (type <= 23)
- 						{
-+							//patch file: num2
- 							if (type == 2)
- 							{
- 								num2 = 910;
-@@ -12256,7 +_,7 @@
- 		public static bool GrowTree(int i, int y)
- 		{
- 			int num = y;
--			while (Main.tile[i, num].type == 20)
-+			while (TileLoader.IsSapling(Main.tile[i, num].type))
- 			{
- 				num++;
- 			}
-@@ -12264,7 +_,7 @@
- 			{
- 				return false;
- 			}
--			if (Main.tile[i, num].nactive() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && (Main.tile[i, num].type == 2 || Main.tile[i, num].type == 23 || Main.tile[i, num].type == 60 || Main.tile[i, num].type == 109 || Main.tile[i, num].type == 147 || Main.tile[i, num].type == 199 || Main.tile[i, num].type == 70) && (Main.tile[i, num - 1].wall == 0 || Main.tile[i, num - 1].wall == 106 || Main.tile[i, num - 1].wall == 107 || (Main.tile[i, num - 1].wall >= 138 && Main.tile[i, num - 1].wall <= 141) || Main.tile[i, num - 1].wall == 145 || Main.tile[i, num - 1].wall == 150 || Main.tile[i, num - 1].wall == 152) && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || Main.tile[i - 1, num].type == 70)) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || Main.tile[i + 1, num].type == 70))))
-+			if (Main.tile[i, num].nactive() && !Main.tile[i, num].halfBrick() && Main.tile[i, num].slope() == 0 && (Main.tile[i, num].type == 2 || Main.tile[i, num].type == 23 || Main.tile[i, num].type == 60 || Main.tile[i, num].type == 109 || Main.tile[i, num].type == 147 || Main.tile[i, num].type == 199 || Main.tile[i, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i, num].type)) && (Main.tile[i, num - 1].wall == 0 || Main.tile[i, num - 1].wall == 106 || Main.tile[i, num - 1].wall == 107 || (Main.tile[i, num - 1].wall >= 138 && Main.tile[i, num - 1].wall <= 141) || Main.tile[i, num - 1].wall == 145 || Main.tile[i, num - 1].wall == 150 || Main.tile[i, num - 1].wall == 152) && ((Main.tile[i - 1, num].active() && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || Main.tile[i - 1, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type))) || (Main.tile[i + 1, num].active() && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || Main.tile[i + 1, num].type == 70 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))))
- 			{
- 				int num2 = 2;
- 				int num3 = 16;
-@@ -12535,11 +_,11 @@
- 					int num7 = WorldGen.genRand.Next(3);
- 					bool flag3 = false;
- 					bool flag4 = false;
--					if (Main.tile[i - 1, num].nactive() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199))
-+					if (Main.tile[i - 1, num].nactive() && !Main.tile[i - 1, num].halfBrick() && Main.tile[i - 1, num].slope() == 0 && (Main.tile[i - 1, num].type == 2 || Main.tile[i - 1, num].type == 23 || Main.tile[i - 1, num].type == 60 || Main.tile[i - 1, num].type == 109 || Main.tile[i - 1, num].type == 147 || Main.tile[i - 1, num].type == 199 || TileLoader.CanGrowModTree(Main.tile[i - 1, num].type)))
- 					{
- 						flag3 = true;
- 					}
--					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199))
-+					if (Main.tile[i + 1, num].nactive() && !Main.tile[i + 1, num].halfBrick() && Main.tile[i + 1, num].slope() == 0 && (Main.tile[i + 1, num].type == 2 || Main.tile[i + 1, num].type == 23 || Main.tile[i + 1, num].type == 60 || Main.tile[i + 1, num].type == 109 || Main.tile[i + 1, num].type == 147 || Main.tile[i + 1, num].type == 199 || TileLoader.CanGrowModTree(Main.tile[i + 1, num].type)))
- 					{
- 						flag4 = true;
- 					}
-@@ -13313,14 +_,14 @@
- 								return false;
- 							}
- 						}
--						else if (ignoreID == 20)
-+						else if (TileLoader.IsSapling(ignoreID))
- 						{
- 							ushort type3 = Main.tile[i, j].type;
--							if (type3 <= 74)
--							{
--								if (type3 <= 24)
--								{
--									if (type3 == 3 || type3 == 20 || type3 == 24)
-+							if (type3 <= 74 || TileLoader.IsSapling(type3))
-+							{
-+								if (type3 <= 24 || TileLoader.IsSapling(type3))
-+								{
-+									if (type3 == 3 || TileLoader.IsSapling(type3) || type3 == 24)
- 									{
- 										goto IL_159;
- 									}
-@@ -13392,6 +_,7 @@
  
- 		public static void smCallBack(object threadContext)
- 		{
+ 			if (!EmptyTileCheck(i - 1, i + 1, j - 30, j - 1, 20))
+@@ -8456,10 +_,10 @@
+ 
+ 		public static bool GrowEpicTree(int i, int y) {
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
+ 			}
+ 
+-			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109)))) {
++			if (Main.tile[i, j].active() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && Main.tile[i, j].type == 2 && Main.tile[i, j - 1].wall == 0 && Main.tile[i, j - 1].liquid == 0 && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type))) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type))))) {
+ 				int num = 2;
+ 				if (EmptyTileCheck(i - num, i + num, j - 55, j - 1, 20)) {
+ 					bool flag = false;
+@@ -8683,10 +_,10 @@
+ 					int num5 = genRand.Next(3);
+ 					bool flag3 = false;
+ 					bool flag4 = false;
+-					if (Main.tile[i - 1, j].active() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109))
++					if (Main.tile[i - 1, j].active() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)))
+ 						flag3 = true;
+ 
+-					if (Main.tile[i + 1, j].active() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109))
++					if (Main.tile[i + 1, j].active() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))
+ 						flag4 = true;
+ 
+ 					if (!flag3) {
+@@ -9613,6 +_,14 @@
+ 						num4 = 2;
+ 				}
+ 
++				TileLoader.TreeGrowthFXGore(tile3.type, ref num2);
++				if (num2 > 0)
++					break;
++
++				TileLoader.PalmTreeGrowthFXGore(tile3.type, ref num2);
++				if (num2 > 0)
++					break;
++
+ 				switch (tile3.type) {
+ 					case 2:
+ 						num2 = 910;
+@@ -9722,13 +_,13 @@
+ 
+ 		public static bool GrowTree(int i, int y) {
+ 			int j;
+-			for (j = y; Main.tile[i, j].type == 20; j++) {
++			for (j = y; TileLoader.IsSapling(Main.tile[i, j].type); j++) {
+ 			}
+ 
+ 			if ((Main.tile[i - 1, j - 1].liquid != 0 || Main.tile[i, j - 1].liquid != 0 || Main.tile[i + 1, j - 1].liquid != 0) && Main.tile[i, j].type != 60)
+ 				return false;
+ 
+-			if (Main.tile[i, j].nactive() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && (Main.tile[i, j].type == 2 || Main.tile[i, j].type == 23 || Main.tile[i, j].type == 60 || Main.tile[i, j].type == 109 || Main.tile[i, j].type == 147 || Main.tile[i, j].type == 199 || Main.tile[i, j].type == 70) && (Main.tile[i, j - 1].wall == 0 || Main.tile[i, j - 1].wall == 106 || Main.tile[i, j - 1].wall == 107 || (Main.tile[i, j - 1].wall >= 138 && Main.tile[i, j - 1].wall <= 141) || Main.tile[i, j - 1].wall == 145 || Main.tile[i, j - 1].wall == 150 || Main.tile[i, j - 1].wall == 152) && ((Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || Main.tile[i - 1, j].type == 70)) || (Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || Main.tile[i + 1, j].type == 70)))) {
++			if (Main.tile[i, j].nactive() && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && (Main.tile[i, j].type == 2 || Main.tile[i, j].type == 23 || Main.tile[i, j].type == 60 || Main.tile[i, j].type == 109 || Main.tile[i, j].type == 147 || Main.tile[i, j].type == 199 || Main.tile[i, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i, j].type)) && (Main.tile[i, j - 1].wall == 0 || Main.tile[i, j - 1].wall == 106 || Main.tile[i, j - 1].wall == 107 || Main.tile[i, j - 1].wall >= 138 && Main.tile[i, j - 1].wall <= 141 || Main.tile[i, j - 1].wall == 145 || Main.tile[i, j - 1].wall == 150 || Main.tile[i, j - 1].wall == 152) && (Main.tile[i - 1, j].active() && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || Main.tile[i - 1, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)) || Main.tile[i + 1, j].active() && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || Main.tile[i + 1, j].type == 70 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))) {
+ 				int num = 2;
+ 				int num2 = 16;
+ 				if (Main.tile[i, j].type == 60)
+@@ -9956,10 +_,10 @@
+ 					int num6 = genRand.Next(3);
+ 					bool flag3 = false;
+ 					bool flag4 = false;
+-					if (Main.tile[i - 1, j].nactive() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199))
++					if (Main.tile[i - 1, j].nactive() && !Main.tile[i - 1, j].halfBrick() && Main.tile[i - 1, j].slope() == 0 && (Main.tile[i - 1, j].type == 2 || Main.tile[i - 1, j].type == 23 || Main.tile[i - 1, j].type == 60 || Main.tile[i - 1, j].type == 109 || Main.tile[i - 1, j].type == 147 || Main.tile[i - 1, j].type == 199 || TileLoader.CanGrowModTree(Main.tile[i - 1, j].type)))
+ 						flag3 = true;
+ 
+-					if (Main.tile[i + 1, j].nactive() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199))
++					if (Main.tile[i + 1, j].nactive() && !Main.tile[i + 1, j].halfBrick() && Main.tile[i + 1, j].slope() == 0 && (Main.tile[i + 1, j].type == 2 || Main.tile[i + 1, j].type == 23 || Main.tile[i + 1, j].type == 60 || Main.tile[i + 1, j].type == 109 || Main.tile[i + 1, j].type == 147 || Main.tile[i + 1, j].type == 199 || TileLoader.CanGrowModTree(Main.tile[i + 1, j].type)))
+ 						flag4 = true;
+ 
+ 					if (!flag3) {
+@@ -10614,12 +_,12 @@
+ 
+ 								break;
+ 							}
+-						case 20:
++						case int _ when TileLoader.IsSapling(ignoreID):
+ 							switch (Main.tile[i, j].type) {
+ 								default:
+ 									return false;
+ 								case 3:
+-								case 20:
++								case ushort _ when TileLoader.IsSapling(Main.tile[i, j].type):
+ 								case 24:
+ 								case 32:
+ 								case 61:
+@@ -10655,6 +_,7 @@
+ 		}
+ 
+ 		public static void smCallBack(object threadContext) {
 +			List<GenPass> hardmodetasks = new List<GenPass>();
- 			WorldGen.IsGeneratingHardMode = true;
+ 			IsGeneratingHardMode = true;
  			if (Main.rand == null)
- 			{
-@@ -13432,8 +_,16 @@
- 			{
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+@@ -10687,8 +_,15 @@
  				num3 = (int)((float)Main.maxTilesX * (1f - num2));
  			}
-+			hardmodetasks.Add(new PassLegacy("Hardmode Good", delegate (GenerationProgress progress)
-+			{
- 			WorldGen.GERunner(num3, 0, (float)(3 * num5), 5f, true);
+ 
+-			GERunner(num3, 0, 3 * num5, 5f);
+-			GERunner(num4, 0, 3 * -num5, 5f, good: false);
++			hardmodetasks.Add(new PassLegacy("Hardmode Good", delegate (GenerationProgress progress) {
++				GERunner(num3, 0, 3 * num5, 5f, true);
 +			}));
-+			hardmodetasks.Add(new PassLegacy("Hardmode Evil", delegate (GenerationProgress progress)
-+			{
- 			WorldGen.GERunner(num4, 0, (float)(3 * -(float)num5), 5f, false);
++
++			hardmodetasks.Add(new PassLegacy("Hardmode Evil", delegate (GenerationProgress progress) {
++				GERunner(num4, 0, 3 * -(float)num5, 5f, false);
 +			}));
-+			hardmodetasks.Add(new PassLegacy("Hardmode Walls", delegate (GenerationProgress progress)
-+			{
++
++			hardmodetasks.Add(new PassLegacy("Hardmode Walls", delegate (GenerationProgress progress) {
  			float num7 = (float)Main.maxTilesX / 4200f;
- 			int i = (int)(25f * num7);
+ 			int num8 = (int)(25f * num7);
  			ShapeData shapeData = new ShapeData();
-@@ -13508,6 +_,9 @@
+@@ -10718,13 +_,22 @@
  					shapeData.Clear();
  				}
  			}
 +			}));
-+			hardmodetasks.Add(new PassLegacy("Hardmode Announcment", delegate (GenerationProgress progress)
-+			{
+ 
++			hardmodetasks.Add(new PassLegacy("Hardmode Announcment", delegate (GenerationProgress progress) {
  			if (Main.netMode == 0)
- 			{
- 				Main.NewText(Lang.misc[15].Value, 50, 255, 130, false);
-@@ -13517,6 +_,12 @@
- 				NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key, new object[0]), new Color(50, 255, 130), -1);
- 			}
+ 				Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
+ 			else if (Main.netMode == 2)
+ 				NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key), new Color(50, 255, 130));
+ 
  			AchievementsHelper.NotifyProgressionEvent(9);
 +			}));
++
 +			WorldHooks.ModifyHardmodeTasks(hardmodetasks);
-+			foreach (GenPass task in hardmodetasks)
-+			{
++			foreach (GenPass task in hardmodetasks) {
 +				task.Apply(null);
 +			}
++
  			if (Main.netMode == 2)
- 			{
  				Netplay.ResetSections();
-@@ -13568,7 +_,7 @@
- 			}
- 			int frameX = (int)Main.tile[i, j].frameX;
+ 
+@@ -10766,7 +_,7 @@
+ 
+ 			int frameX = Main.tile[i, j].frameX;
  			Tile tile = Main.tile[i, j];
 -			if (tile.type != 11)
 +			if (TileLoader.CloseDoorID(Main.tile[i, j]) < 0)
- 			{
  				return false;
- 			}
-@@ -13622,6 +_,7 @@
- 					}
+ 
+ 			int num4 = tile.frameY;
+@@ -10813,13 +_,14 @@
  				}
  			}
+ 
 +			ushort closeDoorID = (ushort)TileLoader.CloseDoorID(tile);
- 			for (int m = num7; m < num7 + 2; m++)
- 			{
- 				for (int n = num5; n < num5 + 3; n++)
-@@ -13632,7 +_,7 @@
- 						{
- 							Main.tile[m, n] = new Tile();
- 						}
--						Main.tile[m, n].type = 10;
-+						Main.tile[m, n].type = closeDoorID;
- 						Main.tile[m, n].frameX = (short)(WorldGen.genRand.Next(3) * 18 + num4);
+ 			for (int l = num7; l < num7 + 2; l++) {
+ 				for (int m = num3; m < num3 + 3; m++) {
+ 					if (l == num2) {
+ 						if (Main.tile[l, m] == null)
+ 							Main.tile[l, m] = new Tile();
+ 
+-						Main.tile[l, m].type = 10;
++						Main.tile[l, m].type = closeDoorID;
+ 						Main.tile[l, m].frameX = (short)(genRand.Next(3) * 18 + num6);
  					}
- 					else
-@@ -13830,7 +_,7 @@
- 							{
- 								for (int k = num8 - 8; k < num8 + 8; k++)
- 								{
--									if (Main.tile[j, k].active() && Main.tile[j, k].type == 4)
-+									if (Main.tile[j, k].active() && TileLoader.IsTorch(Main.tile[j, k].type))
- 									{
+ 					else {
+@@ -10977,7 +_,7 @@
+ 							bool flag2 = false;
+ 							for (int k = num6 - 8; k < num6 + 8; k++) {
+ 								for (int l = num7 - 8; l < num7 + 8; l++) {
+-									if (Main.tile[k, l].active() && Main.tile[k, l].type == 4) {
++									if (Main.tile[k, l].active() && TileLoader.IsTorch(Main.tile[k, l].type)) {
  										flag2 = true;
  										break;
-@@ -20411,11 +_,7 @@
+ 									}
+@@ -16527,10 +_,7 @@
  				Main.tile[i, j] = new Tile();
- 			}
+ 
  			Tile tile = Main.tile[i, j];
 -			if (tile.type != 10)
--			{
 -				return false;
--			}
+-
 -			if (tile.frameY >= 594 && tile.frameY <= 646 && tile.frameX < 54)
 +			if (TileLoader.OpenDoorID(Main.tile[i, j]) < 0)
- 			{
  				return false;
- 			}
-@@ -20484,8 +_,9 @@
- 			}
- 			int num7 = num2 % 36 * 54;
- 			Main.PlaySound(8, i * 16, j * 16, 1, 1f, 0f);
+ 
+ 			short num2 = 0;
+@@ -16592,8 +_,9 @@
+ 
+ 			int num8 = num4 % 36 * 54;
+ 			Main.PlaySound(8, i * 16, j * 16);
 +			ushort openDoorID = (ushort)TileLoader.OpenDoorID(Main.tile[i, j]);
- 			Main.tile[num5, num4].active(true);
--			Main.tile[num5, num4].type = 11;
-+			Main.tile[num5, num4].type = openDoorID;
- 			Main.tile[num5, num4].frameY = (short)num7;
- 			Main.tile[num5, num4].frameX = num;
- 			Main.tile[num5, num4].color(color);
-@@ -20494,7 +_,7 @@
- 				Main.tile[num5 + 1, num4] = new Tile();
+ 			Main.tile[num6, num].active(active: true);
+-			Main.tile[num6, num].type = 11;
++			Main.tile[num6, num].type = openDoorID;
+ 			Main.tile[num6, num].frameY = (short)num8;
+ 			Main.tile[num6, num].frameX = num2;
+ 			Main.tile[num6, num].color(color);
+@@ -16601,7 +_,7 @@
+ 				Main.tile[num6 + 1, num] = new Tile();
+ 
+ 			Main.tile[num6 + 1, num].active(active: true);
+-			Main.tile[num6 + 1, num].type = 11;
++			Main.tile[num6 + 1, num].type = openDoorID;
+ 			Main.tile[num6 + 1, num].frameY = (short)num8;
+ 			Main.tile[num6 + 1, num].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num].color(color);
+@@ -16609,7 +_,7 @@
+ 				Main.tile[num6, num + 1] = new Tile();
+ 
+ 			Main.tile[num6, num + 1].active(active: true);
+-			Main.tile[num6, num + 1].type = 11;
++			Main.tile[num6, num + 1].type = openDoorID;
+ 			Main.tile[num6, num + 1].frameY = (short)(num8 + 18);
+ 			Main.tile[num6, num + 1].frameX = num2;
+ 			Main.tile[num6, num + 1].color(color2);
+@@ -16617,7 +_,7 @@
+ 				Main.tile[num6 + 1, num + 1] = new Tile();
+ 
+ 			Main.tile[num6 + 1, num + 1].active(active: true);
+-			Main.tile[num6 + 1, num + 1].type = 11;
++			Main.tile[num6 + 1, num + 1].type = openDoorID;
+ 			Main.tile[num6 + 1, num + 1].frameY = (short)(num8 + 18);
+ 			Main.tile[num6 + 1, num + 1].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num + 1].color(color2);
+@@ -16625,7 +_,7 @@
+ 				Main.tile[num6, num + 2] = new Tile();
+ 
+ 			Main.tile[num6, num + 2].active(active: true);
+-			Main.tile[num6, num + 2].type = 11;
++			Main.tile[num6, num + 2].type = openDoorID;
+ 			Main.tile[num6, num + 2].frameY = (short)(num8 + 36);
+ 			Main.tile[num6, num + 2].frameX = num2;
+ 			Main.tile[num6, num + 2].color(color3);
+@@ -16633,7 +_,7 @@
+ 				Main.tile[num6 + 1, num + 2] = new Tile();
+ 
+ 			Main.tile[num6 + 1, num + 2].active(active: true);
+-			Main.tile[num6 + 1, num + 2].type = 11;
++			Main.tile[num6 + 1, num + 2].type = openDoorID;
+ 			Main.tile[num6 + 1, num + 2].frameY = (short)(num8 + 36);
+ 			Main.tile[num6 + 1, num + 2].frameX = (short)(num2 + 18);
+ 			Main.tile[num6 + 1, num + 2].color(color3);
+@@ -16694,6 +_,9 @@
+ 					KillTile(x, num5 + k);
  			}
- 			Main.tile[num5 + 1, num4].active(true);
--			Main.tile[num5 + 1, num4].type = 11;
-+			Main.tile[num5 + 1, num4].type = openDoorID;
- 			Main.tile[num5 + 1, num4].frameY = (short)num7;
- 			Main.tile[num5 + 1, num4].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4].color(color);
-@@ -20503,7 +_,7 @@
- 				Main.tile[num5, num4 + 1] = new Tile();
+ 
++			if (!TileLoader.Drop(x, j, type))
++				goto skipDrop;
++
+ 			if (type == 92)
+ 				Item.NewItem(x * 16, j * 16, 32, 32, 341);
+ 
+@@ -16779,6 +_,7 @@
+ 				Item.NewItem(x * 16, j * 16, 32, 32, type2);
  			}
- 			Main.tile[num5, num4 + 1].active(true);
--			Main.tile[num5, num4 + 1].type = 11;
-+			Main.tile[num5, num4 + 1].type = openDoorID;
- 			Main.tile[num5, num4 + 1].frameY = (short)(num7 + 18);
- 			Main.tile[num5, num4 + 1].frameX = num;
- 			Main.tile[num5, num4 + 1].color(color2);
-@@ -20512,7 +_,7 @@
- 				Main.tile[num5 + 1, num4 + 1] = new Tile();
- 			}
- 			Main.tile[num5 + 1, num4 + 1].active(true);
--			Main.tile[num5 + 1, num4 + 1].type = 11;
-+			Main.tile[num5 + 1, num4 + 1].type = openDoorID;
- 			Main.tile[num5 + 1, num4 + 1].frameY = (short)(num7 + 18);
- 			Main.tile[num5 + 1, num4 + 1].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4 + 1].color(color2);
-@@ -20521,7 +_,7 @@
- 				Main.tile[num5, num4 + 2] = new Tile();
- 			}
- 			Main.tile[num5, num4 + 2].active(true);
--			Main.tile[num5, num4 + 2].type = 11;
-+			Main.tile[num5, num4 + 2].type = openDoorID;
- 			Main.tile[num5, num4 + 2].frameY = (short)(num7 + 36);
- 			Main.tile[num5, num4 + 2].frameX = num;
- 			Main.tile[num5, num4 + 2].color(color3);
-@@ -20530,7 +_,7 @@
- 				Main.tile[num5 + 1, num4 + 2] = new Tile();
- 			}
- 			Main.tile[num5 + 1, num4 + 2].active(true);
--			Main.tile[num5 + 1, num4 + 2].type = 11;
-+			Main.tile[num5 + 1, num4 + 2].type = openDoorID;
- 			Main.tile[num5 + 1, num4 + 2].frameY = (short)(num7 + 36);
- 			Main.tile[num5 + 1, num4 + 2].frameX = (short)(num + 18);
- 			Main.tile[num5 + 1, num4 + 2].color(color3);
-@@ -20607,6 +_,8 @@
- 						WorldGen.KillTile(x, num4 + l, false, false, false);
- 					}
- 				}
-+				if (TileLoader.Drop(x, j, type))
-+				{
- 				if (type == 92)
- 				{
- 					Item.NewItem(x * 16, j * 16, 32, 32, 341, 1, false, 0, false, false);
-@@ -20704,6 +_,7 @@
- 						type3 = 3892;
- 					}
- 					Item.NewItem(x * 16, j * 16, 32, 32, type3, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 			}
-@@ -20839,6 +_,8 @@
- 						WorldGen.KillTile(num + 1, num4 + num5, false, false, false);
- 					}
- 				}
-+				if (TileLoader.Drop(num, j, type))
-+				{
- 				if (type == 104)
- 				{
- 					int num6 = frameX / 36;
-@@ -21010,6 +_,7 @@
- 				{
- 					Item.NewItem(num * 16, j * 16, 32, 48, 3202, 1, false, 0, false, false);
- 					TETrainingDummy.Kill(num, num4);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 			}
-@@ -22107,7 +_,8 @@
- 						}
- 					}
- 				}
--				Item.NewItem(x * 16, y * 16, 32, 32, 1873, 1, false, 0, false, false);
-+				if (TileLoader.Drop(x, y, TileID.ChristmasTree))
-+					Item.NewItem(x * 16, y * 16, 32, 32, 1873, 1, false, 0, false, false);
- 				WorldGen.destroyObject = false;
- 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
  		}
-@@ -22216,8 +_,10 @@
- 			{
- 				flag = true;
+ 
+@@ -16878,6 +_,9 @@
+ 					KillTile(num + 1, num6 + m);
  			}
--			if (Main.tile[x, num].type == 20)
--			{
-+			if (TileLoader.IsSapling(Main.tile[x, num].type))
-+			{
+ 
++			if (!TileLoader.Drop(num, j, type))
++				goto skipDrop;
++
+ 			if (type == 104) {
+ 				int num7 = frameX / 36;
+ 				int num8 = 0;
+@@ -17058,6 +_,7 @@
+ 				TETrainingDummy.Kill(num, num6);
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 
+@@ -17924,7 +_,8 @@
+ 				}
+ 			}
+ 
++			if (TileLoader.Drop(x, y, TileID.ChristmasTree))
+-			Item.NewItem(x * 16, y * 16, 32, 32, 1873);
++				Item.NewItem(x * 16, y * 16, 32, 32, 1873);
+ 			destroyObject = false;
+ 		}
+ 
+@@ -18013,7 +_,9 @@
+ 			if (!SolidTileAllowBottomSlope(x, num + 2) && !TileID.Sets.Platforms[Main.tile[x, num + 2].type])
+ 				flag = true;
+ 
+-			if (Main.tile[x, num].type == 20) {
++			if (TileLoader.IsSapling(Main.tile[x, num].type)) {
 +				int originalType = Main.tile[x, num].type;
 +				int newType = TileID.Saplings;
- 				int num3 = (int)(Main.tile[x, num].frameX / 54);
- 				int type2 = (int)Main.tile[x, num + 2].type;
- 				int num4 = -1;
-@@ -22261,12 +_,17 @@
- 				{
- 					num4 = 9;
+ 				int num4 = Main.tile[x, num].frameX / 54;
+ 				int type2 = Main.tile[x, num + 2].type;
+ 				int num5 = -1;
+@@ -18048,12 +_,16 @@
+ 					case 112:
+ 						num5 = 9;
+ 						break;
++					case int _ when TileLoader.SaplingGrowthType(type2, ref newType, ref num5):
++						break;
+ 					default:
+ 						flag = true;
+ 						break;
  				}
-+				else if (TileLoader.SaplingGrowthType(type2, ref newType, ref num4))
-+				{
-+				}
- 				else
- 				{
- 					flag = true;
- 				}
--				if (!flag && num3 != num4)
--				{
-+				if (!flag && (originalType != newType || num3 != num4))
-+				{
+ 
+-				if (!flag && num4 != num5) {
++				if (!flag && (originalType != newType || num4 != num5)) {
 +					Main.tile[x, num].type = (ushort)newType;
 +					Main.tile[x, num + 1].type = (ushort)newType;
- 					int num5 = 54 * num4;
- 					num5 += WorldGen.genRand.Next(3) * 18;
- 					Main.tile[x, num].frameX = (short)num5;
-@@ -22284,6 +_,8 @@
- 				{
- 					WorldGen.KillTile(x, num + 1, false, false, false);
- 				}
-+				if (TileLoader.Drop(x, num, type))
-+				{
- 				if (type == 216)
- 				{
- 					Item.NewItem(x * 16, num * 16, 32, 32, 970 + num2, 1, false, 0, false, false);
-@@ -22439,6 +_,7 @@
- 					{
- 						Item.NewItem(x * 16, num * 16, 32, 32, 525, 1, false, 0, false, false);
- 					}
-+				}
- 				}
- 				WorldGen.destroyObject = false;
+ 					int num6 = 54 * num5;
+ 					num6 += genRand.Next(3) * 18;
+ 					Main.tile[x, num].frameX = (short)num6;
+@@ -18071,6 +_,9 @@
+ 			if (Main.tile[x, num + 1].type == type)
+ 				KillTile(x, num + 1);
+ 
++			if (!TileLoader.Drop(x, num, type))
++				goto skipDrop;
++
+ 			if (type == 216)
+ 				Item.NewItem(x * 16, num * 16, 32, 32, 970 + num3);
+ 
+@@ -18195,6 +_,7 @@
+ 					break;
  			}
-@@ -22605,6 +_,8 @@
- 				{
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 
+@@ -18317,6 +_,9 @@
+ 				if (type != 395)
  					Sign.KillSign(num7, num8);
+ 
++				if (!TileLoader.Drop(x, y, type))
++					goto skipDrop;
++
+ 				switch (type) {
+ 					case 85: {
+ 							int type2 = 321;
+@@ -18340,6 +_,7 @@
+ 						break;
  				}
-+				if (TileLoader.Drop(x, y, type))
-+				{
- 				if (type == 85)
- 				{
- 					int type2 = 321;
-@@ -22630,6 +_,7 @@
- 				else
- 				{
- 					Item.NewItem(x * 16, y * 16, 32, 32, 171, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
+ 
++				skipDrop:
+ 				destroyObject = false;
  				return;
-@@ -24308,6 +_,8 @@
- 						WorldGen.KillTile(x, i + l, false, false, false);
- 					}
- 				}
-+				if (TileLoader.Drop(x, i + 1, type))
-+				{
- 				if (type == 91)
- 				{
- 					int num2 = frameX / 18;
-@@ -24360,6 +_,7 @@
- 					{
- 						Item.NewItem(x * 16, (i + 1) * 16, 32, 32, 337 + num2, 1, false, 0, false, false);
- 					}
-+				}
- 				}
- 				WorldGen.destroyObject = false;
  			}
-@@ -24549,7 +_,8 @@
- 			if (flag)
- 			{
- 				WorldGen.destroyObject = true;
--				Item.NewItem(i * 16, j * 16, 48, 48, 2699, 1, false, 0, false, false);
-+				if (TileLoader.Drop(i, j, TileID.WeaponsRack))
-+					Item.NewItem(i * 16, j * 16, 48, 48, 2699, 1, false, 0, false, false);
- 				for (int num7 = 0; num7 < 3; num7++)
- 				{
- 					for (int num8 = 0; num8 < 3; num8++)
-@@ -24671,7 +_,8 @@
- 			if (flag)
- 			{
- 				WorldGen.destroyObject = true;
--				Item.NewItem(i * 16, j * 16, 32, 32, 498, 1, false, 0, false, false);
-+				if (TileLoader.Drop(i,j,TileID.Mannequin))
-+					Item.NewItem(i * 16, j * 16, 32, 32, 498, 1, false, 0, false, false);
- 				for (int num5 = 0; num5 <= 1; num5++)
- 				{
- 					for (int num6 = 0; num6 <= 2; num6++)
-@@ -24732,7 +_,8 @@
- 			if (flag)
- 			{
- 				WorldGen.destroyObject = true;
--				Item.NewItem(i * 16, j * 16, 32, 32, 1989, 1, false, 0, false, false);
-+				if (TileLoader.Drop(i, j, TileID.Womannequin))
-+					Item.NewItem(i * 16, j * 16, 32, 32, 1989, 1, false, 0, false, false);
- 				for (int num5 = 0; num5 <= 1; num5++)
- 				{
- 					for (int num6 = 0; num6 <= 2; num6++)
-@@ -24752,7 +_,7 @@
- 		public static void Place1x2(int x, int y, ushort type, int style)
- 		{
+@@ -19680,6 +_,9 @@
+ 					KillTile(x, num + k);
+ 			}
+ 
++			if (!TileLoader.Drop(x, num + 1, type))
++				goto skipDrop;
++
+ 			if (type == 91) {
+ 				int num3 = frameX / 18;
+ 				num3 += num2 * 111;
+@@ -19709,6 +_,7 @@
+ 					Item.NewItem(x * 16, (num + 1) * 16, 32, 32, 337 + num3);
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 
+@@ -19871,7 +_,8 @@
+ 				return;
+ 
+ 			destroyObject = true;
++			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
+-			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
++				Item.NewItem(i * 16, j * 16, 48, 48, 2699);
+ 			for (int m = 0; m < 3; m++) {
+ 				for (int n = 0; n < 3; n++) {
+ 					int num9 = num + m;
+@@ -19975,7 +_,9 @@
+ 				return;
+ 
+ 			destroyObject = true;
++			if (TileLoader.Drop(i, j, TileID.Mannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 498);
++				Item.NewItem(i * 16, j * 16, 32, 32, 498);
++
+ 			for (int m = 0; m <= 1; m++) {
+ 				for (int n = 0; n <= 2; n++) {
+ 					int num7 = num + m;
+@@ -20027,7 +_,9 @@
+ 				return;
+ 
+ 			destroyObject = true;
++			if (TileLoader.Drop(i, j, TileID.Womannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
++				Item.NewItem(i * 16, j * 16, 32, 32, 1989);
++
+ 			for (int m = 0; m <= 1; m++) {
+ 				for (int n = 0; n <= 2; n++) {
+ 					int num7 = num + m;
+@@ -20042,7 +_,7 @@
+ 
+ 		public static void Place1x2(int x, int y, ushort type, int style) {
  			short frameX = 0;
 -			if (type == 20)
 +			if (TileLoader.IsSapling(type))
- 			{
- 				frameX = (short)(WorldGen.genRand.Next(3) * 18);
+ 				frameX = (short)(genRand.Next(3) * 18);
+ 
+ 			if (Main.tile[x, y - 1] == null)
+@@ -20128,6 +_,9 @@
+ 			if (Main.tile[x, num + 1].type == type)
+ 				KillTile(x, num + 1);
+ 
++			if (!TileLoader.Drop(x, num, type))
++				goto skipDrop;
++
+ 			switch (type) {
+ 				case 42: {
+ 						int type2 = 0;
+@@ -20244,6 +_,7 @@
+ 					break;
  			}
-@@ -24854,6 +_,8 @@
- 				{
- 					WorldGen.KillTile(x, num2 + 1, false, false, false);
- 				}
-+				if (TileLoader.Drop(x, num2, type))
-+				{
- 				if (type == 42)
- 				{
- 					int type2 = 0;
-@@ -24986,6 +_,7 @@
- 				else if (type == 271)
- 				{
- 					Item.NewItem(x * 16, num2 * 16, 32, 32, 2005, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 			}
-@@ -25156,6 +_,8 @@
- 				{
- 					WorldGen.KillTile(num3 + 1, y, false, false, false);
- 				}
-+				if (TileLoader.Drop(num3, y, type))
-+				{
- 				if (type == 16)
- 				{
- 					if (num2 == 1)
-@@ -25409,6 +_,7 @@
- 					{
- 						Item.NewItem(num3 * 16, y * 16, 32, 32, 525, 1, false, 0, false, false);
- 					}
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				WorldGen.SquareTileFrame(num3, y, true);
-@@ -25516,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 79)
- 				{
- 					int type2;
-@@ -25677,6 +_,7 @@
- 						type3 = 3895;
- 					}
- 					Item.NewItem(i * 16, j * 16, 32, 32, type3, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num5 = num - 1; num5 < num + 4; num5++)
-@@ -25868,6 +_,8 @@
- 				}
- 				if (flag)
- 				{
-+					if (TileLoader.Drop(i, j, type)) // do not know the size for this
-+					{
- 					if (type == 238)
- 					{
- 						float num4 = (float)(i * 16);
-@@ -25891,6 +_,7 @@
- 					if (type == 236)
- 					{
- 						Item.NewItem(i * 16, j * 16, 32, 32, 1291, 1, false, 0, false, false);
-+					}
- 					}
- 					short arg_2A9_0 = Main.tile[i, j].frameX;
- 					WorldGen.destroyObject = true;
-@@ -26134,9 +_,14 @@
- 			{
- 				Projectile.NewProjectile((float)(num2 * 16 + 16), (float)(num3 * 16 + 16), 0f, 0f, 655, 0, 0f, Main.myPlayer, 0f, 0f);
- 			}
-+			//FishingCrate, GeyserTrap, and BeeHive
-+			// geyser is 2x1
-+			if (TileLoader.Drop(num2, num3, type))
-+			{
- 			if (num12 != 0)
- 			{
- 				Item.NewItem(num2 * 16, num3 * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, num12, 1, false, 0, false, false);
-+			}
- 			}
- 			WorldGen.destroyObject = false;
- 			for (int num13 = -1; num13 < width + 1; num13++)
-@@ -26207,7 +_,7 @@
- 			{
- 				ushort type2 = Main.tile[k, num4 - 1].type;
- 				ushort type3 = Main.tile[k + 1, num4 - 1].type;
--				if (!TileID.Sets.BasicChest[(int)type2] && !TileID.Sets.BasicChest[(int)type3] && type2 != 88 && type3 != 88 && !TileID.Sets.BasicChestFake[(int)type2] && !TileID.Sets.BasicChestFake[(int)type3] && !WorldGen.SolidTileAllowBottomSlope(k, num4 + 2) && !WorldGen.SolidTileAllowBottomSlope(k + 1, num4 + 2))
-+				if (!TileID.Sets.BasicChest[(int)type2] && !TileID.Sets.BasicChest[(int)type3] && !TileLoader.IsDresser(type2) && !TileLoader.IsDresser(type3) && !TileID.Sets.BasicChestFake[(int)type2] && !TileID.Sets.BasicChestFake[(int)type3] && !WorldGen.SolidTileAllowBottomSlope(k, num4 + 2) && !WorldGen.SolidTileAllowBottomSlope(k + 1, num4 + 2))
- 				{
- 					flag = true;
- 				}
-@@ -26483,9 +_,12 @@
- 					num13 = 3896;
- 				}
- 			}
-+			if (TileLoader.Drop(i, j, type))
-+			{
- 			if (num13 != 0)
- 			{
- 				Item.NewItem(i * 16, j * 16, 32, 32, num13, 1, false, 0, false, false);
-+			}
- 			}
- 			if (type == 138 && !WorldGen.gen && Main.netMode != 1)
- 			{
-@@ -26514,7 +_,7 @@
- 			{
- 			}
- 			k = j - k / 18;
--			return TileID.Sets.BasicChest[(int)Main.tile[num, k - 1].type] || TileID.Sets.BasicChest[(int)Main.tile[num + 1, k - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num, k - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num + 1, k - 1].type] || Main.tile[num, k - 1].type == 88 || Main.tile[num + 1, k - 1].type == 88;
-+			return TileID.Sets.BasicChest[(int)Main.tile[num, k - 1].type] || TileID.Sets.BasicChest[(int)Main.tile[num + 1, k - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num, k - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num + 1, k - 1].type] || TileLoader.IsDresser(Main.tile[num, k - 1].type) || TileLoader.IsDresser(Main.tile[num + 1, k - 1].type);
+ 
++			skipDrop:
+ 			destroyObject = false;
  		}
  
- 		public static void OreRunner(int i, int j, double strength, int steps, ushort type)
-@@ -26559,7 +_,7 @@
- 				{
- 					for (int l = num5; l < num6; l++)
- 					{
--						if ((double)(Math.Abs((float)k - value.X) + Math.Abs((float)l - value.Y)) < strength * 0.5 * (1.0 + (double)WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (Main.tile[k, l].type == 0 || Main.tile[k, l].type == 1 || Main.tile[k, l].type == 23 || Main.tile[k, l].type == 25 || Main.tile[k, l].type == 40 || Main.tile[k, l].type == 53 || Main.tile[k, l].type == 57 || Main.tile[k, l].type == 59 || Main.tile[k, l].type == 60 || Main.tile[k, l].type == 70 || Main.tile[k, l].type == 109 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 117 || Main.tile[k, l].type == 147 || Main.tile[k, l].type == 161 || Main.tile[k, l].type == 163 || Main.tile[k, l].type == 164 || Main.tileMoss[(int)Main.tile[k, l].type] || Main.tile[k, l].type == 199 || Main.tile[k, l].type == 200 || Main.tile[k, l].type == 203 || Main.tile[k, l].type == 234))
-+						if ((double)(Math.Abs((float)k - value.X) + Math.Abs((float)l - value.Y)) < strength * 0.5 * (1.0 + (double)WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (TileID.Sets.CanBeClearedDuringOreRunner[(int)Main.tile[k, l].type] || Main.tileMoss[(int)Main.tile[k, l].type]))
- 						{
- 							Main.tile[k, l].type = type;
- 							WorldGen.SquareTileFrame(k, l, true);
-@@ -26773,7 +_,7 @@
- 				{
- 					flag = true;
+@@ -20375,6 +_,9 @@
+ 			if (Main.tile[num + 1, y].type == type)
+ 				KillTile(num + 1, y);
+ 
++			if (!TileLoader.Drop(num3, y, type))
++				goto skipDrop;
++
+ 			if (type == 16) {
+ 				if (num3 == 1)
+ 					Item.NewItem(num * 16, y * 16, 32, 32, 716);
+@@ -20574,6 +_,7 @@
+ 					break;
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			SquareTileFrame(num, y);
+ 			SquareTileFrame(num + 1, y);
+@@ -20659,6 +_,8 @@
  				}
--				if (Main.tile[l, j - 1].active() && (TileID.Sets.BasicChest[(int)Main.tile[l, j - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[l, j - 1].type] || Main.tile[l, j - 1].type == 88))
-+				if (Main.tile[l, j - 1].active() && (TileID.Sets.BasicChest[(int)Main.tile[l, j - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[l, j - 1].type] || TileLoader.IsDresser(Main.tile[l, j - 1].type)))
- 				{
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
+ 			if (type == 79) {
+ 				int num5 = 0;
+ 				switch (num3) {
+@@ -20812,6 +_,7 @@
+ 				Item.NewItem(i * 16, j * 16, 32, 32, type2);
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num6 = num - 1; num6 < num + 4; num6++) {
+ 				for (int num7 = num2 - 1; num7 < num2 + 4; num7++) {
+@@ -20967,6 +_,8 @@
+ 				if (!flag)
  					return;
- 				}
-@@ -26786,9 +_,12 @@
- 			{
- 				short arg_167_0 = Main.tile[i, j].frameX;
- 				WorldGen.destroyObject = true;
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 235)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 1263, 1, false, 0, false, false);
-+				}
- 				}
- 				for (int m = k; m < k + 3; m++)
- 				{
-@@ -26908,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 14)
- 				{
- 					int type2;
-@@ -27488,6 +_,7 @@
- 					{
- 						Item.NewItem(i * 16, j * 16, 32, 32, 989, 1, false, 0, false, false);
- 					}
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num9 = k - 1; num9 < k + 4; num9++)
-@@ -27550,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 101)
- 				{
- 					int type2;
-@@ -27682,6 +_,7 @@
- 				else if (type == 463)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 3813, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num5 = num2 - 1; num5 < num2 + 4; num5++)
-@@ -27744,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 464)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 3814, 1, false, 0, false, false);
-@@ -27751,6 +_,7 @@
- 				if (type == 466)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 3816, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num5 = num2 - 1; num5 < num2 + 6; num5++)
-@@ -27808,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 275)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 2162, 1, false, 0, false, false);
-@@ -27863,6 +_,7 @@
- 				if (type == 359)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 3071, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num4 = num - 1; num4 < num + 7; num4++)
-@@ -28201,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				int type2 = 928;
- 				switch (num)
- 				{
-@@ -28216,6 +_,7 @@
- 						break;
- 				}
- 				Item.NewItem(i * 16, j * 16, 32, 32, type2, 1, false, 0, false, false);
-+				}
- 				WorldGen.destroyObject = false;
- 				for (int num7 = k; num7 < k + 4; num7++)
- 				{
-@@ -28332,7 +_,8 @@
- 					{
- 						Main.tile[l, m] = new Tile();
- 					}
--					if (Main.tile[l, m].active() && (Main.tile[l, m].type == 139 || Main.tile[l, m].type == 35))
-+					if (Main.tile[l, m].active() && (Main.tile[l, m].type == 139 || Main.tile[l, m].type == 35
-+						|| TileLoader.IsModMusicBox(Main.tile[l, m])))
- 					{
- 						if (Main.tile[l, m].frameX < 36)
- 						{
-@@ -28512,6 +_,9 @@
- 						}
- 					}
- 				}
-+				// size ???
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 35)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 1813, 1, false, 0, false, false);
-@@ -28571,6 +_,7 @@
- 				else
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 562 + num, 1, false, 0, false, false);
-+				}
- 				}
- 				for (int num7 = num4 - 1; num7 < num4 + 3; num7++)
- 				{
-@@ -28727,10 +_,6 @@
  
- 		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1)
- 		{
--			if (type >= 470)
--			{
--				return false;
--			}
- 			TileObject toBePlaced;
- 			if (!TileObject.CanPlace(x, y, type, style, direction, out toBePlaced, false))
- 			{
-@@ -28926,7 +_,8 @@
- 			{
- 				type2 = 3239;
- 			}
--			Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2, 1, false, 0, false, false);
-+			if (TileLoader.Drop(x, y, type))
-+				Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2, 1, false, 0, false, false);
- 			for (int k = x - 1; k < x + num + 1; k++)
- 			{
- 				for (int l = y - 1; l < y + num2 + 1; l++)
-@@ -28987,7 +_,8 @@
- 			{
- 				type2 = 3240;
- 			}
--			Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2, 1, false, 0, false, false);
-+			if (TileLoader.Drop(x, y, type))
-+				Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2, 1, false, 0, false, false);
- 			for (int l = x - 1; l < x + width + 1; l++)
- 			{
- 				for (int m = y - 1; m < y + height + 1; m++)
-@@ -29398,7 +_,7 @@
- 					flag2 = false;
++				if (!TileLoader.Drop(i, j, type))
++					goto skipDrop; // do not know the size for this
+ 				if (type == 238) {
+ 					float num6 = i * 16;
+ 					float num7 = j * 16;
+@@ -20987,6 +_,7 @@
+ 				if (type == 236)
+ 					Item.NewItem(i * 16, j * 16, 32, 32, 1291);
+ 
++				skipDrop:
+ 				_ = Main.tile[i, j].frameX;
+ 				destroyObject = true;
+ 				for (int n = num; n < num + 2; n++) {
+@@ -21170,7 +_,9 @@
+ 			if (type == 444 && Main.netMode != 1 && !flag5)
+ 				Projectile.NewProjectile(num2 * 16 + 16, num3 * 16 + 16, 0f, 0f, 655, 0, 0f, Main.myPlayer);
+ 
+-			if (num12 != 0)
++			// FishingCrate, GeyserTrap, and BeeHive
++			// geyser is 2x1
++			if (TileLoader.Drop(num2, num3, type) && num12 != 0)
+ 				Item.NewItem(num2 * 16, num3 * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, num12);
+ 
+ 			destroyObject = false;
+@@ -21234,7 +_,7 @@
+ 				case 138: {
+ 						ushort type4 = Main.tile[num2, num6 - 1].type;
+ 						ushort type5 = Main.tile[num2 + 1, num6 - 1].type;
+-						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && type4 != 88 && type5 != 88 && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
++						if (!TileID.Sets.BasicChest[type4] && !TileID.Sets.BasicChest[type5] && !TileLoader.IsDresser(type4) && !TileLoader.IsDresser(type5) && !TileID.Sets.BasicChestFake[type4] && !TileID.Sets.BasicChestFake[type5] && !SolidTileAllowBottomSlope(num2, num6 + 2) && !SolidTileAllowBottomSlope(num2 + 1, num6 + 2))
+ 							flag = true;
+ 
+ 						break;
+@@ -21474,7 +_,7 @@
  				}
  			}
--			if (type == 88)
-+			if (TileLoader.IsDresser(type))
- 			{
- 				int num2 = Chest.CreateChest(x - 1, y - 1, -1);
- 				if (num2 == -1)
-@@ -29615,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 254)
- 				{
- 					if (frameX >= 72)
-@@ -29803,6 +_,7 @@
- 						Item.NewItem(i * 16, j * 16, 32, 32, num7, 1, false, 0, false, false);
- 					}
- 				}
-+				}
- 				WorldGen.destroyObject = false;
- 				for (int num8 = l - 1; num8 < l + 3; num8++)
- 				{
-@@ -30246,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(i, j, type))
-+				{
- 				if (type == 454)
- 				{
- 					switch (Main.rand.Next(9))
-@@ -30442,6 +_,7 @@
- 						type2 = 106;
- 					}
- 					Item.NewItem(i * 16, j * 16, 32, 32, type2, 1, false, 0, false, false);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num19 = k - 1; num19 < k + num + 1; num19++)
-@@ -30531,6 +_,8 @@
- 						}
- 					}
- 				}
-+				if (TileLoader.Drop(num, j, type))
-+				{
- 				if (type == 106)
- 				{
- 					Item.NewItem(i * 16, j * 16, 32, 32, 363, 1, false, 0, false, false);
-@@ -30623,6 +_,7 @@
- 						}
- 					}
- 					NPC.SpawnOnPlayer(plr, 222);
-+				}
- 				}
- 				WorldGen.destroyObject = false;
- 				for (int num16 = k - 1; num16 < k + 4; num16++)
-@@ -30889,7 +_,8 @@
- 						}
- 					}
- 				}
--				Item.NewItem(i * 16, j * 16, 32, 32, 63, 1, false, 0, false, false);
-+				if (TileLoader.Drop(i, j, type))
-+					Item.NewItem(i * 16, j * 16, 32, 32, 63, 1, false, 0, false, false);
- 				WorldGen.destroyObject = false;
+ 
+-			if (num13 != 0)
++			if (TileLoader.Drop(i, j, type) && num13 != 0)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, num13);
+ 
+ 			if (type == 138 && !gen && Main.netMode != 1)
+@@ -21499,7 +_,7 @@
  			}
- 		}
-@@ -31055,7 +_,7 @@
- 					}
- 				}
- 			}
--			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234))
-+			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[num2, num].type)))
- 			{
- 				WorldGen.KillTile(i, j, false, false, false);
+ 
+ 			num2 = j - num2 / 18;
+-			if (TileID.Sets.BasicChest[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChest[Main.tile[num + 1, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + 1, num2 - 1].type] || Main.tile[num, num2 - 1].type == 88 || Main.tile[num + 1, num2 - 1].type == 88)
++			if (TileID.Sets.BasicChest[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChest[Main.tile[num + 1, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num, num2 - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + 1, num2 - 1].type] || TileLoader.IsDresser(Main.tile[num, num2 - 1].type) || TileLoader.IsDresser(Main.tile[num + 1, num2 - 1].type))
  				return true;
-@@ -31068,7 +_,7 @@
+ 
+ 			return false;
+@@ -21538,7 +_,7 @@
+ 
+ 				for (int k = num3; k < num4; k++) {
+ 					for (int l = num5; l < num6; l++) {
+-						if ((double)(Math.Abs((float)k - vector.X) + Math.Abs((float)l - vector.Y)) < strength * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (Main.tile[k, l].type == 0 || Main.tile[k, l].type == 1 || Main.tile[k, l].type == 23 || Main.tile[k, l].type == 25 || Main.tile[k, l].type == 40 || Main.tile[k, l].type == 53 || Main.tile[k, l].type == 57 || Main.tile[k, l].type == 59 || Main.tile[k, l].type == 60 || Main.tile[k, l].type == 70 || Main.tile[k, l].type == 109 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 117 || Main.tile[k, l].type == 147 || Main.tile[k, l].type == 161 || Main.tile[k, l].type == 163 || Main.tile[k, l].type == 164 || Main.tileMoss[Main.tile[k, l].type] || Main.tile[k, l].type == 199 || Main.tile[k, l].type == 200 || Main.tile[k, l].type == 203 || Main.tile[k, l].type == 234)) {
++						if ((double)(Math.Abs((float)k - vector.X) + Math.Abs((float)l - vector.Y)) < strength * 0.5 * (1.0 + genRand.Next(-10, 11) * 0.015) && Main.tile[k, l].active() && (TileID.Sets.CanBeClearedDuringOreRunner[Main.tile[k, l].type] || Main.tileMoss[Main.tile[k, l].type])) {
+ 							Main.tile[k, l].type = type;
+ 							SquareTileFrame(k, l);
+ 							if (Main.netMode == 2)
+@@ -21704,7 +_,7 @@
+ 				if (!Main.tile[k, j].active() || Main.tile[k, j].type != type || Main.tile[k, j].frameX != (k - num) * 18 + num3 || Main.tile[k, j].frameY != 0)
+ 					flag = true;
+ 
+-				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88))
++				if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileLoader.IsDresser(Main.tile[k, j - 1].type)))
+ 					return;
+ 
+ 				if (!SolidTileAllowBottomSlope(k, j + 1))
+@@ -21716,7 +_,7 @@
+ 
+ 			_ = Main.tile[i, j].frameX;
+ 			destroyObject = true;
+-			if (type == 235)
++			if (TileLoader.Drop(i, j, type) && type == 235)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 1263);
+ 
+ 			for (int l = num; l < num + 3; l++) {
+@@ -21824,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++				
+ 			if (type == 14) {
+ 				int type2;
+ 				if (num6 >= 1 && num6 <= 3) {
+@@ -22314,6 +_,7 @@
+ 					break;
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num9 = num5 - 1; num9 < num5 + 4; num9++) {
+ 				for (int num10 = num - 1; num10 < num + 4; num10++) {
+@@ -22364,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++
+ 			switch (type) {
+ 				case 101: {
+ 						int type2;
+@@ -22478,6 +_,7 @@
+ 					break;
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num5 = num - 1; num5 < num + 4; num5++) {
+ 				for (int num6 = num2 - 1; num6 < num2 + 4; num6++) {
+@@ -22528,12 +_,16 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++
+ 			if (type == 464)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 3814);
+ 
+ 			if (type == 466)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 3816);
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num5 = num - 1; num5 < num + 6; num5++) {
+ 				for (int num6 = num2 - 1; num6 < num2 + 5; num6++) {
+@@ -22579,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++
+ 			if (type == 275)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 2162);
+ 
+@@ -22621,6 +_,7 @@
+ 			if (type == 359)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 3071);
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num4 = num - 1; num4 < num + 7; num4++) {
+ 				for (int num5 = num2 - 1; num5 < num2 + 4; num5++) {
+@@ -22911,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++
+ 			int type2 = 928;
+ 			switch (num2) {
+ 				case 1:
+@@ -22926,6 +_,7 @@
+ 			}
+ 
+ 			Item.NewItem(i * 16, j * 16, 32, 32, type2);
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num7 = num; num7 < num + 4; num7++) {
+ 				for (int num8 = num3; num8 < num3 + 3; num8++) {
+@@ -23027,7 +_,8 @@
+ 					if (Main.tile[k, l] == null)
+ 						Main.tile[k, l] = new Tile();
+ 
+-					if (Main.tile[k, l].active() && (Main.tile[k, l].type == 139 || Main.tile[k, l].type == 35)) {
++					if (Main.tile[k, l].active() && (Main.tile[k, l].type == 139 || Main.tile[k, l].type == 35
++						|| TileLoader.IsModMusicBox(Main.tile[k, l]))) {
+ 						if (Main.tile[k, l].frameX < 36)
+ 							Main.tile[k, l].frameX += 36;
+ 						else
+@@ -23174,6 +_,9 @@
+ 				}
+ 			}
+ 
++			// size ???
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
+ 			if (type == 35)
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 1813);
+ 			else if (num3 == 28)
+@@ -23205,6 +_,7 @@
+ 			else
+ 				Item.NewItem(i * 16, j * 16, 32, 32, 562 + num3);
+ 
++			skipDrop:
+ 			for (int num7 = num - 1; num7 < num + 3; num7++) {
+ 				for (int num8 = num2 - 1; num8 < num2 + 3; num8++) {
+ 					TileFrame(num7, num8);
+@@ -23330,8 +_,8 @@
+ 		}
+ 
+ 		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1) {
+-			if (type >= 470)
+-				return false;
++			//if (type >= 470)
++			//	return false;
+ 
+ 			if (!TileObject.CanPlace(x, y, type, style, direction, out TileObject objectData))
+ 				return false;
+@@ -23505,7 +_,9 @@
+ 			if (point.Y == 0)
+ 				type2 = 3239;
+ 
++			if (TileLoader.Drop(x, y, type))
+-			Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
++				Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
++
+ 			for (int k = x - 1; k < x + num + 1; k++) {
+ 				for (int l = y - 1; l < y + num2 + 1; l++) {
+ 					TileFrame(k, l);
+@@ -23558,7 +_,9 @@
+ 			if (point.Y == 0)
+ 				type2 = 3240;
+ 
++			if (TileLoader.Drop(x, y, type))
+-			Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
++				Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
++
+ 			for (int m = x - 1; m < x + width + 1; m++) {
+ 				for (int n = y - 1; n < y + height + 1; n++) {
+ 					TileFrame(m, n);
+@@ -23894,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (type == 88) {
++			if (TileLoader.IsDresser(type)) {
+ 				if (Chest.CreateChest(x - 1, y - 1) == -1)
+ 					flag2 = false;
+ 				else if (Main.netMode == 1)
+@@ -24071,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
++
+ 			switch (type) {
+ 				case 254:
+ 					if (frameX < 72)
+@@ -24246,6 +_,7 @@
+ 					}
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num8 = num3 - 1; num8 < num3 + 3; num8++) {
+ 				for (int num9 = num - 1; num9 < num + 3; num9++) {
+@@ -24609,6 +_,8 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(i, j, type))
++				goto skipDrop;
+ 			if (type == 454) {
+ 				switch (Main.rand.Next(9)) {
+ 					case 2:
+@@ -24787,6 +_,7 @@
+ 				Item.NewItem(i * 16, j * 16, 32, 32, type2);
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num19 = num - 1; num19 < num + num3 + 1; num19++) {
+ 				for (int num20 = num2 - 1; num20 < num2 + 4; num20++) {
+@@ -24858,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (!TileLoader.Drop(num, j, type))
++				goto skipDrop;
++
+ 			switch (type) {
+ 				case 106:
+ 					Item.NewItem(i * 16, j * 16, 32, 32, 363);
+@@ -24945,6 +_,7 @@
+ 					break;
+ 			}
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 			for (int num16 = num - 1; num16 < num + 4; num16++) {
+ 				for (int num17 = num2 - 1; num17 < num2 + 4; num17++) {
+@@ -25160,7 +_,8 @@
+ 				}
+ 			}
+ 
++			if (TileLoader.Drop(i, j, type))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 63);
++				Item.NewItem(i * 16, j * 16, 32, 32, 63);
+ 			destroyObject = false;
+ 		}
+ 
+@@ -25290,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || (Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234)) {
++			if (!Main.tile[num2, num].nactive() || Main.tile[num2, num].halfBrick() || Main.tile[num2, num].slope() != 0 || Main.tile[num2, num].type != 53 && Main.tile[num2, num].type != 112 && Main.tile[num2, num].type != 116 && Main.tile[num2, num].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[num2, num].type)) {
+ 				KillTile(i, j);
+ 				return true;
+ 			}
+@@ -25301,7 +_,7 @@
  					return true;
  				}
  			}
--			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234)))
-+			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[i, j + 1].type))))
- 			{
- 				WorldGen.KillTile(i, j, false, false, false);
+-			else if (i == num2 && (!Main.tile[i, j + 1].active() || (Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234))) {
++			else if (i == num2 && (!Main.tile[i, j + 1].active() || Main.tile[i, j + 1].type != 80 && Main.tile[i, j + 1].type != 53 && Main.tile[i, j + 1].type != 112 && Main.tile[i, j + 1].type != 116 && Main.tile[i, j + 1].type != 234 && !TileLoader.CanGrowModCactus(Main.tile[i, j + 1].type))) {
+ 				KillTile(i, j);
  				return true;
-@@ -31156,6 +_,8 @@
- 				}
- 				if (Main.netMode != 1 && !WorldGen.noTileActions)
- 				{
-+					if (TileLoader.Drop(num, num2, type))
-+					{
- 					if (type == 12)
- 					{
- 						Item.NewItem(num * 16, num2 * 16, 32, 32, 29, 1, false, 0, false, false);
-@@ -31271,14 +_,15 @@
- 						}
- 						AchievementsHelper.NotifyProgressionEvent(7);
- 					}
--				}
--				if (flag)
--				{
--					Main.PlaySound(4, i * 16, j * 16, 1, 1f, 0f);
--				}
--				else
--				{
--					Main.PlaySound(13, i * 16, j * 16, 1, 1f, 0f);
-+					if (flag)
-+					{
-+						Main.PlaySound(4, i * 16, j * 16, 1, 1f, 0f);
-+					}
-+					else
-+					{
-+						Main.PlaySound(13, i * 16, j * 16, 1, 1f, 0f);
-+					}
-+				}
- 				}
- 				WorldGen.destroyObject = false;
  			}
-@@ -31312,6 +_,10 @@
- 				num2 = 53;
+@@ -25362,7 +_,7 @@
+ 				}
  			}
+ 
+-			if (Main.netMode != 1 && !noTileActions) {
++			if (Main.netMode != 1 && !noTileActions && TileLoader.Drop(num, num2, type)) {
+ 				switch (type) {
+ 					case 12:
+ 						Item.NewItem(num * 16, num2 * 16, 32, 32, 29);
+@@ -25490,6 +_,9 @@
  			if (num2 == 112)
-+			{
-+				num2 = 53;
-+			}
-+			if (TileLoader.CanGrowModPalmTree(num2))
- 			{
  				num2 = 53;
- 			}
-@@ -31405,6 +_,10 @@
- 			{
+ 
++			if (TileLoader.CanGrowModPalmTree(num2))
++				num2 = 53;
++
+ 			if (num2 != 53 && num2 != type)
+ 				KillTile(i, j);
+ 
+@@ -25559,6 +_,9 @@
+ 			if (num4 == 199)
  				num4 = 2;
- 			}
+ 
 +			if (TileLoader.CanGrowModTree(num4))
-+			{
 +				num4 = 2;
-+			}
++
  			if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
- 			{
- 				WorldGen.KillTile(i, j, false, false, false);
-@@ -31748,7 +_,7 @@
- 						int wall = (int)Main.tile[k, l].wall;
- 						if (conversionType == 4)
- 						{
--							if (type <= 470 && wall <= 231)
-+							if (true)
- 							{
- 								if (WallID.Sets.Conversion.Grass[wall] && wall != 81)
- 								{
-@@ -31826,7 +_,7 @@
- 						}
- 						else if (conversionType == 2)
- 						{
--							if (type <= 470 && wall <= 231)
-+							if (true)
- 							{
- 								if (WallID.Sets.Conversion.Grass[wall] && wall != 70)
- 								{
-@@ -31906,7 +_,7 @@
- 						}
- 						else if (conversionType == 1)
- 						{
--							if (type <= 470 && wall <= 231)
-+							if (true)
- 							{
- 								if (WallID.Sets.Conversion.Grass[wall] && wall != 69)
- 								{
-@@ -32349,11 +_,11 @@
- 			{
+ 				KillTile(i, j);
+ 
+@@ -25853,7 +_,7 @@
+ 					int wall = Main.tile[k, l].wall;
+ 					switch (conversionType) {
+ 						case 4:
+-							if (type <= 470 && wall <= 231) {
++							if (true) {//if (type <= 470 && wall <= 231) {
+ 								if (WallID.Sets.Conversion.Grass[wall] && wall != 81) {
+ 									Main.tile[k, l].wall = 81;
+ 									SquareWallFrame(k, l);
+@@ -25919,8 +_,6 @@
+ 							}
+ 							continue;
+ 						case 2:
+-							if (type > 470 || wall > 231)
+-								continue;
+ 							if (WallID.Sets.Conversion.Grass[wall] && wall != 70) {
+ 								Main.tile[k, l].wall = 70;
+ 								SquareWallFrame(k, l);
+@@ -25983,7 +_,7 @@
+ 							}
+ 							continue;
+ 						case 1:
+-							if (type <= 470 && wall <= 231) {
++							if (true) {//if (type <= 470 && wall <= 231) {
+ 								if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
+ 									Main.tile[k, l].wall = 69;
+ 									SquareWallFrame(k, l);
+@@ -26334,7 +_,7 @@
+ 			if (!Main.tile[i, j].nactive() || Main.tile[i, j].halfBrick() || Main.tile[i, j].slope() != 0 || Main.tile[i, j - 1].liquid > 0 || (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116))
  				return;
- 			}
--			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116)
-+			if (Main.tile[i, j].type != 53 && Main.tile[i, j].type != 80 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116 && !TileLoader.CanGrowModCactus(Main.tile[i, j].type))
- 			{
- 				return;
- 			}
--			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234)
-+			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234 || TileLoader.CanGrowModCactus(Main.tile[i, j].type))
- 			{
+ 
+-			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234) {
++			if (Main.tile[i, j].type == 53 || Main.tile[i, j].type == 112 || Main.tile[i, j].type == 116 || Main.tile[i, j].type == 234 || TileLoader.CanGrowModCactus(Main.tile[i, j].type)) {
  				if (Main.tile[i, j - 1].active() || Main.tile[i - 1, j - 1].active() || Main.tile[i + 1, j - 1].active())
- 				{
-@@ -32377,7 +_,7 @@
- 										return;
- 									}
- 								}
--								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234)
-+								if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234 || TileLoader.CanGrowModCactus(Main.tile[k, l].type))
- 								{
- 									num4++;
- 								}
-@@ -32600,6 +_,9 @@
- 			}
- 			if (flag)
- 			{
-+				// size ???
-+				if (TileLoader.Drop(num, num2, type))
-+				{
- 				WorldGen.destroyObject = true;
- 				if (num >= 7 && num <= 9)
- 				{
-@@ -32716,10 +_,12 @@
- 					{
- 						if (Main.netMode != 1)
- 						{
--							Projectile.NewProjectile((float)(i * 16 + 16), (float)(j * 16 + 16), 0f, -12f, 518, 0, 0f, Main.myPlayer, 0f, 0f);
--						}
--					}
--					else if (WorldGen.genRand.Next(40) == 0 && Main.wallDungeon[(int)Main.tile[i, j].wall] && (double)j > Main.worldSurface)
-+							Projectile.NewProjectile((float)(i * 16 + 16), (float)(j * 16 + 16), 0f, -12f, 518, 0, 0f, Main.myPlayer, 0f,
-+								0f);
-+						}
-+					}
-+					else if (WorldGen.genRand.Next(40) == 0 && Main.wallDungeon[(int)Main.tile[i, j].wall] &&
-+							(double)j > Main.worldSurface)
- 					{
- 						Item.NewItem(i * 16, j * 16, 16, 16, 327, 1, false, 0, false, false);
- 					}
-@@ -32941,7 +_,9 @@
- 						{
- 							num13--;
- 						}
--						if (num13 == 0 && Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statLife < Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statLifeMax2)
-+						if (num13 == 0 &&
-+							Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statLife <
-+							Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statLifeMax2)
- 						{
- 							Item.NewItem(i * 16, j * 16, 16, 16, 58, 1, false, 0, false, false);
- 							if (Main.rand.Next(2) == 0)
-@@ -32960,7 +_,9 @@
- 								}
+ 					return;
+ 
+@@ -26352,7 +_,7 @@
+ 									return;
  							}
+ 
+-							if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234)
++							if (Main.tile[k, l].type == 53 || Main.tile[k, l].type == 112 || Main.tile[k, l].type == 116 || Main.tile[k, l].type == 234 || TileLoader.CanGrowModCactus(Main.tile[k, l].type))
+ 								num4++;
  						}
--						else if (num13 == 1 && Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statMana < Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statManaMax2)
-+						else if (num13 == 1 &&
-+								Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statMana <
-+								Main.player[(int)Player.FindClosest(new Vector2((float)(i * 16), (float)(j * 16)), 16, 16)].statManaMax2)
- 						{
- 							Item.NewItem(i * 16, j * 16, 16, 16, 184, 1, false, 0, false, false);
- 						}
-@@ -33206,6 +_,7 @@
- 							}
- 						}
- 					}
-+				}
+ 						catch {
+@@ -26512,6 +_,10 @@
+ 			if (!flag)
+ 				return;
+ 
++			// size ???
++			if (!TileLoader.Drop(num, num2, type))
++				goto skipDrop;
++
+ 			destroyObject = true;
+ 			if (num4 >= 7 && num4 <= 9)
+ 				Main.PlaySound(6, i * 16, j * 16);
+@@ -26964,6 +_,7 @@
  				}
- 				WorldGen.destroyObject = false;
  			}
-@@ -33239,6 +_,10 @@
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 
+@@ -26989,6 +_,9 @@
  			if (num != -1 && Main.netMode == 1 && type == 467)
- 			{
- 				NetMessage.SendData(34, -1, -1, null, 4, (float)x, (float)y, (float)style, 0, 0, 0);
-+			}
+ 				NetMessage.SendData(34, -1, -1, null, 4, x, y, style);
+ 
 +			if (num != 1 && Main.netMode == 1 && type >= TileID.Count && TileID.Sets.BasicChest[type])
-+			{
-+				NetMessage.SendData(34, -1, -1, null, 100, (float)x, (float)y, (float)style, 0, type, 0);
- 			}
++				NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
++
  			return num;
  		}
-@@ -33384,7 +_,8 @@
- 						}
- 					}
- 				}
--				Item.NewItem(i * 16, j * 16, 32, 32, type2, 1, false, 0, false, false);
-+				if (TileLoader.Drop(i, j, type))
-+					Item.NewItem(i * 16, j * 16, 32, 32, type2, 1, false, 0, false, false);
- 				WorldGen.destroyObject = false;
- 				if (Main.tile[k, num + 2].type == 138 || Main.tile[k + 1, num + 2].type == 138)
- 				{
-@@ -33545,10 +_,6 @@
  
- 		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
- 		{
--			if (type >= 470)
--			{
--				return false;
--			}
- 			bool result = false;
- 			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY)
- 			{
-@@ -33608,7 +_,7 @@
- 								return false;
- 							}
- 						}
--						else if (type == 3 || type == 20 || type == 24 || type == 27 || type == 32 || type == 51 || type == 69 || type == 72 || type == 201 || type == 352)
-+						else if (type == 3 || TileLoader.IsSapling(type) || type == 24 || type == 27 || type == 32 || type == 51 || type == 69 || type == 72 || type == 201 || type == 352)
- 						{
- 							return false;
- 						}
-@@ -33833,7 +_,7 @@
- 							WorldGen.SquareTileFrame(i, j, true);
- 						}
- 					}
--					else if (type == 4)
-+					else if (TileLoader.IsTorch(type))
- 					{
- 						if (Main.tile[i - 1, j] == null)
- 						{
-@@ -33991,7 +_,7 @@
- 						WorldGen.PlaceOnTable1x1(i, j, type, style);
- 						WorldGen.SquareTileFrame(i, j, true);
- 					}
--					else if (type == 14 || type == 26 || type == 86 || type == 87 || type == 88 || type == 89 || type == 114 || type == 186 || type == 187 || type == 215 || type == 217 || type == 218 || type == 377)
-+					else if (type == 14 || type == 26 || type == 86 || type == 87 || TileLoader.IsDresser(type) || type == 89 || type == 114 || type == 186 || type == 187 || type == 215 || type == 217 || type == 218 || type == 377)
- 					{
- 						WorldGen.Place3x2(i, j, (ushort)type, style);
- 						WorldGen.SquareTileFrame(i, j, true);
-@@ -34006,14 +_,16 @@
- 						WorldGen.PlaceJunglePlant(i, j, (ushort)type, 0, 0);
- 						WorldGen.SquareTileFrame(i, j, true);
- 					}
--					else if (type == 20)
-+					else if (TileLoader.IsSapling(type))
- 					{
- 						if (Main.tile[i, j + 1] == null)
- 						{
- 							Main.tile[i, j + 1] = new Tile();
- 						}
- 						int type2 = (int)Main.tile[i, j + 1].type;
--						if (Main.tile[i, j + 1].active() && (type2 == 2 || type2 == 109 || type2 == 147 || type2 == 60 || type2 == 23 || type2 == 199 || type2 == 53 || type2 == 234 || type2 == 116 || type2 == 112))
-+						int dummyType = TileID.Saplings;
-+						int dummyStyle = 0;
-+						if (Main.tile[i, j + 1].active() && (type2 == 2 || type2 == 109 || type2 == 147 || type2 == 60 || type2 == 23 || type2 == 199 || type2 == 53 || type2 == 234 || type2 == 116 || type2 == 112 || TileLoader.SaplingGrowthType(type2, ref dummyType, ref dummyStyle)))
- 						{
- 							WorldGen.Place1x2(i, j, (ushort)type, style);
- 							WorldGen.SquareTileFrame(i, j, true);
-@@ -34171,6 +_,10 @@
- 					else if (type == 314)
- 					{
- 						Minecart.PlaceTrack(tile, style);
-+					}
-+					else if (type >= TileID.Count && TileObjectData.GetTileData(type, style) != null)
-+					{
-+						PlaceObject(i, j, type, mute, style);
- 					}
- 					else
- 					{
-@@ -34237,7 +_,11 @@
- 					{
- 						fail = true;
- 					}
--					if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172 || tile.wall == 226 || tile.wall == 227)
-+					WallLoader.KillWall(i, j, tile.wall, ref fail);
-+					if (!WallLoader.KillSound(i, j, tile.wall))
-+					{
-+					}
-+					else if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172 || tile.wall == 226 || tile.wall == 227)
- 					{
- 						Main.PlaySound(13, i * 16, j * 16, 1, 1f, 0f);
- 					}
-@@ -34254,6 +_,7 @@
- 					{
- 						num = 3;
- 					}
-+					WallLoader.NumDust(i, j, tile.wall, fail, ref num);
- 					for (int k = 0; k < num; k++)
- 					{
- 						int num2 = 0;
-@@ -34737,6 +_,10 @@
- 						else if (tile.wall == 17 || tile.wall == 18 || tile.wall == 19)
- 						{
- 							num2 = 1;
-+						}
-+						if (!WallLoader.CreateDust(i, j, tile.wall, ref num2))
-+						{
-+							continue;
- 						}
- 						if (tile.wall == 44)
- 						{
-@@ -35261,14 +_,14 @@
- 					{
- 						num4 = 2210 + (int)tile.wall - 138;
- 					}
--					if (num4 > 0)
-+					if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
- 					{
- 						Item.NewItem(i * 16, j * 16, 16, 16, num4, 1, false, 0, false, false);
- 					}
- 					tile.wall = 0;
- 					tile.wallColor(0);
- 					WorldGen.SquareWallFrame(i, j, true);
--					if (tile.type >= 0 && tile.type < 470 && TileID.Sets.FramesOnKillWall[(int)tile.type])
-+					if (tile.type >= 0 && TileID.Sets.FramesOnKillWall[(int)tile.type])
- 					{
- 						WorldGen.TileFrame(i, j, false, false);
- 					}
-@@ -35339,6 +_,10 @@
- 			{
- 				return false;
- 			}
-+			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
-+			{
-+				return false;
-+			}
- 			if (j >= 1)
- 			{
- 				tile2 = Main.tile[i, j - 1];
-@@ -35365,7 +_,7 @@
- 						goto IL_12B;
- 					}
- 				}
--				else if (num != 72 && num != 88)
-+				else if (num != 72 && !TileLoader.IsDresser(num))
- 				{
- 					if (num != 323)
- 					{
-@@ -35402,7 +_,7 @@
- 					return false;
+@@ -27109,7 +_,9 @@
  				}
  			}
--			else if (type2 != 88)
-+			else if (!TileLoader.IsDresser(type2))
- 			{
- 				if (type2 != 138)
- 				{
-@@ -35448,7 +_,7 @@
- 					{
- 						Main.tile[i, j - 1] = new Tile();
- 					}
--					if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileID.Sets.BasicChest[(int)Main.tile[i, j - 1].type] && !TileID.Sets.BasicChest[(int)tile.type]) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (Main.tile[i, j - 1].type == 88 && tile.type != 88) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72)))
-+					if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileID.Sets.BasicChest[(int)Main.tile[i, j - 1].type] && !TileID.Sets.BasicChest[(int)tile.type]) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileLoader.IsDresser(Main.tile[i, j - 1].type) && !TileLoader.IsDresser(tile.type)) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72)))
- 					{
- 						if (Main.tile[i, j - 1].type == 5)
- 						{
-@@ -35476,20 +_,24 @@
- 						int num = i - frameX % 54 / 18;
- 						for (int k = 0; k < 3; k++)
- 						{
--							if (Main.tile[num + k, j - 1].active() && (TileID.Sets.BasicChest[(int)Main.tile[num + k, j - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num + k, j - 1].type] || Main.tile[num + k, j - 1].type == 88))
-+							if (Main.tile[num + k, j - 1].active() && (TileID.Sets.BasicChest[(int)Main.tile[num + k, j - 1].type] || TileID.Sets.BasicChestFake[(int)Main.tile[num + k, j - 1].type] || TileLoader.IsDresser(Main.tile[num + k, j - 1].type)))
- 							{
- 								fail = true;
- 								break;
- 							}
- 						}
- 					}
-+					TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
- 					if (!effectOnly && !WorldGen.stopDrops)
- 					{
- 						if (!noItem && FixExploitManEaters.SpotProtected(i, j))
- 						{
- 							return;
- 						}
--						if (tile.type == 127)
-+						if (!TileLoader.KillSound(i, j, tile.type))
-+						{
-+						}
-+						else if (tile.type == 127)
- 						{
- 							Main.PlaySound(SoundID.Item27, i * 16, j * 16);
- 						}
-@@ -35690,7 +_,7 @@
- 							return;
- 						}
- 					}
--					int num13 = WorldGen.KillTile_GetTileDustAmount(fail, tile);
-+					int num13 = WorldGen.KillTile_GetTileDustAmount(fail, tile, i, j);
- 					for (int num14 = 0; num14 < num13; num14++)
- 					{
- 						WorldGen.KillTile_MakeTileDust(i, j, tile);
-@@ -35730,7 +_,7 @@
- 							return;
- 						}
- 					}
--					if (tile.type == 88 && Main.netMode != 1)
-+					if (TileLoader.IsDresser(tile.type) && Main.netMode != 1)
- 					{
- 						int num16 = (int)(tile.frameX / 18);
- 						int y2 = j - (int)(tile.frameY / 18);
-@@ -35763,6 +_,7 @@
- 						}
- 						if (tile.type == 73)
- 						{
-+							//patch file: num17, num18
- 							num17 = 200;
- 							num18 = 50;
- 							if (tile.frameX >= 108)
-@@ -35824,6 +_,7 @@
- 						{
- 							num19 = 10;
- 						}
-+						TileLoader.DropCritterChance(i, j, tile.type, ref num17, ref num18, ref num19);
- 						if (num17 > 0 && NPC.CountNPCS(357) < 5 && WorldGen.genRand.Next(num17) == 0)
- 						{
- 							int type = 357;
-@@ -36192,7 +_,7 @@
- 										}
- 										if (Main.tile[i, num29] != null)
- 										{
--											if (Main.tile[i, num29].type == 2 || Main.tile[i, num29].type == 109 || Main.tile[i, num29].type == 147 || Main.tile[i, num29].type == 199 || Main.tile[i, num29].type == 23)
-+											if (Main.tile[i, num29].type == 2 || Main.tile[i, num29].type == 109 || Main.tile[i, num29].type == 147 || Main.tile[i, num29].type == 199 || Main.tile[i, num29].type == 23 || TileLoader.CanDropAcorn(Main.tile[i, num29].type))
- 											{
- 												num23 = 9;
- 												num24 = 27;
-@@ -36248,6 +_,7 @@
- 								if (Main.tile[num30, num31].active())
- 								{
- 									ushort type4 = Main.tile[num30, num31].type;
-+									//patch file: type4
- 									if (type4 <= 70)
- 									{
- 										if (type4 != 23)
-@@ -36287,6 +_,7 @@
- 									{
- 										num23 = 621;
- 									}
-+									TileLoader.DropTreeWood(type4, ref num23);
- 								}
- 								int num32 = (int)Player.FindClosest(new Vector2((float)(num30 * 16), (float)(num31 * 16)), 16, 16);
- 								int axe = Main.player[num32].inventory[Main.player[num32].selectedItem].axe;
-@@ -36311,6 +_,7 @@
- 							if (Main.tile[i, num33].active())
- 							{
- 								ushort type4 = Main.tile[i, num33].type;
-+								//patch file: type4
- 								if (type4 != 112)
- 								{
- 									if (type4 != 116)
-@@ -36329,6 +_,7 @@
- 								{
- 									num23 = 619;
- 								}
-+								TileLoader.DropPalmTreeWood(type4, ref num23);
- 							}
- 						}
- 						else if (tile.type == 408)
-@@ -37635,7 +_,8 @@
- 						{
- 							num23 = 2504;
- 						}
--						if (num23 > 0)
-+						bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
-+						if (vanillaDrop && num23 > 0)
- 						{
- 							int num45 = 1;
- 							if (flag)
-@@ -37644,7 +_,7 @@
- 							}
- 							Item.NewItem(i * 16, j * 16, 16, 16, num23, num45, false, -1, false, false);
- 						}
--						if (num24 > 0)
-+						if (vanillaDrop && num24 > 0)
- 						{
- 							Item.NewItem(i * 16, j * 16, 16, 16, num24, 1, false, -1, false, false);
- 						}
-@@ -37679,7 +_,7 @@
- 			}
+ 
++			if (TileLoader.Drop(i, j, type))
+-			Item.NewItem(i * 16, j * 16, 32, 32, type2);
++				Item.NewItem(i * 16, j * 16, 32, 32, type2);
++
+ 			destroyObject = false;
+ 			if (Main.tile[num, num2 + 2].type == 138 || Main.tile[num + 1, num2 + 2].type == 138)
+ 				SquareTileFrame(num, num2 + 2);
+@@ -27251,8 +_,8 @@
  		}
  
--		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache)
-+		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache, int i, int j)
- 		{
+ 		public static bool PlaceTile(int i, int j, int type, bool mute = false, bool forced = false, int plr = -1, int style = 0) {
+-			if (type >= 470)
+-				return false;
++			//if (type >= 470)
++			//	return false;
+ 
+ 			bool result = false;
+ 			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
+@@ -27299,6 +_,7 @@
+ 									return false;
+ 								break;
+ 							case 3:
++							case int _ when TileLoader.IsSapling(type):
+ 							case 20:
+ 							case 24:
+ 							case 27:
+@@ -27482,7 +_,7 @@
+ 							SquareTileFrame(i, j);
+ 						}
+ 					}
+-					else if (type == 4) {
++					else if (TileLoader.IsTorch(type)) {
+ 						if (Main.tile[i - 1, j] == null)
+ 							Main.tile[i - 1, j] = new Tile();
+ 
+@@ -27646,6 +_,7 @@
+ 									case 26:
+ 									case 86:
+ 									case 87:
++									case int _ when TileLoader.IsDresser(type):
+ 									case 88:
+ 									case 89:
+ 									case 114:
+@@ -27666,12 +_,14 @@
+ 										PlaceJunglePlant(i, j, (ushort)type, 0, 0);
+ 										SquareTileFrame(i, j);
+ 										break;
+-									case 20: {
++									case int _ when TileLoader.IsSapling(type): {
+ 											if (Main.tile[i, j + 1] == null)
+ 												Main.tile[i, j + 1] = new Tile();
+ 
+ 											int type2 = Main.tile[i, j + 1].type;
++											int dummyType = TileID.Saplings;
++											int dummyStyle = 0;
+-											if (Main.tile[i, j + 1].active() && (type2 == 2 || type2 == 109 || type2 == 147 || type2 == 60 || type2 == 23 || type2 == 199 || type2 == 53 || type2 == 234 || type2 == 116 || type2 == 112)) {
++											if (Main.tile[i, j + 1].active() && (type2 == 2 || type2 == 109 || type2 == 147 || type2 == 60 || type2 == 23 || type2 == 199 || type2 == 53 || type2 == 234 || type2 == 116 || type2 == 112 || TileLoader.SaplingGrowthType(type2, ref dummyType, ref dummyStyle))) {
+ 												Place1x2(i, j, (ushort)type, style);
+ 												SquareTileFrame(i, j);
+ 											}
+@@ -27852,6 +_,9 @@
+ 													case 314:
+ 														Minecart.PlaceTrack(tile, style);
+ 														break;
++													case int _ when type >= TileID.Count && TileObjectData.GetTileData(type, style) != null:
++														PlaceObject(i, j, type, mute, style);
++														break;
+ 													default:
+ 														tile.active(active: true);
+ 														tile.type = (ushort)type;
+@@ -27922,7 +_,9 @@
+ 			if (tile.wall == 87 && !NPC.downedGolemBoss)
+ 				fail = true;
+ 
++			WallLoader.KillWall(i, j, tile.wall, ref fail);
++			if (!WallLoader.KillSound(i, j, tile.wall)) {}
+-			if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172 || tile.wall == 226 || tile.wall == 227)
++			else if (tile.wall == 21 || tile.wall == 186 || tile.wall == 136 || tile.wall == 137 || tile.wall == 168 || tile.wall == 169 || tile.wall == 172 || tile.wall == 226 || tile.wall == 227)
+ 				Main.PlaySound(13, i * 16, j * 16);
+ 			else if (tile.wall >= 63 && tile.wall <= 70)
+ 				Main.PlaySound(6, i * 16, j * 16);
+@@ -27933,6 +_,7 @@
+ 			if (fail)
+ 				num = 3;
+ 
++			WallLoader.NumDust(i, j, tile.wall, fail, ref num);
+ 			for (int k = 0; k < num; k++) {
+ 				int num2 = 0;
+ 				if (tile.wall == 148)
+@@ -28276,6 +_,9 @@
+ 				else if (tile.wall == 17 || tile.wall == 18 || tile.wall == 19)
+ 					num2 = 1;
+ 
++				if (!WallLoader.CreateDust(i, j, tile.wall, ref num2))
++					continue;
++
+ 				if (tile.wall == 44) {
+ 					int num3 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 66, 0f, 0f, 100, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB), 0.75f);
+ 					Main.dust[num3].noGravity = true;
+@@ -28674,13 +_,13 @@
+ 			if (tile.wall >= 138 && tile.wall <= 141)
+ 				num4 = 2210 + tile.wall - 138;
+ 
+-			if (num4 > 0)
++			if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
+ 				Item.NewItem(i * 16, j * 16, 16, 16, num4);
+ 
+ 			tile.wall = 0;
+ 			tile.wallColor(0);
+ 			SquareWallFrame(i, j);
+-			if (tile.type >= 0 && tile.type < 470 && TileID.Sets.FramesOnKillWall[tile.type])
++			if (tile.type >= 0 && TileID.Sets.FramesOnKillWall[tile.type])
+ 				TileFrame(i, j);
+ 		}
+ 
+@@ -28737,6 +_,9 @@
+ 			if (!tile.active())
+ 				return false;
+ 
++			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
++				return false;
++
+ 			if (j >= 1)
+ 				tile2 = Main.tile[i, j - 1];
+ 
+@@ -28755,6 +_,7 @@
+ 					case 26:
+ 					case 72:
+ 					case 88:
++					case int t when TileLoader.IsDresser(t):
+ 						if (tile.type != type)
+ 							return false;
+ 						break;
+@@ -28789,6 +_,7 @@
+ 					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
+ 						return false;
+ 					break;
++				case ushort t when TileLoader.IsDresser(t):
+ 				case 88:
+ 					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
+ 						return false;
+@@ -28814,7 +_,7 @@
+ 			if (j >= 1 && Main.tile[i, j - 1] == null)
+ 				Main.tile[i, j - 1] = new Tile();
+ 
+-			if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChest[tile.type]) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (Main.tile[i, j - 1].type == 88 && tile.type != 88) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72))) {
++			if (j >= 1 && Main.tile[i, j - 1].active() && ((Main.tile[i, j - 1].type == 5 && tile.type != 5) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChest[tile.type]) || (Main.tile[i, j - 1].type == 323 && tile.type != 323) || (TileLoader.IsDresser(Main.tile[i, j - 1].type) && !TileLoader.IsDresser(tile.type)) || (Main.tile[i, j - 1].type == 26 && tile.type != 26) || (Main.tile[i, j - 1].type == 72 && tile.type != 72))) {
+ 				if (Main.tile[i, j - 1].type == 5) {
+ 					if ((Main.tile[i, j - 1].frameX != 66 || Main.tile[i, j - 1].frameY < 0 || Main.tile[i, j - 1].frameY > 44) && (Main.tile[i, j - 1].frameX != 88 || Main.tile[i, j - 1].frameY < 66 || Main.tile[i, j - 1].frameY > 110) && Main.tile[i, j - 1].frameY < 198)
+ 						return;
+@@ -28834,18 +_,20 @@
+ 				int frameX = tile.frameX;
+ 				int num = i - frameX % 54 / 18;
+ 				for (int k = 0; k < 3; k++) {
+-					if (Main.tile[num + k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[num + k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + k, j - 1].type] || Main.tile[num + k, j - 1].type == 88)) {
++					if (Main.tile[num + k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[num + k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[num + k, j - 1].type] || TileLoader.IsDresser(Main.tile[num + k, j - 1].type))) {
+ 						fail = true;
+ 						break;
+ 					}
+ 				}
+ 			}
+ 
++			TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
+ 			if (!effectOnly && !stopDrops) {
+ 				if (!noItem && FixExploitManEaters.SpotProtected(i, j))
+ 					return;
+ 
++				if (!TileLoader.KillSound(i, j, tile.type)) { }
+-				if (tile.type == 127) {
++				else if (tile.type == 127) {
+ 					Main.PlaySound(SoundID.Item27, i * 16, j * 16);
+ 				}
+ 				else if (tile.type == 147 || tile.type == 224) {
+@@ -29006,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			int num14 = KillTile_GetTileDustAmount(fail, tile);
++			int num14 = KillTile_GetTileDustAmount(fail, tile, i, j);
+ 			for (int l = 0; l < num14; l++) {
+ 				KillTile_MakeTileDust(i, j, tile);
+ 			}
+@@ -29040,7 +_,7 @@
+ 					return;
+ 			}
+ 
+-			if (tile.type == 88 && Main.netMode != 1) {
++			if (TileLoader.IsDresser(tile.type) && Main.netMode != 1) {
+ 				int num16 = tile.frameX / 18;
+ 				int y2 = j - tile.frameY / 18;
+ 				num16 %= 3;
+@@ -29067,6 +_,7 @@
+ 				}
+ 
+ 				if (tile.type == 73) {
++					//patch file: num17, num18
+ 					num17 = 200;
+ 					num18 = 50;
+ 					if (tile.frameX >= 108) {
+@@ -29112,6 +_,7 @@
+ 					num19 = 10;
+ 				}
+ 
++				TileLoader.DropCritterChance(i, j, tile.type, ref num17, ref num18, ref num19);
+ 				if (num17 > 0 && NPC.CountNPCS(357) < 5 && genRand.Next(num17) == 0) {
+ 					int type = 357;
+ 					if (genRand.Next(NPC.goldCritterChance) == 0)
+@@ -29393,7 +_,7 @@
+ 								}
+ 
+ 								if (Main.tile[i, m] != null) {
+-									if (Main.tile[i, m].type == 2 || Main.tile[i, m].type == 109 || Main.tile[i, m].type == 147 || Main.tile[i, m].type == 199 || Main.tile[i, m].type == 23) {
++									if (Main.tile[i, m].type == 2 || Main.tile[i, m].type == 109 || Main.tile[i, m].type == 147 || Main.tile[i, m].type == 199 || Main.tile[i, m].type == 23 || TileLoader.CanDropAcorn(Main.tile[i, m].type)) {
+ 										num23 = 9;
+ 										num24 = 27;
+ 									}
+@@ -29456,6 +_,7 @@
+ 									num23 = 2503;
+ 									break;
+ 							}
++							TileLoader.DropTreeWood(Main.tile[num29, n].type, ref num23);
+ 						}
+ 
+ 						int num30 = Player.FindClosest(new Vector2(num29 * 16, n * 16), 16, 16);
+@@ -29485,6 +_,7 @@
+ 								num23 = 619;
+ 								break;
+ 						}
++						TileLoader.DropPalmTreeWood(Main.tile[i, num31].type, ref num23);
+ 					}
+ 				}
+ 				else if (tile.type == 408) {
+@@ -30495,7 +_,8 @@
+ 					num23 = 2504;
+ 				}
+ 
+-				if (num23 > 0) {
++				bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
++				if (vanillaDrop && num23 > 0) {
+ 					int num41 = 1;
+ 					if (flag)
+ 						num41++;
+@@ -30503,7 +_,7 @@
+ 					Item.NewItem(i * 16, j * 16, 16, 16, num23, num41, noBroadcast: false, -1);
+ 				}
+ 
+-				if (num24 > 0)
++				if (vanillaDrop && num24 > 0)
+ 					Item.NewItem(i * 16, j * 16, 16, 16, num24, 1, noBroadcast: false, -1);
+ 			}
+ 
+@@ -30532,7 +_,7 @@
+ 			SquareTileFrame(i, j);
+ 		}
+ 
+-		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
++		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache, int i, int j) {
  			int result = 10;
  			if (tileCache.type == 231)
-@@ -37734,6 +_,7 @@
- 			{
+ 				result = 6;
+@@ -30573,6 +_,7 @@
+ 			if (tileCache.type == 376)
  				result = 0;
- 			}
+ 
 +			TileLoader.NumDust(i, j, tileCache.type, fail, ref result);
  			return result;
  		}
  
-@@ -38844,10 +_,12 @@
- 						{
+@@ -31299,8 +_,11 @@
+ 						if (Main.tile[num12, k].active() && Main.tile[num12, k].type == 199)
  							num = 121;
- 						}
-+						//patch file: num13, num14
- 						if (Main.tile[num13, num14].active() && Main.tile[num13, num14].type == 147)
- 						{
- 							num = 122;
- 						}
-+						TileLoader.TreeDust(Main.tile[num13, num14], ref num);
- 					}
- 				}
- 			}
-@@ -38871,10 +_,12 @@
- 						{
- 							num = 79;
- 						}
-+						//patch file: num15
- 						if (Main.tile[i, num15].active() && Main.tile[i, num15].type == 112)
- 						{
- 							num = 77;
- 						}
-+						TileLoader.PalmTreeDust(Main.tile[i, num15], ref num);
- 					}
- 				}
- 			}
-@@ -39829,7 +_,7 @@
- 			}
- 			flag = true;
- 			IL_2622:
--			if (num < 0)
-+			if (!TileLoader.CreateDust(i, j, tileCache.type, ref num) || (num < 0)) // TODO, fix
- 			{
- 				return 6000;
- 			}
-@@ -41784,6 +_,7 @@
  
- 		public static void UpdateWorld()
- 		{
++						//patch file: num12, k
+ 						if (Main.tile[num12, k].active() && Main.tile[num12, k].type == 147)
+ 							num = 122;
++
++						TileLoader.TreeDust(Main.tile[num12, k], ref num);
+ 					}
+ 				}
+ 			}
+@@ -31319,8 +_,11 @@
+ 						if (Main.tile[i, l].active() && Main.tile[i, l].type == 116)
+ 							num = 79;
+ 
++						//patch file: l
+ 						if (Main.tile[i, l].active() && Main.tile[i, l].type == 112)
+ 							num = 77;
++
++						TileLoader.PalmTreeDust(Main.tile[i, l], ref num);
+ 					}
+ 				}
+ 			}
+@@ -31898,7 +_,7 @@
+ 			if (type == 178 || (uint)(type - 426) <= 1u || (uint)(type - 430) <= 10u)
+ 				flag = true;
+ 
+-			if (num >= 0) {
++			if (TileLoader.CreateDust(i, j, tileCache.type, ref num) && num >= 0) { // TODO, fix
+ 				if (tileCache.type == 352 && num == 5) {
+ 					int num15 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 5, 0f, 0f, 100);
+ 					Main.dust[num15].scale = 1.5f;
+@@ -33517,6 +_,7 @@
+ 		}
+ 
+ 		public static void UpdateWorld() {
 +			WorldHooks.PreUpdate();
  			int num = 20;
  			int maxValue = 40;
  			if (Main.expertMode)
-@@ -41858,6 +_,7 @@
+@@ -33579,6 +_,7 @@
+ 
+ 				int num6 = genRand.Next(10, Main.maxTilesX - 10);
+ 				int num7 = genRand.Next(10, (int)Main.worldSurface - 1);
++				//patch file: num6, num7
+ 				int num8 = num6 - 1;
+ 				int num9 = num6 + 2;
+ 				int num10 = num7 - 1;
+@@ -34157,6 +_,8 @@
+ 					if (Main.netMode == 2)
+ 						NetMessage.SendTileSquare(-1, num60, num61, 3);
  				}
- 				int num7 = WorldGen.genRand.Next(10, Main.maxTilesX - 10);
- 				int num8 = WorldGen.genRand.Next(10, (int)Main.worldSurface - 1);
-+				//patch file: num7, num8
- 				int num9 = num7 - 1;
- 				int num10 = num7 + 2;
- 				int num11 = num8 - 1;
-@@ -42614,6 +_,8 @@
- 							}
- 						}
- 					}
-+					TileLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].type);
-+					WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
- 				}
- 				num6++;
++				TileLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].type);
++				WallLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].wall);
  			}
-@@ -43374,12 +_,14 @@
- 						}
- 					}
- 					WorldGen.SpreadDesertWalls(num, num64, num65);
-+					TileLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].type);
-+					WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
+ 
+ 			for (int num62 = 0; (float)num62 < (float)(Main.maxTilesX * Main.maxTilesY) * num3; num62++) {
+@@ -34747,10 +_,12 @@
  				}
- 				num63++;
+ 
+ 				SpreadDesertWalls(num, num63, num64);
++				TileLoader.RandomUpdate(num63, num64, Main.tile[num63, num64].type);
++				WallLoader.RandomUpdate(num63, num64, Main.tile[num63, num64].wall);
  			}
- 			if (!Main.dayTime)
- 			{
--				float num143 = (float)(Main.maxTilesX / 4200);
-+				float num143 = (float)(Main.maxTilesX / 4200f); // Selfish fix for falling stars on extra small worlds
- 				if ((float)Main.rand.Next(8000) < 10f * num143)
- 				{
- 					int num144 = 12;
-@@ -43397,6 +_,7 @@
- 					Projectile.NewProjectile(vector.X, vector.Y, num147, num148, 12, 1000, 10f, Main.myPlayer, 0f, 0f);
+ 
+ 			if (!Main.dayTime) {
+-				float num139 = Main.maxTilesX / 4200;
++				float num139 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
+ 				if ((float)Main.rand.Next(8000) < 10f * num139) {
+ 					int num140 = Main.rand.Next(Main.maxTilesX - 50) + 100;
+ 					num140 *= 16;
+@@ -34766,6 +_,8 @@
+ 					Projectile.NewProjectile(vector.X, vector.Y, num142, num143, 12, 1000, 10f, Main.myPlayer);
  				}
  			}
++
 +			WorldHooks.PostUpdate();
  		}
  
- 		private static void TrySpawningTownNPC(int x, int y)
-@@ -43557,7 +_,7 @@
- 			}
- 			if (Main.tile[i, j].wall == 0)
- 			{
+ 		private static void TrySpawningTownNPC(int x, int y) {
+@@ -34900,7 +_,7 @@
+ 				Main.tile[i, j] = new Tile();
+ 
+ 			if (Main.tile[i, j].wall == 0) {
 -				Main.tile[i, j].wall = (byte)type;
 +				Main.tile[i, j].wall = (ushort)type;
- 				WorldGen.SquareWallFrame(i, j, true);
+ 				SquareWallFrame(i, j);
  				if (!mute)
- 				{
-@@ -47384,6 +_,10 @@
- 			if (Main.tile[i, j - 1].active())
- 			{
- 				ushort type2 = Main.tile[i, j - 1].type;
-+				if (TileID.Sets.BasicChest[type2])
-+				{
-+					return false;
-+				}
- 				if (type2 <= 77)
- 				{
- 					if (type2 <= 21)
-@@ -47917,7 +_,11 @@
+ 					Main.PlaySound(0, i * 16, j * 16);
+@@ -37890,6 +_,8 @@
+ 							return false;
  					}
- 					if (tile.active())
- 					{
--						if (noBreak && Main.tileFrameImportant[(int)tile.type] && tile.type != 4)
+ 					if (Main.tile[i, j - 1].active()) {
++						if (TileID.Sets.BasicChest[Main.tile[i, j - 1].type])
++							return false;
+ 						switch (Main.tile[i, j - 1].type) {
+ 							case 5:
+ 							case 21:
+@@ -38277,7 +_,10 @@
+ 						Liquid.AddWater(i, j);
+ 
+ 					if (tile.active()) {
+-						if (noBreak && Main.tileFrameImportant[tile.type] && tile.type != 4)
 +						if (!TileLoader.TileFrame(i, j, tile.type, ref resetFrame, ref noBreak))
-+						{
 +							return;
-+						}
-+						if (noBreak && Main.tileFrameImportant[(int)tile.type] && !TileLoader.IsTorch(tile.type))
- 						{
++
++						if (noBreak && Main.tileFrameImportant[tile.type] && !TileLoader.IsTorch(tile.type))
  							return;
- 						}
-@@ -47931,7 +_,7 @@
+ 
+ 						int num = tile.type;
+@@ -38289,7 +_,7 @@
  						Rectangle rectangle = new Rectangle(-1, -1, 0, 0);
- 						if (Main.tileFrameImportant[(int)tile.type])
- 						{
--							if (num == 4)
-+							if (TileLoader.IsTorch(num))
- 							{
- 								Tile tile2 = Main.tile[i, j - 1];
- 								Tile tile3 = Main.tile[i, j + 1];
-@@ -48920,7 +_,7 @@
- 							{
- 								WorldGen.Check3x3(i, j, (int)((ushort)num));
- 							}
--							else if (num == 15 || num == 20 || num == 216 || num == 338 || num == 390)
-+							else if (num == 15 || TileLoader.IsSapling(num) || num == 216 || num == 338 || num == 390)
- 							{
- 								WorldGen.Check1x2(i, j, (ushort)num);
- 							}
-@@ -48944,7 +_,7 @@
- 							{
- 								WorldGen.CheckOnTable1x1(i, j, (int)((byte)num));
- 							}
--							else if (TileID.Sets.BasicChest[num])
-+							else if (TileID.Sets.BasicChest[num] && num < TileID.Count)
- 							{
- 								WorldGen.CheckChest(i, j, num);
- 							}
-@@ -49110,6 +_,10 @@
- 							else if (num == 323)
- 							{
- 								WorldGen.CheckPalmTree(i, j);
-+							}
-+							else
-+							{
-+								TileLoader.CheckModTile(i, j, num);
- 							}
- 							return;
- 						}
-@@ -49260,11 +_,11 @@
- 								num61 = -1;
- 								num59 = -1;
- 							}
--							if (num == 147)
-+							if (TileID.Sets.Snow[num])
- 							{
- 								WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Ices, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
--							else if (num == 161 || num == 163 || num == 164 || num == 200)
-+							else if (TileID.Sets.Ices[num])
- 							{
- 								WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Snow, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
-@@ -49274,7 +_,7 @@
- 							}
- 							else if (Main.tileBrick[num])
- 							{
--								if (num == 60 || num == 70)
-+								if (TileID.Sets.GrassSpecial[num])
- 								{
- 									WorldGen.TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								}
-@@ -49287,7 +_,7 @@
- 							{
- 								WorldGen.TileMergeAttempt(num, Main.tilePile, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
--							if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && num61 == 165)
-+							if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && num61 == 165)
- 							{
- 								if (tile3.frameY == 72)
- 								{
-@@ -49298,7 +_,7 @@
- 									num61 = num;
- 								}
- 							}
--							if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && num56 == 165)
-+							if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && num56 == 165)
- 							{
- 								if (tile2.frameY == 90)
- 								{
-@@ -49320,7 +_,7 @@
- 									num56 = num;
- 								}
- 							}
--							if ((num == 200 || num == 161 || num == 163 || num == 164) && num61 == 165)
-+							if (TileID.Sets.Ices[num] && num61 == 165)
- 							{
- 								num61 = num;
- 							}
-@@ -49464,7 +_,7 @@
- 										num56 = num;
- 									}
- 								}
--								else if (num56 == 147)
-+								else if (num56 > -1 && TileID.Sets.Snow[num56])
- 								{
- 									WorldGen.TileFrame(i, j - 1, false, false);
- 									if (WorldGen.mergeDown)
-@@ -49480,7 +_,7 @@
- 										num61 = num;
- 									}
- 								}
--								else if (num61 == 147)
-+								else if (num61 > -1 && TileID.Sets.Snow[num61])
- 								{
- 									WorldGen.TileFrame(i, j + 1, false, false);
- 									if (WorldGen.mergeUp)
-@@ -49496,7 +_,7 @@
- 										num58 = num;
- 									}
- 								}
--								else if (num58 == 147)
-+								else if (num58 > -1 && TileID.Sets.Snow[num58])
- 								{
- 									WorldGen.TileFrame(i - 1, j, false, false);
- 									if (WorldGen.mergeRight)
-@@ -49512,7 +_,7 @@
- 										num59 = num;
- 									}
- 								}
--								else if (num59 == 147)
-+								else if (num59 > -1 && TileID.Sets.Snow[num59])
- 								{
- 									WorldGen.TileFrame(i + 1, j, false, false);
- 									if (WorldGen.mergeLeft)
-@@ -49520,19 +_,19 @@
- 										num59 = num;
- 									}
- 								}
--								if (num56 == 2 || num56 == 23 || num56 == 109 || num56 == 199)
-+								if (num56 > -1 && TileID.Sets.Grass[num56])
- 								{
- 									num56 = num;
- 								}
--								if (num61 == 2 || num61 == 23 || num61 == 109 || num61 == 199)
-+								if (num61 > -1 && TileID.Sets.Grass[num61])
- 								{
- 									num61 = num;
- 								}
--								if (num58 == 2 || num58 == 23 || num58 == 109 || num58 == 199)
-+								if (num58 > -1 && TileID.Sets.Grass[num58])
- 								{
- 									num58 = num;
- 								}
--								if (num59 == 2 || num59 == 23 || num59 == 109 || num59 == 199)
-+								if (num59 > -1 && TileID.Sets.Grass[num59])
- 								{
- 									num59 = num;
- 								}
-@@ -49540,7 +_,7 @@
- 								{
- 									num55 = num;
- 								}
--								else if (num55 == 2 || num55 == 23 || num55 == 109 || num55 == 199)
-+								else if (num55 > -1 && TileID.Sets.Grass[num55])
- 								{
- 									num55 = num;
- 								}
-@@ -49548,7 +_,7 @@
- 								{
- 									num57 = num;
- 								}
--								else if (num57 == 2 || num57 == 23 || num57 == 109 || num57 == 199)
-+								else if (num57 > -1 && TileID.Sets.Grass[num57])
- 								{
- 									num57 = num;
- 								}
-@@ -49556,7 +_,7 @@
- 								{
- 									num60 = num;
- 								}
--								else if (num60 == 2 || num60 == 23 || num60 == 109 || num60 == 199)
-+								else if (num60 > -1 && TileID.Sets.Grass[num60])
- 								{
- 									num60 = num;
- 								}
-@@ -49564,7 +_,7 @@
- 								{
- 									num62 = num;
- 								}
--								else if (num62 == 2 || num62 == 23 || num62 == 109 || num62 == 199)
-+								else if (num62 > -1 && TileID.Sets.Grass[num62])
- 								{
- 									num62 = num;
- 								}
-@@ -49625,7 +_,7 @@
- 									WorldGen.TileMergeAttemptFrametest(i, j, num, 57, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								}
- 							}
--							else if (num == 58 || num == 76 || num == 75)
-+							else if (TileID.Sets.HellSpecial[num])
- 							{
- 								WorldGen.TileMergeAttempt(-2, 57, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
-@@ -49634,7 +_,7 @@
- 								WorldGen.TileMergeAttempt(-2, 1, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								WorldGen.TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
--							else if (num == 59)
-+							else if (TileID.Sets.Mud[num])
- 							{
- 								if ((double)j > Main.rockLayer)
- 								{
-@@ -49672,11 +_,11 @@
- 							{
- 								WorldGen.TileMergeAttempt(-2, 189, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
--							else if (num == 147)
-+							else if (TileID.Sets.Snow[num])
- 							{
- 								WorldGen.TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
--							else if (num == 161 || num == 163 || num == 164 || num == 200 || num == 224)
-+							else if (TileID.Sets.IcesSlush[num])
- 							{
- 								WorldGen.TileMergeAttempt(-2, 147, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 							}
-@@ -49802,12 +_,12 @@
- 								num59 = num;
- 								WorldGen.mergeRight = true;
- 							}
--							if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num])
-+							if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num])
- 							{
- 								flag8 = true;
- 								WorldGen.TileMergeAttemptWeird(num, -1, Main.tileSolid, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								int num66 = TileID.Sets.NeedsGrassFramingDirt[num];
--								if (num == 60 || num == 70)
-+								if (TileID.Sets.GrassSpecial[num])
- 								{
- 									num66 = 59;
- 								}
-@@ -51389,7 +_,7 @@
- 								}
- 								else
- 								{
--									if (num != 2 && num != 23 && num != 60 && num != 70 && num != 109 && num != 199)
-+									if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num])
- 									{
- 										if (num56 == -1 && num61 == -2 && num58 == num && num59 == num)
- 										{
-@@ -51984,7 +_,7 @@
- 								{
- 									WorldGen.TileMergeAttemptWeird(num, -1, Main.tileSolid, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								}
--								if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num])
-+								if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num])
- 								{
- 									WorldGen.TileMergeAttempt(num, -2, ref num56, ref num61, ref num58, ref num59, ref num55, ref num57, ref num60, ref num62);
- 								}
-@@ -52448,7 +_,7 @@
- 									if (tile3 != null && !tile3.active())
- 									{
- 										bool flag18 = true;
--										if (tile2.active() && (TileID.Sets.BasicChest[(int)tile2.type] || TileID.Sets.BasicChestFake[(int)tile2.type] || tile2.type == 323 || tile2.type == 88))
-+										if (tile2.active() && (TileID.Sets.BasicChest[(int)tile2.type] || TileID.Sets.BasicChestFake[(int)tile2.type] || tile2.type == 323 || TileLoader.IsDresser(tile2.type)))
- 										{
- 											flag18 = false;
+ 						if (Main.tileFrameImportant[tile.type]) {
+ 							switch (num) {
+-								case 4: {
++								case int _ when TileLoader.IsTorch(num): {
+ 										Tile tile16 = Main.tile[i, j - 1];
+ 										Tile tile17 = Main.tile[i, j + 1];
+ 										Tile tile10 = Main.tile[i - 1, j];
+@@ -39055,6 +_,7 @@
+ 																switch (num) {
+ 																	case 15:
+ 																	case 20:
++																	case int _ when TileLoader.IsSapling(num):
+ 																	case 216:
+ 																	case 338:
+ 																	case 390:
+@@ -39100,7 +_,7 @@
+ 																				CheckOnTable1x1(i, j, (byte)num);
+ 																				return;
+ 																			default:
+-																				if (TileID.Sets.BasicChest[num]) {
++																				if (TileID.Sets.BasicChest[num] && num < TileID.Count) {
+ 																					CheckChest(i, j, num);
+ 																					return;
+ 																				}
+@@ -39279,6 +_,7 @@
+ 																													CheckPalmTree(i, j);
+ 																													break;
+ 																											}
++																											TileLoader.CheckModTile(i, j, num); // TODO: Test this. Not sure this is still correct.
+ 																											return;
+ 																									}
+ 																									break;
+@@ -39478,13 +_,10 @@
  										}
-@@ -52514,7 +_,7 @@
- 								else if (Main.netMode == 2 && tile3 != null && !tile3.active())
- 								{
- 									bool flag19 = true;
--									if (tile2.active() && (TileID.Sets.BasicChest[(int)tile2.type] || TileID.Sets.BasicChestFake[(int)tile2.type] || tile2.type == 323 || tile2.type == 88))
-+									if (tile2.active() && (TileID.Sets.BasicChest[(int)tile2.type] || TileID.Sets.BasicChestFake[(int)tile2.type] || tile2.type == 323 || TileLoader.IsDresser(tile2.type)))
- 									{
- 										flag19 = false;
- 									}
-@@ -52596,7 +_,11 @@
- 							if (rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0)
- 							{
- 								WorldGen.tileReframeCount++;
+ 
+ 										switch (num) {
+-											case 147:
++											case int _ when TileID.Sets.Snow[num]:
+ 												TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Ices, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 												break;
+-											case 161:
+-											case 163:
+-											case 164:
+-											case 200:
++											case int _ when TileID.Sets.Ices[num]:
+ 												TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Snow, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 												break;
+ 											case 162:
+@@ -39492,7 +_,7 @@
+ 												break;
+ 											default:
+ 												if (Main.tileBrick[num]) {
+-													if (num == 60 || num == 70)
++													if (TileID.Sets.GrassSpecial[num])
+ 														TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													else
+ 														TileMergeAttempt(num, Main.tileBrick, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -39503,14 +_,14 @@
+ 												break;
+ 										}
+ 
+-										if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && down == 165) {
++										if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && down == 165) {
+ 											if (tile17.frameY == 72)
+ 												down = num;
+ 											else if (tile17.frameY == 0)
+ 												down = num;
+ 										}
+ 
+-										if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && up == 165) {
++										if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && up == 165) {
+ 											if (tile16.frameY == 90)
+ 												up = num;
+ 											else if (tile16.frameY == 54)
+@@ -39525,7 +_,7 @@
+ 												up = num;
+ 										}
+ 
+-										if ((num == 200 || num == 161 || num == 163 || num == 164) && down == 165)
++										if (TileID.Sets.Ices[num] && down == 165)
+ 											down = num;
+ 
+ 										if ((tile.slope() == 1 || tile.slope() == 2) && down > -1 && !TileID.Sets.Platforms[down])
+@@ -39640,7 +_,7 @@
+ 													if (mergeDown)
+ 														up = num;
+ 												}
+-												else if (up == 147) {
++												else if (up > -1 && TileID.Sets.Snow[up]) {
+ 													TileFrame(i, j - 1);
+ 													if (mergeDown)
+ 														up = num;
+@@ -39650,7 +_,7 @@
+ 													if (mergeUp)
+ 														down = num;
+ 												}
+-												else if (down == 147) {
++												else if (down > -1 && TileID.Sets.Snow[down]) {
+ 													TileFrame(i, j + 1);
+ 													if (mergeUp)
+ 														down = num;
+@@ -39660,7 +_,7 @@
+ 													if (mergeRight)
+ 														left = num;
+ 												}
+-												else if (left == 147) {
++												else if (left > -1 && TileID.Sets.Snow[left]) {
+ 													TileFrame(i - 1, j);
+ 													if (mergeRight)
+ 														left = num;
+@@ -39670,34 +_,34 @@
+ 													if (mergeLeft)
+ 														right = num;
+ 												}
+-												else if (right == 147) {
++												else if (right > -1 && TileID.Sets.Snow[right]) {
+ 													TileFrame(i + 1, j);
+ 													if (mergeLeft)
+ 														right = num;
+ 												}
+-												if (up == 2 || up == 23 || up == 109 || up == 199)
++												if (up > -1 && TileID.Sets.Grass[up])
+ 													up = num;
+-												if (down == 2 || down == 23 || down == 109 || down == 199)
++												if (down > -1 && TileID.Sets.Grass[down])
+ 													down = num;
+-												if (left == 2 || left == 23 || left == 109 || left == 199)
++												if (left > -1 && TileID.Sets.Grass[left])
+ 													left = num;
+-												if (right == 2 || right == 23 || right == 109 || right == 199)
++												if (right > -1 && TileID.Sets.Grass[right])
+ 													right = num;
+ 												if (upLeft > -1 && Main.tileMergeDirt[upLeft])
+ 													upLeft = num;
+-												else if (upLeft == 2 || upLeft == 23 || upLeft == 109 || upLeft == 199)
++												else if (upLeft > -1 && TileID.Sets.Grass[upLeft])
+ 													upLeft = num;
+ 												if (upRight > -1 && Main.tileMergeDirt[upRight])
+ 													upRight = num;
+-												else if (upRight == 2 || upRight == 23 || upRight == 109 || upRight == 199)
++												else if (upRight > -1 && TileID.Sets.Grass[upRight])
+ 													upRight = num;
+ 												if (downLeft > -1 && Main.tileMergeDirt[downLeft])
+ 													downLeft = num;
+-												else if (downLeft == 2 || downLeft == 23 || downLeft == 109 || downLeft == 199)
++												else if (downLeft > -1 && TileID.Sets.Grass[downLeft])
+ 													downLeft = num;
+ 												if (downRight > -1 && Main.tileMergeDirt[downRight])
+ 													downRight = num;
+-												else if (downRight == 2 || downRight == 23 || downRight == 109 || downRight == 199)
++												else if (downRight > -1 && TileID.Sets.Grass[downRight])
+ 													downRight = num;
+ 												TileMergeAttempt(-2, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 												TileMergeAttempt(num, 191, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -39744,16 +_,14 @@
+ 										}
+ 										else {
+ 											switch (num) {
+-												case 58:
+-												case 75:
+-												case 76:
++												case int _ when TileID.Sets.HellSpecial[num]:
+ 													TileMergeAttempt(-2, 57, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+ 												case 57:
+ 													TileMergeAttempt(-2, 1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													TileMergeAttemptFrametest(i, j, num, TileID.Sets.HellSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+-												case 59:
++												case int _ when TileID.Sets.Mud[num]:
+ 													if ((double)j > Main.rockLayer)
+ 														TileMergeAttempt(-2, 1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													TileMergeAttempt(num, TileID.Sets.GrassSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+@@ -39780,14 +_,10 @@
+ 												case 196:
+ 													TileMergeAttempt(-2, 189, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+-												case 147:
++												case int _ when TileID.Sets.Snow[num]:
+ 													TileMergeAttemptFrametest(i, j, num, TileID.Sets.IcesSlush, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+-												case 161:
+-												case 163:
+-												case 164:
+-												case 200:
+-												case 224:
++												case int _ when TileID.Sets.IcesSlush[num]:
+ 													TileMergeAttempt(-2, 147, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 													break;
+ 												case 162:
+@@ -39889,11 +_,11 @@
+ 											mergeRight = true;
+ 										}
+ 
+-										if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num]) {
++										if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num]) {
+ 											flag8 = true;
+ 											TileMergeAttemptWeird(num, -1, Main.tileSolid, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 											int num58 = TileID.Sets.NeedsGrassFramingDirt[num];
+-											if (num == 60 || num == 70) {
++											if (TileID.Sets.GrassSpecial[num]) {
+ 												num58 = 59;
+ 											}
+ 											else if (Main.tileMoss[num]) {
+@@ -41320,7 +_,7 @@
+ 												}
+ 											}
+ 											else {
+-												if (num != 2 && num != 23 && num != 60 && num != 70 && num != 109 && num != 199) {
++												if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num]) {
+ 													if (up == -1 && down == -2 && left == num && right == num) {
+ 														switch (num55) {
+ 															case 0:
+@@ -41869,7 +_,7 @@
+ 												TileMergeAttemptWeird(num, -1, Main.tileSolid, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 											}
+ 
+-											if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num])
++											if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num])
+ 												TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 
+ 											if (up == num && down == num && left == num && right == num) {
+@@ -42263,7 +_,7 @@
+ 											if (Main.netMode == 0) {
+ 												if (tile17 != null && !tile17.active()) {
+ 													bool flag16 = true;
+-													if (tile16.active() && (TileID.Sets.BasicChest[tile16.type] || TileID.Sets.BasicChestFake[tile16.type] || tile16.type == 323 || tile16.type == 88))
++													if (tile16.active() && (TileID.Sets.BasicChest[tile16.type] || TileID.Sets.BasicChestFake[tile16.type] || tile16.type == 323 || TileLoader.IsDresser(tile16.type)))
+ 														flag16 = false;
+ 
+ 													if (flag16) {
+@@ -42318,7 +_,7 @@
+ 											}
+ 											else if (Main.netMode == 2 && tile17 != null && !tile17.active()) {
+ 												bool flag17 = true;
+-												if (tile16.active() && (TileID.Sets.BasicChest[tile16.type] || TileID.Sets.BasicChestFake[tile16.type] || tile16.type == 323 || tile16.type == 88))
++												if (tile16.active() && (TileID.Sets.BasicChest[tile16.type] || TileID.Sets.BasicChestFake[tile16.type] || tile16.type == 323 || TileLoader.IsDresser(tile16.type)))
+ 													flag17 = false;
+ 
+ 												if (flag17) {
+@@ -42388,7 +_,11 @@
+ 
+ 										if (rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) {
+ 											tileReframeCount++;
 +#if DEBUG
-+								if (WorldGen.tileReframeCount < 20)
++											if (tileReframeCount < 20) {
 +#else
- 								if (WorldGen.tileReframeCount < 55)
+ 											if (tileReframeCount < 55) {
 +#endif
- 								{
- 									bool flag21 = WorldGen.mergeUp;
- 									bool flag22 = WorldGen.mergeDown;
-
+ 												bool num74 = mergeUp;
+ 												bool flag19 = mergeDown;
+ 												bool flag20 = mergeLeft;

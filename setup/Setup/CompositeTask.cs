@@ -2,12 +2,12 @@
 
 namespace Terraria.ModLoader.Setup
 {
-	public class CompositeTask : Task
+	public class CompositeTask : SetupOperation
 	{
-		private Task[] tasks;
-		private Task failed;
+		private SetupOperation[] tasks;
+		private SetupOperation failed;
 
-		public CompositeTask(ITaskInterface taskInterface, params Task[] tasks) : base(taskInterface) {
+		public CompositeTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface) {
 			this.tasks = tasks;
 		}
 

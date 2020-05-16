@@ -106,8 +106,16 @@ namespace Terraria.ModLoader.Config
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
 				return;
 			}
-			string json = File.Exists(path) ? File.ReadAllText(path) : "{}";
-			JsonConvert.PopulateObject(json, config, serializerSettings);
+			bool jsonFileExists = File.Exists(path);
+			string json = jsonFileExists ? File.ReadAllText(path) : "{}";
+			try {
+				JsonConvert.PopulateObject(json, config, serializerSettings);
+			}
+			catch (JsonReaderException) when (jsonFileExists) {
+				Logging.tML.Warn($"Then config file {config.Name} from the mod {config.mod.Name} located at {path} failed to load. The file was likely corrupted somehow, so the defaults will be loaded and the file deleted.");
+				File.Delete(path);
+				JsonConvert.PopulateObject("{}", config, serializerSettings);
+			}
 		}
 
 		internal static void Reset(ModConfig pendingConfig)

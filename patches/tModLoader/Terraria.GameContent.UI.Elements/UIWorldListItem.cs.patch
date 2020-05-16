@@ -1,6 +1,10 @@
---- src/Terraria\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
-+++ src/tModLoader\Terraria.GameContent.UI.Elements\UIWorldListItem.cs
-@@ -5,6 +_,8 @@
+--- src/Terraria/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
++++ src/tModLoader/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.OS;
++using System;
  using Terraria.Graphics;
  using Terraria.IO;
  using Terraria.Localization;
@@ -9,18 +13,18 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -25,6 +_,7 @@
+@@ -24,6 +_,7 @@
  		private Texture2D _buttonPlayTexture;
  		private Texture2D _buttonSeedTexture;
  		private Texture2D _buttonDeleteTexture;
 +		private Texture2D _configTexture;
  		private UIImageButton _deleteButton;
  
- 		public bool IsFavorite
-@@ -87,6 +_,17 @@
- 				base.Append(uIImageButton4);
+ 		public bool IsFavorite => _data.IsFavorite;
+@@ -79,6 +_,17 @@
  				num += 24f;
  			}
+ 
 +			//if (ConfigManager.Configs.Count > 0)
 +			//{
 +			//	UIImageButton configButton = new UIImageButton(this._configTexture);
@@ -32,42 +36,44 @@
 +			//	Append(configButton);
 +			//	num += 24f;
 +			//}
- 			UIImageButton uIImageButton5 = new UIImageButton(this._buttonDeleteTexture);
+ 			UIImageButton uIImageButton5 = new UIImageButton(_buttonDeleteTexture);
  			uIImageButton5.VAlign = 1f;
  			uIImageButton5.HAlign = 1f;
-@@ -126,6 +_,7 @@
- 			this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
- 			this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
- 			this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-+			this._configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
+@@ -116,6 +_,7 @@
+ 			_buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
+ 			_buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
+ 			_buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
++			_configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  		}
  
- 		private void InitializeAppearance()
-@@ -169,6 +_,11 @@
- 		private void SeedMouseOver(UIMouseEvent evt, UIElement listeningElement)
- 		{
- 			this._buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", this._data.SeedText));
+ 		private void InitializeAppearance() {
+@@ -149,6 +_,10 @@
+ 			_buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", _data.SeedText));
+ 		}
+ 
++		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++			_buttonLabel.SetText("Edit World Config");
 +		}
 +
-+		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement)
-+		{
-+			this._buttonLabel.SetText("Edit World Config");
+ 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+ 			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
+@@ -205,9 +_,29 @@
+ 				else
+ 					Main.menuMode = 10;
  
- 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement)
-@@ -242,8 +_,27 @@
- 			}
- 			if (!Main.menuMultiplayer)
- 			{
-+				ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
-+				if (ConfigManager.AnyModNeedsReload())
-+				{
-+					ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
-+					ModLoader.ModLoader.Reload();
-+					return;
+-				if (!Main.menuMultiplayer)
++				if (!Main.menuMultiplayer) {
++					ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
++					if (ConfigManager.AnyModNeedsReload()) {
++						ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
++						ModLoader.ModLoader.Reload();
++						return;
++					}
++	
++					ConfigManager.OnChangedAll();
+ 					WorldGen.playWorld();
 +				}
-+				ConfigManager.OnChangedAll();
- 				WorldGen.playWorld();
  			}
 +		}
 +
@@ -82,16 +88,14 @@
 +			};
  		}
  
- 		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement)
-@@ -272,6 +_,10 @@
- 		{
- 			Platform.Current.Clipboard = this._data.SeedText;
- 			this._buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
+ 		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+@@ -229,6 +_,9 @@
+ 		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+ 			Platform.Current.Clipboard = _data.SeedText;
+ 			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
 +		}
 +
-+		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
-+		{
++		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  		}
  
- 		public override int CompareTo(object obj)
-
+ 		public override int CompareTo(object obj) {

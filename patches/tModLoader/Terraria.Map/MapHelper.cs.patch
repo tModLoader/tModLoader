@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Map\MapHelper.cs
-+++ src/tModLoader\Terraria.Map\MapHelper.cs
+--- src/Terraria/Terraria.Map/MapHelper.cs
++++ src/tModLoader/Terraria.Map/MapHelper.cs
 @@ -4,6 +_,8 @@
  using System.Diagnostics;
  using System.IO;
@@ -9,60 +9,54 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -106,7 +_,8 @@
+@@ -110,7 +_,8 @@
  		private static ushort dirtPosition;
  		private static ushort rockPosition;
  		private static ushort hellPosition;
--		private static Color[] colorLookup;
 +		internal static ushort modPosition;
+-		private static Color[] colorLookup;
 +		internal static Color[] colorLookup;
  		private static ushort[] snowTypes;
  		private static ushort wallRangeStart;
  		private static ushort wallRangeEnd;
-@@ -1129,6 +_,7 @@
- 			}
- 			MapHelper.hellPosition = num11;
- 			MapHelper.colorLookup[(int)num11] = color7;
-+			MapHelper.modPosition = (ushort)(num11 + 1);
- 			MapHelper.snowTypes = new ushort[6];
- 			MapHelper.snowTypes[0] = MapHelper.tileLookup[147];
- 			MapHelper.snowTypes[1] = MapHelper.tileLookup[161];
-@@ -2006,6 +_,7 @@
+@@ -1123,6 +_,7 @@
+ 
+ 			hellPosition = num11;
+ 			colorLookup[num11] = color7;
++			modPosition = (ushort)(num11 + 1);
+ 			snowTypes = new ushort[6];
+ 			snowTypes[0] = tileLookup[147];
+ 			snowTypes[1] = tileLookup[161];
+@@ -1566,7 +_,9 @@
  				}
  			}
- 			int num16 = num3 + num4;
-+			MapLoader.ModMapOption(ref num16, i, j);
- 			return MapTile.Create((ushort)num16, (byte)num2, (byte)num);
+ 
+-			return MapTile.Create((ushort)(num3 + num4), (byte)num2, (byte)num);
++			ushort mapType = (ushort)(num3 + num4);
++			MapLoader.ModMapOption(ref mapType, i, j);
++			return MapTile.Create(mapType, (byte)num2, (byte)num);
  		}
  
-@@ -2060,7 +_,7 @@
- 							{
- 								int num = 0;
- 								byte[] array = new byte[16384];
--								binaryWriter.Write(193);
-+								binaryWriter.Write(194);
- 								Main.MapFileMetadata.IncrementAndWrite(binaryWriter);
- 								binaryWriter.Write(Main.worldName);
- 								binaryWriter.Write(Main.worldID);
-@@ -2162,7 +_,7 @@
- 										int num5;
- 										ushort num6;
+ 		public static void SaveMap() {
+@@ -1679,7 +_,7 @@
+ 										byte b5 = 0;
  										int num7;
--										if (mapTile.Light <= 18)
-+										if (mapTile.Light <= 18 || mapTile.Type >= MapHelper.modPosition)
- 										{
- 											flag4 = false;
+ 										ushort num8;
+-										if (mapTile.Light <= 18) {
++										if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
  											flag3 = false;
-@@ -2344,9 +_,11 @@
- 								}
+ 											flag2 = false;
+ 											num7 = 0;
+@@ -1823,9 +_,12 @@
+ 
  								deflateStream.Dispose();
  								FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
-+                                //patch file: text
++								//patch file: text
  							}
  						}
  					}
++
 +					MapIO.WriteModFile(text, isCloudSave);
  				}
- 				catch (Exception value)
- 				{
-
+ 				catch (Exception value) {
+ 					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {

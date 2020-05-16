@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.States\UICharacterSelect.cs
-+++ src/tModLoader\Terraria.GameContent.UI.States\UICharacterSelect.cs
+--- src/Terraria/Terraria.GameContent.UI.States/UICharacterSelect.cs
++++ src/tModLoader/Terraria.GameContent.UI.States/UICharacterSelect.cs
 @@ -9,18 +_,22 @@
  using Terraria.Localization;
  using Terraria.UI;
@@ -22,32 +22,31 @@
  		private bool skipDraw;
 +		private static bool _currentlyMigratingFiles;
  
- 		public override void OnInitialize()
- 		{
-@@ -80,12 +_,7 @@
- 		{
- 			Main.PlaySound(10, -1, -1, 1, 1f, 0f);
+ 		public override void OnInitialize() {
+ 			UIElement uIElement = new UIElement();
+@@ -78,12 +_,7 @@
+ 		private void NewCharacterClick(UIMouseEvent evt, UIElement listeningElement) {
+ 			Main.PlaySound(10);
  			Player player = new Player();
--			player.inventory[0].SetDefaults(3507, false);
+-			player.inventory[0].SetDefaults(3507);
 -			player.inventory[0].Prefix(-1);
--			player.inventory[1].SetDefaults(3509, false);
+-			player.inventory[1].SetDefaults(3509);
 -			player.inventory[1].Prefix(-1);
--			player.inventory[2].SetDefaults(3506, false);
+-			player.inventory[2].SetDefaults(3506);
 -			player.inventory[2].Prefix(-1);
 +			PlayerHooks.SetupStartInventory(player);
  			Main.PendingPlayer = player;
  			Main.menuMode = 2;
  		}
-@@ -142,6 +_,68 @@
- 			foreach (PlayerFileData current in list)
- 			{
- 				this._playerList.Add(new UICharacterListItem(current, num++));
+@@ -126,6 +_,67 @@
+ 			int num = 0;
+ 			foreach (PlayerFileData item in list) {
+ 				_playerList.Add(new UICharacterListItem(item, num++));
 +			}
-+			if (list.Count == 0)
-+			{
++
++			if (list.Count == 0) {
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
-+				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any())
-+				{
++				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any()) {
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
 +					autoMigrateButton.Height.Set(50, 0);
@@ -90,21 +89,20 @@
 +							}, TaskCreationOptions.PreferFairness);
 +						}
 +					};
++
 +					autoMigrateButton.Append(migrateText);
 +					_playerList.Add(autoMigrateButton);
-+
 +					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
 +					noPlayersMessage.Width.Set(0, 1);
 +					noPlayersMessage.Height.Set(200, 0);
 +					noPlayersMessage.MarginTop = 20f;
-+					noPlayersMessage.OnClick += (a, b) =>
-+					{
++					noPlayersMessage.OnClick += (a, b) => {
 +						System.Diagnostics.Process.Start(Main.PlayerPath);
 +						System.Diagnostics.Process.Start(vanillaPlayersPath);
 +					};
++
 +					_playerList.Add(noPlayersMessage);
 +				}
  			}
  		}
  
-
