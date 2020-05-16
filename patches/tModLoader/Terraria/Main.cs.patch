@@ -2345,15 +2345,15 @@
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
  				float num52 = 0f;
-@@ -20442,6 +_,8 @@
- 				value56.Y += num248;
- 				spriteBatch.Draw(texture2D31, vector31 + value56 * nPC.scale, rectangle8, color46, MathHelper.Clamp(nPC.velocity.X * 0.1f, -(float)Math.PI / 8f, (float)Math.PI / 8f), rectangle8.Size() / 2f, nPC.scale * 0.7f, spriteEffects ^ SpriteEffects.FlipHorizontally, 0f);
- 			}
-+
-+			NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, color9);
- 		}
+@@ -20142,6 +_,8 @@
+ 									DrawNPCExtras(n3, beforeDraw: false, num65, num64, color9, vector10, spriteEffects);
+ 								}
  
- 		protected void DrawNPCExtras(NPC n, bool beforeDraw, float addHeight, float addY, Microsoft.Xna.Framework.Color npcColor, Vector2 halfSize, SpriteEffects npcSpriteEffect) {
++								NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, color9);
++
+ 								return;
+ 							}
+ 					}
 @@ -20596,6 +_,7 @@
  					}
  				}
