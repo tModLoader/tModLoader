@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items
 {
@@ -21,7 +22,7 @@ namespace ExampleMod.Items
 			item.height = 20;
 			item.maxStack = 999;
 			item.value = 100;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 		}
 
 		private Vector2 boxSize; // stores the size of our tooltip box

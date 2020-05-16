@@ -129,7 +129,7 @@ namespace ExampleMod.NPCs
 				// netmode == 0 is SP, netmode == 1 is MP Client, netmode == 2 is MP Server. 
 				// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set. Don't set netUpdate unless you do something non-deterministic ("random")
-				if (AI_Timer == 1 && Main.netMode != 1) {
+				if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
 					// For reference: without proper syncing: https://gfycat.com/BackAnxiousFerret and with proper syncing: https://gfycat.com/TatteredKindlyDalmatian
 					AI_FlutterTime = Main.rand.NextBool() ? 100 : 50;
 					npc.netUpdate = true;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.Projectiles
 {
@@ -161,7 +162,7 @@ namespace ExampleMod.Projectiles
 				projectile.netUpdate = true;
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 				// Play the sound
-				Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y);
+				Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
 			}
 
 			return false;

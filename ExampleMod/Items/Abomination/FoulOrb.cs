@@ -19,10 +19,10 @@ namespace ExampleMod.Items.Abomination
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 20;
-			item.rare = 9;
+			item.rare = ItemRarityID.Cyan;
 			item.useAnimation = 45;
 			item.useTime = 45;
-			item.useStyle = 4;
+			item.useStyle = ItemUseStyleID.HoldingUp;
 			item.UseSound = SoundID.Item44;
 			item.consumable = true;
 		}

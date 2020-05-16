@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
 {
@@ -15,7 +16,7 @@ namespace ExampleMod.Items.Armor
 		public override void SetDefaults() {
 			item.width = 18;
 			item.height = 18;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 			item.vanity = true;
 		}
 

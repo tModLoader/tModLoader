@@ -205,7 +205,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
   </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
-  </ ItemGroup >
+  </ItemGroup>
 </Project>";
 		}
 

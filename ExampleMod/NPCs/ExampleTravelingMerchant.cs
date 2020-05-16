@@ -251,7 +251,7 @@ namespace ExampleMod.NPCs
 		public override void SetupShop(Chest shop, ref int nextSlot) {
 			foreach (Item item in shopItems) {
 				// We dont want "empty" items and unloaded items to appear
-				if (item == null || item.type == 0)
+				if (item == null || item.type == ItemID.None)
 					continue;
 
 				shop.item[nextSlot].SetDefaults(item.type);

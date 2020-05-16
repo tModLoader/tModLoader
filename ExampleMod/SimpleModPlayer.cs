@@ -55,7 +55,7 @@ namespace ExampleMod
 				item.height = 34;
 				item.accessory = true;
 				item.value = 150000;
-				item.rare = 5;
+				item.rare = ItemRarityID.Pink;
 			}
 
 			public override void UpdateAccessory(Player player, bool hideVisual) {

@@ -137,7 +137,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			if (damageTotal < 0) {
 				damageTotal = 0;
 			}
-			if (Main.netMode == 1) {
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
 				return;
 			}
 			if (stage == 2 && difficulty > 0) {
@@ -242,7 +242,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		public void FindPlayers() {
-			if (Main.netMode != 1) {
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				int originalCount = targets.Count;
 				targets.Clear();
 				for (int k = 0; k < 255; k++) {
@@ -250,7 +250,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 						targets.Add(k);
 					}
 				}
-				if (Main.netMode == 2 && targets.Count != originalCount) {
+				if (Main.netMode == NetmodeID.Server && targets.Count != originalCount) {
 					ModPacket netMessage = GetPacket(PuritySpiritMessageType.TargetList);
 					netMessage.Write(targets.Count);
 					foreach (int target in targets) {
@@ -278,7 +278,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					Player player = Main.player[k];
 					if (player.active && player.position.X > center.X - arenaWidth / 2 && player.position.X + player.width < center.X + arenaWidth / 2 && player.position.Y > center.Y - arenaHeight / 2 && player.position.Y + player.height < center.Y + arenaHeight / 2) {
 						player.GetModPlayer<ExamplePlayer>().heroLives = 3;
-						if (Main.netMode == 2) {
+						if (Main.netMode == NetmodeID.Server) {
 							ModPacket netMessage = GetPacket(PuritySpiritMessageType.HeroPlayer);
 							netMessage.Send(k);
 						}
@@ -303,7 +303,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 				attackProgress = 0;
 				stage++;
 				npc.dontTakeDamage = false;
-				if (Main.netMode == 2) {
+				if (Main.netMode == NetmodeID.Server) {
 					ModPacket netMessage = GetPacket(PuritySpiritMessageType.DontTakeDamage);
 					netMessage.Write(false);
 					netMessage.Send();
@@ -312,7 +312,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		private void SetupCrystals(int radius, bool clockwise) {
-			if (Main.netMode == 1) {
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
 				return;
 			}
 			Vector2 center = npc.Center;
@@ -326,14 +326,14 @@ namespace ExampleMod.NPCs.PuritySpirit
 				int proj = Projectile.NewProjectile(pos.X, pos.Y, 0f, 0f, ProjectileType<PureCrystal>(), damage, 0f, Main.myPlayer, npc.whoAmI, angle);
 				Main.projectile[proj].localAI[0] = radius;
 				Main.projectile[proj].localAI[1] = clockwise ? 1 : -1;
-				NetMessage.SendData(27, -1, -1, null, proj);
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, proj);
 			}
 		}
 
 		private void UltimateAttack() {
 			if (attackProgress == 0) {
 				PlaySound(15, 0);
-				if (Main.netMode != 1) {
+				if (Main.netMode != NetmodeID.MultiplayerClient) {
 					int damage = Main.expertMode ? 720 : 600;
 					Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ProjectileType<VoidWorld>(), damage, 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
 				}
@@ -448,7 +448,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 					int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ProjectileType<NullLaser>(), damage, 0f, Main.myPlayer, npc.whoAmI, (int)(60f + k * timer));
 					Main.projectile[proj].localAI[0] = (int)totalTime;
 					((NullLaser)Main.projectile[proj].modProjectile).warningTime = timer;
-					NetMessage.SendData(27, -1, -1, null, proj);
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, proj);
 				}
 				attackProgress = (int)totalTime;
 			}
@@ -489,7 +489,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 						Main.projectile[proj].localAI[0] = target;
 						Main.projectile[proj].localAI[1] = rotationSpeed;
 						((PuritySphere)Main.projectile[proj].modProjectile).maxTimer = (int)time;
-						NetMessage.SendData(27, -1, -1, null, proj);
+						NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, proj);
 					}
 				}
 				attackProgress = 60 + (int)time + PuritySphere.strikeTime;
@@ -526,12 +526,12 @@ namespace ExampleMod.NPCs.PuritySpirit
 				npc.active = true;
 				npc.life = 1;
 				npc.dontTakeDamage = true;
-				if (Main.netMode == 2) {
+				if (Main.netMode == NetmodeID.Server) {
 					ModPacket netMessage = GetPacket(PuritySpiritMessageType.DontTakeDamage);
 					netMessage.Write(true);
 					netMessage.Send();
 				}
-				if (Main.netMode != 1) {
+				if (Main.netMode != NetmodeID.MultiplayerClient) {
 					stage = 10;
 				}
 				return false;
@@ -695,10 +695,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		private void OnHit(int damage) {
 			damageTotal += damage * 60;
-			if (Main.netMode != 0) {
+			if (Main.netMode != NetmodeID.SinglePlayer) {
 				ModPacket netMessage = GetPacket(PuritySpiritMessageType.Damage);
 				netMessage.Write(damage * 60);
-				if (Main.netMode == 1) {
+				if (Main.netMode == NetmodeID.MultiplayerClient) {
 					netMessage.Write(Main.myPlayer);
 				}
 				netMessage.Send();
@@ -707,7 +707,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 
 		public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
 			if (damageTotal >= dpsCap * 60) {
-				if (!saidRushMessage && Main.netMode != 1) {
+				if (!saidRushMessage && Main.netMode != NetmodeID.MultiplayerClient) {
 					Talk("Oh, in a rush now, are we?");
 					saidRushMessage = true;
 				}
@@ -761,7 +761,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		private void Talk(string message) {
-			if (Main.netMode != 2) {
+			if (Main.netMode != NetmodeID.Server) {
 				string text = Language.GetTextValue("Mods.ExampleMod.NPCTalk", Lang.GetNPCNameValue(npc.type), message);
 				Main.NewText(text, 150, 250, 150);
 			}
@@ -772,7 +772,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 		}
 
 		private void PlaySound(int type, int style) {
-			if (Main.netMode != 2) {
+			if (Main.netMode != NetmodeID.Server) {
 				if (targets.Contains(Main.myPlayer)) {
 					Main.PlaySound(type, -1, -1, style);
 				}
@@ -825,7 +825,7 @@ namespace ExampleMod.NPCs.PuritySpirit
 			else if (type == PuritySpiritMessageType.Damage) {
 				int damage = reader.ReadInt32();
 				damageTotal += damage;
-				if (Main.netMode == 2) {
+				if (Main.netMode == NetmodeID.Server) {
 					ModPacket netMessage = GetPacket(PuritySpiritMessageType.Damage);
 					int ignore = reader.ReadInt32();
 					netMessage.Write(damage);

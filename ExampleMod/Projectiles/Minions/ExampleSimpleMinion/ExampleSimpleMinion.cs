@@ -58,9 +58,9 @@ namespace ExampleMod.Projectiles.Minions.ExampleSimpleMinion
 			item.height = 32;
 			item.useTime = 36;
 			item.useAnimation = 36;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.value = Item.buyPrice(0, 30, 0, 0);
-			item.rare = 9;
+			item.rare = ItemRarityID.Cyan;
 			item.UseSound = SoundID.Item44;
 
 			// These below are needed for a minion weapon

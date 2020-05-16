@@ -19,7 +19,7 @@ namespace ExampleMod.Items
 			item.consumable = true;
 			item.width = 24;
 			item.height = 24;
-			item.rare = 11;
+			item.rare = ItemRarityID.Purple;
 			item.expert = true;
 		}
 

@@ -16,10 +16,10 @@ namespace ExampleMod.Items
 			item.width = 22;
 			item.height = 22;
 			item.maxStack = 99;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 			item.useAnimation = 15;
 			item.useTime = 10;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.UseSound = SoundID.Item81;
 			item.consumable = true;
 		}

@@ -21,7 +21,7 @@ namespace ExampleMod.Items.Armor
 			item.width = 18;
 			item.height = 18;
 			item.value = 10000;
-			item.rare = 2;
+			item.rare = ItemRarityID.Green;
 			item.defense = 60;
 		}
 

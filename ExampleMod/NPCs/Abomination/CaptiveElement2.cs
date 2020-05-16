@@ -214,7 +214,7 @@ namespace ExampleMod.NPCs.Abomination
 			if (captiveType != 4) {
 				LookToPlayer();
 				attackCool -= 1f;
-				if (attackCool <= 0f && Main.netMode != 1) {
+				if (attackCool <= 0f && Main.netMode != NetmodeID.MultiplayerClient) {
 					if (captiveType == 3) {
 						jungleAI++;
 						if (jungleAI == 0) {
@@ -329,7 +329,7 @@ namespace ExampleMod.NPCs.Abomination
 		}
 
 		public override void NPCLoot() {
-			if (Main.netMode != 1) {
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				int centerX = (int)(npc.position.X + (float)(npc.width / 2)) / 16;
 				int centerY = (int)(npc.position.Y + (float)(npc.height / 2)) / 16;
 				int halfLength = npc.width / 2 / 16 + 1;
@@ -341,7 +341,7 @@ namespace ExampleMod.NPCs.Abomination
 						}
 						Main.tile[x, y].lava(false);
 						Main.tile[x, y].liquid = 0;
-						if (Main.netMode == 2) {
+						if (Main.netMode == NetmodeID.Server) {
 							NetMessage.SendTileSquare(-1, x, y, 1);
 						}
 						else {

@@ -2,6 +2,7 @@ using ExampleMod.Dusts;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
 {
@@ -32,7 +33,7 @@ namespace ExampleMod.Items.Armor
 			item.height = 28;
 			item.accessory = true;
 			item.value = 150000;
-			item.rare = 5;
+			item.rare = ItemRarityID.Pink;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

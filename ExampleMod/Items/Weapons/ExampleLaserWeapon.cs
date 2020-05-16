@@ -18,12 +18,12 @@ namespace ExampleMod.Items.Weapons
 			item.magic = true;
 			item.channel = true; //Channel so that you can held the weapon [Important]
 			item.mana = 5;
-			item.rare = 5;
+			item.rare = ItemRarityID.Pink;
 			item.width = 28;
 			item.height = 30;
 			item.useTime = 20;
 			item.UseSound = SoundID.Item13;
-			item.useStyle = 5;
+			item.useStyle = ItemUseStyleID.HoldingOut;
 			item.shootSpeed = 14f;
 			item.useAnimation = 20;
 			item.shoot = ProjectileType<ExampleLaser>();

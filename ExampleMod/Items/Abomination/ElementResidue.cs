@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Abomination
 {
@@ -13,7 +14,7 @@ namespace ExampleMod.Items.Abomination
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;
-			item.rare = 9;
+			item.rare = ItemRarityID.Cyan;
 			item.value = Item.sellPrice(0, 2, 50, 0);
 		}
 	}
