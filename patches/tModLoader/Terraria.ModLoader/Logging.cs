@@ -220,7 +220,7 @@ namespace Terraria.ModLoader
 				traceString = traceString.Substring(traceString.IndexOf('\n'));
 				var exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 				lock (pastExceptions) {
-					if (!pastExceptions.Add(exString) && !oom)
+					if (!pastExceptions.Add(exString))
 						return;
 				}
 
