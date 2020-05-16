@@ -16,14 +16,14 @@ namespace Terraria.ModLoader.Core
 			if (!Directory.Exists(Logging.LogArchiveDir)) {
 				string[] existingOldLogs = Directory.GetFiles(Logging.LogDir, "*.zip");
 
+				Directory.CreateDirectory(Logging.LogArchiveDir);
+
 				for (int i = 0; i < existingOldLogs.Length; i++) {
 					try {
-						File.Delete(existingOldLogs[i]);
+						File.Move(existingOldLogs[i], Path.Combine(Logging.LogArchiveDir, Path.GetFileName(existingOldLogs[i])));
 					}
 					catch (IOException) { }
 				}
-
-				Directory.CreateDirectory(Logging.LogArchiveDir);
 			}
 
 			foreach (string logFile in Directory.GetFiles(Logging.LogDir, "*.old*")) {
