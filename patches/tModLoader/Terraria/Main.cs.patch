@@ -3862,6 +3862,24 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -35211,8 +_,16 @@
+ 
+ 			if (!loadedEverything) {
+ 				array[0] = true;
+-				array9[0] = string.Format("   {0}  {1,-10}", Language.GetTextValue("UI.LoadingCode"), Program.LoadedPercentage.ToString("P0"));
++				array9[0] = string.Format("{0}  {1}", Language.GetTextValue("UI.LoadingCode"), Program.LoadedPercentage.ToString("P0"));
+ 				num5 = 1;
++				if (!ModLoader.ModLoader.skipLoad) {
++					array9[1] = "Click to skip loading mods";
++					array7[1] = 0.5f;
++					num5 = 2;
++					if(selectedMenu == 1) {
++						ModLoader.ModLoader.skipLoad = true;
++					}
++				}
+ 			}
+ 			else if (menuMode == 1212) {
+ 				array9[0] = Lang.menu[102].Value;
 @@ -35249,7 +_,7 @@
  				if (selectedMenu >= 1) {
  					chTitle = true;
