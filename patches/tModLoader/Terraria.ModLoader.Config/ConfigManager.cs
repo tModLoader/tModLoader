@@ -111,7 +111,7 @@ namespace Terraria.ModLoader.Config
 			try {
 				JsonConvert.PopulateObject(json, config, serializerSettings);
 			}
-			catch (JsonReaderException) when (jsonFileExists) {
+			catch (Exception e) when (jsonFileExists && (e is JsonReaderException || e is JsonSerializationException)) {
 				Logging.tML.Warn($"Then config file {config.Name} from the mod {config.mod.Name} located at {path} failed to load. The file was likely corrupted somehow, so the defaults will be loaded and the file deleted.");
 				File.Delete(path);
 				JsonConvert.PopulateObject("{}", config, serializerSettings);
