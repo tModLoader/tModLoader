@@ -534,11 +534,32 @@
  			Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
  			float num22 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
  			float num23 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
-@@ -2540,9 +_,14 @@
+@@ -2515,7 +_,7 @@
+ 			}
+ 
+ 			if (!crystalLeaf || petalTimer != 0)
+-				return;
++				goto End;
+ 
+ 			_ = inventory[selectedItem].type;
+ 			int num5 = 0;
+@@ -2528,7 +_,7 @@
+ 					continue;
+ 				}
+ 
+-				return;
++				goto End;
+ 			}
+ 
+ 			petalTimer = 50;
+@@ -2540,9 +_,17 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
-+			PlayerHooks.OnHitAnything(this, x, y, victim); // TODO: Fix this, it is probably wrong now.
++
++			End:
++
++			PlayerHooks.OnHitAnything(this, x, y, victim);
  		}
  
  		public void openPresent() {
