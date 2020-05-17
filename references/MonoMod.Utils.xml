@@ -804,6 +804,13 @@
             Print the exception to the console, including extended loading / reflection data useful for mods.
             </summary>
         </member>
+        <member name="M:MonoMod.Utils.Extensions.GetStateMachineTarget(System.Reflection.MethodInfo)">
+            <summary>
+            Get the method of interest for a given state machine method.
+            </summary>
+            <param name="method">The method creating the state machine.</param>
+            <returns>The "main" method in the state machine.</returns>
+        </member>
         <member name="M:MonoMod.Utils.Extensions.SafeResolve(Mono.Cecil.TypeReference)">
             <summary>
             Safely resolve a reference, silently discarding any exceptions.
