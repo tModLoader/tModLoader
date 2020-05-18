@@ -10,6 +10,11 @@
 *.force
 installer2/*.class
 installer2/*.jar
+solutions/ReleaseExtras/JourneysEndCompatibilityContent/Images
+solutions/ReleaseExtras/LinuxFiles
+solutions/ReleaseExtras/LinuxMacSharedFiles
+solutions/ReleaseExtras/MacFiles
+solutions/ReleaseExtras/WindowsFiles
 solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/**/*.zip
