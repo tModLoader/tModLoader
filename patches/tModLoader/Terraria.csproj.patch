@@ -114,13 +114,17 @@
    </ItemGroup>
    <Target Name="EditBin" AfterTargets="Build">
      <PropertyGroup>
-@@ -118,5 +_,9 @@
+@@ -116,7 +_,11 @@
+   </Target>
+   <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
-     <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
-     <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
+-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\$(OutputName).exe" />
+-    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(tModLoaderSteamPath)" />
 +  </Target>
 +  <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
 +    <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
-+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\ModCompile\tModLoader.FNA.exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\ModCompile\tModLoader.FNA.exe" />
    </Target>
  </Project>

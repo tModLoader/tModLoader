@@ -21,6 +21,7 @@ namespace Terraria.ModLoader.Setup
 		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
 		public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
+		public static string tMLSteamDir { get; private set; }
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -39,13 +40,16 @@ namespace Terraria.ModLoader.Setup
 				return ResolveAssemblyFrom(libDir, name) ?? ResolveAssemblyFrom(referencesDir, name);
 			};
 
-			if (args.Length == 1 && args[0] == "--steamdir") {
+			/*if (args.Length == 1 && args[0] == "--steamdir") {
 				Console.WriteLine(SteamDir);
 				return;
-			}
+			}*/
 
-			if (!File.Exists(targetsFilePath))
-				UpdateSteamDirTargetsFile();
+			tMLSteamDir = Path.Combine(Path.GetDirectoryName(SteamDir), "tModLoader");
+			if (!Directory.Exists(tMLSteamDir))
+				tMLSteamDir = SteamDir;
+
+			UpdateSteamDirTargetsFile();
 
 			Application.Run(new MainForm());
 		}
@@ -140,13 +144,21 @@ namespace Terraria.ModLoader.Setup
 		private static readonly string targetsFilePath = Path.Combine("src", "TerrariaSteamPath.targets");
 		private static void UpdateSteamDirTargetsFile() {
 			SetupOperation.CreateParentDirectory(targetsFilePath);
-			File.WriteAllText(targetsFilePath,
+
+			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
     <TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
+    <tModLoaderSteamPath>{tMLSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
-</Project>");
+</Project>";
+
+
+			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
+				return;
+
+			File.WriteAllText(targetsFilePath, targetsText);
 		}
 	}
 }
