@@ -3862,6 +3862,17 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -35149,8 +_,8 @@
+ 
+ 			Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoA / 255f)), (byte)((float)(int)color.G * ((float)LogoA / 255f)), (byte)((float)(int)color.B * ((float)LogoA / 255f)), (byte)((float)(int)color.A * ((float)LogoA / 255f)));
+ 			Microsoft.Xna.Framework.Color color3 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoB / 255f)), (byte)((float)(int)color.G * ((float)LogoB / 255f)), (byte)((float)(int)color.B * ((float)LogoB / 255f)), (byte)((float)(int)color.A * ((float)LogoB / 255f)));
+-			spriteBatch.Draw(logoTexture, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, logoTexture.Width, logoTexture.Height), color2, logoRotation, new Vector2(logoTexture.Width / 2, logoTexture.Height / 2), logoScale, SpriteEffects.None, 0f);
++			spriteBatch.Draw(logoTexture, new Vector2(screenWidth / 2, 120f), new Microsoft.Xna.Framework.Rectangle(0, 0, logoTexture.Width, logoTexture.Height), color2, logoRotation, new Vector2(logoTexture.Width / 2, logoTexture.Height / 2), logoScale, SpriteEffects.None, 0f);
+-			spriteBatch.Draw(logo2Texture, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, logoTexture.Width, logoTexture.Height), color3, logoRotation, new Vector2(logoTexture.Width / 2, logoTexture.Height / 2), logoScale, SpriteEffects.None, 0f);
++			spriteBatch.Draw(logo2Texture, new Vector2(screenWidth / 2, 120f), new Microsoft.Xna.Framework.Rectangle(0, 0, logoTexture.Width, logoTexture.Height), color3, logoRotation, new Vector2(logoTexture.Width / 2, logoTexture.Height / 2), logoScale, SpriteEffects.None, 0f);
+ 			if (dayTime) {
+ 				LogoA += 2;
+ 				if (LogoA > 255)
 @@ -35211,8 +_,16 @@
  
  			if (!loadedEverything) {
