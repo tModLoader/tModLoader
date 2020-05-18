@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.UI
 			_baseElement.Append(buttonCreate);
 
 			// TODO localisations
-			const float top = 16;
+			float top = 16;
 			_modName = createAndAppendTextInputWithLabel("ModName (no spaces)", "Type here");
 			_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.CurrentString.Replace(" ", "")); };
 			_modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
