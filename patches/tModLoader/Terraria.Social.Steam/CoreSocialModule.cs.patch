@@ -12,7 +12,7 @@
  	{
  		private static CoreSocialModule _instance;
 -		public const int SteamAppId = 105600;
-+		public const int SteamAppId = 1281930;
++		public const uint SteamAppId = ModLoader.Engine.Steam.TMLAppID; // No references to this?
  		private bool IsSteamValid;
  		private object _steamTickLock = new object();
  		private object _steamCallbackLock = new object();
@@ -22,8 +22,8 @@
  #if CLIENT
 -			if (SteamAPI.RestartAppIfNecessary(new AppId_t(105600u))) {
 +			if (System.Diagnostics.Debugger.IsAttached && !File.Exists("steam_appid.txt"))
-+				File.WriteAllText("steam_appid.txt", "1281930");
-+			if (SteamAPI.RestartAppIfNecessary(new AppId_t(1281930u)) && !System.Diagnostics.Debugger.IsAttached) {
++				ModLoader.Engine.Steam.EnsureSteamAppIdTMLFile();
++			if (SteamAPI.RestartAppIfNecessary(ModLoader.Engine.Steam.TMLAppID_t) && !System.Diagnostics.Debugger.IsAttached) {
  				Environment.Exit(1);
  				return;
  			}
