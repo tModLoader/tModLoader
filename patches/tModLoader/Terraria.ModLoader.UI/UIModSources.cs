@@ -133,8 +133,12 @@ namespace Terraria.ModLoader.UI
 
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(10, -1, -1, 1);
-			Directory.CreateDirectory(ModCompile.ModSourcePath);
-			Process.Start(ModCompile.ModSourcePath);
+			try {
+				Directory.CreateDirectory(ModCompile.ModSourcePath);
+				Process.Start(ModCompile.ModSourcePath);
+			} catch(Exception e) {
+				Logging.tML.Error(e);
+			}
 		}
 
 		private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
