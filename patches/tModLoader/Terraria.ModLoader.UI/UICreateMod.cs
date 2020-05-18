@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.CodeDom.Compiler;
 using System.IO;
 using Terraria.GameContent.UI.Elements;
@@ -9,22 +10,25 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
-	public class UICreateMod : UIState {
+	public class UICreateMod : UIState
+	{
+		private UIElement _baseElement;
 		private UITextPanel<string> _messagePanel;
 		private UIFocusInputTextField _modName;
 		private UIFocusInputTextField _modDiplayName;
 		private UIFocusInputTextField _modAuthor;
 		private UIFocusInputTextField _basicSword;
 
-		public override void OnInitialize() {
-			var uIElement = new UIElement {
+		public override void OnInitialize()
+		{
+			_baseElement = new UIElement {
 				Width = { Percent = 0.8f },
 				MaxWidth = UICommon.MaxPanelWidth,
 				Top = { Pixels = 220 },
 				Height = { Pixels = -220, Percent = 1f },
 				HAlign = 0.5f
 			};
-			Append(uIElement);
+			Append(_baseElement);
 
 			var mainPanel = new UIPanel {
 				Width = { Percent = 1f },
@@ -32,14 +36,14 @@ namespace Terraria.ModLoader.UI
 				BackgroundColor = UICommon.MainPanelBackground,
 				PaddingTop = 0f
 			};
-			uIElement.Append(mainPanel);
+			_baseElement.Append(mainPanel);
 
 			var uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"), 0.8f, true) {
 				HAlign = 0.5f,
 				Top = { Pixels = -35 },
 				BackgroundColor = UICommon.DefaultUIBlue
 			}.WithPadding(15);
-			uIElement.Append(uITextPanel);
+			_baseElement.Append(uITextPanel);
 
 			_messagePanel = new UITextPanel<string>(Language.GetTextValue("")) {
 				Width = { Percent = 1f },
@@ -47,7 +51,7 @@ namespace Terraria.ModLoader.UI
 				VAlign = 1f,
 				Top = { Pixels = -20 }
 			};
-			uIElement.Append(_messagePanel);
+			// Appended dynamically
 
 			var buttonBack = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = { Pixels = -10, Percent = 0.5f },
@@ -56,16 +60,17 @@ namespace Terraria.ModLoader.UI
 				Top = { Pixels = -65 }
 			}.WithFadedMouseOver();
 			buttonBack.OnClick += BackClick;
-			uIElement.Append(buttonBack);
+			_baseElement.Append(buttonBack);
 
 			var buttonCreate = new UITextPanel<string>(Language.GetTextValue("LegacyMenu.28")); // Create
 			buttonCreate.CopyStyle(buttonBack);
 			buttonCreate.HAlign = 1f;
 			buttonCreate.WithFadedMouseOver();
 			buttonCreate.OnClick += OKClick;
-			uIElement.Append(buttonCreate);
+			_baseElement.Append(buttonCreate);
 
-			float top = 16;
+			// TODO localisations
+			const float top = 16;
 			_modName = createAndAppendTextInputWithLabel("ModName (no spaces)", "Type here");
 			_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.CurrentString.Replace(" ", "")); };
 			_modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
@@ -76,7 +81,8 @@ namespace Terraria.ModLoader.UI
 			_modAuthor.OnTab += (a, b) => _basicSword.Focused = true;
 			_basicSword.OnTab += (a, b) => _modName.Focused = true;
 
-			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint) {
+			UIFocusInputTextField createAndAppendTextInputWithLabel(string label, string hint)
+			{
 				var panel = new UIPanel();
 				panel.SetPadding(0);
 				panel.Width.Set(0, 1f);
@@ -114,7 +120,8 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		public override void OnActivate() {
+		public override void OnActivate()
+		{
 			base.OnActivate();
 			_modName.SetText("");
 			_modDiplayName.SetText("");
@@ -122,62 +129,89 @@ namespace Terraria.ModLoader.UI
 			_messagePanel.SetText("");
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
-			Main.menuMode = Interface.modSourcesID;
-		}
+		private string lastKnownMessage = "";
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+			if (lastKnownMessage != _messagePanel.Text) {
+				lastKnownMessage = _messagePanel.Text;
+				if (string.IsNullOrEmpty(_messagePanel.Text)) {
+					_baseElement.RemoveChild(_messagePanel);
+				}
+				else {
 
-		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
-			string modNameTrimmed = _modName.CurrentString.Trim();
-			string basicSwordTrimmed = _basicSword.CurrentString.Trim();
-			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
-			var provider = CodeDomProvider.CreateProvider("C#");
-			if (Directory.Exists(sourceFolder))
-				_messagePanel.SetText("Folder already exists");
-			else if (!provider.IsValidIdentifier(modNameTrimmed))
-				_messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
-			else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
-				_messagePanel.SetText("BasicSword is invalid C# identifier. Remove spaces.");
-			else if (string.IsNullOrWhiteSpace(_modDiplayName.CurrentString))
-				_messagePanel.SetText("DisplayName can't be empty");
-			else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
-				_messagePanel.SetText("Author can't be empty");
-			else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
-				_messagePanel.SetText("Author can't be empty");
-			else {
-				Main.PlaySound(SoundID.MenuOpen);
-				Main.menuMode = Interface.modSourcesID;
-				Directory.CreateDirectory(sourceFolder);
-
-				// TODO: verbatim line endings, localization.
-				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
-				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
-				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
-				File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
-				string propertiesFolder = Path.Combine(sourceFolder, "Properties");
-				Directory.CreateDirectory(propertiesFolder);
-				File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), GetLaunchSettings());
-				if (!string.IsNullOrEmpty(basicSwordTrimmed)) {
-					string itemsFolder = Path.Combine(sourceFolder, "Items");
-					Directory.CreateDirectory(itemsFolder);
-					File.WriteAllText(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.cs"), GetBasicSword(modNameTrimmed, basicSwordTrimmed));
-					File.WriteAllBytes(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.png"), ExampleSwordPNG);
+					_baseElement.Append(_messagePanel);
 				}
 			}
 		}
 
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			Main.PlaySound(SoundID.MenuClose);
+			Main.menuMode = Interface.modSourcesID;
+		}
+
+		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
+		{
+			try {
+				string modNameTrimmed = _modName.CurrentString.Trim();
+				string basicSwordTrimmed = _basicSword.CurrentString.Trim();
+				string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
+				var provider = CodeDomProvider.CreateProvider("C#");
+				if (Directory.Exists(sourceFolder))
+					_messagePanel.SetText("Folder already exists");
+				else if (!provider.IsValidIdentifier(modNameTrimmed))
+					_messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
+				else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
+					_messagePanel.SetText("BasicSword is invalid C# identifier. Remove spaces.");
+				else if (string.IsNullOrWhiteSpace(_modDiplayName.CurrentString))
+					_messagePanel.SetText("DisplayName can't be empty");
+				else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
+					_messagePanel.SetText("Author can't be empty");
+				else {
+
+					Directory.CreateDirectory(sourceFolder);
+
+					// TODO: verbatim line endings, localization.
+					File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
+					File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
+					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
+					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
+					string propertiesFolder = Path.Combine(sourceFolder, "Properties");
+					Directory.CreateDirectory(propertiesFolder);
+					File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), GetLaunchSettings());
+					if (!string.IsNullOrEmpty(basicSwordTrimmed)) {
+						string itemsFolder = Path.Combine(sourceFolder, "Items");
+						Directory.CreateDirectory(itemsFolder);
+						File.WriteAllText(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.cs"), GetBasicSword(modNameTrimmed, basicSwordTrimmed));
+						File.WriteAllBytes(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.png"), ExampleSwordPNG);
+					}
+
+					Main.PlaySound(SoundID.MenuOpen);
+					Main.menuMode = Interface.modSourcesID;
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Error(e);
+				_messagePanel.SetText("There was an issue. Check client.log");
+			}
+		}
+
 		// TODO Let's embed all these files
-		private string GetModBuild() {
+		private string GetModBuild()
+		{
 			return $"displayName = {_modDiplayName.CurrentString}" +
 				$"{Environment.NewLine}author = {_modAuthor.CurrentString}" +
 				$"{Environment.NewLine}version = 0.1";
 		}
 
-		private string GetModDescription() {
+		private string GetModDescription()
+		{
 			return $"{_modDiplayName.CurrentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.";
 		}
 
-		private string GetModClass(string modNameTrimmed) {
+		private string GetModClass(string modNameTrimmed)
+		{
 			return
 $@"using Terraria.ModLoader;
 
@@ -189,7 +223,8 @@ namespace {modNameTrimmed}
 }}";
 		}
 
-		internal string GetModCsproj(string modNameTrimmed) {
+		internal string GetModCsproj(string modNameTrimmed)
+		{
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -221,7 +256,8 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 			return false;
 		}
 
-		internal string GetLaunchSettings() {
+		internal string GetLaunchSettings()
+		{
 			return
 $@"{{
   ""profiles"": {{
@@ -239,7 +275,8 @@ $@"{{
 }}";
 		}
 
-		internal string GetBasicSword(string modNameTrimmed, string basicSwordName) {
+		internal string GetBasicSword(string modNameTrimmed, string basicSwordName)
+		{
 			return
 $@"using Terraria.ID;
 using Terraria.ModLoader;
