@@ -6,7 +6,11 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  
-@@ -20,7 +_,11 @@
+@@ -17,10 +_,15 @@
+ 		public static SocialMode Mode => _mode;
+ 
+ 		public static void Initialize(SocialMode? mode = null) {
++			_modules = new List<ISocialModule>();
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
  #if CLIENT
@@ -19,13 +23,48 @@
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
-@@ -59,7 +_,8 @@
- 		private static void LoadSteam() {
+@@ -28,14 +_,9 @@
+ 			}
+ 
+ 			_mode = mode.Value;
+-			_modules = new List<ISocialModule>();
+ 			SocialMode mode2 = Mode;
+ 			if (mode2 == SocialMode.Steam)
+ 				LoadSteam();
+-
+-			foreach (ISocialModule module in _modules) {
+-				module.Initialize();
+-			}
+ 		}
+ 
+ 		public static void Shutdown() {
+@@ -56,10 +_,16 @@
+ 			return module;
+ 		}
+ 
++		private static bool _steamAPILoaded = false;
+-		private static void LoadSteam() {
++		internal static void LoadSteam() {
++			if (_steamAPILoaded) return;
  			LoadModule<CoreSocialModule>();
  			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
 +			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
++			if (!ModLoader.Engine.Steam.IsSteamApp) {
++				ModLoader.Engine.Steam.EnsureSteamAppIdTerrariaFile();
 -			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+			// Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++				Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++			}
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  #if CLIENT
+@@ -67,6 +_,10 @@
+ #else
+ 			Network = LoadModule<NetServerSocialModule>();
+ #endif
++			foreach (ISocialModule module in _modules) {
++				module.Initialize();
++			}
++			_steamAPILoaded = true;
+ 		}
+ 	}
+ }
