@@ -238,7 +238,9 @@ namespace Terraria.ModLoader
 				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
 				if (oom) {
-					Interface.MessageBoxShow("Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it. (or go and find the 64bit version of tML)");
+					const string error = "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.";
+					Logging.tML.Fatal(error);
+					Interface.MessageBoxShow(error);
 					Environment.Exit(1);
 				}
 			}
