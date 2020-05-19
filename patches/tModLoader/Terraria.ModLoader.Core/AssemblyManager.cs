@@ -372,8 +372,12 @@ namespace Terraria.ModLoader.Core
 
 		private class CecilAssemblyResolver : DefaultAssemblyResolver
 		{
+			private readonly AssemblyNameReference tMLAssemblyName;
+
 			public CecilAssemblyResolver() {
-				RegisterAssembly(ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly);
+				var tMLAssembly = AssemblyDefinition.ReadAssembly(Assembly.GetExecutingAssembly().Location);
+				RegisterAssembly(tMLAssembly);
+				tMLAssemblyName = tMLAssembly.Name;
 			}
 
 			public new void RegisterAssembly(AssemblyDefinition asm) {
@@ -383,6 +387,9 @@ namespace Terraria.ModLoader.Core
 
 			public override AssemblyDefinition Resolve(AssemblyNameReference name) {
 				try {
+					if (name.Name == "Terraria")
+						name = tMLAssemblyName;
+
 					return base.Resolve(name);
 				}
 				catch (AssemblyResolutionException) {
@@ -398,8 +405,6 @@ namespace Terraria.ModLoader.Core
 			}
 
 			private AssemblyDefinition FallbackResolve(AssemblyNameReference name) {
-				if (name.Name == "Terraria")
-					return ModuleDefinition.ReadModule(Assembly.GetExecutingAssembly().Location).Assembly;
 				string resourceName = name.Name + ".dll";
 				resourceName = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
 				MemoryStream ms;
