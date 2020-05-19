@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11.7
+set version=v0.11.7.1
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %version% Release
@@ -91,7 +91,7 @@ copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
 ::copy ReleaseExtras\README_Linux.txt "%lnx%\README.txt" /y
 
 ::call zipjs.bat zipDirItems -source "%lnx%" -destination "%lnx%.zip" -keep yes -force yes
-::call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
+call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
 call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
 
 :: Mac release
