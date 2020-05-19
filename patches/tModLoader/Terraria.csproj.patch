@@ -78,9 +78,14 @@
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
      </Reference>
-@@ -82,6 +_,7 @@
+@@ -80,8 +_,11 @@
+   </ItemGroup>
+   <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
-     <EmbeddedResource Include="Terraria.Libraries/**" />
+-    <EmbeddedResource Include="Terraria.Libraries/**" />
++    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" >
++		<LogicalName>Newtonsoft.Json.dll</LogicalName>
++	</EmbeddedResource>
      <EmbeddedResource Include="Terraria.Localization.Content/*" />
 +    <EmbeddedResource Include="**\*.png" />
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
