@@ -537,9 +537,8 @@ namespace Terraria.ModLoader.Core
 				mod.modFile.AddFile(dllName, File.ReadAllBytes(dllPath));
 
 				// read mod assembly using cecil for verification and pdb processing
-				using (var asmResolver = new DefaultAssemblyResolver()) {
+				using (var asmResolver = new BuildAssemblyResolver(xna)) {
 					asmResolver.AddSearchDirectory(Path.GetDirectoryName(dllPath));
-					asmResolver.AddSearchDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
 					var asm = AssemblyDefinition.ReadAssembly(dllPath, new ReaderParameters { InMemory = true, ReadSymbols = mod.properties.includePDB, AssemblyResolver = asmResolver });
 					VerifyModAssembly(mod.Name, asm);
@@ -671,9 +670,17 @@ namespace Terraria.ModLoader.Core
 			throw new BuildException("Missing dll reference: " + path);
 		}
 
-		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna)
+		private static string GetTerrariaReference(bool xna)
 		{
+			if (xna == PlatformUtilities.IsXNA)
+				return Assembly.GetExecutingAssembly().Location;
+
+			return Path.Combine(modCompileDir, xna ? "tModLoader.XNA.exe" : "tModLoader.FNA.exe");
+		}
+
+		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {
 			var refs = new List<string>();
+			refs.Add(GetTerrariaReference(xna));
 
 			var xnaAndFnaLibs = new[] {
 				"Microsoft.Xna.Framework.dll",
@@ -684,10 +691,9 @@ namespace Terraria.ModLoader.Core
 			};
 
 			if (xna == PlatformUtilities.IsXNA) {
-				var terrariaModule = Assembly.GetExecutingAssembly();
-				refs.Add(terrariaModule.Location);
-				// find xna in the currently referenced assemblies (eg, via GAC)
-				refs.AddRange(terrariaModule.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaAndFnaLibs.Contains(Path.GetFileName(loc))));
+				var executingAssembly = Assembly.GetExecutingAssembly();
+				// find xna/fna in the currently referenced assemblies (eg, via GAC)
+				refs.AddRange(executingAssembly.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaAndFnaLibs.Contains(Path.GetFileName(loc))));
 
 				// avoid a double extract of the embedded dlls
 				if (referencesUpdated) {
@@ -696,23 +702,21 @@ namespace Terraria.ModLoader.Core
 				}
 
 				//extract embedded resource dlls to the references path rather than the tempDir
-				foreach (var resName in terrariaModule.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
+				foreach (var resName in executingAssembly.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
 					var path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
-					using (Stream res = terrariaModule.GetManifestResourceStream(resName), file = File.Create(path))
+					using (Stream res = executingAssembly.GetManifestResourceStream(resName), file = File.Create(path))
 						res.CopyTo(file);
 
 					refs.Add(path);
 				}
 			}
 			else {
-				var mainModulePath = Path.Combine(modCompileDir, xna ? "tModLoader.XNA.exe" : "tModLoader.FNA.exe");
-				refs.Add(mainModulePath);
-				// find xna in the ModCompile folder
+				// find xna/fna in the ModCompile folder
 				refs.AddRange(xnaAndFnaLibs.Select(f => Path.Combine(modCompileDir, f)).Where(File.Exists));
 
 				//extract embedded resource dlls to a temporary folder
-				var asm = AssemblyDefinition.ReadAssembly(mainModulePath);
-				foreach (var res in asm.MainModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
+				var terrariaModule = AssemblyDefinition.ReadAssembly(refs[0]).MainModule;
+				foreach (var res in terrariaModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
 					var path = Path.Combine(tempDir, Path.GetFileName(res.Name));
 					using (Stream s = res.GetResourceStream(), file = File.Create(path))
 						s.CopyTo(file);
@@ -762,6 +766,29 @@ namespace Terraria.ModLoader.Core
 						first = false;
 					}
 				}
+			}
+		}
+
+		// Workaround for #896
+		// really we should bring all the references here, but that's likely to defeat half the point of no-compile
+		// when we move to .NET Core we shouldn't need to generate pdbs/mdbs with cecil anymore, so this won't be necessary
+		private class BuildAssemblyResolver : DefaultAssemblyResolver
+		{
+			private readonly AssemblyNameReference tMLAssemblyName;
+
+			public BuildAssemblyResolver(bool xna)
+			{
+				var tMLAssembly = AssemblyDefinition.ReadAssembly(GetTerrariaReference(xna));
+				RegisterAssembly(tMLAssembly);
+				tMLAssemblyName = tMLAssembly.Name;;
+			}
+
+			public override AssemblyDefinition Resolve(AssemblyNameReference name)
+			{
+				if (name.Name == "Terraria")
+					name = tMLAssemblyName;
+
+				return base.Resolve(name);
 			}
 		}
 	}
