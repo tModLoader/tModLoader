@@ -38,7 +38,7 @@
  		}
  
  		public static void Shutdown() {
-@@ -56,10 +_,16 @@
+@@ -56,10 +_,15 @@
  			return module;
  		}
  
@@ -49,11 +49,10 @@
  			LoadModule<CoreSocialModule>();
  			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
 +			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
-+			if (!ModLoader.Engine.Steam.IsSteamApp) {
-+				ModLoader.Engine.Steam.EnsureSteamAppIdTerrariaFile();
++			//if (!ModLoader.Engine.Steam.IsSteamApp) {
 -			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+				Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+			}
++				//Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++			//}
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  #if CLIENT
