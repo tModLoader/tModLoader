@@ -335,6 +335,10 @@ namespace Terraria.ModLoader.Core
 		internal static void BuildModCommandLine(string modFolder)
 		{
 			// Once we get to this point, the application is guaranteed to exit
+			if (!DeveloperModeReady(out string msg)) {
+				Console.Error.WriteLine("Developer Mode is not ready: " + msg);
+				Environment.Exit(1);
+			}
 			var lockFile = AcquireConsoleBuildLock();
 			try {
 				new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
