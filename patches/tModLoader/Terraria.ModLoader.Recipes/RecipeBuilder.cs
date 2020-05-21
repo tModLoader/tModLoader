@@ -9,6 +9,11 @@ namespace Terraria.ModLoader.Recipes
 	{
 		private readonly ModRecipe _recipe;
 
+		public static RecipeBuilder New() 
+		{
+			return new RecipeBuilder();	
+		}
+		
 		/// <summary>Creates a new instance with no ingredients and no result.</summary>
 		/// <seealso cref="Requires(int,int)"/>
 		/// <seealso cref="Build"/>
@@ -51,7 +56,6 @@ namespace Terraria.ModLoader.Recipes
 			_recipe.SetResult(item, stack);
 		}
 
-
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size.
 		/// Ex.: 
@@ -60,22 +64,20 @@ namespace Terraria.ModLoader.Recipes
 		/// <param name="type">The item type.</param>
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(int type, int stack = 1)
+		public RecipeBuilder AddIngredient(int type, int stack = 1)
 		{
 			_recipe.AddIngredient(type, stack);
 			return this;
 		}
 
-
 		// System.TupleValue is not resolved. Need to import it from a NuGet package ?
-		/*public RecipeBuilder Requires(params (short itemId, int stack)[] ingredients)
+		/*public RecipeBuilder AddIngredients(params (short itemId, int stack)[] ingredients)
 		{
 			for (int i = 0; i < ingredients.Length; i++)
 				Requires(ingredients[i].Item1, ingredients[i].Item2);
 
 			return this;
 		}*/
-
 
 		/// <summary>
 		/// Adds the specified ingredients to this recipe with the given item types.
@@ -84,7 +86,7 @@ namespace Terraria.ModLoader.Recipes
 		/// </summary>
 		/// <param name="types">The item types.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(params int[] types)
+		public RecipeBuilder AddIngredients(params int[] types)
 		{
 			for (int i = 0; i < types.Length; i++)
 				Requires(types[i]);
@@ -92,14 +94,13 @@ namespace Terraria.ModLoader.Recipes
 			return this;
 		}
 
-
 		/// <summary>Adds an ingredient to this recipe with the given item name from the given mod, and with the given stack stack. If the mod parameter is null, then it will automatically use an item from the mod creating this recipe.</summary>
 		/// <param name="mod">The mod.</param>
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-		public RecipeBuilder Requires(Mod mod, string itemName, int stack = 1)
+		public RecipeBuilder AddIngredient(Mod mod, string itemName, int stack = 1)
 		{
 			_recipe.AddIngredient(mod, itemName, stack);
 			return this;
@@ -109,31 +110,29 @@ namespace Terraria.ModLoader.Recipes
 		/// <typeparam name="T">The type.</typeparam>
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires<T>(int stack = 1) where T : ModItem => Requires(ModContent.ItemType<T>(), stack);
+		public RecipeBuilder AddIngredient<T>(int stack = 1) where T : ModItem => AddIngredient(ModContent.ItemType<T>(), stack);
 
 
 		/// <summary>Adds an ingredient to this recipe of the given type of item and stack size.</summary>
 		/// <param name="modItem">The item.</param>
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
-		public RecipeBuilder Requires(ModItem modItem, int stack = 1)
+		public RecipeBuilder AddIngredient(ModItem modItem, int stack = 1)
 		{
 			_recipe.AddIngredient(modItem, stack);
 			return this;
 		}
-
 
 		/// <summary>Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size. Vanilla recipe groups consist of "Wood", "IronBar", "PresurePlate", "Sand", and "Fragment".</summary>
 		/// <param name="recipeGroup">The name.</param>
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
 		/// <exception cref="RecipeException"></exception>
-		public RecipeBuilder Requires(string recipeGroup, int stack = 1)
+		public RecipeBuilder AddRecipeGroup(string recipeGroup, int stack = 1)
 		{
 			_recipe.AddRecipeGroup(recipeGroup, stack);
 			return this;
 		}
-
 
 		/// <summary>
 		/// Adds one or many required crafting station(s) with the given tile type(s) to the recipe being built.
@@ -142,7 +141,7 @@ namespace Terraria.ModLoader.Recipes
 		/// </summary>
 		/// <param name="tileTypes"></param>
 		/// <returns></returns>
-		public RecipeBuilder At(params int[] tileTypes)
+		public RecipeBuilder RequiresTiles(params int[] tileTypes)
 		{
 			for (int i = 0; i < tileTypes.Length; i++)
 				_recipe.AddTile(tileTypes[i]);
@@ -173,6 +172,10 @@ namespace Terraria.ModLoader.Recipes
 		/// <summary>Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.</summary>
 		/// <returns></returns>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void Build() => _recipe.AddRecipe();
+		public ModRecipe Build() 
+		{
+			_recipe.AddRecipe();
+			return _recipe;
+		}
 	}
 }
