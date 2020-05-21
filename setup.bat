@@ -1,14 +1,27 @@
-git submodule update --init --recursive
 @echo off
+
+where git >NUL
+if NOT ["%errorlevel%"]==["0"] (
+	echo "git not found on PATH"
+    pause
+    exit /b %errorlevel%
+)
+
+git submodule update --init --recursive
 if NOT ["%errorlevel%"]==["0"] (
     pause
     exit /b %errorlevel%
 )
-@echo on
+
+where dotnet >NUL
+if NOT ["%errorlevel%"]==["0"] (
+	echo "dotnet not found on PATH. Install .NET Core!"
+    pause
+    exit /b %errorlevel%
+)
 
 dotnet run --project setup/setup.csproj
 
-@echo off
 if NOT ["%errorlevel%"]==["0"] (
     pause
     exit /b %errorlevel%
