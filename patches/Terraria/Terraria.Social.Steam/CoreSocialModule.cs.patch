@@ -14,9 +14,7 @@
  			if (!SteamAPI.Init()) {
  				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
  				Environment.Exit(1);
-@@ -39,8 +_,11 @@
- 			thread2.Start();
- 			Main.OnTickForThirdPartySoftwareOnly += PulseSteamTick;
+@@ -41,6 +_,9 @@
  			Main.OnTickForThirdPartySoftwareOnly += PulseSteamCallback;
  			if (Platform.IsOSX)
  				_onOverlayActivated = Callback<GameOverlayActivated_t>.Create(OnOverlayActivated);

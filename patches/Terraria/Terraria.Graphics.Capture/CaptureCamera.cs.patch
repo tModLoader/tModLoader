@@ -36,15 +36,15 @@
  							ptr2 += 4;
  							ptr4 += 4;
  						}
-@@ -197,6 +_,7 @@
- 		private bool SaveImage(int width, int height, ImageFormat imageFormat, string filename) {
+@@ -199,6 +_,7 @@
+ 				return false;
+ 
  			try {
- 				Directory.CreateDirectory(Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar);
 +#if WINDOWS
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -207,6 +_,12 @@
+@@ -209,6 +_,12 @@
  					bitmap.Dispose();
  				}
  
@@ -57,9 +57,7 @@
  				return true;
  			}
  			catch (Exception value) {
-@@ -219,21 +_,32 @@
- 			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
- 			string filename2 = Path.Combine(text, filename);
+@@ -223,19 +_,30 @@
  			if (!Utils.TryCreatingDirectory(text))
  				return;
  
@@ -90,7 +88,7 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -241,12 +_,20 @@
+@@ -243,12 +_,20 @@
  					num += texture.Width - width << 2;
  				}
  
@@ -111,7 +109,7 @@
  		}
  
  		private void FinishCapture() {
-@@ -277,6 +_,7 @@
+@@ -279,6 +_,7 @@
  		}
  
  		public void Dispose() {
@@ -119,7 +117,7 @@
  			Monitor.Enter(_captureLock);
  			if (!_isDisposed) {
  				_frameBuffer.Dispose();
-@@ -291,6 +_,7 @@
+@@ -293,6 +_,7 @@
  				_isDisposed = true;
  				Monitor.Exit(_captureLock);
  			}

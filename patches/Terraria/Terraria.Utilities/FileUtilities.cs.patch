@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria.Utilities/FileUtilities.cs
 +++ src/Terraria/Terraria.Utilities/FileUtilities.cs
-@@ -20,7 +_,11 @@
+@@ -21,7 +_,11 @@
  			if (cloud && SocialAPI.Cloud != null)
  				SocialAPI.Cloud.Delete(path);
  			else
