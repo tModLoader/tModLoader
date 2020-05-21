@@ -116,7 +116,7 @@ namespace Terraria.ModLoader.Core
 			if (version == default(Version))
 				msg = Language.GetTextValue("tModLoader.DMModCompileMissing");
 			else
-				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, modCompileVersion);
+				msg = Language.GetTextValue("tModLoader.DMModCompileUpdate", ModLoader.versionTag, version);
 #endif
 			return false;
 		}
