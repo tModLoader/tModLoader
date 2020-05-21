@@ -2,11 +2,12 @@
 
 where git >NUL
 if NOT ["%errorlevel%"]==["0"] (
-	echo "git not found on PATH"
+	echo git not found on PATH
     pause
     exit /b %errorlevel%
 )
 
+echo Restoring git submodules
 git submodule update --init --recursive
 if NOT ["%errorlevel%"]==["0"] (
     pause
@@ -15,11 +16,12 @@ if NOT ["%errorlevel%"]==["0"] (
 
 where dotnet >NUL
 if NOT ["%errorlevel%"]==["0"] (
-	echo "dotnet not found on PATH. Install .NET Core!"
+	echo dotnet not found on PATH. Install .NET Core!
     pause
     exit /b %errorlevel%
 )
 
+echo building setup.csproj
 dotnet run --project setup/setup.csproj
 
 if NOT ["%errorlevel%"]==["0"] (
