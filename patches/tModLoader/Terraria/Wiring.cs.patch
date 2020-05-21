@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -6,6 +_,7 @@
+@@ -7,6 +_,7 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -14,28 +_,28 @@
+@@ -15,28 +_,28 @@
  		public static bool blockPlayerTeleportationForOneIteration;
  		public static bool running;
  		private static Dictionary<Point16, bool> _wireSkip;
@@ -47,10 +47,10 @@
  		private static int[] _mechTime;
 -		private static int _currentWireColor;
 +		public static int _currentWireColor;
- 		private static int CurrentUser = 254;
+ 		private static int CurrentUser = 255;
  
  		public static void SetCurrentUser(int plr = -1) {
-@@ -280,7 +_,7 @@
+@@ -299,7 +_,7 @@
  			}
  		}
  
@@ -59,7 +59,7 @@
  			for (int k = 0; k < _numMechs; k++) {
  				if (_mechX[k] == i && _mechY[k] == j)
  					return false;
-@@ -344,7 +_,7 @@
+@@ -363,7 +_,7 @@
  			}
  		}
  
@@ -68,7 +68,7 @@
  			if (Main.netMode == 1)
  				return;
  
-@@ -765,6 +_,9 @@
+@@ -784,6 +_,9 @@
  			if (!tile.active())
  				return;
  
@@ -78,21 +78,21 @@
  			switch (type) {
  				case 144:
  					HitSwitch(i, j);
-@@ -1111,11 +_,11 @@
- 						NetMessage.SendData(19, -1, -1, null, 4 + flag11.ToInt(), i, j);
- 						break;
- 					}
--				case 11:
-+				case int _ when TileLoader.CloseDoorID(Main.tile[i, j]) >= 0:
- 					if (WorldGen.CloseDoor(i, j, forced: true))
- 						NetMessage.SendData(19, -1, -1, null, 1, i, j);
- 					break;
--				case 10: {
-+				case int _ when TileLoader.OpenDoorID(Main.tile[i, j]) >= 0: {
- 						int num73 = 1;
- 						if (Main.rand.Next(2) == 0)
- 							num73 = -1;
-@@ -1187,7 +_,7 @@
+@@ -1146,11 +_,11 @@
+-			if (type == 11) {
++			if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0) {
+ 				if (WorldGen.CloseDoor(i, j, forced: true))
+ 					NetMessage.SendData(19, -1, -1, null, 1, i, j);
+ 
+ 				return;
+ 			}
+ 
+-			if (type == 10) {
++			if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0) {
+ 				int num69 = 1;
+ 				if (Main.rand.Next(2) == 0)
+ 					num69 = -1;
+@@ -1236,7 +_,7 @@
  
  						break;
  					}
@@ -101,7 +101,7 @@
  					if (tile.frameX < 66)
  						tile.frameX += 66;
  					else
-@@ -1603,6 +_,7 @@
+@@ -1719,6 +_,7 @@
  					}
  				case 35:
  				case 139:
@@ -109,78 +109,82 @@
  					WorldGen.SwitchMB(i, j);
  					break;
  				case 207:
-@@ -1934,14 +_,13 @@
- 										if (!CheckMech(num53, num52, 300))
+@@ -2106,15 +_,14 @@
+ 										if (!CheckMech(num134, num133, 300))
  											break;
  
--										int[] array2 = new int[10];
+ 										int num145 = 50;
+-										int[] array2 = new int[num145];
 +										List<int> array2 = new List<int>();
- 										int num64 = 0;
- 										for (int num65 = 0; num65 < 200; num65++) {
--											if (Main.npc[num65].active && (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550)) {
--												array2[num64] = num65;
-+											bool vanillaCanGo = (Main.npc[num65].type == 17 || Main.npc[num65].type == 19 || Main.npc[num65].type == 22 || Main.npc[num65].type == 38 || Main.npc[num65].type == 54 || Main.npc[num65].type == 107 || Main.npc[num65].type == 108 || Main.npc[num65].type == 142 || Main.npc[num65].type == 160 || Main.npc[num65].type == 207 || Main.npc[num65].type == 209 || Main.npc[num65].type == 227 || Main.npc[num65].type == 228 || Main.npc[num65].type == 229 || Main.npc[num65].type == 358 || Main.npc[num65].type == 369 || Main.npc[num65].type == 550);
-+											if (Main.npc[num65].active && NPCLoader.CanGoToStatue(Main.npc[num65], true, vanillaCanGo)) {
-+												array2.Add(num65);
- 												num64++;
--												if (num64 >= 9)
+ 										int num146 = 0;
+ 										for (int num147 = 0; num147 < 200; num147++) {
+-											if (Main.npc[num147].active && (Main.npc[num147].type == 17 || Main.npc[num147].type == 19 || Main.npc[num147].type == 22 || Main.npc[num147].type == 38 || Main.npc[num147].type == 54 || Main.npc[num147].type == 107 || Main.npc[num147].type == 108 || Main.npc[num147].type == 142 || Main.npc[num147].type == 160 || Main.npc[num147].type == 207 || Main.npc[num147].type == 209 || Main.npc[num147].type == 227 || Main.npc[num147].type == 228 || Main.npc[num147].type == 229 || Main.npc[num147].type == 368 || Main.npc[num147].type == 369 || Main.npc[num147].type == 550 || Main.npc[num147].type == 441 || Main.npc[num147].type == 588)) {
+-												array2[num146] = num147;
++											bool vanillaCanGo = Main.npc[num147].type == 17 || Main.npc[num147].type == 19 || Main.npc[num147].type == 22 || Main.npc[num147].type == 38 || Main.npc[num147].type == 54 || Main.npc[num147].type == 107 || Main.npc[num147].type == 108 || Main.npc[num147].type == 142 || Main.npc[num147].type == 160 || Main.npc[num147].type == 207 || Main.npc[num147].type == 209 || Main.npc[num147].type == 227 || Main.npc[num147].type == 228 || Main.npc[num147].type == 229 || Main.npc[num147].type == 368 || Main.npc[num147].type == 369 || Main.npc[num147].type == 550 || Main.npc[num147].type == 441 || Main.npc[num147].type == 588;
++											if (Main.npc[num147].active && NPCLoader.CanGoToStatue(Main.npc[num147], true, vanillaCanGo)) {
++												array2.Add(num147);
+ 												num146++;
+-												if (num146 >= num145)
 -													break;
  											}
  										}
  
-@@ -1950,6 +_,7 @@
- 											Main.npc[num66].position.X = num55 - Main.npc[num66].width / 2;
- 											Main.npc[num66].position.Y = num56 - Main.npc[num66].height - 1;
- 											NetMessage.SendData(23, -1, -1, null, num66);
-+											NPCLoader.OnGoToStatue(Main.npc[num66], true);
+@@ -2123,6 +_,7 @@
+ 											Main.npc[num148].position.X = num137 - Main.npc[num148].width / 2;
+ 											Main.npc[num148].position.Y = num138 - Main.npc[num148].height - 1;
+ 											NetMessage.SendData(23, -1, -1, null, num148);
++											NPCLoader.OnGoToStatue(Main.npc[num148], true);
  										}
  
  										break;
-@@ -1958,14 +_,13 @@
- 										if (!CheckMech(num53, num52, 300))
+@@ -2131,15 +_,14 @@
+ 										if (!CheckMech(num134, num133, 300))
  											break;
  
--										int[] array = new int[10];
+ 										int num141 = 50;
+-										int[] array = new int[num141];
 +										List<int> array = new List<int>();
- 										int num59 = 0;
- 										for (int num60 = 0; num60 < 200; num60++) {
--											if (Main.npc[num60].active && (Main.npc[num60].type == 18 || Main.npc[num60].type == 20 || Main.npc[num60].type == 124 || Main.npc[num60].type == 178 || Main.npc[num60].type == 208 || Main.npc[num60].type == 353)) {
--												array[num59] = num60;
-+											bool vanillaCanGo = (Main.npc[num60].type == 18 || Main.npc[num60].type == 20 || Main.npc[num60].type == 124 || Main.npc[num60].type == 178 || Main.npc[num60].type == 208 || Main.npc[num60].type == 353);
-+											if (Main.npc[num60].active && NPCLoader.CanGoToStatue(Main.npc[num60], false, vanillaCanGo)) {
-+												array.Add(num60);
- 												num59++;
--												if (num59 >= 9)
+ 										int num142 = 0;
+ 										for (int num143 = 0; num143 < 200; num143++) {
+-											if (Main.npc[num143].active && (Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633)) {
+-												array[num142] = num143;
++											bool vanillaCanGo = Main.npc[num143].type == 18 || Main.npc[num143].type == 20 || Main.npc[num143].type == 124 || Main.npc[num143].type == 178 || Main.npc[num143].type == 208 || Main.npc[num143].type == 353 || Main.npc[num143].type == 633;
++											if (Main.npc[num143].active && NPCLoader.CanGoToStatue(Main.npc[num143], false, vanillaCanGo)) {
++												array.Add(num143);
+ 												num142++;
+-												if (num142 >= num141)
 -													break;
  											}
  										}
  
-@@ -1974,6 +_,7 @@
- 											Main.npc[num61].position.X = num55 - Main.npc[num61].width / 2;
- 											Main.npc[num61].position.Y = num56 - Main.npc[num61].height - 1;
- 											NetMessage.SendData(23, -1, -1, null, num61);
-+											NPCLoader.OnGoToStatue(Main.npc[num61], false);
+@@ -2148,6 +_,7 @@
+ 											Main.npc[num144].position.X = num137 - Main.npc[num144].width / 2;
+ 											Main.npc[num144].position.Y = num138 - Main.npc[num144].height - 1;
+ 											NetMessage.SendData(23, -1, -1, null, num144);
++											NPCLoader.OnGoToStatue(Main.npc[num144], false);
  										}
  
  										break;
-@@ -2016,6 +_,7 @@
- 						break;
- 					}
+@@ -2226,9 +_,10 @@
+ 				case 557:
+ 					tile.type = 546;
+ 					WorldGen.SquareTileFrame(i, j);
+ 					NetMessage.SendTileSquare(-1, i, j, 1);
+ 					break;
  			}
 +			TileLoader.HitWire(i, j, type);
  		}
  
- 		private static void Teleport() {
-@@ -2071,7 +_,7 @@
- 			}
+ 		private static void GeyserTrap(int i, int j) {
+@@ -2318,6 +_,6 @@
+ 			return false;
  		}
  
 -		private static void DeActive(int i, int j) {
 +		public static void DeActive(int i, int j) {
- 			if (!Main.tile[i, j].active())
+ 			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  				return;
- 
-@@ -2088,7 +_,7 @@
+@@ -2335,7 +_,7 @@
  			}
  		}
  

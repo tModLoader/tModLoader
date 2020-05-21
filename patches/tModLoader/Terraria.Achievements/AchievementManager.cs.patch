@@ -9,7 +9,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -47,6 +_,7 @@
+@@ -50,6 +_,7 @@
  		}
  
  		private void Save(string path, bool cloud) {
@@ -17,7 +17,7 @@
  			lock (_ioLock) {
  				if (SocialAPI.Achievements != null)
  					SocialAPI.Achievements.StoreStats();
-@@ -71,10 +_,13 @@
+@@ -74,10 +_,13 @@
  		public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
  
  		public void Load() {

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Gore.cs
 +++ src/tModLoader/Terraria/Gore.cs
-@@ -5,11 +_,17 @@
+@@ -7,11 +_,18 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
  using Terraria.Utilities;
@@ -15,15 +15,11 @@
 +			internal set;
 +		}
 +		internal int realType = 0;
++		public Vector2 drawOffset = Vector2.Zero;
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -25,11 +_,16 @@
- 		public byte frame;
- 		public byte frameCounter;
- 		public byte numFrames = 1;
-+		public Vector2 drawOffset = Vector2.Zero;
- 
+@@ -238,7 +_,11 @@
  		public void Update() {
  			if (Main.netMode == 2 || !active)
  				return;
@@ -32,18 +28,17 @@
 +				return;
 +
 +			ModGore.SetupUpdateType(this);
- 			bool flag = type >= 1024 && type <= 1026;
- 			if (type >= 276 && type <= 282) {
- 				velocity.X *= 0.98f;
-@@ -575,6 +_,7 @@
+ 			switch (GoreID.Sets.SpecialAI[type]) {
+ 				case 4:
+ 					UpdateAmbientFloorCloud();
+@@ -830,5 +_,6 @@
  				else
- 					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num30, num31, num32);
+ 					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num37, num38, num39);
  			}
 +			ModGore.TakeDownUpdateType(this);
  		}
  
- 		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-@@ -621,6 +_,7 @@
+@@ -1035,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
@@ -51,7 +46,7 @@
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
  				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -700,6 +_,12 @@
+@@ -1149,6 +_,12 @@
  		}
  
  		public Color GetAlpha(Color newColor) {

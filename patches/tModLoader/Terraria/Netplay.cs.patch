@@ -1,10 +1,10 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -1,24 +_,29 @@
+@@ -1,27 +_,31 @@
  using System;
 +using System.Collections.Concurrent;
  using System.IO;
-+using System.Linq;
+ using System.Linq;
  using System.Net;
  using System.Net.Sockets;
 +
@@ -13,8 +13,10 @@
  #endif
  using System.Threading;
 +using System.Threading.Tasks;
+ using Terraria.Audio;
  using Terraria.IO;
  using Terraria.Localization;
+ using Terraria.Map;
 +using Terraria.ModLoader;
  using Terraria.Net;
  using Terraria.Net.Sockets;
@@ -32,18 +34,28 @@
  namespace Terraria
  {
  	public class Netplay
-@@ -40,7 +_,7 @@
- 		public static bool spamCheck = false;
- 		public static bool anyClients = false;
- 		private static Thread ServerThread;
+@@ -49,7 +_,7 @@
+ 		public static bool SpamCheck = false;
+ 		public static bool HasClients;
+ 		private static Thread _serverThread;
 -#if SERVER
 +#if SERVER && WINDOWS
- 		public static UPnPNAT upnpnat;
- 		public static IStaticPortMappingCollection mappings;
+ 		public static UPnPNAT _upnpnat;
+ 		public static IStaticPortMappingCollection _mappings;
  #endif
-@@ -50,10 +_,24 @@
+@@ -91,6 +_,8 @@
+ 				Main.txMsgType[i] = 0;
+ 				Main.txDataType[i] = 0;
+ 			}
++
++			ModNet.ResetNetDiag();
+ 		}
  
- 		public static event Action OnDisconnect;
+ 		public static void ResetSections() {
+@@ -129,9 +_,23 @@
+ 
+ 			return false;
+ 		}
  
 +		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
 +
@@ -59,33 +71,29 @@
 +			t.Wait();
 +		}
 +
- 		private static void OpenPort() {
- 			portForwardIP = GetLocalIPAddress();
- 			portForwardPort = ListenPort;
+ 		private static void OpenPort(int port) {
 -#if SERVER
 +#if SERVER && WINDOWS
  			if (Netplay.upnpnat == null)
  			{
  				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-@@ -78,7 +_,7 @@
+@@ -156,7 +_,7 @@
  		}
  
- 		public static void closePort() {
+ 		private static void ClosePort(int port) {
 -#if SERVER
 +#if SERVER && WINDOWS
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -110,6 +_,8 @@
- 				Main.txMsgType[i] = 0;
- 				Main.txDataType[i] = 0;
- 			}
-+
-+			ModNet.ResetNetDiag();
- 		}
+@@ -364,5 +_,5 @@
  
- 		public static void ResetSections() {
-@@ -207,6 +_,7 @@
+ 		private static void UpdateClient() {
+ 			if (Main.netMode == 1 && Connection.Socket.IsConnected() && NetMessage.buffer[256].checkBytes)
+-				NetMessage.CheckBytes();
++				InvokeOnMainThread(() => NetMessage.CheckBytes());
+ 		}
+@@ -425,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -93,9 +101,9 @@
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
  			if (Main.rand == null)
-@@ -226,9 +_,11 @@
+@@ -444,9 +_,11 @@
  
- 			disconnect = false;
+ 			Disconnect = false;
  			Connection = new RemoteServer();
 -			Connection.ReadBuffer = new byte[1024];
 +			Connection.ReadBuffer = new byte[ushort.MaxValue];
@@ -106,16 +114,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -236,7 +_,7 @@
- 				while (!disconnect) {
- 					if (Connection.Socket.IsConnected()) {
- 						if (NetMessage.buffer[256].checkBytes)
--							NetMessage.CheckBytes();
-+							InvokeOnMainThread(() => NetMessage.CheckBytes());
- 
- 						Connection.IsActive = true;
- 						if (Connection.State == 0) {
-@@ -274,6 +_,7 @@
+@@ -489,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -123,7 +122,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -296,8 +_,6 @@
+@@ -511,8 +_,6 @@
  								Main.statusText = Connection.StatusText + ": " + (int)((float)Connection.StatusCount / (float)Connection.StatusMax * 100f) + "%";
  							}
  						}
@@ -132,7 +131,7 @@
  					}
  					else if (Connection.IsActive) {
  						Main.statusText = Language.GetTextValue("Net.LostConnection");
-@@ -307,6 +_,7 @@
+@@ -522,6 +_,7 @@
  					num = Connection.State;
  				}
  
@@ -140,43 +139,3 @@
  				try {
  					Connection.Socket.Close();
  				}
-@@ -366,7 +_,7 @@
- 			if (num != -1) {
- 				Clients[num].Reset();
- 				Clients[num].Socket = client;
--				Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
-+				//Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
- 			}
- 
- 			if (FindNextOpenClientSlot() == -1)
-@@ -456,16 +_,21 @@
- 				}
- 
- 				int num3 = 0;
-+				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination)) {
-+					InvokeOnMainThread(() => {
-+						for (int k = 0; k < 256; k++) {
-+							if (NetMessage.buffer[k].checkBytes)
-+								NetMessage.CheckBytes(k);
-+
-+							if (Clients[k].PendingTermination) {
-+								Clients[k].Reset();
-+								NetMessage.SyncDisconnectedPlayer(k);
-+							}
-+						}
-+					});
-+				}
-+
- 				for (int k = 0; k < 256; k++) {
--					if (NetMessage.buffer[k].checkBytes)
--						NetMessage.CheckBytes(k);
--
--					if (Clients[k].PendingTermination) {
--						Clients[k].Reset();
--						NetMessage.SyncDisconnectedPlayer(k);
--						continue;
--					}
--
- 					if (Clients[k].IsConnected()) {
- 						if (!Clients[k].IsActive)
- 							Clients[k].State = 0;

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.UI/UIElement.cs
 +++ src/tModLoader/Terraria.UI/UIElement.cs
-@@ -51,6 +_,22 @@
+@@ -73,7 +_,23 @@
  		public event MouseEvent OnMouseOver;
  		public event MouseEvent OnMouseOut;
  		public event MouseEvent OnDoubleClick;
@@ -21,9 +21,10 @@
 +		public event MouseEvent OnXButton2Click;
 +		public event MouseEvent OnXButton2DoubleClick;
  		public event ScrollWheelEvent OnScrollWheel;
+ 		public event ElementEvent OnUpdate;
  
  		public UIElement() {
-@@ -114,6 +_,8 @@
+@@ -132,6 +_,8 @@
  			Elements.Clear();
  		}
  
@@ -31,15 +32,16 @@
 +
  		public virtual void Draw(SpriteBatch spriteBatch) {
  			bool overflowHidden = OverflowHidden;
- 			bool useImmediateMode = _useImmediateMode;
-@@ -134,12 +_,14 @@
+ 			bool useImmediateMode = UseImmediateMode;
+@@ -152,14 +_,16 @@
  			if (overflowHidden) {
  				spriteBatch.End();
  				Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
 +				Rectangle adjustedClippingRectangle = Rectangle.Intersect(clippingRectangle, spriteBatch.GraphicsDevice.ScissorRectangle);
 -				spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
+ 				spriteBatch.GraphicsDevice.RasterizerState = OverflowHiddenRasterizerState;
 +				spriteBatch.GraphicsDevice.ScissorRectangle = adjustedClippingRectangle;
- 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, _overflowHiddenRasterizerState, null, Main.UIScaleMatrix);
+ 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, OverflowHiddenRasterizerState, null, Main.UIScaleMatrix);
  			}
  
  			DrawChildren(spriteBatch);
@@ -47,8 +49,9 @@
 +				rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
  				spriteBatch.End();
  				spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+ 				spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
-@@ -319,6 +_,134 @@
+@@ -357,6 +_,134 @@
  
  			if (Parent != null)
  				Parent.DoubleClick(evt);

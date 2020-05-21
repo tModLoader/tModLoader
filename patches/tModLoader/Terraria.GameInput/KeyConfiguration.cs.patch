@@ -27,7 +27,7 @@
  		}
  
  		public void Processkey(TriggersSet set, string newKey) {
-@@ -41,34 +_,36 @@
+@@ -41,22 +_,24 @@
  		}
  
  		public void ReadPreferences(Dictionary<string, List<string>> dict) {
@@ -62,19 +62,3 @@
  			}
  
  			if (!dictionary.ContainsKey("MouseLeft") || dictionary["MouseLeft"].Count == 0) {
--				dictionary.Add("MouseLeft", new List<string> {
-+				dictionary["MouseLeft"] = new List<string> {
- 					"Mouse1"
--				});
-+				};
- 			}
- 
- 			if (!dictionary.ContainsKey("Inventory") || dictionary["Inventory"].Count == 0) {
--				dictionary.Add("Inventory", new List<string> {
-+				dictionary["Inventory"] = new List<string> {
- 					"Escape"
--				});
-+				};
- 			}
- 
- 			return dictionary;

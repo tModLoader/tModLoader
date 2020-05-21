@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
-@@ -134,7 +_,7 @@
+@@ -138,7 +_,7 @@
  			return true;
  		}
  
@@ -9,7 +9,7 @@
  			TileObjectData tileData = TileObjectData.GetTileData(type, style);
  			objectData = Empty;
  			if (tileData == null)
-@@ -277,7 +_,7 @@
+@@ -281,7 +_,7 @@
  				for (int i = 0; i < tileData2.Width; i++) {
  					for (int j = 0; j < tileData2.Height; j++) {
  						Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
@@ -18,12 +18,12 @@
  						bool flag3 = false;
  						if (tileData2.AnchorWall) {
  							num25 += 1f;
-@@ -288,7 +_,7 @@
+@@ -292,7 +_,7 @@
  						}
  
  						bool flag4 = false;
--						if (tileSafely.active() && !Main.tileCut[tileSafely.type])
-+						if (tileSafely.active() && !Main.tileCut[tileSafely.type] && !checkStay)
+-						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
++						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
  							flag4 = true;
  
  						if (flag4 || flag2 || flag3) {

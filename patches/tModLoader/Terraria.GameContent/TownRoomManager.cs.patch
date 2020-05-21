@@ -1,9 +1,10 @@
 --- src/Terraria/Terraria.GameContent/TownRoomManager.cs
 +++ src/tModLoader/Terraria.GameContent/TownRoomManager.cs
-@@ -2,13 +_,14 @@
+@@ -2,12 +_,13 @@
  using System;
  using System.Collections.Generic;
  using System.IO;
+ using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent
@@ -12,12 +13,10 @@
  	{
 -		private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 +		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
--		private bool[] _hasRoom = new bool[580];
+-		private bool[] _hasRoom = new bool[663];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
- 		public int FindOccupation(int x, int y) => FindOccupation(new Point(x, y));
- 
-@@ -66,8 +_,17 @@
+@@ -67,8 +_,17 @@
  		}
  
  		public void Save(BinaryWriter writer) {

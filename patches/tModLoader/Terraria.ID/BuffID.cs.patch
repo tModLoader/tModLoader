@@ -8,10 +8,10 @@
  namespace Terraria.ID
  {
  	public class BuffID
-@@ -208,5 +_,32 @@
- 		public const int Oiled = 204;
- 		public const int BallistaPanic = 205;
- 		public const int Count = 206;
+@@ -592,5 +_,32 @@
+ 		public const int BrainOfConfusionBuff = 321;
+ 		public const int EmpressBlade = 322;
+ 		public const int Count = 323;
 +		public static readonly IdDictionary Search = IdDictionary.Create<BuffID, int>();
 +
 +		public static string GetUniqueKey(int type) {

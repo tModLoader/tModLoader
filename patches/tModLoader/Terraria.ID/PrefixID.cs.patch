@@ -8,10 +8,11 @@
  namespace Terraria.ID
  {
  	public class PrefixID
-@@ -86,5 +_,34 @@
+@@ -86,6 +_,35 @@
  		public const int Unreal = 82;
  		public const int Mythical = 83;
- 		public const int Count = 84;
+ 		public const int Legendary2 = 84;
+ 		public const int Count = 85;
 +		public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
 +		public static string GetUniqueKey(byte type) {
 +			if (type < 1 || type >= ModPrefix.PrefixCount)

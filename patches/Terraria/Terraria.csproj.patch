@@ -8,7 +8,7 @@
      <OutputType>WinExe</OutputType>
 @@ -6,11 +_,12 @@
      <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
+     <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace />
 -    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
 +    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
@@ -21,7 +21,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -23,25 +_,98 @@
+@@ -23,32 +_,105 @@
    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
      <Optimize>false</Optimize>
      <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
@@ -64,6 +64,7 @@
 +      <Private>true</Private>
 +    </Reference>
      <Reference Include="Newtonsoft.Json" />
+     <Reference Include="RailSDK.Net" />
 -    <Reference Include="ReLogic" />
 -    <Reference Include="Steamworks.NET" />
 +    <Reference Include="ReLogic">
@@ -79,6 +80,7 @@
      <Reference Include="System" />
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
+     <Reference Include="System.Runtime.Serialization" />
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="System.Windows.Forms">
 +      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
@@ -87,8 +89,8 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
-     <EmbeddedResource Include="Terraria.Libraries/**" />
-     <EmbeddedResource Include="Terraria.Localization.Content/*" />
+     <EmbeddedResource Include="Terraria.GameContent.Creative.Content.Sacrifices.tsv" />
+     <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Materials.json" />
 +    <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <LogicalName>ReLogic.dll</LogicalName>
 +    </EmbeddedResource>
@@ -107,6 +109,11 @@
 +    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
 +      <LogicalName>Steamworks.NET.dll</LogicalName>
 +    </EmbeddedResource>
+     <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Tiles.json" />
+     <EmbeddedResource Include="Terraria.GameContent.WorldBuilding.Configuration.json" />
+     <EmbeddedResource Include="Terraria.IO.Data.ResourcePacksDefaultInfo.tsv" />
+     <EmbeddedResource Include="Terraria.Libraries/**" />
+     <EmbeddedResource Include="Terraria.Localization.Content/*" />
    </ItemGroup>
 +  <Target Name="EditBin" AfterTargets="Build">
 +    <PropertyGroup>

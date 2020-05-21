@@ -1,14 +1,14 @@
 --- src/Terraria/Terraria.GameContent.UI.States/UIManageControls.cs
 +++ src/tModLoader/Terraria.GameContent.UI.States/UIManageControls.cs
-@@ -9,6 +_,7 @@
- using Terraria.Graphics;
+@@ -11,6 +_,7 @@
+ using Terraria.ID;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -36,15 +_,20 @@
+@@ -39,15 +_,20 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -31,7 +31,7 @@
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
  		private List<UIElement> _bindsKeyboard = new List<UIElement>();
-@@ -202,6 +_,9 @@
+@@ -209,6 +_,9 @@
  			List<string> bindings = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -41,7 +41,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -224,6 +_,9 @@
+@@ -232,6 +_,9 @@
  			List<string> bindings2 = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -51,7 +51,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -292,26 +_,39 @@
+@@ -300,26 +_,39 @@
  				"sp13"
  			};
  
@@ -91,7 +91,7 @@
  		}
  
  		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode) {
-@@ -349,6 +_,9 @@
+@@ -357,6 +_,9 @@
  				case 4:
  					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  					break;
@@ -101,7 +101,7 @@
  			}
  
  			CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
-@@ -370,6 +_,9 @@
+@@ -378,6 +_,9 @@
  				case 4:
  					text = Lang.menu[198];
  					break;
@@ -111,7 +111,7 @@
  			}
  
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
-@@ -522,6 +_,25 @@
+@@ -530,6 +_,25 @@
  
  						return uIKeybindingSimpleListItem4;
  					}
@@ -137,7 +137,7 @@
  				case "sp14": {
  						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
  						uIKeybindingToggleListItem.OnClick += delegate {
-@@ -594,11 +_,39 @@
+@@ -602,11 +_,39 @@
  						}
  					}, 1008, color);
  				default:

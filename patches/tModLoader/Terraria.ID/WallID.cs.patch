@@ -8,11 +8,11 @@
  namespace Terraria.ID
  {
  	public class WallID
-@@ -251,5 +_,32 @@
- 		public const byte SillyBalloonPurpleWall = 229;
- 		public const byte SillyBalloonGreenWall = 230;
- 		public const byte Count = 231;
-+		public static readonly IdDictionary Search = IdDictionary.Create<WallID, byte>();
+@@ -343,5 +_,32 @@
+ 		public const ushort AmberStoneWallEcho = 314;
+ 		public const ushort BambooFence = 315;
+ 		public const ushort Count = 316;
++		public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
 +
 +		public static string GetUniqueKey(int type) {
 +			if (type < 0 || type >= WallLoader.WallCount)

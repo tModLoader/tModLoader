@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -4,6 +_,7 @@
+@@ -7,6 +_,7 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
@@ -8,20 +8,23 @@
  
  namespace Terraria
  {
-@@ -159,6 +_,9 @@
- 		public static bool isLocked(int x, int y) {
- 			if (Main.tile[x, y] == null)
+@@ -197,6 +_,9 @@
+ 		public static bool IsLocked(Tile t) {
+ 			if (t == null)
  				return true;
 +				
-+			if (Main.tile[x, y].type >= TileID.Count)
-+				return TileLoader.IsLockedChest(x, y, Main.tile[x, y].type);
++			if (t.type >= TileID.Count)
++				return TileLoader.IsLockedChest(x, y, t.type);
  
- 			if ((Main.tile[x, y].frameX >= 72 && Main.tile[x, y].frameX <= 106) || (Main.tile[x, y].frameX >= 144 && Main.tile[x, y].frameX <= 178) || (Main.tile[x, y].frameX >= 828 && Main.tile[x, y].frameX <= 1006) || (Main.tile[x, y].frameX >= 1296 && Main.tile[x, y].frameX <= 1330) || (Main.tile[x, y].frameX >= 1368 && Main.tile[x, y].frameX <= 1402) || (Main.tile[x, y].frameX >= 1440 && Main.tile[x, y].frameX <= 1474))
+ 			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
-@@ -228,6 +_,17 @@
+@@ -269,8 +_,19 @@
  
- 			short num;
- 			int type;
+ 			short num = 0;
+ 			int type = 0;
+ 			Tile tileSafely = Framing.GetTileSafely(X, Y);
+ 			int type2 = tileSafely.type;
+ 			int num2 = tileSafely.frameX / 36;
 +			if (Main.tile[X, Y].type >= TileID.Count) {
 +				num = -36;
 +				type = 11;
@@ -33,18 +36,17 @@
 +				num *= -1;
 +				goto PostVanillaChests;
 +			}
- 			switch (Main.tile[X, Y].frameX / 36) {
- 				case 2:
- 					num = 36;
-@@ -258,6 +_,7 @@
- 				default:
+ 			switch (type2) {
+ 				case 21:
+@@ -317,6 +_,7 @@
+ 					}
  					return false;
  			}
 +			PostVanillaChests:
  
- 			Main.PlaySound(22, X * 16, Y * 16);
+ 			SoundEngine.PlaySound(22, X * 16, Y * 16);
  			for (int i = X; i <= X + 1; i++) {
-@@ -348,15 +_,21 @@
+@@ -411,15 +_,21 @@
  			}
  			else {
  				switch (type) {
@@ -69,20 +71,24 @@
  				}
  			}
  
-@@ -441,10 +_,10 @@
+@@ -504,14 +_,14 @@
  			}
  		}
  
--		public void AddShop(Item newItem) {
+-		public void AddItemToShop(Item newItem) {
 +		public int AddShop(Item newItem) {
- 			int num = 0;
+ 			int num = Main.shopSellbackHelper.Remove(newItem);
+ 			if (num >= newItem.stack)
+ 				return;
+ 
+ 			int num2 = 0;
  			while (true) {
--				if (num < 39) {
-+				if (num < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
- 					if (item[num] == null || item[num].type == 0)
+-				if (num2 < 39) {
++				if (num2 < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
+ 					if (item[num2] == null || item[num2].type == 0)
  						break;
  
-@@ -452,7 +_,7 @@
+@@ -519,7 +_,7 @@
  					continue;
  				}
  
@@ -90,17 +96,15 @@
 +				break;
  			}
  
- 			item[num] = newItem.Clone();
-@@ -463,6 +_,8 @@
- 				if (item[num].value < 1)
- 					item[num].value = 1;
- 			}
-+
+ 			item[num2] = newItem.Clone();
+@@ -529,5 +_,6 @@
+ 			_ = item[num2].value;
+ 			_ = 0;
 +			return num;
  		}
  
  		public static void SetupTravelShop() {
-@@ -710,9 +_,12 @@
+@@ -877,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -113,11 +117,11 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -1908,6 +_,7 @@
- 					}
+@@ -2512,6 +_,7 @@
+ 					array[num++].SetDefaults(4921);
  			}
  
 +			NPCLoader.SetupShop(type, this, ref num);
- 			if (Main.player[Main.myPlayer].discount) {
- 				for (int num8 = 0; num8 < num; num8++) {
- 					item[num8].value = (int)((float)item[num8].value * 0.8f);
+ 			for (int num11 = 0; num11 < num; num11++) {
+ 				array[num11].isAShopItem = true;
+ 			}

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.ID/ProjectileID.cs
 +++ src/tModLoader/Terraria.ID/ProjectileID.cs
-@@ -1,3 +_,7 @@
+@@ -3,3 +_,7 @@
 +using ReLogic.Reflection;
 +using System;
 +using Terraria.ModLoader;
@@ -8,10 +8,10 @@
  namespace Terraria.ID
  {
  	public class ProjectileID
-@@ -800,5 +_,38 @@
- 		public const short BookStaffShot = 712;
- 		public const short DD2Win = 713;
- 		public const short Count = 714;
+@@ -1209,5 +_,38 @@
+ 		public const short Mace = 947;
+ 		public const short FlamingMace = 948;
+ 		public const short Count = 949;
 +		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
 +
 +		public static string GetUniqueKey(int type) {

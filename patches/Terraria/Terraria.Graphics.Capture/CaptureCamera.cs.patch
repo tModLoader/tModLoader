@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria.Graphics.Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria.Graphics.Capture/CaptureCamera.cs
-@@ -5,9 +_,14 @@
+@@ -5,10 +_,15 @@
  using System.Drawing;
  using System.Drawing.Imaging;
  using System.IO;
@@ -8,6 +8,7 @@
  using System.Runtime.InteropServices;
 +#endif
  using System.Threading;
+ using Terraria.Graphics.Effects;
  using Terraria.Localization;
 +#if !WINDOWS
 +using Terraria.Utilities;
@@ -15,7 +16,7 @@
  
  namespace Terraria.Graphics.Capture
  {
-@@ -158,10 +_,17 @@
+@@ -177,10 +_,17 @@
  					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
  					for (int i = 0; i < area.Height; i++) {
  						for (int j = 0; j < area.Width; j++) {
@@ -35,7 +36,7 @@
  							ptr2 += 4;
  							ptr4 += 4;
  						}
-@@ -178,6 +_,7 @@
+@@ -197,6 +_,7 @@
  		private bool SaveImage(int width, int height, ImageFormat imageFormat, string filename) {
  			try {
  				Directory.CreateDirectory(Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar);
@@ -43,7 +44,7 @@
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -188,6 +_,12 @@
+@@ -207,6 +_,12 @@
  					bitmap.Dispose();
  				}
  
@@ -56,10 +57,12 @@
  				return true;
  			}
  			catch (Exception value) {
-@@ -200,19 +_,30 @@
+@@ -219,21 +_,32 @@
  			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
  			string filename2 = Path.Combine(text, filename);
- 			Directory.CreateDirectory(text);
+ 			if (!Utils.TryCreatingDirectory(text))
+ 				return;
+ 
 +#if WINDOWS
  			using (Bitmap bitmap = new Bitmap(width, height)) {
  				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
@@ -87,7 +90,7 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -220,12 +_,20 @@
+@@ -241,12 +_,20 @@
  					num += texture.Width - width << 2;
  				}
  
@@ -108,7 +111,7 @@
  		}
  
  		private void FinishCapture() {
-@@ -256,6 +_,7 @@
+@@ -277,6 +_,7 @@
  		}
  
  		public void Dispose() {
@@ -116,7 +119,7 @@
  			Monitor.Enter(_captureLock);
  			if (!_isDisposed) {
  				_frameBuffer.Dispose();
-@@ -268,6 +_,7 @@
+@@ -291,6 +_,7 @@
  				_isDisposed = true;
  				Monitor.Exit(_captureLock);
  			}

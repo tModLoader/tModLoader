@@ -1,11 +1,11 @@
 --- src/decompiled/Terraria.UI/UserInterface.cs
 +++ src/Terraria/Terraria.UI/UserInterface.cs
-@@ -47,11 +_,13 @@
+@@ -56,11 +_,13 @@
  		}
  
  		private void ResetState() {
 +#if CLIENT
- 			MousePosition = new Vector2(Main.mouseX, Main.mouseY);
+ 			GetMousePosition();
  			_wasMouseDown = Main.mouseLeft;
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));

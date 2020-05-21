@@ -11,7 +11,7 @@
  
 @@ -13,6 +_,7 @@
  		private TimeSpan _playTime = TimeSpan.Zero;
- 		private Stopwatch _timer = new Stopwatch();
+ 		private readonly Stopwatch _timer = new Stopwatch();
  		private bool _isTimerActive;
 +		public CustomModDataException customDataFail = null;
  

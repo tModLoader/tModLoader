@@ -1,32 +1,36 @@
 --- src/Terraria/Terraria/WaterfallManager.cs
 +++ src/tModLoader/Terraria/WaterfallManager.cs
-@@ -2,6 +_,7 @@
+@@ -2,8 +_,9 @@
  using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
  using System;
- using System.IO;
+ using Terraria.ID;
+ using Terraria.IO;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -18,7 +_,7 @@
+@@ -20,8 +_,8 @@
  		private const int minWet = 160;
- 		private const int maxCount = 200;
+ 		private const int maxWaterfallCountDefault = 1000;
  		private const int maxLength = 100;
--		private const int maxTypes = 23;
-+		internal const int maxTypes = 23;
+-		private const int maxTypes = 24;
++		internal const int maxTypes = 24;
+ 		public int maxWaterfallCount = 1000;
  		private int qualityMax;
  		private int currentMax;
  		private WaterfallData[] waterfalls;
-@@ -201,7 +_,7 @@
+@@ -208,8 +_,8 @@
  			}
  		}
  
 -		private void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
 +		internal void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
+ 			Main.tileSolid[546] = false;
  			float num = 0f;
  			float num2 = 99999f;
  			float num3 = 99999f;
-@@ -344,6 +_,7 @@
+@@ -357,6 +_,7 @@
  					if (num29 >= 2)
  						continue;
  
@@ -34,7 +38,7 @@
  					switch (num12) {
  						case 1: {
  								float r;
-@@ -409,6 +_,8 @@
+@@ -422,6 +_,8 @@
  								break;
  							}
  					}
@@ -43,7 +47,7 @@
  
  					int num31 = 0;
  					int num32 = 0;
-@@ -515,6 +_,9 @@
+@@ -531,6 +_,9 @@
  							num12 = 15 + num36 - 262;
  							break;
  					}
@@ -51,9 +55,9 @@
 +						TileLoader.ChangeWaterfallStyle(num36, ref num12);
 +					}
  
- 					if (WorldGen.SolidTile(tile4) && !tile2.halfBrick())
+ 					if (WorldGen.SolidTile(tile5) && !tile3.halfBrick())
  						num11 = 8;
-@@ -570,6 +_,9 @@
+@@ -586,6 +_,9 @@
  							break;
  					}
  
@@ -63,10 +67,10 @@
  					color5 = new Color((int)num38, (int)num39, (int)num40, (int)num41);
  					if (num12 == 1) {
  						float num42 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
-@@ -809,6 +_,8 @@
+@@ -841,6 +_,8 @@
  
- 			if (Main.liquidAlpha[10] > 0f)
- 				DrawWaterfall(spriteBatch, 13, Main.liquidAlpha[10]);
+ 			if (Main.liquidAlpha[12] > 0f)
+ 				DrawWaterfall(spriteBatch, 23, Main.liquidAlpha[12]);
 +
 +			WaterStyleLoader.DrawWaterfall(this, spriteBatch);
  		}

@@ -1,26 +1,29 @@
 --- src/Terraria/Terraria.GameContent.Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria.GameContent.Liquid/LiquidRenderer.cs
-@@ -74,9 +_,13 @@
- 			0
+@@ -77,16 +_,16 @@
  		};
  		public const float MIN_LIQUID_SIZE = 0.25f;
-+#if SERVER
- 		public static LiquidRenderer Instance = new LiquidRenderer();
-+#else //client initialization has been moved to LoadContent to prevent FNA deadlocks
-+		public static LiquidRenderer Instance;
-+#endif
--		private Tile[,] _tiles = Main.tile;
-+		//private Tile[,] _tiles = Main.tile;
--		private Texture2D[] _liquidTextures = new Texture2D[12];
-+		public Texture2D[] _liquidTextures = new Texture2D[12];
+ 		public static LiquidRenderer Instance;
+-		private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[13];
++		public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[12];
  		private LiquidCache[] _cache = new LiquidCache[1];
  		private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
  		private int _animationFrame;
-@@ -112,7 +_,7 @@
+ 		private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
+ 		private readonly UnifiedRandom _random = new UnifiedRandom();
+ 		private Color[] _waveMask = new Color[1];
+ 		private float _frameState;
+ 
+-		private static Tile[,] Tiles => Main.tile;
++		//private static Tile[,] Tiles => Main.tile;
+ 
+ 		public event Action<Color[], Rectangle> WaveFilters;
+ 
+@@ -120,7 +_,7 @@
  				ptr2 = ptr;
  				for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++) {
  					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++) {
--						tile = _tiles[i, j];
+-						tile = Tiles[i, j];
 +						tile = Main.tile[i, j];
  						if (tile == null)
  							tile = new Tile();

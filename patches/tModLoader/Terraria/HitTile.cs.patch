@@ -1,14 +1,15 @@
 --- src/Terraria/Terraria/HitTile.cs
 +++ src/tModLoader/Terraria/HitTile.cs
-@@ -1,6 +_,7 @@
+@@ -1,7 +_,8 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
+ using Terraria.GameContent;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
  namespace Terraria
-@@ -243,7 +_,7 @@
+@@ -267,7 +_,7 @@
  
  				bool flag2 = false;
  				bool flag3 = false;

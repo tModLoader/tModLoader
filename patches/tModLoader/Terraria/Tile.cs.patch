@@ -1,28 +1,27 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -9,9 +_,10 @@
+@@ -10,9 +_,9 @@
  	public class Tile
  	{
  		public ushort type;
--		public byte wall;
-+		public ushort wall;
+ 		public ushort wall;
  		public byte liquid;
-+		// bitwise manipulations on signed values in C# apparently doesn't follow the C standards so the one unused bit in sTileHeader would have to have a unique way to access it.
 -		public short sTileHeader;
-+		public ushort sTileHeader;
++		public ushort sTileHeader; //For easier bitwise manipulations
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -326,7 +_,7 @@
- 			if (color > 30)
- 				color = 30;
+@@ -326,8 +_,8 @@
  
+ 		public byte color() => (byte)(sTileHeader & 0x1F);
+ 
+ 		public void color(byte color) {
 -			sTileHeader = (short)((sTileHeader & 0xFFE0) | color);
 +			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);
  		}
  
  		public bool active() => (sTileHeader & 0x20) == 32;
-@@ -335,7 +_,7 @@
+@@ -336,7 +_,7 @@
  			if (active)
  				sTileHeader |= 32;
  			else
@@ -31,7 +30,7 @@
  		}
  
  		public bool inActive() => (sTileHeader & 0x40) == 64;
-@@ -344,7 +_,7 @@
+@@ -345,7 +_,7 @@
  			if (inActive)
  				sTileHeader |= 64;
  			else
@@ -40,7 +39,7 @@
  		}
  
  		public bool wire() => (sTileHeader & 0x80) == 128;
-@@ -353,7 +_,7 @@
+@@ -354,7 +_,7 @@
  			if (wire)
  				sTileHeader |= 128;
  			else
@@ -49,7 +48,7 @@
  		}
  
  		public bool wire2() => (sTileHeader & 0x100) == 256;
-@@ -362,7 +_,7 @@
+@@ -363,7 +_,7 @@
  			if (wire2)
  				sTileHeader |= 256;
  			else
@@ -58,7 +57,7 @@
  		}
  
  		public bool wire3() => (sTileHeader & 0x200) == 512;
-@@ -371,7 +_,7 @@
+@@ -372,7 +_,7 @@
  			if (wire3)
  				sTileHeader |= 512;
  			else
@@ -67,7 +66,7 @@
  		}
  
  		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
-@@ -380,7 +_,7 @@
+@@ -381,7 +_,7 @@
  			if (halfBrick)
  				sTileHeader |= 1024;
  			else
@@ -76,7 +75,7 @@
  		}
  
  		public bool actuator() => (sTileHeader & 0x800) == 2048;
-@@ -389,13 +_,13 @@
+@@ -390,12 +_,12 @@
  			if (actuator)
  				sTileHeader |= 2048;
  			else
@@ -91,4 +90,3 @@
 +			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
  		}
  
- 		public static void SmoothSlope(int x, int y, bool applyToNeighbors = true) {

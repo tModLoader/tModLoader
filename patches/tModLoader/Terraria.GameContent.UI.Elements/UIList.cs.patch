@@ -1,7 +1,9 @@
 --- src/Terraria/Terraria.GameContent.UI.Elements/UIList.cs
 +++ src/tModLoader/Terraria.GameContent.UI.Elements/UIList.cs
-@@ -25,9 +_,9 @@
+@@ -27,12 +_,12 @@
  			}
+ 
+ 			public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  		}
  
 -		protected List<UIElement> _items = new List<UIElement>();
@@ -11,8 +13,9 @@
 +		internal UIElement _innerList = new UIInnerList();
  		private float _innerListHeight;
  		public float ListPadding = 5f;
+ 		public Action<List<UIElement>> ManualSortMethod;
  
-@@ -60,9 +_,23 @@
+@@ -65,9 +_,23 @@
  			_scrollbar.ViewPosition = _items[num].Top.Pixels;
  		}
  

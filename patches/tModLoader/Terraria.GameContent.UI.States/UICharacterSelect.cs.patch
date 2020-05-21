@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.GameContent.UI.States/UICharacterSelect.cs
 +++ src/tModLoader/Terraria.GameContent.UI.States/UICharacterSelect.cs
-@@ -9,18 +_,22 @@
+@@ -11,19 +_,23 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
@@ -12,33 +12,28 @@
  {
  	public class UICharacterSelect : UIState
  	{
- 		private static string noteToEveryone = "This code is terrible and you will risk cancer reading it --Yoraiz0r";
 -		private UIList _playerList;
 +		internal UIList _playerList;
  		private UITextPanel<LocalizedText> _backPanel;
  		private UITextPanel<LocalizedText> _newPanel;
  		private UIPanel _containerPanel;
+ 		private UIScrollbar _scrollbar;
+ 		private bool _isScrollbarAttached;
  		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
  		private bool skipDraw;
 +		private static bool _currentlyMigratingFiles;
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -78,12 +_,7 @@
+@@ -97,6 +_,7 @@
  		private void NewCharacterClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Main.PlaySound(10);
- 			Player player = new Player();
--			player.inventory[0].SetDefaults(3507);
--			player.inventory[0].Prefix(-1);
--			player.inventory[1].SetDefaults(3509);
--			player.inventory[1].Prefix(-1);
--			player.inventory[2].SetDefaults(3506);
--			player.inventory[2].Prefix(-1);
-+			PlayerHooks.SetupStartInventory(player);
- 			Main.PendingPlayer = player;
- 			Main.menuMode = 2;
+ 			SoundEngine.PlaySound(10);
+ 			Main.PendingPlayer = new Player();
++			PlayerHooks.SetupStartInventory(Main.PendingPlayer);
+ 			Main.MenuUI.SetState(new UICharacterCreation(Main.PendingPlayer));
+ 			Main.menuMode = 888;
  		}
-@@ -126,6 +_,67 @@
+@@ -141,6 +_,67 @@
  			int num = 0;
  			foreach (PlayerFileData item in list) {
  				_playerList.Add(new UICharacterListItem(item, num++));

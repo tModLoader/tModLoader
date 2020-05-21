@@ -1,8 +1,9 @@
 --- src/Terraria/Terraria.Map/MapHelper.cs
 +++ src/tModLoader/Terraria.Map/MapHelper.cs
-@@ -4,6 +_,8 @@
+@@ -4,7 +_,9 @@
  using System.Diagnostics;
  using System.IO;
+ using System.Threading;
  using Terraria.IO;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
@@ -19,44 +20,38 @@
  		private static ushort[] snowTypes;
  		private static ushort wallRangeStart;
  		private static ushort wallRangeEnd;
-@@ -1123,6 +_,7 @@
+@@ -1436,6 +_,7 @@
  
- 			hellPosition = num11;
- 			colorLookup[num11] = color7;
-+			modPosition = (ushort)(num11 + 1);
+ 			hellPosition = num12;
+ 			colorLookup[num12] = color9;
++			modPosition = (ushort)(num12 + 1);
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
-@@ -1566,7 +_,9 @@
+@@ -1625,6 +_,8 @@
  				}
  			}
  
--			return MapTile.Create((ushort)(num3 + num4), (byte)num2, (byte)num);
-+			ushort mapType = (ushort)(num3 + num4);
+-			return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
++			ushort mapType = (ushort)(num3 + baseOption);
 +			MapLoader.ModMapOption(ref mapType, i, j);
 +			return MapTile.Create(mapType, (byte)num2, (byte)num);
  		}
  
- 		public static void SaveMap() {
-@@ -1679,7 +_,7 @@
- 										byte b5 = 0;
- 										int num7;
- 										ushort num8;
--										if (mapTile.Light <= 18) {
-+										if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
- 											flag3 = false;
- 											flag2 = false;
- 											num7 = 0;
-@@ -1823,9 +_,12 @@
+@@ -2238,7 +_,7 @@
+ 								byte b5 = 0;
+ 								int num7;
+ 								ushort num8;
+-								if (mapTile.Light <= 18) {
++								if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
+ 									flag2 = false;
+ 									flag = false;
+ 									num7 = 0;
+@@ -2382,5 +_,7 @@
  
- 								deflateStream.Dispose();
- 								FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
-+								//patch file: text
- 							}
- 						}
+ 						deflateStream.Dispose();
+ 						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
++						//patch file: text
  					}
-+
 +					MapIO.WriteModFile(text, isCloudSave);
  				}
- 				catch (Exception value) {
- 					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {

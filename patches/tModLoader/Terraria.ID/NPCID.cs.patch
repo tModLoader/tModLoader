@@ -1,7 +1,9 @@
 --- src/Terraria/Terraria.ID/NPCID.cs
 +++ src/tModLoader/Terraria.ID/NPCID.cs
-@@ -1,5 +_,8 @@
+@@ -1,7 +_,10 @@
  using Microsoft.Xna.Framework;
+ using ReLogic.Reflection;
+ using System;
 +using ReLogic.Reflection;
 +using System;
  using System.Collections.Generic;
@@ -9,7 +11,7 @@
  
  namespace Terraria.ID
  {
-@@ -1379,6 +_,39 @@
+@@ -5622,6 +_,39 @@
  				return NetIdMap[-id - 1];
  
  			return id;

@@ -8,8 +8,8 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -125,7 +_,7 @@
- 			while (_isListening && !Netplay.disconnect) {
+@@ -134,7 +_,7 @@
+ 			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
 -					Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));

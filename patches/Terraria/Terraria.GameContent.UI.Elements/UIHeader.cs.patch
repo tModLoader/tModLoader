@@ -5,7 +5,7 @@
  				if (_text != value) {
  					_text = value;
 +#if CLIENT
- 					Vector2 vector = Main.fontDeathText.MeasureString(Text);
+ 					Vector2 vector = FontAssets.DeathText.Value.MeasureString(Text);
  					Width.Pixels = vector.X;
  					Height.Pixels = vector.Y;
 +#endif

@@ -1,67 +1,53 @@
 --- src/Terraria/Terraria.UI/ItemSlot.cs
 +++ src/tModLoader/Terraria.UI/ItemSlot.cs
-@@ -6,6 +_,7 @@
+@@ -9,7 +_,8 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameInput;
  using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -48,7 +_,7 @@
+@@ -60,9 +_,9 @@
  		}
  
+ 		public static bool DrawGoldBGForCraftingMaterial;
  		public static bool ShiftForcedOn;
 -		private static Item[] singleSlotArray;
 +		internal static Item[] singleSlotArray;
  		private static bool[] canFavoriteAt;
+ 		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
  		private static int[] inventoryGlowTime;
-@@ -449,9 +_,13 @@
- 						}
- 						break;
- 					case 3:
--						Main.mouseItem.netDefaults(inv[slot].netID);
-+						if (!PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot]))
-+							break;
+@@ -651,18 +_,24 @@
+ 					break;
+ 				case 3:
+ 					HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
 +						
-+						Main.mouseItem = inv[slot].Clone();
-+						Main.mouseItem.stack = 1;
- 						if (inv[slot].buyOnce)
--							Main.mouseItem.Prefix(inv[slot].prefix);
-+							Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
- 						else
- 							Main.mouseItem.Prefix(-1);
- 						Main.mouseItem.position = player.Center - new Vector2(Main.mouseItem.width, Main.mouseItem.headSlot) / 2f;
-@@ -462,18 +_,25 @@
- 							Main.PlaySound(18);
- 						else
- 							Main.PlaySound(7);
-+						
-+						PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
- 						break;
- 					case 4: {
+ 					break;
+ 				case 4: {
 +							if (!PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
 +								break;
 +							
- 							Chest chest = Main.instance.shop[Main.npcShop];
- 							if (player.SellItem(Main.mouseItem.value, Main.mouseItem.stack)) {
--								chest.AddShop(Main.mouseItem);
-+								int soldItemIndex = chest.AddShop(Main.mouseItem);
- 								Main.mouseItem.SetDefaults();
- 								Main.PlaySound(18);
+ 						Chest chest = Main.instance.shop[Main.npcShop];
+ 						if (player.SellItem(Main.mouseItem)) {
+-							chest.AddItemToShop(Main.mouseItem);
++								int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
+ 							Main.mouseItem.SetDefaults();
+ 							SoundEngine.PlaySound(18);
 +								PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
- 							}
- 							else if (Main.mouseItem.value == 0) {
--								chest.AddShop(Main.mouseItem);
-+								int soldItemIndex = chest.AddShop(Main.mouseItem);
- 								Main.mouseItem.SetDefaults();
- 								Main.PlaySound(7);
+ 						}
+ 						else if (Main.mouseItem.value == 0) {
+-							chest.AddItemToShop(Main.mouseItem);
++								int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
+ 							Main.mouseItem.SetDefaults();
+ 							SoundEngine.PlaySound(7);
 +								PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
- 							}
+ 						}
  
- 							Recipe.FindRecipes();
-@@ -491,20 +_,24 @@
+ 						Recipe.FindRecipes();
+@@ -712,20 +_,24 @@
  			if (inv[slot].type <= 0)
  				return;
  
@@ -72,30 +58,30 @@
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
 +				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
- 					if (player.SellItem(inv[slot].value, inv[slot].stack)) {
--						chest.AddShop(inv[slot]);
-+						int soldItemIndex = chest.AddShop(inv[slot]);
+ 					if (player.SellItem(inv[slot])) {
+-						chest.AddItemToShop(inv[slot]);
++						int soldItemIndex = chest.AddItemToShop(inv[slot]);
  						inv[slot].SetDefaults();
- 						Main.PlaySound(18);
+ 						SoundEngine.PlaySound(18);
  						Recipe.FindRecipes();
 +						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  					else if (inv[slot].value == 0) {
--						chest.AddShop(inv[slot]);
-+						int soldItemIndex = chest.AddShop(inv[slot]);
+-						chest.AddItemToShop(inv[slot]);
++						int soldItemIndex = chest.AddItemToShop(inv[slot]);
  						inv[slot].SetDefaults();
- 						Main.PlaySound(7);
+ 						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
 +						PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  					}
  				}
  			}
-@@ -680,10 +_,12 @@
+@@ -1000,10 +_,12 @@
  			switch (context) {
  				case 0:
- 					flag = true;
--					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861)) {
-+					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || ItemLoader.IsModBossBag(inv[slot]))) {
+ 					result = true;
+-					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957)) {
++					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || ItemLoader.IsModBossBag(inv[slot]))) {
  						if (Main.mouseRightRelease) {
  							player.OpenBossBag(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -105,10 +91,10 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -696,7 +_,9 @@
- 					else if (Main.mouseRight && ((inv[slot].type >= 2334 && inv[slot].type <= 2336) || (inv[slot].type >= 3203 && inv[slot].type <= 3208))) {
+@@ -1016,7 +_,9 @@
+ 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5043 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
- 							player.openCrate(inv[slot].type);
+ 							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
@@ -116,10 +102,10 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -709,7 +_,9 @@
+@@ -1029,7 +_,9 @@
  					else if (Main.mouseRight && inv[slot].type == 3093) {
  						if (Main.mouseRightRelease) {
- 							player.openHerbBag();
+ 							player.OpenHerbBag();
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
@@ -127,7 +113,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -721,7 +_,9 @@
+@@ -1067,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
  						if (Main.mouseRightRelease) {
@@ -138,7 +124,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -734,7 +_,9 @@
+@@ -1080,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 3085) {
  						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
@@ -149,7 +135,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -747,7 +_,9 @@
+@@ -1106,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1869) {
  						if (Main.mouseRightRelease) {
@@ -160,7 +146,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -777,6 +_,9 @@
+@@ -1136,6 +_,9 @@
  
  						Recipe.FindRecipes();
  					}
@@ -168,9 +154,9 @@
 +						ItemLoader.RightClick(inv[slot], player);
 +					}
  					else {
- 						flag = false;
+ 						result = false;
  					}
-@@ -795,7 +_,7 @@
+@@ -1161,7 +_,7 @@
  							}
  						}
  
@@ -179,69 +165,81 @@
  							break;
  
  						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-@@ -836,6 +_,9 @@
+@@ -1237,7 +_,9 @@
  
- 						int num = Main.superFastStack + 1;
- 						for (int i = 0; i < num; i++) {
-+							if (!PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot]))
-+								continue;
-+							
- 							if ((Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0) || !player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) || inv[slot].stack <= 0)
- 								continue;
+ 			int num = Main.superFastStack + 1;
+ 			Player localPlayer = Main.LocalPlayer;
+ 			for (int i = 0; i < num; i++) {
++				if (!PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot]))
++					continue;
+ 				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
+ 					continue;
  
-@@ -843,9 +_,14 @@
- 								Main.PlaySound(18);
+@@ -1250,12 +_,18 @@
+ 						SoundEngine.PlaySound(18);
+ 					else
+ 						SoundEngine.PlaySound(7);
++					PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
+ 				}
  
- 							if (Main.mouseItem.type == 0) {
--								Main.mouseItem.netDefaults(inv[slot].netID);
--								if (inv[slot].prefix != 0)
--									Main.mouseItem.Prefix(inv[slot].prefix);
-+								Main.mouseItem = inv[slot].Clone();
-+								Main.mouseItem.stack = 1;
-+								if (inv[slot].buyOnce)
-+									Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
+ 				if (Main.mouseItem.type == 0) {
+-					Main.mouseItem.netDefaults(inv[slot].netID);
+-					if (inv[slot].prefix != 0)
+-						Main.mouseItem.Prefix(inv[slot].prefix);
++						Main.mouseItem = inv[slot].Clone();
++						Main.mouseItem.stack = 1;
++						if (inv[slot].buyOnce)
++							Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
 +
-+								// Main.mouseItem.netDefaults(inv[slot].netID);
-+								// if (inv[slot].prefix != 0)
-+								//	 Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
++						// Main.mouseItem.netDefaults(inv[slot].netID);
++						// if (inv[slot].prefix != 0)
++						//	 Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
  
- 								Main.mouseItem.stack = 0;
- 							}
-@@ -858,6 +_,8 @@
- 
- 							if (inv[slot].buyOnce && --inv[slot].stack <= 0)
- 								inv[slot].SetDefaults();
+ 					Main.mouseItem.stack = 0;
+ 				}
+@@ -1261,3 +_,6 @@
 +
-+							PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
- 						}
++					Main.mouseItem = inv[slot].Clone();
++					Main.mouseItem.stack = 1;
+ 				}
  
- 						break;
-@@ -1244,10 +_,15 @@
- 				num8 *= inventoryScale;
- 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num8 / 2f;
+ 				if (!inv[slot].buyOnce)
+@@ -1265,7 +_,9 @@
+ 
+ 				Main.mouseItem.stack++;
+ 				RefreshStackSplitCooldown();
+ 				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
+ 					inv[slot].SetDefaults();
++
++				PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
+ 			}
+ 		}
+@@ -1592,10 +_,15 @@
+ 				num9 *= inventoryScale;
+ 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
-+				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num8 * scale3))
++				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3))
 +					goto skip;
 +				
- 				spriteBatch.Draw(texture2D3, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num8 * scale3, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent)
- 					spriteBatch.Draw(texture2D3, position2, rectangle2, item.GetColor(color), 0f, origin, num8 * scale3, SpriteEffects.None, 0f);
+ 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(color), 0f, origin, num9 * scale3, SpriteEffects.None, 0f);
  
 +				skip:
-+				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num8 * scale3);
++				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num9 * scale3);
  				if (ItemID.Sets.TrapSigned[item.type])
- 					spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
+ 					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
-@@ -1429,7 +_,7 @@
+@@ -1858,7 +_,7 @@
  					return false;
  
- 				if (player.armor[slot].wingSlot > 0 && item.wingSlot > 0)
+ 				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0)
 -					return false;
 +					return !ItemLoader.CanEquipAccessory(item, slot);
  			}
  
- 			for (int i = 0; i < player.armor.Length; i++) {
-@@ -1445,7 +_,7 @@
+ 			for (int i = 0; i < itemCollection.Length; i++) {
+@@ -1874,7 +_,7 @@
  					return true;
  			}
  
@@ -250,22 +248,22 @@
  		}
  
  		private static Item DyeSwap(Item item, out bool success) {
-@@ -1518,6 +_,14 @@
- 						accSlotCount = j - 3;
+@@ -1950,6 +_,14 @@
+ 						accSlotToSwapTo = j - 3;
  				}
  
 +				for (int k = 0; k < num2; k++) {
-+					int index = 3 + (accSlotCount + num2) % num2;
++					int index = 3 + (accSlotToSwapTo + num2) % num2;
 +					if (ItemLoader.CanEquipAccessory(item, index)) {
-+						accSlotCount = index - 3;
++						accSlotToSwapTo = index - 3;
 +						break;
 +					}
 +				}
 +
- 				if (accSlotCount >= num2)
- 					accSlotCount = 0;
+ 				if (accSlotToSwapTo > num2)
+ 					return item;
  
-@@ -1530,6 +_,9 @@
+@@ -1962,5 +_,8 @@
  						num3 = k;
  				}
  
@@ -274,12 +272,11 @@
 +
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
- 				accSlotCount++;
-@@ -1746,7 +_,7 @@
+@@ -2059,7 +_,7 @@
  		}
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {
--			if (type < 0 || type > 3930)
+-			if (type < 0 || type > 5043)
 +			if (type < 0)
  				return currentColor;
  

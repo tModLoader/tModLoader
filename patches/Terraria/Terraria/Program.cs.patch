@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -2,14 +_,18 @@
+@@ -2,13 +_,17 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -10,7 +10,6 @@
  using System.IO;
  using System.Reflection;
  using System.Runtime.CompilerServices;
- using System.Runtime.ExceptionServices;
  using System.Text;
  using System.Threading;
 +#if CLIENT
@@ -19,7 +18,7 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -19,7 +_,11 @@
+@@ -18,7 +_,11 @@
  {
  	public static class Program
  	{
@@ -28,10 +27,10 @@
 +#else
 +		public const bool IsServer = true;
 +#endif
- 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
- 		private static int ThingsToLoad = 0;
- 		private static int ThingsLoaded = 0;
-@@ -50,10 +_,18 @@
+ 		public const bool IsXna = true;
+ 		public const bool IsFna = false;
+ 		public const bool IsDebug = false;
+@@ -56,10 +_,18 @@
  		private static void ForceJITOnAssembly(Assembly assembly) {
  			Type[] types = assembly.GetTypes();
  			for (int i = 0; i < types.Length; i++) {
@@ -50,7 +49,7 @@
  				}
  
  				ThingsLoaded++;
-@@ -128,9 +_,11 @@
+@@ -114,9 +_,11 @@
  		}
  
  		private static void InitializeConsoleOutput() {
@@ -62,7 +61,7 @@
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -163,7 +_,11 @@
+@@ -151,7 +_,11 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
@@ -74,12 +73,12 @@
  				}
  				catch (Exception e) {
  					DisplayException(e);
-@@ -179,7 +_,11 @@
+@@ -176,7 +_,11 @@
  					streamWriter.WriteLine("");
  				}
  
 +#if CLIENT
- 				MessageBox.Show(e.ToString(), "Terraria: Error");
+ 				MessageBox.Show(text, "Terraria: Error");
 +#else
 +				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
 +#endif

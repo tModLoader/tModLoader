@@ -1,29 +1,28 @@
 --- src/Terraria/Terraria/Mount.cs
 +++ src/tModLoader/Terraria/Mount.cs
-@@ -6,6 +_,7 @@
- using Terraria.GameContent.Achievements;
+@@ -10,6 +_,7 @@
+ using Terraria.GameContent.Drawing;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria
  {
-@@ -39,8 +_,13 @@
+@@ -73,11 +_,12 @@
+ 				MinecartDust = DelegateMethods.Minecart.Sparks;
+ 				MinecartLandingSound = DelegateMethods.Minecart.LandingSound;
+ 				MinecartBumperSound = DelegateMethods.Minecart.BumperSound;
  			}
  		}
  
 -		private class MountData
 +		public class MountData
  		{
-+			public ModMountData modMountData {
-+				get;
-+				set;
-+			}
-+
- 			public Texture2D backTexture;
- 			public Texture2D backTextureGlow;
- 			public Texture2D backTextureExtra;
-@@ -134,7 +_,7 @@
++			public ModMountData modMountData {get;set;}
+ 			public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
+ 			public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
+ 			public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
+@@ -154,7 +_,7 @@
  		public const int DrawBackExtra = 1;
  		public const int DrawFront = 2;
  		public const int DrawFrontExtra = 3;
@@ -32,10 +31,11 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public const int scutlixBaseDamage = 50;
-@@ -147,28 +_,28 @@
+@@ -167,30 +_,30 @@
  		public static int drillPickTime = 6;
  		public static int drillBeamCooldownMax = 1;
  		public const float maxDrillLength = 48f;
+ 		private static Vector2 santankTextureSize;
 -		private MountData _data;
 +		public MountData _data;
 -		private int _type;
@@ -79,14 +79,15 @@
 +		public object _mountSpecificData;
 -		private bool _active;
 +		public bool _active;
+ 		private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
  		public bool Active => _active;
  
-@@ -1179,13 +_,13 @@
+@@ -2000,13 +_,13 @@
  		}
  
  		public static int GetHeightBoost(int MountType) {
--			if (MountType <= -1 || MountType >= 15)
+-			if (MountType <= -1 || MountType >= MountID.Count)
 +			if (MountType <= -1 || MountType >= mounts.Length)
  				return 0;
  
@@ -98,7 +99,7 @@
  			int num = _data.jumpHeight;
  			switch (_type) {
  				case 0:
-@@ -1200,10 +_,11 @@
+@@ -2022,10 +_,11 @@
  					break;
  			}
  
@@ -111,7 +112,7 @@
  			float num = _data.jumpSpeed;
  			switch (_type) {
  				case 0:
-@@ -1216,6 +_,7 @@
+@@ -2039,6 +_,7 @@
  					break;
  			}
  
@@ -119,8 +120,10 @@
  			return num;
  		}
  
-@@ -1536,6 +_,9 @@
+@@ -2475,8 +_,11 @@
  		}
+ 
+ 		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
 +			if (!MountLoader.UpdateFrame(mountedPlayer, state, velocity))
@@ -129,17 +132,16 @@
  			if (_frameState != state) {
  				_frameState = state;
  				_frameCounter = 0f;
-@@ -1891,6 +_,7 @@
+@@ -3314,5 +_,6 @@
  
  		public void UpdateEffects(Player mountedPlayer) {
  			mountedPlayer.autoJump = AutoJump;
 +			MountLoader.UpdateEffects(mountedPlayer);
  			switch (_type) {
- 				case 9: {
- 						Vector2 center = mountedPlayer.Center;
-@@ -1955,11 +_,14 @@
+ 				case 13:
+@@ -3482,10 +_,13 @@
  						else
- 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector4.X, vector4.Y, vector4.Z);
+ 							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector7.X, vector7.Y, vector7.Z);
  
 +						mountedPlayer.allDamage += 0.15f;
 +						/*
@@ -147,12 +149,11 @@
  						mountedPlayer.rangedDamage += 0.15f;
  						mountedPlayer.magicDamage += 0.15f;
  						mountedPlayer.minionDamage += 0.15f;
- 						mountedPlayer.thrownDamage += 0.15f;
 +						*/
  					}
  					if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  						mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -2081,7 +_,7 @@
+@@ -3660,7 +_,7 @@
  			if (_type == -1)
  				return;
  
@@ -161,7 +162,7 @@
  				if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
  					return;
  			}
-@@ -2129,6 +_,7 @@
+@@ -3714,6 +_,7 @@
  
  		public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
  			_aiming = true;
@@ -169,54 +170,56 @@
  			switch (_type) {
  				case 9: {
  						int frameExtra = _frameExtra;
-@@ -2398,6 +_,7 @@
- 			type = _type;
- 			_ = 8;
- 			DrawData item;
-+			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num6, ref effect, ref origin, ref scale, shadow);
- 			if (!flag2) {
- 				item = new DrawData(texture2D, Position, value, drawColor, num6, origin, scale, effect, 0);
- 				item.shader = currentShader;
-@@ -2456,6 +_,8 @@
- 			bool cart = Cart;
- 			_active = false;
- 			mountedPlayer.ClearBuff(_data.buff);
-+			bool skipDust = false;
-+			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
- 			_mountSpecificData = null;
- 			_ = _type;
- 			if (cart) {
-@@ -2466,7 +_,7 @@
+@@ -4155,7 +_,8 @@
+ 					}
+ 					break;
+ 			}
  
- 			mountedPlayer.fullRotation = 0f;
- 			mountedPlayer.fullRotationOrigin = Vector2.Zero;
--			if (Main.netMode != 2) {
-+			if (Main.netMode != 2 && !skipDust) {
- 				for (int i = 0; i < 100; i++) {
- 					if (_type == 6 || _type == 11 || _type == 13) {
- 						if (i % 10 == 0) {
-@@ -2505,12 +_,10 @@
++			flag2 = !MountLoader.Draw(this, playerDrawData, drawType, drawPlayer, ref texture2D, ref texture2D2, ref Position, ref value, ref drawColor, ref color, ref num8, ref spriteEffects, ref origin, ref scale, shadow);
+ 			if (!flag2) {
+ 				item = new DrawData(texture2D, Position, value, drawColor, num8, origin, scale, spriteEffects, 0);
+ 				item.shader = currentShader;
+@@ -4294,6 +_,8 @@
+ 				bool cart = Cart;
+ 				_active = false;
+ 				mountedPlayer.ClearBuff(_data.buff);
++				bool skipDust = false;
++				MountLoader.Dismount(this, mountedPlayer, ref skipDust);
+ 				_mountSpecificData = null;
+ 				_ = _type;
+ 				if (cart) {
+@@ -4303,9 +_,10 @@
+ 				}
+ 
+ 				mountedPlayer.fullRotation = 0f;
+ 				mountedPlayer.fullRotationOrigin = Vector2.Zero;
++				if (!skipDust)
+-				DoSpawnDust(mountedPlayer, isDismounting: true);
++					DoSpawnDust(mountedPlayer, isDismounting: true);
+ 				Reset();
+ 				mountedPlayer.position.Y += mountedPlayer.height;
+ 				mountedPlayer.height = 42;
+ 				mountedPlayer.position.Y -= mountedPlayer.height;
+@@ -4315,7 +_,7 @@
  		}
  
  		public void SetMount(int m, Player mountedPlayer, bool faceLeft = false) {
--			if (_type == m)
-+			if (_type == m || m <= -1 || m >= mounts.Length)
+-			if (_type == m || m <= -1 || m >= MountID.Count || (m == 5 && mountedPlayer.wet))
++			if (_type == m || m <= -1 || m >= mounts.Length || (m == 5 && mountedPlayer.wet))
  				return;
  
- 			switch (m) {
--				default:
--					return;
- 				case 5:
- 					if (mountedPlayer.wet)
- 						return;
-@@ -2581,7 +_,9 @@
+ 			if (_active) {
+@@ -4371,9 +_,12 @@
  			if (_type == 8)
  				_mountSpecificData = new DrillMountData();
  
--			if (Main.netMode != 2) {
+ 			if (_type == 35)
+ 				_mountSpecificData = new ExtraFrameMountData();
+ 
 +			bool skipDust = false;
 +			MountLoader.SetMount(this, mountedPlayer, ref skipDust);
-+			if (Main.netMode != 2 && !skipDust) {
- 				for (int k = 0; k < 100; k++) {
- 					if (_type == 6 || _type == 11 || _type == 13) {
- 						if (k % 10 == 0) {
++			if (!skipDust)
+-			DoSpawnDust(mountedPlayer, isDismounting: false);
++				DoSpawnDust(mountedPlayer, isDismounting: false);
+ 			if (mountedPlayer.whoAmI == Main.myPlayer)
+ 				NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);

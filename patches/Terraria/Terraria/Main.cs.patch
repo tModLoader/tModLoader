@@ -1,17 +1,17 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -4,6 +_,9 @@
- using Microsoft.Xna.Framework.Content;
- using Microsoft.Xna.Framework.Graphics;
+@@ -6,6 +_,9 @@
  using Microsoft.Xna.Framework.Input;
+ using ReLogic.Content;
+ using ReLogic.Content.Sources;
 +#if MAC
 +using SDL2;
 +#endif
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -11,10 +_,15 @@
- using System;
+@@ -16,10 +_,15 @@
+ using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
 +#if WINDOWS
@@ -26,10 +26,10 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Threading;
-@@ -51,10 +_,17 @@
+@@ -67,10 +_,17 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
- using Terraria.World.Generation;
+ using Terraria.WorldBuilding;
 +#if SERVER
 +using Terraria.Server;
 +#endif
@@ -44,23 +44,23 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -2791,6 +_,7 @@
- 				LockOnHelper.UseMode = LockOnHelper.LockOnMode.ThreeDS;
+@@ -3254,6 +_,7 @@
+ 				base.InactiveSleepTime = TimeSpan.FromMilliseconds(flag2 ? 20 : 0);
+ 			}
  
- 			Configuration.Get("InvisibleCursorForGamepad", ref InvisibleCursorForGamepad);
 +#if CLIENT && WINDOWS
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
- 				form.Location = new System.Drawing.Point(0, 0);
-@@ -2804,6 +_,7 @@
+ 				SetBorderlessFormStyle(form);
+@@ -3266,6 +_,7 @@
  				form.FormBorderStyle = FormBorderStyle.Sizable;
  			}
  
 +#endif
- 			SetDisplayMode(currentValue3, currentValue4, currentValue2);
- 			Configuration.Get("SettingsUnlock_WorldEvil", ref SettingsUnlock_WorldEvil);
- 			Configuration.Get("SettingsEnabled_MinersWobble", ref SettingsEnabled_MinersWobble);
-@@ -2990,9 +_,13 @@
+ 			Control.FromHandle(instance.Window.Handle).BringToFront();
+ 			if (!flag)
+ 				Configuration.Get("Support4K", ref Support4K);
+@@ -3456,9 +_,13 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
  
@@ -75,7 +75,7 @@
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
  								int height = binaryReader.ReadInt32();
-@@ -3086,8 +_,13 @@
+@@ -3549,8 +_,13 @@
  		private static void EraseWorld(int i) {
  			try {
  				if (!WorldList[i].IsCloudSave) {
@@ -89,7 +89,7 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
-@@ -3361,9 +_,11 @@
+@@ -3860,9 +_,11 @@
  			rand = new UnifiedRandom();
  			if (autoShutdown) {
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
@@ -101,50 +101,49 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4075,13 +_,17 @@
+@@ -4623,12 +_,16 @@
+ 			if (graphicsAdapter != null)
+ 				e.GraphicsDeviceInformation.Adapter = graphicsAdapter;
  
- 		public Main() {
- 			instance = this;
 +#if CLIENT
- 			graphics = new GraphicsDeviceManager(this);
- 			base.Content.RootDirectory = "Content";
+ 			graphics.PreparingDeviceSettings -= SetMonitorOnce;
 +#endif
  		}
  
  		protected void SetTitle() {
 +#if CLIENT
  			_cachedTitle = Lang.GetRandomGameTitle();
- 			Platform.Current.SetWindowUnicodeTitle(base.Window, _cachedTitle);
+ 			Platform.Get<IWindowService>().SetUnicodeTitle(base.Window, _cachedTitle);
 +#endif
  		}
  
- 		public static void InitLifeBytes() {
-@@ -4135,6 +_,9 @@
+ 		private static void SetTileValue() {
+@@ -4667,6 +_,9 @@
  		}
  
  		protected override void Initialize() {
 +#if SERVER
 +			netMode = 2;
 +#endif
- 			LocalFavoriteData.Load();
- 			CloudFavoritesData.Load();
- 			FindAnnouncementBoxStatus();
-@@ -4149,9 +_,14 @@
- 			TileEntity.InitializeAll();
- 			Projectile.InitializeStaticThings();
- 			InitializeItemAnimations();
+ 			musicFade[50] = 1f;
+ 			for (int i = 0; i < 10; i++) {
+ 				recentWorld[i] = "";
+@@ -4742,9 +_,14 @@
+ 			ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+ 			ShopHelper = new ShopHelper();
+ 			CreativeItemSacrificesCatalog.Instance.Initialize();
 +#if CLIENT
+ 			BestiaryUI = new UIBestiaryTest(BestiaryDB);
  			Lighting.Initialize();
  			MapHelper.Initialize();
- 			TimeLogger.Initialize();
 +#else
 +			Mount.Initialize();
 +			Minecart.Initialize();
 +#endif
- 			WorldGen.RandomizeBackgrounds();
- 			WorldGen.RandomizeCaveBackgrounds();
- 			WorldGen.RandomizeMoonState();
-@@ -6554,13 +_,18 @@
+ 			WorldGen.RandomizeBackgrounds(rand);
+ 			if (treeBGSet1[0] == 173)
+ 				WorldGen.RandomizeBackgrounds(rand);
+@@ -4817,15 +_,20 @@
  				ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(myPlayer);
  			}
@@ -158,31 +157,17 @@
  
 +#endif
 +#if CLIENT
- 			ClientInitialize();
-+#endif
- 		}
- 
- 		private void ClientInitialize() {
-@@ -6600,6 +_,7 @@
- 			OpenRecent();
+ 			SoundID.FillAccessMap();
  			Star.SpawnStars();
- 			WorldGen.RandomizeWeather();
-+#if CLIENT
- 			_achievements = new AchievementManager();
- 			AchievementInitializer.Load();
- 			DyeInitializer.Load();
-@@ -6607,6 +_,7 @@
- 			AchievementCompleteUI.Initialize();
- 			UILinksInitializer.Load();
  			ItemSorting.SetupWhiteLists();
 +#endif
- 			foreach (DisplayMode supportedDisplayMode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes) {
- 				if (supportedDisplayMode.Width < minScreenW || supportedDisplayMode.Height < minScreenH || supportedDisplayMode.Width > maxScreenW || supportedDisplayMode.Height > maxScreenH)
- 					continue;
-@@ -7273,6 +_,25 @@
  		}
  
- 		protected void UpdateAudio() {
+ 		private void Initialize_Entities() {
+@@ -12160,6 +_,25 @@
+ 		}
+ 
+ 		public void UpdateViewZoomKeys() {
 +#if !WINDOWS
 +			if (Main.engine != null)
 +				Main.engine.Update();
@@ -202,30 +187,30 @@
 +			}
 +
 +#endif
- 			if (!dedServ) {
- 				bool flag = (!hasFocus || gamePaused) && netMode == 0;
- 				if (flag) {
-@@ -9795,9 +_,11 @@
+ 			if (!inFancyUI) {
+ 				float num = 0.01f;
+ 				if (PlayerInput.Triggers.Current.ViewZoomIn)
+@@ -12218,9 +_,11 @@
  			PlayerInput.SetZoom_Unscaled();
  			MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
 +#if CLIENT
- 			if (Main.OnTick != null)
- 				Main.OnTick();
+ 			if (Main.OnTickForThirdPartySoftwareOnly != null)
+ 				Main.OnTickForThirdPartySoftwareOnly();
  
 +#endif
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
  				_hasPendingNetmodeChange = false;
-@@ -11587,6 +_,7 @@
+@@ -14387,6 +_,7 @@
  		public static extern short GetKeyState(int keyCode);
  
- 		public static string GetInputText(string oldString) {
+ 		public static string GetInputText(string oldString, bool allowMultiLine = false) {
 +#if CLIENT
  			if (!hasFocus)
  				return oldString;
  
-@@ -11675,6 +_,9 @@
+@@ -14473,6 +_,9 @@
  			}
  
  			return text;
@@ -234,8 +219,8 @@
 +#endif
  		}
  
- 		public void MouseTextHackZoom(string text) {
-@@ -34774,8 +_,13 @@
+ 		public void MouseTextHackZoom(string text, string buffTooltip = null) {
+@@ -35350,8 +_,13 @@
  
  		protected void QuitGame() {
  			SaveSettings();
@@ -249,14 +234,15 @@
  		}
  
  		protected Microsoft.Xna.Framework.Color randColor() {
-@@ -35399,8 +_,15 @@
+@@ -36030,9 +_,16 @@
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
- 					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
+ 					string str = "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
 +#if LINUX
 +					str += IntPtr.Size == 8 ? " -x64": " -x86";
 +#endif
  					str = ((!ActiveWorldFileData.IsCloudSave) ? (str + " -world \"" + worldPathName + "\"") : (str + " -cloudworld \"" + worldPathName + "\""));
+ 					tServer = new Process();
 +#if WINDOWS
  					tServer.StartInfo.FileName = "TerrariaServer.exe";
 +#else
@@ -265,21 +251,7 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
-@@ -36629,11 +_,13 @@
- 					}
- 
- 					bool flag7 = false;
-+#if WINDOWS
- 					flag7 = true;
- 					System.Drawing.Rectangle bounds = Screen.FromPoint(((Form)Control.FromHandle(instance.Window.Handle)).Location).Bounds;
- 					if (bounds.Width > maxScreenW || bounds.Height > maxScreenH)
- 						flag7 = false;
- 
-+#endif
- 					num2 = 210;
- 					num4 = 55;
- 					int num28 = 0;
-@@ -40186,7 +_,11 @@
+@@ -41233,7 +_,11 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
@@ -289,17 +261,17 @@
 +			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
 +#endif
  			try {
- 				drawWaters(bg: true);
+ 				DrawWaters(isBackground: true);
  			}
-@@ -45715,6 +_,7 @@
+@@ -46795,6 +_,7 @@
  		}
  
  		private static void CheckMonoliths() {
 +#if CLIENT
  			bool flag = player[myPlayer].ZoneTowerVortex || player[myPlayer].ZoneTowerNebula || player[myPlayer].ZoneTowerStardust || player[myPlayer].ZoneTowerSolar;
  			for (int i = 0; i < MonolithFilterNames.Length; i++) {
- 				if (!flag && i == monolithType) {
-@@ -45732,6 +_,7 @@
+ 				if (!flag && i == SceneMetrics.ActiveMonolithType) {
+@@ -46812,6 +_,7 @@
  						SkyManager.Instance.Deactivate(MonolithSkyNames[i]);
  				}
  			}
@@ -307,7 +279,7 @@
  		}
  
  		private void GraphicsDeviceLost(object sender, EventArgs evt) {
-@@ -45786,7 +_,9 @@
+@@ -46880,7 +_,9 @@
  			if (!base.IsActive)
  				maxQ = true;
  
@@ -317,95 +289,55 @@
  			if (Main.OnPreDraw != null)
  				Main.OnPreDraw(gameTime);
  
-@@ -48180,6 +_,7 @@
- 			BirthdayParty.UpdateTime();
- 			Sandstorm.UpdateTime();
+@@ -49324,6 +_,7 @@
  			DD2Event.UpdateTime();
+ 			WorldGen.mysticLogsEvent.UpdateTime();
+ 			PylonSystem.Update();
 +#if CLIENT
  			if (NPC.MoonLordCountdown > 0) {
  				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
  				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -48192,6 +_,7 @@
- 				Filters.Scene.Deactivate("MoonLordShake");
+@@ -49336,6 +_,7 @@
+ 				Terraria.Graphics.Effects.Filters.Scene.Deactivate("MoonLordShake");
  			}
  
 +#endif
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
  				if (NPC.MoonLordCountdown <= 0 && netMode != 1)
-@@ -48855,6 +_,9 @@
- 
- 		public static void PlaySoundInstance(SoundEffectInstance sound) {
- 			sound.Play();
-+#if !WINDOWS
-+			ActiveSoundInstances.Add(sound);
-+#endif
- 		}
- 
- 		public static ActiveSound GetActiveSound(SlotId id) {
-@@ -48906,6 +_,11 @@
- 		}
- 
- 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-+#if !WINDOWS
-+			// lock statement without creating a block. Formatter wants to indent the whole method if we wrap it with another block.
-+			// could create another method _PlaySound or do_PlaySound, but we try to avoid annoying people who want to hook methods
-+			Monitor.Enter(Main._audioLock);
-+#endif
- 			int num = Style;
- 			try {
- 				if (dedServ)
-@@ -49479,6 +_,12 @@
- 			}
- 			catch {
- 			}
-+#if !WINDOWS
-+			finally {
-+				Monitor.Exit(Main._audioLock);
-+			}
-+
-+#endif
- 
- 			return null;
- 		}
-@@ -49542,6 +_,7 @@
- 
+@@ -50218,22 +_,28 @@
+ 		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
  			Form form = null;
 +#if WINDOWS
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -49550,6 +_,9 @@
+ 				((Form)Control.FromHandle(instance.Window.Handle)).WindowState = FormWindowState.Normal;
+ 			}
  
- 			form = (Form)Control.FromHandle(instance.Window.Handle);
- 			flag = (form.FormBorderStyle == FormBorderStyle.None);
 +#else
 +			Main.screenMaximized = false;
 +#endif
- 			if (!instance.IsActive && (screenBorderless || screenMaximized || graphics.IsFullScreen))
- 				return;
- 
-@@ -49557,6 +_,7 @@
+ 			form = (Form)Control.FromHandle(instance.Window.Handle);
+ 			flag = (form.FormBorderStyle == FormBorderStyle.None);
+ 			bool flag2 = false;
  			int num3;
  			int num4;
- 			if (screenBorderless || screenMaximized || graphics.IsFullScreen) {
+ 			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
 +#if WINDOWS
  				form.MinimumSize = new Size(0, 0);
- 				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
- 					screenBorderlessPendingResizes--;
-@@ -49565,6 +_,7 @@
- 					height = bounds.Height;
- 				}
+ 				if (!fullscreen)
+ 					SetDisplayModeAsBorderless(ref width, ref height, form);
  
 +#endif
  				if (width > maxScreenW) {
  					float num = (float)height / (float)width;
  					width = maxScreenW;
-@@ -49589,12 +_,14 @@
- 				}
+@@ -50260,12 +_,14 @@
  			}
  			else {
+ 				PlayerInput.RawMouseScale = Vector2.One;
 +#if WINDOWS
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
@@ -417,7 +349,7 @@
  				width = Math.Min(width, maxScreenW);
  				height = Math.Min(height, maxScreenH);
  				num3 = graphics.GraphicsDevice.Viewport.Width;
-@@ -49602,6 +_,7 @@
+@@ -50273,6 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -425,7 +357,7 @@
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
-@@ -49614,6 +_,7 @@
+@@ -50285,6 +_,7 @@
  				}
  			}
  
@@ -433,19 +365,19 @@
  			width &= 0x7FFFFFFE;
  			height &= 0x7FFFFFFE;
  			width = Math.Max(width, minScreenW);
-@@ -49636,6 +_,7 @@
+@@ -50314,6 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
 +#if WINDOWS
  				if (!fullscreen) {
- 					form.SendToBack();
+ 					if (screenBorderless) {
+ 						ApplyBorderlessResolution(form);
+@@ -50327,6 +_,7 @@
  					form.BringToFront();
-@@ -49654,6 +_,7 @@
- 					}
  				}
  
 +#endif
- 				Lighting.Initialize(resize: true);
+ 				Lighting.Initialize();
  				if (!drawToScreen)
  					instance.InitTargets();

@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria.Initializers/UILinksInitializer.cs
 +++ src/tModLoader/Terraria.Initializers/UILinksInitializer.cs
-@@ -2,6 +_,9 @@
- using System;
+@@ -5,6 +_,9 @@
+ using Terraria.GameContent.Tile_Entities;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ModLoader;
@@ -10,25 +10,25 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -490,7 +_,7 @@
- 				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
+@@ -631,7 +_,7 @@
+ 				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
  			};
  
--			for (int num8 = 600; num8 <= 650; num8++) {
-+			for (int num8 = 600; num8 <= 698; num8++) {
- 				UILinkPoint value11 = new UILinkPoint(num8, enabled: true, num8 + 10, num8 - 10, num8 - 1, num8 + 1);
- 				cp13.LinkMap.Add(num8, value11);
+-			for (int num12 = 600; num12 <= 650; num12++) {
++			for (int num12 = 600; num12 <= 698; num12++) {
+ 				UILinkPoint value13 = new UILinkPoint(num12, enabled: true, num12 + 10, num12 - 10, num12 - 1, num12 + 1);
+ 				cp14.LinkMap.Add(num12, value13);
  			}
-@@ -500,7 +_,7 @@
- 				if (num50 == 0)
- 					num50 = 100;
+@@ -641,7 +_,7 @@
+ 				if (num55 == 0)
+ 					num55 = 100;
  
--				for (int num51 = 0; num51 < 50; num51++) {
-+				for (int num51 = 0; num51 < 98; num51++) {
- 					cp13.LinkMap[600 + num51].Up = ((num51 % num50 == 0) ? (-1) : (600 + num51 - 1));
- 					if (cp13.LinkMap[600 + num51].Up == -1) {
- 						if (num51 >= num50 * 2)
-@@ -1370,6 +_,13 @@
+-				for (int num56 = 0; num56 < 50; num56++) {
++				for (int num56 = 0; num56 < 98; num56++) {
+ 					cp14.LinkMap[600 + num56].Up = ((num56 % num55 == 0) ? (-1) : (600 + num56 - 1));
+ 					if (cp14.LinkMap[600 + num56].Up == -1) {
+ 						if (num56 >= num55 * 2)
+@@ -1576,6 +_,13 @@
  					break;
  				case 6:
  					UIVirtualKeyboard.Cancel();

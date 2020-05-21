@@ -1,27 +1,28 @@
 --- src/Terraria/Terraria.GameContent.UI.States/UIWorldSelect.cs
 +++ src/tModLoader/Terraria.GameContent.UI.States/UIWorldSelect.cs
-@@ -2,7 +_,9 @@
+@@ -2,8 +_,10 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
  using System.Collections.Generic;
 +using System.IO;
  using System.Linq;
+ using Terraria.Audio;
 +using System.Threading.Tasks;
  using Terraria.GameContent.UI.Elements;
  using Terraria.GameInput;
- using Terraria.IO;
-@@ -20,6 +_,7 @@
- 		private UIPanel _containerPanel;
+ using Terraria.ID;
+@@ -24,6 +_,7 @@
+ 		private bool _isScrollbarAttached;
  		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
  		private bool skipDraw;
 +		private static bool _currentlyMigratingFiles;
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -115,6 +_,49 @@
+@@ -130,6 +_,49 @@
  			int num = 0;
- 			foreach (WorldFileData item in list) {
- 				_worldList.Add(new UIWorldListItem(item, num++));
+ 			foreach (WorldFileData item in orderedEnumerable) {
+ 				_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
 +			}
 +
 +			if (list.Count == 0) {

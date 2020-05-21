@@ -1,11 +1,9 @@
 --- src/decompiled/Terraria.Graphics.Capture/CaptureInterface.cs
 +++ src/Terraria/Terraria.Graphics.Capture/CaptureInterface.cs
-@@ -881,8 +_,19 @@
- 						ToggleCamera();
- 					}
+@@ -889,7 +_,17 @@
  
--					if (i == num2++ && flag2 && flag)
-+					if (i == num2++ && flag2 && flag) {
+ 					if (i == num2++ && flag2 && flag) {
+ 						SoundEngine.PlaySound(12);
 +#if LINUX
 +						string fileName = Path.Combine(Main.SavePath, "Captures");
 +						Process.Start(new ProcessStartInfo(fileName) {
@@ -15,9 +13,8 @@
 +							CreateNoWindow = true
 +						});
 +#else
- 						Process.Start(Path.Combine(Main.SavePath, "Captures"));
+ 						Utils.OpenFolder(Path.Combine(Main.SavePath, "Captures"));
 +#endif
-+					}
+ 					}
  
  					if (i == num2++ && flag2) {
- 						ToggleCamera(On: false);

@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria.UI/IngameFancyUI.cs
 +++ src/tModLoader/Terraria.UI/IngameFancyUI.cs
-@@ -3,7 +_,9 @@
- using Terraria.Achievements;
+@@ -4,7 +_,9 @@
+ using Terraria.Audio;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ID;
@@ -10,10 +10,10 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI
-@@ -71,6 +_,12 @@
- 
- 						if (Main.tile[player.chestX, player.chestY].type == 88)
- 							Main.defaultChestName = Lang.dresserType[Main.tile[player.chestX, player.chestY].frameX / 54].Value;
+@@ -85,6 +_,12 @@
+ 							Main.defaultChestName = Lang.chestType2[tile.frameX / 36].Value;
+ 						else if (tile.type == 88)
+ 							Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;
 +
 +						if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] && Main.tile[player.chestX, player.chestY].type >= TileID.Count)
 +							Main.defaultChestName = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);

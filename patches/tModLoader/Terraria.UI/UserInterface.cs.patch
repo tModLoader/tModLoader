@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.UI/UserInterface.cs
 +++ src/tModLoader/Terraria.UI/UserInterface.cs
-@@ -16,10 +_,26 @@
+@@ -17,11 +_,27 @@
  		private List<UIState> _history = new List<UIState>();
  		public Vector2 MousePosition;
  		private bool _wasMouseDown;
@@ -25,10 +25,11 @@
 +		private double _lastMouseXButton1DownTime;
 +		private double _lastMouseXButton2DownTime;
  		private double _clickDisabledTimeRemaining;
+ 		private bool _isStateDirty;
  		public bool IsVisible;
  		private UIState _currentState;
-@@ -29,7 +_,9 @@
- 		public void ResetLasts() {
+@@ -34,7 +_,9 @@
+ 
  			_lastElementHover = null;
  			_lastElementDown = null;
 +			_lastElementRightDown = null;
@@ -36,10 +37,10 @@
 +			_lastElementRightClicked = null;
  		}
  
- 		public UserInterface() {
-@@ -50,14 +_,25 @@
+ 		public void EscapeElements() {
+@@ -59,14 +_,25 @@
  #if CLIENT
- 			MousePosition = new Vector2(Main.mouseX, Main.mouseY);
+ 			GetMousePosition();
  			_wasMouseDown = Main.mouseLeft;
 +			_wasMouseRightDown = Main.mouseRight;
 +			_wasMouseMiddleDown = Main.mouseMiddle;
@@ -63,9 +64,9 @@
  			_clickDisabledTimeRemaining = Math.Max(_clickDisabledTimeRemaining, 200.0);
  		}
  
-@@ -67,6 +_,10 @@
+@@ -80,6 +_,10 @@
  
- 			MousePosition = new Vector2(Main.mouseX, Main.mouseY);
+ 			GetMousePosition();
  			bool flag = Main.mouseLeft && Main.hasFocus;
 +			bool mouseRightDown = Main.mouseRight && Main.hasFocus;
 +			bool mouseMiddleDown = Main.mouseMiddle && Main.hasFocus;
@@ -74,7 +75,7 @@
  			UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
  			_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  			bool flag2 = _clickDisabledTimeRemaining > 0.0;
-@@ -99,12 +_,101 @@
+@@ -112,12 +_,101 @@
  				_lastElementDown = null;
  			}
  

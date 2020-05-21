@@ -1,11 +1,13 @@
 --- src/Terraria/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
 +++ src/tModLoader/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
-@@ -1,9 +_,12 @@
+@@ -1,11 +_,14 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
  using ReLogic.OS;
 +using System;
- using Terraria.Graphics;
+ using Terraria.Audio;
+ using Terraria.DataStructures;
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -13,15 +15,15 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -24,6 +_,7 @@
- 		private Texture2D _buttonPlayTexture;
- 		private Texture2D _buttonSeedTexture;
- 		private Texture2D _buttonDeleteTexture;
-+		private Texture2D _configTexture;
+@@ -28,6 +_,7 @@
+ 		private Asset<Texture2D> _buttonDeleteTexture;
  		private UIImageButton _deleteButton;
+ 		private int _orderInList;
++		private Asset<Texture2D> _configTexture;
+ 		private bool _canBePlayed;
  
  		public bool IsFavorite => _data.IsFavorite;
-@@ -79,6 +_,17 @@
+@@ -85,6 +_,17 @@
  				num += 24f;
  			}
  
@@ -36,29 +38,29 @@
 +			//	Append(configButton);
 +			//	num += 24f;
 +			//}
- 			UIImageButton uIImageButton5 = new UIImageButton(_buttonDeleteTexture);
- 			uIImageButton5.VAlign = 1f;
- 			uIImageButton5.HAlign = 1f;
-@@ -116,6 +_,7 @@
- 			_buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
- 			_buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
- 			_buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
+ 			UIImageButton uIImageButton5 = new UIImageButton(_buttonDeleteTexture) {
+ 				VAlign = 1f,
+ 				HAlign = 1f
+@@ -124,6 +_,7 @@
+ 			_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
+ 			_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
+ 			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 +			_configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  		}
  
  		private void InitializeAppearance() {
-@@ -149,6 +_,10 @@
- 			_buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", _data.SeedText));
+@@ -172,6 +_,10 @@
+ 				_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
  		}
  
 +		private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement) {
 +			_buttonLabel.SetText("Edit World Config");
 +		}
 +
- 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
- 			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
+ 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+ 			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
  		}
-@@ -205,9 +_,29 @@
+@@ -239,8 +_,28 @@
  				else
  					Main.menuMode = 10;
  
@@ -88,10 +90,9 @@
 +			};
  		}
  
- 		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
-@@ -229,6 +_,9 @@
+@@ -290,6 +_,9 @@
  		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Platform.Current.Clipboard = _data.SeedText;
+ 			Platform.Get<IClipboard>().Value = _data.GetFullSeedText();
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
 +		}
 +

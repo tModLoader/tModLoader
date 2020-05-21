@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.IO/WorldFile.cs
 +++ src/tModLoader/Terraria.IO/WorldFile.cs
-@@ -11,6 +_,8 @@
+@@ -13,6 +_,8 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -9,7 +9,7 @@
  
  namespace Terraria.IO
  {
-@@ -154,6 +_,7 @@
+@@ -293,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();
  			bool flag = loadFromCloud && SocialAPI.Cloud != null;
@@ -17,8 +17,9 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -192,6 +_,8 @@
+@@ -331,7 +_,9 @@
  
+ 						CheckSavedOreTiers();
  						binaryReader.Close();
  						memoryStream.Close();
 +						WorldHooks.SetupWorld();
@@ -26,25 +27,24 @@
  						if (num3 != 0)
  							WorldGen.loadFailed = true;
  						else
-@@ -294,6 +_,9 @@
- 				if (Main.worldPathName == null)
- 					return;
+@@ -476,6 +_,9 @@
+ 			if (Main.worldPathName == null)
+ 				return;
  
-+				if (!BackupIO.archiveLock)
-+					BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
++			if (!BackupIO.archiveLock)
++				BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
 +
- 				new Stopwatch().Start();
- 				byte[] array = null;
- 				int num = 0;
-@@ -333,6 +_,7 @@
- 				if (text != null && array2 != null)
- 					FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
+ 			new Stopwatch().Start();
+ 			int num;
+ 			byte[] array;
+@@ -512,5 +_,6 @@
+ 			if (text != null && array2 != null)
+ 				FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
++			WorldIO.Save(Main.worldPathName, useCloudSaving);
+ 		}
  
-+				WorldIO.Save(Main.worldPathName, useCloudSaving);
- 				WorldGen.saveLock = false;
- 			}
- 
-@@ -939,7 +_,11 @@
+ 		private static void ResetTempsToDayTime() {
+@@ -813,7 +_,11 @@
  			}
  
  			writer.Write(NPC.savedAngler);
@@ -56,17 +56,15 @@
 +
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
- 			writer.Write(Main.invasionSizeStart);
-@@ -998,7 +_,7 @@
+ 			writer.Write(NPC.savedGolfer);
+@@ -895,5 +_,5 @@
  					byte b2;
  					byte b3 = b2 = (b = 0);
  					bool flag = false;
--					if (tile.active()) {
-+					if (tile.active() && tile.type < TileID.Count) {
+-					if (tile.active())
++					if (tile.active() && tile.type < TileID.Count)
  						flag = true;
- 						if (tile.type == 127) {
- 							WorldGen.KillTile(i, num2);
-@@ -1027,9 +_,11 @@
+@@ -909,9 +_,11 @@
  						}
  
  						if (Main.tileFrameImportant[tile.type]) {
@@ -80,19 +78,18 @@
  							num3++;
  							array[num3] = (byte)(tile.frameY & 0xFF);
  							num3++;
-@@ -1044,9 +_,9 @@
+@@ -926,9 +_,9 @@
  						}
  					}
  
 -					if (tile.wall != 0) {
 +					if (tile.wall != 0 && tile.wall < WallID.Count) {
  						b3 = (byte)(b3 | 4);
--						array[num3] = tile.wall;
-+						array[num3] = (byte)tile.wall;
+ 						array[num3] = (byte)tile.wall;
  						num3++;
  						if (tile.wallColor() != 0) {
  							b = (byte)(b | 0x10);
-@@ -1166,7 +_,7 @@
+@@ -1054,7 +_,7 @@
  				writer.Write(chest.name);
  				for (int l = 0; l < 40; l++) {
  					Item item = chest.item[l];
@@ -101,7 +98,7 @@
  						writer.Write((short)0);
  						continue;
  					}
-@@ -1232,7 +_,7 @@
+@@ -1100,7 +_,7 @@
  		private static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {
  				NPC nPC = Main.npc[i];
@@ -110,7 +107,7 @@
  					writer.Write(nPC.active);
  					writer.Write(nPC.netID);
  					writer.Write(nPC.GivenName);
-@@ -1247,7 +_,7 @@
+@@ -1120,7 +_,7 @@
  			writer.Write(value: false);
  			for (int j = 0; j < Main.npc.Length; j++) {
  				NPC nPC2 = Main.npc[j];
@@ -119,7 +116,7 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
-@@ -1811,7 +_,7 @@
+@@ -1795,7 +_,7 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];
  				Sign sign;
@@ -128,7 +125,7 @@
  					sign = new Sign();
  					sign.text = text;
  					sign.x = num2;
-@@ -2083,6 +_,7 @@
+@@ -2085,6 +_,7 @@
  				return result;
  			}
  			catch (Exception value) {
@@ -136,7 +133,7 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
-@@ -2549,9 +_,10 @@
+@@ -2134,9 +_,10 @@
  		}
  
  		private static int SaveTileEntities(BinaryWriter writer) {

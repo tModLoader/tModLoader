@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria.WorldBuilding/WorldGenerator.cs
++++ src/tModLoader/Terraria.WorldBuilding/WorldGenerator.cs
+@@ -7,10 +_,10 @@
+ {
+ 	public class WorldGenerator
+ 	{
+-		private readonly List<GenPass> _passes = new List<GenPass>();
++		internal readonly List<GenPass> _passes = new List<GenPass>();
+-		private float _totalLoadWeight;
++		internal float _totalLoadWeight;
+-		private readonly int _seed;
++		internal readonly int _seed;
+ 		private readonly WorldGenConfiguration _configuration;
+ 
+ 		public WorldGenerator(int seed, WorldGenConfiguration configuration) {
+ 			_seed = seed;

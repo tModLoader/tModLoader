@@ -1,22 +1,26 @@
 --- src/Terraria/Terraria.UI/ChestUI.cs
 +++ src/tModLoader/Terraria.UI/ChestUI.cs
-@@ -3,6 +_,8 @@
+@@ -3,9 +_,11 @@
  using Microsoft.Xna.Framework.Input;
  using System.Collections.Generic;
+ using Terraria.Audio;
+ using Terraria.GameContent;
  using Terraria.GameInput;
+ using Terraria.Localization;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -96,6 +_,10 @@
- 					text = Lang.chestType2[Main.tile[player.chestX, player.chestY].frameX / 36].Value;
- 				else if (Main.tile[player.chestX, player.chestY].type == 88)
- 					text = Lang.dresserType[Main.tile[player.chestX, player.chestY].frameX / 54].Value;
-+				else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type])
-+					text = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
-+				else if (TileLoader.IsDresser(Main.tile[player.chestX, player.chestY].type))
-+					text = TileLoader.ModDresserName(Main.tile[player.chestX, player.chestY].type);
+@@ -105,7 +_,11 @@
+ 						text = Lang.chestType2[tile.frameX / 36].Value;
+ 					else if (tile.type == 88)
+ 						text = Lang.dresserType[tile.frameX / 54].Value;
++					else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type])
++						text = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
++					else if (TileLoader.IsDresser(Main.tile[player.chestX, player.chestY].type))
++						text = TileLoader.ModDresserName(Main.tile[player.chestX, player.chestY].type);
+ 				}
  			}
  			else if (player.chest == -2) {
  				text = Lang.inter[32].Value;

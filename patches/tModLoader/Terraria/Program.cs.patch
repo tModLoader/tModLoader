@@ -25,21 +25,19 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -25,10 +_,12 @@
+@@ -24,9 +_,10 @@
  	{
  #if CLIENT
  		public const bool IsServer = false;
-+
  #else
  		public const bool IsServer = true;
  #endif
- 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
 +		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
- 		private static int ThingsToLoad = 0;
- 		private static int ThingsLoaded = 0;
- 		public static bool LoadedEverything = false;
-@@ -53,27 +_,68 @@
- 		public static void ForceLoadThread(object ThreadContext) {
+ 		public const bool IsXna = true;
+ 		public const bool IsFna = false;
+ 		public const bool IsDebug = false;
+@@ -59,6 +_,7 @@
+ 		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
 +			Logging.Terraria.Info("JIT loading finished");
@@ -147,6 +145,7 @@
 +		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
 +		// moving arg parsing to a separate function avoids this
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
+ 			Thread.CurrentThread.Name = "Main Thread";
  			if (monoArgs)
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
@@ -176,22 +175,23 @@
  
 -			LaunchParameters = Utils.ParseArguements(args);
  			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.English);
+ 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+ 			InitializeConsoleOutput();
 -			SetupLogging();
+ 			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
 +			//Program.SetupLogging();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
- 					InitializeConsoleOutput();
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
 +					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -187,9 +_,10 @@
+@@ -175,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -205,12 +205,12 @@
  			}
  		}
  
-@@ -202,9 +_,18 @@
+@@ -199,9 +_,18 @@
  				}
  
  #if CLIENT
--				MessageBox.Show(e.ToString(), "Terraria: Error");
-+				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
+-				MessageBox.Show(text, "Terraria: Error");
++				ModLoader.UI.Interface.MessageBoxShow(text);
 +
 +				if (e.Message.Contains("CSteamworks"))
 +					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");

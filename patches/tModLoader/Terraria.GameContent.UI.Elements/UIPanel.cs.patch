@@ -8,13 +8,13 @@
 +		public override void OnActivate() {
 +			// moved from constructor to avoid texture loading on JIT thread
  			if (_borderTexture == null)
- 				_borderTexture = TextureManager.Load("Images/UI/PanelBorder");
+ 				_borderTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBorder");
  
  			if (_backgroundTexture == null)
- 				_backgroundTexture = TextureManager.Load("Images/UI/PanelBackground");
+ 				_backgroundTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBackground");
 +		}
  
 +		public UIPanel() {
- 			SetPadding(CORNER_SIZE);
+ 			SetPadding(_cornerSize);
  		}
  

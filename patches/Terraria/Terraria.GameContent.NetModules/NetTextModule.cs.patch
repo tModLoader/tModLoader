@@ -1,7 +1,7 @@
 --- src/decompiled/Terraria.GameContent.NetModules/NetTextModule.cs
 +++ src/Terraria/Terraria.GameContent.NetModules/NetTextModule.cs
-@@ -49,6 +_,12 @@
- 			NetManager.Instance.Broadcast(SerializeServerMessage(NetworkText.FromLiteral(message.Text), messageColor));
+@@ -39,6 +_,12 @@
+ 			return true;
  		}
  
 -		public override bool Deserialize(BinaryReader reader, int senderPlayerId) => DeserializeAsClient(reader, senderPlayerId);

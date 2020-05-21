@@ -1,9 +1,9 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -1780,6 +_,12 @@
+@@ -2097,6 +_,12 @@
  					}
  				}
- 				catch {
+ 				catch (Exception) {
 +#if SERVER
 +					if (num < NetMessage.buffer.Length - 100)
 +					{

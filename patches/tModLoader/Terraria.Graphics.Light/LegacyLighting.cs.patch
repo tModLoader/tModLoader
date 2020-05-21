@@ -1,31 +1,30 @@
---- src/Terraria/Terraria/Lighting.cs
-+++ src/tModLoader/Terraria/Lighting.cs
-@@ -8,6 +_,7 @@
- using Terraria.Graphics;
- using Terraria.ID;
+--- src/Terraria/Terraria.Graphics.Light/LegacyLighting.cs
++++ src/tModLoader/Terraria.Graphics.Light/LegacyLighting.cs
+@@ -6,5 +_,6 @@
+ using Terraria.DataStructures;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
- namespace Terraria
+ namespace Terraria.Graphics.Light
  {
-@@ -112,7 +_,7 @@
- 		private static int firstToLightY;
- 		private static int lastToLightX;
- 		private static int lastToLightY;
--		private static float negLight = 0.04f;
-+		internal static float negLight = 0.04f;
- 		private static float negLight2 = 0.16f;
- 		private static float wetLightR = 0.16f;
- 		private static float wetLightG = 0.16f;
-@@ -120,7 +_,7 @@
- 		private static float honeyLightR = 0.16f;
- 		private static float honeyLightG = 0.16f;
- 		private static float honeyLightB = 0.16f;
--		private static float blueWave = 1f;
-+		internal static float blueWave = 1f;
- 		private static int blueDir = 1;
- 		private static int minX7;
- 		private static int maxX7;
+@@ -91,7 +_,7 @@
+ 		private int _firstToLightY;
+ 		private int _lastToLightX;
+ 		private int _lastToLightY;
+-		private float _negLight = 0.04f;
++		internal float _negLight = 0.04f;
+ 		private float _negLight2 = 0.16f;
+ 		private float _wetLightR = 0.16f;
+ 		private float _wetLightG = 0.16f;
+@@ -99,7 +_,7 @@
+ 		private float _honeyLightR = 0.16f;
+ 		private float _honeyLightG = 0.16f;
+ 		private float _honeyLightB = 0.16f;
+-		private float _blueWave = 1f;
++		internal float _blueWave = 1f;
+ 		private int _blueDir = 1;
+ 		private int _minX7;
+ 		private int _maxX7;
 @@ -513,6 +_,7 @@
  			}
  
@@ -34,14 +33,14 @@
  			int[] screenTileCounts = Main.screenTileCounts;
  			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
  			num4 = Utils.Clamp(firstToLightX, 5, Main.maxTilesX - 1);
-@@ -525,6 +_,7 @@
- 			Main.monolithType = -1;
- 			for (int n = num4; n < num5; n++) {
- 				LightingState[] array3 = states[n - firstToLightX];
+@@ -558,6 +_,7 @@
+ 			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
+ 			for (int m = num; m < num2; m++) {
+ 				LightingState[] array3 = _states[m - _firstToLightX];
 +				//patch file: n, num17
- 				for (int num17 = num6; num17 < num7; num17++) {
- 					LightingState lightingState2 = array3[num17 - firstToLightY];
- 					Tile tile = Main.tile[n, num17];
+ 				for (int n = num3; n < num4; n++) {
+ 					LightingState lightingState2 = array3[n - _firstToLightY];
+ 					Tile tile = Main.tile[m, n];
 @@ -737,7 +_,9 @@
  							break;
  					}
@@ -52,6 +51,24 @@
  						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16) {
  							screenTileCounts[tile.type]++;
  							if (tile.type == 215 && tile.frameY < 36)
+@@ -738,6 +_,8 @@
+ 							_wetLightB = 0f;
+ 							break;
+ 					}
++
++					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref _wetLightR, ref _wetLightG, ref _wetLightB);
+ 				}
+ 				else {
+ 					_negLight = 0.9f;
+@@ -764,6 +_,8 @@
+ 					_negLight *= 0.85f;
+ 					_negLight2 *= 0.85f;
+ 				}
++
++				ModHooks.ModifyLightingBrightness(ref _negLight, ref _negLight2);
+ 			}
+ 			else {
+ 				_negLight = 0.04f;
 @@ -765,6 +_,8 @@
  									Main.player[Main.myPlayer].hasBanner = true;
  								}
@@ -61,6 +78,14 @@
  						}
  
  						switch (tile.type) {
+@@ -788,6 +_,7 @@
+ 					_negLight2 += 0.18f;
+ 				}
+ 
++				ModHooks.ModifyLightingBrightness(ref _negLight, ref _negLight2);
+ 				_wetLightR = _negLight * 1.2f;
+ 				_wetLightG = _negLight * 1.1f;
+ 			}
 @@ -811,6 +_,10 @@
  								break;
  						}
@@ -105,29 +130,3 @@
  			if (Main.holyTiles < 0)
  				Main.holyTiles = 0;
  
-@@ -2200,6 +_,8 @@
- 							wetLightB = 0f;
- 							break;
- 					}
-+
-+					WaterStyleLoader.LightColorMultiplier(Main.waterStyle, ref wetLightR, ref wetLightG, ref wetLightB);
- 				}
- 				else {
- 					negLight = 0.9f;
-@@ -2226,6 +_,8 @@
- 					negLight *= 0.85f;
- 					negLight2 *= 0.85f;
- 				}
-+
-+				ModHooks.ModifyLightingBrightness(ref negLight, ref negLight2);
- 			}
- 			else {
- 				negLight = 0.04f;
-@@ -2250,6 +_,7 @@
- 					negLight2 += 0.18f;
- 				}
- 
-+				ModHooks.ModifyLightingBrightness(ref negLight, ref negLight2);
- 				wetLightR = negLight * 1.2f;
- 				wetLightG = negLight * 1.1f;
- 			}

@@ -2,13 +2,13 @@
 +++ src/tModLoader/Terraria/RecipeGroup.cs
 @@ -8,6 +_,7 @@
  		public Func<string> GetText;
- 		public List<int> ValidItems;
- 		public int IconicItemIndex;
+ 		public HashSet<int> ValidItems;
+ 		public int IconicItemId;
 +		internal bool[] ValidItemsLookup;
  		public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  		public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
- 		public static int nextRecipeGroupIndex = 0;
-@@ -22,6 +_,13 @@
+ 		public static int nextRecipeGroupIndex;
+@@ -23,6 +_,13 @@
  			recipeGroups.Add(num, rec);
  			recipeGroupIDs.Add(name, num);
  			return num;
