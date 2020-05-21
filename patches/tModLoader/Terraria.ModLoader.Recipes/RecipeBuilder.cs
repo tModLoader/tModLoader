@@ -1,7 +1,4 @@
-﻿using System;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.Exceptions;
+﻿using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Recipes
 {
@@ -9,11 +6,12 @@ namespace Terraria.ModLoader.Recipes
 	{
 		private readonly ModRecipe _recipe;
 
-		public static RecipeBuilder New() 
-		{
-			return new RecipeBuilder();	
-		}
-		
+		/// <summary>
+		/// Returns a new instance of <see cref="RecipeBuilder"/>
+		/// </summary>
+		/// <returns></returns>
+		public static RecipeBuilder New() => new RecipeBuilder();
+
 		/// <summary>Creates a new instance with no ingredients and no result.</summary>
 		/// <seealso cref="Requires(int,int)"/>
 		/// <seealso cref="Build"/>
@@ -70,14 +68,17 @@ namespace Terraria.ModLoader.Recipes
 			return this;
 		}
 
-		// System.TupleValue is not resolved. Need to import it from a NuGet package ?
-		/*public RecipeBuilder AddIngredients(params (short itemId, int stack)[] ingredients)
+		/// <summary>
+		/// Adds given ingredients to the recipe.
+		/// </summary>
+		/// <param name="ingredients">The ingredients value tuples</param>
+		/// <returns></returns>
+		public RecipeBuilder AddIngredients(params (short itemType, int stack)[] ingredients)
 		{
-			for (int i = 0; i < ingredients.Length; i++)
-				Requires(ingredients[i].Item1, ingredients[i].Item2);
-
+			foreach (var (itemType, stack) in ingredients)
+				AddIngredient(itemType, stack);
 			return this;
-		}*/
+		}
 
 		/// <summary>
 		/// Adds the specified ingredients to this recipe with the given item types.
@@ -89,7 +90,7 @@ namespace Terraria.ModLoader.Recipes
 		public RecipeBuilder AddIngredients(params int[] types)
 		{
 			for (int i = 0; i < types.Length; i++)
-				Requires(types[i]);
+				AddIngredient(types[i]);
 
 			return this;
 		}
@@ -111,7 +112,6 @@ namespace Terraria.ModLoader.Recipes
 		/// <param name="stack">The stack.</param>
 		/// <returns></returns>
 		public RecipeBuilder AddIngredient<T>(int stack = 1) where T : ModItem => AddIngredient(ModContent.ItemType<T>(), stack);
-
 
 		/// <summary>Adds an ingredient to this recipe of the given type of item and stack size.</summary>
 		/// <param name="modItem">The item.</param>
@@ -149,30 +149,50 @@ namespace Terraria.ModLoader.Recipes
 			return this;
 		}
 
-		public RecipeBuilder RequiresLava() {
+		/// <summary>
+		/// Makes the recipe require lava
+		/// </summary>
+		/// <returns></returns>
+		public RecipeBuilder RequiresLava()
+		{
 			_recipe.needLava = true;
 			return this;
 		}
-		
-		public RecipeBuilder RequiresHoney() {
+
+		/// <summary>
+		/// Makes the recipe require honey
+		/// </summary>
+		/// <returns></returns>
+		public RecipeBuilder RequiresHoney()
+		{
 			_recipe.needHoney = true;
 			return this;
 		}
-		
-		public RecipeBuilder RequiresWater() {
+
+		/// <summary>
+		/// Makes the recipe require water
+		/// </summary>
+		/// <returns></returns>
+		public RecipeBuilder RequiresWater()
+		{
 			_recipe.needWater = true;
 			return this;
 		}
-		
-		public RecipeBuilder RequiresSnowBiome() {
+
+		/// <summary>
+		/// Makes the recipe require the snow biome
+		/// </summary>
+		/// <returns></returns>
+		public RecipeBuilder RequiresSnowBiome()
+		{
 			_recipe.needSnowBiome = true;
 			return this;
 		}
 
 		/// <summary>Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.</summary>
-		/// <returns></returns>
+		/// <returns><see cref="ModRecipe"/></returns>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public ModRecipe Build() 
+		public ModRecipe Build()
 		{
 			_recipe.AddRecipe();
 			return _recipe;
