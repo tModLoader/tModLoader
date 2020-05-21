@@ -9,7 +9,6 @@ namespace Terraria.ModLoader.Recipes
 	{
 		private readonly ModRecipe _recipe;
 
-
 		/// <summary>Creates a new instance with no ingredients and no result.</summary>
 		/// <seealso cref="Requires(int,int)"/>
 		/// <seealso cref="Build"/>
@@ -64,7 +63,6 @@ namespace Terraria.ModLoader.Recipes
 		public RecipeBuilder Requires(int type, int stack = 1)
 		{
 			_recipe.AddIngredient(type, stack);
-
 			return this;
 		}
 
@@ -91,7 +89,6 @@ namespace Terraria.ModLoader.Recipes
 			for (int i = 0; i < types.Length; i++)
 				Requires(types[i]);
 
-
 			return this;
 		}
 
@@ -105,7 +102,6 @@ namespace Terraria.ModLoader.Recipes
 		public RecipeBuilder Requires(Mod mod, string itemName, int stack = 1)
 		{
 			_recipe.AddIngredient(mod, itemName, stack);
-
 			return this;
 		}
 
@@ -123,7 +119,6 @@ namespace Terraria.ModLoader.Recipes
 		public RecipeBuilder Requires(ModItem modItem, int stack = 1)
 		{
 			_recipe.AddIngredient(modItem, stack);
-
 			return this;
 		}
 
@@ -136,7 +131,6 @@ namespace Terraria.ModLoader.Recipes
 		public RecipeBuilder Requires(string recipeGroup, int stack = 1)
 		{
 			_recipe.AddRecipeGroup(recipeGroup, stack);
-
 			return this;
 		}
 
@@ -156,23 +150,25 @@ namespace Terraria.ModLoader.Recipes
 			return this;
 		}
 
-
-		public RecipeBuilder RequiresLava() => NeedVar(recipe => recipe.needLava = true);
-
-		public RecipeBuilder RequiresHoney() => NeedVar(recipe => recipe.needHoney = true);
-
-		public RecipeBuilder RequiresWater() => NeedVar(recipe => recipe.needWater = true);
-
-		public RecipeBuilder RequiresSnowBiome() => NeedVar(recipe => recipe.needSnowBiome = true);
-
-
-		private RecipeBuilder NeedVar(Action<ModRecipe> need)
-		{
-			need(_recipe);
-
+		public RecipeBuilder RequiresLava() {
+			_recipe.needLava = true;
 			return this;
 		}
-
+		
+		public RecipeBuilder RequiresHoney() {
+			_recipe.needHoney = true;
+			return this;
+		}
+		
+		public RecipeBuilder RequiresWater() {
+			_recipe.needWater = true;
+			return this;
+		}
+		
+		public RecipeBuilder RequiresSnowBiome() {
+			_recipe.needSnowBiome = true;
+			return this;
+		}
 
 		/// <summary>Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.</summary>
 		/// <returns></returns>
