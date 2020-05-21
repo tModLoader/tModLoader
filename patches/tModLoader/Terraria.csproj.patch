@@ -80,7 +80,7 @@
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
      </Reference>
-@@ -80,8 +_,11 @@
+@@ -80,10 +_,13 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
@@ -95,7 +95,7 @@
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -102,3 +_,24 @@
+@@ -102,6 +_,27 @@
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>

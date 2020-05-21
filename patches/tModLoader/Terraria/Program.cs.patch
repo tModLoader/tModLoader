@@ -36,7 +36,7 @@
  		public const bool IsXna = true;
  		public const bool IsFna = false;
  		public const bool IsDebug = false;
-@@ -59,6 +_,7 @@
+@@ -59,27 +_,68 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -137,7 +137,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -160,25 +_,47 @@
+@@ -160,27 +_,49 @@
  			}
  		}
  
