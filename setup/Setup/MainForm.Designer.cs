@@ -127,8 +127,8 @@ namespace Terraria.ModLoader.Setup
             this.buttonDiffTerraria.Size = new System.Drawing.Size(129, 23);
             this.buttonDiffTerraria.TabIndex = 4;
             this.buttonDiffTerraria.Text = "Diff Terraria";
-            this.toolTipButtons.SetToolTip(this.buttonDiffTerraria, "Recalculates the Terraria patches\r\nDiffs the src/merged and src/Terraria director" +
-        "ies\r\nUsed for fixing decompilation errors\r\n");
+            this.toolTipButtons.SetToolTip(this.buttonDiffTerraria, "Recalculates the Terraria patches\r\nDiffs the src/Terraria directory" +
+        "\r\nUsed for fixing decompilation errors\r\n");
             this.buttonDiffTerraria.UseVisualStyleBackColor = true;
             this.buttonDiffTerraria.Click += new System.EventHandler(this.buttonTask_Click);
             // 
