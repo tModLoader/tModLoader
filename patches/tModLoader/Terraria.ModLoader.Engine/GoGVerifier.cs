@@ -73,12 +73,7 @@ namespace Terraria.ModLoader.Engine
 			// TODO These steam checks should not be here, but I'm afraid to move stuff around right now -Jof
 			bool checkSteam = File.Exists(steamAPIpath);
 #if CLIENT
-#if MAC
-			var tmlContentDir = "tModLoader.app/Contents/MacOS/" + ContentDirectory;
-#else
-			var tmlContentDir = ContentDirectory;
-#endif
-			if (!Directory.Exists(tmlContentDir)) {
+			if (!Directory.Exists(ContentDirectory)) {
 				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
 				return false;
 			}
