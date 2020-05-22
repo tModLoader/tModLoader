@@ -66,7 +66,13 @@ namespace Terraria.ModLoader.Core
 		{
 			foreach (string log in GetLogs()) {
 				try {
-					File.Move(log, Path.Combine(Logging.LogArchiveDir, Path.GetFileName(log)));
+					string destination = Path.Combine(Logging.LogArchiveDir, Path.GetFileName(log));
+
+					if(File.Exists(destination)) {
+						File.Delete(destination);
+					}
+
+					File.Move(log, destination);
 				}
 				catch (Exception e) {
 					Logging.tML.Error(e);
@@ -80,7 +86,6 @@ namespace Terraria.ModLoader.Core
 
 		private static void Archive(string logFile, string entryName)
 		{
-
 			DateTime time;
 			try {
 				time = File.GetCreationTime(logFile);
