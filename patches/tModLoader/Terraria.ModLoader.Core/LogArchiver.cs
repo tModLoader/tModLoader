@@ -68,7 +68,7 @@ namespace Terraria.ModLoader.Core
 				try {
 					string destination = Path.Combine(Logging.LogArchiveDir, Path.GetFileName(log));
 
-					if(File.Exists(destination)) {
+					if (File.Exists(destination)) {
 						File.Delete(destination);
 					}
 
