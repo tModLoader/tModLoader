@@ -13,7 +13,7 @@
  			}
  
  			_mode = mode.Value;
-@@ -69,17 +_,25 @@
+@@ -69,8 +_,12 @@
  			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
@@ -26,7 +26,7 @@
  		}
  
  		private static void LoadWeGame() {
- 			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
+@@ -78,8 +_,12 @@
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
  			Overlay = LoadModule<Terraria.Social.WeGame.OverlaySocialModule>();

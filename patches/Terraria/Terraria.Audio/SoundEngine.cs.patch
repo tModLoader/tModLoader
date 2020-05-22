@@ -1,0 +1,14 @@
+--- src/decompiled/Terraria.Audio/SoundEngine.cs
++++ src/Terraria/Terraria.Audio/SoundEngine.cs
+@@ -30,6 +_,11 @@
+ 
+ 		public static void Update() {
+ 			if (IsAudioSupported) {
++#if !WINDOWS
++				if(Main.engine != null) {
++					Main.engine.Update();
++				}
++#endif
+ 				SoundInstanceGarbageCollector.Update();
+ 				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
+ 				if (!_areSoundsPaused && flag)

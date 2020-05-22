@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/WorldGen.cs
 +++ src/Terraria/Terraria/WorldGen.cs
-@@ -19,10 +_,12 @@
+@@ -20,10 +_,12 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
@@ -14,7 +14,7 @@
  
  namespace Terraria
  {
-@@ -50790,6 +_,7 @@
+@@ -51120,6 +_,7 @@
  
  		public static bool UpdateMapTile(int i, int j, bool addToList = true) {
  			bool result = false;
@@ -22,7 +22,7 @@
  			if (Main.mapEnabled && !noMapUpdate && !gen && Main.Map[i, j].Light > 0 && Main.Map.UpdateType(i, j) && addToList) {
  				result = true;
  				if (MapHelper.numUpdateTile < MapHelper.maxUpdateTile - 1) {
-@@ -50802,6 +_,7 @@
+@@ -51132,6 +_,7 @@
  				}
  			}
  
