@@ -236,7 +236,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" />
+    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)"" />
   </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
@@ -251,6 +251,8 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
 				return true;
 			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
+				return true;
+			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
 				return true;
 
 			return false;
