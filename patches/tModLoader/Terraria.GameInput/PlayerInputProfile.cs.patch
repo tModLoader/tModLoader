@@ -9,7 +9,7 @@
  
  namespace Terraria.GameInput
  {
-@@ -178,9 +_,12 @@
+@@ -185,9 +_,12 @@
  		}
  
  		public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {
@@ -23,7 +23,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -233,6 +_,21 @@
+@@ -240,6 +_,21 @@
  			};
  
  			CopyKeysFrom(profile, mode, keysToCopy);

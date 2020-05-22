@@ -1,13 +1,12 @@
 --- src/Terraria/Terraria.Social/SocialAPI.cs
 +++ src/tModLoader/Terraria.Social/SocialAPI.cs
-@@ -1,5 +_,6 @@
+@@ -1,4 +_,5 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
- 
-@@ -17,10 +_,15 @@
+@@ -19,10 +_,15 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -24,14 +23,18 @@
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
-@@ -28,14 +_,9 @@
+@@ -30,7 +_,6 @@
  			}
  
  			_mode = mode.Value;
 -			_modules = new List<ISocialModule>();
- 			SocialMode mode2 = Mode;
- 			if (mode2 == SocialMode.Steam)
- 				LoadSteam();
+ 			JoinRequests = new ServerJoinRequestsManager();
+ 			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
+ 			switch (Mode) {
+@@ -41,10 +_,6 @@
+ 					LoadWeGame();
+ 					break;
+ 			}
 -
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
@@ -39,15 +42,15 @@
  		}
  
  		public static void Shutdown() {
-@@ -56,10 +_,15 @@
- 			return module;
+@@ -68,10 +_,15 @@
+ 		private static void LoadDiscord() {
  		}
  
 +		private static bool _steamAPILoaded = false;
 -		private static void LoadSteam() {
 +		internal static void LoadSteam() {
 +			if (_steamAPILoaded) return;
- 			LoadModule<CoreSocialModule>();
+ 			LoadModule<Terraria.Social.Steam.CoreSocialModule>();
  			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
 +			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
 +			//if (!ModLoader.Engine.Steam.IsSteamApp) {
@@ -57,9 +60,9 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  #if CLIENT
-@@ -67,6 +_,10 @@
+@@ -93,6 +_,10 @@
  #else
- 			Network = LoadModule<NetServerSocialModule>();
+ 			Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
  #endif
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();

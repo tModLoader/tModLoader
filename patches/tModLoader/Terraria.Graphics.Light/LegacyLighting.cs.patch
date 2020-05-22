@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.Graphics.Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria.Graphics.Light/LegacyLighting.cs
-@@ -6,5 +_,6 @@
+@@ -5,6 +_,7 @@
+ using System.Diagnostics;
  using Terraria.DataStructures;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -25,14 +26,6 @@
  		private int _blueDir = 1;
  		private int _minX7;
  		private int _maxX7;
-@@ -513,6 +_,7 @@
- 			}
- 
- 			Main.player[Main.myPlayer].hasBanner = false;
-+			WorldHooks.ResetNearbyTileEffects();
- 			int[] screenTileCounts = Main.screenTileCounts;
- 			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
- 			num4 = Utils.Clamp(firstToLightX, 5, Main.maxTilesX - 1);
 @@ -558,6 +_,7 @@
  			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
  			for (int m = num; m < num2; m++) {
@@ -41,16 +34,6 @@
  				for (int n = num3; n < num4; n++) {
  					LightingState lightingState2 = array3[n - _firstToLightY];
  					Tile tile = Main.tile[m, n];
-@@ -737,7 +_,9 @@
- 							break;
- 					}
- 
-+					WallLoader.ModifyLight(n, num17, tile.wall, ref num18, ref num19, ref num20);
- 					if (tile.active()) {
-+						bool closer = false;
- 						if (n > num4 + num15 && n < num5 - num15 && num17 > num6 + num16 && num17 < num7 - num16) {
- 							screenTileCounts[tile.type]++;
- 							if (tile.type == 215 && tile.frameY < 36)
 @@ -738,6 +_,8 @@
  							_wetLightB = 0f;
  							break;
@@ -69,15 +52,6 @@
  			}
  			else {
  				_negLight = 0.04f;
-@@ -765,6 +_,8 @@
- 									Main.player[Main.myPlayer].hasBanner = true;
- 								}
- 							}
-+
-+							closer = true;
- 						}
- 
- 						switch (tile.type) {
 @@ -788,6 +_,7 @@
  					_negLight2 += 0.18f;
  				}
@@ -86,47 +60,3 @@
  				_wetLightR = _negLight * 1.2f;
  				_wetLightG = _negLight * 1.1f;
  			}
-@@ -811,6 +_,10 @@
- 								break;
- 						}
- 
-+						if (TileLoader.IsModMusicBox(tile) && tile.frameX >= 36)
-+							Main.musicBox = SoundLoader.tileToMusic[tile.type][tile.frameY / 36 * 36];
-+
-+						TileLoader.NearbyEffects(n, num17, tile.type, closer);
- 						if (Main.tileBlockLight[tile.type] && (lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
- 							lightingState2.stopLight = true;
- 
-@@ -1967,13 +_,17 @@
- 						}
- 					}
- 
-+					TileLoader.ModifyLight(n, num17, tile.type, ref num18, ref num19, ref num20);
-+
- 					if (RGB) {
- 						if (lightingState2.r2 < num18)
- 							lightingState2.r2 = num18;
- 
-+						//patch file: num18, num19
- 						if (lightingState2.g2 < num19)
- 							lightingState2.g2 = num19;
- 
-+						//patch file: num19, num20
- 						if (lightingState2.b2 < num20)
- 							lightingState2.b2 = num20;
- 					}
-@@ -2076,12 +_,13 @@
- 			Main.partyMonoliths = screenTileCounts[455];
- 			if (Main.player[Main.myPlayer].accOreFinder) {
- 				Main.player[Main.myPlayer].bestOre = -1;
--				for (int num58 = 0; num58 < 470; num58++) {
-+				for (int num58 = 0; num58 < Main.tileValue.Length; num58++) {
- 					if (screenTileCounts[num58] > 0 && Main.tileValue[num58] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || Main.tileValue[num58] > Main.tileValue[Main.player[Main.myPlayer].bestOre]))
- 						Main.player[Main.myPlayer].bestOre = num58;
- 				}
- 			}
- 
-+			WorldHooks.TileCountsAvailable(screenTileCounts);
- 			if (Main.holyTiles < 0)
- 				Main.holyTiles = 0;
- 
