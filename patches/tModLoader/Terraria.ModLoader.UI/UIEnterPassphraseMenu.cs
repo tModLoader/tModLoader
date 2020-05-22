@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.UI
 			Main.PlaySound(10);
 			ModLoader.modBrowserPassphrase = PasscodeTextField.Text.Trim();
 			Main.SaveSettings();
-			if (Engine.GoGVerifier.IsGoG) {
+			if (Engine.InstallVerifier.IsGoG) {
 				Main.menuMode = Interface.enterSteamIDMenuID;
 				Interface.enterSteamIDMenu.SetGotoMenu(_gotoMenu);
 			}
