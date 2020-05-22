@@ -1,5 +1,18 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
+@@ -6,9 +_,12 @@
+ using System;
+ using System.Collections;
+ using System.Collections.Generic;
++using System.Diagnostics;
+ using System.IO;
+ using System.Linq;
++using System.Text;
+ using Terraria.DataStructures;
++using Terraria.ModLoader.Exceptions;
+ using Terraria.UI.Chat;
+ using Terraria.Utilities;
+ 
 @@ -167,6 +_,12 @@
  								num2 -= 16;
  
@@ -23,7 +36,64 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -385,7 +_,43 @@
+@@ -379,13 +_,100 @@
+ 			}
+ 		}
+ 
++		// Somewhat backported from 1.4, we can replace Directory.CreateDirectory in other places with this if we want.
++		public static bool TryCreatingDirectory(string folderPath)
++		{
++			if (Directory.Exists(folderPath)) {
++				return true;
++			}
++			try {
++				Directory.CreateDirectory(folderPath);
++				return true;
++			}
++			catch (Exception e) when (e is UnauthorizedAccessException || e is FileNotFoundException || e is DirectoryNotFoundException) {
++				StringBuilder stringBuilder = new StringBuilder();
++				stringBuilder.AppendLine("Failed to create the folder: \"" + folderPath.Replace("/", "\\") + "\"!");
++				List<string> list = new List<string>
++				{
++					"If you are using an Anti-virus, please make sure it does not block Terraria in any way.",
++					"Try making sure your `Documents/My Games/Terraria/ModLoader` folder is not set to 'read-only'.",
++					"Try verifying integrity of game files via Steam."
++				};
++				if (folderPath.ToLower().Contains("onedrive")) {
++					list.Add("Try updating OneDrive.");
++				}
++				stringBuilder.AppendLine();
++				stringBuilder.AppendLine("Suggestions:");
++				for (int i = 0; i < list.Count; i++) {
++					string str = list[i];
++					stringBuilder.AppendLine((i + 1).ToString() + ". " + str);
++				}
++				stringBuilder.AppendLine();
++				throw new FolderCreationFailedException(stringBuilder.ToString(), e);
++			}
++		}
++
++		public static void OpenFolder(string folderPath)
++		{
++#if LINUX
++			if (TryCreatingDirectory(folderPath)) {
++				Process.Start(new ProcessStartInfo(folderPath) {
++					FileName = "open-folder",
++					Arguments = folderPath,
++					UseShellExecute = true,
++					CreateNoWindow = true
++				});
++			}
++#else
++			if (TryCreatingDirectory(folderPath)) {
++				Process.Start(folderPath);
++			}
++#endif
++		}
++
+ 		public static byte[] ToByteArray(this string str) {
+ 			byte[] array = new byte[str.Length * 2];
+ 			Buffer.BlockCopy(str.ToCharArray(), 0, array, 0, array.Length);
  			return array;
  		}
  
