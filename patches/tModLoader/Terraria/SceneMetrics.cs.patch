@@ -8,7 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria
-@@ -389,7 +_,10 @@
+@@ -389,7 +_,9 @@
  
  		public int GetTileCount(ushort tileId) => _tileCounts[tileId];
  
@@ -16,7 +16,6 @@
 +		public void Reset()
 +		{
 +			WorldHooks.ResetNearbyTileEffects();
-+
  			Array.Clear(_tileCounts, 0, _tileCounts.Length);
  			SandTileCount = 0;
  			EvilTileCount = 0;
