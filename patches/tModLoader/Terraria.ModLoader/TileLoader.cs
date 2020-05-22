@@ -83,6 +83,8 @@ namespace Terraria.ModLoader
 		private delegate int DelegateSaplingGrowthType(int type, ref int style);
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
 		private static Action<int, int, Item>[] HookPlaceInWorld;
+		private static Func<int, bool>[] HookCanActuate;
+		private static Func<int, bool>[] HookCanActuateForcibly;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -268,6 +270,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
+			ModLoader.BuildGlobalHook(ref HookCanActuate, globalTiles, g => g.CanActuate);
+			ModLoader.BuildGlobalHook(ref HookCanActuateForcibly, globalTiles, g => g.CanActuateForcibly);
 
 			if (!unloading) {
 				loaded = true;
@@ -1045,6 +1049,26 @@ namespace Terraria.ModLoader
 
 		public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+		}
+
+		public static bool CanActuate(Tile tile)
+		{
+			foreach (var hook in HookCanActuate) {
+				if (!hook(tile.type)) {
+					return false;
+				}
+			}
+			return GetTile(tile.type)?.CanActuate(tile.type) ?? true;
+		}
+
+		public static bool CanActuateForcibly(Tile tile)
+		{
+			foreach (var hook in HookCanActuateForcibly) {
+				if (!hook(tile.type)) {
+					return false;
+				}
+			}
+			return GetTile(tile.type)?.CanActuateForcibly(tile.type) ?? GetTile(tile.type)?.CanActuate(tile.type) ?? true;
 		}
 	}
 }

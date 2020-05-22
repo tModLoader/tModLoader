@@ -403,5 +403,15 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item used to place this tile.</param>
 		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
+
+		/// <summary>
+		/// Return false to stop this Tile from being actuated. Returns true by default.
+		/// </summary>
+		public virtual bool CanActuate(int type) => true;
+
+		/// <summary>
+		/// Return false to stop this Tile from being actuated, even when forced to do so without an actuator. Returns true by default.
+		/// </summary>
+		public virtual bool CanActuateForcibly(int type) => true;
 	}
 }
