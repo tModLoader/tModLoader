@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.UI/UserInterface.cs
 +++ src/tModLoader/Terraria.UI/UserInterface.cs
-@@ -17,11 +_,27 @@
+@@ -17,10 +_,26 @@
  		private List<UIState> _history = new List<UIState>();
  		public Vector2 MousePosition;
  		private bool _wasMouseDown;
@@ -27,7 +27,6 @@
  		private double _clickDisabledTimeRemaining;
  		private bool _isStateDirty;
  		public bool IsVisible;
- 		private UIState _currentState;
 @@ -34,7 +_,9 @@
  
  			_lastElementHover = null;

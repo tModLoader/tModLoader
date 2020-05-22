@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.UI.Gamepad/GamepadPointID.cs
 +++ src/tModLoader/Terraria.UI.Gamepad/GamepadPointID.cs
-@@ -162,8 +_,8 @@
- 		public const int ChestActRestock = 503;
+@@ -163,7 +_,7 @@
  		public const int ChestActRenameChest = 504;
  		public const int ChestSort = 505;
  		public const int ChestToggleVacuum = 506;

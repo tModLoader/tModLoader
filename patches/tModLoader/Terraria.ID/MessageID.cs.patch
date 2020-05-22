@@ -218,52 +218,56 @@
 +		//Player.talkNPC, sent on change
 +		//forwarded to other clients
  		public const byte SyncTalkNPC = 40;
+-		public const byte Unknown41 = 41;
+-		public const byte Unknown42 = 42;
+-		public const byte Unknown43 = 43;
 +		[Obsolete("Use MessageID.SyncTalkNPC")]
 +		public const byte PlayerTalkingNPC = 40;
 +		//Player.itemRotation, itemAnimation and channel
 +		//forwarded to other clients
--		public const byte Unknown41 = 41;
 +		public const byte ItemAnimation = 41;
 +		//player's current and maximum mana
 +		//sent on change, and the major client and server sync
--		public const byte Unknown42 = 42;
 +		public const byte PlayerMana = 42;
 +		//restores mana
 +		//forwarded to other clients
--		public const byte Unknown43 = 43;
 +		public const byte ManaEffect = 43;
 +		//Player.KillMe
 +		//forwarded to other clients
  		[Obsolete("Deprecated.")]
 -		public const byte Unknown44 = 44;
+-		public const byte Unknown45 = 45;
+-		public const byte Unknown46 = 46;
+-		public const byte Unknown47 = 47;
 +		public const byte KillPlayer = 44;
 +		//forwarded to clients
 +		//forwarding includes the chat message "{player} has joined the {team} party"
--		public const byte Unknown45 = 45;
 +		public const byte PlayerTeam = 45;
 +		//if the server finds a sign at the location, it replies with ReadSign
--		public const byte Unknown46 = 46;
 +		public const byte RequestReadSign = 46;
 +		//signIndex, x, y, text, player
 +		//if the text changes on the server, the packet is forwarded to other clients
 +		//opens the sign gui and plays the sound on the client
--		public const byte Unknown47 = 47;
 +		public const byte ReadSign = 47;
 +		//x, y, liquid, liquidType
 +		//if NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
  		[Obsolete("Deprecated. Use NetLiquidModule instead.")]
  		public const byte LiquidUpdate = 48;
+-		public const byte Unknown49 = 49;
+-		public const byte Unknown50 = 50;
+-		public const byte Unknown51 = 51;
+-		public const byte Unknown52 = 52;
+-		public const byte Unknown53 = 53;
+-		public const byte Unknown54 = 54;
 +		//spawns a newly joined player
 +		//client state 6->10
 +		//calls Player.Spawn which sends SpawnPlayer to the server
 +		//sent from RequestTileData once the world is ready for the player to spawn
--		public const byte Unknown49 = 49;
 +		public const byte StartPlaying = 49;
 +		//contents of Player.buffType
 +		//on receipt, the buffTime for active buffs is set to 60 ticks (1 second)
 +		//buffTime is only ever decremented on the owner's client, and the server relies on the client resending this packet when buffs are generated or expire
 +		//forwarded to other clients
--		public const byte Unknown50 = 50;
 +		public const byte PlayerBuffs = 50;
 +		//param, actionType
 +		//actionType {
@@ -272,22 +276,18 @@
 +		//3 - Main.Sundialing
 +		//4 - Main.npc[param].BigMimicSpawnSmoke
 +		//}
--		public const byte Unknown51 = 51;
 +		public const byte Assorted1 = 51;
 +		//unlockType, x, y
 +		//if unlockType { Chest.Unlock = 1, WorldGen.UnlockDoor = 2 }
 +		//sends TileSquare to all clients
 +		//forwarded to other clients
--		public const byte Unknown52 = 52;
 +		public const byte Unlock = 52;
 +		//npcID, buffType, duration
 +		//NPC.AddBuff sends this if netMode is client
 +		//adds a buff to an NPC
 +		//SyncNPCBuff is sent to all clients
--		public const byte Unknown53 = 53;
 +		public const byte AddNPCBuff = 53;
 +		//sends all buffs on an npc
--		public const byte Unknown54 = 54;
 +		public const byte SendNPCBuffs = 54;
 +		//server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +		//client rejects packets for other players
@@ -296,22 +296,29 @@
 +		//client sends this after SetDefaults (npcNameLookup = 0) 'help I don't know what their name is'
 +		//server replies with name
  		public const byte UniqueTownNPCInfoSyncRequest = 56;
-+		//hallowed/corrupted/crimson tile counts (out of 100)
 -		public const byte Unknown57 = 57;
+-		public const byte InstrumentSound = 58;
++		//hallowed/corrupted/crimson tile counts (out of 100)
 +		public const byte TileCounts = 57;
 +		//Main.harpNote = pitch
 +		//plays harp or bell sound based on held item at player position
 +		//forwarded to other clients
--		public const byte InstrumentSound = 58;
 +		public const byte PlayNote = 58;
 +		//Wiring.HitSwitch(x, y)
 +		//forwarded to other clients
--		public const byte HitSwitch = 59;
-+		public const byte HitSwitch = 59;
+ 		public const byte HitSwitch = 59;
+-		public const byte Unknown60 = 60;
+-		public const byte Unknown61 = 61;
+-		public const byte Unknown62 = 62;
+-		public const byte Unknown63 = 63;
+-		public const byte Unknown64 = 64;
+-		public const byte TeleportEntity = 65;
+-		public const byte Unknown66 = 66;
+-		public const byte Unknown67 = 67;
+-		public const byte Unknown68 = 68;
 +		//npcID, homeX, homeY, changeType
 +		//changeType WorldGen.{ kickOut = 0, moveRoom = 1 }
 +		//sent by client on WorldGen.kickOut/moveRoom, propogated by server in UpdateNPC
--		public const byte Unknown60 = 60;
 +		public const byte NPCHome = 60;
 +		//player, npcID
 +		//only sent by client, accepted by server
@@ -322,19 +329,15 @@
 +		//    PumpkinMoon = -4, SnowMoon = -5, Eclipse = -6, MartianInvation = -7,
 +		//    MoonLordTimer = -8 if (NPC.downedGolemBoss && Main.HardMode && !NPC.AnyDanger && !NPC.AnyoneNearCultists)
 +		//}
--		public const byte Unknown61 = 61;
 +		public const byte SpawnBoss = 61;
 +		//player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +		//forwarded to other clients
--		public const byte Unknown62 = 62;
 +		public const byte Dodge = 62;
 +		//WorldGen.paintTile(x, y, color)
 +		//forwarded to other clients
--		public const byte Unknown63 = 63;
 +		public const byte PaintTile = 63;
 +		//WorldGen.paintWall(x, y, color)
 +		//forwarded to other clients
--		public const byte Unknown64 = 64;
 +		public const byte PaintWall = 64;
 +		//teleportType, index, position
 +		//first 2 bits of teleportType { Player = 0, NPC = 1, PlayerToPlayer = 2 }
@@ -342,24 +345,20 @@
 +		//if PlayerToPlayer, the nearest player in 9999 units is found, and a chat message sent "{player} has teleported to {player2}"
 +		//index is set to whoAmI on server, so NPC teleports cannot be sent from client
 +		//player teleports are forwarded to other clients
--		public const byte TeleportEntity = 65;
 +		public const byte Teleport = 65;
 +		//player, heal
 +		//restores health
 +		//forwarded to other clients
--		public const byte Unknown66 = 66;
 +		public const byte SpiritHeal = 66;
--		public const byte Unknown67 = 67;
 +		public const byte Unused67 = 67;
 +		//client sends this in response to LoadPlayer, server ignores it
--		public const byte Unknown68 = 68;
 +		public const byte ClientUUID = 68;
 +		//chestIndex, x, y, name
 +		//forwarded to other clients
  		public const byte ChestName = 69;
  		public const byte BugCatching = 70;
  		public const byte BugReleasing = 71;
-@@ -91,19 +_,32 @@
+@@ -91,20 +_,33 @@
  		public const byte PlaceObject = 79;
  		public const byte SyncPlayerChestIndex = 80;
  		public const byte CombatTextInt = 81;
@@ -393,6 +392,7 @@
 + 		public const byte MurderSomeoneElsesProjectile = MurderSomeoneElsesPortal;
  		public const byte TeleportPlayerThroughPortal = 96;
  		public const byte AchievementMessageNPCKilled = 97;
+ 		public const byte AchievementMessageEventHappened = 98;
 @@ -112,7 +_,7 @@
  		public const byte TeleportNPCThroughPortal = 100;
  		public const byte UpdateTowerShieldStrengths = 101;

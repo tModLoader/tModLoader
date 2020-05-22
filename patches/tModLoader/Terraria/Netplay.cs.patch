@@ -43,17 +43,16 @@
  		public static UPnPNAT _upnpnat;
  		public static IStaticPortMappingCollection _mappings;
  #endif
-@@ -91,6 +_,8 @@
- 				Main.txMsgType[i] = 0;
- 				Main.txDataType[i] = 0;
+@@ -65,6 +_,8 @@
+ 				if (NetMessage.buffer[i].checkBytes)
+ 					NetMessage.CheckBytes(i);
  			}
 +
 +			ModNet.ResetNetDiag();
  		}
  
- 		public static void ResetSections() {
-@@ -129,9 +_,23 @@
- 
+ 		private static string GetLocalIPAddress() {
+@@ -121,8 +_,22 @@
  			return false;
  		}
  
@@ -77,7 +76,7 @@
  			if (Netplay.upnpnat == null)
  			{
  				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-@@ -156,7 +_,7 @@
+@@ -147,7 +_,7 @@
  		}
  
  		private static void ClosePort(int port) {
@@ -86,14 +85,16 @@
  			if (Netplay.portForwardOpen)
  			{
  				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -364,5 +_,5 @@
+@@ -355,7 +_,7 @@
  
  		private static void UpdateClient() {
  			if (Main.netMode == 1 && Connection.Socket.IsConnected() && NetMessage.buffer[256].checkBytes)
 -				NetMessage.CheckBytes();
 +				InvokeOnMainThread(() => NetMessage.CheckBytes());
  		}
-@@ -425,6 +_,7 @@
+ 
+ 		public static void AddCurrentServerToRecentList() {
+@@ -416,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -101,7 +102,7 @@
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
  			if (Main.rand == null)
-@@ -444,9 +_,11 @@
+@@ -435,9 +_,11 @@
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -114,7 +115,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -489,6 +_,7 @@
+@@ -480,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -122,7 +123,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -511,8 +_,6 @@
+@@ -502,8 +_,6 @@
  								Main.statusText = Connection.StatusText + ": " + (int)((float)Connection.StatusCount / (float)Connection.StatusMax * 100f) + "%";
  							}
  						}
@@ -131,7 +132,7 @@
  					}
  					else if (Connection.IsActive) {
  						Main.statusText = Language.GetTextValue("Net.LostConnection");
-@@ -522,6 +_,7 @@
+@@ -513,6 +_,7 @@
  					num = Connection.State;
  				}
  

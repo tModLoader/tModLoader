@@ -84,7 +84,7 @@
  			Triggers.Reset();
  			ScrollWheelValueOld = ScrollWheelValue;
  			ScrollWheelValue = 0;
-@@ -516,8 +_,11 @@
+@@ -516,6 +_,9 @@
  			UpdateMainMouse();
  			Main.mouseLeft = Triggers.Current.MouseLeft;
  			Main.mouseRight = Triggers.Current.MouseRight;
@@ -94,8 +94,6 @@
  			CacheZoomableValues();
  			if (num != 0 && PlayerInput.OnActionableInput != null)
  				PlayerInput.OnActionableInput();
- 		}
- 
 @@ -706,6 +_,8 @@
  				flag = true;
  			}

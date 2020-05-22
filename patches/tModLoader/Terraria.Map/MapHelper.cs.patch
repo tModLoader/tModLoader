@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.Map/MapHelper.cs
 +++ src/tModLoader/Terraria.Map/MapHelper.cs
-@@ -4,7 +_,9 @@
- using System.Diagnostics;
+@@ -5,6 +_,8 @@
  using System.IO;
  using System.Threading;
  using Terraria.IO;
@@ -28,7 +27,7 @@
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
-@@ -1625,6 +_,8 @@
+@@ -1625,7 +_,9 @@
  				}
  			}
  
@@ -38,6 +37,7 @@
 +			return MapTile.Create(mapType, (byte)num2, (byte)num);
  		}
  
+ 		public static void GetTileBaseOption(int y, Tile tileCache, ref int baseOption) {
 @@ -2238,7 +_,7 @@
  								byte b5 = 0;
  								int num7;
@@ -47,7 +47,7 @@
  									flag2 = false;
  									flag = false;
  									num7 = 0;
-@@ -2382,5 +_,7 @@
+@@ -2382,7 +_,9 @@
  
  						deflateStream.Dispose();
  						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
@@ -55,3 +55,5 @@
  					}
 +					MapIO.WriteModFile(text, isCloudSave);
  				}
+ 			}
+ 

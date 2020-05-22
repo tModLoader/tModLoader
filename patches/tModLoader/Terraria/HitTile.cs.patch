@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/HitTile.cs
 +++ src/tModLoader/Terraria/HitTile.cs
-@@ -1,7 +_,8 @@
- using Microsoft.Xna.Framework;
+@@ -2,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
  using Terraria.GameContent;

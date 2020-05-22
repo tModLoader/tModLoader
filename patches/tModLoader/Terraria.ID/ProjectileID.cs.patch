@@ -1,6 +1,8 @@
 --- src/Terraria/Terraria.ID/ProjectileID.cs
 +++ src/tModLoader/Terraria.ID/ProjectileID.cs
-@@ -3,3 +_,7 @@
+@@ -1,5 +_,9 @@
+ using Terraria.WorldBuilding;
+ 
 +using ReLogic.Reflection;
 +using System;
 +using Terraria.ModLoader;

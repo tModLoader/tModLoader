@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.ID/ItemID.cs
 +++ src/tModLoader/Terraria.ID/ItemID.cs
-@@ -2,6 +_,8 @@
+@@ -1,7 +_,9 @@
+ using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
 +using System;
  using System.Collections.Generic;
@@ -19,7 +20,8 @@
  			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
  			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
  			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
-@@ -933,5 +_,6 @@
+@@ -932,6 +_,7 @@
+ 				4315,
  				4584
  			};
 +			public static bool[] IsAMaterial = Factory.CreateBoolSet();

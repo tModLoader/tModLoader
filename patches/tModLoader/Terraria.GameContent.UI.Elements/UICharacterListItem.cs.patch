@@ -29,7 +29,8 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -86,14 +_,81 @@
+@@ -85,15 +_,82 @@
+ 			uIImageButton4.OnMouseOut += DeleteMouseOut;
  			_deleteButton = uIImageButton4;
  			Append(uIImageButton4);
 +			if (data.customDataFail != null) {

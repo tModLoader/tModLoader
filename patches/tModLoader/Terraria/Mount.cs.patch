@@ -8,10 +8,7 @@
  
  namespace Terraria
  {
-@@ -73,11 +_,12 @@
- 				MinecartDust = DelegateMethods.Minecart.Sparks;
- 				MinecartLandingSound = DelegateMethods.Minecart.LandingSound;
- 				MinecartBumperSound = DelegateMethods.Minecart.BumperSound;
+@@ -76,8 +_,9 @@
  			}
  		}
  
@@ -31,8 +28,7 @@
  		private static Vector2[] scutlixEyePositions;
  		private static Vector2 scutlixTextureSize;
  		public const int scutlixBaseDamage = 50;
-@@ -167,30 +_,30 @@
- 		public static int drillPickTime = 6;
+@@ -168,28 +_,28 @@
  		public static int drillBeamCooldownMax = 1;
  		public const float maxDrillLength = 48f;
  		private static Vector2 santankTextureSize;
@@ -82,7 +78,6 @@
  		private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
  		public bool Active => _active;
- 
 @@ -2000,13 +_,13 @@
  		}
  
@@ -120,9 +115,7 @@
  			return num;
  		}
  
-@@ -2475,8 +_,11 @@
- 		}
- 
+@@ -2477,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  
  		public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
@@ -132,13 +125,14 @@
  			if (_frameState != state) {
  				_frameState = state;
  				_frameCounter = 0f;
-@@ -3314,5 +_,6 @@
+@@ -3314,6 +_,7 @@
  
  		public void UpdateEffects(Player mountedPlayer) {
  			mountedPlayer.autoJump = AutoJump;
 +			MountLoader.UpdateEffects(mountedPlayer);
  			switch (_type) {
  				case 13:
+ 				case 15:
 @@ -3482,10 +_,13 @@
  						else
  							Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector7.X, vector7.Y, vector7.Z);
@@ -170,8 +164,7 @@
  			switch (_type) {
  				case 9: {
  						int frameExtra = _frameExtra;
-@@ -4155,7 +_,8 @@
- 					}
+@@ -4156,6 +_,7 @@
  					break;
  			}
  
@@ -188,8 +181,7 @@
  				_mountSpecificData = null;
  				_ = _type;
  				if (cart) {
-@@ -4303,9 +_,10 @@
- 				}
+@@ -4304,7 +_,8 @@
  
  				mountedPlayer.fullRotation = 0f;
  				mountedPlayer.fullRotationOrigin = Vector2.Zero;
@@ -199,7 +191,6 @@
  				Reset();
  				mountedPlayer.position.Y += mountedPlayer.height;
  				mountedPlayer.height = 42;
- 				mountedPlayer.position.Y -= mountedPlayer.height;
 @@ -4315,7 +_,7 @@
  		}
  
@@ -209,10 +200,7 @@
  				return;
  
  			if (_active) {
-@@ -4371,9 +_,12 @@
- 			if (_type == 8)
- 				_mountSpecificData = new DrillMountData();
- 
+@@ -4374,7 +_,10 @@
  			if (_type == 35)
  				_mountSpecificData = new ExtraFrameMountData();
  
@@ -223,3 +211,4 @@
 +				DoSpawnDust(mountedPlayer, isDismounting: false);
  			if (mountedPlayer.whoAmI == Main.myPlayer)
  				NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);
+ 		}
