@@ -418,10 +418,10 @@
  		public Item DeepClone() => (Item)MemberwiseClone();
  
  		public bool IsTheSameAs(Item compareItem) {
-@@ -45763,6 +_,8 @@
- 			type = 0;
- 			stack = 0;
- 			netID = 0;
+@@ -45766,6 +_,8 @@
+ 			dye = 0;
+ 			shoot = 0;
+ 			mountType = -1;
 +			modItem = null;
 +			globalItems = new GlobalItem[0];
  		}

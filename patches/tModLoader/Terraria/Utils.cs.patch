@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -250,6 +_,12 @@
+@@ -251,6 +_,12 @@
  								num2 -= 16;
  
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -13,7 +13,7 @@
  							if (num3 < 0)
  								num3 = 0;
  
-@@ -257,7 +_,8 @@
+@@ -258,7 +_,8 @@
  							int num4 = num3;
  							if (array3.Length > 1) {
  								num4 = 0;
@@ -23,7 +23,7 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -520,5 +_,41 @@
+@@ -521,5 +_,41 @@
  			return array;
  		}
  
@@ -65,7 +65,7 @@
 +		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
 +		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
-@@ -716,4 +_,17 @@
+@@ -717,4 +_,17 @@
  		}
  
 +
@@ -83,7 +83,7 @@
 +
  		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
  		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
-@@ -1108,14 +_,17 @@
+@@ -1109,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

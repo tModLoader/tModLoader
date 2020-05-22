@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.WorldBuilding/WorldGenerator.cs
 +++ src/tModLoader/Terraria.WorldBuilding/WorldGenerator.cs
-@@ -7,10 +_,10 @@
+@@ -6,11 +_,11 @@
  {
  	public class WorldGenerator
  	{
@@ -11,6 +11,7 @@
 -		private readonly int _seed;
 +		internal readonly int _seed;
  		private readonly WorldGenConfiguration _configuration;
+ 		public static GenerationProgress CurrentGenerationProgress;
  
  		public WorldGenerator(int seed, WorldGenConfiguration configuration) {
  			_seed = seed;
