@@ -50,24 +50,28 @@
  		private static int CurrentUser = 254;
  
  		public static void SetCurrentUser(int plr = -1) {
-@@ -226,7 +_,8 @@
+@@ -226,21 +_,21 @@
  
  		public static bool Actuate(int i, int j) {
  			Tile tile = Main.tile[i, j];
 -			if (!tile.actuator())
-+
 +			if (!tile.actuator() || !TileLoader.CanActuate(tile))
  				return false;
- 
+-
  			if ((tile.type != 226 || !((double)j > Main.worldSurface) || NPC.downedPlantBoss) && (!((double)j > Main.worldSurface) || NPC.downedGolemBoss || Main.tile[i, j - 1].type != 237)) {
-@@ -241,6 +_,10 @@
+ 				if (tile.inActive())
+ 					ReActive(i, j);
+ 				else
+ 					DeActive(i, j);
+ 			}
+-
+ 			return true;
+ 		}
  
  		public static void ActuateForced(int i, int j) {
  			Tile tile = Main.tile[i, j];
-+
-+			if (!TileLoader.CanActuate(tile))
++			if (!TileLoader.CanActuateForcibly(tile))
 +				return;
-+
  			if (tile.type != 226 || !((double)j > Main.worldSurface) || NPC.downedPlantBoss) {
  				if (tile.inActive())
  					ReActive(i, j);

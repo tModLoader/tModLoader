@@ -84,6 +84,7 @@ namespace Terraria.ModLoader
 		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
 		private static Action<int, int, Item>[] HookPlaceInWorld;
 		private static Func<int, bool>[] HookCanActuate;
+		private static Func<int, bool>[] HookCanActuateForcibly;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -270,6 +271,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 			ModLoader.BuildGlobalHook(ref HookCanActuate, globalTiles, g => g.CanActuate);
+			ModLoader.BuildGlobalHook(ref HookCanActuateForcibly, globalTiles, g => g.CanActuateForcibly);
 
 			if (!unloading) {
 				loaded = true;
@@ -1056,8 +1058,17 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-
 			return GetTile(tile.type)?.CanActuate(tile.type) ?? true;
+		}
+
+		public static bool CanActuateForcibly(Tile tile)
+		{
+			foreach (var hook in HookCanActuateForcibly) {
+				if (!hook(tile.type)) {
+					return false;
+				}
+			}
+			return GetTile(tile.type)?.CanActuateForcibly(tile.type) ?? true;
 		}
 	}
 }

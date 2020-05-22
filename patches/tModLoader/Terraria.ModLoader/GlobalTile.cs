@@ -408,5 +408,11 @@ namespace Terraria.ModLoader
 		/// Return false to prevent Tiles of this type from being actuated. Returns true by default.
 		/// </summary>
 		public virtual bool CanActuate(int type) => true;
+
+
+		/// <summary>
+		/// Return false to prevent Tiles of this type from being actuated forcibly, even when they do not have actuators. Returns true by default.
+		/// </summary>
+		public virtual bool CanActuateForcibly(int type) => true;
 	}
 }
