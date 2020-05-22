@@ -4,10 +4,10 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set version=v0.11.7.2
+set tModLoaderVersion=v0.11.7.2
 call buildRelease.bat
 
-set destinationFolder=.\tModLoader %version% Release
+set destinationFolder=.\tModLoader %tModLoaderVersion% Release
 @IF %ERRORLEVEL% NEQ 0 (
 	pause
 	EXIT /B %ERRORLEVEL%
@@ -23,10 +23,10 @@ set destinationFolder=.\tModLoader %version% Release
 mkdir "%destinationFolder%"
 
 :: Temp Folders
-set win=%destinationFolder%\tModLoader Windows %version%
-set mac=%destinationFolder%\tModLoader Mac %version%
-set macReal=%destinationFolder%\tModLoader Mac %version%\tModLoader.app\Contents\MacOS
-set lnx=%destinationFolder%\tModLoader Linux %version%
+set win=%destinationFolder%\tModLoader Windows %tModLoaderVersion%
+set mac=%destinationFolder%\tModLoader Mac %tModLoaderVersion%
+set macReal=%destinationFolder%\tModLoader Mac %tModLoaderVersion%\tModLoader.app\Contents\MacOS
+set lnx=%destinationFolder%\tModLoader Linux %tModLoaderVersion%
 set mcfna=%destinationFolder%\ModCompile_FNA
 set mcxna=%destinationFolder%\ModCompile_XNA
 set pdbs=%destinationFolder%\pdbs
@@ -150,22 +150,22 @@ rmdir "%mcxna%" /S /Q
 rmdir "%pdbs%" /S /Q
 
 :: Copy to public DropBox Folder
-::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %version%.zip"
-::copy "%mac%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Mac %version%.zip"
-::copy "%lnx%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Linux %version%.zip"
+::copy "%win%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Windows %tModLoaderVersion%.zip"
+::copy "%mac%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Mac %tModLoaderVersion%.zip"
+::copy "%lnx%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\tModLoader Linux %tModLoaderVersion%.zip"
 
 :: ExampleMod.zip (TODO, other parts of ExampleMod release)
 rmdir ..\ExampleMod\bin /S /Q
 rmdir ..\ExampleMod\obj /S /Q
 :: TODO: ignore .vs folder
-::call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %version%.zip" -keep yes -force yes
-call python ZipAndMakeExecutable.py "..\ExampleMod" "%destinationFolder%\ExampleMod %version%.zip" ExampleMod\
-::copy "%destinationFolder%\ExampleMod %version%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
+::call zipjs.bat zipItem -source "..\ExampleMod" -destination "%destinationFolder%\ExampleMod %tModLoaderVersion%.zip" -keep yes -force yes
+call python ZipAndMakeExecutable.py "..\ExampleMod" "%destinationFolder%\ExampleMod %tModLoaderVersion%.zip" ExampleMod\
+::copy "%destinationFolder%\ExampleMod %tModLoaderVersion%.zip" "C:\Users\Javid\Dropbox\Public\TerrariaModding\tModLoaderReleases\"
 
 echo(
 echo(
 echo(
-echo tModLoader %version% ready to release.
+echo tModLoader %tModLoaderVersion% ready to release.
 echo Upload the 6 zip files to github.
 echo(
 echo(
