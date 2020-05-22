@@ -4,6 +4,9 @@ var dir_74fadca5af88c7a374b16ca7b71ad489 =
     [ "CustomModDataException.cs", "_custom_mod_data_exception_8cs.html", [
       [ "CustomModDataException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_custom_mod_data_exception" ]
     ] ],
+    [ "FolderCreationFailedException.cs", "_folder_creation_failed_exception_8cs.html", [
+      [ "FolderCreationFailedException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception" ]
+    ] ],
     [ "MissingResourceException.cs", "_missing_resource_exception_8cs.html", [
       [ "LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance" ],
       [ "MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception" ]

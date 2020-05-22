@@ -1,5 +1,10 @@
 var NAVTREEINDEX3 =
 {
+"class_terraria_1_1_mod_loader_1_1_global_item.html#a72388f01c5226d661f0f3334948e382e":[1,0,0,0,21,71],
+"class_terraria_1_1_mod_loader_1_1_global_item.html#a7282668435b22acb79d992782dfe92eb":[1,0,0,0,21,105],
+"class_terraria_1_1_mod_loader_1_1_global_item.html#a75ca1e08364214425742ffc6b76121ae":[1,0,0,0,21,94],
+"class_terraria_1_1_mod_loader_1_1_global_item.html#a7d4a3fb2f05e742509dd0979820f92d5":[1,0,0,0,21,67],
+"class_terraria_1_1_mod_loader_1_1_global_item.html#a7ef23cc204f2c238cb3b016bbde72d33":[1,0,0,0,21,83],
 "class_terraria_1_1_mod_loader_1_1_global_item.html#a7fd42a7370666dc0df9ff7daccc02034":[1,0,0,0,21,90],
 "class_terraria_1_1_mod_loader_1_1_global_item.html#a802b47960934cec8f83b0bc6b5bb5d84":[1,0,0,0,21,9],
 "class_terraria_1_1_mod_loader_1_1_global_item.html#a8668939008987de1f97b8a8c7291651e":[1,0,0,0,21,8],
@@ -244,10 +249,5 @@ var NAVTREEINDEX3 =
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html#afb3f5f79af272f74204799a0047fab5c":[1,0,0,0,3,0,4],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html":[1,0,0,0,3,1],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a35b46b4512674088b58014717e3a9432":[1,0,0,0,3,1,6],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a513236cbee97e9a7563cbb36e643d52d":[1,0,0,0,3,1,7],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a6104c95e6d2e375d899138a21b0e4556":[1,0,0,0,3,1,4],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a62b60ddc8541ad192f15499bacda62b9":[1,0,0,0,3,1,8],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a76d1976f69a67e9a3dfc8a73cd3c998d":[1,0,0,0,3,1,1],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a8390778bc5dbb42e28429583820fa842":[1,0,0,0,3,1,9],
-"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a96c7e2a456848a92ed5980203558b85d":[1,0,0,0,3,1,0]
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a513236cbee97e9a7563cbb36e643d52d":[1,0,0,0,3,1,7]
 };

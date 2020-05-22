@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a6104c95e6d2e375d899138a21b0e4556":[1,0,0,0,3,1,4],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a62b60ddc8541ad192f15499bacda62b9":[1,0,0,0,3,1,8],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a76d1976f69a67e9a3dfc8a73cd3c998d":[1,0,0,0,3,1,1],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a8390778bc5dbb42e28429583820fa842":[1,0,0,0,3,1,9],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#a96c7e2a456848a92ed5980203558b85d":[1,0,0,0,3,1,0],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#aaa298093bab612edd1cddc5a584da3a7":[1,0,0,0,3,1,5],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#aadded8376cf5cbda6dd52f9a5813445b":[1,0,0,0,3,1,3],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html#ac1eee28f75bf15d0abc185e6b0c7b4e2":[1,0,0,0,3,1,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4d47a85bf9df041b0164d108702d9219":[1,0,0,0,27,63],
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4f44765f62ae697a52df24969ed742bb":[1,0,0,0,27,135],
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a4ffda3ead9a5972f86b1bf7a9da89d73":[1,0,0,0,27,191],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a508388ddb358692ca0702ebe6df1af76":[1,0,0,0,27,116],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a5165873207cd77dfc4b87aefe328a6a4":[1,0,0,0,27,202],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a51bb59609c95145d8b110b5c4fdeda90":[1,0,0,0,27,10],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a535caa08af0b66933e47c6d6691a0920":[1,0,0,0,27,164],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a5367084859760c6c8a2642ba26f5f211":[1,0,0,0,27,211],
-"class_terraria_1_1_mod_loader_1_1_item_loader.html#a53a8e7c32465eaef772fd8340f48c3e6":[1,0,0,0,27,67]
+"class_terraria_1_1_mod_loader_1_1_item_loader.html#a508388ddb358692ca0702ebe6df1af76":[1,0,0,0,27,116]
 };

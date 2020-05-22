@@ -57,6 +57,7 @@ var hierarchy =
     [ "Terraria.ModLoader.EquipTexture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html", null ],
     [ "Terraria.ModLoader.ErrorLogger", "class_terraria_1_1_mod_loader_1_1_error_logger.html", null ],
     [ "Exception", "class_exception.html", [
+      [ "Terraria.ModLoader.Exceptions.FolderCreationFailedException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],

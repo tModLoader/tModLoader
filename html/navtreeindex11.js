@@ -1,5 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a47cc163eb23dfd5d37ea1bfd71f60c38":[1,0,0,0,71,134],
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a482120990b5cd9df455c0eb6a81085ad":[1,0,0,0,71,154],
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a48cfd955e7941d3fabdb8c6c3c62ff99":[1,0,0,0,71,228],
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4d17b8b581c09448eff81cfad4d09a32":[1,0,0,0,71,168],
+"class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4e58bd33b33138114f8221c214b8f5d1":[1,0,0,0,71,69],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a4fbd579f2b8c6294bbdbb01418d7a399":[1,0,0,0,71,229],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a525dd8f8eceb593f7cc44a6f0f47ac15":[1,0,0,0,71,56],
 "class_terraria_1_1_mod_loader_1_1_player_hooks.html#a52b794b04d71da7bd3229d19096ac324":[1,0,0,0,71,184],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6c2ac9664fbb1433b82f29c96afd720f":[1,0,0,0,73,75],
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6eff3d0ca209b7209030cb08b2a2e80e":[1,0,0,0,73,77],
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a6fad9e84dd509722ff3bb1b330adc0be":[1,0,0,0,73,4],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a768b405c178ff4a2f26203852106ed01":[1,0,0,0,73,33],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a770983b8ca18ead01a4bd49612460af6":[1,0,0,0,73,59],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a79993db141d0026df8850aba428076ca":[1,0,0,0,73,65],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a79f48bdf6caa31f0b190ddb1e074f179":[1,0,0,0,73,72],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7ba8c15540798577b214b9841725aadb":[1,0,0,0,73,42],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a7bbf4e7167ab78d0feb7a9d9b5d367b0":[1,0,0,0,73,25]
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a768b405c178ff4a2f26203852106ed01":[1,0,0,0,73,33]
 };
