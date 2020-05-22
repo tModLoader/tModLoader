@@ -785,7 +785,7 @@
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
 +			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = new Steamworks.AppId_t(105600u);
++				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
 +				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
 +				if (appInstalled) { 
 +					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
