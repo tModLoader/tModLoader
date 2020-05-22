@@ -16,5 +16,13 @@ namespace ExampleMod.Tiles
 
 			return true;
 		}
+
+		public override bool CanActuate(int type)
+		{
+			if (type == TileID.MartianConduitPlating) {
+				return false;
+			}
+			return base.CanActuate(type);
+		}
 	}
 }
