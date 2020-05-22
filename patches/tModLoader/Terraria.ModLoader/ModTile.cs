@@ -589,5 +589,10 @@ namespace Terraria.ModLoader
 		/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
 		/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 		public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
+
+		/// <summary>
+		/// Return false to prevent this Tile from being actuated. Returns true by default.
+		/// </summary>
+		public virtual bool CanActuate(int type) => true;
 	}
 }
