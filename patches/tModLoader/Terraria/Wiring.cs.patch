@@ -78,10 +78,7 @@
  			switch (type) {
  				case 144:
  					HitSwitch(i, j);
-@@ -1143,14 +_,14 @@
- 				return;
- 			}
- 
+@@ -1146,11 +_,11 @@
 -			if (type == 11) {
 +			if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0) {
  				if (WorldGen.CloseDoor(i, j, forced: true))
@@ -112,7 +109,8 @@
  					WorldGen.SwitchMB(i, j);
  					break;
  				case 207:
-@@ -2107,14 +_,13 @@
+@@ -2106,15 +_,14 @@
+ 										if (!CheckMech(num134, num133, 300))
  											break;
  
  										int num145 = 50;
@@ -139,7 +137,8 @@
  										}
  
  										break;
-@@ -2132,14 +_,13 @@
+@@ -2131,15 +_,14 @@
+ 										if (!CheckMech(num134, num133, 300))
  											break;
  
  										int num141 = 50;
@@ -166,7 +165,10 @@
  										}
  
  										break;
-@@ -2229,6 +_,7 @@
+@@ -2226,9 +_,10 @@
+ 				case 557:
+ 					tile.type = 546;
+ 					WorldGen.SquareTileFrame(i, j);
  					NetMessage.SendTileSquare(-1, i, j, 1);
  					break;
  			}
@@ -174,7 +176,7 @@
  		}
  
  		private static void GeyserTrap(int i, int j) {
-@@ -2318,7 +_,7 @@
+@@ -2318,6 +_,6 @@
  			return false;
  		}
  
@@ -182,7 +184,6 @@
 +		public static void DeActive(int i, int j) {
  			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  				return;
- 
 @@ -2335,7 +_,7 @@
  			}
  		}

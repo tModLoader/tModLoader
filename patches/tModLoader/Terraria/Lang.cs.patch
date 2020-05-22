@@ -11,7 +11,7 @@
  using Terraria.UI;
  
  namespace Terraria
-@@ -32,14 +_,14 @@
+@@ -32,15 +_,15 @@
  		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];
  		public static LocalizedText[] prefix = new LocalizedText[85];
@@ -33,6 +33,7 @@
  		private static LocalizedText[] _emojiNameCache = new LocalizedText[145];
  
  		public static string GetMapObjectName(int id) {
+ 			if (_mapLegendCache != null)
 @@ -107,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  

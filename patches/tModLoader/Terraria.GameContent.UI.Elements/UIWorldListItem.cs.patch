@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
 +++ src/tModLoader/Terraria.GameContent.UI.Elements/UIWorldListItem.cs
-@@ -2,10 +_,13 @@
+@@ -1,11 +_,14 @@
+ using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
  using ReLogic.OS;
@@ -59,7 +60,7 @@
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
  		}
-@@ -239,9 +_,29 @@
+@@ -239,8 +_,28 @@
  				else
  					Main.menuMode = 10;
  
@@ -89,7 +90,6 @@
 +			};
  		}
  
- 		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
 @@ -290,6 +_,9 @@
  		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			Platform.Get<IClipboard>().Value = _data.GetFullSeedText();

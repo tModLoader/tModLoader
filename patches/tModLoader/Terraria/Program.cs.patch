@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,19 +_,23 @@
+@@ -2,20 +_,24 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -12,6 +12,7 @@
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
+ using System.Runtime.ExceptionServices;
  using System.Text;
  using System.Threading;
 +
@@ -24,7 +25,10 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -27,6 +_,7 @@
+@@ -24,9 +_,10 @@
+ 	{
+ #if CLIENT
+ 		public const bool IsServer = false;
  #else
  		public const bool IsServer = true;
  #endif
@@ -119,7 +123,7 @@
  		}
  
  		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -90,13 +_,6 @@
+@@ -84,13 +_,6 @@
  			}
  		}
  
@@ -133,7 +137,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -146,27 +_,49 @@
+@@ -160,27 +_,49 @@
  			}
  		}
  

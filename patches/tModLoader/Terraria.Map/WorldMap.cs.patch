@@ -16,7 +16,8 @@
  				return;
  			}
  
-@@ -93,6 +_,7 @@
+@@ -92,7 +_,8 @@
+ 							else
  								MapHelper.LoadMapVersion2(binaryReader, num);
  
  							ClearEdges();

@@ -1,6 +1,8 @@
 --- src/Terraria/Terraria/WaterfallManager.cs
 +++ src/tModLoader/Terraria/WaterfallManager.cs
-@@ -4,6 +_,7 @@
+@@ -2,8 +_,9 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
  using System;
  using Terraria.ID;
  using Terraria.IO;
@@ -8,7 +10,7 @@
  
  namespace Terraria
  {
-@@ -20,7 +_,7 @@
+@@ -20,8 +_,8 @@
  		private const int minWet = 160;
  		private const int maxWaterfallCountDefault = 1000;
  		private const int maxLength = 100;
@@ -17,7 +19,8 @@
  		public int maxWaterfallCount = 1000;
  		private int qualityMax;
  		private int currentMax;
-@@ -208,7 +_,7 @@
+ 		private WaterfallData[] waterfalls;
+@@ -208,8 +_,8 @@
  			}
  		}
  
@@ -26,6 +29,7 @@
  			Main.tileSolid[546] = false;
  			float num = 0f;
  			float num2 = 99999f;
+ 			float num3 = 99999f;
 @@ -357,6 +_,7 @@
  					if (num29 >= 2)
  						continue;

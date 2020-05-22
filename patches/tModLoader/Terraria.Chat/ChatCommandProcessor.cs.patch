@@ -8,7 +8,7 @@
  
  namespace Terraria.Chat
  {
-@@ -95,6 +_,9 @@
+@@ -95,5 +_,8 @@
  		}
  
  		public void ProcessIncomingMessage(ChatMessage message, int clientId) {
@@ -17,4 +17,3 @@
 +
  			if (_commands.TryGetValue(message.CommandId, out IChatCommand value)) {
  				value.ProcessIncomingMessage(message.Text, (byte)clientId);
- 				message.Consume();

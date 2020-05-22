@@ -67,7 +67,7 @@
  				}
  				else {
  					dust.active = false;
-@@ -1780,6 +_,13 @@
+@@ -1780,4 +_,11 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -79,5 +79,3 @@
 +			}
 +
  			float num = (float)(255 - alpha) / 255f;
- 			int num2 = type;
- 			if ((uint)(num2 - 299) <= 2u) {

@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.ID/MountID.cs
 +++ src/tModLoader/Terraria.ID/MountID.cs
-@@ -61,6 +_,6 @@
- 		public const int DarkMageBook = 48;
+@@ -62,5 +_,5 @@
  		public const int LavaShark = 49;
  		public const int QueenSlime = 50;
 -		public static int Count = 51;

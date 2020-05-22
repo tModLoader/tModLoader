@@ -18,7 +18,10 @@
  
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
-@@ -272,6 +_,17 @@
+@@ -269,8 +_,19 @@
+ 
+ 			short num = 0;
+ 			int type = 0;
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
  			int num2 = tileSafely.frameX / 36;
@@ -35,7 +38,6 @@
 +			}
  			switch (type2) {
  				case 21:
- 					switch (num2) {
 @@ -317,6 +_,7 @@
  					}
  					return false;
@@ -95,8 +97,7 @@
  			}
  
  			item[num2] = newItem.Clone();
-@@ -528,6 +_,7 @@
- 			item[num2].stack -= num;
+@@ -529,5 +_,6 @@
  			_ = item[num2].value;
  			_ = 0;
 +			return num;

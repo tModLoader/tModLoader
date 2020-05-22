@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.GameContent/TownRoomManager.cs
 +++ src/tModLoader/Terraria.GameContent/TownRoomManager.cs
-@@ -3,13 +_,14 @@
+@@ -2,12 +_,13 @@
+ using System;
  using System.Collections.Generic;
  using System.IO;
  using Terraria.ID;
@@ -15,8 +16,6 @@
 -		private bool[] _hasRoom = new bool[663];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
- 		public void AddOccupantsToList(int x, int y, List<int> occupantsList) {
- 			AddOccupantsToList(new Point(x, y), occupantsList);
 @@ -67,8 +_,17 @@
  		}
  

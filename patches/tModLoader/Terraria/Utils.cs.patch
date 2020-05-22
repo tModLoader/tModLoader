@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -251,6 +_,12 @@
+@@ -250,6 +_,12 @@
  								num2 -= 16;
  
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -13,7 +13,7 @@
  							if (num3 < 0)
  								num3 = 0;
  
-@@ -258,7 +_,8 @@
+@@ -257,7 +_,8 @@
  							int num4 = num3;
  							if (array3.Length > 1) {
  								num4 = 0;
@@ -23,7 +23,7 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -521,7 +_,43 @@
+@@ -520,5 +_,41 @@
  			return array;
  		}
  
@@ -65,10 +65,7 @@
 +		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
 +		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
- 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
- 		public static T NextFromList<T>(this UnifiedRandom random, params T[] objs) => objs[random.Next(objs.Length)];
-@@ -716,6 +_,19 @@
- 			return currentPosition + v.SafeNormalize(Vector2.Zero) * maxAmountAllowedToMove;
+@@ -716,4 +_,17 @@
  		}
  
 +
@@ -86,8 +83,7 @@
 +
  		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
  		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
- 		public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
-@@ -1109,14 +_,17 @@
+@@ -1108,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

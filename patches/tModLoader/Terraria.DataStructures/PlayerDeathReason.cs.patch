@@ -1,9 +1,10 @@
 --- src/Terraria/Terraria.DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria.DataStructures/PlayerDeathReason.cs
-@@ -14,6 +_,15 @@
+@@ -13,3 +_,12 @@
+ 		private int _sourceItemType;
  		private int _sourceItemPrefix;
  		private string _sourceCustomReason;
- 
++
 +		public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
 +		public ref int SourceNPCIndex => ref _sourceNPCIndex;
 +		public ref int SourceProjectileIndex => ref _sourceProjectileIndex;
@@ -12,7 +13,3 @@
 +		public ref int SourceItemType => ref _sourceItemType;
 +		public ref int SourceItemPrefix => ref _sourceItemPrefix;
 +		public ref string SourceCustomReason => ref _sourceCustomReason;
-+
- 		public int? SourceProjectileType {
- 			get {
- 				if (_sourceProjectileIndex == -1)

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.GameContent.UI.States/UICharacterSelect.cs
 +++ src/tModLoader/Terraria.GameContent.UI.States/UICharacterSelect.cs
-@@ -11,12 +_,15 @@
+@@ -11,19 +_,23 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
@@ -17,7 +17,7 @@
  		private UITextPanel<LocalizedText> _backPanel;
  		private UITextPanel<LocalizedText> _newPanel;
  		private UIPanel _containerPanel;
-@@ -24,6 +_,7 @@
+ 		private UIScrollbar _scrollbar;
  		private bool _isScrollbarAttached;
  		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
  		private bool skipDraw;

@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria.ObjectData/TileObjectData.cs
-@@ -4,13 +_,14 @@
+@@ -3,14 +_,15 @@
+ using Terraria.DataStructures;
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
@@ -168,7 +169,7 @@
  			newAlternate.Calculate();
  			if (!newTile._hasOwnAlternates)
  				newTile.Alternates = new List<TileObjectData>();
-@@ -4158,7 +_,6 @@
+@@ -4157,7 +_,6 @@
  			newTile.StyleMultiplier = 3;
  			newTile.StyleHorizontal = true;
  			addTile(615);
@@ -176,7 +177,7 @@
  		}
  
  		public static bool CustomPlace(int type, int style) {
-@@ -4312,6 +_,68 @@
+@@ -4311,6 +_,68 @@
  			TileObjectData tileData = GetTileData(type, style);
  			if (tileData != null)
  				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);

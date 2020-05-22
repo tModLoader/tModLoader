@@ -143,7 +143,7 @@
  		"StatusInGame": "Online spielen.",
  		"StatusJoining": "Spiel beitreten."
  	},
-@@ -576,7 +_,7 @@
+@@ -576,6 +_,6 @@
  		"Mediumcore": "Mediumcore",
  		"More": "mehr",
  		"MoveOffCloud": "Von Wolke weg",
@@ -151,7 +151,6 @@
 +		"MoveToCloud": "Zur Wolke hin",
  		"New": "Neu",
  		"Normal": "Normal",
- 		"LightMode_White": "{$LegacyMenu.56}",
 @@ -589,7 +_,7 @@
  		"Softcore": "Softcore",
  		"SpaceButton": "Leertaste",
