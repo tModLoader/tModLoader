@@ -1,0 +1,93 @@
+//Moved from Main to SoundEngine
+@@ -48906,6 +49005,11 @@
+ 		}
+ 
+ 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
++#if !WINDOWS
++			// lock statement without creating a block. Formatter wants to indent the whole method if we wrap it with another block.
++			// could create another method _PlaySound or do_PlaySound, but we try to avoid annoying people who want to hook methods
++			Monitor.Enter(Main._audioLock);
++#endif
+ 			int num = Style;
+
+ 			try {
+ 				if (dedServ)
+//With above
+@@ -49479,6 +49583,12 @@
+ 			}
+ 			catch {
+ 			}
++#if !WINDOWS
++			finally {
++				Monitor.Exit(Main._audioLock);
++			}
++
++#endif
+ 
+ 			return null;
+ 		}
+
+//Move from Main to SoundEngine?
+@@ -48855,6 +48951,9 @@
+ 
+ 		public static void PlaySoundInstance(SoundEffectInstance sound) {
+ 			sound.Play();
+
++#if !WINDOWS
++			ActiveSoundInstances.Add(sound);
++#endif
+ 		}
+ 
+ 		public static ActiveSound GetActiveSound(SlotId id) {
+
+
+//From ItemSlot, move to Main.shopSellbackHelper
+@@ -449,9 +450,13 @@
+ 						}
+ 						break;
+ 					case 3:
+-						Main.mouseItem.netDefaults(inv[slot].netID);
++						if (!PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot]))
++							break;
++						
++						Main.mouseItem = inv[slot].Clone();
++						Main.mouseItem.stack = 1;
+ 						if (inv[slot].buyOnce)
+-							Main.mouseItem.Prefix(inv[slot].prefix);
++							Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
+ 						else
+ 							Main.mouseItem.Prefix(-1);
+ 						Main.mouseItem.position = player.Center - new Vector2(Main.mouseItem.width, Main.mouseItem.headSlot) / 2f;
+
+//Netplay
+@@ -456,16 +696,21 @@
+ 				}
+ 
+ 				int num3 = 0;
++				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination)) {
++					InvokeOnMainThread(() => {
++						for (int k = 0; k < 256; k++) {
++							if (NetMessage.buffer[k].checkBytes)
++								NetMessage.CheckBytes(k);
++
++							if (Clients[k].PendingTermination) {
++								Clients[k].Reset();
++								NetMessage.SyncDisconnectedPlayer(k);
++							}
++						}
++					});
++				}
++
+ 				for (int k = 0; k < 256; k++) {
+-					if (NetMessage.buffer[k].checkBytes)
+-						NetMessage.CheckBytes(k);
+-
+-					if (Clients[k].PendingTermination) {
+-						Clients[k].Reset();
+-						NetMessage.SyncDisconnectedPlayer(k);
+-						continue;
+-					}
+-
+ 					if (Clients[k].IsConnected()) {
+ 						if (!Clients[k].IsActive)
+ 							Clients[k].State = 0;

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,20 +_,24 @@
+@@ -2,19 +_,23 @@
  using ReLogic.OS;
  using System;
  using System.Collections.Generic;
@@ -12,7 +12,6 @@
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
- using System.Runtime.ExceptionServices;
  using System.Text;
  using System.Threading;
 +
@@ -123,7 +122,7 @@
  		}
  
  		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -84,13 +_,6 @@
+@@ -90,13 +_,6 @@
  			}
  		}
  
@@ -137,7 +136,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -160,27 +_,49 @@
+@@ -146,27 +_,49 @@
  			}
  		}
  

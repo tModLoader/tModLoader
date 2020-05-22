@@ -165,22 +165,6 @@
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
  						if (Main.player[i].active && Main.player[i].talkNPC == whoAmI) {
-@@ -32068,7 +_,14 @@
- 			int num9 = -1;
- 			if (Main.netMode != 1 && !flag3) {
- 				for (int n = 0; n < 200; n++) {
-+					if (!Main.npc[n].active) continue;
-+					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[n], this);
-+					if (modCanHit.HasValue && !modCanHit.Value)
-+						continue;
-+
-+					bool canHitVal = modCanHit.HasValue && modCanHit.Value;
-+					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
--					if (Main.npc[n].active && !Main.npc[n].friendly && Main.npc[n].damage > 0 && Main.npc[n].Distance(base.Center) < num4 && (type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[n].netID))) {
-+					if (Main.npc[n].active && !Main.npc[n].friendly && Main.npc[n].damage > 0 && Main.npc[n].Distance(base.Center) < num4 && (type != 453 || !NPCID.Sets.Skeletons.Contains(Main.npc[n].netID) || canHitVal)) {
- 						flag6 = true;
- 						float num10 = Main.npc[n].Center.X - base.Center.X;
- 						if (num10 < 0f && (num5 == -1f || num10 > num5)) {
 @@ -37346,9 +_,10 @@
  
  		private void AI_007_TownEntities() {
@@ -210,6 +194,26 @@
  				TargetClosest();
  				if (position.X < Main.player[target].position.X) {
  					base.direction = 1;
+@@ -37647,11 +_,18 @@
+ 			int num9 = -1;
+ 			int num10 = -1;
+ 			if (!flag6 && Main.netMode != 1 && !flag3) {
+ 				for (int m = 0; m < 200; m++) {
++					if (!Main.npc[m].active) continue;
++					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[m], this);
++					if (modCanHit.HasValue && !modCanHit.Value)
++						continue;
++
++					bool canHitVal = modCanHit.HasValue && modCanHit.Value;
++					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
+-					if (!Main.npc[m].active || Main.npc[m].friendly || Main.npc[m].damage <= 0 || !(Main.npc[m].Distance(base.Center) < num5) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[m].type]) || (!Main.npc[m].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[m].Center, 0, 0)))
++					if (!Main.npc[m].active || Main.npc[m].friendly || Main.npc[m].damage <= 0 || !(Main.npc[m].Distance(base.Center) < num5) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[n].type] && canHitVal) || (!Main.npc[m].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[m].Center, 0, 0))) {
+ 						continue;
+ 
+ 					flag10 = true;
+ 					float num11 = Main.npc[m].Center.X - base.Center.X;
+ 					if (type == 614) {
+ 						if (num11 < 0f && (num6 == -1f || num11 > num6)) {
 @@ -37884,7 +_,7 @@
  
  					if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
@@ -402,79 +406,6 @@
 +		public void VanillaFindFrame(int num) {
  			int num2 = 0;
  			if (type == 657) {
-@@ -50379,6 +_,7 @@
- 					NetMessage.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
- 			}
- 
-+			NPCLoader.NPCLoot(this);
- 			if (type != 16 && type != 81 && type != 121 && Main.rand.Next(6) == 0 && lifeMax > 1 && damage > 0) {
- 				int num65 = Player.FindClosest(base.position, width, height);
- 				if (Main.rand.Next(2) == 0 && Main.player[num65].statMana < Main.player[num65].statManaMax2)
-@@ -51048,6 +_,7 @@
- 						}
- 						else if (Main.player[num5].townNPCs >= 3f) {
- 							flag4 = true;
-+							//patch file: flag4, flag11
- 							if (!Main.expertMode || Main.rand.Next(30) != 0)
- 								flag11 = true;
- 
-@@ -51201,18 +_,23 @@
- 							flag = false;
- 
- 						if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
-+							//patch file: flag7
- 							if (Main.tile[num, num2 - 1].honey())
- 								flag7 = true;
-+							//patch file: flag6
- 							else
- 								flag6 = true;
- 						}
- 
- 						int num25 = (int)Main.player[num5].Center.X / 16;
- 						int num26 = (int)(Main.player[num5].Bottom.Y + 8f) / 16;
-+						spawnInfo.playerFloorX = num25;
-+						spawnInfo.playerFloorY = num26;
- 						if (Main.tile[num, num2].type == 367) {
- 							flag9 = true;
- 						}
- 						else if (Main.tile[num, num2].type == 368) {
-+							//patch file: flag8
- 							flag8 = true;
- 						}
- 						else if (Main.tile[num25, num26].type == 367) {
-@@ -51325,8 +_,32 @@
- 			}
- 
- 			flag = false;
-+			spawnInfo.spawnTileX = num;
-+			spawnInfo.spawnTileY = num2;
-+			spawnInfo.spawnTileType = num3;
-+			spawnInfo.player = Main.player[num5];
-+			spawnInfo.sky = flag2;
-+			spawnInfo.lihzahrd = flag3;
-+			spawnInfo.playerSafe = flag4;
-+			spawnInfo.invasion = flag5;
-+			spawnInfo.water = flag6;
-+			spawnInfo.granite = flag8;
-+			spawnInfo.marble = flag9;
-+			spawnInfo.spiderCave = flag10;
-+			spawnInfo.playerInTown = flag11;
-+			spawnInfo.desertCave = flag12;
-+			spawnInfo.planteraDefeated = flag13;
-+			spawnInfo.safeRangeX = flag14;
- 			int num45 = Main.tile[num, num2].type;
- 			int newNPC = 200;
-+			int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo);
-+			if (!spawnChoice.HasValue)
-+				return;
-+
-+			int spawn = spawnChoice.Value;
-+			if (spawn != 0)
-+				goto endVanillaSpawn;
-+
- 			if (Main.player[num5].ZoneTowerNebula) {
- 				bool flag15 = true;
- 				int num46 = 0;
 @@ -54672,7 +_,10 @@
  					if (Main.tile[x, y].type == 467)
  						number2 = 5;
@@ -546,7 +477,18 @@
 +
  			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
  			DoDeathEvents_BeforeLoot(closestPlayer);
-@@ -58372,6 +_,7 @@
+@@ -58309,9 +_,10 @@
+ 				else if (Main.netMode == 2)
+ 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[32].Key), new Color(50, 255, 130));
+ 			}
+ 
++			NPCLoader.NPCLoot(this);
+ 			NPCLoot_DropMoney(closestPlayer);
+ 			NPCLoot_DropHeals(closestPlayer);
+ 		}
+ 
+ 		private bool IsNPCValidForBestiaryKillCredit() {
+@@ -58371,6 +_,7 @@
  			else if (type == 398)
  				num = 3544;
  
@@ -631,6 +573,30 @@
  							int num13 = (int)(Main.player[num7].position.X / 16f) - spawnRangeX;
  							int num14 = (int)(Main.player[num7].position.X / 16f) + spawnRangeX;
  							int num15 = (int)(Main.player[num7].position.Y / 16f) - spawnRangeY;
+@@ -60040,18 +_,23 @@
+ 								flag2 = false;
+ 
+ 							if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
++								//patch file: flag7
+ 								if (Main.tile[num, num2 - 1].honey())
+ 									flag8 = true;
++								//patch file: flag6
+ 								else
+ 									flag7 = true;
+ 							}
+ 
+ 							int num29 = (int)Main.player[num7].Center.X / 16;
+ 							int num30 = (int)(Main.player[num7].Bottom.Y + 8f) / 16;
++							spawnInfo.playerFloorX = num29;
++							spawnInfo.playerFloorY = num30;
+ 							if (Main.tile[num, num2].type == 367) {
+ 								flag10 = true;
+ 							}
+ 							else if (Main.tile[num, num2].type == 368) {
++								//patch file: flag8
+ 								flag9 = true;
+ 							}
+ 							else if (Main.tile[num29, num30].type == 367) {
 @@ -60136,6 +_,7 @@
  						for (int num40 = num - num39; num40 < num + num39; num40++) {
  							for (int num41 = num2 - num39; num41 < num2 + num39; num41++) {
@@ -647,41 +613,45 @@
  									flag13 = true;
  							}
  						}
-@@ -61095,22 +_,31 @@
- 				Rectangle npcRect = nPC.Hitbox;
- 				float damageMultiplier = 1f;
- 				GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
--				if (!hitbox.Intersects(npcRect) || (type == 453 && NPCID.Sets.Skeletons.Contains(nPC.netID)))
+@@ -60170,14 +_,38 @@
+ 			}
+ 
+ 			flag2 = false;
+ 			int spawnTileType = Main.tile[num, num2].type;
+ 			int num49 = Main.tile[num, num2 - 1].wall;
+ 			if (Main.tile[num, num2 - 2].wall == 244 || Main.tile[num, num2].wall == 244)
+ 				num49 = 244;
+ 
+ 			bool flag17 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
+ 			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
++			spawnInfo.spawnTileX = num;
++			spawnInfo.spawnTileY = num2;
++			spawnInfo.spawnTileType = num3;
++			spawnInfo.player = Main.player[num7];
++			spawnInfo.sky = flag3;
++			spawnInfo.lihzahrd = flag4;
++			spawnInfo.playerSafe = flag5;
++			spawnInfo.invasion = flag6;
++			spawnInfo.water = flag7;
++			spawnInfo.granite = flag9;
++			spawnInfo.marble = flag10;
++			spawnInfo.spiderCave = flag11;
++			spawnInfo.playerInTown = flag12;
++			spawnInfo.desertCave = flag13;
++			spawnInfo.planteraDefeated = flag14;
++			spawnInfo.safeRangeX = flag15;
+ 			int newNPC = 200;
+ 			int cattailX;
+ 			int cattailY;
++			int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo);
++			if (!spawnChoice.HasValue)
++				return;
 +
-+				bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[i], this);
-+				if (modCanHit.HasValue && !modCanHit.Value)
-+					continue;
++			int spawn = spawnChoice.Value;
++			if (spawn != 0)
++				goto endVanillaSpawn;
 +
-+				// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
-+				if (!hitbox.Intersects(npcRect) || (!(modCanHit.HasValue && modCanHit.Value) && type == 453 && NPCID.Sets.Skeletons.Contains(nPC.netID)))
- 					continue;
- 
- 				double num2 = 0.0;
- 				int num3 = nPC.damage;
--				int num4 = 6;
-+				float num4 = 6;
- 				int num5 = 1;
- 				if (nPC.position.X + (float)(nPC.width / 2) > position.X + (float)(width / 2))
- 					num5 = -1;
- 
--				num2 = StrikeNPCNoInteraction(num3, num4, num5);
-+				bool crit = false;
-+				NPCLoader.ModifyHitNPC(nPC, this, ref num3, ref num4, ref crit);
-+				num2 = StrikeNPCNoInteraction(num3, num4, num5, crit, false, false);
- 				if (Main.netMode != 0)
- 					NetMessage.SendData(28, -1, -1, null, whoAmI, num3, num4, num5);
- 
- 				netUpdate = true;
- 				immune[255] = num;
-+				NPCLoader.OnHitNPC(nPC, this, (int)num2, num4, crit);
- 				if (dryadWard) {
- 					num3 = (int)num2 / 3;
- 					num4 = 6;
+ 			if (Main.player[num7].ZoneTowerNebula) {
 @@ -62281,6 +_,10 @@
  				}
  			}
@@ -771,6 +741,43 @@
  				}
  			}
  		}
+@@ -71888,25 +_,33 @@
+ 					Rectangle npcRect = nPC.Hitbox;
+ 					GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
++					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[i], this);
++					if (modCanHit.HasValue && !modCanHit.Value)
++						continue;
++
++					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
+-					if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624)
++					if (hitbox.Intersects(npcRect) && ((modCanHit == true) || type != 453 || !NPCID.Sets.Skeletons[nPC.type])&& nPC.type != 624)
+ 						BeHurtByOtherNPC(i, nPC);
+ 				}
+ 			}
+ 		}
+ 
+ 		private void BeHurtByOtherNPC(int npcIndex, NPC thatNPC) {
+ 			int num = 30;
+ 			if (type == 548)
+ 				num = 20;
+ 
+ 			int num2 = Main.DamageVar(thatNPC.damage);
+-			int num3 = 6;
++			float num3 = 6;
+ 			int num4 = (!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1);
++			bool crit = false;
++			NPCLoader.ModifyHitNPC(nPC, this, ref num2, ref num3, ref crit);
+-			double num5 = StrikeNPCNoInteraction(num2, num3, num4);
++			double num5 = StrikeNPCNoInteraction(num2, num3, num4, crit, false, false);
+ 			if (Main.netMode != 0)
+ 				NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
+ 
+ 			netUpdate = true;
+ 			immune[255] = num;
++			NPCLoader.OnHitNPC(nPC, this, (int)num5, num3, crit);
+ 			if (dryadWard) {
+ 				num2 = (int)num5 / 3;
+ 				num3 = 6;
 @@ -72534,5 +_,9 @@
  				newColor = Color.White;
  
