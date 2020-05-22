@@ -315,7 +315,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				}
 
 				var updateObject = (JObject)jsonObject["update"];
-				if (updateObject != null) {
+				if (updateObject != null && !Engine.Steam.IsSteamApp) {
 					_updateAvailable = true;
 					_updateText = (string)updateObject["message"];
 					_updateUrl = (string)updateObject["url"];
