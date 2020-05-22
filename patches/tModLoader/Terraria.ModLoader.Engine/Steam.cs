@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.Engine
 		{
 			SteamApps.GetAppInstallDir(TMLAppID_t, out string tmlInstallDIr, 1000);
 #if MAC
-				terrariaInstallLocation = Path.Combine(tmlInstallDIr, "tModLoader.app/Contents/MacOS");
+				tmlInstallDIr = Path.Combine(tmlInstallDIr, "tModLoader.app/Contents/MacOS");
 #endif
 			return tmlInstallDIr;
 		}
