@@ -25,14 +25,6 @@
  		private int _blueDir = 1;
  		private int _minX7;
  		private int _maxX7;
-@@ -513,6 +_,7 @@
- 			}
- 
- 			Main.player[Main.myPlayer].hasBanner = false;
-+			WorldHooks.ResetNearbyTileEffects();
- 			int[] screenTileCounts = Main.screenTileCounts;
- 			Array.Clear(screenTileCounts, 0, screenTileCounts.Length);
- 			num4 = Utils.Clamp(firstToLightX, 5, Main.maxTilesX - 1);
 @@ -558,6 +_,7 @@
  			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
  			for (int m = num; m < num2; m++) {

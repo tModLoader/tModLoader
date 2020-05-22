@@ -8,11 +8,11 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria.Net
-@@ -87,6 +_,7 @@
+@@ -90,6 +_,7 @@
  					socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
  				}
  				catch {
 +					Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
  				}
- 			}
- 		}
+ 
+ 				Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);

@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -2097,6 +_,12 @@
+@@ -2071,6 +_,12 @@
  					}
  				}
  				catch (Exception) {

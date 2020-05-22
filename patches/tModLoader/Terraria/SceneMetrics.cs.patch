@@ -1,0 +1,22 @@
+--- src/Terraria/Terraria/SceneMetrics.cs
++++ src/tModLoader/Terraria/SceneMetrics.cs
+@@ -2,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.WorldBuilding;
+ 
+ namespace Terraria
+@@ -389,7 +_,10 @@
+ 
+ 		public int GetTileCount(ushort tileId) => _tileCounts[tileId];
+ 
+-		public void Reset() {
++		public void Reset()
++		{
++			WorldHooks.ResetNearbyTileEffects();
++
+ 			Array.Clear(_tileCounts, 0, _tileCounts.Length);
+ 			SandTileCount = 0;
+ 			EvilTileCount = 0;

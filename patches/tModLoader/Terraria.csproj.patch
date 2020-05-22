@@ -7,7 +7,7 @@
 -    <TargetFramework>net40</TargetFramework>
 +    <TargetFramework>net45</TargetFramework>
      <OutputType>WinExe</OutputType>
-     <Version>1.4.0.0</Version>
+     <Version>1.4.0.3</Version>
      <Company>Re-Logic</Company>
 @@ -10,9 +_,10 @@
      <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
@@ -39,7 +39,7 @@
      <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))">
        <Private>true</Private>
      </Reference>
-@@ -59,7 +_,31 @@
+@@ -59,6 +_,30 @@
      <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))">
        <Private>true</Private>
      </Reference>
@@ -70,9 +70,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net" />
      <Reference Include="ReLogic">
-       <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\ReLogicWindows.dll</HintPath>
-@@ -74,7 +_,8 @@
-     <Reference Include="System" />
+@@ -75,6 +_,7 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -80,25 +78,23 @@
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
      </Reference>
-@@ -80,10 +_,13 @@
+@@ -82,8 +_,12 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
--    <EmbeddedResource Include="Terraria.Libraries/**" />
 +    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" >
 +		<LogicalName>Newtonsoft.Json.dll</LogicalName>
 +	</EmbeddedResource>
-     <EmbeddedResource Include="Terraria.Localization.Content/*" />
      <EmbeddedResource Include="Terraria.GameContent.Creative.Content.Sacrifices.tsv" />
      <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Materials.json" />
 +    <EmbeddedResource Include="**\*.png" />
      <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>ReLogic.dll</LogicalName>
      </EmbeddedResource>
-@@ -102,6 +_,27 @@
-     <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-       <LogicalName>Steamworks.NET.dll</LogicalName>
-     </EmbeddedResource>
+@@ -107,6 +_,27 @@
+     <EmbeddedResource Include="Terraria.IO.Data.ResourcePacksDefaultInfo.tsv" />
+     <EmbeddedResource Include="Terraria.Libraries/**" />
+     <EmbeddedResource Include="Terraria.Localization.Content/*" />
 +    <EmbeddedResource Include="..\..\references\TerrariaHooks.XNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
 +      <LogicalName>TerrariaHooks.dll</LogicalName>
 +    </EmbeddedResource>
@@ -123,7 +119,7 @@
    </ItemGroup>
    <Target Name="EditBin" AfterTargets="Build">
      <PropertyGroup>
-@@ -116,7 +_,11 @@
+@@ -123,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />

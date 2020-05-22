@@ -36,7 +36,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 226);
+-						writer.Write("Terraria" + 227);
 +						writer.Write(ModLoader.ModLoader.versionedName);
  						break;
  					case 2:
@@ -55,7 +55,7 @@
  							break;
  						}
  					case 7: {
-@@ -293,6 +_,9 @@
+@@ -294,6 +_,9 @@
  							writer.Write((short)WorldGen.SavedOreTiers.Mythril);
  							writer.Write((short)WorldGen.SavedOreTiers.Adamantite);
  							writer.Write((sbyte)Main.invasionType);
@@ -65,7 +65,7 @@
  							if (SocialAPI.Network != null)
  								writer.Write(SocialAPI.Network.GetLobbyId());
  							else
-@@ -505,6 +_,7 @@
+@@ -506,6 +_,7 @@
  								value4 = (short)item6.netID;
  
  							writer.Write(value4);
@@ -73,7 +73,7 @@
  							break;
  						}
  					case 22:
-@@ -574,9 +_,10 @@
+@@ -575,9 +_,10 @@
  								}
  							}
  
@@ -85,7 +85,7 @@
  							break;
  						}
  					case 24:
-@@ -613,14 +_,20 @@
+@@ -614,14 +_,20 @@
  								bb20[7] = true;
  
 -							if (projectile.originalDamage != 0)
@@ -107,7 +107,7 @@
  							if (bb20[4])
  								writer.Write((short)projectile.damage);
  
-@@ -637,7 +_,10 @@
+@@ -638,7 +_,10 @@
  						}
  					case 28:
  						writer.Write((short)number);
@@ -119,7 +119,7 @@
  						writer.Write(number3);
  						writer.Write((byte)(number4 + 1f));
  						writer.Write((byte)number5);
-@@ -665,6 +_,7 @@
+@@ -666,6 +_,7 @@
  							writer.Write((short)item5.stack);
  							writer.Write(item5.prefix);
  							writer.Write(value2);
@@ -127,7 +127,7 @@
  							break;
  						}
  					case 33: {
-@@ -708,5 +_,7 @@
+@@ -709,5 +_,7 @@
  						else {
  							writer.Write((short)0);
  						}
@@ -135,7 +135,7 @@
 +							writer.Write((ushort)number6);
  						break;
  					case 35:
-@@ -720,6 +_,9 @@
+@@ -721,6 +_,9 @@
  							writer.Write(player3.zone2);
  							writer.Write(player3.zone3);
  							writer.Write(player3.zone4);
@@ -145,7 +145,7 @@
  							break;
  						}
  					case 38:
-@@ -772,8 +_,8 @@
+@@ -773,8 +_,8 @@
  						}
  					case 50: {
  							writer.Write((byte)number);
@@ -155,7 +155,7 @@
  							}
  
  							break;
-@@ -1320,7 +_,10 @@
+@@ -1321,7 +_,10 @@
  
  				int num25 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;
@@ -167,7 +167,7 @@
  				writer.BaseStream.Position = num25;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {
-@@ -1668,7 +_,7 @@
+@@ -1642,7 +_,7 @@
  							}
  						}
  
@@ -176,7 +176,7 @@
  							short num8 = (short)Chest.FindChest(j, i);
  							if (num8 != -1) {
  								array[num] = num8;
-@@ -1688,7 +_,7 @@
+@@ -1662,7 +_,7 @@
  								array2[num2++] = num10;
  						}
  
@@ -185,7 +185,7 @@
  							short num11 = (short)Sign.ReadSign(j, i);
  							if (num11 != -1)
  								array2[num2++] = num11;
-@@ -1853,6 +_,14 @@
+@@ -1827,6 +_,14 @@
  				writer.Write(sign.text);
  			}
  
@@ -200,7 +200,7 @@
  			writer.Write(num3);
  			for (int m = 0; m < num3; m++) {
  				TileEntity.Write(writer, TileEntity.ByID[array3[m]]);
-@@ -2064,10 +_,11 @@
+@@ -2038,10 +_,11 @@
  					buffer[i].totalData += streamLength;
  					buffer[i].checkBytes = true;
  				}
@@ -213,7 +213,7 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2100,7 +_,7 @@
+@@ -2074,7 +_,7 @@
  #if SERVER
  					if (num < NetMessage.buffer.Length - 100)
  					{
@@ -222,7 +222,7 @@
  					}
  #endif
  					num2 = 0;
-@@ -2305,7 +_,7 @@
+@@ -2279,7 +_,7 @@
  			}
  
  			if (!flag) {
@@ -231,7 +231,7 @@
  				WorldFile.SaveWorld();
  				Netplay.Disconnect = true;
  			}
-@@ -2356,11 +_,12 @@
+@@ -2330,11 +_,12 @@
  					SendData(5, toWho, fromWho, null, plr, 58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
@@ -245,7 +245,7 @@
  				}
  
  				return;
-@@ -2372,7 +_,7 @@
+@@ -2346,7 +_,7 @@
  				Netplay.Clients[plr].IsAnnouncementCompleted = false;
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)

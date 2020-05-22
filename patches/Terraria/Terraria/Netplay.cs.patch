@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -3,7 +_,10 @@
+@@ -3,6 +_,9 @@
  using System.Linq;
  using System.Net;
  using System.Net.Sockets;
@@ -10,7 +10,6 @@
  using System.Threading;
  using Terraria.Audio;
  using Terraria.IO;
- using Terraria.Localization;
 @@ -12,6 +_,12 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
@@ -35,7 +34,9 @@
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
  		private static UdpClient BroadcastClient = null;
-@@ -120,7 +_,35 @@
+@@ -109,9 +_,37 @@
+ 		}
+ 
  		private static void OpenPort(int port) {
 +#if SERVER
 +			if (Netplay.upnpnat == null)
@@ -71,7 +72,7 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -370,6 +_,11 @@
+@@ -361,6 +_,11 @@
  					flag = false;
  				}
  				catch {
@@ -83,7 +84,7 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -621,7 +_,19 @@
+@@ -612,8 +_,20 @@
  		}
  
  		public static void Initialize() {
@@ -103,3 +104,4 @@
 +#endif
  		}
  
+ 		public static void Update() {
