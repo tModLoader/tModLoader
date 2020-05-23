@@ -213,7 +213,7 @@
  
  #if CLIENT
 -				MessageBox.Show(e.ToString(), "Terraria: Error");
-+				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
++				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +
 +				if (e is FolderCreationFailedException)
 +					Process.Start(e.HelpLink);
