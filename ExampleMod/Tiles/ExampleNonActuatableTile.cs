@@ -6,7 +6,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
 {
-	public class ExampleNotActuableTile : ModTile
+	public class ExampleNonActuatableTile : ModTile
 	{
 		public override void SetDefaults()
 		{
@@ -15,7 +15,7 @@ namespace ExampleMod.Tiles
 			Main.tileBlockLight[Type] = true;
 			Main.tileLighted[Type] = true;
 			dustType = DustType<Sparkle>();
-			drop = ItemType<Items.Placeable.ExampleNotActuableTile>();
+			drop = ItemType<Items.Placeable.ExampleNonActuatableTile>();
 			AddMapEntry(new Color(200, 200, 200));
 		}
 

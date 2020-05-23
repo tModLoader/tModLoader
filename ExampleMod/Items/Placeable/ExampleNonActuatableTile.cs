@@ -1,16 +1,15 @@
-﻿using ExampleMod.Items.Abomination;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Items.Placeable
 {
-	public class ExampleNotActuableTile : ModItem
+	public class ExampleNonActuatableTile : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Example Non-Actuable Tile");
+			DisplayName.SetDefault("Example Non-Actuatable Tile");
 			Tooltip.SetDefault("This is block cannot be actuated.");
 		}
 
@@ -24,7 +23,7 @@ namespace ExampleMod.Items.Placeable
 			item.useTime = 10;
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleNotActuableTile>();
+			item.createTile = TileType<Tiles.ExampleNonActuatableTile>();
 		}
 
 		public override void AddRecipes() {
