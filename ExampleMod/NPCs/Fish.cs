@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.NPCs
 {
@@ -154,7 +155,7 @@ namespace ExampleMod.NPCs
 							npc.velocity.X = 0f;
 						}
 					}
-					else if (Main.netMode != 1) {
+					else if (Main.netMode != NetmodeID.MultiplayerClient) {
 						npc.velocity.Y = (float)Main.rand.Next(-50, -20) * 0.1f;
 						npc.velocity.X = (float)Main.rand.Next(-20, 20) * 0.1f;
 						npc.netUpdate = true;

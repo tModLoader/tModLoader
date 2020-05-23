@@ -19,7 +19,7 @@ namespace ExampleMod.Items.Abomination
 			item.width = 24;
 			item.height = 24;
 			item.value = Item.buyPrice(0, 10, 0, 0);
-			item.rare = 9;
+			item.rare = ItemRarityID.Cyan;
 			item.expert = true;
 			item.accessory = true;
 			item.damage = 120;

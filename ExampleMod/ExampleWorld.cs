@@ -386,7 +386,7 @@ namespace ExampleMod
 				// If you look at the sprite for Chests by extracting Tiles_21.xnb, you'll see that the 12th chest is the Ice Chest. Since we are counting from 0, this is where 11 comes from. 36 comes from the width of each tile including padding. 
 				if (chest != null && Main.tile[chest.x, chest.y].type == TileID.Containers && Main.tile[chest.x, chest.y].frameX == 11 * 36) {
 					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++) {
-						if (chest.item[inventoryIndex].type == 0) {
+						if (chest.item[inventoryIndex].type == ItemID.None) {
 							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInIceChests[itemsToPlaceInIceChestsChoice]);
 							itemsToPlaceInIceChestsChoice = (itemsToPlaceInIceChestsChoice + 1) % itemsToPlaceInIceChests.Length;
 							// Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(Main.rand.Next(itemsToPlaceInIceChests));
@@ -421,14 +421,14 @@ namespace ExampleMod
 				if (VolcanoCooldown > 0) {
 					VolcanoCooldown--;
 				}
-				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !GetInstance<ExampleConfigServer>().DisableVolcanos) {
+				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !GetInstance<ExampleConfigServer>().DisableVolcanoes) {
 					string key = "Mods.ExampleMod.VolcanoWarning";
 					Color messageColor = Color.Orange;
-					if (Main.netMode == 2) // Server
+					if (Main.netMode == NetmodeID.Server) // Server
 					{
 						NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 					}
-					else if (Main.netMode == 0) // Single Player
+					else if (Main.netMode == NetmodeID.SinglePlayer) // Single Player
 					{
 						Main.NewText(Language.GetTextValue(key), messageColor);
 					}
@@ -441,7 +441,7 @@ namespace ExampleMod
 				if (VolcanoCountdown == 0) {
 					VolcanoTremorTime = DefaultVolcanoTremorTime;
 					// Since PostUpdate only happens in single and server, we need to inform the clients to shake if this is a server
-					if (Main.netMode == 2) {
+					if (Main.netMode == NetmodeID.Server) {
 						var netMessage = mod.GetPacket();
 						netMessage.Write((byte)ExampleModMessageType.SetTremorTime);
 						netMessage.Write(VolcanoTremorTime);
@@ -469,7 +469,7 @@ namespace ExampleMod
 								Main.projectile[projectile].Name = "Volcanic Rubble";
 								identities.Add(Main.projectile[projectile].identity);
 							}
-							if (Main.netMode == 2) {
+							if (Main.netMode == NetmodeID.Server) {
 								var netMessage = mod.GetPacket();
 								netMessage.Write((byte)ExampleModMessageType.VolcanicRubbleMultiplayerFix);
 								netMessage.Write(identities.Count);

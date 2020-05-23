@@ -139,12 +139,12 @@ namespace ExampleMod.NPCs
 			}
 
 			// Below this point is the normal AI code.
-			if (npc.ai[0] == 0f && Main.netMode != 1) {
+			if (npc.ai[0] == 0f && Main.netMode != NetmodeID.MultiplayerClient) {
 				npc.TargetClosest(true);
 				npc.ai[0] = 1f;
 			}
 			if (npc.ai[1] != 3f && npc.ai[1] != 2f) {
-				Main.PlaySound(15, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
+				Main.PlaySound(SoundID.Roar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
 				npc.ai[1] = 2f;
 			}
 			if (Main.player[npc.target].dead || Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f || Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f) {

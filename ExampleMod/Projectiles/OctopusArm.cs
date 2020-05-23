@@ -6,6 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Projectiles
 {
@@ -134,7 +135,7 @@ namespace ExampleMod.Projectiles
 			}
 			projectile.rotation += angleSpeed;
 			length += lengthSpeed;
-			if (Main.netMode == 2) {
+			if (Main.netMode == NetmodeID.Server) {
 				netUpdateCounter++;
 				if (netUpdateCounter >= 300) {
 					projectile.netUpdate = true;

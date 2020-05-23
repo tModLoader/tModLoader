@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.States\UIManageControls.cs
-+++ src/tModLoader\Terraria.GameContent.UI.States\UIManageControls.cs
+--- src/Terraria/Terraria.GameContent.UI.States/UIManageControls.cs
++++ src/tModLoader/Terraria.GameContent.UI.States/UIManageControls.cs
 @@ -9,6 +_,7 @@
  using Terraria.Graphics;
  using Terraria.Initializers;
@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -37,7 +_,9 @@
+@@ -36,15 +_,20 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -17,9 +17,8 @@
 +			"ResetModHotkeys",
 +			"ClearModHotkeys"
  		};
- 		private static List<string> _BindingsHalfSingleLine = new List<string>
- 		{
-@@ -45,8 +_,11 @@
+ 		private static List<string> _BindingsHalfSingleLine = new List<string> {
+ 			"sp9",
  			"sp10",
  			"sp11",
  			"sp12",
@@ -32,8 +31,8 @@
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
  		private List<UIElement> _bindsKeyboard = new List<UIElement>();
-@@ -207,6 +_,9 @@
- 			{
+@@ -202,6 +_,9 @@
+ 			List<string> bindings = new List<string> {
  				"MouseLeft",
  				"MouseRight",
 +				"MouseMiddle",
@@ -42,8 +41,8 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -229,6 +_,9 @@
- 			{
+@@ -224,6 +_,9 @@
+ 			List<string> bindings2 = new List<string> {
  				"MouseLeft",
  				"MouseRight",
 +				"MouseMiddle",
@@ -52,48 +51,47 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -296,26 +_,40 @@
- 				"sp19",
+@@ -292,26 +_,39 @@
  				"sp13"
  			};
+ 
 +			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
 +			_ModBindings.Clear();
-+			foreach (var hotkey in HotKeyLoader.HotKeys)
-+			{
++			foreach (var hotkey in HotKeyLoader.HotKeys) {
 +				_ModBindings.Add(hotkey.uniqueName);
 +				_BindingsFullLine.Add(hotkey.uniqueName);
 +			}
++
 +			_ModBindings.Add("ResetModHotkeys");
 +			_ModBindings.Add("ClearModHotkeys");
-+
  			InputMode currentInputMode = InputMode.Keyboard;
- 			this._bindsKeyboard.Add(this.CreateBindingGroup(0, bindings, currentInputMode));
- 			this._bindsKeyboard.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
- 			this._bindsKeyboard.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
-+			this._bindsKeyboard.Add(this.CreateBindingGroup(5, _ModBindings, currentInputMode));
+ 			_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
+ 			_bindsKeyboard.Add(CreateBindingGroup(1, bindings4, currentInputMode));
+ 			_bindsKeyboard.Add(CreateBindingGroup(2, bindings3, currentInputMode));
++			_bindsKeyboard.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
  			currentInputMode = InputMode.XBoxGamepad;
- 			this._bindsGamepad.Add(this.CreateBindingGroup(0, bindings2, currentInputMode));
- 			this._bindsGamepad.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
- 			this._bindsGamepad.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
- 			this._bindsGamepad.Add(this.CreateBindingGroup(3, bindings5, currentInputMode));
- 			this._bindsGamepad.Add(this.CreateBindingGroup(4, bindings6, currentInputMode));
-+			this._bindsGamepad.Add(this.CreateBindingGroup(5, _ModBindings, currentInputMode));
+ 			_bindsGamepad.Add(CreateBindingGroup(0, bindings2, currentInputMode));
+ 			_bindsGamepad.Add(CreateBindingGroup(1, bindings4, currentInputMode));
+ 			_bindsGamepad.Add(CreateBindingGroup(2, bindings3, currentInputMode));
+ 			_bindsGamepad.Add(CreateBindingGroup(3, bindings5, currentInputMode));
+ 			_bindsGamepad.Add(CreateBindingGroup(4, bindings6, currentInputMode));
++			_bindsGamepad.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
  			currentInputMode = InputMode.KeyboardUI;
- 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(0, bindings, currentInputMode));
- 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
- 			this._bindsKeyboardUI.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
-+			this._bindsKeyboardUI.Add(this.CreateBindingGroup(5, _ModBindings, currentInputMode));
+ 			_bindsKeyboardUI.Add(CreateBindingGroup(0, bindings, currentInputMode));
+ 			_bindsKeyboardUI.Add(CreateBindingGroup(1, bindings4, currentInputMode));
+ 			_bindsKeyboardUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
++			_bindsKeyboardUI.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
  			currentInputMode = InputMode.XBoxGamepadUI;
- 			this._bindsGamepadUI.Add(this.CreateBindingGroup(0, bindings2, currentInputMode));
- 			this._bindsGamepadUI.Add(this.CreateBindingGroup(1, bindings4, currentInputMode));
- 			this._bindsGamepadUI.Add(this.CreateBindingGroup(2, bindings3, currentInputMode));
- 			this._bindsGamepadUI.Add(this.CreateBindingGroup(3, bindings5, currentInputMode));
- 			this._bindsGamepadUI.Add(this.CreateBindingGroup(4, bindings6, currentInputMode));
-+			this._bindsGamepadUI.Add(this.CreateBindingGroup(5, _ModBindings, currentInputMode));
+ 			_bindsGamepadUI.Add(CreateBindingGroup(0, bindings2, currentInputMode));
+ 			_bindsGamepadUI.Add(CreateBindingGroup(1, bindings4, currentInputMode));
+ 			_bindsGamepadUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
+ 			_bindsGamepadUI.Add(CreateBindingGroup(3, bindings5, currentInputMode));
+ 			_bindsGamepadUI.Add(CreateBindingGroup(4, bindings6, currentInputMode));
++			_bindsGamepadUI.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
  		}
  
- 		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
-@@ -355,6 +_,9 @@
+ 		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode) {
+@@ -349,6 +_,9 @@
  				case 4:
  					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  					break;
@@ -101,9 +99,9 @@
 +					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Yellow, 0.18f);
 +					break;
  			}
- 			this.CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
- 			uIPanel.BackgroundColor = uIPanel.BackgroundColor.MultiplyRGBA(new Color(111, 111, 111));
-@@ -376,6 +_,9 @@
+ 
+ 			CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
+@@ -370,6 +_,9 @@
  				case 4:
  					text = Lang.menu[198];
  					break;
@@ -111,65 +109,64 @@
 +					text = Language.GetText("tModLoader.ModControls");
 +					break;
  			}
- 			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f, false)
- 			{
-@@ -549,6 +_,26 @@
- 						{
- 							string copyableProfileName = UIManageControls.GetCopyableProfileName();
- 							PlayerInput.CurrentProfile.CopyGamepadAdvancedSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
-+						};
-+						return uIElement7;
-+					}
-+				case "ResetModHotkeys":
-+					{
+ 
+ 			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
+@@ -522,6 +_,25 @@
+ 
+ 						return uIKeybindingSimpleListItem4;
+ 					}
++				case "ResetModHotkeys": {
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
-+						uIElement7.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
-+						{
-+							string copyableProfileName = UIManageControls.GetCopyableProfileName();
++						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
++							string copyableProfileName = GetCopyableProfileName();
 +							PlayerInput.CurrentProfile.CopyModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
 +						};
++
 +						return uIElement7;
 +					}
-+				case "ClearModHotkeys":
-+					{
++				case "ClearModHotkeys": {
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 +							foreach (var modHotkey in HotKeyLoader.HotKeys) {
 +								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modHotkey.uniqueName].Clear();
 +							}
- 						};
- 						return uIElement7;
- 					}
-@@ -660,11 +_,40 @@
- 							}
- 						}, 1008, color);
++						};
++
++						return uIElement7;
++					}
+ 				case "sp14": {
+ 						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
+ 						uIKeybindingToggleListItem.OnClick += delegate {
+@@ -594,11 +_,39 @@
+ 						}
+ 					}, 1008, color);
+ 				default:
++					if (_ModBindings.Contains(bind)) {
++						string defaultKey = HotKeyLoader.modHotKeys[bind].defaultKey;
++						UIElement container = new UIElement();
++						var left = new UIKeybindingListItem(bind, currentInputMode, color);
++						left.Width.Precent = 0.68f;
++						left.Height.Precent = 1f;
++						container.Append(left);
++						// TODO: Clear instead of Reset to Defaults if no default specified.
++						var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
++						right.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
++							string copyableProfileName = GetCopyableProfileName();
++							PlayerInput.CurrentProfile.CopyIndividualModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
++						};
++		
++						right.Left.Precent = 0.7f;
++						right.Width.Precent = 0.3f;
++						right.Height.Precent = 1f;
++						container.Append(right);
++						return container;
++					}
++
+ 					return new UIKeybindingListItem(bind, currentInputMode, color);
  			}
-+			if (_ModBindings.Contains(bind))
-+			{
-+				string defaultKey = HotKeyLoader.modHotKeys[bind].defaultKey;
-+				UIElement container = new UIElement();
-+				var left = new UIKeybindingListItem(bind, currentInputMode, color);
-+				left.Width.Precent = 0.68f;
-+				left.Height.Precent = 1f;
-+				container.Append(left);
-+				// TODO: Clear instead of Reset to Defaults if no default specified.
-+				var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
-+				right.OnClick += delegate(UIMouseEvent evt, UIElement listeningElement)
-+				{
-+					string copyableProfileName = UIManageControls.GetCopyableProfileName();
-+					PlayerInput.CurrentProfile.CopyIndividualModHotkeySettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
-+				};
-+				right.Left.Precent = 0.7f;
-+				right.Width.Precent = 0.3f;
-+				right.Height.Precent = 1f;
-+				container.Append(right);
-+				return container;
-+			}
- 			return new UIKeybindingListItem(bind, currentInputMode, color);
  		}
  
- 		public override void OnActivate()
- 		{
+ 		public override void OnActivate() {
 +			// TODO, only if new mod controls -- seems to be cause of bug on reload.
 +			_bindsKeyboard.Clear();
 +			_bindsGamepad.Clear();
@@ -177,8 +174,6 @@
 +			_bindsGamepadUI.Clear();
 +			AssembleBindPanels();
 +			FillList();
-+
- 			if (Main.gameMenu)
- 			{
- 				this._outerContainer.Top.Set(220f, 0f);
-
+ 			if (Main.gameMenu) {
+ 				_outerContainer.Top.Set(220f, 0f);
+ 				_outerContainer.Height.Set(-220f, 1f);

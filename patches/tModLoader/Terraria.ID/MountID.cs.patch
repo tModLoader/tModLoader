@@ -1,7 +1,7 @@
---- src/Terraria\Terraria.ID\MountID.cs
-+++ src/tModLoader\Terraria.ID\MountID.cs
-@@ -15,6 +_,21 @@
- 				});
+--- src/Terraria/Terraria.ID/MountID.cs
++++ src/tModLoader/Terraria.ID/MountID.cs
+@@ -8,6 +_,21 @@
+ 			public static bool[] Cart = Factory.CreateBoolSet(6, 11, 13);
  		}
  
 -		public static int Count = 15;
@@ -23,4 +23,3 @@
 +		public const int Basilisk = 14;
  	}
  }
-

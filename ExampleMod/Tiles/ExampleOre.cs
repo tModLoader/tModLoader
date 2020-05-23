@@ -25,7 +25,7 @@ namespace ExampleMod.Tiles
 
 			dustType = 84;
 			drop = ItemType<Items.Placeable.ExampleOre>();
-			soundType = 21;
+			soundType = SoundID.Tink;
 			soundStyle = 1;
 			//mineResist = 4f;
 			//minPick = 200;

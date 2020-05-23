@@ -7,7 +7,7 @@ namespace ExampleMod.Items.Placeable
 	internal class ExampleLamp : ModItem
 	{
 		public override void SetDefaults() {
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.useTurn = true;
 			item.useAnimation = 15;
 			item.useTime = 10;

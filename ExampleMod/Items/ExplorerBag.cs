@@ -15,7 +15,7 @@ namespace ExampleMod.Items
 		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
-			item.rare = 2;
+			item.rare = ItemRarityID.Green;
 		}
 
 		public override bool CanRightClick() {

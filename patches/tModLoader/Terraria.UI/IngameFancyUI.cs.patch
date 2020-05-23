@@ -1,6 +1,6 @@
---- src/Terraria\Terraria.UI\IngameFancyUI.cs
-+++ src/tModLoader\Terraria.UI\IngameFancyUI.cs
-@@ -4,7 +_,9 @@
+--- src/Terraria/Terraria.UI/IngameFancyUI.cs
++++ src/tModLoader/Terraria.UI/IngameFancyUI.cs
+@@ -3,7 +_,9 @@
  using Terraria.Achievements;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
@@ -10,19 +10,16 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI
-@@ -88,6 +_,14 @@
- 						{
- 							Main.defaultChestName = Lang.dresserType[(int)(Main.tile[player.chestX, player.chestY].frameX / 54)].Value;
- 						}
+@@ -71,6 +_,12 @@
+ 
+ 						if (Main.tile[player.chestX, player.chestY].type == 88)
+ 							Main.defaultChestName = Lang.dresserType[Main.tile[player.chestX, player.chestY].frameX / 54].Value;
++
 +						if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] && Main.tile[player.chestX, player.chestY].type >= TileID.Count)
-+						{
 +							Main.defaultChestName = TileLoader.ModChestName(Main.tile[player.chestX, player.chestY].type);
-+						}
++
 +						if (TileLoader.IsDresser(Main.tile[player.chestX, player.chestY].type))
-+						{
 +							Main.defaultChestName = TileLoader.ModDresserName(Main.tile[player.chestX, player.chestY].type);
-+						}
+ 
  						if (Main.npcChatText == "")
- 						{
  							Main.npcChatText = Main.defaultChestName;
-

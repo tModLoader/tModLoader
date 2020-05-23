@@ -96,7 +96,7 @@ namespace ExampleMod.UI
 				if (hoveringOverReforgeButton) {
 					Main.hoverItemName = Language.GetTextValue("LegacyInterface.19");
 					if (!tickPlayed) {
-						Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+						Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
 					}
 					tickPlayed = true;
 					Main.LocalPlayer.mouseInterface = true;

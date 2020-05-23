@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
 {
@@ -8,7 +9,7 @@ namespace ExampleMod.Items.Armor
 		public override void SetDefaults() {
 			item.width = 28;
 			item.height = 20;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 			item.vanity = true;
 		}
 

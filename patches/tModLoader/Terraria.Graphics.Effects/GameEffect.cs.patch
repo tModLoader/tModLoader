@@ -1,6 +1,6 @@
---- src/Terraria\Terraria.Graphics.Effects\GameEffect.cs
-+++ src/tModLoader\Terraria.Graphics.Effects\GameEffect.cs
-@@ -41,8 +_,8 @@
+--- src/Terraria/Terraria.Graphics.Effects/GameEffect.cs
++++ src/tModLoader/Terraria.Graphics.Effects/GameEffect.cs
+@@ -24,8 +_,8 @@
  
  		public abstract bool IsVisible();
  
@@ -11,4 +11,3 @@
 +		public abstract void Deactivate(params object[] args);
  	}
  }
-

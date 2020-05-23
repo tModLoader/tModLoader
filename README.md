@@ -4,22 +4,22 @@ tModLoader (TML) is an open-source, community-driven, modification and expansion
 
 **Note**: the code on this GitHub repository will be ahead of the current released version.
 
-___
-
+<p align="center" >
+<img src="http://i.imgur.com/kdcROYP.png"/>
+</p>
 
 ## Instructions
 
 Want to play or create mods? Or do you want to contribute to tModLoader perhaps?
 Click the text that applies to you.
 
+### [Get tModLoader on Steam](https://store.steampowered.com/app/1281930/tModLoader/)
+
 ### [I am a **player**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players) (Play mods)
 
 ### [I am a **developer**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers) (Create mods)
 
 ### [I am a **contributor**](https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-contributors) (Help create tModLoader)
-
-___
-
 
 ## Support us
 
@@ -39,7 +39,9 @@ TML is largely created and maintained by a core team of contributors: **Blushiem
 
 This project exists in its current state thanks to all the people who have contributed:
 
-<a href="https://github.com/tModLoader/tModLoader/graphs/contributors"><img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/tModLoader/tModLoader/graphs/contributors">
+<img src="https://opencollective.com/tModLoader/contributors.svg?height=215&width=890&button=false" />
+</a>
 
 ## License
 TML is licensed under the [MIT license](https://github.com/tModLoader/tModLoader/blob/master/LICENSE)

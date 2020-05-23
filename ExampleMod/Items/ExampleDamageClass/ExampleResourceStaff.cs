@@ -19,7 +19,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 			item.Size = new Vector2(28, 36);
 			item.damage = 32;
 			item.knockBack = 3;
-			item.rare = 10;
+			item.rare = ItemRarityID.Red;
 			item.mana = 0; // Make sure to nullify the mana usage of the staff here, as it still copies the setdefaults of the amethyst staff.
 			item.useStyle = ItemUseStyleID.HoldingOut;
 

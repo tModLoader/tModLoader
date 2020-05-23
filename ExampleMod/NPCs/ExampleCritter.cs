@@ -22,7 +22,7 @@ namespace ExampleMod.NPCs
 
 		/// <summary>
 		/// Change the following code sequence in Wiring.HitWireSingle
-		/// num145 = Utils.SelectRandom(Main.rand, new short[5]
+		/// num12 = Utils.SelectRandom(Main.rand, new short[5]
 		/// {
 		/// 	359,
 		/// 	359,
@@ -42,7 +42,7 @@ namespace ExampleMod.NPCs
 		/// 	360,
 		/// }
 		/// arr = arr.ToList().Add(id).ToArray();
-		/// num145 = Utils.SelectRandom(Main.rand, arr);
+		/// num12 = Utils.SelectRandom(Main.rand, arr);
 		/// 
 		/// </summary>
 		/// <param name="il"></param>
@@ -78,13 +78,9 @@ namespace ExampleMod.NPCs
 					;
 				}
 
-				// not enough switch instructions
-				if (targets.Length < 56 - offset) {
-					continue;
-				}
-
-				var target = targets[56 - offset];
-				if (target == null) {
+				// get the label for case 56: if it exists
+				int case56Index = 56 - offset;
+				if (case56Index < 0 || case56Index >= targets.Length || !(targets[case56Index] is ILLabel target)) {
 					continue;
 				}
 

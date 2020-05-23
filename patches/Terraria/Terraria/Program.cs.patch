@@ -1,0 +1,88 @@
+--- src/decompiled/Terraria/Program.cs
++++ src/Terraria/Terraria/Program.cs
+@@ -2,14 +_,18 @@
+ using ReLogic.OS;
+ using System;
+ using System.Collections.Generic;
++#if CLIENT
+ using System.Diagnostics;
++#endif
+ using System.IO;
+ using System.Reflection;
+ using System.Runtime.CompilerServices;
+ using System.Runtime.ExceptionServices;
+ using System.Text;
+ using System.Threading;
++#if CLIENT
+ using System.Windows.Forms;
++#endif
+ using Terraria.Initializers;
+ using Terraria.Localization;
+ using Terraria.Social;
+@@ -19,7 +_,11 @@
+ {
+ 	public static class Program
+ 	{
++#if CLIENT
+ 		public const bool IsServer = false;
++#else
++		public const bool IsServer = true;
++#endif
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 		private static int ThingsToLoad = 0;
+ 		private static int ThingsLoaded = 0;
+@@ -50,10 +_,18 @@
+ 		private static void ForceJITOnAssembly(Assembly assembly) {
+ 			Type[] types = assembly.GetTypes();
+ 			for (int i = 0; i < types.Length; i++) {
++#if WINDOWS
+ 				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
++#else
++				MethodInfo[] methods = types[i].GetMethods();
++#endif
+ 				foreach (MethodInfo methodInfo in methods) {
+ 					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
++#if WINDOWS
+ 						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
++#else
++						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
++#endif
+ 				}
+ 
+ 				ThingsLoaded++;
+@@ -128,9 +_,11 @@
+ 		}
+ 
+ 		private static void InitializeConsoleOutput() {
++#if CLIENT
+ 			if (Debugger.IsAttached)
+ 				return;
+ 
++#endif
+ 			try {
+ 				Console.OutputEncoding = Encoding.UTF8;
+ 				if (Platform.IsWindows)
+@@ -163,7 +_,11 @@
+ 					SocialAPI.Initialize();
+ 					LaunchInitializer.LoadParameters(main);
+ 					Main.OnEnginePreload += StartForceLoad;
++#if CLIENT
+ 					main.Run();
++#else
++					main.DedServ();
++#endif
+ 				}
+ 				catch (Exception e) {
+ 					DisplayException(e);
+@@ -179,7 +_,11 @@
+ 					streamWriter.WriteLine("");
+ 				}
+ 
++#if CLIENT
+ 				MessageBox.Show(e.ToString(), "Terraria: Error");
++#else
++				Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
++#endif
+ 			}
+ 			catch {
+ 			}

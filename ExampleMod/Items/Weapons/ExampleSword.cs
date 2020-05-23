@@ -23,7 +23,7 @@ namespace ExampleMod.Items.Weapons
 			item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
 			item.knockBack = 6; // The force of knockback of the weapon. Maximum is 20
 			item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins
-			item.rare = 2; // The rarity of the weapon, from -1 to 13. You can also use ItemRarityID.TheColorRarity
+			item.rare = ItemRarityID.Green; // The rarity of the weapon, from -1 to 13. You can also use ItemRarityID.TheColorRarity
 			item.UseSound = SoundID.Item1; // The sound when the weapon is being used
 			item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button
 			item.crit = 6; // The critical strike chance the weapon has. The player, by default, has 4 critical strike chance
@@ -34,7 +34,7 @@ namespace ExampleMod.Items.Weapons
 			//use useStyle 3 to make the sword act like a shortsword
 			//use useStyle 4 for use like a life crystal,
 			//and use useStyle 5 for staffs or guns
-			item.useStyle = 1; // 1 is the useStyle
+			item.useStyle = ItemUseStyleID.SwingThrow; // 1 is the useStyle
 		}
 
 		public override void AddRecipes() {

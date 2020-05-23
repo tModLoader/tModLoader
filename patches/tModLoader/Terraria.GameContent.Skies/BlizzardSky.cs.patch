@@ -1,19 +1,17 @@
---- src/Terraria\Terraria.GameContent.Skies\BlizzardSky.cs
-+++ src/tModLoader\Terraria.GameContent.Skies\BlizzardSky.cs
-@@ -53,13 +_,13 @@
+--- src/Terraria/Terraria.GameContent.Skies/BlizzardSky.cs
++++ src/tModLoader/Terraria.GameContent.Skies/BlizzardSky.cs
+@@ -42,12 +_,12 @@
  			}
  		}
  
--		internal override void Activate(Vector2 position, params object[] args)
-+		public override void Activate(Vector2 position, params object[] args)
- 		{
- 			this._isActive = true;
- 			this._isLeaving = false;
+-		internal override void Activate(Vector2 position, params object[] args) {
++		public override void Activate(Vector2 position, params object[] args) {
+ 			_isActive = true;
+ 			_isLeaving = false;
  		}
  
--		internal override void Deactivate(params object[] args)
-+		public override void Deactivate(params object[] args)
- 		{
- 			this._isLeaving = true;
+-		internal override void Deactivate(params object[] args) {
++		public override void Deactivate(params object[] args) {
+ 			_isLeaving = true;
  		}
-
+ 

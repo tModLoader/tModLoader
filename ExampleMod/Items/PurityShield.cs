@@ -15,9 +15,9 @@ namespace ExampleMod.Items
 			item.height = 32;
 			item.useTime = 20;
 			item.useAnimation = 20;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.value = Item.sellPrice(2, 0, 0, 0);
-			item.rare = 11;
+			item.rare = ItemRarityID.Purple;
 			item.UseSound = SoundID.Item79;
 			item.noMelee = true;
 		}

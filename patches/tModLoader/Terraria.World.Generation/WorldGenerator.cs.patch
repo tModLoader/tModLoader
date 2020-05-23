@@ -1,18 +1,18 @@
---- src/Terraria\Terraria.World.Generation\WorldGenerator.cs
-+++ src/tModLoader\Terraria.World.Generation\WorldGenerator.cs
-@@ -8,9 +_,9 @@
+--- src/Terraria/Terraria.World.Generation/WorldGenerator.cs
++++ src/tModLoader/Terraria.World.Generation/WorldGenerator.cs
+@@ -7,9 +_,9 @@
  {
  	public class WorldGenerator
  	{
 -		private List<GenPass> _passes = new List<GenPass>();
--		private float _totalLoadWeight;
--		private int _seed;
 +		internal List<GenPass> _passes = new List<GenPass>();
+-		private float _totalLoadWeight;
 +		internal float _totalLoadWeight;
+-		private int _seed;
 +		internal int _seed;
  
- 		public WorldGenerator(int seed)
- 		{
+ 		public WorldGenerator(int seed) {
+ 			_seed = seed;
 @@ -44,7 +_,22 @@
  				Main.rand = new UnifiedRandom(this._seed);
  				stopwatch.Start();
@@ -37,4 +37,3 @@
  				progress.End();
  				stopwatch.Reset();
  			}
-

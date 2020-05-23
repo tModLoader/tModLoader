@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
+using System.IO;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -16,12 +18,14 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> exitAndDisableAllButton;
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
+		private UITextPanel<string> retryButton;
 		
 		private string message;
 		private int gotoMenu;
 		private string webHelpURL;
-		private bool showRetry;
+		private bool continueIsRetry;
 		private bool showSkip;
+		private Action retryAction;
 
 		public override void OnInitialize() {
 			area = new UIElement {
@@ -74,6 +78,12 @@ namespace Terraria.ModLoader.UI
 			exitAndDisableAllButton.WithFadedMouseOver();
 			exitAndDisableAllButton.OnClick += ExitAndDisableAll;
 
+			retryButton = new UITextPanel<string>("Retry", 0.7f, true);
+			retryButton.CopyStyle(continueButton);
+			retryButton.Top.Set(-50f, 1f);
+			retryButton.WithFadedMouseOver();
+			retryButton.OnClick += (evt, elem) => retryAction();
+
 			Append(area);
 		}
 
@@ -82,21 +92,27 @@ namespace Terraria.ModLoader.UI
 
 			messageBox.SetText(message);
 
-			var continueKey = gotoMenu < 0 ? "Exit" : showRetry ? "Retry" : "Continue";
+			var continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
 			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 			
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
+			area.AddOrRemoveChild(retryButton, retryAction != null);
 		}
 
-		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool showRetry = false, bool showSkip = false) {
+		public override void OnDeactivate() {
+			retryAction = null; //release references for the GC
+		}
+
+		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null) {
 			this.message = message;
 			this.gotoMenu = gotoMenu;
 			this.webHelpURL = webHelpURL;
-			this.showRetry = showRetry;
+			this.continueIsRetry = continueIsRetry;
 			this.showSkip = showSkip;
+			this.retryAction = retryAction;
 			Main.gameMenu = true;
 			Main.menuMode = Interface.errorMessageID;
 		}
@@ -118,7 +134,7 @@ namespace Terraria.ModLoader.UI
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
 			Main.PlaySound(SoundID.MenuOpen);
-			Process.Start(Logging.LogPath);
+			Utils.OpenFolder(Logging.LogPath);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {

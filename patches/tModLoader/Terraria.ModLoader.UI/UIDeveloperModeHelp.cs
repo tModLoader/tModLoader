@@ -163,7 +163,7 @@ namespace Terraria.ModLoader.UI
 				// upgrade start scripts to system mono
 				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
 					File.Copy("tModLoader-mono", monoPath, true);
-
+				/*
 				// vanilla start scripts need to be upgraded to copy back the sys/ folder
 				var kickPaths = new List<string> { "TerrariaServer" };
 				if (!File.ReadAllText("Terraria").Contains("forwarder"))
@@ -171,6 +171,7 @@ namespace Terraria.ModLoader.UI
 
 				foreach (var kickPath in kickPaths)
 					File.Copy("tModLoader-kick", kickPath, true);
+				*/
 
 				monoStartScriptsUpdated = true;
 				_updateRequired = true;
@@ -194,7 +195,7 @@ namespace Terraria.ModLoader.UI
 				try {
 					Extract(file);
 					var currentEXEFilename = Process.GetCurrentProcess().ProcessName;
-					string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "Terraria.xml");
+					string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "tModLoader.xml");
 					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
 					File.Copy(originalXMLFile, correctXMLFile, true);
 					File.Delete(originalXMLFile);

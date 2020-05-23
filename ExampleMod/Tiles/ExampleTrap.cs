@@ -61,7 +61,7 @@ namespace ExampleMod.Tiles
 			{
 				tile.frameX += 18;
 			}
-			if (Main.netMode == 1)
+			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
 				NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1, TileChangeType.None);
 			}
@@ -76,7 +76,7 @@ namespace ExampleMod.Tiles
 			int style = tile.frameY / 18;
 			int nextFrameX = frameXCycle[tile.frameX / 18];
 			tile.frameX = (short)(nextFrameX * 18);
-			if (Main.netMode == 1)
+			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
 				NetMessage.SendTileSquare(-1, Player.tileTargetX, Player.tileTargetY, 1, TileChangeType.None);
 			}

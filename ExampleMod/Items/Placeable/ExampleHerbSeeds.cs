@@ -1,5 +1,6 @@
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -8,7 +9,7 @@ namespace ExampleMod.Items.Placeable
 		public override void SetDefaults() {
 			item.autoReuse = true;
 			item.useTurn = true;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.useAnimation = 15;
 			item.useTime = 10;
 			item.maxStack = 99;

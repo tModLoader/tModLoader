@@ -92,10 +92,11 @@ namespace ExampleMod.Tiles
 			Main.sign[Sign.ReadSign(i, j, true)].text = "Type in a command, right-click sign to activate it!";
 		}
 
-		public override void RightClick(int i, int j)
+		public override bool NewRightClick(int i, int j)
 		{
 			// Uses the text from the sign to run a command
 			Main.ExecuteCommand(Main.sign[Sign.ReadSign(i, j, true)].text, new ExampleCommandCaller());
+			return true;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)

@@ -1,4 +1,6 @@
 ﻿using Ionic.Zip;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,41 +14,123 @@ namespace Terraria.ModLoader.Core
 	/// </summary>
 	internal static class LogArchiver
 	{
-		internal static void ArchiveLogs() {
-			foreach (var logFile in Directory.GetFiles(Logging.LogDir, "*.old*"))
-				Archive(logFile, Path.GetFileNameWithoutExtension(logFile));
+		private const int MAX_LOGS = 20;
 
+		/// <summary>
+		/// Attempt archiving logs.
+		/// </summary>
+		internal static void ArchiveLogs()
+		{
+			SetupLogDirs();
+			MoveOldLogs();
 			DeleteOldArchives();
 		}
 
-		private static void Archive(string logFile, string entryName) {
-			var time = File.GetCreationTime(logFile);
-			int n = 1;
+		private static IEnumerable<string> GetLogs()
+		{
+			try {
+				return Directory.GetFiles(Logging.LogDir, "*.zip").AsEnumerable();
+			}
+			catch (Exception e) {
+				// Intermediate problem, try logging
+				Logging.tML.Error(e);
+			}
+			return new string[0];
+		}
 
-			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-			var existingLogs = Directory.GetFiles(Logging.LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
-			if (existingLogs.Count > 0)
-				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
+		private static IEnumerable<string> GetOldLogs()
+		{
+			try {
+				return Directory.GetFiles(Logging.LogDir, "*.old*").AsEnumerable();
+			}
+			catch (Exception e) {
+				// Intermediate problem, try logging
+				Logging.tML.Error(e);
+			}
+			return new string[0];
+		}
 
-			using (var zip = new ZipFile(Path.Combine(Logging.LogDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
-				using (var stream = File.OpenRead(logFile)) {
-					zip.AddEntry(entryName, stream);
-					zip.Save();
+		private static void SetupLogDirs()
+		{
+			try {
+				Directory.CreateDirectory(Logging.LogArchiveDir);
+			}
+			catch (Exception e) {
+				// Intermediate issues, try logging
+				Logging.tML.Error(e);
+				return;
+			}
+		}
+
+		private static void MoveOldLogs()
+		{
+			foreach (string log in GetLogs()) {
+				try {
+					File.Move(log, Path.Combine(Logging.LogArchiveDir, Path.GetFileName(log)));
+				}
+				catch (Exception e) {
+					Logging.tML.Error(e);
 				}
 			}
 
-			File.Delete(logFile);
+			foreach (string log in GetOldLogs()) {
+				Archive(log, Path.GetFileNameWithoutExtension(log));
+			}
 		}
 
-		private const int MAX_LOGS = 20;
-		private static void DeleteOldArchives() {
-			var pattern = new Regex(".*\\.zip");
-			var existingLogs = Directory.GetFiles(Logging.LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).OrderBy(File.GetCreationTime).ToList();
-			foreach (var f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
+		private static void Archive(string logFile, string entryName)
+		{
+
+			DateTime time;
+			try {
+				time = File.GetCreationTime(logFile);
+			}
+			catch (Exception e) {
+				Logging.tML.Error(e);
+				return;
+			}
+			int n = 1;
+
+			var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
+			string[] existingLogs = new string[0];
+			try {
+				existingLogs = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToArray();
+			}
+			catch (Exception e) {
+				Logging.tML.Error(e);
+				return;
+			}
+
+			if (existingLogs.Length > 0)
+				n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
+
+			try {
+				using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
+					using (var stream = File.OpenRead(logFile)) {
+						zip.AddEntry(entryName, stream);
+						zip.Save();
+					}
+				}
+
+				File.Delete(logFile);
+			}
+			catch (Exception e) {
+				// Problem either in File.OpenRead, zip.Save or File.Delete IO ops
+				Logging.tML.Error(e);
+			}
+		}
+
+		private static void DeleteOldArchives()
+		{
+			var existingLogs = GetLogs().OrderBy(File.GetCreationTime).ToList();
+
+			foreach (string f in existingLogs.Take(existingLogs.Count - MAX_LOGS)) {
 				try {
 					File.Delete(f);
 				}
-				catch (IOException) { }
+				catch (Exception e) {
+					Logging.tML.Error(e);
+				}
 			}
 		}
 	}

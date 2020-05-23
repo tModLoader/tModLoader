@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Localization\LanguageManager.cs
-+++ src/tModLoader\Terraria.Localization\LanguageManager.cs
+--- src/Terraria/Terraria.Localization/LanguageManager.cs
++++ src/tModLoader/Terraria.Localization/LanguageManager.cs
 @@ -8,6 +_,7 @@
  using System.Reflection;
  using System.Text.RegularExpressions;
@@ -17,33 +17,29 @@
  		private Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.English;
  
-@@ -80,6 +_,10 @@
- 				this.LoadLanguage(this._fallbackCulture);
+@@ -67,6 +_,9 @@
+ 				}
+ 
+ 				LoadLanguage(culture);
++				if (ActiveCulture != null)
++					ModContent.RefreshModLanguage(culture);
++
+ 				ActiveCulture = culture;
+ 				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 				Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+@@ -111,10 +_,13 @@
  			}
- 			this.LoadLanguage(culture);
-+			if (this.ActiveCulture != null)
-+			{
-+				ModContent.RefreshModLanguage(culture);
-+			}
- 			this.ActiveCulture = culture;
- 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
- 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -140,12 +_,14 @@
- 			return result;
  		}
  
--		private void ProcessCopyCommandsInTexts()
--		{
+-		private void ProcessCopyCommandsInTexts() {
++		internal void ProcessCopyCommandsInTexts() {
 -			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-+		internal void ProcessCopyCommandsInTexts()
-+		{
 +			Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
- 			foreach (KeyValuePair<string, LocalizedText> current in this._localizedTexts)
- 			{
- 				LocalizedText value = current.Value;
+ 			foreach (KeyValuePair<string, LocalizedText> localizedText in _localizedTexts) {
+ 				LocalizedText value = localizedText.Value;
 +				if (value.Value == null)
 +					continue;
- 				for (int i = 0; i < 100; i++)
- 				{
- 					string text = regex.Replace(value.Value, (Match match) => this.GetTextValue(match.Groups[1].ToString()));
-
++
+ 				for (int i = 0; i < 100; i++) {
+ 					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
+ 					if (text == value.Value)

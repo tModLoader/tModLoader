@@ -1,33 +1,27 @@
---- src/Terraria\Terraria.GameContent.Liquid\LiquidRenderer.cs
-+++ src/tModLoader\Terraria.GameContent.Liquid\LiquidRenderer.cs
-@@ -65,8 +_,8 @@
- 		private static readonly byte[] WAVE_MASK_STRENGTH;
- 		private static readonly byte[] VISCOSITY_MASK;
- 		public static LiquidRenderer Instance;
--		private Tile[,] _tiles = Main.tile;
--		private Texture2D[] _liquidTextures = new Texture2D[12];
-+		//private Tile[,] _tiles = Main.tile;
-+		public Texture2D[] _liquidTextures = new Texture2D[12];
- 		private LiquidRenderer.LiquidCache[] _cache = new LiquidRenderer.LiquidCache[1];
- 		private LiquidRenderer.LiquidDrawCache[] _drawCache = new LiquidRenderer.LiquidDrawCache[1];
- 		private int _animationFrame;
-@@ -110,7 +_,7 @@
- 				{
- 					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++)
- 					{
--						Tile tile = this._tiles[i, j];
-+						Tile tile = Main.tile[i, j];
- 						if (tile == null)
- 						{
- 							tile = new Tile();
-@@ -659,7 +_,9 @@
- 			array2[1] = 200;
- 			array2[2] = 240;
- 			LiquidRenderer.VISCOSITY_MASK = array2;
-+#if SERVER //client initialization has been moved to LoadContent to prevent FNA deadlocks
- 			LiquidRenderer.Instance = new LiquidRenderer();
+--- src/Terraria/Terraria.GameContent.Liquid/LiquidRenderer.cs
++++ src/tModLoader/Terraria.GameContent.Liquid/LiquidRenderer.cs
+@@ -74,9 +_,13 @@
+ 			0
+ 		};
+ 		public const float MIN_LIQUID_SIZE = 0.25f;
++#if SERVER
+ 		public static LiquidRenderer Instance = new LiquidRenderer();
++#else //client initialization has been moved to LoadContent to prevent FNA deadlocks
++		public static LiquidRenderer Instance;
 +#endif
- 		}
- 	}
- }
-
+-		private Tile[,] _tiles = Main.tile;
++		//private Tile[,] _tiles = Main.tile;
+-		private Texture2D[] _liquidTextures = new Texture2D[12];
++		public Texture2D[] _liquidTextures = new Texture2D[12];
+ 		private LiquidCache[] _cache = new LiquidCache[1];
+ 		private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
+ 		private int _animationFrame;
+@@ -112,7 +_,7 @@
+ 				ptr2 = ptr;
+ 				for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++) {
+ 					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++) {
+-						tile = _tiles[i, j];
++						tile = Main.tile[i, j];
+ 						if (tile == null)
+ 							tile = new Tile();
+ 

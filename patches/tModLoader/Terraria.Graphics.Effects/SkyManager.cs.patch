@@ -1,20 +1,15 @@
---- src/Terraria\Terraria.Graphics.Effects\SkyManager.cs
-+++ src/tModLoader\Terraria.Graphics.Effects\SkyManager.cs
-@@ -98,5 +_,16 @@
- 			}
+--- src/Terraria/Terraria.Graphics.Effects/SkyManager.cs
++++ src/tModLoader/Terraria.Graphics.Effects/SkyManager.cs
+@@ -82,5 +_,12 @@
+ 
  			return MathHelper.Clamp(num, 0f, 1f);
  		}
 +
-+		internal void DeactivateAll()
-+		{
-+			foreach (string key in this._effects.Keys)
-+			{
++		internal void DeactivateAll() {
++			foreach (string key in _effects.Keys) {
 +				if (this[key].IsActive())
-+				{
 +					this[key].Deactivate(new object[0]);
-+				}
 +			}
 +		}
  	}
  }
-

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.GameContent.UI.States\UIWorldSelect.cs
-+++ src/tModLoader\Terraria.GameContent.UI.States\UIWorldSelect.cs
+--- src/Terraria/Terraria.GameContent.UI.States/UIWorldSelect.cs
++++ src/tModLoader/Terraria.GameContent.UI.States/UIWorldSelect.cs
 @@ -2,7 +_,9 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
@@ -16,18 +16,17 @@
  		private bool skipDraw;
 +		private static bool _currentlyMigratingFiles;
  
- 		public override void OnInitialize()
- 		{
-@@ -132,6 +_,51 @@
- 			{
- 				this._worldList.Add(new UIWorldListItem(current, num++));
- 			}
+ 		public override void OnInitialize() {
+ 			UIElement uIElement = new UIElement();
+@@ -115,6 +_,49 @@
+ 			int num = 0;
+ 			foreach (WorldFileData item in list) {
+ 				_worldList.Add(new UIWorldListItem(item, num++));
++			}
 +
-+			if (list.Count == 0)
-+			{
++			if (list.Count == 0) {
 +				string vanillaWorldsPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Worlds");
-+				if (Directory.Exists(vanillaWorldsPath) && Directory.GetFiles(vanillaWorldsPath, "*.wld").Any())
-+				{
++				if (Directory.Exists(vanillaWorldsPath) && Directory.GetFiles(vanillaWorldsPath, "*.wld").Any()) {
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);
 +					autoMigrateButton.Height.Set(50, 0);
@@ -52,22 +51,20 @@
 +							}, TaskCreationOptions.PreferFairness);
 +						}
 +					};
++
 +					autoMigrateButton.Append(migrateText);
 +					_worldList.Add(autoMigrateButton);
-+
 +					var noWorldsMessage = new UIText(Language.GetText("tModLoader.MigrateWorldsMessage"));
 +					noWorldsMessage.Width.Set(0, 1);
 +					noWorldsMessage.Height.Set(300, 0);
 +					noWorldsMessage.MarginTop = 20f;
-+					noWorldsMessage.OnClick += (a, b) =>
-+					{
-+						System.Diagnostics.Process.Start(Main.WorldPath);
-+						System.Diagnostics.Process.Start(vanillaWorldsPath);
++					noWorldsMessage.OnClick += (a, b) => {
++						Utils.OpenFolder(Main.WorldPath);
++						Utils.OpenFolder(vanillaWorldsPath);
 +					};
++
 +					_worldList.Add(noWorldsMessage);
 +				}
-+			}
+ 			}
  		}
  
- 		public override void Draw(SpriteBatch spriteBatch)
-

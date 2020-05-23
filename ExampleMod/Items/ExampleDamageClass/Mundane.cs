@@ -49,7 +49,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 			item.damage = 20;
 			item.crit = 20;
 			item.knockBack = 2;
-			item.rare = 10;
+			item.rare = ItemRarityID.Red;
 		}
 
 		public override void GetWeaponCrit(Player player, ref int crit)

@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.Map\WorldMap.cs
-+++ src/tModLoader\Terraria.Map\WorldMap.cs
+--- src/Terraria/Terraria.Map/WorldMap.cs
++++ src/tModLoader/Terraria.Map/WorldMap.cs
 @@ -1,6 +_,7 @@
  using System;
  using System.IO;
@@ -8,29 +8,19 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -103,6 +_,7 @@
- 			if (!FileUtilities.Exists(text, isCloudSave))
- 			{
+@@ -74,6 +_,7 @@
+ 
+ 			if (!FileUtilities.Exists(text, isCloudSave)) {
  				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
-+                //patch file: text
++				//patch file: text
  				return;
  			}
- 			using (MemoryStream memoryStream = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave)))
-@@ -112,7 +_,7 @@
- 					try
- 					{
- 						int num = binaryReader.ReadInt32();
--						if (num <= 193)
-+						if (num <= 194)
- 						{
- 							if (num <= 91)
- 							{
-@@ -122,6 +_,7 @@
- 							{
+ 
+@@ -87,6 +_,7 @@
+ 							else
  								MapHelper.LoadMapVersion2(binaryReader, num);
- 							}
+ 
 +							MapIO.ReadModFile(text, isCloudSave);
  							Main.clearMap = true;
  							Main.loadMap = true;
  							Main.loadMapLock = true;
-

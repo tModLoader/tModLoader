@@ -24,7 +24,7 @@ namespace ExampleMod.Items
 			item.width = 20;
 			item.height = 20;
 			item.value = 100;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 		}
 
 		public override Color? GetAlpha(Color lightColor) {

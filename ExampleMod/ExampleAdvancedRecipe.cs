@@ -64,7 +64,7 @@ namespace ExampleMod
 		public override void SetDefaults() {
 			item.width = 26;
 			item.height = 26;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 		}
 
 		//Using our custom recipe type
