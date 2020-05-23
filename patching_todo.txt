@@ -40,3 +40,9 @@
 			
 		//Check for this in IsContainer:
 			TileLoader.IsDresser(tile.type)
+
+//Rartrin
+	//Projectile.FishingCheck
+		//Make PlayerHooks.CatchFish and other related hooks use the new FishingAttempt struct.
+		//Move PlayerHooks.CatchFish and fishing related hooks to be each of the FishingCheck submethods.
+		

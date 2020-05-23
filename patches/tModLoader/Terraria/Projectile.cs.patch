@@ -337,18 +337,6 @@
  			}
  
  			if (true) {
-@@ -10048,9 +_,11 @@
- 				while (Main.tile[j, num5].liquid > 0 && !WorldGen.SolidTile(j, num5) && num5 < Main.maxTilesY - 10) {
- 					num4++;
- 					num5++;
-+					//patch file: flag, num4
- 					if (Main.tile[j, num5].lava())
- 						flag = true;
- 					else if (Main.tile[j, num5].honey())
-+						//patch file: flag2
- 						flag2 = true;
- 				}
- 			}
 @@ -10161,9 +_,14 @@
  				}
  			}
@@ -375,16 +363,6 @@
  			if (myRect.Intersects(targetRect))
  				return true;
  
-@@ -10356,6 +_,9 @@
- 						return 0.31f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.03f;
- 					case "Random":
- 						return Main.rand.NextFloat();
-+					case "bluemagic123":
-+					case "blushiemagic":
-+						return 0.55f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.1f;
- 				}
- 			}
- 
 @@ -11388,6 +_,9 @@
  						if (num73 > (float)num74)
  							this.ai[0] = 1f;
@@ -395,22 +373,6 @@
  
  					Vector2 value4 = base.Center - new Vector2(5f);
  					Vector2 value5 = base.Center + new Vector2(5f);
-@@ -11453,6 +_,7 @@
- 									if (type >= 646 && type <= 649)
- 										num85 = 4;
- 
-+									ProjectileLoader.NumGrappleHooks(this, Main.player[owner], ref num85);
- 									for (int num86 = 0; num86 < 1000; num86++) {
- 										if (Main.projectile[num86].active && Main.projectile[num86].owner == owner && Main.projectile[num86].aiStyle == 7) {
- 											if (Main.projectile[num86].timeLeft < num83) {
-@@ -11520,6 +_,7 @@
- 					if (type == 332)
- 						num87 = 17f;
- 
-+					ProjectileLoader.GrappleRetreatSpeed(this, Main.player[owner], ref num87);
- 					if (num73 < 24f)
- 						Kill();
- 
 @@ -11584,17 +_,21 @@
  					overrideHeight = 4;
  				}
@@ -473,6 +435,26 @@
 +				fisher.junk = true;
  				return;
  			}
+@@ -13360,7 +_,9 @@
+ 				while (Main.tile[i, num].liquid > 0 && !WorldGen.SolidTile(i, num) && num < Main.maxTilesY - 10) {
+ 					numWaters++;
+ 					num++;
++					//patch file: flag, num4
+ 					if (Main.tile[i, num].lava())
+ 						lava = true;
+ 					else if (Main.tile[i, num].honey())
++						//patch file: flag2
+ 						honey = true;
+@@ -13712,6 +_,9 @@
+ 						return 0.77f;
+ 					case "Random":
+ 						return Main.rand.NextFloat();
++					case "bluemagic123":
++					case "blushiemagic":
++						return 0.55f + (float)Math.Cos(Main.time / 120.0 * 6.2831854820251465) * 0.1f;
+ 				}
+ 			}
+ 
 @@ -13862,6 +_,10 @@
  		}
  
@@ -484,131 +466,47 @@
  			if (aiStyle == 1) {
  				AI_001();
  			}
-@@ -19991,7 +_,7 @@
+@@ -26786,6 +_,6 @@
+-							if (!flag || player.CheckMana(player.inventory[player.selectedItem].mana, pay: true)) {
++							if (!flag || player.CheckMana(player.inventory[player.selectedItem], pay: true)) {
+ 								int num = damage;
+ 								position = base.Center;
+ 								int num2 = 0;
+ 								float num3 = 0f;
+ 								_medusaHeadTargetList.Clear();
+@@ -31643,6 +_,7 @@
+ 							if (type >= 646 && type <= 649)
+ 								num17 = 4;
  
- 					if (Main.myPlayer == owner) {
- 						bool flag42 = false;
--						flag42 = (!flag40 || player6.CheckMana(player6.inventory[player6.selectedItem].mana, pay: true));
-+						flag42 = (!flag40 || player6.CheckMana(player6.inventory[player6.selectedItem], pay: true));
- 						bool flag43 = player6.channel && flag42;
- 						if ((!flag41 && !flag43) || this.ai[0] == 180f) {
- 							Vector2 vector80 = player6.Center + new Vector2(player6.direction * 4, player6.gravDir * 2f);
-@@ -23272,7 +_,7 @@
- 					Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
- 					Rectangle value = new Rectangle((int)Main.player[owner].position.X, (int)Main.player[owner].position.Y, Main.player[owner].width, Main.player[owner].height);
- 					if (rectangle.Intersects(value)) {
--						if (ai[1] > 0f && ai[1] < 3930f) {
-+						if (ai[1] > 0f) {
- 							int num7 = (int)ai[1];
- 							Item item = new Item();
- 							item.SetDefaults(num7);
-@@ -23314,6 +_,7 @@
- 								int num13 = item.stack = Main.rand.Next(minValue2, num12 + 1);
- 							}
++							ProjectileLoader.NumGrappleHooks(this, Main.player[owner], ref num17);
+ 							for (int num18 = 0; num18 < 1000; num18++) {
+ 								if (Main.projectile[num18].active && Main.projectile[num18].owner == owner && Main.projectile[num18].aiStyle == 7) {
+ 									if (Main.projectile[num18].timeLeft < num16) {
+@@ -31720,6 +_,7 @@
+ 				if (type == 332)
+ 					num19 = 17f;
  
-+							ItemLoader.CaughtFishStack(item);
- 							item.newAndShiny = true;
- 							if (Main.player[owner].GetItem(owner, item).stack > 0) {
- 								int number = Item.NewItem((int)position.X, (int)position.Y, width, height, num7, 1, noBroadcast: false, 0, noGrabDelay: true);
-@@ -29788,7 +_,7 @@
++				ProjectileLoader.GrappleRetreatSpeed(this, Main.player[owner], ref num19);
+ 				if (num3 < 24f)
+ 					Kill();
+ 
+@@ -32649,6 +_,7 @@
+ 				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
+ 			}
+ 
++			ItemLoader.CaughtFishStack(item);
+ 			item.newAndShiny = true;
+ 			if (thePlayer.GetItem(owner, item, default(GetItemSettings)).stack > 0) {
+ 				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, itemType, 1, noBroadcast: false, 0, noGrabDelay: true);
+@@ -41049,7 +_,7 @@
  				}
  
  				if (flag && Main.myPlayer == owner) {
 -					if (player.channel && player.CheckMana(player.inventory[player.selectedItem].mana, pay: true) && !player.noItems && !player.CCed) {
 +					if (player.channel && player.CheckMana(player.inventory[player.selectedItem], pay: true) && !player.noItems && !player.CCed) {
- 						float num6 = player.inventory[player.selectedItem].shootSpeed * scale;
+ 						float num8 = player.inventory[player.selectedItem].shootSpeed * scale;
  						Vector2 value2 = vector;
  						Vector2 value3 = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY) - value2;
-@@ -30093,7 +_,7 @@
- 
- 				if (flag8 && Main.myPlayer == owner) {
- 					bool flag9 = false;
--					flag9 = (!flag7 || player.CheckMana(player.inventory[player.selectedItem].mana, pay: true));
-+					flag9 = (!flag7 || player.CheckMana(player.inventory[player.selectedItem], pay: true));
- 					if (player.channel && flag9 && !player.noItems && !player.CCed) {
- 						if (ai[0] == 1f) {
- 							Vector2 center2 = base.Center;
-@@ -30870,6 +_,11 @@
- 			num10 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
- 			num8 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
- 			num7 = 14f - num8 / 2f;
-+			// Yoyos with effective top speed (boosted by melee speed) num8 > 26 will set num11 to be less than 1.
-+			// This breaks the AI's acceleration vector math and stops the velocity from being correctly capped every frame.
-+			// Providing a minimum value of 1.01 to num11 fixes this, allowing for very fast modded yoyos.
-+			// See issue #751 for more details.
-+			if (num7 < 1.01f) num7 = 1.01f;
- 			num9 = 5f + num8 / 2f;
- 			if (flag)
- 				num9 += 20f;
-@@ -31441,7 +_,7 @@
- 					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
- 						continue;
- 
--					int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
-+					int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j);
- 					for (int k = 0; k < num4; k++) {
- 						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
- 						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -31928,7 +_,7 @@
- 						if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
- 							continue;
- 
--						int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely) * 6;
-+						int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j) * 6;
- 						for (int k = 0; k < num2; k++) {
- 							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
- 							obj.velocity.Y -= 3f + (float)num * 1.5f;
-@@ -32452,6 +_,11 @@
- 			Main.projectileIdentity[owner, identity] = -1;
- 			int num = timeLeft;
- 			timeLeft = 0;
-+			if (!ProjectileLoader.PreKill(this, num)) {
-+				active = false;
-+				return;
-+			}
-+
- 			if (type == 686) {
- 				Main.PlayTrackedSound(SoundID.DD2_BetsyFireballImpact, base.Center);
- 			}
-@@ -37345,9 +_,13 @@
- 								if (Main.tileDungeon[Main.tile[num822, num823].type] || Main.tile[num822, num823].type == 88 || TileID.Sets.BasicChest[Main.tile[num822, num823].type] || Main.tile[num822, num823].type == 26 || Main.tile[num822, num823].type == 107 || Main.tile[num822, num823].type == 108 || Main.tile[num822, num823].type == 111 || Main.tile[num822, num823].type == 226 || Main.tile[num822, num823].type == 237 || Main.tile[num822, num823].type == 221 || Main.tile[num822, num823].type == 222 || Main.tile[num822, num823].type == 223 || Main.tile[num822, num823].type == 211 || Main.tile[num822, num823].type == 404)
- 									flag4 = false;
- 
-+								//patch file: num822, num823
- 								if (!Main.hardMode && Main.tile[num822, num823].type == 58)
- 									flag4 = false;
- 
-+								if (!TileLoader.CanExplode(num822, num823))
-+									flag4 = false;
-+
- 								if (flag4) {
- 									WorldGen.KillTile(num822, num823);
- 									if (!Main.tile[num822, num823].active() && Main.netMode != 0)
-@@ -37360,7 +_,7 @@
- 
- 							for (int num827 = num822 - 1; num827 <= num822 + 1; num827++) {
- 								for (int num828 = num823 - 1; num828 <= num823 + 1; num828++) {
--									if (Main.tile[num827, num828] != null && Main.tile[num827, num828].wall > 0 && flag3) {
-+									if (Main.tile[num827, num828] != null && Main.tile[num827, num828].wall > 0 && flag3 && WallLoader.CanExplode(num827, num828, Main.tile[num827, num828].wall)) {
- 										WorldGen.KillWall(num827, num828);
- 										if (Main.tile[num827, num828].wall == 0 && Main.netMode != 0)
- 											NetMessage.SendData(17, -1, -1, null, 2, num827, num828);
-@@ -37636,10 +_,15 @@
- 				}
- 			}
- 
-+			ProjectileLoader.Kill(this, num);
- 			active = false;
- 		}
- 
- 		public Color GetAlpha(Color newColor) {
-+			Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
-+			if (modColor.HasValue)
-+				return modColor.Value;
-+
- 			if (type == 270)
- 				return new Color(255, 255, 255, Main.rand.Next(0, 255));
- 
 @@ -41286,7 +_,7 @@
  
  				if (flag5 && Main.myPlayer == owner) {
@@ -618,3 +516,98 @@
  					if (player.channel && flag6 && !player.noItems && !player.CCed) {
  						if (ai[0] == 180f) {
  							Vector2 center = base.Center;
+@@ -41398,7 +_,7 @@
+ 
+ 				if (flag9 && Main.myPlayer == owner) {
+ 					bool flag10 = false;
+-					flag10 = (!flag8 || player.CheckMana(player.inventory[player.selectedItem].mana, pay: true));
++					flag10 = (!flag8 || player.CheckMana(player.inventory[player.selectedItem], pay: true));
+ 					if (player.channel && flag10 && !player.noItems && !player.CCed) {
+ 						if (ai[0] == 1f) {
+ 							Vector2 center2 = base.Center;
+@@ -42403,9 +_,14 @@
+ 			num10 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
+ 			num8 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
+ 			num7 = 14f - num8 / 2f;
+ 			if (num7 < 1f)
+ 				num7 = 1f;
+ 
++			// Yoyos with effective top speed (boosted by melee speed) num8 > 26 will set num11 to be less than 1.
++			// This breaks the AI's acceleration vector math and stops the velocity from being correctly capped every frame.
++			// Providing a minimum value of 1.01 to num11 fixes this, allowing for very fast modded yoyos.
++			// See issue #751 for more details.
++			if (num7 < 1.01f) num7 = 1.01f;
+ 			num9 = 5f + num8 / 2f;
+ 			if (flag)
+ 				num9 += 20f;
+@@ -42987,7 +_,7 @@
+ 					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
+ 						continue;
+ 
+-					int num5 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++					int num5 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j);
+ 					for (int k = 0; k < num5; k++) {
+ 						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 						obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -43519,7 +_,7 @@
+ 					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
+ 						continue;
+ 
+-					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely) * dustAmountMultiplier;
++					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j) * dustAmountMultiplier;
+ 					for (int k = 0; k < num2; k++) {
+ 						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 						obj.velocity.Y -= 3f + (float)num * 1.5f;
+@@ -44144,5 +_,10 @@
+ 			Main.projectileIdentity[owner, identity] = -1;
+ 			int num = timeLeft;
+ 			timeLeft = 0;
+ 			ParticleOrchestraSettings settings;
++			if (!ProjectileLoader.PreKill(this, num)) {
++				active = false;
++				return;
++			}
++
+ 			if (type == 756) {
+@@ -44939,7 +_,7 @@
+ 			if (Main.myPlayer == owner && bobber) {
+ 				PopupText.ClearSonarText();
+-				if (ai[1] > 0f && ai[1] < 5043f)
++				if (ai[1] > 0f)
+ 					AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
+ 
+ 				ai[1] = 0f;
+ 			}
+@@ -50478,5 +_,6 @@
+ 				}
+ 			}
+ 
++			ProjectileLoader.Kill(this, num);
+ 			active = false;
+ 		}
+@@ -50544,4 +_,7 @@
+ 			if (Main.tileDungeon[Main.tile[x, y].type] || TileID.Sets.BasicChest[Main.tile[x, y].type])
+ 				return false;
++
++			if (!TileLoader.CanExplode(x, y))
++				return false;
+ 
+ 			switch (Main.tile[x, y].type) {
+@@ -50602,7 +_,7 @@
+ 
+ 					for (int k = i - 1; k <= i + 1; k++) {
+ 						for (int l = j - 1; l <= j + 1; l++) {
+-							if (Main.tile[k, l] != null && Main.tile[k, l].wall > 0 && wallSplode) {
++							if (Main.tile[k, l] != null && Main.tile[k, l].wall > 0 && wallSplode && WallLoader.CanExplode(k, l, Main.tile[k, l].wall)) {
+ 								WorldGen.KillWall(k, l);
+ 								if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
+ 									NetMessage.SendData(17, -1, -1, null, 2, k, l);
+@@ -50668,4 +_,8 @@
+ 		public Color GetAlpha(Color newColor) {
++			Color? modColor = ProjectileLoader.GetAlpha(this, newColor);
++			if (modColor.HasValue)
++				return modColor.Value;
++
+ 			if (type == 937)
+ 				newColor.A = (byte)((float)(int)newColor.A * 0.75f);
+ 
