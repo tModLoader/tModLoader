@@ -1,11 +1,42 @@
 //Mirsario:
-	//Re-add TileLoader.NearbyEffects calls (perhaps multiple) to somewhere in SceneMetrics
-	
-	//Re-add this MusicBox logic, to somewhere in SceneMetrics:
+	//Lighting:
+		//Re-add TileLoader.NearbyEffects calls (perhaps multiple) to somewhere in SceneMetrics
+		
+		//Re-add this MusicBox logic, to somewhere in SceneMetrics:
 			if (TileLoader.IsModMusicBox(tile) && tile.frameX >= 36)
 				Main.musicBox = SoundLoader.tileToMusic[tile.type][tile.frameY / 36 * 36];
-	
-	//Call this at the end of SceneMetrics.ScanAndExportToMain:
+		
+		//Call this at the end of SceneMetrics.ScanAndExportToMain:
 			WorldHooks.TileCountsAvailable(_tileCounts);
-	
-	//Resize the arrays that ScreenMetrics.UpdateOreFinderData uses.
+		
+		//Resize the arrays that ScreenMetrics.UpdateOreFinderData uses.
+
+	//WorldGen:
+		//Call this before `AddGenerationPass("Reset"` in WorldGen:
+			WorldHooks.PreWorldGen();
+		
+		//Re-add progress message details in "Micro Biomes" generation pass with messages like this:
+			progress.Message = Lang.gen[76] + "..Enchanted Swords";
+		
+		//Add TileLoader.CanGrowModTree check to WorldGen.IsTileTypeFitForTree
+		
+		//Add this to i<5 for loop in TreeGrowFXCheck:
+			TileLoader.TreeGrowthFXGore(tile2.type, ref passStyle);
+				if (passStyle > 0)
+					break;
+
+			TileLoader.PalmTreeGrowthFXGore(tile2.type, ref passStyle);
+				if (passStyle > 0)
+					break;
+				
+		//Add this to TileID.Sets.CommonSapling check in EmptyTileCheck
+			|| TileLoader.IsSapling(Main.tile[i, j].type)
+			
+		//Use this in IsLockedDoor:
+			TileLoader.OpenDoorID(Main.tile[i, j]) < 0
+			
+		//Call this in KillTile_GetTileDustAmount:
+			TileLoader.NumDust(i, j, tileCache.type, fail, ref result);
+			
+		//Check for this in IsContainer:
+			TileLoader.IsDresser(tile.type)
