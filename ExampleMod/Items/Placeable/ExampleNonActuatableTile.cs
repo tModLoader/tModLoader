@@ -9,8 +9,13 @@ namespace ExampleMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
+<<<<<<< HEAD:ExampleMod/Items/Placeable/ExampleNonActuatableTile.cs
 			DisplayName.SetDefault("Example Non-Actuatable Tile");
 			Tooltip.SetDefault("This is block cannot be actuated.");
+=======
+			DisplayName.SetDefault("Example Non-Actuable Tile");
+			Tooltip.SetDefault("This block cannot be actuated.");
+>>>>>>> NewCanActuate:ExampleMod/Items/Placeable/ExampleNotActuableTile.cs
 		}
 
 		public override void SetDefaults() {
