@@ -40,6 +40,67 @@
 			
 		//Check for this in IsContainer:
 			TileLoader.IsDresser(tile.type)
+			
+		//Check for this somewhere at KillTile_GetTreeDrops
+			TileLoader.CanDropAcorn(Main.tile[i, m].type)
+			
+		//Call this somewhere at KillTile_GetTreeDrops
+			TileLoader.DropPalmTreeWood(Main.tile[i, num31].type, ref num23);
+			
+		//Remove this check in PlaceTile and PlaceObject:
+			(num >= 623)
+			
+		//Re-add all needed TileLoader.Drop(x,y,type) checks. They're usually needed before 'destroyObject = false' lines.
+		
+		//Re-add these calls to UpdateWorld
+			TileLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].type);
+			WallLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].wall);
+		
+		//Add this call to UpdateWorld() after the gen check.
+			WorldHooks.PreUpdate();
+		
+		//Add this call to end of UpdateWorld():
+			WorldHooks.PostUpdate();
+		
+		//Add this patch to UpdateWorld():
+			-float num6 = Main.maxTilesX / 4200;
+			+float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
+			
+		//Add the following in front of this > https://i.imgur.com/hA0mqt7.png < place:
+			case int _ when TileLoader.IsDresser(type):
+			
+		//Reimplement these unsorted broken patches:
+			//
+		   |					num23 = 2504;
+		   |				}
+		   |
+		   |-				if (num23 > 0) {
+		   |+				bool vanillaDrop = TileLoader.Drop(i, j, tile.type);
+		   |+				if (vanillaDrop && num23 > 0) {
+		   |					int num41 = 1;
+		   |					if (flag)
+		   |						num41++;
+		   |			//B
+		   |			SquareTileFrame(i, j);
+		   |		}
+		   |
+			
+		   |-		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
+		   |+		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache, int i, int j) {
+		   |			int result = 10;
+		   |			if (tileCache.type == 231)
+		   |				result = 6;
+		   |			//C
+		   |			if (type == 178 || (uint)(type - 426) <= 1u || (uint)(type - 430) <= 10u)
+		   |				flag = true;
+		   |
+
+		   |-			if (num >= 0) {
+		   |+			if (TileLoader.CreateDust(i, j, tileCache.type, ref num) && num >= 0) { // TODO, fix
+		   |				if (tileCache.type == 352 && num == 5) {
+		   |					int num15 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 5, 0f, 0f, 100);
+		   |					Main.dust[num15].scale = 1.5f;
+					
 
 //Rartrin
 	//Projectile.FishingCheck
