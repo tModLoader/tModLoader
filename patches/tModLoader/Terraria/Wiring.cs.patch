@@ -55,7 +55,7 @@
  		public static bool Actuate(int i, int j) {
  			Tile tile = Main.tile[i, j];
 -			if (!tile.actuator())
-+			if (!tile.actuator() || !TileLoader.CanActuate(tile))
++			if (!TileLoader.CanActuate(tile) || !tile.actuator())
  				return false;
 -
  			if ((tile.type != 226 || !((double)j > Main.worldSurface) || NPC.downedPlantBoss) && (!((double)j > Main.worldSurface) || NPC.downedGolemBoss || Main.tile[i, j - 1].type != 237)) {

@@ -598,6 +598,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Return false to stop this Tile from being actuated, even when forced to do so without an actuator. Returns true by default.
 		/// </summary>
-		public virtual bool CanActuateForcibly(int type) => true;
+		public virtual bool CanActuateForcibly(int type) => CanActuate(type);
 	}
 }

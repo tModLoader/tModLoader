@@ -1068,7 +1068,7 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
-			return GetTile(tile.type)?.CanActuateForcibly(tile.type) ?? GetTile(tile.type)?.CanActuate(tile.type) ?? true;
+			return GetTile(tile.type)?.CanActuateForcibly(tile.type) ?? true;
 		}
 	}
 }
