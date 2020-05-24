@@ -832,6 +832,16 @@
  				Item.NewItem(i * 16, j * 16, 32, 32, num13);
  
  			if (type == 138 && !gen && Main.netMode != 1)
+@@ -28880,6 +_,9 @@
+ 		}
+ 
+ 		public static bool IsAContainer(Tile t) {
++			if (TileLoader.IsDresser(t.type))
++				return true;
++
+ 			if (t.type != 88 && t.type != 470 && t.type != 475 && !TileID.Sets.BasicChest[t.type])
+ 				return TileID.Sets.BasicChestFake[t.type];
+ 
 @@ -28919,7 +_,7 @@
  
  				for (int k = num3; k < num4; k++) {
@@ -976,6 +986,17 @@
  			for (int num7 = num - 1; num7 < num + 3; num7++) {
  				for (int num8 = num2 - 1; num8 < num2 + 3; num8++) {
  					TileFrame(num7, num8);
+@@ -31024,8 +_,8 @@
+ 		}
+ 
+ 		public static bool PlaceObject(int x, int y, int type, bool mute = false, int style = 0, int alternate = 0, int random = -1, int direction = -1) {
+-			if (type >= 623)
+-				return false;
++			//if (type >= 623)
++			//	return false;
+ 
+ 			if (!TileObject.CanPlace(x, y, type, style, direction, out TileObject objectData))
+ 				return false;
 @@ -31199,7 +_,9 @@
  			if (point.Y == 0)
  				type2 = 3239;
@@ -1181,6 +1202,17 @@
  			return num;
  		}
  
+@@ -36594,8 +_,8 @@
+ 			if (gen && Main.tile[i, j].active() && Main.tile[i, j].type == 488)
+ 				return false;
+ 
+-			if (num >= 623)
+-				return false;
++			//if (num >= 623)
++			//	return false;
+ 
+ 			bool result = false;
+ 			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
 @@ -36673,6 +_,7 @@
  									return false;
  								break;
@@ -1198,6 +1230,14 @@
  						if (Main.tile[i - 1, j] == null)
  							Main.tile[i - 1, j] = new Tile();
  
+@@ -37046,6 +_,7 @@
+ 								PlaceOnTable1x1(i, j, num, style);
+ 								SquareTileFrame(i, j);
+ 								break;
++							case int _ when TileLoader.IsDresser(num):
+ 							case 14:
+ 							case 26:
+ 							case 86:
 @@ -37071,12 +_,14 @@
  								PlaceJunglePlant(i, j, (ushort)num, 0, 0);
  								SquareTileFrame(i, j);
@@ -1247,6 +1287,16 @@
  				TileFrame(i, j);
  		}
  
+@@ -37368,6 +_,9 @@
+ 		}
+ 
+ 		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
++			if (!WallLoader.KillSound(i,j,tileCache.wall))
++				return;
++
+ 			if (tileCache.wall == 241 || (tileCache.wall >= 88 && tileCache.wall <= 93) || tileCache.wall == 21 || tileCache.wall == 186 || tileCache.wall == 136 || tileCache.wall == 137 || tileCache.wall == 168 || tileCache.wall == 169 || tileCache.wall == 172 || tileCache.wall == 226 || tileCache.wall == 227 || tileCache.wall == 242 || tileCache.wall == 243)
+ 				SoundEngine.PlaySound(13, i * 16, j * 16);
+ 			else if ((tileCache.wall >= 63 && tileCache.wall <= 70) || tileCache.wall == 264 || tileCache.wall == 268 || tileCache.wall == 265)
 @@ -38503,6 +_,9 @@
  			if (tileCache.wall == 245)
  				num = 195;
@@ -1301,6 +1351,24 @@
  			for (int k = 0; k < num15; k++) {
  				KillTile_MakeTileDust(i, j, tile);
  			}
+@@ -41692,7 +_,7 @@
+ 						}
+ 
+ 						if (Main.tile[i, k] != null) {
+-							if (Main.tile[i, k].type == 2 || Main.tile[i, k].type == 109 || Main.tile[i, k].type == 147 || Main.tile[i, k].type == 199 || Main.tile[i, k].type == 23) {
++							if (Main.tile[i, k].type == 2 || Main.tile[i, k].type == 109 || Main.tile[i, k].type == 147 || Main.tile[i, k].type == 199 || Main.tile[i, k].type == 23 || TileLoader.CanDropAcorn(Main.tile[i,k].type)) {
+ 								dropItem = 9;
+ 								secondaryItem = 27;
+ 							}
+@@ -41739,6 +_,8 @@
+ 						dropItem = 2503;
+ 						break;
+ 				}
++				TileLoader.DropTreeWood(Main.tile[x,y].type,ref dropItem);
++				TileLoader.DropPalmTreeWood(Main.tile[x,y].type,ref dropItem);
+ 			}
+ 
+ 			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);
 @@ -41983,7 +_,14 @@
  			return value;
  		}
@@ -1351,6 +1419,48 @@
  			return false;
  		}
  
+@@ -45343,6 +_,8 @@
+ 			if (gen)
+ 				return;
+ 
++			WorldHooks.PreUpdate();
++
+ 			AllowedToSpreadInfections = true;
+ 			CreativePowers.StopBiomeSpreadPower power = CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>();
+ 			if (power != null && power.GetIsUnlocked())
+@@ -45420,7 +_,7 @@
+ 				return;
+ 
+ 			for (int l = 0; l < Main.dayRate; l++) {
+-				float num6 = Main.maxTilesX / 4200;
++				float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
+ 				num6 *= Star.starfallBoost;
+ 				if (!((float)Main.rand.Next(8000) < 10f * num6))
+ 					continue;
+@@ -45451,6 +_,7 @@
+ 					Projectile.NewProjectile(position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
+ 				}
+ 			}
++			WorldHooks.PostUpdate();
+ 		}
+ 
+ 		public static int GetWorldUpdateRate() {
+@@ -45462,6 +_,7 @@
+ 		}
+ 
+ 		private static void UpdateWorld_OvergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++			WallLoader.RandomUpdate(i,j,Main.tile[i,j].wall);
+ 			int num = i - 1;
+ 			int num2 = i + 2;
+ 			int num3 = j - 1;
+@@ -46031,6 +_,7 @@
+ 		}
+ 
+ 		private static void UpdateWorld_UndergroundTile(int i, int j, bool checkNPCSpawns, int wallDist) {
++			TileLoader.RandomUpdate(i,j,Main.tile[i,j].type);
+ 			int num = i - 1;
+ 			int num2 = i + 2;
+ 			int num3 = j - 1;
 @@ -50959,6 +_,8 @@
  							return false;
  					}

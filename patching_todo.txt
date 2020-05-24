@@ -12,44 +12,10 @@
 		//Resize the arrays that ScreenMetrics.UpdateOreFinderData uses.
 
 	//WorldGen:
-		//Check for this in IsContainer:
-			TileLoader.IsDresser(tile.type)
-			
-		//Check for this somewhere at KillTile_GetTreeDrops
-			TileLoader.CanDropAcorn(Main.tile[i, m].type)
-			
-		//Call this somewhere at KillTile_GetTreeDrops
-			TileLoader.DropPalmTreeWood(Main.tile[i, num31].type, ref num23);
-			
-		//Remove this check in PlaceTile and PlaceObject:
-			(num >= 623)
-			
 		//Re-add all needed TileLoader.Drop(x,y,type) checks. They're usually needed before 'destroyObject = false' lines.
-		
-		//Re-add these calls to UpdateWorld
-			TileLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].type);
-			WallLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].wall);
-		
-		//Add this call to UpdateWorld() after the gen check.
-			WorldHooks.PreUpdate();
-		
-		//Add this call to end of UpdateWorld():
-			WorldHooks.PostUpdate();
 			
-		//Add this call to the end of the if (Main.tile[x, y].active()) check in KillTile_GetTreeDrops():
-			TileLoader.DropTreeWood(Main.tile[num29, n].type, ref dropItem);
-		
-		//Add this patch to UpdateWorld():
-			-float num6 = Main.maxTilesX / 4200;
-			+float num6 = Main.maxTilesX / 4200f; // Selfish fix for falling stars on extra small worlds
-			
-		//Add the following in front of this > https://i.imgur.com/hA0mqt7.png < place:
-			case int _ when TileLoader.IsDresser(type):
-			
-		//Reimplement this call and check in KillWall_PlaySounds:
+		//Reimplement this call:
 			WallLoader.KillWall(i, j, tile.wall, ref fail);
-			
-			if (!WallLoader.KillSound(i, j, tile.wall)) {}
 		
 		//Ensure that KillTile_GetTileDustAmount and its calls all have x,y parameters, to pass to the following call at the bottom of it:
 			TileLoader.NumDust(x, y, tileCache.type, fail, ref result);
