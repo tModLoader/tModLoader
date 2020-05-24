@@ -9,8 +9,7 @@
  #if CLIENT
  using Terraria.Map;
  #endif
-@@ -665,8 +_,14 @@
- 		private static int lAltarY;
+@@ -666,7 +_,13 @@
  		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
  		public static int tileReframeCount;
  		public static bool noMapUpdate;
@@ -150,7 +149,7 @@
  							return;
  						}
  					}
-@@ -2447,5 +_,11 @@
+@@ -2447,6 +_,12 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
  
@@ -162,6 +161,7 @@
 +			Main.OnTick -= FinishPlayWorld;
  			Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  			Main.ActivePlayerFileData.StartPlayTimer();
+ 			_lastSeed = Main.ActiveWorldFileData.Seed;
 @@ -2478,6 +_,7 @@
  		}
  
@@ -170,8 +170,7 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2739,7 +_,8 @@
- 			}
+@@ -2740,6 +_,7 @@
  
  			setWorldSize();
  			Star.SpawnStars();
@@ -204,6 +203,14 @@
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
+@@ -5447,6 +_,7 @@
+ 			int snowOriginRight = 0;
+ 			int logX = -1;
+ 			int logY = -1;
++			WorldHooks.PreWorldGen();
+ 			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				numOceanCaveTreasure = 0;
+ 				skipDesertTileCheck = false;
 @@ -8028,7 +_,7 @@
  								int num541 = genRand.Next(num526 - num534, num526 + num534 + 1);
  								int num542 = genRand.Next(num527 - num535, num527 + num535 - 2);
@@ -222,9 +229,80 @@
  							int num81 = Main.tile[num52, num53].frameX / 18;
  							int num82 = 0;
  							ushort type = 21;
-@@ -11711,12 +_,15 @@
- 				Main.AnglerQuestSwap();
- 				skipFramingDuringGen = false;
+@@ -11266,7 +_,7 @@
+ 			});
+ 
+ 			AddGenerationPass("Micro Biomes", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+-				progress.Message = Lang.gen[76].Value;
++				progress.Message = Lang.gen[76].Value+"..Dead Man's Chests";
+ 				_ = (float)(Main.maxTilesX * Main.maxTilesY) / 5040000f;
+ 				float num27 = 10f;
+ 				if (getGoodWorldGen)
+@@ -11284,6 +_,7 @@
+ 					possibleChestsToTrapify.Remove(num29);
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Thin Ice";
+ 				progress.Set(1f / num27);
+ 				if (!notTheBees) {
+ 					ThinIceBiome thinIceBiome = configuration.CreateBiome<ThinIceBiome>();
+@@ -11295,6 +_,7 @@
+ 					}
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Sword Shrines";
+ 				progress.Set(0.1f);
+ 				progress.Set(2f / num27);
+ 				EnchantedSwordBiome enchantedSwordBiome = configuration.CreateBiome<EnchantedSwordBiome>();
+@@ -11317,6 +_,7 @@
+ 					}
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Campsites";
+ 				progress.Set(0.2f);
+ 				progress.Set(3f / num27);
+ 				if (!notTheBees) {
+@@ -11329,6 +_,7 @@
+ 					}
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Explosive Traps";
+ 				progress.Set(4f / num27);
+ 				if (!notTheBees) {
+ 					MiningExplosivesBiome miningExplosivesBiome = configuration.CreateBiome<MiningExplosivesBiome>();
+@@ -11343,6 +_,7 @@
+ 					}
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Living Trees";
+ 				progress.Set(0.3f);
+ 				progress.Set(5f / num27);
+ 				MahoganyTreeBiome mahoganyTreeBiome = configuration.CreateBiome<MahoganyTreeBiome>();
+@@ -11356,6 +_,7 @@
+ 					num38++;
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Long Minecart Tracks";
+ 				progress.Set(0.4f);
+ 				progress.Set(6f / num27);
+ 				progress.Set(7f / num27);
+@@ -11379,6 +_,7 @@
+ 					}
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Standard Minecart Tracks";
+ 				progress.Set(8f / num27);
+ 				random6 = passConfig.Get<WorldGenRange>("StandardTrackCount").GetRandom(genRand);
+ 				worldGenRange = passConfig.Get<WorldGenRange>("StandardTrackLength");
+@@ -11388,6 +_,7 @@
+ 						num42++;
+ 				}
+ 
++				progress.Message = Lang.gen[76].Value+"..Lava Traps";
+ 				progress.Set(9f / num27);
+ 				if (!notTheBees) {
+ 					double num43 = (double)Main.maxTilesX * 0.02;
+@@ -11713,11 +_,14 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -238,6 +316,7 @@
 +			BackupIO.archiveLock = true;
  		}
  
+ 		private static void NotTheBees() {
 @@ -12360,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;
@@ -273,7 +352,29 @@
  						flag4 = true;
  
  					if (!flag3) {
-@@ -14649,7 +_,7 @@
+@@ -14390,6 +_,14 @@
+ 					continue;
+ 				}
+ 
++				TileLoader.TreeGrowthFXGore(tile2.type,ref passStyle);
++				if(passStyle > 0)
++					break;
++
++				TileLoader.PalmTreeGrowthFXGore(tile2.type,ref passStyle);
++				if(passStyle > 0)
++					break;
++
+ 				GetTreeLeaf(x, topTile, tile2, ref treeHeight, out int _, out passStyle);
+ 				break;
+ 			}
+@@ -14643,13 +_,13 @@
+ 				case 492:
+ 					return true;
+ 				default:
+-					return false;
++					return TileLoader.CanGrowModTree(type);
+ 			}
+ 		}
  
  		public static bool GrowTree(int i, int y) {
  			int j;
@@ -295,6 +396,24 @@
  				flag4 = true;
  
  			if (!flag3) {
+@@ -16034,7 +_,7 @@
+ 				return false;
+ 
+ 			bool flag = false;
+-			if (ignoreID != -1 && TileID.Sets.CommonSapling[ignoreID])
++			if (ignoreID != -1 && (TileID.Sets.CommonSapling[ignoreID] || TileLoader.IsSapling(ignoreID)))
+ 				flag = true;
+ 
+ 			for (int i = startX; i < endX + 1; i++) {
+@@ -16062,7 +_,7 @@
+ 					}
+ 
+ 					if (flag) {
+-						if (TileID.Sets.CommonSapling[Main.tile[i, j].type])
++						if (TileID.Sets.CommonSapling[Main.tile[i, j].type] || TileLoader.IsSapling(Main.tile[i,j].type))
+ 							break;
+ 
+ 						switch (Main.tile[i, j].type) {
 @@ -16105,6 +_,7 @@
  		}
  
@@ -475,8 +594,8 @@
  				}
  			}
  
-+			if (TileLoader.Drop(x, y, TileID.ChristmasTree))
 -			Item.NewItem(x * 16, y * 16, 32, 32, 1873);
++			if (TileLoader.Drop(x, y, TileID.ChristmasTree))
 +				Item.NewItem(x * 16, y * 16, 32, 32, TileID.ChristmasTree);
  			destroyObject = false;
  		}
@@ -577,8 +696,8 @@
  				return;
  
  			destroyObject = true;
-+			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
 -			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
++			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
 +				Item.NewItem(i * 16, j * 16, 48, 48, TileID.WeaponsRack);
  			for (int m = 0; m < 3; m++) {
  				for (int n = 0; n < 3; n++) {
@@ -587,8 +706,8 @@
  				return;
  
  			destroyObject = true;
-+			if (TileLoader.Drop(i, j, TileID.Mannequin))
 -			Item.NewItem(i * 16, j * 16, 32, 32, 498);
++			if (TileLoader.Drop(i, j, TileID.Mannequin))
 +				Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +
  			for (int m = 0; m <= 1; m++) {
@@ -598,8 +717,8 @@
  				return;
  
  			destroyObject = true;
-+			if (TileLoader.Drop(i, j, TileID.Womannequin))
 -			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
++			if (TileLoader.Drop(i, j, TileID.Womannequin))
 +				Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +
  			for (int m = 0; m <= 1; m++) {
@@ -624,8 +743,7 @@
  			switch (type) {
  				case 42: {
  						int type2 = 0;
-@@ -27143,7 +_,8 @@
- 					Item.NewItem(x * 16, num * 16, 32, 32, 4695 + num3);
+@@ -27144,6 +_,7 @@
  					break;
  			}
  
@@ -862,8 +980,8 @@
  			if (point.Y == 0)
  				type2 = 3239;
  
-+			if (TileLoader.Drop(x, y, type))
 -			Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
++			if (TileLoader.Drop(x, y, type))
 +				Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
 +
  			for (int k = x - 1; k < x + num + 1; k++) {
@@ -873,8 +991,8 @@
  			if (point.Y == 0)
  				type2 = 3240;
  
-+			if (TileLoader.Drop(x, y, type))
 -			Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
++			if (TileLoader.Drop(x, y, type))
 +				Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
 +
  			for (int m = x - 1; m < x + width + 1; m++) {
@@ -1107,12 +1225,14 @@
  											default:
  												tile.active(active: true);
  												tile.type = (ushort)num;
-@@ -37340,4 +_,5 @@
+@@ -37340,6 +_,7 @@
  			if (fail)
  				num = 3;
  
 +			WallLoader.NumDust(i, j, tile.wall, fail, ref num);
  			for (int k = 0; k < num; k++) {
+ 				KillWall_MakeWallDust(i, j, tile);
+ 			}
 @@ -37349,11 +_,12 @@
  				return;
  			}
@@ -1172,10 +1292,7 @@
  				int num2 = tile.frameX / 18;
  				int y3 = y - tile.frameY / 18;
  				num2 %= 3;
-@@ -39633,10 +_,10 @@
- 				}
- 			}
- 
+@@ -39636,7 +_,7 @@
  			if ((tile.type == 471 && TEWeaponsRack.KillTileDropItem(tile, i, j)) || (tile.type == 470 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)) || (tile.type == 475 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)))
  				return;
  
@@ -1184,6 +1301,22 @@
  			for (int k = 0; k < num15; k++) {
  				KillTile_MakeTileDust(i, j, tile);
  			}
+@@ -41983,7 +_,14 @@
+ 			return value;
+ 		}
+ 
+-		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
++		public static int KillTile_GetTileDustAmount(bool fail,Tile tileCache,int x,int y) {
++			int result = KillTile_GetTileDustAmount_Vanilla(fail,tileCache);
++
++			TileLoader.NumDust(x,y,tileCache.type,fail,ref result);
++
++			return result;
++		}
++		private static int KillTile_GetTileDustAmount_Vanilla(bool fail, Tile tileCache) {
+ 			switch (tileCache.type) {
+ 				default:
+ 					if (!fail)
 @@ -43019,8 +_,11 @@
  						if (Main.tile[num11, k].active() && Main.tile[num11, k].type == 199)
  							num = 121;
@@ -1208,6 +1341,16 @@
  					}
  				}
  			}
+@@ -43740,6 +_,9 @@
+ 			if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
+ 				return t.frameX < 54;
+ 
++			if (TileLoader.OpenDoorID(t) < 0)
++				return true;
++
+ 			return false;
+ 		}
+ 
 @@ -50959,6 +_,8 @@
  							return false;
  					}
@@ -1360,8 +1503,7 @@
  													if ((double)j > Main.rockLayer)
  														TileMergeAttempt(-2, 1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													TileMergeAttempt(num, TileID.Sets.GrassSpecial, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-@@ -52843,15 +_,11 @@
- 												case 460:
+@@ -52844,14 +_,10 @@
  													TileMergeAttempt(-2, 189, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													TileMergeAttempt(num, 196, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													break;
@@ -1378,8 +1520,7 @@
  													TileMergeAttempt(-2, 147, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  													break;
  												case 162:
-@@ -52953,12 +_,12 @@
- 										else if (TileID.Sets.OreMergesWithMud[num])
+@@ -52954,11 +_,11 @@
  											TileMergeAttempt(num, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
  										bool flag = false;

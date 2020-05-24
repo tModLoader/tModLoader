@@ -195,11 +195,11 @@
  				TargetClosest();
  				if (position.X < Main.player[target].position.X) {
  					base.direction = 1;
-@@ -38020,11 +_,18 @@
- 			int num10 = -1;
+@@ -38021,7 +_,14 @@
  			int num11 = -1;
  			if (!flag6 && Main.netMode != 1 && !flag3) {
  				for (int l = 0; l < 200; l++) {
+-					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type]) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
 +					if (!Main.npc[l].active) continue;
 +					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[l], this);
 +					if (modCanHit.HasValue && !modCanHit.Value)
@@ -207,14 +207,10 @@
 +
 +					bool canHitVal = modCanHit.HasValue && modCanHit.Value;
 +					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
--					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type]) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
-+					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type] && canHitVal) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0))) {
++					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type] && canHitVal) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
  						continue;
  
  					flag10 = true;
- 					float num12 = Main.npc[l].Center.X - base.Center.X;
- 					if (type == 614) {
- 						if (num12 < 0f && (num7 == -1f || num12 > num7)) {
 @@ -38257,7 +_,7 @@
  
  					if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
@@ -565,12 +561,11 @@
  							flag4 = true;
  
  						flag2 = false;
-@@ -60743,6 +_,8 @@
+@@ -60743,6 +_,7 @@
  								safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num12);
  							}
  
 +							NPCLoader.EditSpawnRange(Main.player[num7], ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
-+
  							int num13 = (int)(Main.player[num7].position.X / 16f) - spawnRangeX;
  							int num14 = (int)(Main.player[num7].position.X / 16f) + spawnRangeX;
  							int num15 = (int)(Main.player[num7].position.Y / 16f) - spawnRangeY;
@@ -699,24 +694,20 @@
  			return false;
  		}
  
-+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
++		public bool HasBuff(int type) => FindBuffIndex(type) != -1; //TODO: Make this an extension instead?
 +
  		public int FindBuffIndex(int type) {
  			if (buffImmune[type])
  				return -1;
-@@ -71190,8 +_,11 @@
+@@ -71190,6 +_,8 @@
  			int num = -1;
  			for (int i = 0; i < 5; i++) {
  				if (buffType[i] == type) {
-+					if (BuffLoader.ReApply(type, this, time, i)) {
-+					}
--					if (buffTime[i] < time)
-+					else if (buffTime[i] < time) {
++					if (BuffLoader.ReApply(type, this, time, i))
++						return;
+ 					if (buffTime[i] < time)
  						buffTime[i] = time;
-+					}
  
- 					return;
- 				}
 @@ -71460,6 +_,7 @@
  			}
  
@@ -733,11 +724,10 @@
  			if (lifeRegen <= -240 && num < 2)
  				num = 2;
  
-@@ -72549,6 +_,8 @@
+@@ -72549,6 +_,7 @@
  
  					if (buffType[i] == 316)
  						markedByRainbowWhip = true;
-+
 +					BuffLoader.Update(buffType[i], this, ref i); // todo, move?
  				}
  			}
