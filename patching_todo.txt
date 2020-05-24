@@ -11,6 +11,9 @@
 		
 		//Resize the arrays that ScreenMetrics.UpdateOreFinderData uses.
 
+	//TileID:
+		//Add ids 477 and 492 to Sets.Grass.
+
 	//WorldGen:
 		//Call this before `AddGenerationPass("Reset"` in WorldGen:
 			WorldHooks.PreWorldGen();
@@ -61,6 +64,9 @@
 		
 		//Add this call to end of UpdateWorld():
 			WorldHooks.PostUpdate();
+			
+		//Add this call to the end of the if (Main.tile[x, y].active()) check in KillTile_GetTreeDrops():
+			TileLoader.DropTreeWood(Main.tile[num29, n].type, ref dropItem);
 		
 		//Add this patch to UpdateWorld():
 			-float num6 = Main.maxTilesX / 4200;
@@ -68,6 +74,28 @@
 			
 		//Add the following in front of this > https://i.imgur.com/hA0mqt7.png < place:
 			case int _ when TileLoader.IsDresser(type):
+			
+		//Reimplement this call and check in KillWall_PlaySounds:
+			WallLoader.KillWall(i, j, tile.wall, ref fail);
+			
+			if (!WallLoader.KillSound(i, j, tile.wall)) {}
+		
+		//Ensure that KillTile_GetTileDustAmount and its calls all have x,y parameters, to pass to the following call at the bottom of it:
+			TileLoader.NumDust(x, y, tileCache.type, fail, ref result);
+			
+		//Search for "NPC.CountNPCS(num5) < 5" and add the following before the if check it's in:
+			TileLoader.DropCritterChance(i, j, tileCache.type, ref num, ref num2, ref num3);
+			
+		//Replace all 'type == 88' checks (except those in Dust code) with the following:
+			TileLoader.IsDresser(tile.type)
+			
+		//Reimplement the following hook:
+			TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem);
+			
+		//Add this to the start of KillTile_PlaySounds:
+			if (!TileLoader.KillSound(i, j, type)) {
+				return;
+			}
 			
 		//Reimplement these unsorted broken patches:
 			//
@@ -100,7 +128,53 @@
 		   |				if (tileCache.type == 352 && num == 5) {
 		   |					int num15 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 5, 0f, 0f, 100);
 		   |					Main.dust[num15].scale = 1.5f;
-					
+			
+			
+		   //Replace some checks for grass tile ids with TileID.Sets.Grass checks:
+		   |@@ -39670,34 +39873,34 @@
+		   | 													if (mergeLeft)
+		   | 														right = num;
+		   | 												}
+		   |-												else if (right == 147) {
+		   |+												else if (right > -1 && TileID.Sets.Snow[right]) {
+		   | 													TileFrame(i + 1, j);
+		   | 													if (mergeLeft)
+		   | 														right = num;
+		   | 												}
+		   |-												if (up == 2 || up == 23 || up == 109 || up == 199)
+		   |+												if (up > -1 && TileID.Sets.Grass[up])
+		   | 													up = num;
+		   |-												if (down == 2 || down == 23 || down == 109 || down == 199)
+		   |+												if (down > -1 && TileID.Sets.Grass[down])
+		   | 													down = num;
+		   |-												if (left == 2 || left == 23 || left == 109 || left == 199)
+		   |+												if (left > -1 && TileID.Sets.Grass[left])
+		   | 													left = num;
+		   |-												if (right == 2 || right == 23 || right == 109 || right == 199)
+		   |+												if (right > -1 && TileID.Sets.Grass[right])
+		   | 													right = num;
+		   | 												if (upLeft > -1 && Main.tileMergeDirt[upLeft])
+		   | 													upLeft = num;
+		   |-												else if (upLeft == 2 || upLeft == 23 || upLeft == 109 || upLeft == 199)
+		   |+												else if (upLeft > -1 && TileID.Sets.Grass[upLeft])
+		   | 													upLeft = num;
+		   | 												if (upRight > -1 && Main.tileMergeDirt[upRight])
+		   | 													upRight = num;
+		   |-												else if (upRight == 2 || upRight == 23 || upRight == 109 || upRight == 199)
+		   |+												else if (upRight > -1 && TileID.Sets.Grass[upRight])
+		   | 													upRight = num;
+		   | 												if (downLeft > -1 && Main.tileMergeDirt[downLeft])
+		   | 													downLeft = num;
+		   |-												else if (downLeft == 2 || downLeft == 23 || downLeft == 109 || downLeft == 199)
+		   |+												else if (downLeft > -1 && TileID.Sets.Grass[downLeft])
+		   | 													downLeft = num;
+		   | 												if (downRight > -1 && Main.tileMergeDirt[downRight])
+		   | 													downRight = num;
+		   |-												else if (downRight == 2 || downRight == 23 || downRight == 109 || downRight == 199)
+		   |+												else if (downRight > -1 && TileID.Sets.Grass[downRight])
+		   | 													downRight = num;
+		   | 												TileMergeAttempt(-2, 59, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		   | 												TileMergeAttempt(num, 191, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 
 //Rartrin
 	//Projectile.FishingCheck
