@@ -590,6 +590,14 @@
  			if (type == 104) {
  				int num7 = frameX / 36;
  				int num8 = 0;
+@@ -23526,6 +_,7 @@
+ 			if (type == 592)
+ 				Item.NewItem(num * 16, j * 16, 32, 32, 4867);
+ 
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 
 @@ -24432,7 +_,8 @@
  				}
  			}
@@ -638,15 +646,6 @@
 +
  			if (type == 216)
  				Item.NewItem(x * 16, num * 16, 32, 32, 970 + num3);
- 
-@@ -24842,7 +_,7 @@
- 						break;
- 				}
- 
--				if (num8 > 0)
-+				if (vanillaDrop && num8 > 0)
- 					Item.NewItem(x * 16, num * 16, 32, 32, num8);
- 			}
  
 @@ -24865,6 +_,7 @@
  					break;
@@ -1169,7 +1168,7 @@
  							}
  
 -							if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 116 || Main.tile[m, n].type == 234)
-+							if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 116 || Main.tile[m, n].type == 234 || TileLoader.CanGrowModCactus(Main.tile[k, l].type))
++							if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 116 || Main.tile[m, n].type == 234 || TileLoader.CanGrowModCactus(Main.tile[m, n].type))
  								num5++;
  						}
  						catch {
@@ -1217,7 +1216,7 @@
  									return false;
  								break;
  							case 3:
-+							case int _ when TileLoader.IsSapling(type):
++							case int _ when TileLoader.IsSapling(num):
  							case 20:
  							case 24:
  							case 27:
@@ -1243,7 +1242,7 @@
  								SquareTileFrame(i, j);
  								break;
 -							case 20: {
-+							case int _ when TileLoader.IsSapling(type): {
++							case int _ when TileLoader.IsSapling(num): {
  									if (Main.tile[i, j + 1] == null)
  										Main.tile[i, j + 1] = new Tile();
  
@@ -1259,13 +1258,19 @@
  											case 314:
  												Minecart.PlaceTrack(tile, style);
  												break;
-+											case int _ when type >= TileID.Count && TileObjectData.GetTileData(type, style) != null:
++											case int _ when num >= TileID.Count && TileObjectData.GetTileData(num, style) != null:
 +												PlaceObject(i, j, (ushort)num, mute, style);
 +												break;
  											default:
  												tile.active(active: true);
  												tile.type = (ushort)num;
-@@ -37340,6 +_,7 @@
+@@ -37335,11 +_,13 @@
+ 				return;
+ 
+ 			fail = KillWall_CheckFailure(fail, tile);
++			WallLoader.KillWall(i, j, tile.type, ref fail);
+ 			KillWall_PlaySounds(i, j, tile);
+ 			int num = 10;
  			if (fail)
  				num = 3;
  
@@ -1273,12 +1278,7 @@
  			for (int k = 0; k < num; k++) {
  				KillWall_MakeWallDust(i, j, tile);
  			}
-@@ -37349,11 +_,12 @@
- 				return;
- 			}
- 
-+			if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
- 			KillWall_DropItems(i, j, tile);
+@@ -37353,7 +_,7 @@
  			tile.wall = 0;
  			tile.wallColor(0);
  			SquareWallFrame(i, j);
@@ -1297,12 +1297,22 @@
  			if (tileCache.wall == 241 || (tileCache.wall >= 88 && tileCache.wall <= 93) || tileCache.wall == 21 || tileCache.wall == 186 || tileCache.wall == 136 || tileCache.wall == 137 || tileCache.wall == 168 || tileCache.wall == 169 || tileCache.wall == 172 || tileCache.wall == 226 || tileCache.wall == 227 || tileCache.wall == 242 || tileCache.wall == 243)
  				SoundEngine.PlaySound(13, i * 16, j * 16);
  			else if ((tileCache.wall >= 63 && tileCache.wall <= 70) || tileCache.wall == 264 || tileCache.wall == 268 || tileCache.wall == 265)
+@@ -37378,7 +_,8 @@
+ 
+ 		private static void KillWall_DropItems(int i, int j, Tile tileCache) {
+ 			int num = KillWall_GetItemDrops(tileCache);
+-			if (num > 0)
++
++			if (WallLoader.Drop(i, j, Main.tile[i,j].type, ref num) && num > 0)
+ 				Item.NewItem(i * 16, j * 16, 16, 16, num);
+ 		}
+ 
 @@ -38503,6 +_,9 @@
  			if (tileCache.wall == 245)
  				num = 195;
  
 +			if (!WallLoader.CreateDust(i, j, tileCache.wall, ref num))
-+				continue;
++				return;
 +
  			if (tileCache.wall == 44) {
  				int num2 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 66, 0f, 0f, 100, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB), 0.75f);
@@ -1321,7 +1331,7 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;
  						break;
-+					case int _ when TileLoader.IsDresser(t):
++					case int _ when TileLoader.IsDresser(type):
  					case 21:
  					case 26:
  					case 72:
@@ -1329,7 +1339,7 @@
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 2, j - tile.frameY / 18))
  						return false;
  					break;
-+				case ushort _ when TileLoader.IsDresser(t):
++				case ushort _ when TileLoader.IsDresser(tile.type):
  				case 88:
  					if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
  						return false;
@@ -1342,6 +1352,24 @@
  				int num2 = tile.frameX / 18;
  				int y3 = y - tile.frameY / 18;
  				num2 %= 3;
+@@ -38818,7 +_,7 @@
+ 				return false;
+ 
+ 			MoveReplaceTileAnchor(ref x, ref y, targetType, tileSafely);
+-			int num = KillTile_GetTileDustAmount(fail: false, tileSafely);
++			int num = KillTile_GetTileDustAmount(false, tileSafely, x, y);
+ 			for (int i = 0; i < num; i++) {
+ 				KillTile_MakeTileDust(x, y, tileSafely);
+ 			}
+@@ -39506,6 +_,8 @@
+ 			if (num == 2)
+ 				return;
+ 
++			TileLoader.KillTile(i, j, tile.type, ref fail, ref effectOnly, ref noItem); //Placed before gen check on purpose.
++
+ 			if (gen)
+ 				noItem = true;
+ 
 @@ -39636,7 +_,7 @@
  			if ((tile.type == 471 && TEWeaponsRack.KillTileDropItem(tile, i, j)) || (tile.type == 470 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)) || (tile.type == 475 && (CheckTileBreakability2_ShouldTileSurvive(i, j) || fail)))
  				return;
@@ -1351,6 +1379,16 @@
  			for (int k = 0; k < num15; k++) {
  				KillTile_MakeTileDust(i, j, tile);
  			}
+@@ -39803,6 +_,9 @@
+ 		private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
+ 
+ 		private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) {
++			if (TileLoader.Drop(x, y, Main.tile[x, y].type))
++				return;
++
+ 			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
+ 			if (!Main.getGoodWorld || tileCache.active()) {
+ 				if (dropItem > 0)
 @@ -41692,7 +_,7 @@
  						}
  
@@ -1369,6 +1407,24 @@
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);
+@@ -41811,6 +_,7 @@
+ 			if (Main.player[num4].ZoneGraveyard)
+ 				num5 = 606;
+ 
++			TileLoader.DropCritterChance(i,j,tileCache.type,ref num,ref num2,ref num3);
+ 			if (num > 0 && NPC.CountNPCS(num5) < 5 && genRand.Next(num) == 0) {
+ 				int type = num5;
+ 				if (num5 == 357 && Player.GetClosestRollLuck(i, j, NPC.goldCritterChance) == 0f)
+@@ -41859,6 +_,9 @@
+ 				return;
+ 
+ 			int type = tileCache.type;
++			if(!TileLoader.KillSound(i,j,type))
++				return;
++
+ 			if (type == 127) {
+ 				SoundEngine.PlaySound(SoundID.Item27, i * 16, j * 16);
+ 			}
 @@ -41983,7 +_,14 @@
  			return value;
  		}
@@ -1409,6 +1465,15 @@
  					}
  				}
  			}
+@@ -43649,7 +_,7 @@
+ 			if (type == 178 || (uint)(type - 426) <= 1u || (uint)(type - 430) <= 10u)
+ 				flag = true;
+ 
+-			if (num >= 0) {
++			if (TileLoader.CreateDust(i,j,tileCache.type,ref num) && num >= 0) {
+ 				if (tileCache.type == 518) {
+ 					int num14 = (int)tileCache.liquid / 16;
+ 					num14 -= 3;
 @@ -43740,6 +_,9 @@
  			if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
  				return t.frameX < 54;
@@ -1674,3 +1739,12 @@
  												bool num50 = mergeUp;
  												bool flag14 = mergeDown;
  												bool flag15 = mergeLeft;
+@@ -55810,7 +_,7 @@
+ 
+ 		public static bool AllowsSandfall(Tile tileTopCache) {
+ 			bool result = true;
+-			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileLoader.IsDresser(tileTopCache.type) || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
+ 				result = false;
+ 
+ 			return result;
