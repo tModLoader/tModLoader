@@ -47,10 +47,10 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 227) {
+-						if (reader.ReadString() == "Terraria" + 228) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == ModLoader.ModLoader.versionedName;
-+						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 194 && ModNet.AllowVanillaClients) {
++						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + 228 && ModNet.AllowVanillaClients) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
 +								if (ModNet.isModdedClient[whoAmI]) {

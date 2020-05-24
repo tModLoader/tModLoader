@@ -7,33 +7,33 @@
  
  namespace Terraria.Graphics.Light
  {
-@@ -91,7 +_,7 @@
- 		private int _firstToLightY;
- 		private int _lastToLightX;
- 		private int _lastToLightY;
+@@ -106,7 +_,7 @@
+ 		private int _expandedRectTop;
+ 		private int _expandedRectRight;
+ 		private int _expandedRectBottom;
 -		private float _negLight = 0.04f;
 +		internal float _negLight = 0.04f;
  		private float _negLight2 = 0.16f;
  		private float _wetLightR = 0.16f;
  		private float _wetLightG = 0.16f;
-@@ -99,7 +_,7 @@
+@@ -114,7 +_,7 @@
  		private float _honeyLightR = 0.16f;
  		private float _honeyLightG = 0.16f;
  		private float _honeyLightB = 0.16f;
 -		private float _blueWave = 1f;
 +		internal float _blueWave = 1f;
  		private int _blueDir = 1;
- 		private int _minX7;
- 		private int _maxX7;
-@@ -558,6 +_,7 @@
+ 		private RectArea _minBoundArea;
+ 		private RectArea _requestedArea;
+@@ -578,6 +_,7 @@
  			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
  			for (int m = num; m < num2; m++) {
- 				LightingState[] array3 = _states[m - _firstToLightX];
+ 				LightingState[] array3 = _states[m - _expandedRectLeft];
 +				//patch file: n, num17
  				for (int n = num3; n < num4; n++) {
- 					LightingState lightingState2 = array3[n - _firstToLightY];
+ 					LightingState lightingState2 = array3[n - _expandedRectTop];
  					Tile tile = Main.tile[m, n];
-@@ -567,6 +_,8 @@
+@@ -587,6 +_,8 @@
  					}
  
  					_lightMap.GetLight(m - num, n - num3, out Vector3 color);
@@ -42,7 +42,7 @@
  					if (_rgb) {
  						lightingState2.R2 = color.X;
  						lightingState2.G2 = color.Y;
-@@ -738,6 +_,8 @@
+@@ -746,6 +_,8 @@
  							_wetLightB = 0f;
  							break;
  					}
@@ -51,7 +51,7 @@
  				}
  				else {
  					_negLight = 0.9f;
-@@ -764,6 +_,8 @@
+@@ -772,6 +_,8 @@
  					_negLight *= 0.85f;
  					_negLight2 *= 0.85f;
  				}
@@ -60,7 +60,7 @@
  			}
  			else {
  				_negLight = 0.04f;
-@@ -788,6 +_,7 @@
+@@ -796,6 +_,7 @@
  					_negLight2 += 0.18f;
  				}
  

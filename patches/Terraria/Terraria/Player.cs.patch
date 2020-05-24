@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Player.cs
 +++ src/Terraria/Terraria/Player.cs
-@@ -35493,9 +_,11 @@
+@@ -35488,9 +_,11 @@
  				else {
  					bool num2 = Main.tile[x, y].active();
  					WorldGen.KillTile(x, y);

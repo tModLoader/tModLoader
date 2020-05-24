@@ -9,7 +9,7 @@
  using Terraria.Utilities;
  
  namespace Terraria
-@@ -267,7 +_,7 @@
+@@ -291,7 +_,7 @@
  
  				bool flag2 = false;
  				bool flag3 = false;
