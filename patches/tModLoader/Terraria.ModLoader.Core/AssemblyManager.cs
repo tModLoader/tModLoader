@@ -112,16 +112,13 @@ namespace Terraria.ModLoader.Core
 
 				try {
 					using (modFile.Open()) {
-						const string suffixPlat = PlatformUtilities.IsXNA ? ".XNA.dll" : ".FNA.dll";
-						foreach (var dll in properties.dllReferences) {
-							byte[] dllBytes = modFile.GetBytes("lib/" + dll + suffixPlat) ??
-							                  modFile.GetBytes("lib/" + dll + ".dll");
-
-							LoadAssembly(EncapsulateReferences(dllBytes));
+						foreach (var dllName in properties.dllReferences) {
+							LoadAssembly(EncapsulateReferences(modFile.GetLibraryDll(dllName)));
 						}
 
-						if (eacEnabled && HasEaC) //load the unmodified dll and EaC pdb
+						if (eacEnabled && HasEaC) {//load the unmodified dll and EaC pdb
 							assembly = LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath));
+						}
 						else {
 							var pdb = GetModPdb(out var imageDebugHeader);
 							assembly = LoadAssembly(EncapsulateReferences(modFile.GetModAssembly(), imageDebugHeader), pdb);
@@ -339,7 +336,18 @@ namespace Terraria.ModLoader.Core
 			return fileName;
 		}
 
+		private static string GetLibraryDllFilename(this TmodFile modFile, string dllName, bool? xna = null)
+		{
+			string variant = (xna ?? PlatformUtilities.IsXNA) ? "XNA" : "FNA";
+			var fileName = $"lib/{dllName}.{variant}.dll";
+			if (!modFile.HasFile(fileName))
+				fileName = $"lib/{dllName}.dll";
+
+			return fileName;
+		}
+
 		internal static byte[] GetModAssembly(this TmodFile modFile, bool? xna = null) => modFile.GetBytes(modFile.GetModAssemblyFileName(xna));
+		internal static byte[] GetLibraryDll(this TmodFile modFile, string dllName, bool? xna = null) => modFile.GetBytes(modFile.GetLibraryDllFilename(dllName, xna));
 
 		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
 
