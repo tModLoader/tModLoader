@@ -566,8 +566,8 @@ namespace Terraria.ModLoader.Core
 					// force the native pdb writer when possible, to support stack traces on older .NET frameworks
 					asm.Write(tempDllPath, new WriterParameters {
 						WriteSymbols = true,
-						SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : null
-					});
+						SymbolWriterProvider = FrameworkVersion.Framework == Framework.NetFramework ? new NativePdbWriterProvider() : (ISymbolWriterProvider)new PortablePdbWriterProvider()
+					});;
 
 					mod.modFile.AddFile(Path.ChangeExtension(dllName, "pdb"), File.ReadAllBytes(Path.ChangeExtension(tempDllPath, "pdb")));
 
