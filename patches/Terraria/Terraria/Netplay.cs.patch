@@ -17,7 +17,7 @@
 +#if !WINDOWS
 +using Terraria.Social.Base;
 +#endif
-+#if SERVER
++#if SERVER && WINDOWS
 +using NATUPNPLib;
 +#endif
  
@@ -27,47 +27,52 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER
++#if SERVER && WINDOWS
 +		public static UPnPNAT _upnpnat;
 +		public static IStaticPortMappingCollection _mappings;
 +#endif
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
  		private static UdpClient BroadcastClient = null;
-@@ -109,9 +_,37 @@
+@@ -109,9 +_,42 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER
-+			if (Netplay.upnpnat == null)
-+			{
-+				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-+				Netplay.mappings = Netplay.upnpnat.StaticPortMappingCollection;
++#if SERVER && WINDOWS
++			string localIPAddress = GetLocalIPAddress();
++			if (_upnpnat == null) {
++				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++				_mappings = _upnpnat.StaticPortMappingCollection;
 +			}
-+			if (Netplay.mappings != null)
-+			{
-+				foreach (IStaticPortMapping staticPortMapping in Netplay.mappings)
-+				{
-+					if (staticPortMapping.InternalPort == Netplay.portForwardPort && staticPortMapping.InternalClient == Netplay.portForwardIP && staticPortMapping.Protocol == "TCP")
-+					{
-+						Netplay.portForwardOpen = true;
-+					}
-+				}
-+				if (!Netplay.portForwardOpen)
-+				{
-+					Netplay.mappings.Add(Netplay.portForwardPort, "TCP", Netplay.portForwardPort, Netplay.portForwardIP, true, "Terraria Server");
-+					Netplay.portForwardOpen = true;
-+				}
++
++			if (_mappings == null)
++				return;
++
++			bool flag = false;
++			foreach (IStaticPortMapping mapping in _mappings) {
++				if (mapping.InternalPort == port && mapping.InternalClient == localIPAddress && mapping.Protocol == "TCP")
++					flag = true;
 +			}
++
++			if (!flag)
++				_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
 +#endif
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER
-+			if (Netplay.portForwardOpen)
-+			{
-+				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
++#if SERVER && WINDOWS
++			string localIPAddress = GetLocalIPAddress();
++			bool flag = false;
++			if (_mappings == null)
++				return;
++
++			foreach (IStaticPortMapping mapping in _mappings) {
++				if (mapping.InternalPort == port && mapping.InternalClient == localIPAddress && mapping.Protocol == "TCP")
++					flag = true;
 +			}
++
++			if (!flag)
++				_mappings.Remove(port, "TCP");
 +#endif
  		}
  
@@ -84,7 +89,7 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -612,8 +_,20 @@
+@@ -612,12 +_,26 @@
  		}
  
  		public static void Initialize() {
@@ -92,12 +97,10 @@
  			NetMessage.buffer[256] = new MessageBuffer();
  			NetMessage.buffer[256].whoAmI = 256;
 +#else
-+			for (int i = 0; i < 257; i++)
-+			{
++			for (int i = 0; i < 257; i++) {
 +				if (i < 256)
-+				{
 +					Netplay.Clients[i] = new RemoteClient();
-+				}
++				
 +				NetMessage.buffer[i] = new MessageBuffer();
 +				NetMessage.buffer[i].whoAmI = i;
 +			}
@@ -105,3 +108,11 @@
  		}
  
  		public static void Update() {
++#if CLIENT
+ 			UpdateClient();
++#else
++			UpdateServer();
++#endif
+ 		}
+ 
+ 		public static int GetSectionX(int x) => x / 200;

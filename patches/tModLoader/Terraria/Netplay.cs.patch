@@ -1,13 +1,12 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -1,27 +_,31 @@
+@@ -1,27 +_,29 @@
  using System;
 +using System.Collections.Concurrent;
  using System.IO;
  using System.Linq;
  using System.Net;
  using System.Net.Sockets;
-+
  #if !WINDOWS
  using System.Runtime.CompilerServices;
  #endif
@@ -22,27 +21,16 @@
  using Terraria.Net.Sockets;
  using Terraria.Social;
  using Terraria.Utilities;
-+
  #if !WINDOWS
  using Terraria.Social.Base;
  #endif
--#if SERVER
-+#if SERVER && WINDOWS
+ #if SERVER && WINDOWS
  using NATUPNPLib;
  #endif
 -
  namespace Terraria
  {
  	public class Netplay
-@@ -49,7 +_,7 @@
- 		public static bool SpamCheck = false;
- 		public static bool HasClients;
- 		private static Thread _serverThread;
--#if SERVER
-+#if SERVER && WINDOWS
- 		public static UPnPNAT _upnpnat;
- 		public static IStaticPortMappingCollection _mappings;
- #endif
 @@ -82,6 +_,7 @@
  
  		private static void ResetNetDiag() {
@@ -71,28 +59,18 @@
 +		}
 +
  		private static void OpenPort(int port) {
--#if SERVER
-+#if SERVER && WINDOWS
- 			if (Netplay.upnpnat == null)
- 			{
- 				Netplay.upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-@@ -147,7 +_,7 @@
- 		}
- 
- 		private static void ClosePort(int port) {
--#if SERVER
-+#if SERVER && WINDOWS
- 			if (Netplay.portForwardOpen)
- 			{
- 				Netplay.mappings.Remove(Netplay.portForwardPort, "TCP");
-@@ -355,5 +_,5 @@
+ #if SERVER && WINDOWS
+ 			string localIPAddress = GetLocalIPAddress();
+ 			if (_upnpnat == null) {
+ 				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
+@@ -360,5 +_,5 @@
  
  		private static void UpdateClient() {
  			if (Main.netMode == 1 && Connection.Socket.IsConnected() && NetMessage.buffer[256].checkBytes)
 -				NetMessage.CheckBytes();
 +				InvokeOnMainThread(() => NetMessage.CheckBytes());
  		}
-@@ -416,6 +_,7 @@
+@@ -421,6 +_,7 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -100,7 +78,7 @@
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
  			if (Main.rand == null)
-@@ -435,9 +_,11 @@
+@@ -440,9 +_,11 @@
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -113,7 +91,7 @@
  		private static void InnerClientLoop() {
  			try {
  				NetMessage.buffer[256].Reset();
-@@ -480,6 +_,7 @@
+@@ -485,6 +_,7 @@
  						else if (Connection.State == 5 && WorldGen.worldCleared) {
  							Connection.State = 6;
  							Main.player[Main.myPlayer].FindSpawn();
@@ -121,7 +99,7 @@
  							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
  						}
  
-@@ -502,8 +_,6 @@
+@@ -507,8 +_,6 @@
  								Main.statusText = Connection.StatusText + ": " + (int)((float)Connection.StatusCount / (float)Connection.StatusMax * 100f) + "%";
  							}
  						}
@@ -130,7 +108,7 @@
  					}
  					else if (Connection.IsActive) {
  						Main.statusText = Language.GetTextValue("Net.LostConnection");
-@@ -513,6 +_,7 @@
+@@ -518,6 +_,7 @@
  					num = Connection.State;
  				}
  

@@ -60,7 +60,7 @@
  			Control.FromHandle(instance.Window.Handle).BringToFront();
  			if (!flag)
  				Configuration.Get("Support4K", ref Support4K);
-@@ -3465,9 +_,13 @@
+@@ -3465,9 +_,12 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
  
@@ -71,7 +71,6 @@
  
 +#endif
 +							}
-+
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
  								int height = binaryReader.ReadInt32();
@@ -101,6 +100,17 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
+@@ -4634,8 +_,10 @@
+ 			instance = this;
+ 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 			Configuration.Load();
++#if CLIENT
+ 			graphics = new GraphicsDeviceManager(this as Game);
+ 			base.Content.RootDirectory = "Content";
++#endif
+ 		}
+ 
+ 		private static void SetDisplayMonitor() {
 @@ -4649,12 +_,16 @@
  			if (graphicsAdapter != null)
  				e.GraphicsDeviceInformation.Adapter = graphicsAdapter;
@@ -165,7 +175,38 @@
  		}
  
  		private void Initialize_Entities() {
-@@ -12255,9 +_,11 @@
+@@ -8328,8 +_,10 @@
+ 			if (!SoundEngine.IsAudioSupported || !_musicLoaded)
+ 				return;
+ 
++#if CLIENT
+ 			if (!showSplash)
+ 				SoundEngine.Update();
++#endif
+ 
+ 			if (musicVolume == 0f)
+ 				curMusic = 0;
+@@ -12208,11 +_,13 @@
+ 		}
+ 
+ 		public static void NotifyOfEvent(GameNotificationType type) {
++#if CLIENT
+ 			if (!instance.IsActive && _flashNotificationType.HasFlag(type)) {
+ 				QueueMainThreadAction(delegate {
+ 					Platform.Get<IWindowService>().StartFlashingIcon(instance.Window);
+ 				});
+ 			}
++#endif
+ 		}
+ 
+ 		protected void DoUpdate(GameTime gameTime) {
+@@ -12251,13 +_,17 @@
+ 				InGameUI.SetState(null);
+ 
+ 			CurrentInputTextTakerOverride = null;
++#if CLIENT
+ 			AchievementAdvisor.Update();
++#endif
  			PlayerInput.SetZoom_Unscaled();
  			MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
@@ -177,6 +218,18 @@
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
  				_hasPendingNetmodeChange = false;
+@@ -12532,7 +_,11 @@
+ 			if (Main.OnTickForInternalCodeOnly != null)
+ 				Main.OnTickForInternalCodeOnly();
+ 
++#if CLIENT
+ 			if (netMode != 1 && !gameMenu && !gamePaused && AmbienceServer != null)
++#else
++			if(AmbienceServer != null)
++#endif
+ 				AmbienceServer.Update();
+ 
+ 			WorldGen.BackgroundsCache.UpdateFlashValues();
 @@ -14430,6 +_,7 @@
  		public static extern short GetKeyState(int keyCode);
  
@@ -238,6 +291,18 @@
  			try {
  				DrawWaters(isBackground: true);
  			}
+@@ -42525,9 +_,11 @@
+ 		}
+ 
+ 		public static void TriggerPing(Vector2 position) {
++#if CLIENT
+ 			Pings.Add(position);
+ 			if (netMode == 1)
+ 				NetManager.Instance.SendToServer(NetPingModule.Serialize(position));
++#endif
+ 		}
+ 
+ 		private static void DrawNPCHeadFriendly(Entity theNPC, byte alpha, float headScale, SpriteEffects dir, int npcID, float x, float y) {
 @@ -46362,6 +_,7 @@
  		}
  
@@ -254,16 +319,18 @@
  		}
  
  		private void GraphicsDeviceLost(object sender, EventArgs evt) {
-@@ -46447,7 +_,9 @@
+@@ -46447,9 +_,11 @@
  			if (!base.IsActive)
  				maxQ = true;
  
 +#if CLIENT
  			UpdateDisplaySettings();
-+#endif
  			if (Main.OnPreDraw != null)
  				Main.OnPreDraw(gameTime);
++#endif
  
+ 			drawsCountedForFPS++;
+ 			screenLastPosition = screenPosition;
 @@ -48902,6 +_,7 @@
  			DD2Event.UpdateTime();
  			WorldGen.mysticLogsEvent.UpdateTime();

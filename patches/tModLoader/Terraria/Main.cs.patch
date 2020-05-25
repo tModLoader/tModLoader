@@ -22,10 +22,10 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
-@@ -202,21 +_,21 @@
- 		public static IPlayerRenderer PotionOfReturnRenderer = new ReturnGatePlayerRenderer();
- 		public static string versionNumber = "v1.4.0.2";
- 		public static string versionNumber2 = "v1.4.0.2";
+@@ -206,22 +_,22 @@
+ 		public static NPCHeadRenderer BossNPCHeadRenderer = null;
+ 		public static string versionNumber = "v1.4.0.4";
+ 		public static string versionNumber2 = "v1.4.0.4";
 -		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria");
 +		public static string SavePath = Program.SavePath;
  		public static bool AnnouncementBoxDisabled;
@@ -40,20 +40,21 @@
  		private static bool? _overrideForExpertMode = null;
  		private static bool? _overrideForMasterMode = null;
  		public static bool drunkWorld = false;
+ 		public static bool getGoodWorld = false;
  		public static Vector2 destroyerHB = new Vector2(0f, 0f);
  		public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
 -		public static FavoritesFile CloudFavoritesData = new FavoritesFile("/favorites.json", isCloud: true);
 +		public static FavoritesFile CloudFavoritesData = new FavoritesFile("/ModLoader/favorites.json", true);
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
-@@ -235,5 +_,6 @@
+@@ -240,5 +_,6 @@
  		public static ulong LobbyId = 0uL;
  		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
 +		public static bool playerLoaded => ActivePlayersCount > 0;
  		public WaterfallManager waterfallManager;
  		public static WorldSections sectionManager;
  		public static bool ServerSideCharacter;
-@@ -247,6 +_,7 @@
+@@ -251,6 +_,7 @@
  		public static ulong TileFrameSeed = (ulong)Guid.NewGuid().GetHashCode();
  		private static ulong _drawCycleCounter;
  		public static ContentManager ShaderContentManager;
@@ -61,16 +62,16 @@
  		public static Ref<Effect> ScreenShaderRef = new Ref<Effect>();
  		public static Ref<Effect> PixelShaderRef = new Ref<Effect>();
  		public static Ref<Effect> TileShaderRef = new Ref<Effect>();
-@@ -256,6 +_,8 @@
+@@ -260,6 +_,8 @@
  		public static bool UseHeatDistortion = true;
- 		public static int npcStreamSpeed = 60;
+ 		public static int npcStreamSpeed = 30;
  		public static int musicError;
 +		public static int soundError;
 +		public static int ambientError;
  		public static bool dedServFPS;
  		public static int dedServCount1;
  		public static int dedServCount2;
-@@ -400,7 +_,10 @@
+@@ -404,7 +_,10 @@
  		public static int lastMouseY;
  		private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
  		public static bool mouseLeft;
@@ -81,7 +82,7 @@
  		public static bool isMouseLeftConsumedByUI = false;
  		public static float essScale = 1f;
  		public static int essDir = -1;
-@@ -519,13 +_,13 @@
+@@ -518,13 +_,13 @@
  		public static int wofDrawAreaBottom;
  		public static int wofDrawFrameIndex;
  		public static int offScreenRange = 200;
@@ -101,7 +102,7 @@
  		public static RenderTarget2D screenTarget;
  		public static RenderTarget2D screenTargetSwap;
  		public static int maxMapUpdates = 250000;
-@@ -546,8 +_,8 @@
+@@ -545,8 +_,8 @@
  		public static bool clearMap;
  		public static int mapTargetX = 5;
  		public static int mapTargetY = 2;
@@ -112,7 +113,7 @@
  		public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  		public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  		public const int numInfoIcons = 13;
-@@ -578,12 +_,12 @@
+@@ -577,12 +_,12 @@
  		private int lastTileX;
  		private int firstTileY;
  		private int lastTileY;
@@ -162,7 +163,7 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
-@@ -803,8 +_,8 @@
+@@ -804,8 +_,8 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
  		public static WaveBank waveBank;
@@ -172,7 +173,7 @@
  		public static float[] musicFade = new float[89];
  		public static float musicVolume = 1f;
  		public static float ambientVolume = 1f;
-@@ -978,9 +_,14 @@
+@@ -982,9 +_,14 @@
  			0.75f
  		};
  		public static byte mouseTextColor;
@@ -187,7 +188,7 @@
  		public static bool playerInventory;
  		public static int stackSplit;
  		public static bool preventStackSplitReset;
-@@ -996,6 +_,7 @@
+@@ -1000,6 +_,7 @@
  		public static bool recFastScroll;
  		public static bool recBigList;
  		public static int recStart;
@@ -195,7 +196,7 @@
  		public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
  		public static int[] availableRecipe = new int[Recipe.maxRecipes];
  		public static float[] availableRecipeY = new float[Recipe.maxRecipes];
-@@ -1081,6 +_,7 @@
+@@ -1085,6 +_,7 @@
  		public static bool Support4K = true;
  		public static float MinimumZoomComparerX = 1920f;
  		public static float MinimumZoomComparerY = 1200f;
@@ -203,7 +204,7 @@
  		private static int _renderTargetMaxSize = 2048;
  		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
  		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.Reach;
-@@ -1090,6 +_,7 @@
+@@ -1094,6 +_,7 @@
  		public static float temporaryGUIScaleSlider = -1f;
  		public static bool temporaryGUIScaleSliderUpdate = false;
  		public static bool InGuideCraftMenu;
@@ -211,7 +212,7 @@
  		public static bool InReforgeMenu;
  		public static Item HoverItem = new Item();
  		private static int backSpaceCount;
-@@ -1111,9 +_,9 @@
+@@ -1115,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Path.Combine(SavePath, "Worlds");
@@ -223,7 +224,7 @@
  		public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  		public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  		public static KeyboardState inputText;
-@@ -1807,7 +_,7 @@
+@@ -1811,7 +_,7 @@
  		public static float exitScale = 0.8f;
  		public static bool mouseReforge;
  		public static float reforgeScale = 0.8f;
@@ -232,15 +233,16 @@
  		public static string getIP = defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer;
-@@ -1898,6 +_,7 @@
+@@ -1902,7 +_,8 @@
  		private static bool startFullscreen = false;
  		public static string oldStatusText = "";
+ 		public static string autoGenFileLocation = null;
  		public static bool autoShutdown;
 +		public static bool showServerConsole = false;
  		private uint previousExecutionState;
  		public static int sundialCooldown;
  		public static bool fastForwardTime;
-@@ -1944,16 +_,18 @@
+@@ -1949,16 +_,18 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld;
@@ -263,7 +265,7 @@
  		public TilePaintSystemV2 TilePaintSystem;
  		public TileDrawing TilesRenderer;
  		public WallDrawing WallsRenderer;
-@@ -1977,7 +_,7 @@
+@@ -1982,7 +_,7 @@
  		public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  		public static bool mouseText;
  		private static int mH;
@@ -272,7 +274,7 @@
  		public static int hairStart;
  		private static int oldHairStyle;
  		private static Microsoft.Xna.Framework.Color oldHairColor;
-@@ -1989,8 +_,8 @@
+@@ -1994,8 +_,8 @@
  		public static Player dresserInterfaceDummy;
  		private bool _needToSetupDrawInterfaceLayers = true;
  		private List<GameInterfaceLayer> _gameInterfaceLayers;
@@ -282,7 +284,7 @@
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
  		private static int _itemIconCacheSelectedItemID;
-@@ -2045,13 +_,13 @@
+@@ -2050,13 +_,13 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -302,7 +304,7 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
-@@ -2167,6 +_,8 @@
+@@ -2172,6 +_,8 @@
  
  		public static Effect screenShader => ScreenShaderRef.Value;
  
@@ -311,7 +313,7 @@
  		public static Effect pixelShader => PixelShaderRef.Value;
  
  		public static Effect vertexPixelShader => VertexPixelShaderRef.Value;
-@@ -2677,6 +_,7 @@
+@@ -2680,6 +_,7 @@
  			}
  
  			result.X = num;
@@ -319,7 +321,7 @@
  			return result;
  		}
  
-@@ -2693,6 +_,8 @@
+@@ -2696,6 +_,8 @@
  				itemAnimationsRegistered.Add(index);
  
  			itemAnimations[index] = animation;
@@ -328,7 +330,7 @@
  		}
  
  		public static void InitializeItemAnimations() {
-@@ -2734,11 +_,13 @@
+@@ -2737,11 +_,13 @@
  			}
  		}
  
@@ -343,7 +345,7 @@
  		}
  
  		private static void SetGraphicsProfileInternal() {
-@@ -2746,10 +_,14 @@
+@@ -2749,10 +_,14 @@
  			graphics.GraphicsProfile = _selectedGraphicsProfile;
  			switch (_selectedGraphicsProfile) {
  				case GraphicsProfile.HiDef:
@@ -362,7 +364,7 @@
  					break;
  				case GraphicsProfile.Reach:
  					maxScreenW = 1920;
-@@ -2767,8 +_,8 @@
+@@ -2770,8 +_,8 @@
  					SetGraphicsProfileInternal();
  				}
  			}
@@ -373,7 +375,7 @@
  		}
  
  		private static void TrySupporting8K() {
-@@ -2797,6 +_,7 @@
+@@ -2800,6 +_,7 @@
  				flag2 = false;
  				anglerQuest = rand.Next(anglerQuestItemNetIDs.Length);
  				int num = anglerQuestItemNetIDs[anglerQuest];
@@ -381,7 +383,7 @@
  				if (num == 2454 && (!hardMode || WorldGen.crimson))
  					flag2 = true;
  
-@@ -2838,6 +_,8 @@
+@@ -2841,6 +_,8 @@
  
  				if ((num == 2476 || num == 2453 || num == 2473) && !flag)
  					flag2 = true;
@@ -390,7 +392,7 @@
  			}
  
  			NetMessage.SendAnglerQuest(-1);
-@@ -2965,7 +_,8 @@
+@@ -2968,7 +_,8 @@
  		public static void SaveRecent() {
  			Utils.TryCreatingDirectory(SavePath);
  			try {
@@ -400,7 +402,7 @@
  			}
  			catch {
  			}
-@@ -3036,6 +_,7 @@
+@@ -3041,6 +_,7 @@
  			Configuration.Put("UseHeatDistortion", UseHeatDistortion);
  			Configuration.Put("WaveQuality", WaveQuality);
  			Configuration.Put("Support4K", Support4K);
@@ -408,15 +410,16 @@
  			Configuration.Put("MouseColor", new Dictionary<string, byte> {
  				{ "R", mouseColor.R },
  				{ "G", mouseColor.G },
-@@ -3060,6 +_,7 @@
+@@ -3065,7 +_,8 @@
  			Configuration.Put("ThrottleWhenInactive", instance.InactiveSleepTime != TimeSpan.Zero);
  			Configuration.Put("DoorAutoOpeningMode", DoorOpeningHelper.PreferenceSettings);
  			Configuration.Put("WaterfallDrawLimit", instance.waterfallManager.maxWaterfallCount);
+ 			Configuration.Put("DisableIntenseVisualEffects", DisableIntenseVisualEffects);
 +			ModLoader.ModLoader.SaveConfiguration();
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3125,5 +_,9 @@
+@@ -3131,5 +_,9 @@
  			}
  
 +#if SERVER
@@ -426,7 +429,7 @@
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
  			Configuration.Get("MapEnabled", ref mapEnabled);
  			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
-@@ -3414,6 +_,7 @@
+@@ -3423,6 +_,7 @@
  				};
  			}
  
@@ -434,16 +437,16 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3426,7 +_,7 @@
+@@ -3435,7 +_,7 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
--			if (currentValue != 226)
-+			if (currentValue != 226 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
+-			if (currentValue != 228)
++			if (currentValue != 228 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
  				SaveSettings();
  		}
  
-@@ -3553,9 +_,11 @@
+@@ -3561,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
  			}
@@ -455,7 +458,7 @@
  			try {
  				string path = PlayerList[i].Path.Substring(0, PlayerList[i].Path.Length - 4);
  				if (Directory.Exists(path))
-@@ -3582,6 +_,7 @@
+@@ -3590,6 +_,7 @@
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
  				}
  
@@ -463,7 +466,7 @@
  				LoadWorlds();
  			}
  			catch {
-@@ -3756,6 +_,12 @@
+@@ -3764,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
  
@@ -476,7 +479,7 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
-@@ -3883,8 +_,8 @@
+@@ -3895,8 +_,8 @@
  
  		public void DedServ() {
  			NeverSleep();
@@ -486,7 +489,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3893,17 +_,18 @@
+@@ -3905,17 +_,18 @@
  #endif
  			}
  			else {
@@ -507,7 +510,7 @@
  					Console.WriteLine("");
  					for (int i = 0; i < WorldList.Count; i++) {
  						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
-@@ -3916,6 +_,8 @@
+@@ -3928,6 +_,8 @@
  					textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  					Console.WriteLine(textValue);
  					Console.WriteLine(textValue2);
@@ -516,43 +519,6 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  					string text2 = Console.ReadLine();
-@@ -4105,7 +_,35 @@
- 			instance = this;
- #if CLIENT
- 			graphics = new GraphicsDeviceManager(this);
--			base.Content.RootDirectory = "Content";
-+#endif
-+		}
-+
-+		internal void PostSocialInitialize()
-+		{
-+#if CLIENT
-+			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				vanillaContentFolder = "../Content"; // Nested Manual Install
-+			}
-+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = new Steamworks.AppId_t(105600u);
-+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-+				if (appInstalled) { 
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-+					Logging.Terraria.Info("Found Terraria steamapp install at: "+ steamInstallFolder);
-+
-+					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-+					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
-+				}
-+			}
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
-+				Environment.Exit(1);
-+			}
-+
-+			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
-+			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
- #endif
- 		}
- 
 @@ -4118,7 +_,7 @@
  
  		public static void InitLifeBytes() {
@@ -562,7 +528,7 @@
  				if (i != 0) {
  					nPC.SetDefaults(i);
  					if (nPC.lifeMax > 32767 || nPC.boss)
-@@ -4142,6 +_,14 @@
+@@ -4154,6 +_,14 @@
  
  						continue;
  					}
@@ -577,7 +543,7 @@
  
  					try {
  						int num3 = Convert.ToInt32(text2);
-@@ -4252,6 +_,7 @@
+@@ -4264,6 +_,7 @@
  			catch {
  			}
  
@@ -585,19 +551,20 @@
  			Task task2 = WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  			Console.WriteLine("");
-@@ -4265,36 +_,35 @@
- 				}
+@@ -4286,37 +_,36 @@
+ 			catch {
  			}
  
 +			//run one tick to JIT all the game content now rather than when a player connects
 +			Logging.ServerConsoleLine("Running one update...");
 +			Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +			Update(new GameTime());
- 			try {
- 				Console.Clear();
+ 			if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
+ 				WriteFancyWorldLoadErrorToConsole();
+ 				Console.ReadKey();
 +				Logging.ResetPastExceptions(); // "Running one update..." above.
- 			}
- 			catch {
+ 				YouCanSleepNow();
+ 				return;
  			}
  
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
@@ -633,7 +600,7 @@
  					if (oldStatusText != statusText) {
  						oldStatusText = statusText;
  						Console.WriteLine(statusText);
-@@ -4302,25 +_,21 @@
+@@ -4324,25 +_,21 @@
  
  					if (Netplay.HasClients)
  						Update(new GameTime());
@@ -668,7 +635,7 @@
 +				}
  			}
  
-@@ -4336,8 +_,14 @@
+@@ -4363,8 +_,14 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
@@ -684,7 +651,7 @@
  				string text2 = text;
  				text = text.ToLower();
  				try {
-@@ -4379,12 +_,21 @@
+@@ -4404,12 +_,21 @@
  								num = text3.Length;
  						}
  
@@ -706,7 +673,7 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
-@@ -4469,11 +_,12 @@
+@@ -4494,11 +_,12 @@
  						Console.WriteLine(Language.GetTextValue("CLI.Port", Netplay.ListenPort));
  					}
  					else if (text == Language.GetTextValue("CLI.Version_Command")) {
@@ -720,7 +687,7 @@
  						}
  						catch {
  						}
-@@ -4595,7 +_,7 @@
+@@ -4620,7 +_,7 @@
  				catch {
  					Console.WriteLine(Language.GetTextValue("CLI.InvalidCommand"));
  				}
@@ -729,7 +696,44 @@
  		}
  
  		public static void Sundialing() {
-@@ -4699,6 +_,13 @@
+@@ -4662,7 +_,35 @@
+ 			instance = this;
+ 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 			Configuration.Load();
+ 			graphics = new GraphicsDeviceManager(this as Game);
+-			base.Content.RootDirectory = "Content";
++#endif
++		}
++
++		internal void PostSocialInitialize()
++		{
++#if CLIENT
++			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
++			if (!Directory.Exists(vanillaContentFolder)) {
++				vanillaContentFolder = "../Content"; // Nested Manual Install
++			}
++			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
++				var appID = new Steamworks.AppId_t(105600u);
++				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++				if (appInstalled) { 
++					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
++					Logging.Terraria.Info("Found Terraria steamapp install at: "+ steamInstallFolder);
++
++					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
++					if (!Directory.Exists(vanillaContentFolder))
++						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
++				}
++			}
++			if (!Directory.Exists(vanillaContentFolder)) {
++				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
++				Environment.Exit(1);
++			}
++
++			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
++			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+ 		}
+ 
+@@ -4726,6 +_,13 @@
  		}
  
  		protected override void Initialize() {
@@ -752,16 +756,6 @@
  			}
  
  			for (int num13 = 0; num13 < 1001; num13++) {
-@@ -6606,6 +_,9 @@
- #if CLIENT
- 			ClientInitialize();
- #endif
-+#if SERVER
-+			this.OpenSettings();
-+#endif
- 		}
- 
- 		private void ClientInitialize() {
 @@ -6674,41 +_,48 @@
  			}
  
@@ -1516,14 +1510,6 @@
  						currentLine++;
  					}
  
-@@ -12176,6 +_,7 @@
- 		}
- 
- 		protected override void Update(GameTime gameTime) {
-+			FallbackSyncContext.Update();
- 			if (!IsEnginePreloaded) {
- 				IsEnginePreloaded = true;
- 				if (Main.OnEnginePreload != null)
 @@ -12191,6 +_,7 @@
  							array3[currentLine] = true;
  
@@ -1540,6 +1526,14 @@
  						currentLine++;
  					}
  
+@@ -12216,6 +_,7 @@
+ 		}
+ 
+ 		protected override void Update(GameTime gameTime) {
++			FallbackSyncContext.Update();
+ 			if (!IsEnginePreloaded) {
+ 				IsEnginePreloaded = true;
+ 				if (Main.OnEnginePreload != null)
 @@ -12221,6 +_,7 @@
  							array3[currentLine] = true;
  
@@ -1729,7 +1723,7 @@
  					CustomCurrencyManager.GetPriceText(HoverItem.shopSpecialCurrency, array, ref currentLine, storeValue);
  					color = new Microsoft.Xna.Framework.Color((byte)(255f * num18), (byte)(255f * num18), (byte)(255f * num18), a);
  				}
-@@ -12292,6 +_,7 @@
+@@ -12317,6 +_,7 @@
  				_hasPendingNetmodeChange = false;
  			}
  
@@ -1774,16 +1768,6 @@
  			}
  
  			X += toolTipDistance;
-@@ -12493,6 +_,9 @@
- 
- 					mouseLeftRelease = false;
- 					mouseRightRelease = false;
-+					mouseMiddleRelease = false;
-+					mouseXButton1Release = false;
-+					mouseXButton2Release = false;
- 					if (gameMenu)
- 						UpdateMenu();
- 
 @@ -12494,19 +_,26 @@
  			if ((float)Y + zero.Y + 4f > (float)screenHeight)
  				Y = (int)((float)screenHeight - zero.Y - 4f);
@@ -1831,6 +1815,16 @@
  				}
  				else {
  					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+@@ -12523,6 +_,9 @@
+ 
+ 					mouseLeftRelease = false;
+ 					mouseRightRelease = false;
++					mouseMiddleRelease = false;
++					mouseXButton1Release = false;
++					mouseXButton2Release = false;
+ 					if (gameMenu)
+ 						UpdateMenu();
+ 
 @@ -12580,18 +_,30 @@
  					else if (array2[l]) {
  						black = (array3[l] ? new Microsoft.Xna.Framework.Color((byte)(190f * num18), (byte)(120f * num18), (byte)(120f * num18), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num18), (byte)(190f * num18), (byte)(120f * num18), a));
@@ -1916,7 +1910,7 @@
  					Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  					int num12 = 0;
  					num8 = 16;
-@@ -13019,6 +_,7 @@
+@@ -13057,6 +_,7 @@
  				}
  			}
  
@@ -1950,7 +1944,7 @@
  					int num14 = 0;
  					if (tile.halfBrick())
  						num14 = 8;
-@@ -13286,6 +_,7 @@
+@@ -13324,6 +_,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
@@ -1984,13 +1978,6 @@
  
  							if (type == 374)
  								num32 = 716;
-@@ -13938,5 +_,6 @@
- 				tileFrameCounter[493] += 120;
- 
-+			TileLoader.AnimateTiles();
- 			AnimateTiles_CritterCages();
- 		}
- 
 @@ -13957,6 +_,7 @@
  								flag4 = (flag4 || type == 162);
  						}
@@ -1999,6 +1986,13 @@
  						if (flag4) {
  							if (color.R < byte.MaxValue)
  								color.R = byte.MaxValue;
+@@ -13973,5 +_,6 @@
+ 				tileFrameCounter[493] += 120;
+ 
++			TileLoader.AnimateTiles();
+ 			AnimateTiles_CritterCages();
+ 		}
+ 
 @@ -14494,6 +_,7 @@
  										if (type == 211)
  											newColor = new Microsoft.Xna.Framework.Color(50, 255, 100, 255);
@@ -2038,7 +2032,7 @@
  								spriteBatch.Draw(evilCactusTexture, new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f, i * 16 - (int)screenPosition.Y + num12) + value, new Microsoft.Xna.Framework.Rectangle(num10, num11, num9, num8), color, 0f, default(Vector2), 1f, effects, 0f);
  							else if (flag15)
  								spriteBatch.Draw(crimsonCactusTexture, new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f, i * 16 - (int)screenPosition.Y + num12) + value, new Microsoft.Xna.Framework.Rectangle(num10, num11, num9, num8), color, 0f, default(Vector2), 1f, effects, 0f);
-@@ -15519,6 +_,7 @@
+@@ -15554,6 +_,7 @@
  				}
  			}
  
@@ -3312,30 +3306,11 @@
  						playerDrawData.Add(value);
  						if (drawPlayer.inventory[drawPlayer.selectedItem].type == 3870) {
  							value = new DrawData(glowMaskTexture[238], new Vector2((int)(value2.X - screenPosition.X + origin5.X + (float)num103), (int)(value2.Y - screenPosition.Y + (float)num104)), new Microsoft.Xna.Framework.Rectangle(0, 0, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Width, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Height), new Microsoft.Xna.Framework.Color(255, 255, 255, 127), num102, origin5, drawPlayer.inventory[drawPlayer.selectedItem].scale, spriteEffects2, 0);
-@@ -27138,6 +_,7 @@
+@@ -27194,6 +_,7 @@
  				else if (npc[i].type == 548) {
  					DrawCacheNPCsBehindNonSolidTiles.Add(i);
  				}
 +				NPCLoader.DrawBehind(Main.npc[i], i);
- 			}
- 		}
- 
-@@ -27171,7 +_,7 @@
- 					DrawCacheProjsBehindNPCs.Add(i);
- 
- 				if (projectile[i].type != 636 && projectile[i].type != 598)
--					continue;
-+					goto postProjDrawCache;
- 
- 				bool flag = true;
- 				if (projectile[i].ai[0] == 1f) {
-@@ -27188,6 +_,9 @@
- 
- 				if (flag)
- 					DrawCacheProjsBehindProjectiles.Add(i);
-+				
-+			postProjDrawCache:
-+				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverWiresUI);
  			}
  		}
  
@@ -3350,6 +3325,15 @@
  				Microsoft.Xna.Framework.Rectangle bodyFrame5 = drawPlayer.bodyFrame;
  				int num109 = num2;
  				bodyFrame5.X += num109;
+@@ -27227,7 +_,7 @@
+ 					DrawCacheProjsBehindNPCs.Add(i);
+ 
+ 				if (projectile[i].type != 636 && projectile[i].type != 598)
+-					continue;
++					goto postProjDrawCache;
+ 
+ 				bool flag = true;
+ 				if (projectile[i].ai[0] == 1f) {
 @@ -27230,6 +_,7 @@
  				if (!drawPlayer.invis || (drawPlayer.body != 21 && drawPlayer.body != 22)) {
  					if (flag && !drawPlayer.invis) {
@@ -3358,6 +3342,16 @@
  						if (flag2) {
  							value = new DrawData(playerTextures[skinVariant, 7], new Vector2((int)(Position.X - screenPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2)), (int)(Position.Y - screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 4f)) + drawPlayer.bodyPosition + new Vector2(drawPlayer.bodyFrame.Width / 2, drawPlayer.bodyFrame.Height / 2), drawPlayer.bodyFrame, color5, drawPlayer.bodyRotation, origin, 1f, spriteEffects, 0);
  							playerDrawData.Add(value);
+@@ -27244,6 +_,9 @@
+ 
+ 				if (flag)
+ 					DrawCacheProjsBehindProjectiles.Add(i);
++				
++			postProjDrawCache:
++				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverWiresUI);
+ 			}
+ 		}
+ 
 @@ -27271,7 +_,9 @@
  				playerDrawData.Add(value);
  			}
@@ -3820,7 +3814,7 @@
  				InReforgeMenu = false;
  			}
  
-@@ -32807,7 +_,9 @@
+@@ -32873,7 +_,9 @@
  				SetupDrawInterfaceLayers();
  
  			PlayerInput.SetZoom_UI();
@@ -3840,15 +3834,6 @@
  			}
  		}
  
-@@ -33107,6 +_,8 @@
- 		}
- 
- 		private void DrawInterface_33_MouseText() {
-+			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
-+			ModHooks.PostDrawInterface(spriteBatch);
- 			if (mouseItem.stack <= 0)
- 				mouseItem.type = 0;
- 
 @@ -33170,6 +_,11 @@
  						if (type == 439 || type == 370)
  							scale = 1.5f;
@@ -3861,6 +3846,15 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -33175,6 +_,8 @@
+ 		}
+ 
+ 		private void DrawInterface_33_MouseText() {
++			// TODO - UI Sorting and selective disable support -  move this to new one between 32 and 33
++			ModHooks.PostDrawInterface(spriteBatch);
+ 			if (mouseItem.stack <= 0)
+ 				mouseItem.type = 0;
+ 
 @@ -35149,8 +_,8 @@
  
  			Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoA / 255f)), (byte)((float)(int)color.G * ((float)LogoA / 255f)), (byte)((float)(int)color.B * ((float)LogoA / 255f)), (byte)((float)(int)color.A * ((float)LogoA / 255f)));
@@ -4033,7 +4027,7 @@
  				array9[num12] = Lang.menu[14].Value;
  				if (selectedMenu == num12) {
  					PlaySound(10);
-@@ -36008,7 +_,7 @@
+@@ -35939,7 +_,7 @@
  					menuMode = 14;
  				}
  			}
@@ -4042,7 +4036,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36122,7 +_,7 @@
+@@ -36053,7 +_,7 @@
  					}
  
  					tServer.StartInfo.UseShellExecute = false;
@@ -4051,7 +4045,7 @@
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else
-@@ -36143,7 +_,10 @@
+@@ -36074,7 +_,10 @@
  				array4[3] = 30;
  				array4[4] = 70;
  				array4[5] = 70;
@@ -4176,7 +4170,7 @@
  			if (num8 != ugBack) {
  				oldUgBack = ugBack;
  				ugBack = num8;
-@@ -38789,6 +_,21 @@
+@@ -38722,6 +_,21 @@
  			else
  				mouseRightRelease = true;
  
@@ -4198,7 +4192,7 @@
  			if (menuMode == num)
  				GamepadMainMenuHandler.LastDrew = num;
  		}
-@@ -39579,6 +_,7 @@
+@@ -39512,6 +_,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
@@ -4267,6 +4261,14 @@
  			backColor = bgColor;
  			trueBackColor = backColor;
  			Lighting.Initialize(resize: true);
+@@ -42226,6 +_,7 @@
+ 						}
+ 					}
+ 					else if (type >= num99 && type < num99 + num100) {
++						//patch file: num91, num92
+ 						Tile tile5 = Main.tile[num91, num92];
+ 						if (tile5 != null) {
+ 							int num109 = num92;
 @@ -42229,6 +_,7 @@
  					waterStyle = 0;
  				}
@@ -4275,15 +4277,7 @@
  				if (bgStyle != 4 && bloodMoon && !dayTime)
  					waterStyle = 9;
  
-@@ -42293,6 +_,7 @@
- 						}
- 					}
- 					else if (type >= num99 && type < num99 + num100) {
-+						//patch file: num91, num92
- 						Tile tile5 = Main.tile[num91, num92];
- 						if (tile5 != null) {
- 							int num109 = num92;
-@@ -42306,6 +_,7 @@
+@@ -42239,6 +_,7 @@
  					}
  					else {
  						text = Lang.GetMapObjectName(type);
@@ -4576,6 +4570,23 @@
  			}
  
  			if (!gameMenu && netMode != 2)
+@@ -46402,7 +_,7 @@
+ 
+ 				bool flag2 = false;
+ 				bool flag3 = false;
+-				if (tile[x, y].type == 10) {
++				if (TileLoader.IsClosedDoor(tile[x, y])) {
+ 					flag2 = false;
+ 				}
+ 				else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
+@@ -46467,6 +_,7 @@
+ 		}
+ 
+ 		protected override void Draw(GameTime gameTime) {
++			try {
+ 			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
+ 				_isDrawingOrUpdating = true;
+ 				EnsureRenderTargetContent();
 @@ -46728,6 +_,8 @@
  			tileColor.G = (byte)((bgColor.R + bgColor.G + bgColor.B + bgColor.G * 7) / 10);
  			tileColor.B = (byte)((bgColor.R + bgColor.G + bgColor.B + bgColor.B * 7) / 10);
@@ -4604,23 +4615,6 @@
  			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Filters.Scene.CanCapture();
  			if (flag)
  				Filters.Scene.BeginCapture();
-@@ -46841,7 +_,7 @@
- 
- 				bool flag2 = false;
- 				bool flag3 = false;
--				if (tile[x, y].type == 10) {
-+				if (TileLoader.IsClosedDoor(tile[x, y])) {
- 					flag2 = false;
- 				}
- 				else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
-@@ -46906,6 +_,7 @@
- 		}
- 
- 		protected override void Draw(GameTime gameTime) {
-+			try {
- 			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
- 				_isDrawingOrUpdating = true;
- 				EnsureRenderTargetContent();
 @@ -46915,7 +_,7 @@
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  			DrawBackgroundBlackFill();
@@ -4832,7 +4826,7 @@
  			width = Math.Max(width, minScreenW);
  			height = Math.Max(height, minScreenH);
  			if (width != num3 || height != num4 || flag2) {
-@@ -50374,7 +_,9 @@
+@@ -49946,7 +_,9 @@
  			}
  
  #if WINDOWS
@@ -4843,7 +4837,7 @@
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
  					flag2 = true;
-@@ -50407,7 +_,9 @@
+@@ -49979,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;

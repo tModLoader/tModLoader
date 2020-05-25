@@ -17,6 +17,12 @@
 		//Test modded grasses' behavior.
 		
 		//Ensure that all of KillTile_GetTileDustAmount's calls have x,y parameters in other files:
+		
+	//Main:
+		//Add this to the end of Initialize():
+			#if SERVER
+			this.OpenSettings();
+			#endif
 
 //Rartrin
 	//Projectile.FishingCheck

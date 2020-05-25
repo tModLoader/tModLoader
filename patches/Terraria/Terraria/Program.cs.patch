@@ -56,23 +56,21 @@
 +#if CLIENT
  			if (Debugger.IsAttached)
  				return;
- 
 +#endif
+ 
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -151,7 +_,11 @@
+@@ -151,6 +_,9 @@
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
 +#if CLIENT
- 					main.Run();
-+#else
 +					main.DedServ();
 +#endif
+ 					main.Run();
  				}
  				catch (Exception e) {
- 					DisplayException(e);
 @@ -176,7 +_,11 @@
  					streamWriter.WriteLine("");
  				}

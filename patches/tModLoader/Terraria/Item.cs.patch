@@ -343,7 +343,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45584,6 +_,9 @@
+@@ -45588,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -353,7 +353,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -45708,14 +_,17 @@
+@@ -45712,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -374,7 +374,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -45734,7 +_,22 @@
+@@ -45738,7 +_,22 @@
  			}
  		}
  
@@ -398,7 +398,7 @@
  		public Item DeepClone() => (Item)MemberwiseClone();
  
  		public bool IsTheSameAs(Item compareItem) {
-@@ -45766,6 +_,8 @@
+@@ -45770,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;

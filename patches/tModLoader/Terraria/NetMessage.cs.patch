@@ -36,7 +36,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 228);
+-						writer.Write("Terraria" + Main.curRelease);
 +						writer.Write(ModLoader.ModLoader.versionedName);
  						break;
  					case 2:
@@ -213,16 +213,14 @@
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2074,7 +_,7 @@
+@@ -2088,5 +_,5 @@
  #if SERVER
  					if (num < NetMessage.buffer.Length - 100)
- 					{
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
 +						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
- 					}
  #endif
  					num2 = 0;
-@@ -2279,7 +_,7 @@
+@@ -2291,7 +_,7 @@
  			}
  
  			if (!flag) {
@@ -231,7 +229,7 @@
  				WorldFile.SaveWorld();
  				Netplay.Disconnect = true;
  			}
-@@ -2330,11 +_,12 @@
+@@ -2342,11 +_,12 @@
  					SendData(5, toWho, fromWho, null, plr, 58 + Main.player[plr].armor.Length + Main.player[plr].dye.Length + Main.player[plr].miscEquips.Length + 1 + m, (int)Main.player[plr].miscDyes[m].prefix);
  				}
  
@@ -245,7 +243,7 @@
  				}
  
  				return;
-@@ -2346,7 +_,7 @@
+@@ -2358,7 +_,7 @@
  				Netplay.Clients[plr].IsAnnouncementCompleted = false;
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)

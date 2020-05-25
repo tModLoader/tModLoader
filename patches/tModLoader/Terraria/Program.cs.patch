@@ -190,9 +190,10 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -175,9 +_,10 @@
+@@ -173,10 +_,11 @@
  					main.DedServ();
  #endif
+ 					main.Run();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -204,7 +205,7 @@
  			}
  		}
  
-@@ -199,9 +_,18 @@
+@@ -198,9 +_,18 @@
  				}
  
  #if CLIENT
