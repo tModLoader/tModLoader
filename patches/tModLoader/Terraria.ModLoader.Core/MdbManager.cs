@@ -64,7 +64,7 @@ namespace Terraria.ModLoader.Core
 				return false;
 			
 			var debugInfo = moduleEntry.mdbReader.Read(mRef.Resolve());
-			if (!debugInfo.HasSequencePoints)
+			if (debugInfo == null || !debugInfo.HasSequencePoints) //#929 would be nice if we knew why MdbReader.Read may return null, but either way, there's nothing to get sequence points from here
 				return false;
 
 			var prev = debugInfo.SequencePoints.OrderBy(sp => sp.Offset).LastOrDefault(sp => sp.Offset <= ilOffset);
