@@ -3257,8 +3257,9 @@
  
  			goto IL_6dc5;
  		IL_6dc5:
+-			if (drawPlayer.shoe > 0 && drawPlayer.shoe < 18) {
 +		shoeAccLayer:
- 			if (drawPlayer.shoe > 0 && drawPlayer.shoe < 18) {
++			if (drawPlayer.shoe > 0) {
  				value = new DrawData(accShoesTexture[drawPlayer.shoe], new Vector2((int)(Position.X - screenPosition.X - (float)(drawPlayer.legFrame.Width / 2) + (float)(drawPlayer.width / 2)), (int)(Position.Y - screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.legFrame.Height + 4f)) + drawPlayer.legPosition + vector2, drawPlayer.legFrame, color14, drawPlayer.legRotation, vector2, 1f, spriteEffects, 0);
  				value.shader = shader6;
  				playerDrawData.Add(value);
