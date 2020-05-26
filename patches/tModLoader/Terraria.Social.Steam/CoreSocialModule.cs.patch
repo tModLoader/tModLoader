@@ -27,8 +27,8 @@
  				Environment.Exit(1);
  				return;
  			}
- 
  #endif
+ 
  			if (!SteamAPI.Init()) {
 -				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
 +				ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));

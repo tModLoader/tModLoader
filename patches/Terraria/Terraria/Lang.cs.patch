@@ -1,5 +1,15 @@
 --- src/decompiled/Terraria/Lang.cs
 +++ src/Terraria/Terraria/Lang.cs
+@@ -6,7 +_,9 @@
+ using Terraria.GameInput;
+ using Terraria.ID;
+ using Terraria.Localization;
++#if CLIENT
+ using Terraria.Map;
++#endif
+ using Terraria.UI;
+ 
+ namespace Terraria
 @@ -404,6 +_,7 @@
  		}
  

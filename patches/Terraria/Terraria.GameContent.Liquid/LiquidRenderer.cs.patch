@@ -1,0 +1,14 @@
+--- src/decompiled/Terraria.GameContent.Liquid/LiquidRenderer.cs
++++ src/Terraria/Terraria.GameContent.Liquid/LiquidRenderer.cs
+@@ -96,9 +_,11 @@
+ 		}
+ 
+ 		private void PrepareAssets() {
++#if CLIENT
+ 			for (int i = 0; i < _liquidTextures.Length; i++) {
+ 				_liquidTextures[i] = Main.Assets.Request<Texture2D>("Images/Misc/water_" + i);
+ 			}
++#endif
+ 		}
+ 
+ 		private unsafe void InternalPrepareDraw(Rectangle drawArea) {

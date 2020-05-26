@@ -1,5 +1,21 @@
 --- src/decompiled/Terraria/Player.cs
 +++ src/Terraria/Terraria/Player.cs
+@@ -28700,11 +_,15 @@
+ 		}
+ 
+ 		public Rectangle GetItemDrawFrame(int type) {
++#if SERVER
++			return Rectangle.Empty;
++#else
+ 			Main.instance.LoadItem(type);
+ 			if (type == 75)
+ 				return TextureAssets.Item[type].Frame(1, 8);
+ 
+ 			return TextureAssets.Item[type].Frame();
++#endif
+ 		}
+ 
+ 		public void ItemCheck(int i) {
 @@ -35488,9 +_,11 @@
  				else {
  					bool num2 = Main.tile[x, y].active();

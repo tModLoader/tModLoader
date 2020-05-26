@@ -1,5 +1,16 @@
 --- src/decompiled/Terraria/WorldGen.cs
 +++ src/Terraria/Terraria/WorldGen.cs
+@@ -39511,8 +_,10 @@
+ 				if (!noItem && FixExploitManEaters.SpotProtected(i, j))
+ 					return;
+ 
++#if CLIENT
+ 				if (!gen && !Main.gameMenu)
+ 					KillTile_PlaySounds(i, j, fail, tile);
++#endif
+ 			}
+ 
+ 			if (tile.type == 128 || tile.type == 269) {
 @@ -51120,6 +_,7 @@
  
  		public static bool UpdateMapTile(int i, int j, bool addToList = true) {

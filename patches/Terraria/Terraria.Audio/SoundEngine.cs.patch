@@ -18,7 +18,13 @@
  				SoundInstanceGarbageCollector.Update();
  				bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  				if (!_areSoundsPaused && flag)
-@@ -59,7 +_,10 @@
+@@ -56,31 +_,52 @@
+ 		}
+ 
+ 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
++#if SERVER
++			return null;
++#else
  			if (!IsAudioSupported)
  				return null;
  
@@ -27,6 +33,74 @@
 +#endif
 -			return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
 +				return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
++#endif
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
++#if SERVER
++			return null;
++#else
+ 			if (!IsAudioSupported)
+ 				return null;
+ 
+ 			return _player.GetActiveSound(id);
++#endif
+ 		}
+ 
+-		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
++		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
++		{
++#if SERVER
++			return SlotId.Invalid;
++#else
+ 			if (!IsAudioSupported)
+ 				return SlotId.Invalid;
+ 
+ 			return _player.Play(style, position);
++#endif
+ 		}
+ 
+-		public static SlotId PlayTrackedSound(SoundStyle style) {
++		public static SlotId PlayTrackedSound(SoundStyle style)
++		{
++#if SERVER
++			return SlotId.Invalid;
++#else
+ 			if (!IsAudioSupported)
+ 				return SlotId.Invalid;
+ 
+ 			return _player.Play(style);
++#endif
+ 		}
+ 
+ 		public static void StopTrackedSounds() {
+@@ -89,10 +_,14 @@
+ 		}
+ 
+ 		public static SoundEffect GetTrackableSoundByStyleId(int id) {
++#if SERVER
++			return null;
++#else
+ 			if (!IsAudioSupported)
+ 				return null;
+ 
+ 			return _legacyPlayer.GetTrackableSoundByStyleId(id);
++#endif
+ 		}
+ 
+ 		public static void StopAmbientSounds() {
+@@ -101,10 +_,14 @@
+ 		}
+ 
+ 		public static ActiveSound FindActiveSound(SoundStyle style) {
++#if SERVER
++			return null;
++#else
+ 			if (!IsAudioSupported)
+ 				return null;
+ 
+ 			return _player.FindActiveSound(style);
++#endif
+ 		}
+ 
+ 		private static bool TestAudioSupport() {

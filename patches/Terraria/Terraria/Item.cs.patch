@@ -1,5 +1,15 @@
 --- src/decompiled/Terraria/Item.cs
 +++ src/Terraria/Terraria/Item.cs
+@@ -3,7 +_,9 @@
+ using System.IO;
+ using Terraria.Audio;
+ using Terraria.Enums;
++#if CLIENT
+ using Terraria.GameContent;
++#endif
+ using Terraria.GameContent.Events;
+ using Terraria.GameContent.UI;
+ using Terraria.Graphics.Shaders;
 @@ -45547,6 +_,9 @@
  		}
  

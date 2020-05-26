@@ -1,17 +1,14 @@
 --- src/Terraria/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -6,7 +_,10 @@
- using Terraria.GameInput;
- using Terraria.ID;
- using Terraria.Localization;
-+using Terraria.ModLoader;
-+#if CLIENT
+@@ -9,6 +_,7 @@
+ #if CLIENT
  using Terraria.Map;
-+#endif
+ #endif
++using Terraria.ModLoader;
  using Terraria.UI;
  
  namespace Terraria
-@@ -32,15 +_,15 @@
+@@ -34,15 +_,15 @@
  		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];
  		public static LocalizedText[] prefix = new LocalizedText[85];
@@ -34,7 +31,7 @@
  
  		public static string GetMapObjectName(int id) {
  			if (_mapLegendCache != null)
-@@ -107,7 +_,7 @@
+@@ -109,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
  		public static LocalizedText GetNPCName(int netID) {
@@ -43,7 +40,7 @@
  				return _npcNameCache[netID];
  
  			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -119,8 +_,10 @@
+@@ -121,8 +_,10 @@
  		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
  		public static LocalizedText GetItemName(int id) {
@@ -56,7 +53,7 @@
  				return _itemNameCache[id];
  
  			return LocalizedText.Empty;
-@@ -268,6 +_,10 @@
+@@ -270,6 +_,10 @@
  				return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
@@ -67,7 +64,7 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -405,7 +_,7 @@
+@@ -407,7 +_,7 @@
  
  		public static void BuildMapAtlas() {
  #if CLIENT

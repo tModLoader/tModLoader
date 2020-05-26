@@ -7,7 +7,7 @@
 +#if CLIENT
  			LoadClientParameters(game);
 +#else
-+			LaunchInitializer.LoadServerParameters(game);
++			LoadServerParameters(game);
 +#endif
  		}
  
