@@ -21,7 +21,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -23,32 +_,109 @@
+@@ -23,32 +_,118 @@
    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
      <Optimize>false</Optimize>
      <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
@@ -96,6 +96,15 @@
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
      <EmbeddedResource Include="Terraria.GameContent.Creative.Content.Sacrifices.tsv" />
      <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Materials.json" />
++    <EmbeddedResource Include="..\..\references\RailSDK.Net.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++      <LogicalName>RailSDK.Net.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\RailSDK.Net.Mac.dll" Condition="$(DefineConstants.Contains('MAC'))">
++      <LogicalName>RailSDK.Net.dll</LogicalName>
++    </EmbeddedResource>
++    <EmbeddedResource Include="..\..\references\RailSDK.Net.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++      <LogicalName>RailSDK.Net.dll</LogicalName>
++    </EmbeddedResource>
 +    <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
 +      <LogicalName>ReLogic.dll</LogicalName>
 +    </EmbeddedResource>
