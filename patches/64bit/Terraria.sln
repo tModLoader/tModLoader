@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "Terraria.csproj", "{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		FNADebug|Any CPU = FNADebug|Any CPU
+		FNARelease|Any CPU = FNARelease|Any CPU
+		FNAServerDebug|Any CPU = FNAServerDebug|Any CPU
+		FNAServerRelease|Any CPU = FNAServerRelease|Any CPU
+		XNADebug|Any CPU = XNADebug|Any CPU
+		XNARelease|Any CPU = XNARelease|Any CPU
+		XNAServerDebug|Any CPU = XNAServerDebug|Any CPU
+		XNAServerRelease|Any CPU = XNAServerRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNADebug|Any CPU.ActiveCfg = FNADebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNADebug|Any CPU.Build.0 = FNADebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNARelease|Any CPU.ActiveCfg = FNARelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNARelease|Any CPU.Build.0 = FNARelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerDebug|Any CPU.ActiveCfg = FNAServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerDebug|Any CPU.Build.0 = FNAServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerRelease|Any CPU.ActiveCfg = FNAServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.FNAServerRelease|Any CPU.Build.0 = FNAServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNADebug|Any CPU.ActiveCfg = XNADebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNADebug|Any CPU.Build.0 = XNADebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNARelease|Any CPU.ActiveCfg = XNARelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNARelease|Any CPU.Build.0 = XNARelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerDebug|Any CPU.ActiveCfg = XNAServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerDebug|Any CPU.Build.0 = XNAServerDebug|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerRelease|Any CPU.ActiveCfg = XNAServerRelease|Any CPU
+		{3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5}.XNAServerRelease|Any CPU.Build.0 = XNAServerRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56B5FF14-88D7-4DF7-80C4-BFB0DBE39A9C}
+	EndGlobalSection
+EndGlobal

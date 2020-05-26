@@ -1,0 +1,263 @@
+--- src/tModLoader/Terraria.csproj
++++ src/64bit/Terraria.csproj
+@@ -1,66 +_,120 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <Import Project="..\TerrariaSteamPath.targets" />
+   <PropertyGroup>
+-    <TargetFramework>net45</TargetFramework>
++    <TargetFramework>net48</TargetFramework>
+-    <OutputType>WinExe</OutputType>
+     <Version>1.3.5.3</Version>
+     <Company>Re-Logic</Company>
+     <Copyright>Copyright © Re-Logic 2017</Copyright>
+     <RootNamespace />
+-    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
++    <Configurations>XNADebug;XNAServerDebug;XNARelease;XNAServerRelease;FNARelease;FNADebug;FNAServerRelease;FNAServerDebug</Configurations>
+     <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <LangVersion>7.3</LangVersion>
++    <OutputType>WinExe</OutputType>
+     <PlatformTarget>AnyCPU</PlatformTarget>
+     <Optimize>true</Optimize>
+     <OutputName>tModLoader</OutputName>
+   </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-    <OutputType>Exe</OutputType>
+-    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
+-    <OutputName>$(OutputName)Server</OutputName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
+-    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+-    <Optimize>false</Optimize>
+-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+-    <OutputName>$(OutputName)Debug</OutputName>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
+-    <PlatformTarget>x86</PlatformTarget>
+-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
+-    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
+-    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
+-  </PropertyGroup>
+-  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
+-    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
++  <PropertyGroup Condition="$(Configuration.Contains('FNAServerRelease'))">
++    <OutputType>Exe</OutputType>
++    <DefineConstants>TRACE;SERVER;FNA</DefineConstants>
++    <ApplicationIcon>IconFNAServer.ico</ApplicationIcon>
++    <OutputName>$(OutputName)Server</OutputName>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNAServerRelease'))">
++  <OutputType>Exe</OutputType>
++    <DefineConstants>DEBUG;TRACE;SERVER;XNA</DefineConstants>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputName>$(OutputName)Server</OutputName>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNAServerDebug'))">
++    <Optimize>false</Optimize>
++    <PlatformTarget>x86</PlatformTarget>
++    <DefineConstants>TRACE;DEBUG;SERVER;XNA</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputType>Exe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('FNAServerDebug'))">
++    <Optimize>false</Optimize>
++    <PlatformTarget>AnyCPU</PlatformTarget>
++    <DefineConstants>TRACE;DEBUG;DSERVER;FNA</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
++    <ApplicationIcon>IconFNAServer.ico</ApplicationIcon>
++    <OutputType>Exe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNADebug'))">
++    <Optimize>false</Optimize>
++    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
++    <PlatformTarget>x86</PlatformTarget>
++    <DefineConstants>TRACE;DEBUG;CLIENT;XNA</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputType>WinExe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('FNADebug'))">
++    <Optimize>false</Optimize>
++    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
++    <PlatformTarget>AnyCPU</PlatformTarget>
++    <DefineConstants>TRACE;DEBUG;CLIENT;FNA</DefineConstants>
++    <OutputName>$(OutputName)Debug</OutputName>
++    <ApplicationIcon>IconFNA.ico</ApplicationIcon>
++    <OutputType>WinExe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('XNARelease'))">
++    <Optimize>true</Optimize>
++    <PlatformTarget>x86</PlatformTarget>
++    <DefineConstants>TRACE;CLIENT;XNA</DefineConstants>
++    <OutputName>$(OutputName)Release</OutputName>
++    <ApplicationIcon>IconXNA.ico</ApplicationIcon>
++    <OutputType>Exe</OutputType>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('FNARelease'))">
++    <Optimize>true</Optimize>
++    <PlatformTarget>AnyCPU</PlatformTarget>
++    <DefineConstants>TRACE;CLIENT;FNA</DefineConstants>
++    <OutputName>$(OutputName)Release</OutputName>
++    <ApplicationIcon>IconFNA.ico</ApplicationIcon>
++    <OutputType>Exe</OutputType>
+   </PropertyGroup>
+   <PropertyGroup>
+     <PdbFile>bin\$(OutputName)</PdbFile>
+-    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='XNADebug|AnyCPU'">
++    <Prefer32Bit>false</Prefer32Bit>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
+       <HintPath>..\..\references\FNA.dll</HintPath>
+     </Reference>
+-    <Reference Include="Ionic.Zip.Reduced">
+-      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
+-    </Reference>
+     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))">
+-      <Private>true</Private>
++      <HintPath>..\..\references\Microsoft.Xna.Framework.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))">
+-      <Private>true</Private>
++      <HintPath>..\..\references\Microsoft.Xna.Framework.Game.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))">
+-      <Private>true</Private>
++      <HintPath>..\..\references\Microsoft.Xna.Framework.Graphics.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))">
+-      <Private>true</Private>
++      <HintPath>..\..\references\Microsoft.Xna.Framework.Xact.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('XNA'))">
++      <HintPath>..\..\references\ReLogicXNA.dll</HintPath>
++    </Reference>
++    <Reference Include="ReLogic" Condition="$(DefineConstants.Contains('FNA'))">
++      <HintPath>..\..\references\ReLogicFNA.dll</HintPath>
++    </Reference>
++    <Reference Include="Newtonsoft.Json" />
++    <Reference Include="Steamworks.NET">
++      <HintPath>..\..\references\Steamworks.NET.Linux.dll</HintPath>
++    </Reference>
++    <Reference Include="System" />
++    <Reference Include="System.XML" />
++    <Reference Include="System.Core" />
++    <Reference Include="System.Drawing" />
++    <Reference Include="Ionic.Zip.Reduced">
++      <HintPath>..\..\references\Ionic.Zip.Reduced.dll</HintPath>
+     </Reference>
+     <Reference Include="Mono.Cecil">
+       <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
+@@ -86,43 +_,26 @@
+     <Reference Include="MonoMod.Utils">
+       <HintPath>..\..\references\MonoMod.Utils.dll</HintPath>
+     </Reference>
+-    <Reference Include="Newtonsoft.Json" />
+-    <Reference Include="ReLogic">
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\ReLogicWindows.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\ReLogicMac.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">..\..\references\ReLogicLinux.dll</HintPath>
+-    </Reference>
+-    <Reference Include="Steamworks.NET">
+-      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\Steamworks.NET.Windows.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\Steamworks.NET.OSX.dll</HintPath>
+-      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">..\..\references\Steamworks.NET.Linux.dll</HintPath>
+-    </Reference>
+-    <Reference Include="System" />
+-    <Reference Include="System.Core" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.XML" />
+     <Reference Include="System.Windows.Forms">
+-      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
++      <HintPath Condition="!$(DefineConstants.Contains('XNA'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
+     </Reference>
+     <Reference Include="WindowsBase" />
+   </ItemGroup>
+   <ItemGroup>
++    <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" Condition="$(DefineConstants.Contains('XNA'))" />
+-    <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
++    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
+-    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" >
++    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
+-		<LogicalName>Newtonsoft.Json.dll</LogicalName>
++      <LogicalName>Newtonsoft.Json.dll</LogicalName>
+-	</EmbeddedResource>
++    </EmbeddedResource>
+     <EmbeddedResource Include="Terraria.Localization.Content/*" />
+     <EmbeddedResource Include="**\*.png" />
+-    <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
+-      <LogicalName>ReLogic.dll</LogicalName>
+-    </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\ReLogicMac.dll" Condition="$(DefineConstants.Contains('MAC'))">
++    <EmbeddedResource Include="..\..\references\ReLogicXNA.dll" Condition="$(DefineConstants.Contains('XNA'))">
+       <LogicalName>ReLogic.dll</LogicalName>
+     </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\ReLogicLinux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
++    <EmbeddedResource Include="..\..\references\ReLogicFNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
+       <LogicalName>ReLogic.dll</LogicalName>
+     </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\Steamworks.NET.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
++    <EmbeddedResource Include="..\..\references\Steamworks.NET.64bit.dll" Condition="$(DefineConstants.Contains('FNA'))">
+       <LogicalName>Steamworks.NET.dll</LogicalName>
+     </EmbeddedResource>
+     <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
+@@ -137,7 +_,17 @@
+     <EmbeddedResource Include="..\..\references\TerrariaHooks.FNA.dll" Condition="$(DefineConstants.Contains('FNA'))">
+       <LogicalName>TerrariaHooks.dll</LogicalName>
+     </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\Ionic.Zip.Reduced.dll" />
++	<EmbeddedResource Include="..\..\references\System.ValueTuple.Windows.dll" Condition="$(DefineConstants.Contains('XNA'))">
++      <LogicalName>System.ValueTuple.dll</LogicalName>
++    </EmbeddedResource>
++	<EmbeddedResource Include="..\..\references\System.ValueTuple.Mono.dll" Condition="$(DefineConstants.Contains('FNA'))">
++      <LogicalName>System.ValueTuple.dll</LogicalName>
++    </EmbeddedResource>
++	<EmbeddedResource Include="..\..\references\Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++	<EmbeddedResource Include="..\..\references\Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++	<EmbeddedResource Include="..\..\references\Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++	<EmbeddedResource Include="..\..\references\Microsoft.Xna.Framework.Xact.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++    <EmbeddedResource Include="..\..\references\FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
+     <EmbeddedResource Include="..\..\references\MP3Sharp.dll" />
+     <EmbeddedResource Include="..\..\references\NVorbis.dll" />
+     <EmbeddedResource Include="..\..\references\log4net.dll" />
+@@ -146,12 +_,6 @@
+     <EmbeddedResource Include="..\..\references\Mono.Cecil.Mdb.dll" />
+     <EmbeddedResource Include="..\..\references\MonoMod.RuntimeDetour.dll" />
+     <EmbeddedResource Include="..\..\references\MonoMod.Utils.dll" />
+-    <EmbeddedResource Include="..\..\references\System.ValueTuple.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
+-      <LogicalName>System.ValueTuple.dll</LogicalName>
+-    </EmbeddedResource>
+-    <EmbeddedResource Include="..\..\references\System.ValueTuple.Mono.dll" Condition="!$(DefineConstants.Contains('WINDOWS'))">
+-      <LogicalName>System.ValueTuple.dll</LogicalName>
+-    </EmbeddedResource>
+   </ItemGroup>
+   <Target Name="EditBin" AfterTargets="Build">
+     <PropertyGroup>
+@@ -168,11 +_,17 @@
+   </Target>
+   <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
+     <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
++    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
++      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
++    </Exec>
+-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\$(OutputName).exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\$(OutputName).exe" />
+-    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(tModLoaderSteamPath)" />
++    <Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(SteamDir)" />
+   </Target>
+   <Target Name="CopyToModCompile" AfterTargets="EditBin" Condition="$(Configuration)==MacRelease">
+     <Message Text="Copying tModLoaderMac to ModCompile..." Importance="high" />
++    <Exec Command="&quot;$(ProjectDir)..\..\setup\bin\setup&quot; --steamdir" ConsoleToMsBuild="true">
++      <Output TaskParameter="ConsoleOutput" PropertyName="SteamDir" />
++    </Exec>
+-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(tModLoaderSteamPath)\ModCompile\tModLoader.FNA.exe" />
++    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(SteamDir)\ModCompile\tModLoader.FNA.exe" />
+   </Target>
+ </Project>

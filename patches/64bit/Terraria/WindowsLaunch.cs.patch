@@ -1,0 +1,8 @@
+--- src/tModLoader/Terraria/WindowsLaunch.cs
++++ src/64bit/Terraria/WindowsLaunch.cs
+@@ -1,4 +_,4 @@
+-#if WINDOWS
++#if XNA
+ using System;
+ using System.IO;
+ using System.Reflection;

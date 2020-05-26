@@ -1,0 +1,114 @@
+#if FNA
+using SDL2;
+#endif
+using System;
+using System.Reflection;
+using Microsoft.Win32;
+using Microsoft.Xna.Framework.Graphics;
+#if !WINDOWS
+using System.IO;
+using System.Runtime.InteropServices;
+#endif
+namespace Terraria.Utilities
+{
+	public static class PlatformUtilities
+	{
+#if FNA
+		private struct SDL_Surface
+		{
+			private uint flags;
+
+			public IntPtr format;
+
+			public int w;
+
+			public int h;
+
+			private int pitch;
+
+			public IntPtr pixels;
+
+			private IntPtr userdata;
+
+			private int locked;
+
+			private IntPtr lock_data;
+
+			private SDL.SDL_Rect clip_rect;
+
+			private IntPtr map;
+
+			private int refcount;
+		}
+#endif
+		public static readonly bool IsXNA = XNACheck();
+		public static readonly bool IsFNA = !IsXNA;
+		public static readonly bool IsWindows = RunningPlatform() == PlatformID.Win32NT;
+		public static readonly bool IsOSX = RunningPlatform() == PlatformID.MacOSX;
+		public static readonly bool IsLinux = RunningPlatform() == PlatformID.Unix;
+
+
+#if !XNA
+		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
+			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, imgWidth, imgHeight, 32, 255u, 65280u, 16711680u, 4278190080u);
+			SDL.SDL_LockSurface(intPtr);
+			PlatformUtilities.SDL_Surface* ptr = (PlatformUtilities.SDL_Surface*)(void*)intPtr;
+			Marshal.Copy(data, 0, ptr->pixels, width * height * 4);
+			SDL.SDL_UnlockSurface(intPtr);
+			data = null;
+			if (width != imgWidth || height != imgHeight) {
+				IntPtr intPtr2 = SDL.SDL_CreateRGBSurface(0u, width, height, 32, 255u, 65280u, 16711680u, 4278190080u);
+				SDL.SDL_BlitScaled(intPtr, IntPtr.Zero, intPtr2, IntPtr.Zero);
+				SDL.SDL_FreeSurface(intPtr);
+				intPtr = intPtr2;
+			}
+
+			byte[] array = new byte[width * height * 4 + 41 + 57 + 256];
+			GCHandle handle = GCHandle.Alloc(array, GCHandleType.Pinned);
+			IntPtr intPtr3 = SDL.SDL_RWFromMem(handle.AddrOfPinnedObject(), array.Length);
+			SDL_image.IMG_SavePNG_RW(intPtr, intPtr3, 1);
+			SDL.SDL_FreeSurface(intPtr);
+			int count = (array[33] << 24 | array[34] << 16 | array[35] << 8 | array[36]) + 41 + 57;
+			stream.Write(array, 0, count);
+		}
+#endif
+
+		public static PlatformID RunningPlatform() {
+			switch (Environment.OSVersion.Platform) {
+				case PlatformID.Unix:
+					if (Directory.Exists("/Applications")
+						& Directory.Exists("/System")
+						& Directory.Exists("/Users")
+						& Directory.Exists("/Volumes")) {
+						return PlatformID.MacOSX;
+					}
+					else {
+						return PlatformID.Unix;
+					}
+
+				case PlatformID.MacOSX:
+					return PlatformID.MacOSX;
+
+				default:
+					return PlatformID.Win32NT;
+			}
+		}
+
+		public static bool XNACheck() {
+			return Assembly.GetAssembly(typeof(GraphicsProfile)).GetType("Microsoft.Xna.Framework.Graphics.ProfileCapabilities") != null;
+		}
+
+		public static bool RegisteryKeyInstalled(string regkey) {
+
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+				var key = Registry.LocalMachine.OpenSubKey(regkey);
+				if (key == null)
+					return false;
+				else
+					return true;
+			}
+
+			return true;
+		}
+	}
+}

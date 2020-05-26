@@ -1,0 +1,222 @@
+--- src/tModLoader/Terraria/Program.cs
++++ src/64bit/Terraria/Program.cs
+@@ -20,6 +_,7 @@
+ using Terraria.Initializers;
+ using Terraria.Localization;
+ using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
+ using Terraria.ModLoader.Exceptions;
+ using Terraria.Social;
+ using Terraria.Utilities;
+@@ -104,7 +_,7 @@
+ 
+ 		private static void ForceJITOnMethod(MethodInfo method)
+ 		{
+-#if WINDOWS
++#if XNA
+ 			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+ #else
+ 			// We don't synchronize access to JitForcedMethodCache because no one ever needs to read its value.
+@@ -117,7 +_,7 @@
+ 
+ 		private static IEnumerable<MethodInfo> GetMethodsCrossPlatform(Type type)
+ 		{
+-#if WINDOWS
++#if XNA
+ 			return type.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+ #else
+ 			return type.GetMethods();
+@@ -204,89 +_,133 @@
+ 		// some versions of the .NET runtime will run the Main static initilizer as soon as LaunchGame is invoked
+ 		// causing Main.SavePath to be initialized before LaunchParameters is parsed.
+ 		// moving arg parsing to a separate function avoids this
+-		public static void LaunchGame(string[] args, bool monoArgs = false) {
+-			if (monoArgs)
++		public static void LaunchGame(string[] args, bool monoArgs = false)
++		{
++#if FNA && CLIENT
++			if (!Environment.Is64BitOperatingSystem) {
++				MessageBox.Show("Your current OS has been detected as a 32bit OS\n" +
++				                "Sadly, since tmodloader 64bit doesn't support 32bit OS you'll have to either upgrade your OS to 64bit or get a 64bit computer.\n" +
++				                "However, this doesn't mean that 32bit won't be supported in a future.", "Terraria.exe", MessageBoxButtons.OK);
++				Environment.Exit(1);
++			}
++
++			//This check here if the proper VCRedist is installed on windows, should take care of the Faudio problem for some user (other need to update their driver)
++			if (PlatformUtilities.IsWindows) {
++				if (!PlatformUtilities.RegisteryKeyInstalled(@"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64")) {
++					MessageBox.Show("You are missing the VC Redist required for the Faudio.dll.\n" +
++					                "Now executing the VC redist installer included with this package.\n" +
++					                "If you have more problem, you can join our discord.\n" +
++					                "link: https://discord.gg/DY8cx5T \n", "Terraria.exe", MessageBoxButtons.OK);
++					ProcessStartInfo installerStartInfo = new ProcessStartInfo("VC_redist.x64.exe", "/quiet /norestart");
++					Process process = Process.Start(installerStartInfo);
++					Console.Write("Installing VC redist, please wait...");
++
++					while (!process.HasExited) {
++
++					}
++
++					Console.Write("Installation done!");
++				}
++			}
++#endif
++
++			if (monoArgs) {
+ 				args = Utils.ConvertMonoArgsToDotNet(args);
+ 
++				LaunchParameters = Utils.ParseArguements(args);
++
+-			LaunchParameters = Utils.ParseArguements(args);
++				typeof(ReLogic.OS.Platform).GetField("Current", BindingFlags.Static | BindingFlags.Public).SetValue(null, new UniversalPlatform(PlatformType.Linux));
+-			SavePath =
++				SavePath =
+-				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
++					LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
+-				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
++					LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
+-				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++					Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
+-			if (File.Exists("savehere.txt"))
++				if (File.Exists("savehere.txt"))
+-				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
++					SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
+ 
+-			try {
++				try {
+-				Logging.Init();
++					Logging.Init();
+-			}
++				}
+-			catch (Exception e) {
++				catch (Exception e) {
+-				DisplayException(e);
++					DisplayException(e);
+-				return;
++					return;
+-			}
++				}
+ 
+-			LaunchGame_();
++				if (PlatformUtilities.IsLinux) {
++					Logging.tML.Info($"Setting LD_LIBRARY_PATH to {Path.Combine(Environment.CurrentDirectory, "lib64")}");
++					Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", Path.Combine(Environment.CurrentDirectory, "lib64"));
++
++				}
++
++				if (PlatformUtilities.IsOSX) {
++					Logging.tML.Info($"Setting DYLD_LIBRARY_PATH to {Path.Combine(Environment.CurrentDirectory, "osx")}");
++					Environment.SetEnvironmentVariable("DYLD_LIBRARY_PATH", Path.Combine(Environment.CurrentDirectory, "osx"));
++
++				}
++
++				LaunchGame_();
++			}
+ 		}
+ 
+ 		public static void LaunchGame_() {
+-			if (Platform.IsOSX) {
++				if (Platform.IsOSX) {
+-				Main.OnEngineLoad += delegate {
++					Main.OnEngineLoad += delegate {
+-					Main.instance.IsMouseVisible = false;
++						Main.instance.IsMouseVisible = false;
+-				};
++					};
+-			}
++				}
+ 
+-			ThreadPool.SetMinThreads(8, 8);
++				ThreadPool.SetMinThreads(8, 8);
+-			LanguageManager.Instance.SetLanguage(GameCulture.English);
++				LanguageManager.Instance.SetLanguage(GameCulture.English);
+-			//Program.SetupLogging();
++				//Program.SetupLogging();
+-			try {
++				try {
+-				ModLoader.ModLoader.EngineInit();
++					ModLoader.ModLoader.EngineInit();
+-				using (Main main = new Main()) {
++					using (Main main = new Main()) {
+-					InitializeConsoleOutput();
++						InitializeConsoleOutput();
+-					Lang.InitializeLegacyLocalization();
++						Lang.InitializeLegacyLocalization();
+-					SocialAPI.Initialize();
++						SocialAPI.Initialize();
+-					main.PostSocialInitialize();
++					
+-					LaunchInitializer.LoadParameters(main);
++						LaunchInitializer.LoadParameters(main);
+-					Main.OnEnginePreload += StartForceLoad;
++						Main.OnEnginePreload += StartForceLoad;
+ #if CLIENT
+-					main.Run();
++						main.Run();
+ #else
+ 					main.DedServ();
+ #endif
++					}
+ 				}
+-			}
+-			catch (Exception e) {
++				catch (Exception e) {
+-				Logging.Terraria.Fatal("Main engine crash", e);
++					Logging.Terraria.Fatal("Main engine crash", e);
+-				DisplayException(e);
++					DisplayException(e);
++				}
+ 			}
+-		}
+ 
+-		private static void DisplayException(Exception e) {
++			private static void DisplayException(Exception e) {
+-			try {
++				try {
+-				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
++					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
+-					streamWriter.WriteLine(DateTime.Now);
++						streamWriter.WriteLine(DateTime.Now);
+-					streamWriter.WriteLine(e);
++						streamWriter.WriteLine(e);
+-					streamWriter.WriteLine("");
++						streamWriter.WriteLine("");
+-				}
++					}
+ 
+ #if CLIENT
+-				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
++					ModLoader.UI.Interface.MessageBoxShow(e.ToString());
+ 
+-				if (e is FolderCreationFailedException)
++					if (e is FolderCreationFailedException)
+-					Process.Start(e.HelpLink);
++						Process.Start(e.HelpLink);
+ 
+-				if (e.Message.Contains("CSteamworks"))
++					if (e.Message.Contains("CSteamworks"))
+-					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
++						Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
+ 
+-				if (e.StackTrace.Contains("LaunchLocalServer")) {
++					if (e.StackTrace.Contains("LaunchLocalServer")) {
+-					ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
++						ModLoader.UI.Interface.MessageBoxShow("Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.");
+ 
+-					Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
++						Process.Start(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
+-				}
++					}
+ #else
+ 				Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
+ #endif
+-			}
+-			catch {
+-			}
+-		}
++				}
++				catch {
++				}
++			}
+ 	}
+ }

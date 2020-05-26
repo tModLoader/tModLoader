@@ -1,0 +1,86 @@
+--- src/tModLoader/Terraria.ModLoader.UI/UIMemoryBar.cs
++++ src/64bit/Terraria.ModLoader.UI/UIMemoryBar.cs
+@@ -2,13 +_,16 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.Collections.Generic;
++using System.ComponentModel;
+ using System.Diagnostics;
+ using System.Linq;
++using System.Runtime.InteropServices;
+ using System.Text;
+ using System.Threading.Tasks;
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.ModLoader.Core;
+ using Terraria.UI;
++using Terraria.Utilities;
+ 
+ namespace Terraria.ModLoader.UI
+ {
+@@ -27,6 +_,28 @@
+ 			}
+ 		}
+ 
++		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
++		private class MEMORYSTATUSEX
++		{
++			public uint dwLength;
++			public uint dwMemoryLoad;
++			public ulong ullTotalPhys;
++			public ulong ullAvailPhys;
++			public ulong ullTotalPageFile;
++			public ulong ullAvailPageFile;
++			public ulong ullTotalVirtual;
++			public ulong ullAvailVirtual;
++			public ulong ullAvailExtendedVirtual;
++			public MEMORYSTATUSEX() {
++				dwLength = (uint)Marshal.SizeOf(this);
++			}
++		}
++
++
++		[return: MarshalAs(UnmanagedType.Bool)]
++		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
++		static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX lpBuffer);
++
+ 		internal static bool RecalculateMemoryNeeded = true;
+ 
+ 		private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
+@@ -106,13 +_,30 @@
+ 			_hoverPanel = new UIPanel();
+ 			_hoverPanel.Activate();
+ 
+-#if WINDOWS //TODO: 64bit?
+-			_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
+-			long availableMemory = _maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
+-#else
+-			long maxMemory = GetTotalMemory();
+-			long availableMemory = GetAvailableMemory();
+-#endif
++			long availableMemory = 0;
++
++			//Special Memory check on windows only
++			if (PlatformUtilities.IsWindows) {
++				if (PlatformUtilities.IsFNA) {
++					MEMORYSTATUSEX memStatus = new MEMORYSTATUSEX();
++					if (GlobalMemoryStatusEx(memStatus)) {
++						_maxMemory = (long)memStatus.ullTotalPhys;
++						availableMemory = _maxMemory;
++					}
++				}
++				else {
++					_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
++					availableMemory = _maxMemory;
++				}
++
++			}
++			else {
++				_maxMemory = GetTotalMemory();
++				availableMemory = GetAvailableMemory();
++			}
++
++
++
+ 
+ 			long totalModMemory = 0;
+ 			int i = 0;

@@ -1,0 +1,56 @@
+--- src/tModLoader/Terraria.Graphics.Capture/CaptureCamera.cs
++++ src/64bit/Terraria.Graphics.Capture/CaptureCamera.cs
+@@ -5,7 +_,7 @@
+ using System.Drawing;
+ using System.Drawing.Imaging;
+ using System.IO;
+-#if WINDOWS
++#if XNA
+ using System.Runtime.InteropServices;
+ #endif
+ using System.Threading;
+@@ -163,7 +_,7 @@
+ 					byte* ptr4 = ptr3 + (destinationBufferWidth * area.Y + area.X << 2);
+ 					for (int i = 0; i < area.Height; i++) {
+ 						for (int j = 0; j < area.Width; j++) {
+-#if WINDOWS
++#if XNA
+ 							ptr4[2] = ptr2[0];
+ 							ptr4[1] = ptr2[1];
+ 							ptr4[0] = ptr2[2];
+@@ -190,7 +_,7 @@
+ 		private bool SaveImage(int width, int height, ImageFormat imageFormat, string filename) {
+ 			try {
+ 				Directory.CreateDirectory(Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar);
+-#if WINDOWS
++#if XNA
+ 				using (Bitmap bitmap = new Bitmap(width, height)) {
+ 					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
+ 					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
+@@ -219,7 +_,7 @@
+ 			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
+ 			string filename2 = Path.Combine(text, filename);
+ 			Directory.CreateDirectory(text);
+-#if WINDOWS
++#if XNA
+ 			using (Bitmap bitmap = new Bitmap(width, height)) {
+ 				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
+ #else
+@@ -231,7 +_,7 @@
+ 				int num2 = 0;
+ 				for (int i = 0; i < height; i++) {
+ 					for (int j = 0; j < width; j++) {
+-#if WINDOWS
++#if XNA
+ 						byte b = _outputData[num + 2];
+ 						_outputData[num2 + 2] = _outputData[num];
+ 						_outputData[num2] = b;
+@@ -250,7 +_,7 @@
+ 					num += texture.Width - width << 2;
+ 				}
+ 
+-#if WINDOWS
++#if XNA
+ 				BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
+ 				IntPtr scan = bitmapData.Scan0;
+ 				Marshal.Copy(_outputData, 0, scan, width * height * 4);

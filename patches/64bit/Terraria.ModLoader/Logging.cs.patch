@@ -1,0 +1,21 @@
+--- src/tModLoader/Terraria.ModLoader/Logging.cs
++++ src/64bit/Terraria.ModLoader/Logging.cs
+@@ -17,6 +_,7 @@
+ using Terraria.ModLoader.Core;
+ using Microsoft.Xna.Framework;
+ using Terraria.ModLoader.UI;
++using Terraria.Utilities;
+ 
+ namespace Terraria.ModLoader
+ {
+@@ -45,8 +_,9 @@
+ 
+ 			ConfigureAppenders();
+ 
+-			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, ReLogic.OS.Platform.Current.Type, side, DateTime.Now.ToString("d"));
++			tML.InfoFormat("Starting {0} {1} {2} ({3})", ModLoader.versionedName, PlatformUtilities.RunningPlatform(), side, DateTime.Now.ToString("d"));
+ 			tML.InfoFormat("Running on {0} {1}", FrameworkVersion.Framework, FrameworkVersion.Version);
++			tML.InfoFormat("Engine: {0}", PlatformUtilities.IsFNA ? "FNA" : "XNA");
+ 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
+ 			tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
+ 			tML.InfoFormat("Launch Parameters: {0}", string.Join(" ", Program.LaunchParameters.Select(p => (p.Key + " " + p.Value).Trim())));

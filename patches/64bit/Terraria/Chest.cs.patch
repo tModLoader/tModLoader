@@ -1,0 +1,205 @@
+--- src/tModLoader/Terraria/Chest.cs
++++ src/64bit/Terraria/Chest.cs
+@@ -1,10 +_,12 @@
+ using Microsoft.Xna.Framework;
++using System;
+ using Terraria.DataStructures;
+ using Terraria.GameContent.Achievements;
+ using Terraria.GameContent.Events;
+ using Terraria.ID;
+ using Terraria.ObjectData;
+ using Terraria.ModLoader;
++using Terraria.ModLoader.x64bit;
+ 
+ namespace Terraria
+ {
+@@ -29,13 +_,15 @@
+ 		public int frameCounter;
+ 		public int frame;
+ 
+-		public Chest(bool bank = false) {
++		public Chest(bool bank = false)
++		{
+ 			item = new Item[40];
+ 			bankChest = bank;
+ 			name = string.Empty;
+ 		}
+ 
+-		public override string ToString() {
++		public override string ToString()
++		{
+ 			int num = 0;
+ 			for (int i = 0; i < item.Length; i++) {
+ 				if (item[i].stack > 0)
+@@ -45,7 +_,8 @@
+ 			return $"{{X: {x}, Y: {y}, Count: {num}}}";
+ 		}
+ 
+-		public static void Initialize() {
++		public static void Initialize()
++		{
+ 			int[] array = chestItemSpawn;
+ 			int[] array2 = chestTypeToIcon;
+ 			array2[0] = (array[0] = 48);
+@@ -148,7 +_,8 @@
+ 			dresserTypeToIcon[31] = (dresserItemSpawn[31] = 3914);
+ 		}
+ 
+-		private static bool IsPlayerInChest(int i) {
++		private static bool IsPlayerInChest(int i)
++		{
+ 			for (int j = 0; j < 255; j++) {
+ 				if (Main.player[j].chest == i)
+ 					return true;
+@@ -157,10 +_,11 @@
+ 			return false;
+ 		}
+ 
+-		public static bool isLocked(int x, int y) {
++		public static bool isLocked(int x, int y)
++		{
+ 			if (Main.tile[x, y] == null)
+ 				return true;
+-				
++
+ 			if (Main.tile[x, y].type >= TileID.Count)
+ 				return TileLoader.IsLockedChest(x, y, Main.tile[x, y].type);
+ 
+@@ -170,16 +_,18 @@
+ 			return false;
+ 		}
+ 
+-		public static void ServerPlaceItem(int plr, int slot) {
++		public static void ServerPlaceItem(int plr, int slot)
++		{
+ 			Main.player[plr].inventory[slot] = PutItemInNearbyChest(Main.player[plr].inventory[slot], Main.player[plr].Center);
+-			NetMessage.SendData(5, -1, -1, null, plr, slot, (int)Main.player[plr].inventory[slot].prefix);
++			NetMessage.SendData(5, -1, -1, null, plr, slot, (int) Main.player[plr].inventory[slot].prefix);
+ 		}
+ 
+-		public static Item PutItemInNearbyChest(Item item, Vector2 position) {
++		public static Item PutItemInNearbyChest(Item item, Vector2 position)
++		{
+ 			if (Main.netMode == 1)
+ 				return item;
+ 
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+ 				bool flag = false;
+ 				bool flag2 = false;
+ 				if (Main.chest[i] == null || IsPlayerInChest(i) || isLocked(Main.chest[i].x, Main.chest[i].y) || !((new Vector2(Main.chest[i].x * 16 + 16, Main.chest[i].y * 16 + 16) - position).Length() < 200f))
+@@ -226,7 +_,8 @@
+ 
+ 		public object Clone() => MemberwiseClone();
+ 
+-		public static bool Unlock(int X, int Y) {
++		public static bool Unlock(int X, int Y)
++		{
+ 			if (Main.tile[X, Y] == null)
+ 				return false;
+ 
+@@ -236,13 +_,14 @@
+ 				num = -36;
+ 				type = 11;
+ 				bool manual = false;
+-				if(!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
++				if (!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
+ 					return false;
+ 				if (manual)
+ 					return true;
+ 				num *= -1;
+ 				goto PostVanillaChests;
+ 			}
++
+ 			switch (Main.tile[X, Y].frameX / 36) {
+ 				case 2:
+ 					num = 36;
+@@ -273,6 +_,7 @@
+ 				default:
+ 					return false;
+ 			}
++
+ 			PostVanillaChests:
+ 
+ 			Main.PlaySound(22, X * 16, Y * 16);
+@@ -287,20 +_,20 @@
+ 
+ 			return true;
+ 		}
++	
+ 
+ 		public static int UsingChest(int i) {
+ 			if (Main.chest[i] != null) {
+ 				for (int j = 0; j < 255; j++) {
+ 					if (Main.player[j].active && Main.player[j].chest == i)
+ 						return j;
+-				}
++					}
+ 			}
+-
+ 			return -1;
+ 		}
+ 
+ 		public static int FindChest(int X, int Y) {
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+ 				if (Main.chest[i] != null && Main.chest[i].x == X && Main.chest[i].y == Y)
+ 					return i;
+ 			}
+@@ -309,8 +_,8 @@
+ 		}
+ 
+ 		public static int FindChestByGuessing(int X, int Y) {
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+-				if (Main.chest[i] != null && Main.chest[i].x >= X && Main.chest[i].x < X + 2 && Main.chest[i].y >= Y && Main.chest[i].y < Y + 2)
++				if (Main.chest[i] != null && Main.chest[i].x >= X && Main.chest[i].x < X + 2 && Main.chest[i].y >= Y && Main.chest[i].y < Y + 2) 
+ 					return i;
+ 			}
+ 
+@@ -319,7 +_,7 @@
+ 
+ 		public static int FindEmptyChest(int x, int y, int type = 21, int style = 0, int direction = 1) {
+ 			int num = -1;
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+ 				Chest chest = Main.chest[i];
+ 				if (chest != null) {
+ 					if (chest.x == x && chest.y == y)
+@@ -407,7 +_,7 @@
+ 		}
+ 
+ 		public static bool CanDestroyChest(int X, int Y) {
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+ 				Chest chest = Main.chest[i];
+ 				if (chest == null || chest.x != X || chest.y != Y)
+ 					continue;
+@@ -424,7 +_,7 @@
+ 		}
+ 
+ 		public static bool DestroyChest(int X, int Y) {
+-			for (int i = 0; i < 1000; i++) {
++			for (int i = 0; i < Core64.maxChest; i++) {
+ 				Chest chest = Main.chest[i];
+ 				if (chest == null || chest.x != X || chest.y != Y)
+ 					continue;
+@@ -1944,15 +_,14 @@
+ 		}
+ 
+ 		public static void UpdateChestFrames() {
+-			bool[] array = new bool[1000];
++			bool[] array = new bool[Core64.maxChest];
+ 			for (int i = 0; i < 255; i++) {
+ 				if (Main.player[i].active && Main.player[i].chest >= 0 && Main.player[i].chest < 1000)
+ 					array[Main.player[i].chest] = true;
+ 			}
+ 
+-			Chest chest = null;
+-			for (int j = 0; j < 1000; j++) {
++			for (int j = 0; j < Core64.maxChest; j++) {
+-				chest = Main.chest[j];
++				Chest chest = Main.chest[j];
+ 				if (chest != null) {
+ 					if (array[j])
+ 						chest.frameCounter++;

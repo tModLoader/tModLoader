@@ -1,0 +1,27 @@
+--- src/tModLoader/Terraria.Graphics/TileBatch.cs
++++ src/64bit/Terraria.Graphics/TileBatch.cs
+@@ -7,13 +_,13 @@
+ 
+ namespace Terraria.Graphics
+ {
+-#if WINDOWS
++#if XNA
+ 	public class TileBatch
+ #else
+ 	public class TileBatch : IDisposable
+ #endif
+ 	{
+-#if WINDOWS
++#if XNA
+ 		private struct SpriteData
+ 		{
+ 			public Vector4 Source;
+@@ -123,7 +_,7 @@
+ 		private readonly GraphicsDevice _graphicsDevice;
+ #endif
+ 		private SpriteBatch _spriteBatch;
+-#if WINDOWS
++#if XNA
+ 		private static Vector2 _vector2Zero;
+ 		private static Rectangle? _nullRectangle;
+ 		private DynamicVertexBuffer _vertexBuffer;

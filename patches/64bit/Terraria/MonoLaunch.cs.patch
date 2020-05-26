@@ -1,0 +1,14 @@
+--- src/tModLoader/Terraria/MonoLaunch.cs
++++ src/64bit/Terraria/MonoLaunch.cs
+@@ -1,4 +_,4 @@
+-#if !WINDOWS
++/*
+ using System;
+ using System.IO;
+ using System.Reflection;
+@@ -24,4 +_,4 @@
+ 		Program.LaunchGame(args, monoArgs: true);
+ 	}
+ }
+-#endif
++*/

@@ -1,0 +1,110 @@
+--- src/tModLoader/Terraria.ModLoader.UI/Interface.cs
++++ src/64bit/Terraria.ModLoader.UI/Interface.cs
+@@ -9,6 +_,8 @@
+ using Terraria.ModLoader.UI;
+ using Terraria.ModLoader.UI.DownloadManager;
+ using Terraria.ModLoader.UI.ModBrowser;
++using Terraria.ModLoader.x64bit;
++using Terraria.Utilities;
+ 
+ namespace Terraria.ModLoader.UI
+ {
+@@ -39,6 +_,7 @@
+ 		internal const int modConfigID = 10024;
+ 		internal const int createModID = 10025;
+ 		internal const int exitID = 10026;
++		internal const int supportID = 20000;
+ 		internal static UIMods modsMenu = new UIMods();
+ 		internal static UILoadMods loadMods = new UILoadMods();
+ 		private static UIModSources modSources = new UIModSources();
+@@ -79,11 +_,21 @@
+ 				buttonIndex++;
+ 				numButtons++;
+ 			}
++
+ 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
+ 			if (selectedMenu == buttonIndex) {
+ 				Main.PlaySound(10, -1, -1, 1);
+ 				Main.menuMode = modBrowserID;
+ 			}
++
++			buttonIndex++;
++			numButtons++;
++
++			buttonNames[buttonIndex] = "Support";
++			if (selectedMenu == buttonIndex) {
++				Main.PlaySound(10, -1, -1, 1);
++				Main.menuMode = supportID;
++			}
+ 			buttonIndex++;
+ 			numButtons++;
+ 			offY = 220;
+@@ -283,6 +_,47 @@
+ 			else if (Main.menuMode == exitID) {
+ 				Environment.Exit(0);
+ 			}
++			else if (Main.menuMode == supportID) {
++				offY = 210;
++				spacing = 60;
++				numButtons = 5;
++				buttonVerticalSpacing[numButtons - 1] = 18;
++				int buttonIndex = 0;
++				buttonNames[buttonIndex] = "tModLoader 64bit discord";
++				if (selectedMenu == buttonIndex) {
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://discord.gg/DY8cx5T");
++				}
++
++				buttonIndex++;
++				buttonNames[buttonIndex] = "Official tModLoader discord";
++				if (selectedMenu == buttonIndex) {
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://discord.gg/RMZCqq6");
++				}
++
++				buttonIndex++;
++				buttonNames[buttonIndex] = "Support Dradon on Patreon!";
++				if (selectedMenu == buttonIndex) {
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://www.patreon.com/dradonhunter11");
++				}
++
++				buttonIndex++;
++				buttonNames[buttonIndex] = "Support tModLoader on Patreon!";
++				if (selectedMenu == buttonIndex) {
++					Main.PlaySound(SoundID.MenuOpen);
++					Process.Start("https://www.patreon.com/tModLoader");
++				}
++
++				buttonIndex++;
++				buttonNames[buttonIndex] = Lang.menu[5].Value;
++				if (selectedMenu == buttonIndex || backButtonDown) {
++					backButtonDown = false;
++					Main.menuMode = 0;
++					Main.PlaySound(11, -1, -1, 1);
++				}
++			}
+ 		}
+ 
+ 		internal static void ServerModMenu() {
+@@ -378,12 +_,16 @@
+ 		internal static void MessageBoxShow(string text, string caption = null) {
+ 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
+ 			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
+-#if !MAC
+-			System.Windows.Forms.MessageBox.Show(text, caption);
+-#else
++
++			if (PlatformUtilities.IsWindows)
++				System.Windows.Forms.MessageBox.Show(text, caption);
++			else {
++				File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
++				Process.Start("fake-messagebox.txt");
++			}
++
+ 			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
+ 			Process.Start("fake-messagebox.txt");
+-#endif
+ 		}
+ 	}
+ }

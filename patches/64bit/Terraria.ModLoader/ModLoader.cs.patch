@@ -1,0 +1,40 @@
+--- src/tModLoader/Terraria.ModLoader/ModLoader.cs
++++ src/64bit/Terraria.ModLoader/ModLoader.cs
+@@ -18,6 +_,7 @@
+ using Terraria.ModLoader.Default;
+ using Terraria.ModLoader.Engine;
+ using Terraria.ModLoader.UI;
++using Terraria.ModLoader.x64bit;
+ using Version = System.Version;
+ 
+ namespace Terraria.ModLoader
+@@ -51,7 +_,8 @@
+ 		[Obsolete("Use Platform.IsLinux")]
+ 		public static readonly bool linux = Platform.IsLinux;
+ 		[Obsolete("Use Platform.IsOSX")]
++		//Better having a field to check if the process is in 64bit mode
+-		public static readonly bool mac = Platform.IsOSX;
++		public static readonly bool is64BitProcess = Environment.Is64BitProcess;
+ 
+ 		[Obsolete("Use CompressedPlatformRepresentation instead")]
+ 		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
+@@ -359,6 +_,9 @@
+ 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
+ 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+ 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
++			Main.Configuration.Put("VanillaMode", Core64.vanillaMode);
++			Main.Configuration.Put("LiteMode", Core64.liteMode);
++			Main.Configuration.Put("Last64BitLaunched", Core64.current64BitInternalVersion);
+ 		}
+ 
+ 		internal static void LoadConfiguration()
+@@ -375,6 +_,9 @@
+ 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
+ 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
+ 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
++			Main.Configuration.Get("VanillaMode", ref Core64.vanillaMode);
++			Main.Configuration.Get("LiteMode", ref Core64.liteMode);
++			Main.Configuration.Get("Last64BitLaunched", ref Core64.last64bitVersionLaunched);
+ 		}
+ 
+ 		internal static void MigrateSettings()

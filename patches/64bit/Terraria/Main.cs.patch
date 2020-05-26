@@ -1,0 +1,374 @@
+--- src/tModLoader/Terraria/Main.cs
++++ src/64bit/Terraria/Main.cs
+@@ -4,7 +_,8 @@
+ using Microsoft.Xna.Framework.Content;
+ using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Input;
+-#if MAC
++
++#if FNA
+ using SDL2;
+ #endif
+ using ReLogic.Graphics;
+@@ -14,20 +_,23 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
+-#if WINDOWS
++using Steamworks;
++#if XNA
+ using System.Drawing;
+ #endif
+ using System.IO;
+ using System.Linq;
+ using System.Reflection;
+-#if !WINDOWS
++
++#if FNA
+ using System.Runtime.CompilerServices;
+ #endif
+ using System.Runtime.InteropServices;
+ using System.Text;
+ using System.Threading;
++#if XNA
+ using System.Windows.Forms;
+-using Steamworks;
++#endif
+ using Terraria.Achievements;
+ using Terraria.Audio;
+ using Terraria.Chat;
+@@ -58,6 +_,7 @@
+ using Terraria.ModLoader.Engine;
+ using Terraria.ModLoader.IO;
+ using Terraria.ModLoader.UI;
++using Terraria.ModLoader.x64bit;
+ using Terraria.Net;
+ using Terraria.ObjectData;
+ using Terraria.Social;
+@@ -461,16 +_,16 @@
+ 		public static int mapTimeMax = 30;
+ 		public static int mapTime = mapTimeMax;
+ 		public static bool clearMap;
+-		public static int mapTargetX = 5;
++		public static int mapTargetX = 10;
+-		public static int mapTargetY = 2;
++		public static int mapTargetY = 4;
+ 		private static bool flameRingLoaded;
+ 		private Texture2D flameRingTexture;
+ 		private Texture2D mapDeathTexture;
+-		public RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
++		public RenderTarget2D[,] mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+ 		public RenderTarget2D mapSectionTexture;
+-		public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
++		public static bool[,] initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+-		public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
++		public static bool[,] mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+-		public const int numInfoIcons = 13;
++		public const int numInfoIcons = 13;		
+ 		public Texture2D[] infoIconTexture = new Texture2D[14];
+ 		public static Texture2D[] wireUITexture = new Texture2D[12];
+ 		public static Texture2D builderAccTexture;
+@@ -599,15 +_,15 @@
+ 		public static bool autoJoin = false;
+ 		public static bool serverStarting = false;
+ 		public static float leftWorld = 0f;
+-		public static float rightWorld = 134400f;
++		public static float rightWorld = 16800 * 16;
+ 		public static float topWorld = 0f;
+-		public static float bottomWorld = 38400f;
++		public static float bottomWorld = 3600 * 16f;
+-		public static int maxTilesX = (int)rightWorld / 16 + 1;
++		public static int maxTilesX = (int)Main.rightWorld / 16 + 1;
+-		public static int maxTilesY = (int)bottomWorld / 16 + 1;
++		public static int maxTilesY = (int)Main.bottomWorld / 16 + 1;
+ 		public const int sectionWidth = 200;
+ 		public const int sectionHeight = 150;
+-		public static int maxSectionsX = maxTilesX / 200;
++		public static int maxSectionsX = Main.maxTilesX / 200;
+-		public static int maxSectionsY = maxTilesY / 150;
++		public static int maxSectionsY = Main.maxTilesY / 150;
+ 		public const int maxDust = 6000;
+ 		public static int maxDustToDraw = 6000;
+ 		public const int maxCombatText = 100;
+@@ -3159,15 +_,16 @@
+ 		}
+ 
+ 		private static void EraseWorld(int i) {
+-			try {
+-				if (!WorldList[i].IsCloudSave) {
+-#if WINDOWS
+-					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path);
+-					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak");
+-#else
+-					File.Delete(Main.WorldList[i].Path);
+-					File.Delete(Main.WorldList[i].Path + ".bak");
+-#endif
++			try	{
++				if (!Main.WorldList[i].IsCloudSave) {
++					if (PlatformUtilities.IsWindows) {
++						FileOperationAPIWrapper.MoveToRecycleBin(Main.WorldList[i].Path);
++						FileOperationAPIWrapper.MoveToRecycleBin(Main.WorldList[i].Path + ".bak");
++					}
++					else {
++						File.Delete(Main.WorldList[i].Path);
++						File.Delete(Main.WorldList[i].Path + ".bak");
++					}
+ 				}
+ 				else if (SocialAPI.Cloud != null) {
+ 					SocialAPI.Cloud.Delete(WorldList[i].Path);
+@@ -3246,6 +_,11 @@
+ 					maxTilesY = 2400;
+ 					autoGen = true;
+ 					break;
++				case "4": 
++					maxTilesX = 16800;
++					maxTilesY = 3600;
++					autoGen = true;
++					break;
+ 			}
+ 		}
+ 
+@@ -3448,7 +_,7 @@
+ 			rand = new UnifiedRandom();
+ 			if (autoShutdown && !showServerConsole) {
+ 				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
+-#if WINDOWS
++#if XNA
+ 				IntPtr intPtr = FindWindow(null, lpWindowName);
+ 				if (intPtr != IntPtr.Zero)
+ 					ShowWindow(intPtr, 0);
+@@ -3546,6 +_,11 @@
+ 										maxTilesY = 2400;
+ 										flag2 = false;
+ 										break;
++									case 4:
++										maxTilesX = 16800;
++										maxTilesY = 3600;
++										flag2 = false;
++										break;
+ 								}
+ 							}
+ 							catch {
+@@ -4187,14 +_,10 @@
+ 
+ 		public Main() {
+ 			instance = this;
++			Core64.SetupVariable();
+ #if CLIENT
+ 			graphics = new GraphicsDeviceManager(this);
+-#endif
+-		}
+ 
+-		internal void PostSocialInitialize()
+-		{
+-#if CLIENT
+ 			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
+ 			if (!Directory.Exists(vanillaContentFolder)) {
+ 				vanillaContentFolder = "../Content"; // Nested Manual Install
+@@ -7457,7 +_,7 @@
+ 			if (waveBank == null) //supress extra exceptions from audio engine failing to load
+ 				return;
+ 
+-#if !WINDOWS
++#if FNA
+ 			if (Main.engine != null)
+ 				Main.engine.Update();
+ 
+@@ -10238,7 +_,7 @@
+ 				}
+ 
+ 				hasFocus = base.IsActive;
+-#if WINDOWS
++#if XNA
+ 				hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
+ #endif
+ 				if (!gameMenu || netMode == 2) {
+@@ -35770,9 +_,8 @@
+ 			SocialAPI.Shutdown();
+ #endif
+ 			Exit();
+-#if MAC
+-			SDL.SDL_DestroyWindow(base.Window.Handle);
+-#endif
++			if(PlatformUtilities.IsOSX)
++				SDL.SDL_DestroyWindow(base.Window.Handle);
+ 		}
+ 
+ 		protected Microsoft.Xna.Framework.Color randColor() {
+@@ -36404,19 +_,19 @@
+ 				}
+ 				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
+ 					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
+-#if LINUX
+-					str += IntPtr.Size == 8 ? " -x64": " -x86";
+-#endif
++					if(PlatformUtilities.IsLinux)
++						str += IntPtr.Size == 8 ? " -x64": " -x86";
++
+ 					str = ((!ActiveWorldFileData.IsCloudSave) ? (str + " -world \"" + worldPathName + "\"") : (str + " -cloudworld \"" + worldPathName + "\""));
+ 					str += " -modpath \"" + ModOrganizer.modPath + "\"";
+ 					if (showServerConsole)
+ 						str += " -showserverconsole";
+ 
+-#if WINDOWS
+-					tServer.StartInfo.FileName = "tModLoaderServer.exe";
+-#else
+-					tServer.StartInfo.FileName = "tModLoaderServer";
+-#endif
++					if(PlatformUtilities.IsWindows)
++						tServer.StartInfo.FileName = "tModLoaderServer.exe";
++					else
++						tServer.StartInfo.FileName = "tModLoaderServer";
++
+ 					tServer.StartInfo.Arguments = str;
+ 					if (libPath != "") {
+ 						ProcessStartInfo startInfo = tServer.StartInfo;
+@@ -37696,7 +_,7 @@
+ 					}
+ 
+ 					bool flag7 = false;
+-#if WINDOWS
++#if XNA
+ 					flag7 = true;
+ 					System.Drawing.Rectangle bounds = Screen.FromPoint(((Form)Control.FromHandle(instance.Window.Handle)).Location).Bounds;
+ 					if (bounds.Width > maxScreenW || bounds.Height > maxScreenH)
+@@ -38351,36 +_,42 @@
+ 					array4[1] = 30;
+ 					array4[2] = 30;
+ 					array4[3] = 30;
+-					array4[4] = 70;
++					array4[4] = 30;
++					array4[5] = 70;
+ 					array9[0] = Lang.menu[91].Value;
+ 					array[0] = true;
+ 					array9[1] = Lang.menu[92].Value;
+ 					array9[2] = Lang.menu[93].Value;
+ 					array9[3] = Lang.menu[94].Value;
++					array9[4] = "Extra Large";
+-					array9[4] = Lang.menu[5].Value;
++					array9[5] = Lang.menu[5].Value;
+-					num5 = 5;
++					num5 = 6;
+-					if (selectedMenu == 4 || flag5) {
++					if (this.selectedMenu == 5 || flag5) {
+ 						flag5 = false;
+ 						menuMode = 6;
+-						PlaySound(11);
++						PlaySound(11, -1, -1, 1, 1f, 0f);
+ 					}
+-					else if (selectedMenu > 0) {
++					else if (this.selectedMenu > 0) {
+-						if (selectedMenu == 1) {
++						if (this.selectedMenu == 1) {
+ 							maxTilesX = 4200;
+ 							maxTilesY = 1200;
+ 						}
+-						else if (selectedMenu == 2) {
++						else if (this.selectedMenu == 2) {
+ 							maxTilesX = 6400;
+ 							maxTilesY = 1800;
+ 						}
+-						else {
++						else if (this.selectedMenu == 3) {
+ 							maxTilesX = 8400;
+ 							maxTilesY = 2400;
+ 						}
++						else {
++							maxTilesX = 16800;
++							maxTilesY = 3600;
++						}
+ 
+ 						clrInput();
+ 						menuMode = -7;
+-						PlaySound(10);
++						PlaySound(10, -1, -1, 1, 1f, 0f);
+ 						WorldGen.setWorldSize();
+ 					}
+ 				}
+@@ -39164,26 +_,11 @@
+ 				if (num108 == 3)
+ 					num110 = 2;
+ 
+-				string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
+-				string patreonShortURL = @"patreon.com/tModLoader";
+-				bool showPatreon = !Steam.IsSteamApp;
+-				string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
+-				Vector2 origin3 = fontMouseText.MeasureString(drawVersion);
+-				origin3.X *= 0.5f;
+-				origin3.Y *= 0.5f;
+-				spriteBatch.DrawString(fontMouseText, drawVersion, new Vector2(origin3.X + num109 + 10f, screenHeight - origin3.Y + num110 - 2f), color13, 0f, origin3, 1f, SpriteEffects.None, 0f);
+-				if (num108 == 4)
+-					color13 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
+-
+-				if (showPatreon) {
+-					origin3 = fontMouseText.MeasureString(supportMessage);
+-					Vector2 urlSize = fontMouseText.MeasureString(patreonShortURL);
+-					spriteBatch.DrawString(fontMouseText, patreonShortURL, new Vector2(origin3.X + num109 + 10f, screenHeight - origin3.Y + num110 - 2f), color13, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+-					if (num108 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin3.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
+-						PlaySound(SoundID.MenuOpen);
+-						Process.Start("https://www.patreon.com/tModLoader");
+-					}
++				if (num108 == 3) {
++					num110 = 2;
+ 				}
++
++				Core64.DrawPatreon(spriteBatch, num109, num110, num110, hasFocus, color13);
+ 			}
+ 
+ 			DrawCursor(DrawThickCursor());
+@@ -41314,7 +_,7 @@
+ 			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
+ 			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+ 			spriteBatch.Begin();
+-#if WINDOWS
++#if XNA
+ 			tileBatch.Begin();
+ #else
+ 			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
+@@ -50855,8 +_,9 @@
+ 				graphics.ToggleFullScreen();
+ 
+ 			bool flag = false;
++#if XNA
+ 			Form form = null;
+-#if WINDOWS
++
+ 			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
+ 			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
+ 				screenMaximized = false;
+@@ -50875,7 +_,7 @@
+ 			int num3;
+ 			int num4;
+ 			if (screenBorderless || screenMaximized || graphics.IsFullScreen) {
+-#if WINDOWS
++#if XNA
+ 				form.MinimumSize = new Size(0, 0);
+ 				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
+ 					screenBorderlessPendingResizes--;
+@@ -50909,7 +_,7 @@
+ 				}
+ 			}
+ 			else {
+-#if WINDOWS
++#if XNA
+ 				form.MinimumSize = new Size(minScreenW, minScreenH);
+ 				if (flag) {
+ 					width = displayWidth[0];
+@@ -50924,7 +_,7 @@
+ 				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
+ 			}
+ 
+-#if WINDOWS
++#if XNA
+ 			// appears redundant. Just causes the window to fight the user when attempting to resize too small
+ 			// with this disabled, the window will just snap back to minimum size when released
+ 			/*if (!fullscreen && !flag2) {
+@@ -50965,7 +_,7 @@
+ 				PendingResolutionWidth = screenWidth;
+ 				PendingResolutionHeight = screenHeight;
+ 				PlayerInput.CacheOriginalScreenDimensions();
+-#if WINDOWS
++#if XNA
+ 				if (!fullscreen) {
+ 					form.SendToBack();
+ 					form.BringToFront();
