@@ -6,7 +6,7 @@
  		public static void OpenFolder(string folderPath) {
 -			if (TryCreatingDirectory(folderPath))
 +			if (TryCreatingDirectory(folderPath)) {
-+#if WINDOWS
++#if !LINUX
  				Process.Start(folderPath);
 +#else
 +				Process.Start(new ProcessStartInfo(folderPath) {
