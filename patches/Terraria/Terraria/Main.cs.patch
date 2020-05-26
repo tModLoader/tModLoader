@@ -44,6 +44,18 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
+@@ -445,7 +_,11 @@
+ 		public static float gFader;
+ 		public static byte gFadeDir = 1;
+ 		public static bool shouldDrawNetDiagnosticsUI;
++#if CLIENT
+ 		public static INetDiagnosticsUI ActiveNetDiagnosticsUI = new NetDiagnosticsUI();
++#else
++		public static INetDiagnosticsUI ActiveNetDiagnosticsUI = new EmptyDiagnosticsUI();
++#endif
+ 		public static IMultiplayerClosePlayersOverlay ActiveClosePlayersTeamOverlay = new NewMultiplayerClosePlayersOverlay();
+ 		public static double UpdateTimeAccumulator;
+ 		public static bool drawSkip;
 @@ -3263,6 +_,7 @@
  				base.InactiveSleepTime = TimeSpan.FromMilliseconds(flag2 ? 20 : 0);
  			}
@@ -60,7 +72,7 @@
  			Control.FromHandle(instance.Window.Handle).BringToFront();
  			if (!flag)
  				Configuration.Get("Support4K", ref Support4K);
-@@ -3465,9 +_,12 @@
+@@ -3465,8 +_,11 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
  
@@ -68,12 +80,11 @@
 +							if (num >= 91 && binaryReader.ReadBoolean()) {
 +#if CLIENT && WINDOWS
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
- 
 +#endif
 +							}
+ 
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
- 								int height = binaryReader.ReadInt32();
 @@ -3558,8 +_,13 @@
  		private static void EraseWorld(int i) {
  			try {
@@ -100,11 +111,12 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4634,8 +_,10 @@
+@@ -4633,9 +_,11 @@
+ 		public Main() {
  			instance = this;
  			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
- 			Configuration.Load();
 +#if CLIENT
+ 			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
  			base.Content.RootDirectory = "Content";
 +#endif
@@ -138,6 +150,31 @@
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
  				recentWorld[i] = "";
+@@ -4719,7 +_,9 @@
+ 			WorldGen.Hooks.OnWorldLoad += delegate {
+ 				AmbienceServer = new AmbienceServer();
+ 				LocalGolfState = new GolfState();
++#if CLIENT
+ 				Lighting.Clear();
++#endif
+ 			};
+ 
+ 			PlayerInput.OnActionableInput += delegate {
+@@ -4728,10 +_,14 @@
+ 			};
+ 
+ 			SceneMetrics = new SceneMetrics(ActiveWorld);
++#if CLIENT
+ 			TimeLogger.Initialize();
+ 			LoadContent_TryEnteringHiDef();
+ 			ClientInitialize();
+ 			base.Initialize();
++#else
++			Initialize_AlmostEverything();
++#endif
+ 		}
+ 
+ 		private void Initialize_AlmostEverything() {
 @@ -4768,10 +_,15 @@
  			ItemDropSolver = new ItemDropResolver(itemDropDatabase);
  			ShopHelper = new ShopHelper();
@@ -159,15 +196,15 @@
  				Player.Hooks.EnterWorld(myPlayer);
  			}
 +
-+#if CLIENT && WINDOWS
++#if CLIENT
++#if WINDOWS
  			else {
  				IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
  				int menuItemCount = GetMenuItemCount(systemMenu);
  				RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  			}
- 
 +#endif
-+#if CLIENT
+ 
  			SoundID.FillAccessMap();
  			Star.SpawnStars();
  			ItemSorting.SetupWhiteLists();
@@ -200,7 +237,7 @@
  		}
  
  		protected void DoUpdate(GameTime gameTime) {
-@@ -12251,13 +_,17 @@
+@@ -12251,12 +_,16 @@
  				InGameUI.SetState(null);
  
  			CurrentInputTextTakerOverride = null;
@@ -213,11 +250,10 @@
 +#if CLIENT
  			if (Main.OnTickForThirdPartySoftwareOnly != null)
  				Main.OnTickForThirdPartySoftwareOnly();
- 
 +#endif
+ 
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
- 				_hasPendingNetmodeChange = false;
 @@ -12532,7 +_,11 @@
  			if (Main.OnTickForInternalCodeOnly != null)
  				Main.OnTickForInternalCodeOnly();
