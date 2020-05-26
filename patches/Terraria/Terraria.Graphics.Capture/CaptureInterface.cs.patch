@@ -1,5 +1,15 @@
 --- src/decompiled/Terraria.Graphics.Capture/CaptureInterface.cs
 +++ src/Terraria/Terraria.Graphics.Capture/CaptureInterface.cs
+@@ -4,6 +_,9 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++#if LINUX
++using System.Diagnostics;
++#endif
+ using Terraria.Audio;
+ using Terraria.GameContent;
+ using Terraria.GameContent.UI;
 @@ -889,7 +_,17 @@
  
  					if (i == num2++ && flag2 && flag) {
