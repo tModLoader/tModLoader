@@ -1,14 +1,5 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -89,7 +_,7 @@
- 				writer.Write((byte)msgType);
- 				switch (msgType) {
- 					case 1:
--						writer.Write("Terraria" + 228);
-+						writer.Write("Terraria" + Main.curRelease);
- 						break;
- 					case 2:
- 						text.Serialize(writer);
 @@ -2053,6 +_,13 @@
  
  		public static void CheckBytes(int bufferIndex = 256) {
