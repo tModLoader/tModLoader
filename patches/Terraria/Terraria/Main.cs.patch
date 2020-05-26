@@ -64,14 +64,14 @@
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
  				SetBorderlessFormStyle(form);
-@@ -3275,6 +_,7 @@
+@@ -3274,6 +_,7 @@
+ 			else {
  				form.FormBorderStyle = FormBorderStyle.Sizable;
  			}
- 
 +#endif
+ 
  			Control.FromHandle(instance.Window.Handle).BringToFront();
  			if (!flag)
- 				Configuration.Get("Support4K", ref Support4K);
 @@ -3465,8 +_,11 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
@@ -266,20 +266,20 @@
  				AmbienceServer.Update();
  
  			WorldGen.BackgroundsCache.UpdateFlashValues();
-@@ -14430,6 +_,7 @@
+@@ -14430,6 +_,9 @@
  		public static extern short GetKeyState(int keyCode);
  
  		public static string GetInputText(string oldString, bool allowMultiLine = false) {
-+#if CLIENT
++#if SERVER
++			return "";
++#else
  			if (!hasFocus)
  				return oldString;
  
-@@ -14516,6 +_,9 @@
+@@ -14516,6 +_,7 @@
  			}
  
  			return text;
-+#else
-+			return "";
 +#endif
  		}
  
@@ -375,15 +375,15 @@
  			if (NPC.MoonLordCountdown > 0) {
  				float num4 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
  				num4 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -48914,6 +_,7 @@
+@@ -48913,6 +_,7 @@
+ 			else if (Terraria.Graphics.Effects.Filters.Scene["MoonLordShake"].IsActive()) {
  				Terraria.Graphics.Effects.Filters.Scene.Deactivate("MoonLordShake");
  			}
- 
 +#endif
+ 
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
- 				if (NPC.MoonLordCountdown <= 0 && netMode != 1)
-@@ -49796,22 +_,28 @@
+@@ -49796,11 +_,15 @@
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
  			Form form = null;
@@ -393,13 +393,13 @@
  				screenMaximized = false;
  				((Form)Control.FromHandle(instance.Window.Handle)).WindowState = FormWindowState.Normal;
  			}
- 
 +#else
 +			Main.screenMaximized = false;
 +#endif
+ 
  			form = (Form)Control.FromHandle(instance.Window.Handle);
  			flag = (form.FormBorderStyle == FormBorderStyle.None);
- 			bool flag2 = false;
+@@ -49808,11 +_,13 @@
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
@@ -407,12 +407,14 @@
  				form.MinimumSize = new Size(0, 0);
  				if (!fullscreen)
  					SetDisplayModeAsBorderless(ref width, ref height, form);
- 
 +#endif
- 				if (width > maxScreenW) {
+ 
+-				if (width > maxScreenW) {
++				if(width > maxScreenW) {
  					float num = (float)height / (float)width;
  					width = maxScreenW;
-@@ -49838,12 +_,14 @@
+ 					height = (int)(num * (float)width);
+@@ -49838,11 +_,13 @@
  			}
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
@@ -422,11 +424,10 @@
  					width = displayWidth[0];
  					height = displayHeight[0];
  				}
- 
 +#endif
+ 
  				width = Math.Min(width, maxScreenW);
  				height = Math.Min(height, maxScreenH);
- 				num3 = graphics.GraphicsDevice.Viewport.Width;
 @@ -49851,6 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
@@ -435,14 +436,14 @@
  			if (!fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
-@@ -49863,6 +_,7 @@
+@@ -49862,6 +_,7 @@
+ 					flag2 = true;
  				}
  			}
- 
 +#endif
+ 
  			width &= 0x7FFFFFFE;
  			height &= 0x7FFFFFFE;
- 			width = Math.Max(width, minScreenW);
 @@ -49892,6 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
@@ -451,11 +452,11 @@
  				if (!fullscreen) {
  					if (screenBorderless) {
  						ApplyBorderlessResolution(form);
-@@ -49905,6 +_,7 @@
+@@ -49904,6 +_,7 @@
+ 					form.SendToBack();
  					form.BringToFront();
  				}
- 
 +#endif
+ 
  				Lighting.Initialize();
  				if (!drawToScreen)
- 					instance.InitTargets();
