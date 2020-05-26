@@ -1,10 +1,12 @@
 --- src/decompiled/Terraria.Audio/SoundPlayer.cs
 +++ src/Terraria/Terraria.Audio/SoundPlayer.cs
-@@ -1,6 +_,7 @@
+@@ -1,6 +_,9 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
++#if FNA
 +using System.Threading;
++#endif
  
  namespace Terraria.Audio
  {
@@ -12,16 +14,15 @@
  		}
  
  		public void Update() {
--			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-+#if !WINDOWS
++#if FNA
 +			Monitor.Enter(SoundEngine.AudioLock);
 +#endif
-+			foreach(SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+ 			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
  				item.Value.Update();
  				if (!item.Value.IsPlaying)
  					_trackedSounds.Remove(item.Id);
  			}
-+#if !WINDOWS
++#if FNA
 +			Monitor.Exit(SoundEngine.AudioLock);
 +#endif
  		}

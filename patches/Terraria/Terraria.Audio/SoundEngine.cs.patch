@@ -12,7 +12,7 @@
  
  		public static void Update() {
  			if (IsAudioSupported) {
-+#if !WINDOWS
++#if FNA
 +				Main.engine?.Update();
 +#endif
  				SoundInstanceGarbageCollector.Update();
@@ -22,10 +22,10 @@
  			if (!IsAudioSupported)
  				return null;
  
--			return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
-+#if !WINDOWS
++#if FNA
 +			lock(AudioLock)
 +#endif
+-			return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
 +				return _legacyPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
  		}
  
