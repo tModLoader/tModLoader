@@ -18,7 +18,7 @@
  using Terraria.Initializers;
  using Terraria.Localization;
  using Terraria.Social;
-@@ -18,7 +_,11 @@
+@@ -18,9 +_,18 @@
  {
  	public static class Program
  	{
@@ -27,9 +27,16 @@
 +#else
 +		public const bool IsServer = true;
 +#endif
++#if XNA
  		public const bool IsXna = true;
  		public const bool IsFna = false;
++#else
++		public const bool IsXna = false;
++		public const bool IsFna = true;
++#endif
  		public const bool IsDebug = false;
+ 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 		private static int ThingsToLoad;
 @@ -56,10 +_,18 @@
  		private static void ForceJITOnAssembly(Assembly assembly) {
  			Type[] types = assembly.GetTypes();

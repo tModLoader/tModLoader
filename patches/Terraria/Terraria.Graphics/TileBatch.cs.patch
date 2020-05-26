@@ -1,54 +1,381 @@
 --- src/decompiled/Terraria.Graphics/TileBatch.cs
 +++ src/Terraria/Terraria.Graphics/TileBatch.cs
-@@ -1,11 +_,19 @@
+@@ -1,9 +_,13 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
-+#if !WINDOWS
++#if FNA
 +using System.Collections.Generic;
 +#endif
  
  namespace Terraria.Graphics
  {
-+#if WINDOWS
++#if XNA
  	public class TileBatch
+ 	{
+ 		private struct SpriteData
+@@ -41,27 +_,29 @@
+ 		private VertexPositionColorTexture[] _vertices = new VertexPositionColorTexture[8192];
+ 		private int _vertexBufferPosition;
+ 
+-		public TileBatch(GraphicsDevice graphicsDevice) {
++		public TileBatch(GraphicsDevice graphicsDevice)
++		{
+ 			_graphicsDevice = graphicsDevice;
+ 			_spriteBatch = new SpriteBatch(graphicsDevice);
+ 			Allocate();
+ 		}
+ 
+-		private void Allocate() {
++		private void Allocate()
++		{
+-			if (_vertexBuffer == null || _vertexBuffer.IsDisposed) {
++			if(_vertexBuffer == null || _vertexBuffer.IsDisposed) {
+-				_vertexBuffer = new DynamicVertexBuffer(_graphicsDevice, typeof(VertexPositionColorTexture), 8192, BufferUsage.WriteOnly);
++				_vertexBuffer = new DynamicVertexBuffer(_graphicsDevice,typeof(VertexPositionColorTexture),8192,BufferUsage.WriteOnly);
+ 				_vertexBufferPosition = 0;
+ 				_vertexBuffer.ContentLost += delegate {
+ 					_vertexBufferPosition = 0;
+ 				};
+ 			}
+ 
+-			if (_indexBuffer != null && !_indexBuffer.IsDisposed)
++			if(_indexBuffer != null && !_indexBuffer.IsDisposed)
+ 				return;
+ 
+-			if (_fallbackIndexData == null) {
++			if(_fallbackIndexData == null) {
+ 				_fallbackIndexData = new short[12288];
+-				for (int i = 0; i < 2048; i++) {
++				for(int i = 0;i < 2048;i++) {
+ 					_fallbackIndexData[i * 6] = (short)(i * 4);
+ 					_fallbackIndexData[i * 6 + 1] = (short)(i * 4 + 1);
+ 					_fallbackIndexData[i * 6 + 2] = (short)(i * 4 + 2);
+@@ -71,89 +_,101 @@
+ 				}
+ 			}
+ 
+-			_indexBuffer = new DynamicIndexBuffer(_graphicsDevice, typeof(short), 12288, BufferUsage.WriteOnly);
++			_indexBuffer = new DynamicIndexBuffer(_graphicsDevice,typeof(short),12288,BufferUsage.WriteOnly);
+ 			_indexBuffer.SetData(_fallbackIndexData);
+ 			_indexBuffer.ContentLost += delegate {
+ 				_indexBuffer.SetData(_fallbackIndexData);
+ 			};
+ 		}
+ 
+-		private void FlushRenderState() {
++		private void FlushRenderState()
++		{
+ 			Allocate();
+ 			_graphicsDevice.SetVertexBuffer(_vertexBuffer);
+ 			_graphicsDevice.Indices = _indexBuffer;
+ 			_graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+ 		}
+ 
+-		public void Dispose() {
+-			if (_vertexBuffer != null)
++		public void Dispose()
++		{
++			if(_vertexBuffer != null)
+ 				_vertexBuffer.Dispose();
+ 
+-			if (_indexBuffer != null)
++			if(_indexBuffer != null)
+ 				_indexBuffer.Dispose();
+ 		}
+ 
+-		public void Begin(Matrix transformation) {
+-			_spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transformation);
++		public void Begin(Matrix transformation)
++		{
++			_spriteBatch.Begin(SpriteSortMode.Deferred,null,null,null,null,null,transformation);
+ 			_spriteBatch.End();
+ 		}
+ 
+-		public void Begin() {
++		public void Begin()
++		{
+ 			_spriteBatch.Begin();
+ 			_spriteBatch.End();
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector2 position, VertexColors colors) {
++		public void Draw(Texture2D texture,Vector2 position,VertexColors colors)
++		{
+ 			Vector4 destination = default(Vector4);
+ 			destination.X = position.X;
+ 			destination.Y = position.Y;
+ 			destination.Z = 1f;
+ 			destination.W = 1f;
+-			InternalDraw(texture, ref destination, scaleDestination: true, ref _nullRectangle, ref colors, ref _vector2Zero, SpriteEffects.None, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: true,ref _nullRectangle,ref colors,ref _vector2Zero,SpriteEffects.None,0f);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, float scale, SpriteEffects effects) {
++		public void Draw(Texture2D texture,Vector2 position,Rectangle? sourceRectangle,VertexColors colors,Vector2 origin,float scale,SpriteEffects effects)
++		{
+ 			Vector4 destination = default(Vector4);
+ 			destination.X = position.X;
+ 			destination.Y = position.Y;
+ 			destination.Z = scale;
+ 			destination.W = scale;
+-			InternalDraw(texture, ref destination, scaleDestination: true, ref sourceRectangle, ref colors, ref origin, effects, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: true,ref sourceRectangle,ref colors,ref origin,effects,0f);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector4 destination, VertexColors colors) {
++		public void Draw(Texture2D texture,Vector4 destination,VertexColors colors)
++		{
+-			InternalDraw(texture, ref destination, scaleDestination: false, ref _nullRectangle, ref colors, ref _vector2Zero, SpriteEffects.None, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: false,ref _nullRectangle,ref colors,ref _vector2Zero,SpriteEffects.None,0f);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector2 position, VertexColors colors, Vector2 scale) {
++		public void Draw(Texture2D texture,Vector2 position,VertexColors colors,Vector2 scale)
++		{
+ 			Vector4 destination = default(Vector4);
+ 			destination.X = position.X;
+ 			destination.Y = position.Y;
+ 			destination.Z = scale.X;
+ 			destination.W = scale.Y;
+-			InternalDraw(texture, ref destination, scaleDestination: true, ref _nullRectangle, ref colors, ref _vector2Zero, SpriteEffects.None, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: true,ref _nullRectangle,ref colors,ref _vector2Zero,SpriteEffects.None,0f);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors) {
++		public void Draw(Texture2D texture,Vector4 destination,Rectangle? sourceRectangle,VertexColors colors)
++		{
+-			InternalDraw(texture, ref destination, scaleDestination: false, ref sourceRectangle, ref colors, ref _vector2Zero, SpriteEffects.None, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: false,ref sourceRectangle,ref colors,ref _vector2Zero,SpriteEffects.None,0f);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, SpriteEffects effects, float rotation) {
++		public void Draw(Texture2D texture,Vector4 destination,Rectangle? sourceRectangle,VertexColors colors,Vector2 origin,SpriteEffects effects,float rotation)
++		{
+-			InternalDraw(texture, ref destination, scaleDestination: false, ref sourceRectangle, ref colors, ref origin, effects, rotation);
++			InternalDraw(texture,ref destination,scaleDestination: false,ref sourceRectangle,ref colors,ref origin,effects,rotation);
+ 		}
+ 
+-		public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, VertexColors colors) {
++		public void Draw(Texture2D texture,Rectangle destinationRectangle,Rectangle? sourceRectangle,VertexColors colors)
++		{
+ 			Vector4 destination = default(Vector4);
+ 			destination.X = destinationRectangle.X;
+ 			destination.Y = destinationRectangle.Y;
+ 			destination.Z = destinationRectangle.Width;
+ 			destination.W = destinationRectangle.Height;
+-			InternalDraw(texture, ref destination, scaleDestination: false, ref sourceRectangle, ref colors, ref _vector2Zero, SpriteEffects.None, 0f);
++			InternalDraw(texture,ref destination,scaleDestination: false,ref sourceRectangle,ref colors,ref _vector2Zero,SpriteEffects.None,0f);
+ 		}
+ 
+-		private static short[] CreateIndexData() {
++		private static short[] CreateIndexData()
++		{
+ 			short[] array = new short[12288];
+-			for (int i = 0; i < 2048; i++) {
++			for(int i = 0;i < 2048;i++) {
+ 				array[i * 6] = (short)(i * 4);
+ 				array[i * 6 + 1] = (short)(i * 4 + 1);
+ 				array[i * 6 + 2] = (short)(i * 4 + 2);
+@@ -165,32 +_,32 @@
+ 			return array;
+ 		}
+ 
+-		private unsafe void InternalDraw(Texture2D texture, ref Vector4 destination, bool scaleDestination, ref Rectangle? sourceRectangle, ref VertexColors colors, ref Vector2 origin, SpriteEffects effects, float rotation) {
++		private unsafe void InternalDraw(Texture2D texture,ref Vector4 destination,bool scaleDestination,ref Rectangle? sourceRectangle,ref VertexColors colors,ref Vector2 origin,SpriteEffects effects,float rotation)
++		{
+-			if (_queuedSpriteCount >= _spriteDataQueue.Length)
++			if(_queuedSpriteCount >= _spriteDataQueue.Length)
+-				Array.Resize(ref _spriteDataQueue, _spriteDataQueue.Length << 1);
++				Array.Resize(ref _spriteDataQueue,_spriteDataQueue.Length << 1);
+ 
+-			fixed (SpriteData* ptr = &_spriteDataQueue[_queuedSpriteCount]) {
++			fixed(SpriteData* ptr = &_spriteDataQueue[_queuedSpriteCount]) {
+ 				float num = destination.Z;
+ 				float num2 = destination.W;
+-				if (sourceRectangle.HasValue) {
++				if(sourceRectangle.HasValue) {
+ 					Rectangle value = sourceRectangle.Value;
+ 					ptr->Source.X = value.X;
+ 					ptr->Source.Y = value.Y;
+ 					ptr->Source.Z = value.Width;
+ 					ptr->Source.W = value.Height;
+-					if (scaleDestination) {
++					if(scaleDestination) {
+ 						num *= (float)value.Width;
+ 						num2 *= (float)value.Height;
+ 					}
+-				}
+-				else {
++				} else {
+ 					float num3 = texture.Width;
+ 					float num4 = texture.Height;
+ 					ptr->Source.X = 0f;
+ 					ptr->Source.Y = 0f;
+ 					ptr->Source.Z = num3;
+ 					ptr->Source.W = num4;
+-					if (scaleDestination) {
++					if(scaleDestination) {
+ 						num *= num3;
+ 						num2 *= num4;
+ 					}
+@@ -207,67 +_,69 @@
+ 				ptr->Rotation = rotation;
+ 			}
+ 
+-			if (_spriteTextures == null || _spriteTextures.Length != _spriteDataQueue.Length)
++			if(_spriteTextures == null || _spriteTextures.Length != _spriteDataQueue.Length)
+-				Array.Resize(ref _spriteTextures, _spriteDataQueue.Length);
++				Array.Resize(ref _spriteTextures,_spriteDataQueue.Length);
+ 
+ 			_spriteTextures[_queuedSpriteCount++] = texture;
+ 		}
+ 
+-		public void End() {
+-			if (_queuedSpriteCount != 0) {
++		public void End()
++		{
++			if(_queuedSpriteCount != 0) {
+ 				FlushRenderState();
+ 				Flush();
+ 			}
+ 		}
+ 
+-		private void Flush() {
++		private void Flush()
++		{
+ 			Texture2D texture2D = null;
+ 			int num = 0;
+-			for (int i = 0; i < _queuedSpriteCount; i++) {
++			for(int i = 0;i < _queuedSpriteCount;i++) {
+-				if (_spriteTextures[i] != texture2D) {
++				if(_spriteTextures[i] != texture2D) {
+-					if (i > num)
++					if(i > num)
+-						RenderBatch(texture2D, _spriteDataQueue, num, i - num);
++						RenderBatch(texture2D,_spriteDataQueue,num,i - num);
+ 
+ 					num = i;
+ 					texture2D = _spriteTextures[i];
+ 				}
+ 			}
+ 
+-			RenderBatch(texture2D, _spriteDataQueue, num, _queuedSpriteCount - num);
++			RenderBatch(texture2D,_spriteDataQueue,num,_queuedSpriteCount - num);
+-			Array.Clear(_spriteTextures, 0, _queuedSpriteCount);
++			Array.Clear(_spriteTextures,0,_queuedSpriteCount);
+ 			_queuedSpriteCount = 0;
+ 		}
+ 
+-		private unsafe void RenderBatch(Texture2D texture, SpriteData[] sprites, int offset, int count) {
++		private unsafe void RenderBatch(Texture2D texture,SpriteData[] sprites,int offset,int count)
++		{
+ 			_graphicsDevice.Textures[0] = texture;
+ 			float num = 1f / (float)texture.Width;
+ 			float num2 = 1f / (float)texture.Height;
+-			while (count > 0) {
++			while(count > 0) {
+ 				SetDataOptions options = SetDataOptions.NoOverwrite;
+ 				int num3 = count;
+-				if (num3 > 2048 - _vertexBufferPosition) {
++				if(num3 > 2048 - _vertexBufferPosition) {
+ 					num3 = 2048 - _vertexBufferPosition;
+-					if (num3 < 256) {
++					if(num3 < 256) {
+ 						_vertexBufferPosition = 0;
+ 						options = SetDataOptions.Discard;
+ 						num3 = count;
+-						if (num3 > 2048)
++						if(num3 > 2048)
+ 							num3 = 2048;
+ 					}
+ 				}
+ 
+-				fixed (SpriteData* ptr = &sprites[offset]) {
++				fixed(SpriteData* ptr = &sprites[offset]) {
+-					fixed (VertexPositionColorTexture* ptr3 = &_vertices[0]) {
++					fixed(VertexPositionColorTexture* ptr3 = &_vertices[0]) {
+ 						SpriteData* ptr2 = ptr;
+ 						VertexPositionColorTexture* ptr4 = ptr3;
+-						for (int i = 0; i < num3; i++) {
++						for(int i = 0;i < num3;i++) {
+ 							float num4;
+ 							float num5;
+-							if (ptr2->Rotation != 0f) {
++							if(ptr2->Rotation != 0f) {
+ 								num4 = (float)Math.Cos(ptr2->Rotation);
+ 								num5 = (float)Math.Sin(ptr2->Rotation);
+-							}
+-							else {
++							} else {
+ 								num4 = 1f;
+ 								num5 = 0f;
+ 							}
+@@ -278,17 +_,17 @@
+ 							ptr4[1].Color = ptr2->Colors.TopRightColor;
+ 							ptr4[2].Color = ptr2->Colors.BottomRightColor;
+ 							ptr4[3].Color = ptr2->Colors.BottomLeftColor;
+-							for (int j = 0; j < 4; j++) {
++							for(int j = 0;j < 4;j++) {
+ 								float num8 = CORNER_OFFSET_X[j];
+ 								float num9 = CORNER_OFFSET_Y[j];
+ 								float num10 = (num8 - num6) * ptr2->Destination.Z;
+ 								float num11 = (num9 - num7) * ptr2->Destination.W;
+ 								float x = ptr2->Destination.X + num10 * num4 - num11 * num5;
+ 								float y = ptr2->Destination.Y + num10 * num5 + num11 * num4;
+-								if ((ptr2->Effects & SpriteEffects.FlipVertically) != 0)
++								if((ptr2->Effects & SpriteEffects.FlipVertically) != 0)
+ 									num8 = 1f - num8;
+ 
+-								if ((ptr2->Effects & SpriteEffects.FlipHorizontally) != 0)
++								if((ptr2->Effects & SpriteEffects.FlipHorizontally) != 0)
+ 									num9 = 1f - num9;
+ 
+ 								ptr4->Position.X = x;
+@@ -305,16 +_,382 @@
+ 				}
+ 
+ 				int offsetInBytes = _vertexBufferPosition * sizeof(VertexPositionColorTexture) * 4;
+-				_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num3 * 4, sizeof(VertexPositionColorTexture), options);
++				_vertexBuffer.SetData(offsetInBytes,_vertices,0,num3 * 4,sizeof(VertexPositionColorTexture),options);
+ 				int minVertexIndex = _vertexBufferPosition * 4;
+ 				int numVertices = num3 * 4;
+ 				int startIndex = _vertexBufferPosition * 6;
+ 				int primitiveCount = num3 * 2;
+-				_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, minVertexIndex, numVertices, startIndex, primitiveCount);
++				_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,0,minVertexIndex,numVertices,startIndex,primitiveCount);
+ 				_vertexBufferPosition += num3;
+ 				offset += num3;
+ 				count -= num3;
+ 			}
+ 		}
+ 	}
 +#else
 +	public class TileBatch : IDisposable
-+#endif
- 	{
-+#if WINDOWS
- 		private struct SpriteData
- 		{
- 			public Vector4 Source;
-@@ -32,7 +_,90 @@
- 		private SpriteData[] _spriteDataQueue = new SpriteData[2048];
- 		private Texture2D[] _spriteTextures;
- 		private int _queuedSpriteCount;
-+#else
++	{
 +		private class TextureComparer : IComparer<BatchDrawInfo>
 +		{
 +			public static TextureComparer Instance = new TextureComparer();
 +
-+			public int Compare(BatchDrawInfo info1, BatchDrawInfo info2) => info1.Texture.GetHashCode().CompareTo(info2.Texture.GetHashCode());
++			public int Compare(BatchDrawInfo info1,BatchDrawInfo info2) => info1.Texture.GetHashCode().CompareTo(info2.Texture.GetHashCode());
 +		}
 +
 +		private struct BatchDrawInfo
 +		{
-+			public static readonly BatchDrawInfo Empty = new BatchDrawInfo(null, 0, 0);
-+
++			public static readonly BatchDrawInfo Empty = new BatchDrawInfo(null,0,0);
 +			public readonly Texture2D Texture;
-+
 +			public readonly int Index;
-+
 +			public int Count;
 +
-+			public BatchDrawInfo(Texture2D texture, int index, int count) {
++			public BatchDrawInfo(Texture2D texture,int index,int count)
++			{
 +				Texture = texture;
 +				Index = index;
 +				Count = count;
 +			}
 +
-+			public BatchDrawInfo(Texture2D texture) {
++			public BatchDrawInfo(Texture2D texture)
++			{
 +				Texture = texture;
 +				Index = 0;
 +				Count = 0;
@@ -58,188 +385,183 @@
 +		private class BatchDrawGroup
 +		{
 +			public VertexPositionColorTexture[] VertexArray;
-+
 +			public BatchDrawInfo[] BatchDraws;
-+
 +			public int BatchDrawCount;
-+
 +			public int SpriteCount;
 +
 +			public int VertexCount => SpriteCount * 4;
 +
-+			public BatchDrawGroup() {
++			public BatchDrawGroup()
++			{
 +				VertexArray = new VertexPositionColorTexture[8192];
 +				BatchDraws = new BatchDrawInfo[2048];
 +				BatchDrawCount = 0;
 +				SpriteCount = 0;
 +			}
 +
-+			public void Reset() {
++			public void Reset()
++			{
 +				BatchDrawCount = 0;
 +				SpriteCount = 0;
 +			}
 +
-+			public void AddBatch(BatchDrawInfo batch) {
++			public void AddBatch(BatchDrawInfo batch)
++			{
 +				BatchDraws[BatchDrawCount++] = batch;
 +			}
 +		}
 +
 +		private SpriteSortMode _sortMode;
-+
 +		private const int MAX_SPRITES = 2048;
-+
 +		private const int MAX_VERTICES = 8192;
-+
 +		private const int MAX_INDICES = 12288;
-+
 +		private const int INITIAL_BATCH_DRAW_GROUP_COUNT = 32;
-+
 +		private short[] _sortedIndexData = new short[12288];
-+
 +		private DynamicIndexBuffer _sortedIndexBuffer;
-+
 +		private int _lastBatchDrawGroupIndex;
-+
 +		private BatchDrawInfo _currentBatchDrawInfo;
-+
 +		private List<BatchDrawGroup> _batchDrawGroups = new List<BatchDrawGroup>();
-+
 +		private readonly GraphicsDevice _graphicsDevice;
-+#endif
- 		private SpriteBatch _spriteBatch;
-+#if WINDOWS
- 		private static Vector2 _vector2Zero;
- 		private static Rectangle? _nullRectangle;
- 		private DynamicVertexBuffer _vertexBuffer;
-@@ -316,5 +_,281 @@
- 				count -= num3;
- 			}
- 		}
-+#else
-+		public void Begin() {
-+			Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
++		private SpriteBatch _spriteBatch;
++
++		public void Begin()
++		{
++			Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,SamplerState.LinearClamp,DepthStencilState.None,RasterizerState.CullCounterClockwise,null,Matrix.Identity);
 +		}
 +
-+		public void Begin(SpriteSortMode sortMode, BlendState blendState) {
-+			Begin(sortMode, blendState, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
++		public void Begin(SpriteSortMode sortMode,BlendState blendState)
++		{
++			Begin(sortMode,blendState,SamplerState.LinearClamp,DepthStencilState.None,RasterizerState.CullCounterClockwise,null,Matrix.Identity);
 +		}
 +
-+		public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState) {
-+			Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, null, Matrix.Identity);
++		public void Begin(SpriteSortMode sortMode,BlendState blendState,SamplerState samplerState,DepthStencilState depthStencilState,RasterizerState rasterizerState)
++		{
++			Begin(sortMode,blendState,samplerState,depthStencilState,rasterizerState,null,Matrix.Identity);
 +		}
 +
-+		public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect) {
-+			Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, Matrix.Identity);
++		public void Begin(SpriteSortMode sortMode,BlendState blendState,SamplerState samplerState,DepthStencilState depthStencilState,RasterizerState rasterizerState,Effect effect)
++		{
++			Begin(sortMode,blendState,samplerState,depthStencilState,rasterizerState,effect,Matrix.Identity);
 +		}
 +
-+		public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformationMatrix) {
-+			if (sortMode != SpriteSortMode.Deferred && sortMode != SpriteSortMode.Texture)
++		public void Begin(SpriteSortMode sortMode,BlendState blendState,SamplerState samplerState,DepthStencilState depthStencilState,RasterizerState rasterizerState,Effect effect,Matrix transformationMatrix)
++		{
++			if(sortMode != 0 && sortMode != SpriteSortMode.Texture)
 +				throw new NotImplementedException("TileBatch only supports SpriteSortMode.Deferred and SpriteSortMode.Texture.");
 +
 +			_sortMode = sortMode;
-+			_spriteBatch.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, transformationMatrix);
++			_spriteBatch.Begin(sortMode,blendState,samplerState,depthStencilState,rasterizerState,effect,transformationMatrix);
 +			_spriteBatch.End();
 +		}
 +
-+		public void End() {
-+			if (_sortMode == SpriteSortMode.Deferred)
++		public void End()
++		{
++			if(_sortMode == SpriteSortMode.Deferred)
 +				DrawBatch();
-+			else if (_sortMode == SpriteSortMode.Texture)
++			else if(_sortMode == SpriteSortMode.Texture)
 +				SortedDrawBatch();
 +		}
 +
-+		public void Draw(Texture2D texture, Vector2 position, VertexColors colors) {
-+			Draw(texture, position, null, colors, Vector2.Zero, 1f, SpriteEffects.None);
++		public void Draw(Texture2D texture,Vector2 position,VertexColors colors)
++		{
++			Draw(texture,position,null,colors,Vector2.Zero,1f,SpriteEffects.None);
 +		}
 +
-+		public void Draw(Texture2D texture, Vector4 destination, VertexColors colors) {
-+			InternalDraw(texture, destination, null, colors, 0f, Vector2.Zero, SpriteEffects.None, 0f);
++		public void Draw(Texture2D texture,Vector4 destination,VertexColors colors)
++		{
++			InternalDraw(texture,destination,null,colors,0f,Vector2.Zero,SpriteEffects.None,0f);
 +		}
 +
-+		public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors) {
-+			InternalDraw(texture, destination, sourceRectangle, colors, 0f, Vector2.Zero, SpriteEffects.None, 0f);
++		public void Draw(Texture2D texture,Vector4 destination,Rectangle? sourceRectangle,VertexColors colors)
++		{
++			InternalDraw(texture,destination,sourceRectangle,colors,0f,Vector2.Zero,SpriteEffects.None,0f);
 +		}
 +
-+		public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, float scale, SpriteEffects effects) {
++		public void Draw(Texture2D texture,Vector2 position,Rectangle? sourceRectangle,VertexColors colors,Vector2 origin,float scale,SpriteEffects effects)
++		{
 +			float z;
 +			float w;
-+			if (sourceRectangle.HasValue) {
-+				z = sourceRectangle.Value.Width * scale;
-+				w = sourceRectangle.Value.Height * scale;
-+			}
-+			else {
-+				z = texture.Width * scale;
-+				w = texture.Height * scale;
++			if(sourceRectangle.HasValue) {
++				z = (float)sourceRectangle.Value.Width * scale;
++				w = (float)sourceRectangle.Value.Height * scale;
++			} else {
++				z = (float)texture.Width * scale;
++				w = (float)texture.Height * scale;
 +			}
 +
-+			InternalDraw(texture, new Vector4(position.X, position.Y, z, w), sourceRectangle, colors, 0f, origin * scale, effects, 0f);
++			InternalDraw(texture,new Vector4(position.X,position.Y,z,w),sourceRectangle,colors,0f,origin * scale,effects,0f);
 +		}
 +
-+		public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, SpriteEffects effects, float rotation) {
-+			InternalDraw(texture, destination, sourceRectangle, colors, rotation, origin, effects, 0f);
++		public void Draw(Texture2D texture,Vector4 destination,Rectangle? sourceRectangle,VertexColors colors,Vector2 origin,SpriteEffects effects,float rotation)
++		{
++			InternalDraw(texture,destination,sourceRectangle,colors,rotation,origin,effects,0f);
 +		}
 +
-+		internal void InternalDraw(Texture2D texture, Vector4 destinationRectangle, Rectangle? sourceRectangle, VertexColors colors, float rotation, Vector2 origin, SpriteEffects effect, float depth) {
-+			Vector4 vector;
-+			if (sourceRectangle.HasValue) {
-+				vector.X = sourceRectangle.Value.X;
-+				vector.Y = sourceRectangle.Value.Y;
-+				vector.Z = sourceRectangle.Value.Width;
-+				vector.W = sourceRectangle.Value.Height;
-+			}
-+			else {
-+				vector.X = 0f;
-+				vector.Y = 0f;
-+				vector.Z = texture.Width;
-+				vector.W = texture.Height;
-+			}
-+
-+			Vector2 vector2;
-+			vector2.X = vector.X / texture.Width;
-+			vector2.Y = vector.Y / texture.Height;
-+			Vector2 vector3;
-+			vector3.X = (vector.X + vector.Z) / texture.Width;
-+			vector3.Y = (vector.Y + vector.W) / texture.Height;
-+			if ((effect & SpriteEffects.FlipVertically) != SpriteEffects.None) {
-+				float y = vector3.Y;
-+				vector3.Y = vector2.Y;
-+				vector2.Y = y;
++		internal void InternalDraw(Texture2D texture,Vector4 destinationRectangle,Rectangle? sourceRectangle,VertexColors colors,float rotation,Vector2 origin,SpriteEffects effect,float depth)
++		{
++			Vector4 sourceRectangle2 = default(Vector4);
++			if(sourceRectangle.HasValue) {
++				sourceRectangle2.X = sourceRectangle.Value.X;
++				sourceRectangle2.Y = sourceRectangle.Value.Y;
++				sourceRectangle2.Z = sourceRectangle.Value.Width;
++				sourceRectangle2.W = sourceRectangle.Value.Height;
++			} else {
++				sourceRectangle2.X = 0f;
++				sourceRectangle2.Y = 0f;
++				sourceRectangle2.Z = texture.Width;
++				sourceRectangle2.W = texture.Height;
 +			}
 +
-+			if ((effect & SpriteEffects.FlipHorizontally) != SpriteEffects.None) {
-+				float x = vector3.X;
-+				vector3.X = vector2.X;
-+				vector2.X = x;
++			Vector2 texCoordTL = default(Vector2);
++			texCoordTL.X = sourceRectangle2.X / (float)texture.Width;
++			texCoordTL.Y = sourceRectangle2.Y / (float)texture.Height;
++			Vector2 texCoordBR = default(Vector2);
++			texCoordBR.X = (sourceRectangle2.X + sourceRectangle2.Z) / (float)texture.Width;
++			texCoordBR.Y = (sourceRectangle2.Y + sourceRectangle2.W) / (float)texture.Height;
++			if((effect & SpriteEffects.FlipVertically) != 0) {
++				float y = texCoordBR.Y;
++				texCoordBR.Y = texCoordTL.Y;
++				texCoordTL.Y = y;
 +			}
 +
-+			QueueSprite(destinationRectangle, -origin, colors, vector, vector2, vector3, texture, depth, rotation);
++			if((effect & SpriteEffects.FlipHorizontally) != 0) {
++				float x = texCoordBR.X;
++				texCoordBR.X = texCoordTL.X;
++				texCoordTL.X = x;
++			}
++
++			QueueSprite(destinationRectangle,-origin,colors,sourceRectangle2,texCoordTL,texCoordBR,texture,depth,rotation);
 +		}
 +
-+		public TileBatch(GraphicsDevice graphicsDevice) {
++		public TileBatch(GraphicsDevice graphicsDevice)
++		{
 +			_spriteBatch = new SpriteBatch(graphicsDevice);
 +			_graphicsDevice = graphicsDevice;
-+			for (int i = 0; i < 32; i++) {
++			for(int i = 0;i < 32;i++) {
 +				_batchDrawGroups.Add(new BatchDrawGroup());
 +			}
 +
-+			_sortedIndexBuffer = new DynamicIndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 12288, BufferUsage.WriteOnly);
++			_sortedIndexBuffer = new DynamicIndexBuffer(graphicsDevice,IndexElementSize.SixteenBits,12288,BufferUsage.WriteOnly);
 +		}
 +
-+		~TileBatch() {
++		~TileBatch()
++		{
 +			Dispose();
 +		}
 +
-+		public void Dispose() {
++		public void Dispose()
++		{
 +			_sortedIndexBuffer.Dispose();
 +			_spriteBatch.Dispose();
 +		}
 +
-+		private void SortAndApplyIndexData(BatchDrawGroup batchDrawGroup) {
-+			Array.Sort(batchDrawGroup.BatchDraws, 0, batchDrawGroup.BatchDrawCount, TextureComparer.Instance);
++		private void SortAndApplyIndexData(BatchDrawGroup batchDrawGroup)
++		{
++			Array.Sort(batchDrawGroup.BatchDraws,0,batchDrawGroup.BatchDrawCount,TextureComparer.Instance);
 +			int num = 0;
-+			for (int i = 0; i < batchDrawGroup.BatchDrawCount; i++) {
++			for(int i = 0;i < batchDrawGroup.BatchDrawCount;i++) {
 +				BatchDrawInfo batchDrawInfo = batchDrawGroup.BatchDraws[i];
-+				for (int j = 0; j < batchDrawInfo.Count; j++) {
++				for(int j = 0;j < batchDrawInfo.Count;j++) {
 +					int num2 = batchDrawInfo.Index * 4 + j * 4;
 +					_sortedIndexData[num] = (short)num2;
 +					_sortedIndexData[num + 1] = (short)(num2 + 1);
@@ -251,32 +573,32 @@
 +				}
 +			}
 +
-+			_sortedIndexBuffer.SetData(_sortedIndexData, 0, num);
++			_sortedIndexBuffer.SetData(_sortedIndexData,0,num);
 +		}
 +
-+		private void SortedDrawBatch() {
-+			if (_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
++		private void SortedDrawBatch()
++		{
++			if(_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
 +				return;
 +
 +			FlushRemainingBatch();
 +			VertexBuffer vertexBuffer = _graphicsDevice.GetVertexBuffers()[0].VertexBuffer;
 +			_graphicsDevice.Indices = _sortedIndexBuffer;
-+			for (int i = 0; i <= _lastBatchDrawGroupIndex; i++) {
++			for(int i = 0;i <= _lastBatchDrawGroupIndex;i++) {
 +				BatchDrawGroup batchDrawGroup = _batchDrawGroups[i];
 +				int vertexCount = batchDrawGroup.VertexCount;
-+				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray, 0, vertexCount);
++				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray,0,vertexCount);
 +				SortAndApplyIndexData(batchDrawGroup);
 +				int num = 0;
-+				for (int j = 0; j < batchDrawGroup.BatchDrawCount; j++) {
++				for(int j = 0;j < batchDrawGroup.BatchDrawCount;j++) {
 +					BatchDrawInfo batchDrawInfo = batchDrawGroup.BatchDraws[j];
 +					_graphicsDevice.Textures[0] = batchDrawInfo.Texture;
 +					int num2 = batchDrawInfo.Count;
-+					while (j + 1 < batchDrawGroup.BatchDrawCount && batchDrawInfo.Texture == batchDrawGroup.BatchDraws[j + 1].Texture) {
++					for(;j + 1 < batchDrawGroup.BatchDrawCount && batchDrawInfo.Texture == batchDrawGroup.BatchDraws[j + 1].Texture;j++) {
 +						num2 += batchDrawGroup.BatchDraws[j + 1].Count;
-+						j++;
 +					}
 +
-+					_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, num2 * 4, num, num2 * 2);
++					_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,0,0,num2 * 4,num,num2 * 2);
 +					num += num2 * 6;
 +				}
 +
@@ -287,20 +609,21 @@
 +			_lastBatchDrawGroupIndex = 0;
 +		}
 +
-+		private void DrawBatch() {
-+			if (_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
++		private void DrawBatch()
++		{
++			if(_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
 +				return;
 +
 +			FlushRemainingBatch();
 +			VertexBuffer vertexBuffer = _graphicsDevice.GetVertexBuffers()[0].VertexBuffer;
-+			for (int i = 0; i <= _lastBatchDrawGroupIndex; i++) {
++			for(int i = 0;i <= _lastBatchDrawGroupIndex;i++) {
 +				BatchDrawGroup batchDrawGroup = _batchDrawGroups[i];
 +				int vertexCount = batchDrawGroup.VertexCount;
-+				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray, 0, vertexCount);
-+				for (int j = 0; j < batchDrawGroup.BatchDrawCount; j++) {
++				vertexBuffer.SetData(_batchDrawGroups[i].VertexArray,0,vertexCount);
++				for(int j = 0;j < batchDrawGroup.BatchDrawCount;j++) {
 +					BatchDrawInfo batchDrawInfo = batchDrawGroup.BatchDraws[j];
 +					_graphicsDevice.Textures[0] = batchDrawInfo.Texture;
-+					_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, batchDrawInfo.Count * 4, batchDrawInfo.Index * 6, batchDrawInfo.Count * 2);
++					_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,0,0,batchDrawInfo.Count * 4,batchDrawInfo.Index * 6,batchDrawInfo.Count * 2);
 +				}
 +
 +				batchDrawGroup.Reset();
@@ -310,7 +633,8 @@
 +			_lastBatchDrawGroupIndex = 0;
 +		}
 +
-+		private void QueueSprite(Vector4 destinationRect, Vector2 origin, VertexColors colors, Vector4 sourceRectangle, Vector2 texCoordTL, Vector2 texCoordBR, Texture2D texture, float depth, float rotation) {
++		private void QueueSprite(Vector4 destinationRect,Vector2 origin,VertexColors colors,Vector4 sourceRectangle,Vector2 texCoordTL,Vector2 texCoordBR,Texture2D texture,float depth,float rotation)
++		{
 +			UpdateCurrentBatchDraw(texture);
 +			float num = origin.X / sourceRectangle.Z;
 +			float num2 = origin.Y / sourceRectangle.W;
@@ -323,11 +647,10 @@
 +			BatchDrawGroup batchDrawGroup = _batchDrawGroups[_lastBatchDrawGroupIndex];
 +			float num5;
 +			float num6;
-+			if (rotation != 0f) {
++			if(rotation != 0f) {
 +				num5 = (float)Math.Cos(rotation);
 +				num6 = (float)Math.Sin(rotation);
-+			}
-+			else {
++			} else {
 +				num5 = 1f;
 +				num6 = 0f;
 +			}
@@ -363,33 +686,34 @@
 +			batchDrawGroup.SpriteCount++;
 +		}
 +
-+		private void UpdateCurrentBatchDraw(Texture2D texture) {
++		private void UpdateCurrentBatchDraw(Texture2D texture)
++		{
 +			BatchDrawGroup batchDrawGroup = _batchDrawGroups[_lastBatchDrawGroupIndex];
-+			if (batchDrawGroup.SpriteCount >= 2048) {
++			if(batchDrawGroup.SpriteCount >= 2048) {
 +				_currentBatchDrawInfo.Count = 2048 - _currentBatchDrawInfo.Index;
 +				_batchDrawGroups[_lastBatchDrawGroupIndex].AddBatch(_currentBatchDrawInfo);
 +				_currentBatchDrawInfo = new BatchDrawInfo(texture);
 +				_lastBatchDrawGroupIndex++;
-+				if (_lastBatchDrawGroupIndex >= _batchDrawGroups.Count)
++				if(_lastBatchDrawGroupIndex >= _batchDrawGroups.Count)
 +					_batchDrawGroups.Add(new BatchDrawGroup());
-+			}
-+			else if (texture != _currentBatchDrawInfo.Texture) {
-+				if (batchDrawGroup.SpriteCount != 0 || _lastBatchDrawGroupIndex != 0) {
++			} else if(texture != _currentBatchDrawInfo.Texture) {
++				if(batchDrawGroup.SpriteCount != 0 || _lastBatchDrawGroupIndex != 0) {
 +					_currentBatchDrawInfo.Count = batchDrawGroup.SpriteCount - _currentBatchDrawInfo.Index;
 +					batchDrawGroup.AddBatch(_currentBatchDrawInfo);
 +				}
 +
-+				_currentBatchDrawInfo = new BatchDrawInfo(texture, batchDrawGroup.SpriteCount, 0);
++				_currentBatchDrawInfo = new BatchDrawInfo(texture,batchDrawGroup.SpriteCount,0);
 +			}
 +		}
 +
-+		private void FlushRemainingBatch() {
++		private void FlushRemainingBatch()
++		{
 +			BatchDrawGroup batchDrawGroup = _batchDrawGroups[_lastBatchDrawGroupIndex];
-+			if (_currentBatchDrawInfo.Index != batchDrawGroup.SpriteCount) {
++			if(_currentBatchDrawInfo.Index != batchDrawGroup.SpriteCount) {
 +				_currentBatchDrawInfo.Count = batchDrawGroup.SpriteCount - _currentBatchDrawInfo.Index;
 +				batchDrawGroup.AddBatch(_currentBatchDrawInfo);
 +			}
 +		}
++	}
 +#endif
- 	}
  }

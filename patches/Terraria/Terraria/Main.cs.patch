@@ -10,7 +10,7 @@
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -16,10 +_,15 @@
+@@ -16,15 +_,22 @@
  using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -26,6 +26,13 @@
  using System.Runtime.InteropServices;
  using System.Text;
  using System.Threading;
+ using System.Threading.Tasks;
++#if WINDOWS
+ using System.Windows.Forms;
++#endif
+ using Terraria.Achievements;
+ using Terraria.Audio;
+ using Terraria.Chat;
 @@ -67,10 +_,17 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
@@ -44,6 +51,22 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
+@@ -89,6 +_,7 @@
+ 			Ready
+ 		}
+ 
++#if WINDOWS
+ 		internal static class NativeMethods
+ 		{
+ 			public const uint ES_CONTINUOUS = 2147483648u;
+@@ -97,6 +_,7 @@
+ 			[DllImport("kernel32.dll")]
+ 			public static extern uint SetThreadExecutionState(uint esFlags);
+ 		}
++#endif
+ 
+ 		private struct MouseTextCache
+ 		{
 @@ -445,7 +_,11 @@
  		public static float gFader;
  		public static byte gFadeDir = 1;
@@ -56,6 +79,30 @@
  		public static IMultiplayerClosePlayersOverlay ActiveClosePlayersTeamOverlay = new NewMultiplayerClosePlayersOverlay();
  		public static double UpdateTimeAccumulator;
  		public static bool drawSkip;
+@@ -1071,8 +_,13 @@
+ 		public static float MinimumZoomComparerX = 1920f;
+ 		public static float MinimumZoomComparerY = 1200f;
+ 		private static int _renderTargetMaxSize = 2048;
++#if XNA
+ 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
+ 		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.Reach;
++#else
++		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.HiDef;
++		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.HiDef;
++#endif
+ 		public static int LogicCheckScreenWidth = 1920;
+ 		public static int LogicCheckScreenHeight = 1200;
+ 		private static WorldPreparationState _worldPreparationState = WorldPreparationState.AwaitingData;
+@@ -1888,7 +_,9 @@
+ 		public static string oldStatusText = "";
+ 		public static string autoGenFileLocation = null;
+ 		public static bool autoShutdown;
++#if WINDOWS
+ 		private uint previousExecutionState;
++#endif
+ 		public static int sundialCooldown;
+ 		public static bool fastForwardTime;
+ 		private static Stopwatch splashTimer = new Stopwatch();
 @@ -3263,6 +_,7 @@
  				base.InactiveSleepTime = TimeSpan.FromMilliseconds(flag2 ? 20 : 0);
  			}
@@ -64,14 +111,16 @@
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
  				SetBorderlessFormStyle(form);
-@@ -3274,6 +_,7 @@
- 			else {
- 				form.FormBorderStyle = FormBorderStyle.Sizable;
+@@ -3276,7 +_,8 @@
  			}
-+#endif
  
  			Control.FromHandle(instance.Window.Handle).BringToFront();
- 			if (!flag)
++#endif
+-			if (!flag)
++			if(!flag)
+ 				Configuration.Get("Support4K", ref Support4K);
+ 
+ 			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
 @@ -3465,8 +_,11 @@
  							if (num >= 2)
  								terrariasFixedTiming = binaryReader.ReadBoolean();
@@ -99,6 +148,23 @@
  				}
  				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
+@@ -3860,12 +_,16 @@
+ 		}
+ 
+ 		public void NeverSleep() {
++#if WINDOWS
+ 			previousExecutionState = NativeMethods.SetThreadExecutionState(2147483649u);
++#endif
+ 		}
+ 
+ 		public void YouCanSleepNow() {
++#if WINDOWS
+ 			if (previousExecutionState != 0)
+ 				NativeMethods.SetThreadExecutionState(previousExecutionState);
++#endif
+ 		}
+ 
+ 		public void DedServ() {
 @@ -3873,9 +_,11 @@
  			rand = new UnifiedRandom();
  			if (autoShutdown) {
@@ -111,7 +177,7 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4633,9 +_,11 @@
+@@ -4633,13 +_,16 @@
  		public Main() {
  			instance = this;
  			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
@@ -123,12 +189,18 @@
  		}
  
  		private static void SetDisplayMonitor() {
-@@ -4649,12 +_,16 @@
+ 			Configuration.Get("Display", "");
++#if XNA
+ 			graphics.PreparingDeviceSettings += SetMonitorOnce;
+ 		}
+ 
+@@ -4649,12 +_,17 @@
  			if (graphicsAdapter != null)
  				e.GraphicsDeviceInformation.Adapter = graphicsAdapter;
  
 +#if CLIENT
  			graphics.PreparingDeviceSettings -= SetMonitorOnce;
++#endif
 +#endif
  		}
  
@@ -212,6 +284,23 @@
  		}
  
  		private void Initialize_Entities() {
+@@ -8141,12 +_,16 @@
+ 			Configuration.Load();
+ 			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
+ 			Configuration.Get("Support4K", ref Support4K);
++#if FNA
++			SetGraphicsProfile(GraphicsProfile.HiDef);
++#else
+ 			bool flag = Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
+ 			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
+ 				flag = false;
+ 
+ 			if (Support4K && flag && base.GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)
+ 				SetGraphicsProfile(GraphicsProfile.HiDef);
++#endif
+ 		}
+ 
+ 		protected IEnumerator LoadContent_Deferred() {
 @@ -8328,8 +_,10 @@
  			if (!SoundEngine.IsAudioSupported || !_musicLoaded)
  				return;
@@ -254,6 +343,16 @@
  
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
+@@ -12459,7 +_,9 @@
+ 
+ 				UpdateOldNPCShop();
+ 				hasFocus = base.IsActive;
++#if WINDOWS
+ 				hasFocus |= (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
++#endif
+ 				if (!base.IsActive && netMode == 0) {
+ 					if (!Platform.IsOSX)
+ 						base.IsMouseVisible = true;
 @@ -12532,7 +_,11 @@
  			if (Main.OnTickForInternalCodeOnly != null)
  				Main.OnTickForInternalCodeOnly();
@@ -315,11 +414,29 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
+@@ -38770,6 +_,9 @@
+ 			_uiScaleWanted = uiScaleWanted;
+ 		}
+ 
++#if !WINDOWS
++		private static bool IsBorderlessDisplayAvailable() => false;
++#else
+ 		private static bool IsBorderlessDisplayAvailable() => true;
+ 
+ 		private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form) {
+@@ -38797,6 +_,7 @@
+ 			form.Location = new System.Drawing.Point(0, 0);
+ 			form.FormBorderStyle = FormBorderStyle.None;
+ 		}
++#endif
+ 
+ 		public static void OpenCharacterSelectUI() {
+ 			MenuUI.SetState(_characterSelectMenu);
 @@ -41174,7 +_,11 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
-+#if WINDOWS
++#if XNA
  			tileBatch.Begin();
 +#else
 +			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
@@ -383,11 +500,12 @@
  
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
-@@ -49796,11 +_,15 @@
+@@ -49795,24 +_,32 @@
+ 
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
- 			Form form = null;
 +#if WINDOWS
+ 			Form form = null;
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
@@ -397,9 +515,11 @@
 +			Main.screenMaximized = false;
 +#endif
  
++#if WINDOWS
  			form = (Form)Control.FromHandle(instance.Window.Handle);
  			flag = (form.FormBorderStyle == FormBorderStyle.None);
-@@ -49808,11 +_,13 @@
++#endif
+ 			bool flag2 = false;
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {

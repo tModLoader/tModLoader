@@ -24,18 +24,15 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -24,9 +_,10 @@
- 	{
- #if CLIENT
- 		public const bool IsServer = false;
- #else
- 		public const bool IsServer = true;
- #endif
+@@ -40,6 +_,7 @@
+ 		private static int ThingsLoaded;
+ 		public static bool LoadedEverything;
+ 		public static IntPtr JitForcedMethodCache;
 +		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
- 		public const bool IsXna = true;
- 		public const bool IsFna = false;
- 		public const bool IsDebug = false;
-@@ -59,27 +_,68 @@
+ 
+ 		public static float LoadedPercentage {
+ 			get {
+@@ -64,27 +_,68 @@
  		public static void ForceLoadThread(object threadContext) {
  			ForceLoadAssembly(Assembly.GetExecutingAssembly(), initializeStaticMembers: true);
  			LoadedEverything = true;
@@ -122,7 +119,7 @@
  		}
  
  		private static void ForceStaticInitializers(Assembly assembly) {
-@@ -90,13 +_,6 @@
+@@ -95,13 +_,6 @@
  			}
  		}
  
@@ -136,7 +133,7 @@
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
  			Assembly assembly = null;
  			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-@@ -146,27 +_,49 @@
+@@ -151,27 +_,49 @@
  			}
  		}
  
@@ -190,7 +187,7 @@
  					LaunchInitializer.LoadParameters(main);
  					Main.OnEnginePreload += StartForceLoad;
  #if CLIENT
-@@ -175,9 +_,10 @@
+@@ -180,9 +_,10 @@
  					main.DedServ();
  #endif
  				}
@@ -204,7 +201,7 @@
  			}
  		}
  
-@@ -199,9 +_,18 @@
+@@ -204,9 +_,18 @@
  				}
  
  #if CLIENT

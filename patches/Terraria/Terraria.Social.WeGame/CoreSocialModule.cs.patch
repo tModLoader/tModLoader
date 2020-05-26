@@ -14,3 +14,16 @@
  
  			if (rail_api.RailNeedRestartAppForCheckingEnvironment(railGameID, array.Length, array))
  				Environment.Exit(1);
+@@ -57,7 +_,12 @@
+ 		}
+ 
+ 		public void Shutdown() {
++#if !WINDOWS
++			isRailValid = false;
++			AppDomain.CurrentDomain.ProcessExit += delegate {
++#else
+ 			Application.ApplicationExit += delegate {
++#endif
+ 				isRailValid = false;
+ 			};
+ 

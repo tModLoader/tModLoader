@@ -36,29 +36,27 @@
  							ptr2 += 4;
  							ptr4 += 4;
  						}
-@@ -200,5 +_,6 @@
+@@ -199,6 +_,7 @@
+ 				return false;
  
  			try {
 +#if WINDOWS
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -209,6 +_,12 @@
+@@ -208,6 +_,11 @@
+ 					bitmap.Save(filename, imageFormat);
  					bitmap.Dispose();
  				}
- 
 +#else
 +				using (FileStream fileStream = File.Create(filename)) {
 +					PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
 +				}
-+
 +#endif
+ 
  				return true;
  			}
- 			catch (Exception value) {
-@@ -221,21 +_,32 @@
- 			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
- 			string filename2 = Path.Combine(text, filename);
+@@ -223,19 +_,30 @@
  			if (!Utils.TryCreatingDirectory(text))
  				return;
  

@@ -1,0 +1,22 @@
+--- src/decompiled/Terraria/Utils.cs
++++ src/Terraria/Terraria/Utils.cs
+@@ -511,8 +_,18 @@
+ 		}
+ 
+ 		public static void OpenFolder(string folderPath) {
+-			if (TryCreatingDirectory(folderPath))
++			if (TryCreatingDirectory(folderPath)) {
++#if WINDOWS
+ 				Process.Start(folderPath);
++#else
++				Process.Start(new ProcessStartInfo(folderPath) {
++					FileName = "open-folder",
++					Arguments = folderPath,
++					UseShellExecute = true,
++					CreateNoWindow = true
++				});
++#endif
++			}
+ 		}
+ 
+ 		public static byte[] ToByteArray(this string str) {

@@ -21,7 +21,7 @@
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -23,32 +_,105 @@
+@@ -23,32 +_,109 @@
    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
      <Optimize>false</Optimize>
      <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
@@ -64,9 +64,14 @@
 +      <Private>true</Private>
 +    </Reference>
      <Reference Include="Newtonsoft.Json" />
-     <Reference Include="RailSDK.Net" />
+-    <Reference Include="RailSDK.Net" />
 -    <Reference Include="ReLogic" />
 -    <Reference Include="Steamworks.NET" />
++    <Reference Include="RailSDK.Net">
++      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\RailSDK.Net.Windows.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\RailSDK.Net.Mac.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">..\..\references\RailSDK.Net.Linux.dll</HintPath>
++    </Reference>
 +    <Reference Include="ReLogic">
 +      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\ReLogicWindows.dll</HintPath>
 +      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\ReLogicMac.dll</HintPath>
