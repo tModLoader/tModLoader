@@ -4245,14 +4245,6 @@
  			if (!tileSetsLoaded[i]) {
  				tileTexture[i] = OurLoad<Texture2D>("Images" + Path.DirectorySeparatorChar.ToString() + "Tiles_" + i);
  				tileSetsLoaded[i] = true;
-@@ -44761,6 +_,7 @@
- 							}
- 						}
- 
-+						SurfaceBgStyleLoader.DrawFarTexture();
- 						SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
- 					}
- 				}
 @@ -44927,12 +_,15 @@
  						backColor.G = (byte)((float)(int)backColor.G * bgAlpha2[5]);
  						backColor.B = (byte)((float)(int)backColor.B * bgAlpha2[5]);
@@ -4278,6 +4270,15 @@
  					if (bgStyle == num21) {
  						bgAlpha[num21] += tranSpeed;
  						if (bgAlpha[num21] > 1f)
+@@ -45179,7 +_,8 @@
+ 				DrawSurfaceBG_DrawBackMountainsLayer(246);
+ 			}
+ 
++			SurfaceBgStyleLoader.DrawFarTexture();
+ 			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
+ 		}
+ 
+ 		private void DrawSurfaceBG_BackMountainsStep2(int pushBGTopHack) {
 @@ -45550,8 +_,9 @@
  						}
  					}
@@ -4542,33 +4543,6 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue, bool force = false) {
  			int num = 80;
  			if (!force && newText.Length > num) {
-@@ -48588,7 +_,7 @@
- 					num++;
- 			}
- 
--			for (int j = 0; j < 580; j++) {
-+			for (int j = 0; j < townNPCCanSpawn.Length; j++) {
- 				townNPCCanSpawn[j] = false;
- 			}
- 
-@@ -48719,6 +_,7 @@
- 						continue;
- 
- 					if (num27 < 2000000000) {
-+						//patch file: num27
- 						if (player[l].inventory[m].type == 71)
- 							num27 += player[l].inventory[m].stack;
- 
-@@ -48908,6 +_,9 @@
- 
- 			if (WorldGen.prioritizedTownNPC == 0 && NPC.savedBartender && num25 < 1)
- 				WorldGen.prioritizedTownNPC = 550;
-+
-+			// TODO, see what changed and see if we need to do anything to integrate mod npc
-+			NPCLoader.CanTownNPCSpawn(num26, num27);
- 		}
- 
- 		public static int DamageVar(float dmg) => (int)Math.Round(dmg * (1f + (float)rand.Next(-15, 16) * 0.01f));
 @@ -49005,6 +_,9 @@
  		}
  
@@ -4589,6 +4563,15 @@
  						case 0: {
  								int num16 = rand.Next(3);
  								soundInstanceDig[num16].Stop();
+@@ -49432,7 +_,7 @@
+ 					num++;
+ 			}
+ 
+-			for (int j = 0; j < 663; j++) {
++			for (int j = 0; j < townNPCCanSpawn.Length; j++) {
+ 				townNPCCanSpawn[j] = false;
+ 			}
+ 
 @@ -49570,18 +_,49 @@
  							soundEffectInstance.Pan = num3;
  							trackableSoundInstances[num] = soundEffectInstance;
@@ -4641,22 +4624,22 @@
  			}
  #if !WINDOWS
  			finally {
-@@ -49731,11 +_,12 @@
- 					height = form.ClientSize.Height;
- 					flag2 = true;
- 				}
--			}
+@@ -49582,6 +_,7 @@
+ 						continue;
  
-+			}*/
- #endif
--			width &= 0x7FFFFFFE;
--			height &= 0x7FFFFFFE;
-+			// unknown justification for preventing odd window sizes. Causes excessive device resets.
-+			// width &= 2147483646;
-+			// height &= 2147483646;
- 			width = Math.Max(width, minScreenW);
- 			height = Math.Max(height, minScreenH);
- 			if (width != num3 || height != num4 || flag2) {
+ 					if (num32 < 2000000000) {
++						//patch file: num27
+ 						if (player[l].inventory[m].type == 71)
+ 							num32 += player[l].inventory[m].stack;
+ 
+@@ -49801,4 +_,7 @@
+ 
+ 			WorldGen.prioritizedTownNPCType = num36;
++
++			// TODO, see what changed and see if we need to do anything to integrate mod npc
++			NPCLoader.CanTownNPCSpawn(num26, num27);
+ 		}
+ 
 @@ -49985,7 +_,9 @@
  			}
  
@@ -4668,6 +4651,21 @@
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
  					flag2 = true;
+@@ -49995,10 +_,11 @@
+ 					height = form.ClientSize.Height;
+ 					flag2 = true;
+ 				}
+-			}
++			}*/
+ #endif
+ 
+-			width &= 0x7FFFFFFE;
+-			height &= 0x7FFFFFFE;
++			// unknown justification for preventing odd window sizes. Causes excessive device resets.
++			// width &= 2147483646;
++			// height &= 2147483646;
+ 			width = Math.Max(width, minScreenW);
+ 			height = Math.Max(height, minScreenH);
 @@ -50018,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
