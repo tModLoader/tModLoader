@@ -43,6 +43,26 @@
 			if (modPriority >= MusicPriority.Event) {
 				newMusic = modMusic;
 			}
+		
+		//Ensure that Main.Update has the following lines:
+			}
+			catch (Exception e) {
+				Logging.Terraria.Error(e);
+			}
+			
+		//Put this somewhere high in DoUpdateInWorld:
+			if (netMode == 1 && Netplay.syncingWorld) // skip updating entities while world is loading in multiplayer #340
+				goto skipEntityUpdates;
+			
+		//Add this after DoUpdate_WhilePaused() call:
+			PlayerHooks.UpdateAutopause(player[myPlayer]);
+			
+		//Reimplement these calls (unrelated to each other):
+			ModHooks.MidUpdateProjectileItem();
+			
+			TileLoader.SetDrawPositions(j, i, ref num9, ref num12, ref num8);
+			
+			
 			
 		//Reimplement broken patches:
 //
@@ -111,4 +131,210 @@ if (nPC.aiStyle == 7)
  			PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  			TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
  			ScreenShaderRef.Value = ShaderContentManager.Load<Effect>("ScreenShader");
-		
+//
+@@ -16295,7 +16647,9 @@
+ 				}
+ 
+ 				try {
++					Texture2D modTopTextures;
+ 					if (type4 == 5 && frameY >= 198 && frameX >= 22) {
++						//frame
+ 						int num316 = 0;
+ 						switch (frameX) {
+ 							case 22: {
+//
+@@ -16309,11 +16663,22 @@
+ 									}
+ 
+ 									int num320 = 0;
++									//frame width
+ 									int num321 = 80;
++									//frame height
+ 									int num322 = 80;
++									//x offset left
+ 									int num323 = 32;
++									//y offset
+ 									int num324 = 0;
++									modTopTextures = null;
+ 									for (int num325 = num301; num325 < num301 + 100; num325++) {
++										modTopTextures = TileLoader.GetTreeTopTextures(tile[num300, num325].type,
++											num300, num325, ref num316, ref num321, ref num322, ref num323, ref num324);
++
++										if (modTopTextures != null)
++											break;
++
+ 										if (Main.tile[num300, num325].type == 2) {
+ 											num320 = GetTreeStyle(num300);
+ 											break;
+//
+@@ -16152,6 +16503,7 @@
+ 						int num298 = 0;
+ 						spriteBatch.Draw(texture2D2, new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num297, i * 16 - (int)screenPosition.Y + num12 + num298) + value, empty, color6, 0f, default(Vector2), 1f, effects, 0f);
+ 					}
++					TileLoader.PostDraw(j, i, type, spriteBatch);
+ 				}
+ 			}
+ //
+ @@ -16380,10 +16745,12 @@
+ 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num326 / 2f, 0.7f + num326);
+ 									}
+ 
+-									if (tile6.color() > 0)
++									if (modTopTextures == null && tile6.color() > 0)
+ 										checkTreeAlt[num320, tile6.color()] = true;
+ 
++									if (modTopTextures != null)
++										spriteBatch.Draw(modTopTextures, new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-									if (tile6.color() > 0 && treeAltTextureDrawn[num320, tile6.color()])
++									else if (tile6.color() > 0 && treeAltTextureDrawn[num320, tile6.color()])
+ 										spriteBatch.Draw(treeTopAltTexture[num320, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 									else
+ 										spriteBatch.Draw(treeTopTexture[num320], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+//
+@@ -16401,7 +16768,13 @@
+ 									}
+ 
+ 									int num327 = 0;
++									Texture2D modBranchTextures = null;
+ 									for (int num328 = num301; num328 < num301 + 100; num328++) {
++										modBranchTextures = TileLoader.GetTreeBranchTextures(tile[num300 + 1, num328].type, num300, num328, 1, ref num316);
++
++										if (modBranchTextures != null)
++											break;
++
+ 										if (Main.tile[num300 + 1, num328].type == 2) {
+ 											num327 = GetTreeStyle(num300 + 1);
+ 											break;
+//
+@@ -16455,10 +16828,12 @@
+ 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num329 / 2f, 0.7f + num329);
+ 									}
+ 
+-									if (tile6.color() > 0)
++									if (modBranchTextures == null && tile6.color() > 0)
+ 										checkTreeAlt[num327, tile6.color()] = true;
+ 
++									if (modBranchTextures != null)
++										spriteBatch.Draw(modBranchTextures, new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-									if (tile6.color() > 0 && treeAltTextureDrawn[num327, tile6.color()])
++									else if (tile6.color() > 0 && treeAltTextureDrawn[num327, tile6.color()])
+ 										spriteBatch.Draw(treeBranchAltTexture[num327, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 									else
+ 										spriteBatch.Draw(treeBranchTexture[num327], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+//
+@@ -16476,7 +16851,13 @@
+ 									}
+ 
+ 									int num317 = 0;
++									Texture2D modBranchTextures = null;
+ 									for (int num318 = num301; num318 < num301 + 100; num318++) {
++										modBranchTextures = TileLoader.GetTreeBranchTextures(tile[num300 - 1, num318].type, num300, num318, -1, ref num316);
++
++										if (modBranchTextures != null)
++											break;
++
+ 										if (Main.tile[num300 - 1, num318].type == 2) {
+ 											num317 = GetTreeStyle(num300 - 1);
+ 											break;
+//
+@@ -16530,10 +16911,12 @@
+ 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num319 / 2f, 0.7f + num319);
+ 									}
+ 
+-									if (tile6.color() > 0)
++									if (modBranchTextures == null && tile6.color() > 0)
+ 										checkTreeAlt[num317, tile6.color()] = true;
+ 
++									if (modBranchTextures != null)
++										spriteBatch.Draw(modBranchTextures, new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-									if (tile6.color() > 0 && treeAltTextureDrawn[num317, tile6.color()])
++									else if (tile6.color() > 0 && treeAltTextureDrawn[num317, tile6.color()])
+ 										spriteBatch.Draw(treeBranchAltTexture[num317, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 									else
+ 										spriteBatch.Draw(treeBranchTexture[num317], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+//
+@@ -16544,7 +16927,7 @@
+ 					}
+ 
+ 					if (type4 != 323 || frameX < 88 || frameX > 132)
+-						continue;
++						goto SpecialDraw;
+ 
+ 					int num330 = 0;
+ 					switch (frameX) {
+//
+@@ -16562,7 +16945,12 @@
+ 					int num334 = 80;
+ 					int num335 = 32;
+ 					int num336 = 0;
++					modTopTextures = null;
+ 					for (int num337 = num301; num337 < num301 + 100; num337++) {
++						modTopTextures = TileLoader.GetPalmTreeTopTextures(tile[num300, num337].type);
++						if (modTopTextures != null)
++							break;
++
+ 						if (Main.tile[num300, num337].type == 53) {
+ 							num332 = 0;
+ 							break;
+//
+@@ -16586,16 +16974,22 @@
+ 
+ 					int frameY3 = Main.tile[num300, num301].frameY;
+ 					int y3 = num332 * 82;
+-					if (tile6.color() > 0)
++					if (modTopTextures == null && tile6.color() > 0)
+ 						checkTreeAlt[num331, tile6.color()] = true;
+ 
++					if (modTopTextures != null)
++						spriteBatch.Draw(modTopTextures, new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-					if (tile6.color() > 0 && treeAltTextureDrawn[num331, tile6.color()])
++					else if (tile6.color() > 0 && treeAltTextureDrawn[num331, tile6.color()])
+ 						spriteBatch.Draw(treeTopAltTexture[num331, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					else
+ 						spriteBatch.Draw(treeTopTexture[num331], new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				}
+ 				catch {
+ 				}
++
++				SpecialDraw:
++
++				TileLoader.SpecialDraw(type4, num300, num301, spriteBatch);
+ 			}
+ 
+ 			if (TileObject.objectPreview.Active && player[myPlayer].showItemIcon && placementPreview && !CaptureManager.Instance.Active) {
+//
+@@ -12580,18 +12880,30 @@
+ 					else if (array2[l]) {
+ 						black = (array3[l] ? new Microsoft.Xna.Framework.Color((byte)(190f * num18), (byte)(120f * num18), (byte)(120f * num18), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num18), (byte)(190f * num18), (byte)(120f * num18), a));
+ 					}
+-					else if (l == currentLine - 1) {
++					else if (drawableLines[l].mod.Equals("Terraria") && drawableLines[l].Name.Equals("Price")) {
+ 						black = color;
+ 					}
+ 
+-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontMouseText, array[l], new Vector2(X, Y + num25), black, 0f, Vector2.Zero, Vector2.One);
++					drawableLines[l].color = black;
++					drawColor = black;
++					if (overrideColor[l].HasValue) {
++						drawColor = overrideColor[l].Value * num18;
++						drawableLines[l].overrideColor = drawColor;
++					}
++
++					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
++						ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawColor, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
++
++					ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[l]);
+ 				}
+ 
+-				num25 += (int)(fontMouseText.MeasureString(array[l]).Y + (float)num24);
++				Y += (int)(fontMouseText.MeasureString(array[l]).Y + yOffset);
+ 			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
+ 		}
+ 
+-		private void MouseText_DrawBuffString(ref int X, ref int Y) {
++		private void MouseText_DrawBuffString(ref int X, ref int Y, int buffNameHeight) {
+ 			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
+ 			int num = 220;
+ 			int num2 = -1;

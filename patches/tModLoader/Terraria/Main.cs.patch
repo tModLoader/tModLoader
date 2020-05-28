@@ -874,14 +874,6 @@
  						switch (num2) {
  							case 1:
  								flag = true;
-@@ -9813,6 +_,7 @@
- 				return;
- 
- 			_isDrawingOrUpdating = true;
-+			try {
- 			DoUpdate(gameTime);
- 			CinematicManager.Instance.Update(gameTime);
- 			if (netMode == 2) {
 @@ -9824,8 +_,14 @@
  			else if (netMode == 1) {
  				Netplay.Connection.Socket.SendQueuedPackets();
@@ -897,44 +889,6 @@
  		}
  
  		public void UpdateViewZoomKeys() {
-@@ -9858,6 +_,8 @@
- 			if (InGameUI != null)
- 				InGameUI.Update(gameTime);
- 
-+			ModHooks.UpdateUI(gameTime);
-+			PlayerInput.ScrollWheelDeltaForUI = 0;
- 			PlayerInput.SetZoom_Unscaled();
- 			MouseOversTryToClear();
- 			PlayerInput.ResetInputsOnActiveStateChange();
-@@ -10051,7 +_,9 @@
- 				}
- 
- 				hasFocus = base.IsActive;
-+#if WINDOWS
- 				hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
-+#endif
- 				if (!gameMenu || netMode == 2) {
- 					WorldFile.tempRaining = raining;
- 					WorldFile.tempRainTime = rainTime;
-@@ -10209,6 +_,9 @@
- 				if ((byte)player[myPlayer].zone4 != (byte)clientPlayer.zone4)
- 					flag = true;
- 
-+				if (!PlayerHooks.CustomBiomesMatch(player[myPlayer], clientPlayer))
-+					flag = true;
-+
- 				if (flag)
- 					NetMessage.SendData(36, -1, -1, null, myPlayer);
- 
-@@ -10237,7 +_,7 @@
- 				}
- 
- 				bool flag2 = false;
--				for (int num4 = 0; num4 < 22; num4++) {
-+				for (int num4 = 0; num4 < Player.MaxBuffs; num4++) {
- 					if (player[myPlayer].buffType[num4] != clientPlayer.buffType[num4])
- 						flag2 = true;
- 				}
 @@ -10260,6 +_,8 @@
  
  				if (flag4)
@@ -944,106 +898,6 @@
  			}
  
  			if (netMode == 1)
-@@ -10351,11 +_,13 @@
- 				if (playerInventory)
- 					player[myPlayer].AdjTiles();
- 
-+				PlayerHooks.UpdateAutopause(player[myPlayer]);
- 				gamePaused = true;
- 				return;
- 			}
- 
- 			gamePaused = false;
-+			ModHooks.PreUpdateEntities();
- 			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
- 				Star.UpdateStars();
- 				Cloud.UpdateClouds();
-@@ -10364,6 +_,9 @@
- 			PortalHelper.UpdatePortalPoints();
- 			tileSolid[379] = false;
- 			ActivePlayersCount = 0;
-+			if (netMode == 1 && Netplay.syncingWorld) // skip updating entities while world is loading in multiplayer #340
-+				goto skipEntityUpdates;
-+
- 			for (int num12 = 0; num12 < 255; num12++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -10378,6 +_,7 @@
- 			}
- 
- 			_gameUpdateCount++;
-+			ModHooks.MidUpdatePlayerNPC();
- 			if (netMode != 1) {
- 				try {
- 					NPC.SpawnNPC();
-@@ -10424,6 +_,7 @@
- 				}
- 			}
- 
-+			ModHooks.MidUpdateNPCGore();
- 			for (int num15 = 0; num15 < 500; num15++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -10438,6 +_,7 @@
- 				}
- 			}
- 
-+			ModHooks.MidUpdateGoreProjectile();
- 			LockOnHelper.SetUP();
- 			for (int num16 = 0; num16 < 1000; num16++) {
- 				ProjectileUpdateLoopIndex = num16;
-@@ -10456,6 +_,7 @@
- 
- 			ProjectileUpdateLoopIndex = -1;
- 			LockOnHelper.SetDOWN();
-+			ModHooks.MidUpdateProjectileItem();
- 			for (int num17 = 0; num17 < 400; num17++) {
- 				if (ignoreErrors) {
- 					try {
-@@ -10485,6 +_,8 @@
- 				Dust.UpdateDust();
- 			}
- 
-+			ModHooks.MidUpdateDustTime();
-+
- 			if (netMode != 2) {
- 				CombatText.UpdateCombatText();
- 				ItemText.UpdateItemText();
-@@ -10502,6 +_,7 @@
- 				UpdateTime();
- 			}
- 
-+			ModHooks.MidUpdateTimeWorld();
- 			tileSolid[379] = true;
- 			if (netMode != 1) {
- 				if (ignoreErrors) {
-@@ -10539,6 +_,8 @@
- 					UpdateClient();
- 			}
- 
-+			ModHooks.PostUpdateEverything();
-+
- 			if (ignoreErrors) {
- 				try {
- 					for (int num19 = 0; num19 < numChatLines; num19++) {
-@@ -10579,8 +_,6 @@
- 				if (cameraLerp > 1f)
- 					cameraLerp = 1f;
- 			}
--
--			base.Update(gameTime);
- 		}
- 
- 		private static void DoUpdate_AnimateCursorColors() {
-@@ -10618,7 +_,7 @@
- 		}
- 
- 		private static void DoUpdate_Enter_ToggleChat() {
--			if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && netMode == 1 && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt) && hasFocus) {
-+			if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt) && hasFocus) {
- 				if (chatRelease && !drawingPlayerChat && !editSign && !editChest && !gameMenu && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape)) {
- 					PlaySound(10);
- 					drawingPlayerChat = true;
 @@ -10676,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
@@ -1398,6 +1252,15 @@
  						currentLine++;
  					}
  
+@@ -12254,7 +_,8 @@
+ 			}
+ 
+ 			if (!_isDrawingOrUpdating) {
+ 				_isDrawingOrUpdating = true;
++			try {
+ 				DoUpdate(gameTime);
+ 				CinematicManager.Instance.Update(gameTime);
+ 				if (netMode == 2) {
 @@ -12269,140 +_,164 @@
  							array3[currentLine] = true;
  
@@ -1665,41 +1528,6 @@
  					if (gameMenu)
  						UpdateMenu();
  
-@@ -12580,18 +_,30 @@
- 					else if (array2[l]) {
- 						black = (array3[l] ? new Microsoft.Xna.Framework.Color((byte)(190f * num18), (byte)(120f * num18), (byte)(120f * num18), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num18), (byte)(190f * num18), (byte)(120f * num18), a));
- 					}
--					else if (l == currentLine - 1) {
-+					else if (drawableLines[l].mod.Equals("Terraria") && drawableLines[l].Name.Equals("Price")) {
- 						black = color;
- 					}
- 
--					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, fontMouseText, array[l], new Vector2(X, Y + num25), black, 0f, Vector2.Zero, Vector2.One);
-+					drawableLines[l].color = black;
-+					drawColor = black;
-+					if (overrideColor[l].HasValue) {
-+						drawColor = overrideColor[l].Value * num18;
-+						drawableLines[l].overrideColor = drawColor;
-+					}
-+
-+					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref yOffset) && globalCanDraw)
-+						ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].font, drawableLines[l].text, new Vector2((float)drawableLines[l].X, (float)drawableLines[l].Y), drawColor, drawableLines[l].rotation, drawableLines[l].origin, drawableLines[l].baseScale, drawableLines[l].maxWidth, drawableLines[l].spread);
-+
-+					ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[l]);
- 				}
- 
--				num25 += (int)(fontMouseText.MeasureString(array[l]).Y + (float)num24);
-+				Y += (int)(fontMouseText.MeasureString(array[l]).Y + yOffset);
- 			}
-+
-+			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
- 		}
- 
--		private void MouseText_DrawBuffString(ref int X, ref int Y) {
-+		private void MouseText_DrawBuffString(ref int X, ref int Y, int buffNameHeight) {
- 			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
- 			int num = 220;
- 			int num2 = -1;
 @@ -12605,7 +_,7 @@
  
  			if (bannerMouseOver) {
@@ -1718,6 +1546,14 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -12657,6 +_,7 @@
+ 				Sandstorm.EmitDust();
+ 			}
+ 
++			ModHooks.PreUpdateEntities();
+ 			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
+ 				Star.UpdateStars();
+ 				Cloud.UpdateClouds();
 @@ -12717,9 +_,11 @@
  					spriteBatch.DrawString(fontMouseText, text, new Vector2(num13, num14), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
@@ -1731,6 +1567,32 @@
  		}
  
  		protected void DrawFPS() {
+@@ -12780,5 +_,7 @@
+ 			if (InGameUI != null)
+ 				InGameUI.Update(gameTime);
+ 
++			ModHooks.UpdateUI(gameTime);
++			PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
+ 			CreativeMenu.Update(gameTime);
+ 			BigBossProgressBar.Update();
+@@ -12899,6 +_,9 @@
+ 			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
+ 				flag2 = true;
+ 
++			if (!PlayerHooks.CustomBiomesMatch(Main.player[myPlayer], player))
++				flag2 = true;
++
+ 			if (flag2)
+ 				NetMessage.SendData(36, -1, -1, null, myPlayer);
+ 
+@@ -12927,6 +_,6 @@
+ 			}
+ 
+ 			bool flag3 = false;
+-			for (int num4 = 0; num4 < 22; num4++) {
++			for (int num4 = 0; num4 < Player.MaxBuffs; num4++) {
+ 				if (Main.player[myPlayer].buffType[num4] != player.buffType[num4])
+ 					flag3 = true;
 @@ -12931,6 +_,7 @@
  			for (int i = num6; i < num7 + 4; i++) {
  				for (int j = num4 - 2; j < num5 + 2; j++) {
@@ -1739,6 +1601,14 @@
  					if (tile == null) {
  						tile = new Tile();
  						Main.tile[j, i] = tile;
+@@ -12996,6 +_,7 @@
+ 			}
+ 
+ 			_gameUpdateCount++;
++			ModHooks.MidUpdatePlayerNPC();
+ 			NPC.RevengeManager.Update();
+ 			if (netMode != 1) {
+ 				try {
 @@ -13001,8 +_,10 @@
  							if (num11 == 0 && j % 2 == 1)
  								effects = SpriteEffects.FlipHorizontally;
@@ -1750,40 +1620,58 @@
  					Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  					int num12 = 0;
  					num8 = 16;
-@@ -13070,6 +_,9 @@
+@@ -13040,7 +_,8 @@
  				}
  			}
  
-+			skipEntityUpdates:
-+			ModHooks.MidUpdateInvasionNet();
-+
- 			if (ignoreErrors) {
- 				try {
- 					if (netMode == 2)
-@@ -13090,6 +_,7 @@
+ 			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
++			ModHooks.MidUpdateNPCGore();
+ 			for (int l = 0; l < 600; l++) {
+ 				if (ignoreErrors) {
+ 					try {
+@@ -13055,8 +_,9 @@
  				}
+ 			}
+ 
++			ModHooks.MidUpdateGoreProjectile();
+ 			LockOnHelper.SetUP();
+ 			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
+ 			PreUpdateAllProjectiles();
+ 			for (int m = 0; m < 1000; m++) {
+ 				ProjectileUpdateLoopIndex = m;
+@@ -13105,11 +_,13 @@
+ 				Dust.UpdateDust();
+ 			}
+ 
++			ModHooks.MidUpdateDustTime();
+ 			if (netMode != 2) {
+ 				CombatText.UpdateCombatText();
+ 				PopupText.UpdateItemText();
  			}
  
 +			ModHooks.MidUpdateItemDust();
  			if (ignoreErrors) {
  				try {
- 					Dust.UpdateDust();
-@@ -13154,6 +_,7 @@
- 						num8 = 18;
+ 					UpdateTime();
+@@ -13122,9 +_,10 @@
+ 				UpdateTime();
+ 			}
  
- 					if (type == 227) {
-+						//patch file: num9, num8
- 						num9 = 32;
- 						num8 = 38;
- 						num12 = ((num10 != 238) ? (num12 - 20) : (num12 - 6));
-@@ -13212,6 +_,7 @@
- 					if (type == 139 || type == 142 || type == 143)
- 						num12 = 2;
++			ModHooks.MidUpdateTimeWorld();
+ 			tileSolid[379] = true;
+ 			if (gameMenu && netMode != 2)
+ 				return;
  
-+					TileLoader.SetDrawPositions(j, i, ref num9, ref num12, ref num8);
- 					int num14 = 0;
- 					if (tile.halfBrick())
- 						num14 = 8;
+ 			if (netMode != 1) {
+ 				if (ignoreErrors) {
+@@ -13162,6 +_,7 @@
+ 					UpdateClient();
+ 			}
+ 
++			ModHooks.PostUpdateEverything();
+ 			chatMonitor.Update();
+ 			upTimer = (float)sw.Elapsed.TotalMilliseconds;
+ 			if (upTimerMaxDelay > 0f)
 @@ -13357,6 +_,7 @@
  
  		private void DoUpdate_HandleInput() {
@@ -1910,167 +1798,6 @@
  												spriteBatch.Draw(tileAltTexture[type, tile.color()], new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num287, i * 16 - (int)screenPosition.Y + num12) + value, new Microsoft.Xna.Framework.Rectangle(num10, y2, num9, num8), color, 0f, default(Vector2), 1f, effects, 0f);
  											else
  												spriteBatch.Draw(tileTexture[type], new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num287, i * 16 - (int)screenPosition.Y + num12) + value, new Microsoft.Xna.Framework.Rectangle(num10, y2, num9, num8), color, 0f, default(Vector2), 1f, effects, 0f);
-@@ -16152,6 +_,7 @@
- 						int num298 = 0;
- 						spriteBatch.Draw(texture2D2, new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num297, i * 16 - (int)screenPosition.Y + num12 + num298) + value, empty, color6, 0f, default(Vector2), 1f, effects, 0f);
- 					}
-+					TileLoader.PostDraw(j, i, type, spriteBatch);
- 				}
- 			}
- 
-@@ -16295,7 +_,9 @@
- 				}
- 
- 				try {
-+					Texture2D modTopTextures;
- 					if (type4 == 5 && frameY >= 198 && frameX >= 22) {
-+						//frame
- 						int num316 = 0;
- 						switch (frameX) {
- 							case 22: {
-@@ -16309,11 +_,22 @@
- 									}
- 
- 									int num320 = 0;
-+									//frame width
- 									int num321 = 80;
-+									//frame height
- 									int num322 = 80;
-+									//x offset left
- 									int num323 = 32;
-+									//y offset
- 									int num324 = 0;
-+									modTopTextures = null;
- 									for (int num325 = num301; num325 < num301 + 100; num325++) {
-+										modTopTextures = TileLoader.GetTreeTopTextures(tile[num300, num325].type,
-+											num300, num325, ref num316, ref num321, ref num322, ref num323, ref num324);
-+
-+										if (modTopTextures != null)
-+											break;
-+
- 										if (Main.tile[num300, num325].type == 2) {
- 											num320 = GetTreeStyle(num300);
- 											break;
-@@ -16380,10 +_,12 @@
- 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num326 / 2f, 0.7f + num326);
- 									}
- 
--									if (tile6.color() > 0)
-+									if (modTopTextures == null && tile6.color() > 0)
- 										checkTreeAlt[num320, tile6.color()] = true;
- 
-+									if (modTopTextures != null)
-+										spriteBatch.Draw(modTopTextures, new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--									if (tile6.color() > 0 && treeAltTextureDrawn[num320, tile6.color()])
-+									else if (tile6.color() > 0 && treeAltTextureDrawn[num320, tile6.color()])
- 										spriteBatch.Draw(treeTopAltTexture[num320, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 									else
- 										spriteBatch.Draw(treeTopTexture[num320], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-@@ -16401,7 +_,13 @@
- 									}
- 
- 									int num327 = 0;
-+									Texture2D modBranchTextures = null;
- 									for (int num328 = num301; num328 < num301 + 100; num328++) {
-+										modBranchTextures = TileLoader.GetTreeBranchTextures(tile[num300 + 1, num328].type, num300, num328, 1, ref num316);
-+
-+										if (modBranchTextures != null)
-+											break;
-+
- 										if (Main.tile[num300 + 1, num328].type == 2) {
- 											num327 = GetTreeStyle(num300 + 1);
- 											break;
-@@ -16455,10 +_,12 @@
- 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num329 / 2f, 0.7f + num329);
- 									}
- 
--									if (tile6.color() > 0)
-+									if (modBranchTextures == null && tile6.color() > 0)
- 										checkTreeAlt[num327, tile6.color()] = true;
- 
-+									if (modBranchTextures != null)
-+										spriteBatch.Draw(modBranchTextures, new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--									if (tile6.color() > 0 && treeAltTextureDrawn[num327, tile6.color()])
-+									else if (tile6.color() > 0 && treeAltTextureDrawn[num327, tile6.color()])
- 										spriteBatch.Draw(treeBranchAltTexture[num327, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 									else
- 										spriteBatch.Draw(treeBranchTexture[num327], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-@@ -16476,7 +_,13 @@
- 									}
- 
- 									int num317 = 0;
-+									Texture2D modBranchTextures = null;
- 									for (int num318 = num301; num318 < num301 + 100; num318++) {
-+										modBranchTextures = TileLoader.GetTreeBranchTextures(tile[num300 - 1, num318].type, num300, num318, -1, ref num316);
-+
-+										if (modBranchTextures != null)
-+											break;
-+
- 										if (Main.tile[num300 - 1, num318].type == 2) {
- 											num317 = GetTreeStyle(num300 - 1);
- 											break;
-@@ -16530,10 +_,12 @@
- 										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num319 / 2f, 0.7f + num319);
- 									}
- 
--									if (tile6.color() > 0)
-+									if (modBranchTextures == null && tile6.color() > 0)
- 										checkTreeAlt[num317, tile6.color()] = true;
- 
-+									if (modBranchTextures != null)
-+										spriteBatch.Draw(modBranchTextures, new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--									if (tile6.color() > 0 && treeAltTextureDrawn[num317, tile6.color()])
-+									else if (tile6.color() > 0 && treeAltTextureDrawn[num317, tile6.color()])
- 										spriteBatch.Draw(treeBranchAltTexture[num317, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 									else
- 										spriteBatch.Draw(treeBranchTexture[num317], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-@@ -16544,7 +_,7 @@
- 					}
- 
- 					if (type4 != 323 || frameX < 88 || frameX > 132)
--						continue;
-+						goto SpecialDraw;
- 
- 					int num330 = 0;
- 					switch (frameX) {
-@@ -16562,7 +_,12 @@
- 					int num334 = 80;
- 					int num335 = 32;
- 					int num336 = 0;
-+					modTopTextures = null;
- 					for (int num337 = num301; num337 < num301 + 100; num337++) {
-+						modTopTextures = TileLoader.GetPalmTreeTopTextures(tile[num300, num337].type);
-+						if (modTopTextures != null)
-+							break;
-+
- 						if (Main.tile[num300, num337].type == 53) {
- 							num332 = 0;
- 							break;
-@@ -16586,16 +_,22 @@
- 
- 					int frameY3 = Main.tile[num300, num301].frameY;
- 					int y3 = num332 * 82;
--					if (tile6.color() > 0)
-+					if (modTopTextures == null && tile6.color() > 0)
- 						checkTreeAlt[num331, tile6.color()] = true;
- 
-+					if (modTopTextures != null)
-+						spriteBatch.Draw(modTopTextures, new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--					if (tile6.color() > 0 && treeAltTextureDrawn[num331, tile6.color()])
-+					else if (tile6.color() > 0 && treeAltTextureDrawn[num331, tile6.color()])
- 						spriteBatch.Draw(treeTopAltTexture[num331, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 					else
- 						spriteBatch.Draw(treeTopTexture[num331], new Vector2(num300 * 16 - (int)screenPosition.X - num335 + frameY3, num301 * 16 - (int)screenPosition.Y - num334 + 16 + num336) + value, new Microsoft.Xna.Framework.Rectangle(num330 * (num333 + 2), y3, num333, num334), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 				}
- 				catch {
- 				}
-+
-+				SpecialDraw:
-+
-+				TileLoader.SpecialDraw(type4, num300, num301, spriteBatch);
- 			}
- 
- 			if (TileObject.objectPreview.Active && player[myPlayer].showItemIcon && placementPreview && !CaptureManager.Instance.Active) {
 @@ -16682,7 +_,7 @@
  					continue;
  

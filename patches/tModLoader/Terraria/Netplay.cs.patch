@@ -39,16 +39,14 @@
  		}
  
  		public static void ResetSections() {
-@@ -120,9 +_,23 @@
- 
+@@ -121,6 +_,19 @@
  			return false;
  		}
  
 +		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
 +
 +		internal static void OnUpdate() {
-+			Task t;
-+			while (mainThreadTasks.TryDequeue(out t))
++			while (mainThreadTasks.TryDequeue(out Task t))
 +				t.RunSynchronously();
 +		}
 +
@@ -61,8 +59,6 @@
  		private static void OpenPort(int port) {
  #if SERVER && WINDOWS
  			string localIPAddress = GetLocalIPAddress();
- 			if (_upnpnat == null) {
- 				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
 @@ -360,5 +_,5 @@
  
  		private static void UpdateClient() {
