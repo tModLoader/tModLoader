@@ -23,7 +23,7 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -521,5 +_,41 @@
+@@ -531,5 +_,41 @@
  			return array;
  		}
  
@@ -65,7 +65,7 @@
 +		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
 +		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
-@@ -717,4 +_,17 @@
+@@ -727,4 +_,17 @@
  		}
  
 +
@@ -83,7 +83,7 @@
 +
  		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
  		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
-@@ -1109,14 +_,17 @@
+@@ -1119,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

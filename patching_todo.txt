@@ -1,3 +1,8 @@
+//Rartrin
+	//Projectile.FishingCheck
+		//Make PlayerHooks.CatchFish and other related hooks use the new FishingAttempt struct.
+		//Move PlayerHooks.CatchFish and fishing related hooks to be each of the FishingCheck submethods.
+		
 //Mirsario:
 	//Lighting:
 		//Re-add TileLoader.NearbyEffects calls (perhaps multiple) to somewhere in SceneMetrics
@@ -23,9 +28,87 @@
 			#if SERVER
 			this.OpenSettings();
 			#endif
+			
+		//Put this somewhere it fits. Was in Main.LoadTextures():
+			UICommon.LoadTextures();
+		
+		//Define and pass modMusic and modPriority to UpdateAudio_DecideOnTOWMusic and UpdateAudio_DecideOnNewMusic methods...
+			int modMusic = -1;
+			MusicPriority modPriority = MusicPriority.None;
+			
+		//...And put this after the calls.
+			ModHooks.UpdateMusic(ref modMusic, ref modPriority);
+			
+		//Redo all the checks like that in both UpdateAudio_DecideOnTOWMusic and UpdateAudio_DecideOnNewMusic:
+			if (modPriority >= MusicPriority.Event) {
+				newMusic = modMusic;
+			}
+			
+		//Reimplement broken patches:
+//
+if (nPC.aiStyle == 7)
+	DrawNPCExtras(n3, beforeDraw: false, num65, num64, color9, vector10, spriteEffects);
 
-//Rartrin
-	//Projectile.FishingCheck
-		//Make PlayerHooks.CatchFish and other related hooks use the new FishingAttempt struct.
-		//Move PlayerHooks.CatchFish and fishing related hooks to be each of the FishingCheck submethods.
++NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, color9);
+
+//
+@@ -6674,41 +5292,48 @@
+ 			}
+ 
+ 			if (autoJoin) {
++				ModLoader.ModLoader.OnSuccessfulLoad += () => {
+-				LoadPlayers();
++					LoadPlayers();
+-				menuMode = 1;
++					menuMode = 1;
+-				menuMultiplayer = true;
++					menuMultiplayer = true;
++				};
+ 			}
+ 
+ 			fpsTimer.Start();
+ 		}
+ 
+ 		public T OurLoad<T>(string path) {
+-			lock (globalTextureLocker) {
++			GLCallLocker.Enter(globalTextureLocker);
++			try {
+ 				if (TexturePackSupport.Enabled && typeof(T) == t2d && TexturePackSupport.FetchTexture(path + ".png", out Texture2D tex))
+ 					return (T)(object)tex;
+ 
+ 				return base.Content.Load<T>(path);
+ 			}
++			finally {
++				Monitor.Exit(globalTextureLocker);
++			}
+ 		}
+ 
+ 		protected override void LoadContent() {
++			HiDefGraphicsIssues.OnLoadContent();
+ 			Configuration.Load();
++			ModLoader.ModLoader.MigrateSettings();
+ 			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
+ 			if (UseExperimentalFeatures)
+ 				TexturePackSupport.Enabled = true;
+ 
+ 			Configuration.Get("Support4K", ref Support4K);
+ 			bool flag = Support4K && base.GraphicsDevice.Adapter.IsProfileSupported(GraphicsProfile.HiDef);
+-			if (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width <= 1920 && GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height <= 1200)
+-				flag = false;
+-
++			// (resolution check removed) tModLoader will attempt to use HiDef even if the computer resolution doesn't need it to support newer shaders.
+ 			if (Support4K && flag)
+-				SetGraphicsProfile(GraphicsProfile.HiDef);
++				if (SetGraphicsProfile(GraphicsProfile.HiDef))
++					return; // changing the graphics profile triggers a device recreation and XNA will call `LoadContent` again
+ 
+-			TexturePackSupport.FindTexturePack();
++			TexturePackSupport.FindTexturePacks();
+ 			TextureManager.Initialize();
+ 			mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
+-			ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++			ShaderContentManager = new TMLContentManager(base.Content.ServiceProvider, base.Content.RootDirectory, AlternateContentManager);
+ 			PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
+ 			TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
+ 			ScreenShaderRef.Value = ShaderContentManager.Load<Effect>("ScreenShader");
 		

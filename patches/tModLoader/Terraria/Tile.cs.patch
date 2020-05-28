@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -10,9 +_,9 @@
+@@ -12,9 +_,9 @@
  	public class Tile
  	{
  		public ushort type;
@@ -11,7 +11,7 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -326,8 +_,8 @@
+@@ -328,8 +_,8 @@
  
  		public byte color() => (byte)(sTileHeader & 0x1F);
  
@@ -21,7 +21,7 @@
  		}
  
  		public bool active() => (sTileHeader & 0x20) == 32;
-@@ -336,7 +_,7 @@
+@@ -338,7 +_,7 @@
  			if (active)
  				sTileHeader |= 32;
  			else
@@ -30,7 +30,7 @@
  		}
  
  		public bool inActive() => (sTileHeader & 0x40) == 64;
-@@ -345,7 +_,7 @@
+@@ -347,7 +_,7 @@
  			if (inActive)
  				sTileHeader |= 64;
  			else
@@ -39,7 +39,7 @@
  		}
  
  		public bool wire() => (sTileHeader & 0x80) == 128;
-@@ -354,7 +_,7 @@
+@@ -356,7 +_,7 @@
  			if (wire)
  				sTileHeader |= 128;
  			else
@@ -48,7 +48,7 @@
  		}
  
  		public bool wire2() => (sTileHeader & 0x100) == 256;
-@@ -363,7 +_,7 @@
+@@ -365,7 +_,7 @@
  			if (wire2)
  				sTileHeader |= 256;
  			else
@@ -57,7 +57,7 @@
  		}
  
  		public bool wire3() => (sTileHeader & 0x200) == 512;
-@@ -372,7 +_,7 @@
+@@ -374,7 +_,7 @@
  			if (wire3)
  				sTileHeader |= 512;
  			else
@@ -66,7 +66,7 @@
  		}
  
  		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
-@@ -381,7 +_,7 @@
+@@ -383,7 +_,7 @@
  			if (halfBrick)
  				sTileHeader |= 1024;
  			else
@@ -75,7 +75,7 @@
  		}
  
  		public bool actuator() => (sTileHeader & 0x800) == 2048;
-@@ -390,12 +_,12 @@
+@@ -392,12 +_,12 @@
  			if (actuator)
  				sTileHeader |= 2048;
  			else

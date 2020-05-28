@@ -89,10 +89,10 @@
      <EmbeddedResource Include="Terraria.GameContent.Creative.Content.Sacrifices.tsv" />
      <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Materials.json" />
 +    <EmbeddedResource Include="**\*.png" />
-     <EmbeddedResource Include="..\..\references\ReLogicWindows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-       <LogicalName>ReLogic.dll</LogicalName>
+     <EmbeddedResource Include="..\..\references\RailSDK.Net.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
+       <LogicalName>RailSDK.Net.dll</LogicalName>
      </EmbeddedResource>
-@@ -106,11 +_,31 @@
+@@ -115,11 +_,31 @@
      <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
        <LogicalName>Steamworks.NET.dll</LogicalName>
      </EmbeddedResource>
@@ -125,7 +125,7 @@
    </ItemGroup>
    <Target Name="EditBin" AfterTargets="Build">
      <PropertyGroup>
-@@ -127,7 +_,11 @@
+@@ -136,7 +_,11 @@
    </Target>
    <Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
      <Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
