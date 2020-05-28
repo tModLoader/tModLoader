@@ -4148,167 +4148,7 @@
  						}
  					}
  				}
-@@ -31350,15 +_,12 @@
- 
- 			trashItem = new Item();
- 			grappling[0] = -1;
--			inventory[0].SetDefaults(3507);
--			inventory[1].SetDefaults(3509);
--			inventory[2].SetDefaults(3506);
-+			if (startupInventory)
-+				PlayerHooks.SetStartInventory(this);
-+
- 			statManaMax = 20;
- 			extraAccessory = false;
--			if (Main.cEd)
--				inventory[3].SetDefaults(603);
--
--			for (int n = 0; n < 470; n++) {
-+			for (int n = 0; n < adjTile.Length; n++) {
- 				adjTile[n] = false;
- 				oldAdjTile[n] = false;
- 			}
-@@ -31460,6 +_,7 @@
- 		}
- 
- 		public void GetAnglerReward() {
-+			List<Item> rewardItems = new List<Item>();
- 			Item item = new Item();
- 			item.type = 0;
- 			float num = 1f;
-@@ -31469,6 +_,8 @@
- 				num = 0.5f - (float)(anglerQuestsFinished - 50) * 0.005f;
- 			else if (anglerQuestsFinished <= 150)
- 				num = 0.25f - (float)(anglerQuestsFinished - 100) * 0.002f;
-+			else
-+				num = 0.15f;
- 
- 			if (anglerQuestsFinished == 5) {
- 				item.SetDefaults(2428);
-@@ -31591,55 +_,22 @@
- 				}
- 			}
- 
--			item.position = base.Center;
--			Item item2 = GetItem(whoAmI, item, longText: true);
--			if (item2.stack > 0) {
--				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--				if (Main.netMode == 1)
--					NetMessage.SendData(21, -1, -1, null, number, 1f);
--			}
--
-+			rewardItems.Add(item);
- 			if (item.type == 2417) {
- 				Item item3 = new Item();
- 				Item item4 = new Item();
- 				item3.SetDefaults(2418);
--				item3.position = base.Center;
--				item2 = GetItem(whoAmI, item3, longText: true);
--				if (item2.stack > 0) {
--					int number2 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--					if (Main.netMode == 1)
--						NetMessage.SendData(21, -1, -1, null, number2, 1f);
--				}
--
-+				rewardItems.Add(item3);
- 				item4.SetDefaults(2419);
--				item4.position = base.Center;
--				item2 = GetItem(whoAmI, item4, longText: true);
--				if (item2.stack > 0) {
--					int number3 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--					if (Main.netMode == 1)
--						NetMessage.SendData(21, -1, -1, null, number3, 1f);
--				}
-+				rewardItems.Add(item4);
- 			}
- 			else if (item.type == 2498) {
- 				Item item5 = new Item();
- 				Item item6 = new Item();
- 				item5.SetDefaults(2499);
--				item5.position = base.Center;
--				item2 = GetItem(whoAmI, item5, longText: true);
--				if (item2.stack > 0) {
--					int number4 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--					if (Main.netMode == 1)
--						NetMessage.SendData(21, -1, -1, null, number4, 1f);
--				}
--
-+				rewardItems.Add(item5);
- 				item6.SetDefaults(2500);
--				item6.position = base.Center;
--				item2 = GetItem(whoAmI, item6, longText: true);
--				if (item2.stack > 0) {
--					int number5 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--					if (Main.netMode == 1)
--						NetMessage.SendData(21, -1, -1, null, number5, 1f);
--				}
-+				rewardItems.Add(item6);
- 			}
- 
- 			Item item7 = new Item();
-@@ -31671,16 +_,9 @@
- 				item7.stack = num2;
- 			}
- 
--			item7.position = base.Center;
--			item2 = GetItem(whoAmI, item7, longText: true);
--			if (item2.stack > 0) {
--				int number6 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
--				if (Main.netMode == 1)
--					NetMessage.SendData(21, -1, -1, null, number6, 1f);
--			}
--
-+			rewardItems.Add(item7);
- 			if (Main.rand.Next((int)(100f * num)) > 50)
--				return;
-+				goto postAnglerQuestCountCheck;
- 
- 			Item item8 = new Item();
- 			if (Main.rand.Next((int)(15f * num)) == 0)
-@@ -31708,12 +_,18 @@
- 			if (Main.rand.Next(250) <= anglerQuestsFinished)
- 				item8.stack++;
- 
-+			rewardItems.Add(item8);
-+
-+			postAnglerQuestCountCheck:
-+			PlayerHooks.AnglerQuestReward(this, num, rewardItems);
-+			foreach (Item rewardItem in rewardItems) {
--			item8.position = base.Center;
-+				rewardItem.position = Center;
--			item2 = GetItem(whoAmI, item8, longText: true);
-+				Item getItem = GetItem(whoAmI, rewardItem, longText: true);
--			if (item2.stack > 0) {
-+				if (getItem.stack > 0) {
--				int number7 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
-+					int number = Item.NewItem((int)position.X, (int)position.Y, width, height, getItem.type, getItem.stack, noBroadcast: false, 0, noGrabDelay: true);
--				if (Main.netMode == 1)
-+					if (Main.netMode == 1)
--					NetMessage.SendData(21, -1, -1, null, number7, 1f);
-+						NetMessage.SendData(21, -1, -1, null, number, 1f);
-+				}
- 			}
- 		}
- 
-@@ -31816,7 +_,7 @@
- 					return true;
- 
- 				solarShields--;
--				for (int i = 0; i < 22; i++) {
-+				for (int i = 0; i < MaxBuffs; i++) {
- 					if (buffType[i] >= 170 && buffType[i] <= 172)
- 						DelBuff(i);
- 				}
-@@ -32070,7 +_,7 @@
- 				return;
- 
- 			int time = 480;
--			for (int i = 0; i < 22; i++) {
-+			for (int i = 0; i < MaxBuffs; i++) {
- 				if (buffType[i] >= type && buffType[i] < type + 3)
- 					DelBuff(i);
- 			}
-@@ -35355,8 +_,14 @@
+@@ -35359,8 +_,14 @@
  
  			speed += item.shootSpeed;
  			if (item.ranged) {
@@ -4325,7 +4165,7 @@
  			}
  			else {
  				Damage += item.damage;
-@@ -35936,6 +_,8 @@
+@@ -35940,6 +_,8 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
@@ -4334,7 +4174,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
-@@ -35953,6 +_,8 @@
+@@ -35957,6 +_,8 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
  						Main.item[num3].newAndShiny = false;
@@ -4343,7 +4183,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num3);
  					}
-@@ -35970,6 +_,8 @@
+@@ -35974,6 +_,8 @@
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
  						Main.item[num4].newAndShiny = false;
@@ -4352,7 +4192,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num4);
  					}
-@@ -35989,6 +_,8 @@
+@@ -35993,6 +_,8 @@
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
  					Main.item[num5].newAndShiny = false;
@@ -4361,7 +4201,7 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);
  				}
-@@ -36106,13 +_,14 @@
+@@ -36110,13 +_,14 @@
  			}
  
  			player.trashItem = trashItem.Clone();
@@ -4377,7 +4217,7 @@
  			return player;
  		}
  
-@@ -36123,7 +_,7 @@
+@@ -36127,7 +_,7 @@
  			if (Main.tile[x, y - 1] == null)
  				return false;
  
@@ -4386,7 +4226,7 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -36488,7 +_,7 @@
+@@ -36492,7 +_,7 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
@@ -4395,7 +4235,7 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -36919,6 +_,9 @@
+@@ -36923,6 +_,9 @@
  				playerFileData.Player = player;
  				return playerFileData;
  			}
@@ -4405,7 +4245,7 @@
  			catch {
  			}
  
-@@ -36976,12 +_,17 @@
+@@ -36980,12 +_,17 @@
  			PlayerFileData playerFileData = LoadPlayer(file, cloudSave);
  			if (playerFileData.Player != null) {
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1) {
@@ -4424,7 +4264,7 @@
  				}
  
  				return playerFileData;
-@@ -37031,7 +_,33 @@
+@@ -37035,7 +_,33 @@
  			return -1;
  		}
  
@@ -4459,7 +4299,133 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -37735,6 +_,7 @@
+@@ -37073,10 +_,10 @@
+ 
+ 			trashItem = new Item();
+ 			lastVisualizedSelectedItem = new Item();
+ 			grappling[0] = -1;
+ 			statManaMax = 20;
+ 			extraAccessory = false;
+-			for (int n = 0; n < 623; n++) {
++			for (int n = 0; n < adjTile.Length; n++) {
+ 				adjTile[n] = false;
+ 				oldAdjTile[n] = false;
+ 			}
+@@ -37304,6 +_,7 @@
+ 		}
+ 
+ 		public void GetAnglerReward() {
++			List<Item> rewardItems = new List<Item>();
+ 			Item item = new Item();
+ 			item.type = 0;
+ 			int num = anglerQuestsFinished;
+@@ -37489,56 +_,23 @@
+ 					}
+ 			}
+ 
+-			item.position = base.Center;
+ 			GetItemSettings nPCEntityToPlayerInventorySettings = GetItemSettings.NPCEntityToPlayerInventorySettings;
+-			Item item2 = GetItem(whoAmI, item, nPCEntityToPlayerInventorySettings);
+-			if (item2.stack > 0) {
+-				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-				if (Main.netMode == 1)
+-					NetMessage.SendData(21, -1, -1, null, number, 1f);
+-			}
+-
++			rewardItems.Add(item);
+ 			if (item.type == 2417) {
+ 				Item item3 = new Item();
+ 				Item item4 = new Item();
+ 				item3.SetDefaults(2418);
+-				item3.position = base.Center;
+-				item2 = GetItem(whoAmI, item3, nPCEntityToPlayerInventorySettings);
+-				if (item2.stack > 0) {
+-					int number2 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-					if (Main.netMode == 1)
+-						NetMessage.SendData(21, -1, -1, null, number2, 1f);
+-				}
+-
++				rewardItems.Add(item3);
+ 				item4.SetDefaults(2419);
+-				item4.position = base.Center;
+-				item2 = GetItem(whoAmI, item4, nPCEntityToPlayerInventorySettings);
+-				if (item2.stack > 0) {
+-					int number3 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-					if (Main.netMode == 1)
+-						NetMessage.SendData(21, -1, -1, null, number3, 1f);
+-				}
++				rewardItems.Add(item4);
+ 			}
+ 			else if (item.type == 2498) {
+ 				Item item5 = new Item();
+ 				Item item6 = new Item();
+ 				item5.SetDefaults(2499);
+-				item5.position = base.Center;
+-				item2 = GetItem(whoAmI, item5, nPCEntityToPlayerInventorySettings);
+-				if (item2.stack > 0) {
+-					int number4 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-					if (Main.netMode == 1)
+-						NetMessage.SendData(21, -1, -1, null, number4, 1f);
+-				}
+-
++				rewardItems.Add(item5);
+ 				item6.SetDefaults(2500);
+-				item6.position = base.Center;
+-				item2 = GetItem(whoAmI, item6, nPCEntityToPlayerInventorySettings);
+-				if (item2.stack > 0) {
+-					int number5 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-					if (Main.netMode == 1)
+-						NetMessage.SendData(21, -1, -1, null, number5, 1f);
+-				}
++				rewardItems.Add(item6);
+ 			}
+ 
+ 			Item item7 = new Item();
+@@ -37570,16 +_,9 @@
+ 				item7.stack = num3;
+ 			}
+ 
+-			item7.position = base.Center;
+-			item2 = GetItem(whoAmI, item7, nPCEntityToPlayerInventorySettings);
+-			if (item2.stack > 0) {
+-				int number6 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+-				if (Main.netMode == 1)
+-					NetMessage.SendData(21, -1, -1, null, number6, 1f);
+-			}
+-
++			rewardItems.Add(item7);
+ 			if (Main.rand.Next((int)(100f * num2)) > 50)
+-				return;
++				goto postAnglerQuestCountCheck;
+ 
+ 			Item item8 = new Item();
+ 			if (Main.rand.Next((int)(15f * num2)) == 0)
+@@ -37607,12 +_,18 @@
+ 			if (Main.rand.Next(250) <= num)
+ 				item8.stack++;
+ 
++			rewardItems.Add(item8);
++
++			postAnglerQuestCountCheck:
++			PlayerHooks.AnglerQuestReward(this, num2, rewardItems);
++			foreach (Item rewardItem in rewardItems) {
+-			item8.position = base.Center;
++				rewardItem.position = Center;
+-			item2 = GetItem(whoAmI, item8, GetItemSettings.NPCEntityToPlayerInventorySettings);
++				Item getItem = GetItem(whoAmI, rewardItem, GetItemSettings.NPCEntityToPlayerInventorySettings);
+-			if (item2.stack > 0) {
++				if (getItem.stack > 0) {
+-				int number7 = Item.NewItem((int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
++					int number = Item.NewItem((int)position.X, (int)position.Y, width, height, getItem.type, getItem.stack, noBroadcast: false, 0, noGrabDelay: true);
+-				if (Main.netMode == 1)
++					if (Main.netMode == 1)
+-					NetMessage.SendData(21, -1, -1, null, number7, 1f);
++						NetMessage.SendData(21, -1, -1, null, number, 1f);
++				}
+ 			}
+ 		}
+ 
+@@ -37739,6 +_,7 @@
  					list.Add(3024);
  			}
  
@@ -4467,7 +4433,7 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -37748,6 +_,49 @@
+@@ -37752,6 +_,49 @@
  			}
  		}
  
@@ -4517,3 +4483,23 @@
  		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
  			int num = (int)((float)amount * manaCost);
  			if (statMana >= num) {
+@@ -37782,9 +_,9 @@
+ 		}
+ 
+ 		public bool ConsumeSolarFlare() {
+ 			if (setSolar && solarShields > 0) {
+ 				solarShields--;
+-				for (int i = 0; i < 22; i++) {
++				for (int i = 0; i < MaxBuffs; i++) {
+ 					if (buffType[i] >= 170 && buffType[i] <= 172)
+ 						DelBuff(i);
+ 				}
+@@ -38022,7 +_,7 @@
+ 				return;
+ 
+ 			int timeToAdd = 480;
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffType[i] >= type && buffType[i] < type + 3)
+ 					DelBuff(i);
+ 			}
