@@ -4830,6 +4830,15 @@
  						if (player[l].inventory[m].type == 71)
  							num27 += player[l].inventory[m].stack;
  
+@@ -48735,7 +_,7 @@
+ 					if (player[l].inventory[m].ammo == AmmoID.Bullet || player[l].inventory[m].useAmmo == AmmoID.Bullet)
+ 						flag2 = true;
+ 
+-					if (player[l].inventory[m].type == 166 || player[l].inventory[m].type == 167 || player[l].inventory[m].type == 168 || player[l].inventory[m].type == 235 || player[l].inventory[m].type == 2896 || player[l].inventory[m].type == 3547)
++					if (ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[player[l].inventory[m].type])
+ 						flag3 = true;
+ 
+ 					if (player[l].inventory[m].dye > 0 || (player[l].inventory[m].type >= 1107 && player[l].inventory[m].type <= 1120) || (player[l].inventory[m].type >= 3385 && player[l].inventory[m].type <= 3388)) {
 @@ -48908,6 +_,9 @@
  
  			if (WorldGen.prioritizedTownNPC == 0 && NPC.savedBartender && num25 < 1)

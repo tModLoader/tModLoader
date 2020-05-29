@@ -7,14 +7,15 @@ namespace ExampleMod.Items.Weapons
 {
 	internal class ExampleExplosive : ModItem
 	{
-		// TODO, count as explosive for demolitionist spawn
-
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			base.SetStaticDefaults();
 			DisplayName.SetDefault("Example Explosive");
+			ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[item.type] = true;
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.shootSpeed = 12f;
 			item.shoot = ProjectileType<Projectiles.ExampleExplosive>();
@@ -31,7 +32,8 @@ namespace ExampleMod.Items.Weapons
 			item.rare = ItemRarityID.Blue;
 		}
 
-		public override void AddRecipes() {
+		public override void AddRecipes()
+		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemType<ExampleItem>());
 			recipe.AddIngredient(ItemID.Dynamite);
