@@ -200,6 +200,7 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.RemoveChild(_uiLoader);
 			_modList.Clear();
 			_modList.AddRange(_items);
+			Recalculate();
 			_modList.ViewPosition = modListViewPosition;
 		}
 	}
