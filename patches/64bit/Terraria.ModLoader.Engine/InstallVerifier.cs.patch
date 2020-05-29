@@ -1,0 +1,35 @@
+--- src/tModLoader/Terraria.ModLoader.Engine/InstallVerifier.cs
++++ src/64bit/Terraria.ModLoader.Engine/InstallVerifier.cs
+@@ -7,6 +_,7 @@
+ using System.Reflection;
+ using System.Security.Cryptography;
+ using Terraria.Social;
++using Terraria.Utilities;
+ 
+ namespace Terraria.ModLoader.Engine
+ {
+@@ -27,19 +_,19 @@
+ 
+ 		static InstallVerifier()
+ 		{
+-			if (Platform.IsWindows) {
++			if (PlatformUtilities.IsWindows) {
+-				steamAPIPath = "steam_api.dll";
++				steamAPIPath = "./steam_api64.dll";
+-				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
++				steamAPIHash = ToByteArray("2bca4e2c047ec969cb3cff277e7fc184".ToUpper());
+ 				gogHash = ToByteArray("8a836691c1d4446cf9af1361dcdc5ffe");
+ 				steamHash = ToByteArray("fde46a346a885f8d35366e3996f9ca3a");
+ 			}
+-			else if (Platform.IsOSX) {
++			else if (PlatformUtilities.IsOSX) {
+ 				steamAPIPath = "osx/libsteam_api.dylib";
+ 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
+ 				gogHash = ToByteArray("88d56cd87f88a2230f60d9c675f5c977");
+ 				steamHash = ToByteArray("905eceab54c27117c4368d8b55d020e7");
+ 			}
+-			else if (Platform.IsLinux) {
++			else if (PlatformUtilities.IsLinux) {
+ 				steamAPIPath = "lib/libsteam_api.so";
+ 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
+ 				gogHash = ToByteArray("9250594786fb53810da9bf4bc7c7d9a9");

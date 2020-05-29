@@ -185,7 +185,7 @@
 +					}
  
  #if CLIENT
--				ModLoader.UI.Interface.MessageBoxShow(e.ToString());
+-				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
 +					ModLoader.UI.Interface.MessageBoxShow(e.ToString());
  
 -				if (e is FolderCreationFailedException)

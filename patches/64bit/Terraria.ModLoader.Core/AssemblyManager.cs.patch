@@ -1,11 +1,8 @@
 --- src/tModLoader/Terraria.ModLoader.Core/AssemblyManager.cs
 +++ src/64bit/Terraria.ModLoader.Core/AssemblyManager.cs
-@@ -112,7 +_,7 @@
+@@ -112,4 +_,5 @@
  
  				try {
  					using (modFile.Open()) {
--						const string suffixPlat = PlatformUtilities.IsXNA ? ".XNA.dll" : ".FNA.dll";
 +						string suffixPlat = PlatformUtilities.IsXNA ? ".XNA.dll" : ".FNA.dll";
- 						foreach (var dll in properties.dllReferences) {
- 							byte[] dllBytes = modFile.GetBytes("lib/" + dll + suffixPlat) ??
- 							                  modFile.GetBytes("lib/" + dll + ".dll");
+ 						foreach (var dllName in properties.dllReferences) {

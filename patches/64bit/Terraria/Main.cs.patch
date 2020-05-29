@@ -165,7 +165,7 @@
  			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
  			if (!Directory.Exists(vanillaContentFolder)) {
  				vanillaContentFolder = "../Content"; // Nested Manual Install
-@@ -7457,7 +_,7 @@
+@@ -7459,7 +_,7 @@
  			if (waveBank == null) //supress extra exceptions from audio engine failing to load
  				return;
  
@@ -174,7 +174,7 @@
  			if (Main.engine != null)
  				Main.engine.Update();
  
-@@ -10238,7 +_,7 @@
+@@ -10240,7 +_,7 @@
  				}
  
  				hasFocus = base.IsActive;
@@ -183,7 +183,7 @@
  				hasFocus = (Form.ActiveForm == Control.FromHandle(base.Window.Handle) as Form);
  #endif
  				if (!gameMenu || netMode == 2) {
-@@ -35770,9 +_,8 @@
+@@ -35772,9 +_,8 @@
  			SocialAPI.Shutdown();
  #endif
  			Exit();
@@ -195,7 +195,7 @@
  		}
  
  		protected Microsoft.Xna.Framework.Color randColor() {
-@@ -36404,19 +_,19 @@
+@@ -36406,19 +_,19 @@
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
  					string str = "-autoshutdown -password \"" + Netplay.ServerPassword + "\" -lang " + Language.ActiveCulture.LegacyId;
@@ -223,7 +223,7 @@
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
  						ProcessStartInfo startInfo = tServer.StartInfo;
-@@ -37696,7 +_,7 @@
+@@ -37698,7 +_,7 @@
  					}
  
  					bool flag7 = false;
@@ -232,7 +232,7 @@
  					flag7 = true;
  					System.Drawing.Rectangle bounds = Screen.FromPoint(((Form)Control.FromHandle(instance.Window.Handle)).Location).Bounds;
  					if (bounds.Width > maxScreenW || bounds.Height > maxScreenH)
-@@ -38351,36 +_,42 @@
+@@ -38353,36 +_,42 @@
  					array4[1] = 30;
  					array4[2] = 30;
  					array4[3] = 30;
@@ -285,7 +285,7 @@
  						WorldGen.setWorldSize();
  					}
  				}
-@@ -39164,26 +_,11 @@
+@@ -39166,26 +_,11 @@
  				if (num108 == 3)
  					num110 = 2;
  
@@ -316,7 +316,7 @@
  			}
  
  			DrawCursor(DrawThickCursor());
-@@ -41314,7 +_,7 @@
+@@ -41316,7 +_,7 @@
  			base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
@@ -325,7 +325,7 @@
  			tileBatch.Begin();
  #else
  			tileBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
-@@ -50855,8 +_,9 @@
+@@ -50857,8 +_,9 @@
  				graphics.ToggleFullScreen();
  
  			bool flag = false;
@@ -336,7 +336,7 @@
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -50875,7 +_,7 @@
+@@ -50877,7 +_,7 @@
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen) {
@@ -345,7 +345,7 @@
  				form.MinimumSize = new Size(0, 0);
  				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  					screenBorderlessPendingResizes--;
-@@ -50909,7 +_,7 @@
+@@ -50911,7 +_,7 @@
  				}
  			}
  			else {
@@ -354,7 +354,7 @@
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
-@@ -50924,7 +_,7 @@
+@@ -50926,7 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -363,7 +363,7 @@
  			// appears redundant. Just causes the window to fight the user when attempting to resize too small
  			// with this disabled, the window will just snap back to minimum size when released
  			/*if (!fullscreen && !flag2) {
-@@ -50965,7 +_,7 @@
+@@ -50967,7 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
