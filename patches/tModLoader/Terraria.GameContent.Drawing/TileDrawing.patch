@@ -26,6 +26,23 @@
  					}
  				}
  			}
+@@ -4355,6 +_,7 @@
+ 							glowColor = _martianGlow;
+ 						}
+ 
++						//*extra patch context*
+ 						if (num51 == 29) {
+ 							glowTexture = TextureAssets.GlowMask[122].Value;
+ 							glowSourceRect = new Rectangle(tileFrameX, tileFrameY % 38, tileWidth, tileHeight);
+@@ -4364,6 +_,8 @@
+ 						break;
+ 					}
+ 			}
++			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref addFrX, ref tileHeight); //TODO: Is this correct?
++			TileLoader.SetSpriteEffects(x, y, tileCache.type, ref tileSpriteEffect);
+ 		}
+ 
+ 		private bool IsWindBlocked(int x, int y) {
 @@ -5120,8 +_,11 @@
  			int type = 706;
  			if (Main.waterStyle == 12)
