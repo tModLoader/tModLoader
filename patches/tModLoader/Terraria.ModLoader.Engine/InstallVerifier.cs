@@ -30,20 +30,20 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsWindows) {
 				steamAPIPath = "steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
-				gogHash = ToByteArray("329296a600b71a4684e5e40a1899124b");
-				steamHash = ToByteArray("17c42ca2c951a7a8a53ddf3a0ca00290");
+				gogHash = ToByteArray("8a836691c1d4446cf9af1361dcdc5ffe");
+				steamHash = ToByteArray("fde46a346a885f8d35366e3996f9ca3a");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "osx/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
-				gogHash = ToByteArray("c9ac52c4b6deaf3aba63d6878ff1a38b");
-				steamHash = ToByteArray("6d256ff00b438884d79bab2a68d19937");
+				gogHash = ToByteArray("88d56cd87f88a2230f60d9c675f5c977");
+				steamHash = ToByteArray("905eceab54c27117c4368d8b55d020e7");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "lib/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
-				gogHash = ToByteArray("61bcb380ba3408ab664bc6fac3364faf");
-				steamHash = ToByteArray("d5a43f1fd4823af91fdf7b2745248c61");
+				gogHash = ToByteArray("9250594786fb53810da9bf4bc7c7d9a9");
+				steamHash = ToByteArray("6c496fa6d23f200eed209544c6c12502");
 			}
 			else {
 				string message = "Unknown OS platform: unable to verify installation.";
@@ -121,14 +121,20 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_{Main.versionNumber}.exe";
+			string CheckExe = $"Terraria_1.4.0.4.exe"; // {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
-			// If .exe not present check Terraria dir in root
+			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 			if (!File.Exists(vanillaPath)) {
 				vanillaPath = Path.Combine("..", "Terraria");
 				string defaultExe = Path.Combine(vanillaPath, DefaultExe);
 				string checkExe = Path.Combine(vanillaPath, CheckExe);
+				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
+			}
+			// If .exe not present check parent directory (Nested Manual Install)
+			if (!File.Exists(vanillaPath)) {
+				string defaultExe = Path.Combine("..", DefaultExe);
+				string checkExe = Path.Combine("..", CheckExe);
 				vanillaPath = File.Exists(defaultExe) ? defaultExe : checkExe;
 			}
 
