@@ -804,6 +804,13 @@
             Print the exception to the console, including extended loading / reflection data useful for mods.
             </summary>
         </member>
+        <member name="M:MonoMod.Utils.Extensions.GetStateMachineTarget(System.Reflection.MethodInfo)">
+            <summary>
+            Get the method of interest for a given state machine method.
+            </summary>
+            <param name="method">The method creating the state machine.</param>
+            <returns>The "main" method in the state machine.</returns>
+        </member>
         <member name="M:MonoMod.Utils.Extensions.SafeResolve(Mono.Cecil.TypeReference)">
             <summary>
             Safely resolve a reference, silently discarding any exceptions.
@@ -1172,15 +1179,6 @@
             <param name="context">The generic context provided to relink generic references.</param>
             <returns>A relinked reference.</returns>
         </member>
-        <member name="M:MonoMod.Utils.Extensions.Relink(Mono.Cecil.GenericParameterConstraint,MonoMod.Utils.Relinker,Mono.Cecil.IGenericParameterProvider)">
-            <summary>
-            Relink the given type reference.
-            </summary>
-            <param name="constraint">The reference to relink.</param>
-            <param name="relinker">The relinker to use during the relinking process.</param>
-            <param name="context">The generic context provided to relink generic references.</param>
-            <returns>A relinked reference.</returns>
-        </member>
         <member name="M:MonoMod.Utils.Extensions.Relink(Mono.Cecil.MethodReference,MonoMod.Utils.Relinker,Mono.Cecil.IGenericParameterProvider)">
             <summary>
             Relink the given method reference.
@@ -1276,8 +1274,9 @@
             Get a native function pointer for a given method. This matches an IL-level ldftn.
             </summary>
             <remarks>
-            ldftn doesn't JIT-compile the method on mono, which thus keeps the class constructor untouched.
-            On the other hand, its result thus doesn't always match that of MethodHandle.GetFunctionPointer().
+            The result of ldftn doesn't always match that of MethodHandle.GetFunctionPointer().
+            For example, ldftn doesn't JIT-compile the method on mono, which thus keeps the class constructor untouched.
+            And on .NET, struct overrides (f.e. ToString) have got multiple entry points pointing towards the same code.
             </remarks>
             <param name="m">The method to get a native function pointer for.</param>
             <returns>The native function pointer.</returns>

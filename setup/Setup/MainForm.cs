@@ -12,78 +12,32 @@ namespace Terraria.ModLoader.Setup
 {
 	public partial class MainForm : Form, ITaskInterface
 	{
-		class AssemblyDecompileTask : Task
-		{
-			private byte[] ToByteArray(String hexString) {
-				byte[] retval = new byte[hexString.Length / 2];
-				for (int i = 0; i < hexString.Length; i += 2)
-					retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
-				return retval;
-			}
-
-			private MainForm parent;
-			public AssemblyDecompileTask(MainForm parent) : base(parent) {
-				this.parent = parent;
-			}
-
-			public override bool StartupWarning() {
-				return MessageBox.Show(
-						"Decompilation may take a long time (1-3 hours) and consume a lot of RAM (2GB will not be enough)",
-						"Ready to Decompile", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-					== DialogResult.OK;
-			}
-
-			public override void Run() {
-				var md5 = MD5.Create();
-				var stream = File.OpenRead(TerrariaPath);
-
-				byte[] GoGHash = ToByteArray(Settings.Default.GoGClientWinMD5);
-
-				//Check assembly MD5
-				if (GoGHash.SequenceEqual(md5.ComputeHash(stream))) {
-					parent.decompileGoG().Run();
-					parent.patchGoG().Run();
-				}
-				else {
-					parent.decompile().Run();
-				}
-			}
-		}
 		private CancellationTokenSource cancelSource;
 
 		private bool closeOnCancel;
-		private IDictionary<Button, Func<Task>> taskButtons = new Dictionary<Button, Func<Task>>();
-		private Func<Task> decompile;
-		private Func<Task> decompileGoG;
-		private Func<Task> patchGoG;
+		private IDictionary<Button, Func<SetupOperation>> taskButtons = new Dictionary<Button, Func<SetupOperation>>();
 
 		public MainForm()
 		{
 			InitializeComponent();
 
-			decompile = () => new DecompileTask(this, "src/decompiled");
-			decompileGoG = () => new DecompileTask(this, "src/decompiled_gog");
-			patchGoG = () => new PatchTask(this, "src/decompiled_gog", "src/decompiled", "patches/GoG", new ProgramSetting<DateTime>("DecompiledDiffCutoff"));
-
-			taskButtons[buttonDecompile] = () => new AssemblyDecompileTask(this);
-			taskButtons[buttonDiffMerged] = () => new DiffTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonPatchMerged] = () => new PatchTask(this, "src/decompiled", "src/merged", "patches/merged", new ProgramSetting<DateTime>("MergedDiffCutoff"));
-			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/merged", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"), FormatTask.tModLoaderFormat);
+			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
+			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
-				new SetupTask(this, new[] { buttonDecompile, buttonPatchMerged, buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }
 					.Select(b => taskButtons[b]()).ToArray());
 
-			menuItemWarnings.Checked = Settings.Default.SuppressWarnings;
-			menuItemSingleDecompileThread.Checked = Settings.Default.SingleDecompileThread;
+			SetPatchMode(Settings.Default.PatchMode);
+			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
 
 			Closing += (sender, args) =>
 			{
@@ -120,10 +74,7 @@ namespace Terraria.ModLoader.Setup
 			}));
 		}
 
-		public CancellationToken CancellationToken()
-		{
-			return cancelSource.Token;
-		}
+		public CancellationToken CancellationToken => cancelSource.Token;
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
@@ -135,22 +86,8 @@ namespace Terraria.ModLoader.Setup
 			SelectTerrariaDialog();
 		}
 
-		private void menuItemWarnings_Click(object sender, EventArgs e)
-		{
-			Settings.Default.SuppressWarnings = menuItemWarnings.Checked;
-			Settings.Default.Save();
-		}
-
-		private void menuItemSingleDecompileThread_Click(object sender, EventArgs e)
-		{
-			Settings.Default.SingleDecompileThread = menuItemSingleDecompileThread.Checked;
-			Settings.Default.Save();
-		}
-
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
-			Settings.Default.DecompiledDiffCutoff = new DateTime(2015, 1, 1);
-			Settings.Default.MergedDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.Save();
@@ -161,11 +98,15 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private void menuItemFormatCode_Click(object sender, EventArgs e) {
-			RunTask(new FormatTask(this, FormatTask.tModLoaderFormat));
+			RunTask(new FormatTask(this));
 		}
 
 		private void menuItemHookGen_Click(object sender, EventArgs e) {
 			RunTask(new HookGenTask(this));
+		}
+
+		private void simplifierToolStripMenuItem_Click(object sender, EventArgs e) {
+			RunTask(new SimplifierTask(this));
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)
@@ -173,7 +114,7 @@ namespace Terraria.ModLoader.Setup
 			RunTask(taskButtons[(Button)sender]());
 		}
 
-		private void RunTask(Task task)
+		private void RunTask(SetupOperation task)
 		{
 			cancelSource = new CancellationTokenSource();
 			foreach (var b in taskButtons.Keys) b.Enabled = false;
@@ -182,18 +123,17 @@ namespace Terraria.ModLoader.Setup
 			new Thread(() => RunTaskThread(task)).Start();
 		}
 
-		private void RunTaskThread(Task task)
+		private void RunTaskThread(SetupOperation task)
 		{
-			var errorLogFile = Path.Combine(Program.LogDir, "error.log");
+			var errorLogFile = Path.Combine(Program.logsDir, "error.log");
 			try
 			{
-				if (File.Exists(errorLogFile))
-					File.Delete(errorLogFile);
+				SetupOperation.DeleteFile(errorLogFile);
 
 				if (!task.ConfigurationDialog())
 					return;
 
-				if (!Settings.Default.SuppressWarnings && !task.StartupWarning())
+				if (!task.StartupWarning())
 					return;
 
 				try
@@ -214,7 +154,7 @@ namespace Terraria.ModLoader.Setup
 					return;
 				}
 
-				if ((task.Failed() || task.Warnings() && !Settings.Default.SuppressWarnings))
+				if (task.Failed() || task.Warnings())
 					task.FinishedDialog();
 
 				Invoke(new Action(() =>
@@ -231,7 +171,7 @@ namespace Terraria.ModLoader.Setup
 					labelStatus.Text = "Error: " + e.Message.Trim();
 				}));
 
-				Task.CreateDirectory(Program.LogDir);
+				SetupOperation.CreateDirectory(Program.logsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally
@@ -246,8 +186,30 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private void diffGoGToolStripMenuItem_Click(object sender, EventArgs e) {
-			RunTask(new DiffTask(this, "src/decompiled_gog", "src/decompiled", "patches/GoG", new ProgramSetting<DateTime>("DecompiledDiffCutoff")));
+		private void SetPatchMode(int mode) {
+			exactToolStripMenuItem.Checked = mode == 0;
+			offsetToolStripMenuItem.Checked = mode == 1;
+			fuzzyToolStripMenuItem.Checked = mode == 2;
+			Settings.Default.PatchMode = mode;
+			Settings.Default.Save();
+		}
+
+		private void exactToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(0);
+		}
+
+		private void offsetToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(1);
+		}
+
+		private void fuzzyToolStripMenuItem_Click(object sender, EventArgs e) {
+			SetPatchMode(2);
+		}
+
+		private void formatDecompiledOutputToolStripMenuItem_Click(object sender, EventArgs e) {
+			Settings.Default.FormatAfterDecompiling ^= true;
+			Settings.Default.Save();
+			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
 		}
 	}
 }

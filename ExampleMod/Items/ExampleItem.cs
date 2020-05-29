@@ -14,7 +14,7 @@ namespace ExampleMod.Items
 			item.height = 20;
 			item.maxStack = 999;
 			item.value = 100;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 		}
 
 		public override void AddRecipes() {

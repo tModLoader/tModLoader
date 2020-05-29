@@ -1,50 +1,74 @@
---- src/Terraria\Terraria\IngameOptions.cs
-+++ src/tModLoader\Terraria\IngameOptions.cs
-@@ -4,6 +_,7 @@
+--- src/Terraria/Terraria/IngameOptions.cs
++++ src/tModLoader/Terraria/IngameOptions.cs
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
++using Steamworks;
  using Terraria.GameContent;
  using Terraria.GameInput;
  using Terraria.Localization;
++using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.UI;
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
-@@ -16,6 +_,7 @@
+@@ -14,7 +_,8 @@
+ 	{
+ 		public const int width = 670;
  		public const int height = 480;
- 		public static float[] leftScale = new float[]
- 		{
+-		public static float[] leftScale = new float[9] {
++		public static float[] leftScale = new float[] {
 +			0.7f,
  			0.7f,
  			0.7f,
  			0.7f,
-@@ -180,7 +_,7 @@
- 			IngameOptions.noSound = false;
+@@ -166,7 +_,7 @@
+ 			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num7 = flag5 ? 1 : 0;
 -			int num8 = 5 + num7 + 2;
 +			int num8 = 5 + num7 + 2 + 1; // Add 1 for ModConfig menu
  			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
- 			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (float)(num8 + 1);
+ 			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (num8 + 1);
  			if (flag)
-@@ -257,6 +_,21 @@
- 				{
- 					IngameOptions.Close();
- 					IngameFancyUI.OpenKeybinds();
-+				}
-+			}
-+			num10++;
-+			if (IngameOptions.DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, IngameOptions.leftScale, 0.7f, 0.8f, 0.01f))
-+			{
-+				IngameOptions.leftHover = num10;
-+				if (flag4)
-+				{
-+					IngameOptions.Close();
+@@ -234,6 +_,20 @@
+ 			}
+ 
+ 			num10++;
++			if (DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
++				leftHover = num10;
++				if (flag4) {
++					Close();
 +					IngameFancyUI.CoverNextFrame();
 +					Main.playerInventory = false;
 +					Main.editChest = false;
 +					Main.npcChatText = "";
 +					Main.inFancyUI = true;
 +					Main.InGameUI.SetState(Interface.modConfigList);
++				}
++			}
++
++			num10++;
+ 			if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4) {
+@@ -245,6 +_,7 @@
+ 			if (flag5)
+ 				num10++;
+ 
++			if(!Steam.IsSteamApp) {
+ 			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4) {
+@@ -252,8 +_,9 @@
+ 					IngameFancyUI.OpenAchievements();
  				}
  			}
+-
  			num10++;
-
++			}
++
+ 			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
+ 				leftHover = num10;
+ 				if (flag4)

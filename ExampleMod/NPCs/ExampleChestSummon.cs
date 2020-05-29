@@ -13,7 +13,7 @@ namespace ExampleMod.NPCs
 
 		// This doesn't make sense, but this is around where this check happens in Vanilla Terraria.
 		public override void PreUpdateBuffs() {
-			if (Main.netMode != 1) {
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (player.chest == -1 && LastChest >= 0 && Main.chest[LastChest] != null) {
 					int x2 = Main.chest[LastChest].x;
 					int y2 = Main.chest[LastChest].y;
@@ -29,7 +29,7 @@ namespace ExampleMod.NPCs
 		}
 
 		public static bool ChestItemSummonCheck(int x, int y, Mod mod) {
-			if (Main.netMode == 1 || !Main.hardMode) {
+			if (Main.netMode == NetmodeID.MultiplayerClient || !Main.hardMode) {
 				return false;
 			}
 			int num = Chest.FindChest(x, y);
@@ -42,7 +42,7 @@ namespace ExampleMod.NPCs
 			int tileStyle = (int)(Main.tile[Main.chest[num].x, Main.chest[num].y].frameX / 36);
 			if (TileID.Sets.BasicChest[tileType] && (tileStyle < 5 || tileStyle > 6)) {
 				for (int i = 0; i < 40; i++) {
-					if (Main.chest[num].item[i] != null && Main.chest[num].item[i].type > 0) {
+					if (Main.chest[num].item[i] != null && Main.chest[num].item[i].type > ItemID.None) {
 						if (Main.chest[num].item[i].type == ItemType<ExampleBlock>()) {
 							numberExampleBlocks += Main.chest[num].item[i].stack;
 						}
@@ -72,13 +72,13 @@ namespace ExampleMod.NPCs
 						Main.chest[num].item[l] = new Item();
 					}
 					Chest.DestroyChest(x, y);
-					NetMessage.SendData(34, -1, -1, null, 1, (float)x, (float)y, 0f, number, 0, 0);
+					NetMessage.SendData(MessageID.ChestUpdates, -1, -1, null, 1, (float)x, (float)y, 0f, number, 0, 0);
 					NetMessage.SendTileSquare(-1, x, y, 3);
 				}
 				int npcToSpawn = NPCType<PartyZombie>();
 				int npcIndex = NPC.NewNPC(x * 16 + 16, y * 16 + 32, npcToSpawn, 0, 0f, 0f, 0f, 0f, 255);
 				Main.npc[npcIndex].whoAmI = npcIndex;
-				NetMessage.SendData(23, -1, -1, null, npcIndex, 0f, 0f, 0f, 0, 0, 0);
+				NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npcIndex, 0f, 0f, 0f, 0, 0, 0);
 				Main.npc[npcIndex].BigMimicSpawnSmoke();
 			}
 			return false;

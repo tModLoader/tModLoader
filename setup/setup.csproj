@@ -1,174 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ECAD06B8-1A3B-4288-A02C-198A198EF98E}</ProjectGuid>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>True</UseWindowsForms>
+    <UseWPF>True</UseWPF>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
-    <AssemblyName>setup</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <ApplicationIcon>../patches/tModLoader/tModLoader.ico</ApplicationIcon>
+    <TieredCompilation>false</TieredCompilation> <!-- be nice if we didn't need this, but MonoMod.RuntimeDetour isn't compatible with tiered jit currently -->
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+  <ItemGroup>
+    <Page Remove="PatchReviewer\**" />
+    <Compile Remove="PatchReviewer\**" />
+    <EmbeddedResource Remove="PatchReviewer\**" />
+    <None Remove="PatchReviewer\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.7.9" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.4.0" />
+    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="20.5.7.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.Decompiler">
       <HintPath>lib\ICSharpCode.Decompiler.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>lib\ICSharpCode.NRefactory.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="XnaToFna">
+      <HintPath>lib\XnaToFna.exe</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.NRefactory.CSharp">
-      <HintPath>lib\ICSharpCode.NRefactory.CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ILSpy">
-      <HintPath>lib\ILSpy.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil_0.9.6.0">
-      <HintPath>lib\Mono.Cecil_0.9.6.0.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="Setup\CompositeTask.cs" />
-    <Compile Include="Setup\DecompileTask.cs" />
-    <Compile Include="Setup\DiffTask.cs" />
-    <Compile Include="Setup\FormatTask.cs" />
-    <Compile Include="Setup\HookGenTask.cs" />
-    <Compile Include="Setup\ITaskInterface.cs" />
-    <Compile Include="Setup\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Setup\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\PatchTask.cs" />
-    <Compile Include="Setup\Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setup\ProgramSetting.cs" />
-    <Compile Include="Setup\RegenSourceTask.cs" />
-    <Compile Include="Setup\SelectFilesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Setup\SelectFilesForm.Designer.cs">
-      <DependentUpon>SelectFilesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\SetupDebugTask.cs" />
-    <Compile Include="Setup\SetupTask.cs" />
-    <Compile Include="Setup\Task.cs" />
-    <EmbeddedResource Include="Setup\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Setup\SelectFilesForm.resx">
-      <DependentUpon>SelectFilesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="icon\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="icon\file.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="HookGenWrapper\HookGenWrapper.csproj">
-      <Project>{a386559e-0850-47ad-8f5b-d1492fa27980}</Project>
-      <Name>HookGenWrapper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

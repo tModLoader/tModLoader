@@ -1,26 +1,25 @@
---- src/Terraria\Terraria.DataStructures\PlayerDeathReason.cs
-+++ src/tModLoader\Terraria.DataStructures\PlayerDeathReason.cs
-@@ -6,14 +_,14 @@
+--- src/Terraria/Terraria.DataStructures/PlayerDeathReason.cs
++++ src/tModLoader/Terraria.DataStructures/PlayerDeathReason.cs
+@@ -5,14 +_,14 @@
  {
  	public class PlayerDeathReason
  	{
 -		private int SourcePlayerIndex = -1;
--		private int SourceNPCIndex = -1;
--		private int SourceProjectileIndex = -1;
--		private int SourceOtherIndex = -1;
--		private int SourceProjectileType;
--		private int SourceItemType;
--		private int SourceItemPrefix;
--		private string SourceCustomReason;
 +		public int SourcePlayerIndex = -1;
+-		private int SourceNPCIndex = -1;
 +		public int SourceNPCIndex = -1;
+-		private int SourceProjectileIndex = -1;
 +		public int SourceProjectileIndex = -1;
+-		private int SourceOtherIndex = -1;
 +		public int SourceOtherIndex = -1;
+-		private int SourceProjectileType;
 +		public int SourceProjectileType;
+-		private int SourceItemType;
 +		public int SourceItemType;
+-		private int SourceItemPrefix;
 +		public int SourceItemPrefix;
+-		private string SourceCustomReason;
 +		public string SourceCustomReason;
  
- 		public static PlayerDeathReason LegacyEmpty()
- 		{
-
+ 		public static PlayerDeathReason LegacyEmpty() {
+ 			return new PlayerDeathReason {

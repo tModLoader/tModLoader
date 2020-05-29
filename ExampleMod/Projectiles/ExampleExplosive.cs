@@ -216,8 +216,8 @@ namespace ExampleMod.Projectiles
 								}
 								if (canKillTile) {
 									WorldGen.KillTile(i, j, false, false, false);
-									if (!Main.tile[i, j].active() && Main.netMode != 0) {
-										NetMessage.SendData(17, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0);
+									if (!Main.tile[i, j].active() && Main.netMode != NetmodeID.SinglePlayer) {
+										NetMessage.SendData(MessageID.TileChange, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0);
 									}
 								}
 							}
@@ -226,8 +226,8 @@ namespace ExampleMod.Projectiles
 									for (int y = j - 1; y <= j + 1; y++) {
 										if (Main.tile[x, y] != null && Main.tile[x, y].wall > 0 && canKillWalls && WallLoader.CanExplode(x, y, Main.tile[x, y].wall)) {
 											WorldGen.KillWall(x, y, false);
-											if (Main.tile[x, y].wall == 0 && Main.netMode != 0) {
-												NetMessage.SendData(17, -1, -1, null, 2, (float)x, (float)y, 0f, 0, 0, 0);
+											if (Main.tile[x, y].wall == 0 && Main.netMode != NetmodeID.SinglePlayer) {
+												NetMessage.SendData(MessageID.TileChange, -1, -1, null, 2, (float)x, (float)y, 0f, 0, 0, 0);
 											}
 										}
 									}

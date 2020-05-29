@@ -27,7 +27,7 @@ namespace ExampleMod.Items
 			item.height = refItem.height;
 			item.maxStack = 999;
 			item.value = 1000;
-			item.rare = 3;
+			item.rare = ItemRarityID.Orange;
 		}
 
 		// The following 2 methods are purely to show off these 2 hooks. Don't use them in your own code.

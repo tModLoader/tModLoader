@@ -1,67 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Formatting;
+using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.CodeAnalysis.Options;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using ICSharpCode.NRefactory.CSharp;
-using ICSharpCode.NRefactory.Editor;
+using Terraria.ModLoader.Setup.Formatting;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class FormatTask : Task
+	public partial class FormatTask : SetupOperation
 	{
-		public static CSharpFormattingOptions tModLoaderFormat = FormattingOptionsFactory.CreateAllman();
+		private static AdhocWorkspace workspace = new AdhocWorkspace();
+		static FormatTask() {
+			FixRoslynFormatter.Apply();
 
-		public static string FormatCode(string text, CSharpFormattingOptions options, CancellationToken ct) {
-			var formatter = new CSharpFormatter(options) { FormattingMode = FormattingMode.Intrusive };
-			text = text.Replace("\r\n\r\n", "\r\n");
-
-			var doc = new StringBuilderDocument(text);
-			var syntaxTree = SyntaxTree.Parse(doc, doc.FileName, null, ct);
-			formatter.AnalyzeFormatting(doc, syntaxTree, ct).ApplyChanges();
-
-			return doc.Text;
+			workspace.Options = workspace.Options
+				.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInControlBlocks, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
 		}
 
-		public static void Format(string path, CSharpFormattingOptions options, CancellationToken ct) {
-			File.WriteAllText(path, FormatCode(File.ReadAllText(path), options, ct));
-		}
+		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
 
-		private static string directory = "";
+		private static string projectPath; //persist across executions
+		public override bool ConfigurationDialog() => (bool)taskInterface.Invoke(new Func<bool>(() => {
+			var dialog = new OpenFileDialog {
+				FileName = projectPath,
+				InitialDirectory = Path.GetDirectoryName(projectPath) ?? Path.GetFullPath("."),
+				Filter = "C# Project|*.csproj",
+				Title = "Select C# Project"
+			};
 
-		public readonly CSharpFormattingOptions format;
-		private List<string> files = new List<string>(); 
-
-		public FormatTask(ITaskInterface taskInterface, CSharpFormattingOptions format) : base(taskInterface) {
-			this.format = format;
-		}
-
-		public override bool ConfigurationDialog() {
-			var form = new SelectFilesForm(directory, "C# Source Files (*.cs)|*.cs");
-			var res = (DialogResult)taskInterface.Invoke(new Func<DialogResult>(() => form.ShowDialog(taskInterface)));
-
-			if (res != DialogResult.OK)
-				return false;
-
-			directory = form.GetDirectory();
-			foreach (var path in form.GetPaths()) {
-				if (Directory.Exists(path))
-					foreach (var file in Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories))
-						files.Add(file);
-				else if (File.Exists(path) && path.EndsWith(".cs"))
-					files.Add(path);
-			}
-
-			return true;
-		}
+			var result = dialog.ShowDialog();
+			projectPath = dialog.FileName;
+			return result == DialogResult.OK && File.Exists(projectPath);
+		}));
 
 		public override void Run() {
-			var items = files.Select(file => new WorkItem(
-				"Formatting: " + Path.GetFileName(file),
-				() => Format(file, format, taskInterface.CancellationToken()))).ToList();
+			var dir = Path.GetDirectoryName(projectPath); //just format all files in the directory
+			var workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
+				.Select(path => new FileInfo(path))
+				.OrderByDescending(f => f.Length)
+				.Select(f => new WorkItem("Formatting: " + f.Name, () => FormatFile(f.FullName, taskInterface.CancellationToken, false)));
 
-			ExecuteParallel(items);
+
+			ExecuteParallel(workItems.ToList());
+		}
+
+		public static void FormatFile(string path, CancellationToken cancellationToken, bool aggressive) {
+			string source = File.ReadAllText(path);
+			string formatted = Format(source, cancellationToken, aggressive);
+			if (source != formatted)
+				File.WriteAllText(path, formatted);
+		}
+
+		public static SyntaxNode Format(SyntaxNode node, CancellationToken cancellationToken, bool aggressive) {
+			if (aggressive) {
+				node = new NoNewlineBetweenFieldsRewriter().Visit(node);
+				node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
+			}
+
+			node = new AddVisualNewlinesRewriter().Visit(node);
+			node = Formatter.Format(node, workspace, cancellationToken: cancellationToken);
+			node = new CollectionInitializerFormatter().Visit(node);
+			return node;
+		}
+
+		public static string Format(string source, CancellationToken cancellationToken, bool aggressive) {
+			var tree = CSharpSyntaxTree.ParseText(source);
+			return Format(tree.GetRoot(), cancellationToken, aggressive).ToFullString();
 		}
 	}
 }

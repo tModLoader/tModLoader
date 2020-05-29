@@ -98,7 +98,7 @@ namespace ExampleMod.NPCs.Abomination
 						Main.dust[dust].velocity = 3f * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 					}
 				}
-				if (Main.netMode != 1 && change >= 100f) {
+				if (Main.netMode != NetmodeID.MultiplayerClient && change >= 100f) {
 					int next = NPC.NewNPC((int)npc.Center.X, (int)npc.position.Y + npc.height, NPCType<CaptiveElement2>());
 					Main.npc[next].ai[0] = captiveType;
 					if (captiveType != 4) {
@@ -126,7 +126,7 @@ namespace ExampleMod.NPCs.Abomination
 			}
 			SetPosition(npc);
 			attackCool -= 1f;
-			if (Main.netMode != 1 && attackCool <= 0f) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && attackCool <= 0f) {
 				attackCool = 200f + 200f * (float)abomination.life / (float)abomination.lifeMax + (float)Main.rand.Next(200);
 				Vector2 delta = Main.player[abomination.target].Center - npc.Center;
 				float magnitude = (float)Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);

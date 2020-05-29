@@ -84,7 +84,6 @@ namespace Terraria.ModLoader
 			return mod.GetTexture(subName);
 		}
 
-		private static readonly string ImagePath = "Content" + Path.DirectorySeparatorChar + "Images";
 		/// <summary>
 		/// Returns whether or not a texture with the specified name exists.
 		/// </summary>
@@ -96,7 +95,7 @@ namespace Terraria.ModLoader
 			SplitName(name, out modName, out subName);
 
 			if (modName == "Terraria")
-				return File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb");
+				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.TextureExists(subName);
@@ -117,7 +116,7 @@ namespace Terraria.ModLoader
 			string modName, subName;
 			SplitName(name, out modName, out subName);
 			if (modName == "Terraria") {
-				if (File.Exists(ImagePath + Path.DirectorySeparatorChar + subName + ".xnb")) {
+				if((Main.instance.Content as TMLContentManager).ImageExists(subName)) { 
 					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
 					return true;
 				}
@@ -579,10 +578,12 @@ namespace Terraria.ModLoader
 		/// Several arrays and other fields hold references to various classes from mods, we need to clean them up to give properly coded mods a chance to be completely free of references
 		/// so that they can be collected by the garbage collection. For most things eventually they will be replaced during gameplay, but we want the old instance completely gone quickly.
 		/// </summary>
-		internal static void CleanupModReferences() {
+		internal static void CleanupModReferences()
+		{
 			// Clear references to ModPlayer instances
-			for (int i = 0; i < 256; i++) {
+			for (int i = 0; i < Main.player.Length; i++) {
 				Main.player[i] = new Player();
+				// player.whoAmI is only set for active players
 			}
 
 			Main.clientPlayer = new Player(false);
@@ -590,23 +591,29 @@ namespace Terraria.ModLoader
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			foreach (var npc in Main.npc) {
-				npc.SetDefaults(0);
+			for (int i = 0; i < Main.npc.Length; i++) {
+				Main.npc[i] = new NPC();
+				Main.npc[i].whoAmI = i;
 			}
 
-			foreach (var item in Main.item) {
-				item.SetDefaults(0);
+			for (int i = 0; i < Main.item.Length; i++) {
+				Main.item[i] = new Item();
+				// item.whoAmI is never used
 			}
-			ItemSlot.singleSlotArray[0]?.SetDefaults(0);
+
+			if (ItemSlot.singleSlotArray[0] != null) {
+				ItemSlot.singleSlotArray[0] = new Item();
+			}
 
 			for (int i = 0; i < Main.chest.Length; i++) {
 				Main.chest[i] = new Chest();
 			}
 
-            for (int i = 0; i < 1001; i++) {
-                Main.projectile[i] = new Projectile();
-            }
-        }
+			for (int i = 0; i < Main.projectile.Length; i++) {
+				Main.projectile[i] = new Projectile();
+				// projectile.whoAmI is only set for active projectiles
+			}
+		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
 			if (!assetName.StartsWith("tmod:"))

@@ -3,6 +3,7 @@ using ExampleMod.Items.Weapons;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Abomination
 {
@@ -18,7 +19,7 @@ namespace ExampleMod.Items.Abomination
 			item.consumable = true;
 			item.width = 24;
 			item.height = 24;
-			item.rare = 9;
+			item.rare = ItemRarityID.Cyan;
 			item.expert = true;
 		}
 

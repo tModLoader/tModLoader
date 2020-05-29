@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.IO\WorldFileData.cs
-+++ src/tModLoader\Terraria.IO\WorldFileData.cs
+--- src/Terraria/Terraria.IO/WorldFileData.cs
++++ src/tModLoader/Terraria.IO/WorldFileData.cs
 @@ -1,6 +_,7 @@
  using System;
  using System.IO;
@@ -8,20 +8,19 @@
  using Terraria.Utilities;
  
  namespace Terraria.IO
-@@ -163,6 +_,7 @@
- 			string worldPathFromName = Main.GetWorldPathFromName(this.Name, true);
- 			if (FileUtilities.MoveToCloud(base.Path, worldPathFromName))
- 			{
-+				WorldIO.MoveToCloud(base.Path, worldPathFromName);
- 				Main.LocalFavoriteData.ClearEntry(this);
- 				this._isCloudSave = true;
- 				this._path = worldPathFromName;
-@@ -179,6 +_,7 @@
- 			string worldPathFromName = Main.GetWorldPathFromName(this.Name, false);
- 			if (FileUtilities.MoveToLocal(base.Path, worldPathFromName))
- 			{
-+				WorldIO.MoveToLocal(base.Path, worldPathFromName);
- 				Main.CloudFavoritesData.ClearEntry(this);
- 				this._isCloudSave = false;
- 				this._path = worldPathFromName;
-
+@@ -111,6 +_,7 @@
+ 			if (!base.IsCloudSave) {
+ 				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);
+ 				if (FileUtilities.MoveToCloud(base.Path, worldPathFromName)) {
++					WorldIO.MoveToCloud(Path, worldPathFromName);
+ 					Main.LocalFavoriteData.ClearEntry(this);
+ 					_isCloudSave = true;
+ 					_path = worldPathFromName;
+@@ -123,6 +_,7 @@
+ 			if (base.IsCloudSave) {
+ 				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: false);
+ 				if (FileUtilities.MoveToLocal(base.Path, worldPathFromName)) {
++					WorldIO.MoveToLocal(Path, worldPathFromName);
+ 					Main.CloudFavoritesData.ClearEntry(this);
+ 					_isCloudSave = false;
+ 					_path = worldPathFromName;

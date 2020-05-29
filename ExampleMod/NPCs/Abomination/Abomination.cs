@@ -78,7 +78,7 @@ namespace ExampleMod.NPCs.Abomination
 		}
 
 		public override void AI() {
-			if (Main.netMode != 1 && npc.localAI[0] == 0f) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[0] == 0f) {
 				for (int k = 0; k < 5; k++) {
 					int captive = NPC.NewNPC((int)npc.position.X, (int)npc.position.Y, NPCType<CaptiveElement>());
 					Main.npc[captive].ai[0] = npc.whoAmI;
@@ -106,7 +106,7 @@ namespace ExampleMod.NPCs.Abomination
 				}
 			}
 			moveCool -= 1f;
-			if (Main.netMode != 1 && moveCool <= 0f) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && moveCool <= 0f) {
 				npc.TargetClosest(false);
 				player = Main.player[npc.target];
 				double angle = Main.rand.NextDouble() * 2.0 * Math.PI;
@@ -155,7 +155,7 @@ namespace ExampleMod.NPCs.Abomination
 				captiveRotation -= 2f * (float)Math.PI;
 			}
 			attackCool -= 1f;
-			if (Main.netMode != 1 && attackCool <= 0f) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && attackCool <= 0f) {
 				attackCool = 200f + 200f * (float)npc.life / (float)npc.lifeMax + (float)Main.rand.Next(200);
 				Vector2 delta = player.Center - npc.Center;
 				float magnitude = (float)Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);
@@ -184,7 +184,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		private void ExpertLaser() {
 			laserTimer--;
-			if (laserTimer <= 0 && Main.netMode != 1) {
+			if (laserTimer <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
 				if (npc.localAI[0] == 2f) {
 					int laser1Index;
 					int laser2Index;
@@ -261,7 +261,7 @@ namespace ExampleMod.NPCs.Abomination
 			for (int k = 0; k < damage / npc.lifeMax * 100.0; k++) {
 				Dust.NewDust(npc.position, npc.width, npc.height, 5, hitDirection, -1f, 0, default(Color), 1f);
 			}
-			if (Main.netMode != 1 && npc.life <= 0) {
+			if (Main.netMode != NetmodeID.MultiplayerClient && npc.life <= 0) {
 				Vector2 spawnAt = npc.Center + new Vector2(0f, (float)npc.height / 2f);
 				NPC.NewNPC((int)spawnAt.X, (int)spawnAt.Y, NPCType<AbominationRun>());
 			}

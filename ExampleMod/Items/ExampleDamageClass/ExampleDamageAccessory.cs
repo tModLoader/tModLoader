@@ -18,7 +18,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 
 		public override void SetDefaults() {
 			item.Size = new Vector2(34);
-			item.rare = 10;
+			item.rare = ItemRarityID.Red;
 			item.accessory = true;
 		}
 

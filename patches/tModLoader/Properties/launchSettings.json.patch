@@ -1,0 +1,13 @@
+--- src/Terraria/Properties/launchSettings.json
++++ src/tModLoader/Properties/launchSettings.json
+@@ -2,8 +_,8 @@
+   "profiles": {
+     "Terraria": {
+       "commandName": "Executable",
+-      "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
++      "executablePath": "$(tModLoaderSteamPath)/$(OutputName).exe",
+-      "workingDirectory": "$(TerrariaSteamPath)"
++      "workingDirectory": "$(tModLoaderSteamPath)"
+     }
+   }
+ }

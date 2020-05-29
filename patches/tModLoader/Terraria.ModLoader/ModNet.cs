@@ -324,11 +324,13 @@ namespace Terraria.ModLoader
 
 		private static void OnModsDownloaded(bool needsReload) {
 			if (needsReload) {
+				Main.netMode = 0;
 				ModLoader.OnSuccessfulLoad = NetReload();
 				ModLoader.Reload();
 				return;
 			}
 
+			Main.netMode = 1;
 			downloadingMod = null;
 			netMods = null;
 			foreach (var mod in ModLoader.Mods)

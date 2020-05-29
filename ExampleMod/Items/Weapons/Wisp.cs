@@ -21,7 +21,7 @@ namespace ExampleMod.Items.Weapons
 			item.consumable = true;
 			item.knockBack = 1f;
 			item.value = Item.sellPrice(0, 0, 1, 0);
-			item.rare = 8;
+			item.rare = ItemRarityID.Yellow;
 			item.shoot = ProjectileType<Projectiles.Wisp>();
 			item.ammo = item.type; // The first item in an ammo class sets the AmmoID to it's type
 		}
@@ -46,7 +46,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override int ConsumeItem(int type, int numRequired) {
 			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[TileType<ExampleWorkbench>()]) {
-				Main.PlaySound(2, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
+				Main.PlaySound(SoundID.Item, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
 				return Main.rand.NextBool() ? 0 : 1; //You have half chance to not consume your materials
 			}
 			return base.ConsumeItem(type, numRequired);

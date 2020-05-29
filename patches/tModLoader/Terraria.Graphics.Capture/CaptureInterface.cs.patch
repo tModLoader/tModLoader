@@ -1,0 +1,21 @@
+--- src/Terraria/Terraria.Graphics.Capture/CaptureInterface.cs
++++ src/tModLoader/Terraria.Graphics.Capture/CaptureInterface.cs
+@@ -882,17 +_,7 @@
+ 					}
+ 
+ 					if (i == num2++ && flag2 && flag) {
+-#if LINUX
+-						string fileName = Path.Combine(Main.SavePath, "Captures");
+-						Process.Start(new ProcessStartInfo(fileName) {
+-							FileName = "open-folder",
+-							Arguments = fileName,
+-							UseShellExecute = true,
+-							CreateNoWindow = true
+-						});
+-#else
+-						Process.Start(Path.Combine(Main.SavePath, "Captures"));
++						Utils.OpenFolder(Path.Combine(Main.SavePath, "Captures"));
+-#endif
+ 					}
+ 
+ 					if (i == num2++ && flag2) {

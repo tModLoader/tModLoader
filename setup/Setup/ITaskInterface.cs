@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup
 		void SetMaxProgress(int max);
 		void SetStatus(string status);
 		void SetProgress(int progress);
-		CancellationToken CancellationToken();
+		CancellationToken CancellationToken { get; }
 
 		object Invoke(Delegate action);
 		IAsyncResult BeginInvoke(Delegate action);

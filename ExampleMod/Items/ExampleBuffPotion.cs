@@ -23,7 +23,7 @@ namespace ExampleMod.Items
             item.UseSound = SoundID.Item3;
             item.maxStack = 30;
             item.consumable = true;
-            item.rare = 3;
+            item.rare = ItemRarityID.Orange;
             item.value = Item.buyPrice(gold: 1);
             item.buffType = BuffType<Buffs.ExampleDefenseBuff>(); //Specify an existing buff to be applied when used.
             item.buffTime = 5400; //The amount of time the buff declared in item.buffType will last in ticks. 5400 / 60 is 90, so this buff will last 90 seconds.

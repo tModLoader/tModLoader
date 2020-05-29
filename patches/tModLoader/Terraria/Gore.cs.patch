@@ -1,6 +1,6 @@
---- src/Terraria\Terraria\Gore.cs
-+++ src/tModLoader\Terraria\Gore.cs
-@@ -5,11 +_,19 @@
+--- src/Terraria/Terraria/Gore.cs
++++ src/tModLoader/Terraria/Gore.cs
+@@ -5,11 +_,17 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
  using Terraria.Utilities;
@@ -10,66 +10,57 @@
  {
  	public class Gore
  	{
-+		public ModGore modGore
-+		{
++		public ModGore modGore {
 +			get;
 +			internal set;
 +		}
 +		internal int realType = 0;
-+
  		public static int goreTime = 600;
  		public Vector2 position;
  		public Vector2 velocity;
-@@ -26,6 +_,8 @@
+@@ -25,11 +_,16 @@
+ 		public byte frame;
  		public byte frameCounter;
  		public byte numFrames = 1;
- 
 +		public Vector2 drawOffset = Vector2.Zero;
+ 
+ 		public void Update() {
+ 			if (Main.netMode == 2 || !active)
+ 				return;
+ 
++			if (modGore != null && !modGore.Update(this))
++				return;
 +
- 		public void Update()
- 		{
- 			if (Main.netMode == 2)
-@@ -34,6 +_,11 @@
++			ModGore.SetupUpdateType(this);
+ 			bool flag = type >= 1024 && type <= 1026;
+ 			if (type >= 276 && type <= 282) {
+ 				velocity.X *= 0.98f;
+@@ -575,6 +_,7 @@
+ 				else
+ 					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num30, num31, num32);
  			}
- 			if (this.active)
- 			{
-+				if (this.modGore != null && !this.modGore.Update(this))
-+				{
-+					return;
-+				}
-+				ModGore.SetupUpdateType(this);
- 				bool flag = this.type >= 1024 && this.type <= 1026;
- 				if (this.type >= 276 && this.type <= 282)
- 				{
-@@ -790,6 +_,7 @@
- 					}
- 					Lighting.AddLight((int)((this.position.X + 32f * this.scale / 2f) / 16f), (int)((this.position.Y + 32f * this.scale / 2f) / 16f), num29, num30, num31);
- 				}
-+				ModGore.TakeDownUpdateType(this);
- 			}
++			ModGore.TakeDownUpdateType(this);
  		}
  
-@@ -849,6 +_,7 @@
+ 		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
+@@ -621,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
 +			ModGore.SetupGore(Main.gore[num]);
- 			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type))
- 			{
+ 			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
-@@ -938,6 +_,14 @@
+ 				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -700,6 +_,12 @@
+ 		}
  
- 		public Color GetAlpha(Color newColor)
- 		{
-+			if (this.modGore != null)
-+			{
-+				Color? modColor = this.modGore.GetAlpha(this, newColor);
+ 		public Color GetAlpha(Color newColor) {
++			if (modGore != null) {
++				Color? modColor = modGore.GetAlpha(this, newColor);
 +				if (modColor.HasValue)
-+				{
 +					return modColor.Value;
-+				}
 +			}
- 			float num = (float)(255 - this.alpha) / 255f;
++
+ 			float num = (float)(255 - alpha) / 255f;
  			int r;
  			int g;
-

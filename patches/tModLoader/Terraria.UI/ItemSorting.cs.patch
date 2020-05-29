@@ -1,5 +1,5 @@
---- src/Terraria\Terraria.UI\ItemSorting.cs
-+++ src/tModLoader\Terraria.UI\ItemSorting.cs
+--- src/Terraria/Terraria.UI/ItemSorting.cs
++++ src/tModLoader/Terraria.UI/ItemSorting.cs
 @@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -8,238 +8,237 @@
  
  namespace Terraria.UI
  {
-@@ -52,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -73,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -94,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -115,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -136,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -157,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -178,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -268,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -289,7 +_,7 @@
- 							int num = inv[y].rare.CompareTo(inv[x].rare);
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -381,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -406,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -431,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
+@@ -37,7 +_,7 @@
+ 				indexesSortable39.Sort(delegate (int x, int y) {
+ 					int num28 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num28 == 0)
+-						num28 = ((x != y) ? (-1) : 0);
++						num28 = x.CompareTo(y);
+ 
+ 					return num28;
+ 				});
+@@ -54,7 +_,7 @@
+ 				indexesSortable38.Sort(delegate (int x, int y) {
+ 					int num27 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num27 == 0)
+-						num27 = ((x != y) ? (-1) : 0);
++						num27 = x.CompareTo(y);
+ 
+ 					return num27;
+ 				});
+@@ -71,7 +_,7 @@
+ 				indexesSortable37.Sort(delegate (int x, int y) {
+ 					int num26 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num26 == 0)
+-						num26 = ((x != y) ? (-1) : 0);
++						num26 = x.CompareTo(y);
+ 
+ 					return num26;
+ 				});
+@@ -88,7 +_,7 @@
+ 				indexesSortable36.Sort(delegate (int x, int y) {
+ 					int num25 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num25 == 0)
+-						num25 = ((x != y) ? (-1) : 0);
++						num25 = x.CompareTo(y);
+ 
+ 					return num25;
+ 				});
+@@ -105,7 +_,7 @@
+ 				indexesSortable35.Sort(delegate (int x, int y) {
+ 					int num24 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num24 == 0)
+-						num24 = ((x != y) ? (-1) : 0);
++						num24 = x.CompareTo(y);
+ 
+ 					return num24;
+ 				});
+@@ -122,7 +_,7 @@
+ 				indexesSortable34.Sort(delegate (int x, int y) {
+ 					int num23 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num23 == 0)
+-						num23 = ((x != y) ? (-1) : 0);
++						num23 = x.CompareTo(y);
+ 
+ 					return num23;
+ 				});
+@@ -139,7 +_,7 @@
+ 				indexesSortable33.Sort(delegate (int x, int y) {
+ 					int num22 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num22 == 0)
+-						num22 = ((x != y) ? (-1) : 0);
++						num22 = x.CompareTo(y);
+ 
+ 					return num22;
+ 				});
+@@ -209,7 +_,7 @@
+ 						num21 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num21 == 0)
+-						num21 = ((x != y) ? (-1) : 0);
++						num21 = x.CompareTo(y);
+ 
+ 					return num21;
+ 				});
+@@ -226,7 +_,7 @@
+ 				indexesSortable26.Sort(delegate (int x, int y) {
+ 					int num20 = inv[y].rare.CompareTo(inv[x].rare);
+ 					if (num20 == 0)
+-						num20 = ((x != y) ? (-1) : 0);
++						num20 = x.CompareTo(y);
+ 
+ 					return num20;
+ 				});
+@@ -300,7 +_,7 @@
+ 						num16 = inv[x].netID.CompareTo(inv[y].netID);
+ 
+ 					if (num16 == 0)
+-						num16 = ((x != y) ? (-1) : 0);
++						num16 = x.CompareTo(y);
+ 
+ 					return num16;
+ 				});
+@@ -320,7 +_,7 @@
+ 						num15 = inv[x].netID.CompareTo(inv[y].netID);
+ 
+ 					if (num15 == 0)
+-						num15 = ((x != y) ? (-1) : 0);
++						num15 = x.CompareTo(y);
+ 
+ 					return num15;
+ 				});
+@@ -340,7 +_,7 @@
+ 						num14 = inv[x].netID.CompareTo(inv[y].netID);
+ 
+ 					if (num14 == 0)
+-						num14 = ((x != y) ? (-1) : 0);
++						num14 = x.CompareTo(y);
+ 
+ 					return num14;
+ 				});
+@@ -360,7 +_,7 @@
+ 						num13 = inv[x].netID.CompareTo(inv[y].netID);
+ 
+ 					if (num13 == 0)
+-						num13 = ((x != y) ? (-1) : 0);
++						num13 = x.CompareTo(y);
+ 
+ 					return num13;
+ 				});
+@@ -380,7 +_,7 @@
+ 						num12 = inv[x].netID.CompareTo(inv[y].netID);
+ 
+ 					if (num12 == 0)
+-						num12 = ((x != y) ? (-1) : 0);
++						num12 = x.CompareTo(y);
+ 
+ 					return num12;
+ 				});
+@@ -433,7 +_,7 @@
+ 						num11 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num11 == 0)
+-						num11 = ((x != y) ? (-1) : 0);
++						num11 = x.CompareTo(y);
+ 
+ 					return num11;
+ 				});
 @@ -456,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -481,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -549,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -578,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -607,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -632,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -665,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -720,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -762,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -787,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -812,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -841,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -864,7 +_,7 @@
- 							}
- 							if (num == 0)
- 							{
--								num = ((x == y) ? 0 : -1);
-+								num = x.CompareTo(y);
- 							}
- 							return num;
- 						});
-@@ -920,7 +_,7 @@
- 			list.Add(ItemSorting.ItemSortingLayers.LastTilesCommon);
- 			list.Add(ItemSorting.ItemSortingLayers.LastNotTrash);
- 			list.Add(ItemSorting.ItemSortingLayers.LastTrash);
--			for (int i = -48; i < 3930; i++)
-+			for (int i = -48; i < ItemLoader.ItemCount; i++)
- 			{
+ 						num10 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num10 == 0)
+-						num10 = ((x != y) ? (-1) : 0);
++						num10 = x.CompareTo(y);
+ 
+ 					return num10;
+ 				});
+@@ -479,7 +_,7 @@
+ 						num9 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num9 == 0)
+-						num9 = ((x != y) ? (-1) : 0);
++						num9 = x.CompareTo(y);
+ 
+ 					return num9;
+ 				});
+@@ -499,7 +_,7 @@
+ 						num8 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num8 == 0)
+-						num8 = ((x != y) ? (-1) : 0);
++						num8 = x.CompareTo(y);
+ 
+ 					return num8;
+ 				});
+@@ -525,7 +_,7 @@
+ 						num7 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num7 == 0)
+-						num7 = ((x != y) ? (-1) : 0);
++						num7 = x.CompareTo(y);
+ 
+ 					return num7;
+ 				});
+@@ -568,7 +_,7 @@
+ 						num6 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num6 == 0)
+-						num6 = ((x != y) ? (-1) : 0);
++						num6 = x.CompareTo(y);
+ 
+ 					return num6;
+ 				});
+@@ -601,7 +_,7 @@
+ 						num5 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num5 == 0)
+-						num5 = ((x != y) ? (-1) : 0);
++						num5 = x.CompareTo(y);
+ 
+ 					return num5;
+ 				});
+@@ -621,7 +_,7 @@
+ 						num4 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num4 == 0)
+-						num4 = ((x != y) ? (-1) : 0);
++						num4 = x.CompareTo(y);
+ 
+ 					return num4;
+ 				});
+@@ -641,7 +_,7 @@
+ 						num3 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num3 == 0)
+-						num3 = ((x != y) ? (-1) : 0);
++						num3 = x.CompareTo(y);
+ 
+ 					return num3;
+ 				});
+@@ -664,7 +_,7 @@
+ 						num2 = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num2 == 0)
+-						num2 = ((x != y) ? (-1) : 0);
++						num2 = x.CompareTo(y);
+ 
+ 					return num2;
+ 				});
+@@ -684,7 +_,7 @@
+ 						num = inv[y].stack.CompareTo(inv[x].stack);
+ 
+ 					if (num == 0)
+-						num = ((x != y) ? (-1) : 0);
++						num = x.CompareTo(y);
+ 
+ 					return num;
+ 				});
+@@ -740,7 +_,7 @@
+ 			list.Add(ItemSortingLayers.LastTilesCommon);
+ 			list.Add(ItemSortingLayers.LastNotTrash);
+ 			list.Add(ItemSortingLayers.LastTrash);
+-			for (int i = -48; i < 3930; i++) {
++			for (int i = -48; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.netDefaults(i);
-
+ 				list2.Add(item);

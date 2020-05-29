@@ -1,13 +1,20 @@
 /src
-/logs
+/setup/logs
 **/bin/
 **/obj/
+**/packages/
+.vs
 *.user
 *.suo
 *.cache
 *.force
 installer2/*.class
 installer2/*.jar
+solutions/ReleaseExtras/JourneysEndCompatibilityContent/Images
+solutions/ReleaseExtras/LinuxFiles
+solutions/ReleaseExtras/LinuxMacSharedFiles
+solutions/ReleaseExtras/MacFiles
+solutions/ReleaseExtras/WindowsFiles
 solutions/documentation/html
 solutions/documentation/*.tmp
 solutions/**/*.zip
@@ -16,6 +23,7 @@ solutions/**/*.tar.gz
 **/.vs/
 **/.idea/
 /test/Terraria.xml
+/test/tModLoader.xml
 /test/Test Local/Players
 /test/Test Local/Worlds
 /test/Test Local/Logs

@@ -2,6 +2,7 @@ using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Armor
 {
@@ -16,7 +17,7 @@ namespace ExampleMod.Items.Armor
 			item.width = 18;
 			item.height = 18;
 			item.value = 10000;
-			item.rare = 2;
+			item.rare = ItemRarityID.Green;
 			item.defense = 30;
 		}
 

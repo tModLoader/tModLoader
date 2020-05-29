@@ -1,304 +1,395 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using System.Xml;
 using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.Ast;
-using ICSharpCode.ILSpy;
-using ICSharpCode.ILSpy.TextView;
-using Mono.Cecil;
+using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.OutputVisitor;
+using ICSharpCode.Decompiler.CSharp.Transforms;
+using ICSharpCode.Decompiler.Metadata;
+using ICSharpCode.Decompiler.TypeSystem;
 using Terraria.ModLoader.Properties;
 using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
-	public class DecompileTask : Task
+	public class DecompileTask : SetupOperation
 	{
-		private class EmbeddedAssemblyResolver : BaseAssemblyResolver
+		private class EmbeddedAssemblyResolver : IAssemblyResolver
 		{
-			private Dictionary<string, AssemblyDefinition> cache = new Dictionary<string, AssemblyDefinition>();
-			public ModuleDefinition baseModule;
+			private readonly PEFile baseModule;
+			private readonly UniversalAssemblyResolver _resolver;
+			private readonly Dictionary<string, PEFile> cache = new Dictionary<string, PEFile>();
 
-			public EmbeddedAssemblyResolver() {
-				AddSearchDirectory(SteamDir);
+			public EmbeddedAssemblyResolver(PEFile baseModule, string targetFramework)
+			{
+				this.baseModule = baseModule;
+				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, PEStreamOptions.PrefetchMetadata);
+				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName));
 			}
 
-			public override AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters) {
-				lock (this) {
-					AssemblyDefinition assemblyDefinition;
-					if (cache.TryGetValue(name.FullName, out assemblyDefinition))
-						return assemblyDefinition;
-
-					//ignore references to other mscorlib versions, they are unneeded and produce namespace conflicts
-					if (name.Name == "mscorlib" && name.Version.Major != 4)
-						goto skip;
-
+			public PEFile Resolve(IAssemblyReference name)
+			{
+				lock (this)
+				{
+					if (cache.TryGetValue(name.FullName, out var module))
+						return module;
+					
 					//look in the base module's embedded resources
-					if (baseModule != null) {
-						var resName = name.Name + ".dll";
-						var res =
-							baseModule.Resources.OfType<EmbeddedResource>()
-								.SingleOrDefault(r => r.Name.EndsWith(resName));
-						if (res != null)
-							assemblyDefinition = AssemblyDefinition.ReadAssembly(res.GetResourceStream(), parameters);
-					}
+					var resName = name.Name + ".dll";
+					var res = baseModule.Resources.Where(r => r.ResourceType == ResourceType.Embedded).SingleOrDefault(r => r.Name.EndsWith(resName));
+					if (!res.IsNil)
+						module = new PEFile(res.Name, res.TryOpenStream());
 
-					if (assemblyDefinition == null)
-						assemblyDefinition = base.Resolve(name, parameters);
-
-				skip:
-					cache[name.FullName] = assemblyDefinition;
-					return assemblyDefinition;
+					if (module == null)
+						module = _resolver.Resolve(name);
+					
+					cache[name.FullName] = module;
+					return module;
 				}
 			}
+
+			public PEFile ResolveModule(PEFile mainModule, string moduleName) => _resolver.ResolveModule(mainModule, moduleName);
 		}
 
-		private static readonly CSharpLanguage lang = new CSharpLanguage();
-		private static readonly Guid clientGuid = new Guid("3996D5FA-6E59-4FE4-9F2B-40EEEF9645D5");
-		private static readonly Guid serverGuid = new Guid("85BF1171-A0DC-4696-BFA4-D6E9DC4E0830");
+		private class ExtendedProjectDecompiler : WholeProjectDecompiler
+		{
+			public new bool IncludeTypeWhenDecompilingProject(PEFile module, TypeDefinitionHandle type) => base.IncludeTypeWhenDecompilingProject(module, type);
+		}
+
 		public static readonly Version clientVersion = new Version(Settings.Default.ClientVersion);
 		public static readonly Version serverVersion = new Version(Settings.Default.ServerVersion);
 
-		public readonly string srcDir;
-		public readonly bool serverOnly;
+		private readonly string srcDir;
+		private readonly bool serverOnly;
+		private readonly bool formatOutput = Settings.Default.FormatAfterDecompiling;
 
-		public string FullSrcDir => Path.Combine(baseDir, srcDir);
+		private ExtendedProjectDecompiler projectDecompiler;
 
-		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface) {
+		private readonly DecompilerSettings decompilerSettings = new DecompilerSettings(LanguageVersion.Latest)
+		{
+			RemoveDeadCode = true,
+			CSharpFormattingOptions = FormattingOptionsFactory.CreateKRStyle()
+		};
+
+		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface)
+		{
 			this.srcDir = srcDir;
 			this.serverOnly = serverOnly;
 		}
 
-		public override bool ConfigurationDialog() {
+		public override bool ConfigurationDialog()
+		{
 			if (File.Exists(TerrariaPath) && File.Exists(TerrariaServerPath))
 				return true;
 
-			return (bool)taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
+			return (bool) taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
 		}
 
-		public override bool StartupWarning() {
-			return MessageBox.Show(
-					"Decompilation may take a long time (1-3 hours) and consume a lot of RAM (2GB will not be enough)",
-					"Ready to Decompile", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-				== DialogResult.OK;
-		}
-
-		public override void Run() {
+		public override void Run()
+		{
 			taskInterface.SetStatus("Deleting Old Src");
+			if (Directory.Exists(srcDir))
+				Directory.Delete(srcDir, true);
+			
+			var clientModule = serverOnly ? null : ReadModule(TerrariaPath, clientVersion);
+			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
+			var mainModule = serverOnly ? serverModule : clientModule;
 
-			if (Directory.Exists(FullSrcDir))
-				Directory.Delete(FullSrcDir, true);
-
-			var options = new DecompilationOptions {
-				FullDecompilation = true,
-				CancellationToken = taskInterface.CancellationToken(),
-				SaveAsProjectDirectory = FullSrcDir
+			projectDecompiler = new ExtendedProjectDecompiler { 
+				Settings = decompilerSettings,
+				AssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.Reader.DetectTargetFrameworkId())
 			};
 
+
 			var items = new List<WorkItem>();
+			var files = new HashSet<string>();
+			var resources = new HashSet<string>();
 
-			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
-			var serverSources = GetCodeFiles(serverModule, options).ToList();
-			var serverResources = GetResourceFiles(serverModule, options).ToList();
+			if (!serverOnly)
+				AddModule(clientModule, projectDecompiler.AssemblyResolver, items, files, resources);
 
-			var sources = serverSources;
-			var resources = serverResources;
-			var infoModule = serverModule;
-			if (!serverOnly) {
-				var clientModule = !serverOnly ? ReadModule(TerrariaPath, clientVersion) : null;
-				var clientSources = GetCodeFiles(clientModule, options).ToList();
-				var clientResources = GetResourceFiles(clientModule, options).ToList();
+			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, serverOnly ? null : "SERVER");
 
-				sources = CombineFiles(clientSources, sources, src => src.Key);
-				resources = CombineFiles(clientResources, resources, res => res.Item1);
-				infoModule = clientModule;
+			items.Add(WriteProjectFile(mainModule, files, resources));
 
-				items.Add(new WorkItem("Writing Terraria" + lang.ProjectFileExtension,
-					() => WriteProjectFile(clientModule, clientGuid, clientSources, clientResources, options)));
+			ExecuteParallel(items);
+		}
 
-				items.Add(new WorkItem("Writing Terraria" + lang.ProjectFileExtension + ".user",
-					() => WriteProjectUserFile(clientModule, SteamDir, options)));
+		protected PEFile ReadModule(string path, Version version)
+		{
+			var versionedPath = path.Insert(path.LastIndexOf('.'), $"_v{version}");
+			if (File.Exists(versionedPath))
+				path = versionedPath;
+
+			taskInterface.SetStatus("Loading " + Path.GetFileName(path));
+			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+			{
+				var module = new PEFile(path, fileStream, PEStreamOptions.PrefetchEntireImage);
+				var assemblyName = new AssemblyName(module.FullName);
+				if (assemblyName.Version != version)
+					throw new Exception($"{assemblyName.Name} version {assemblyName.Version}. Expected {version}");
+
+				return module;
 			}
-
-			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension,
-				() => WriteProjectFile(serverModule, serverGuid, serverSources, serverResources, options)));
-
-			items.Add(new WorkItem("Writing TerrariaServer"+lang.ProjectFileExtension+".user",
-				() => WriteProjectUserFile(serverModule, SteamDir, options)));
-			
-			items.Add(new WorkItem("Writing Assembly Info",
-				() => WriteAssemblyInfo(infoModule, options)));
-			
-			items.AddRange(sources.Select(src => new WorkItem(
-				"Decompiling: "+src.Key, () => DecompileSourceFile(src, options))));
-
-			items.AddRange(resources.Select(res => new WorkItem(
-				"Extracting: " + res.Item1, () => ExtractResource(res, options))));
-			
-			ExecuteParallel(items, maxDegree: Settings.Default.SingleDecompileThread ? 1 : 0);
 		}
 
-		protected ModuleDefinition ReadModule(string modulePath, Version version) {
-			taskInterface.SetStatus("Loading "+Path.GetFileName(modulePath));
-			var resolver = new EmbeddedAssemblyResolver();
-			var module = ModuleDefinition.ReadModule(modulePath, 
-				new ReaderParameters { AssemblyResolver = resolver});
-			resolver.baseModule = module;
-			
-			if (module.Assembly.Name.Version != version)
-				throw new Exception($"{module.Assembly.Name.Name} version {module.Assembly.Name.Version}. Expected {version}");
-
-			return module;
-		}
-
-#region ReflectedMethods
-		private static readonly MethodInfo _IncludeTypeWhenDecompilingProject = typeof(CSharpLanguage)
-			.GetMethod("IncludeTypeWhenDecompilingProject", BindingFlags.NonPublic | BindingFlags.Instance);
-
-		public static bool IncludeTypeWhenDecompilingProject(TypeDefinition type, DecompilationOptions options) {
-			return (bool)_IncludeTypeWhenDecompilingProject.Invoke(lang, new object[] { type, options });
-		}
-
-		private static readonly MethodInfo _WriteProjectFile = typeof(CSharpLanguage)
-			.GetMethod("WriteProjectFile", BindingFlags.NonPublic | BindingFlags.Instance);
-
-		public static void WriteProjectFile(TextWriter writer, IEnumerable<Tuple<string, string>> files, ModuleDefinition module) {
-			_WriteProjectFile.Invoke(lang, new object[] { writer, files, module });
-		}
-
-		private static readonly MethodInfo _CleanUpName = typeof(DecompilerTextView)
-			.GetMethod("CleanUpName", BindingFlags.NonPublic | BindingFlags.Static);
-
-		public static string CleanUpName(string name) {
-			return (string)_CleanUpName.Invoke(null, new object[] { name });
-		}
-#endregion
-
-		//from ICSharpCode.ILSpy.CSharpLanguage
-		private static IEnumerable<IGrouping<string, TypeDefinition>> GetCodeFiles(ModuleDefinition module, DecompilationOptions options) {
-			return module.Types.Where(t => IncludeTypeWhenDecompilingProject(t, options))
-				.GroupBy(type => {
-					var file = CleanUpName(type.Name) + lang.FileExtension;
-					return string.IsNullOrEmpty(type.Namespace) ? file : Path.Combine(CleanUpName(type.Namespace), file);
+		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module)
+		{
+			var metadata = module.Metadata;
+			return module.Metadata.GetTopLevelTypeDefinitions().Where(td => projectDecompiler.IncludeTypeWhenDecompilingProject(module, td))
+				.GroupBy(h =>
+				{
+					var type = metadata.GetTypeDefinition(h);
+					var path = WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Name)) + ".cs";
+					if (!string.IsNullOrEmpty(metadata.GetString(type.Namespace)))
+						path = Path.Combine(WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Namespace)), path);
+					return path.Replace('\\', '/');
 				}, StringComparer.OrdinalIgnoreCase);
 		}
 
-		private static IEnumerable<Tuple<string, EmbeddedResource>> GetResourceFiles(ModuleDefinition module, DecompilationOptions options) {
-			return module.Resources.OfType<EmbeddedResource>().Select(res => {
+		private static IEnumerable<(string path, Resource r)> GetResourceFiles(PEFile module)
+		{
+			return module.Resources.Where(r => r.ResourceType == ResourceType.Embedded).Select(res =>
+			{
 				var path = res.Name;
 				path = path.Replace("Terraria.Libraries.", "Terraria.Libraries\\");
-				if (path.EndsWith(".dll")) {
+				path = path.Replace("Terraria.Localization.Content.", "Terraria.Localization.Content\\");
+				if (path.EndsWith(".dll"))
+				{
 					var asmRef = module.AssemblyReferences.SingleOrDefault(r => path.EndsWith(r.Name + ".dll"));
 					if (asmRef != null)
-						path = path.Substring(0, path.Length - asmRef.Name.Length - 5) +
-						Path.DirectorySeparatorChar + asmRef.Name + ".dll";
+						path = Path.Combine(path.Substring(0, path.Length - asmRef.Name.Length - 5), asmRef.Name + ".dll");
 				}
-				return Tuple.Create(path, res);
+				else if (IsCultureFile(path))
+					path = path.Insert(path.LastIndexOf('.'), ".Main");
+
+				return (path.Replace('\\', '/'), res);
 			});
 		}
 
-		private static List<T> CombineFiles<T, K>(IEnumerable<T> client, IEnumerable<T> server, Func<T, K> key) {
-			var list = client.ToList();
-			var set = new HashSet<K>(list.Select(key));
-			list.AddRange(server.Where(src => !set.Contains(key(src))));
-			return list;
-		}
-
-		private static void ExtractResource(Tuple<string, EmbeddedResource> res, DecompilationOptions options) {
-			var path = Path.Combine(options.SaveAsProjectDirectory, res.Item1);
-			CreateParentDirectory(path);
-
-			var s = res.Item2.GetResourceStream();
-			s.Position = 0;
-			using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-				s.CopyTo(fs);
-		}
-
-		private static void DecompileSourceFile(IGrouping<string, TypeDefinition> src, DecompilationOptions options) {
-			var path = Path.Combine(options.SaveAsProjectDirectory, src.Key);
-			CreateParentDirectory(path);
-
-			using (var w = new StreamWriter(path)) {
-				var builder = new AstBuilder(
-					new DecompilerContext(src.First().Module) {
-						CancellationToken = options.CancellationToken,
-						Settings = options.DecompilerSettings
-					});
-
-				foreach (var type in src)
-					builder.AddType(type);
-
-				builder.GenerateCode(new PlainTextOutput(w));
+		private static bool IsCultureFile(string path) {
+			try {
+				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				return true;
 			}
+			catch (CultureNotFoundException) { }
+			return false;
 		}
 
-		private static void WriteAssemblyInfo(ModuleDefinition module, DecompilationOptions options) {
-			var path = Path.Combine(options.SaveAsProjectDirectory, Path.Combine("Properties", "AssemblyInfo" + lang.FileExtension));
-			CreateParentDirectory(path);
+		private DecompilerTypeSystem AddModule(PEFile module, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, string conditional = null)
+		{
+			var sources = GetCodeFiles(module).ToList();
+			var resources = GetResourceFiles(module).ToList();
 
-			using (var w = new StreamWriter(path)) {
-				var builder = new AstBuilder(
-					new DecompilerContext(module) {
-						CancellationToken = options.CancellationToken,
-						Settings = options.DecompilerSettings
-					});
+			var ts = new DecompilerTypeSystem(module, resolver, decompilerSettings);
+			items.AddRange(sources
+				.Where(src => sourceSet.Add(src.Key))
+				.Select(src => DecompileSourceFile(ts, src, conditional)));
 
-				builder.AddAssembly(module, true);
-				builder.GenerateCode(new PlainTextOutput(w));
-			}
+			if (conditional != null && resources.Any(res => !resourceSet.Contains(res.path)))
+				throw new Exception($"Conditional ({conditional}) resources not supported");
+
+			items.AddRange(resources
+				.Where(res => resourceSet.Add(res.path))
+				.Select(res => ExtractResource(res.path, res.r)));
+
+			return ts;
 		}
 
-		private static void WriteProjectFile(ModuleDefinition module, Guid guid,
-				IEnumerable<IGrouping<string, TypeDefinition>> sources, 
-				IEnumerable<Tuple<string, EmbeddedResource>> resources,
-				DecompilationOptions options) {
+		private WorkItem ExtractResource(string name, Resource res)
+		{
+			return new WorkItem("Extracting: " + name, () =>
+			{
+				var path = Path.Combine(srcDir, name);
+				CreateParentDirectory(path);
 
-			//flatten the file list
-			var files = sources.Select(src => Tuple.Create("Compile", src.Key))
-				.Concat(resources.Select(res => Tuple.Create("EmbeddedResource", res.Item1)))
-				.Concat(new[] { Tuple.Create("Compile", Path.Combine("Properties", "AssemblyInfo" + lang.FileExtension)) });
-
-			//fix the guid and add a value to the CommandLineArguments field so the method doesn't crash
-			var claField = typeof(App).GetField("CommandLineArguments", BindingFlags.Static | BindingFlags.NonPublic);
-			var claType = typeof(App).Assembly.GetType("ICSharpCode.ILSpy.CommandLineArguments");
-			var claConstructor = claType.GetConstructors()[0];
-			var claInst = claConstructor.Invoke(new object[] {Enumerable.Empty<string>()});
-			var guidField = claType.GetField("FixedGuid");
-			guidField.SetValue(claInst, guid);
-			claField.SetValue(null, claInst);
-
-			var path = Path.Combine(options.SaveAsProjectDirectory,
-				Path.GetFileNameWithoutExtension(module.Name) + lang.ProjectFileExtension);
-			CreateParentDirectory(path);
-
-			using (var w = new StreamWriter(path))
-				WriteProjectFile(w, files, module);
-			using (var w = new StreamWriter(path, true))
-				w.Write(Environment.NewLine);
+				var s = res.TryOpenStream();
+				s.Position = 0;
+				using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+					s.CopyTo(fs);
+			});
 		}
 
-		private static void WriteProjectUserFile(ModuleDefinition module, string debugWorkingDir, DecompilationOptions options) {
-			var path = Path.Combine(options.SaveAsProjectDirectory,
-				Path.GetFileNameWithoutExtension(module.Name) + lang.ProjectFileExtension + ".user");
-			CreateParentDirectory(path);
+		private CSharpDecompiler CreateDecompiler(DecompilerTypeSystem ts)
+		{
+			var decompiler = new CSharpDecompiler(ts, projectDecompiler.Settings)
+			{
+				CancellationToken = taskInterface.CancellationToken
+			};
+			decompiler.AstTransforms.Add(new EscapeInvalidIdentifiers());
+			decompiler.AstTransforms.Add(new RemoveCLSCompliantAttribute());
+			return decompiler;
+		}
 
-			using (var w = new StreamWriter(path))
-				using (var xml = new XmlTextWriter(w)) {
-					xml.Formatting = Formatting.Indented;
-					xml.WriteStartDocument();
-					xml.WriteStartElement("Project", "http://schemas.microsoft.com/developer/msbuild/2003");
-					xml.WriteAttributeString("ToolsVersion", "4.0");
-					xml.WriteStartElement("PropertyGroup");
-					xml.WriteAttributeString("Condition", "'$(Configuration)' == 'Debug'");
-					xml.WriteStartElement("StartWorkingDirectory");
-					xml.WriteValue(debugWorkingDir);
-					xml.WriteEndElement();
-					xml.WriteEndElement();
-					xml.WriteEndDocument();
+		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string conditional = null)
+		{
+			return new WorkItem("Decompiling: " + src.Key, updateStatus =>
+			{
+				var path = Path.Combine(srcDir, src.Key);
+				CreateParentDirectory(path);
+
+				using (var w = new StringWriter())
+				{
+					if (conditional != null)
+						w.WriteLine("#if "+conditional);
+
+					CreateDecompiler(ts)
+						.DecompileTypes(src.ToArray())
+						.AcceptVisitor(new CSharpOutputVisitor(w, projectDecompiler.Settings.CSharpFormattingOptions));
+
+					if (conditional != null)
+						w.WriteLine("#endif");
+
+					string source = w.ToString();
+					if (formatOutput) {
+						updateStatus("Formatting: " + src.Key);
+						source = FormatTask.Format(source, taskInterface.CancellationToken, true);
+					}
+
+					File.WriteAllText(path, source);
 				}
+			});
+		}
+
+		private WorkItem WriteProjectFile(PEFile module, IEnumerable<string> sources, IEnumerable<string> resources)
+		{
+			var name = Path.GetFileNameWithoutExtension(module.Name) + ".csproj";
+			return new WorkItem("Writing: " + name, () =>
+			{
+				var path = Path.Combine(srcDir, name);
+				CreateParentDirectory(path);
+
+				using (var sw = new StreamWriter(path))
+				using (var w = new XmlTextWriter(sw)) {
+					w.Formatting = System.Xml.Formatting.Indented;
+					w.WriteStartElement("Project");
+					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
+
+					w.WriteStartElement("PropertyGroup");
+					w.WriteElementString("TargetFramework", "net40");
+					w.WriteElementString("OutputType", "WinExe");
+					w.WriteElementString("Version", new AssemblyName(module.FullName).Version.ToString());
+					
+					var attribs = GetCustomAttributes(module);
+					w.WriteElementString("Company", attribs[nameof(AssemblyCompanyAttribute)]);
+					w.WriteElementString("Copyright", attribs[nameof(AssemblyCopyrightAttribute)]);
+
+					w.WriteElementString("RootNamespace", "");
+					w.WriteElementString("Configurations", "Debug;Release;ServerDebug;ServerRelease");
+
+					w.WriteElementString("AssemblySearchPaths", "$(AssemblySearchPaths);{GAC}");
+					w.WriteElementString("PlatformTarget", "x86");
+					w.WriteElementString("AllowUnsafeBlocks", "true");
+					w.WriteElementString("Optimize", "true");
+					w.WriteEndElement(); // </PropertyGroup>
+
+					//configurations
+					w.WriteStartElement("PropertyGroup");
+					w.WriteAttributeString("Condition", "$(Configuration.Contains('Server'))");
+					w.WriteElementString("OutputType", "Exe");
+					w.WriteElementString("DefineConstants", "$(DefineConstants);SERVER");
+					w.WriteElementString("OutputName", "$(OutputName)Server");
+					w.WriteEndElement(); // </PropertyGroup>
+
+					w.WriteStartElement("PropertyGroup");
+					w.WriteAttributeString("Condition", "!$(Configuration.Contains('Server'))");
+					w.WriteElementString("DefineConstants", "$(DefineConstants);CLIENT");
+					w.WriteEndElement(); // </PropertyGroup>
+
+					w.WriteStartElement("PropertyGroup");
+					w.WriteAttributeString("Condition", "$(Configuration.Contains('Debug'))");
+					w.WriteElementString("Optimize", "false");
+					w.WriteElementString("DefineConstants", "$(DefineConstants);DEBUG");
+					w.WriteEndElement(); // </PropertyGroup>
+
+					// references
+					w.WriteStartElement("ItemGroup");
+					foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
+						if (r.Name == "mscorlib") continue;
+
+						w.WriteStartElement("Reference");
+						w.WriteAttributeString("Include", r.Name);
+						w.WriteEndElement();
+					}
+					w.WriteEndElement(); // </ItemGroup>
+					
+					// resources
+					w.WriteStartElement("ItemGroup");
+					foreach (var r in ApplyWildcards(resources, sources.ToArray()).OrderBy(r => r)) {
+						w.WriteStartElement("EmbeddedResource");
+						w.WriteAttributeString("Include", r);
+						w.WriteEndElement();
+					}
+					w.WriteEndElement(); // </ItemGroup>
+					w.WriteEndElement(); // </Project>
+
+					sw.Write(Environment.NewLine);
+				}
+			});
+		}
+
+		private IEnumerable<string> ApplyWildcards(IEnumerable<string> include, IReadOnlyList<string> exclude) {
+			var wildpaths = new HashSet<string>();
+			foreach (var path in include) {
+				if (wildpaths.Any(path.StartsWith))
+					continue;
+
+				string wpath = path;
+				string cards = "";
+				while (wpath.Contains('/')) {
+					var parent = wpath.Substring(0, wpath.LastIndexOf('/'));
+					if (exclude.Any(e => e.StartsWith(parent)))
+						break; //can't use parent as a wildcard
+
+					wpath = parent;
+					if (cards.Length < 2)
+						cards += "*";
+				}
+
+				if (wpath != path) {
+					wildpaths.Add(wpath);
+					yield return $"{wpath}/{cards}";
+				} else {
+					yield return path;
+				}
+			}
+		}
+
+		private static string[] knownAttributes = {nameof(AssemblyCompanyAttribute), nameof(AssemblyCopyrightAttribute) };
+		private IDictionary<string, string> GetCustomAttributes(PEFile module) {
+			var dict = new Dictionary<string, string>();
+
+			var reader = module.Reader.GetMetadataReader();
+			var attribs = reader.GetAssemblyDefinition().GetCustomAttributes().Select(reader.GetCustomAttribute);
+			foreach (var attrib in attribs) {
+				var ctor = reader.GetMemberReference((MemberReferenceHandle)attrib.Constructor);
+				var attrTypeName = reader.GetString(reader.GetTypeReference((TypeReferenceHandle)ctor.Parent).Name);
+				if (!knownAttributes.Contains(attrTypeName))
+					continue;
+
+				var value = attrib.DecodeValue(new IDGAFAttributeTypeProvider());
+				dict[attrTypeName] = value.FixedArguments.Single().Value as string;
+			}
+
+			return dict;
+		}
+
+		private class IDGAFAttributeTypeProvider : ICustomAttributeTypeProvider<object>
+		{
+			public object GetPrimitiveType(PrimitiveTypeCode typeCode) => null;
+			public object GetSystemType() => throw new NotImplementedException();
+			public object GetSZArrayType(object elementType) => throw new NotImplementedException();
+			public object GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind) => throw new NotImplementedException();
+			public object GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind) => throw new NotImplementedException();
+			public object GetTypeFromSerializedName(string name) => throw new NotImplementedException();
+			public PrimitiveTypeCode GetUnderlyingEnumType(object type) => throw new NotImplementedException();
+			public bool IsSystemType(object type) => throw new NotImplementedException();
 		}
 	}
 }

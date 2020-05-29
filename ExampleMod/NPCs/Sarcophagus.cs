@@ -51,7 +51,7 @@ namespace ExampleMod.NPCs
 				}
 				else if (ai >= 180f) {
 					ai = -120f;
-					if (Main.netMode != 1) {
+					if (Main.netMode != NetmodeID.MultiplayerClient) {
 						int proj = Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, ProjectileType<ShadowArm>(), npc.damage / 2, 0f, Main.myPlayer, player.Center.X, player.Center.Y);
 					}
 					npc.netUpdate = true;

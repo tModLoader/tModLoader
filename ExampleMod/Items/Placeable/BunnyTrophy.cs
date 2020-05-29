@@ -1,6 +1,7 @@
 using ExampleMod.Tiles;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items.Placeable
 {
@@ -14,10 +15,10 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
-			item.useStyle = 1;
+			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
 			item.value = 50000;
-			item.rare = 1;
+			item.rare = ItemRarityID.Blue;
 			item.createTile = TileType<BossTrophy>();
 			item.placeStyle = 2;
 		}

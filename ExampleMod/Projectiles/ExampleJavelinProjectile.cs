@@ -61,7 +61,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		public override void Kill(int timeLeft) {
-			Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y); // Play a death sound
+			Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y); // Play a death sound
 			Vector2 usePos = projectile.position; // Position to use for dusts
 			
 			// Please note the usage of MathHelper, please use this!
@@ -96,7 +96,7 @@ namespace ExampleMod.Projectiles
 
 				// Sync the drop for multiplayer
 				// Note the usage of Terraria.ID.MessageID, please use this!
-				if (Main.netMode == 1 && item >= 0) {
+				if (Main.netMode == NetmodeID.MultiplayerClient && item >= 0) {
 					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item, 1f);
 				}
 			}

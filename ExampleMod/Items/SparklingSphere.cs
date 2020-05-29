@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace ExampleMod.Items
 {
@@ -17,7 +18,7 @@ namespace ExampleMod.Items
 			item.width = 40;
 			item.height = 40;
 			item.value = 10000;
-			item.rare = 2;
+			item.rare = ItemRarityID.Green;
 		}
 
 		public override void HoldStyle(Player player) {
