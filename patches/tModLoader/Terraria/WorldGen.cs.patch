@@ -1523,15 +1523,16 @@
  				int num8 = num6 - 1;
  				int num9 = num6 + 2;
  				int num10 = num7 - 1;
-@@ -34157,6 +_,8 @@
- 					if (Main.netMode == 2)
- 						NetMessage.SendTileSquare(-1, num60, num61, 3);
+@@ -34132,6 +_,9 @@
+ 					}
  				}
+ 
 +				TileLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].type);
 +				WallLoader.RandomUpdate(num6, num7, Main.tile[num6, num7].wall);
- 			}
++
+ 				if ((Main.tile[num6, num7].type != 199 && Main.tile[num6, num7].type != 205) || genRand.Next(15) != 0 || Main.tile[num6, num7 + 1].active() || Main.tile[num6, num7 + 1].lava())
+ 					continue;
  
- 			for (int num62 = 0; (float)num62 < (float)(Main.maxTilesX * Main.maxTilesY) * num3; num62++) {
 @@ -34747,10 +_,12 @@
  				}
  
