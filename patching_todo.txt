@@ -67,7 +67,7 @@
 			
 			TileLoader.SetDrawPositions(j, i, ref num9, ref num12, ref num8);
 			
-			
+		//Reimplement the entire ModifyTooltips hook call with all the tooltipNames filling, based on diffs of 1.3.5.3.
 			
 		//Reimplement broken patches:
 //
