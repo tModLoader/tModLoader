@@ -1,0 +1,29 @@
+--- src/tModLoader/Terraria/WorldGen.cs
++++ src/64bit/Terraria/WorldGen.cs
+@@ -592,12 +_,12 @@
+ 		private static int[] dRoomT = new int[maxDRooms];
+ 		private static int[] dRoomB = new int[maxDRooms];
+ 		private static int numDDoors;
+-		private static int[] DDoorX = new int[300];
++		private static int[] DDoorX = new int[3000];
+-		private static int[] DDoorY = new int[300];
++		private static int[] DDoorY = new int[3000];
+-		private static int[] DDoorPos = new int[300];
++		private static int[] DDoorPos = new int[3000];
+ 		private static int numDPlats;
+-		private static int[] DPlatX = new int[300];
++		private static int[] DPlatX = new int[3000];
+-		private static int[] DPlatY = new int[300];
++		private static int[] DPlatY = new int[3000];
+ 		private static int JungleItemCount = 0;
+ 		private static int[] JChestX = new int[100];
+ 		private static int[] JChestY = new int[100];
+@@ -12043,7 +_,7 @@
+ 		}
+ 
+ 		public static void makeTemple(int x, int y) {
+-			Rectangle[] array = new Rectangle[40];
++			Rectangle[] array = new Rectangle[80];
+ 			float num = Main.maxTilesX / 4200;
+ 			int num2 = genRand.Next((int)(num * 10f), (int)(num * 16f));
+ 			int num3 = 1;

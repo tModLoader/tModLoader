@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.x64bit
 
 		internal static void SetupVariable() {
 			Main.chest = new Chest[maxChest];
-			Main.tile = new Tile[16801, 3601];
+			Main.tile = new Tile[16801, 4801];
 
 			LoadChests_Hook += LoadChestHook;
 			SaveChests_Hook += SaveChestsHook;
