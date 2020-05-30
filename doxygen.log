@@ -716,7 +716,7 @@ Generating caller graph for function Terraria.ModLoader.ItemLoader.ModifyWeaponD
 Generating call graph for function Terraria.ModLoader.ItemLoader.NeedsModSaving
 Generating caller graph for function Terraria.ModLoader.ItemLoader.OnConsumeMana
 Generating caller graph for function Terraria.ModLoader.ItemLoader.OnMissingMana
-Gener/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1142: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
+Gener/home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/ItemLoader.cs:1143: warning: The following parameters of Terraria.ModLoader.ItemLoader.ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) are not documented:
   parameter 'item'
   parameter 'reforgePrice'
 /home/travis/build/tModLoader/tModLoader/patches/tModLoader/Terraria.ModLoader/Mod.cs:1565: warning: The following parameters of Terraria.ModLoader.Mod.GetFileStream(string name, bool newFileStream=false) are not documented:
