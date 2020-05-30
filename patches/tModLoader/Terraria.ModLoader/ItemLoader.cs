@@ -120,6 +120,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.LockOnAimAbove, nextItem);
 			Array.Resize(ref ItemID.Sets.LockOnAimCompensation, nextItem);
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
+			Array.Resize(ref ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn, nextItem);
 			ItemID.Sets.IsAMaterial = new bool[nextItem]; // clears it, which is desired.
 			for (int k = ItemID.Count; k < nextItem; k++) {
 				Lang._itemNameCache[k] = LocalizedText.Empty;
