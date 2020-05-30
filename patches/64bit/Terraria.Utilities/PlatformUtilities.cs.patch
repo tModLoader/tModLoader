@@ -102,7 +102,7 @@
 +		}
 +
 +		public static bool XNACheck() {
-+			return Assembly.GetAssembly(typeof(GraphicsProfile)).GetType("Microsoft.Xna.Framework.Graphics.ProfileCapabilities") != null;
++			return !Environment.Is64BitProcess;
 +		}
 +
 +		public static bool RegisteryKeyInstalled(string regkey) {

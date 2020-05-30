@@ -1,8 +1,20 @@
 --- src/tModLoader/Terraria.ModLoader.Core/AssemblyManager.cs
 +++ src/64bit/Terraria.ModLoader.Core/AssemblyManager.cs
-@@ -112,4 +_,5 @@
+@@ -133,7 +_,7 @@
+ 			}
  
- 				try {
- 					using (modFile.Open()) {
-+						string suffixPlat = PlatformUtilities.IsXNA ? ".XNA.dll" : ".FNA.dll";
- 						foreach (var dllName in properties.dllReferences) {
+ 			private byte[] GetModPdb(out ImageDebugHeader header) {
+-				var fileName = modFile.GetModAssemblyFileName();
++				var fileName = modFile.GetModAssemblyFileName(false);
+ 
+ 				// load a separate debug header to splice into the assembly (dll provided was precompiled and references non-cecil symbols)
+ 				if (modFile.HasFile(fileName + ".cecildebugheader"))
+@@ -346,7 +_,7 @@
+ 			return fileName;
+ 		}
+ 
+-		internal static byte[] GetModAssembly(this TmodFile modFile, bool? xna = null) => modFile.GetBytes(modFile.GetModAssemblyFileName(xna));
++		internal static byte[] GetModAssembly(this TmodFile modFile, bool? xna = null) => modFile.GetBytes(modFile.GetModAssemblyFileName(false));
+ 		internal static byte[] GetLibraryDll(this TmodFile modFile, string dllName, bool? xna = null) => modFile.GetBytes(modFile.GetLibraryDllFilename(dllName, xna));
+ 
+ 		internal static IEnumerable<Assembly> GetModAssemblies(string name) => loadedMods[name].assemblies;
