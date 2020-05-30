@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.x64bit
 			string tmlModeString = liteMode ? "Disable lite mode" : "Enable lite mode";
 			bool showPatreon = Main.menuMode == 0;
 			string architecture = $"(Running in {(Environment.Is64BitProcess ? 64.ToString() : 32.ToString())} bit mode)";
-			string GoG = GoGVerifier.IsGoG ? "GoG" : "Steam";
+			string GoG = InstallVerifier.IsGoG ? "GoG" : "Steam";
 			string drawVersion;
 			if (vanillaMode) {
 				drawVersion = Main.versionNumber;
