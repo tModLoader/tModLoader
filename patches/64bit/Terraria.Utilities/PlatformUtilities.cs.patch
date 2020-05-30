@@ -1,11 +1,12 @@
 --- src/tModLoader/Terraria.Utilities/PlatformUtilities.cs
 +++ src/64bit/Terraria.Utilities/PlatformUtilities.cs
-@@ -1,6 +_,11 @@
+@@ -1,6 +_,12 @@
 -#if !WINDOWS
 +#if FNA
  using SDL2;
 +#endif
  using System;
++using System.Linq;
 +using System.Reflection;
 +using Microsoft.Win32;
 +using Microsoft.Xna.Framework.Graphics;
@@ -101,9 +102,9 @@
 +			}
 +		}
 +
-+		public static bool XNACheck() {
-+			return !Environment.Is64BitProcess;
-+		}
++		public static bool XNACheck() =>
++			AppDomain.CurrentDomain.GetAssemblies().Any(i => i.FullName == "FNA");
++		
 +
 +		public static bool RegisteryKeyInstalled(string regkey) {
 +
