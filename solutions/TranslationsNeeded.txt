@@ -1,5 +1,4 @@
 zh-Hans 1
-ru-RU 198
 pt-BR 260
 pl-PL 171
 it-IT 303
