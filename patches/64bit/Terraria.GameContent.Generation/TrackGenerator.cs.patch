@@ -1,0 +1,11 @@
+--- src/tModLoader/Terraria.GameContent.Generation/TrackGenerator.cs
++++ src/64bit/Terraria.GameContent.Generation/TrackGenerator.cs
+@@ -46,7 +_,7 @@
+ 		private const int MAX_RETRIES = 400;
+ 		private const int MAX_SMOOTH_DISTANCE = 15;
+ 		private const int MAX_ITERATIONS = 1000000;
+-		private TrackHistory[] _historyCache = new TrackHistory[2048];
++		private TrackHistory[] _historyCache = new TrackHistory[2048 * 2];
+ 
+ 		public void Generate(int trackCount, int minimumLength) {
+ 			int num = trackCount;

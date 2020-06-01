@@ -18,6 +18,25 @@
  		private static int JungleItemCount = 0;
  		private static int[] JChestX = new int[100];
  		private static int[] JChestY = new int[100];
+@@ -2264,7 +_,7 @@
+ 				Main.projectile[num6] = new Projectile();
+ 			}
+ 
+-			for (int num7 = 0; num7 < 1000; num7++) {
++			for (int num7 = 0; num7 < Terraria.ModLoader.x64bit.Core64.maxChest; num7++) {
+ 				Main.chest[num7] = null;
+ 			}
+ 
+@@ -8413,7 +_,8 @@
+ 
+ 				progress.Message = Lang.gen[76] + "..Minecart Tracks";
+ 				progress.Set(0.5f);
+-				TrackGenerator.Run((int)(10f * num), (int)(num * 25f) + 250);
++				int minTrackLength = Math.Min((int)(num * 25f) + 250, 350);
++				TrackGenerator.Run((int)(10f * num), minTrackLength);
+ 				progress.Set(1f);
+ 			});
+ 
 @@ -12043,7 +_,7 @@
  		}
  
