@@ -95,13 +95,13 @@ namespace Terraria.ModLoader.x64bit
 					urlSize = Main.fontMouseText.MeasureString(tmlModeString);
 					Main.spriteBatch.DrawString(Main.fontMouseText, tmlModeString, new Vector2(num110 + 10f, Main.screenHeight - origin3.Y - 72f - num111 + 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 					if (num109 == 4 && Main.mouseLeftRelease && Main.mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)(num110 + 10f), (int)(Main.screenHeight - origin3.Y - 72f - num111 + 2f), (int)urlSize.X, (int)origin3.Y).Contains(new Microsoft.Xna.Framework.Point(Main.mouseX, Main.mouseY)) && hasFocus) {
-						string message = liteMode ? "Your game will be switched to the full tML 64bit version, for that you'll need to restart your game completely to have the effect applied.\n" +
-													  "In this mode you can generate XL world and have an expended chest limit, however you can't play with 32bit anymore unless you switch back to tML64bit lite mode" :
-							"Your game will be switched to the tML 64bit lite mode, for that you'll need to restart your game completely to have the effect applied.\n" +
-							"In this mode, you can play with other 32bit client and lite user, but cannot play with the full tML64bit user, however you can switch back to the full tML64bit.";
+						string message = liteMode ? "Your game will be switched to the full tML 64bit version. You will need to restart your game completely to have the effect applied.\n" +
+													  "In this mode you can generate an XL world, and allows for a chest limit of 2000. However, you can't play with 32bit anymore unless you switch back to tML64bit lite mode." :
+							"Your game will be switched to the tML 64bit lite mode. You will need to restart your game completely to have the effect applied.\n" +
+							"In this mode, you can play with other 32bit tModLoader clients and other tModLoader 64 bit lite users, but cannot play with tML64bit users in full mode. You can always switch back to the full tML64bit.";
 
 						Main.PlaySound(SoundID.MenuOpen);
-						Interface.infoMessage.SpecialShow(message, 0, null, "Go back", "Apply", () => {
+						Interface.infoMessage.SpecialShow(message, 0, null, "Back", "Apply", () => {
 							liteMode = !liteMode;
 							Main.SaveSettings();
 							Environment.Exit(0);
