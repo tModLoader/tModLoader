@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Debug("Disabled Main.Support4K");
 			*/
 
-			string reportStatus = "Unknown";
+			string reportStatus = Language.GetTextValue("tModLoader.GraphicsEngineReportUnknown");
 			log4net.LogManager.Shutdown();
 			string logContents = System.IO.File.ReadAllText(Logging.LogPath);
 			try {
@@ -130,7 +130,7 @@ namespace Terraria.ModLoader.Engine
 			}
 			catch {
 				// Can't log since log4net.LogManager.Shutdown happened.
-				reportStatus = "Failure";
+				reportStatus = Language.GetTextValue("tModLoader.GraphicsEngineReportFailure");
 			}
 
 			//var modsAffected = ModContent.HiDefMods.Count == 0 ? "No mods will be affected." : $"The following mods will be affected {string.Join(", ", ModContent.HiDefMods.Select(m => m.DisplayName))}";

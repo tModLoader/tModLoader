@@ -343,6 +343,8 @@
 		"ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
 		"MissingServerExecutable": "Looks like you didn't do a complete install. You are missing tModLoaderServer.exe. Check your install directory and read the install directions.",
 		"GraphicsEngineFailure": "Graphics Engine Failure",
+		"GraphicsEngineReportUnknown": "Unknown",
+		"GraphicsEngineReportFailure": "Failure",
 		"GraphicsEngineFailureMessage": "tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {0}",
 		"OutOfMemory": "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.",
 		"ContentFolderNotFoundInstallCheck": "{0} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.",
