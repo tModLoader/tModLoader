@@ -240,7 +240,7 @@ namespace Terraria.ModLoader
 				if (oom) {
 					const string error = "Game ran out of memory. You'll have to find which mod is consuming lots of memory, and contact the devs or remove it.";
 					Logging.tML.Fatal(error);
-					Interface.MessageBoxShow(error);
+					Interface.MessageBoxShow(Language.GetTextValue("tModLoader.OutOfMemory"));
 					Environment.Exit(1);
 				}
 			}

@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.Engine
 			else {
 				string message = "Unknown OS platform: unable to verify installation.";
 				Logging.tML.Fatal(message);
-				Exit(message, string.Empty);
+				Exit(Language.GetTextValue("tModLoader.UnknownVerificationOS"), string.Empty);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			// Check if the content directory is present which is required
 			if (!Directory.Exists(ContentDirectory)) {
-				Exit($"{ContentDirectory} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.");
+				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", ContentDirectory));
 				return false;
 			}
 #endif
@@ -100,13 +100,13 @@ namespace Terraria.ModLoader.Engine
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 
 			if (!Directory.Exists(Path.Combine(terrariaInstallLocation, ContentDirectory))) {
-				Exit($"Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.");
+				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"));
 				return false;
 			}
 #endif
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Process.Start(@"https://terraria.org");
-				Exit("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", string.Empty);
+				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
 				return false;
 			}
 
@@ -142,13 +142,13 @@ namespace Terraria.ModLoader.Engine
 #if SERVER
 				return false;
 #else
-				Exit($"{vanillaPath} could not be found.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.", string.Empty);
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaPath), string.Empty);
 				return false;
 #endif
 			}
 
 			if (!HashMatchesFile(vanillaPath, gogHash)) {
-				Exit($"{vanillaPath} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"", string.Empty);
+				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaPath), string.Empty);
 				return false;
 			}
 
@@ -157,3 +157,4 @@ namespace Terraria.ModLoader.Engine
 		}
 	}
 }
+l
