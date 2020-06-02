@@ -339,6 +339,18 @@
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support"
+
+		// MessageBox
+		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
+		"MissingServerExecutable": "安装文件不完整（文件tModLoaderServer.exe缺失），无法启动服务器。请阅读教程并重新安装。",
+		"GraphicsEngineFailure": "图形引擎崩溃",
+		"GraphicsEngineFailureMessage": "tModLoader目前在启用部分测试功能后崩溃了。如果你一直遇到这个问题，那么请打开游戏配置文件（config.json）并将其中的Support4K选项关闭（设为false）\n请重新启动游戏。\n异常上报进度：{0}",
+		"OutOfMemory": "游戏内存不足。请检查模组的内存占用，并移除占用较大的模组，或联系它们的开发者以修复这个问题。",
+		"ContentFolderNotFoundInstallCheck": "无法检测到{0}文件夹。\r\n\r\n请确保tModLoader安装在单独的文件夹里，或从Steam中直接安装。",
+		"VanillaSteamInstallationNotFound": "无法检测到原版Terraria的Content资源文件夹。\r\n\r\n请确保已经从Steam安装了原版Terraria且位于同一个Steam目录。",
+		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
+		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。",
+		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "增加{0}%伤害"
