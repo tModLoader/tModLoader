@@ -7,7 +7,7 @@
 		//Add call to PlayerHooks.SetStartInventory here. Moved from Player constructor.
 	//Player
 		//Check if Player constructor still needs startupInventory arg
-
+		//Ensure ItemLoader.ConsumeItem hook was added to everywhere that a player can consume item.consumable.
 //Mirsario:
 	//Lighting:
 		//Re-add TileLoader.NearbyEffects calls (perhaps multiple) to somewhere in SceneMetrics

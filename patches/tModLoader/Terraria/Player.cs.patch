@@ -53,20 +53,19 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[323];
-@@ -756,6 +_,13 @@
- 		public int rangedCrit = 4;
+@@ -1018,6 +_,12 @@
+ 		public int meleeCrit = 4;
  		public int magicCrit = 4;
- 		public int thrownCrit = 4;
+ 		public int rangedCrit = 4;
 +		public float allDamage; // added to better support new damage classes
 +		public float allDamageMult;
 +		public float meleeDamageMult;
 +		public float rangedDamageMult;
 +		public float magicDamageMult;
-+		public float thrownDamageMult;
 +		public float minionDamageMult;
  		public float meleeDamage = 1f;
+ 		public float magicDamage = 1f;
  		public float rangedDamage = 1f;
- 		public float thrownDamage = 1f;
 @@ -1061,8 +_,26 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -129,22 +128,6 @@
  					if (buffType[i] == type) {
  						flag = false;
  						break;
-@@ -1585,11 +_,13 @@
- 			}
- 
- 			int num2 = -1;
--			for (int j = 0; j < 22; j++) {
-+			for (int j = 0; j < MaxBuffs; j++) {
- 				if (buffType[j] != type)
- 					continue;
- 
-+				if (BuffLoader.ReApply(type, this, num, j)) {
-+				}
--				if (type == 94) {
-+				else if (type == 94) {
- 					buffTime[j] += num;
- 					if (buffTime[j] > manaSickTimeMax)
- 						buffTime[j] = manaSickTimeMax;
 @@ -1602,7 +_,7 @@
  			}
  
@@ -190,17 +173,6 @@
  				legacySoundStyle = inventory[i].UseSound;
  				int num2 = inventory[i].buffTime;
  				if (num2 == 0)
-@@ -1884,7 +_,9 @@
- 
- 				AddBuff(num, num2);
- 				if (inventory[i].consumable) {
-+					if (ItemLoader.ConsumeItem(inventory[i], this))
--					inventory[i].stack--;
-+						inventory[i].stack--;
-+
- 					if (inventory[i].stack <= 0)
- 						inventory[i].TurnToAir();
- 				}
 @@ -1929,6 +_,7 @@
  
  					if (!flag) {
@@ -209,16 +181,6 @@
  						if (item.UseSound != null)
  							Main.PlaySound(item.UseSound, base.Center);
  					}
-@@ -2112,6 +_,9 @@
- 
- 						if (Main.projectile[num9].type >= 230 && Main.projectile[num9].type <= 235)
- 							Main.projectile[num9].Kill();
-+
-+						if (modSingleHook2.HasValue && modSingleHook2.Value)
-+							Main.projectile[num9].Kill();
- 					}
- 				}
- 			}
 @@ -2229,6 +_,7 @@
  				Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
  				if (item.stack > 0) {
@@ -285,6 +247,24 @@
  				if (Main.vanityPet[buffType[j]])
  					DelBuff(j);
  			}
+@@ -2452,13 +_,15 @@
+ 			}
+ 		}
+ 
+ 		private bool AddBuff_TryUpdatingExistingBuffTime(int type, int time) {
+ 			bool result = false;
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffType[i] != type)
+ 					continue;
+ 
++				if (BuffLoader.ReApply(type, this, time, i)) {
++				}
+-				if (type == 94) {
++				else if (type == 94) {
+ 					buffTime[i] += time;
+ 					if (buffTime[i] > manaSickTimeMax)
+ 						buffTime[i] = manaSickTimeMax;
 @@ -2485,20 +_,28 @@
  		public void DelBuff(int b) {
  			buffTime[b] = 0;
@@ -478,6 +458,20 @@
  					if (whoAmI == Main.myPlayer && item2.type == 603 && !Main.runningCollectorsEdition)
  						flag = false;
  
+@@ -2717,10 +_,12 @@
+ 
+ 					AddBuff(num2, num3);
+ 					if (item2.consumable) {
++						if (ItemLoader.ConsumeItem(item2, this))
+-						item2.stack--;
++							item2.stack--;
++
+ 						if (item2.stack <= 0)
+ 							item2.TurnToAir();
+ 					}
+ 
+ 					if (CountBuffs() == 22)
+ 						break;
 @@ -2891,12 +_,12 @@
  
  		public Item QuickMount_GetItemToUse() {
@@ -534,45 +528,6 @@
  			Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
  			float num21 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
  			float num22 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
-@@ -3150,8 +_,11 @@
- 			if (type == 3862)
- 				num9 = 564;
- 
-+			ItemLoader.OpenBossBag(type, this, ref num9);
--			if (num9 <= 0)
-+			if (num9 <= 0) {
-+				NPCLoader.blockLoot.Clear(); // clear blockloot
- 				return;
-+			}
- 
- 			NPC nPC = new NPC();
- 			nPC.SetDefaults(num9);
-@@ -3198,9 +_,13 @@
- 				value -= (float)num13;
- 				QuickSpawnItem(71, num13);
- 			}
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
- 		}
- 
--		private void TryGettingDevArmor() {
-+		public void TryGettingDevArmor() {
-+			if (ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
-+				return;
-+
- 			if (Main.rand.Next(20) == 0) {
- 				switch (Main.rand.Next(14)) {
- 					case 0:
-@@ -3295,6 +_,10 @@
- 		}
- 
- 		public void openCrate(int type) {
-+			if (!ItemLoader.PreOpenVanillaBag("crate", this, type))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("crate", this, type);
- 			int num = type - 2334;
- 			if (type >= 3203)
- 				num = type - 3203 + 3;
 @@ -3479,7 +_,7 @@
  			}
  
@@ -652,15 +607,19 @@
  			switch (type) {
  				case 3318: {
  						if (Main.rand.Next(2) == 0)
-@@ -4165,6 +_,8 @@
- 				if (Main.netMode == 1)
- 					NetMessage.SendData(21, -1, -1, null, number42, 1f);
- 			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
- 		}
+@@ -4172,8 +_,11 @@
+ 			if (type == 4957)
+ 				num11 = 657;
  
- 		public int CountItem(int type, int stopCountingAt = 0) {
++			ItemLoader.OpenBossBag(type, this, ref num11);
+-			if (num11 <= 0)
++			if (num11 <= 0) {
++				NPCLoader.blockLoot.Clear(); // clear blockloot
+ 				return;
++			}
+ 
+ 			NPC nPC = new NPC();
+ 			nPC.SetDefaults(num11);
 @@ -4192,7 +_,9 @@
  
  			for (int i = num; i != num2; i += num3) {
@@ -672,57 +631,29 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -4204,6 +_,10 @@
- 		}
- 
- 		public void openLockBox() {
-+			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("lockBox", this, 0);
- 			bool flag = true;
- 			while (flag) {
- 				flag = false;
-@@ -4305,9 +_,15 @@
- 						NetMessage.SendData(21, -1, -1, null, number5, 1f);
- 				}
- 			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
- 		}
- 
- 		public void openHerbBag() {
-+			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("herbBag", this, 0);
- 			int num = Main.rand.Next(2, 5);
- 			if (Main.rand.Next(3) == 0)
- 				num++;
-@@ -4364,9 +_,15 @@
- 				if (Main.netMode == 1)
- 					NetMessage.SendData(21, -1, -1, null, number, 1f);
- 			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
- 		}
- 
- 		public void openGoodieBag() {
-+			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("goodieBag", this, 0);
- 			if (Main.rand.Next(150) == 0) {
- 				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 1810);
- 				if (Main.netMode == 1)
-@@ -4654,6 +_,7 @@
- 						break;
- 					}
+@@ -4220,9 +_,13 @@
+ 				value -= (float)num15;
+ 				QuickSpawnItem(71, num15);
  			}
 +			NPCLoader.blockLoot.Clear(); // clear blockloot
  		}
  
- 		public void UpdateDyes(int plr) {
+-		private void TryGettingDevArmor() {
++		public void TryGettingDevArmor() {
++			if (ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this))
++				return;
++
+ 			if (Main.rand.Next(20) == 0) {
+ 				switch (Main.rand.Next(18)) {
+ 					case 0:
+@@ -4343,3 +_,7 @@
+ 		}
+ 
+ 		public void OpenFishingCrate(int crateItemID) {
++			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
++				return;
++
++			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
 @@ -4703,37 +_,37 @@
  			for (int i = 0; i < 20; i++) {
  				int num = i % 10;
@@ -887,6 +818,81 @@
  				}
  				else if (buffType[k] == 41) {
  					buffTime[k] = 18000;
+@@ -5607,6 +_,8 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number58, 1f);
+ 			}
++
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public int CountItem(int type, int stopCountingAt = 0) {
+@@ -5678,8 +_,12 @@
+ 		}
+ 
+ 		public void OpenLockBox() {
++			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
++				return;
++
++			ItemLoader.OpenVanillaBag("lockBox", this, 0);
+ 			bool flag = true;
+ 			while (flag) {
+ 				flag = false;
+ 				int num = 0;
+ 				int num2 = Main.rand.Next(7);
+@@ -5717,9 +_,15 @@
+ 						NetMessage.SendData(21, -1, -1, null, number2, 1f);
+ 				}
+ 			}
++
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public void OpenHerbBag() {
++			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, 0))
++				return;
++
++			ItemLoader.OpenVanillaBag("herbBag", this, 0);
+ 			int num = Main.rand.Next(2, 5);
+ 			if (Main.rand.Next(3) == 0)
+ 				num++;
+@@ -5776,31 +_,36 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public void OpenCanofWorms() {
+ 			QuickSpawnItem(2002, Main.rand.Next(5, 9));
+ 			if (Main.rand.Next(10) < 3)
+ 				QuickSpawnItem(3191, Main.rand.Next(1, 3));
+ 
+ 			if (Main.rand.Next(20) == 0)
+ 				QuickSpawnItem(2895);
+ 		}
+ 
+ 		public void OpenOyster() {
+ 			if (Main.rand.Next(5) == 0) {
+ 				if (Main.rand.Next(25) == 0)
+ 					QuickSpawnItem(4414);
+ 				else if (Main.rand.Next(5) == 0)
+ 					QuickSpawnItem(4413);
+ 				else
+ 					QuickSpawnItem(4412);
+ 			}
+ 
+ 			QuickSpawnItem(4411);
+ 		}
+ 
+ 		public void OpenGoodieBag() {
++			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, 0))
++				return;
++
++			ItemLoader.OpenVanillaBag("goodieBag", this, 0);
+ 			if (Main.rand.Next(150) == 0) {
+ 				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 1810);
+ 				if (Main.netMode == 1)
 @@ -5950,15 +_,16 @@
  					wellFed = true;
  					statDefense += 2;
@@ -918,6 +924,14 @@
  			}
  		}
  
+@@ -6088,6 +_,7 @@
+ 						break;
+ 					}
+ 			}
++			NPCLoader.blockLoot.Clear(); // clear blockloot
+ 		}
+ 
+ 		public void UpdateDyes() {
 @@ -6142,9 +_,11 @@
  			}
  		}
@@ -4148,6 +4162,16 @@
  						}
  					}
  				}
+@@ -31461,6 +_,9 @@
+ 
+ 						if (Main.projectile[j].type >= 230 && Main.projectile[j].type <= 235)
+ 							Main.projectile[j].Kill();
++
++						if (modSingleHook2.HasValue && modSingleHook2.Value)
++							Main.projectile[j].Kill();
+ 					}
+ 				}
+ 			}
 @@ -35359,8 +_,14 @@
  
  			speed += item.shootSpeed;
