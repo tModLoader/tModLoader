@@ -2014,6 +2014,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -12675,7 +_,7 @@
+ 				return;
+ 
+ 			int num12 = 0;
+-			for (int l = 0; l < 267; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].NPCBannerBuff[l])
+ 					continue;
+ 
 @@ -12717,9 +_,11 @@
  					spriteBatch.DrawString(fontMouseText, text, new Vector2(num13, num14), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
