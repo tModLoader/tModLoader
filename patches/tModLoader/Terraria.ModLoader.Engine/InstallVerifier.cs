@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using Terraria.Localization;
 using Terraria.Social;
 
 namespace Terraria.ModLoader.Engine
