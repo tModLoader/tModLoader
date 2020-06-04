@@ -1,0 +1,9 @@
+//Things that need to be done after initial patches are fixed.
+//This can include new systems that should be accounted for
+
+
+//Rartrin
+	//Wing
+		//Loading should leverage player.GetWingStats()
+		//ArmorIDs.Wing.Sets.Stats
+	
