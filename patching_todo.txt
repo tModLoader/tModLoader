@@ -8,6 +8,10 @@
 	//Player
 		//Check if Player constructor still needs startupInventory arg
 		//Ensure ItemLoader.ConsumeItem hook was added to everywhere that a player can consume item.consumable.
+		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
+		//Ensure all blockLists are cleared everywhere that they need to be.
+		//Correct new allDamage increasing accessories
+
 //Mirsario:
 	//Lighting:
 		//Re-add TileLoader.NearbyEffects calls (perhaps multiple) to somewhere in SceneMetrics

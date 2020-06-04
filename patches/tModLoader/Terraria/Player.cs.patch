@@ -113,74 +113,6 @@
  				inventory[selectedItem].stack--;
  			}
  			else {
-@@ -1568,12 +_,12 @@
- 				return;
- 
- 			int num = time1;
--			if (Main.expertMode && whoAmI == Main.myPlayer && (type == 20 || type == 22 || type == 23 || type == 24 || type == 30 || type == 31 || type == 32 || type == 33 || type == 35 || type == 36 || type == 39 || type == 44 || type == 46 || type == 47 || type == 69 || type == 70 || type == 80))
-+			if (Main.expertMode && whoAmI == Main.myPlayer && BuffLoader.LongerExpertDebuff(type))
- 				num = (int)(Main.expertDebuffTime * (float)num);
- 
- 			if (!quiet && Main.netMode == 1) {
- 				bool flag = true;
--				for (int i = 0; i < 22; i++) {
-+				for (int i = 0; i < MaxBuffs; i++) {
- 					if (buffType[i] == type) {
- 						flag = false;
- 						break;
-@@ -1602,7 +_,7 @@
- 			}
- 
- 			if (Main.vanityPet[type] || Main.lightPet[type]) {
--				for (int k = 0; k < 22; k++) {
-+				for (int k = 0; k < MaxBuffs; k++) {
- 					if (Main.vanityPet[type] && Main.vanityPet[buffType[k]])
- 						DelBuff(k);
- 
-@@ -1814,15 +_,15 @@
- 
- 			LegacySoundStyle legacySoundStyle = null;
- 			for (int i = 0; i < 58; i++) {
--				if (CountBuffs() == 22)
-+				if (CountBuffs() == MaxBuffs)
- 					return;
- 
- 				if (inventory[i].stack <= 0 || inventory[i].type <= 0 || inventory[i].buffType <= 0 || inventory[i].summon || inventory[i].buffType == 90)
- 					continue;
- 
- 				int num = inventory[i].buffType;
--				bool flag = true;
--				for (int j = 0; j < 22; j++) {
-+				bool flag = ItemLoader.CanUseItem(inventory[i], this);
-+				for (int j = 0; j < MaxBuffs; j++) {
- 					if (num == 27 && (buffType[j] == num || buffType[j] == 101 || buffType[j] == 102)) {
- 						flag = false;
- 						break;
-@@ -1840,7 +_,7 @@
- 				}
- 
- 				if (Main.lightPet[inventory[i].buffType] || Main.vanityPet[inventory[i].buffType]) {
--					for (int k = 0; k < 22; k++) {
-+						for (int k = 0; k < MaxBuffs; k++) {
- 						if (Main.lightPet[buffType[k]] && Main.lightPet[inventory[i].buffType])
- 							flag = false;
- 
-@@ -1877,6 +_,7 @@
- 				if (!flag)
- 					continue;
- 
-+				ItemLoader.UseItem(inventory[i], this);
- 				legacySoundStyle = inventory[i].UseSound;
- 				int num2 = inventory[i].buffTime;
- 				if (num2 == 0)
-@@ -1929,6 +_,7 @@
- 
- 					if (!flag) {
- 						mount.SetMount(item.mountType, this);
-+						ItemLoader.UseItem(item, this);
- 						if (item.UseSound != null)
- 							Main.PlaySound(item.UseSound, base.Center);
- 					}
 @@ -2229,6 +_,7 @@
  				Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
  				if (item.stack > 0) {
@@ -265,6 +197,15 @@
  					buffTime[i] += time;
  					if (buffTime[i] > manaSickTimeMax)
  						buffTime[i] = manaSickTimeMax;
+@@ -2477,7 +_,7 @@
+ 		private int AddBuff_DetermineBuffTimeToAdd(int type, int time1) {
+ 			int num = time1;
+-			if (Main.expertMode && whoAmI == Main.myPlayer && (type == 20 || type == 22 || type == 23 || type == 24 || type == 30 || type == 31 || type == 32 || type == 33 || type == 35 || type == 36 || type == 39 || type == 44 || type == 46 || type == 47 || type == 69 || type == 70 || type == 80))
++			if (Main.expertMode && whoAmI == Main.myPlayer && BuffLoader.LongerExpertDebuff(type))
+ 				num = (int)(Main.GameModeInfo.DebuffTimeMultiplier * (float)num);
+ 
+ 			return num;
+ 		}
 @@ -2485,20 +_,28 @@
  		public void DelBuff(int b) {
  			buffTime[b] = 0;
@@ -440,9 +381,18 @@
  					return inventory[i];
  			}
  
-@@ -2683,6 +_,10 @@
+@@ -2677,8 +_,8 @@
+-			if (CountBuffs() != 22) {
++			if (CountBuffs() != MaxBuffs) {
+ 				for (int i = 0; i < 58; i++) {
+ 					Item item2 = inventory[i];
+ 					if (item2.stack <= 0 || item2.type <= 0 || item2.buffType <= 0 || item2.summon)
+ 						continue;
+ 
  					int num2 = item2.buffType;
- 					bool flag = QuickBuff_ShouldBotherUsingThisBuff(num2);
+-					bool flag = QuickBuff_ShouldBotherUsingThisBuff(num2);
++					bool flag = ItemLoader.CanUseItem(item2], this) && QuickBuff_ShouldBotherUsingThisBuff(num2);
+@@ -2685,4 +_,8 @@
  					if (item2.mana > 0 && flag) {
 +						if (CheckMana(item2, -1, true, true))
 +							manaRegenDelay = (int)maxRegenDelay;
@@ -458,6 +408,14 @@
  					if (whoAmI == Main.myPlayer && item2.type == 603 && !Main.runningCollectorsEdition)
  						flag = false;
  
+@@ -2710,6 +_,7 @@
+ 					if (!flag)
+ 						continue;
+ 
++					ItemLoader.UseItem(item2, this);
+ 					legacySoundStyle = item2.UseSound;
+ 					int num3 = item2.buffTime;
+ 					if (num3 == 0)
 @@ -2717,10 +_,12 @@
  
  					AddBuff(num2, num3);
@@ -472,6 +430,14 @@
  
  					if (CountBuffs() == 22)
  						break;
+@@ -2820,6 +_,7 @@
+ 				if (item != null && item.mountType != -1 && mount.CanMount(item.mountType, this)) {
+ 					if (!QuickMinecartSnap()) {
+ 						mount.SetMount(item.mountType, this);
++						ItemLoader.UseItem(item, this);
+ 						if (item.UseSound != null)
+ 							SoundEngine.PlaySound(item.UseSound, base.Center);
+ 					}
 @@ -2891,12 +_,12 @@
  
  		public Item QuickMount_GetItemToUse() {
@@ -620,17 +586,6 @@
  
  			NPC nPC = new NPC();
  			nPC.SetDefaults(num11);
-@@ -4192,7 +_,9 @@
- 
- 			for (int i = num; i != num2; i += num3) {
- 				if (inventory[i].stack > 0 && inventory[i].type == type) {
-+					if (ItemLoader.ConsumeItem(inventory[i], this))
--					inventory[i].stack--;
-+						inventory[i].stack--;
-+
- 					if (inventory[i].stack <= 0)
- 						inventory[i].SetDefaults();
- 
 @@ -4220,9 +_,13 @@
  				value -= (float)num15;
  				QuickSpawnItem(71, num15);
@@ -654,170 +609,6 @@
 +				return;
 +
 +			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
-@@ -4703,37 +_,37 @@
- 			for (int i = 0; i < 20; i++) {
- 				int num = i % 10;
- 				if (dye[num] != null && armor[i].type > 0 && armor[i].stack > 0 && (i / 10 >= 1 || !hideVisual[num] || armor[i].wingSlot > 0 || armor[i].type == 934)) {
--					if (armor[i].handOnSlot > 0 && armor[i].handOnSlot < 20)
-+					if (armor[i].handOnSlot > 0)
- 						cHandOn = dye[num].dye;
- 
--					if (armor[i].handOffSlot > 0 && armor[i].handOffSlot < 12)
-+					if (armor[i].handOffSlot > 0)
- 						cHandOff = dye[num].dye;
- 
--					if (armor[i].backSlot > 0 && armor[i].backSlot < 14)
-+					if (armor[i].backSlot > 0)
- 						cBack = dye[num].dye;
- 
--					if (armor[i].frontSlot > 0 && armor[i].frontSlot < 5)
-+					if (armor[i].frontSlot > 0)
- 						cFront = dye[num].dye;
- 
--					if (armor[i].shoeSlot > 0 && armor[i].shoeSlot < 18)
-+					if (armor[i].shoeSlot > 0)
- 						cShoe = dye[num].dye;
- 
--					if (armor[i].waistSlot > 0 && armor[i].waistSlot < 13)
-+					if (armor[i].waistSlot > 0)
- 						cWaist = dye[num].dye;
- 
--					if (armor[i].shieldSlot > 0 && armor[i].shieldSlot < 7)
-+					if (armor[i].shieldSlot > 0)
- 						cShield = dye[num].dye;
- 
--					if (armor[i].neckSlot > 0 && armor[i].neckSlot < 10)
-+					if (armor[i].neckSlot > 0)
- 						cNeck = dye[num].dye;
- 
--					if (armor[i].faceSlot > 0 && armor[i].faceSlot < 9)
-+					if (armor[i].faceSlot > 0)
- 						cFace = dye[num].dye;
- 
--					if (armor[i].balloonSlot > 0 && armor[i].balloonSlot < 18)
-+					if (armor[i].balloonSlot > 0)
- 						cBalloon = dye[num].dye;
- 
--					if (armor[i].wingSlot > 0 && armor[i].wingSlot < 40)
-+					if (armor[i].wingSlot > 0)
- 						cWings = dye[num].dye;
- 
- 					if (armor[i].type == 934)
-@@ -4766,13 +_,14 @@
- 					ownedProjectileCounts[Main.projectile[j].type]++;
- 			}
- 
--			for (int k = 0; k < 22; k++) {
-+			for (int k = 0; k < MaxBuffs; k++) {
- 				if (buffType[k] <= 0 || buffTime[k] <= 0)
- 					continue;
- 
- 				if (whoAmI == Main.myPlayer && buffType[k] != 28)
- 					buffTime[k]--;
- 
-+				int originalIndex = k;
- 				if (buffType[k] == 1) {
- 					lavaImmune = true;
- 					fireWalk = true;
-@@ -4982,11 +_,14 @@
- 					}
- 				}
- 				else if (buffType[k] == 117) {
-+					allDamage += 0.1f;
-+					/*
- 					thrownDamage += 0.1f;
- 					meleeDamage += 0.1f;
- 					rangedDamage += 0.1f;
- 					magicDamage += 0.1f;
- 					minionDamage += 0.1f;
-+					*/
- 				}
- 				else if (buffType[k] == 119) {
- 					loveStruck = true;
-@@ -5021,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int n = 0; n < 22; n++) {
-+							for (int n = 0; n < MaxBuffs; n++) {
- 								if (buffType[n] >= 95 && buffType[n] <= 95 + num3 - 1) {
- 									DelBuff(n);
- 									n--;
-@@ -5049,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int num5 = 0; num5 < 22; num5++) {
-+							for (int num5 = 0; num5 < MaxBuffs; num5++) {
- 								if (buffType[num5] >= 170 && buffType[num5] <= 170 + num4 - 1) {
- 									DelBuff(num5);
- 									num5--;
-@@ -5073,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int num7 = 0; num7 < 22; num7++) {
-+							for (int num7 = 0; num7 < MaxBuffs; num7++) {
- 								if (buffType[num7] >= 98 && buffType[num7] <= 98 + num6 - 1) {
- 									DelBuff(num7);
- 									num7--;
-@@ -5103,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int num10 = 0; num10 < 22; num10++) {
-+							for (int num10 = 0; num10 < MaxBuffs; num10++) {
- 								if (buffType[num10] >= 176 && buffType[num10] <= 178 + num9 - 1) {
- 									DelBuff(num10);
- 									num10--;
-@@ -5128,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int num13 = 0; num13 < 22; num13++) {
-+							for (int num13 = 0; num13 < MaxBuffs; num13++) {
- 								if (buffType[num13] >= 173 && buffType[num13] <= 175 + num12 - 1) {
- 									DelBuff(num13);
- 									num13--;
-@@ -5155,7 +_,7 @@
- 							k--;
- 						}
- 						else {
--							for (int num16 = 0; num16 < 22; num16++) {
-+							for (int num16 = 0; num16 < MaxBuffs; num16++) {
- 								if (buffType[num16] >= 179 && buffType[num16] <= 181 + num15 - 1) {
- 									DelBuff(num16);
- 									num16--;
-@@ -5172,11 +_,14 @@
- 					}
- 
- 					float num17 = 0.15f * (float)nebulaLevelDamage;
-+					allDamage += num17;
-+					/*
- 					meleeDamage += num17;
- 					rangedDamage += num17;
- 					magicDamage += num17;
- 					minionDamage += num17;
- 					thrownDamage += num17;
-+					*/
- 				}
- 				else if (buffType[k] == 62) {
- 					if ((double)statLife <= (double)statLifeMax2 * 0.5) {
-@@ -5566,11 +_,14 @@
- 						}
- 					}
- 
-+					allDamage += 0.2f;
-+					/*
- 					meleeDamage += 0.2f;
- 					magicDamage += 0.2f;
- 					rangedDamage += 0.2f;
- 					thrownDamage += 0.2f;
- 					minionDamage += 0.2f;
-+					*/
- 				}
- 				else if (buffType[k] == 41) {
- 					buffTime[k] = 18000;
 @@ -5607,6 +_,8 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number58, 1f);
@@ -827,6 +618,17 @@
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0) {
+@@ -5634,7 +_,9 @@
+ 
+ 			for (int i = num; i != num2; i += num3) {
+ 				if (inventory[i].stack > 0 && inventory[i].type == type) {
++					if (ItemLoader.ConsumeItem(inventory[i], this))
+-					inventory[i].stack--;
++						inventory[i].stack--;
++
+ 					if (inventory[i].stack <= 0)
+ 						inventory[i].SetDefaults();
+ 
 @@ -5678,8 +_,12 @@
  		}
  
@@ -893,37 +695,6 @@
  			if (Main.rand.Next(150) == 0) {
  				int number = Item.NewItem((int)position.X, (int)position.Y, width, height, 1810);
  				if (Main.netMode == 1)
-@@ -5950,15 +_,16 @@
- 					wellFed = true;
- 					statDefense += 2;
- 					meleeCrit += 2;
--					meleeDamage += 0.05f;
-+					allDamage += 0.05f;
-+					//meleeDamage += 0.05f;
- 					meleeSpeed += 0.05f;
- 					magicCrit += 2;
--					magicDamage += 0.05f;
-+					//magicDamage += 0.05f;
- 					rangedCrit += 2;
--					rangedDamage += 0.05f;
-+					//rangedDamage += 0.05f;
- 					thrownCrit += 2;
--					thrownDamage += 0.05f;
-+					//thrownDamage += 0.05f;
--					minionDamage += 0.05f;
-+					//minionDamage += 0.05f;
- 					minionKB += 0.5f;
- 					moveSpeed += 0.2f;
- 				}
-@@ -5986,6 +_,8 @@
- 				else if (buffType[k] == 79) {
- 					meleeEnchant = 8;
- 				}
-+				if (k == originalIndex)
-+					BuffLoader.Update(buffType[k], this, ref k);
- 			}
- 		}
- 
 @@ -6088,6 +_,7 @@
  						break;
  					}
@@ -932,118 +703,152 @@
  		}
  
  		public void UpdateDyes() {
-@@ -6142,9 +_,11 @@
- 			}
- 		}
+@@ -6133,36 +_,36 @@
+ 		private void UpdateItemDye(bool effectiveEquipmentSlot, bool armorHidden, Item armorItem, Item dyeItem) {
+ 			if (!armorItem.IsAir && (!(effectiveEquipmentSlot && armorHidden) || armorItem.wingSlot > 0 || armorItem.type == 934 || armorItem.type == 4341 || armorItem.type == 4563)) {
+-				if (armorItem.handOnSlot > 0 && armorItem.handOnSlot < 22)
++					if (armorItem.handOnSlot > 0)
+ 					cHandOn = dyeItem.dye;
  
--		public void UpdateEquips(int i) {
--			for (int j = 0; j < 58; j++) {
--				int type = inventory[j].type;
-+		//public void UpdateEquips(int i)
-+		public void VanillaUpdateInventory(Item item) {
-+			//for (int j = 0; j < 58; j++)
-+			{
-+				int type = item.type;
- 				if ((type == 15 || type == 707) && accWatch < 1)
- 					accWatch = 1;
+-				if (armorItem.handOffSlot > 0 && armorItem.handOffSlot < 14)
++					if (armorItem.handOffSlot > 0)
+ 					cHandOff = dyeItem.dye;
  
-@@ -6207,11 +_,18 @@
+-				if (armorItem.backSlot > 0 && armorItem.backSlot < 30)
++					if (armorItem.backSlot > 0)
+ 					cBack = dyeItem.dye;
  
- 				if (type == 3624)
- 					autoActuator = true;
-+
-+				ItemLoader.UpdateInventory(item, this);
- 			}
-+		}
+-				if (armorItem.frontSlot > 0 && armorItem.frontSlot < 9)
++					if (armorItem.frontSlot > 0)
+ 					cFront = dyeItem.dye;
  
-+		public void VanillaUpdateEquip(Item item) {
--			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
-+			// for (int k = 0; k < 8 + this.extraAccessorySlots; k++)
-+			// fake array and loop to keep patches small
-+			var armor = new [] {item}; int k = 0;
-+			{
- 				if (armor[k].expertOnly && !Main.expertMode)
--					continue;
-+					return;
+-				if (armorItem.shoeSlot > 0 && armorItem.shoeSlot < 25)
++					if (armorItem.shoeSlot > 0)
+ 					cShoe = dyeItem.dye;
  
- 				int type2 = armor[k].type;
- 				if ((type2 == 15 || type2 == 707) && accWatch < 1)
-@@ -6462,10 +_,13 @@
- 					armorPenetration += 5;
+-				if (armorItem.waistSlot > 0 && armorItem.waistSlot < 17)
++					if (armorItem.waistSlot > 0)
+ 					cWaist = dyeItem.dye;
  
- 				if (armor[k].type == 2277) {
-+					allDamage += 0.05f;
-+					/*
- 					magicDamage += 0.05f;
- 					meleeDamage += 0.05f;
- 					rangedDamage += 0.05f;
- 					thrownDamage += 0.05f;
-+					*/
- 					magicCrit += 5;
- 					rangedCrit += 5;
- 					meleeCrit += 5;
-@@ -6528,10 +_,13 @@
- 					meleeSpeed += 0.07f;
+-				if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < 10)
++					if (armorItem.shieldSlot > 0)
+ 					cShield = dyeItem.dye;
  
- 				if (armor[k].type == 792 || armor[k].type == 793 || armor[k].type == 794) {
-+					allDamage += 0.02f;
-+					/*
- 					meleeDamage += 0.02f;
- 					rangedDamage += 0.02f;
- 					magicDamage += 0.02f;
- 					thrownDamage += 0.02f;
-+					*/
+-				if (armorItem.neckSlot > 0 && armorItem.neckSlot < 11)
++					if (armorItem.neckSlot > 0)
+ 					cNeck = dyeItem.dye;
+ 
+-				if (armorItem.faceSlot > 0 && armorItem.faceSlot < 16)
++					if (armorItem.faceSlot > 0)
+ 					cFace = dyeItem.dye;
+ 
+-				if (armorItem.balloonSlot > 0 && armorItem.balloonSlot < 18)
++					if (armorItem.balloonSlot > 0)
+ 					cBalloon = dyeItem.dye;
+ 
+-				if (armorItem.wingSlot > 0 && armorItem.wingSlot < 47)
++					if (armorItem.wingSlot > 0)
+ 					cWings = dyeItem.dye;
+ 
+ 				if (armorItem.type == 934)
+@@ -6202,13 +_,14 @@
+ 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
+ 				AddBuff(151, 2);
+ 
+-			for (int j = 0; j < 22; j++) {
++			for (int j = 0; j < MaxBuffs; j++) {
+ 				if (buffType[j] <= 0 || buffTime[j] <= 0)
+ 					continue;
+ 
+ 				if (whoAmI == Main.myPlayer && !BuffID.Sets.TimeLeftDoesNotDecrease[buffType[j]])
+ 					buffTime[j]--;
+ 
++				int originalIndex = j;
+ 				if (buffType[j] == 1) {
+ 					lavaImmune = true;
+ 					fireWalk = true;
+@@ -6451,10 +_,13 @@
+ 					}
  				}
- 
- 				if (armor[k].type == 371) {
-@@ -7028,35 +_,47 @@
- 				}
- 
- 				if (armor[k].prefix == 69) {
-+					allDamage += 0.01f;
+ 				else if (buffType[j] == 117) {
++					allDamage += 0.1f;
 +					/*
- 					meleeDamage += 0.01f;
- 					rangedDamage += 0.01f;
- 					magicDamage += 0.01f;
- 					minionDamage += 0.01f;
- 					thrownDamage += 0.01f;
-+					*/
- 				}
- 
- 				if (armor[k].prefix == 70) {
-+					allDamage += 0.02f;
-+					/*
- 					meleeDamage += 0.02f;
- 					rangedDamage += 0.02f;
- 					magicDamage += 0.02f;
- 					minionDamage += 0.02f;
- 					thrownDamage += 0.02f;
+ 					meleeDamage += 0.1f;
+ 					rangedDamage += 0.1f;
+ 					magicDamage += 0.1f;
+ 					minionDamage += 0.1f;
 +					*/
  				}
+ 				else if (buffType[j] == 119) {
+ 					loveStruck = true;
+@@ -6499,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int m = 0; m < 22; m++) {
++							for (int m = 0; m < MaxBuffs; m++) {
+ 								if (buffType[m] >= 95 && buffType[m] <= 95 + num4 - 1) {
+ 									DelBuff(m);
+ 									m--;
+@@ -6527,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int n = 0; n < 22; n++) {
++							for (int n = 0; n < MaxBuffs; n++) {
+ 								if (buffType[n] >= 170 && buffType[n] <= 170 + num5 - 1) {
+ 									DelBuff(n);
+ 									n--;
+@@ -6551,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int num7 = 0; num7 < 22; num7++) {
++							for (int num7 = 0; num7 < MaxBuffs; num7++) {
+ 								if (buffType[num7] >= 98 && buffType[num7] <= 98 + num6 - 1) {
+ 									DelBuff(num7);
+ 									num7--;
+@@ -6581,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int num10 = 0; num10 < 22; num10++) {
++							for (int num10 = 0; num10 < MaxBuffs; num10++) {
+ 								if (buffType[num10] >= 176 && buffType[num10] <= 178 + num9 - 1) {
+ 									DelBuff(num10);
+ 									num10--;
+@@ -6606,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int num13 = 0; num13 < 22; num13++) {
++							for (int num13 = 0; num13 < MaxBuffs; num13++) {
+ 								if (buffType[num13] >= 173 && buffType[num13] <= 175 + num12 - 1) {
+ 									DelBuff(num13);
+ 									num13--;
+@@ -6633,7 +_,7 @@
+ 							j--;
+ 						}
+ 						else {
+-							for (int num16 = 0; num16 < 22; num16++) {
++							for (int num16 = 0; num16 < MaxBuffs; num16++) {
+ 								if (buffType[num16] >= 179 && buffType[num16] <= 181 + num15 - 1) {
+ 									DelBuff(num16);
+ 									num16--;
+@@ -6650,10 +_,13 @@
+ 					}
  
- 				if (armor[k].prefix == 71) {
-+					allDamage += 0.03f;
+ 					float num17 = 0.15f * (float)nebulaLevelDamage;
++					allDamage += num17;
 +					/*
- 					meleeDamage += 0.03f;
- 					rangedDamage += 0.03f;
- 					magicDamage += 0.03f;
- 					minionDamage += 0.03f;
- 					thrownDamage += 0.03f;
+ 					meleeDamage += num17;
+ 					rangedDamage += num17;
+ 					magicDamage += num17;
+ 					minionDamage += num17;
 +					*/
  				}
- 
- 				if (armor[k].prefix == 72) {
-+					allDamage += 0.04f;
-+					/*
- 					meleeDamage += 0.04f;
- 					rangedDamage += 0.04f;
- 					magicDamage += 0.04f;
- 					minionDamage += 0.04f;
- 					thrownDamage += 0.04f;
-+					*/
- 				}
- 
- 				if (armor[k].prefix == 73)
+ 				else if (buffType[j] == 62) {
+ 					if ((double)statLife <= (double)statLifeMax2 * 0.5) {
 @@ -7082,14 +_,18 @@
  
  				if (armor[k].prefix == 80)
@@ -1068,54 +873,20 @@
  
  				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
  					dd2Accessory = true;
-@@ -7100,11 +_,14 @@
- 					magicCrit += 5;
- 					rangedCrit += 5;
- 					thrownCrit += 5;
-+					allDamage += 0.05f;
+@@ -7272,10 +_,13 @@
+ 						}
+ 					}
+ 
++					allDamage += 0.2f;
 +					/*
- 					meleeDamage += 0.05f;
- 					magicDamage += 0.05f;
- 					rangedDamage += 0.05f;
- 					thrownDamage += 0.05f;
- 					minionDamage += 0.05f;
+ 					meleeDamage += 0.2f;
+ 					magicDamage += 0.2f;
+ 					rangedDamage += 0.2f;
+ 					minionDamage += 0.2f;
 +					*/
  				}
- 
- 				if (armor[l].type == 3016)
-@@ -7159,7 +_,7 @@
- 				}
- 
- 				if (armor[l].type >= 3309 && armor[l].type <= 3314)
--					counterWeight = 556 + armor[l].type - 3309;
-+						counterWeight = 556 + armor[l].type - 3309;
- 
- 				if (armor[l].type == 3334)
- 					yoyoGlove = true;
-@@ -7255,7 +_,7 @@
- 					doubleJumpSail = true;
- 				}
- 
--				if (armor[l].type == 1253 && (double)statLife <= (double)statLifeMax2 * 0.5)
-+				if (armor[l].type == 1253 && statLife <= statLifeMax2 * 0.5)
- 					AddBuff(62, 5);
- 
- 				if (armor[l].type == 1290)
-@@ -7277,11 +_,14 @@
- 					rangedCrit += 8;
- 					magicCrit += 8;
- 					thrownCrit += 8;
-+					allDamage += 0.1f;
-+					/*
- 					meleeDamage += 0.1f;
- 					rangedDamage += 0.1f;
- 					magicDamage += 0.1f;
- 					minionDamage += 0.1f;
- 					thrownDamage += 0.1f;
-+					*/
- 				}
- 
- 				if (armor[l].type == 982) {
+ 				else if (buffType[j] == 41) {
+ 					buffTime[j] = 18000;
 @@ -7456,7 +_,7 @@
  				if (armor[l].type == 861) {
  					accMerman = true;
@@ -1125,15 +896,6 @@
  						hideMerman = true;
  						hideWolf = true;
  					}
-@@ -7489,7 +_,7 @@
- 
- 				if (armor[l].type == 485) {
- 					wolfAcc = true;
--					if (hideVisual[l])
-+					if (hideVisual)
- 						hideWolf = true;
- 				}
- 
 @@ -7642,7 +_,7 @@
  				if (armor[l].type == 3110) {
  					accMerman = true;
@@ -1143,127 +905,52 @@
  						hideMerman = true;
  						hideWolf = true;
  					}
-@@ -7652,16 +_,17 @@
- 					lifeRegen += 2;
- 					statDefense += 4;
- 					meleeSpeed += 0.1f;
--					meleeDamage += 0.1f;
-+					allDamage += 0.1f;
-+					//meleeDamage += 0.1f;
+@@ -7656,14 +_,15 @@
+ 					wellFed = true;
+ 					statDefense += 2;
  					meleeCrit += 2;
--					rangedDamage += 0.1f;
-+					//rangedDamage += 0.1f;
- 					rangedCrit += 2;
--					magicDamage += 0.1f;
-+					//magicDamage += 0.1f;
++					allDamage += 0.05f;
+-					meleeDamage += 0.05f;
++					//meleeDamage += 0.05f;
+ 					meleeSpeed += 0.05f;
  					magicCrit += 2;
- 					pickSpeed -= 0.15f;
--					minionDamage += 0.1f;
-+					//minionDamage += 0.1f;
- 					minionKB += 0.5f;
--					thrownDamage += 0.1f;
-+					//thrownDamage += 0.1f;
- 					thrownCrit += 2;
- 				}
- 
-@@ -7669,16 +_,17 @@
- 					lifeRegen += 2;
- 					statDefense += 4;
- 					meleeSpeed += 0.1f;
--					meleeDamage += 0.1f;
-+					allDamage += 0.1f;
-+					//meleeDamage += 0.1f;
- 					meleeCrit += 2;
--					rangedDamage += 0.1f;
-+					//rangedDamage += 0.1f;
+-					magicDamage += 0.05f;
++					//magicDamage += 0.05f;
  					rangedCrit += 2;
--					magicDamage += 0.1f;
-+					//magicDamage += 0.1f;
- 					magicCrit += 2;
- 					pickSpeed -= 0.15f;
--					minionDamage += 0.1f;
-+					//minionDamage += 0.1f;
+-					rangedDamage += 0.05f;
++					//rangedDamage += 0.05f;
+-					minionDamage += 0.05f;
++					//minionDamage += 0.05f;
  					minionKB += 0.5f;
--					thrownDamage += 0.1f;
-+					//thrownDamage += 0.1f;
- 					thrownCrit += 2;
+ 					moveSpeed += 0.2f;
+ 					pickSpeed -= 0.05f;
  				}
- 
-@@ -7686,16 +_,17 @@
- 					lifeRegen += 2;
- 					statDefense += 4;
- 					meleeSpeed += 0.1f;
--					meleeDamage += 0.1f;
-+					allDamage += 0.1f;
-+					//meleeDamage += 0.1f;
- 					meleeCrit += 2;
--					rangedDamage += 0.1f;
-+					//rangedDamage += 0.1f;
- 					rangedCrit += 2;
--					magicDamage += 0.1f;
-+					//magicDamage += 0.1f;
- 					magicCrit += 2;
- 					pickSpeed -= 0.15f;
--					minionDamage += 0.1f;
-+					//minionDamage += 0.1f;
- 					minionKB += 0.5f;
--					thrownDamage += 0.1f;
-+					//thrownDamage += 0.1f;
- 					thrownCrit += 2;
+@@ -7721,5 +_,7 @@
+ 				else if (buffType[j] == 79) {
+ 					meleeEnchant = 8;
  				}
++				if (j == originalIndex)
++					BuffLoader.Update(buffType[j], this, ref j);
+ 			}
  
-@@ -7714,13 +_,8 @@
- 				if (armor[l].type == 2998)
- 					minionDamage += 0.15f;
+@@ -7991,12 +_,14 @@
+ 			}
+ 		}
  
--				if (armor[l].type == 935) {
-+				if (armor[l].type == 935)
--					magicDamage += 0.12f;
-+						allDamage += 0.12f;
--					meleeDamage += 0.12f;
--					rangedDamage += 0.12f;
--					minionDamage += 0.12f;
--					thrownDamage += 0.12f;
--				}
+-		public void UpdateEquips(int i) {
++		//public void UpdateEquips(int i) {
++		public void VanillaUpdateInventory(Item item) {
+ 			if (inventory[selectedItem].type == 277 && (!mount.Active || !mount.Cart))
+ 				trident = true;
  
- 				if (armor[l].type == 492)
- 					wingTimeMax = 100;
-@@ -7925,7 +_,7 @@
+-			for (int j = 0; j < 58; j++) {
++			//for (int j = 0; j < 58; j++)
++			{
+-				int type = inventory[j].type;
++				int type = item.type;
+ 				if ((type == 15 || type == 707) && accWatch < 1)
+ 					accWatch = 1;
  
- 				if (armor[l].type == 497) {
- 					accMerman = true;
--					if (hideVisual[l])
-+					if (hideVisual)
- 						hideMerman = true;
- 				}
- 
-@@ -7947,9 +_,9 @@
- 				}
- 
- 				if (Main.myPlayer != whoAmI)
--					continue;
-+					goto postMusicBoxes; // TODO: double check wings logic, etc.
- 
--				if (armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 41) {
-+				if (armor[l].type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0) {
- 					int num5 = 0;
- 					if (Main.curMusic == 1)
- 						num5 = 0;
-@@ -8018,10 +_,12 @@
- 						armor[l].SetDefaults(3796);
- 					else if (Main.curMusic == 41)
- 						armor[l].SetDefaults(3869);
--					else if (Main.curMusic > 13)
-+					else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
- 						armor[l].SetDefaults(1596 + Main.curMusic - 14);
--					else
-+					else if (Main.curMusic < Main.maxMusic)
- 						armor[l].SetDefaults(num5 + 562);
-+					else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
-+						armor[l].SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
- 				}
- 
- 				if (armor[l].type >= 562 && armor[l].type <= 574)
 @@ -8068,26 +_,28 @@
  
  				if (armor[l].type == 3869)
@@ -1313,6 +1000,31 @@
  
  				if (type3 == 861 || type3 == 3110 || type3 == 485) {
  					hideWolf = false;
+@@ -8068,14 +_,22 @@
+ 
+ 				if (type == 4743)
+ 					hasFootball = true;
++
++				ItemLoader.UpdateInventory(item, this);
+ 			}
++		}
+ 
+ 			if (inventory[58].type == 4743)
+ 				hasFootball = true;
+ 
++		public void VanillaUpdateEquip(Item item) {
+-			for (int k = 0; k < 10; k++) {
++			// for (int k = 0; k < 10; k++)
++			// fake array and loop to keep patches small
++			Item[] armor = {item};
++			int k = 0;
++			{
+ 				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
+-					continue;
++					return;
+ 
+ 				int type2 = armor[k].type;
+ 				if ((type2 == 15 || type2 == 707) && accWatch < 1)
 @@ -8099,7 +_,37 @@
  					forceMerman = true;
  				}
@@ -1365,6 +1077,34 @@
  			}
  
  			if (head == 22 && body == 14 && legs == 14) {
+@@ -8285,10 +_,13 @@
+ 					armorPenetration += 5;
+ 
+ 				if (armor[k].type == 2277) {
++					allDamage += 0.05f;
++					/*
+ 					magicDamage += 0.05f;
+ 					meleeDamage += 0.05f;
+ 					rangedDamage += 0.05f;
+ 					minionDamage += 0.05f;
++					*/
+ 					magicCrit += 5;
+ 					rangedCrit += 5;
+ 					meleeCrit += 5;
+@@ -8341,10 +_,13 @@
+ 					meleeSpeed += 0.07f;
+ 
+ 				if (armor[k].type == 792 || armor[k].type == 793 || armor[k].type == 794) {
++					allDamage += 0.02f;
++					/*
+ 					meleeDamage += 0.02f;
+ 					rangedDamage += 0.02f;
+ 					magicDamage += 0.02f;
+ 					minionDamage += 0.02f;
++					*/
+ 				}
+ 
+ 				if (armor[k].type == 371) {
 @@ -8514,7 +_,7 @@
  				int num9 = 240;
  				if (solarCounter >= num9) {
@@ -1383,6 +1123,50 @@
  		}
  
  		public void UpdateSocialShadow() {
+@@ -8881,31 +_,43 @@
+ 				}
+ 
+ 				if (armor[k].prefix == 69) {
++					allDamage += 0.01f;
++					/*
+ 					meleeDamage += 0.01f;
+ 					rangedDamage += 0.01f;
+ 					magicDamage += 0.01f;
+ 					minionDamage += 0.01f;
++					*/
+ 				}
+ 
+ 				if (armor[k].prefix == 70) {
++					allDamage += 0.02f;
++					/*
+ 					meleeDamage += 0.02f;
+ 					rangedDamage += 0.02f;
+ 					magicDamage += 0.02f;
+ 					minionDamage += 0.02f;
++					*/
+ 				}
+ 
+ 				if (armor[k].prefix == 71) {
++					allDamage += 0.03f;
++					/*
+ 					meleeDamage += 0.03f;
+ 					rangedDamage += 0.03f;
+ 					magicDamage += 0.03f;
+ 					minionDamage += 0.03f;
++					*/
+ 				}
+ 
+ 				if (armor[k].prefix == 72) {
++					allDamage += 0.04f;
++					/*
+ 					meleeDamage += 0.04f;
+ 					rangedDamage += 0.04f;
+ 					magicDamage += 0.04f;
+ 					minionDamage += 0.04f;
++					*/
+ 				}
+ 
+ 				if (armor[k].prefix == 73)
 @@ -8913,6 +_,7 @@
  					_insideBlizzardSound = SlotId.Invalid;
  			}
@@ -1391,6 +1175,27 @@
  			if (!dead) {
  				Point point2 = base.Center.ToTileCoordinates();
  				if (WorldGen.InWorld(point2.X, point2.Y, 1)) {
+@@ -8944,15 +_,16 @@
+ 			if (skyStoneEffects) {
+ 				lifeRegen += 2;
+ 				statDefense += 4;
+ 				meleeSpeed += 0.1f;
+-				meleeDamage += 0.1f;
++				allDamage += 0.1f;
++				//meleeDamage += 0.1f;
+ 				meleeCrit += 2;
+-				rangedDamage += 0.1f;
++				//rangedDamage += 0.1f;
+ 				rangedCrit += 2;
+-				magicDamage += 0.1f;
++				//magicDamage += 0.1f;
+ 				magicCrit += 2;
+ 				pickSpeed -= 0.15f;
+-				minionDamage += 0.1f;
++				//minionDamage += 0.1f;
+ 				minionKB += 0.5f;
+ 			}
+ 
 @@ -9012,8 +_,9 @@
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
@@ -1411,6 +1216,87 @@
  			int tileBoost = item.tileBoost;
  			int num3 = 0;
  			if (item.type == 1071 || item.type == 1543 || item.type == 1072 || item.type == 1544) {
+@@ -9286,12 +_,15 @@
+ 			if (currentItem.type == 3015) {
+ 				aggro -= 400;
+ 				meleeCrit += 5;
+ 				magicCrit += 5;
+ 				rangedCrit += 5;
++				allDamage += 0.05f;
++				/*
+ 				meleeDamage += 0.05f;
+ 				magicDamage += 0.05f;
+ 				rangedDamage += 0.05f;
+ 				minionDamage += 0.05f;
++				*/
+ 			}
+ 
+ 			if (currentItem.type == 3016)
+@@ -9474,11 +_,14 @@
+ 			if (currentItem.type == 1301) {
+ 				meleeCrit += 8;
+ 				rangedCrit += 8;
+ 				magicCrit += 8;
++				allDamage += 0.1f;
++				/*
+ 				meleeDamage += 0.1f;
+ 				rangedDamage += 0.1f;
+ 				magicDamage += 0.1f;
+ 				minionDamage += 0.1f;
++				*/
+ 			}
+ 
+ 			if (currentItem.type == 982) {
+@@ -9687,5 +_,5 @@
+ 			if (currentItem.type == 485) {
+ 				wolfAcc = true;
+-				if (hideVisibleAccessory[itemSlot])
++				if (hideVisual)
+ 					hideWolf = true;
+ 			}
+@@ -9879,6 +_,3 @@
+ 			if (currentItem.type == 935) {
++				allDamage += 0.12f;
+-				magicDamage += 0.12f;
+-				meleeDamage += 0.12f;
+-				rangedDamage += 0.12f;
+-				minionDamage += 0.12f;
+ 			}
+@@ -9978,6 +_,6 @@
+ 			if (currentItem.type == 497) {
+ 				accMerman = true;
+-				if (hideVisibleAccessory[itemSlot])
++				if (hideVisual)
+ 					hideMerman = true;
+ 			}
+ 
+@@ -10001,8 +_,9 @@
+ 			if (Main.myPlayer != whoAmI)
+-				return;
++				//return;
++				goto postMusicBoxes; // TODO: double check wings logic, etc.
+ 
+-			if (currentItem.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0 && Main.curMusic <= 89) {
++			if (currentItem.type == 576 && Main.rand.Next(10800) == 0 && Main.curMusic > 0) {
+ 				SoundEngine.PlaySound(SoundID.Item166, base.Center);
+ 				int num3 = -1;
+ 				if (Main.curMusic == 1)
+ 					num3 = 0;
+@@ -10162,9 +_,13 @@
+ 				else if (Main.curMusic == 88)
+ 					currentItem.SetDefaults(5040);
+-				else if (Main.curMusic > 13)
++				else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
+ 					currentItem.SetDefaults(1596 + Main.curMusic - 14);
+ 				else if (num3 != -1)
++					;//Silence
++				else if (Main.curMusic < Main.maxMusic)
+ 					currentItem.SetDefaults(num3 + 562);
++				else if (SoundLoader.musicToItem.ContainsKey(Main.curMusic))
++					currentItem.SetDefaults(SoundLoader.musicToItem[Main.curMusic]);
+ 			}
+ 
+ 			ApplyMusicBox(currentItem);
 @@ -10437,7 +_,7 @@
  					beetleCounter += 200f;
  
