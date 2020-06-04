@@ -104,11 +104,6 @@ namespace Terraria.ModLoader.Engine
 				return false;
 			}
 #endif
-			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
-				Process.Start(@"https://terraria.org");
-				Exit("Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.", string.Empty);
-				return false;
-			}
 
 			Logging.tML.Info("Steam installation OK.");
 			return true;
