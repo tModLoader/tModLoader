@@ -334,6 +334,7 @@
 
 		// Misc
 		"OK": "OK",
+		// "NoProblemsFound": "No Problems Found. If a problem occurs it will be shown here",
 		"Continue": "Kontynuuj",
 		"PatreonSetTooltip": "Dzięki za wsparcie!",
 		// "WorldGenError": "A problem was encountered during world generation",

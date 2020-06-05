@@ -45,7 +45,8 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15);
 			_baseElement.Append(uITextPanel);
 
-			_messagePanel = new UITextPanel<string>(Language.GetTextValue("")) {
+			//"No Problems Found. If a problem occurs it will be shown here"
+			_messagePanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.NoProblemsFound")) {
 				Width = { Percent = 1f },
 				Height = { Pixels = 25 },
 				VAlign = 1f,
@@ -126,7 +127,6 @@ namespace Terraria.ModLoader.UI
 			_modName.SetText("");
 			_modDiplayName.SetText("");
 			_modAuthor.SetText("");
-			_messagePanel.SetText("");
 		}
 
 		private string lastKnownMessage = "";
