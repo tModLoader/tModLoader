@@ -30,20 +30,20 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsWindows) {
 				steamAPIPath = "steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
-				gogHash = ToByteArray("329296a600b71a4684e5e40a1899124b");
-				steamHash = ToByteArray("17c42ca2c951a7a8a53ddf3a0ca00290");
+				gogHash = ToByteArray("8b546731a5b6a498a0e28f047bc56377");
+				steamHash = ToByteArray("6b85b2a8ea384384c1090d784f3fcff6");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "osx/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
-				gogHash = ToByteArray("c9ac52c4b6deaf3aba63d6878ff1a38b");
-				steamHash = ToByteArray("6d256ff00b438884d79bab2a68d19937");
+				gogHash = ToByteArray("47f34aed84a7267cf42a7724a356fd1a");
+				steamHash = ToByteArray("214b6e8d77644ed8148fde1bfc9b321e");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "lib/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
-				gogHash = ToByteArray("61bcb380ba3408ab664bc6fac3364faf");
-				steamHash = ToByteArray("d5a43f1fd4823af91fdf7b2745248c61");
+				gogHash = ToByteArray("a9ebf47eee8f65ad264509f2fa16d161");
+				steamHash = ToByteArray("c15c0d10d11200384371e8db2ec05679");
 			}
 			else {
 				string message = "Unknown OS platform: unable to verify installation.";
