@@ -74,7 +74,7 @@ namespace Terraria.ModLoader.UI
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
 				if (selectedMenu == buttonIndex) {
 					Main.PlaySound(10, -1, -1, 1);
-					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
+					Main.menuMode = ModCompile.DeveloperModeReady(out _) ? modSourcesID : developerModeHelpID;
 				}
 				buttonIndex++;
 				numButtons++;
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.UI
 			}
 			buttonIndex++;
 			numButtons++;
-			offY = 220;
+			offY = 240; //220
 			for (int k = 0; k < numButtons; k++) {
 				buttonScales[k] = 0.82f;
 			}
