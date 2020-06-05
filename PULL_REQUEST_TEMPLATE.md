@@ -9,10 +9,10 @@ Want to PR a bug fix?
 template=bug_fix.md
 
 Want to PR a new feature? 
-?template=new_feature.md
+template=new_feature.md
 
 Want to PR changes to ExampleMod?
-?template=example_mod.md
+template=example_mod.md
 
 If you can't figure this out, simply open the link directly and copy the template:
 Bug fix: https://raw.githubusercontent.com/tModLoader/tModLoader/master/.github/PULL_REQUEST_TEMPLATE/bug_fix.md
