@@ -11,7 +11,7 @@ versionInput = input("Enter new version number separated by periods ('0.1.2.3'):
 versionList = versionInput.split('.')
 #versionNums = [int(x) for x in versionList]
 
-TypicalReplace("CompleteRelease.bat", "set version=v", versionInput)
+TypicalReplace("CompleteRelease.bat", "set tModLoaderVersion=v", versionInput)
 TypicalReplace("../ExampleMod/build.txt", "version = ", versionInput)
 TypicalReplace("documentation/Doxyfile", "PROJECT_NUMBER         = ", versionInput)
 TypicalReplace("../patches/tModLoader/Terraria.ModLoader/ModLoader.cs", "\t\tpublic static readonly Version version = new Version(", ', '.join(versionList) + ');')

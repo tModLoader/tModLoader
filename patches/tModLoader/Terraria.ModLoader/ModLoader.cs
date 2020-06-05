@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11, 7, 2);
+		public static readonly Version version = new Version(0, 11, 7, 4);
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
-		internal static bool showMemoryEstimates;
+		internal static bool showMemoryEstimates = true;
 
 		internal static bool skipLoad;
 

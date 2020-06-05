@@ -224,7 +224,7 @@
 		"ShowMemoryEstimatesNo": "Показывать приблизительное использование памяти: Нет",
 		"ClearMBCredentials": "Очистить данные браузера модов",
 		"AutomaticallyEnableNewlyDownloadedModsYes": "Автоматически включать недавно скачанные моды: Да",
-		"AutomaticallyEnableNewlyDownloadedModsNo": "Автоматически включать недавно скачанные моды: Нет", 
+		"AutomaticallyEnableNewlyDownloadedModsNo": "Автоматически включать недавно скачанные моды: Нет",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "Автоматически включать и перезагружать моды при выходе из браузера модов: Да",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Автоматически включать и перезагружать моды при выходе из браузера модов: Нет",
 		"ReloadModsReminder": "Вы обновили мод. Не забудьте перезагрузить моды, чтобы изменения вступили в силу.",

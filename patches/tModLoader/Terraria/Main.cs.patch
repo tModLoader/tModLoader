@@ -769,7 +769,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,35 @@
+@@ -4105,7 +_,37 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
@@ -795,6 +795,8 @@
 +					if (!Directory.Exists(vanillaContentFolder))
 +						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
 +				}
++				Steamworks.SteamRemoteStorage.GetQuota(out ulong pnTotalBytes, out ulong puAvailableBytes);
++				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)puAvailableBytes)} available");
 +			}
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
@@ -2012,6 +2014,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -12675,7 +_,7 @@
+ 				return;
+ 
+ 			int num12 = 0;
+-			for (int l = 0; l < 267; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].NPCBannerBuff[l])
+ 					continue;
+ 
 @@ -12717,9 +_,11 @@
  					spriteBatch.DrawString(fontMouseText, text, new Vector2(num13, num14), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
@@ -3257,8 +3268,9 @@
  
  			goto IL_6dc5;
  		IL_6dc5:
+-			if (drawPlayer.shoe > 0 && drawPlayer.shoe < 18) {
 +		shoeAccLayer:
- 			if (drawPlayer.shoe > 0 && drawPlayer.shoe < 18) {
++			if (drawPlayer.shoe > 0) {
  				value = new DrawData(accShoesTexture[drawPlayer.shoe], new Vector2((int)(Position.X - screenPosition.X - (float)(drawPlayer.legFrame.Width / 2) + (float)(drawPlayer.width / 2)), (int)(Position.Y - screenPosition.Y + (float)drawPlayer.height - (float)drawPlayer.legFrame.Height + 4f)) + drawPlayer.legPosition + vector2, drawPlayer.legFrame, color14, drawPlayer.legRotation, vector2, 1f, spriteEffects, 0);
  				value.shader = shader6;
  				playerDrawData.Add(value);
@@ -4829,6 +4841,15 @@
  						if (player[l].inventory[m].type == 71)
  							num27 += player[l].inventory[m].stack;
  
+@@ -48735,7 +_,7 @@
+ 					if (player[l].inventory[m].ammo == AmmoID.Bullet || player[l].inventory[m].useAmmo == AmmoID.Bullet)
+ 						flag2 = true;
+ 
+-					if (player[l].inventory[m].type == 166 || player[l].inventory[m].type == 167 || player[l].inventory[m].type == 168 || player[l].inventory[m].type == 235 || player[l].inventory[m].type == 2896 || player[l].inventory[m].type == 3547)
++					if (ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[player[l].inventory[m].type])
+ 						flag3 = true;
+ 
+ 					if (player[l].inventory[m].dye > 0 || (player[l].inventory[m].type >= 1107 && player[l].inventory[m].type <= 1120) || (player[l].inventory[m].type >= 3385 && player[l].inventory[m].type <= 3388)) {
 @@ -48908,6 +_,9 @@
  
  			if (WorldGen.prioritizedTownNPC == 0 && NPC.savedBartender && num25 < 1)
