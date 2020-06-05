@@ -16,14 +16,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Core
 {
 	// TODO further documentation
 	// TODO too many inner classes
-	internal class ModCompile
+	public class ModCompile
 	{
 		public interface IBuildStatus
 		{
@@ -55,8 +54,8 @@ namespace Terraria.ModLoader.Core
 
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
-		internal static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
-		internal static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
+		public static readonly string modCompileDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModCompile");
+		public static readonly string modCompileVersionPath = Path.Combine(modCompileDir, "version");
 
 		internal static string[] FindModSources()
 		{
@@ -67,11 +66,7 @@ namespace Terraria.ModLoader.Core
 		// Silence exception reporting in the chat unless actively modding.
 		public static bool activelyModding;
 
-		public static bool DeveloperMode {
-			get {
-				return Debugger.IsAttached || File.Exists(modCompileVersionPath) || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
-			}
-		}
+		public static bool DeveloperMode => Debugger.IsAttached || File.Exists(modCompileVersionPath) || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
 		internal static bool DeveloperModeReady(out string msg)
 		{
