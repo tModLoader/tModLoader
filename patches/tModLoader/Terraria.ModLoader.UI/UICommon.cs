@@ -17,7 +17,8 @@ namespace Terraria.ModLoader.UI
 
 		public static StyleDimension MaxPanelWidth = new StyleDimension(600, 0);
 
-		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel {
+		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel
+		{
 			if (overColor == default)
 				overColor = DefaultUIBlue;
 
@@ -34,29 +35,34 @@ namespace Terraria.ModLoader.UI
 			return elem;
 		}
 
-		public static T WithPadding<T>(this T elem, float pixels) where T : UIElement {
+		public static T WithPadding<T>(this T elem, float pixels) where T : UIElement
+		{
 			elem.SetPadding(pixels);
 			return elem;
 		}
 
-		public static T WithPadding<T>(this T elem, string name, int id, Vector2? anchor = null, Vector2? offset = null) where T : UIElement {
+		public static T WithPadding<T>(this T elem, string name, int id, Vector2? anchor = null, Vector2? offset = null) where T : UIElement
+		{
 			elem.SetSnapPoint(name, id, anchor, offset);
 			return elem;
 		}
 
-		public static T WithView<T>(this T elem, float viewSize, float maxViewSize) where T : UIScrollbar {
+		public static T WithView<T>(this T elem, float viewSize, float maxViewSize) where T : UIScrollbar
+		{
 			elem.SetView(viewSize, maxViewSize);
 			return elem;
 		}
 
-		public static void AddOrRemoveChild(this UIElement elem, UIElement child, bool add) {
-			if (!add) 
+		public static void AddOrRemoveChild(this UIElement elem, UIElement child, bool add)
+		{
+			if (!add)
 				elem.RemoveChild(child);
-			else if (!elem.HasChild(child)) 
+			else if (!elem.HasChild(child))
 				elem.Append(child);
 		}
 
-		public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null) {
+		public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null)
+		{
 			if (bounds == null)
 				bounds = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 			float x = Main.fontMouseText.MeasureString(text).X;
@@ -66,26 +72,26 @@ namespace Terraria.ModLoader.UI
 			Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 
-		internal static Texture2D ButtonErrorTexture;
-		internal static Texture2D ButtonConfigTexture;
-		internal static Texture2D ButtonPlusTexture;
-		internal static Texture2D ButtonUpDownTexture;
-		internal static Texture2D ButtonCollapsedTexture;
-		internal static Texture2D ButtonExpandedTexture;
-		internal static Texture2D ModBrowserIconsTexture;
-		internal static Texture2D ButtonExclamationTexture;
-		internal static Texture2D LoaderTexture;
-		internal static Texture2D LoaderBgTexture;
-		internal static Texture2D ButtonDownloadTexture;
-		internal static Texture2D ButtonDowngradeTexture;
-		internal static Texture2D ButtonDownloadMultipleTexture;
-		internal static Texture2D ButtonModInfoTexture;
-		internal static Texture2D ButtonModConfigTexture;
+		public static Texture2D ButtonErrorTexture { get; internal set; }
+		public static Texture2D ButtonConfigTexture { get; internal set; }
+		public static Texture2D ButtonPlusTexture { get; internal set; }
+		public static Texture2D ButtonUpDownTexture { get; internal set; }
+		public static Texture2D ButtonCollapsedTexture { get; internal set; }
+		public static Texture2D ButtonExpandedTexture { get; internal set; }
+		public static Texture2D ModBrowserIconsTexture { get; internal set; }
+		public static Texture2D ButtonExclamationTexture { get; internal set; }
+		public static Texture2D LoaderTexture { get; internal set; }
+		public static Texture2D LoaderBgTexture { get; internal set; }
+		public static Texture2D ButtonDownloadTexture { get; internal set; }
+		public static Texture2D ButtonDowngradeTexture { get; internal set; }
+		public static Texture2D ButtonDownloadMultipleTexture { get; internal set; }
+		public static Texture2D ButtonModInfoTexture { get; internal set; }
+		public static Texture2D ButtonModConfigTexture { get; internal set; }
+		public static Texture2D DividerTexture { get; internal set; }
+		public static Texture2D InnerPanelTexture { get; internal set; }
 
-		internal static Texture2D DividerTexture;
-		internal static Texture2D InnerPanelTexture;
-
-		internal static void LoadTextures() {
+		internal static void LoadTextures()
+		{
 			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
 			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
 			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
@@ -105,7 +111,7 @@ namespace Terraria.ModLoader.UI
 			DividerTexture = TextureManager.Load("Images/UI/Divider");
 			InnerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 
-			Texture2D LoadEmbeddedTexture(string name) 
+			Texture2D LoadEmbeddedTexture(string name)
 				=> Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.{name}"));
 		}
 	}
