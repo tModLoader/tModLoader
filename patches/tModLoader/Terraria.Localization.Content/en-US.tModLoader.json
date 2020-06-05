@@ -169,7 +169,7 @@
 		"MBShowMSServer": "Show server side only mods",
 		"MBShowMSNoSync": "Show no sync only mods",
 		"MBClearSpecialFilter": "Clear Special Filter: {0}",
-		"MBOfflineWithReason": "Offline ({0})",
+		"MBOfflineWithReason": "OFFLINE ({0})",
 		"MBBusy": "Busy",
 		"MBUnknown": "Unknown",
 		"MBOfflineTroubleshooting": "The Mod Browser can't be reached, this can be due to many reasons.\n 1. Check your Internet connection.\n 2. The Mod Browser might just be offline. If it worked before, just wait a few hours.\n 3. Double-click this message to open the Mod Browser website. You can use this to manually download mods. If this works, you should check your firewall to allow Terraria.exe through or try disabling your VPN if you are using one.\n 4. If that website does not work, the Mod Browser server might be blocked by your Government, Internet Service Provider, Router, or Web Filter. If that is the case, you'll need to figure it out on your own.",
