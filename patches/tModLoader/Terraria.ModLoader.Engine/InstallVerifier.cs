@@ -14,7 +14,6 @@ namespace Terraria.ModLoader.Engine
 	internal static class InstallVerifier
 	{
 		const string ContentDirectory = "Content";
-		const string InstallInstructions = "Please restore your Terraria install, then install tModLoader on Steam or by following the README.txt instructions for manual installation.";
 
 		private static bool? isValid;
 		public static bool IsValid => isValid ?? (isValid = InstallCheck()).Value;
@@ -47,9 +46,9 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("6c496fa6d23f200eed209544c6c12502");
 			}
 			else {
-				string message = "Unknown OS platform: unable to verify installation.";
+				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
 				Logging.tML.Fatal(message);
-				Exit(Language.GetTextValue("tModLoader.UnknownVerificationOS"), string.Empty);
+				Exit(message, string.Empty);
 			}
 		}
 
@@ -67,7 +66,7 @@ namespace Terraria.ModLoader.Engine
 				retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
 			return retval;
 		}
-		private static void Exit(string errorMessage, string extraMessage = InstallInstructions)
+		private static void Exit(string errorMessage, string extraMessage)
 		{
 			errorMessage += $"\r\n\r\n{extraMessage}";
 			Logging.tML.Fatal(errorMessage);
@@ -80,7 +79,7 @@ namespace Terraria.ModLoader.Engine
 #if CLIENT
 			// Check if the content directory is present which is required
 			if (!Directory.Exists(ContentDirectory)) {
-				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", ContentDirectory));
+				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", ContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
 #endif
@@ -101,7 +100,7 @@ namespace Terraria.ModLoader.Engine
 			string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 
 			if (!Directory.Exists(Path.Combine(terrariaInstallLocation, ContentDirectory))) {
-				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"));
+				Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 				return false;
 			}
 #endif
@@ -158,4 +157,3 @@ namespace Terraria.ModLoader.Engine
 		}
 	}
 }
-l

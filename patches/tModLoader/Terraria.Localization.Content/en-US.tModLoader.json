@@ -351,7 +351,8 @@
 		"VanillaSteamInstallationNotFound": "Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.",
 		"SteamAPIHashMismatch": "Steam API hash mismatch, assumed pirated.\n\ntModLoader requires a legitimate Terraria install to work.",
 		"VanillaGOGNotFound": "{0} could not be found.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.",
-		"GOGHashMismatch": "{0} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\""
+		"GOGHashMismatch": "{0} is not the unmodified Terraria executable.\r\n\r\nGOG installs must have the unmodified Terraria executable to function.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"Terraria_v<VERSION>.exe\"",
+		"DefaultExtraMessage": "Please restore your Terraria install, then install tModLoader on Steam or by following the README.txt instructions for manual installation."
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% increased damage"
