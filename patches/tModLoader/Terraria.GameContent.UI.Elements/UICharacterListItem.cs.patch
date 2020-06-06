@@ -143,6 +143,16 @@
  		public override int CompareTo(object obj) {
  			UICharacterListItem uICharacterListItem = obj as UICharacterListItem;
  			if (uICharacterListItem != null) {
+@@ -222,7 +_,8 @@
+ 			CalculatedStyle innerDimensions = GetInnerDimensions();
+ 			CalculatedStyle dimensions = _playerPanel.GetDimensions();
+ 			float num = dimensions.X + dimensions.Width;
+-			Utils.DrawBorderString(spriteBatch, _data.Name, new Vector2(num + 6f, dimensions.Y - 2f), Color.White);
++			Color textColor = _data.Player.loadStatus == 0 ? Color.White : Color.Red;
++			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.Player.loadStatus == 1 ? " (1.4 Player, won't load)": ""), new Vector2(num + 6f, dimensions.Y - 2f), textColor);
+ 			spriteBatch.Draw(_dividerTexture, new Vector2(num, innerDimensions.Y + 21f), null, Color.White, 0f, Vector2.Zero, new Vector2((GetDimensions().X + GetDimensions().Width - num) / 8f, 1f), SpriteEffects.None, 0f);
+ 			Vector2 vector = new Vector2(num + 6f, innerDimensions.Y + 29f);
+ 			float num2 = 200f;
 @@ -230,11 +_,11 @@
  			DrawPanel(spriteBatch, vector2, num2);
  			spriteBatch.Draw(Main.heartTexture, vector2 + new Vector2(5f, 2f), Color.White);

@@ -89,13 +89,22 @@
  		}
  
  		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
-@@ -229,6 +_,9 @@
- 		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Platform.Current.Clipboard = _data.SeedText;
+@@ -231,6 +_,9 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
-+		}
-+
-+		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  		}
  
++		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
++		}
++
  		public override int CompareTo(object obj) {
+ 			UIWorldListItem uIWorldListItem = obj as UIWorldListItem;
+ 			if (uIWorldListItem != null) {
+@@ -273,7 +_,7 @@
+ 			CalculatedStyle dimensions = _worldIcon.GetDimensions();
+ 			float num = dimensions.X + dimensions.Width;
+ 			Color color = _data.IsValid ? Color.White : Color.Red;
+-			Utils.DrawBorderString(spriteBatch, _data.Name, new Vector2(num + 6f, dimensions.Y - 2f), color);
++			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.FutureVersion ? " (1.4 World, won't load)" : "") , new Vector2(num + 6f, dimensions.Y - 2f), color);
+ 			spriteBatch.Draw(_dividerTexture, new Vector2(num, innerDimensions.Y + 21f), null, Color.White, 0f, Vector2.Zero, new Vector2((GetDimensions().X + GetDimensions().Width - num) / 8f, 1f), SpriteEffects.None, 0f);
+ 			Vector2 vector = new Vector2(num + 6f, innerDimensions.Y + 29f);
+ 			float num2 = 100f;

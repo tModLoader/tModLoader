@@ -70,11 +70,10 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -103,6 +_,15 @@
- 			string newMOTD;
+@@ -104,6 +_,15 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
-+
+ 
 +			string modPath;
 +			if ((modPath = TryParameter(new string[] {
 +				"-modpath"
@@ -83,6 +82,22 @@
 +
 +			if (HasParameter("-showserverconsole"))
 +				Main.showServerConsole = true;
- 
++
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
+ 				Netplay.BanFilePath = banFilePath;
+@@ -125,8 +_,13 @@
+ 				Main.UseExperimentalFeatures = true;
+ 
+ 			string world;
+-			if ((world = TryParameter("-world")) != null)
++			if ((world = TryParameter("-world")) != null) {
+ 				game.SetWorld(world, cloud: false);
++				if (!Main.ActiveWorldFileData.IsValid) {
++					System.Console.WriteLine($"The world {Main.ActiveWorldFileData.Name} is invalid." + (Main.ActiveWorldFileData.FutureVersion ? " (1.4 World, won't load)" : ""));
++					System.Environment.Exit(1);
++				}
++			}
+ 			else if (SocialAPI.Mode == SocialMode.Steam && (world = TryParameter("-cloudworld")) != null)
+ 				game.SetWorld(world, cloud: true);
+ 

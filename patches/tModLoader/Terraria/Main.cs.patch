@@ -481,7 +481,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3394,17 +_,18 @@
+@@ -3394,20 +_,21 @@
  #endif
  			}
  			else {
@@ -501,7 +501,11 @@
 +					Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
  					Console.WriteLine("");
  					for (int i = 0; i < WorldList.Count; i++) {
- 						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
+-						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
++						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name + (WorldList[i].FutureVersion ? "\t(1.4 World, won't load)" : ""));
+ 					}
+ 
+ 					string textValue = Language.GetTextValue("CLI.NewWorld_Command");
 @@ -3417,6 +_,8 @@
  					textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  					Console.WriteLine(textValue);
@@ -580,8 +584,15 @@
  
  					try {
  						int num3 = Convert.ToInt32(text2);
-@@ -3643,7 +_,7 @@
+@@ -3641,9 +_,14 @@
+ 						if (num3 < 0 || num3 >= WorldList.Count)
+ 							continue;
  
++						if (!WorldList[num3].IsValid) {
++							Console.WriteLine($"The world {WorldList[num3].Name} is invalid");
++							continue;
++						}
++
  						bool flag3 = true;
  						while (flag3) {
 -							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
