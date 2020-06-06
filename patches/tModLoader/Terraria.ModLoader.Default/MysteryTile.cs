@@ -12,12 +12,16 @@ namespace Terraria.ModLoader.Default
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
 				var frame = new MysteryTileFrame(tile.frameX, tile.frameY);
-				var info = ModContent.GetInstance<MysteryTilesWorld>().infos[frame.FrameID];
+				var infos = ModContent.GetInstance<MysteryTilesWorld>().infos;
+				int frameID = frame.FrameID;
+				if (frameID >= 0 && frameID < infos.Count) { // This only works in SP
+					var info = infos[frameID];
 
-				if(info != null) {
-					Main.LocalPlayer.showItemIcon = true;
-					Main.LocalPlayer.showItemIcon2 = -1;
-					Main.LocalPlayer.showItemIconText = $"{info.modName}: {info.name}";
+					if (info != null) {
+						Main.LocalPlayer.showItemIcon = true;
+						Main.LocalPlayer.showItemIcon2 = -1;
+						Main.LocalPlayer.showItemIconText = $"{info.modName}: {info.name}";
+					}
 				}
 			}
 		}
