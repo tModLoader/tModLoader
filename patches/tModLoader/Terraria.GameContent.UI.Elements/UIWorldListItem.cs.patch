@@ -47,7 +47,16 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -149,6 +_,10 @@
+@@ -142,13 +_,18 @@
+ 		}
+ 
+ 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++			if(_data.IsValid)
+-			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
++				_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
+ 		}
+ 
+ 		private void SeedMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", _data.SeedText));
  		}
  
@@ -113,7 +122,7 @@
  			float num = dimensions.X + dimensions.Width;
  			Color color = _data.IsValid ? Color.White : Color.Red;
 -			Utils.DrawBorderString(spriteBatch, _data.Name, new Vector2(num + 6f, dimensions.Y - 2f), color);
-+			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.FutureVersion ? " (1.4 World, won't load)" : "") , new Vector2(num + 6f, dimensions.Y - 2f), color);
++			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.FutureVersion ? " (1.4 Worlds are not supported)" : "") , new Vector2(num + 6f, dimensions.Y - 2f), color);
  			spriteBatch.Draw(_dividerTexture, new Vector2(num, innerDimensions.Y + 21f), null, Color.White, 0f, Vector2.Zero, new Vector2((GetDimensions().X + GetDimensions().Width - num) / 8f, 1f), SpriteEffects.None, 0f);
  			Vector2 vector = new Vector2(num + 6f, innerDimensions.Y + 29f);
  			float num2 = 100f;

@@ -114,7 +114,16 @@
  			_deleteButtonLabel.Top.Set(-3f, 0f);
  			Append(_deleteButtonLabel);
  			uIImageButton.SetSnapPoint("Play", snapPointIndex);
-@@ -120,6 +_,14 @@
+@@ -113,13 +_,22 @@
+ 		}
+ 
+ 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++			if(_data.Player.loadStatus == 0)
+-			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
++				_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
+ 		}
+ 
+ 		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
  
@@ -149,7 +158,7 @@
  			float num = dimensions.X + dimensions.Width;
 -			Utils.DrawBorderString(spriteBatch, _data.Name, new Vector2(num + 6f, dimensions.Y - 2f), Color.White);
 +			Color textColor = _data.Player.loadStatus == 0 ? Color.White : Color.Red;
-+			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.Player.loadStatus == 1 ? " (1.4 Player, won't load)": ""), new Vector2(num + 6f, dimensions.Y - 2f), textColor);
++			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.Player.loadStatus == 1 ? " (1.4 Players are not supported)" : ""), new Vector2(num + 6f, dimensions.Y - 2f), textColor);
  			spriteBatch.Draw(_dividerTexture, new Vector2(num, innerDimensions.Y + 21f), null, Color.White, 0f, Vector2.Zero, new Vector2((GetDimensions().X + GetDimensions().Width - num) / 8f, 1f), SpriteEffects.None, 0f);
  			Vector2 vector = new Vector2(num + 6f, innerDimensions.Y + 29f);
  			float num2 = 200f;

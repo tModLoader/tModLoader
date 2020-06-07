@@ -94,7 +94,7 @@
 +			if ((world = TryParameter("-world")) != null) {
  				game.SetWorld(world, cloud: false);
 +				if (!Main.ActiveWorldFileData.IsValid) {
-+					System.Console.WriteLine($"The world {Main.ActiveWorldFileData.Name} is invalid." + (Main.ActiveWorldFileData.FutureVersion ? " (1.4 World, won't load)" : ""));
++					System.Console.WriteLine($"The world {Main.ActiveWorldFileData.Name} is invalid." + (Main.ActiveWorldFileData.FutureVersion ? " (1.4 Worlds are not supported)" : ""));
 +					System.Environment.Exit(1);
 +				}
 +			}

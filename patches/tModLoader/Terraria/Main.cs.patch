@@ -430,15 +430,18 @@
  			PlayerInput.Load();
  			if (currentValue7 < 165) {
  				try {
-@@ -2960,7 +_,7 @@
+@@ -2960,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue7 != 194)
-+			if (currentValue7 != 194 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
++			if (currentValue7 != 194 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
++			}
  		}
  
+ 		protected void OpenLegacySettings() {
 @@ -3090,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
@@ -502,7 +505,7 @@
  					Console.WriteLine("");
  					for (int i = 0; i < WorldList.Count; i++) {
 -						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
-+						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name + (WorldList[i].FutureVersion ? "\t(1.4 World, won't load)" : ""));
++						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name + (WorldList[i].FutureVersion ? "\t(1.4 Worlds are not supported)" : ""));
  					}
  
  					string textValue = Language.GetTextValue("CLI.NewWorld_Command");
@@ -780,7 +783,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,37 @@
+@@ -4105,7 +_,40 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
@@ -795,6 +798,9 @@
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
++#if MAC
++			vanillaContentFolder = ../../../Terraria.app/Contents/MacOS/Content";
++#endif
 +			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
 +				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
 +				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
@@ -861,7 +867,7 @@
  		}
  
  		private void ClientInitialize() {
-@@ -6674,41 +_,48 @@
+@@ -6674,41 +_,52 @@
  			}
  
  			if (autoJoin) {
@@ -895,7 +901,11 @@
  		protected override void LoadContent() {
 +			HiDefGraphicsIssues.OnLoadContent();
  			Configuration.Load();
-+			ModLoader.ModLoader.MigrateSettings();
++
++			// This reverts a potentially bad setting change. (Didn't work where it was before)
++			if (new System.Version(Configuration.Get("LastLaunchedTModLoaderVersion", "0.0")) <= new System.Version(0, 11, 7, 5))
++				Main.Configuration.Put("Support4K", true);
++
  			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
  			if (UseExperimentalFeatures)
  				TexturePackSupport.Enabled = true;
