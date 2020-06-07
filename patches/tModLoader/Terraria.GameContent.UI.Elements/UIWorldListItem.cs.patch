@@ -58,6 +58,15 @@
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
+@@ -194,7 +_,7 @@
+ 		}
+ 
+ 		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
+-			if (listeningElement == evt.Target) {
++			if (listeningElement == evt.Target && _data.IsValid) {
+ 				_data.SetAsActive();
+ 				Main.PlaySound(10);
+ 				Main.GetInputText("");
 @@ -205,9 +_,29 @@
  				else
  					Main.menuMode = 10;
