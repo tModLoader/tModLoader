@@ -136,6 +136,18 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
+@@ -2472,6 +_,11 @@
+ 							worldFileData.IsHardMode = binaryReader.ReadBoolean();
+ 							return worldFileData;
+ 						}
++						else {
++							var invalid = WorldFileData.FromInvalidWorld(file, cloudSave);
++							invalid.FutureVersion = true;
++							return invalid;
++						}
+ 					}
+ 				}
+ 			}
 @@ -2549,9 +_,10 @@
  		}
  

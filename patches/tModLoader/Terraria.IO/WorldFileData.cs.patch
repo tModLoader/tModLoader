@@ -8,6 +8,14 @@
  using Terraria.Utilities;
  
  namespace Terraria.IO
+@@ -20,6 +_,7 @@
+ 		public bool IsExpertMode;
+ 		public bool HasCorruption = true;
+ 		public bool IsHardMode;
++		public bool FutureVersion;
+ 
+ 		public string SeedText => _seedText;
+ 
 @@ -111,6 +_,7 @@
  			if (!base.IsCloudSave) {
  				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);

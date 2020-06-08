@@ -430,15 +430,18 @@
  			PlayerInput.Load();
  			if (currentValue7 < 165) {
  				try {
-@@ -2960,7 +_,7 @@
+@@ -2960,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue7 != 194)
-+			if (currentValue7 != 194 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version)
++			if (currentValue7 != 194 || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != ModLoader.ModLoader.version) {
++				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
++			}
  		}
  
+ 		protected void OpenLegacySettings() {
 @@ -3090,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
@@ -481,7 +484,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3394,17 +_,18 @@
+@@ -3394,20 +_,21 @@
  #endif
  			}
  			else {
@@ -501,7 +504,11 @@
 +					Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2) + " - " + ModLoader.ModLoader.versionedName);
  					Console.WriteLine("");
  					for (int i = 0; i < WorldList.Count; i++) {
- 						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
+-						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
++						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name + (WorldList[i].FutureVersion ? "\t(1.4 Worlds are not supported)" : ""));
+ 					}
+ 
+ 					string textValue = Language.GetTextValue("CLI.NewWorld_Command");
 @@ -3417,6 +_,8 @@
  					textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  					Console.WriteLine(textValue);
@@ -580,8 +587,15 @@
  
  					try {
  						int num3 = Convert.ToInt32(text2);
-@@ -3643,7 +_,7 @@
+@@ -3641,9 +_,14 @@
+ 						if (num3 < 0 || num3 >= WorldList.Count)
+ 							continue;
  
++						if (!WorldList[num3].IsValid) {
++							Console.WriteLine($"The world {WorldList[num3].Name} is invalid");
++							continue;
++						}
++
  						bool flag3 = true;
  						while (flag3) {
 -							Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
@@ -769,7 +783,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4105,7 +_,37 @@
+@@ -4105,7 +_,40 @@
  			instance = this;
  #if CLIENT
  			graphics = new GraphicsDeviceManager(this);
@@ -784,6 +798,9 @@
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
++#if MAC
++			vanillaContentFolder = "../../../Terraria.app/Contents/MacOS/Content";
++#endif
 +			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
 +				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
 +				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
@@ -850,7 +867,7 @@
  		}
  
  		private void ClientInitialize() {
-@@ -6674,41 +_,48 @@
+@@ -6674,41 +_,52 @@
  			}
  
  			if (autoJoin) {
@@ -884,7 +901,11 @@
  		protected override void LoadContent() {
 +			HiDefGraphicsIssues.OnLoadContent();
  			Configuration.Load();
-+			ModLoader.ModLoader.MigrateSettings();
++
++			// This reverts a potentially bad setting change. (Didn't work where it was before)
++			if (new System.Version(Configuration.Get("LastLaunchedTModLoaderVersion", "0.0")) <= new System.Version(0, 11, 7, 5))
++				Main.Configuration.Put("Support4K", true);
++
  			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
  			if (UseExperimentalFeatures)
  				TexturePackSupport.Enabled = true;
@@ -2014,6 +2035,15 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
+@@ -12675,7 +_,7 @@
+ 				return;
+ 
+ 			int num12 = 0;
+-			for (int l = 0; l < 267; l++) {
++			for (int l = 0; l < NPCLoader.NPCCount; l++) {
+ 				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].NPCBannerBuff[l])
+ 					continue;
+ 
 @@ -12717,9 +_,11 @@
  					spriteBatch.DrawString(fontMouseText, text, new Vector2(num13, num14), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}

@@ -47,7 +47,16 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -149,6 +_,10 @@
+@@ -142,13 +_,18 @@
+ 		}
+ 
+ 		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++			if(_data.IsValid)
+-			_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
++				_buttonLabel.SetText(Language.GetTextValue("UI.Play"));
+ 		}
+ 
+ 		private void SeedMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_buttonLabel.SetText(Language.GetTextValue("UI.CopySeed", _data.SeedText));
  		}
  
@@ -58,6 +67,15 @@
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
+@@ -194,7 +_,7 @@
+ 		}
+ 
+ 		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
+-			if (listeningElement == evt.Target) {
++			if (listeningElement == evt.Target && _data.IsValid) {
+ 				_data.SetAsActive();
+ 				Main.PlaySound(10);
+ 				Main.GetInputText("");
 @@ -205,9 +_,29 @@
  				else
  					Main.menuMode = 10;
@@ -89,13 +107,22 @@
  		}
  
  		private void FavoriteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
-@@ -229,6 +_,9 @@
- 		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Platform.Current.Clipboard = _data.SeedText;
+@@ -231,6 +_,9 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
-+		}
-+
-+		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  		}
  
++		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
++		}
++
  		public override int CompareTo(object obj) {
+ 			UIWorldListItem uIWorldListItem = obj as UIWorldListItem;
+ 			if (uIWorldListItem != null) {
+@@ -273,7 +_,7 @@
+ 			CalculatedStyle dimensions = _worldIcon.GetDimensions();
+ 			float num = dimensions.X + dimensions.Width;
+ 			Color color = _data.IsValid ? Color.White : Color.Red;
+-			Utils.DrawBorderString(spriteBatch, _data.Name, new Vector2(num + 6f, dimensions.Y - 2f), color);
++			Utils.DrawBorderString(spriteBatch, _data.Name + (_data.FutureVersion ? " (1.4 Worlds are not supported)" : "") , new Vector2(num + 6f, dimensions.Y - 2f), color);
+ 			spriteBatch.Draw(_dividerTexture, new Vector2(num, innerDimensions.Y + 21f), null, Color.White, 0f, Vector2.Zero, new Vector2((GetDimensions().X + GetDimensions().Width - num) / 8f, 1f), SpriteEffects.None, 0f);
+ 			Vector2 vector = new Vector2(num + 6f, innerDimensions.Y + 29f);
+ 			float num2 = 100f;

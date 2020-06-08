@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11, 7, 4);
+		public static readonly Version version = new Version(0, 11, 7, 5);
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
@@ -375,16 +375,13 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
 		}
 
 		internal static void MigrateSettings()
 		{
-			if (LastLaunchedTModLoaderVersion != null) return;
-
-			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
-			if (LastLaunchedTModLoaderVersion <= new Version(0, 11, 4))
-				Main.Configuration.Put("Support4K", true); // This reverts a potentially bad setting change. 
-														   // Subsequent migrations here.
+			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
+				showMemoryEstimates = true;
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;
