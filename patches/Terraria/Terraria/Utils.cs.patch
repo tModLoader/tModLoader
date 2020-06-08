@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Utils.cs
 +++ src/Terraria/Terraria/Utils.cs
-@@ -511,8 +_,18 @@
+@@ -512,8 +_,18 @@
  		}
  
  		public static void OpenFolder(string folderPath) {

@@ -92,7 +92,7 @@
  								inv[slot].SetDefaults();
  
 @@ -1016,7 +_,9 @@
- 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5043 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
+ 					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5045 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -263,7 +263,7 @@
  				if (accSlotToSwapTo > num2)
  					return item;
  
-@@ -1962,5 +_,8 @@
+@@ -1965,5 +_,8 @@
  						num3 = k;
  				}
  
@@ -272,11 +272,11 @@
 +
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
-@@ -2059,7 +_,7 @@
+@@ -2062,7 +_,7 @@
  		}
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {
--			if (type < 0 || type > 5043)
+-			if (type < 0 || type > 5045)
 +			if (type < 0)
  				return currentColor;
  

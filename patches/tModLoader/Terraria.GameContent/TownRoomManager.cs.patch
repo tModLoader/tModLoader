@@ -16,22 +16,22 @@
 -		private bool[] _hasRoom = new bool[663];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
-@@ -67,8 +_,17 @@
+@@ -67,9 +_,17 @@
  		}
  
  		public void Save(BinaryWriter writer) {
--			writer.Write(_roomLocationPairs.Count);
-+			int count = 0;
-+			foreach (Tuple<int, Point> current in _roomLocationPairs) {
-+				if (current.Item1 < Main.maxNPCTypes)
-+					count++;
-+			}
+ 			lock (_roomLocationPairs) {
+-				writer.Write(_roomLocationPairs.Count);
++				int count = 0;
++				foreach (Tuple<int, Point> current in _roomLocationPairs) {
++					if (current.Item1 < Main.maxNPCTypes)
++						count++;
++				}
++				writer.Write(count);
+ 				foreach (Tuple<int, Point> roomLocationPair in _roomLocationPairs) {
++					if (roomLocationPair.Item1 >= Main.maxNPCTypes)
++						continue;
 +
-+			writer.Write(count);
- 			foreach (Tuple<int, Point> roomLocationPair in _roomLocationPairs) {
-+				if (roomLocationPair.Item1 >= Main.maxNPCTypes)
-+					continue;
-+
- 				writer.Write(roomLocationPair.Item1);
- 				writer.Write(roomLocationPair.Item2.X);
- 				writer.Write(roomLocationPair.Item2.Y);
+ 					writer.Write(roomLocationPair.Item1);
+ 					writer.Write(roomLocationPair.Item2.X);
+ 					writer.Write(roomLocationPair.Item2.Y);

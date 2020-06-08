@@ -14,10 +14,10 @@
  		public static LocalizedText[] prefix = new LocalizedText[85];
 -		public static LocalizedText[] _mapLegendCache;
 +		public static MapLegend _mapLegendCache;
--		private static LocalizedText[] _itemNameCache = new LocalizedText[5043];
-+		internal static LocalizedText[] _itemNameCache = new LocalizedText[5043];
--		private static LocalizedText[] _projectileNameCache = new LocalizedText[949];
-+		internal static LocalizedText[] _projectileNameCache = new LocalizedText[949];
+-		private static LocalizedText[] _itemNameCache = new LocalizedText[5045];
++		internal static LocalizedText[] _itemNameCache = new LocalizedText[5045];
+-		private static LocalizedText[] _projectileNameCache = new LocalizedText[950];
++		internal static LocalizedText[] _projectileNameCache = new LocalizedText[950];
 -		private static LocalizedText[] _npcNameCache = new LocalizedText[663];
 +		internal static LocalizedText[] _npcNameCache = new LocalizedText[663];
  		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
@@ -25,8 +25,8 @@
 +		internal static LocalizedText[] _buffNameCache = new LocalizedText[323];
 -		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[323];
 +		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[323];
--		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5043];
-+		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5043];
+-		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5045];
++		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5045];
  		private static LocalizedText[] _emojiNameCache = new LocalizedText[145];
  
  		public static string GetMapObjectName(int id) {
@@ -48,7 +48,7 @@
 -			id = ItemID.FromNetId((short)id);
 +				id = ItemID.FromNetId((short)id);
 +
--			if (id > 0 && id < 5043 && _itemNameCache[id] != null)
+-			if (id > 0 && id < 5045 && _itemNameCache[id] != null)
 +			if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
  				return _itemNameCache[id];
  

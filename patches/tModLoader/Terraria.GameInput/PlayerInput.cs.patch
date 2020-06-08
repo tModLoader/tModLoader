@@ -18,7 +18,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -306,6 +_,44 @@
+@@ -316,9 +_,21 @@
  			}
  		}
  
@@ -27,43 +27,20 @@
 +		private static void ReInitialize() {
 +			Profiles.Clear();
 +			OriginalProfiles.Clear();
-+			PlayerInputProfile playerInputProfile = new PlayerInputProfile("Redigit's Pick");
-+			playerInputProfile.Initialize(PresetProfiles.Redigit);
-+			Profiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Yoraiz0r's Pick");
-+			playerInputProfile.Initialize(PresetProfiles.Yoraiz0r);
-+			Profiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Console (Playstation)");
-+			playerInputProfile.Initialize(PresetProfiles.ConsolePS);
-+			Profiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Console (Xbox)");
-+			playerInputProfile.Initialize(PresetProfiles.ConsoleXBox);
-+			Profiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Custom");
-+			playerInputProfile.Initialize(PresetProfiles.Redigit);
-+			Profiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Redigit's Pick");
-+			playerInputProfile.Initialize(PresetProfiles.Redigit);
-+			OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Yoraiz0r's Pick");
-+			playerInputProfile.Initialize(PresetProfiles.Yoraiz0r);
-+			OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Console (Playstation)");
-+			playerInputProfile.Initialize(PresetProfiles.ConsolePS);
-+			OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
-+			playerInputProfile = new PlayerInputProfile("Console (Xbox)");
-+			playerInputProfile.Initialize(PresetProfiles.ConsoleXBox);
-+			OriginalProfiles.Add(playerInputProfile.Name, playerInputProfile);
-+			Triggers.Initialize(); // Populates triggers with known hotkeys
-+			SetSelectedProfile("Custom");
++			Initialize_Inner(); //Mirsario: To not repeat code in patches, reuse the one that was previously in Initialize().
 +			Load(); // Loads the JSON into the Profiles above
 +			reinitialize = false;
 +		}
-+
  		public static void Initialize() {
  			Main.InputProfiles.OnProcessText += PrettyPrintProfiles;
  			Player.Hooks.OnEnterWorld += Hook_OnEnterWorld;
-@@ -356,7 +_,9 @@
++			Initialize_Inner();
++		}
++		private static void Initialize_Inner() {
+ 			PlayerInputProfile playerInputProfile = new PlayerInputProfile("Redigit's Pick");
+ 			playerInputProfile.Initialize(PresetProfiles.Redigit);
+ 			Profiles.Add(playerInputProfile.Name, playerInputProfile);
+@@ -366,7 +_,9 @@
  		}
  
  		public static void Load() {
@@ -74,7 +51,7 @@
  			Dictionary<string, PlayerInputProfile> dictionary = new Dictionary<string, PlayerInputProfile>();
  			string currentValue = null;
  			Main.InputProfiles.Get("Selected Profile", ref currentValue);
-@@ -486,6 +_,9 @@
+@@ -496,6 +_,9 @@
  		}
  
  		public static void UpdateInput() {
@@ -84,7 +61,7 @@
  			Triggers.Reset();
  			ScrollWheelValueOld = ScrollWheelValue;
  			ScrollWheelValue = 0;
-@@ -516,8 +_,11 @@
+@@ -526,6 +_,9 @@
  			UpdateMainMouse();
  			Main.mouseLeft = Triggers.Current.MouseLeft;
  			Main.mouseRight = Triggers.Current.MouseRight;
@@ -94,9 +71,7 @@
  			CacheZoomableValues();
  			if (num != 0 && PlayerInput.OnActionableInput != null)
  				PlayerInput.OnActionableInput();
- 		}
- 
-@@ -706,6 +_,8 @@
+@@ -716,6 +_,8 @@
  				flag = true;
  			}
  
@@ -105,7 +80,7 @@
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -978,6 +_,9 @@
+@@ -994,6 +_,9 @@
  			List<string> list = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -115,7 +90,7 @@
  				"Inventory"
  			};
  
-@@ -1159,7 +_,7 @@
+@@ -1175,7 +_,7 @@
  					if (DpadSnapCooldown[i] == 0) {
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -124,7 +99,7 @@
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;
-@@ -1401,6 +_,9 @@
+@@ -1417,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -134,7 +109,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1438,6 +_,9 @@
+@@ -1454,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -144,7 +119,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1509,6 +_,9 @@
+@@ -1525,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -154,7 +129,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1546,6 +_,9 @@
+@@ -1562,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -164,7 +139,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1616,6 +_,9 @@
+@@ -1632,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -174,7 +149,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1653,6 +_,9 @@
+@@ -1669,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -184,7 +159,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1723,6 +_,9 @@
+@@ -1739,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -194,7 +169,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1760,6 +_,9 @@
+@@ -1776,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");

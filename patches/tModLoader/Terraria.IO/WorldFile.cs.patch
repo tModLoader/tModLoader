@@ -17,7 +17,7 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -342,6 +_,8 @@
+@@ -347,6 +_,8 @@
  						CheckSavedOreTiers();
  						binaryReader.Close();
  						memoryStream.Close();
@@ -26,7 +26,7 @@
  						if (num3 != 0)
  							WorldGen.loadFailed = true;
  						else
-@@ -493,6 +_,9 @@
+@@ -498,6 +_,9 @@
  			if (Main.worldPathName == null)
  				return;
  
@@ -36,15 +36,15 @@
  			new Stopwatch().Start();
  			int num;
  			byte[] array;
-@@ -528,6 +_,7 @@
+@@ -535,6 +_,7 @@
  
  			if (text != null && array2 != null)
  				FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
 +			WorldIO.Save(Main.worldPathName, useCloudSaving);
  		}
  
- 		private static void ResetTempsToDayTime() {
-@@ -831,7 +_,11 @@
+ 		private static void DoRollingBackups(string backupWorldWritePath) {
+@@ -869,7 +_,11 @@
  			}
  
  			writer.Write(NPC.savedAngler);
@@ -57,7 +57,7 @@
  			writer.Write(NPC.savedStylist);
  			writer.Write(NPC.savedTaxCollector);
  			writer.Write(NPC.savedGolfer);
-@@ -913,7 +_,7 @@
+@@ -951,7 +_,7 @@
  					byte b2;
  					byte b3 = b2 = (b = 0);
  					bool flag = false;
@@ -66,7 +66,7 @@
  						flag = true;
  
  					if (flag) {
-@@ -927,9 +_,11 @@
+@@ -965,9 +_,11 @@
  						}
  
  						if (Main.tileFrameImportant[tile.type]) {
@@ -80,7 +80,7 @@
  							num3++;
  							array[num3] = (byte)(tile.frameY & 0xFF);
  							num3++;
-@@ -944,7 +_,7 @@
+@@ -982,7 +_,7 @@
  						}
  					}
  
@@ -89,7 +89,7 @@
  						b3 = (byte)(b3 | 4);
  						array[num3] = (byte)tile.wall;
  						num3++;
-@@ -1072,7 +_,7 @@
+@@ -1110,7 +_,7 @@
  				writer.Write(chest.name);
  				for (int l = 0; l < 40; l++) {
  					Item item = chest.item[l];
@@ -98,7 +98,7 @@
  						writer.Write((short)0);
  						continue;
  					}
-@@ -1118,7 +_,7 @@
+@@ -1156,7 +_,7 @@
  		private static int SaveNPCs(BinaryWriter writer) {
  			for (int i = 0; i < Main.npc.Length; i++) {
  				NPC nPC = Main.npc[i];
@@ -107,7 +107,7 @@
  					writer.Write(nPC.active);
  					writer.Write(nPC.netID);
  					writer.Write(nPC.GivenName);
-@@ -1138,7 +_,7 @@
+@@ -1176,7 +_,7 @@
  			writer.Write(value: false);
  			for (int j = 0; j < Main.npc.Length; j++) {
  				NPC nPC2 = Main.npc[j];
@@ -116,7 +116,7 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
-@@ -1816,7 +_,7 @@
+@@ -1859,7 +_,7 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];
  				Sign sign;
@@ -125,7 +125,7 @@
  					sign = new Sign();
  					sign.text = text;
  					sign.x = num2;
-@@ -2106,6 +_,7 @@
+@@ -2149,6 +_,7 @@
  				return result;
  			}
  			catch (Exception value) {
@@ -133,16 +133,18 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
-@@ -2155,9 +_,10 @@
+@@ -2198,11 +_,12 @@
  		}
  
  		private static int SaveTileEntities(BinaryWriter writer) {
--			writer.Write(TileEntity.ByID.Count);
-+			writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
- 			foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
-+				if (item.Value.type < ModTileEntity.numVanilla)
--				TileEntity.Write(writer, item.Value);
-+					TileEntity.Write(writer, item.Value);
+ 			lock (TileEntity.ByID) {
+-				writer.Write(TileEntity.ByID.Count);
++				writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
+ 				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
++					if (item.Value.type < ModTileEntity.numVanilla)
+-					TileEntity.Write(writer, item.Value);
++						TileEntity.Write(writer, item.Value);
+ 				}
  			}
  
  			return (int)writer.BaseStream.Position;

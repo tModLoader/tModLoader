@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria.UI/GameInterfaceLayer.cs
 +++ src/tModLoader/Terraria.UI/GameInterfaceLayer.cs
-@@ -8,13 +_,18 @@
+@@ -9,13 +_,18 @@
  	{
  		public readonly string Name;
  		public InterfaceScaleType ScaleType;

@@ -10,7 +10,7 @@
  namespace Terraria.ID
  {
  	public class TileID
-@@ -148,6 +_,8 @@
+@@ -149,6 +_,8 @@
  			public static int[] DrawFlipMode = Factory.CreateIntSet(0, 3, 1, 13, 1, 20, 1, 24, 1, 49, 1, 372, 1, 50, 1, 52, 1, 61, 1, 62, 1, 71, 1, 73, 1, 74, 1, 81, 1, 82, 1, 83, 1, 84, 1, 91, 1, 92, 1, 93, 1, 110, 1, 113, 1, 115, 1, 135, 1, 141, 1, 165, 1, 174, 1, 201, 1, 205, 1, 227, 1, 270, 1, 271, 1, 382, 1, 184, 2, 185, 3, 528, 1, 529, 1, 590, 1, 595, 1, 615, 1);
  			public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621);
  			public static bool[] AllTiles = Factory.CreateBoolSet(true);
@@ -19,7 +19,7 @@
  			public static bool[] Mud = Factory.CreateBoolSet(59);
  			public static bool[] Snow = Factory.CreateBoolSet(147);
  			public static bool[] Ices = Factory.CreateBoolSet(161, 200, 163, 164);
-@@ -163,6 +_,7 @@
+@@ -164,6 +_,7 @@
  			public static bool[] BasicChestFake = Factory.CreateBoolSet(441, 468);
  			public static bool[] BasicDresser = Factory.CreateBoolSet(88);
  			public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
@@ -27,7 +27,7 @@
  			public static bool[] Corrupt = Factory.CreateBoolSet(23, 25, 112, 163, 398, 400);
  			public static bool[] Hallow = Factory.CreateBoolSet(109, 117, 116, 164, 402, 403, 115);
  			public static bool[] Crimson = Factory.CreateBoolSet(199, 203, 234, 200, 399, 401, 205);
-@@ -821,5 +_,34 @@
+@@ -822,5 +_,34 @@
  		public const ushort SliceOfCake = 621;
  		public const ushort TeaKettle = 622;
  		public const ushort Count = 623;

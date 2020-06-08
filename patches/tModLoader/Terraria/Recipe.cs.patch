@@ -126,7 +126,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13051,4 +_,7 @@
+@@ -13053,4 +_,7 @@
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
 +			RecipeHooks.AddRecipes();

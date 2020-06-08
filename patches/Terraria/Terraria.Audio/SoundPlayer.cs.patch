@@ -10,7 +10,7 @@
  
  namespace Terraria.Audio
  {
-@@ -55,11 +_,17 @@
+@@ -55,16 +_,22 @@
  		}
  
  		public void Update() {
@@ -18,9 +18,14 @@
 +			Monitor.Enter(SoundEngine.AudioLock);
 +#endif
  			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
- 				item.Value.Update();
- 				if (!item.Value.IsPlaying)
+ 				try {
+ 					item.Value.Update();
+ 					if (!item.Value.IsPlaying)
+ 						_trackedSounds.Remove(item.Id);
+ 				}
+ 				catch {
  					_trackedSounds.Remove(item.Id);
+ 				}
  			}
 +#if FNA
 +			Monitor.Exit(SoundEngine.AudioLock);

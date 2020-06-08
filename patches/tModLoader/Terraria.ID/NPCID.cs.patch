@@ -11,7 +11,7 @@
  
  namespace Terraria.ID
  {
-@@ -5622,6 +_,39 @@
+@@ -5666,6 +_,39 @@
  				return NetIdMap[-id - 1];
  
  			return id;

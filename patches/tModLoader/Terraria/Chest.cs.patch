@@ -117,11 +117,11 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2512,6 +_,7 @@
+@@ -2508,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  
 +			NPCLoader.SetupShop(type, this, ref num);
- 			for (int num11 = 0; num11 < num; num11++) {
- 				array[num11].isAShopItem = true;
+ 			for (int num12 = 0; num12 < num; num12++) {
+ 				array[num12].isAShopItem = true;
  			}
