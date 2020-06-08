@@ -20,6 +20,10 @@
 	//Need reimplementing:
 		//TileLoader.DisableSmartInteract
 		//TileLoader.HasSmartInteract
+		//"Enable Developer Mode" button
+
+	//Needs checking:
+		//WaterStyleLoader.WaterStyleCount
 
 //Mirsario:
 	//Lighting:

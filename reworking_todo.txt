@@ -1,0 +1,17 @@
+//Things that need to be done after initial patches are fixed.
+//This can include new systems that should be accounted for
+
+
+//Rartrin
+	//Wing
+		//Loading should leverage player.GetWingStats()
+		//ArmorIDs.Wing.Sets.Stats
+	//Background system
+		//Main.bgAlpha2 became Main.bgAlphaFrontLayer
+		//Background system in general got some refactoring
+	//Minimum zoom comparer
+		//Check if ModLoader.ModLoader.removeForcedMinimumZoom is still needed now that MinimumZoomComparerX and Y exist
+	//WaterStyleLoader.ChooseWaterStyle
+		//Vanilla has Main.CalculateWaterStyle() now
+	//Integrate with vanilla asset system
+		//?Reimplement PlayerHooks.GetMapBackgroundImage in DrawMapFullscreenBackground so it can use assets
