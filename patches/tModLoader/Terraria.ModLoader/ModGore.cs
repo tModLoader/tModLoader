@@ -92,7 +92,7 @@ namespace Terraria.ModLoader
 			if (gore.modGore != null) {
 				return gore.modGore.DrawBehind(gore);
 			}
-			return ((gore.type >= 706 && gore.type <= 717) || gore.type == 943) && (gore.frame < 7 || gore.frame > 9);
+			return (((gore.type >= 706 && gore.type <= 717) || gore.type == 943 || gore.type == 1147 || (gore.type >= 1160 && gore.type <= 1162)) && (gore.frame < 7 || gore.frame > 9));
 		}
 
 		/// <summary>

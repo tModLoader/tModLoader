@@ -8,51 +8,34 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -354,6 +_,8 @@
- 						short frameY = tile.frameY;
- 						if (!TextureAssets.Tile[type].IsLoaded)
- 							Main.instance.LoadTiles(type);
-+						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
-+							goto PostDraw;
+@@ -553,7 +_,7 @@
+ 			if (TileID.Sets.HasOutlines[drawData.typeCache])
+ 				GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
  
- 						switch (type) {
- 							case 541:
-@@ -481,6 +_,8 @@
- 						}
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache, tileX, tileY)) {
+ 				if (drawData.tileLight.R < byte.MaxValue)
+ 					drawData.tileLight.R = byte.MaxValue;
  
- 						DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
-+						PostDraw:
-+						TileLoader.PostDraw(j, i, type, Main.spriteBatch);
- 					}
- 				}
+@@ -2794,8 +_,11 @@
  			}
-@@ -4355,6 +_,7 @@
- 							glowColor = _martianGlow;
- 						}
- 
-+						//*extra patch context*
- 						if (num51 == 29) {
- 							glowTexture = TextureAssets.GlowMask[122].Value;
- 							glowSourceRect = new Rectangle(tileFrameX, tileFrameY % 38, tileWidth, tileHeight);
-@@ -4364,6 +_,8 @@
- 						break;
- 					}
- 			}
-+			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref addFrX, ref tileHeight); //TODO: Is this correct?
-+			TileLoader.SetSpriteEffects(x, y, tileCache.type, ref tileSpriteEffect);
  		}
  
- 		private bool IsWindBlocked(int x, int y) {
-@@ -5120,8 +_,11 @@
- 			int type = 706;
- 			if (Main.waterStyle == 12)
- 				type = 1147;
--			else if (Main.waterStyle > 1)
-+			else if (Main.waterStyle > 1) {
- 				type = 706 + Main.waterStyle - 1;
-+				if (Main.waterStyle >= WaterStyleLoader.vanillaWaterCount)
-+					type = WaterStyleLoader.GetWaterStyle(Main.waterStyle).GetDropletGore();
-+			}
+-		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache) {
++		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache, int x, int y) {
+ 			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
++
++			flag |= TileLoader.Dangersense(x,y,typeCache,localPlayer);
++
+ 			if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
+ 				if (!localPlayer.fireWalk)
+@@ -5744,7 +_,7 @@
+ 		}
  
- 			if (typeCache == 374)
- 				type = 716;
+ 		private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust) {
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache, i, j)) {
+ 				if (tileLight.R < byte.MaxValue)
+ 					tileLight.R = byte.MaxValue;
+ 
