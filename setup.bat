@@ -8,7 +8,7 @@ if NOT ["%errorlevel%"]==["0"] (
 )
 
 echo Restoring git submodules
-git submodule update --init --recursive
+git submodule update --init --recursive --remote --merge
 if NOT ["%errorlevel%"]==["0"] (
     pause
     exit /b %errorlevel%
