@@ -1231,10 +1231,12 @@
 +		public void DrawNPC(int iNPCIndex, bool behindTiles) {
  			NPC rCurrentNPC = npc[iNPCIndex];
  			Vector2 screenPos = screenPosition;
-@@ -16810,6 +_,11 @@
+@@ -16810,6 +_,13 @@
  				}
  			}
  
++			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed?
++			
 +			if (!NPCLoader.PreDraw(npc[iNPCIndex], spriteBatch, npcColor)) {
 +				NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, npcColor);
 +				return;
@@ -1243,22 +1245,6 @@
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
-@@ -17997,6 +_,7 @@
- 			}
- 
- 			if (nPC.ichor)
-+				//patch file: color9
- 				color9 = new Microsoft.Xna.Framework.Color(255, 255, 0, 255);
- 
- 			if (nPC.onFrostBurn) {
-@@ -18029,6 +_,7 @@
- 				Lighting.AddLight((int)(nPC.position.X / 16f), (int)(nPC.position.Y / 16f + 1f), 1f, 0.3f, 0.1f);
- 			}
- 
-+			NPCLoader.DrawEffects(nPC, ref color9);
- 			if (Main.player[myPlayer].detectCreature && nPC.lifeMax > 1) {
- 				byte b2;
- 				byte b3;
 @@ -20128,12 +_,14 @@
  				}
  
@@ -1282,74 +1268,36 @@
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num11, num11);
  				Vector2 vector4 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
  				Vector2 origin4 = value9.Size() * new Vector2((n.spriteDirection != 1) ? 1 : 0, 1f);
-@@ -20838,7 +_,10 @@
- 				}
- 			}
- 
-+			if (!ProjectileLoader.PreDrawExtras(projectile, spriteBatch)) {
-+				//fluff
-+			}
--			if (projectile.bobber && Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].holdStyle > 0) {
-+			else if (projectile.bobber && Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].holdStyle > 0) {
- 				num = mountedCenter.X;
- 				num2 = mountedCenter.Y;
- 				num2 += Main.player[projectile.owner].gfxOffY;
-@@ -22026,6 +_,11 @@
+@@ -21587,6 +_,11 @@
  			if (projectile.type == 14)
- 				color25 = Microsoft.Xna.Framework.Color.White;
+ 				color29 = Microsoft.Xna.Framework.Color.White;
  
-+			if (!ProjectileLoader.PreDraw(projectile, spriteBatch, color25)) {
-+				ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
++			if (!ProjectileLoader.PreDraw(projectile, spriteBatch, color29)) {
++				ProjectileLoader.PostDraw(projectile, spriteBatch, color29);
 +				return;
 +			}
 +
- 			int num130 = 0;
- 			int num131 = 0;
+ 			int num135 = 0;
+ 			int num136 = 0;
  			if (projectile.type == 175)
-@@ -22041,6 +_,7 @@
- 				num130 = 8;
- 
- 			if (projectile.type == 519) {
-+				//patch file: num130, num131
- 				num130 = 6;
- 				num131 -= 6;
- 			}
-@@ -22202,6 +_,7 @@
- 				num131 = 4;
+@@ -21928,15 +_,17 @@
+ 				num136 = 3;
  			}
  
-+			//patch file: num132
- 			float num132 = (float)(projectileTexture[projectile.type].Width - projectile.width) * 0.5f + (float)projectile.width * 0.5f;
- 			if (projectile.type == 50 || projectile.type == 53 || projectile.type == 515)
- 				num131 = -8;
-@@ -22286,6 +_,7 @@
++			//patch details
+ 			if (projectile.type == 397) {
+ 				num137 -= 1f;
+ 				num135 = -2;
+ 				num136 = -2;
+ 			}
+ 
  			if (projectile.type == 398)
- 				num130 = 8;
+ 				num135 = 8;
  
-+			ProjectileLoader.DrawOffset(projectile, ref num131, ref num130, ref num132);
++			ProjectileLoader.DrawOffset(projectile, ref num136, ref num135, ref num137);
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  				spriteEffects = SpriteEffects.FlipHorizontally;
-@@ -24319,7 +_,7 @@
- 					}
- 
- 					if (projectile.bobber) {
--						if (projectile.ai[1] > 0f && projectile.ai[1] < 3930f && projectile.ai[0] == 1f) {
-+						if (projectile.ai[1] > 0f && projectile.ai[0] == 1f) {
- 							int num310 = (int)projectile.ai[1];
- 							Vector2 center5 = projectile.Center;
- 							float rotation27 = projectile.rotation;
-@@ -24355,6 +_,10 @@
- 
- 						if (projectile.type == 473)
- 							spriteBatch.Draw(projectileTexture[projectile.type], new Vector2(projectile.position.X - screenPosition.X + num132 + (float)num131, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, projectileTexture[projectile.type].Width, projectileTexture[projectile.type].Height), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num132, projectile.height / 2 + num130), projectile.scale, spriteEffects, 0f);
-+
-+						ModProjectile modProjectile = projectile.modProjectile;
-+						if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
-+							spriteBatch.Draw(glowTexture, new Vector2(projectile.position.X - screenPosition.X + num132 + num131, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, projectileTexture[projectile.type].Width, projectileTexture[projectile.type].Height)), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num132, projectile.height / 2 + num130), projectile.scale, spriteEffects, 0f);
- 					}
- 
- 					if (projectile.type == 106)
 @@ -24446,6 +_,8 @@
  				}
  			}
@@ -1383,6 +1331,16 @@
  					_ = drawPlayer.dye[num2].dye;
  			}
  
+@@ -25130,8 +_,8 @@
+ 					}
+ 				}
+ 
+ 				if (projectile.bobber) {
+-					if (projectile.ai[1] > 0f && projectile.ai[1] < 5045f && projectile.ai[0] == 1f) {
++					if (projectile.ai[1] > 0f && projectile.ai[0] == 1f) {
+ 						int num385 = (int)projectile.ai[1];
+ 						Vector2 center5 = projectile.Center;
+ 						float rotation30 = projectile.rotation;
 @@ -25147,17 +_,25 @@
  			if (drawPlayer.dye[0] != null)
  				shaderId = drawPlayer.dye[0].dye;
@@ -1409,6 +1367,16 @@
  			Vector2 position = drawPlayer.position;
  			Microsoft.Xna.Framework.Rectangle bodyFrame = drawPlayer.bodyFrame;
  			drawPlayer.bodyFrame.Y = 0;
+@@ -25175,5 +_,9 @@
+ 
+ 					if (projectile.type == 473)
+ 						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num137 + (float)num136, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num137, projectile.height / 2 + num135), projectile.scale, spriteEffects, 0);
++
++					ModProjectile modProjectile = projectile.modProjectile;
++					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
++						spriteBatch.Draw(glowTexture, new Vector2(projectile.position.X - screenPosition.X + num137 + num136, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num137, projectile.height / 2 + num135), projectile.scale, spriteEffects, 0f);
+ 
+ 					if (projectile.type == 312) {
 @@ -25182,12 +_,43 @@
  			if (drawPlayer.head == 161 || drawPlayer.head == 14 || drawPlayer.head == 15 || drawPlayer.head == 16 || drawPlayer.head == 18 || drawPlayer.head == 21 || drawPlayer.head == 24 || drawPlayer.head == 25 || drawPlayer.head == 26 || drawPlayer.head == 40 || drawPlayer.head == 44 || drawPlayer.head == 51 || drawPlayer.head == 56 || drawPlayer.head == 59 || drawPlayer.head == 60 || drawPlayer.head == 67 || drawPlayer.head == 68 || drawPlayer.head == 69 || drawPlayer.head == 114 || drawPlayer.head == 121 || drawPlayer.head == 126 || drawPlayer.head == 130 || drawPlayer.head == 136 || drawPlayer.head == 140 || drawPlayer.head == 145 || drawPlayer.head == 158 || drawPlayer.head == 159 || drawPlayer.head == 184 || drawPlayer.head == 190 || (double)drawPlayer.head == 92.0 || drawPlayer.head == 195)
  				flag2 = true;
