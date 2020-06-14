@@ -396,9 +396,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
 		/// </summary>
-		/// <param name="player">The player</param>
-		/// <param name="grappleX">X coordinate of the position to grapple to</param>
-		/// <param name="grappleY">Y coordinate of the position to grapple to</param>
 		public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
 		}
 	}
