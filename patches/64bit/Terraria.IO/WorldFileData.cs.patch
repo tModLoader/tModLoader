@@ -1,6 +1,6 @@
 --- src/tModLoader/Terraria.IO/WorldFileData.cs
 +++ src/64bit/Terraria.IO/WorldFileData.cs
-@@ -66,6 +_,9 @@
+@@ -67,6 +_,9 @@
  				case 8400:
  					_worldSizeName = Language.GetText("UI.WorldSizeLarge");
  					break;

@@ -1,6 +1,6 @@
 --- src/tModLoader/Terraria.ModLoader.Core/ModCompile.cs
 +++ src/64bit/Terraria.ModLoader.Core/ModCompile.cs
-@@ -177,12 +_,20 @@
+@@ -179,12 +_,20 @@
  			if (referenceAssembliesPath != null)
  				return true;
  

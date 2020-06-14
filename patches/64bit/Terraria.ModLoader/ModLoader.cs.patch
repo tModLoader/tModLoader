@@ -28,10 +28,11 @@
  		}
  
  		internal static void LoadConfiguration()
-@@ -375,6 +_,9 @@
+@@ -375,7 +_,10 @@
  			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
  			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
  			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+ 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get("LastLaunchedTModLoaderVersion", "0.0"));
 +			Main.Configuration.Get("VanillaMode", ref Core64.vanillaMode);
 +			Main.Configuration.Get("LiteMode", ref Core64.liteMode);
 +			Main.Configuration.Get("Last64BitLaunched", ref Core64.last64bitVersionLaunched);
