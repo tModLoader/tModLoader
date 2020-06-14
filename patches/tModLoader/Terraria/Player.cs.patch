@@ -1658,6 +1658,29 @@
  			velocity.Y -= num * gravDir;
  			if (gravDir == 1f) {
  				if (velocity.Y > 0f)
+@@ -13977,6 +_,11 @@
+ 			float num3 = 0f;
+ 			for (int i = 0; i < grapCount; i++) {
+ 				Projectile projectile = Main.projectile[grappling[i]];
++				int type = projectile.type;
++				bool useAiType = projectile.modProjectile != null && projectile.modProjectile.aiType > 0;
++				if(useAiType) {
++					projectile.type = projectile.modProjectile.aiType;
++				}
+ 				num2 += projectile.position.X + (float)(projectile.width / 2);
+ 				num3 += projectile.position.Y + (float)(projectile.height / 2);
+ 				if (projectile.type == 403) {
+@@ -14017,6 +_,10 @@
+ 					num2 += 0f - vector4.X + value.X * num5;
+ 					num3 += 0f - vector4.Y + value.Y * num5;
+ 				}
++				if(useAiType) {
++					projectile.type = type;
++				}
++				ProjectileLoader.GrappleTargetPoint(projectile, this, ref num2, ref num3);
+ 			}
+ 
+ 			num2 /= (float)grapCount;
 @@ -14032,6 +_,7 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 13f;
