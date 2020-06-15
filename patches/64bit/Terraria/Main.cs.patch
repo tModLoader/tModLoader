@@ -165,6 +165,14 @@
  			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
  			if (!Directory.Exists(vanillaContentFolder)) {
  				vanillaContentFolder = "../Content"; // Nested Manual Install
+@@ -6757,6 +_,7 @@
+ 			});
+ 
+ 			base.Initialize();
++			base.Window.ClientSizeChanged += Core64.DoClientSizeChanged;
+ 			base.Window.AllowUserResizing = true;
+ 			OpenSettings();
+ 			if (screenWidth > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
 @@ -7473,7 +_,7 @@
  			if (waveBank == null) //supress extra exceptions from audio engine failing to load
  				return;
@@ -336,7 +344,14 @@
  			screenMaximized = (((Form)Control.FromHandle(instance.Window.Handle)).WindowState == FormWindowState.Maximized);
  			if (screenBorderless && screenMaximized && !graphics.IsFullScreen) {
  				screenMaximized = false;
-@@ -50891,7 +_,7 @@
+@@ -50884,14 +_,11 @@
+ #else
+ 			Main.screenMaximized = false;
+ #endif
+-			if (!instance.IsActive && (screenBorderless || screenMaximized || graphics.IsFullScreen))
+-				return;
+-
+ 			bool flag2 = false;
  			int num3;
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen) {
@@ -345,7 +360,11 @@
  				form.MinimumSize = new Size(0, 0);
  				if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  					screenBorderlessPendingResizes--;
-@@ -50925,7 +_,7 @@
+@@ -50922,10 +_,11 @@
+ 				else {
+ 					num3 = graphics.PreferredBackBufferWidth;
+ 					num4 = graphics.PreferredBackBufferHeight;
++					flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  				}
  			}
  			else {
@@ -363,6 +382,16 @@
  			// appears redundant. Just causes the window to fight the user when attempting to resize too small
  			// with this disabled, the window will just snap back to minimum size when released
  			/*if (!fullscreen && !flag2) {
+@@ -50970,8 +_,7 @@
+ 				screenHeight = height;
+ 				graphics.PreferredBackBufferWidth = screenWidth;
+ 				graphics.PreferredBackBufferHeight = screenHeight;
+-				if (width != num3 || height != num4) //avoid resetting the device when it doesn't need resizing
+-					graphics.ApplyChanges();
++				graphics.ApplyChanges();
+ 
+ 				PlayerInput.CacheOriginalScreenDimensions();
+ 				FixUIScale();
 @@ -50981,7 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
@@ -372,3 +401,11 @@
  				if (!fullscreen) {
  					form.SendToBack();
  					form.BringToFront();
+@@ -51020,7 +_,6 @@
+ 		}
+ 
+ 		public void UpdateDisplaySettings() {
+-			SetResolution(base.GraphicsDevice.Viewport.Width, base.GraphicsDevice.Viewport.Height);
+ 		}
+ 
+ 		public static void OpenPlayerSelect(OnPlayerSelected method) {

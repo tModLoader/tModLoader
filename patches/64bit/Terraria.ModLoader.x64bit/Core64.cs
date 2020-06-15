@@ -307,5 +307,19 @@ namespace Terraria.ModLoader.x64bit
 				}
 			}
 		}
+
+		public static void DoClientSizeChanged(Object sender, EventArgs e)
+		{
+			var window = sender as GameWindow;
+			// We remove the event in case SetResolution changes the window size again.
+			window.ClientSizeChanged -= DoClientSizeChanged;
+			if (Main.graphics.IsFullScreen) {
+				Main.SetResolution(Main.PendingResolutionWidth, Main.PendingResolutionHeight);
+			}
+			else {
+				Main.SetResolution(window.ClientBounds.Width, window.ClientBounds.Height);
+			}
+			window.ClientSizeChanged += DoClientSizeChanged;
+		}
 	}
 }
