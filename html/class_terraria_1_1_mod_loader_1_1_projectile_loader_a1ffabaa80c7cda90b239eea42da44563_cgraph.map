@@ -1,0 +1,4 @@
+<map id="Terraria.ModLoader.ProjectileLoader.GrappleTargetPoint" name="Terraria.ModLoader.ProjectileLoader.GrappleTargetPoint">
+<area shape="rect" id="node2" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac4de29eeb738abe6b8c94bc8683fbc92" title="The location that the grappling hook pulls the player to. Defaults to the center of the hook projecti..." alt="" coords="259,5,464,47"/>
+<area shape="rect" id="node3" href="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212" title="Terraria.ModLoader.Global\lProjectile.Instance" alt="" coords="268,71,455,112"/>
+</map>

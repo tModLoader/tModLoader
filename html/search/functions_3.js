@@ -39,6 +39,7 @@ var searchData=
   ['delegategrabrange',['DelegateGrabRange',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a8ad81af84490d6804d6e746ee8b6b37e',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegategrapplepullspeed',['DelegateGrapplePullSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a2744e597c3133cba11b7a4b7592bc2d3',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegategrappleretreatspeed',['DelegateGrappleRetreatSpeed',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a952da66f954dc6993d3b9444c957470c',1,'Terraria::ModLoader::ProjectileLoader']]],
+  ['delegategrappletargetpoint',['DelegateGrappleTargetPoint',['../class_terraria_1_1_mod_loader_1_1_projectile_loader.html#af3d66f87fbe2dac5eb03a718439dffcf',1,'Terraria::ModLoader::ProjectileLoader']]],
   ['delegatehorizontalwingspeeds',['DelegateHorizontalWingSpeeds',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a6fb98e97ea8f4ce1077437e6d6c6f812',1,'Terraria::ModLoader::ItemLoader']]],
   ['delegatekilltile',['DelegateKillTile',['../class_terraria_1_1_mod_loader_1_1_tile_loader.html#aa302db51e71127ad510c8d5a1575e806',1,'Terraria::ModLoader::TileLoader']]],
   ['delegatekillwall',['DelegateKillWall',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html#a950ad65f5cd49d327c13fbd1d0b2d80f',1,'Terraria::ModLoader::WallLoader']]],

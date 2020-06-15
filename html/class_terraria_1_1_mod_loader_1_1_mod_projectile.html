@@ -185,6 +185,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf427ac7f49f9c3a28ed60fde7b39909"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#adf427ac7f49f9c3a28ed60fde7b39909">GrappleRetreatSpeed</a> (Player player, ref float speed)</td></tr>
 <tr class="memdesc:adf427ac7f49f9c3a28ed60fde7b39909"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.  <a href="#adf427ac7f49f9c3a28ed60fde7b39909">More...</a><br /></td></tr>
 <tr class="separator:adf427ac7f49f9c3a28ed60fde7b39909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7da8640cb6aaceb66187fcf62f9d018"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af7da8640cb6aaceb66187fcf62f9d018">GrappleTargetPoint</a> (Player player, ref float grappleX, ref float grappleY)</td></tr>
+<tr class="memdesc:af7da8640cb6aaceb66187fcf62f9d018"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.  <a href="#af7da8640cb6aaceb66187fcf62f9d018">More...</a><br /></td></tr>
+<tr class="separator:af7da8640cb6aaceb66187fcf62f9d018"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6ada2add80fed8a7a311044246cdefd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd">Kill</a> (int timeLeft)</td></tr>
 <tr class="memdesc:ab6ada2add80fed8a7a311044246cdefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)  <a href="#ab6ada2add80fed8a7a311044246cdefd">More...</a><br /></td></tr>
 <tr class="separator:ab6ada2add80fed8a7a311044246cdefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -808,8 +811,8 @@ Properties</h2></td></tr>
 
 <p>When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. </p>
 
-<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00441">441</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
-<div class="fragment"><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                                                                                                                                                                                                                  {</div><div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00447">447</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;                                                                                                                                                                                                                  {</div><div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a48f04db7c4e6636b043bc62020ff1342"></a>
@@ -941,6 +944,50 @@ Properties</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00429">429</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
 <div class="fragment"><div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;                                                                                {</div><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af7da8640cb6aaceb66187fcf62f9d018"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModProjectile.GrappleTargetPoint </td>
+          <td>(</td>
+          <td class="paramtype">Player&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>grappleX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>grappleY</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile. </p>
+
+<p>Definition at line <a class="el" href="_mod_projectile_8cs_source.html#l00441">441</a> of file <a class="el" href="_mod_projectile_8cs_source.html">ModProjectile.cs</a>.</p>
+<div class="fragment"><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                                                                                                      {</div><div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ab6ada2add80fed8a7a311044246cdefd"></a>

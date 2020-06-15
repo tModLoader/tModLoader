@@ -15,6 +15,7 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a7b67b1fc3ff53a59a66cb0fe82410778", null ],
     [ "GrapplePullSpeed", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13d107cf7fb3ee9bc26eb2b2750994ea", null ],
     [ "GrappleRetreatSpeed", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#af3cebf7f17f07bd9f39e2a75fd6af915", null ],
+    [ "GrappleTargetPoint", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac4de29eeb738abe6b8c94bc8683fbc92", null ],
     [ "Instance", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac385423894e4a48e74b7a185095d4212", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1d449abeb4ee387b6b2ebe33da5693aa", null ],
     [ "MinionContactDamage", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab216a84d7301f86afada25f4b9f17156", null ],
