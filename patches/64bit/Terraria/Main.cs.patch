@@ -169,7 +169,7 @@
  			});
  
  			base.Initialize();
-+			base.Window.ClientSizeChanged += DoClientSizeChanged;
++			base.Window.ClientSizeChanged += Core64.DoClientSizeChanged;
  			base.Window.AllowUserResizing = true;
  			OpenSettings();
  			if (screenWidth > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
@@ -401,22 +401,9 @@
  				if (!fullscreen) {
  					form.SendToBack();
  					form.BringToFront();
-@@ -51019,8 +_,19 @@
- 			UIScale = UIScaleWanted;
+@@ -51020,7 +_,6 @@
  		}
  
-+		private void DoClientSizeChanged(Object sender, EventArgs e)
-+		{
-+			// We remove the event in case SetResolution changes the window size again.
-+			Window.ClientSizeChanged -= DoClientSizeChanged;
-+			if (graphics.IsFullScreen) {
-+				SetResolution(PendingResolutionWidth, PendingResolutionHeight);
-+			} else {
-+				SetResolution(Window.ClientBounds.Width, Window.ClientBounds.Height);
-+			}
-+			Window.ClientSizeChanged += DoClientSizeChanged;
-+		}
-+
  		public void UpdateDisplaySettings() {
 -			SetResolution(base.GraphicsDevice.Viewport.Width, base.GraphicsDevice.Viewport.Height);
  		}
