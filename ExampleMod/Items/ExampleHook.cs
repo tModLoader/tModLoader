@@ -122,6 +122,13 @@ namespace ExampleMod.Items
 			speed = 4;
 		}
 
+		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
+			Vector2 dirToPlayer = projectile.DirectionTo(player.Center);
+			float hangDist = 50f;
+			grappleX += dirToPlayer.X * hangDist;
+			grappleY += dirToPlayer.Y * hangDist;
+		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
 			Vector2 center = projectile.Center;
