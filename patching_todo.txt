@@ -69,6 +69,12 @@
 			ItemLoader.MeleeEffects(item, this, itemRectangle);
 			PlayerHooks.MeleeEffects(this, item, itemRectangle);
 			
+		//In ItemCheck_UseMiningTools_TryPoundingTile, apply this:
+-			if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
++			if (TileLoader.Slope(x, y, Main.tile[x, u].type)) {
++			}	
++			else if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
+			
 		//These giant patches:
 //{
 @@ -28829,26 +29253,48 @@

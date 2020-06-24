@@ -1775,7 +1775,7 @@
  		}
  
  		public Color ChatColor() {
-@@ -20799,7 +_,11 @@
+@@ -20799,8 +_,12 @@
  					if (!immune && !flag2)
  						StatusFromNPC(Main.npc[i]);
  
@@ -1789,6 +1789,7 @@
 +					}
  
  					if (num) {
+ 						GiveImmuneTimeForCollisionAttack(longInvince ? 60 : 30);
 @@ -20875,4 +_,6 @@
  		}
  
@@ -2258,14 +2259,6 @@
  				if (buffTime[i] > 0 && buffType[i] == 59)
  					DelBuff(i);
  			}
-@@ -25998,6 +_,7 @@
- 				itemRotation = 0f;
- 			}
- 
-+			ItemLoader.HoldStyle(item, this);
- 			if ((((item.type == 974 || item.type == 8 || item.type == 1245 || item.type == 2274 || item.type == 3004 || item.type == 3045 || item.type == 3114 || (item.type >= 427 && item.type <= 433)) && !wet) || item.type == 523 || item.type == 1333) && !pulley) {
- 				float num45 = 1f;
- 				float num46 = 0.95f;
 @@ -26098,6 +_,13 @@
  					return 0.0;
  				}
@@ -2532,17 +2525,6 @@
  										num230 = 0;
  
  									if (hitTile.AddDamage(num229, num230) >= 100) {
-@@ -27914,7 +_,9 @@
- 										if (poundRelease) {
- 											int num231 = tileTargetX;
- 											int num232 = tileTargetY;
-+											if (TileLoader.Slope(num231, num232, Main.tile[num231, num232].type)) {
-+											}
--											if (TileID.Sets.Platforms[Main.tile[num231, num232].type]) {
-+											else if (TileID.Sets.Platforms[Main.tile[num231, num232].type]) {
- 												if (Main.tile[num231, num232].halfBrick()) {
- 													WorldGen.PoundTile(num231, num232);
- 													if (Main.netMode == 1)
 @@ -28342,10 +_,11 @@
  			if (paintingAWall) {
  				if (b != byte.MaxValue && Main.tile[x, y].wallColor() != b && WorldGen.paintWall(x, y, b, broadCast: true)) {
@@ -2556,14 +2538,6 @@
  						ApplyItemTime(inventory[selectedItem], wallSpeed);
  				}
  			}
-@@ -28396,6 +_,7 @@
- 					}
- 				}
- 				else if (item.useStyle == 3) {
-+					//patch file: flag21
- 					if ((double)itemAnimation > (double)itemAnimationMax * 0.666) {
- 						flag21 = true;
- 					}
 @@ -28403,7 +_,7 @@
  			int num2 = 25;
  			int num3 = 50;
