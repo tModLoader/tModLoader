@@ -2336,14 +2336,6 @@
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
  
  						NetMessage.SendData(16, -1, -1, null, whoAmI);
-@@ -26333,6 +_,7 @@
- 					Lighting.AddLight(RotatedRelativePoint(new Vector2(itemLocation.X + 6f + base.velocity.X, itemLocation.Y - 14f)), 1f, 0.6f, 0.85f);
- 			}
- 
-+			ItemLoader.HoldItem(item, this);
- 			if (controlUseItem)
- 				releaseUseItem = false;
- 			else
 @@ -26361,6 +_,9 @@
  						velocity.Y = -3.5f;
  						fallStart = (int)(position.Y / 16f);
@@ -2588,48 +2580,6 @@
 +			ItemLoader.ExtractinatorUse(ref num5, ref num6, extractType);
  			if (num5 > 0) {
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
-@@ -28722,6 +_,8 @@
- 						Main.dust[num299].velocity.Y *= 2f;
- 					}
- 
-+					ItemLoader.MeleeEffects(item, this, r2);
-+					PlayerHooks.MeleeEffects(this, item, r2);
- 					if (Main.myPlayer == i && (item.type == 1991 || item.type == 3183)) {
- 						for (int num300 = 0; num300 < 200; num300++) {
- 							if (Main.npc[num300].active && Main.npc[num300].catchItem > 0) {
-@@ -28733,22 +_,7 @@
- 					}
- 
- 					if (Main.myPlayer == i && (item.damage > 0 || item.type == 3183)) {
--						int num301 = item.damage;
--						if (item.melee)
--							num301 = (int)((float)item.damage * meleeDamage);
--
--						if (item.ranged)
--							num301 = (int)((float)item.damage * rangedDamage);
--
--						if (item.magic)
--							num301 = (int)((float)item.damage * magicDamage);
--
--						if (item.summon)
--							num301 = (int)((float)item.damage * minionDamage);
--
--						if (item.thrown)
--							num301 = (int)((float)item.damage * thrownDamage);
--
-+						int num301 = weaponDamage;//No idea why vanilla doesn't do this. weaponDamage is currently only used for ranged, and the seprate calculation here (which is identical, except ignores ammo modifiers) is used for everything else.
- 						float knockBack = item.knockBack;
- 						float num302 = 1f;
- 						if (kbGlove)
-@@ -28761,6 +_,8 @@
- 						if (inventory[selectedItem].type == 3106)
- 							knockBack += knockBack * (1f - stealth);
- 
-+						ItemLoader.GetWeaponKnockback(item, this, ref knockBack);
-+						PlayerHooks.GetWeaponKnockback(this, item, ref knockBack);
- 						List<ushort> list2 = null;
- 						int type5 = item.type;
- 						if (type5 == 213) {
 @@ -28783,7 +_,8 @@
  			if (Main.moonPhase == 4)
  				num *= 0.9f;
@@ -2678,69 +2628,6 @@
 +				}
  			}
  		}
-@@ -28829,26 +_,48 @@
- 									continue;
- 
- 								if (!Main.npc[num310].dontTakeDamage) {
-+									bool? modCanHit = ItemLoader.CanHitNPC(item, this, Main.npc[num310]);
-+									if (modCanHit.HasValue && !modCanHit.Value)
-+										continue;
-+
-+									bool? modCanBeHit = NPCLoader.CanBeHitByItem(Main.npc[num310], this, item);
-+									if (modCanBeHit.HasValue && !modCanBeHit.Value)
-+										continue;
-+
-+									bool? modCanHit2 = PlayerHooks.CanHitNPC(this, item, Main.npc[num310]);
-+									if (modCanHit2.HasValue && !modCanHit2.Value)
-+										continue;
-+
-+									bool canHitFlag = modCanHit.HasValue && modCanHit.Value || modCanBeHit.HasValue && modCanBeHit.Value || modCanHit2.HasValue && modCanHit2.Value;
--									if (Main.npc[num310].friendly && (Main.npc[num310].type != 22 || !killGuide) && (Main.npc[num310].type != 54 || !killClothier))
-+									if (!canHitFlag && (Main.npc[num310].friendly && (Main.npc[num310].type != 22 || !killGuide) && (Main.npc[num310].type != 54 || !killClothier)))
- 										continue;
- 
- 									Rectangle value13 = new Rectangle((int)Main.npc[num310].position.X, (int)Main.npc[num310].position.Y, Main.npc[num310].width, Main.npc[num310].height);
- 									if (!r2.Intersects(value13) || (!Main.npc[num310].noTileCollide && !CanHit(Main.npc[num310])))
- 										continue;
- 
--									bool flag22 = false;
--									if (item.melee && Main.rand.Next(1, 101) <= meleeCrit)
--										flag22 = true;
--
--									if (item.ranged && Main.rand.Next(1, 101) <= rangedCrit)
--										flag22 = true;
--
--									if (item.magic && Main.rand.Next(1, 101) <= magicCrit)
--										flag22 = true;
--
--									if (item.thrown && Main.rand.Next(1, 101) <= thrownCrit)
--										flag22 = true;
--
-+									// patch note: 1.3.6 should include changes: GetWeaponCrit()
-+									bool flag22 = false; // flag22, is this hit a crit?
-+									int critChance = 0;
-+									if (item.melee)
-+										critChance = meleeCrit;
-+									else if (item.ranged)
-+										critChance = rangedCrit;
-+
-+
-+
-+									else if (item.magic)
-+										critChance = magicCrit;
-+	
-+									else if (item.thrown)
-+										critChance = thrownCrit;
-+	
-+									else if (!item.summon) // custom damage class
-+										critChance = item.crit;
-+	
-+									ItemLoader.GetWeaponCrit(item, this, ref critChance);
-+									PlayerHooks.GetWeaponCrit(this, item, ref critChance);
-+									flag22 = critChance >= 100 || Main.rand.Next(1, 101) <= critChance;
- 									int num311 = Item.NPCtoBanner(Main.npc[num310].BannerID());
- 									if (num311 > 0 && NPCBannerBuff[num311])
- 										num301 = ((!Main.expertMode) ? ((int)((float)num301 * ItemID.Sets.BannerStrength[Item.BannerToItem(num311)].NormalDamageDealt)) : ((int)((float)num301 * ItemID.Sets.BannerStrength[Item.BannerToItem(num311)].ExpertDamageDealt)));
 @@ -28857,7 +_,8 @@
  				return;
  			}
@@ -2751,51 +2638,6 @@
  			if (inventory[num].stack <= 0)
  				inventory[num].SetDefaults();
  		}
-@@ -28860,11 +_,15 @@
- 									}
- 
- 									int num312 = Main.DamageVar(num301);
-+									ItemLoader.ModifyHitNPC(item, this, Main.npc[num310], ref num312, ref knockBack, ref flag22);
-+									NPCLoader.ModifyHitByItem(Main.npc[num310], this, item, ref num312, ref knockBack, ref flag22);
-+									PlayerHooks.ModifyHitNPC(this, item, Main.npc[num310], ref num312, ref knockBack, ref flag22);
- 									StatusNPC(item.type, num310);
- 									OnHit(Main.npc[num310].Center.X, Main.npc[num310].Center.Y, Main.npc[num310]);
- 									if (armorPenetration > 0)
- 										num312 += Main.npc[num310].checkArmorPenetration(armorPenetration);
- 
-+									//patch file: knockBack, flag22, num313
- 									int num313 = (int)Main.npc[num310].StrikeNPC(num312, knockBack, direction, flag22);
- 									if (inventory[selectedItem].type == 3211) {
- 										Vector2 vector30 = new Vector2(direction * 100 + Main.rand.Next(-25, 26), Main.rand.Next(-75, 76));
-@@ -28923,6 +_,9 @@
- 											NetMessage.SendData(21, -1, -1, null, num318);
- 									}
- 
-+									ItemLoader.OnHitNPC(item, this, Main.npc[num310], num313, knockBack, flag22);
-+									NPCLoader.OnHitByItem(Main.npc[num310], this, item, num313, knockBack, flag22);
-+									PlayerHooks.OnHitNPC(this, item, Main.npc[num310], num313, knockBack, flag22);
- 									int num319 = Item.NPCtoBanner(Main.npc[num310].BannerID());
- 									if (num319 >= 0)
- 										lastCreatureHit = num319;
-@@ -28955,6 +_,9 @@
- 									if (num320 == i || !Main.player[num320].active || !Main.player[num320].hostile || Main.player[num320].immune || Main.player[num320].dead || (Main.player[i].team != 0 && Main.player[i].team == Main.player[num320].team))
- 										continue;
- 
-+									if (!ItemLoader.CanHitPvp(item, this, Main.player[num320]) || !PlayerHooks.CanHitPvp(this, item, Main.player[num320]))
-+										continue; // todo: pvp crit hook?
-+
- 									Rectangle value16 = new Rectangle((int)Main.player[num320].position.X, (int)Main.player[num320].position.Y, Main.player[num320].width, Main.player[num320].height);
- 									if (!r2.Intersects(value16) || !CanHit(Main.player[num320]))
- 										continue;
-@@ -28964,6 +_,8 @@
- 										flag24 = true;
- 
- 									int num321 = Main.DamageVar(num301);
-+									ItemLoader.ModifyHitPvp(item, this, Main.player[num320], ref num321, ref flag24);
-+									PlayerHooks.ModifyHitPvp(this, item, Main.player[num320], ref num321, ref flag24);
- 									StatusPvP(item.type, num320);
- 									OnHit(Main.player[num320].Center.X, Main.player[num320].Center.Y, Main.player[num320]);
- 									PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
 @@ -29033,6 +_,9 @@
  		public void ItemCheck(int i) {
 +			if (!PlayerHooks.PreItemCheck(this))
