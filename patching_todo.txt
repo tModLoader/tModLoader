@@ -60,6 +60,45 @@
 			
 			TileLoader.PostDraw(x, y, type, spriteBatch);
 			
+	//WallDrawing:
+		//Reimplement these calls:
+			if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
+				WallLoader.PostDraw(j, i, wall, spriteBatch);
+				continue;
+			}
+		
+		//Around line 130, after outline draws, put this:
+			WallLoader.PostDraw(j, i, wall, spriteBatch);
+			
+	//Item:
+		//In Item.GetDrawHitbox, return the following size if it's not null.
+			itemAnimations[item[i].type]?.GetFrame(itemTexture[item[i].type])
+			
+	//LegacyNetDiagnosticsUI:
+		//Add this to the end of PrintNetDiagnosticsLineForMessage
+			ModNet.DrawModDiagnoseNet();
+			
+	//LegacySoundPlayer
+		//Re-add clamps for volume and pitch, 0.0..1.0 and -1.0..1.0 respectively?
+			
+		//In PlaySound, before any playing:
+			case int _ when SoundLoader.PlayModSound(type, num, num2, num3, ref soundEffectInstance):
+				// Modders can return null to not play anything (prevent overlap), return the original sound effect (restarts sound), or return a new sound effect instance to allow overlapping sound.
+				break;
+		
+		//In PlaySound, call this if the type is SoundLoader.customSoundType
+			// TODO, trackable sounds? verify working. return soundEffectInstance
+			SoundLoader.customSoundInstances[num].Stop();
+			SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].CreateInstance();
+			SoundLoader.customSoundInstances[num].Volume = num2;
+			SoundLoader.customSoundInstances[num].Pan = num3;
+			//Main.PlaySoundInstance(SoundLoader.customSoundInstances[num]);
+			soundEffectInstance = SoundLoader.customSoundInstances[num];
+			
+		//Put this in somewhere:
+			if (waveBank == null) //Supress extra exceptions from the audio engine failing to load
+				return null;
+		
 	//LegacyPlayerRenderer:
 		//Reimplement all PlayerHeadDrawInfo & PlayerDrawInfo related stuff. Use 1.3.5.3 vanilla/tML diffs.
 		//There might need to be a redesign of the structs and the hooks that use it.
@@ -72,20 +111,45 @@
 		//Reimplement these calls from Main.DrawPlayer:
 			ItemLoader.DrawHands(drawPlayer, ref flag, ref flag2);
 			
-			ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(projectile[drawPlayer.heldProj], ref flag3);
-			
 			ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5);
 			
 			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num12, ref newColor);
 			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num13, ref newColor2);
 			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num14, ref newColor3);
 			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num15, ref newColor4);
+			
+			ItemLoader.DrawHands(drawPlayer, ref flag, ref flag2);
+			
+			ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(projectile[drawPlayer.heldProj], ref flag3); //(multiple of these)
+			
+			ItemLoader.DrawBody(drawPlayer) // ('if' check)
+			
+		//Reimplement the following broken patches:
+// {
++			bool fullBright = false;
++			PlayerHooks.DrawEffects(drawInfo, ref num18, ref num19, ref num20, ref num21, ref fullBright);
+ 			if (num18 != 1f || num19 != 1f || num20 != 1f || num21 != 1f) {
+-				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn) {
++				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || fullBright) {
+// }
+
+// {
++						Vector2 holdoutOrigin = Vector2.Zero;
++						ItemLoader.HoldoutOrigin(drawPlayer, ref holdoutOrigin);
+-						value = new DrawData(itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type], new Vector2((int)(value2.X - screenPosition.X + origin5.X + (float)num103), (int)(value2.Y - screenPosition.Y + (float)num104)), new Microsoft.Xna.Framework.Rectangle(0, 0, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Width, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Height), drawPlayer.inventory[drawPlayer.selectedItem].GetAlpha(currentColor), num102, origin5, drawPlayer.inventory[drawPlayer.selectedItem].scale, spriteEffects2, 0);
++						value = new DrawData(itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type], new Vector2((int)(value2.X - screenPosition.X + origin5.X + (float)num103), (int)(value2.Y - screenPosition.Y + (float)num104)), new Microsoft.Xna.Framework.Rectangle(0, 0, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Width, itemTexture[drawPlayer.inventory[drawPlayer.selectedItem].type].Height), drawPlayer.inventory[drawPlayer.selectedItem].GetAlpha(currentColor), num102, origin5 + holdoutOrigin, drawPlayer.inventory[drawPlayer.selectedItem].scale, spriteEffects2, 0);
+// }
 		
 	//Main:
 		//Add this to the end of Initialize():
 			#if SERVER
 			this.OpenSettings();
 			#endif
+			
+		//Add this to the end of ClearVisualPostProcessEffects:
+			//Added by tML.
+			Filters.Scene.DeactivateAll();
+			SkyManager.Instance.DeactivateAll();
 			
 		//Put this somewhere it fits. Was in Main.LoadTextures():
 			UICommon.LoadTextures();
@@ -105,9 +169,39 @@
 		//Put this somewhere high in DoUpdateInWorld:
 			if (netMode == 1 && Netplay.syncingWorld) // skip updating entities while world is loading in multiplayer #340
 				goto skipEntityUpdates;
+				
+		//In DrawWaters, replace '13' in for check with
+			WaterStyleLoader.WaterStyleCount'
 			
 		//Add this after DoUpdate_WhilePaused() call:
 			PlayerHooks.UpdateAutopause(player[myPlayer]);
+			
+		//Add this to the top of Main.DrawItem:
+			if (!ItemLoader.PreDrawInWorld(item, spriteBatch, color, currentColor, ref num4, ref scale, whoami)) {
+				goto PostDraw;
+			}
+			
+		//Add this to the middle of DrawBG() after definition of the used variable.
+			SurfaceBgStyleLoader.ChooseStyle(ref preferredBGStyleForPlayer);
+			
+		//Add this near the end of Main.DrawItem, before the default drawing calls:
+			if(ItemLoader.animations.Contains(item.type))
+				ItemLoader.DrawAnimatedItem(item, whoAmI, color, alpha, rotation, scale);
+				goto PostDraw;
+		
+		//Add this to the end of Main.DrawItem:
+			PostDraw:
+			ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num4, scale, whoami);
+			
+		//Add this to the end of DrawSurfaceBG_BackMountainsStep2:
+			SurfaceBgStyleLoader.DrawMiddleTexture();
+			
+		//Add this near the end of DrawSurfaceBG(), after SkyManager.Instance.DrawToDepth(spriteBatch, 1f); call:
+			FinishDrawCloseBackground:
+			SurfaceBgStyleLoader.DrawCloseBackground(num21);
+		//...Then make sure that all returns/continues before it are replaced with gotos to that statement.
+			
+		//Find where the logo is rendered, and lower the position a bit.
 			
 		//If still needed - replace Utils.WordwrapString call in Main.TextDisplayCache.PrepareCache with Utils.WordwrapStringSmart.
 		//Use old diffs in Main.GUIChatDrawInner
