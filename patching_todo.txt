@@ -127,13 +127,14 @@
 			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
 			
 		//Reimplement broken patches:
-//
+// {
 if (nPC.aiStyle == 7)
 	DrawNPCExtras(n3, beforeDraw: false, num65, num64, color9, vector10, spriteEffects);
 
 +NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, color9);
+// }
 
-//
+// {
 @@ -6674,41 +5292,48 @@
  			}
  
@@ -179,7 +180,9 @@ if (nPC.aiStyle == 7)
  			PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  			TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
  			ScreenShaderRef.Value = ShaderContentManager.Load<Effect>("ScreenShader");
-//
+// }
+
+// {
 @@ -16295,7 +16647,9 @@
  				}
  
@@ -190,7 +193,9 @@ if (nPC.aiStyle == 7)
  						int num316 = 0;
  						switch (frameX) {
  							case 22: {
-//
+// }
+
+// {
 @@ -16309,11 +16663,22 @@
  									}
  
@@ -214,7 +219,9 @@ if (nPC.aiStyle == 7)
  										if (Main.tile[num300, num325].type == 2) {
  											num320 = GetTreeStyle(num300);
  											break;
-//
+// }
+
+// {
 @@ -16152,6 +16503,7 @@
  						int num298 = 0;
  						spriteBatch.Draw(texture2D2, new Vector2((float)(j * 16 - (int)screenPosition.X) - ((float)num9 - 16f) / 2f + (float)num297, i * 16 - (int)screenPosition.Y + num12 + num298) + value, empty, color6, 0f, default(Vector2), 1f, effects, 0f);
@@ -222,7 +229,9 @@ if (nPC.aiStyle == 7)
 +					TileLoader.PostDraw(j, i, type, spriteBatch);
  				}
  			}
- //
+// }
+
+// {
  @@ -16380,10 +16745,12 @@
  										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num326 / 2f, 0.7f + num326);
  									}
@@ -238,7 +247,9 @@ if (nPC.aiStyle == 7)
  										spriteBatch.Draw(treeTopAltTexture[num320, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									else
  										spriteBatch.Draw(treeTopTexture[num320], new Vector2(num300 * 16 - (int)screenPosition.X - num323, num301 * 16 - (int)screenPosition.Y - num322 + 16 + num324) + value, new Microsoft.Xna.Framework.Rectangle(num316 * (num321 + 2), 0, num321, num322), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-//
+// }
+
+// {
 @@ -16401,7 +16768,13 @@
  									}
  
@@ -253,7 +264,9 @@ if (nPC.aiStyle == 7)
  										if (Main.tile[num300 + 1, num328].type == 2) {
  											num327 = GetTreeStyle(num300 + 1);
  											break;
-//
+// }
+
+// {
 @@ -16455,10 +16828,12 @@
  										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num329 / 2f, 0.7f + num329);
  									}
@@ -269,7 +282,9 @@ if (nPC.aiStyle == 7)
  										spriteBatch.Draw(treeBranchAltTexture[num327, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									else
  										spriteBatch.Draw(treeBranchTexture[num327], new Vector2(num300 * 16 - (int)screenPosition.X - 24, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(0, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-//
+// }
+
+// {
 @@ -16476,7 +16851,13 @@
  									}
  
@@ -284,7 +299,9 @@ if (nPC.aiStyle == 7)
  										if (Main.tile[num300 - 1, num318].type == 2) {
  											num317 = GetTreeStyle(num300 - 1);
  											break;
-//
+// }
+
+// {
 @@ -16530,10 +16911,12 @@
  										Lighting.AddLight(num300, num301, 0.1f, 0.2f + num319 / 2f, 0.7f + num319);
  									}
@@ -300,7 +317,9 @@ if (nPC.aiStyle == 7)
  										spriteBatch.Draw(treeBranchAltTexture[num317, tile6.color()], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  									else
  										spriteBatch.Draw(treeBranchTexture[num317], new Vector2(num300 * 16 - (int)screenPosition.X, num301 * 16 - (int)screenPosition.Y - 12) + value, new Microsoft.Xna.Framework.Rectangle(42, num316 * 42, 40, 40), Lighting.GetColor(num300, num301), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-//
+// }
+
+// {
 @@ -16544,7 +16927,7 @@
  					}
  
@@ -310,7 +329,9 @@ if (nPC.aiStyle == 7)
  
  					int num330 = 0;
  					switch (frameX) {
-//
+// }
+
+// {
 @@ -16562,7 +16945,12 @@
  					int num334 = 80;
  					int num335 = 32;
@@ -324,7 +345,9 @@ if (nPC.aiStyle == 7)
  						if (Main.tile[num300, num337].type == 53) {
  							num332 = 0;
  							break;
-//
+// }
+
+// {
 @@ -16586,16 +16974,22 @@
  
  					int frameY3 = Main.tile[num300, num301].frameY;
@@ -350,7 +373,9 @@ if (nPC.aiStyle == 7)
  			}
  
  			if (TileObject.objectPreview.Active && player[myPlayer].showItemIcon && placementPreview && !CaptureManager.Instance.Active) {
-//
+// }
+
+// {
 @@ -12580,18 +12880,30 @@
  					else if (array2[l]) {
  						black = (array3[l] ? new Microsoft.Xna.Framework.Color((byte)(190f * num18), (byte)(120f * num18), (byte)(120f * num18), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num18), (byte)(190f * num18), (byte)(120f * num18), a));
