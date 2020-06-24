@@ -59,6 +59,27 @@
 			TileLoader.DrawEffects(j, i, type, spriteBatch, ref color, ref nextSpecialDrawIndex);
 			
 			TileLoader.PostDraw(x, y, type, spriteBatch);
+			
+	//LegacyPlayerRenderer:
+		//Reimplement all PlayerHeadDrawInfo & PlayerDrawInfo related stuff. Use 1.3.5.3 vanilla/tML diffs.
+		//There might need to be a redesign of the structs and the hooks that use it.
+		//Perhaps we won't even need the structs anymore.
+		
+		//Remove all 'id<vanilla count' checks.
+		
+		//Reimplement ItemLoader.DrawHair hook.
+		
+		//Reimplement these calls from Main.DrawPlayer:
+			ItemLoader.DrawHands(drawPlayer, ref flag, ref flag2);
+			
+			ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(projectile[drawPlayer.heldProj], ref flag3);
+			
+			ItemLoader.DrawHair(drawPlayer, ref flag4, ref flag5);
+			
+			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref color11, ref num12, ref newColor);
+			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref color12, ref num13, ref newColor2);
+			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref num14, ref newColor3);
+			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref color14, ref num15, ref newColor4);
 		
 	//Main:
 		//Add this to the end of Initialize():
@@ -88,6 +109,9 @@
 		//Add this after DoUpdate_WhilePaused() call:
 			PlayerHooks.UpdateAutopause(player[myPlayer]);
 			
+		//If still needed - replace Utils.WordwrapString call in Main.TextDisplayCache.PrepareCache with Utils.WordwrapStringSmart.
+		//Use old diffs in Main.GUIChatDrawInner
+			
 		//Reimplement the entire ModifyTooltips hook call with all the tooltipNames filling, based on diffs of 1.3.5.3. See MouseText_DrawItemTooltip.
 		
 		//In DrawProj, jump over drawing of all extras with a goto:
@@ -99,6 +123,8 @@
 			ModHooks.MidUpdateProjectileItem();
 			
 			PlayerHooks.SendClientChanges(player[myPlayer], clientPlayer);
+			
+			ProjectileLoader.PostDraw(projectile, spriteBatch, color25);
 			
 		//Reimplement broken patches:
 //
