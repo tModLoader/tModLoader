@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -1072,7 +1073,7 @@ namespace Terraria.ModLoader
 			if (ConsumeItem(item, player) && --item.stack == 0)
 				item.SetDefaults();
 
-			Main.PlaySound(7);
+			SoundEngine.PlaySound(7);
 			Main.stackSplit = 30;
 			Main.mouseRightRelease = false;
 			Recipe.FindRecipes();

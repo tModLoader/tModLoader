@@ -1019,7 +1019,7 @@
  				X += 34;
  
  			new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
-+			Vector2 vector = FontAssets.MouseText.MeasureString(cursorText);
++			Vector2 vector = FontAssets.MouseText.Value.MeasureString(cursorText);
  			if (HoverItem.type > 0) {
  				MouseText_DrawItemTooltip(info, num, diff, X, Y);
  				return;
@@ -1042,47 +1042,6 @@
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
-@@ -15310,10 +_,12 @@
- 					for (int i = 0; i < item.ToolTip.Lines; i++) {
- 						if (i == 0 && ItemID.Sets.UsesCursedByPlanteraTooltip[item.type] && !NPC.downedPlantBoss) {
- 							toolTipLine[numLines] = Lang.tip[59].Value;
-+							tooltipNames[currentLine] = "Tooltip" + j;
- 							numLines++;
- 						}
- 						else {
- 							toolTipLine[numLines] = item.ToolTip.GetLine(i);
-+							tooltipNames[currentLine] = "Tooltip" + j;
- 							numLines++;
- 						}
- 					}
-@@ -15321,23 +_,27 @@
- 
- 				if ((item.type == 3818 || item.type == 3819 || item.type == 3820 || item.type == 3824 || item.type == 3825 || item.type == 3826 || item.type == 3829 || item.type == 3830 || item.type == 3831 || item.type == 3832 || item.type == 3833 || item.type == 3834) && !player[myPlayer].downedDD2EventAnyDifficulty) {
- 					toolTipLine[numLines] = Lang.misc[104].Value;
-+					tooltipNames[currentLine] = "EtherianManaWarning";
- 					numLines++;
- 				}
- 
- 				if (item.buffType > 0 && BuffID.Sets.IsWellFed[item.buffType] && expertMode) {
- 					toolTipLine[numLines] = Lang.misc[40].Value;
-+					tooltipNames[currentLine] = "WellFedExpert";
- 					numLines++;
- 				}
- 
- 				if (item.buffTime > 0) {
- 					string text = (item.buffTime / 60 < 60) ? Language.GetTextValue("CommonItemTooltip.SecondDuration", Math.Round((double)item.buffTime / 60.0)) : Language.GetTextValue("CommonItemTooltip.MinuteDuration", Math.Round((double)(item.buffTime / 60) / 60.0));
- 					toolTipLine[numLines] = text;
-+					tooltipNames[currentLine] = "BuffTime";
- 					numLines++;
- 				}
- 
- 				if (item.type == 3262 || item.type == 3282 || item.type == 3283 || item.type == 3284 || item.type == 3285 || item.type == 3286 || item.type == 3316 || item.type == 3315 || item.type == 3317 || item.type == 3291 || item.type == 3389) {
- 					toolTipLine[numLines] = " ";
- 					yoyoLogo = numLines;
-+					tooltipNames[currentLine] = "OneDropLogo";
- 					numLines++;
- 				}
- 
 @@ -15608,7 +_,7 @@
  			}
  		}
@@ -1655,7 +1614,7 @@
  							scale = 1.5f;
  
 +						if (!NPCLoader.DrawHealthBar(npc[num2], ref scale)) {
-+							npc[num2].position -= npc[num2].visualOffset;
++							npc[num2].position -= npc[num2].netOffset;
 +							continue;
 +						}
 +

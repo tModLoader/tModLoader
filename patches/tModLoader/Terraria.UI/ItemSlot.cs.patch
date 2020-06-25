@@ -201,7 +201,7 @@
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
 +
-+				PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
++				PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
  			}
  		}
  
