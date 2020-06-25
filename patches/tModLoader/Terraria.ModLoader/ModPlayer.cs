@@ -761,7 +761,7 @@ namespace Terraria.ModLoader
 		/// <param name="fishingRod"></param>
 		/// <param name="bait"></param>
 		/// <param name="fishingLevel"></param>
-		public virtual void GetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel) {
+		public virtual void GetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel) {
 		}
 
 		/// <summary>

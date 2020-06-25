@@ -1,0 +1,21 @@
+--- src/Terraria/Terraria.DataStructures/PlayerFishingConditions.cs
++++ src/tModLoader/Terraria.DataStructures/PlayerFishingConditions.cs
+@@ -2,11 +_,14 @@
+ {
+ 	public struct PlayerFishingConditions
+ 	{
+-		public int PolePower;
+-		public int PoleItemType;
+-		public int BaitPower;
+-		public int BaitItemType;
++		public int PolePower => Pole.fishingPole;
++		public int PoleItemType => Pole.type;
++		public int BaitPower => Bait.bait;
++		public int BaitItemType => Bait.type;
+ 		public float LevelMultipliers;
+ 		public int FinalFishingLevel;
++
++		public Item Pole;
++		public Item Bait;
+ 	}
+ }

@@ -4,8 +4,8 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
-++using Terraria.ModLoader;
-++using Terraria.ModLoader.IO;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
  namespace Terraria
  {
@@ -191,20 +191,19 @@
 +			structures = new StructureMap();
  			worldSurfaceLow = 0.0;
 -			double worldSurface = 0.0;
--			double worldSurfaceHigh = 0.0;
--			double rockLayerLow = 0.0;
--			double rockLayer = 0.0;
--			double rockLayerHigh = 0.0;
 +			worldSurface = 0.0;
+-			double worldSurfaceHigh = 0.0;
 +			worldSurfaceHigh = 0.0;
+-			double rockLayerLow = 0.0;
 +			rockLayerLow = 0.0;
+-			double rockLayer = 0.0;
 +			rockLayer = 0.0;
+-			double rockLayerHigh = 0.0;
 +			rockLayerHigh = 0.0;
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
-@@ -5448,7 +_,8 @@
- 			int snowOriginRight = 0;
+@@ -5449,6 +_,7 @@
  			int logX = -1;
  			int logY = -1;
  			int dungeonLocation = 0;
@@ -603,8 +602,8 @@
  				}
  			}
  
--			Item.NewItem(x * 16, y * 16, 32, 32, 1873);
 +			if (TileLoader.Drop(x, y, TileID.ChristmasTree))
+-			Item.NewItem(x * 16, y * 16, 32, 32, 1873);
 +				Item.NewItem(x * 16, y * 16, 32, 32, TileID.ChristmasTree);
  			destroyObject = false;
  		}
@@ -696,8 +695,8 @@
  				return;
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
+-			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +				Item.NewItem(i * 16, j * 16, 48, 48, TileID.WeaponsRack);
  			for (int m = 0; m < 3; m++) {
  				for (int n = 0; n < 3; n++) {
@@ -706,8 +705,8 @@
  				return;
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +			if (TileLoader.Drop(i, j, TileID.Mannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +
  			for (int m = 0; m <= 1; m++) {
@@ -717,8 +716,8 @@
  				return;
  
  			destroyObject = true;
--			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +			if (TileLoader.Drop(i, j, TileID.Womannequin))
+-			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +
  			for (int m = 0; m <= 1; m++) {
@@ -1001,8 +1000,8 @@
  			if (point.Y == 0)
  				type2 = 3239;
  
--			Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
 +			if (TileLoader.Drop(x, y, type))
+-			Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
 +				Item.NewItem(x * 16, y * 16, num * 16, num2 * 16, type2);
 +
  			for (int k = x - 1; k < x + num + 1; k++) {
@@ -1012,8 +1011,8 @@
  			if (point.Y == 0)
  				type2 = 3240;
  
--			Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
 +			if (TileLoader.Drop(x, y, type))
+-			Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
 +				Item.NewItem(x * 16, y * 16, width * 16, height * 16, type2);
 +
  			for (int m = x - 1; m < x + width + 1; m++) {
@@ -1248,9 +1247,9 @@
  										Main.tile[i, j + 1] = new Tile();
  
  									int type = Main.tile[i, j + 1].type;
--									if (Main.tile[i, j + 1].active() && (type == 2 || type == 109 || type == 147 || type == 60 || type == 23 || type == 199 || type == 53 || type == 234 || type == 116 || type == 112)) {
 +									int dummyType = TileID.Saplings;
 +									int dummyStyle = 0;
+-									if (Main.tile[i, j + 1].active() && (type == 2 || type == 109 || type == 147 || type == 60 || type == 23 || type == 199 || type == 53 || type == 234 || type == 116 || type == 112)) {
 +									if (Main.tile[i, j + 1].active() && (type == 2 || type == 109 || type == 147 || type == 60 || type == 23 || type == 199 || type == 53 || type == 234 || type == 116 || type == 112 || TileLoader.SaplingGrowthType(type, ref dummyType, ref dummyStyle))) {
  										Place1x2(i, j, (ushort)num, style);
  										SquareTileFrame(i, j);
@@ -1390,8 +1389,7 @@
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
-@@ -41797,8 +_,8 @@
- 						}
+@@ -41798,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
  							Tile tile = Main.tile[i, k];
@@ -1431,7 +1429,6 @@
  			return value;
  		}
  
--		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
 +		public static int KillTile_GetTileDustAmount(bool fail,Tile tileCache,int x,int y) {
 +			int result = KillTile_GetTileDustAmount_Vanilla(fail,tileCache);
 +
@@ -1439,6 +1436,7 @@
 +
 +			return result;
 +		}
+-		public static int KillTile_GetTileDustAmount(bool fail, Tile tileCache) {
 +		private static int KillTile_GetTileDustAmount_Vanilla(bool fail, Tile tileCache) {
  			switch (tileCache.type) {
  				default:

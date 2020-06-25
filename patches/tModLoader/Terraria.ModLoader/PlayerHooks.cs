@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
@@ -80,20 +81,20 @@ namespace Terraria.ModLoader
 		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false) {
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
-			item.SetDefaults(3507);
+			item.SetDefaults(ItemID.CopperShortsword);
 			item.Prefix(-1);
 			items.Add(item);
 			item = new Item();
-			item.SetDefaults(3509);
+			item.SetDefaults(ItemID.CopperPickaxe);
 			item.Prefix(-1);
 			items.Add(item);
 			item = new Item();
-			item.SetDefaults(3506);
+			item.SetDefaults(ItemID.CopperAxe);
 			item.Prefix(-1);
 			items.Add(item);
-			if (Main.cEd && !mediumcoreDeath) {
+			if (Main.runningCollectorsEdition && !mediumcoreDeath) {
 				item = new Item();
-				item.SetDefaults(603);
+				item.SetDefaults(ItemID.Carrot);
 				items.Add(item);
 			}
 			foreach (int index in HookSetupStartInventory.arr) {
@@ -922,10 +923,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetFishingLevel(Item fishingRod, Item bait, ref int fishingLevel);
+		private delegate void DelegateGetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel);
 		private static HookList HookGetFishingLevel = AddHook<DelegateGetFishingLevel>(p => p.GetFishingLevel);
 
-		public static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref int fishingLevel) {
+		public static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref float fishingLevel) {
 			foreach (int index in HookGetFishingLevel.arr) {
 				player.modPlayers[index].GetFishingLevel(fishingRod, bait, ref fishingLevel);
 			}

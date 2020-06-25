@@ -771,7 +771,7 @@ namespace Terraria.ModLoader
 		public static void MineDamage(int minePower, ref int damage) {
 			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
 			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int)(minePower / modTile.mineResist) : minePower;
+			damage += modTile != null ? (int)(1.2f * minePower / modTile.mineResist) : (int)(1.2f * minePower);
 		}
 		//in Terraria.Player.ItemCheck at end of else if chain setting num to 0 add
 		//  else { TileLoader.PickPowerCheck(tile, pickPower, ref num); }
