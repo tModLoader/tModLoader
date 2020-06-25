@@ -34,7 +34,7 @@
  					UIVirtualKeyboard.Cancel();
 +					break;
 +				case 100:
-+					Main.PlaySound(11, -1, -1, 1, 1f, 0f);
++					SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
 +					Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
 +					break;
 +				case 101:

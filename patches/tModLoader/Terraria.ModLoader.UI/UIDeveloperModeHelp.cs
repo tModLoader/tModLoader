@@ -12,6 +12,7 @@ using Terraria.Utilities;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
@@ -182,7 +183,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DownloadModCompile() {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			// download the ModCompile for the platform we don't have
 			string url = $"https://github.com/tModLoader/tModLoader/releases/download/{ModLoader.versionTag}/ModCompile_{(PlatformUtilities.IsXNA ? "FNA" : "XNA")}.zip";
 			string file = Path.Combine(ModCompile.modCompileDir, $"ModCompile_{ModLoader.versionedName}.zip");
@@ -218,7 +219,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DirectDownloadRefAssemblies() {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			const string url = "https://tmodloader.net/dl/ext/v45ReferenceAssemblies.zip"; // This never changes, maybe put it on 0.11 release only and leave it out of other release uploads.
 			string folder = Path.Combine(ModCompile.modCompileDir, "v4.5 Reference Assemblies");
 			string file = Path.Combine(folder, "v4.5 Reference Assemblies.zip");
@@ -266,11 +267,11 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			if (_allChecksSatisfied) {
-				Main.PlaySound(SoundID.MenuOpen);
+				SoundEngine.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
 			}
 			else {
-				Main.PlaySound(SoundID.MenuClose);
+				SoundEngine.PlaySound(SoundID.MenuClose);
 				Main.menuMode = 0;
 			}
 		}

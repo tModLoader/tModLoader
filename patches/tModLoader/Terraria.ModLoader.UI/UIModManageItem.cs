@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Specialized;
 using System.Net;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -85,7 +86,7 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID);
 				return;
 			}
-			Main.PlaySound(12);
+			SoundEngine.PlaySound(12);
 			try {
 				ServicePointManager.Expect100Continue = false;
 

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -118,7 +119,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			if (gotoMenu < 0)
 				Environment.Exit(0);
 
@@ -133,17 +134,17 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Process.Start(Logging.LogPath);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Process.Start(webHelpURL);
 		}
 
 		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			ModLoader.skipLoad = true;
 			Main.menuMode = gotoMenu;
 		}

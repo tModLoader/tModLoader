@@ -13,6 +13,7 @@ using Terraria.UI.Gamepad;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
@@ -229,7 +230,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
+			SoundEngine.PlaySound(11, -1, -1, 1);
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
@@ -240,26 +241,26 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			SoundEngine.PlaySound(10, -1, -1, 1);
 			if (items.Count > 0)
 				ModLoader.Reload();
 		}
 
 		private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			SoundEngine.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Process.Start(ModLoader.ModPath);
 		}
 
 		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement) {
 			if (!Interface.modsMenu.loading) {
-				Main.PlaySound(12, -1, -1, 1);
+				SoundEngine.PlaySound(12, -1, -1, 1);
 				Main.menuMode = Interface.modPacksMenuID;
 			}
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(12, -1, -1, 1);
+			SoundEngine.PlaySound(12, -1, -1, 1);
 			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Enable();
@@ -268,7 +269,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(12, -1, -1, 1);
+			SoundEngine.PlaySound(12, -1, -1, 1);
 			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Disable();

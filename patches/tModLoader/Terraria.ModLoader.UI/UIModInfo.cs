@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -161,23 +162,23 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void ExtractMod(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Interface.extractMod.Show(_localMod, _gotoMenu);
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			File.Delete(_localMod.modFile.path);
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Process.Start(_url);
 		}
 

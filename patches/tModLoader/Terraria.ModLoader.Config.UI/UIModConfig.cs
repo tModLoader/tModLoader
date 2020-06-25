@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -164,7 +166,7 @@ namespace Terraria.ModLoader.Config.UI
 			revertConfigButton.OnClick += RevertConfig;
 			//uIElement.Append(revertConfigButton);
 
-			//float scale = Math.Min(1f, 130f/Main.fontMouseText.MeasureString("Restore Defaults").X);
+			//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
 			restoreDefaultsConfigButton = new UITextPanel<string>("Restore Defaults", 1f, false);
 			restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
 			restoreDefaultsConfigButton.WithFadedMouseOver();
@@ -178,7 +180,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modsMenuID;
 
 			//Main.menuMode = 1127;
@@ -205,7 +207,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
 		private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
@@ -214,7 +216,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		private void NextConfig(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			//DiscardChanges();
 			int index = modConfigs.IndexOf(modConfig);
 			modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
@@ -235,7 +237,7 @@ namespace Terraria.ModLoader.Config.UI
 			// MP with ServerSide: Send request to server
 			// SP or MP with ClientSide: Apply immediately if !NeedsReload
 			if (Main.gameMenu) {
-				Main.PlaySound(SoundID.MenuOpen);
+				SoundEngine.PlaySound(SoundID.MenuOpen);
 				ConfigManager.Save(pendingConfig);
 				ConfigManager.Load(modConfig);
 				// modConfig.OnChanged(); delayed until ReloadRequired checked
@@ -261,12 +263,12 @@ namespace Terraria.ModLoader.Config.UI
 				// SP or MP with ClientSide
 				ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.mod, modConfig.Name);
 				if (loadTimeConfig.NeedsReload(pendingConfig)) {
-					Main.PlaySound(SoundID.MenuClose);
+					SoundEngine.PlaySound(SoundID.MenuClose);
 					SetMessage("Can't save because changes would require a reload.", Color.Red);
 					return;
 				}
 				else {
-					Main.PlaySound(SoundID.MenuOpen);
+					SoundEngine.PlaySound(SoundID.MenuOpen);
 					ConfigManager.Save(pendingConfig);
 					ConfigManager.Load(modConfig);
 					modConfig.OnChanged();
@@ -284,13 +286,13 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			pendingRevertDefaults = true;
 			DoMenuModeState();
 		}
 
 		private void RevertConfig(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			DiscardChanges();
 		}
 
@@ -308,7 +310,7 @@ namespace Terraria.ModLoader.Config.UI
 		public void SetMessage(string text, Color color) {
 			message.TextScale = 1f;
 			message.SetText("Notification: " + text);
-			float width = Main.fontMouseText.MeasureString(text).X;
+			float width = FontAssets.MouseText.Value.MeasureString(text).X;
 			if (width > 400) {
 				message.TextScale = 400 / width;
 				message.Recalculate();

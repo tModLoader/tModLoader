@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -84,19 +85,19 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void OpenURL(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Process.Start(_url);
 		}
 
 		// Windows only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
 		// The script then replaces this exe and then launches tModLoader again.
 		private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 
 			string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);

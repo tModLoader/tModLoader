@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -88,14 +89,14 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Main.menuMode = _gotoMenu;
 			if (_gotoState != null)
 				Main.MenuUI.SetState(_gotoState);
 		}
 
 		private void AltClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			_altAction?.Invoke();
 			Main.menuMode = _gotoMenu;
 		}

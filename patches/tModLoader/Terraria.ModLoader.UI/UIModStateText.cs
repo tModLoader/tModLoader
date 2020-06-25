@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.UI;
 
@@ -41,7 +42,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Recalculate() {
-			var textSize = new Vector2(Main.fontMouseText.MeasureString(DisplayText).X, 16f);
+			var textSize = new Vector2(FontAssets.MouseText.Value.MeasureString(DisplayText).X, 16f);
 			Width.Set(textSize.X + PaddingLeft + PaddingRight, 0f);
 			Height.Set(textSize.Y + PaddingTop + PaddingBottom, 0f);
 			base.Recalculate();

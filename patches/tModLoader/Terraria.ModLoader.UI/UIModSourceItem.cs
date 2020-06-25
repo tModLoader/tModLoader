@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -106,7 +107,7 @@ namespace Terraria.ModLoader.UI
 							Directory.Delete(binFolder, true);
 						Directory.CreateDirectory(propertiesFolder);
 						File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
-						Main.PlaySound(SoundID.MenuOpen);
+						SoundEngine.PlaySound(SoundID.MenuOpen);
 						Main.menuMode = Interface.modSourcesID;
 					};
 					Append(upgradeCSProjButton);
@@ -141,12 +142,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BuildMod(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Interface.buildMod.Build(_mod, false);
 		}
 
 		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Interface.buildMod.Build(_mod, true);
 		}
 
@@ -156,7 +157,7 @@ namespace Terraria.ModLoader.UI
 				Interface.enterPassphraseMenu.SetGotoMenu(Interface.modSourcesID);
 				return;
 			}
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			try {
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;

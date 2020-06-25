@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI.Chat;
 
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader.UI
 				oldInnerDimensions = innerDimensionsRectangle;
 
 				TextScaleMax = textScaleMax;
-				DynamicSpriteFont dynamicSpriteFont = large ? Main.fontDeathText : Main.fontMouseText;
+				DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
 				Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(TextScaleMax));
 
 				innerDimensionsRectangle.Inflate(-4, 0);

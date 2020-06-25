@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -113,12 +114,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11);
+			SoundEngine.PlaySound(11);
 			Main.menuMode = Interface.createModID;
 		}
 
 		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
+			SoundEngine.PlaySound(11, -1, -1, 1);
 			Main.menuMode = Interface.managePublishedID;
 			if (ModLoader.modBrowserPassphrase == string.Empty) {
 				Main.menuMode = Interface.enterPassphraseMenuID;
@@ -127,12 +128,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11, -1, -1, 1);
+			SoundEngine.PlaySound(11, -1, -1, 1);
 			Main.menuMode = 0;
 		}
 
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			SoundEngine.PlaySound(10, -1, -1, 1);
 			try {
 				Directory.CreateDirectory(ModCompile.ModSourcePath);
 				Process.Start(ModCompile.ModSourcePath);
@@ -142,13 +143,13 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			SoundEngine.PlaySound(10, -1, -1, 1);
 			if (_modList.Count > 0)
 				Interface.buildMod.BuildAll(false);
 		}
 
 		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10, -1, -1, 1);
+			SoundEngine.PlaySound(10, -1, -1, 1);
 			if (_modList.Count > 0)
 				Interface.buildMod.BuildAll(true);
 		}

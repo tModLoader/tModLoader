@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Reflection;
+using Terraria.GameContent;
 using Terraria.Graphics;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -121,13 +122,13 @@ namespace Terraria.ModLoader.Config.UI
 			{
 				position.X += 8f;
 				position.Y += 8f;
-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 			}
 			if (IsMouseHovering && TooltipFunction != null)
 			{
 				UIModConfig.tooltip = TooltipFunction();
 				//string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
-				//float x = Main.fontMouseText.MeasureString(hoverText).X;
+				//float x = FontAssets.MouseText.Value.MeasureString(hoverText).X;
 				//vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
 				//if (vector.Y > (float)(Main.screenHeight - 30))
 				//{
@@ -137,7 +138,7 @@ namespace Terraria.ModLoader.Config.UI
 				//{
 				//	vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
 				//}
-				//Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+				//Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 
 			//if (IsMouseHovering) {
@@ -169,7 +170,7 @@ namespace Terraria.ModLoader.Config.UI
 		string header;
 		public HeaderElement(string header) {
 			this.header = header;
-			Vector2 size = ChatManager.GetStringSize(Main.fontItemStack, this.header, Vector2.One, 532); // TODO: Max Width can't be known at this time.
+			Vector2 size = ChatManager.GetStringSize(FontAssets.ItemStack.Value, this.header, Vector2.One, 532); // TODO: Max Width can't be known at this time.
 			Width.Set(0f, 1f);
 			Height.Set(size.Y + 6, 0f);
 		}
@@ -180,7 +181,7 @@ namespace Terraria.ModLoader.Config.UI
 			float settingsWidth = dimensions.Width + 1f;
 			Vector2 position = new Vector2(dimensions.X, dimensions.Y) + new Vector2(8);
 			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 2, (int)dimensions.Width - 20, 1), Color.LightGray);
-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, header, position, Color.White, 0f, Vector2.Zero, new Vector2(1f), settingsWidth - 20, 2f);
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, header, position, Color.White, 0f, Vector2.Zero, new Vector2(1f), settingsWidth - 20, 2f);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(ID.SoundID.MenuOpen);
+			SoundEngine.PlaySound(ID.SoundID.MenuOpen);
 			Main.menuMode = gotoMenu;
 			OnCancel?.Invoke();
 		}

@@ -11,6 +11,7 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI.Chat;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
@@ -247,20 +248,20 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = !_mod.Enabled;
 		}
 
 		internal void Enable() {
 			if(_mod.Enabled){return;}
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = true;
 			_uiModStateText.SetEnabled();
 		}
 
 		internal void Disable() {
 			if(!_mod.Enabled){return;}
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			_mod.Enabled = false;
 			_uiModStateText.SetDisabled();
 		}
@@ -297,12 +298,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
 		}
 
 		internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Interface.modConfig.SetMod(ModLoader.GetMod(ModName));
 			Main.menuMode = Interface.modConfigID;
 		}

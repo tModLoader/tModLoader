@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
@@ -92,7 +93,7 @@ namespace Terraria.ModLoader.UI
 				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID));
 
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11);
+			SoundEngine.PlaySound(11);
 			VirtualKeyboard.Text = "";
 			Main.MenuUI.SetState(VirtualKeyboard);
 			Main.menuMode = 888;
@@ -107,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			// TODO
 			//Main.menuMode = Interface.modsMenuID;
 
-			//Main.PlaySound(10, -1, -1, 1);
+			//SoundEngine.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModPacksDirectory);
 
 			string path = Path.Combine(ModPacksDirectory, filename + ".json");
@@ -119,7 +120,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11);
+			SoundEngine.PlaySound(11);
 			Main.menuMode = Interface.modsMenuID;
 		}
 

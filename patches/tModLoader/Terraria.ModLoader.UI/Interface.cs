@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -65,7 +66,7 @@ namespace Terraria.ModLoader.UI
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
 			if (selectedMenu == buttonIndex) {
-				Main.PlaySound(10, -1, -1, 1);
+				SoundEngine.PlaySound(10, -1, -1, 1);
 				Main.menuMode = modsMenuID;
 			}
 			buttonIndex++;
@@ -73,7 +74,7 @@ namespace Terraria.ModLoader.UI
 			if (ModCompile.DeveloperMode) {
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(10, -1, -1, 1);
+					SoundEngine.PlaySound(10, -1, -1, 1);
 					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
 				}
 				buttonIndex++;
@@ -81,7 +82,7 @@ namespace Terraria.ModLoader.UI
 			}
 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
 			if (selectedMenu == buttonIndex) {
-				Main.PlaySound(10, -1, -1, 1);
+				SoundEngine.PlaySound(10, -1, -1, 1);
 				Main.menuMode = modBrowserID;
 			}
 			buttonIndex++;
@@ -105,7 +106,7 @@ namespace Terraria.ModLoader.UI
 		//	buttonNames[buttonIndex] = "Mod " + Lang.menu[66];
 		//	if (selectedMenu == buttonIndex)
 		//	{
-		//		Main.PlaySound(10, -1, -1, 1);
+		//		SoundEngine.PlaySound(10, -1, -1, 1);
 		//		Main.menuMode = modControlsID;
 		//	}
 		//	for (int k = 0; k < numButtons; k++)
@@ -220,49 +221,49 @@ namespace Terraria.ModLoader.UI
 				int buttonIndex = 0;
 				buttonNames[buttonIndex] = (ModNet.downloadModsFromServers ? Language.GetTextValue("tModLoader.DownloadFromServersYes") : Language.GetTextValue("tModLoader.DownloadFromServersNo"));
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? Language.GetTextValue("tModLoader.DownloadSignedYes") : Language.GetTextValue("tModLoader.DownloadSignedNo"));
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowMemoryEstimates{(ModLoader.showMemoryEstimates ? "Yes" : "No")}");
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.showMemoryEstimates = !ModLoader.showMemoryEstimates;
 				}
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.modBrowserPassphrase = "";
 					ModLoader.SteamID64 = "";
 				}
@@ -272,7 +273,7 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex || backButtonDown) {
 					backButtonDown = false;
 					Main.menuMode = 11;
-					Main.PlaySound(11, -1, -1, 1);
+					SoundEngine.PlaySound(11, -1, -1, 1);
 				}
 			}
 			else if (Main.menuMode == modConfigID)

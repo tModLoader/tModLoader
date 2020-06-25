@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Reflection;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ModLoader.UI;
@@ -124,7 +125,7 @@ namespace Terraria.ModLoader.Config.UI
 			initializeButton.Left.Pixels -= 3;
 			initializeButton.HAlign = 1f;
 			initializeButton.OnClick += (a, b) => {
-				Main.PlaySound(21);
+				SoundEngine.PlaySound(21);
 				object data = Activator.CreateInstance(memberInfo.Type);
 				string json = jsonDefaultValueAttribute?.json ?? "{}";
 				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);

@@ -13,6 +13,7 @@ using Ionic.Zlib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -108,7 +109,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			SpecialModPackFilter = null;
 			SpecialModPackFilterTitle = null;
 			UpdateNeeded = true;
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 		}
 
 		private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element) {
@@ -156,7 +157,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			_cts?.Cancel(false);
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = 0;
 
 			bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
@@ -190,7 +191,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
 			if (Loading) return;
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			PopulateModBrowser();
 		}
 
@@ -362,7 +363,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
 			if (downloads.Count <= 0) return;
 
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.OnDownloadsComplete += () => {
 				if (_missingMods.Count > 0) {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Specialized;
 using System.Net;
 using System.Text;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -69,7 +70,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modSourcesID;
 		}
 

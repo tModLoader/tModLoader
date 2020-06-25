@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -71,7 +72,7 @@ namespace Terraria.ModLoader.Config.UI
 				initializeButton.Left.Pixels -= 3;
 				initializeButton.HAlign = 1f;
 				initializeButton.OnClick += (a, b) => {
-					Main.PlaySound(SoundID.Tink);
+					SoundEngine.PlaySound(SoundID.Tink);
 					InitializeCollection();
 					SetupList();
 					Interface.modConfig.RecalculateChildren(); // not needed?
@@ -84,7 +85,7 @@ namespace Terraria.ModLoader.Config.UI
 				addButton.Top.Set(4, 0f);
 				addButton.Left.Set(-52, 1f);
 				addButton.OnClick += (a, b) => {
-					Main.PlaySound(SoundID.Tink);
+					SoundEngine.PlaySound(SoundID.Tink);
 					AddItem();
 					SetupList();
 					Interface.modConfig.RecalculateChildren();
@@ -97,7 +98,7 @@ namespace Terraria.ModLoader.Config.UI
 				deleteButton.Top.Set(4, 0f);
 				deleteButton.Left.Set(-25, 1f);
 				deleteButton.OnClick += (a, b) => {
-					Main.PlaySound(SoundID.Tink);
+					SoundEngine.PlaySound(SoundID.Tink);
 					if (nullAllowed)
 						NullCollection();
 					else

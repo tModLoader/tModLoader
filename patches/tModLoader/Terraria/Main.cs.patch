@@ -1173,10 +1173,10 @@
  				}
  			}
  
-+			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed?
++			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
 +			
-+			if (!NPCLoader.PreDraw(npc[iNPCIndex], spriteBatch, npcColor)) {
-+				NPCLoader.PostDraw(npc[iNPCIndex], spriteBatch, npcColor);
++			if (!NPCLoader.PreDraw(rCurrentNPC, spriteBatch, npcColor)) {
++				NPCLoader.PostDraw(rCurrentNPC, spriteBatch, npcColor);
 +				return;
 +			}
 +
@@ -1299,7 +1299,7 @@
  				spriteBatch.Draw(TextureAssets.GlowMask[233].Value, vector2, frame, new Microsoft.Xna.Framework.Color(255, 255, 255, 63) * 0.75f, num, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
 +
 +			PostDraw:
-+			ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num4, scale, whoami);
++			ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num, scale, whoami);
  		}
  
  		public void DrawItems() {
@@ -1335,6 +1335,17 @@
  			if (NPC.downedGolemBoss)
  				num4 *= 200;
  			else if (NPC.downedPlantBoss)
+@@ -28866,6 +_,10 @@
+ 				if (num15 > 0 && num15 < 1)
+ 					num15 = 1;
+ 
++				reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
++				canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
++				PlayerHooks.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num15);
++
+ 				if (num15 < 0)
+ 					num15 = 0;
+ 
 @@ -28916,9 +_,12 @@
  				else {
  					text5 = text5.Substring(0, text5.Length - 1);
@@ -1538,16 +1549,6 @@
  							Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  							Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)npc[k].position.X, (int)npc[k].position.Y, npc[k].width, npc[k].height);
  							if (rectangle2.Intersects(value4))
-@@ -31557,6 +_,9 @@
- 						num7 = x;
- 				}
- 
-+				reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+				canHeal = PlayerHooks.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+				PlayerHooks.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num7);
- 				if (num7 > 460f)
- 					num7 = 460f;
- 
 @@ -31650,14 +_,14 @@
  			recBigList = false;
  			int num = -1;
@@ -1631,7 +1632,7 @@
 +					}
 +				}
 +				
-+				goto SkipMenus; //Put the label somewhere after the following if-else chain.
++				goto SkipMenuEnumeration; //Put the label somewhere after the following if-else chain.
 +			}
  
  			if (menuMode == 1212) {
@@ -1775,23 +1776,31 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36410,15 +_,18 @@
+@@ -36410,6 +_,9 @@
  					menuMode = 12;
  				}
  
-+				if (!Steam.IsSteamApp) {
++				if(Steam.IsSteamApp)
++					goto SkipAchievements;
++
  				num11++;
  				array9[num11] = Lang.menu[131].Value;
  				if (selectedMenu == num11) {
- 					SoundEngine.PlaySound(10);
- 					MenuUI.SetState(AchievementsMenu);
+@@ -36418,6 +_,8 @@
  					menuMode = 888;
-+					}
+ 				}
+ 
++				SkipAchievements:
++
+ 				num11++;
+ 				array9[num11] = Language.GetText("UI.ResourcePacks").Value;
+ 				if (selectedMenu == num11) {
+@@ -36427,6 +_,7 @@
  				}
  
  				num11++;
-+				Interface.AddMenuButtons(this, selectedMenu, array9, array7, ref num2, ref num4, ref num12, ref num5);
- 				array9[num11] = Language.GetText("UI.ResourcePacks").Value;
++				Interface.AddMenuButtons(this, selectedMenu, array9, array7, ref num2, ref num4, ref num11, ref num5);
+ 				array9[num11] = Lang.menu[14].Value;
  				if (selectedMenu == num11) {
  					SoundEngine.PlaySound(10);
 @@ -37036,6 +_,7 @@
@@ -1816,7 +1825,7 @@
  					array9[num20] = Lang.menu[5].Value;
  					if (selectedMenu == num20 || flag5) {
  						flag5 = false;
-@@ -38124,6 +_,9 @@
+@@ -38124,7 +_,12 @@
  						netMode = 0;
  					}
  				}
@@ -1824,8 +1833,11 @@
 +					Interface.ModLoaderMenus(this, selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 +				}
  			}
++
++			SkipMenuEnumeration:
  
  			if (menuMode == 888) {
+ 				if (!_blockFancyUIWhileLoading)
 @@ -38647,6 +_,7 @@
  
  			bool flag11 = false;

@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
@@ -222,7 +223,7 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
 			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
 			Interface.modBrowser.UpdateNeeded = true;
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Main.menuMode = Interface.modBrowserID;
 		}
 
@@ -250,7 +251,7 @@ namespace Terraria.ModLoader.UI
 
 		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			string message = "";
 			for (int i = 0; i < modListItem._mods.Length; i++) {
 				message += modListItem._mods[i] + (modListItem._modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem._mods[i]) ? "" : Language.GetTextValue("tModLoader.ModPackDisabled")) + "\n";

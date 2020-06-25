@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -74,7 +75,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void SubmitPassphrase(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			ModLoader.modBrowserPassphrase = PasscodeTextField.Text.Trim();
 			Main.SaveSettings();
 			if (Engine.GoGVerifier.IsGoG) {
@@ -86,12 +87,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11);
+			SoundEngine.PlaySound(11);
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Process.Start(REGISTER_URL);
 		}
 

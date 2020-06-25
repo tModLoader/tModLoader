@@ -8,6 +8,8 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics;
 using Terraria.ID;
@@ -157,7 +159,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 			Interface.modBrowser.FilterTextBox.Text = "";
 			Interface.modBrowser.UpdateNeeded = true;
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 		}
 
 		internal static UIModDownloadItem FromJson(LocalMod[] installedMods, JObject mod) {
@@ -371,7 +373,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			try {
 				var myDateTime = DateTime.Parse(_timeStamp); // parse date
 				string text = TimeHelper.HumanTimeSpanString(myDateTime); // get time text
-				int textWidth = (int)Main.fontMouseText.MeasureString(text).X; // measure text width
+				int textWidth = (int)FontAssets.MouseText.Value.MeasureString(text).X; // measure text width
 				int diffWidth = baseWidth - textWidth; // get difference
 				drawPos.X += diffWidth * 0.5f; // add difference as padding
 				Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White);
@@ -394,14 +396,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void DownloadMod(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			var modDownload = GetModDownload();
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(modDownload);
 		}
 
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuTick);
+			SoundEngine.PlaySound(SoundID.MenuTick);
 			var downloads = new HashSet<DownloadModFile> { GetModDownload() };
 			GetDependenciesRecursive(this, ref downloads);
 			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
@@ -426,7 +428,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Interface.modInfo.Show(ModName, DisplayName, Interface.modBrowserID, Installed, loadFromWeb: true);
 		}
 

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -69,7 +70,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The font this tooltip would be drawn with
 		/// </summary>
-		public DynamicSpriteFont font = Main.fontMouseText;
+		public DynamicSpriteFont font = FontAssets.MouseText.Value;
 		/// <summary>
 		/// The rotation this tooltip would be drawn in
 		/// </summary>

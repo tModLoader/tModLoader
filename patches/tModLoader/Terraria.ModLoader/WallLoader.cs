@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.Audio;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -149,7 +150,7 @@ namespace Terraria.ModLoader
 				if (!modWall.KillSound(i, j)) {
 					return false;
 				}
-				Main.PlaySound(modWall.soundType, i * 16, j * 16, modWall.soundStyle);
+				SoundEngine.PlaySound(modWall.soundType, i * 16, j * 16, modWall.soundStyle);
 				return false;
 			}
 			return true;

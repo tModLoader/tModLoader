@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
@@ -81,7 +82,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
-			Main.PlaySound(11, -1, -1, 1);
+			SoundEngine.PlaySound(11, -1, -1, 1);
 			//Main.menuMode = 0;
 
 			//Main.menuMode = 1127;
@@ -90,7 +91,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		//private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
 		//{
-		//	Main.PlaySound(10, -1, -1, 1);
+		//	SoundEngine.PlaySound(10, -1, -1, 1);
 		//	Directory.CreateDirectory(ModLoader.ModPath);
 		//	Process.Start(ModLoader.ModPath);
 		//}

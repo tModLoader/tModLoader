@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
@@ -78,20 +79,20 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void SubmitSteamID(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			ModLoader.SteamID64 = SteamIdTextField.Text.Trim();
 			Main.SaveSettings();
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(11);
+			SoundEngine.PlaySound(11);
 			Main.menuMode = _gotoMenu;
 		}
 
 		//TODO unused
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(10);
+			SoundEngine.PlaySound(10);
 			Process.Start(REGISTER_URL);
 		}
 

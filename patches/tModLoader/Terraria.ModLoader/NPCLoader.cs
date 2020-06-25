@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.Audio;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
@@ -907,7 +908,7 @@ namespace Terraria.ModLoader
 			}
 
 			if (!result) {
-				Main.PlaySound(SoundID.MenuTick);
+				SoundEngine.PlaySound(SoundID.MenuTick);
 				return false;
 			}
 
@@ -923,7 +924,7 @@ namespace Terraria.ModLoader
 
 			if (npc.modNPC != null) {
 				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
-				Main.PlaySound(SoundID.MenuTick);
+				SoundEngine.PlaySound(SoundID.MenuTick);
 				if (shop) {
 					Main.playerInventory = true;
 					Main.npcChatText = "";
