@@ -1086,7 +1086,7 @@
  					break;
  			}
 +
-+			BuffLoader.DrawCustomBuffTip(buffString, spriteBatch, X, Y + (int)fontMouseText.MeasureString(buffString).Y);
++			BuffLoader.DrawCustomBuffTip(buffString, spriteBatch, X, Y + (int)FontAssets.MouseText.Value.MeasureString(buffString).Y);
  		}
  
  		protected void DrawFPS() {
@@ -1122,7 +1122,7 @@
  					drawBackGore = true;
  					continue;
  				}
-@@ -16008,18 +_,18 @@
+@@ -16008,11 +_,11 @@
  						value.Y += 4f;
  
  					Microsoft.Xna.Framework.Color alpha = gore[i].GetAlpha(Lighting.GetColor((int)((double)gore[i].position.X + (double)sourceRectangle.Width * 0.5) / 16, (int)(((double)gore[i].position.Y + (double)sourceRectangle.Height * 0.5) / 16.0)));
@@ -1135,14 +1135,6 @@
 +					spriteBatch.Draw(TextureAssets.Gore[gore[i].type].Value, new Vector2(gore[i].position.X + gore[i].drawOffset.X - screenPosition.X + (float)(TextureAssets.Gore[gore[i].type].Width() / 2), gore[i].position.Y + gore[i].drawOffset.Y - screenPosition.Y + (float)(TextureAssets.Gore[gore[i].type].Height() / 2)), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Gore[gore[i].type].Width(), TextureAssets.Gore[gore[i].type].Height()), alpha2, gore[i].rotation, new Vector2(TextureAssets.Gore[gore[i].type].Width() / 2, TextureAssets.Gore[gore[i].type].Height() / 2), gore[i].scale, SpriteEffects.None, 0f);
  				}
  			}
- 
- 			TimeLogger.DetailedDrawTime(24);
- 		}
- 
--		public void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f, bool noFlip = false) {
-+		public void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f) {
- 			if (Health <= 0)
- 				return;
  
 @@ -16099,6 +_,8 @@
  			float num = 0f;
@@ -1850,7 +1842,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -38855,10 +_,26 @@
+@@ -38855,10 +_,27 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -1868,11 +1860,12 @@
 +						color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
 +
 +					if (showPatreon) {
-+						origin2 = fontMouseText.MeasureString(supportMessage);
-+						Vector2 urlSize = fontMouseText.MeasureString(patreonShortURL);
-+						spriteBatch.DrawString(fontMouseText, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++						var font = FontAssets.MouseText.Value;
++						origin2 = font.MeasureString(supportMessage);
++						Vector2 urlSize = font.MeasureString(patreonShortURL);
++						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
-+							PlaySound(SoundID.MenuOpen);
++							SoundEngine.PlaySound(SoundID.MenuOpen);
 +							Process.Start("https://www.patreon.com/tModLoader");
 +						}
 +					}
@@ -1929,14 +1922,14 @@
 +				int y = (int)(num2 + mapFullscreenScale * 10);
 +				int width = (int)((maxTilesX - 40) * mapFullscreenScale);
 +				int height = (int)((maxTilesY - 40) * mapFullscreenScale);
-+				var destinationRectangle = new Microsoft.Xna.Framework.Rectangle(x, y, width, height);
-+				spriteBatch.Draw(mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(40, 4, 848, 240), Microsoft.Xna.Framework.Color.White);
++				var destinationRectangle = new Rectangle(x, y, width, height);
++				spriteBatch.Draw(TextureAssets.Map.Value, destinationRectangle, new Rectangle(40, 4, 848, 240), Color.White);
 +				int edgeWidth = (int)(40 * mapFullscreenScale * 5);
 +				int edgeHeight = (int)(4 * mapFullscreenScale * 5);
-+				destinationRectangle = new Microsoft.Xna.Framework.Rectangle(x - edgeWidth, y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
-+				spriteBatch.Draw(mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(0, 0, 40, 248), Microsoft.Xna.Framework.Color.White);
-+				destinationRectangle = new Microsoft.Xna.Framework.Rectangle(x + width, y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
-+				spriteBatch.Draw(mapTexture, destinationRectangle, new Microsoft.Xna.Framework.Rectangle(888, 0, 40, 248), Microsoft.Xna.Framework.Color.White);
++				destinationRectangle = new Rectangle(x - edgeWidth, y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
++				spriteBatch.Draw(TextureAssets.Map.Value, destinationRectangle, new Rectangle(0, 0, 40, 248), Color.White);
++				destinationRectangle = new Rectangle(x + width, y - edgeHeight, edgeWidth, height + 2 * edgeHeight);
++				spriteBatch.Draw(TextureAssets.Map.Value, destinationRectangle, new Rectangle(888, 0, 40, 248), Color.White);
  				if (mouseLeft && mouseLeftRelease) {
  					double totalSeconds = gameTime.TotalGameTime.TotalSeconds;
  					if (totalSeconds - _lastPingMouseDownTime < 0.5 && Vector2.Distance(MouseScreen, _lastPingMousePosition) < 2f)
@@ -2063,18 +2056,17 @@
  		}
  
  		private void DoDraw(GameTime gameTime) {
-@@ -46966,9 +_,9 @@
+@@ -46966,8 +_,8 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
- 			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
 +			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
 +			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
+ 			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
- 			BackgroundViewMatrix.Zoom = new Vector2(ForcedMinimumZoom);
 @@ -46978,6 +_,7 @@
  			else
  				Rasterizer = RasterizerState.CullClockwise;
@@ -2236,13 +2228,13 @@
  			UpdateBGVisibility_FrontLayer(null, null);
 +			if (bgStyle < SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount) {
 +				for (int i = SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
-+					bgAlphaFrontLayer[i] -= tranSpeed;
++					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
 +					if (bgAlphaFrontLayer[i] < 0f)
 +						bgAlphaFrontLayer[i] = 0f;
 +				}
 +			}
 +
-+			SurfaceBgStyleLoader.ModifyFarFades(bgStyle, bgAlphaFrontLayer, tranSpeed);
++			SurfaceBgStyleLoader.ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
