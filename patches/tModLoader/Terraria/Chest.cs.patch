@@ -74,7 +74,7 @@
  		}
  
 -		public void AddItemToShop(Item newItem) {
-+		public int AddShop(Item newItem) {
++		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
  			if (num >= newItem.stack)
  				return;

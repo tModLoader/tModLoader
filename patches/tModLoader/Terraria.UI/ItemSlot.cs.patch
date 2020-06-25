@@ -24,23 +24,23 @@
 +						
  					break;
  				case 4: {
-+							if (!PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
-+								break;
++						if (!PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
++							break;
 +							
  						Chest chest = Main.instance.shop[Main.npcShop];
  						if (player.SellItem(Main.mouseItem)) {
 -							chest.AddItemToShop(Main.mouseItem);
-+								int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
++							int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
  							Main.mouseItem.SetDefaults();
  							SoundEngine.PlaySound(18);
-+								PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++							PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						}
  						else if (Main.mouseItem.value == 0) {
 -							chest.AddItemToShop(Main.mouseItem);
-+								int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
++							int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
  							Main.mouseItem.SetDefaults();
  							SoundEngine.PlaySound(7);
-+								PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++							PlayerHooks.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
  						}
  
  						Recipe.FindRecipes();
