@@ -74,6 +74,15 @@
  		public static bool isMouseLeftConsumedByUI = false;
  		public static float essScale = 1f;
  		public static int essDir = -1;
+@@ -539,7 +_,7 @@
+ 		public static int instantBGTransitionCounter = 2;
+ 		public static int bgDelay;
+ 		public static int bgStyle;
+-		private const int BG_STYLES_COUNT = 14;
++		internal const int BG_STYLES_COUNT = 14;
+ 		public static float[] bgAlphaFrontLayer = new float[14];
+ 		public static float[] bgAlphaFarBackLayer = new float[14];
+ 		public static int[] bgFrame = new int[14];
 @@ -553,13 +_,13 @@
  		public static int wofDrawAreaBottom;
  		public static int wofDrawFrameIndex;
@@ -2238,8 +2247,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
-+			if (bgStyle < SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount) {
-+				for (int i = SurfaceBgStyleLoader.vanillaSurfaceBgStyleCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
++			if (bgStyle < SurfaceBgStyleLoader.VanillaSurfaceBgStyleCount) {
++				for (int i = SurfaceBgStyleLoader.VanillaSurfaceBgStyleCount; i < bgAlphaFrontLayer.Length /*SurfaceBackgroundStyleLoader.SurfaceStyleCount*/; i++) {
 +					bgAlphaFrontLayer[i] -= backgroundLayerTransitionSpeed;
 +					if (bgAlphaFrontLayer[i] < 0f)
 +						bgAlphaFrontLayer[i] = 0f;

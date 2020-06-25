@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
@@ -27,7 +28,6 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
 		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-		private static int vanillaSkeletonCount = NPCID.Sets.Skeletons.Count;
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
 		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
@@ -100,11 +100,11 @@ namespace Terraria.ModLoader
 		//replace a lot of 540 immediates
 		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
 		internal static void ResizeArrays(bool unloading) {
-			Array.Resize(ref Main.NPCLoaded, nextNPC);
+			//Textures
+			Array.Resize(ref TextureAssets.Npc, nextNPC);
+			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
-			Array.Resize(ref Main.npcTexture, nextNPC);
-			Array.Resize(ref Main.npcAltTextures, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
@@ -112,6 +112,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
+			//Sets
 			Array.Resize(ref NPCID.Sets.TrailingMode, nextNPC);
 			Array.Resize(ref NPCID.Sets.BelongsToInvasionOldOnesArmy, nextNPC);
 			Array.Resize(ref NPCID.Sets.TeleportationImmune, nextNPC);
@@ -136,14 +137,14 @@ namespace Terraria.ModLoader
 			Array.Resize(ref NPCID.Sets.PrettySafe, nextNPC);
 			Array.Resize(ref NPCID.Sets.MagicAuraColor, nextNPC);
 			Array.Resize(ref NPCID.Sets.BossHeadTextures, nextNPC);
-			Array.Resize(ref NPCID.Sets.ExcludedFromDeathTally, nextNPC);
-			Array.Resize(ref NPCID.Sets.TechnicallyABoss, nextNPC);
+			Array.Resize(ref NPCID.Sets.PositiveNPCTypesExcludedFromDeathTally, nextNPC);
+			Array.Resize(ref NPCID.Sets.ShouldBeCountedAsBoss, nextNPC);
 			Array.Resize(ref NPCID.Sets.MustAlwaysDraw, nextNPC);
 			Array.Resize(ref NPCID.Sets.ExtraTextureCount, nextNPC);
 			Array.Resize(ref NPCID.Sets.NPCFramingGroup, nextNPC);
 			Array.Resize(ref NPCID.Sets.TownNPCsFramingGroups, nextNPC);
+
 			for (int k = NPCID.Count; k < nextNPC; k++) {
-				Main.NPCLoaded[k] = true;
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 				NPCID.Sets.TrailingMode[k] = -1;
@@ -159,9 +160,11 @@ namespace Terraria.ModLoader
 			}
 
 			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
+
 			for (int i = 0; i < InstancedGlobals.Length; i++) {
 				InstancedGlobals[i].instanceIndex = i;
 			}
+
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHook(globalNPCs, hook.method);
 			}
@@ -179,9 +182,6 @@ namespace Terraria.ModLoader
 			globalIndexes.Clear();
 			globalIndexesByType.Clear();
 			bannerToItem.Clear();
-			while (NPCID.Sets.Skeletons.Count > vanillaSkeletonCount) {
-				NPCID.Sets.Skeletons.RemoveAt(NPCID.Sets.Skeletons.Count - 1);
-			}
 		}
 
 		internal static bool IsModNPC(NPC npc) {

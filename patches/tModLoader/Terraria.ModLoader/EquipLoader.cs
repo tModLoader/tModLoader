@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -59,61 +60,51 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays() {
-			Array.Resize(ref Main.armorHeadLoaded, nextEquip[EquipType.Head]);
-			Array.Resize(ref Main.armorBodyLoaded, nextEquip[EquipType.Body]);
-			Array.Resize(ref Main.armorLegsLoaded, nextEquip[EquipType.Legs]);
-			Array.Resize(ref Main.accHandsOnLoaded, nextEquip[EquipType.HandsOn]);
-			Array.Resize(ref Main.accHandsOffLoaded, nextEquip[EquipType.HandsOff]);
-			Array.Resize(ref Main.accBackLoaded, nextEquip[EquipType.Back]);
-			Array.Resize(ref Main.accFrontLoaded, nextEquip[EquipType.Front]);
-			Array.Resize(ref Main.accShoesLoaded, nextEquip[EquipType.Shoes]);
-			Array.Resize(ref Main.accWaistLoaded, nextEquip[EquipType.Waist]);
-			Array.Resize(ref Main.wingsLoaded, nextEquip[EquipType.Wings]);
-			Array.Resize(ref Main.accShieldLoaded, nextEquip[EquipType.Shield]);
-			Array.Resize(ref Main.accNeckLoaded, nextEquip[EquipType.Neck]);
-			Array.Resize(ref Main.accFaceLoaded, nextEquip[EquipType.Face]);
-			Array.Resize(ref Main.accballoonLoaded, nextEquip[EquipType.Balloon]);
-			foreach (EquipType type in EquipTypes) {
-				for (int k = GetNumVanilla(type); k < nextEquip[type]; k++) {
-					GetLoadedArray(type)[k] = true;
-				}
-			}
-			Array.Resize(ref Main.armorHeadTexture, nextEquip[EquipType.Head]);
-			Array.Resize(ref Main.armorBodyTexture, nextEquip[EquipType.Body]);
-			Array.Resize(ref Main.femaleBodyTexture, nextEquip[EquipType.Body]);
-			Array.Resize(ref Main.armorArmTexture, nextEquip[EquipType.Body]);
-			Array.Resize(ref Main.armorLegTexture, nextEquip[EquipType.Legs]);
-			Array.Resize(ref Main.accHandsOnTexture, nextEquip[EquipType.HandsOn]);
-			Array.Resize(ref Main.accHandsOffTexture, nextEquip[EquipType.HandsOff]);
-			Array.Resize(ref Main.accBackTexture, nextEquip[EquipType.Back]);
-			Array.Resize(ref Main.accFrontTexture, nextEquip[EquipType.Front]);
-			Array.Resize(ref Main.accShoesTexture, nextEquip[EquipType.Shoes]);
-			Array.Resize(ref Main.accWaistTexture, nextEquip[EquipType.Waist]);
-			Array.Resize(ref Main.wingsTexture, nextEquip[EquipType.Wings]);
-			Array.Resize(ref Main.accShieldTexture, nextEquip[EquipType.Shield]);
-			Array.Resize(ref Main.accNeckTexture, nextEquip[EquipType.Neck]);
-			Array.Resize(ref Main.accFaceTexture, nextEquip[EquipType.Face]);
-			Array.Resize(ref Main.accBalloonTexture, nextEquip[EquipType.Balloon]);
+			Array.Resize(ref TextureAssets.ArmorHead, nextEquip[EquipType.Head]);
+			Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.Body]);
+			Array.Resize(ref TextureAssets.FemaleBody, nextEquip[EquipType.Body]);
+			Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.Body]);
+			Array.Resize(ref TextureAssets.ArmorLeg, nextEquip[EquipType.Legs]);
+			Array.Resize(ref TextureAssets.AccHandsOn, nextEquip[EquipType.HandsOn]);
+			Array.Resize(ref TextureAssets.AccHandsOff, nextEquip[EquipType.HandsOff]);
+			Array.Resize(ref TextureAssets.AccBack, nextEquip[EquipType.Back]);
+			Array.Resize(ref TextureAssets.AccFront, nextEquip[EquipType.Front]);
+			Array.Resize(ref TextureAssets.AccShoes, nextEquip[EquipType.Shoes]);
+			Array.Resize(ref TextureAssets.AccWaist, nextEquip[EquipType.Waist]);
+			Array.Resize(ref TextureAssets.Wings, nextEquip[EquipType.Wings]);
+			Array.Resize(ref TextureAssets.AccShield, nextEquip[EquipType.Shield]);
+			Array.Resize(ref TextureAssets.AccNeck, nextEquip[EquipType.Neck]);
+			Array.Resize(ref TextureAssets.AccFace, nextEquip[EquipType.Face]);
+			Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
+
 			foreach (EquipType type in EquipTypes) {
 				foreach (var entry in equipTextures[type]) {
 					int slot = entry.Key;
 					EquipTexture texture = entry.Value;
+					
 					GetTextureArray(type)[slot] = ModContent.GetTexture(texture.Texture);
+
 					if (type == EquipType.Body) {
-						Main.femaleBodyTexture[slot] = ModContent.GetTexture(femaleTextures[slot]);
-						Main.armorArmTexture[slot] = ModContent.GetTexture(armTextures[slot]);
+						TextureAssets.FemaleBody[slot] = ModContent.GetTexture(femaleTextures[slot]);
+						TextureAssets.ArmorArm[slot] = ModContent.GetTexture(armTextures[slot]);
 					}
 				}
 			}
+
 			Array.Resize(ref Item.headType, nextEquip[EquipType.Head]);
+			
 			foreach (var entry in slotToId[EquipType.Head]) {
 				Item.headType[entry.Key] = entry.Value;
 			}
+
 			Array.Resize(ref Item.bodyType, nextEquip[EquipType.Body]);
+
 			foreach (var entry in slotToId[EquipType.Body]) {
 				Item.bodyType[entry.Key] = entry.Value;
 			}
+
 			Array.Resize(ref Item.legType, nextEquip[EquipType.Legs]);
+			
 			foreach (var entry in slotToId[EquipType.Legs]) {
 				Item.legType[entry.Key] = entry.Value;
 			}

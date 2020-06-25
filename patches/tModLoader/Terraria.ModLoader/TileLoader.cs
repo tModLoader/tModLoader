@@ -145,7 +145,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileSolidTop, nextTile);
 			Array.Resize(ref Main.tileSolid, nextTile);
 			Array.Resize(ref Main.tileBouncy, nextTile);
-			Array.Resize(ref Main.tileValue, nextTile);
 			Array.Resize(ref Main.tileLargeFrames, nextTile);
 			Array.Resize(ref Main.tileRope, nextTile);
 			Array.Resize(ref Main.tileBrick, nextTile);
@@ -168,7 +167,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFlame, nextTile);
 			Array.Resize(ref Main.tileFrame, nextTile);
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
-			Array.Resize(ref Main.screenTileCounts, nextTile);
+			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
