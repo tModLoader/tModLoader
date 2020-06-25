@@ -166,30 +166,28 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
-+				if (!PlayerHooks.CanBuyItem(player, Main.npc[player.talkNPC], inv, inv[slot]))
++				if (!PlayerHooks.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
 +					continue;
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1250,14 +_,23 @@
+@@ -1250,14 +_,24 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
-+					PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
++					PlayerHooks.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
  				}
  
  				if (Main.mouseItem.type == 0) {
--					Main.mouseItem.netDefaults(inv[slot].netID);
--					if (inv[slot].prefix != 0)
--						Main.mouseItem.Prefix(inv[slot].prefix);
-+						Main.mouseItem = inv[slot].Clone();
-+						Main.mouseItem.stack = 1;
-+						if (inv[slot].buyOnce)
-+							Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
-+
-+						// Main.mouseItem.netDefaults(inv[slot].netID);
-+						// if (inv[slot].prefix != 0)
-+						//	 Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
++					/* //no prefix, preserved by cloning
+ 					Main.mouseItem.netDefaults(inv[slot].netID);
+ 					if (inv[slot].prefix != 0)
+ 						Main.mouseItem.Prefix(inv[slot].prefix);
++					*/
++					Main.mouseItem = inv[slot].Clone();
++					Main.mouseItem.stack = 1;
++					if (inv[slot].buyOnce)
++						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
  
  					Main.mouseItem.stack = 0;
 +
