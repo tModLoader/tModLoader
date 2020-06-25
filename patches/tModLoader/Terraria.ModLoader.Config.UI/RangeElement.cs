@@ -92,7 +92,7 @@ namespace Terraria.ModLoader.Config.UI
 					{
 						float percent = tick * TickIncrement;
 						if (percent <= 1f)
-							sb.Draw(Main.magicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
+							sb.Draw(TextureAssets.MagicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
 					}
 				}
 			}

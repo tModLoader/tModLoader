@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
 using System.Collections.Generic;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader.Config.UI
 {
@@ -161,7 +162,7 @@ namespace Terraria.ModLoader.Config.UI
 			base.Draw(spriteBatch);
 			Rectangle hitbox = GetInnerDimensions().ToRectangle();
 			hitbox = new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 2, 30);
-			Main.spriteBatch.Draw(Main.magicPixel, hitbox, c.current);
+			Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, hitbox, c.current);
 		}
 
 		internal float GetHeight()

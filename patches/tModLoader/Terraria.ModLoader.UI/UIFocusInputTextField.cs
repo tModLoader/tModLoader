@@ -57,7 +57,7 @@ namespace Terraria.ModLoader.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			//Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			//Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Red * 0.6f);
+			//Main.spriteBatch.Draw(TextureAssets.MagicPixel, hitbox, Color.Red * 0.6f);
 
 			if (Focused) {
 				GameInput.PlayerInput.WritingText = true;

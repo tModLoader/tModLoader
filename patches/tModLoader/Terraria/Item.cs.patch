@@ -366,7 +366,7 @@
  				Main.rand = new UnifiedRandom();
  
 +			if (NPCLoader.blockLoot.Contains(Type))
-+				return num;
++				return Main.maxItems;
 +
  			if (Main.halloween) {
  				if (Type == 58)

@@ -143,7 +143,7 @@ namespace Terraria.ModLoader.Config.UI
 
 			//if (IsMouseHovering) {
 			//	Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			//	Main.spriteBatch.Draw(Main.magicPixel, hitbox, Color.Green * 0.6f);
+			//	Main.spriteBatch.Draw(TextureAssets.MagicPixel, hitbox, Color.Green * 0.6f);
 			//}
 		}
 
@@ -180,7 +180,7 @@ namespace Terraria.ModLoader.Config.UI
 			CalculatedStyle dimensions = base.GetDimensions();
 			float settingsWidth = dimensions.Width + 1f;
 			Vector2 position = new Vector2(dimensions.X, dimensions.Y) + new Vector2(8);
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 2, (int)dimensions.Width - 20, 1), Color.LightGray);
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 2, (int)dimensions.Width - 20, 1), Color.LightGray);
 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, header, position, Color.White, 0f, Vector2.Zero, new Vector2(1f), settingsWidth - 20, 2f);
 		}
 	}

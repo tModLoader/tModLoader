@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
@@ -46,8 +47,8 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle space = GetInnerDimensions();
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)space.X + 10, (int)space.Y + (int)space.Height / 2 + 20, (int)space.Width - 20, 10), new Rectangle(0, 0, 1, 1), new Color(0, 0, 70));
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)space.X + 10, (int)space.Y + (int)space.Height / 2 + 20, (int)((space.Width - 20) * Progress), 10), new Rectangle(0, 0, 1, 1), new Color(200, 200, 70));
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)space.X + 10, (int)space.Y + (int)space.Height / 2 + 20, (int)space.Width - 20, 10), new Rectangle(0, 0, 1, 1), new Color(0, 0, 70));
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)space.X + 10, (int)space.Y + (int)space.Height / 2 + 20, (int)((space.Width - 20) * Progress), 10), new Rectangle(0, 0, 1, 1), new Color(200, 200, 70));
 		}
 
 		public void UpdateProgress(float value) => Progress = value;

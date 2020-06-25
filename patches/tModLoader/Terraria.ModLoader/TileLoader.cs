@@ -170,7 +170,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
-			Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
+			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
@@ -226,7 +226,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.TouchDamageOther, nextTile);
 			Array.Resize(ref TileID.Sets.Falling, nextTile);
 			Array.Resize(ref TileID.Sets.Ore, nextTile);
-			Array.Resize(ref TileID.Sets.ForceObsidianKill, nextTile);
+			Array.Resize(ref TileID.Sets.Obsidian, nextTile);
+
 			for (int k = TileID.Count; k < nextTile; k++) {
 				TileID.Sets.AllTiles[k] = true;
 				TileID.Sets.GeneralPlacementTiles[k] = true;

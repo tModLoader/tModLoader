@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -107,7 +108,7 @@ namespace Terraria.ModLoader.Config.UI
 			CalculatedStyle dimensions = base.GetInnerDimensions();
 			Rectangle rectangle = dimensions.ToRectangle();
 			rectangle = new Rectangle(rectangle.Right - 30, rectangle.Y, 30, 30);
-			spriteBatch.Draw(Main.magicPixel, rectangle, Color.AliceBlue);
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, rectangle, Color.AliceBlue);
 
 			float x = (c.X - min) / (max - min);
 			float y = (c.Y - min) / (max - min);
@@ -118,7 +119,7 @@ namespace Terraria.ModLoader.Config.UI
 			var blipRectangle = new Rectangle((int)position.X - 2, (int)position.Y - 2, 4, 4);
 
 			if (x >= 0 && x <= 1 && y >= 0 && y <= 1)
-				spriteBatch.Draw(Main.magicPixel, blipRectangle, Color.Black);
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, blipRectangle, Color.Black);
 
 			if (IsMouseHovering && rectangle.Contains((Main.MouseScreen).ToPoint()) && Main.mouseLeft) {
 				float newPerc = (Main.mouseX - rectangle.X) / (float)rectangle.Width;

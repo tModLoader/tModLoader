@@ -925,6 +925,7 @@ namespace Terraria.ModLoader
 			if (npc.modNPC != null) {
 				npc.modNPC.OnChatButtonClicked(firstButton, ref shop);
 				SoundEngine.PlaySound(SoundID.MenuTick);
+
 				if (shop) {
 					Main.playerInventory = true;
 					Main.npcChatText = "";
@@ -932,6 +933,7 @@ namespace Terraria.ModLoader
 					Main.instance.shop[Main.npcShop].SetupShop(npc.type);
 				}
 			}
+
 			foreach (GlobalNPC g in HookOnChatButtonClicked.arr) {
 				g.Instance(npc).OnChatButtonClicked(npc, firstButton);
 			}

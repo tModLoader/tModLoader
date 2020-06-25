@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.UI
 				}
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
 				xOffset += width;
-				Main.spriteBatch.Draw(Main.magicPixel, drawArea, memoryBarData.DrawColor);
+				Main.spriteBatch.Draw(TextureAssets.MagicPixel, drawArea, memoryBarData.DrawColor);
 
 				if (!drawHover && drawArea.Contains(mouse)) {
 					Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(memoryBarData.Tooltip);
@@ -82,13 +82,18 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (drawHover && hoverData != null) {
-				_hoverPanel.Parent = Parent;
+				if(_hoverPanel.Parent!=Parent) {
+					_hoverPanel.Remove();
+					Parent.Append(_hoverPanel);
+				}
+
 				_hoverPanel.Width.Set(hoverRect.Width + 5, 0);
 				_hoverPanel.Height.Set(hoverRect.Height + 5, 0);
 				_hoverPanel.Top.Set(Math.Abs(Parent.GetDimensions().Y - hoverRect.Y) - 10, 0);
 				_hoverPanel.Left.Set(Math.Abs(Parent.GetDimensions().X - hoverRect.X) - 20, 0);
 				_hoverPanel.Recalculate();
 				_hoverPanel.Draw(spriteBatch);
+
 				Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverData.Tooltip, hoverRect.X, hoverRect.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 			}
 		}

@@ -10,13 +10,11 @@
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -16,15 +_,22 @@
+@@ -16,15 +_,19 @@
  using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
-+#if WINDOWS
- using System.Drawing;
-+#endif
+-using System.Drawing;
  using System.IO;
  using System.Linq;
  using System.Reflection;
@@ -525,7 +523,8 @@
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
 +#if WINDOWS
- 				form.MinimumSize = new Size(0, 0);
+-				form.MinimumSize = new Size(0, 0);
++				form.MinimumSize = new System.Drawing.Size(0, 0);
  				if (!fullscreen)
  					SetDisplayModeAsBorderless(ref width, ref height, form);
 +#endif
@@ -540,7 +539,8 @@
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
 +#if WINDOWS
- 				form.MinimumSize = new Size(minScreenW, minScreenH);
+-				form.MinimumSize = new Size(minScreenW, minScreenH);
++				form.MinimumSize = new System.Drawing.Size(minScreenW, minScreenH);
  				if (flag) {
  					width = displayWidth[0];
  					height = displayHeight[0];

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
@@ -57,14 +58,16 @@ namespace Terraria.ModLoader.Config.UI
 			if (definition != null) {
 				int type = unloaded ? 0 : this.type;
 				Main.instance.LoadNPC(type);
-				Texture2D npcTexture = Main.npcTexture[type];
+				Texture2D npcTexture = TextureAssets.Npc[type].Value;
 
 				int frameCounter = Interface.modConfig.updateCount / 8;
 				int frames = Main.npcFrameCount[type];
+				
 				if (unloaded) {
-					npcTexture = Main.itemTexture[ItemID.Count];
+					npcTexture = TextureAssets.Item[ItemID.Count].Value; //Will this always return the 'missing item' texture?
 					frames = 1;
 				}
+
 				int height = npcTexture.Height / frames;
 				int width = npcTexture.Width;
 				int frame = frameCounter % frames;

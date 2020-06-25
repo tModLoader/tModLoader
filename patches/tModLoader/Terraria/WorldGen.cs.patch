@@ -154,7 +154,7 @@
  				Main.anglerQuestFinished = true;
  
 +			// Move rest of method to main thread to fix concurrent modification exceptions
-+			Main.OnTick += FinishPlayWorld;
++			Main.OnTickForInternalCodeOnly += FinishPlayWorld;
 +		}
 +
 +		internal static void FinishPlayWorld() {

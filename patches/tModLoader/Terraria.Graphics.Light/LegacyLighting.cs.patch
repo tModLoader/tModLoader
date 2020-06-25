@@ -38,7 +38,7 @@
  					}
  
  					_lightMap.GetLight(m - num, n - num3, out Vector3 color);
-++					WallLoader.ModifyLight(m, n, tile.wall, ref color.X, ref color.Y, ref color.Z); //TODO: Test. Is this the correct place?
++					WallLoader.ModifyLight(m, n, tile.wall, ref color.X, ref color.Y, ref color.Z); //TODO: Test. Is this the correct place?
 +					TileLoader.ModifyLight(m, n, tile.type, ref color.X, ref color.Y, ref color.Z);
  					if (_rgb) {
  						lightingState2.R2 = color.X;
