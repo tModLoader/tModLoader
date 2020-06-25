@@ -40,6 +40,9 @@ csharp_style_var_for_built_in_types = false:suggestion
 #prefer explicit type over var when the type is already mentioned on the right-hand side of a declaration
 csharp_style_var_when_type_is_apparent = true:none
 
+# Space preferences
+csharp_space_after_comma = true
+
 [*.json]
 indent_style = tab
 # unfortuantely anything other than tab_width and indent_size 1 causes VS to become whimsical about indenting
