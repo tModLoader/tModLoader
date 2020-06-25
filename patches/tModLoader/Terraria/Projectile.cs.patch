@@ -34,10 +34,10 @@
  		public bool friendly;
  		public int penetrate = 1;
 -		private int[] localNPCImmunity = new int[200];
--		private bool usesLocalNPCImmunity;
--		private bool usesIDStaticNPCImmunity;
 +		public int[] localNPCImmunity = new int[200];
+-		private bool usesLocalNPCImmunity;
 +		public bool usesLocalNPCImmunity;
+-		private bool usesIDStaticNPCImmunity;
 +		public bool usesIDStaticNPCImmunity;
  		public int maxPenetrate = 1;
  		public int identity;
@@ -225,8 +225,8 @@
  									if (flag7 && !hostile && num8 > 0)
  										num18 += nPC.checkArmorPenetration(num8);
  
--									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, num7, num31, flag6)) : ((int)nPC.StrikeNPC(num18, num7, num31, flag6));
 +									// patch note: use local variable 'knockback', not knockBack / num7
+-									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, num7, num31, flag6)) : ((int)nPC.StrikeNPC(num18, num7, num31, flag6));
 + 									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, knockback, hitDirection, flag6)) : ((int)nPC.StrikeNPC(num18, knockback, hitDirection, flag6));
  									if (flag7 && Main.player[owner].accDreamCatcher)
  										Main.player[owner].addDPS(num32);
@@ -360,9 +360,9 @@
  					overrideHeight = 4;
  				}
  
--				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				if (!ProjectileLoader.TileCollideStyle(this, ref overrideWidth, ref overrideHeight, ref flag6)) {
 +				}
+-				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				else if ((type != 440 && type != 449 && type != 606 || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || localAI[1] <= 0f) && (type != 640 || localAI[1] <= 0f)) {
  					if (aiStyle == 10) {
  						if (type >= 736 && type <= 738)
@@ -383,9 +383,9 @@
  						}
  					}
  
--					if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
 +					if (!ProjectileLoader.OnTileCollide(this, velocity)) {
 +					}
+-					if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
 +					else if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
  						base.position += base.velocity;
  						base.velocity = Vector2.Zero;
@@ -559,7 +559,7 @@
  					for (int k = 0; k < num2; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num * 1.5f;
-@@ -44238,4 +_,9 @@
+@@ -44238,6 +_,11 @@
  			int num = timeLeft;
  			timeLeft = 0;
  			ParticleOrchestraSettings settings;
@@ -569,6 +569,8 @@
 +			}
 +
  			if (type == 949) {
+ 				SoundEngine.PlaySound(SoundID.Item10, base.Center);
+ 				int num2 = (int)ai[0];
 @@ -45049,7 +_,7 @@
  
  			if (Main.myPlayer == owner && bobber) {

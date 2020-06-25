@@ -133,8 +133,7 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
-@@ -2198,11 +_,12 @@
- 		}
+@@ -2199,9 +_,10 @@
  
  		private static int SaveTileEntities(BinaryWriter writer) {
  			lock (TileEntity.ByID) {
@@ -147,4 +146,3 @@
  				}
  			}
  
- 			return (int)writer.BaseStream.Position;

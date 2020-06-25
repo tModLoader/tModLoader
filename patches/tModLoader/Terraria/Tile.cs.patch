@@ -1,8 +1,6 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -12,9 +_,9 @@
- 	public class Tile
- 	{
+@@ -14,7 +_,7 @@
  		public ushort type;
  		public ushort wall;
  		public byte liquid;
@@ -11,8 +9,7 @@
  		public byte bTileHeader;
  		public byte bTileHeader2;
  		public byte bTileHeader3;
-@@ -328,8 +_,8 @@
- 
+@@ -329,7 +_,7 @@
  		public byte color() => (byte)(sTileHeader & 0x1F);
  
  		public void color(byte color) {
@@ -75,7 +72,7 @@
  		}
  
  		public bool actuator() => (sTileHeader & 0x800) == 2048;
-@@ -392,12 +_,12 @@
+@@ -392,13 +_,13 @@
  			if (actuator)
  				sTileHeader |= 2048;
  			else
@@ -90,3 +87,4 @@
 +			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
  		}
  
+ 		public void Clear(TileDataType types) {

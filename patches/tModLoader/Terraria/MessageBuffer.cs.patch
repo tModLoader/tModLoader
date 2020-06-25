@@ -284,9 +284,9 @@
  									break;
  								}
  								SoundEngine.PlaySound(0, num15 * 16, num16 * 16);
--								WorldGen.PlaceChestDirect(num15, num16, 21, num17, num18);
 +								if (modType == 0)
 +									modType = TileID.Containers;
+-								WorldGen.PlaceChestDirect(num15, num16, 21, num17, num18);
 +								WorldGen.PlaceChestDirect(num15, num16, modType, num17, num18);
  								break;
 -							case 2:
@@ -296,9 +296,9 @@
  									break;
  								}
  								SoundEngine.PlaySound(0, num15 * 16, num16 * 16);
--								WorldGen.PlaceDresserDirect(num15, num16, 88, num17, num18);
 +								if (modType == 0)
 +									modType = TileID.Dressers;
+-								WorldGen.PlaceDresserDirect(num15, num16, 88, num17, num18);
 +								WorldGen.PlaceDresserDirect(num15, num16, modType, num17, num18);
  								break;
  							case 4:

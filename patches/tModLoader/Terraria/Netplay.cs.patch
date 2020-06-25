@@ -1,13 +1,12 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -1,27 +_,29 @@
+@@ -1,4 +_,5 @@
  using System;
 +using System.Collections.Concurrent;
  using System.IO;
  using System.Linq;
  using System.Net;
- using System.Net.Sockets;
- #if !WINDOWS
+@@ -7,10 +_,12 @@
  using System.Runtime.CompilerServices;
  #endif
  using System.Threading;
@@ -20,10 +19,7 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
- using Terraria.Utilities;
- #if !WINDOWS
- using Terraria.Social.Base;
- #endif
+@@ -21,7 +_,6 @@
  #if SERVER && WINDOWS
  using NATUPNPLib;
  #endif
@@ -59,13 +55,15 @@
  		private static void OpenPort(int port) {
  #if SERVER && WINDOWS
  			string localIPAddress = GetLocalIPAddress();
-@@ -360,5 +_,5 @@
+@@ -360,7 +_,7 @@
  
  		private static void UpdateClient() {
  			if (Main.netMode == 1 && Connection.Socket.IsConnected() && NetMessage.buffer[256].checkBytes)
 -				NetMessage.CheckBytes();
 +				InvokeOnMainThread(() => NetMessage.CheckBytes());
  		}
+ 
+ 		public static void AddCurrentServerToRecentList() {
 @@ -421,6 +_,7 @@
  		}
  

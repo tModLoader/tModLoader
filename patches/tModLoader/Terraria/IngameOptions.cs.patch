@@ -1,9 +1,6 @@
 --- src/Terraria/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
-@@ -1,13 +_,16 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
- using System;
+@@ -4,10 +_,13 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.Audio;

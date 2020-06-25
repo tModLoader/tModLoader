@@ -70,8 +70,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\RailSDK.Net.Windows.dll</HintPath>
-@@ -78,7 +_,8 @@
-     <Reference Include="System" />
+@@ -79,6 +_,7 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -92,10 +91,7 @@
      <EmbeddedResource Include="..\..\references\RailSDK.Net.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
        <LogicalName>RailSDK.Net.dll</LogicalName>
      </EmbeddedResource>
-@@ -115,11 +_,31 @@
-     <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-       <LogicalName>Steamworks.NET.dll</LogicalName>
-     </EmbeddedResource>
+@@ -118,8 +_,28 @@
      <EmbeddedResource Include="Terraria.GameContent.Metadata.MaterialData.Tiles.json" />
      <EmbeddedResource Include="Terraria.GameContent.WorldBuilding.Configuration.json" />
      <EmbeddedResource Include="Terraria.IO.Data.ResourcePacksDefaultInfo.tsv" />

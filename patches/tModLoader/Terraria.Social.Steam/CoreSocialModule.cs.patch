@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria.Social.Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria.Social.Steam/CoreSocialModule.cs
-@@ -2,5 +_,6 @@
+@@ -1,6 +_,7 @@
+ using ReLogic.OS;
  using Steamworks;
  using System;
 +using System.IO;

@@ -1,12 +1,11 @@
 --- src/Terraria/Terraria.Social/SocialAPI.cs
 +++ src/tModLoader/Terraria.Social/SocialAPI.cs
-@@ -1,5 +_,6 @@
+@@ -1,4 +_,5 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
- 
 @@ -19,10 +_,15 @@
  		public static SocialMode Mode => _mode;
  
@@ -24,15 +23,15 @@
  #else
  				if (Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
-@@ -33,15 +_,10 @@
+@@ -30,7 +_,6 @@
+ 			}
+ 
+ 			_mode = mode.Value;
 -			_modules = new List<ISocialModule>();
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
- 				case SocialMode.Steam:
- 					LoadSteam();
- 					break;
- 				case SocialMode.WeGame:
+@@ -41,10 +_,6 @@
  					LoadWeGame();
  					break;
  			}
@@ -40,6 +39,9 @@
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
+ 		}
+ 
+ 		public static void Shutdown() {
 @@ -68,10 +_,15 @@
  		private static void LoadDiscord() {
  		}

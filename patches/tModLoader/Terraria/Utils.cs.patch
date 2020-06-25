@@ -23,7 +23,7 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -532,5 +_,41 @@
+@@ -532,7 +_,43 @@
  			return array;
  		}
  
@@ -65,7 +65,10 @@
 +		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
 +		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
-@@ -728,4 +_,17 @@
+ 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
+ 		public static T NextFromList<T>(this UnifiedRandom random, params T[] objs) => objs[random.Next(objs.Length)];
+@@ -727,6 +_,19 @@
+ 			return currentPosition + v.SafeNormalize(Vector2.Zero) * maxAmountAllowedToMove;
  		}
  
 +
@@ -83,6 +86,7 @@
 +
  		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
  		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
+ 		public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
 @@ -1120,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  

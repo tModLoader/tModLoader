@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.UI/ItemSlot.cs
 +++ src/tModLoader/Terraria.UI/ItemSlot.cs
-@@ -9,7 +_,8 @@
- using Terraria.GameContent.UI.Chat;
+@@ -10,6 +_,7 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
@@ -9,8 +8,7 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -60,9 +_,9 @@
- 		}
+@@ -61,7 +_,7 @@
  
  		public static bool DrawGoldBGForCraftingMaterial;
  		public static bool ShiftForcedOn;
@@ -19,7 +17,6 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
- 		private static int[] inventoryGlowTime;
 @@ -651,18 +_,24 @@
  					break;
  				case 3:
@@ -165,8 +162,7 @@
  							break;
  
  						Utils.Swap(ref inv[slot], ref inv[slot - 10]);
-@@ -1237,7 +_,9 @@
- 
+@@ -1238,6 +_,8 @@
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
@@ -175,7 +171,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1250,12 +_,18 @@
+@@ -1250,14 +_,23 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -196,17 +192,13 @@
 +						//	 Main.mouseItem.Prefix((int)inv[slot].prefix); // no prefix, preserved by cloning
  
  					Main.mouseItem.stack = 0;
- 				}
-@@ -1261,3 +_,6 @@
 +
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.stack = 1;
  				}
  
  				if (!inv[slot].buyOnce)
-@@ -1265,7 +_,9 @@
- 
- 				Main.mouseItem.stack++;
+@@ -1267,6 +_,8 @@
  				RefreshStackSplitCooldown();
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
@@ -214,6 +206,7 @@
 +				PlayerHooks.PostBuyItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem);
  			}
  		}
+ 
 @@ -1592,10 +_,15 @@
  				num9 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num9 / 2f;
@@ -263,7 +256,7 @@
  				if (accSlotToSwapTo > num2)
  					return item;
  
-@@ -1965,5 +_,8 @@
+@@ -1965,6 +_,9 @@
  						num3 = k;
  				}
  
@@ -272,6 +265,7 @@
 +
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
+ 				accSlotToSwapTo = 0;
 @@ -2062,7 +_,7 @@
  		}
  

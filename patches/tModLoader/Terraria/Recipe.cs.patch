@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -2,7 +_,8 @@
- using System.Collections.Generic;
+@@ -3,6 +_,7 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -9,14 +8,18 @@
  
  namespace Terraria
  {
-@@ -74,5 +_,5 @@
+@@ -72,7 +_,7 @@
+ 				if (num == -1)
+ 					break;
  
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -90,5 +_,5 @@
+@@ -88,7 +_,7 @@
+ 				if (num == -1)
+ 					break;
  
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
@@ -126,7 +129,8 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13053,4 +_,7 @@
+@@ -13052,7 +_,10 @@
+ 			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
 +			RecipeHooks.AddRecipes();
@@ -134,3 +138,5 @@
  			UpdateWhichItemsAreMaterials();
 +			Item.PopulateMaterialCache();
  			UpdateMaterialFieldForAllRecipes();
+ 		}
+ 

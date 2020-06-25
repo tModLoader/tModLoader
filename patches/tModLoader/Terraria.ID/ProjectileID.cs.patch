@@ -1,6 +1,8 @@
 --- src/Terraria/Terraria.ID/ProjectileID.cs
 +++ src/tModLoader/Terraria.ID/ProjectileID.cs
-@@ -3,3 +_,7 @@
+@@ -1,5 +_,9 @@
+ using Terraria.WorldBuilding;
+ 
 +using ReLogic.Reflection;
 +using System;
 +using Terraria.ModLoader;
@@ -8,8 +10,7 @@
  namespace Terraria.ID
  {
  	public class ProjectileID
-@@ -1209,6 +_,39 @@
- 		public const short Mace = 947;
+@@ -1210,5 +_,38 @@
  		public const short FlamingMace = 948;
  		public const short TorchGod = 949;
  		public const short Count = 950;

@@ -33,47 +33,47 @@
  		public const float maxDrillLength = 48f;
  		private static Vector2 santankTextureSize;
 -		private MountData _data;
--		private int _type;
--		private bool _flipDraw;
--		private int _frame;
--		private float _frameCounter;
--		private int _frameExtra;
--		private float _frameExtraCounter;
--		private int _frameState;
--		private int _flyTime;
--		private int _idleTime;
--		private int _idleTimeNext;
--		private float _fatigue;
--		private float _fatigueMax;
--		private bool _abilityCharging;
--		private int _abilityCharge;
--		private int _abilityCooldown;
--		private int _abilityDuration;
--		private bool _abilityActive;
--		private bool _aiming;
 +		public MountData _data;
+-		private int _type;
 +		public int _type;
+-		private bool _flipDraw;
 +		public bool _flipDraw;
+-		private int _frame;
 +		public int _frame;
+-		private float _frameCounter;
 +		public float _frameCounter;
+-		private int _frameExtra;
 +		public int _frameExtra;
+-		private float _frameExtraCounter;
 +		public float _frameExtraCounter;
+-		private int _frameState;
 +		public int _frameState;
+-		private int _flyTime;
 +		public int _flyTime;
+-		private int _idleTime;
 +		public int _idleTime;
+-		private int _idleTimeNext;
 +		public int _idleTimeNext;
+-		private float _fatigue;
 +		public float _fatigue;
+-		private float _fatigueMax;
 +		public float _fatigueMax;
+-		private bool _abilityCharging;
 +		public bool _abilityCharging;
+-		private int _abilityCharge;
 +		public int _abilityCharge;
+-		private int _abilityCooldown;
 +		public int _abilityCooldown;
+-		private int _abilityDuration;
 +		public int _abilityDuration;
+-		private bool _abilityActive;
 +		public bool _abilityActive;
+-		private bool _aiming;
 +		public bool _aiming;
  		public List<DrillDebugDraw> _debugDraw;
 -		private object _mountSpecificData;
--		private bool _active;
 +		public object _mountSpecificData;
+-		private bool _active;
 +		public bool _active;
  		private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
@@ -194,8 +194,8 @@
  
  				mountedPlayer.fullRotation = 0f;
  				mountedPlayer.fullRotationOrigin = Vector2.Zero;
--				DoSpawnDust(mountedPlayer, isDismounting: true);
 +				if (!skipDust)
+-				DoSpawnDust(mountedPlayer, isDismounting: true);
 +					DoSpawnDust(mountedPlayer, isDismounting: true);
  				Reset();
  				mountedPlayer.position.Y += mountedPlayer.height;
@@ -213,10 +213,10 @@
  			if (_type == 35)
  				_mountSpecificData = new ExtraFrameMountData();
  
--			DoSpawnDust(mountedPlayer, isDismounting: false);
 +			bool skipDust = false;
 +			MountLoader.SetMount(this, mountedPlayer, ref skipDust);
 +			if (!skipDust)
+-			DoSpawnDust(mountedPlayer, isDismounting: false);
 +				DoSpawnDust(mountedPlayer, isDismounting: false);
  			if (mountedPlayer.whoAmI == Main.myPlayer)
  				NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);

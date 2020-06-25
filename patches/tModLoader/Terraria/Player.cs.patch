@@ -2373,7 +2373,19 @@
  			if (inventory[num].stack <= 0)
  				inventory[num].SetDefaults();
  		}
-@@ -29031,6 +_,9 @@
+@@ -29019,14 +_,21 @@
+ 		}
+ 
+ 		public Rectangle GetItemDrawFrame(int type) {
++#if SERVER
++			return Rectangle.Empty;
++#else
+ 			Main.instance.LoadItem(type);
+ 			if (type == 75)
+ 				return TextureAssets.Item[type].Frame(1, 8);
+ 
+ 			return TextureAssets.Item[type].Frame();
++#endif
  		}
  
  		public void ItemCheck(int i) {
@@ -2383,7 +2395,7 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -29056,8 +_,17 @@
+@@ -29052,8 +_,17 @@
  			if (itemAnimation == 0 && reuseDelay > 0)
  				ApplyReuseDelay();
  
@@ -2403,7 +2415,7 @@
  
  			if (itemAnimation == 0 && altFunctionUse == 2)
  				altFunctionUse = 0;
-@@ -29086,7 +_,7 @@
+@@ -29082,7 +_,7 @@
  				if (whoAmI == Main.myPlayer && gravDir == 1f && item.mountType != -1 && mount.CanMount(item.mountType, this))
  					mount.SetMount(item.mountType, this);
  
@@ -2412,7 +2424,7 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
-@@ -29164,7 +_,7 @@
+@@ -29160,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
  					ItemCheck_MinionAltFeatureUse(item, flag4);
@@ -2421,7 +2433,7 @@
  						ItemCheck_Shoot(i, item, weaponDamage);
  
  					ItemCheck_UseWiringTools(item);
-@@ -29242,6 +_,9 @@
+@@ -29238,6 +_,9 @@
  				}
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
@@ -2431,7 +2443,7 @@
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
  						if (whoAmI == Main.myPlayer) {
-@@ -29251,18 +_,20 @@
+@@ -29247,18 +_,20 @@
  					}
  
  					if (item.healLife > 0) {
@@ -2458,7 +2470,7 @@
  						}
  					}
  
-@@ -29367,7 +_,7 @@
+@@ -29363,7 +_,7 @@
  					if (ItemTimeIsZero) {
  						ApplyItemTime(item);
  					}
@@ -2467,7 +2479,7 @@
  						for (int k = 0; k < 70; k++) {
  							Dust.NewDust(base.position, width, height, 15, velocity.X * 0.5f, velocity.Y * 0.5f, 150, default(Color), 1.5f);
  						}
-@@ -29456,7 +_,7 @@
+@@ -29452,7 +_,7 @@
  							Main.dust[Dust.NewDust(base.position, width, height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
  						}
  
@@ -2476,7 +2488,7 @@
  							item.stack--;
  					}
  				}
-@@ -29480,7 +_,7 @@
+@@ -29476,7 +_,7 @@
  							Main.dust[Dust.NewDust(base.position, width, height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
  						}
  
@@ -2485,7 +2497,7 @@
  							item.stack--;
  					}
  				}
-@@ -29495,7 +_,7 @@
+@@ -29491,7 +_,7 @@
  						else if (Main.netMode == 1 && whoAmI == Main.myPlayer)
  							NetMessage.SendData(73);
  
@@ -2494,7 +2506,7 @@
  							item.stack--;
  					}
  				}
-@@ -29511,11 +_,11 @@
+@@ -29507,11 +_,11 @@
  								NetMessage.SendData(4, -1, -1, null, whoAmI);
  						}
  
@@ -2508,7 +2520,7 @@
  						num10 = (num10 - (float)itemTime) / num10;
  						float num11 = 44f;
  						float num12 = (float)Math.PI * 3f;
-@@ -29549,11 +_,12 @@
+@@ -29545,11 +_,12 @@
  				}
  
  				if (i == Main.myPlayer) {
@@ -2523,7 +2535,7 @@
  								if (inventory[num15].stack <= 0)
  									inventory[num15] = new Item();
  
-@@ -29582,7 +_,7 @@
+@@ -29578,7 +_,7 @@
  						if (flag7.HasValue)
  							flag6 = flag7.Value;
  
@@ -2532,7 +2544,7 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -29603,6 +_,8 @@
+@@ -29599,6 +_,8 @@
  
  			if (itemAnimation == 0)
  				JustDroppedAnItem = false;
@@ -2541,7 +2553,7 @@
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
-@@ -29904,6 +_,8 @@
+@@ -29900,6 +_,8 @@
  				if (sItem.type == 1826 && Main.npc[i].value > 0f)
  					pumpkinSword(i, (int)((double)damage * 1.5), knockBack);
  
@@ -2550,7 +2562,7 @@
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
-@@ -30547,6 +_,7 @@
+@@ -30543,6 +_,7 @@
  				}
  			}
  
@@ -2558,7 +2570,7 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -30828,7 +_,7 @@
+@@ -30824,7 +_,7 @@
  			if (Main.tileHammer[tile.type]) {
  				canHitWalls = false;
  				if (sItem.hammer > 0) {
@@ -2567,7 +2579,7 @@
  					if (!WorldGen.CanKillTile(x, y))
  						num2 = 0;
  
-@@ -30858,7 +_,10 @@
+@@ -30854,7 +_,10 @@
  				}
  			}
  			else if (Main.tileAxe[tile.type]) {
@@ -2579,7 +2591,7 @@
  				if (sItem.axe > 0) {
  					AchievementsHelper.CurrentlyMining = true;
  					if (!WorldGen.CanKillTile(x, y))
-@@ -31598,7 +_,8 @@
+@@ -31594,7 +_,8 @@
  				}
  
  				if (num3 >= 0 && WorldGen.PlaceWire(num, num2)) {
@@ -2589,7 +2601,7 @@
  					if (inventory[num3].stack <= 0)
  						inventory[num3].SetDefaults();
  
-@@ -31616,7 +_,8 @@
+@@ -31612,7 +_,8 @@
  				}
  
  				if (num4 >= 0 && WorldGen.PlaceWire2(num, num2)) {
@@ -2599,7 +2611,7 @@
  					if (inventory[num4].stack <= 0)
  						inventory[num4].SetDefaults();
  
-@@ -31635,7 +_,8 @@
+@@ -31631,7 +_,8 @@
  				}
  
  				if (num5 >= 0 && WorldGen.PlaceWire3(num, num2)) {
@@ -2609,7 +2621,7 @@
  					if (inventory[num5].stack <= 0)
  						inventory[num5].SetDefaults();
  
-@@ -31654,7 +_,8 @@
+@@ -31650,7 +_,8 @@
  				}
  
  				if (num6 >= 0 && WorldGen.PlaceWire4(num, num2)) {
@@ -2619,7 +2631,7 @@
  					if (inventory[num6].stack <= 0)
  						inventory[num6].SetDefaults();
  
-@@ -31687,7 +_,8 @@
+@@ -31683,7 +_,8 @@
  			else if (sItem.type == 849 && sItem.stack > 0 && WorldGen.PlaceActuator(num, num2)) {
  				ApplyItemTime(sItem);
  				NetMessage.SendData(17, -1, -1, null, 8, tileTargetX, tileTargetY);
@@ -2629,7 +2641,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -31790,6 +_,9 @@
+@@ -31786,6 +_,9 @@
  
  						if (Main.projectile[j].type >= 230 && Main.projectile[j].type <= 235)
  							Main.projectile[j].Kill();
@@ -2639,7 +2651,7 @@
  					}
  				}
  			}
-@@ -33150,7 +_,8 @@
+@@ -33146,7 +_,8 @@
  					Main.projectile[num180].originalDamage = damage;
  					UpdateMaxTurrets();
  				}
@@ -2649,7 +2661,7 @@
  					int num181 = Projectile.NewProjectile(vector.X, vector.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num181].magic = true;
-@@ -33907,10 +_,12 @@
+@@ -33903,10 +_,12 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
  			}
@@ -2663,7 +2675,7 @@
  				manaRegenDelay = (int)maxRegenDelay;
  		}
  
-@@ -34661,6 +_,8 @@
+@@ -34657,6 +_,8 @@
  		}
  
  		private bool ItemCheck_CheckCanUse(Item sItem) {
@@ -2672,7 +2684,7 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-@@ -35025,6 +_,10 @@
+@@ -35021,6 +_,10 @@
  			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && flag)
  				flag2 = true;
  
@@ -2683,7 +2695,7 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -35220,6 +_,7 @@
+@@ -35216,6 +_,7 @@
  			if (!mount.Active)
  				return;
  
@@ -2691,7 +2703,7 @@
  			if (mount.Type == 8) {
  				noItems = true;
  				if (controlUseItem) {
-@@ -35378,7 +_,7 @@
+@@ -35374,7 +_,7 @@
  				if (num == 2)
  					num = 102;
  
@@ -2700,7 +2712,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35550,6 +_,8 @@
+@@ -35546,6 +_,8 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -2709,7 +2721,7 @@
  			return KnockBack;
  		}
  
-@@ -35567,31 +_,47 @@
+@@ -35563,31 +_,47 @@
  		}
  
  		public int GetWeaponDamage(Item sItem) {
@@ -2782,7 +2794,7 @@
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
-@@ -35644,8 +_,11 @@
+@@ -35640,8 +_,11 @@
  			int pickedProjectileId = -1;
  			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  				projToShoot = pickedProjectileId;
@@ -2795,7 +2807,7 @@
  			else if (sItem.type == 3930)
  				projToShoot = 715 + item.type - AmmoID.Rocket;
  			else if (sItem.useAmmo == AmmoID.Rocket)
-@@ -35701,8 +_,14 @@
+@@ -35697,8 +_,14 @@
  
  			speed += item.shootSpeed;
  			if (item.ranged) {
@@ -2812,7 +2824,7 @@
  			}
  			else {
  				Damage += item.damage;
-@@ -35714,11 +_,12 @@
+@@ -35710,11 +_,12 @@
  					if (speed > 20f)
  						speed = 20f;
  				}
@@ -2827,7 +2839,7 @@
  			bool flag2 = dontConsume;
  			if (sItem.type == 3245 && Main.rand.Next(3) == 0)
  				flag2 = true;
-@@ -35759,7 +_,7 @@
+@@ -35755,7 +_,7 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
@@ -2836,7 +2848,7 @@
  				flag2 = true;
  
  			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
-@@ -35780,7 +_,10 @@
+@@ -35776,7 +_,10 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
@@ -2847,7 +2859,7 @@
  				item.stack--;
  				if (item.stack <= 0) {
  					item.active = false;
-@@ -35822,14 +_,20 @@
+@@ -35818,21 +_,29 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
  
@@ -2870,7 +2882,16 @@
  				}
  				else {
  					bool num2 = Main.tile[x, y].active();
-@@ -35905,7 +_,24 @@
+ 					WorldGen.KillTile(x, y);
++#if CLIENT
+ 					if (num2 && !Main.tile[x, y].active())
+ 						AchievementsHelper.HandleMining();
+ 
++#endif
+ 					if (Main.netMode == 1)
+ 						NetMessage.SendData(17, -1, -1, null, 0, x, y);
+ 				}
+@@ -35899,7 +_,24 @@
  			if (Main.tileNoFail[tileTarget.type])
  				num = 100;
  
@@ -2896,7 +2917,7 @@
  			if (tileTarget.type == 211 && pickPower < 200)
  				num = 0;
  
-@@ -35960,6 +_,9 @@
+@@ -35954,6 +_,9 @@
  			else if (tileTarget.type == 223 && pickPower < 150) {
  				num = 0;
  			}
@@ -2906,7 +2927,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -36251,24 +_,46 @@
+@@ -36245,24 +_,46 @@
  		}
  
  		public void DropItems() {
@@ -2955,7 +2976,7 @@
  				}
  
  				inventory[i].TurnToAir();
-@@ -36282,6 +_,8 @@
+@@ -36276,6 +_,8 @@
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
@@ -2964,7 +2985,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
-@@ -36299,6 +_,8 @@
+@@ -36293,6 +_,8 @@
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
  						Main.item[num3].newAndShiny = false;
@@ -2973,7 +2994,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num3);
  					}
-@@ -36316,6 +_,8 @@
+@@ -36310,6 +_,8 @@
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
  						Main.item[num4].newAndShiny = false;
@@ -2982,7 +3003,7 @@
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num4);
  					}
-@@ -36335,6 +_,8 @@
+@@ -36329,6 +_,8 @@
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
  					Main.item[num5].newAndShiny = false;
@@ -2991,7 +3012,7 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, num5);
  				}
-@@ -36342,12 +_,7 @@
+@@ -36336,12 +_,7 @@
  				miscDyes[i].TurnToAir();
  			}
  
@@ -3005,7 +3026,7 @@
  			Main.mouseItem.TurnToAir();
  		}
  
-@@ -36395,13 +_,14 @@
+@@ -36389,13 +_,14 @@
  		}
  
  		public object clientClone() {
@@ -3021,7 +3042,7 @@
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -36452,13 +_,14 @@
+@@ -36446,13 +_,14 @@
  			}
  
  			player.trashItem = trashItem.Clone();
@@ -3037,7 +3058,7 @@
  			return player;
  		}
  
-@@ -36469,7 +_,7 @@
+@@ -36463,7 +_,7 @@
  			if (Main.tile[x, y - 1] == null)
  				return false;
  
@@ -3046,7 +3067,7 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -36601,6 +_,7 @@
+@@ -36595,6 +_,7 @@
  			if (path == null || path == "")
  				return;
  
@@ -3054,7 +3075,7 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -36608,13 +_,14 @@
+@@ -36602,13 +_,14 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
@@ -3070,7 +3091,7 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
-@@ -36660,43 +_,43 @@
+@@ -36654,43 +_,43 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
  						for (int k = 0; k < player.armor.Length; k++) {
@@ -3122,7 +3143,7 @@
  							binaryWriter.Write(player.bank3.item[num3].stack);
  							binaryWriter.Write(player.bank3.item[num3].prefix);
  						}
-@@ -36709,14 +_,8 @@
+@@ -36703,14 +_,8 @@
  
  						binaryWriter.Write(player.voidVaultInfo);
  						for (int num5 = 0; num5 < 22; num5++) {
@@ -3139,7 +3160,7 @@
  						}
  
  						for (int num6 = 0; num6 < 200; num6++) {
-@@ -36761,9 +_,13 @@
+@@ -36755,9 +_,13 @@
  						stream.Flush();
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
@@ -3153,7 +3174,7 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -36836,7 +_,7 @@
+@@ -36830,7 +_,7 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
@@ -3162,7 +3183,7 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -37175,7 +_,7 @@
+@@ -37169,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
  								if (num < 74)
@@ -3171,7 +3192,7 @@
  
  								for (int num29 = 0; num29 < num28; num29++) {
  									player.buffType[num29] = binaryReader.ReadInt32();
-@@ -37275,6 +_,9 @@
+@@ -37269,6 +_,9 @@
  				playerFileData.Player = player;
  				return playerFileData;
  			}
@@ -3181,7 +3202,7 @@
  			catch {
  			}
  
-@@ -37307,6 +_,7 @@
+@@ -37301,6 +_,7 @@
  
  		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
@@ -3189,7 +3210,7 @@
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
-@@ -37323,6 +_,7 @@
+@@ -37317,6 +_,7 @@
  
  				newPlayer.lavaTime = newPlayer.lavaMax;
  			}
@@ -3197,7 +3218,7 @@
  		}
  
  		public static PlayerFileData GetFileData(string file, bool cloudSave) {
-@@ -37332,12 +_,17 @@
+@@ -37326,12 +_,17 @@
  			PlayerFileData playerFileData = LoadPlayer(file, cloudSave);
  			if (playerFileData.Player != null) {
  				if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1) {
@@ -3216,7 +3237,7 @@
  				}
  
  				return playerFileData;
-@@ -37387,7 +_,33 @@
+@@ -37381,7 +_,33 @@
  			return -1;
  		}
  
@@ -3251,7 +3272,7 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -37428,7 +_,7 @@
+@@ -37422,7 +_,7 @@
  			grappling[0] = -1;
  			statManaMax = 20;
  			extraAccessory = false;
@@ -3260,7 +3281,7 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
-@@ -37656,6 +_,7 @@
+@@ -37650,6 +_,7 @@
  		}
  
  		public void GetAnglerReward() {
@@ -3268,7 +3289,7 @@
  			Item item = new Item();
  			item.type = 0;
  			int num = anglerQuestsFinished;
-@@ -37841,56 +_,23 @@
+@@ -37835,56 +_,23 @@
  					}
  			}
  
@@ -3330,7 +3351,7 @@
  			}
  
  			Item item7 = new Item();
-@@ -37922,16 +_,9 @@
+@@ -37916,16 +_,9 @@
  				item7.stack = num3;
  			}
  
@@ -3349,7 +3370,7 @@
  
  			Item item8 = new Item();
  			if (Main.rand.Next((int)(15f * num2)) == 0)
-@@ -37959,12 +_,18 @@
+@@ -37953,12 +_,18 @@
  			if (Main.rand.Next(250) <= num)
  				item8.stack++;
  
@@ -3374,7 +3395,7 @@
  			}
  		}
  
-@@ -38091,6 +_,7 @@
+@@ -38085,6 +_,7 @@
  					list.Add(3024);
  			}
  
@@ -3382,7 +3403,7 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -38104,6 +_,49 @@
+@@ -38098,6 +_,49 @@
  			}
  		}
  
@@ -3432,7 +3453,7 @@
  		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
  			int num = (int)((float)amount * manaCost);
  			if (statMana >= num) {
-@@ -38136,7 +_,7 @@
+@@ -38130,7 +_,7 @@
  		public bool ConsumeSolarFlare() {
  			if (setSolar && solarShields > 0) {
  				solarShields--;
@@ -3441,7 +3462,7 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
-@@ -38374,7 +_,7 @@
+@@ -38368,7 +_,7 @@
  				return;
  
  			int timeToAdd = 480;

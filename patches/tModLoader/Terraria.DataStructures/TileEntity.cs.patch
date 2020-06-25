@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria.DataStructures/TileEntity.cs
-@@ -3,7 +_,8 @@
- using System.Collections.Generic;
+@@ -4,6 +_,7 @@
  using System.IO;
  using Terraria.Audio;
  using Terraria.GameInput;

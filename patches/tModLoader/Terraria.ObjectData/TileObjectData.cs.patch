@@ -1,7 +1,6 @@
 --- src/Terraria/Terraria.ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria.ObjectData/TileObjectData.cs
-@@ -3,14 +_,15 @@
- using Terraria.DataStructures;
+@@ -4,13 +_,14 @@
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;

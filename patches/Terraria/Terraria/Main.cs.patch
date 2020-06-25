@@ -375,13 +375,14 @@
  			if (!hasFocus)
  				return oldString;
  
-@@ -14572,5 +_,6 @@
+@@ -14572,6 +_,7 @@
  			}
  
  			return text;
 +#endif
  		}
  
+ 		private static string PasteTextIn(bool allowMultiLine, string newKeys) {
 @@ -35420,8 +_,13 @@
  
  		protected void QuitGame() {

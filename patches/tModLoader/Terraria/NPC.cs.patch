@@ -126,10 +126,10 @@
  				buffType[k] = 0;
  			}
  
--			for (int l = 0; l < 323; l++) {
 +			if (buffImmune.Length != BuffLoader.BuffCount)
 +				Array.Resize(ref buffImmune, BuffLoader.BuffCount);
 +
+-			for (int l = 0; l < 323; l++) {
 +			for (int l = 0; l < buffImmune.Length; l++) {
  				buffImmune[l] = false;
  			}
@@ -194,7 +194,6 @@
  			int num11 = -1;
  			if (!flag6 && Main.netMode != 1 && !flag3) {
  				for (int l = 0; l < 200; l++) {
--					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type]) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
 +					if (!Main.npc[l].active) continue;
 +					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[l], this);
 +					if (modCanHit.HasValue && !modCanHit.Value)
@@ -202,6 +201,7 @@
 +
 +					bool canHitVal = modCanHit.HasValue && modCanHit.Value;
 +					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
+-					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type]) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
 +					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type] && canHitVal) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
  						continue;
  
@@ -436,9 +436,9 @@
  			if (DeathSound != null)
  				SoundEngine.PlaySound(DeathSound, base.position);
  
--			if (type == 13 || type == 14 || type == 15) {
 +			if (NPCLoader.SpecialNPCLoot(this)) {
 +			}
+-			if (type == 13 || type == 14 || type == 15) {
 +			else if (type == 13 || type == 14 || type == 15) {
  				DropEoWLoot();
  			}
@@ -501,8 +501,8 @@
  				}
  				else {
 -					new Item().SetDefaults(Main.npc[i].catchItem);
--					Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +					// new Item().SetDefaults(Main.npc[i].catchItem);
+-					Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +					int itemWhoAmI = Item.NewItem((int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
 +					NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who], Main.item[itemWhoAmI]);
 +					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
@@ -660,17 +660,17 @@
  			if (num2 < 0)
  				num2 = 0;
  
--			num = Main.CalculateDamageNPCsTake((int)num, num2);
--			if (crit)
--				num *= 2.0;
 +			if (NPCLoader.StrikeNPC(this, ref num, num2, ref knockBack, hitDirection, ref crit)) {
+-			num = Main.CalculateDamageNPCsTake((int)num, num2);
 +				num = Main.CalculateDamageNPCsTake((int)num, num2);
+-			if (crit)
 +				if (crit)
+-				num *= 2.0;
 +					num *= 2.0;
  
 -			if (takenDamageMultiplier > 1f)
--				num *= (double)takenDamageMultiplier;
 +				if (takenDamageMultiplier > 1f)
+-				num *= (double)takenDamageMultiplier;
 +					num *= takenDamageMultiplier;
 +			}
  
@@ -733,12 +733,12 @@
  				if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0) {
  					Rectangle npcRect = nPC.Hitbox;
  					GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
--					if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624)
 +					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[i], this);
 +					if (modCanHit.HasValue && !modCanHit.Value)
 +						continue;
 +
 +					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
+-					if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624)
 +					if (hitbox.Intersects(npcRect) && ((modCanHit == true) || type != 453 || !NPCID.Sets.Skeletons[nPC.type])&& nPC.type != 624)
  						BeHurtByOtherNPC(i, nPC);
  				}
