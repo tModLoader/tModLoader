@@ -95,24 +95,6 @@
  		public static int defaultItemGrabRange = 42;
  		private static float itemGrabSpeed = 0.45f;
  		private static float itemGrabSpeedMax = 4f;
-@@ -1519,7 +_,16 @@
- 			}
- 
- 			int num = Item.NewItem((int)position.X, (int)position.Y, width, height, inventory[selectedItem].type);
--			if (!flag2 && inventory[selectedItem].type == 8 && inventory[selectedItem].stack > 1) {
-+			bool dryTorch = false;
-+			bool wetTorch = false;
-+			bool glowstick = false;
-+			inventory[selectedItem].modItem?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
-+			int type = inventory[selectedItem].type;
-+			if (!flag2 && inventory[selectedItem].stack > 1 && (dryTorch || wetTorch || type == 8 || type == 427 || type == 428 || type == 429 || type == 430 || type == 431 || type == 432 || type == 433 || type == 523 || type == 974 || type == 1245 || type == 1333 || type == 2274 || type == 3004 || type == 3045 || type == 3114)) {
-+				Item torch = inventory[selectedItem].Clone();
-+				torch.stack = 1;
-+				torch.position = Main.item[num].position;
-+				Main.item[num] = torch;
- 				inventory[selectedItem].stack--;
- 			}
- 			else {
 @@ -1999,7 +_,9 @@
  		public void ApplyItemTime(Item sItem) {
 +			int totalUseTime = PlayerHooks.TotalUseTime(sItem.useTime, this, sItem);
@@ -865,30 +847,6 @@
  				}
  				else if (buffType[j] == 62) {
  					if ((double)statLife <= (double)statLifeMax2 * 0.5) {
-@@ -7082,14 +_,18 @@
- 
- 				if (armor[k].prefix == 80)
- 					meleeSpeed += 0.04f;
-+
-+				ItemLoader.UpdateEquip(armor[k], this);
- 			}
-+		}
- 
--			bool flag = false;
--			bool flag2 = false;
--			bool flag3 = false;
--			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
-+		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			// for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
-+			// fake array and loop to keep patches small
-+			var armor = new[] { item }; int l = 0;
-+			{
- 				if (armor[l].expertOnly && !Main.expertMode)
--					continue;
-+					return;
- 
- 				if (armor[l].type == 3810 || armor[l].type == 3809 || armor[l].type == 3812 || armor[l].type == 3811)
- 					dd2Accessory = true;
 @@ -7331,10 +_,13 @@
  						}
  					}
@@ -948,93 +906,6 @@
 +				int type = item.type;
  				if ((type == 15 || type == 707) && accWatch < 1)
  					accWatch = 1;
- 
-@@ -8068,26 +_,28 @@
- 
- 				if (armor[l].type == 3869)
- 					Main.musicBox2 = 39;
--			}
--
--			if (dd2Accessory) {
--				minionDamage += 0.1f;
--				maxTurrets++;
--			}
--
--			for (int m = 3; m < 8 + extraAccessorySlots; m++) {
--				if (armor[m].wingSlot > 0) {
--					if (!hideVisual[m] || (velocity.Y != 0f && !mount.Active))
--						wings = armor[m].wingSlot;
--
--					wingsLogic = armor[m].wingSlot;
--				}
--			}
--
--			for (int n = 13; n < 18 + extraAccessorySlots; n++) {
--				int type3 = armor[n].type;
--				if (armor[n].wingSlot > 0)
--					wings = armor[n].wingSlot;
-+
-+				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
-+			}
-+			postMusicBoxes:
-+
-+			if (armor[l].wingSlot > 0) {
-+				if (!hideVisual || velocity.Y != 0f && !mount.Active)
-+					wings = armor[l].wingSlot;
-+
-+				wingsLogic = armor[l].wingSlot;
-+			}
-+
-+			ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
-+		}
-+
-+		public void VanillaUpdateVanityAccessory(Item item) {
-+			//for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
-+			{
-+				int type3 = item.type;
-+				if (item.wingSlot > 0)
-+					wings = item.wingSlot;
- 
- 				if (type3 == 861 || type3 == 3110 || type3 == 485) {
- 					hideWolf = false;
-@@ -8099,7 +_,37 @@
- 					forceMerman = true;
- 				}
- 			}
-+		}
- 
-+		public void UpdateEquips(int i) //Noise for the Diff
-+		{
-+			for (int j = 0; j < 58; j++) {
-+				VanillaUpdateInventory(inventory[j]);
-+			}
-+
-+			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
-+				VanillaUpdateEquip(armor[k]);
-+			}
-+
-+			bool flag = false;
-+			bool flag2 = false;
-+			bool flag3 = false;
-+			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
-+				VanillaUpdateAccessory(i, armor[l], hideVisual[l], ref flag, ref flag2, ref flag3);
-+			}
-+
-+			if (dd2Accessory) {
-+				minionDamage += 0.1f;
-+				maxTurrets++;
-+			}
-+
-+			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
-+			//wing loop merged into VanillaUpdateAccessory
-+			for (int n = 13; n < 18 + extraAccessorySlots; n++) {
-+				VanillaUpdateVanityAccessory(armor[n]);
-+			}
-+
-+			PlayerHooks.UpdateVanityAccessories(this);
- 			if (whoAmI == Main.myPlayer && Main.clock && accWatch < 3)
- 				accWatch++;
  
 @@ -8127,14 +_,22 @@
  
@@ -1133,6 +1004,30 @@
  				}
  
  				if (armor[k].prefix == 73)
+@@ -8990,12 +_,19 @@
+ 
+ 				if (armor[k].prefix == 80)
+ 					meleeSpeed += 0.04f;
++
++				ItemLoader.UpdateEquip(armor[k], this);
+ 			}
+ 
+-			equippedAnyWallSpeedAcc = false;
++			//equippedAnyWallSpeedAcc = false;
+-			equippedAnyTileSpeedAcc = false;
++			//equippedAnyTileSpeedAcc = false;
+-			equippedAnyTileRangeAcc = false;
++			//equippedAnyTileRangeAcc = false;
++		}
+-			for (int l = 3; l < 10; l++) {
++		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
++			// for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
++			// fake array and loop to keep patches small
++			var armor = new[] { item }; int l = 0;
++			{
+ 				if (IsAValidEquipmentSlotForIteration(l))
+ 					ApplyEquipFunctional(l, armor[l]);
+ 			}
 @@ -9003,13 +_,14 @@
  			if (skyStoneEffects) {
  				lifeRegen += 2;
@@ -1152,15 +1047,99 @@
 -				minionDamage += 0.1f;
 +				//minionDamage += 0.1f;
  				minionKB += 0.5f;
-@@ -9210,6 +_,8 @@
- 				}
- 			}
- 
-+			TileLoader.DisableSmartCursor(Main.tile[num, num2], ref flag);
+@@ -9013,26 +_,28 @@
+ 				pickSpeed -= 0.15f;
+ 				//minionDamage += 0.1f;
+ 				minionKB += 0.5f;
+-			}
+-
+-			if (dd2Accessory) {
+-				minionDamage += 0.1f;
+-				maxTurrets++;
+-			}
+-
+-			for (int m = 3; m < 10; m++) {
+-				if (armor[m].wingSlot > 0 && IsAValidEquipmentSlotForIteration(m)) {
+-					if (!hideVisibleAccessory[m] || (velocity.Y != 0f && !mount.Active))
+-						wings = armor[m].wingSlot;
+-
+-					wingsLogic = armor[m].wingSlot;
+-				}
+-			}
+-
+-			for (int n = 13; n < 20; n++) {
+-				if (IsAValidEquipmentSlotForIteration(n))
+-					ApplyEquipVanity(n, armor[n]);
+-			}
 +
- 			int tileBoost = item.tileBoost;
- 			int num3 = 0;
- 			if (item.type == 1071 || item.type == 1543 || item.type == 1072 || item.type == 1544) {
++				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
++			}
++
++			if (armor[l].wingSlot > 0) {
++				if (!hideVisual || velocity.Y != 0f && !mount.Active)
++					wings = armor[l].wingSlot;
++
++				wingsLogic = armor[l].wingSlot;
++			}
++
++			ApplyEquipVanity(l, armor[l]);
++			ItemLoader.UpdateAccessory(armor[l], this, hideVisual);
++		}
++
++		public void VanillaUpdateVanityAccessory(Item item) {
++			//for (int n = 13; n < 18 + this.extraAccessorySlots; n++)
++			{
++				int type3 = item.type;
++				if (item.wingSlot > 0)
++					wings = item.wingSlot;
+ 
+ 			if (wet && ShouldFloatInWater)
+ 				accFlipper = true;
+@@ -9037,12 +_,43 @@
+ 			if (wet && ShouldFloatInWater)
+ 				accFlipper = true;
++		}
+ 
++		public void UpdateEquips(int i) //Noise for the Diff
++		{
++			for (int j = 0; j < 58; j++) {
++				VanillaUpdateInventory(inventory[j]);
++			}
++
++			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
++				VanillaUpdateEquip(armor[k]);
++			}
++
++			bool flag = false;
++			bool flag2 = false;
++			bool flag3 = false;
++			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
++				VanillaUpdateAccessory(i, armor[l], hideVisual[l], ref flag, ref flag2, ref flag3);
++			}
++
++			if (dd2Accessory) {
++				minionDamage += 0.1f;
++				maxTurrets++;
++			}
++
++			PlayerHooks.UpdateEquips(this, ref flag, ref flag2, ref flag3);
++			//wing loop merged into VanillaUpdateAccessory
++			for (int n = 13; n < 20; n++) {
++				if (IsAValidEquipmentSlotForIteration(n))
++					ApplyEquipVanity(n, armor[n]);
++			}
++
++			PlayerHooks.UpdateVanityAccessories(this);
+ 			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasClock && accWatch < 3)
+ 				accWatch++;
+ 
+ 			if (equippedAnyTileSpeedAcc && inventory[selectedItem].createTile != 4)
+ 				tileSpeed += 0.5f;
+ 
+ 			if (equippedAnyWallSpeedAcc)
+ 				wallSpeed += 0.5f;
+ 
 @@ -9345,12 +_,15 @@
  			if (currentItem.type == 3015) {
  				aggro -= 400;
@@ -1231,11 +1210,10 @@
  					hideMerman = true;
  			}
  
-@@ -10060,8 +_,9 @@
+@@ -10060,8 +_,8 @@
  			if (Main.myPlayer != whoAmI)
 -				return;
-+				//return;
-+				goto postMusicBoxes; // TODO: double check wings logic, etc.
++				return; // TODO: double check wings logic, etc.
  
 -			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && Main.curMusic <= 89) {
 +			if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0) {
@@ -1319,24 +1297,6 @@
  		}
  
  		public void UpdateSocialShadow() {
-@@ -10987,6 +_,7 @@
- 							num10 = 4;
- 							break;
- 					}
-+					TileLoader.FixSmartInteractCoords(tile2.type, ref num9, ref num10, ref num11, ref num12, ref num13, ref num14);
- 
- 					if (num9 == 0 || num10 == 0)
- 						continue;
-@@ -11028,6 +_,9 @@
- 					if (!nPC.active || !nPC.townNPC || !nPC.Hitbox.Intersects(value6))
- 						continue;
- 
-+					if (!NPCLoader.CanChat(nPC, nPC.townNPC))
-+						continue;
-+
- 					Main.SmartInteractNPCsNearby.Add(num18);
- 					if (!flag4) {
- 						float num19 = nPC.Hitbox.Distance(point);
 @@ -11184,6 +_,8 @@
  			bool flag6 = ZoneRain && ZoneSnow;
  			bool flag7 = point.Y > Main.maxTilesY - 320;
@@ -1384,6 +1344,17 @@
 +
  				SmartSelect_PickToolForStrategy(tX, tY, toolStrategy, wetTile);
  				_lastSmartCursorToolStrategy = toolStrategy;
+@@ -11762,9 +_,9 @@
+ 					case 0:
+ 						if (ItemID.Sets.Torches[type]) {
+ 							SmartSelect_SelectItem(i);
+ 							return;
+ 						}
+-						if (type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776)
++						if (type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776 || ItemID.Sets.Glowstick[type])
+ 							SmartSelect_SelectItem(i);
+ 						break;
+ 					case 1:
 @@ -11786,16 +_,16 @@
  						}
  						break;
@@ -1553,14 +1524,6 @@
  			infernoCounter++;
  			if (infernoCounter >= 180)
  				infernoCounter = 0;
-@@ -16669,6 +_,7 @@
- 					dJumpEffectUnicorn = false;
- 				}
- 				else {
-+					bool isCustomWings = ItemLoader.WingUpdate(this, flag19);
- 					if (flag19) {
- 						if (wings == 10 && Main.rand.Next(2) == 0) {
- 							int num42 = 4;
 @@ -16852,6 +_,7 @@
  						}
  					}
@@ -1590,15 +1553,6 @@
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
-@@ -17366,7 +_,7 @@
- 							}
- 						}
- 					}
--					else {
-+					else if (!isCustomWings) {
- 						int num94 = 4;
- 						if (wings == 32)
- 							num94 = 3;
 @@ -17379,12 +_,14 @@
  					AddBuff(194, 2, quiet: false);
  			}
@@ -1678,6 +1632,15 @@
  				HorizontalMovement();
  				if (gravControl) {
  					if (controlUp && releaseUp) {
+@@ -18292,7 +_,8 @@
+ 					CancelAllJumpVisualEffects();
+ 				}
+ 				else {
++					bool isCustomWings = ItemLoader.WingUpdate(this, flag20);
+ 					if (flag20) {
+ 						WingAirVisuals();
+ 						WingMovement();
+ 					}
 @@ -18308,4 +_,4 @@
  						rocketTime = 0;
  					}
@@ -1719,15 +1682,6 @@
  			if (tongued) {
  				base.position += base.velocity;
  				flag28 = false;
-@@ -19254,7 +_,7 @@
- 					if (!flag5)
- 						Projectile.NewProjectile(myX * 16 + 8, num18 * 16 + 2, 0f, 0f, 419 + Main.rand.Next(4), 0, 0f, whoAmI, myX, num18);
- 				}
--				else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || Main.tile[myX, myY].type == 33 || Main.tile[myX, myY].type == 49 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || Main.tile[myX, myY].type == 174) {
-+				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || Main.tile[myX, myY].type == 33 || Main.tile[myX, myY].type == 49 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || Main.tile[myX, myY].type == 174) {
- 					flag2 = true;
- 					WorldGen.KillTile(myX, myY);
- 					GamepadEnableGrappleCooldown();
 @@ -19304,7 +_,8 @@
  			grappling[0] = -1;
  			grapCount = 0;
@@ -1747,6 +1701,17 @@
  
  			if (wingsLogic == 45)
  				runSlowdown *= 6f;
+@@ -20189,8 +_,10 @@
+ 			if (wings == 43) {
+ 				num28 = 7;
+ 				num29 = 1;
+ 				num27 = 3;
+ 			}
++
++			if (isCustomWings) return;
+ 
+ 			if (wings == 32)
+ 				num27 = 3;
 @@ -20750,6 +_,9 @@
  						break;
  				}
@@ -1766,15 +1731,6 @@
 +				PlayerHooks.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
  					if (whoAmI == Main.myPlayer && num2 > 0f && !immune && !Main.npc[i].dontTakeDamage) {
  						int num6 = (int)((float)num4 * num2);
-@@ -20786,6 +_,8 @@
- 					showItemIcon2 = num27;
- 				}
- 			}
-+
-+			TileLoader.MouseOver(myX, myY);
- 		}
- 
- 		public Color ChatColor() {
 @@ -20799,8 +_,12 @@
  					if (!immune && !flag2)
  						StatusFromNPC(Main.npc[i]);
@@ -1809,17 +1765,6 @@
  			if (!controlUseItem && altFunctionUse == 1)
  				altFunctionUse = 0;
  
-@@ -20951,7 +_,9 @@
- 						continue;
- 
- 					Main.item[j].beingGrabbed = true;
-+					if (ItemLoader.GrabStyle(Main.item[j], this)) {
-+					}
--					if (manaMagnet && (Main.item[j].type == 184 || Main.item[j].type == 1735 || Main.item[j].type == 1868)) {
-+					else if (manaMagnet && (Main.item[j].type == 184 || Main.item[j].type == 1735 || Main.item[j].type == 1868)) {
- 						Vector2 vector = new Vector2(Main.item[j].position.X + (float)(Main.item[j].width / 2), Main.item[j].position.Y + (float)(Main.item[j].height / 2));
- 						float num3 = base.Center.X - vector.X;
- 						float num4 = base.Center.Y - vector.Y;
 @@ -21079,7 +_,10 @@
  		}
  
@@ -1859,6 +1804,16 @@
  					flag2 = true;
  					SoundEngine.PlaySound(28, myX * 16, myY * 16, 0);
  					WorldGen.SwitchMB(myX, myY);
+@@ -21524,8 +_,8 @@
+-				else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
++				else if (TileLoader.IsTorch(Main.tile[myX, myY].type) || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
+ 					WorldGen.KillTile(myX, myY);
+ 					if (Main.netMode == 1)
+ 						NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
+ 
+ 					flag2 = true;
+ 					GamepadEnableGrappleCooldown();
+ 				}
 @@ -21824,7 +_,8 @@
  					if (!NPC.AnyNPCs(245) && Main.hardMode && NPC.downedPlantBoss) {
  						for (int n = 0; n < 58; n++) {
@@ -1913,18 +1868,6 @@
  					flag2 = true;
  					Main.mouseRightRelease = false;
  					int num68 = 0;
-@@ -22133,8 +_,10 @@
- 					bodyFrame.Y = bodyFrame.Height * 2;
- 				}
- 				else {
--					if (inventory[selectedItem].useStyle != 5)
-+					if (inventory[selectedItem].useStyle != 5) {
-+						ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this); //TODO: does this method need to return bool? Should it run before the rest of the useStyle code?
- 						return;
-+					}
- 
- 					if (inventory[selectedItem].type == 281 || inventory[selectedItem].type == 986) {
- 						bodyFrame.Y = bodyFrame.Height * 2;
 @@ -22147,7 +_,9 @@
  												continue;
  
@@ -1956,60 +1899,18 @@
  				noThrow = 2;
  				cursorItemIconEnabled = true;
  				cursorItemIconID = inventory[selectedItem].type;
-@@ -23494,11 +_,13 @@
+@@ -23714,9 +_,11 @@
+ 			else if (Main.tile[myX, myY].type == 334) {
+ 				noThrow = 2;
+ 			}
  
- 						if (num3 > 0 && Main.tile[num, num2].color() != num3 && WorldGen.paintTile(num, num2, (byte)num3, broadCast: true)) {
- 							int num5 = num4;
-+							if (ItemLoader.ConsumeItem(inventory[num5], this))
--							inventory[num5].stack--;
-+								inventory[num5].stack--;
+ 			if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
+ 				cursorItemIconEnabled = false;
+ 				cursorItemIconID = 0;
+ 			}
 +
- 							if (inventory[num5].stack <= 0)
- 								inventory[num5].SetDefaults();
- 
--							itemTime = inventory[selectedItem].useTime;
-+							itemTime = PlayerHooks.TotalUseTime(inventory[selectedItem].useTime, this, inventory[selectedItem]);
- 						}
- 					}
- 				}
-@@ -23522,11 +_,13 @@
- 
- 						if (num8 > 0 && Main.tile[num6, num7].wallColor() != num8 && WorldGen.paintWall(num6, num7, (byte)num8, broadCast: true)) {
- 							int num10 = num9;
-+							if (ItemLoader.ConsumeItem(inventory[num10], this))
--							inventory[num10].stack--;
-+								inventory[num10].stack--;
-+
- 							if (inventory[num10].stack <= 0)
- 								inventory[num10].SetDefaults();
- 
--							itemTime = inventory[selectedItem].useTime;
-+							itemTime = PlayerHooks.TotalUseTime(inventory[selectedItem].useTime, this, inventory[selectedItem]);
- 						}
- 					}
- 				}
-@@ -23673,9 +_,19 @@
- 					bool flag3 = false;
- 					bool flag4 = false;
- 					TileObject objectData = default(TileObject);
-+					if (!TileLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createTile)) {
-+					}
--					if (TileObjectData.CustomPlace(inventory[selectedItem].createTile, inventory[selectedItem].placeStyle) && inventory[selectedItem].createTile != 82) {
-+					else if (TileObjectData.CustomPlace(inventory[selectedItem].createTile, inventory[selectedItem].placeStyle) && inventory[selectedItem].createTile != 82) {
- 						flag4 = true;
--						flag3 = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)inventory[selectedItem].createTile, inventory[selectedItem].placeStyle, direction, out objectData);
-+						int hackCreateTile = inventory[selectedItem].createTile;
-+						int hackPlaceStyle = inventory[selectedItem].placeStyle;
-+						if (hackCreateTile == TileID.Saplings) {
-+							Tile soil = Main.tile[tileTargetX, tileTargetY + 1];
-+							if (soil.active())
-+								TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
-+						}
-+
-+						flag3 = TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out objectData, false);
- 						int num25 = 0;
- 						int num26 = 0;
- 						int x = 0;
++			TileLoader.MouseOver(myX, myY);
+ 		}
 @@ -23852,6 +_,9 @@
  				if (!item.active || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item))
  					continue;
@@ -2036,6 +1937,14 @@
  						item = PickupItem(i, j, item);
 +					}
  				}
+@@ -23866,4 +_,6 @@
+ 					if (CanPullItem(item, status)) {
+ 						item.beingGrabbed = true;
++						if (ItemLoader.GrabStyle(item, this)) {
++						}
+-						if (manaMagnet && (item.type == 184 || item.type == 1735 || item.type == 1868))
++						else if (manaMagnet && (item.type == 184 || item.type == 1735 || item.type == 1868))
+ 							PullItem_Pickup(item, 12f, 5);
 @@ -24201,6 +_,35 @@
  			}
  		}
@@ -2072,37 +1981,6 @@
  		public bool BuyItem(int price, int customCurrency = -1) {
  			if (customCurrency != -1)
  				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-@@ -24262,11 +_,13 @@
- 
- 											if (num80 > 0 && Main.tile[num78, num79].color() != num80 && WorldGen.paintTile(num78, num79, (byte)num80, broadCast: true)) {
- 												int num83 = num81;
-+												if (ItemLoader.ConsumeItem(inventory[num83], this))
--												inventory[num83].stack--;
-+													inventory[num83].stack--;
-+
- 												if (inventory[num83].stack <= 0)
- 													inventory[num83].SetDefaults();
- 
--												itemTime = (int)((float)inventory[selectedItem].useTime * tileSpeed);
-+												itemTime = PlayerHooks.TotalUseTime(inventory[selectedItem].useTime * tileSpeed, this, inventory[selectedItem]);
- 											}
- 										}
- 
-@@ -24284,11 +_,12 @@
- 										int num84 = FindItem(849);
- 										if (num84 > -1 && WorldGen.PlaceActuator(num78, num79)) {
- 											NetMessage.SendData(17, -1, -1, null, 8, num78, num79);
-+											if (ItemLoader.ConsumeItem(inventory[num84], this))
--											inventory[num84].stack--;
-+												inventory[num84].stack--;
- 											if (inventory[num84].stack <= 0)
- 												inventory[num84].SetDefaults();
- 
--											itemTime = (int)((float)inventory[selectedItem].useTime * tileSpeed);
-+											itemTime = PlayerHooks.TotalUseTime(inventory[selectedItem].useTime * tileSpeed, this, inventory[selectedItem]);
- 										}
- 									}
- 								}
 @@ -24418,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -2112,21 +1990,6 @@
  				oldAdjTile[i] = adjTile[i];
  				adjTile[i] = false;
  			}
-@@ -24425,11 +_,12 @@
- 
- 			if (num100 > 0 && Main.tile[num98, num99].wallColor() != num100 && WorldGen.paintWall(num98, num99, (byte)num100, broadCast: true)) {
- 				int num103 = num101;
-+				if (ItemLoader.ConsumeItem(inventory[num103], this))	
--				inventory[num103].stack--;
-+					inventory[num103].stack--;
- 				if (inventory[num103].stack <= 0)
- 					inventory[num103].SetDefaults();
- 
--				itemTime = (int)((float)inventory[selectedItem].useTime * wallSpeed);
-+				itemTime = PlayerHooks.TotalUseTime(inventory[selectedItem].useTime * wallSpeed, this, inventory[selectedItem]);
- 			}
- 		}
- 
 @@ -24458,7 +_,9 @@
  								adjTile[14] = true;
  								alchemyTable = true;
@@ -2173,14 +2036,16 @@
  			if (mount.Active) {
  				legFrameCounter = 0.0;
  				legFrame.Y = legFrame.Height * 6;
-@@ -25018,6 +_,7 @@
- 			float num = mount.PlayerOffsetHitbox;
- 			Item item = inventory[selectedItem];
- 			if (mount.Active) {
-+				MountLoader.UseAbility(this, Vector2.Zero, false);
- 				if (mount.Type == 8) {
- 					noItems = true;
- 					if (controlUseItem) {
+@@ -25013,7 +_,9 @@
+ 						if ((double)num19 > 0.6) {
+ 							bodyFrame.Y = bodyFrame.Height * 4;
+ 							if (gravDir == -1f)
+ 								bodyFrame.Y = bodyFrame.Height * 2;
+ 						}
+ 					}
+ 				}
++				else
++					ItemLoader.UseItemFrame(this.inventory[this.selectedItem], this); //TODO: does this method need to return bool? Should it run before the rest of the useStyle code?
 @@ -25041,6 +_,8 @@
  				_ = bodyFrame;
  				reference6.Y = 0;
@@ -2190,27 +2055,6 @@
  			else if (shieldRaised) {
  				bodyFrame.Y = bodyFrame.Height * 10;
  			}
-@@ -25298,7 +_,8 @@
- 
- 							if (flag5) {
- 								num8 = inventory[n].type;
-+								if (ItemLoader.ConsumeItem(inventory[n], this))
--								inventory[n].stack--;
-+									inventory[n].stack--;
- 								if (inventory[n].stack <= 0)
- 									inventory[n].SetDefaults();
- 							}
-@@ -25406,6 +_,10 @@
- 					if (item.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[item.shoot] && altFunctionUse == 2)
- 						flag6 = true;
- 
-+					if (!CheckMana(item, -1, !flag6))
-+						flag2 = false;
-+
-+					goto SkipManaCode;
- 					if (item.type != 127 || !spaceGun) {
- 						if (statMana >= (int)((float)item.mana * manaCost)) {
- 							if (!flag6)
 @@ -25433,6 +_,8 @@
  			if (drawPlayer.body == 36 && drawPlayer.head == 56)
  				armorEffectDrawOutlines = true;
@@ -2228,21 +2072,6 @@
  			return num;
  		}
  
-@@ -25621,11 +_,11 @@
- 
- 			if (itemAnimation > 0) {
- 				if (item.melee)
--					itemAnimationMax = (int)((float)item.useAnimation * meleeSpeed);
-+					itemAnimationMax = PlayerHooks.TotalMeleeTime(item.useAnimation * meleeSpeed, this, item);
- 				else
--					itemAnimationMax = item.useAnimation;
-+					itemAnimationMax = PlayerHooks.TotalMeleeTime(item.useAnimation, this, item);
- 
--				if (item.mana > 0 && !flag && (item.type != 127 || !spaceGun))
-+				if (item.mana > 0 && !flag && GetManaCost(item) > 0)
- 					manaRegenDelay = (int)maxRegenDelay;
- 
- 				if (Main.dedServ) {
 @@ -25781,3 +_,6 @@
  				immune = true;
 +				if (dead)
@@ -2446,6 +2275,28 @@
  					if (inventory[selectedItem].stack == 0)
  						inventory[selectedItem].SetDefaults();
  
+@@ -27057,10 +_,19 @@
+ 				bool canPlace = false;
+ 				bool newObjectType = false;
+ 				TileObject objectData = default(TileObject);
++				if (!TileLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createTile)) {
++				}
+-				if (TileObjectData.CustomPlace(createTile, inventory[selectedItem].placeStyle) && createTile != 82 && createTile != 227) {
++				else if (TileObjectData.CustomPlace(createTile, inventory[selectedItem].placeStyle) && createTile != 82 && createTile != 227) {
+ 					newObjectType = true;
++					int hackCreateTile = inventory[selectedItem].createTile;
++					int hackPlaceStyle = inventory[selectedItem].placeStyle;
++					if (hackCreateTile == TileID.Saplings) {
++						Tile soil = Main.tile[tileTargetX, tileTargetY + 1];
++						if (soil.active())
++							TileLoader.SaplingGrowthType(soil.type, ref hackCreateTile, ref hackPlaceStyle);
++					}
+-					canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)inventory[selectedItem].createTile, inventory[selectedItem].placeStyle, direction, out objectData);
++					canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, hackCreateTile, hackPlaceStyle, direction, out objectData, false);
+ 					PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref objectData);
+ 					PlaceThing_Tiles_BlockPlacementForRepeatedPigronatas(ref canPlace, ref objectData);
+ 					PlaceThing_Tiles_BlockPlacementForRepeatedPumpkins(ref canPlace, ref objectData);
+ 					PlaceThing_Tiles_BlockPlacementForRepeatedCoralAndBeachPiles(ref canPlace, ref objectData);
 @@ -27265,6 +_,7 @@
  				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches);
  				if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorEnabled)
@@ -2454,16 +2305,16 @@
  			}
  
  			return data;
-@@ -27477,7 +_,8 @@
- 							Projectile.NewProjectile(worldX3, worldY3 - pushYUp3, 0f, 0f, shoot, Damage, KnockBack, i);
- 							UpdateMaxTurrets();
- 						}
--						else {
-+						else if (PlayerHooks.Shoot(this, item, ref vector, ref num70, ref num71, ref shoot, ref Damage, ref KnockBack)
-+							&& ItemLoader.Shoot(item, this, ref vector, ref num70, ref num71, ref shoot, ref Damage, ref KnockBack)) {
- 							int num207 = Projectile.NewProjectile(vector.X, vector.Y, num70, num71, shoot, Damage, KnockBack, i);
- 							if (item.type == 726)
- 								Main.projectile[num207].magic = true;
+@@ -27449,7 +_,8 @@
+ 					int num7 = FindItem(849);
+ 					if (num7 > -1 && WorldGen.PlaceActuator(num5, num6)) {
+ 						NetMessage.SendData(17, -1, -1, null, 8, num5, num6);
++						if (ItemLoader.ConsumeItem(inventory[num7], this))
+-						inventory[num7].stack--;
++							inventory[num7].stack--;
+ 						if (inventory[num7].stack <= 0)
+ 							inventory[num7].SetDefaults();
+ 					}
 @@ -27814,6 +_,6 @@
  				if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 59)
  					canPlace = true;
@@ -2472,71 +2323,29 @@
 +			else if (TileLoader.IsTorch(inventory[selectedItem].createTile) || inventory[selectedItem].createTile == 136) {
  				if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  					canPlace = true;
-@@ -27860,12 +_,15 @@
- 										if (num230 != 0)
- 											hitTile.Prune();
- 
--										itemTime = item.useTime;
-+										itemTime = PlayerHooks.TotalUseTime(item.useTime, this, item);
- 										AchievementsHelper.CurrentlyMining = false;
- 									}
- 								}
- 								else if (Main.tileAxe[Main.tile[tileTargetX, tileTargetY].type]) {
--									num230 = ((Main.tile[tileTargetX, tileTargetY].type != 80) ? (num230 + item.axe) : (num230 + item.axe * 3));
-+									if (Main.tile[tileTargetX, tileTargetY].type == 80)
-+										num230 += item.axe * 3;
-+									else
-+										TileLoader.MineDamage(item.axe, ref num230);
- 									if (item.axe > 0) {
- 										AchievementsHelper.CurrentlyMining = true;
- 										if (!WorldGen.CanKillTile(tileTargetX, tileTargetY))
-@@ -27886,27 +_,27 @@
- 										if (num230 != 0)
- 											hitTile.Prune();
- 
--										itemTime = item.useTime;
-+										itemTime = PlayerHooks.TotalUseTime(item.useTime, this, item);
- 										AchievementsHelper.CurrentlyMining = false;
- 									}
- 								}
- 								else if (item.pick > 0) {
- 									PickTile(tileTargetX, tileTargetY, item.pick);
--									itemTime = (int)((float)item.useTime * pickSpeed);
-+									itemTime = PlayerHooks.TotalUseTime(item.useTime * pickSpeed, this, item);
- 								}
- 
- 								if (item.pick > 0)
--									itemTime = (int)((float)item.useTime * pickSpeed);
-+									itemTime = PlayerHooks.TotalUseTime(item.useTime * pickSpeed, this, item);
- 
--								if (item.hammer > 0 && Main.tile[tileTargetX, tileTargetY].active() && ((Main.tileSolid[Main.tile[tileTargetX, tileTargetY].type] && Main.tile[tileTargetX, tileTargetY].type != 10) || Main.tile[tileTargetX, tileTargetY].type == 314 || Main.tile[tileTargetX, tileTargetY].type == 351 || Main.tile[tileTargetX, tileTargetY].type == 424 || Main.tile[tileTargetX, tileTargetY].type == 442) && poundRelease) {
-+								if (item.hammer > 0 && Main.tile[tileTargetX, tileTargetY].active() && (Main.tileSolid[Main.tile[tileTargetX, tileTargetY].type] && !TileLoader.IsClosedDoor(Main.tile[tileTargetX, tileTargetY]) || Main.tile[tileTargetX, tileTargetY].type == 314 || Main.tile[tileTargetX, tileTargetY].type == 351 || Main.tile[tileTargetX, tileTargetY].type == 424 || Main.tile[tileTargetX, tileTargetY].type == 442) && poundRelease) {
- 									flag14 = false;
--									itemTime = item.useTime;
-+									itemTime = PlayerHooks.TotalUseTime(item.useTime, this, item);
- 									num230 += (int)((double)item.hammer * 1.25);
- 									num230 = 100;
--									if (Main.tile[tileTargetX, tileTargetY - 1].active() && Main.tile[tileTargetX, tileTargetY - 1].type == 10)
-+									if (Main.tile[tileTargetX, tileTargetY - 1].active() && TileLoader.IsClosedDoor(Main.tile[tileTargetX, tileTargetY - 1]))
- 										num230 = 0;
- 
--									if (Main.tile[tileTargetX, tileTargetY + 1].active() && Main.tile[tileTargetX, tileTargetY + 1].type == 10)
-+									if (Main.tile[tileTargetX, tileTargetY + 1].active() && TileLoader.IsClosedDoor(Main.tile[tileTargetX, tileTargetY + 1]))
- 										num230 = 0;
- 
- 									if (hitTile.AddDamage(num229, num230) >= 100) {
 @@ -28342,10 +_,11 @@
  			if (paintingAWall) {
  				if (b != byte.MaxValue && Main.tile[x, y].wallColor() != b && WorldGen.paintWall(x, y, b, broadCast: true)) {
-+						if (ItemLoader.ConsumeItem(item, this))
++					if (ItemLoader.ConsumeItem(item, this))
 -					item.stack--;
-+							item.stack--;
++						item.stack--;
  					if (item.stack <= 0)
  						item.SetDefaults();
  
  					if (applyItemAnimation)
  						ApplyItemTime(inventory[selectedItem], wallSpeed);
  				}
+ 			}
+@@ -28352,8 +_,9 @@
+ 			else if (b != byte.MaxValue && Main.tile[x, y].color() != b && WorldGen.paintTile(x, y, b, broadCast: true)) {
++				if (ItemLoader.ConsumeItem(item, this))
+-				item.stack--;
++					item.stack--;
+ 				if (item.stack <= 0)
+ 					item.SetDefaults();
+ 
+ 				if (applyItemAnimation)
+ 					ApplyItemTime(inventory[selectedItem], tileSpeed);
  			}
 @@ -28403,7 +_,7 @@
  			int num2 = 25;
@@ -2642,13 +2451,6 @@
  
  			if (itemAnimation == 0 && altFunctionUse == 2)
  				altFunctionUse = 0;
-@@ -29077,5 +_,6 @@
- 				if (item.potion && flag3)
- 					ApplyPotionDelay(item);
- 
-+					SkipManaCode:
- 				if (item.mana > 0 && flag3 && whoAmI == Main.myPlayer && item.buffType != 0 && item.buffTime != 0)
- 					AddBuff(item.buffType, item.buffTime);
 @@ -29086,5 +_,5 @@
  				if (whoAmI == Main.myPlayer && gravDir == 1f && item.mountType != -1 && mount.CanMount(item.mountType, this))
  					mount.SetMount(item.mountType, this);
@@ -2819,6 +2621,17 @@
  					if (!WorldGen.CanKillTile(x, y))
  						num2 = 0;
  
+@@ -30860,6 +_,9 @@
+ 			else if (Main.tileAxe[tile.type]) {
+-				num2 = ((tile.type != 80) ? (num2 + (int)((float)sItem.axe * 1.2f)) : (num2 + (int)((float)(sItem.axe * 3) * 1.2f)));
++				if (tile.type == 80)
++					num2 += sItem.axe * 3 * 1.2f;
++				else
++					TileLoader.MineDamage(sItem.axe, ref num2);
+ 				if (sItem.axe > 0) {
+ 					AchievementsHelper.CurrentlyMining = true;
+ 					if (!WorldGen.CanKillTile(x, y))
+ 						num2 = 0;
 @@ -31598,9 +_,10 @@
  				}
  
@@ -2910,6 +2723,17 @@
  					}
  				}
  			}
+@@ -33149,8 +_,9 @@
+ 					int num180 = Projectile.NewProjectile(worldX, worldY - pushYUp, 0f, 0f, projToShoot, Damage, KnockBack, i);
+ 					Main.projectile[num180].originalDamage = damage;
+ 					UpdateMaxTurrets();
+ 				}
+-				else {
++				else if (PlayerHooks.Shoot(this, sItem, ref vector, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)
++					&& ItemLoader.Shoot(sItem, this, ref vector, ref num2, ref num3, ref projToShoot, ref Damage, ref KnockBack)) {
+ 					int num181 = Projectile.NewProjectile(vector.X, vector.Y, num2, num3, projToShoot, Damage, KnockBack, i);
+ 					if (sItem.type == 726)
+ 						Main.projectile[num181].magic = true;
 @@ -33906,4 +_,6 @@
  				CompositeArmStretchAmount stretch6 = CompositeArmStretchAmount.ThreeQuarters;
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
@@ -2917,6 +2741,12 @@
  			}
 +			else if(!Main.dedServ)
 +				ItemLoader.UseStyle(item, this);
+@@ -33912,4 +_,4 @@
+ 		private void ItemCheck_ApplyManaRegenDelay(Item sItem) {
+-			if (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))
++ 			if (GetManaCost(sItem)>0)
+ 				manaRegenDelay = (int)maxRegenDelay;
+ 		}
 @@ -34663,5 +_,7 @@
  		private bool ItemCheck_CheckCanUse(Item sItem) {
 +			if(!ItemLoader.CanUseItem(sItem, this))
@@ -2925,6 +2755,27 @@
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
  			int num2 = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
+@@ -35025,7 +_,11 @@
+ 			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && flag)
+ 				flag2 = true;
+ 
++			if (!CheckMana(item, -1, !flag2))
++				flag_idk = false;//This was originally a different flag, make sure this is right
++			return canUse;
++			
+ 			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
+ 				if (statMana >= num) {
+ 					if (!flag2)
+ 						statMana -= num;
+@@ -35219,7 +_,8 @@
+ 		private void ItemCheck_HandleMount() {
+ 			if (!mount.Active)
+ 				return;
+ 
++			MountLoader.UseAbility(this, Vector2.Zero, false);
+ 			if (mount.Type == 8) {
+ 				noItems = true;
+ 				if (controlUseItem) {
 @@ -35378,7 +_,7 @@
  				if (num == 2)
  					num = 102;
@@ -3683,7 +3534,7 @@
 +		public int GetManaCost(Item item) {
 +			float reduce = manaCost;
 +			float mult = 1;
-+			if (item.type == ItemID.SpaceGun && spaceGun)
++			if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray && item.type == ItemID.ZapinatorOrange))
 +				mult = 0;
 +
 +			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);

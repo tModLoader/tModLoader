@@ -19,16 +19,38 @@
 		//Change all CheckMana() to use version with item passed in
 		//Replace ItemLoader.AutoLightSelect with data sets.
 			There are sets for Torches and Water Torches already.
-			Add ItemID.Sets.Glowsticks and implement it in SmartSelect_PickToolForStrategy.
+			Add ItemID.Sets.Glowsticks and implement it in SmartSelect_PickToolForStrategy (both places).
 		//VanillaUpdateVanityAccessory --> ApplyEquipVanity
 
 	//Need reimplementing:
 		//TileLoader.DisableSmartInteract
 		//TileLoader.HasSmartInteract
 		//"Enable Developer Mode" button
+		//NPCLoader.CanChat
+			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
+		//TileLoader.FixSmartInteractCoords
+			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
+		//TileLoader.DisableSmartCursor
+			//Add after to SmartCursorHelper after IsHoveringOverAnInteractibleTileThatBlocksSmartCursor using its return value.
+
+	//TileLoader
+		//Multiply item.axe by 1.2f before adding into the damage.
+
+	//WorldGen
+		//Add TileLoader.IsClosedDoor into WorldGen.IsLockedDoor check.
 
 	//Needs checking:
 		//WaterStyleLoader.WaterStyleCount
+	
+	//Todo later:
+		//Add TileID.Set for allowing right click to drop, like for torches. See "Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90"
+	
+	//Main
+		//Add IsAValidEquipmentSlotForIteration to VanillaUpdateAccessory check.
+		//Move to Main.ApplyMusicBox
++				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
++					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
++			}
 
 //Mirsario:
 	//Player:
