@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -80,11 +81,10 @@ namespace Terraria.ModLoader
 		public static int ItemCount => nextItem;
 
 		internal static void ResizeArrays(bool unloading) {
-			Array.Resize(ref Main.itemTexture, nextItem);
-			Array.Resize(ref Main.itemFlameLoaded, nextItem);
-			Array.Resize(ref Main.itemFlameTexture, nextItem);
+			Array.Resize(ref TextureAssets.Item, nextItem);
+			Array.Resize(ref TextureAssets.ItemFlame, nextItem);
 			Array.Resize(ref Main.itemAnimations, nextItem);
-			Array.Resize(ref Item.itemCaches, nextItem);
+			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 			//Array.Resize(ref ItemID.Sets.TextureCopyLoad, nextItem); //not needed?
 			Array.Resize(ref ItemID.Sets.TrapSigned, nextItem);
 			Array.Resize(ref ItemID.Sets.Deprecated, nextItem);
-			Array.Resize(ref ItemID.Sets.NeverShiny, nextItem);
+			Array.Resize(ref ItemID.Sets.NeverAppearsAsNewInInventory, nextItem);
 			Array.Resize(ref ItemID.Sets.ItemIconPulse, nextItem);
 			Array.Resize(ref ItemID.Sets.ItemNoGravity, nextItem);
 			Array.Resize(ref ItemID.Sets.ExtractinatorMode, nextItem);
@@ -121,12 +121,13 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ItemID.Sets.LockOnAimCompensation, nextItem);
 			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
 			ItemID.Sets.IsAMaterial = new bool[nextItem]; // clears it, which is desired.
+
 			for (int k = ItemID.Count; k < nextItem; k++) {
 				Lang._itemNameCache[k] = LocalizedText.Empty;
 				Lang._itemTooltipCache[k] = ItemTooltip.None;
 				ItemID.Sets.BannerStrength[k] = new ItemID.BannerEffect(1f);
 				ItemID.Sets.KillsToBanner[k] = 50;
-				Item.itemCaches[k] = -1;
+				Item.cachedItemSpawnsByType[k] = -1;
 				//ItemID.Sets.TextureCopyLoad[k] = -1;
 				ItemID.Sets.ExtractinatorMode[k] = -1;
 				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
@@ -149,10 +150,13 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			InstancedGlobals = globalItems.Where(g => g.InstancePerEntity).ToArray();
+
 			for (int i = 0; i < InstancedGlobals.Length; i++) {
 				InstancedGlobals[i].instanceIndex = i;
 			}
+
 			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
+
 			foreach (var hook in hooks)
 				hook.arr = ModLoader.BuildGlobalHook(globalItems, hook.method);
 		}
@@ -166,29 +170,15 @@ namespace Terraria.ModLoader
 			animations.Clear();
 		}
 
-		internal static bool IsModItem(int index) {
-			return index >= ItemID.Count;
-		}
+		internal static bool IsModItem(int index) => index >= ItemID.Count;
 
-		private static bool GeneralPrefix(Item item) {
-			return item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
-		}
-		//add to Terraria.Item.Prefix
-		internal static bool MeleePrefix(Item item) {
-			return item.modItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
-		}
-		//add to Terraria.Item.Prefix
-		internal static bool WeaponPrefix(Item item) {
-			return item.modItem != null && GeneralPrefix(item) && item.melee && item.noUseGraphic;
-		}
-		//add to Terraria.Item.Prefix
-		internal static bool RangedPrefix(Item item) {
-			return item.modItem != null && GeneralPrefix(item) && (item.ranged || item.thrown);
-		}
-		//add to Terraria.Item.Prefix
-		internal static bool MagicPrefix(Item item) {
-			return item.modItem != null && GeneralPrefix(item) && (item.magic || item.summon);
-		}
+		private static bool GeneralPrefix(Item item) => item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
+
+		//Add all these to Terraria.Item.Prefix
+		internal static bool MeleePrefix(Item item) => item.modItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
+		internal static bool WeaponPrefix(Item item) => item.modItem != null && GeneralPrefix(item) && item.melee && item.noUseGraphic;
+		internal static bool RangedPrefix(Item item) => item.modItem != null && GeneralPrefix(item) && item.ranged; //(item.ranged || item.thrown);
+		internal static bool MagicPrefix(Item item) => item.modItem != null && GeneralPrefix(item) && (item.magic || item.summon);
 
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
 
@@ -221,27 +211,36 @@ namespace Terraria.ModLoader
 		internal static void DrawAnimatedItem(Item item, int whoAmI, Color color, Color alpha, float rotation, float scale) {
 			int frameCount = Main.itemAnimations[item.type].FrameCount;
 			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
+
 			Main.itemFrameCounter[whoAmI]++;
+
 			if (Main.itemFrameCounter[whoAmI] >= frameDuration) {
 				Main.itemFrameCounter[whoAmI] = 0;
 				Main.itemFrame[whoAmI]++;
 			}
+
 			if (Main.itemFrame[whoAmI] >= frameCount) {
 				Main.itemFrame[whoAmI] = 0;
 			}
-			Rectangle frame = Main.itemTexture[item.type].Frame(1, frameCount, 0, Main.itemFrame[whoAmI]);
-			float offX = (float)(item.width / 2 - frame.Width / 2);
-			float offY = (float)(item.height - frame.Height);
-			Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(frame.Width / 2) + offX, item.position.Y - Main.screenPosition.Y + (float)(frame.Height / 2) + offY), new Rectangle?(frame), alpha, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
-			if (item.color != default(Color)) {
-				Main.spriteBatch.Draw(Main.itemTexture[item.type], new Vector2(item.position.X - Main.screenPosition.X + (float)(frame.Width / 2) + offX, item.position.Y - Main.screenPosition.Y + (float)(frame.Height / 2) + offY), new Rectangle?(frame), item.GetColor(color), rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
+
+			var texture = TextureAssets.Item[item.type].Value;
+
+			Rectangle frame = texture.Frame(1, frameCount, 0, Main.itemFrame[whoAmI]);
+			float offX = item.width * 0.5f - frame.Width * 0.5f;
+			float offY = item.height - frame.Height;
+			
+			Main.spriteBatch.Draw(texture, new Vector2(item.position.X - Main.screenPosition.X + frame.Width / 2 + offX, item.position.Y - Main.screenPosition.Y + frame.Height / 2 + offY), new Rectangle?(frame), alpha, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
+			
+			if (item.color != default) {
+				Main.spriteBatch.Draw(texture, new Vector2(item.position.X - Main.screenPosition.X + frame.Width / 2 + offX, item.position.Y - Main.screenPosition.Y + frame.Height / 2 + offY), new Rectangle?(frame), item.GetColor(color), rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
 			}
 		}
 
 		private static Rectangle AnimatedItemFrame(Item item) {
 			int frameCount = Main.itemAnimations[item.type].FrameCount;
 			int frameDuration = Main.itemAnimations[item.type].TicksPerFrame;
-			return Main.itemAnimations[item.type].GetFrame(Main.itemTexture[item.type]);
+
+			return Main.itemAnimations[item.type].GetFrame(TextureAssets.Item[item.type].Value);
 		}
 
 		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);
@@ -1561,18 +1560,22 @@ namespace Terraria.ModLoader
 		private static HookList HookHoldoutOffset = AddHook<Func<int, Vector2?>>(g => g.HoldoutOffset);
 		public static void HoldoutOffset(float gravDir, int type, ref Vector2 offset) {
 			ModItem modItem = GetItem(type);
+
 			if (modItem != null) {
 				Vector2? modOffset = modItem.HoldoutOffset();
+
 				if (modOffset.HasValue) {
 					offset.X = modOffset.Value.X;
 					offset.Y += gravDir * modOffset.Value.Y;
 				}
 			}
+
 			foreach (var g in HookHoldoutOffset.arr) {
 				Vector2? modOffset = g.HoldoutOffset(type);
+
 				if (modOffset.HasValue) {
 					offset.X = modOffset.Value.X;
-					offset.Y = Main.itemTexture[type].Height / 2f + gravDir * modOffset.Value.Y;
+					offset.Y = TextureAssets.Item[type].Value.Height / 2f + gravDir * modOffset.Value.Y;
 				}
 			}
 		}
