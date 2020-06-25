@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.World.Generation;
+using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader
 {

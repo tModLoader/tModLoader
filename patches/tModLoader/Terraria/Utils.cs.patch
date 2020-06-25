@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
+@@ -22,7 +_,7 @@
+ 
+ namespace Terraria
+ {
+-	public static class Utils
++	public static partial class Utils
+ 	{
+ 		public delegate bool TileActionAttempt(int x, int y);
+ 
 @@ -251,6 +_,12 @@
  								num2 -= 16;
  
@@ -23,70 +32,6 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -532,7 +_,43 @@
- 			return array;
- 		}
- 
-+		public static T NextEnum<T>(this T src) where T : struct {
-+			if (!typeof(T).IsEnum) throw new ArgumentException(string.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
-+			T[] Arr = (T[])Enum.GetValues(src.GetType());
-+			int j = Array.IndexOf(Arr, src) + 1;
-+			return Arr.Length == j ? Arr[0] : Arr[j];
-+		}
-+
-+		public static T PreviousEnum<T>(this T src) where T : struct {
-+			if (!typeof(T).IsEnum) throw new ArgumentException(string.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
-+			T[] Arr = (T[])Enum.GetValues(src.GetType());
-+			int j = Array.IndexOf(Arr, src) - 1;
-+			return j < 0 ? Arr[Arr.Length - 1] : Arr[j];
-+		}
-+
-+		public static T Next<T>(this UnifiedRandom r, T[] array) => array[r.Next(array.Length)];
-+		public static T Next<T>(this UnifiedRandom r, IList<T> list) => list[r.Next(list.Count)];
-+		public static bool NextBool(this UnifiedRandom r) => r.NextDouble() < .5;
-+
-+		// Returns true 1 out of X times.
-+		public static bool NextBool(this UnifiedRandom r, int consequent) {
-+			if (consequent < 1)
-+				throw new ArgumentOutOfRangeException("consequent", "consequent must be greater than or equal to 1.");
-+
-+			return r.Next(consequent) == 0;
-+		}
-+
-+		// Returns true X out of Y times.
-+		public static bool NextBool(this UnifiedRandom r, int antecedent, int consequent) {
-+			if (antecedent > consequent)
-+				throw new ArgumentOutOfRangeException("antecedent", "antecedent must be less than or equal to consequent.");
-+
-+			return r.Next(consequent) < antecedent;
-+		}
-+
- 		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
-+		public static float NextFloat(this UnifiedRandom r, float maxValue) => (float)r.NextDouble() * maxValue;
-+		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => (float)r.NextDouble() * (maxValue - minValue) + minValue;
- 		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
- 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
- 		public static T NextFromList<T>(this UnifiedRandom random, params T[] objs) => objs[random.Next(objs.Length)];
-@@ -727,6 +_,19 @@
- 			return currentPosition + v.SafeNormalize(Vector2.Zero) * maxAmountAllowedToMove;
- 		}
- 
-+
-+		// Added these as it may prove useful to some modders, it does clutter this file a bit so I put them all in a region which is collapsible
-+		#region tML Helpers
-+		public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY) => ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
-+		public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY) => p.ToVector2().ToWorldCoordinates(autoAddXY);
-+		public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2().ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
-+		public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f) => v.ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
-+		public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY) => v * 16f + autoAddXY;
-+		public static Point ToPoint(this Point16 p) => new Point(p.X, p.Y);
-+		public static Point16 ToPoint16(this Vector2 v) => new Point16((short)v.X, (short)v.Y);
-+		public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
-+		#endregion
-+
- 		public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
- 		public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
- 		public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
 @@ -1120,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  

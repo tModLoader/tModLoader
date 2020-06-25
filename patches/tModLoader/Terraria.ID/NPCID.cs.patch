@@ -11,13 +11,13 @@
  
  namespace Terraria.ID
  {
-@@ -5666,6 +_,39 @@
+@@ -5666,6 +_,38 @@
  				return NetIdMap[-id - 1];
  
  			return id;
 +		}
 +
-+		public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
++		public static string GetUniqueKey(NPC npc) => GetUniqueKey(npc.type);
 +
 +		public static string GetUniqueKey(int type) {
 +			if (type < -65 || type >= NPCLoader.NPCCount)
@@ -30,8 +30,6 @@
 +			return $"{modNPC.mod.Name} {modNPC.Name}";
 +		}
 +
-+		public static string GetUniqueKey(NPC npc) => GetUniqueKey(npc.type);
-+
 +		public static int TypeFromUniqueKey(string key) {
 +			string[] parts = key.Split(new char[] { ' ' }, 2);
 +			if (parts.Length != 2)
@@ -39,6 +37,7 @@
 +
 +			return TypeFromUniqueKey(parts[0], parts[1]);
 +		}
++
 +		public static int TypeFromUniqueKey(string mod, string name) {
 +			if (mod == "Terraria") {
 +				if (!Search.ContainsName(name))

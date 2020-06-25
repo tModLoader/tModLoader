@@ -27,11 +27,10 @@
  			public static bool[] Corrupt = Factory.CreateBoolSet(23, 25, 112, 163, 398, 400);
  			public static bool[] Hallow = Factory.CreateBoolSet(109, 117, 116, 164, 402, 403, 115);
  			public static bool[] Crimson = Factory.CreateBoolSet(199, 203, 234, 200, 399, 401, 205);
-@@ -822,5 +_,34 @@
+@@ -822,5 +_,33 @@
  		public const ushort SliceOfCake = 621;
  		public const ushort TeaKettle = 622;
  		public const ushort Count = 623;
-+		public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
 +
 +		public static string GetUniqueKey(int type) {
 +			if (type < 0 || type >= TileLoader.TileCount)
