@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -37,16 +38,13 @@ namespace Terraria.ModLoader
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type] = new Dictionary<int, EquipTexture>();
 			}
+
 			slotToId[EquipType.Head] = new Dictionary<int, int>();
 			slotToId[EquipType.Body] = new Dictionary<int, int>();
 			slotToId[EquipType.Legs] = new Dictionary<int, int>();
 		}
 
-		internal static int ReserveEquipID(EquipType type) {
-			int reserveID = nextEquip[type];
-			nextEquip[type]++;
-			return reserveID;
-		}
+		internal static int ReserveEquipID(EquipType type) => nextEquip[type]++;
 
 		/// <summary>
 		/// Gets the equipment texture for the specified equipment type and ID.
@@ -115,6 +113,7 @@ namespace Terraria.ModLoader
 				nextEquip[type] = GetNumVanilla(type);
 				equipTextures[type].Clear();
 			}
+
 			idToSlot.Clear();
 			slotToId[EquipType.Head].Clear();
 			slotToId[EquipType.Body].Clear();
@@ -157,81 +156,50 @@ namespace Terraria.ModLoader
 			return 0;
 		}
 
-		internal static bool[] GetLoadedArray(EquipType type) {
+		internal static Asset<Texture2D>[] GetTextureArray(EquipType type) {
 			switch (type) {
 				case EquipType.Head:
-					return Main.armorHeadLoaded;
+					return TextureAssets.ArmorHead;
 				case EquipType.Body:
-					return Main.armorBodyLoaded;
+					return TextureAssets.ArmorBody;
 				case EquipType.Legs:
-					return Main.armorLegsLoaded;
+					return TextureAssets.ArmorLeg;
 				case EquipType.HandsOn:
-					return Main.accHandsOnLoaded;
+					return TextureAssets.AccHandsOn;
 				case EquipType.HandsOff:
-					return Main.accHandsOffLoaded;
+					return TextureAssets.AccHandsOff;
 				case EquipType.Back:
-					return Main.accBackLoaded;
+					return TextureAssets.AccBack;
 				case EquipType.Front:
-					return Main.accFrontLoaded;
+					return TextureAssets.AccFront;
 				case EquipType.Shoes:
-					return Main.accShoesLoaded;
+					return TextureAssets.AccShoes;
 				case EquipType.Waist:
-					return Main.accWaistLoaded;
+					return TextureAssets.AccWaist;
 				case EquipType.Wings:
-					return Main.wingsLoaded;
+					return TextureAssets.Wings;
 				case EquipType.Shield:
-					return Main.accShieldLoaded;
+					return TextureAssets.AccShield;
 				case EquipType.Neck:
-					return Main.accNeckLoaded;
+					return TextureAssets.AccNeck;
 				case EquipType.Face:
-					return Main.accFaceLoaded;
+					return TextureAssets.AccFace;
 				case EquipType.Balloon:
-					return Main.accballoonLoaded;
+					return TextureAssets.AccBalloon;
 			}
-			return null;
-		}
 
-		internal static Texture2D[] GetTextureArray(EquipType type) {
-			switch (type) {
-				case EquipType.Head:
-					return Main.armorHeadTexture;
-				case EquipType.Body:
-					return Main.armorBodyTexture;
-				case EquipType.Legs:
-					return Main.armorLegTexture;
-				case EquipType.HandsOn:
-					return Main.accHandsOnTexture;
-				case EquipType.HandsOff:
-					return Main.accHandsOffTexture;
-				case EquipType.Back:
-					return Main.accBackTexture;
-				case EquipType.Front:
-					return Main.accFrontTexture;
-				case EquipType.Shoes:
-					return Main.accShoesTexture;
-				case EquipType.Waist:
-					return Main.accWaistTexture;
-				case EquipType.Wings:
-					return Main.wingsTexture;
-				case EquipType.Shield:
-					return Main.accShieldTexture;
-				case EquipType.Neck:
-					return Main.accNeckTexture;
-				case EquipType.Face:
-					return Main.accFaceTexture;
-				case EquipType.Balloon:
-					return Main.accBalloonTexture;
-			}
 			return null;
 		}
 
 		internal static void SetSlot(Item item) {
 			IDictionary<EquipType, int> slots;
+
 			if (!idToSlot.TryGetValue(item.type, out slots))
 				return;
 
 			foreach (var entry in slots) {
 				int slot = entry.Value;
+
 				switch (entry.Key) {
 					case EquipType.Head:
 						item.headSlot = slot;
@@ -310,6 +278,7 @@ namespace Terraria.ModLoader
 				case EquipType.Balloon:
 					return player.balloon;
 			}
+
 			return 0;
 		}
 	}

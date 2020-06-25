@@ -188,12 +188,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
 			Main.npcTexture[npc.type] = ModContent.GetTexture(Texture);
+
 			if (banner != 0 && bannerItem != 0) {
 				NPCLoader.bannerToItem[banner] = bannerItem;
 			}
 			else if (banner != 0 || bannerItem != 0) {
 				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
 			}
+
 			if (npc.lifeMax > 32767 || npc.boss) {
 				Main.npcLifeBytes[npc.type] = 4;
 			}
@@ -208,6 +210,7 @@ namespace Terraria.ModLoader
 			int altTextureCount = altTextures.Length;
 			NPCID.Sets.ExtraTextureCount[npc.type] = altTextureCount;
 			Main.npcAltTextures[npc.type] = new Texture2D[altTextureCount + 1];
+
 			if (altTextureCount > 0) {
 				Main.npcAltTextures[npc.type][0] = Main.npcTexture[npc.type];
 			}

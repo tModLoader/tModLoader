@@ -12,6 +12,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI.Chat;
 using Terraria.Audio;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader.UI
 {
@@ -115,49 +116,64 @@ namespace Terraria.ModLoader.UI
 			}
 
 			_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
+
 			if (_modReferences.Length > 0 && !_mod.Enabled) {
 				string refs = string.Join(", ", _mod.properties.modReferences);
 				var icon = UICommon.ButtonExclamationTexture;
+				
 				_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
 					Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 					Top = { Pixels = 42.5f }
 				};
 				_modReferenceIcon.OnClick += EnableDependencies;
+
 				Append(_modReferenceIcon);
 			}
+
 			if (_mod.modFile.ValidModBrowserSignature) {
-				_keyImage = new UIHoverImage(Main.itemTexture[ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
+				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.GoldenKey].Value, Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
 				};
+
 				Append(_keyImage);
 			}
+
 			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
 				};
+
 				Append(_keyImage);
+
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
 			}
+
 			if (_mod.properties.beta) {
-				_keyImage = new UIHoverImage(Main.itemTexture[ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish")) {
+				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.ShadowKey].Value, Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
+
 				Append(_keyImage);
 			}
 
 			if (loadedMod != null) {
 				_loaded = true;
+				
 				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
 				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
 				int xOffset = -40;
+
 				for (int i = 0; i < values.Length; i++) {
 					if (values[i] > 0) {
-						Texture2D iconTexture = Main.instance.infoIconTexture[i];
+						Texture2D iconTexture = TextureAssets.InfoIcon[i].Value;
+
 						_keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
 							Left = { Pixels = xOffset, Percent = 1f }
 						};
+
 						Append(_keyImage);
+						
 						xOffset -= 18;
 					}
 				}

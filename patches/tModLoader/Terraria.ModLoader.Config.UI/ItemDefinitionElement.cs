@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader.Config.UI
 				spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				if (!item.IsAir || unloaded) {
 					int type = unloaded ? ItemID.Count : this.item.type;
-					Texture2D itemTexture = Main.itemTexture[type];
+					Texture2D itemTexture = TextureAssets.Item[type].Value;
 					Rectangle rectangle2;
 					if (Main.itemAnimations[type] != null) {
 						rectangle2 = Main.itemAnimations[type].GetFrame(itemTexture);

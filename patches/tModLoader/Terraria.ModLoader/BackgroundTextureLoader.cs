@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -25,16 +26,17 @@ namespace Terraria.ModLoader
 		public static int GetBackgroundSlot(string texture) => backgrounds.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
-			Array.Resize(ref Main.backgroundTexture, nextBackground);
+			Array.Resize(ref TextureAssets.Background, nextBackground);
 			Array.Resize(ref Main.backgroundHeight, nextBackground);
 			Array.Resize(ref Main.backgroundWidth, nextBackground);
-			Array.Resize(ref Main.backgroundLoaded, nextBackground);
+
 			foreach (string texture in backgrounds.Keys) {
 				int slot = backgrounds[texture];
-				Main.backgroundTexture[slot] = ModContent.GetTexture(texture);
-				Main.backgroundWidth[slot] = Main.backgroundTexture[slot].Width;
-				Main.backgroundHeight[slot] = Main.backgroundTexture[slot].Height;
-				Main.backgroundLoaded[slot] = true;
+				var tex = ModContent.GetTexture(texture);
+
+				TextureAssets.Background[slot] = tex;
+				Main.backgroundWidth[slot] = tex.Width;
+				Main.backgroundHeight[slot] = tex.Height;
 			}
 		}
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.Localization;
@@ -122,60 +123,78 @@ namespace Terraria.ModLoader
 				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
 			}
+
 			foreach (ModPrefix prefix in prefixes.Values) {
 				prefix.AutoDefaults();
 				prefix.SetDefaults();
 			}
+
 			foreach (ModDust dust in dusts.Values) {
 				dust.SetDefaults();
 			}
+
 			foreach (ModTile tile in tiles.Values) {
 				Main.tileTexture[tile.Type] = ModContent.GetTexture(tile.texture);
+
 				TileLoader.SetDefaults(tile);
+
 				if (TileID.Sets.HasOutlines[tile.Type]) {
 					Main.highlightMaskTexture[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
 				}
+
 				if (!string.IsNullOrEmpty(tile.chest)) {
 					TileID.Sets.BasicChest[tile.Type] = true;
 				}
 			}
+
 			foreach (GlobalTile globalTile in globalTiles.Values) {
 				globalTile.SetDefaults();
 			}
+
 			foreach (ModWall wall in walls.Values) {
-				Main.wallTexture[wall.Type] = ModContent.GetTexture(wall.texture);
+				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.texture);
+
 				wall.SetDefaults();
 			}
+
 			foreach (GlobalWall globalWall in globalWalls.Values) {
 				globalWall.SetDefaults();
 			}
+
 			foreach (ModProjectile projectile in projectiles.Values) {
 				ProjectileLoader.SetDefaults(projectile.projectile, false);
 				projectile.AutoStaticDefaults();
 				projectile.SetStaticDefaults();
 			}
+
 			foreach (ModNPC npc in npcs.Values) {
 				NPCLoader.SetDefaults(npc.npc, false);
 				npc.AutoStaticDefaults();
 				npc.SetStaticDefaults();
 			}
+
 			foreach (ModMountData modMountData in mountDatas.Values) {
 				var mountData = modMountData.mountData;
 				mountData.modMountData = modMountData;
+
 				MountLoader.SetupMount(mountData);
+
 				Mount.mounts[modMountData.Type] = mountData;
 			}
+
 			foreach (ModBuff buff in buffs.Values) {
-				Main.buffTexture[buff.Type] = ModContent.GetTexture(buff.texture);
+				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.texture);
+
 				buff.SetDefaults();
 			}
+
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
 				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.texture);
-				Main.liquidTexture[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
+				TextureAssets.Liquid[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
 			}
+
 			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values) {
-				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type]
-					= ModContent.GetTexture(waterfallStyle.texture);
+				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.texture);
 			}
 		}
 

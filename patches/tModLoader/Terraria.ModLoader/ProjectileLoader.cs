@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -62,13 +63,15 @@ namespace Terraria.ModLoader
 		}
 		//change initial size of Terraria.Player.ownedProjectileCounts to ProjectileLoader.ProjectileCount()
 		internal static void ResizeArrays() {
-			Array.Resize(ref Main.projectileLoaded, nextProjectile);
-			Array.Resize(ref Main.projectileTexture, nextProjectile);
+			//Textures
+			Array.Resize(ref TextureAssets.Projectile, nextProjectile);
+			//Etc
 			Array.Resize(ref Main.projHostile, nextProjectile);
 			Array.Resize(ref Main.projHook, nextProjectile);
 			Array.Resize(ref Main.projFrames, nextProjectile);
 			Array.Resize(ref Main.projPet, nextProjectile);
 			Array.Resize(ref Lang._projectileNameCache, nextProjectile);
+			//Sets
 			Array.Resize(ref ProjectileID.Sets.YoyosLifeTimeMultiplier, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosMaximumRange, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.YoyosTopSpeed, nextProjectile);
@@ -79,7 +82,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ProjectileID.Sets.TrailingMode, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TrailCacheLength, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.LightPet, nextProjectile);
-			Array.Resize(ref ProjectileID.Sets.Homing, nextProjectile);
+			Array.Resize(ref ProjectileID.Sets.CountsAsHoming, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.IsADD2Turret, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.TurretFeature, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.MinionTargettingFeature, nextProjectile);
@@ -88,26 +91,30 @@ namespace Terraria.ModLoader
 			Array.Resize(ref ProjectileID.Sets.NeedsUUID, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.StardustDragon, nextProjectile);
 			Array.Resize(ref ProjectileID.Sets.NoLiquidDistortion, nextProjectile);
+
 			for (int k = ProjectileID.Count; k < nextProjectile; k++) {
+				Main.projFrames[k] = 1;
 				Lang._projectileNameCache[k] = LocalizedText.Empty;
 				ProjectileID.Sets.YoyosLifeTimeMultiplier[k] = -1;
 				ProjectileID.Sets.YoyosMaximumRange[k] = 200f;
 				ProjectileID.Sets.YoyosTopSpeed[k] = 10f;
 				ProjectileID.Sets.CanDistortWater[k] = true;
-				Main.projectileLoaded[k] = true;
-				Main.projFrames[k] = 1;
 				ProjectileID.Sets.TrailingMode[k] = -1;
 				ProjectileID.Sets.TrailCacheLength[k] = 10;
 			}
+
 			Array.Resize(ref Projectile.perIDStaticNPCImmunity, nextProjectile);
+
 			for (int i = 0; i < nextProjectile; i++) {
 				Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 			}
 
 			InstancedGlobals = globalProjectiles.Where(g => g.InstancePerEntity).ToArray();
+			
 			for (int i = 0; i < InstancedGlobals.Length; i++) {
 				InstancedGlobals[i].instanceIndex = i;
 			}
+
 			foreach (var hook in hooks) {
 				hook.arr = ModLoader.BuildGlobalHook(globalProjectiles, hook.method);
 			}

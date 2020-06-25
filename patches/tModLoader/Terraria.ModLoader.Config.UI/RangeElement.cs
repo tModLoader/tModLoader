@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.UI;
 
@@ -71,11 +71,11 @@ namespace Terraria.ModLoader.Config.UI
 		public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
 		{
 			perc = Utils.Clamp(perc, -.05f, 1.05f);
+
 			if (colorMethod == null)
-			{
 				colorMethod = new Utils.ColorLerpMethod(Utils.ColorLerp_BlackToWhite);
-			}
-			Texture2D colorBarTexture = Main.colorBarTexture;
+
+			Texture2D colorBarTexture = TextureAssets.ColorBar.Value;
 			Vector2 vector = new Vector2((float)colorBarTexture.Width, (float)colorBarTexture.Height) * scale;
 			IngameOptions.valuePosition.X = IngameOptions.valuePosition.X - (float)((int)vector.X);
 			Rectangle rectangle = new Rectangle((int)IngameOptions.valuePosition.X, (int)IngameOptions.valuePosition.Y - (int)vector.Y / 2, (int)vector.X, (int)vector.Y);
@@ -92,7 +92,7 @@ namespace Terraria.ModLoader.Config.UI
 					{
 						float percent = tick * TickIncrement;
 						if (percent <= 1f)
-							sb.Draw(TextureAssets.MagicPixel, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
+							sb.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)(num2 + num * percent * scale), rectangle.Y - 2, 2, rectangle.Height + 4), Color.White);
 					}
 				}
 			}
@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.Config.UI
 			for (float num4 = 0f; num4 < (float)num; num4 += 1f)
 			{
 				float percent = num4 / (float)num;
-				sb.Draw(Main.colorBlipTexture, new Vector2(num2 + num4 * scale, num3), null, colorMethod(percent), 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+				sb.Draw(TextureAssets.ColorBlip.Value, new Vector2(num2 + num4 * scale, num3), null, colorMethod(percent), 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 			}
 			rectangle.Inflate((int)(-5f * scale), 2);
 			//rectangle.X = (int)num2;
@@ -112,9 +112,13 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			if (flag || lockState == 1)
 			{
-				sb.Draw(Main.colorHighlightTexture, destinationRectangle, Main.OurFavoriteColor);
+				sb.Draw(TextureAssets.ColorHighlight.Value, destinationRectangle, Main.OurFavoriteColor);
 			}
-			sb.Draw(Main.colorSliderTexture, new Vector2(num2 + 167f * scale * perc, num3 + 4f * scale), null, Color.White, 0f, new Vector2(0.5f * (float)Main.colorSliderTexture.Width, 0.5f * (float)Main.colorSliderTexture.Height), scale, SpriteEffects.None, 0f);
+
+			var colorSlider = TextureAssets.ColorSlider.Value;
+
+			sb.Draw(colorSlider, new Vector2(num2 + 167f * scale * perc, num3 + 4f * scale), null, Color.White, 0f, colorSlider.Size() * 0.5f, scale, SpriteEffects.None, 0f);
+
 			if (Main.mouseX >= rectangle.X && Main.mouseX <= rectangle.X + rectangle.Width)
 			{
 				IngameOptions.inBar = flag;
@@ -164,7 +168,7 @@ namespace Terraria.ModLoader.Config.UI
 			vector2.X += 8f;
 			vector2.Y += 2f + num;
 			vector2.X -= 17f;
-			Main.colorBarTexture.Frame(1, 1, 0, 0);
+			//TextureAssets.ColorBar.Value.Frame(1, 1, 0, 0);
 			vector2 = new Vector2(dimensions.X + dimensions.Width - 10f, dimensions.Y + 10f + num);
 			IngameOptions.valuePosition = vector2;
 			float obj = DrawValueBar(spriteBatch, 1f, Proportion, num2, colorMethod);

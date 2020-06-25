@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader
@@ -42,7 +43,7 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays() {
 			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, nextWaterStyle);
 			Array.Resize(ref Main.liquidAlpha, nextWaterStyle);
-			Array.Resize(ref Main.liquidTexture, nextWaterStyle);
+			Array.Resize(ref TextureAssets.Liquid, nextWaterStyle);
 		}
 
 		internal static void Unload() {
@@ -117,8 +118,10 @@ namespace Terraria.ModLoader
 
 		public static void LightColorMultiplier(int style, ref float r, ref float g, ref float b) {
 			ModWaterStyle waterStyle = GetWaterStyle(style);
+
 			if (waterStyle != null) {
 				waterStyle.LightColorMultiplier(ref r, ref g, ref b);
+
 				r *= Lighting.negLight * Lighting.blueWave;
 				g *= Lighting.negLight * Lighting.blueWave;
 				b *= Lighting.negLight * Lighting.blueWave;

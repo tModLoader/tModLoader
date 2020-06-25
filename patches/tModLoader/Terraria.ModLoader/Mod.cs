@@ -15,6 +15,7 @@ using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -489,7 +490,7 @@ namespace Terraria.ModLoader
 			dust.mod = this;
 			dust.Name = name;
 			dust.Type = ModDust.ReserveDustID();
-			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture) : Main.dustTexture;
+			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture) : TextureAssets.Dust.Value;
 
 			dusts[name] = dust;
 			ModDust.dusts.Add(dust);

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
@@ -56,12 +57,12 @@ namespace Terraria.ModLoader.Config.UI
 			if (definition != null) {
 				int type = unloaded ? ProjectileID.Count : this.type;
 				Main.instance.LoadProjectile(type);
-				Texture2D projectileTexture = Main.projectileTexture[type];
+				Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
 				int frameCounter = Interface.modConfig.updateCount / 4;
 				int frames = Main.projFrames[type];
 				if (unloaded) {
-					projectileTexture = Main.itemTexture[ItemID.Count];
+					projectileTexture = TextureAssets.Item[ItemID.Count].Value;
 					frames = 1;
 				}
 				int height = projectileTexture.Height / frames;

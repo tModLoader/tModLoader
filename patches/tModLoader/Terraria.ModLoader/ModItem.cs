@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.GameContent;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -173,12 +175,12 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Item[item.type] = ModContent.GetTexture(Texture);
 
-			var flameTexture = Texture + "_Flame";
+			string flameTexture = Texture + "_Flame";
+
 			if (ModContent.TextureExists(flameTexture)) {
-				Main.itemFlameTexture[item.type] = ModContent.GetTexture(flameTexture);
-				Main.itemFlameLoaded[item.type] = true;
+				TextureAssets.ItemFlame[item.type] = ModContent.GetTexture(flameTexture);
 			}
 
 			if (DisplayName.IsDefault())

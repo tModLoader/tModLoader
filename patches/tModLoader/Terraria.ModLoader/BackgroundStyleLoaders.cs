@@ -132,16 +132,13 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
+
 			// TODO: Causes background to flicker during load because Main.bgAlpha2 is resized after surfaceBgStyles is added to in AutoLoad.
 			foreach (var style in surfaceBgStyles) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
 
-				Main.backColor = Main.trueBackColor;
-				Main.backColor.R = (byte)(Main.backColor.R * alpha);
-				Main.backColor.G = (byte)(Main.backColor.G * alpha);
-				Main.backColor.B = (byte)(Main.backColor.B * alpha);
-				Main.backColor.A = (byte)(Main.backColor.A * alpha);
+				Main.ColorOfSurfaceBackgroundsModified = Main.ColorOfSurfaceBackgroundsBase * alpha;
 
 				if (alpha > 0f) {
 					int textureSlot = style.ChooseFarTexture();
@@ -150,10 +147,17 @@ namespace Terraria.ModLoader
 						Main.instance.LoadBackground(textureSlot);
 
 						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(TextureAssets.Background[textureSlot],
+							Main.spriteBatch.Draw(
+								TextureAssets.Background[textureSlot].Value,
 								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
 								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
+								Main.ColorOfSurfaceBackgroundsModified,
+								0f,
+								default,
+								Main.bgScale,
+								SpriteEffects.None,
+								0f
+							);
 						}
 					}
 				}
@@ -164,15 +168,12 @@ namespace Terraria.ModLoader
 			if (!GlobalBgStyleLoader.loaded) {
 				return;
 			}
+
 			foreach (var style in surfaceBgStyles) {
 				int slot = style.Slot;
 				float alpha = Main.bgAlphaFarBackLayer[slot];
 
-				Main.backColor = Main.trueBackColor;
-				Main.backColor.R = (byte)(Main.backColor.R * alpha);
-				Main.backColor.G = (byte)(Main.backColor.G * alpha);
-				Main.backColor.B = (byte)(Main.backColor.B * alpha);
-				Main.backColor.A = (byte)(Main.backColor.A * alpha);
+				Main.ColorOfSurfaceBackgroundsModified = Main.ColorOfSurfaceBackgroundsBase * alpha;
 
 				if (alpha > 0f) {
 					int textureSlot = style.ChooseMiddleTexture();
@@ -181,10 +182,17 @@ namespace Terraria.ModLoader
 						Main.instance.LoadBackground(textureSlot);
 
 						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(TextureAssets.Background[textureSlot],
+							Main.spriteBatch.Draw(
+								TextureAssets.Background[textureSlot].Value,
 								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
 								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
+								Main.ColorOfSurfaceBackgroundsModified,
+								0f,
+								default,
+								Main.bgScale,
+								SpriteEffects.None,
+								0f
+							);
 						}
 					}
 				}
@@ -229,10 +237,17 @@ namespace Terraria.ModLoader
 
 					if (Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0) {
 						for (int k = 0; k < Main.instance.bgLoops; k++) {
-							Main.spriteBatch.Draw(TextureAssets.Background[textureSlot],
-								new Vector2((Main.instance.bgStartX + Main.bgWidthScaled * k), Main.instance.bgTopY),
+							Main.spriteBatch.Draw(
+								TextureAssets.Background[textureSlot].Value,
+								new Vector2(Main.instance.bgStartX + Main.bgWidthScaled * k, Main.instance.bgTopY),
 								new Rectangle(0, 0, Main.backgroundWidth[textureSlot], Main.backgroundHeight[textureSlot]),
-								Main.backColor, 0f, default(Vector2), Main.bgScale, SpriteEffects.None, 0f);
+								Main.ColorOfSurfaceBackgroundsModified,
+								0f,
+								default,
+								Main.bgScale,
+								SpriteEffects.None,
+								0f
+							);
 						}
 					}
 				}

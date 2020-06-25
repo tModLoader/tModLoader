@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -74,11 +75,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
 		/// </summary>
-		public static ModBuff GetBuff(int type) {
-			return type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
-		}
+		public static ModBuff GetBuff(int type) => type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
 
 		internal static void ResizeArrays() {
+			//Textures
+			Array.Resize(ref TextureAssets.Buff, nextBuff);
+			//Etc
 			Array.Resize(ref Main.pvpBuff, nextBuff);
 			Array.Resize(ref Main.persistentBuff, nextBuff);
 			Array.Resize(ref Main.vanityPet, nextBuff);
@@ -89,15 +91,17 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.buffNoTimeDisplay, nextBuff);
 			Array.Resize(ref Main.buffDoubleApply, nextBuff);
 			Array.Resize(ref Main.buffAlpha, nextBuff);
-			Array.Resize(ref Main.buffTexture, nextBuff);
 			Array.Resize(ref Lang._buffNameCache, nextBuff);
 			Array.Resize(ref Lang._buffDescriptionCache, nextBuff);
+
 			for (int k = BuffID.Count; k < nextBuff; k++) {
 				Lang._buffNameCache[k] = LocalizedText.Empty;
 				Lang._buffDescriptionCache[k] = LocalizedText.Empty;
 			}
+
 			extraPlayerBuffCount = ModLoader.Mods.Any() ? ModLoader.Mods.Max(m => (int)m.ExtraPlayerBuffSlots) : 0;
 
+			//Hooks
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
@@ -113,9 +117,7 @@ namespace Terraria.ModLoader
 			globalBuffs.Clear();
 		}
 
-		internal static bool IsModBuff(int type) {
-			return type >= BuffID.Count;
-		}
+		internal static bool IsModBuff(int type) => type >= BuffID.Count;
 		//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
 		public static void Update(int buff, Player player, ref int buffIndex) {
 			int originalIndex = buffIndex;
@@ -163,13 +165,9 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		public static bool LongerExpertDebuff(int buff) {
-			return GetBuff(buff)?.longerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
-		}
+		public static bool LongerExpertDebuff(int buff) => GetBuff(buff)?.longerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
 
-		public static bool CanBeCleared(int buff) {
-			return GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
-		}
+		public static bool CanBeCleared(int buff) => GetBuff(buff)?.canBeCleared ?? vanillaCanBeCleared[buff];
 
 		public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
 			if (IsModBuff(buff)) {

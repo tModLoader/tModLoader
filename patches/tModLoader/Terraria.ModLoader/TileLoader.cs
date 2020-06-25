@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ObjectData;
 
@@ -117,15 +118,10 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays(bool unloading = false) {
-			Array.Resize(ref Main.tileSetsLoaded, nextTile);
-			for (int k = TileID.Count; k < nextTile; k++) {
-				Main.tileSetsLoaded[k] = true;
-			}
-			Array.Resize(ref Main.highlightMaskTexture, nextTile);
-			Resize2DArray(ref Main.tileAltTexture, nextTile);
-			Resize2DArray(ref Main.tileAltTextureInit, nextTile);
-			Resize2DArray(ref Main.tileAltTextureDrawn, nextTile);
-			Array.Resize(ref Main.tileTexture, nextTile);
+			//Textures
+			Array.Resize(ref TextureAssets.Tile, nextTile);
+			Array.Resize(ref TextureAssets.HighlightMask, nextTile);
+			//Etc
 			Array.Resize(ref Main.tileLighted, nextTile);
 			Array.Resize(ref Main.tileMergeDirt, nextTile);
 			Array.Resize(ref Main.tileCut, nextTile);
@@ -158,20 +154,23 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileGlowMask, nextTile);
 			Array.Resize(ref Main.tileContainer, nextTile);
 			Array.Resize(ref Main.tileSign, nextTile);
-			Array.Resize(ref Main.tileMerge, nextTile);
-			for (int k = 0; k < nextTile; k++) //oh dear
-			{
-				Array.Resize(ref Main.tileMerge[k], nextTile);
-			}
 			Array.Resize(ref Main.tileSand, nextTile);
 			Array.Resize(ref Main.tileFlame, nextTile);
 			Array.Resize(ref Main.tileFrame, nextTile);
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
 			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
+			Array.Resize(ref Main.tileMerge, nextTile);
+
+			for(int k = 0;k < nextTile;k++) { //oh dear
+				Array.Resize(ref Main.tileMerge[k], nextTile);
+			}
+
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
+
+			//Sets
 			Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
 			Array.Resize(ref TileID.Sets.Conversion.Ice, nextTile);
@@ -226,17 +225,18 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.TouchDamageOther, nextTile);
 			Array.Resize(ref TileID.Sets.Falling, nextTile);
 			Array.Resize(ref TileID.Sets.Ore, nextTile);
-			Array.Resize(ref TileID.Sets.Obsidian, nextTile);
 
 			for (int k = TileID.Count; k < nextTile; k++) {
 				TileID.Sets.AllTiles[k] = true;
 				TileID.Sets.GeneralPlacementTiles[k] = true;
 				TileID.Sets.CanBeClearedDuringGeneration[k] = true;
 			}
+
 			while (TileObjectData._data.Count < nextTile) {
 				TileObjectData._data.Add(null);
 			}
 
+			//Hooks
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalTiles, g => g.KillSound);
 			ModLoader.BuildGlobalHook(ref HookNumDust, globalTiles, g => g.NumDust);
 			ModLoader.BuildGlobalHook(ref HookCreateDust, globalTiles, g => g.CreateDust);
