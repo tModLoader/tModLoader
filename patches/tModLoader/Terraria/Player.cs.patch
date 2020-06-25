@@ -1806,6 +1806,15 @@
  					flag2 = true;
  					Main.mouseRightRelease = false;
  					int num68 = 0;
+@@ -22084,7 +_,7 @@
+ 						editedChestName = false;
+ 					}
+ 
+-					bool flag12 = Chest.IsLocked(Main.tile[num69, num70]);
++					bool flag12 = Chest.IsLocked(num69, num70);
+ 					if (Main.netMode == 1 && num68 == 0 && !flag12) {
+ 						if (num69 == chestX && num70 == chestY && chest != -1) {
+ 							chest = -1;
 @@ -22147,7 +_,9 @@
  												continue;
  

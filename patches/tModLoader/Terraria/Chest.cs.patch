@@ -8,8 +8,15 @@
  
  namespace Terraria
  {
-@@ -197,6 +_,9 @@
- 		public static bool IsLocked(Tile t) {
+@@ -192,11 +_,14 @@
+ 			return list;
+ 		}
+ 
+-		public static bool IsLocked(int x, int y) => IsLocked(Main.tile[x, y]);
++		public static bool IsLocked(int x, int y) => IsLocked(x, y, Main.tile[x, y]);
+ 
+-		public static bool IsLocked(Tile t) {
++		public static bool IsLocked(int x, int y, Tile t) {
  			if (t == null)
  				return true;
 +				
@@ -69,15 +76,17 @@
  				}
  			}
  
-@@ -504,14 +_,14 @@
+@@ -504,14 +_,16 @@
  			}
  		}
  
 -		public void AddItemToShop(Item newItem) {
 +		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
++			/*
  			if (num >= newItem.stack)
  				return;
++			*/
  
  			int num2 = 0;
  			while (true) {

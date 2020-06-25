@@ -1361,6 +1361,15 @@
  			for (int i = 0; i < num; i++) {
  				KillTile_MakeTileDust(x, y, tileSafely);
  			}
+@@ -39028,7 +_,7 @@
+ 			bool flag = !ReplaceTile_IsValidSolid(attemptingToReplaceWith) || !ReplaceTile_IsValidSolid(tile.type);
+ 			bool num = !ReplaceTile_IsValidPlatform(attemptingToReplaceWith) || !ReplaceTile_IsValidPlatform(tile.type);
+ 			bool flag2 = (!ReplaceTile_IsValidSolid(attemptingToReplaceWith) && !ReplaceTile_IsValidPlatform(attemptingToReplaceWith)) || (!ReplaceTile_IsValidSolid(tile.type) && !ReplaceTile_IsValidPlatform(tile.type));
+-			bool flag3 = !ReplaceTile_IsValidChest(attemptingToReplaceWith) || !ReplaceTile_IsValidChest(tile.type) || Chest.IsLocked(tile);
++			bool flag3 = !ReplaceTile_IsValidChest(attemptingToReplaceWith) || !ReplaceTile_IsValidChest(tile.type) || Chest.IsLocked(x, y, tile);
+ 			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
+ 			return !(num && flag && flag2 && flag3 && flag4);
+ 		}
 @@ -39605,6 +_,8 @@
  			if (num == 2)
  				return;
