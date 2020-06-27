@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework.Audio;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -13,7 +15,7 @@ namespace Terraria.ModLoader
 		private static readonly IDictionary<SoundType, int> nextSound = new Dictionary<SoundType, int>();
 		internal static readonly IDictionary<SoundType, IDictionary<string, int>> sounds = new Dictionary<SoundType, IDictionary<string, int>>();
 		internal static readonly IDictionary<SoundType, IDictionary<int, ModSound>> modSounds = new Dictionary<SoundType, IDictionary<int, ModSound>>();
-		internal static SoundEffect[] customSounds = new SoundEffect[0];
+		internal static Asset<SoundEffect>[] customSounds = new Asset<SoundEffect>[0];
 		internal static SoundEffectInstance[] customSoundInstances = new SoundEffectInstance[0];
 		/// <summary>
 		/// This value should be passed as the first parameter to Main.PlaySound whenever you want to play a custom sound that is not an item, npcHit, or npcKilled sound.
@@ -68,16 +70,18 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeAndFillArrays() {
-			customSounds = new SoundEffect[nextSound[SoundType.Custom]];
+			customSounds = new Asset<SoundEffect>[nextSound[SoundType.Custom]];
 			customSoundInstances = new SoundEffectInstance[nextSound[SoundType.Custom]];
-			Array.Resize(ref Main.soundItem, nextSound[SoundType.Item]);
-			Array.Resize(ref Main.soundInstanceItem, nextSound[SoundType.Item]);
-			Array.Resize(ref Main.soundNPCHit, nextSound[SoundType.NPCHit]);
-			Array.Resize(ref Main.soundInstanceNPCHit, nextSound[SoundType.NPCHit]);
-			Array.Resize(ref Main.soundNPCKilled, nextSound[SoundType.NPCKilled]);
-			Array.Resize(ref Main.soundInstanceNPCKilled, nextSound[SoundType.NPCKilled]);
+			
+			Array.Resize(ref SoundEngine._legacyPlayer._soundItem,				nextSound[SoundType.Item]);
+			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceItem,		nextSound[SoundType.Item]);
+			Array.Resize(ref SoundEngine._legacyPlayer._soundNpcHit,			nextSound[SoundType.NPCHit]);
+			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcHit,	nextSound[SoundType.NPCHit]);
+			Array.Resize(ref SoundEngine._legacyPlayer._soundNpcKilled,			nextSound[SoundType.NPCKilled]);
+			Array.Resize(ref SoundEngine._legacyPlayer._soundInstanceNpcKilled, nextSound[SoundType.NPCKilled]);
 			Array.Resize(ref Main.music, nextSound[SoundType.Music]);
 			Array.Resize(ref Main.musicFade, nextSound[SoundType.Music]);
+
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
 				foreach (string sound in sounds[type].Keys) {
 					int slot = GetSoundSlot(type, sound);
@@ -138,28 +142,30 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return 0;
 				case SoundType.Item:
-					return Main.maxItemSounds + 1;
+					return SoundID.ItemSoundCount + 1;
 				case SoundType.NPCHit:
-					return Main.maxNPCHitSounds + 1;
+					return SoundID.NPCHitCount + 1;
 				case SoundType.NPCKilled:
-					return Main.maxNPCKilledSounds + 1;
+					return SoundID.NPCDeathCount + 1;
 				case SoundType.Music:
 					return Main.maxMusic;
 			}
+
 			return 0;
 		}
 
-		internal static SoundEffect[] GetSoundArray(SoundType type) {
+		internal static Asset<SoundEffect>[] GetSoundArray(SoundType type) {
 			switch (type) {
 				case SoundType.Custom:
 					return customSounds;
 				case SoundType.Item:
-					return Main.soundItem;
+					return SoundEngine._legacyPlayer._soundItem;
 				case SoundType.NPCHit:
-					return Main.soundNPCHit;
+					return SoundEngine._legacyPlayer._soundNpcHit;
 				case SoundType.NPCKilled:
-					return Main.soundNPCKilled;
+					return SoundEngine._legacyPlayer._soundNpcKilled;
 			}
+
 			return null;
 		}
 
@@ -168,12 +174,13 @@ namespace Terraria.ModLoader
 				case SoundType.Custom:
 					return customSoundInstances;
 				case SoundType.Item:
-					return Main.soundInstanceItem;
+					return SoundEngine._legacyPlayer._soundInstanceItem;
 				case SoundType.NPCHit:
-					return Main.soundInstanceNPCHit;
+					return SoundEngine._legacyPlayer._soundInstanceNpcHit;
 				case SoundType.NPCKilled:
-					return Main.soundInstanceNPCKilled;
+					return SoundEngine._legacyPlayer._soundInstanceNpcKilled;
 			}
+
 			return null;
 		}
 	}
