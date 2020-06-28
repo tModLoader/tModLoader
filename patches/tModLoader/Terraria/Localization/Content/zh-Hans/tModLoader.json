@@ -48,6 +48,10 @@
 		"ModsXWalls": "{0}个墙壁",
 		"ModsXBuffs": "{0}个Buff",
 		"ModsXMounts": "{0}个坐骑",
+		"ModsReloadAndReturn": "重新加载模组并回到地图选择页面",
+		"ModsNotFoundServer": "在\"{0}\"里没有找到任何模组。\n如果你在开启一个模组服务器，你可以使用'modpath'命令行参数或配置项来设置加载的模组的路径。\n",
+		"AskForModIndex": "输入模组序号以启用/禁用模组",
+		"AskForCommand": "请输入命令: ",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
@@ -194,6 +198,9 @@
 		"XMonthsAgo": "{0}月前",
 		"1YearAgo": "1年前",
 		"XYearsAgo": "{0}年前",
+		"MBServerReturnToMenu": "回到地图选择页面",
+		"MBServerAskForModName": "输入模组的内部名称（ModName）以进行下载: ",
+		"MBServerDownloadError": "异常: 无法下载{0} -- {1}",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "请输入你的密码",
@@ -338,12 +345,14 @@
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
-		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support"
+		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support",
 
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
 		"MissingServerExecutable": "安装文件不完整（文件tModLoaderServer.exe缺失），无法启动服务器。请阅读教程并重新安装。",
 		"GraphicsEngineFailure": "图形引擎崩溃",
+		"GraphicsEngineReportUnknown": "未知",
+		"GraphicsEngineReportFailure": "失败",
 		"GraphicsEngineFailureMessage": "tModLoader目前在启用部分测试功能后崩溃了。如果你一直遇到这个问题，那么请打开游戏配置文件（config.json）并将其中的Support4K选项关闭（设为false）\n请重新启动游戏。\n异常上报进度：{0}",
 		"OutOfMemory": "游戏内存不足。请检查模组的内存占用，并移除占用较大的模组，或联系它们的开发者以修复这个问题。",
 		"ContentFolderNotFoundInstallCheck": "无法检测到{0}文件夹。\r\n\r\n请确保tModLoader安装在单独的文件夹里，或从Steam中直接安装。",
@@ -351,6 +360,13 @@
 		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
+		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
+		"ClientLogHint": "{0}\n\n你可以在{0}中找到一个名为client.log的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
+		"OutOfMemoryHint": "\n\n提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。\n\n你也可以尝试安装64位版tModLoader\n请注意：64位版tModLoader并不是官方的版本，也不由tModLoader或Terraria团队管理。",
+		"ModExceptionHint": "\n\n提示：很有可能是哪个模组崩溃了。你可以试着逐个禁用模组看看问题是否仍会重复出现。",
+		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
+		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
+		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "增加{0}%伤害"
