@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -21,14 +22,14 @@ namespace Terraria.ModLoader.Config.UI
 
 	public abstract class ConfigElement : UIElement
 	{
-		protected Texture2D playTexture = TextureManager.Load("Images/UI/ButtonPlay");
-		protected Texture2D deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-		protected Texture2D plusTexture = UICommon.ButtonPlusTexture;
+		protected Asset<Texture2D> playTexture = TextureManager.Load("Images/UI/ButtonPlay");
+		protected Asset<Texture2D> deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
+		protected Asset<Texture2D> plusTexture = UICommon.ButtonPlusTexture;
 		//protected Texture2D upArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png"));
 		//protected Texture2D downArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png"));
-		protected Texture2D upDownTexture = UICommon.ButtonUpDownTexture;
-		protected Texture2D collapsedTexture = UICommon.ButtonCollapsedTexture;
-		protected Texture2D expandedTexture = UICommon.ButtonExpandedTexture;
+		protected Asset<Texture2D> upDownTexture = UICommon.ButtonUpDownTexture;
+		protected Asset<Texture2D> collapsedTexture = UICommon.ButtonCollapsedTexture;
+		protected Asset<Texture2D> expandedTexture = UICommon.ButtonExpandedTexture;
 
 		// Provides access to the field/property contained in the item
 		protected PropertyFieldWrapper memberInfo;

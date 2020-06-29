@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MP3Sharp;
 using NVorbis;
+using ReLogic.Content;
 using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
@@ -12,8 +13,10 @@ using System.Threading.Tasks;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
+using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -24,9 +27,12 @@ namespace Terraria.ModLoader
 	partial class Mod
 	{
 		internal bool loading;
+
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
-		internal readonly IDictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+
+		//Assets
 		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
@@ -57,6 +63,10 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
+
+		public AssetRepository Assets { get; private set; }
+
+		private ModContentSource ContentSource { get; set; }
 
 		private void LoadTexture(string path, Stream stream, bool rawimg) {
 			try {
@@ -134,12 +144,12 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModTile tile in tiles.Values) {
-				Main.tileTexture[tile.Type] = ModContent.GetTexture(tile.texture);
+				TextureAssets.Tile[tile.Type] = ModContent.GetTexture(tile.texture);
 
 				TileLoader.SetDefaults(tile);
 
 				if (TileID.Sets.HasOutlines[tile.Type]) {
-					Main.highlightMaskTexture[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
+					TextureAssets.HighlightMask[tile.Type] = ModContent.GetTexture(tile.HighlightTexture);
 				}
 
 				if (!string.IsNullOrEmpty(tile.chest)) {
@@ -246,11 +256,10 @@ namespace Terraria.ModLoader
 			}
 			sounds.Clear();
 			effects.Clear();
-			foreach (var tex in textures.Values)
-				tex?.Dispose();
-			textures.Clear();
 			musics.Clear();
 			fonts.Clear();
+
+			Assets.Dispose();
 		}
 
 		internal void Autoload() {
@@ -360,6 +369,14 @@ namespace Terraria.ModLoader
 			if (Properties.AutoloadBackgrounds) {
 				AutoloadBackgrounds();
 			}
+		}
+
+		private void PrepareAssets()
+		{
+			ContentSource = new ModContentSource(this);
+			Assets = new AssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader);
+
+			Assets.SetSources(new[] { ContentSource }, AssetRequestMode.DoNotLoad);
 		}
 
 		private void AutoloadItem(Type type) {

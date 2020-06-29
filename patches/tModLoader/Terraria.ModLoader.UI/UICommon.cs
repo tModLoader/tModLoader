@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.UI;
 
@@ -68,24 +68,24 @@ namespace Terraria.ModLoader.UI
 			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 
-		internal static Texture2D ButtonErrorTexture;
-		internal static Texture2D ButtonConfigTexture;
-		internal static Texture2D ButtonPlusTexture;
-		internal static Texture2D ButtonUpDownTexture;
-		internal static Texture2D ButtonCollapsedTexture;
-		internal static Texture2D ButtonExpandedTexture;
-		internal static Texture2D ModBrowserIconsTexture;
-		internal static Texture2D ButtonExclamationTexture;
-		internal static Texture2D LoaderTexture;
-		internal static Texture2D LoaderBgTexture;
-		internal static Texture2D ButtonDownloadTexture;
-		internal static Texture2D ButtonDowngradeTexture;
-		internal static Texture2D ButtonDownloadMultipleTexture;
-		internal static Texture2D ButtonModInfoTexture;
-		internal static Texture2D ButtonModConfigTexture;
+		internal static Asset<Texture2D> ButtonErrorTexture;
+		internal static Asset<Texture2D> ButtonConfigTexture;
+		internal static Asset<Texture2D> ButtonPlusTexture;
+		internal static Asset<Texture2D> ButtonUpDownTexture;
+		internal static Asset<Texture2D> ButtonCollapsedTexture;
+		internal static Asset<Texture2D> ButtonExpandedTexture;
+		internal static Asset<Texture2D> ModBrowserIconsTexture;
+		internal static Asset<Texture2D> ButtonExclamationTexture;
+		internal static Asset<Texture2D> LoaderTexture;
+		internal static Asset<Texture2D> LoaderBgTexture;
+		internal static Asset<Texture2D> ButtonDownloadTexture;
+		internal static Asset<Texture2D> ButtonDowngradeTexture;
+		internal static Asset<Texture2D> ButtonDownloadMultipleTexture;
+		internal static Asset<Texture2D> ButtonModInfoTexture;
+		internal static Asset<Texture2D> ButtonModConfigTexture;
 
-		internal static Texture2D DividerTexture;
-		internal static Texture2D InnerPanelTexture;
+		internal static Asset<Texture2D> DividerTexture;
+		internal static Asset<Texture2D> InnerPanelTexture;
 
 		internal static void LoadTextures() {
 			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.UI
 			DividerTexture = TextureManager.Load("Images/UI/Divider");
 			InnerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
 
-			Texture2D LoadEmbeddedTexture(string name) 
+			Asset<Texture2D> LoadEmbeddedTexture(string name) 
 				=> Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.{name}"));
 		}
 	}

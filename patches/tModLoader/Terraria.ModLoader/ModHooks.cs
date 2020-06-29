@@ -10,7 +10,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
-	public abstract partial class Mod
+	partial class Mod
 	{
 		/// <summary>
 		/// Allows you to determine what music should currently play.

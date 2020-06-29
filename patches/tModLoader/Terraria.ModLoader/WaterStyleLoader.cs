@@ -122,9 +122,11 @@ namespace Terraria.ModLoader
 			if (waterStyle != null) {
 				waterStyle.LightColorMultiplier(ref r, ref g, ref b);
 
-				r *= Lighting.negLight * Lighting.blueWave;
-				g *= Lighting.negLight * Lighting.blueWave;
-				b *= Lighting.negLight * Lighting.blueWave;
+				r *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
+				g *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
+				b *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
+
+				//TODO: Make this work with the new lighting engine.
 			}
 		}
 	}
