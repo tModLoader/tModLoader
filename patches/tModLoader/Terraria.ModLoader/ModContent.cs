@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Content.Readers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,18 +70,19 @@ namespace Terraria.ModLoader
 		/// Gets the texture with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithoutExtension". Throws an ArgumentException if the texture does not exist. If a vanilla texture is desired, the format "Terraria/FileNameWithoutExtension" will reference an image from the "terraria/Content/Images" folder. Note: Texture2D is in the Microsoft.Xna.Framework.Graphics namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Texture2D GetTexture(string name) {
+		public static Asset<Texture2D> GetTexture(string name) {
 			if (Main.dedServ)
 				return null;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
-			if (modName == "Terraria")
-				return Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+			SplitName(name, out string modName, out string subName);
+
+			if(modName == "Terraria")
+				return Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
 
 			Mod mod = ModLoader.GetMod(modName);
+
 			if (mod == null)
-				throw new MissingResourceException("Missing mod: " + name);
+				throw new MissingResourceException($"Missing mod: {name}");
 
 			return mod.GetTexture(subName);
 		}

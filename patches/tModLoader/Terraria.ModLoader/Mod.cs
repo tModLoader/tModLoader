@@ -16,6 +16,7 @@ using System.Linq;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
 using Terraria.GameContent;
+using ReLogic.Content;
 
 namespace Terraria.ModLoader
 {
@@ -65,6 +66,10 @@ namespace Terraria.ModLoader
 
 		private IDisposable fileHandle;
 
+		internal Mod()
+		{
+			PrepareAssets();
+		}
 
 		/// <summary>
 		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
@@ -1576,7 +1581,7 @@ namespace Terraria.ModLoader
 		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
-		public Texture2D GetTexture(string name) {
+		public Asset<Texture2D> GetTexture(string name) {
 			if (!textures.TryGetValue(name, out var t))
 				throw new MissingResourceException(name, textures.Keys);
 
