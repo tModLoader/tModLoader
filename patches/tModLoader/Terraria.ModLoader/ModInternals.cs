@@ -65,7 +65,8 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 
 		public AssetRepository Assets { get; private set; }
-		public ModContentSource ContentSource { get; private set; }
+
+		private ModContentSource ContentSource { get; set; }
 
 		private void LoadTexture(string path, Stream stream, bool rawimg) {
 			try {

@@ -1078,7 +1078,8 @@ namespace Terraria.ModLoader
 				if (!ModContent.TextureExists(entry.Value))
 					continue;
 
-				Texture2D extraTexture = ModContent.GetTexture(entry.Value);
+				var extraTexture = ModContent.GetTexture(entry.Value);
+
 				switch (entry.Key) {
 					case MountTextureType.Back:
 						mount.mountData.backTexture = extraTexture;
