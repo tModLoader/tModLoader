@@ -416,6 +416,7 @@ namespace Terraria.ModLoader
 		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
 		{
 			MethodInfo method;
+
 			try {
 				var convert = expr.Body as UnaryExpression;
 				var makeDelegate = convert.Operand as MethodCallExpression;
@@ -426,34 +427,8 @@ namespace Terraria.ModLoader
 			catch (Exception e) {
 				throw new ArgumentException("Invalid hook expression " + expr, e);
 			}
+
 			return method;
 		}
-		/*
-		 * Forwarder, deprecated, methods
-		 * These are methods used likely by many modders, which may need some time to adjust to changes
-		 */
-		[Obsolete("ModLoader.GetFileBytes is deprecated since v0.11, use ModContent.GetFileBytes instead.", true)]
-		public static byte[] GetFileBytes(string name) => ModContent.GetFileBytes(name);
-
-		[Obsolete("ModLoader.FileExists is deprecated since v0.11, use ModContent.FileExists instead.", true)]
-		public static bool FileExists(string name) => ModContent.FileExists(name);
-
-		[Obsolete("ModLoader.GetTexture is deprecated since v0.11, use ModContent.GetTexture instead.", true)]
-		public static Texture2D GetTexture(string name) => ModContent.GetTexture(name);
-
-		[Obsolete("ModLoader.TextureExists is deprecated since v0.11, use ModContent.TextureExists instead.", true)]
-		public static bool TextureExists(string name) => ModContent.TextureExists(name);
-
-		[Obsolete("ModLoader.GetSound is deprecated since v0.11, use ModContent.GetSound instead.", true)]
-		public static SoundEffect GetSound(string name) => ModContent.GetSound(name);
-
-		[Obsolete("ModLoader.SoundExists is deprecated since v0.1, use ModContent.SoundExists instead.", true)]
-		public static bool SoundExists(string name) => ModContent.SoundExists(name);
-
-		[Obsolete("ModLoader.GetMusic is deprecated since v0.11, use ModContent.GetMusic instead.", true)]
-		public static Music GetMusic(string name) => ModContent.GetMusic(name);
-
-		[Obsolete("ModLoader.MusicExists is deprecated since v0.11, use ModContent.MusicExists instead.", true)]
-		public static bool MusicExists(string name) => ModContent.MusicExists(name);
 	}
 }
