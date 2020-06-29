@@ -15,3 +15,7 @@
 		//Vanilla has Main.CalculateWaterStyle() now
 	//Integrate with vanilla asset system
 		//?Reimplement PlayerHooks.GetMapBackgroundImage in DrawMapFullscreenBackground so it can use assets
+
+	//SceneMetrics
+		//This includes tile counts and banner buffs.
+		//Moved from player to Main.ScreneMetrics

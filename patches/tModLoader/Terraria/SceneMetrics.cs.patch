@@ -9,3 +9,12 @@
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+@@ -417,6 +_,8 @@
+ 			MoonLordMonolith = false;
+ 			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
+ 			hasBanner = false;
++			if(NPCBannerBuff.Length<ModLoader.NPCLoader.NPCCount)
++				Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
+ 		}
+ 
+ 		private void UpdateOreFinderData() {

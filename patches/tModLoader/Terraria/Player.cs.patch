@@ -462,7 +462,7 @@
  				int num2 = 0;
  				for (int i = 0; i < 1000; i++) {
  					if (Main.projectile[i].active && Main.projectile[i].owner == Main.myPlayer && (Main.projectile[i].type == 73 || Main.projectile[i].type == 74))
-@@ -3076,11 +_,18 @@
+@@ -3076,11 +_,21 @@
  			float shootSpeed = item.shootSpeed;
  			int damage = item.damage;
  			float knockBack = item.knockBack;
@@ -476,8 +476,11 @@
  				for (int num8 = 0; num8 < 1000; num8++) {
  					if (Main.projectile[num8].active && Main.projectile[num8].owner == whoAmI) {
 +						bool? modSingleHook2 = ProjectileLoader.SingleGrappleHook(Main.projectile[num8].type, this);
-+						if (modSingleHook2.HasValue && !modSingleHook2.Value)
++						if(modSingleHook2.HasValue) {
++							if (modSingleHook2.Value)
++								Main.projectile[num8].Kill();
 +							continue;
++						}
 +
  						switch (Main.projectile[num8].type) {
  							case 13:
@@ -1573,7 +1576,7 @@
  				HorizontalMovement();
  				if (gravControl) {
  					if (controlUp && releaseUp) {
-@@ -18292,6 +_,7 @@
+@@ -18292,12 +_,13 @@
  					CancelAllJumpVisualEffects();
  				}
  				else {
@@ -1581,6 +1584,13 @@
  					if (flag20) {
  						WingAirVisuals();
  						WingMovement();
+ 					}
+ 
+-					WingFrame(flag20);
++					WingFrame(flag20, isCustomWings);
+ 					if (wingsLogic > 0 && rocketBoots != 0 && base.velocity.Y != 0f && rocketTime != 0) {
+ 						int num45 = 6;
+ 						int num46 = rocketTime * num45;
 @@ -18308,7 +_,7 @@
  						rocketTime = 0;
  					}
@@ -1641,6 +1651,15 @@
  
  			if (wingsLogic == 45)
  				runSlowdown *= 6f;
+@@ -19551,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public void WingFrame(bool wingFlap) {
++		public void WingFrame(bool wingFlap, bool isCustomWings) {
+ 			bool flag = wingsLogic != wings;
+ 			if (wings == 4) {
+ 				if (wingFlap || jump > 0) {
 @@ -20192,6 +_,8 @@
  				num27 = 3;
  			}
@@ -2650,16 +2669,6 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -31786,6 +_,9 @@
- 
- 						if (Main.projectile[j].type >= 230 && Main.projectile[j].type <= 235)
- 							Main.projectile[j].Kill();
-+
-+						if (modSingleHook2.HasValue && modSingleHook2.Value)
-+							Main.projectile[j].Kill();
- 					}
- 				}
- 			}
 @@ -33146,7 +_,8 @@
  					Main.projectile[num180].originalDamage = damage;
  					UpdateMaxTurrets();
@@ -2675,7 +2684,7 @@
  				FlipItemLocationAndRotationForGravity();
  			}
 +			else if(!Main.dedServ)
-+				ItemLoader.UseStyle(item, this);
++				ItemLoader.UseStyle(sItem, this);
  		}
  
  		private void ItemCheck_ApplyManaRegenDelay(Item sItem) {
@@ -2697,8 +2706,8 @@
  			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && flag)
  				flag2 = true;
  
-+			if (!CheckMana(item, -1, !flag2))
-+				flag_idk = false;//This was originally a different flag, make sure this is right
++			if (sItem.type != ItemID.MedusaHead && !CheckMana(sItem, pay:!flag2))
++				canUse = false;
 +			return canUse;
 +			
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
@@ -2810,7 +2819,7 @@
 -			else if (sItem.type == 1946)
 +			else if (sItem.type == 1946) {
  				projToShoot = 338 + item.type - 771;
-+				if (shoot > ProjectileID.RocketSnowmanIV)
++				if (projToShoot > ProjectileID.RocketSnowmanIV)
 +					projToShoot = ProjectileID.RocketSnowmanIV;
 +			}
  			else if (sItem.type == 3930)
@@ -2931,7 +2940,7 @@
  				num = 0;
  			}
 +			else {
-+				TileLoader.PickPowerCheck(tile, pickPower, ref num);
++				TileLoader.PickPowerCheck(tileTarget, pickPower, ref num);
 +			}
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
@@ -3201,6 +3210,15 @@
  
  								for (int num29 = 0; num29 < num28; num29++) {
  									player.buffType[num29] = binaryReader.ReadInt32();
+@@ -37259,7 +_,7 @@
+ 							if (num >= 220)
+ 								CreativePowerManager.Instance.LoadToPlayer(player, binaryReader, num);
+ 
+-							LoadPlayer_LastMinuteFixes(player);
++							LoadPlayer_LastMinuteFixes(player, playerFileData);
+ 						}
+ 					}
+ 				}
 @@ -37269,6 +_,9 @@
  				playerFileData.Player = player;
  				return playerFileData;
@@ -3211,11 +3229,14 @@
  			catch {
  			}
  
-@@ -37301,6 +_,7 @@
+@@ -37299,8 +_,9 @@
+ 			}
+ 		}
  
- 		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
+-		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			PlayerIO.Load(newPlayer, playerPath, cloudSave);
++			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
  			for (int i = 3; i < 10; i++) {
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 4874 || type == 5000)
@@ -3246,7 +3267,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,33 @@
+@@ -37381,7 +_,31 @@
  			return -1;
  		}
  
@@ -3264,7 +3285,6 @@
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +
 +		public Player(bool startupInventory = true) {
-+			NPCBannerBuff = new bool[NPCLoader.NPCCount];
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
@@ -3272,7 +3292,6 @@
 +			allDamageMult = 1f;
 +			meleeDamageMult = 1f;
 +			rangedDamageMult = 1f;
-+			thrownDamageMult = 1f;
 +			magicDamageMult = 1f;
 +			minionDamageMult = 1f;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
@@ -3412,7 +3431,7 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -38098,6 +_,49 @@
+@@ -38098,6 +_,52 @@
  			}
  		}
  
@@ -3421,6 +3440,9 @@
 +			float mult = 1;
 +			if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray && item.type == ItemID.ZapinatorOrange))
 +				mult = 0;
++
++			if(item.type == ItemID.BookStaff && altFunctionUse == 2)
++				mult = 2;
 +
 +			CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
 +			int mana = (int)(item.mana * reduce * mult);
