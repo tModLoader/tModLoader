@@ -95,14 +95,14 @@ namespace Terraria.ModLoader.Default
 		// Adds the given patreon item to ModLoader, and handles loading its assets automatically
 		private void AddItemAndEquipType(ModItem item, string prefix, string name, EquipType equipType) {
 			// If a client, we need to add several textures
-			if (!Main.dedServ) {
+			/*if (!Main.dedServ) {
 				AddTexture($"{prefix}.{name}_{equipType}", ReadTexture($"{prefix}.{name}_{equipType}"));
 				AddTexture($"{prefix}.{name}_{equipType}_{equipType}", ReadTexture($"{prefix}.{name}_{equipType}_{equipType}"));
 				if (equipType == EquipType.Body) // If a body, add the arms texture
 				{
 					AddTexture($"{prefix}.{name}_{equipType}_Arms", ReadTexture($"{prefix}.{name}_{equipType}_Arms"));
 				}
-			}
+			}*/
 
 			// Adds the item to ModLoader, as well as the normal assets
 			AddItem($"{name}_{equipType}", item);
