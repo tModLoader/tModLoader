@@ -10,8 +10,7 @@ namespace Terraria.ModLoader.Default
 		public override CommandType Type => CommandType.Chat | CommandType.Server;
 		public override void Action(CommandCaller caller, string input, string[] args) {
 			if (args.Length > 0) {
-				ModCommand mc;
-				if (!CommandManager.GetCommand(caller, args[0], out mc)) {
+				if (!CommandManager.GetCommand(caller, args[0], out ModCommand mc)) {
 					throw new UsageException("Unknown command: " + args[0], Color.Red);
 				}
 				if (mc != null) {

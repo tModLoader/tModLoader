@@ -630,8 +630,7 @@ namespace Terraria.ModLoader.IO
 				if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y)) {
 					newEntity.ID = TileEntity.AssignNewID();
 					TileEntity.ByID[newEntity.ID] = newEntity;
-					TileEntity other;
-					if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out other)) {
+					if (TileEntity.ByPosition.TryGetValue(newEntity.Position, out TileEntity other)) {
 						TileEntity.ByID.Remove(other.ID);
 					}
 					TileEntity.ByPosition[newEntity.Position] = newEntity;

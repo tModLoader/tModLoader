@@ -262,8 +262,7 @@ namespace Terraria.ModLoader
 				EquipLoader.armTextures[slot] = armTexture;
 			}
 			if (item != null) {
-				IDictionary<EquipType, int> slots;
-				if (!EquipLoader.idToSlot.TryGetValue(item.item.type, out slots))
+				if (!EquipLoader.idToSlot.TryGetValue(item.item.type, out IDictionary<EquipType, int> slots))
 					EquipLoader.idToSlot[item.item.type] = slots = new Dictionary<EquipType, int>();
 
 				slots[type] = slot;
@@ -1590,9 +1589,7 @@ namespace Terraria.ModLoader
 
 		public ModConfig GetConfig(string name)
 		{
-			List<ModConfig> configs;
-			if (ConfigManager.Configs.TryGetValue(this, out configs))
-			{
+			if (ConfigManager.Configs.TryGetValue(this, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == name);
 			}
 			return null;

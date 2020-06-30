@@ -53,8 +53,7 @@ namespace Terraria.ModLoader
 		/// <param name="slot"></param>
 		/// <returns></returns>
 		public static EquipTexture GetEquipTexture(EquipType type, int slot) {
-			EquipTexture texture;
-			return equipTextures[type].TryGetValue(slot, out texture) ? texture : null;
+			return equipTextures[type].TryGetValue(slot, out EquipTexture texture) ? texture : null;
 		}
 
 		internal static void ResizeAndFillArrays() {
@@ -192,9 +191,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SetSlot(Item item) {
-			IDictionary<EquipType, int> slots;
 
-			if (!idToSlot.TryGetValue(item.type, out slots))
+			if (!idToSlot.TryGetValue(item.type, out IDictionary<EquipType, int> slots))
 				return;
 
 			foreach (var entry in slots) {

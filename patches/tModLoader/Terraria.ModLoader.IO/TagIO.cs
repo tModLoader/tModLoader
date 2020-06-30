@@ -124,9 +124,8 @@ namespace Terraria.ModLoader.IO
 			new ClassPayloadHandler<TagCompound>(
 				r => {
 					var compound = new TagCompound();
-					string name;
 					object tag;
-					while ((tag = ReadTag(r, out name)) != null)
+					while ((tag = ReadTag(r, out stringname)) != null)
 						compound.Set(name, tag);
 
 					return compound;
@@ -169,8 +168,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private static int GetPayloadId(Type t) {
-			int id;
-			if (PayloadIDs.TryGetValue(t, out id))
+			if (PayloadIDs.TryGetValue(t, out int id))
 				return id;
 
 			if (typeof(IList).IsAssignableFrom(t))
@@ -182,8 +180,7 @@ namespace Terraria.ModLoader.IO
 		public static object Serialize(object value) {
 			var type = value.GetType();
 
-			TagSerializer serializer;
-			if (TagSerializer.TryGetSerializer(type, out serializer))
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer))
 				return serializer.Serialize(value);
 
 			//does a base level typecheck with throw
@@ -214,8 +211,7 @@ namespace Terraria.ModLoader.IO
 			if (type.IsInstanceOfType(tag))
 				return tag;
 
-			TagSerializer serializer;
-			if (TagSerializer.TryGetSerializer(type, out serializer)) {
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer)) {
 				if (tag == null)
 					tag = Deserialize(serializer.TagType, null);
 
@@ -295,8 +291,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static TagCompound Read(BinaryReader reader) {
-			string name;
-			var tag = ReadTag(reader, out name);
+			var tag = ReadTag(reader, out string name);
 			if (!(tag is TagCompound))
 				throw new IOException("Root tag not a TagCompound");
 

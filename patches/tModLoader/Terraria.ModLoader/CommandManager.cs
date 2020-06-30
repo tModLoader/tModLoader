@@ -24,8 +24,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Add(ModCommand cmd) {
-			List<ModCommand> cmdList;
-			if (!Commands.TryGetValue(cmd.Command, out cmdList))
+			if (!Commands.TryGetValue(cmd.Command, out List<ModCommand> cmdList))
 				Commands.Add(cmd.Command, cmdList = new List<ModCommand>());
 
 			cmdList.Add(cmd);
@@ -49,8 +48,7 @@ namespace Terraria.ModLoader
 
 			mc = null;
 
-			List<ModCommand> cmdList;
-			if (!Commands.TryGetValue(name, out cmdList))
+			if (!Commands.TryGetValue(name, out List<ModCommand> cmdList))
 				return false;
 
 			cmdList = cmdList.Where(c => Matches(c.Type, caller.CommandType)).ToList();
@@ -91,8 +89,7 @@ namespace Terraria.ModLoader
 				name = name.Substring(1);
 			}
 
-			ModCommand mc;
-			if (!GetCommand(caller, name, out mc))
+			if (!GetCommand(caller, name, out ModCommand mc))
 				return false;
 
 			if (mc == null)//error in command name (multiple commands or missing mod etc)

@@ -197,13 +197,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static GlobalItem GetGlobalItem(Item item, Mod mod, string name) {
-			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalItems[index].Instance(item) : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalItems[index].Instance(item) : null;
 		}
 
 		internal static GlobalItem GetGlobalItem(Item item, Type type) {
-			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
+			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalItems[index].Instance(item) : null) : null;
 		}
 
 		//near end of Terraria.Main.DrawItem before default drawing call

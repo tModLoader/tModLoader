@@ -35,8 +35,7 @@ namespace Terraria.ModLoader.IO
 		public override T Deserialize(TagCompound tag) {
 			if (tag.ContainsKey("<type>") && tag.GetString("<type>") != Type.FullName) {
 				var instType = GetType(tag.GetString("<type>"));
-				TagSerializer instSerializer;
-				if (instType != null && Type.IsAssignableFrom(instType) && TryGetSerializer(instType, out instSerializer))
+				if (instType != null && Type.IsAssignableFrom(instType) && TryGetSerializer(instType, out TagSerializer instSerializer))
 					return (T)instSerializer.Deserialize(tag);
 			}
 

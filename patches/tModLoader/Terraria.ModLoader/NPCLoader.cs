@@ -208,13 +208,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static GlobalNPC GetGlobalNPC(NPC npc, Mod mod, string name) {
-			int index;
-			return globalIndexes.TryGetValue(mod.Name + ':' + name, out index) ? globalNPCs[index].Instance(npc) : null;
+			return globalIndexes.TryGetValue(mod.Name + ':' + name, out int index) ? globalNPCs[index].Instance(npc) : null;
 		}
 
 		internal static GlobalNPC GetGlobalNPC(NPC npc, Type type) {
-			int index;
-			return globalIndexesByType.TryGetValue(type, out index) ? (index > -1 ? globalNPCs[index].Instance(npc) : null) : null;
+			return globalIndexesByType.TryGetValue(type, out int index) ? (index > -1 ? globalNPCs[index].Instance(npc) : null) : null;
 		}
 
 		private static HookList HookScaleExpertStats = AddHook<Action<NPC, int, float>>(g => g.ScaleExpertStats);

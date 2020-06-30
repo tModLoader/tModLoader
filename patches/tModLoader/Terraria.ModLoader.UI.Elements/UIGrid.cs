@@ -153,8 +153,7 @@ namespace Terraria.ModLoader.UI.Elements
 
 		public override List<SnapPoint> GetSnapPoints() {
 			List<SnapPoint> list = new List<SnapPoint>();
-			SnapPoint item;
-			if (base.GetSnapPoint(out item)) {
+			if (base.GetSnapPoint(out SnapPoint item)) {
 				list.Add(item);
 			}
 			foreach (UIElement current in this._items) {

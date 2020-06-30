@@ -15,8 +15,7 @@ namespace Terraria.ModLoader.IO
 	{
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
 		public T Get<T>(string key) {
-			object tag = null;
-			dict.TryGetValue(key, out tag);
+			dict.TryGetValue(key, out object tag);
 			try {
 				return TagIO.Deserialize<T>(tag);
 			}

@@ -635,8 +635,7 @@ namespace Terraria.ModLoader
 			var modGoreNames = modGores.ToDictionary(t => t.Namespace + "." + t.Name);
 			foreach (var texture in textures.Keys.Where(t => t.StartsWith("Gores/"))) {
 				ModGore modGore = null;
-				Type t;
-				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out t))
+				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out Type t))
 					modGore = (ModGore)Activator.CreateInstance(t);
 
 				AddGore(Name + '/' + texture, modGore);
@@ -645,9 +644,11 @@ namespace Terraria.ModLoader
 
 		private void AutoloadSounds(IList<Type> modSounds) {
 			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
+
 			foreach (var sound in sounds.Keys.Where(t => t.StartsWith("Sounds/"))) {
 				string substring = sound.Substring("Sounds/".Length);
 				SoundType soundType = SoundType.Custom;
+
 				if (substring.StartsWith("Item/")) {
 					soundType = SoundType.Item;
 				}
@@ -657,9 +658,9 @@ namespace Terraria.ModLoader
 				else if (substring.StartsWith("NPCKilled/")) {
 					soundType = SoundType.NPCKilled;
 				}
+
 				ModSound modSound = null;
-				Type t;
-				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out t))
+				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out Type t))
 					modSound = (ModSound)Activator.CreateInstance(t);
 
 				AddSound(soundType, Name + '/' + sound, modSound);

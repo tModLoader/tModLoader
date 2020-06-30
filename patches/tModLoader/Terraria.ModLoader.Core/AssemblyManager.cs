@@ -235,8 +235,7 @@ namespace Terraria.ModLoader.Core
 				if (name == "Terraria")
 					return Assembly.GetExecutingAssembly();
 
-				Assembly a;
-				loadedAssemblies.TryGetValue(name, out a);
+				loadedAssemblies.TryGetValue(name, out Assembly a);
 				return a;
 			};
 		}

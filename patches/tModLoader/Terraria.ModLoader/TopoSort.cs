@@ -40,8 +40,8 @@ namespace Terraria.ModLoader
 		}
 
 		public void AddEntry(T dependency, T dependent) {
-			List<T> list;
-			if (!dependencyDict.TryGetValue(dependent, out list)) dependencyDict[dependent] = list = new List<T>();
+			if (!dependencyDict.TryGetValue(dependent, out List<T> list))
+				dependencyDict[dependent] = list = new List<T>();
 			list.Add(dependency);
 
 			if (!dependentDict.TryGetValue(dependency, out list)) dependentDict[dependency] = list = new List<T>();
@@ -49,8 +49,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void BuildSet(T t, IDictionary<T, List<T>> dict, ISet<T> set) {
-			List<T> list;
-			if (!dict.TryGetValue(t, out list))
+			if (!dict.TryGetValue(t, out List<T> list))
 				return;
 
 			foreach (var entry in dict[t])
@@ -59,13 +58,11 @@ namespace Terraria.ModLoader
 		}
 
 		public List<T> Dependencies(T t) {
-			List<T> list;
-			return dependencyDict.TryGetValue(t, out list) ? list : new List<T>();
+			return dependencyDict.TryGetValue(t, out List<T> list) ? list : new List<T>();
 		}
 
 		public List<T> Dependents(T t) {
-			List<T> list;
-			return dependentDict.TryGetValue(t, out list) ? list : new List<T>();
+			return dependentDict.TryGetValue(t, out List<T> list) ? list : new List<T>();
 		}
 
 		public ISet<T> AllDependencies(T t) {

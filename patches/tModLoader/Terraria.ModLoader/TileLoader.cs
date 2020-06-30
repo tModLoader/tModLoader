@@ -334,7 +334,6 @@ namespace Terraria.ModLoader
 			j -= partY;
 			int originX = i + tileData.Origin.X;
 			int originY = j + tileData.Origin.Y;
-			TileObject objectData;
 			bool partiallyDestroyed = false;
 			for (int x = i; x < i + tileData.Width; x++) {
 				for (int y = j; y < j + tileData.Height; y++) {
@@ -347,7 +346,7 @@ namespace Terraria.ModLoader
 					break;
 				}
 			}
-			if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out objectData, true, true)) {
+			if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, true, true)) {
 				WorldGen.destroyObject = true;
 				for (int x = i; x < i + tileData.Width; x++) {
 					for (int y = j; y < j + tileData.Height; y++) {

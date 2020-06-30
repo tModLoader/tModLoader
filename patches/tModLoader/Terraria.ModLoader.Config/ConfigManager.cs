@@ -57,8 +57,7 @@ namespace Terraria.ModLoader.Config
 		{
 			ConfigManager.Load(config);
 
-			List<ModConfig> configList;
-			if (!Configs.TryGetValue(config.mod, out configList))
+			if (!Configs.TryGetValue(config.mod, out List<ModConfig> configList))
 				Configs.Add(config.mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
@@ -70,8 +69,7 @@ namespace Terraria.ModLoader.Config
 			config.OnChanged();
 
 			// Maintain a backup of LoadTime Configs.
-			List<ModConfig> configList2;
-			if (!LoadTimeConfigs.TryGetValue(config.mod, out configList2))
+			if (!LoadTimeConfigs.TryGetValue(config.mod, out List<ModConfig> configList2))
 				LoadTimeConfigs.Add(config.mod, configList2 = new List<ModConfig>());
 			configList2.Add(GeneratePopulatedClone(config));
 		}
@@ -174,17 +172,14 @@ namespace Terraria.ModLoader.Config
 		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 		internal static ModConfig GetConfig(Mod mod, string config)
 		{
-			List<ModConfig> configs;
-			if (Configs.TryGetValue(mod, out configs))
-			{
+			if (Configs.TryGetValue(mod, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == config);
 			}
 			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 		}
 
 		internal static ModConfig GetLoadTimeConfig(Mod mod, string config) {
-			List<ModConfig> configs;
-			if (LoadTimeConfigs.TryGetValue(mod, out configs)) {
+			if (LoadTimeConfigs.TryGetValue(mod, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == config);
 			}
 			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
