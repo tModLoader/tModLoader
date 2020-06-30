@@ -35,12 +35,12 @@ namespace Terraria.ModLoader.Default
 		public override void Load() {
 			Instance = this;
 
-			if (!Main.dedServ) {
+			/*if (!Main.dedServ) {
 				AddTexture("MysteryItem", ReadTexture("MysteryItem"));
 				AddTexture("StartBag", ReadTexture("StartBag"));
 				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
-			}
-
+			}*/
+			
 			AddItem("MysteryItem", new MysteryItem());
 			AddGlobalItem("MysteryGlobalItem", new MysteryGlobalItem());
 			AddItem("StartBag", new StartBag());

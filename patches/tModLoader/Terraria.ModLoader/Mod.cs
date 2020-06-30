@@ -1455,20 +1455,7 @@ namespace Terraria.ModLoader
 		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
-		public Asset<Texture2D> GetTexture(string name) {
-			//TODO: Add a way to grab a full asset list from an AssetRepository. Then, optimize this with proper cache.
-
-			if(Assets.HasAsset(name))
-				return Assets.Request<Texture2D>(name);
-
-			if(Assets.HasAsset(name+".png"))
-				return Assets.Request<Texture2D>(name+".png");
-
-			if(Assets.HasAsset(name+".rawimg"))
-				return Assets.Request<Texture2D>(name+".rawimg");
-
-			throw new MissingResourceException(name);
-		}
+		public Asset<Texture2D> GetTexture(string name) => Assets.Request<Texture2D>(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.TextureExists(this.FileName(name)).
@@ -1476,22 +1463,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public bool TextureExists(string name) => Assets.HasAsset<Texture2D>(name);
-
-		/// <summary>
-		/// Shorthand for calling ModLoader.AddTexture(this.FileName(name), texture).
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="texture">The texture.</param>
-		/// <exception cref="Terraria.ModLoader.Exceptions.ModNameException">Texture already exist: " + name</exception>
-		public void AddTexture(string name, Texture2D texture) {
-			if (Main.dedServ)
-				return;
-
-			if (TextureExists(name))
-				throw new Exception($"Texture already exist: {name}");
-
-			textures[name] = texture;
-		}
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetSound(this.FileName(name)).
