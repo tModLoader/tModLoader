@@ -495,7 +495,7 @@ namespace Terraria.ModLoader
 			dust.mod = this;
 			dust.Name = name;
 			dust.Type = ModDust.ReserveDustID();
-			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture) : TextureAssets.Dust.Value;
+			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture).Value : TextureAssets.Dust.Value;
 
 			dusts[name] = dust;
 			ModDust.dusts.Add(dust);

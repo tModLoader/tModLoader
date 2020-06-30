@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Config.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (item != null) {
 				CalculatedStyle dimensions = base.GetInnerDimensions();
-				spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+				spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				if (!item.IsAir || unloaded) {
 					int type = unloaded ? ItemID.Count : this.item.type;
 					Texture2D itemTexture = TextureAssets.Item[type].Value;
@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.Config.UI
 					int height = rectangle2.Height;
 					int width = rectangle2.Width;
 					float drawScale = 1f;
-					float availableWidth = (float)defaultBackgroundTexture.Width * scale;
+					float availableWidth = (float)defaultBackgroundTexture.Width() * scale;
 					if (width > availableWidth || height > availableWidth) {
 						if (width > height) {
 							drawScale = availableWidth / width;
@@ -106,7 +106,7 @@ namespace Terraria.ModLoader.Config.UI
 					ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
 						item.GetColor(Color.White), origin, drawScale * pulseScale);
 					if (ItemID.Sets.TrapSigned[type]) {
-						spriteBatch.Draw(Main.wireTexture, dimensions.Position() + new Vector2(40f, 40f) * scale, new Rectangle?(new Rectangle(4, 58, 8, 8)), Color.White, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
+						spriteBatch.Draw(TextureAssets.Wire.Value, dimensions.Position() + new Vector2(40f, 40f) * scale, new Rectangle?(new Rectangle(4, 58, 8, 8)), Color.White, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
 					}
 				}
 			}

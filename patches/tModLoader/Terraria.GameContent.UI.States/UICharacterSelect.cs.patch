@@ -40,7 +40,7 @@
 +			}
 +
 +			if (list.Count == 0) {
-+				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Current.GetStoragePath("Terraria"), "Players");
++				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players");
 +				if (Directory.Exists(vanillaPlayersPath) && Directory.GetFiles(vanillaPlayersPath, "*.plr").Any()) {
 +					var autoMigrateButton = new UIPanel();
 +					autoMigrateButton.Width.Set(0, 1);

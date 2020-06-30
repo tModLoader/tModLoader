@@ -35,8 +35,8 @@ namespace Terraria.ModLoader
 				var tex = ModContent.GetTexture(texture);
 
 				TextureAssets.Background[slot] = tex;
-				Main.backgroundWidth[slot] = tex.Width;
-				Main.backgroundHeight[slot] = tex.Height;
+				Main.backgroundWidth[slot] = tex.Width();
+				Main.backgroundHeight[slot] = tex.Height();
 			}
 		}
 

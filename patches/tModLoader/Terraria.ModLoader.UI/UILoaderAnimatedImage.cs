@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -14,8 +15,8 @@ namespace Terraria.ModLoader.UI
 		public int Frame;
 
 		private readonly float _scale;
-		private Texture2D _backgroundTexture;
-		private Texture2D _loaderTexture;
+		private Asset<Texture2D> _backgroundTexture;
+		private Asset<Texture2D> _loaderTexture;
 
 		public UILoaderAnimatedImage(float left, float top, float scale = 1f) {
 			_scale = scale;
@@ -42,7 +43,7 @@ namespace Terraria.ModLoader.UI
 			// Draw BG
 			if (WithBackground) {
 				spriteBatch.Draw(
-					_backgroundTexture,
+					_backgroundTexture.Value,
 					new Vector2((int)dimensions.X, (int)dimensions.Y),
 					new Rectangle(0, 0, 200, 200),
 					Color.White,
@@ -55,7 +56,7 @@ namespace Terraria.ModLoader.UI
 
 			// Draw loader animation
 			spriteBatch.Draw(
-				_loaderTexture,
+				_loaderTexture.Value,
 				new Vector2((int)dimensions.X, (int)dimensions.Y),
 				new Rectangle(200 * (Frame / 8), 200 * (Frame % 8), 200, 200),
 				Color.White,

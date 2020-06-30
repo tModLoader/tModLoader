@@ -1,22 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using ReLogic.Content;
 using Terraria.GameContent;
-using Terraria.Graphics;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
 	internal class BooleanElement : ConfigElement<bool>
 	{
-		private Texture2D _toggleTexture;
+		private Asset<Texture2D> _toggleTexture;
 
 		// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
 		public override void OnBind() {
 			base.OnBind();
-			_toggleTexture = TextureManager.Load("Images/UI/Settings_Toggle");
+			_toggleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
 
 			OnClick += (ev, v) => Value = !Value;
 		}
@@ -27,9 +24,9 @@ namespace Terraria.ModLoader.Config.UI
 			CalculatedStyle dimensions = base.GetDimensions();
 			// "Yes" and "No" since no "True" and "False" translation available
 			Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Value ? Lang.menu[126].Value : Lang.menu[124].Value, new Vector2(dimensions.X + dimensions.Width - 60, dimensions.Y + 8f), Color.White, 0f, Vector2.Zero, new Vector2(0.8f));
-			Rectangle sourceRectangle = new Rectangle(Value ? ((_toggleTexture.Width - 2) / 2 + 2) : 0, 0, (_toggleTexture.Width - 2) / 2, _toggleTexture.Height);
+			Rectangle sourceRectangle = new Rectangle(Value ? ((_toggleTexture.Width() - 2) / 2 + 2) : 0, 0, (_toggleTexture.Width() - 2) / 2, _toggleTexture.Height());
 			Vector2 drawPosition = new Vector2(dimensions.X + dimensions.Width - sourceRectangle.Width - 10f, dimensions.Y + 8f);
-			spriteBatch.Draw(_toggleTexture, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+			spriteBatch.Draw(_toggleTexture.Value, drawPosition, sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
 		}
 	}
 }

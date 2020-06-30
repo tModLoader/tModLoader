@@ -75,8 +75,8 @@
  				flag = true;
  			}
  
-+			// We might just need a bool for while reloading.
-+			if (player.inventory[player.selectedItem].type >= ItemID.Sets.GamepadWholeScreenUseRange.Length) return;
++			// TODO: We might just need a bool for while reloading.
++			if (player.HeldItem.type >= ItemID.Sets.GamepadWholeScreenUseRange.Length) return false;
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])

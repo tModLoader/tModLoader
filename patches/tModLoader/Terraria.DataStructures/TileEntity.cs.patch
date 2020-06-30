@@ -21,7 +21,7 @@
  			byte id = reader.ReadByte();
  			TileEntity tileEntity = manager.GenerateInstance(id);
 + 			if(tileEntity is null) {
-+				ModTileEntity.ConstructFromType(b);
++				ModTileEntity.ConstructFromType(id);
 +			}
  			tileEntity.type = id;
  			tileEntity.ReadInner(reader, networkSend);

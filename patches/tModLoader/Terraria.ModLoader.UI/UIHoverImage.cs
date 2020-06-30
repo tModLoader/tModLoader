@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
 
 namespace Terraria.ModLoader.UI
@@ -7,7 +8,7 @@ namespace Terraria.ModLoader.UI
 	{
 		internal string HoverText;
 
-		public UIHoverImage(Texture2D texture, string hoverText) : base(texture) {
+		public UIHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture) {
 			HoverText = hoverText;
 		}
 

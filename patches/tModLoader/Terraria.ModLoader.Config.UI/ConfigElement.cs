@@ -22,8 +22,8 @@ namespace Terraria.ModLoader.Config.UI
 
 	public abstract class ConfigElement : UIElement
 	{
-		protected Asset<Texture2D> playTexture = TextureManager.Load("Images/UI/ButtonPlay");
-		protected Asset<Texture2D> deleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
+		protected Asset<Texture2D> playTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
+		protected Asset<Texture2D> deleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 		protected Asset<Texture2D> plusTexture = UICommon.ButtonPlusTexture;
 		//protected Texture2D upArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonIncrement.png"));
 		//protected Texture2D downArrowTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream("Terraria.ModLoader.Config.UI.ButtonDecrement.png"));
@@ -118,7 +118,7 @@ namespace Terraria.ModLoader.Config.UI
 			//color = Color.Lerp(color, Color.White, base.IsMouseHovering ? 1f : 0f);
 			Color panelColor = base.IsMouseHovering ? this.backgroundColor : this.backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
 			Vector2 position = vector;
-			DrawPanel2(spriteBatch, position, Main.settingsPanelTexture, settingsWidth, dimensions.Height, panelColor);
+			DrawPanel2(spriteBatch, position, TextureAssets.SettingsPanel.Value, settingsWidth, dimensions.Height, panelColor);
 			if (drawLabel)
 			{
 				position.X += 8f;

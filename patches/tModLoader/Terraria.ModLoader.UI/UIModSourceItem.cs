@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -23,7 +24,7 @@ namespace Terraria.ModLoader.UI
 	internal class UIModSourceItem : UIPanel
 	{
 		private readonly string _mod;
-		private readonly Texture2D _dividerTexture;
+		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly UIText _modName;
 		private readonly LocalMod _builtMod;
 		private bool _upgradePotentialChecked;
@@ -80,7 +81,7 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 
 			// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
 			if (!_upgradePotentialChecked) {

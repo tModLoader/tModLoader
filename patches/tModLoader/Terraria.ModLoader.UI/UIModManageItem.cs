@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Specialized;
 using System.Net;
@@ -21,7 +22,7 @@ namespace Terraria.ModLoader.UI
 		public string Displayname;
 		public string Version;
 		public string Author;
-		private readonly Texture2D _dividerTexture;
+		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly UIText _modName;
 		private readonly UITextPanel<string> _unpublishButton;
 
@@ -65,7 +66,7 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			var drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 		}
 
 		public override void MouseOver(UIMouseEvent evt) {

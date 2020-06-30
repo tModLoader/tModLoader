@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -156,7 +157,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			Main.projectileTexture[projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[projectile.type] = ModContent.GetTexture(Texture);
 			Main.projFrames[projectile.type] = 1;
 			if (projectile.hostile) {
 				Main.projHostile[projectile.type] = true;

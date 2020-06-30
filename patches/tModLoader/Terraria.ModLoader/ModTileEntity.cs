@@ -83,7 +83,6 @@ namespace Terraria.ModLoader
 		public static void Initialize() {
 			_UpdateStart += UpdateStartInternal;
 			_UpdateEnd += UpdateEndInternal;
-			_NetPlaceEntity += NetPlaceEntity;
 		}
 
 		private static void UpdateStartInternal() {
@@ -101,7 +100,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
-		public static void NetPlaceEntity(int i, int j, int type) {
+		public override void NetPlaceEntityAttempt(int i, int j) {
 			ModTileEntity tileEntity = GetTileEntity(type);
 			if (tileEntity == null) {
 				return;

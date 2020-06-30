@@ -149,7 +149,7 @@
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Current.GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
++				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader");
 +
 +			try {
 +				Logging.Init();

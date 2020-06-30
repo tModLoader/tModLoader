@@ -1,13 +1,14 @@
 using System;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser
 {
 	internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 	{
-		private static Texture2D Texture => UICommon.ModBrowserIconsTexture;
+		private static Asset<Texture2D> Texture => UICommon.ModBrowserIconsTexture;
 
 		public T State {
 			get;

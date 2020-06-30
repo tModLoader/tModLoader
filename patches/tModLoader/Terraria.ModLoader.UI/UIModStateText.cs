@@ -57,9 +57,9 @@ namespace Terraria.ModLoader.UI
 		private void DrawPanel(SpriteBatch spriteBatch) {
 			var position = GetDimensions().Position();
 			var width = Width.Pixels;
-			spriteBatch.Draw(UICommon.InnerPanelTexture, position, new Rectangle(0, 0, 8, UICommon.InnerPanelTexture.Height), Color.White);
-			spriteBatch.Draw(UICommon.InnerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, UICommon.InnerPanelTexture.Height), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(UICommon.InnerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, UICommon.InnerPanelTexture.Height), Color.White);
+			spriteBatch.Draw(UICommon.InnerPanelTexture.Value, position, new Rectangle(0, 0, 8, UICommon.InnerPanelTexture.Height()), Color.White);
+			spriteBatch.Draw(UICommon.InnerPanelTexture.Value, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, UICommon.InnerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(UICommon.InnerPanelTexture.Value, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, UICommon.InnerPanelTexture.Height()), Color.White);
 		}
 
 		private void DrawEnabledText(SpriteBatch spriteBatch) {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using ReLogic.Content;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -270,7 +271,7 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		internal string HoverText;
 
-		public UIModConfigHoverImage(Texture2D texture, string hoverText) : base(texture) {
+		public UIModConfigHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture) {
 			HoverText = hoverText;
 		}
 
@@ -287,7 +288,7 @@ namespace Terraria.ModLoader.Config.UI
 		internal string HoverTextUp;
 		internal string HoverTextDown;
 
-		public UIModConfigHoverImageSplit(Texture2D texture, string hoverTextUp, string hoverTextDown) : base(texture) {
+		public UIModConfigHoverImageSplit(Asset<Texture2D> texture, string hoverTextUp, string hoverTextDown) : base(texture) {
 			HoverTextUp = hoverTextUp;
 			HoverTextDown = hoverTextDown;
 		}

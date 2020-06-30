@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.UI
 				}
 				var drawArea = new Rectangle(rectangle.X + xOffset, rectangle.Y, width, rectangle.Height);
 				xOffset += width;
-				Main.spriteBatch.Draw(TextureAssets.MagicPixel, drawArea, memoryBarData.DrawColor);
+				Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawArea, memoryBarData.DrawColor);
 
 				if (!drawHover && drawArea.Contains(mouse)) {
 					Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(memoryBarData.Tooltip);

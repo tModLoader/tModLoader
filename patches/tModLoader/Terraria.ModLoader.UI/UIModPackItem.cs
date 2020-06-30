@@ -10,6 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.Audio;
+using ReLogic.Content;
 
 namespace Terraria.ModLoader.UI
 {
@@ -26,8 +27,8 @@ namespace Terraria.ModLoader.UI
 
 		// TODO update this list button.
 
-		private readonly Texture2D _dividerTexture;
-		private readonly Texture2D _innerPanelTexture;
+		private readonly Asset<Texture2D> _dividerTexture;
+		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
 		private readonly string[] _mods;
 		private readonly bool[] _modMissing;
@@ -133,7 +134,7 @@ namespace Terraria.ModLoader.UI
 			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(_filename);
 			Append(_updateListWithEnabledButton);
 
-			_deleteButton = new UIImageButton(TextureManager.Load("Images/UI/ButtonDelete")) {
+			_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
 				Top = { Pixels = 40 }
 			};
 			_deleteButton.OnClick += DeleteButtonClick;
@@ -141,9 +142,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
-			spriteBatch.Draw(_innerPanelTexture, position, new Rectangle(0, 0, 8, _innerPanelTexture.Height), Color.White);
-			spriteBatch.Draw(_innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(_innerPanelTexture, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height), Color.White);
+			spriteBatch.Draw(_innerPanelTexture.Value, position, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height()), Color.White);
 		}
 
 		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
@@ -157,7 +158,7 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
-			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 355, innerDimensions.Y);
 			DrawPanel(spriteBatch, drawPos, 350f);
 			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));

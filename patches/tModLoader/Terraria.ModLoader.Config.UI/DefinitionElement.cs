@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
@@ -141,8 +143,8 @@ namespace Terraria.ModLoader.Config.UI
 
 	class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 	{
-		public static Texture2D defaultBackgroundTexture = Main.inventoryBack9Texture;
-		public Texture2D backgroundTexture = defaultBackgroundTexture;
+		public static Asset<Texture2D> defaultBackgroundTexture = TextureAssets.InventoryBack9;
+		public Asset<Texture2D> backgroundTexture = defaultBackgroundTexture;
 		public string tooltip;
 		internal float scale = .75f;
 		protected bool unloaded;
@@ -153,8 +155,8 @@ namespace Terraria.ModLoader.Config.UI
 			SetItem(definition);
 
 			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height * scale, 0f);
+			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
+			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
 		}
 
 		public virtual void SetItem(T item) {
@@ -170,8 +172,8 @@ namespace Terraria.ModLoader.Config.UI
 
 		public virtual void SetScale(float scale) {
 			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height * scale, 0f);
+			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
+			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
 		}
 
 		public override int CompareTo(object obj) {

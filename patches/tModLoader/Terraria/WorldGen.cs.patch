@@ -158,7 +158,7 @@
 +		}
 +
 +		internal static void FinishPlayWorld() {
-+			Main.OnTick -= FinishPlayWorld;
++			Main.OnTickForInternalCodeOnly -= FinishPlayWorld;
  			Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  			Main.ActivePlayerFileData.StartPlayTimer();
  			_lastSeed = Main.ActiveWorldFileData.Seed;

@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
+using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -41,8 +42,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private readonly ModSide _modSide;
 		private readonly int _downloads;
 		private readonly int _hot;
-		private readonly Texture2D _dividerTexture;
-		private readonly Texture2D _innerPanelTexture;
+		private readonly Asset<Texture2D> _dividerTexture;
+		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
 		private readonly UIImage _updateButton;
 		private readonly UIImage _updateWithDepsButton;
@@ -144,7 +145,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (modReferences.Length > 0) {
 				var icon = UICommon.ButtonExclamationTexture;
 				var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", modReferences.Split(',').Select(x => x.Trim())))) {
-					Left = { Pixels = -icon.Width - PADDING, Percent = 1f }
+					Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 				};
 				modReferenceIcon.OnClick += ShowModDependencies;
 				Append(modReferenceIcon);
@@ -260,7 +261,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			float leftOffset = HasModIcon ? ModIconAdjust : 0f;
 			Vector2 drawPos = new Vector2(innerDimensions.X + 5f + leftOffset, innerDimensions.Y + 30f);
-			spriteBatch.Draw(_dividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - leftOffset) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - leftOffset) / 8f, 1f), SpriteEffects.None, 0f);
 
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 125, innerDimensions.Y + 45);
 			DrawTimeText(spriteBatch, drawPos);
@@ -364,9 +365,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			}
 
 			const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
-			spriteBatch.Draw(_innerPanelTexture, drawPos, new Rectangle(0, 0, 8, _innerPanelTexture.Height), Color.White);
-			spriteBatch.Draw(_innerPanelTexture, new Vector2(drawPos.X + 8f, drawPos.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height), Color.White, 0f, Vector2.Zero, new Vector2((baseWidth - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(_innerPanelTexture, new Vector2(drawPos.X + baseWidth - 8f, drawPos.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height), Color.White);
+			spriteBatch.Draw(_innerPanelTexture.Value, drawPos, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(drawPos.X + 8f, drawPos.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((baseWidth - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(drawPos.X + baseWidth - 8f, drawPos.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height()), Color.White);
 
 			drawPos += new Vector2(0f, 2f);
 

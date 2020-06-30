@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria.UI;
 
@@ -7,7 +8,7 @@ namespace Terraria.ModLoader.UI
 {
 	public class UICycleImage : UIElement
 	{
-		private readonly Texture2D _texture;
+		private readonly Asset<Texture2D> _texture;
 		private readonly int _padding;
 		private readonly int _textureOffsetX;
 		private readonly int _textureOffsetY;
@@ -29,7 +30,7 @@ namespace Terraria.ModLoader.UI
 		protected int DrawHeight => (int)Height.Pixels;
 		protected int DrawWidth => (int)Width.Pixels;
 		
-		public UICycleImage(Texture2D texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
+		public UICycleImage(Asset<Texture2D> texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
 			_texture = texture;
 			_textureOffsetX = textureOffsetX;
 			_textureOffsetY = textureOffsetY;
@@ -43,7 +44,7 @@ namespace Terraria.ModLoader.UI
 			CalculatedStyle dimensions = GetDimensions();
 			Point point = new Point(_textureOffsetX, _textureOffsetY + (_padding + DrawHeight) * _currentState);
 			Color color = IsMouseHovering ? Color.White : Color.Silver;
-			spriteBatch.Draw(_texture, new Rectangle((int)dimensions.X, (int)dimensions.Y, DrawWidth, DrawHeight), new Rectangle(point.X, point.Y, DrawWidth, DrawHeight), color);
+			spriteBatch.Draw(_texture.Value, new Rectangle((int)dimensions.X, (int)dimensions.Y, DrawWidth, DrawHeight), new Rectangle(point.X, point.Y, DrawWidth, DrawHeight), color);
 		}
 
 		public override void Click(UIMouseEvent evt) {
