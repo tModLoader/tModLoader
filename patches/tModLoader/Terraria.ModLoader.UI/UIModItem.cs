@@ -13,6 +13,7 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
+using ReLogic.Content;
 
 namespace Terraria.ModLoader.UI
 {
@@ -59,12 +60,13 @@ namespace Terraria.ModLoader.UI
 
 			if (_mod.modFile.HasFile("icon.png")) {
 				try {
-					Texture2D modIconTexture;
+					Asset<Texture2D> modIconTexture;
+
 					using (_mod.modFile.Open())
 					using (var s = _mod.modFile.GetStream("icon.png"))
-						modIconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, s);
+						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(Texture2D.FromStream(Main.instance.GraphicsDevice, s));
 
-					if (modIconTexture.Width == 80 && modIconTexture.Height == 80) {
+					if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
 						_modIcon = new UIImage(modIconTexture) {
 							Left = { Percent = 0f },
 							Top = { Percent = 0f }
@@ -131,7 +133,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (_mod.modFile.ValidModBrowserSignature) {
-				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.GoldenKey].Value, Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
+				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
 				};
 
@@ -150,7 +152,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (_mod.properties.beta) {
-				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.ShadowKey].Value, Language.GetTextValue("tModLoader.BetaModCantPublish")) {
+				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
 
@@ -166,9 +168,7 @@ namespace Terraria.ModLoader.UI
 
 				for (int i = 0; i < values.Length; i++) {
 					if (values[i] > 0) {
-						Texture2D iconTexture = TextureAssets.InfoIcon[i].Value;
-
-						_keyImage = new UIHoverImage(iconTexture, Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
+						_keyImage = new UIHoverImage(TextureAssets.InfoIcon[i], Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
 							Left = { Pixels = xOffset, Percent = 1f }
 						};
 
@@ -217,7 +217,7 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle innerDimensions = GetInnerDimensions();
 			var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
-			spriteBatch.Draw(UICommon.DividerTexture, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
 			drawPos = new Vector2(innerDimensions.X + 10f + _modIconAdjust, innerDimensions.Y + 45f);
 
 			// TODO: These should just be UITexts
@@ -232,7 +232,7 @@ namespace Terraria.ModLoader.UI
 			}
 			if (_mod.properties.side == ModSide.Server) {
 				drawPos += new Vector2(90f, -2f);
-				spriteBatch.Draw(UICommon.ModBrowserIconsTexture, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(UICommon.ModBrowserIconsTexture.Value, drawPos, new Rectangle(5 * 34, 3 * 34, 32, 32), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 				if (new Rectangle((int)drawPos.X, (int)drawPos.Y, 32, 32).Contains(Main.MouseScreen.ToPoint()))
 					UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 			}

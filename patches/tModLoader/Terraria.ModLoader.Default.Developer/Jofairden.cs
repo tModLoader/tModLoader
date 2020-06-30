@@ -270,10 +270,10 @@ namespace Terraria.ModLoader.Default.Developer
 				}
 
 				DrawDataInfo drawDataInfo = getDataFunc.Invoke(drawInfo);
-
 				Player drawPlayer = drawInfo.drawPlayer;
 				DeveloperPlayer devPlayer = DeveloperPlayer.GetPlayer(drawPlayer);
 				SpriteEffects effects = SpriteEffects.None;
+
 				if (drawPlayer.direction == -1) {
 					effects |= SpriteEffects.FlipHorizontally;
 				}
@@ -297,6 +297,7 @@ namespace Terraria.ModLoader.Default.Developer
 					ShaderId = ShaderId ?? GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
 					data.shader = ShaderId.Value;
 				}
+
 				Main.playerDrawData.Add(data);
 			});
 		}

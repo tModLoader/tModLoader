@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.Config.UI
 			SetupList();
 
 			if (CanAdd) {
-				initializeButton = new UIModConfigHoverImage(playTexture.Value, "Initialize");
+				initializeButton = new UIModConfigHoverImage(playTexture, "Initialize");
 				initializeButton.Top.Pixels += 4;
 				initializeButton.Left.Pixels -= 3;
 				initializeButton.HAlign = 1f;
@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.Config.UI
 					pendingChanges = true;
 				};
 
-				addButton = new UIModConfigHoverImage(plusTexture.Value, "Add");
+				addButton = new UIModConfigHoverImage(plusTexture, "Add");
 				addButton.Top.Set(4, 0f);
 				addButton.Left.Set(-52, 1f);
 				addButton.OnClick += (a, b) => {
@@ -94,7 +94,7 @@ namespace Terraria.ModLoader.Config.UI
 					pendingChanges = true;
 				};
 
-				deleteButton = new UIModConfigHoverImage(deleteTexture.Value, "Clear");
+				deleteButton = new UIModConfigHoverImage(deleteTexture, "Clear");
 				deleteButton.Top.Set(4, 0f);
 				deleteButton.Left.Set(-25, 1f);
 				deleteButton.OnClick += (a, b) => {
@@ -110,7 +110,7 @@ namespace Terraria.ModLoader.Config.UI
 				};
 			}
 
-			expandButton = new UIModConfigHoverImage(collapsedTexture.Value, "Expand");
+			expandButton = new UIModConfigHoverImage(collapsedTexture, "Expand");
 			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-79, 1f);
 			expandButton.OnClick += (a, b) => {
@@ -118,7 +118,7 @@ namespace Terraria.ModLoader.Config.UI
 				pendingChanges = true;
 			};
 
-			upDownButton = new UIModConfigHoverImageSplit(upDownTexture.Value, "Scale Up", "Scale Down");
+			upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "Scale Up", "Scale Down");
 			upDownButton.Top.Set(4, 0f);
 			upDownButton.Left.Set(-106, 1f);
 			upDownButton.OnClick += (a, b) => {

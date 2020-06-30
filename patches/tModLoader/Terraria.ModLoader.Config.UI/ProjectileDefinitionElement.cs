@@ -52,8 +52,10 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			CalculatedStyle dimensions = base.GetInnerDimensions();
-			spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			CalculatedStyle dimensions = GetInnerDimensions();
+
+			spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			
 			if (definition != null) {
 				int type = unloaded ? ProjectileID.Count : this.type;
 				Main.instance.LoadProjectile(type);
@@ -61,10 +63,12 @@ namespace Terraria.ModLoader.Config.UI
 
 				int frameCounter = Interface.modConfig.updateCount / 4;
 				int frames = Main.projFrames[type];
+				
 				if (unloaded) {
 					projectileTexture = TextureAssets.Item[ItemID.Count].Value;
 					frames = 1;
 				}
+
 				int height = projectileTexture.Height / frames;
 				int width = projectileTexture.Width;
 				int frame = frameCounter % frames;
@@ -72,7 +76,8 @@ namespace Terraria.ModLoader.Config.UI
 				var rectangle2 = new Rectangle(0, y, width, height);
 
 				float drawScale = 1f;
-				float availableWidth = (float)defaultBackgroundTexture.Width * scale;
+				float availableWidth = (float)defaultBackgroundTexture.Width() * scale;
+				
 				if (width > availableWidth || height > availableWidth) {
 					if (width > height) {
 						drawScale = availableWidth / width;
@@ -81,7 +86,9 @@ namespace Terraria.ModLoader.Config.UI
 						drawScale = availableWidth / height;
 					}
 				}
+
 				drawScale *= scale;
+				
 				Vector2 vector = backgroundTexture.Size() * scale;
 				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 				Vector2 origin = rectangle2.Size() * 0/* * (pulseScale / 2f - 0.5f)*/;

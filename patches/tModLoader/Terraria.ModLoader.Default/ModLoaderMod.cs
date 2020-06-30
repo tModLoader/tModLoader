@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content.Sources;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,13 +29,18 @@ namespace Terraria.ModLoader.Default
 			DisplayName = "tModLoader";
 		}
 
+
+		public override void ModifyContentSources(IList<IContentSource> sources) => sources.Add(ModLoader.ManifestContentSource);
+
 		public override void Load() {
 			Instance = this;
+
 			if (!Main.dedServ) {
 				AddTexture("MysteryItem", ReadTexture("MysteryItem"));
 				AddTexture("StartBag", ReadTexture("StartBag"));
 				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
 			}
+
 			AddItem("MysteryItem", new MysteryItem());
 			AddGlobalItem("MysteryGlobalItem", new MysteryGlobalItem());
 			AddItem("StartBag", new StartBag());

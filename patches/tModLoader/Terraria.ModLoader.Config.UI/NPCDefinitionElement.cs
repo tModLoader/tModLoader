@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = base.GetInnerDimensions();
-			spriteBatch.Draw(backgroundTexture, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 			if (definition != null) {
 				int type = unloaded ? 0 : this.type;
 				Main.instance.LoadNPC(type);
@@ -75,7 +75,7 @@ namespace Terraria.ModLoader.Config.UI
 				Rectangle rectangle2 = new Rectangle(0, y, width, height);
 
 				float drawScale = 1f;
-				float availableWidth = (float)defaultBackgroundTexture.Width * scale;
+				float availableWidth = defaultBackgroundTexture.Width() * scale;
 				if (width > availableWidth || height > availableWidth) {
 					if (width > height) {
 						drawScale = availableWidth / width;

@@ -15,9 +15,9 @@ namespace Terraria.ModLoader.Default
 				var info = ModContent.GetInstance<MysteryTilesWorld>().infos[frame.FrameID];
 
 				if(info != null) {
-					Main.LocalPlayer.showItemIcon = true;
-					Main.LocalPlayer.showItemIcon2 = -1;
-					Main.LocalPlayer.showItemIconText = $"{info.modName}: {info.name}";
+					Main.LocalPlayer.cursorItemIconEnabled = true;
+					Main.LocalPlayer.cursorItemIconID = -1;
+					Main.LocalPlayer.cursorItemIconText = $"{info.modName}: {info.name}";
 				}
 			}
 		}

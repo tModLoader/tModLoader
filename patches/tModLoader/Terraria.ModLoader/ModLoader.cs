@@ -19,6 +19,8 @@ using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Version = System.Version;
+using Terraria.Initializers;
+using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
 {
@@ -84,6 +86,9 @@ namespace Terraria.ModLoader
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
+		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
+		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
+
 		/// <summary>
 		/// Gets the instance of the Mod with the specified name.
 		/// </summary>
@@ -112,6 +117,12 @@ namespace Terraria.ModLoader
 			HiDefGraphicsIssues.Init();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
+		}
+
+		internal static void PrepareAssets()
+		{
+			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
+			ManifestAssets = new ModAssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader, new[] { ManifestContentSource });
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));

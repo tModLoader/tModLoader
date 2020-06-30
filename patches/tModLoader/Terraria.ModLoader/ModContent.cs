@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
+using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
@@ -140,7 +141,7 @@ namespace Terraria.ModLoader
 		/// Gets the sound with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the sound does not exist. Note: SoundEffect is in the Microsoft.Xna.Framework.Audio namespace.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static SoundEffect GetSound(string name) {
+		public static Asset<SoundEffect> GetSound(string name) {
 			if (Main.dedServ)
 				return null;
 

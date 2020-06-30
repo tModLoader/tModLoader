@@ -325,11 +325,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e) {
 			bool success = false;
+
 			try {
 				if (!e.Cancelled && e.Error == null) {
 					byte[] data = e.Result;
+
 					using (var buffer = new MemoryStream(data)) {
-						var iconTexture = Texture2D.FromStream(Main.instance.GraphicsDevice, buffer);
+						var iconTexture = ModLoader.ManifestAssets.CreateAsset($"{ModName}/icon.png", Texture2D.FromStream(Main.instance.GraphicsDevice, buffer));
+
 						_modIcon = new UIImage(iconTexture) {
 							Left = { Percent = 0f },
 							Top = { Percent = 0f }
@@ -342,11 +345,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			catch {
 				// country- wide imgur blocks, cannot load icon
 			}
+
 			if (!success) {
 				AdjustPositioningFailedIcon();
 				ModIconDownloadFailCount++;
+
 				if(ModIconDownloadFailCount == MaxImgurFails)
-					Logging.tML.Error("tModLoader has repeatedly failed to connect to imgur.com to download mod icons. If you know imgur is not accessibile in your country, you can set AvoidImgur found in congfig.json to true to avoid attempting to download mod icons in the future.");
+					Logging.tML.Error("tModLoader has repeatedly failed to connect to imgur.com to download mod icons. If you know imgur is not accessibile in your country, you can set AvoidImgur found in config.json to true to avoid attempting to download mod icons in the future.");
 			}
 		}
 

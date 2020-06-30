@@ -756,6 +756,15 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
+@@ -8252,6 +_,8 @@
+ 			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
+ 			ChromaInitializer.Load();
+ 			_gameContentLoadProcess = LoadContent_Deferred();
++
++			ModLoader.ModLoader.PrepareAssets();
+ 		}
+ 
+ 		private void LoadContent_TryEnteringHiDef() {
 @@ -8334,6 +_,9 @@
  			numClouds = rand.Next(200);
  			Mount.Initialize();

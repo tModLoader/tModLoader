@@ -30,7 +30,7 @@ namespace Terraria.ModLoader.Default
 
 			if (Main.netMode == 1) {
 				//send the command to the server
-				NetMessage.SendChatMessageFromClient(new ChatMessage(input));
+				ChatHelper.SendChatMessageFromClient(new ChatMessage(input));
 			}
 		}
 	}

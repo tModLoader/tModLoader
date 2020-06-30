@@ -85,6 +85,7 @@ namespace Terraria.ModLoader
 			foreach (SoundType type in Enum.GetValues(typeof(SoundType))) {
 				foreach (string sound in sounds[type].Keys) {
 					int slot = GetSoundSlot(type, sound);
+
 					if (type != SoundType.Music) {
 						GetSoundArray(type)[slot] = ModContent.GetSound(sound);
 						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.CreateInstance() ?? null;

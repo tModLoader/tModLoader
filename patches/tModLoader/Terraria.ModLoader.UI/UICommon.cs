@@ -88,6 +88,9 @@ namespace Terraria.ModLoader.UI
 		internal static Asset<Texture2D> InnerPanelTexture;
 
 		internal static void LoadTextures() {
+			Asset<Texture2D> LoadEmbeddedTexture(string name)
+				=> ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.{name}");
+
 			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
 			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
 			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
@@ -106,9 +109,6 @@ namespace Terraria.ModLoader.UI
 
 			DividerTexture = Main.Assets.Request<Texture2D>("Images/UI/Divider");
 			InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");
-
-			Asset<Texture2D> LoadEmbeddedTexture(string name) 
-				=> Texture2D.FromStream(Main.instance.GraphicsDevice, Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.{name}"));
 		}
 	}
 }

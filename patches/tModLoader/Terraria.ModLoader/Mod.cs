@@ -17,6 +17,7 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
 using Terraria.GameContent;
 using ReLogic.Content;
+using ReLogic.Content.Sources;
 
 namespace Terraria.ModLoader
 {
@@ -69,135 +70,6 @@ namespace Terraria.ModLoader
 		internal Mod()
 		{
 			PrepareAssets();
-		}
-
-		/// <summary>
-		/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
-		/// </summary>
-		public virtual void Load() {
-		}
-
-		/// <summary>
-		/// Allows you to load things in your mod after its content has been setup (arrays have been resized to fit the content, etc).
-		/// </summary>
-		public virtual void PostSetupContent() {
-		}
-
-		/// <summary>
-		/// This is called whenever this mod is unloaded from the game. Use it to undo changes that you've made in Load that aren't automatically handled (for example, modifying the texture of a vanilla item). Mods are guaranteed to be unloaded in the reverse order they were loaded in.
-		/// </summary>
-		public virtual void Unload() {
-		}
-
-		/// <summary>
-		/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
-		/// </summary>
-		public virtual uint ExtraPlayerBuffSlots { get; }
-
-		/// <summary>
-		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
-		/// </summary>
-		public virtual void AddRecipeGroups() {
-		}
-
-		/// <summary>
-		/// Override this method to add recipes to the game. It is recommended that you do so through instances of ModRecipe, since it provides methods that simplify recipe creation.
-		/// </summary>
-		public virtual void AddRecipes() {
-		}
-
-		/// <summary>
-		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
-		/// </summary>
-		public virtual void PostAddRecipes() {
-		}
-
-		public virtual void LoadResources() {
-			if (File == null)
-				return;
-
-			fileHandle = File.Open();
-
-			var skipCache = new HashSet<string>();
-			foreach (var entry in File) {
-				Interface.loadMods.SubProgressText = entry.Name;
-
-				Stream _stream = null;
-				Stream GetStream() => _stream = File.GetStream(entry);
-
-				if (LoadResource(entry.Name, entry.Length, GetStream))
-					skipCache.Add(entry.Name);
-				
-				_stream?.Dispose();
-			}
-			File.CacheFiles(skipCache);
-		}
-
-		/// <summary>
-		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
-		/// Use this to release any additional file handles, or stop streaming music. 
-		/// Make sure to call `base.Close()` at the end
-		/// May be called multiple times before Unload
-		/// </summary>
-		public virtual void Close() {
-			fileHandle?.Dispose();
-			if (File != null && File.IsOpen)
-				throw new IOException($"TModFile has open handles: {File.path}");
-		}
-
-		/// <summary>
-		/// Hook for pre-loading resources
-		/// </summary>
-		/// <param name="path">The path of the resource within the tmod</param>
-		/// <param name="length">The length of the uncompressed resource</param>
-		/// <param name="getStream">A function which returns a stream containing the file content</param>
-		/// <returns>true if the file will no-longer be needed and should not be cached</returns>
-		public virtual bool LoadResource(string path, int length, Func<Stream> getStream) {
-			if (tModLoaderVersion < new Version(0, 11) && LoadResourceLegacy(path, length, getStream)) // TODO LoadResourceLegacy is marked obsolete
-				return false;
-
-			string extension = Path.GetExtension(path).ToLower();
-			path = Path.ChangeExtension(path, null);
-			switch (extension) {
-				case ".png":
-				case ".rawimg":
-					if (!Main.dedServ)
-						LoadTexture(path, getStream(), extension == ".rawimg");
-					return true;
-				case ".wav":
-				case ".mp3":
-				case ".ogg":
-					//Main.engine == null would be more sensible, but only the waveBank fails on Linux when there is no audio hardware
-					if (Main.dedServ || Main.waveBank == null) { }
-					else if (path.Contains("Music/"))
-						musics[path] = LoadMusic(path, extension);
-					else
-						sounds[path] = LoadSound(getStream(), length, extension);
-					return true;
-				case ".xnb":
-					if (Main.dedServ) { }
-					else if (path.StartsWith("Fonts/"))
-						fonts[path] = Main.instance.OurLoad<DynamicSpriteFont>("tmod:"+Name+"/"+path);
-					else if (path.StartsWith("Effects/"))
-						effects[path] = Main.ShaderContentManager.Load<Effect>("tmod:"+Name+"/"+path);
-					else
-						throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorUnknownXNBFileHint", path));
-					return true;
-			}
-
-			return false;
-		}
-
-		[Obsolete]
-		private bool LoadResourceLegacy(string path, int length, Func<Stream> getStream) {
-			using (var stream = getStream()) {
-				LoadResourceFromStream(path, length, new BinaryReader(stream));
-				return stream.Position > 0;
-			}
-		}
-
-		[Obsolete("Use LoadResource instead", true)]
-		public virtual void LoadResourceFromStream(string path, int len, BinaryReader reader) {
 		}
 
 		internal void AutoloadConfig()
@@ -1369,11 +1241,15 @@ namespace Terraria.ModLoader
 		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
 			if (!loading)
 				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
+
 			int id = SoundLoader.ReserveSoundID(type);
+			
 			SoundLoader.sounds[type][soundPath] = id;
+
 			if (modSound != null) {
 				SoundLoader.modSounds[type][id] = modSound;
-				modSound.sound = ModContent.GetSound(soundPath);
+
+				modSound.Sound = ModContent.GetSound(soundPath);
 			}
 		}
 
@@ -1583,10 +1459,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
 		public Asset<Texture2D> GetTexture(string name) {
-			if (!textures.TryGetValue(name, out var t))
-				throw new MissingResourceException(name, textures.Keys);
+			//TODO: Add a way to grab a full asset list from an AssetRepository. Then, optimize this with proper cache.
 
-			return t;
+			if(Assets.HasAsset(name))
+				return Assets.Request<Texture2D>(name);
+
+			if(Assets.HasAsset(name+".png"))
+				return Assets.Request<Texture2D>(name+".png");
+
+			if(Assets.HasAsset(name+".rawimg"))
+				return Assets.Request<Texture2D>(name+".rawimg");
+
+			throw new MissingResourceException(name);
 		}
 
 		/// <summary>
@@ -1594,7 +1478,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool TextureExists(string name) => textures.ContainsKey(name);
+		public bool TextureExists(string name) => Assets.HasAsset<Texture2D>(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.AddTexture(this.FileName(name), texture).
@@ -1607,7 +1491,7 @@ namespace Terraria.ModLoader
 				return;
 
 			if (TextureExists(name))
-				throw new Exception("Texture already exist: " + name);
+				throw new Exception($"Texture already exist: {name}");
 
 			textures[name] = texture;
 		}
@@ -1618,19 +1502,14 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		/// <exception cref="MissingResourceException"></exception>
-		public SoundEffect GetSound(string name) {
-			if (!sounds.TryGetValue(name, out var sound))
-				throw new MissingResourceException(name);
-
-			return sound;
-		}
+		public Asset<SoundEffect> GetSound(string name) => Assets.Request<SoundEffect>(name) ?? throw new MissingResourceException(name);
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.SoundExists(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool SoundExists(string name) => sounds.ContainsKey(name);
+		public bool SoundExists(string name) => Assets.HasAsset<SoundEffect>(name);
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).
@@ -1666,7 +1545,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Used to check if a custom SpriteFont exists
 		/// </summary>
-		public bool FontExists(string name) => fonts.ContainsKey(name);
+		public bool FontExists(string name) => Assets.HasAsset<DynamicSpriteFont>(name);
 
 		/// <summary>
 		/// Gets an Effect loaded from the specified path.

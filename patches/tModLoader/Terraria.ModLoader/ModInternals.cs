@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MP3Sharp;
 using NVorbis;
 using ReLogic.Content;
+using ReLogic.Content.Sources;
 using ReLogic.Graphics;
 using ReLogic.Utilities;
 using System;
@@ -15,8 +16,8 @@ using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.Initializers;
 using Terraria.Localization;
+using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Audio;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -30,11 +31,8 @@ namespace Terraria.ModLoader
 
 		private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
 
-		//Assets
-		internal readonly IDictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
-		internal readonly IDictionary<string, DynamicSpriteFont> fonts = new Dictionary<string, DynamicSpriteFont>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
@@ -64,11 +62,10 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 
-		public AssetRepository Assets { get; private set; }
+		public ModAssetRepository Assets { get; private set; }
 
-		private ModContentSource ContentSource { get; set; }
-
-		private void LoadTexture(string path, Stream stream, bool rawimg) {
+		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
+		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
 			try {
 				var texTask = rawimg
 					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, new BinaryReader(stream))
@@ -80,7 +77,9 @@ namespace Terraria.ModLoader
 							Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), t.Exception);
 
 					var tex = t.Result;
+					
 					tex.Name = Name + "/" + path;
+
 					lock (textures)
 						textures[path] = tex;
 				}));
@@ -91,40 +90,47 @@ namespace Terraria.ModLoader
 			finally {
 				stream.Close();
 			}
-		}
+		}*/
 
 		private SoundEffect LoadSound(Stream stream, int length, string extension) {
 			switch (extension) {
 				case ".wav": 
 					if (!stream.CanSeek)
 						stream = new MemoryStream(stream.ReadBytes(length));
+
 					return SoundEffect.FromStream(stream);
 				case ".mp3":
 					using (var mp3Stream = new MP3Stream(stream))
 					using (var ms = new MemoryStream()) {
 						mp3Stream.CopyTo(ms);
+
 						return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, (AudioChannels)mp3Stream.ChannelCount);
 					}
 				case ".ogg":
 					using (var reader = new VorbisReader(stream, true)) {
-						var buffer = new byte[reader.TotalSamples * 2 * reader.Channels];
-						var floatBuf = new float[buffer.Length / 2];
+						byte[] buffer = new byte[reader.TotalSamples * 2 * reader.Channels];
+						float[] floatBuf = new float[buffer.Length / 2];
+						
 						reader.ReadSamples(floatBuf, 0, floatBuf.Length);
 						MusicStreamingOGG.Convert(floatBuf, buffer);
+
 						return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels);
 					}
 			}
+
 			throw new ResourceLoadException("Unknown sound extension "+extension);
 		}
 
 		private Music LoadMusic(string path, string extension) {
-			path = "tmod:"+Name+'/'+path+extension;
+			path = $"tmod:{Name}/{path}{extension}";
+			
 			switch (extension) {
 				case ".wav": return new MusicStreamingWAV(path);
 				case ".mp3": return new MusicStreamingMP3(path);
 				case ".ogg": return new MusicStreamingOGG(path);
 			}
-			throw new ResourceLoadException("Unknown music extension "+extension);
+
+			throw new ResourceLoadException($"Unknown music extension {extension}");
 		}
 
 		internal void SetupContent() {
@@ -237,6 +243,7 @@ namespace Terraria.ModLoader
 			waterfallStyles.Clear();
 			globalRecipes.Clear();
 			translations.Clear();
+
 			if (!Main.dedServ) {
 				// Manually Dispose IDisposables to free up unmanaged memory immediately
 				/* Skip this for now, too many mods don't unload properly and run into exceptions.
@@ -254,10 +261,12 @@ namespace Terraria.ModLoader
 				}
 				*/
 			}
-			sounds.Clear();
+
 			effects.Clear();
 			musics.Clear();
-			fonts.Clear();
+
+			soundPaths.Clear();
+			fontPaths.Clear();
 
 			Assets.Dispose();
 		}
@@ -373,10 +382,15 @@ namespace Terraria.ModLoader
 
 		private void PrepareAssets()
 		{
-			ContentSource = new ModContentSource(this);
-			Assets = new AssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader);
+			//Create the asset repository
 
-			Assets.SetSources(new[] { ContentSource }, AssetRequestMode.DoNotLoad);
+			var sources = new List<IContentSource> {
+				new ModContentSource(this)
+			};
+
+			ModifyContentSources(sources);
+
+			Assets = new ModAssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader, sources.ToArray());
 		}
 
 		private void AutoloadItem(Type type) {

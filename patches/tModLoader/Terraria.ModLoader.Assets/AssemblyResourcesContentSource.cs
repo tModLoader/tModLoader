@@ -2,36 +2,42 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Assets
 {
-	internal class ModContentSource : IContentSource, IDisposable
+	public class AssemblyResourcesContentSource : IContentSource, IDisposable
 	{
+		private static readonly StringComparer StringComparer = StringComparer.CurrentCultureIgnoreCase;
+
 		public IContentValidator ContentValidator { get; set; }
 
 		private readonly RejectedAssetCollection Rejections = new RejectedAssetCollection();
+		private readonly string[] КesourceNames;
 
-		private TmodFile file;
+		private Assembly assembly;
 
-		public ModContentSource(Mod mod) {
-			file = mod.File;
+		public AssemblyResourcesContentSource(Assembly assembly)
+		{
+			КesourceNames = assembly.GetManifestResourceNames();
+
+			this.assembly = assembly;
 		}
 
+		//Rejections
 		public void ClearRejections() => Rejections.Clear();
 		public void RejectAsset(string assetName, IRejectionReason reason) => Rejections.Reject(assetName, reason);
 		public bool TryGetRejections(List<string> rejectionReasons) => Rejections.TryGetRejections(rejectionReasons);
-
-		public bool HasAsset(string assetName) => file.HasFile(assetName);
+		//Assets
+		public bool HasAsset(string assetName) => КesourceNames.Any(s => StringComparer.Equals(s, assetName));
 		public string GetExtension(string assetName) => Path.GetExtension(assetName);
-		public Stream OpenStream(string assetName) => file.GetStream(assetName);
-
+		public Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(assetName);
+		//Etc
 		public void Dispose()
 		{
-			file = null;
+			assembly = null;
 
 			ClearRejections();
 		}

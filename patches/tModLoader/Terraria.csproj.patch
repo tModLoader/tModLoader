@@ -82,7 +82,7 @@
    </ItemGroup>
    <ItemGroup>
      <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" />
-+    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll" >
++    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
 +		<LogicalName>Newtonsoft.Json.dll</LogicalName>
 +	</EmbeddedResource>
      <EmbeddedResource Include="Terraria.GameContent.Creative.Content.Sacrifices.tsv" />
