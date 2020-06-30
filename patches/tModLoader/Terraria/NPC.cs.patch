@@ -76,7 +76,7 @@
  					return 656;
  				default:
 -					return -1;
-+					return NPCHeadLoader.GetNPCFromHeadSlot(type);
++					return NPCHeadLoader.GetNPCFromHeadSlot(headIndex);
  			}
  		}
  
@@ -267,15 +267,16 @@
  					num38 = 6;
  					num39 = 0.4f;
  				}
-@@ -38996,6 +_,11 @@
+@@ -38996,6 +_,12 @@
  					}
  				}
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num34, ref knockBack);
++				NPCLoader.TownNPCAttackStrength(this, ref num34, ref knockBack2);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num37, ref maxValue2);
 +				NPCLoader.TownNPCAttackProj(this, ref num33, ref num36);
-+				NPCLoader.TownNPCAttackProjSpeed(this, ref num35, ref num36, ref num39);
++				NPCLoader.TownNPCAttackProjSpeed(this, ref num35, ref num38, ref num39);
 +				NPCLoader.TownNPCAttackShoot(this, ref flag18);
++
  				if (Main.expertMode)
  					num34 = (int)((float)num34 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
@@ -308,7 +309,7 @@
  					knockBack3 = 3f;
  				}
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num44, ref knockBack2);
++				NPCLoader.TownNPCAttackStrength(this, ref num44, ref knockBack3);
 +				NPCLoader.TownNPCAttackCooldown(this, ref num46, ref maxValue3);
 +				NPCLoader.TownNPCAttackProj(this, ref num43, ref n);
 +				NPCLoader.TownNPCAttackProjSpeed(this, ref num45, ref num47, ref num50);
@@ -328,7 +329,7 @@
  				}
  
 +				NPCLoader.TownNPCAttackStrength(this, ref num60, ref num61);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num59, ref maxValue6);
++				NPCLoader.TownNPCAttackCooldown(this, ref num59, ref maxValue4);
 +				NPCLoader.TownNPCAttackSwing(this, ref num63, ref num62);
  				if (Main.expertMode)
  					num60 = (int)((float)num60 * Main.GameModeInfo.TownNPCDamageMultiplier);

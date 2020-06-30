@@ -732,10 +732,10 @@ namespace Terraria.ModLoader
 		public static bool DrawHealthBar(NPC npc, ref float scale) {
 			Vector2 position = new Vector2(npc.position.X + npc.width / 2, npc.position.Y + npc.gfxOffY);
 			if (Main.HealthBarDrawSettings == 1) {
-				position.Y += npc.height + 10f + Main.NPCAddHeight(npc.whoAmI);
+				position.Y += npc.height + 10f + Main.NPCAddHeight(npc);
 			}
 			else if (Main.HealthBarDrawSettings == 2) {
-				position.Y -= 24f + Main.NPCAddHeight(npc.whoAmI) / 2f;
+				position.Y -= 24f + Main.NPCAddHeight(npc) / 2f;
 			}
 			foreach (GlobalNPC g in HookDrawHealthBar.arr) {
 				bool? result = g.Instance(npc).DrawHealthBar(npc, Main.HealthBarDrawSettings, ref scale, ref position);
@@ -832,12 +832,16 @@ namespace Terraria.ModLoader
 		}
 
 		public static void CanTownNPCSpawn(int numTownNPCs, int money) {
-			foreach (ModNPC npc in npcs) {
-				if (npc.npc.townNPC && NPC.TypeToHeadIndex(npc.npc.type) >= 0 && !NPC.AnyNPCs(npc.npc.type) &&
-					npc.CanTownNPCSpawn(numTownNPCs, money)) {
-					Main.townNPCCanSpawn[npc.npc.type] = true;
-					if (WorldGen.prioritizedTownNPC == 0) {
-						WorldGen.prioritizedTownNPC = npc.npc.type;
+			foreach (ModNPC modNPC in npcs) {
+				var npc = modNPC.npc;
+
+				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
+					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
+					
+					Main.townNPCCanSpawn[npc.type] = true;
+
+					if (WorldGen.prioritizedTownNPCType == 0) {
+						WorldGen.prioritizedTownNPCType = npc.type;
 					}
 				}
 			}

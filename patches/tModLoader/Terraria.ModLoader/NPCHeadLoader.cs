@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -12,32 +13,29 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The number of vanilla town NPC head textures that exist.
 		/// </summary>
-		public static readonly int vanillaHeadCount = Main.npcHeadTexture.Length;
+		public static readonly int VanillaHeadCount = TextureAssets.NpcHead.Length;
 		/// <summary>
 		/// The number of vanilla boss head textures that exist.
 		/// </summary>
-		public static readonly int vanillaBossHeadCount = Main.npcHeadBossTexture.Length;
-		private static int nextHead = vanillaHeadCount;
-		private static int nextBossHead = vanillaBossHeadCount;
+		public static readonly int VanillaBossHeadCount = TextureAssets.NpcHeadBoss.Length;
+
+		private static int nextHead = VanillaHeadCount;
+		private static int nextBossHead = VanillaBossHeadCount;
+
 		internal static IDictionary<string, int> heads = new Dictionary<string, int>();
 		internal static IDictionary<string, int> bossHeads = new Dictionary<string, int>();
 		internal static IDictionary<int, int> npcToHead = new Dictionary<int, int>();
 		internal static IDictionary<int, int> headToNPC = new Dictionary<int, int>();
 		internal static IDictionary<int, int> npcToBossHead = new Dictionary<int, int>();
 
-		internal static int ReserveHeadSlot() {
-			int reserve = nextHead;
-			nextHead++;
-			return reserve;
-		}
+		internal static int ReserveHeadSlot() => nextHead++;
 
 		internal static int ReserveBossHeadSlot(string texture) {
 			if (bossHeads.TryGetValue(texture, out int existing)) {
 				return existing;
 			}
-			int reserve = nextBossHead;
-			nextBossHead++;
-			return reserve;
+
+			return nextBossHead++;
 		}
 
 		/// <summary>
@@ -55,22 +53,25 @@ namespace Terraria.ModLoader
 		public static int GetBossHeadSlot(string texture) => bossHeads.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
-			Array.Resize(ref Main.npcHeadTexture, nextHead);
-			Array.Resize(ref Main.npcHeadBossTexture, nextBossHead);
+			Array.Resize(ref TextureAssets.NpcHead, nextHead);
+			Array.Resize(ref TextureAssets.NpcHeadBoss, nextBossHead);
+
 			foreach (string texture in heads.Keys) {
-				Main.npcHeadTexture[heads[texture]] = ModContent.GetTexture(texture);
+				TextureAssets.NpcHead[heads[texture]] = ModContent.GetTexture(texture);
 			}
+
 			foreach (string texture in bossHeads.Keys) {
-				Main.npcHeadBossTexture[bossHeads[texture]] = ModContent.GetTexture(texture);
+				TextureAssets.NpcHeadBoss[bossHeads[texture]] = ModContent.GetTexture(texture);
 			}
+
 			foreach (int npc in npcToBossHead.Keys) {
 				NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];
 			}
 		}
 
 		internal static void Unload() {
-			nextHead = vanillaHeadCount;
-			nextBossHead = vanillaBossHeadCount;
+			nextHead = VanillaHeadCount;
+			nextBossHead = VanillaBossHeadCount;
 			heads.Clear();
 			bossHeads.Clear();
 			npcToHead.Clear();

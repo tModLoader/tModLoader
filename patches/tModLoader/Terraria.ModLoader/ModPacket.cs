@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -29,19 +30,23 @@ namespace Terraria.ModLoader
 
 			if (Main.netMode == 1) {
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
-				Main.txMsg++;
-				Main.txData += len;
+
+				LegacyNetDiagnosticsUI.txMsg++;
+				LegacyNetDiagnosticsUI.txData += len;
+
 				if (netID > 0) {
 					ModNet.txMsgType[netID]++;
 					ModNet.txDataType[netID] += len;
 				}
 			}
-			else if (toClient != -1)
+			else if (toClient != -1) {
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
-			else
-				for (int i = 0; i < 256; i++)
+			}
+			else {
+				for (int i = 0;i < 256;i++)
 					if (i != ignoreClient && Netplay.Clients[i].IsConnected() && NetMessage.buffer[i].broadcast)
 						Netplay.Clients[i].Socket.AsyncSend(buf, 0, len, SendCallback);
+			}
 		}
 
 		private void SendCallback(object state) { }

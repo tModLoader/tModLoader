@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -65,14 +66,9 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays(bool unloading = false) {
-			Array.Resize(ref Main.wallLoaded, nextWall);
-			for (int k = WallID.Count; k < nextWall; k++) {
-				Main.wallLoaded[k] = true;
-			}
-			Resize2DArray(ref Main.wallAltTexture, nextWall);
-			Resize2DArray(ref Main.wallAltTextureInit, nextWall);
-			Resize2DArray(ref Main.wallAltTextureDrawn, nextWall);
-			Array.Resize(ref Main.wallTexture, nextWall);
+			//Textures
+			Array.Resize(ref TextureAssets.Wall, nextWall);
+			//Etc
 			Array.Resize(ref Main.wallHouse, nextWall);
 			Array.Resize(ref Main.wallDungeon, nextWall);
 			Array.Resize(ref Main.wallLight, nextWall);
@@ -80,6 +76,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.wallLargeFrames, nextWall);
 			Array.Resize(ref Main.wallFrame, nextWall);
 			Array.Resize(ref Main.wallFrameCounter, nextWall);
+			//Sets
 			Array.Resize(ref WallID.Sets.Conversion.Grass, nextWall);
 			Array.Resize(ref WallID.Sets.Conversion.Stone, nextWall);
 			Array.Resize(ref WallID.Sets.Conversion.Sandstone, nextWall);

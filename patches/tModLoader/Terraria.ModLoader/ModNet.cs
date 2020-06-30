@@ -13,6 +13,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI;
 using Terraria.GameContent;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -491,25 +492,24 @@ namespace Terraria.ModLoader
 			float scale = 0.7f;
 
 			for (int j = -1; j < netMods.Length; j++) {
-				int i = j + Main.maxMsg + 2;
+				int i = j + LegacyNetDiagnosticsUI.maxMsg + 2;
 				int x = 200;
 				int y = 120;
 				int xAdjust = i / 50;
+
 				x += xAdjust * 400;
 				y += (i - xAdjust * 50) * 13;
+				
 				if (j == -1) {
 					Main.spriteBatch.DrawString(FontAssets.MouseText.Value, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 					continue;
 				}
+				
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, netMods[j].Name, new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
-				x += 120;
-				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
-				x += 30;
-				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
-				x += 80;
-				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txMsgType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
-				x += 30;
-				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txDataType[j].ToString(), new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxMsgType[j].ToString(), new Vector2(x += 120, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxDataType[j].ToString(), new Vector2(x += 30, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txMsgType[j].ToString(), new Vector2(x += 80, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, txDataType[j].ToString(), new Vector2(x += 30, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 			}
 		}
 	}

@@ -14,6 +14,7 @@ using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
+using ReLogic.OS;
 
 namespace Terraria.ModLoader.UI
 {
@@ -198,9 +199,10 @@ namespace Terraria.ModLoader.UI
 				.Concat(loadedMod.projectiles.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="));
 			//.Concat(loadedMod.tiles.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="))
 			//.Concat(loadedMod.walls.Where(x => !dictionary.ContainsValue(x.Value.)).Select(x => x.Value..Key + "="));
-			int index = $"Mods.{ModName}.".Length;
-			result = result.Select(x => x.Remove(0, index));
-			ReLogic.OS.Platform.Current.Clipboard = string.Join("\n", result);
+
+			result = result.Select(x => x.Remove(0, $"Mods.{ModName}.".Length));
+
+			Platform.Get<IClipboard>().Value = string.Join("\n", result);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {

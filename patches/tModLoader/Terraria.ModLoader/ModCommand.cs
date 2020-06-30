@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Terraria.Chat;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -100,8 +101,9 @@ namespace Terraria.ModLoader
 		public void Reply(string text, Color color = default(Color)) {
 			if (color == default(Color))
 				color = Color.White;
+
 			foreach (var line in text.Split('\n'))
-				NetMessage.SendChatMessageToClient(NetworkText.FromLiteral(line), color, Player.whoAmI);
+				ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral(line), color, Player.whoAmI);
 		}
 	}
 
