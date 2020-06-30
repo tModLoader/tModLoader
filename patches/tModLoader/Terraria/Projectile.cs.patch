@@ -196,32 +196,49 @@
  										num18 = (int)((float)num18 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -9392,6 +_,14 @@
+@@ -9392,18 +_,7 @@
  										Main.player[owner].ClearBuff(198);
  									}
  
-+									float knockback = knockBack;
-+									int hitDirection = this.direction;
-+									if (type == 697 || type == 699 || type == 707 || type == 708)
-+										hitDirection = Main.player[owner].Center.X < nPC.Center.X ? 1 : -1;
-+
-+									ProjectileLoader.ModifyHitNPC(this, nPC, ref num18, ref knockback, ref flag6, ref hitDirection);
-+									NPCLoader.ModifyHitByProjectile(nPC, this, ref num18, ref knockback, ref flag6, ref hitDirection);
-+									PlayerHooks.ModifyHitNPCWithProj(this, nPC, ref num18, ref knockback, ref flag6, ref hitDirection);
- 									StatusNPC(i);
- 									if (flag7 && nPC.life > 5)
- 										TryDoingOnHitEffects(nPC);
-@@ -9404,9 +_,6 @@
- 										netUpdate = true;
- 									}
- 
--									int num31 = base.direction;
--									if (type == 697 || type == 699 || type == 707 || type == 708)
--										num31 = ((Main.player[owner].Center.X < nPC.Center.X) ? 1 : (-1));
- 
- 									if (aiStyle == 15) {
+-									StatusNPC(i);
+-									if (flag7 && nPC.life > 5)
+-										TryDoingOnHitEffects(nPC);
+-
+-									if (ProjectileID.Sets.ImmediatelyUpdatesNPCBuffFlags[type])
+-										nPC.UpdateNPC_BuffSetFlags(lowerBuffTime: false);
+-
+-									if (type == 317) {
+-										ai[1] = -1f;
+-										netUpdate = true;
+-									}
+-
++									// [[ Moved up
+ 									int num31 = base.direction;
+ 									if (type == 697 || type == 699 || type == 707 || type == 708)
  										num31 = ((Main.player[owner].Center.X < nPC.Center.X) ? 1 : (-1));
-@@ -9420,7 +_,8 @@
+@@ -9416,11 +_,30 @@
+ 										if (ai[0] == 6f)
+ 											num7 *= 0.5f;
+ 									}
++									// Moved up ]]
++
++									float knockback = knockBack;
++
++									ProjectileLoader.ModifyHitNPC(this, nPC, ref num18, ref knockback, ref flag6, ref num31);
++									NPCLoader.ModifyHitByProjectile(nPC, this, ref num18, ref knockback, ref flag6, ref num31);
++									PlayerHooks.ModifyHitNPCWithProj(this, nPC, ref num18, ref knockback, ref flag6, ref num31);
++									StatusNPC(i);
++									if (flag7 && nPC.life > 5)
++										TryDoingOnHitEffects(nPC);
++
++									if (ProjectileID.Sets.ImmediatelyUpdatesNPCBuffFlags[type])
++										nPC.UpdateNPC_BuffSetFlags(lowerBuffTime: false);
++
++									if (type == 317) {
++										ai[1] = -1f;
++										netUpdate = true;
++									}
+ 
  									if (flag7 && !hostile && num8 > 0)
  										num18 += nPC.checkArmorPenetration(num8);
  

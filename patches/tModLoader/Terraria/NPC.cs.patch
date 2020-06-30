@@ -753,14 +753,14 @@
  			int num4 = (!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1);
 -			double num5 = StrikeNPCNoInteraction(num2, num3, num4);
 +			bool crit = false;
-+			NPCLoader.ModifyHitNPC(nPC, this, ref num2, ref num3, ref crit);
++			NPCLoader.ModifyHitNPC(thatNPC, this, ref num2, ref num3, ref crit);
 +			double num5 = StrikeNPCNoInteraction(num2, num3, num4, crit, false, false);
  			if (Main.netMode != 0)
  				NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
  
  			netUpdate = true;
  			immune[255] = num;
-+			NPCLoader.OnHitNPC(nPC, this, (int)num5, num3, crit);
++			NPCLoader.OnHitNPC(thatNPC, this, (int)num5, num3, crit);
  			if (dryadWard) {
  				num2 = (int)num5 / 3;
  				num3 = 6;

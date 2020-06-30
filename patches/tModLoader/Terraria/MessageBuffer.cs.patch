@@ -219,7 +219,7 @@
 +										if (modType == 0)
 +											modType = TileID.Containers;
 +
-+										int num19 = WorldGen.PlaceChest(num15, num26, modType, notNearOtherChests: false, num17);
++										int num19 = WorldGen.PlaceChest(num15, num16, modType, notNearOtherChests: false, num17);
  										if (num19 == -1) {
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num19);
 -											Item.NewItem(num15 * 16, num16 * 16, 32, 32, Chest.chestItemSpawn[num17], 1, noBroadcast: true);
@@ -251,7 +251,7 @@
 +										if (modType == 0)
 +											modType = TileID.Dressers;
 +
-+										int num20 = WorldGen.PlaceChest(num15, num26, modType, notNearOtherChests: false, num17);
++										int num20 = WorldGen.PlaceChest(num15, num16, modType, notNearOtherChests: false, num17);
  										if (num20 == -1) {
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b3, num15, num16, num17, num20);
 -											Item.NewItem(num15 * 16, num16 * 16, 32, 32, Chest.dresserItemSpawn[num17], 1, noBroadcast: true);
