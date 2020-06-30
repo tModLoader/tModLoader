@@ -100,6 +100,7 @@ namespace Terraria.ModLoader
 		//in Terraria.GameContent.UI.EmoteBubble make CountNPCs internal
 		internal static void ResizeArrays(bool unloading) {
 			Array.Resize(ref Main.NPCLoaded, nextNPC);
+			Array.Resize(ref Main.NPCTextureTime, nextNPC);
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcTexture, nextNPC);
