@@ -42,6 +42,7 @@ csharp_style_var_when_type_is_apparent = true:none
 
 # Space preferences
 csharp_space_after_comma = true
+csharp_space_after_keywords_in_control_flow_statements = true
 
 [*.json]
 indent_style = tab
