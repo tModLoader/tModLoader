@@ -62,8 +62,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 
-		public ModAssetRepository Assets { get; private set; }
-
 		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
 		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
 			try {
@@ -380,7 +378,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void PrepareAssets()
+		internal void PrepareAssets()
 		{
 			//Create the asset repository
 

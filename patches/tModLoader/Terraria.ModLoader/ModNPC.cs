@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -51,10 +52,6 @@ namespace Terraria.ModLoader
 		/// The file name of this NPC's texture file in the mod loader's file space.
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
-		/// <summary>
-		/// The file names of this NPC's alternate texture files, if any. This will be used in the given AutoStaticDefaults.
-		/// </summary>
-		public virtual string[] AltTextures => new string[0];
 		/// <summary>
 		/// The file name of this NPC's head texture file, to be used in autoloading.
 		/// </summary>
@@ -187,7 +184,7 @@ namespace Terraria.ModLoader
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			Main.npcTexture[npc.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Npc[npc.type] = ModContent.GetTexture(Texture);
 
 			if (banner != 0 && bannerItem != 0) {
 				NPCLoader.bannerToItem[banner] = bannerItem;
@@ -204,18 +201,6 @@ namespace Terraria.ModLoader
 			}
 			else {
 				Main.npcLifeBytes[npc.type] = 1;
-			}
-
-			string[] altTextures = AltTextures;
-			int altTextureCount = altTextures.Length;
-			NPCID.Sets.ExtraTextureCount[npc.type] = altTextureCount;
-			Main.npcAltTextures[npc.type] = new Texture2D[altTextureCount + 1];
-
-			if (altTextureCount > 0) {
-				Main.npcAltTextures[npc.type][0] = Main.npcTexture[npc.type];
-			}
-			for (int k = 1; k <= altTextureCount; k++) {
-				Main.npcAltTextures[npc.type][k] = ModContent.GetTexture(altTextures[k - 1]);
 			}
 
 			if (DisplayName.IsDefault())

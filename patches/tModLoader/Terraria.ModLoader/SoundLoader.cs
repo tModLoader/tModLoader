@@ -88,7 +88,7 @@ namespace Terraria.ModLoader
 
 					if (type != SoundType.Music) {
 						GetSoundArray(type)[slot] = ModContent.GetSound(sound);
-						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.CreateInstance() ?? null;
+						GetSoundInstanceArray(type)[slot] = GetSoundArray(type)[slot]?.Value.CreateInstance() ?? null;
 					}
 					else {
 						Main.music[slot] = ModContent.GetMusic(sound) ?? null;

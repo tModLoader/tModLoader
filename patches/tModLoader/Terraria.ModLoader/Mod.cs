@@ -18,6 +18,7 @@ using Terraria.ModLoader.UI;
 using Terraria.GameContent;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
+using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
 {
@@ -62,15 +63,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public string DisplayName { get; internal set; }
 
+		public ModAssetRepository Assets { get; private set; }
+
 		internal short netID = -1;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
-
-		internal Mod()
-		{
-			PrepareAssets();
-		}
 
 		internal void AutoloadConfig()
 		{

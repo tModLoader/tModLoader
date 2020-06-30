@@ -43,8 +43,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static byte[] GetFileBytes(string name) {
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
@@ -60,8 +59,7 @@ namespace Terraria.ModLoader
 			if (!name.Contains('/'))
 				return false;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.FileExists(subName);
@@ -95,13 +93,13 @@ namespace Terraria.ModLoader
 			if (!name.Contains('/'))
 				return false;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			if (modName == "Terraria")
 				return !Main.dedServ && (Main.instance.Content as TMLContentManager).ImageExists(subName);
 
 			Mod mod = ModLoader.GetMod(modName);
+
 			return mod != null && mod.TextureExists(subName);
 		}
 
@@ -111,30 +109,35 @@ namespace Terraria.ModLoader
 		/// <param name="name">The texture name that is requested</param>
 		/// <param name="texture">The texture itself will be output to this</param>
 		/// <returns>True if the texture is found, false otherwise.</returns>
-		internal static bool TryGetTexture(string name, out Texture2D texture) {
-			if (Main.dedServ) {
-				texture = null;
+		internal static bool TryGetTexture(string name, out Asset<Texture2D> texture)
+		{
+			texture = null;
+
+			if (Main.dedServ || !TextureExists(name)) {
 				return false;
 			}
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
+
 			if (modName == "Terraria") {
-				if((Main.instance.Content as TMLContentManager).ImageExists(subName)) { 
-					texture = Main.instance.Content.Load<Texture2D>("Images" + Path.DirectorySeparatorChar + subName);
+				if ((Main.instance.Content as TMLContentManager).ImageExists(subName)) {
+					texture = Main.Assets.Request<Texture2D>(Path.Combine("Images", subName));
+
 					return true;
 				}
-				texture = null;
+
 				return false;
 			}
 
 			Mod mod = ModLoader.GetMod(modName);
-			if (mod == null) {
-				texture = null;
-				return false;
+
+			if (mod!=null && mod.TextureExists(subName)) {
+				texture = mod.GetTexture(subName);
+
+				return true;
 			}
 
-			return mod.textures.TryGetValue(subName, out texture);
+			return false;
 		}
 
 		/// <summary>
@@ -145,8 +148,7 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				return null;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null)
@@ -162,8 +164,7 @@ namespace Terraria.ModLoader
 			if (!name.Contains('/'))
 				return false;
 
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.SoundExists(subName);
@@ -175,8 +176,7 @@ namespace Terraria.ModLoader
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
 		public static Music GetMusic(string name) {
 			if (Main.dedServ) { return null; }
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 			Mod mod = ModLoader.GetMod(modName);
 			if (mod == null) { throw new MissingResourceException("Missing mod: " + name); }
 			return mod.GetMusic(subName);
@@ -187,8 +187,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool MusicExists(string name) {
 			if (!name.Contains('/')) { return false; }
-			string modName, subName;
-			SplitName(name, out modName, out subName);
+			SplitName(name, out string modName, out string subName);
 			Mod mod = ModLoader.GetMod(modName);
 			return mod != null && mod.MusicExists(subName);
 		}
@@ -356,7 +355,7 @@ namespace Terraria.ModLoader
 				ContentInstance.Register(mod);
 				mod.loading = true;
 				mod.AutoloadConfig();
-				mod.LoadResources();
+				mod.PrepareAssets();
 				mod.Autoload();
 				mod.Load();
 				mod.loading = false;
