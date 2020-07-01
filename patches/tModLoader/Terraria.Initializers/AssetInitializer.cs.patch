@@ -1,24 +1,14 @@
 --- src/Terraria/Terraria.Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria.Initializers/AssetInitializer.cs
-@@ -20,15 +_,19 @@
+@@ -20,8 +_,10 @@
  {
  	public static class AssetInitializer
  	{
-+		internal static AssetLoader assetLoader;
-+		internal static AsyncAssetLoader asyncAssetLoader;
++		internal static AssetReaderCollection assetReaderCollection;
 +
  		public static void CreateAssetServices(GameServiceContainer services) {
- 			AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
+-			AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
++			assetReaderCollection = new AssetReaderCollection();
  			assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  			assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
--			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-+			asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
- 			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
- 			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
- 			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
--			IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
-+			assetLoader = new AssetLoader(assetReaderCollection);
-+			IAssetRepository provider = new AssetRepository(assetLoader, asyncAssetLoader);
- 			services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
- 			services.AddService(typeof(IAssetRepository), provider);
- 		}
+ 			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);

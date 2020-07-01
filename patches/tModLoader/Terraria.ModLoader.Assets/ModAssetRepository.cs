@@ -19,7 +19,9 @@ namespace Terraria.ModLoader.Assets
 
 		public ModAssetRepository(IAssetLoader syncLoader, IAsyncAssetLoader asyncLoader, IEnumerable<IContentSource> sources = null) : base(syncLoader, asyncLoader)
 		{
-			Assets = (Dictionary<string, IAsset>)GetType().GetField("_assets", BindingFlags.NonPublic|BindingFlags.Instance).GetValue(this);
+			Assets = (Dictionary<string, IAsset>)typeof(AssetRepository)
+				.GetField("_assets", BindingFlags.NonPublic|BindingFlags.Instance)
+				.GetValue(this);
 
 			if(sources!=null) {
 				SetSources(sources, AssetRequestMode.DoNotLoad);

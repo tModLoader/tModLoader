@@ -21,6 +21,8 @@ using Terraria.ModLoader.UI;
 using Version = System.Version;
 using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
+using ReLogic.Content;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
@@ -117,12 +119,22 @@ namespace Terraria.ModLoader
 			HiDefGraphicsIssues.Init();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
+			XnaTitleContainerRelativePathFix.Init();
 		}
 
 		internal static void PrepareAssets()
 		{
+			var assetReaderCollection = AssetInitializer.assetReaderCollection;
+
+			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
+
+			var assetLoader = new AssetLoader(assetReaderCollection);
+
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
-			ManifestAssets = new ModAssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader, new[] { ManifestContentSource });
+			ManifestAssets = new ModAssetRepository(assetLoader, asyncAssetLoader, new[] { ManifestContentSource });
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));

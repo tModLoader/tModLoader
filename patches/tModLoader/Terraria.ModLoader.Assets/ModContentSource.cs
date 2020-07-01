@@ -30,6 +30,7 @@ namespace Terraria.ModLoader.Assets
 
 		static ModContentSource()
 		{
+			//TODO: Unhardcode?
 			AssetTypeToExtensions = new Dictionary<Type, IList<string>> {
 				{ typeof(Texture2D),            new List<string> { ".png", ".rawimg" } },
 				{ typeof(SoundEffect),          new List<string> { ".ogg", ".mp3", ".wav" } },
@@ -41,7 +42,7 @@ namespace Terraria.ModLoader.Assets
 
 		public ModContentSource(Mod mod)
 		{
-			file = mod.File;
+			file = mod.File ?? throw new ArgumentNullException(nameof(mod));
 
 			FillPathCache();
 		}

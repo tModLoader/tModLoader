@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Default.Developer;
 using Terraria.ModLoader.Default.Patreon;
 
@@ -30,7 +31,11 @@ namespace Terraria.ModLoader.Default
 		}
 
 
-		public override void ModifyContentSources(IList<IContentSource> sources) => sources.Add(ModLoader.ManifestContentSource);
+		public override void ModifyContentSources(IList<IContentSource> sources)
+		{
+			sources.Clear();
+			sources.Add(new AssemblyResourcesModContentSource("Terraria.ModLoader.Default.", Assembly.GetExecutingAssembly()));
+		}
 
 		public override void Load() {
 			Instance = this;
@@ -53,10 +58,10 @@ namespace Terraria.ModLoader.Default
 			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
-			AddPatronSets();
+			/*AddPatronSets();
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
 			AddDeveloperSets();
-			AddPlayer("DeveloperPlayer", new DeveloperPlayer());
+			AddPlayer("DeveloperPlayer", new DeveloperPlayer());*/
 		}
 
 		public override void Unload() {

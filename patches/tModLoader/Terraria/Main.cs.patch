@@ -696,7 +696,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4725,7 +_,35 @@
+@@ -4725,7 +_,41 @@
  #if CLIENT
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
@@ -707,22 +707,28 @@
 +		internal void PostSocialInitialize()
 +		{
 +#if CLIENT
++			//Make tML use assets from the vanilla game's folder, instead of expecting them all to be in its Content folder.
++
 +			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
++
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				vanillaContentFolder = "../Content"; // Nested Manual Install
 +			}
-+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = new Steamworks.AppId_t(105600u);
-+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
++
++			if (SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init()) {
++				var appID = new AppId_t(105600u);
++				bool appInstalled = SteamApps.BIsAppInstalled(appID);
++
 +				if (appInstalled) { 
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-+					Logging.Terraria.Info("Found Terraria steamapp install at: "+ steamInstallFolder);
++					SteamApps.GetAppInstallDir(appID, out string steamInstallFolder, 1000);
++					Logging.Terraria.Info($"Found Terraria steamapp install at: {steamInstallFolder}");
 +
 +					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
 +					if (!Directory.Exists(vanillaContentFolder))
 +						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/MacOS/Content");
 +				}
 +			}
++
 +			if (!Directory.Exists(vanillaContentFolder)) {
 +				Interface.MessageBoxShow("Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.");
 +				Environment.Exit(1);

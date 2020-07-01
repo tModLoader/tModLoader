@@ -379,13 +379,24 @@ namespace Terraria.ModLoader
 		{
 			//Create the asset repository
 
-			var sources = new List<IContentSource> {
-				new ModContentSource(this)
-			};
+			var sources = new List<IContentSource>();
+
+			if (File!=null) {
+				sources.Add(new ModContentSource(this));
+			}
 
 			ModifyContentSources(sources);
 
-			Assets = new ModAssetRepository(AssetInitializer.assetLoader, AssetInitializer.asyncAssetLoader, sources.ToArray());
+			var assetReaderCollection = AssetInitializer.assetReaderCollection;
+
+			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
+			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
+
+			var assetLoader = new AssetLoader(assetReaderCollection);
+
+			Assets = new ModAssetRepository(assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
 		private void AutoloadItem(Type type) {

@@ -1,6 +1,8 @@
 //Things that need to be done after initial patches are fixed.
 //This can include new systems that should be accounted for
 
+//Anyone, because Mirsario is lazy:
+	//The game crashes without '-nosteam' command line argument. Pls fix, or investigate.
 
 //Rartrin
 	//Chat
