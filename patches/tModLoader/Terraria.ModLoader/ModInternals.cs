@@ -575,8 +575,8 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadBackgrounds() {
-			foreach (string texture in textures.Keys.Where(t => t.StartsWith("Backgrounds/"))) {
-				AddBackgroundTexture(Name + '/' + texture);
+			foreach (string texture in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Backgrounds/"))) {
+				AddBackgroundTexture($"{Name}/{texture}");
 			}
 		}
 
@@ -630,20 +630,24 @@ namespace Terraria.ModLoader
 
 		private void AutoloadGores(IList<Type> modGores) {
 			var modGoreNames = modGores.ToDictionary(t => t.Namespace + "." + t.Name);
-			foreach (var texture in textures.Keys.Where(t => t.StartsWith("Gores/"))) {
+
+			foreach (string texturePath in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
 				ModGore modGore = null;
-				if (modGoreNames.TryGetValue(Name + "." + texture.Replace('/', '.'), out Type t))
+
+				if (modGoreNames.TryGetValue($"{Name}.{texturePath.Replace('/', '.')}", out Type t))
 					modGore = (ModGore)Activator.CreateInstance(t);
 
-				AddGore(Name + '/' + texture, modGore);
+				AddGore($"{Name}/{texturePath}", modGore);
 			}
 		}
 
 		private void AutoloadSounds(IList<Type> modSounds) {
 			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
 
-			foreach (var sound in sounds.Keys.Where(t => t.StartsWith("Sounds/"))) {
-				string substring = sound.Substring("Sounds/".Length);
+			const string SoundFolder = "Sounds/";
+
+			foreach (string soundPath in Assets.EnumeratePaths<SoundEffect>().Where(t => t.StartsWith(SoundFolder))) {
+				string substring = soundPath.Substring(SoundFolder.Length);
 				SoundType soundType = SoundType.Custom;
 
 				if (substring.StartsWith("Item/")) {
@@ -657,13 +661,16 @@ namespace Terraria.ModLoader
 				}
 
 				ModSound modSound = null;
-				if (modSoundNames.TryGetValue((Name + '/' + sound).Replace('/', '.'), out Type t))
+
+				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
 					modSound = (ModSound)Activator.CreateInstance(t);
 
-				AddSound(soundType, Name + '/' + sound, modSound);
+				AddSound(soundType, $"{Name}/{soundPath}", modSound);
 			}
-			foreach (var music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
+
+			foreach (string music in musics.Keys.Where(t => t.StartsWith("Sounds/"))) {
 				string substring = music.Substring("Sounds/".Length);
+
 				if (substring.StartsWith("Music/")) {
 					AddSound(SoundType.Music, Name + '/' + music);
 				}

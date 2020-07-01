@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.Core
 {
@@ -45,8 +47,15 @@ namespace Terraria.ModLoader.Core
 			foreach (var mod in ModLoader.Mods) {
 				var usage = modMemoryUsageEstimates[mod.Name];
 
-				usage.textures = 0; //mod.textures.Values.Sum(tex => tex.Width * tex.Height * 4);
-				usage.sounds = mod.sounds.Values.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
+				usage.textures = mod.Assets
+					.EnumerateLoadedAssets<Texture2D>()
+					.Select(asset => asset.Value)
+					.Sum(tex => tex.Width * tex.Height * 4);
+
+				usage.sounds = mod.Assets
+					.EnumerateLoadedAssets<SoundEffect>()
+					.Select(asset => asset.Value)
+					.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 			}
 		}
 	}

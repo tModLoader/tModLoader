@@ -11,7 +11,7 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.Assets
 {
-	public class ModContentSource : IContentSourceExt, IDisposable
+	public class ModContentSource : IModContentSource, IDisposable
 	{
 		private class ContentTypeInfo
 		{
@@ -55,6 +55,14 @@ namespace Terraria.ModLoader.Assets
 		public bool HasAsset<T>(string assetName) where T : class => file.HasFile(FilterPath(typeof(T), assetName)); //...But this one does.
 		public string GetExtension(string assetName) => ""; //Path.GetExtension(assetName);
 		public Stream OpenStream(string assetName) => file.GetStream(assetName);
+		public IEnumerable<string> EnumeratePaths<T>() where T : class
+		{
+			if (PerContentTypeInfo.TryGetValue(typeof(T), out var info)) {
+				foreach (string path in info.FilePaths) {
+					yield return path;
+				}
+			}
+		}
 		//Etc
 		public void Dispose()
 		{

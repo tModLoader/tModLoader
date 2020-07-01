@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
@@ -106,11 +107,23 @@ namespace Terraria.ModLoader
 		/// <param name="groupName">The recipegroup name to reject.</param>
 		/// <returns>Whether removing the recipegroup was successful.</returns>
 		public bool RejectRecipeGroup(string groupName) {
-			if (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out int groupID)) {
+			if (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out int groupId)) {
 				throw new RecipeException("No recipe group is named " + groupName);
 			}
 
-			return recipe.acceptedGroups.Remove(groupID);
+			bool removedAnything = false;
+
+			for (int i = 0;i<recipe.acceptedGroups.Length;i++) {
+				ref int thisGroup = ref recipe.acceptedGroups[i];
+
+				if (thisGroup==groupId) {
+					thisGroup = -1;
+
+					removedAnything = true;
+				}
+			}
+
+			return removedAnything;
 		}
 
 		/// <summary>

@@ -27,9 +27,29 @@ namespace Terraria.ModLoader.Assets
 		}
 
 		public bool HasAsset<T>(string assetName) where T : class
-			=> Sources.Any(source => source is IContentSourceExt sourceExt ? sourceExt.HasAsset<T>(assetName) : source.HasAsset(assetName));
+			=> Sources.Any(source => source is IModContentSource sourceExt ? sourceExt.HasAsset<T>(assetName) : source.HasAsset(assetName));
 		public Asset<T> CreateAsset<T>(string assetName, T content) where T : class
 			=> CreateAsset(assetName, content);
+		public IEnumerable<string> EnumeratePaths<T>() where T : class
+		{
+			foreach (var source in Sources) {
+				if (source is IModContentSource sourceExt) {
+					foreach (string path in sourceExt.EnumeratePaths<T>()) {
+						yield return path;
+					}
+				}
+			}
+		}
+		public IEnumerable<Asset<T>> EnumerateLoadedAssets<T>() where T : class
+		{
+			foreach (var pair in Assets) {
+				var asset = pair.Value;
+
+				if (asset.IsLoaded && asset is Asset<T> result) {
+					yield return result;
+				}
+			}
+		}
 
 		internal Asset<T> CreateUntrackedAsset<T>(T content) where T : class
 			=> CreateAsset(string.Empty, content, true);
