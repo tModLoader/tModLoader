@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 
@@ -53,9 +54,12 @@ namespace Terraria.ModLoader
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name)) {
 				throw new RecipeException("No recipe group is named " + name);
 			}
+			
 			int id = RecipeGroup.recipeGroupIDs[name];
 			RecipeGroup rec = RecipeGroup.recipeGroups[id];
-			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
+			
+			AddIngredient(rec.IconicItemId, stack);
+
 			groups.Add(id);
 		}
 
@@ -69,8 +73,11 @@ namespace Terraria.ModLoader
 			if (!RecipeGroup.recipeGroupIDs.ContainsValue(recipeGroupID)) {
 				throw new RecipeException("No recipe group has the RecipeGroupID " + recipeGroupID);
 			}
+			
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupID];
-			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
+			
+			AddIngredient(rec.IconicItemId, stack);
+			
 			groups.Add(recipeGroupID);
 		}
 

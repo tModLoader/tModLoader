@@ -1276,7 +1276,7 @@
  
 +					ModProjectile modProjectile = projectile.modProjectile;
 +					if (modProjectile != null && ModContent.TryGetTexture(modProjectile.GlowTexture, out var glowTexture))
-+						spriteBatch.Draw(glowTexture, new Vector2(projectile.position.X - screenPosition.X + num137 + num136, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num137, projectile.height / 2 + num135), projectile.scale, spriteEffects, 0f);
++						spriteBatch.Draw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num137 + num136, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height())), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num137, projectile.height / 2 + num135), projectile.scale, spriteEffects, 0f);
 +
  					if (projectile.type == 312) {
  						ulong seed3 = TileFrameSeed;

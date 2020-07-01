@@ -125,7 +125,7 @@ namespace Terraria.ModLoader.IO
 				r => {
 					var compound = new TagCompound();
 					object tag;
-					while ((tag = ReadTag(r, out stringname)) != null)
+					while ((tag = ReadTag(r, out string name)) != null)
 						compound.Set(name, tag);
 
 					return compound;

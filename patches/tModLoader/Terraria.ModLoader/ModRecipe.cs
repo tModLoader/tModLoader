@@ -118,28 +118,33 @@ namespace Terraria.ModLoader
 		/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
 		public void AddRecipeGroup(string name, int stack = 1) {
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name)) {
-				throw new RecipeException("A recipe group with the name " + name + " does not exist.");
+				throw new RecipeException($"A recipe group with the name {name} does not exist.");
 			}
+
 			int id = RecipeGroup.recipeGroupIDs[name];
 			RecipeGroup rec = RecipeGroup.recipeGroups[id];
-			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
-			acceptedGroups.Add(id);
+			
+			AddIngredient(rec.IconicItemId, stack);
+
+			RequireGroup(name);
 		}
 
 		/// <summary>
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size. Vanilla recipe group IDs can be found in Terraria.ID.RecipeGroupID and modded recipe group IDs will be returned from RecipeGroup.RegisterGroup.
 		/// </summary>
-		/// <param name="recipeGroupID">The RecipeGroupID.</param>
+		/// <param name="recipeGroupId">The RecipeGroupID.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
-		public void AddRecipeGroup(int recipeGroupID, int stack = 1)
+		public void AddRecipeGroup(int recipeGroupId, int stack = 1)
 		{
-			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupID)) {
-				throw new RecipeException("A recipe group with the ID " + recipeGroupID + " does not exist.");
+			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId)) {
+				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
 			}
-			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupID];
-			AddIngredient(rec.ValidItems[rec.IconicItemIndex], stack);
-			acceptedGroups.Add(recipeGroupID);
+			
+			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
+			
+			AddIngredient(rec.IconicItemId, stack);
+			RequireGroup(recipeGroupId);
 		}
 
 		/// <summary>
@@ -150,11 +155,11 @@ namespace Terraria.ModLoader
 		public void AddTile(int tileID) {
 			if (numTiles == 14)
 				throw new RecipeException("Recipe already has maximum number of tiles. 14 is the max.");
-			if (tileID < 0 || tileID >= TileLoader.TileCount) {
+			
+			if (tileID < 0 || tileID >= TileLoader.TileCount)
 				throw new RecipeException("No tile has ID " + tileID);
-			}
-			this.requiredTile[numTiles] = tileID;
-			numTiles++;
+			
+			requiredTile[numTiles++] = tileID;
 		}
 
 		/// <summary>

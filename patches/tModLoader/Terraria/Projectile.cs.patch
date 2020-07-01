@@ -146,28 +146,36 @@
  			if (friendly && owner == Main.myPlayer && !npcProj) {
  				if ((aiStyle == 16 && !ProjectileID.Sets.RocketsSkipDamageForPlayers[type] && (timeLeft <= 1 || type == 108 || type == 164)) || (type == 286 && localAI[1] == -1f)) {
  					int myPlayer = Main.myPlayer;
-@@ -8847,6 +_,21 @@
- 						if (!(Main.npc[i].active && !Main.npc[i].dontTakeDamage && flag) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
- 							continue;
+@@ -8843,8 +_,27 @@
+ 					}
  
+ 					for (int i = 0; i < 200; i++) {
+-						bool flag = (!usesLocalNPCImmunity && !usesIDStaticNPCImmunity) || (usesLocalNPCImmunity && array[i] == 0) || (usesIDStaticNPCImmunity && IsNPCIndexImmuneToProjectileType(type, i));
+-						if (!(Main.npc[i].active && !Main.npc[i].dontTakeDamage && flag) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
++						if (!Main.npc[i].active || Main.npc[i].dontTakeDamage)
++							continue;
++
++						bool immunityTimerInactive = !usesLocalNPCImmunity && !usesIDStaticNPCImmunity || usesLocalNPCImmunity && localNPCImmunity[i] == 0 || usesIDStaticNPCImmunity && IsNPCIndexImmuneToProjectileType(type, i);
++						if (!immunityTimerInactive)
++							continue;
++
 +						bool? modCanHit = ProjectileLoader.CanHitNPC(this, Main.npc[i]);
-+						if (modCanHit.HasValue && !modCanHit.Value)
++						if (modCanHit==false)
 +							continue;
 +
 +						bool? modCanBeHit = NPCLoader.CanBeHitByProjectile(Main.npc[i], this);
-+						if (modCanBeHit.HasValue && !modCanBeHit.Value)
++						if (modCanBeHit==false)
 +							continue;
 +
 +						bool? modCanHit2 = PlayerHooks.CanHitNPCWithProj(this, Main.npc[i]);
-+						if (modCanHit2.HasValue && !modCanHit2.Value)
++						if (modCanHit2==false)
 +							continue;
 +
-+						if (!(modCanHit.HasValue && modCanHit.Value || modCanBeHit.HasValue && modCanBeHit.Value || modCanHit2.HasValue && modCanHit2.Value))
-+							continue;
-+
++						bool canHitFlag = modCanHit==true || modCanBeHit==true || modCanHit2==true;
++						if (!canHitFlag && (!this.friendly || Main.npc[i].friendly && this.type != 318 && (Main.npc[i].type != 22 || this.owner >= 255 || !Main.player[this.owner].killGuide) && (Main.npc[i].type != 54 || this.owner >= 255 || !Main.player[this.owner].killClothier)) && (!this.hostile || !Main.npc[i].friendly || Main.npc[i].dontTakeDamageFromHostiles) || this.owner >= 0 && Main.npc[i].immune[this.owner] != 0 && this.maxPenetrate != 1)
+ 							continue;
+ 
  						Main.npc[i].position += Main.npc[i].netOffset;
- 						bool flag2 = !Main.npc[i].friendly;
- 						flag2 |= (type == 318);
 @@ -8862,6 +_,9 @@
  								flag4 = true;
  							else if (type == 31 && Main.npc[i].type == 69)
@@ -244,7 +252,7 @@
  
 +									// patch note: use local variable 'knockback', not knockBack / num7
 -									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, num7, num31, flag6)) : ((int)nPC.StrikeNPC(num18, num7, num31, flag6));
-+ 									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, knockback, hitDirection, flag6)) : ((int)nPC.StrikeNPC(num18, knockback, hitDirection, flag6));
++ 									int num32 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num18, knockback, num31, flag6)) : ((int)nPC.StrikeNPC(num18, knockback, num31, flag6));
  									if (flag7 && Main.player[owner].accDreamCatcher)
  										Main.player[owner].addDPS(num32);
  
@@ -266,9 +274,9 @@
  									if (type == 710)
  										BetsySharpnel(i);
  
-+						ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, knockback, flag6);
-+						NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, knockback, flag6);
-+						PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, knockback, flag6);
++									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, knockback, flag6);
++									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, knockback, flag6);
++									PlayerHooks.OnHitNPCWithProj(this, Main.npc[i], num32, knockback, flag6);
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
  											damage = (int)((double)damage * 0.8);
@@ -421,19 +429,11 @@
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
 +			PlayerHooks.CatchFish(Main.player[owner], Main.player[owner].inventory[Main.player[owner].selectedItem],
-+				fisher.waterNeededToFish, fisher.inLava ? 1 : fisher.inHoney ? 2 : 0, fisher.fishingLevel, fisher.heightLevel, fisher.questFish, ref fisher.rolledItemDrop, ref fisher.junk);
++				fisher.waterNeededToFish, fisher.inLava ? 1 : fisher.inHoney ? 2 : 0, fisher.fishingLevel, fisher.heightLevel, fisher.questFish, ref fisher.rolledItemDrop);
 +
  			if (fisher.rolledItemDrop > 0) {
  				if (Main.player[owner].sonarPotion) {
  					Item item = new Item();
-@@ -13011,6 +_,7 @@
- 
- 			if (Main.rand.Next(50) > fisher.fishingLevel && Main.rand.Next(50) > fisher.fishingLevel && fisher.waterTilesCount < fisher.waterNeededToFish) {
- 				fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
-+				fisher.junk = true;
- 				return;
- 			}
- 
 @@ -13380,9 +_,11 @@
  				while (Main.tile[i, num].liquid > 0 && !WorldGen.SolidTile(i, num) && num < Main.maxTilesY - 10) {
  					numWaters++;

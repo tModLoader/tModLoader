@@ -907,10 +907,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateCatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk);
+		private delegate void DelegateCatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 
-		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk) {
+		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
 			int i = 0;
 			while (i < 58) {
 				if (player.inventory[i].stack > 0 && player.inventory[i].bait > 0) {
@@ -919,7 +919,7 @@ namespace Terraria.ModLoader
 				i++;
 			}
 			foreach (int index in HookCatchFish.arr) {
-				player.modPlayers[index].CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType, ref junk);
+				player.modPlayers[index].CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType);
 			}
 		}
 

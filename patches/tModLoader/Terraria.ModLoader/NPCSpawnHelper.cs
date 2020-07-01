@@ -267,13 +267,13 @@ namespace Terraria.ModLoader
 				&& info.spawnTileY > Main.worldSurface, 1f / 60f);
 			WormCritter = new SpawnCondition((info) => info.spawnTileY > Main.worldSurface
 				&& info.spawnTileY < Main.maxTilesY - 210 && !info.player.ZoneSnow && !info.player.ZoneCrimson
-				&& !info.player.ZoneCorrupt && !info.player.ZoneJungle && !info.player.ZoneHoly, 1f / 8f);
+				&& !info.player.ZoneCorrupt && !info.player.ZoneJungle && !info.player.ZoneHallow, 1f / 8f);
 			MouseCritter = new SpawnCondition((info) => info.spawnTileY > Main.worldSurface
 				&& info.spawnTileY < Main.maxTilesY - 210 && !info.player.ZoneSnow && !info.player.ZoneCrimson
-				&& !info.player.ZoneCorrupt && !info.player.ZoneJungle && !info.player.ZoneHoly, 1f / 13f);
+				&& !info.player.ZoneCorrupt && !info.player.ZoneJungle && !info.player.ZoneHallow, 1f / 13f);
 			SnailCritter = new SpawnCondition((info) => info.spawnTileY > Main.worldSurface
 				&& info.spawnTileY < (Main.rockLayer + Main.maxTilesY) / 2 && !info.player.ZoneSnow
-				&& !info.player.ZoneCrimson && !info.player.ZoneCorrupt && !info.player.ZoneHoly, 1f / 13f);
+				&& !info.player.ZoneCrimson && !info.player.ZoneCorrupt && !info.player.ZoneHallow, 1f / 13f);
 			FrogCritter = new SpawnCondition((info) => info.spawnTileY < Main.worldSurface && info.player.ZoneJungle, 1f / 9f);
 			HardmodeJungle = new SpawnCondition((info) => info.spawnTileType == TileID.JungleGrass && Main.hardMode, 2f / 3f);
 			JungleTemple = new SpawnCondition((info) => info.spawnTileType == TileID.LihzahrdBrick && info.lihzahrd);
@@ -295,7 +295,7 @@ namespace Terraria.ModLoader
 				|| info.spawnTileType == TileID.Pearlstone || info.spawnTileType == TileID.HallowedGrass
 				|| info.spawnTileType == TileID.HallowedIce), 0.02f);
 			Crimson = new SpawnCondition((info) => (info.spawnTileType == TileID.Crimtane && info.player.ZoneCrimson)
-				|| info.spawnTileType == TileID.FleshGrass || info.spawnTileType == TileID.FleshIce
+				|| info.spawnTileType == TileID.CrimsonGrass || info.spawnTileType == TileID.FleshIce
 				|| info.spawnTileType == TileID.Crimstone || info.spawnTileType == TileID.Crimsand);
 			Corruption = new SpawnCondition((info) => (info.spawnTileType == TileID.Demonite && info.player.ZoneCorrupt)
 				|| info.spawnTileType == TileID.CorruptGrass || info.spawnTileType == TileID.Ebonstone
@@ -303,7 +303,7 @@ namespace Terraria.ModLoader
 			Overworld = new SpawnCondition((info) => info.spawnTileY <= Main.worldSurface);
 			IceGolem = new SpawnCondition(Overworld, (info) => info.player.ZoneSnow && Main.hardMode
 				&& Main.cloudAlpha > 0f && !NPC.AnyNPCs(NPCID.IceGolem), 0.05f);
-			RainbowSlime = new SpawnCondition(Overworld, (info) => info.player.ZoneHoly && Main.hardMode
+			RainbowSlime = new SpawnCondition(Overworld, (info) => info.player.ZoneHallow && Main.hardMode
 				&& Main.cloudAlpha > 0f && !NPC.AnyNPCs(NPCID.RainbowSlime), 0.05f);
 			AngryNimbus = new SpawnCondition(Overworld, (info) => !info.player.ZoneSnow && Main.hardMode
 				&& Main.cloudAlpha > 0f && NPC.CountNPCS(NPCID.AngryNimbus) < 2, 0.1f);

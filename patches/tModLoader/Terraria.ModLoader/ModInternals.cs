@@ -263,9 +263,6 @@ namespace Terraria.ModLoader
 			effects.Clear();
 			musics.Clear();
 
-			soundPaths.Clear();
-			fontPaths.Clear();
-
 			Assets.Dispose();
 		}
 

@@ -1503,12 +1503,7 @@ namespace Terraria.ModLoader
 		/// Gets a SpriteFont loaded from the specified path.
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
-		public DynamicSpriteFont GetFont(string name) {
-			if (!fonts.TryGetValue(name, out var font))
-				throw new MissingResourceException(name);
-
-			return font;
-		}
+		public Asset<DynamicSpriteFont> GetFont(string name) => Assets.Request<DynamicSpriteFont>(name);
 
 		/// <summary>
 		/// Used to check if a custom SpriteFont exists

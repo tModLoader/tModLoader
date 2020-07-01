@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader.Exceptions;
+﻿using System.Linq;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -86,13 +87,16 @@ namespace Terraria.ModLoader
 		/// <param name="groupName">The recipegroup name to accept.</param>
 		/// <returns>Whether adding the recipegroup was successful.</returns>
 		public bool AcceptRecipeGroup(string groupName) {
-			if (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out int groupID)) {
+			if (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out int groupId)) {
 				throw new RecipeException("No recipe group is named " + groupName);
 			}
-			if (recipe.acceptedGroups.Contains(groupID)) {
+
+			if (recipe.acceptedGroups.Contains(groupId)) {
 				return false;
 			}
-			recipe.acceptedGroups.Add(groupID);
+
+			recipe.RequireGroup(groupId);
+
 			return true;
 		}
 
@@ -105,6 +109,7 @@ namespace Terraria.ModLoader
 			if (!RecipeGroup.recipeGroupIDs.TryGetValue(groupName, out int groupID)) {
 				throw new RecipeException("No recipe group is named " + groupName);
 			}
+
 			return recipe.acceptedGroups.Remove(groupID);
 		}
 

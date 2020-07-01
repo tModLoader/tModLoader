@@ -489,6 +489,15 @@
  			NPCLoot_DropMoney(closestPlayer);
  			NPCLoot_DropHeals(closestPlayer);
  		}
+@@ -59187,7 +_,7 @@
+ 			WoFKilledToday = false;
+ 		}
+ 
+-		private void DoDeathEvents_DropBossPotionsAndHearts() {
++		private void DoDeathEvents_DropBossPotionsAndHearts(ref string typeName) {
+ 			int stack = Main.rand.Next(5, 16);
+ 			int num = 28;
+ 			if (type == 113)
 @@ -59211,6 +_,7 @@
  			else if (type == 398)
  				num = 3544;
@@ -497,6 +506,37 @@
  			Item.NewItem((int)position.X, (int)position.Y, width, height, num, stack);
  			int num2 = Main.rand.Next(5) + 5;
  			for (int i = 0; i < num2; i++) {
+@@ -59228,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void DoDeathEvents_CelebrateBossDeath() {
++		private void DoDeathEvents_CelebrateBossDeath(string typeName) {
+ 			if (type == 125 || type == 126) {
+ 				if (Main.netMode == 0)
+ 					Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Plural", Language.GetTextValue("Enemies.TheTwins")), 175, 75);
+@@ -59242,7 +_,7 @@
+ 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
+ 			}
+ 			else if (Main.netMode == 0) {
+-				Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", TypeName), 175, 75);
++				Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75);
+ 			}
+ 			else if (Main.netMode == 2) {
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", GetTypeNetName()), new Color(175, 75, 255));
+@@ -59624,8 +_,10 @@
+ 			}
+ 
+ 			if (boss) {
++				string typeName = TypeName;
++
+-				DoDeathEvents_DropBossPotionsAndHearts();
++				DoDeathEvents_DropBossPotionsAndHearts(ref typeName);
+-				DoDeathEvents_CelebrateBossDeath();
++				DoDeathEvents_CelebrateBossDeath(typeName);
+ 				if (Main.netMode == 2)
+ 					NetMessage.SendData(7);
+ 			}
 @@ -60017,8 +_,10 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
@@ -553,7 +593,7 @@
  						if (Main.player[num7].ZoneTowerSolar || Main.player[num7].ZoneTowerNebula || Main.player[num7].ZoneTowerVortex || Main.player[num7].ZoneTowerStardust)
  							flag6 = true;
  
-+						NPCLoader.EditSpawnRate(Main.player[num5], ref spawnRate, ref maxSpawns);
++						NPCLoader.EditSpawnRate(Main.player[num7], ref spawnRate, ref maxSpawns);
  						num9 = (int)(Main.player[num7].position.X + (float)(Main.player[num7].width / 2)) / 16;
  						num10 = (int)(Main.player[num7].position.Y + (float)(Main.player[num7].height / 2)) / 16;
  						if (Main.wallHouse[Main.tile[num9, num10].wall])

@@ -751,8 +751,7 @@ namespace Terraria.ModLoader
 		/// <param name="worldLayer"></param>
 		/// <param name="questFish"></param>
 		/// <param name="caughtType"></param>
-		/// <param name="junk"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk) {
+		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
 		}
 
 		/// <summary>
