@@ -109,6 +109,47 @@
  		}
  
  		public void SetDummyItemTime(int frames) {
+@@ -2016,33 +_,33 @@
+ 		}
+ 
+ 		private void ApplyItemAnimation(Item sItem, float multiplier, int itemReuseDelay = 0) {
+-			SetItemAnimation((int)((float)sItem.useAnimation * multiplier));
+-			reuseDelay = itemReuseDelay;
++			SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * multiplier, this, sItem));
++			reuseDelay = (int)(itemReuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
+ 		}
+ 
+ 		private void ApplyItemAnimation(Item sItem) {
+ 			if (sItem.melee) {
+-				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
++				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed, this, sItem));
+ 				return;
+ 			}
+ 
+ 			if (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]) {
+-				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
++				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed, this, sItem));
+ 				return;
+ 			}
+ 
+ 			if (sItem.createTile >= 0) {
+-				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
++				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * tileSpeed, this, sItem));
+ 				return;
+ 			}
+ 
+ 			if (sItem.createWall >= 0) {
+-				SetItemAnimation((int)((float)sItem.useAnimation * wallSpeed));
++				SetItemAnimation(PlayerHooks.TotalMeleeTime(sItem.useAnimation * wallSpeed, this, sItem));
+ 				return;
+ 			}
+ 
+ 			SetItemAnimation(sItem.useAnimation);
+-			reuseDelay = sItem.reuseDelay;
++			reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
+ 		}
+ 
+ 		public bool InOpposingTeam(Player otherPlayer) {
 @@ -2270,6 +_,7 @@
  				Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
  				if (item.stack > 0) {
