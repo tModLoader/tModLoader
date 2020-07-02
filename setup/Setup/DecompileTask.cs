@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
+using System.Text;
 using System.Xml;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
@@ -100,6 +101,7 @@ namespace Terraria.ModLoader.Setup
 			var clientModule = serverOnly ? null : ReadModule(TerrariaPath, clientVersion);
 			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
 			var mainModule = serverOnly ? serverModule : clientModule;
+			var rootNamespace = GetCustomAttributes(mainModule)[nameof(AssemblyTitleAttribute)];
 
 			projectDecompiler = new ExtendedProjectDecompiler { 
 				Settings = decompilerSettings,
@@ -112,9 +114,9 @@ namespace Terraria.ModLoader.Setup
 			var resources = new HashSet<string>();
 
 			if (!serverOnly)
-				AddModule(clientModule, projectDecompiler.AssemblyResolver, items, files, resources);
+				AddModule(clientModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources);
 
-			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, serverOnly ? null : "SERVER");
+			AddModule(serverModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources, serverOnly ? null : "SERVER");
 
 			items.Add(WriteProjectFile(mainModule, files, resources));
 
@@ -139,7 +141,27 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module)
+		private static string CalculateSourcePath(string path, string rootNamespace)
+		{
+			if (path.StartsWith(rootNamespace))
+				path = path.Substring(rootNamespace.Length + 1);
+
+			path = path.Replace("Libraries.", "Libraries/"); // lets leave the folder structure in here alone
+			path = path.Replace('\\', '/');
+
+			// . to /
+			int stopFolderzingAt = path.IndexOf('/');
+			if (stopFolderzingAt < 0)
+				stopFolderzingAt = path.LastIndexOf('.');
+			path = new StringBuilder(path).Replace(".", "/", 0, stopFolderzingAt).ToString();
+
+			// default lang files should be called Main
+			if (IsCultureFile(path))
+				path = path.Insert(path.LastIndexOf('.'), "/Main");
+			return path;
+		}
+
+		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module, string rootNamespace)
 		{
 			var metadata = module.Metadata;
 			return module.Metadata.GetTopLevelTypeDefinitions().Where(td => projectDecompiler.IncludeTypeWhenDecompilingProject(module, td))
@@ -149,31 +171,29 @@ namespace Terraria.ModLoader.Setup
 					var path = WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Name)) + ".cs";
 					if (!string.IsNullOrEmpty(metadata.GetString(type.Namespace)))
 						path = Path.Combine(WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Namespace)), path);
-					return path.Replace('\\', '/');
+					return CalculateSourcePath(path, rootNamespace);
 				}, StringComparer.OrdinalIgnoreCase);
 		}
 
-		private static IEnumerable<(string path, Resource r)> GetResourceFiles(PEFile module)
+		private static IEnumerable<(string path, Resource r)> GetResourceFiles(PEFile module, string rootNamespace)
 		{
 			return module.Resources.Where(r => r.ResourceType == ResourceType.Embedded).Select(res =>
 			{
 				var path = res.Name;
-				path = path.Replace("Terraria.Libraries.", "Terraria.Libraries\\");
-				path = path.Replace("Terraria.Localization.Content.", "Terraria.Localization.Content\\");
 				if (path.EndsWith(".dll"))
 				{
 					var asmRef = module.AssemblyReferences.SingleOrDefault(r => path.EndsWith(r.Name + ".dll"));
 					if (asmRef != null)
 						path = Path.Combine(path.Substring(0, path.Length - asmRef.Name.Length - 5), asmRef.Name + ".dll");
 				}
-				else if (IsCultureFile(path))
-					path = path.Insert(path.LastIndexOf('.'), ".Main");
-
-				return (path.Replace('\\', '/'), res);
+				return (CalculateSourcePath(path, rootNamespace), res);
 			});
 		}
 
 		private static bool IsCultureFile(string path) {
+			if (!path.Contains('-'))
+				return false;
+
 			try {
 				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
 				return true;
@@ -182,10 +202,10 @@ namespace Terraria.ModLoader.Setup
 			return false;
 		}
 
-		private DecompilerTypeSystem AddModule(PEFile module, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, string conditional = null)
+		private DecompilerTypeSystem AddModule(PEFile module, string rootNamespace, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, string conditional = null)
 		{
-			var sources = GetCodeFiles(module).ToList();
-			var resources = GetResourceFiles(module).ToList();
+			var sources = GetCodeFiles(module, rootNamespace).ToList();
+			var resources = GetResourceFiles(module, rootNamespace).ToList();
 
 			var ts = new DecompilerTypeSystem(module, resolver, decompilerSettings);
 			items.AddRange(sources
@@ -280,7 +300,7 @@ namespace Terraria.ModLoader.Setup
 					w.WriteElementString("Company", attribs[nameof(AssemblyCompanyAttribute)]);
 					w.WriteElementString("Copyright", attribs[nameof(AssemblyCopyrightAttribute)]);
 
-					w.WriteElementString("RootNamespace", "");
+					w.WriteElementString("RootNamespace", module.Name);
 					w.WriteElementString("Configurations", "Debug;Release;ServerDebug;ServerRelease");
 
 					w.WriteElementString("AssemblySearchPaths", "$(AssemblySearchPaths);{GAC}");
@@ -361,7 +381,7 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static string[] knownAttributes = {nameof(AssemblyCompanyAttribute), nameof(AssemblyCopyrightAttribute) };
+		private static string[] knownAttributes = {nameof(AssemblyCompanyAttribute), nameof(AssemblyCopyrightAttribute), nameof(AssemblyTitleAttribute) };
 		private IDictionary<string, string> GetCustomAttributes(PEFile module) {
 			var dict = new Dictionary<string, string>();
 
