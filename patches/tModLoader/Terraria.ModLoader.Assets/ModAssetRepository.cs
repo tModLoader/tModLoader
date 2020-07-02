@@ -13,9 +13,9 @@ namespace Terraria.ModLoader.Assets
 	{
 		private readonly Dictionary<string, IAsset> Assets;
 
-		private IEnumerable<IContentSource> Sources => (IEnumerable<IContentSource>)GetType()
+		private readonly IEnumerable<IContentSource> Sources;/*=> (IEnumerable<IContentSource>)GetType()
 			.GetField("_sources", BindingFlags.NonPublic|BindingFlags.Instance)
-			.GetValue(this);
+			.GetValue(this);*/
 
 		public ModAssetRepository(IAssetLoader syncLoader, IAsyncAssetLoader asyncLoader, IEnumerable<IContentSource> sources = null) : base(syncLoader, asyncLoader)
 		{
@@ -24,6 +24,7 @@ namespace Terraria.ModLoader.Assets
 				.GetValue(this);
 
 			if(sources!=null) {
+				Sources = sources;
 				SetSources(sources, AssetRequestMode.DoNotLoad);
 			}
 		}
@@ -60,12 +61,11 @@ namespace Terraria.ModLoader.Assets
 
 		private Asset<T> CreateAsset<T>(string assetName, T content, bool tracked = true) where T : class
 		{
-			var type = typeof(Asset<>).MakeGenericType(typeof(T));
-			var constructor = type.GetConstructor(BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance, null, new[] { typeof(string) }, null);
-			var asset = (Asset<T>)constructor.Invoke(new object[] { assetName });
+			var type = typeof(Asset<T>);
+			var asset = (Asset<T>)Activator.CreateInstance(type,BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance, null, new object[]{assetName}, null);
 
 			type.GetMethod("SubmitLoadedContent", BindingFlags.NonPublic|BindingFlags.Instance)
-				.Invoke(asset, new object[] { content, null }); //It doesn't seem like a problem to set the Source to null, it's unused.
+				.Invoke(asset, new object[]{content, Sources.First()}); //Source can not be null. It won't be used for this, but it still requires it to be non-null.
 
 			if(tracked) {
 				if(Assets.TryGetValue(assetName, out var oldAsset)) {

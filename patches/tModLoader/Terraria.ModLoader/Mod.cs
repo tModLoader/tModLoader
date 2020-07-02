@@ -1451,33 +1451,58 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public bool FileExists(string name) => File != null && File.HasFile(name);
 
+		private static readonly string[] imageExtensions = new[]{"",".png"};
 		/// <summary>
 		/// Shorthand for calling ModContent.GetTexture(this.FileName(name)).
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
-		public Asset<Texture2D> GetTexture(string name) => Assets.Request<Texture2D>(name);
+		public Asset<Texture2D> GetTexture(string name)//=> Assets.Request<Texture2D>(name);
+		{
+			foreach(string extension in imageExtensions)
+				if (Assets.HasAsset<Texture2D>(name+extension))
+					return Assets.Request<Texture2D>(name+extension);
+			throw new MissingResourceException(name);
+		}
 
 		/// <summary>
 		/// Shorthand for calling ModLoader.TextureExists(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool TextureExists(string name) => Assets.HasAsset<Texture2D>(name);
+		public bool TextureExists(string name)//=> Assets.HasAsset<Texture2D>(name);
+		{
+			foreach(string extension in imageExtensions)
+				if (Assets.HasAsset<Texture2D>(name+extension))
+					return true;
+			return false;
+		}
 
+		private static readonly string[] soundExtensions = new[]{"",".wav",".ogg",".mp3"};
 		/// <summary>
 		/// Shorthand for calling ModContent.GetSound(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		/// <exception cref="MissingResourceException"></exception>
-		public Asset<SoundEffect> GetSound(string name) => Assets.Request<SoundEffect>(name) ?? throw new MissingResourceException(name);
-
+		public Asset<SoundEffect> GetSound(string name)//=> Assets.Request<SoundEffect>(name);
+		{
+			foreach(string extension in soundExtensions)
+				if (Assets.HasAsset<SoundEffect>(name+extension))
+					return Assets.Request<SoundEffect>(name+extension);
+			throw new MissingResourceException(name);
+		}
 		/// <summary>
 		/// Shorthand for calling ModLoader.SoundExists(this.FileName(name)).
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool SoundExists(string name) => Assets.HasAsset<SoundEffect>(name);
+		public bool SoundExists(string name)//=> Assets.HasAsset<SoundEffect>(name);
+		{
+			foreach(string extension in soundExtensions)
+				if (Assets.HasAsset<SoundEffect>(name+extension))
+					return true;
+			return false;
+		}
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetMusic(this.FileName(name)).

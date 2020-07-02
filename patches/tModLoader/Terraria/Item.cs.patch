@@ -39,6 +39,23 @@
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
  		public const int luckPotionDuration2 = 18000;
+@@ -179,11 +_,11 @@
+ 			}
+ 		}
+ 
+-		public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
+-
+-		public int OriginalDamage => ContentSamples.ItemsByType[type].damage;
+-
+-		public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
++		public int OriginalRarity => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.rare : 0;
++
++		public int OriginalDamage => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.damage : 0;
++
++		public int OriginalDefense => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.defense : 0;
+ 
+ 		public bool IsACoin {
+ 			get {
 @@ -268,6 +_,10 @@
  				return false;
  

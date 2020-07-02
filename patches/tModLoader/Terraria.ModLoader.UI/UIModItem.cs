@@ -65,7 +65,10 @@ namespace Terraria.ModLoader.UI
 
 					using (_mod.modFile.Open())
 					using (var s = _mod.modFile.GetStream("icon.png"))
-						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(Texture2D.FromStream(Main.instance.GraphicsDevice, s));
+						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
+							$"Terraria.ModLoader.UI.Browser.{_mod.Name}.icon.png",
+							Texture2D.FromStream(Main.instance.GraphicsDevice, s)
+						);
 
 					if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
 						_modIcon = new UIImage(modIconTexture) {
@@ -134,7 +137,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (_mod.modFile.ValidModBrowserSignature) {
-				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.GoldenKey], Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
+				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
 				};
 
@@ -153,7 +156,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			if (_mod.properties.beta) {
-				_keyImage = new UIHoverImage(TextureAssets.Item[ItemID.ShadowKey], Language.GetTextValue("tModLoader.BetaModCantPublish")) {
+				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.ShadowKey].Name), Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
 
@@ -169,7 +172,7 @@ namespace Terraria.ModLoader.UI
 
 				for (int i = 0; i < values.Length; i++) {
 					if (values[i] > 0) {
-						_keyImage = new UIHoverImage(TextureAssets.InfoIcon[i], Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
+						_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
 							Left = { Pixels = xOffset, Percent = 1f }
 						};
 

@@ -1,6 +1,13 @@
 --- src/Terraria/Terraria.Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria.Initializers/AssetInitializer.cs
-@@ -20,8 +_,10 @@
+@@ -14,14 +_,17 @@
+ using Terraria.GameContent.UI;
+ using Terraria.ID;
+ using Terraria.IO;
++using Terraria.ModLoader.UI;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.Initializers
  {
  	public static class AssetInitializer
  	{
@@ -12,3 +19,12 @@
  			assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  			assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
  			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+@@ -591,6 +_,8 @@
+ 			LoadMinimapFrames(mode);
+ 			LoadPlayerResourceSets(mode);
+ 			Main.AchievementAdvisor.LoadContent();
++
++			UICommon.LoadTextures();
+ 		}
+ 
+ 		private static void LoadMinimapFrames(AssetRequestMode mode) {
