@@ -1886,7 +1886,7 @@
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
  					else
  						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -38852,10 +_,27 @@
+@@ -38852,10 +_,47 @@
  					if (num107 == 3)
  						num109 = 2;
  
@@ -1898,6 +1898,26 @@
 +					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(drawVersion);
  					origin2.X *= 0.5f;
  					origin2.Y *= 0.5f;
++
++					if (menuMode == 0 && !ModCompile.DeveloperMode) {
++						const string text = "Enable Developer Mode";
++						// measure and draw text from bottom right
++						var textSize = FontAssets.MouseText.Value.MeasureString(text);
++						var pos = new Vector2(screenWidth - 10f + num108, screenHeight - 2f + num109);
++						var d_color = color12;
++						if (num107 == 4) // final draw
++						{
++							var rect = new Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
++							bool mouseover = rect.Contains(mouseX, mouseY);
++							d_color = mouseover ? highVersionColor : new Color(120, 120, 120, 76);
++							if (mouseover && mouseLeftRelease && mouseLeft) {
++								SoundEngine.PlaySound(SoundID.MenuOpen);
++								menuMode = Interface.developerModeHelpID;
++							}
++						}
++						spriteBatch.DrawString(FontAssets.MouseText.Value, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
++					}
++
 -					spriteBatch.DrawString(FontAssets.MouseText.Value, versionNumber, new Vector2(origin2.X + (float)num108 + 10f, (float)screenHeight - origin2.Y + (float)num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
 +					spriteBatch.DrawString(FontAssets.MouseText.Value, drawVersion, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
 +					if (num107 == 4)
