@@ -771,13 +771,12 @@
  		}
  
  		private void LoadContent_TryEnteringHiDef() {
-@@ -8334,6 +_,9 @@
+@@ -8334,6 +_,8 @@
  			numClouds = rand.Next(200);
  			Mount.Initialize();
  			Minecart.Initialize();
 +			// move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
 +			CaptureManager.Instance = new CaptureManager();
-+			LiquidRenderer.Instance = new LiquidRenderer();
  			CacheSupportedDisplaySizes();
  			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
  			ContentSamples.CommonlyUsedContentSamples.PrepareAfterEverythingElseLoaded();

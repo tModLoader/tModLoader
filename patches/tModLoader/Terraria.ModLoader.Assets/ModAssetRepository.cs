@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.Assets
 		public bool HasAsset<T>(string assetName) where T : class
 			=> Sources.Any(source => source is IModContentSource sourceExt ? sourceExt.HasAsset<T>(assetName) : source.HasAsset(assetName));
 		public Asset<T> CreateAsset<T>(string assetName, T content) where T : class
-			=> CreateAsset(assetName, content);
+			=> CreateAsset(assetName, content, true);
 		public IEnumerable<string> EnumeratePaths<T>() where T : class
 		{
 			foreach (var source in Sources) {
@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.Assets
 		internal Asset<T> CreateUntrackedAsset<T>(string assetName, T content) where T : class
 			=> CreateAsset(assetName, content, true);
 
-		private Asset<T> CreateAsset<T>(string assetName, T content, bool tracked = true) where T : class
+		private Asset<T> CreateAsset<T>(string assetName, T content, bool tracked/* = true*/) where T : class
 		{
 			var type = typeof(Asset<T>);
 			var asset = (Asset<T>)Activator.CreateInstance(type,BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance, null, new object[]{assetName}, null);
