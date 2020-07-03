@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Graphics/MagicMissileDrawer.cs
-+++ src/Terraria/Terraria.Graphics/MagicMissileDrawer.cs
+--- src/decompiled/Graphics/MagicMissileDrawer.cs
++++ src/Terraria/Graphics/MagicMissileDrawer.cs
 @@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;
  using System.Runtime.InteropServices;

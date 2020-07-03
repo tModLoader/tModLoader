@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.GameContent.NetModules/NetPingModule.cs
-+++ src/Terraria/Terraria.GameContent.NetModules/NetPingModule.cs
+--- src/decompiled/GameContent/NetModules/NetPingModule.cs
++++ src/Terraria/GameContent/NetModules/NetPingModule.cs
 @@ -14,7 +_,11 @@
  
  		public override bool Deserialize(BinaryReader reader, int userId) {

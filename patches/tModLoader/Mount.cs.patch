@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/Mount.cs
-+++ src/tModLoader/Terraria/Mount.cs
+--- src/Terraria/Mount.cs
++++ src/tModLoader/Mount.cs
 @@ -10,6 +_,7 @@
  using Terraria.GameContent.Drawing;
  using Terraria.Graphics.Shaders;

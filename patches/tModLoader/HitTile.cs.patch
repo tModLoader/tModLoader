@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/HitTile.cs
-+++ src/tModLoader/Terraria/HitTile.cs
+--- src/Terraria/HitTile.cs
++++ src/tModLoader/HitTile.cs
 @@ -2,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;

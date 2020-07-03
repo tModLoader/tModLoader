@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/Tile.cs
-+++ src/tModLoader/Terraria/Tile.cs
+--- src/Terraria/Tile.cs
++++ src/tModLoader/Tile.cs
 @@ -14,7 +_,7 @@
  		public ushort type;
  		public ushort wall;

@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Audio/SoundEngine.cs
-+++ src/Terraria/Terraria.Audio/SoundEngine.cs
+--- src/decompiled/Audio/SoundEngine.cs
++++ src/Terraria/Audio/SoundEngine.cs
 @@ -8,6 +_,7 @@
  {
  	public static class SoundEngine

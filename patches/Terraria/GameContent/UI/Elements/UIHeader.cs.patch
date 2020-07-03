@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.GameContent.UI.Elements/UIHeader.cs
-+++ src/Terraria/Terraria.GameContent.UI.Elements/UIHeader.cs
+--- src/decompiled/GameContent/UI/Elements/UIHeader.cs
++++ src/Terraria/GameContent/UI/Elements/UIHeader.cs
 @@ -16,9 +_,11 @@
  			set {
  				if (_text != value) {

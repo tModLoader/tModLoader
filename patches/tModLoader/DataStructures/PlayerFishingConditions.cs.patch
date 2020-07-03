@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.DataStructures/PlayerFishingConditions.cs
-+++ src/tModLoader/Terraria.DataStructures/PlayerFishingConditions.cs
+--- src/Terraria/DataStructures/PlayerFishingConditions.cs
++++ src/tModLoader/DataStructures/PlayerFishingConditions.cs
 @@ -2,11 +_,14 @@
  {
  	public struct PlayerFishingConditions

@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/NetMessage.cs
-+++ src/Terraria/Terraria/NetMessage.cs
+--- src/decompiled/NetMessage.cs
++++ src/Terraria/NetMessage.cs
 @@ -2057,6 +_,13 @@
  
  		public static void CheckBytes(int bufferIndex = 256) {

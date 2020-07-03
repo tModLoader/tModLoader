@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.GameContent.UI.Elements/UIList.cs
-+++ src/tModLoader/Terraria.GameContent.UI.Elements/UIList.cs
+--- src/Terraria/GameContent/UI/Elements/UIList.cs
++++ src/tModLoader/GameContent/UI/Elements/UIList.cs
 @@ -29,9 +_,9 @@
  			public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  		}

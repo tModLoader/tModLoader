@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.ID/RecipeGroupID.cs
-+++ src/tModLoader/Terraria.ID/RecipeGroupID.cs
+--- src/Terraria/ID/RecipeGroupID.cs
++++ src/tModLoader/ID/RecipeGroupID.cs
 @@ -15,5 +_,10 @@
  		public static int Dragonflies = 10;
  		public static int Turtles = 11;

@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.DataStructures/TileEntity.cs
-+++ src/tModLoader/Terraria.DataStructures/TileEntity.cs
+--- src/Terraria/DataStructures/TileEntity.cs
++++ src/tModLoader/DataStructures/TileEntity.cs
 @@ -4,6 +_,7 @@
  using System.IO;
  using Terraria.Audio;

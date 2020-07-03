@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.UI/IngameFancyUI.cs
-+++ src/tModLoader/Terraria.UI/IngameFancyUI.cs
+--- src/Terraria/UI/IngameFancyUI.cs
++++ src/tModLoader/UI/IngameFancyUI.cs
 @@ -4,7 +_,9 @@
  using Terraria.Audio;
  using Terraria.GameContent.UI.States;

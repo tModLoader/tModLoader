@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Chat/ChatHelper.cs
-+++ src/Terraria/Terraria.Chat/ChatHelper.cs
+--- src/decompiled/Chat/ChatHelper.cs
++++ src/Terraria/Chat/ChatHelper.cs
 @@ -13,7 +_,12 @@
  		private static List<Tuple<string, Color>> _cachedMessages = new List<Tuple<string, Color>>();
  

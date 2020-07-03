@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Audio/LegacySoundPlayer.cs
-+++ src/tModLoader/Terraria.Audio/LegacySoundPlayer.cs
+--- src/Terraria/Audio/LegacySoundPlayer.cs
++++ src/tModLoader/Audio/LegacySoundPlayer.cs
 @@ -38,12 +_,12 @@
  		private SoundEffectInstance _soundInstanceGrab;
  		private Asset<SoundEffect> _soundPixie;

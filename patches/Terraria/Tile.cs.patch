@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/Tile.cs
-+++ src/Terraria/Terraria/Tile.cs
+--- src/decompiled/Tile.cs
++++ src/Terraria/Tile.cs
 @@ -1,8 +_,14 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;

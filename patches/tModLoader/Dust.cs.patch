@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/Dust.cs
-+++ src/tModLoader/Terraria/Dust.cs
+--- src/Terraria/Dust.cs
++++ src/tModLoader/Dust.cs
 @@ -4,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Shaders;

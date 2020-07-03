@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Graphics/FlameLashDrawer.cs
-+++ src/Terraria/Terraria.Graphics/FlameLashDrawer.cs
+--- src/decompiled/Graphics/FlameLashDrawer.cs
++++ src/Terraria/Graphics/FlameLashDrawer.cs
 @@ -1,5 +_,7 @@
  using Microsoft.Xna.Framework;
 +#if XNA

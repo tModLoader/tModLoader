@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Graphics.Capture/CaptureManager.cs
-+++ src/Terraria/Terraria.Graphics.Capture/CaptureManager.cs
+--- src/decompiled/Graphics/Capture/CaptureManager.cs
++++ src/Terraria/Graphics/Capture/CaptureManager.cs
 @@ -9,7 +_,11 @@
  		private CaptureInterface _interface;
  		private CaptureCamera _camera;

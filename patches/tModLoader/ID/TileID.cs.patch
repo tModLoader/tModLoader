@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.ID/TileID.cs
-+++ src/tModLoader/Terraria.ID/TileID.cs
+--- src/Terraria/ID/TileID.cs
++++ src/tModLoader/ID/TileID.cs
 @@ -1,5 +_,9 @@
  using ReLogic.Reflection;
  

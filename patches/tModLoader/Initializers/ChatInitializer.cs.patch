@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Initializers/ChatInitializer.cs
-+++ src/tModLoader/Terraria.Initializers/ChatInitializer.cs
+--- src/Terraria/Initializers/ChatInitializer.cs
++++ src/tModLoader/Initializers/ChatInitializer.cs
 @@ -6,6 +_,7 @@
  
  namespace Terraria.Initializers

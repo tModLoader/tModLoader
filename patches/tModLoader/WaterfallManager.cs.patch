@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/WaterfallManager.cs
-+++ src/tModLoader/Terraria/WaterfallManager.cs
+--- src/Terraria/WaterfallManager.cs
++++ src/tModLoader/WaterfallManager.cs
 @@ -4,6 +_,7 @@
  using System;
  using Terraria.ID;

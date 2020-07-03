@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/Utils.cs
-+++ src/Terraria/Terraria/Utils.cs
+--- src/decompiled/Utils.cs
++++ src/Terraria/Utils.cs
 @@ -512,8 +_,18 @@
  		}
  

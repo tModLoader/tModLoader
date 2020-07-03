@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.UI/UserInterface.cs
-+++ src/Terraria/Terraria.UI/UserInterface.cs
+--- src/decompiled/UI/UserInterface.cs
++++ src/Terraria/UI/UserInterface.cs
 @@ -56,10 +_,12 @@
  		}
  

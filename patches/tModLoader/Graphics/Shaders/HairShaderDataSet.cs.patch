@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Graphics.Shaders/HairShaderDataSet.cs
-+++ src/tModLoader/Terraria.Graphics.Shaders/HairShaderDataSet.cs
+--- src/Terraria/Graphics/Shaders/HairShaderDataSet.cs
++++ src/tModLoader/Graphics/Shaders/HairShaderDataSet.cs
 @@ -7,15 +_,17 @@
  {
  	public class HairShaderDataSet

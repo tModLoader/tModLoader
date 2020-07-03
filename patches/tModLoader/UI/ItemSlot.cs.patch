@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.UI/ItemSlot.cs
-+++ src/tModLoader/Terraria.UI/ItemSlot.cs
+--- src/Terraria/UI/ItemSlot.cs
++++ src/tModLoader/UI/ItemSlot.cs
 @@ -10,6 +_,7 @@
  using Terraria.GameInput;
  using Terraria.ID;

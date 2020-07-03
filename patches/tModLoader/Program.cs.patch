@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/Program.cs
-+++ src/tModLoader/Terraria/Program.cs
+--- src/Terraria/Program.cs
++++ src/tModLoader/Program.cs
 @@ -2,19 +_,23 @@
  using ReLogic.OS;
  using System;

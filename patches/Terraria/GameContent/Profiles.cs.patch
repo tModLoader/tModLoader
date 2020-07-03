@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.GameContent/Profiles.cs
-+++ src/Terraria/Terraria.GameContent/Profiles.cs
+--- src/decompiled/GameContent/Profiles.cs
++++ src/Terraria/GameContent/Profiles.cs
 @@ -17,8 +_,10 @@
  			public LegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
  				_rootFilePath = npcFileTitleFilePath;

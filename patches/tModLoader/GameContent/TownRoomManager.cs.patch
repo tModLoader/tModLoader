@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.GameContent/TownRoomManager.cs
-+++ src/tModLoader/Terraria.GameContent/TownRoomManager.cs
+--- src/Terraria/GameContent/TownRoomManager.cs
++++ src/tModLoader/GameContent/TownRoomManager.cs
 @@ -3,13 +_,14 @@
  using System.Collections.Generic;
  using System.IO;

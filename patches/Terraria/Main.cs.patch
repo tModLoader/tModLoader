@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/Main.cs
-+++ src/Terraria/Terraria/Main.cs
+--- src/decompiled/Main.cs
++++ src/Terraria/Main.cs
 @@ -6,6 +_,9 @@
  using Microsoft.Xna.Framework.Input;
  using ReLogic.Content;

@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.DataStructures/PlayerDeathReason.cs
-+++ src/tModLoader/Terraria.DataStructures/PlayerDeathReason.cs
+--- src/Terraria/DataStructures/PlayerDeathReason.cs
++++ src/tModLoader/DataStructures/PlayerDeathReason.cs
 @@ -14,6 +_,14 @@
  		private int _sourceItemPrefix;
  		private string _sourceCustomReason;

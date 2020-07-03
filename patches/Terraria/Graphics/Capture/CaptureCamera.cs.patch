@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Graphics.Capture/CaptureCamera.cs
-+++ src/Terraria/Terraria.Graphics.Capture/CaptureCamera.cs
+--- src/decompiled/Graphics/Capture/CaptureCamera.cs
++++ src/Terraria/Graphics/Capture/CaptureCamera.cs
 @@ -5,10 +_,15 @@
  using System.Drawing;
  using System.Drawing.Imaging;

@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Social.Steam/CoreSocialModule.cs
-+++ src/Terraria/Terraria.Social.Steam/CoreSocialModule.cs
+--- src/decompiled/Social/Steam/CoreSocialModule.cs
++++ src/Terraria/Social/Steam/CoreSocialModule.cs
 @@ -20,10 +_,12 @@
  
  		public void Initialize() {

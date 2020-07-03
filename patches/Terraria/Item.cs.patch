@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/Item.cs
-+++ src/Terraria/Terraria/Item.cs
+--- src/decompiled/Item.cs
++++ src/Terraria/Item.cs
 @@ -3,7 +_,9 @@
  using System.IO;
  using Terraria.Audio;

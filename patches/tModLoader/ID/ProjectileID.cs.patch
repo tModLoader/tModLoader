@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.ID/ProjectileID.cs
-+++ src/tModLoader/Terraria.ID/ProjectileID.cs
+--- src/Terraria/ID/ProjectileID.cs
++++ src/tModLoader/ID/ProjectileID.cs
 @@ -1,5 +_,9 @@
  using Terraria.WorldBuilding;
  

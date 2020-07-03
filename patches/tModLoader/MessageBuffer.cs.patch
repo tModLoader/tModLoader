@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/MessageBuffer.cs
-+++ src/tModLoader/Terraria/MessageBuffer.cs
+--- src/Terraria/MessageBuffer.cs
++++ src/tModLoader/MessageBuffer.cs
 @@ -19,6 +_,9 @@
  using Terraria.Net;
  using Terraria.Testing;

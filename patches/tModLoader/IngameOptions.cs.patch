@@ -1,5 +1,5 @@
---- src/Terraria/Terraria/IngameOptions.cs
-+++ src/tModLoader/Terraria/IngameOptions.cs
+--- src/Terraria/IngameOptions.cs
++++ src/tModLoader/IngameOptions.cs
 @@ -4,10 +_,13 @@
  using System.Collections.Generic;
  using System.Linq;

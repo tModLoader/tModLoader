@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.Social.WeGame/CoreSocialModule.cs
-+++ src/Terraria/Terraria.Social.WeGame/CoreSocialModule.cs
+--- src/decompiled/Social/WeGame/CoreSocialModule.cs
++++ src/Terraria/Social/WeGame/CoreSocialModule.cs
 @@ -20,9 +_,13 @@
  		public void Initialize() {
  			RailGameID railGameID = new RailGameID();

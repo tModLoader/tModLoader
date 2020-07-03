@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.ID/ItemID.cs
-+++ src/tModLoader/Terraria.ID/ItemID.cs
+--- src/Terraria/ID/ItemID.cs
++++ src/tModLoader/ID/ItemID.cs
 @@ -1,7 +_,9 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;

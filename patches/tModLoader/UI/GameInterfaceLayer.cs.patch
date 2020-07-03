@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.UI/GameInterfaceLayer.cs
-+++ src/tModLoader/Terraria.UI/GameInterfaceLayer.cs
+--- src/Terraria/UI/GameInterfaceLayer.cs
++++ src/tModLoader/UI/GameInterfaceLayer.cs
 @@ -9,13 +_,18 @@
  	{
  		public readonly string Name;

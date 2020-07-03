@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Net/NetManager.cs
-+++ src/tModLoader/Terraria.Net/NetManager.cs
+--- src/Terraria/Net/NetManager.cs
++++ src/tModLoader/Net/NetManager.cs
 @@ -1,5 +_,8 @@
 +using log4net.Core;
  using System.Collections.Generic;

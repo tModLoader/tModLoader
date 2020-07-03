@@ -1,5 +1,5 @@
---- src/decompiled/Terraria.UI/FancyErrorPrinter.cs
-+++ src/Terraria/Terraria.UI/FancyErrorPrinter.cs
+--- src/decompiled/UI/FancyErrorPrinter.cs
++++ src/Terraria/UI/FancyErrorPrinter.cs
 @@ -3,7 +_,9 @@
  using System.Collections.Generic;
  using System.IO;

@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.GameContent.Tile_Entities/TEItemFrame.cs
-+++ src/tModLoader/Terraria.GameContent.Tile_Entities/TEItemFrame.cs
+--- src/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
++++ src/tModLoader/GameContent/Tile_Entities/TEItemFrame.cs
 @@ -1,5 +_,6 @@
  using System.IO;
  using Terraria.DataStructures;

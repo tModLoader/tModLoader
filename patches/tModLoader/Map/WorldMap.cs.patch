@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Map/WorldMap.cs
-+++ src/tModLoader/Terraria.Map/WorldMap.cs
+--- src/Terraria/Map/WorldMap.cs
++++ src/tModLoader/Map/WorldMap.cs
 @@ -1,6 +_,7 @@
  using System;
  using System.IO;

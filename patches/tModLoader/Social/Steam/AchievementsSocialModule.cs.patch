@@ -1,5 +1,5 @@
---- src/Terraria/Terraria.Social.Steam/AchievementsSocialModule.cs
-+++ src/tModLoader/Terraria.Social.Steam/AchievementsSocialModule.cs
+--- src/Terraria/Social/Steam/AchievementsSocialModule.cs
++++ src/tModLoader/Social/Steam/AchievementsSocialModule.cs
 @@ -91,7 +_,7 @@
  		}
  
