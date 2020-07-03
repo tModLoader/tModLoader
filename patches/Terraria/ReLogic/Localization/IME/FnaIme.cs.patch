@@ -1,0 +1,35 @@
+--- src/decompiled/ReLogic/Localization/IME/FnaIme.cs
++++ src/Terraria/ReLogic/Localization/IME/FnaIme.cs
+@@ -1,3 +_,7 @@
++#if FNA
++using Microsoft.Xna.Framework.Input;
++#endif
++
+ namespace ReLogic.Localization.IME
+ {
+ 	internal class FnaIme : PlatformIme
+@@ -12,6 +_,12 @@
+ 
+ 		public override uint SelectedCandidate => 0u;
+ 
++#if FNA
++		public FnaIme() {
++			TextInputEXT.TextInput += OnCharCallback;
++		}
++#endif
++
+ 		private void OnCharCallback(char key) {
+ 			if (base.IsEnabled)
+ 				OnKeyPress(key);
+@@ -21,6 +_,11 @@
+ 
+ 		protected override void Dispose(bool disposing) {
+ 			if (!_disposedValue) {
++#if FNA
++				if (disposing)
++					TextInputEXT.TextInput -= OnCharCallback;
++#endif
++
+ 				if (base.IsEnabled)
+ 					Disable();
+ 
