@@ -70,7 +70,7 @@
      <Reference Include="Newtonsoft.Json" />
      <Reference Include="RailSDK.Net">
        <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\RailSDK.Net.Windows.dll</HintPath>
-@@ -79,6 +_,7 @@
+@@ -79,12 +_,17 @@
      <Reference Include="System.Core" />
      <Reference Include="System.Drawing" />
      <Reference Include="System.Runtime.Serialization" />
@@ -78,10 +78,10 @@
      <Reference Include="System.Windows.Forms">
        <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
      </Reference>
-@@ -86,5 +_,9 @@
+     <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-+    <EmbeddedResource Include="Terraria.Libraries\JSON.NET\Newtonsoft.Json.dll">
++    <EmbeddedResource Include="Libraries\JSON.NET\Newtonsoft.Json.dll">
 +		<LogicalName>Newtonsoft.Json.dll</LogicalName>
 +	</EmbeddedResource>
 +    <EmbeddedResource Include="**\*.png" />
