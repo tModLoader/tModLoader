@@ -27,3 +27,5 @@
 		//We should easily be able to remove all patches to the TileEntity class by doing the following:
 			//Make ModTileEntity use new abstracted vanilla TileEntityManager.
 			//Always use "is" check on TileEntity rather than id>= to determine a ModTileEntity.
+	//GameContent.ItemShopSellbackHelper
+		//Worth keeping track of item data?
