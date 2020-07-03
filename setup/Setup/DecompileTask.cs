@@ -113,14 +113,34 @@ namespace Terraria.ModLoader.Setup
 			var files = new HashSet<string>();
 			var resources = new HashSet<string>();
 
+			// Decompile embedded library sources directly into Terraria project. Treated the same as Terraria source
+			var decompiledLibraries = new [] { "ReLogic" };
+			foreach (var lib in decompiledLibraries)
+				AddEmbeddedLibrary(lib, mainModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources);
+
 			if (!serverOnly)
 				AddModule(clientModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources);
 
 			AddModule(serverModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources, serverOnly ? null : "SERVER");
 
-			items.Add(WriteProjectFile(mainModule, files, resources));
+			items.Add(WriteProjectFile(mainModule, files, resources, decompiledLibraries));
 
 			ExecuteParallel(items);
+		}
+
+		private void AddEmbeddedLibrary(string name, PEFile mainModule, string rootNamespace, IAssemblyResolver resolver, List<WorkItem> items, HashSet<string> files, HashSet<string> resources)
+		{
+			string filename = name + ".dll";
+			var resource = mainModule.Resources.Single(r => r.Name.EndsWith(filename));
+			
+			using var s = resource.TryOpenStream();
+			s.Position = 0;
+			var libModule = new PEFile(filename, s, PEStreamOptions.PrefetchEntireImage);
+			AddModule(libModule, rootNamespace, resolver, items, files, resources);
+
+			// add the resource path to the resource set, to prevent it being extracted later from the main module
+			var path = Path.Combine(resource.Name.Substring(0, resource.Name.Length - filename.Length - 1), filename);
+			resources.Add(CalculateSourcePath(path, rootNamespace));
 		}
 
 		protected PEFile ReadModule(string path, Version version)
@@ -277,7 +297,7 @@ namespace Terraria.ModLoader.Setup
 			});
 		}
 
-		private WorkItem WriteProjectFile(PEFile module, IEnumerable<string> sources, IEnumerable<string> resources)
+		private WorkItem WriteProjectFile(PEFile module, IEnumerable<string> sources, IEnumerable<string> resources, ICollection<string> decompiledLibraries)
 		{
 			var name = Path.GetFileNameWithoutExtension(module.Name) + ".csproj";
 			return new WorkItem("Writing: " + name, () =>
@@ -331,7 +351,7 @@ namespace Terraria.ModLoader.Setup
 					// references
 					w.WriteStartElement("ItemGroup");
 					foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
-						if (r.Name == "mscorlib") continue;
+						if (r.Name == "mscorlib" || decompiledLibraries.Contains(r.Name)) continue;
 
 						w.WriteStartElement("Reference");
 						w.WriteAttributeString("Include", r.Name);
