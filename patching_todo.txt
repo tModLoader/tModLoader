@@ -25,7 +25,6 @@
 	//Need reimplementing:
 		//TileLoader.DisableSmartInteract
 		//TileLoader.HasSmartInteract
-		//"Enable Developer Mode" button
 		//NPCLoader.CanChat
 			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
 		//TileLoader.FixSmartInteractCoords

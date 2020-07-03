@@ -48,33 +48,3 @@
  					if (Clients[k].IsConnected()) {
  						if (!Clients[k].IsActive)
  							Clients[k].State = 0;
-
-//Player.ApplyAnnimation was moved
- 		private void ApplyAnimation(Item sItem) {
- 			if (sItem.melee) {
--				itemAnimation = (int)((float)sItem.useAnimation * meleeSpeed);
--				itemAnimationMax = (int)((float)sItem.useAnimation * meleeSpeed);
-+				itemAnimation = PlayerHooks.TotalMeleeTime(sItem.useAnimation * meleeSpeed, this, sItem);
-+				itemAnimationMax = itemAnimation;
- 			}
- 			else if (sItem.createTile >= 0) {
--				itemAnimation = (int)((float)sItem.useAnimation * tileSpeed);
--				itemAnimationMax = (int)((float)sItem.useAnimation * tileSpeed);
-+				itemAnimation = PlayerHooks.TotalMeleeTime(sItem.useAnimation * tileSpeed, this, sItem);
-+				itemAnimationMax = itemAnimation;
- 			}
- 			else if (sItem.createWall >= 0) {
--				itemAnimation = (int)((float)sItem.useAnimation * wallSpeed);
--				itemAnimationMax = (int)((float)sItem.useAnimation * wallSpeed);
-+				itemAnimation = PlayerHooks.TotalMeleeTime(sItem.useAnimation * wallSpeed, this, sItem);
-+				itemAnimationMax = itemAnimation;
- 			}
- 			else {
--				itemAnimation = sItem.useAnimation;
--				itemAnimationMax = sItem.useAnimation;
--				reuseDelay = sItem.reuseDelay;
-+				itemAnimation = PlayerHooks.TotalMeleeTime(sItem.useAnimation, this, sItem);
-+				itemAnimationMax = itemAnimation;
-+				reuseDelay = (int)(sItem.reuseDelay / PlayerHooks.TotalUseTimeMultiplier(this, sItem));
- 			}
- 		}
