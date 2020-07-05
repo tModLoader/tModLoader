@@ -23,8 +23,6 @@ namespace Terraria.ModLoader.Assets
 			public readonly Dictionary<string, string> PathAssociations = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase); //Null value here would mean that the path is ambiguous
 		}
 
-		//public static readonly IDictionary<Type, IList<string>> AssetTypeToExtensions;
-
 		private readonly AssetReaderCollection AssetReaderCollection;
 		private readonly Dictionary<Type, ContentTypeInfo> PerContentTypeInfo = new Dictionary<Type, ContentTypeInfo>();
 
@@ -41,23 +39,13 @@ namespace Terraria.ModLoader.Assets
 
 			FillPathCache();
 		}
-		public override Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad)
-		{
+		public override Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
 			if (PerContentTypeInfo.TryGetValue(typeof(T), out var info) && info.PathAssociations.TryGetValue(assetName, out string guessedName)) {
 				assetName = guessedName;
 			}
 
 			return base.Request<T>(assetName, mode);
 		}
-		/*protected override IContentSource FindSourceForAsset(string assetName, Type contentType = null) {
-			if (contentType!=null && PerContentTypeInfo.TryGetValue(contentType, out var info)) {
-				info.PathAssociations.TryGetValue(assetName, out string guessedName);
-
-				return _sources.FirstOrDefault(source => source.HasAsset(assetName) || source.HasAsset(guessedName));
-			}
-
-			return base.FindSourceForAsset(assetName, contentType);
-		}*/
 
 		public bool HasAsset<T>(string assetName) where T : class => PerContentTypeInfo.TryGetValue(typeof(T), out var info) && info.FilePaths.Contains(assetName);
 		public IEnumerable<string> EnumeratePaths<T>() where T : class {

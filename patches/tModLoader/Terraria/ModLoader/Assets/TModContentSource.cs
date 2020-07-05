@@ -20,8 +20,7 @@ namespace Terraria.ModLoader.Assets
 
 		public IContentValidator ContentValidator { get; set; }
 
-		public TModContentSource(TmodFile file)
-		{
+		public TModContentSource(TmodFile file) {
 			this.file = file ?? throw new ArgumentNullException(nameof(file));
 		}
 
@@ -35,8 +34,7 @@ namespace Terraria.ModLoader.Assets
 		public Stream OpenStream(string assetName) => file.GetStream(assetName);
 		public IEnumerable<string> EnumerateFiles() => file.Select(fileEntry => fileEntry.Name);
 		//Etc
-		public void Dispose()
-		{
+		public void Dispose() {
 			file = null;
 
 			ClearRejections();
