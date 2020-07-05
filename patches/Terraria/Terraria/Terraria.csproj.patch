@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Terraria.csproj
 +++ src/Terraria/Terraria/Terraria.csproj
-@@ -1,34 +_,61 @@
+@@ -1,34 +_,64 @@
  <Project Sdk="Microsoft.NET.Sdk">
    <Import Project="../Configuration.targets" />
 +  <Import Project="../../TerrariaSteamPath.targets" />
@@ -16,6 +16,9 @@
      <OutputType>Exe</OutputType>
      <OutputName>$(OutputName)Server</OutputName>
    </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
++    <OutputName>$(OutputName)Debug</OutputName>
++  </PropertyGroup>
 +  <PropertyGroup>
 +    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
