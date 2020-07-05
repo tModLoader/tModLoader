@@ -25,7 +25,7 @@
 +  </PropertyGroup>
    <ItemGroup>
 +    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
-+      <HintPath>..\..\references\FNA.dll</HintPath>
++      <HintPath>..\..\..\references\FNA.dll</HintPath>
 +    </Reference>
      <Reference Include="Ionic.Zip.CF" />
 -    <Reference Include="Microsoft.Xna.Framework" />
