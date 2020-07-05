@@ -1,0 +1,10 @@
+--- src/Terraria/ReLogic/Content/Readers/XnbReader.cs
++++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
+@@ -48,5 +_,7 @@
+ 		public void Dispose() {
+ 			Dispose(disposing: true);
+ 		}
++
++		public Type[] GetAssociatedTypes() => null;
+ 	}
+ }

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,10 @@ namespace Terraria.ModLoader.Default
 		}
 
 
-		public override void ModifyContentSources(IList<IContentSource> sources)
+		public override void SetupAssetRepository(IList<IContentSource> sources, AssetReaderCollection assetReaderCollection, IList<Type> delayedLoadTypes)
 		{
 			sources.Clear();
-			sources.Add(new AssemblyResourcesModContentSource("Terraria.ModLoader.Default.", Assembly.GetExecutingAssembly()));
+			sources.Add(new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default."));
 		}
 
 		public override void Load() {

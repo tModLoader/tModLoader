@@ -1,0 +1,40 @@
+--- src/Terraria/ReLogic/Content/AssetRepository.cs
++++ src/tModLoader/ReLogic/Content/AssetRepository.cs
+@@ -7,8 +_,8 @@
+ {
+ 	public class AssetRepository : IAssetRepository, IDisposable
+ 	{
+-		private readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
++		protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
+-		private IEnumerable<IContentSource> _sources = new IContentSource[0];
++		protected IEnumerable<IContentSource> _sources { get; private set; } = new IContentSource[0];
+ 		private readonly Dictionary<Type, Action<IAsset, AssetRequestMode>> _typeSpecificReloadActions = new Dictionary<Type, Action<IAsset, AssetRequestMode>>();
+ 		private readonly IAsyncAssetLoader _asyncLoader;
+ 		private readonly IAssetLoader _loader;
+@@ -47,7 +_,7 @@
+ 				_asyncLoader.Start();
+ 		}
+ 
+-		public void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
++		public virtual void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) {
+ 			ThrowIfDisposed();
+ 			lock (_requestLock) {
+ 				while (_asyncLoader.Remaining > 0) {
+@@ -59,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
++		public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class {
+ 			ThrowIfDisposed();
+ 			assetName = AssetPathHelper.CleanPath(assetName);
+ 			lock (_requestLock) {
+@@ -187,7 +_,7 @@
+ 			LoadAsset(asset2, mode);
+ 		}
+ 
+-		private IContentSource FindSourceForAsset(string assetName) => _sources.FirstOrDefault((IContentSource source) => source.HasAsset(assetName)) ?? throw AssetLoadException.FromMissingAsset(assetName);
++		protected IContentSource FindSourceForAsset(string assetName) => _sources.FirstOrDefault((IContentSource source) => source.HasAsset(assetName)) ?? throw AssetLoadException.FromMissingAsset(assetName);
+ 
+ 		private void ThrowIfDisposed() {
+ 			if (_isDisposed)

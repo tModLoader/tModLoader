@@ -91,21 +91,21 @@ namespace Terraria.ModLoader.UI
 			Asset<Texture2D> LoadEmbeddedTexture(string name)
 				=> ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.{name}");
 
-			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError.png");
-			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig.png");
-			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus.png");
-			ButtonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown.png");
-			ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed.png");
-			ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded.png");
-			ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons.png");
-			ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation.png");
-			LoaderTexture = LoadEmbeddedTexture("UI.Loader.png");
-			LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG.png");
-			ButtonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload.png");
-			ButtonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade.png");
-			ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple.png");
-			ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo.png");
-			ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig.png");
+			ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError");
+			ButtonConfigTexture = LoadEmbeddedTexture("Config.UI.ButtonConfig");
+			ButtonPlusTexture = LoadEmbeddedTexture("Config.UI.ButtonPlus");
+			ButtonUpDownTexture = LoadEmbeddedTexture("Config.UI.ButtonUpDown");
+			ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");
+			ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
+			ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons");
+			ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
+			LoaderTexture = LoadEmbeddedTexture("UI.Loader");
+			LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
+			ButtonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload");
+			ButtonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade");
+			ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
+			ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo");
+			ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig");
 
 			DividerTexture = Main.Assets.Request<Texture2D>("Images/UI/Divider");
 			InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");

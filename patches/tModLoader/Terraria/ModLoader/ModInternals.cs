@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MP3Sharp;
 using NVorbis;
 using ReLogic.Content;
+using ReLogic.Content.Readers;
 using ReLogic.Content.Sources;
 using ReLogic.Graphics;
 using ReLogic.Utilities;
@@ -382,21 +383,31 @@ namespace Terraria.ModLoader
 			var sources = new List<IContentSource>();
 
 			if (File!=null) {
-				sources.Add(new ModContentSource(this));
+				sources.Add(new TModContentSource(File));
 			}
-
-			ModifyContentSources(sources);
 
 			var assetReaderCollection = AssetInitializer.assetReaderCollection;
 
+			assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+			assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
+
+			var delayedLoadTypes = new List<Type> {
+				typeof(Texture2D),
+				typeof(DynamicSpriteFont),
+				typeof(SpriteFont)
+			};
+
+			SetupAssetRepository(sources, assetReaderCollection, delayedLoadTypes);
+
 			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
+
+			foreach (var type in delayedLoadTypes) {
+				asyncAssetLoader.RequireTypeCreationOnTransfer(type);
+			}
 
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
-			Assets = new ModAssetRepository(assetLoader, asyncAssetLoader, sources.ToArray());
+			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
 		private void AutoloadItem(Type type) {

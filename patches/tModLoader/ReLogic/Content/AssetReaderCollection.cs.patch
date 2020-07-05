@@ -1,0 +1,12 @@
+--- src/Terraria/ReLogic/Content/AssetReaderCollection.cs
++++ src/tModLoader/ReLogic/Content/AssetReaderCollection.cs
+@@ -22,5 +_,9 @@
+ 		}
+ 
+ 		public bool CanReadExtension(string extension) => _readersByExtension.ContainsKey(extension.ToLower());
++
++		//Added by tML:
++
++		public bool TryGetReader(string extension, out IAssetReader reader) => _readersByExtension.TryGetValue(extension.ToLower(), out reader);
+ 	}
+ }

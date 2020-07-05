@@ -134,7 +134,7 @@ namespace Terraria.ModLoader
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
-			ManifestAssets = new ModAssetRepository(assetLoader, asyncAssetLoader, new[] { ManifestContentSource });
+			ManifestAssets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, new[] { ManifestContentSource });
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));

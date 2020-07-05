@@ -8,32 +8,60 @@ using ReLogic.Content.Sources;
 
 namespace Terraria.ModLoader.Assets
 {
-	public class AssemblyResourcesContentSource : IContentSource, IDisposable
+	public sealed class AssemblyResourcesContentSource : IContentSource, IDisposable
 	{
 		private static readonly StringComparer StringComparer = StringComparer.CurrentCultureIgnoreCase;
 
 		public IContentValidator ContentValidator { get; set; }
 
-		protected readonly RejectedAssetCollection Rejections = new RejectedAssetCollection();
-		protected readonly string[] ResourceNames;
+		private readonly string RootPath;
+		private readonly HashSet<string> ResourceNames;
+		private readonly RejectedAssetCollection Rejections;
+		private readonly Dictionary<string, string> PathRedirects;
 
 		private Assembly assembly;
 
-		public AssemblyResourcesContentSource(Assembly assembly)
+		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null)
 		{
-			ResourceNames = assembly.GetManifestResourceNames();
+			RootPath = rootPath;
+			Rejections = new RejectedAssetCollection();
+
+			var resourceNames = assembly.GetManifestResourceNames().ToList();
+
+			if (RootPath != null) {
+				PathRedirects = new Dictionary<string, string>();
+
+				for (int i = 0;i<resourceNames.Count;i++) {
+					string path = resourceNames[i];
+
+					if (path.StartsWith(rootPath)) {
+						string shortPath = path.Substring(rootPath.Length);
+
+						resourceNames[i] = shortPath;
+						PathRedirects[shortPath] = path;
+					} else {
+						resourceNames.RemoveAt(i--);
+					}
+				}
+			}
+
+			ResourceNames = new HashSet<string>(resourceNames);
 
 			this.assembly = assembly;
 		}
 
 		//Assets
-		public virtual bool HasAsset(string assetName) => ResourceNames.Any(s => StringComparer.Equals(s, assetName));
-		public virtual string GetExtension(string assetName) => Path.GetExtension(assetName);
-		public virtual Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(assetName);
+		public bool HasAsset(string assetName) => ResourceNames.Any(s => StringComparer.Equals(s, assetName));
+		public string GetExtension(string assetName) => Path.GetExtension(assetName);
+		public Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(PathRedirects != null ? PathRedirects[assetName] : assetName);
+		public IEnumerable<string> EnumerateFiles() => ResourceNames;
 		//Etc
-		public virtual void Dispose()
+		public void Dispose()
 		{
 			assembly = null;
+
+			ResourceNames.Clear();
+			PathRedirects.Clear();
 
 			ClearRejections();
 		}

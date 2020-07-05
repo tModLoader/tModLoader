@@ -1,0 +1,10 @@
+--- src/Terraria/ReLogic/Content/Sources/FileSystemContentSource.cs
++++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
+@@ -76,5 +_,7 @@
+ 		}
+ 
+ 		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
++
++		public IEnumerable<string> EnumerateFiles() => _nameToAbsolutePath.Keys;
+ 	}
+ }
