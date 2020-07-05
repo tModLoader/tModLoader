@@ -1,5 +1,5 @@
---- src/Terraria/UI/LegacyNetDiagnosticsUI.cs
-+++ src/tModLoader/UI/LegacyNetDiagnosticsUI.cs
+--- src/Terraria/Terraria/UI/LegacyNetDiagnosticsUI.cs
++++ src/tModLoader/Terraria/UI/LegacyNetDiagnosticsUI.cs
 @@ -12,7 +_,7 @@
  		public static int rxData = 0;
  		public static int txMsg = 0;

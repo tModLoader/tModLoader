@@ -1,5 +1,5 @@
---- src/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
-+++ src/tModLoader/GameContent/UI/Elements/UIWorldListItem.cs
+--- src/Terraria/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
 @@ -2,10 +_,13 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;

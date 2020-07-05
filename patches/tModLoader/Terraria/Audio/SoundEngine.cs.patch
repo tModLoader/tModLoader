@@ -1,5 +1,5 @@
---- src/Terraria/Audio/SoundEngine.cs
-+++ src/tModLoader/Audio/SoundEngine.cs
+--- src/Terraria/Terraria/Audio/SoundEngine.cs
++++ src/tModLoader/Terraria/Audio/SoundEngine.cs
 @@ -9,8 +_,8 @@
  	public static class SoundEngine
  	{

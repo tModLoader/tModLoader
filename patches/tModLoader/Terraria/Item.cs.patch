@@ -1,14 +1,13 @@
---- src/Terraria/Item.cs
-+++ src/tModLoader/Item.cs
-@@ -1,6 +_,7 @@
+--- src/Terraria/Terraria/Item.cs
++++ src/tModLoader/Terraria/Item.cs
+@@ -1,5 +_,6 @@
  using Microsoft.Xna.Framework;
  using System;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
  using Terraria.Enums;
- #if CLIENT
-@@ -12,11 +_,29 @@
+@@ -10,11 +_,29 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -39,7 +38,7 @@
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
  		public const int luckPotionDuration2 = 18000;
-@@ -179,11 +_,11 @@
+@@ -177,11 +_,11 @@
  			}
  		}
  
@@ -56,7 +55,7 @@
  
  		public bool IsACoin {
  			get {
-@@ -268,6 +_,10 @@
+@@ -266,6 +_,10 @@
  				return false;
  
  			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
@@ -67,7 +66,7 @@
  			int num = pre;
  			float num2 = 1f;
  			float num3 = 1f;
-@@ -286,15 +_,19 @@
+@@ -284,15 +_,19 @@
  				num7 = 1f;
  				num8 = 0;
  				flag = false;
@@ -90,7 +89,7 @@
  						if (num9 == 0)
  							num = 1;
  
-@@ -414,9 +_,12 @@
+@@ -412,9 +_,12 @@
  
  						if (num9 == 39)
  							num = 81;
@@ -105,7 +104,7 @@
  						if (num10 == 0)
  							num = 36;
  
-@@ -458,9 +_,12 @@
+@@ -456,9 +_,12 @@
  
  						if (num10 == 13)
  							num = 61;
@@ -120,7 +119,7 @@
  						if (num11 == 0)
  							num = 16;
  
-@@ -565,9 +_,12 @@
+@@ -563,9 +_,12 @@
  
  						if (num11 == 34)
  							num = 82;
@@ -135,7 +134,7 @@
  						if (num12 == 0)
  							num = 26;
  
-@@ -675,9 +_,12 @@
+@@ -673,9 +_,12 @@
  
  						if (num12 == 35)
  							num = 83;
@@ -150,7 +149,7 @@
  						if (type == 3389)
  							num13 = unifiedRandom.Next(15);
  
-@@ -725,12 +_,15 @@
+@@ -723,12 +_,15 @@
  
  						if (num13 == 14)
  							num = 84;
@@ -166,7 +165,7 @@
  					}
  				}
  
-@@ -738,7 +_,7 @@
+@@ -736,7 +_,7 @@
  					case -3:
  						return true;
  					case -1:
@@ -175,7 +174,7 @@
  							num = 0;
  						break;
  				}
-@@ -1017,6 +_,8 @@
+@@ -1015,6 +_,8 @@
  						num8 = 2;
  						break;
  				}
@@ -184,7 +183,7 @@
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
-@@ -1038,10 +_,16 @@
+@@ -1036,10 +_,16 @@
  					num = -1;
  				}
  
@@ -201,7 +200,7 @@
  			}
  
  			damage = (int)Math.Round((float)damage * num2);
-@@ -1053,6 +_,9 @@
+@@ -1051,6 +_,9 @@
  			scale *= num5;
  			shootSpeed *= num6;
  			crit += num8;
@@ -211,7 +210,7 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1066,6 +_,9 @@
+@@ -1064,6 +_,9 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
@@ -221,7 +220,7 @@
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1118,6 +_,8 @@
+@@ -1116,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
  		public bool checkMat() {
@@ -230,7 +229,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1317,6 +_,9 @@
+@@ -1315,6 +_,9 @@
  		}
  
  		public static int BannerToItem(int banner) {
@@ -240,7 +239,7 @@
  			int num = 0;
  			if (banner >= 276)
  				return 4965 + banner - 276;
-@@ -2071,9 +_,10 @@
+@@ -2069,9 +_,10 @@
  					return 287;
  				case 133:
  					return 288;
@@ -253,7 +252,7 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2642,9 +_,10 @@
+@@ -2640,9 +_,10 @@
  					return 176;
  				case 288:
  					return 133;
@@ -266,7 +265,7 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -44351,6 +_,16 @@
+@@ -44349,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
@@ -283,7 +282,7 @@
  		public void SetDefaults(int Type, bool noMatCheck = false) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -44363,9 +_,6 @@
+@@ -44361,9 +_,6 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
@@ -293,7 +292,7 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
-@@ -44538,11 +_,12 @@
+@@ -44536,11 +_,12 @@
  				maxStack = 999;
  
  			netID = type;
@@ -307,7 +306,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44552,6 +_,8 @@
+@@ -44550,6 +_,8 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -316,7 +315,7 @@
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
-@@ -44654,6 +_,10 @@
+@@ -44652,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -327,7 +326,7 @@
  			switch (type) {
  				case 3318:
  				case 3319:
-@@ -44956,6 +_,7 @@
+@@ -44954,6 +_,7 @@
  				timeSinceItemSpawned += num3;
  			}
  
@@ -335,7 +334,7 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45054,7 +_,7 @@
+@@ -45052,7 +_,7 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
@@ -344,7 +343,7 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45064,6 +_,7 @@
+@@ -45062,6 +_,7 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
@@ -352,7 +351,7 @@
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45074,6 +_,7 @@
+@@ -45072,6 +_,7 @@
  					base.velocity.Y = 0f;
  			}
  			else {
@@ -360,7 +359,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45594,6 +_,9 @@
+@@ -45592,6 +_,9 @@
  		}
  
  		public static Rectangle GetDrawHitbox(int type, Player user) {
@@ -370,7 +369,7 @@
  			Main.instance.LoadItem(type);
  			if (ItemID.Sets.IsFood[type])
  				return TextureAssets.Item[type].Frame(1, 3, 0, 1);
-@@ -45619,6 +_,7 @@
+@@ -45617,6 +_,7 @@
  				default:
  					return TextureAssets.Item[type].Frame();
  			}
@@ -378,7 +377,7 @@
  		}
  
  		public static int NewItem(Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem((int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-@@ -45631,6 +_,9 @@
+@@ -45629,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -388,7 +387,7 @@
  			if (Main.halloween) {
  				if (Type == 58)
  					Type = 1734;
-@@ -45753,14 +_,17 @@
+@@ -45751,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -409,7 +408,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -45779,7 +_,22 @@
+@@ -45777,7 +_,22 @@
  			}
  		}
  
@@ -433,7 +432,7 @@
  		public Item DeepClone() => (Item)MemberwiseClone();
  
  		public bool IsTheSameAs(Item compareItem) {
-@@ -45811,6 +_,8 @@
+@@ -45809,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;

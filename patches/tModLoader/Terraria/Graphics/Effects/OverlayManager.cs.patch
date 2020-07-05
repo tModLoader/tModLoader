@@ -1,5 +1,5 @@
---- src/Terraria/Graphics/Effects/OverlayManager.cs
-+++ src/tModLoader/Graphics/Effects/OverlayManager.cs
+--- src/Terraria/Terraria/Graphics/Effects/OverlayManager.cs
++++ src/tModLoader/Terraria/Graphics/Effects/OverlayManager.cs
 @@ -74,11 +_,11 @@
  			}
  		}

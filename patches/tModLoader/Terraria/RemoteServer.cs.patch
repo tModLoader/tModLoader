@@ -1,5 +1,5 @@
---- src/Terraria/RemoteServer.cs
-+++ src/tModLoader/RemoteServer.cs
+--- src/Terraria/Terraria/RemoteServer.cs
++++ src/tModLoader/Terraria/RemoteServer.cs
 @@ -1,6 +_,7 @@
  using System;
  using System.IO;

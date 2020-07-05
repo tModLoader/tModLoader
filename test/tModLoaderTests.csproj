@@ -28,6 +28,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\tModLoader\Terraria.csproj" />
+    <ProjectReference Include="..\src\tModLoader\Terraria\Terraria.csproj" />
   </ItemGroup>
 </Project>

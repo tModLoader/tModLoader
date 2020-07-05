@@ -1,5 +1,5 @@
---- src/Terraria/NetMessage.cs
-+++ src/tModLoader/NetMessage.cs
+--- src/Terraria/Terraria/NetMessage.cs
++++ src/tModLoader/Terraria/NetMessage.cs
 @@ -1,4 +_,5 @@
  using Ionic.Zlib;
 +using log4net.Core;

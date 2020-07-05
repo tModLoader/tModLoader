@@ -1,5 +1,5 @@
---- src/Terraria/Collision.cs
-+++ src/tModLoader/Collision.cs
+--- src/Terraria/Terraria/Collision.cs
++++ src/tModLoader/Terraria/Collision.cs
 @@ -1982,7 +_,7 @@
  			Vector2 vector2 = default(Vector2);
  			for (int i = num; i < num2; i++) {

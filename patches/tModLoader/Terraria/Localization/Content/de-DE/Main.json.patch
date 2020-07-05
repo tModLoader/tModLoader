@@ -1,5 +1,5 @@
---- src/Terraria/Localization/Content/de-DE/Main.json
-+++ src/tModLoader/Localization/Content/de-DE/Main.json
+--- src/Terraria/Terraria/Localization/Content/de-DE/Main.json
++++ src/tModLoader/Terraria/Localization/Content/de-DE/Main.json
 @@ -73,7 +_,7 @@
  		"BONED_Name": "Knochenbrecher",
  		"BUCKETS_OF_BOLTS_Description": "Besiege die drei nächtlichen mechanischen Bedrohungen: die Zwillinge, den Zerstörer und Skeletron Prime.",

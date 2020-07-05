@@ -1,0 +1,21 @@
+--- src/Terraria/ReLogic/ReLogic.csproj
++++ src/tModLoader/ReLogic/ReLogic.csproj
+@@ -1,6 +_,7 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+   <Import Project="../Configuration.targets" />
+   <PropertyGroup>
++    <TargetFramework>net45</TargetFramework>
+     <OutputType>Library</OutputType>
+     <Version>1.0.0.0</Version>
+     <Company>Re-Logic</Company>
+@@ -8,8 +_,8 @@
+     <RootNamespace>ReLogic</RootNamespace>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="Ionic.Zip.CF">
++    <Reference Include="Ionic.Zip.Reduced">
+-      <HintPath>../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll</HintPath>
++      <HintPath>..\..\..\references\Ionic.Zip.Reduced.dll</HintPath>
+     </Reference>
+     <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
+       <HintPath>..\..\..\references\FNA.dll</HintPath>

@@ -1,5 +1,5 @@
---- src/Terraria/Chest.cs
-+++ src/tModLoader/Chest.cs
+--- src/Terraria/Terraria/Chest.cs
++++ src/tModLoader/Terraria/Chest.cs
 @@ -7,6 +_,7 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;

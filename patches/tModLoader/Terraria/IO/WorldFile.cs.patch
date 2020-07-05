@@ -1,5 +1,5 @@
---- src/Terraria/IO/WorldFile.cs
-+++ src/tModLoader/IO/WorldFile.cs
+--- src/Terraria/Terraria/IO/WorldFile.cs
++++ src/tModLoader/Terraria/IO/WorldFile.cs
 @@ -14,6 +_,8 @@
  using Terraria.Social;
  using Terraria.UI;

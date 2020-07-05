@@ -1,5 +1,5 @@
---- src/Terraria/GameContent/UI/Elements/UIPanel.cs
-+++ src/tModLoader/GameContent/UI/Elements/UIPanel.cs
+--- src/Terraria/Terraria/GameContent/UI/Elements/UIPanel.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIPanel.cs
 @@ -13,15 +_,22 @@
  		private Asset<Texture2D> _backgroundTexture;
  		public Color BorderColor = Color.Black;

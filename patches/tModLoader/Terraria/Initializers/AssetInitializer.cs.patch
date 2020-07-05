@@ -1,5 +1,5 @@
---- src/Terraria/Initializers/AssetInitializer.cs
-+++ src/tModLoader/Initializers/AssetInitializer.cs
+--- src/Terraria/Terraria/Initializers/AssetInitializer.cs
++++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
 @@ -14,14 +_,17 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;

@@ -1,5 +1,5 @@
---- src/Terraria/Achievements/AchievementManager.cs
-+++ src/tModLoader/Achievements/AchievementManager.cs
+--- src/Terraria/Terraria/Achievements/AchievementManager.cs
++++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
 @@ -7,6 +_,8 @@
  using System.Linq;
  using System.Security.Cryptography;

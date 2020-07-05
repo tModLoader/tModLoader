@@ -1,5 +1,5 @@
---- src/Terraria/ID/NPCID.cs
-+++ src/tModLoader/ID/NPCID.cs
+--- src/Terraria/Terraria/ID/NPCID.cs
++++ src/tModLoader/Terraria/ID/NPCID.cs
 @@ -1,7 +_,10 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;

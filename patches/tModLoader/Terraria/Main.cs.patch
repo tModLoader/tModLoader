@@ -1,5 +1,5 @@
---- src/Terraria/Main.cs
-+++ src/tModLoader/Main.cs
+--- src/Terraria/Terraria/Main.cs
++++ src/tModLoader/Terraria/Main.cs
 @@ -32,6 +_,7 @@
  #if WINDOWS
  using System.Windows.Forms;

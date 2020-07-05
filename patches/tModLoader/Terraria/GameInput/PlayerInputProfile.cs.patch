@@ -1,5 +1,5 @@
---- src/Terraria/GameInput/PlayerInputProfile.cs
-+++ src/tModLoader/GameInput/PlayerInputProfile.cs
+--- src/Terraria/Terraria/GameInput/PlayerInputProfile.cs
++++ src/tModLoader/Terraria/GameInput/PlayerInputProfile.cs
 @@ -3,6 +_,8 @@
  using Newtonsoft.Json.Linq;
  using System;

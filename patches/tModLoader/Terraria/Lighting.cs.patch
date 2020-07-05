@@ -1,5 +1,5 @@
---- src/Terraria/Lighting.cs
-+++ src/tModLoader/Lighting.cs
+--- src/Terraria/Terraria/Lighting.cs
++++ src/tModLoader/Terraria/Lighting.cs
 @@ -13,8 +_,8 @@
  		[Obsolete]
  		public static int OffScreenTiles = 45;

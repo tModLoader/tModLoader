@@ -1,5 +1,5 @@
---- src/Terraria/GameContent/UI/States/UIWorldSelect.cs
-+++ src/tModLoader/GameContent/UI/States/UIWorldSelect.cs
+--- src/Terraria/Terraria/GameContent/UI/States/UIWorldSelect.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldSelect.cs
 @@ -2,8 +_,10 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;

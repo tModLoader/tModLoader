@@ -1,5 +1,5 @@
---- src/Terraria/Graphics/Effects/EffectManager.cs
-+++ src/tModLoader/Graphics/Effects/EffectManager.cs
+--- src/Terraria/Terraria/Graphics/Effects/EffectManager.cs
++++ src/tModLoader/Terraria/Graphics/Effects/EffectManager.cs
 @@ -6,7 +_,7 @@
  	public abstract class EffectManager<T> where T : GameEffect
  	{

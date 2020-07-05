@@ -1,5 +1,5 @@
---- src/Terraria/Netplay.cs
-+++ src/tModLoader/Netplay.cs
+--- src/Terraria/Terraria/Netplay.cs
++++ src/tModLoader/Terraria/Netplay.cs
 @@ -1,4 +_,5 @@
  using System;
 +using System.Collections.Concurrent;

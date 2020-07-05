@@ -1,5 +1,5 @@
---- src/Terraria/GameContent/Liquid/LiquidRenderer.cs
-+++ src/tModLoader/GameContent/Liquid/LiquidRenderer.cs
+--- src/Terraria/Terraria/GameContent/Liquid/LiquidRenderer.cs
++++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
 @@ -77,7 +_,7 @@
  		};
  		public const float MIN_LIQUID_SIZE = 0.25f;

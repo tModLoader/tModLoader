@@ -1,5 +1,5 @@
---- src/Terraria/Projectile.cs
-+++ src/tModLoader/Projectile.cs
+--- src/Terraria/Terraria/Projectile.cs
++++ src/tModLoader/Terraria/Projectile.cs
 @@ -20,6 +_,7 @@
  using Terraria.ID;
  using Terraria.Localization;

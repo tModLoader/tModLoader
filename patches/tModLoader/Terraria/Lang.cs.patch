@@ -1,5 +1,5 @@
---- src/Terraria/Lang.cs
-+++ src/tModLoader/Lang.cs
+--- src/Terraria/Terraria/Lang.cs
++++ src/tModLoader/Terraria/Lang.cs
 @@ -9,6 +_,7 @@
  #if CLIENT
  using Terraria.Map;

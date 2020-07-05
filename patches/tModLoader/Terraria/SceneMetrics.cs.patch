@@ -1,5 +1,5 @@
---- src/Terraria/SceneMetrics.cs
-+++ src/tModLoader/SceneMetrics.cs
+--- src/Terraria/Terraria/SceneMetrics.cs
++++ src/tModLoader/Terraria/SceneMetrics.cs
 @@ -27,7 +_,7 @@
  		public static int GraveyardTileThreshold = 24;
  		public bool[] NPCBannerBuff = new bool[289];

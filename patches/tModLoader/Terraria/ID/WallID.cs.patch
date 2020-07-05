@@ -1,5 +1,5 @@
---- src/Terraria/ID/WallID.cs
-+++ src/tModLoader/ID/WallID.cs
+--- src/Terraria/Terraria/ID/WallID.cs
++++ src/tModLoader/Terraria/ID/WallID.cs
 @@ -1,3 +_,7 @@
 +using ReLogic.Reflection;
 +using System;

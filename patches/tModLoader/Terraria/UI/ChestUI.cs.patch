@@ -1,5 +1,5 @@
---- src/Terraria/UI/ChestUI.cs
-+++ src/tModLoader/UI/ChestUI.cs
+--- src/Terraria/Terraria/UI/ChestUI.cs
++++ src/tModLoader/Terraria/UI/ChestUI.cs
 @@ -6,6 +_,8 @@
  using Terraria.GameContent;
  using Terraria.GameInput;

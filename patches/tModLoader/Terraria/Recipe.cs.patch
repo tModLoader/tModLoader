@@ -1,5 +1,5 @@
---- src/Terraria/Recipe.cs
-+++ src/tModLoader/Recipe.cs
+--- src/Terraria/Terraria/Recipe.cs
++++ src/tModLoader/Terraria/Recipe.cs
 @@ -3,6 +_,7 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
