@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.Setup
 
 		public static void EmptyDirectoryRecursive(string dir) {
 			foreach (string directory in Directory.EnumerateDirectories(dir,"*",new EnumerationOptions { RecurseSubdirectories = true })) {
-				foreach (string file in Directory.GetFiles(dir)) {
+				foreach (string file in Directory.GetFiles(directory)) {
 					File.SetAttributes(file,FileAttributes.Normal);
 					File.Delete(file);
 				}
