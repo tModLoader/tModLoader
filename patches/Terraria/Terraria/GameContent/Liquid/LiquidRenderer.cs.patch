@@ -1,5 +1,5 @@
---- src/decompiled/GameContent/Liquid/LiquidRenderer.cs
-+++ src/Terraria/GameContent/Liquid/LiquidRenderer.cs
+--- src/decompiled/Terraria/GameContent/Liquid/LiquidRenderer.cs
++++ src/Terraria/Terraria/GameContent/Liquid/LiquidRenderer.cs
 @@ -96,9 +_,11 @@
  		}
  

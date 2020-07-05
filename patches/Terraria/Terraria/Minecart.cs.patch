@@ -1,5 +1,5 @@
---- src/decompiled/Minecart.cs
-+++ src/Terraria/Minecart.cs
+--- src/decompiled/Terraria/Minecart.cs
++++ src/Terraria/Terraria/Minecart.cs
 @@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;
  using System;

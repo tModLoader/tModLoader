@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/Capture/CaptureInterface.cs
-+++ src/Terraria/Graphics/Capture/CaptureInterface.cs
+--- src/decompiled/Terraria/Graphics/Capture/CaptureInterface.cs
++++ src/Terraria/Terraria/Graphics/Capture/CaptureInterface.cs
 @@ -4,6 +_,9 @@
  using System;
  using System.Collections.Generic;

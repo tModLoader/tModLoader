@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/WindowStateController.cs
-+++ src/Terraria/Graphics/WindowStateController.cs
+--- src/decompiled/Terraria/Graphics/WindowStateController.cs
++++ src/Terraria/Terraria/Graphics/WindowStateController.cs
 @@ -1,15 +_,26 @@
 +#if WINDOWS
  using System.Drawing;

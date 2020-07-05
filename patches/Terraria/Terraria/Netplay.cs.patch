@@ -1,5 +1,5 @@
---- src/decompiled/Netplay.cs
-+++ src/Terraria/Netplay.cs
+--- src/decompiled/Terraria/Netplay.cs
++++ src/Terraria/Terraria/Netplay.cs
 @@ -3,6 +_,9 @@
  using System.Linq;
  using System.Net;

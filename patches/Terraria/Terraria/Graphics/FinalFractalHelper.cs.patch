@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/FinalFractalHelper.cs
-+++ src/Terraria/Graphics/FinalFractalHelper.cs
+--- src/decompiled/Terraria/Graphics/FinalFractalHelper.cs
++++ src/Terraria/Terraria/Graphics/FinalFractalHelper.cs
 @@ -2,7 +_,9 @@
  using System.Collections.Generic;
  using System.Linq;

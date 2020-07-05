@@ -1,5 +1,5 @@
---- src/decompiled/GameContent/CoinLossRevengeSystem.cs
-+++ src/Terraria/GameContent/CoinLossRevengeSystem.cs
+--- src/decompiled/Terraria/GameContent/CoinLossRevengeSystem.cs
++++ src/Terraria/Terraria/GameContent/CoinLossRevengeSystem.cs
 @@ -349,6 +_,9 @@
  
  						revengeMarker.SpawnEnemy();

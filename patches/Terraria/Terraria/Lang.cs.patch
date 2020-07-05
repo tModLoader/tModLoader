@@ -1,5 +1,5 @@
---- src/decompiled/Lang.cs
-+++ src/Terraria/Lang.cs
+--- src/decompiled/Terraria/Lang.cs
++++ src/Terraria/Terraria/Lang.cs
 @@ -6,7 +_,9 @@
  using Terraria.GameInput;
  using Terraria.ID;

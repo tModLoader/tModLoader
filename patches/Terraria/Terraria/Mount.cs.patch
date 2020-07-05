@@ -1,5 +1,5 @@
---- src/decompiled/Mount.cs
-+++ src/Terraria/Mount.cs
+--- src/decompiled/Terraria/Mount.cs
++++ src/Terraria/Terraria/Mount.cs
 @@ -977,9 +_,11 @@
  			}
  

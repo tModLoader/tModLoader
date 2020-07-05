@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/EmpressBladeDrawer.cs
-+++ src/Terraria/Graphics/EmpressBladeDrawer.cs
+--- src/decompiled/Terraria/Graphics/EmpressBladeDrawer.cs
++++ src/Terraria/Terraria/Graphics/EmpressBladeDrawer.cs
 @@ -1,5 +_,7 @@
  using Microsoft.Xna.Framework;
 +#if XNA

@@ -1,47 +1,25 @@
---- src/decompiled/Terraria.csproj
-+++ src/Terraria/Terraria.csproj
-@@ -1,4 +_,5 @@
+--- src/decompiled/Terraria/Terraria.csproj
++++ src/Terraria/Terraria/Terraria.csproj
+@@ -1,34 +_,61 @@
  <Project Sdk="Microsoft.NET.Sdk">
-+  <Import Project="..\TerrariaSteamPath.targets" />
+   <Import Project="../Configuration.targets" />
++  <Import Project="../../TerrariaSteamPath.targets" />
    <PropertyGroup>
-     <TargetFramework>net40</TargetFramework>
      <OutputType>WinExe</OutputType>
-@@ -6,11 +_,12 @@
+     <Version>1.4.0.5</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
--    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
-+    <Configurations>WindowsDebug;WindowsServerDebug;WindowsRelease;WindowsServerRelease;MacRelease;MacServerRelease;LinuxRelease;LinuxServerRelease</Configurations>
-     <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
--    <PlatformTarget>x86</PlatformTarget>
-     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
-     <Optimize>true</Optimize>
 +	<OutputName>Terraria</OutputName>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>
-@@ -23,24 +_,79 @@
-   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-     <Optimize>false</Optimize>
-     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-+    <OutputName>$(OutputName)Debug</OutputName>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
-+    <PlatformTarget>x86</PlatformTarget>
-+    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
-+    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
-+    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
-+  </PropertyGroup>
-+  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
-+    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
-+  </PropertyGroup>
+     <OutputName>$(OutputName)Server</OutputName>
+   </PropertyGroup>
 +  <PropertyGroup>
 +    <PdbFile>bin\$(OutputName)</PdbFile>
 +    <ApplicationIcon>Icon.ico</ApplicationIcon>
-   </PropertyGroup>
++  </PropertyGroup>
    <ItemGroup>
 +    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))">
 +      <HintPath>..\..\references\FNA.dll</HintPath>
@@ -65,16 +43,20 @@
 +    </Reference>
      <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="RailSDK.Net" />
--    <Reference Include="Steamworks.NET" />
 +    <Reference Include="RailSDK.Net">
-+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\RailSDK.Net.Windows.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\RailSDK.Net.Mac.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">..\..\references\RailSDK.Net.Linux.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/RailSDK.Net.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/RailSDK.Net.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/RailSDK.Net.dll</HintPath>
 +    </Reference>
+     <ProjectReference Include="../ReLogic/ReLogic.csproj" />
+     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+       <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
+     </EmbeddedResource>
+-    <Reference Include="Steamworks.NET" />
 +    <Reference Include="Steamworks.NET">
-+      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">..\..\references\Steamworks.NET.Windows.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('MAC'))">..\..\references\Steamworks.NET.OSX.dll</HintPath>
-+      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">..\..\references\Steamworks.NET.Linux.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries/Mac/Steamworks.NET.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries/Linux/Steamworks.NET.dll</HintPath>
 +    </Reference>
      <Reference Include="System" />
      <Reference Include="System.Core" />
@@ -82,33 +64,19 @@
      <Reference Include="System.Runtime.Serialization" />
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="System.Windows.Forms">
-+      <HintPath Condition="!$(DefineConstants.Contains('WINDOWS'))">..\..\references\System.Windows.Forms.Mono.dll</HintPath>
++      <HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
 +    </Reference>
      <Reference Include="WindowsBase" />
    </ItemGroup>
    <ItemGroup>
-+    <EmbeddedResource Include="..\..\references\RailSDK.Net.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>RailSDK.Net.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\RailSDK.Net.Mac.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>RailSDK.Net.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\RailSDK.Net.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>RailSDK.Net.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.Windows.dll" Condition="$(DefineConstants.Contains('WINDOWS'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.OSX.dll" Condition="$(DefineConstants.Contains('MAC'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
-+    <EmbeddedResource Include="..\..\references\Steamworks.NET.Linux.dll" Condition="$(DefineConstants.Contains('LINUX'))">
-+      <LogicalName>Steamworks.NET.dll</LogicalName>
-+    </EmbeddedResource>
-     <EmbeddedResource Include="GameContent/Creative/Content/*" />
-     <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
+@@ -37,7 +_,29 @@
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -49,4 +_,22 @@
+     <EmbeddedResource Include="IO/Data/*" />
+     <EmbeddedResource Include="Libraries/**" />
++    <EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(Configuration.Contains('Windows'))" />
++    <EmbeddedResource Remove="Libraries/Mac/**" Condition="!$(Configuration.Contains('Mac'))" />
++    <EmbeddedResource Remove="Libraries/Linux/**" Condition="!$(Configuration.Contains('Linux'))" />
++    <EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(Configuration.Contains('Mono'))" />
      <EmbeddedResource Include="Localization/Content/**" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>

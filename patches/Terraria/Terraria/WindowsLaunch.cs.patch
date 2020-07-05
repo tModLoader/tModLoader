@@ -1,5 +1,5 @@
---- src/decompiled/WindowsLaunch.cs
-+++ src/Terraria/WindowsLaunch.cs
+--- src/decompiled/Terraria/WindowsLaunch.cs
++++ src/Terraria/Terraria/WindowsLaunch.cs
 @@ -1,3 +_,4 @@
 +#if WINDOWS
  using System;

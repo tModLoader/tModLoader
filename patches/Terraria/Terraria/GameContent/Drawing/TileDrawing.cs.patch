@@ -1,5 +1,5 @@
---- src/decompiled/GameContent/Drawing/TileDrawing.cs
-+++ src/Terraria/GameContent/Drawing/TileDrawing.cs
+--- src/decompiled/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
 @@ -256,6 +_,7 @@
  		}
  

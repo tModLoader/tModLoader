@@ -1,5 +1,5 @@
---- src/decompiled/Testing/PacketHistory.cs
-+++ src/Terraria/Testing/PacketHistory.cs
+--- src/decompiled/Terraria/Testing/PacketHistory.cs
++++ src/Terraria/Terraria/Testing/PacketHistory.cs
 @@ -79,7 +_,12 @@
  
  		private string CreateDumpFileName() {

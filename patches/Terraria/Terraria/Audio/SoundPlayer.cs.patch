@@ -1,5 +1,5 @@
---- src/decompiled/Audio/SoundPlayer.cs
-+++ src/Terraria/Audio/SoundPlayer.cs
+--- src/decompiled/Terraria/Audio/SoundPlayer.cs
++++ src/Terraria/Terraria/Audio/SoundPlayer.cs
 @@ -1,6 +_,9 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;

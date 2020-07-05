@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/RainbowRodDrawer.cs
-+++ src/Terraria/Graphics/RainbowRodDrawer.cs
+--- src/decompiled/Terraria/Graphics/RainbowRodDrawer.cs
++++ src/Terraria/Terraria/Graphics/RainbowRodDrawer.cs
 @@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;
  using System.Runtime.InteropServices;

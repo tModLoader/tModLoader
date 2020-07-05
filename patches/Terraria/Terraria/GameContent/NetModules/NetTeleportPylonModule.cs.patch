@@ -1,5 +1,5 @@
---- src/decompiled/GameContent/NetModules/NetTeleportPylonModule.cs
-+++ src/Terraria/GameContent/NetModules/NetTeleportPylonModule.cs
+--- src/decompiled/Terraria/GameContent/NetModules/NetTeleportPylonModule.cs
++++ src/Terraria/Terraria/GameContent/NetModules/NetTeleportPylonModule.cs
 @@ -34,19 +_,27 @@
  		public override bool Deserialize(BinaryReader reader, int userId) {
  			switch (reader.ReadByte()) {

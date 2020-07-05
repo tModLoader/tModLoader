@@ -1,5 +1,5 @@
---- src/decompiled/GameContent/NetModules/NetAmbienceModule.cs
-+++ src/Terraria/GameContent/NetModules/NetAmbienceModule.cs
+--- src/decompiled/Terraria/GameContent/NetModules/NetAmbienceModule.cs
++++ src/Terraria/Terraria/GameContent/NetModules/NetAmbienceModule.cs
 @@ -1,7 +_,9 @@
  using System.IO;
  using Terraria.GameContent.Ambience;

@@ -1,5 +1,5 @@
---- src/decompiled/Graphics/TileBatch.cs
-+++ src/Terraria/Graphics/TileBatch.cs
+--- src/decompiled/Terraria/Graphics/TileBatch.cs
++++ src/Terraria/Terraria/Graphics/TileBatch.cs
 @@ -1,9 +_,13 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
