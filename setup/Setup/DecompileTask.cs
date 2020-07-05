@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 using ICSharpCode.Decompiler;
@@ -101,7 +102,6 @@ namespace Terraria.ModLoader.Setup
 			var clientModule = serverOnly ? null : ReadModule(TerrariaPath, clientVersion);
 			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
 			var mainModule = serverOnly ? serverModule : clientModule;
-			var rootNamespace = GetCustomAttributes(mainModule)[nameof(AssemblyTitleAttribute)];
 
 			projectDecompiler = new ExtendedProjectDecompiler { 
 				Settings = decompilerSettings,
@@ -112,35 +112,50 @@ namespace Terraria.ModLoader.Setup
 			var items = new List<WorkItem>();
 			var files = new HashSet<string>();
 			var resources = new HashSet<string>();
+			var exclude = new List<string>();
 
 			// Decompile embedded library sources directly into Terraria project. Treated the same as Terraria source
 			var decompiledLibraries = new [] { "ReLogic" };
-			foreach (var lib in decompiledLibraries)
-				AddEmbeddedLibrary(lib, mainModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources);
+			foreach (var lib in decompiledLibraries) {
+				var libRes = mainModule.Resources.Single(r => r.Name.EndsWith(lib+".dll"));
+				AddEmbeddedLibrary(libRes, projectDecompiler.AssemblyResolver, items);
+				exclude.Add(GetOutputPath(libRes.Name, mainModule));
+			}
 
 			if (!serverOnly)
-				AddModule(clientModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources);
+				AddModule(clientModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude);
 
-			AddModule(serverModule, rootNamespace, projectDecompiler.AssemblyResolver, items, files, resources, serverOnly ? null : "SERVER");
+			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude, serverOnly ? null : "SERVER");
 
-			items.Add(WriteProjectFile(mainModule, files, resources, decompiledLibraries));
+			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
+			items.Add(WriteCommonConfigurationFile());
 
 			ExecuteParallel(items);
 		}
 
-		private void AddEmbeddedLibrary(string name, PEFile mainModule, string rootNamespace, IAssemblyResolver resolver, List<WorkItem> items, HashSet<string> files, HashSet<string> resources)
+		private void AddEmbeddedLibrary(Resource res, IAssemblyResolver resolver, List<WorkItem> items)
 		{
-			string filename = name + ".dll";
-			var resource = mainModule.Resources.Single(r => r.Name.EndsWith(filename));
-			
-			using var s = resource.TryOpenStream();
+			using var s = res.TryOpenStream();
 			s.Position = 0;
-			var libModule = new PEFile(filename, s, PEStreamOptions.PrefetchEntireImage);
-			AddModule(libModule, rootNamespace, resolver, items, files, resources);
+			var module = new PEFile(res.Name, s, PEStreamOptions.PrefetchEntireImage);
 
-			// add the resource path to the resource set, to prevent it being extracted later from the main module
-			var path = Path.Combine(resource.Name.Substring(0, resource.Name.Length - filename.Length - 1), filename);
-			resources.Add(CalculateSourcePath(path, rootNamespace));
+			var files = new HashSet<string>();
+			var resources = new HashSet<string>();
+			AddModule(module, resolver, items, files, resources);
+			items.Add(WriteProjectFile(module, "Library", files, resources, w => {
+				// references
+				w.WriteStartElement("ItemGroup");
+				foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
+					if (r.Name == "mscorlib") continue;
+
+					w.WriteStartElement("Reference");
+					w.WriteAttributeString("Include", r.Name);
+					w.WriteEndElement();
+				}
+				w.WriteEndElement(); // </ItemGroup>
+
+				// TODO: resolve references to embedded terraria libraries with their HintPath
+			}));
 		}
 
 		protected PEFile ReadModule(string path, Version version)
@@ -161,8 +176,39 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private static string CalculateSourcePath(string path, string rootNamespace)
+		// memoized
+		private static ConditionalWeakTable<PEFile, string> assemblyTitleCache = new ConditionalWeakTable<PEFile, string>();
+		private static string GetAssemblyTitle(PEFile module)
 		{
+			if (!assemblyTitleCache.TryGetValue(module, out var title))
+				assemblyTitleCache.Add(module, title = GetCustomAttributes(module)[nameof(AssemblyTitleAttribute)]);
+
+			return title;
+		}
+
+		private static bool IsCultureFile(string path)
+		{
+			if (!path.Contains('-'))
+				return false;
+
+			try {
+				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				return true;
+			}
+			catch (CultureNotFoundException) { }
+			return false;
+		}
+
+
+		private static string GetOutputPath(string path, PEFile module)
+		{
+			if (path.EndsWith(".dll")) {
+				var asmRef = module.AssemblyReferences.SingleOrDefault(r => path.EndsWith(r.Name + ".dll"));
+				if (asmRef != null)
+					path = Path.Combine(path.Substring(0, path.Length - asmRef.Name.Length - 5), asmRef.Name + ".dll");
+			}
+
+			var rootNamespace = GetAssemblyTitle(module);
 			if (path.StartsWith(rootNamespace))
 				path = path.Substring(rootNamespace.Length + 1);
 
@@ -178,10 +224,11 @@ namespace Terraria.ModLoader.Setup
 			// default lang files should be called Main
 			if (IsCultureFile(path))
 				path = path.Insert(path.LastIndexOf('.'), "/Main");
+
 			return path;
 		}
 
-		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module, string rootNamespace)
+		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module)
 		{
 			var metadata = module.Metadata;
 			return module.Metadata.GetTopLevelTypeDefinitions().Where(td => projectDecompiler.IncludeTypeWhenDecompilingProject(module, td))
@@ -191,62 +238,45 @@ namespace Terraria.ModLoader.Setup
 					var path = WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Name)) + ".cs";
 					if (!string.IsNullOrEmpty(metadata.GetString(type.Namespace)))
 						path = Path.Combine(WholeProjectDecompiler.CleanUpFileName(metadata.GetString(type.Namespace)), path);
-					return CalculateSourcePath(path, rootNamespace);
+					return GetOutputPath(path, module);
 				}, StringComparer.OrdinalIgnoreCase);
 		}
 
-		private static IEnumerable<(string path, Resource r)> GetResourceFiles(PEFile module, string rootNamespace)
+		private static IEnumerable<(string path, Resource r)> GetResourceFiles(PEFile module)
 		{
-			return module.Resources.Where(r => r.ResourceType == ResourceType.Embedded).Select(res =>
-			{
-				var path = res.Name;
-				if (path.EndsWith(".dll"))
-				{
-					var asmRef = module.AssemblyReferences.SingleOrDefault(r => path.EndsWith(r.Name + ".dll"));
-					if (asmRef != null)
-						path = Path.Combine(path.Substring(0, path.Length - asmRef.Name.Length - 5), asmRef.Name + ".dll");
-				}
-				return (CalculateSourcePath(path, rootNamespace), res);
-			});
+			return module.Resources.Where(r => r.ResourceType == ResourceType.Embedded).Select(res => (GetOutputPath(res.Name, module), res));
 		}
 
-		private static bool IsCultureFile(string path) {
-			if (!path.Contains('-'))
-				return false;
-
-			try {
-				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
-				return true;
+		private DecompilerTypeSystem AddModule(PEFile module, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, ICollection<string> exclude = null, string conditional = null)
+		{
+			var projectDir = GetAssemblyTitle(module);
+			var sources = GetCodeFiles(module).ToList();
+			var resources = GetResourceFiles(module).ToList();
+			if (exclude != null) {
+				sources.RemoveAll(src => exclude.Contains(src.Key));
+				resources.RemoveAll(res => exclude.Contains(res.path));
 			}
-			catch (CultureNotFoundException) { }
-			return false;
-		}
-
-		private DecompilerTypeSystem AddModule(PEFile module, string rootNamespace, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, string conditional = null)
-		{
-			var sources = GetCodeFiles(module, rootNamespace).ToList();
-			var resources = GetResourceFiles(module, rootNamespace).ToList();
 
 			var ts = new DecompilerTypeSystem(module, resolver, decompilerSettings);
 			items.AddRange(sources
 				.Where(src => sourceSet.Add(src.Key))
-				.Select(src => DecompileSourceFile(ts, src, conditional)));
+				.Select(src => DecompileSourceFile(ts, src, projectDir, conditional)));
 
 			if (conditional != null && resources.Any(res => !resourceSet.Contains(res.path)))
 				throw new Exception($"Conditional ({conditional}) resources not supported");
 
 			items.AddRange(resources
 				.Where(res => resourceSet.Add(res.path))
-				.Select(res => ExtractResource(res.path, res.r)));
+				.Select(res => ExtractResource(res.path, res.r, projectDir)));
 
 			return ts;
 		}
 
-		private WorkItem ExtractResource(string name, Resource res)
+		private WorkItem ExtractResource(string name, Resource res, string projectDir)
 		{
 			return new WorkItem("Extracting: " + name, () =>
 			{
-				var path = Path.Combine(srcDir, name);
+				var path = Path.Combine(srcDir, projectDir, name);
 				CreateParentDirectory(path);
 
 				var s = res.TryOpenStream();
@@ -267,11 +297,11 @@ namespace Terraria.ModLoader.Setup
 			return decompiler;
 		}
 
-		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string conditional = null)
+		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string projectName, string conditional = null)
 		{
 			return new WorkItem("Decompiling: " + src.Key, updateStatus =>
 			{
-				var path = Path.Combine(srcDir, src.Key);
+				var path = Path.Combine(srcDir, projectName, src.Key);
 				CreateParentDirectory(path);
 
 				using (var w = new StringWriter())
@@ -297,12 +327,48 @@ namespace Terraria.ModLoader.Setup
 			});
 		}
 
-		private WorkItem WriteProjectFile(PEFile module, IEnumerable<string> sources, IEnumerable<string> resources, ICollection<string> decompiledLibraries)
+		private WorkItem WriteTerrariaProjectFile(PEFile module, IEnumerable<string> sources, IEnumerable<string> resources, ICollection<string> decompiledLibraries)
 		{
-			var name = Path.GetFileNameWithoutExtension(module.Name) + ".csproj";
-			return new WorkItem("Writing: " + name, () =>
+			return WriteProjectFile(module, "WinExe", sources, resources, w => {
+				//configurations
+				w.WriteStartElement("PropertyGroup");
+				w.WriteAttributeString("Condition", "$(Configuration.Contains('Server'))");
+				w.WriteElementString("OutputType", "Exe");
+				w.WriteElementString("OutputName", "$(OutputName)Server");
+				w.WriteEndElement(); // </PropertyGroup>
+
+				// references
+				w.WriteStartElement("ItemGroup");
+				foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
+					if (r.Name == "mscorlib") continue;
+
+					if (decompiledLibraries?.Contains(r.Name) ?? false) {
+						w.WriteStartElement("ProjectReference");
+						w.WriteAttributeString("Include", $"../{r.Name}/{r.Name}.csproj");
+						w.WriteEndElement();
+
+						w.WriteStartElement("EmbeddedResource");
+						w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
+						w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
+					}
+					else {
+						w.WriteStartElement("Reference");
+						w.WriteAttributeString("Include", r.Name);
+					}
+					w.WriteEndElement();
+				}
+				w.WriteEndElement(); // </ItemGroup>
+
+			});
+		}
+
+		private WorkItem WriteProjectFile(PEFile module, string outputType, IEnumerable<string> sources, IEnumerable<string> resources, Action<XmlTextWriter> writeSpecificConfig)
+		{
+			var name = GetAssemblyTitle(module);
+			var filename = name + ".csproj";
+			return new WorkItem("Writing: " + filename, () =>
 			{
-				var path = Path.Combine(srcDir, name);
+				var path = Path.Combine(srcDir, name, filename);
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
@@ -311,9 +377,12 @@ namespace Terraria.ModLoader.Setup
 					w.WriteStartElement("Project");
 					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
 
+					w.WriteStartElement("Import");
+					w.WriteAttributeString("Project", "../Configuration.targets");
+					w.WriteEndElement(); // </Import>
+
 					w.WriteStartElement("PropertyGroup");
-					w.WriteElementString("TargetFramework", "net40");
-					w.WriteElementString("OutputType", "WinExe");
+					w.WriteElementString("OutputType", outputType);
 					w.WriteElementString("Version", new AssemblyName(module.FullName).Version.ToString());
 					
 					var attribs = GetCustomAttributes(module);
@@ -321,8 +390,40 @@ namespace Terraria.ModLoader.Setup
 					w.WriteElementString("Copyright", attribs[nameof(AssemblyCopyrightAttribute)]);
 
 					w.WriteElementString("RootNamespace", module.Name);
-					w.WriteElementString("Configurations", "Debug;Release;ServerDebug;ServerRelease");
+					w.WriteEndElement(); // </PropertyGroup>
 
+					writeSpecificConfig(w);
+					
+					// resources
+					w.WriteStartElement("ItemGroup");
+					foreach (var r in ApplyWildcards(resources, sources.ToArray()).OrderBy(r => r)) {
+						w.WriteStartElement("EmbeddedResource");
+						w.WriteAttributeString("Include", r);
+						w.WriteEndElement();
+					}
+					w.WriteEndElement(); // </ItemGroup>
+					w.WriteEndElement(); // </Project>
+
+					sw.Write(Environment.NewLine);
+				}
+			});
+		}
+
+		private WorkItem WriteCommonConfigurationFile()
+		{
+			var filename = "Configuration.targets";
+			return new WorkItem("Writing: " + filename, () => {
+				var path = Path.Combine(srcDir, filename);
+				CreateParentDirectory(path);
+
+				using (var sw = new StreamWriter(path))
+				using (var w = new XmlTextWriter(sw)) {
+					w.Formatting = System.Xml.Formatting.Indented;
+					w.WriteStartElement("Project");
+
+					w.WriteStartElement("PropertyGroup");
+					w.WriteElementString("TargetFramework", "net40");
+					w.WriteElementString("Configurations", "Debug;Release;ServerDebug;ServerRelease");
 					w.WriteElementString("AssemblySearchPaths", "$(AssemblySearchPaths);{GAC}");
 					w.WriteElementString("PlatformTarget", "x86");
 					w.WriteElementString("AllowUnsafeBlocks", "true");
@@ -332,9 +433,7 @@ namespace Terraria.ModLoader.Setup
 					//configurations
 					w.WriteStartElement("PropertyGroup");
 					w.WriteAttributeString("Condition", "$(Configuration.Contains('Server'))");
-					w.WriteElementString("OutputType", "Exe");
 					w.WriteElementString("DefineConstants", "$(DefineConstants);SERVER");
-					w.WriteElementString("OutputName", "$(OutputName)Server");
 					w.WriteEndElement(); // </PropertyGroup>
 
 					w.WriteStartElement("PropertyGroup");
@@ -348,25 +447,6 @@ namespace Terraria.ModLoader.Setup
 					w.WriteElementString("DefineConstants", "$(DefineConstants);DEBUG");
 					w.WriteEndElement(); // </PropertyGroup>
 
-					// references
-					w.WriteStartElement("ItemGroup");
-					foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
-						if (r.Name == "mscorlib" || decompiledLibraries.Contains(r.Name)) continue;
-
-						w.WriteStartElement("Reference");
-						w.WriteAttributeString("Include", r.Name);
-						w.WriteEndElement();
-					}
-					w.WriteEndElement(); // </ItemGroup>
-					
-					// resources
-					w.WriteStartElement("ItemGroup");
-					foreach (var r in ApplyWildcards(resources, sources.ToArray()).OrderBy(r => r)) {
-						w.WriteStartElement("EmbeddedResource");
-						w.WriteAttributeString("Include", r);
-						w.WriteEndElement();
-					}
-					w.WriteEndElement(); // </ItemGroup>
 					w.WriteEndElement(); // </Project>
 
 					sw.Write(Environment.NewLine);
@@ -402,7 +482,7 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private static string[] knownAttributes = {nameof(AssemblyCompanyAttribute), nameof(AssemblyCopyrightAttribute), nameof(AssemblyTitleAttribute) };
-		private IDictionary<string, string> GetCustomAttributes(PEFile module) {
+		private static IDictionary<string, string> GetCustomAttributes(PEFile module) {
 			var dict = new Dictionary<string, string>();
 
 			var reader = module.Reader.GetMetadataReader();
