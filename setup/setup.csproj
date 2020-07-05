@@ -5,7 +5,7 @@
     <UseWPF>True</UseWPF>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
-    <ApplicationIcon>../patches/tModLoader/tModLoader.ico</ApplicationIcon>
+    <ApplicationIcon>../patches/tModLoader/Terraria/tModLoader.ico</ApplicationIcon>
     <TieredCompilation>false</TieredCompilation> <!-- be nice if we didn't need this, but MonoMod.RuntimeDetour isn't compatible with tiered jit currently -->
   </PropertyGroup>
   <ItemGroup>
