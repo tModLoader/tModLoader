@@ -129,10 +129,10 @@ namespace ExampleMod.Items
 			float projRotation = distToProj.ToRotation() - 1.57f;
 			float distance = distToProj.Length();
 			while (distance > 30f && !float.IsNaN(distance)) {
-				distToProj.Normalize();                 //get unit vector
-				distToProj *= 24f;                      //speed = 24
-				center += distToProj;                   //update draw position
-				distToProj = playerCenter - center;    //update distance
+				distToProj.Normalize();				//get unit vector
+				distToProj *= 24f;					//speed = 24
+				center += distToProj;				//update draw position
+				distToProj = playerCenter - center;	//update distance
 				distance = distToProj.Length();
 				Color drawColor = lightColor;
 

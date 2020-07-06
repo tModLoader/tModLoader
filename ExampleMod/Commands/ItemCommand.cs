@@ -13,7 +13,7 @@ namespace ExampleMod.Commands
 
 		public override string Usage
 			=> "/item <type|name> [stack]" +
-			   "\nReplace spaces in item name with underscores";
+			"\nReplace spaces in item name with underscores";
 
 		public override string Description
 			=> "Spawn an item";

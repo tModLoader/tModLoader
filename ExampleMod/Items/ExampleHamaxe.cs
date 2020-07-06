@@ -21,8 +21,8 @@ namespace ExampleMod.Items
 			item.height = 40;
 			item.useTime = 15;
 			item.useAnimation = 15;
-			item.axe = 30;          //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
-			item.hammer = 100;      //How much hammer power the weapon has
+			item.axe = 30;		//How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
+			item.hammer = 100;	//How much hammer power the weapon has
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.knockBack = 6;
 			item.value = 10000;

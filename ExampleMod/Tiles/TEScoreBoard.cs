@@ -164,7 +164,7 @@ namespace ExampleMod.Tiles
 			name.SetDefault("ScoreBoard");
 			AddMapEntry(new Color(26, 127, 206), name);
 			disableSmartCursor = true; //?
-									   //TODO	Main.highlightMaskTexture[Type] = mod.GetTexture("Tiles/ScoreBoard_Outline");
+									//TODO	Main.highlightMaskTexture[Type] = mod.GetTexture("Tiles/ScoreBoard_Outline");
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {

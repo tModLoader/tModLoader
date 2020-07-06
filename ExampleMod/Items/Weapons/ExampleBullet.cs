@@ -18,13 +18,13 @@ namespace ExampleMod.Items.Weapons
 			item.width = 8;
 			item.height = 8;
 			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			item.consumable = true;			//You need to set the item consumable so that the ammo would automatically consumed
 			item.knockBack = 1.5f;
 			item.value = 10;
 			item.rare = ItemRarityID.Green;
 			item.shoot = ProjectileType<Projectiles.ExampleBullet>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
-			item.ammo = AmmoID.Bullet;              //The ammo class this ammo belongs to.
+			item.shootSpeed = 16f;				//The speed of the projectile
+			item.ammo = AmmoID.Bullet;			//The ammo class this ammo belongs to.
 		}
 
 		// Give each bullet consumed a 20% chance of granting the Wrath buff for 5 seconds

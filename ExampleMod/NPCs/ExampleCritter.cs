@@ -60,7 +60,7 @@ namespace ExampleMod.NPCs
 			// we can search for
 			// switch (*)
 			//   case 56:
-			//     Utils.SelectRandom *
+			//	Utils.SelectRandom *
 
 			// in general you'd want to look for a specific switch variable, or perhaps the containing switch (type) { case 105:
 			// but the generated IL is really variable and hard to match in this case

@@ -49,7 +49,7 @@ namespace ExampleMod.NPCs
 
 				// NPC won't spawn today if it stayed all night
 				if (traveler == null && Main.rand.NextBool(4)) { // 4 = 25% Chance
-																 // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
 				else {

@@ -150,8 +150,8 @@ namespace ExampleMod.Projectiles
 		}
 
 		/*
-		 * Sets the end of the laser position based on where it collides with something
-		 */
+		* Sets the end of the laser position based on where it collides with something
+		*/
 		private void SetLaserPosition(Player player) {
 			for (Distance = MOVE_DISTANCE; Distance <= 2200f; Distance += 5f) {
 				var start = player.Center + projectile.velocity * Distance;
@@ -218,8 +218,8 @@ namespace ExampleMod.Projectiles
 		public override bool ShouldUpdatePosition() => false;
 
 		/*
-		 * Update CutTiles so the laser will cut tiles (like grass)
-		 */
+		* Update CutTiles so the laser will cut tiles (like grass)
+		*/
 		public override void CutTiles() {
 			DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
 			Vector2 unit = projectile.velocity;

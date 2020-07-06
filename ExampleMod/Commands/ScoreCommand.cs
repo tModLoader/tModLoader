@@ -14,7 +14,7 @@ namespace ExampleMod.Commands
 
 		public override string Usage
 			=> "/score playerName <get|reset>" +
-			   "\n/score playerName <add|set> amount";
+			"\n/score playerName <add|set> amount";
 
 		public override string Description
 			=> "Manipulate ExamplePlayer.score";

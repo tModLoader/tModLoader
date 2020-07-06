@@ -102,7 +102,7 @@ namespace ExampleMod.NPCs
 			if (npc.ai[3] > 0f) {
 				npc.dontTakeDamage = true;
 				npc.ai[3] += 1f; // increase our death timer.
-								 //npc.velocity = Vector2.UnitY * npc.velocity.Length();
+								//npc.velocity = Vector2.UnitY * npc.velocity.Length();
 				npc.velocity.X *= 0.95f; // lose inertia
 				if (npc.velocity.Y < 0.5f) {
 					npc.velocity.Y = npc.velocity.Y + 0.02f;

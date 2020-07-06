@@ -11,9 +11,9 @@ namespace ExampleMod.Items.ExampleDamageClass
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("20% increased additive example damage" +
-							   "\n20% more multiplicative example damage" +
-							   "\n15% increased example critical strike chance" +
-							   "\n5 increased increased example knockback");
+							"\n20% more multiplicative example damage" +
+							"\n15% increased example critical strike chance" +
+							"\n5 increased increased example knockback");
 		}
 
 		public override void SetDefaults() {

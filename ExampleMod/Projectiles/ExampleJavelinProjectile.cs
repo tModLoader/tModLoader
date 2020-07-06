@@ -104,10 +104,10 @@ namespace ExampleMod.Projectiles
 
 		// 
 		/*
-		 * The following showcases recommended practice to work with the ai field
-		 * You make a property that uses the ai as backing field
-		 * This allows you to contextualize ai better in the code
-		 */
+		* The following showcases recommended practice to work with the ai field
+		* You make a property that uses the ai as backing field
+		* This allows you to contextualize ai better in the code
+		*/
 
 		// Are we sticking to a target?
 		public bool IsStickingToTarget {
@@ -140,8 +140,8 @@ namespace ExampleMod.Projectiles
 		}
 
 		/*
-		 * The following code handles the javelin sticking to the enemy hit.
-		 */
+		* The following code handles the javelin sticking to the enemy hit.
+		*/
 		private void UpdateStickyJavelins(NPC target) {
 			int currentJavelinIndex = 0; // The javelin index
 
@@ -253,7 +253,7 @@ namespace ExampleMod.Projectiles
 				projectile.Kill();
 			}
 			else if (Main.npc[projTargetIndex].active && !Main.npc[projTargetIndex].dontTakeDamage) { // If the target is active and can take damage
-																									  // Set the projectile's position relative to the target's center
+																									// Set the projectile's position relative to the target's center
 				projectile.Center = Main.npc[projTargetIndex].Center - projectile.velocity * 2f;
 				projectile.gfxOffY = Main.npc[projTargetIndex].gfxOffY;
 				if (hitEffect) { // Perform a hit effect here

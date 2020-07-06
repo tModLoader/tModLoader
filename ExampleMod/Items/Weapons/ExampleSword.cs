@@ -63,7 +63,7 @@ namespace ExampleMod.Items.Weapons
 		// Star Wrath/Starfury style weapon. Spawn projectiles from sky that aim towards mouse.
 		// See Source code for Star Wrath projectile to see how it passes through tiles.
 		/*	The following changes to SetDefaults 
-		 	item.shoot = 503;
+			item.shoot = 503;
 			item.shootSpeed = 8f;
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
 		{

@@ -39,8 +39,8 @@ namespace ExampleMod.Items.Weapons
 		}
 
 		/*
-		 * Feel free to uncomment any of the examples below to see what they do
-		 */
+		* Feel free to uncomment any of the examples below to see what they do
+		*/
 
 		// What if I wanted this gun to have a 38% chance not to consume ammo?
 		/*public override bool ConsumeAmmo(Player player)
@@ -121,7 +121,7 @@ namespace ExampleMod.Items.Weapons
 		// How can I get a "Clockwork Assault Rifle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
 		/*	The following changes to SetDefaults()
-		 	item.useAnimation = 12;
+			item.useAnimation = 12;
 			item.useTime = 4;
 			item.reuseDelay = 14;
 		public override bool ConsumeAmmo(Player player)
