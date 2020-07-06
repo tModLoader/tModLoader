@@ -10,6 +10,15 @@
  
  namespace Terraria.ID
  {
+@@ -35,7 +_,7 @@
+ 
+ 		public class Sets
+ 		{
+-			public static SetFactory Factory = new SetFactory(5045);
++			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
+ 			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
+ 				1533,
+ 				1534,
 @@ -855,7 +_,8 @@
  			public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
  			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);

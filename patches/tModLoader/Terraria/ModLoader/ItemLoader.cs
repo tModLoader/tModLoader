@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 		internal static readonly IDictionary<string, int> globalIndexes = new Dictionary<string, int>();
 		internal static readonly IDictionary<Type, int> globalIndexesByType = new Dictionary<Type, int>();
 		internal static readonly ISet<int> animations = new HashSet<int>();
-		internal static readonly int vanillaQuestFishCount = Main.anglerQuestItemNetIDs.Length;
+		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
 		private class HookList
@@ -90,93 +90,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);
 			Array.Resize(ref Lang._itemTooltipCache, nextItem);
-			
-			//Bool arrays
-			Array.Resize(ref ItemID.Sets.AlsoABuildingItem, nextItem);
-			Array.Resize(ref ItemID.Sets.AnimatesAsSoul, nextItem);
-			Array.Resize(ref ItemID.Sets.CanBePlacedOnWeaponRacks, nextItem);
-			Array.Resize(ref ItemID.Sets.CanBeQuickusedOnGamepad, nextItem);
-			Array.Resize(ref ItemID.Sets.CanFishInLava, nextItem);
-			Array.Resize(ref ItemID.Sets.CanGetPrefixes, nextItem);
-			Array.Resize(ref ItemID.Sets.ColorfulDyeValues, nextItem);
-			Array.Resize(ref ItemID.Sets.Deprecated, nextItem);
-			Array.Resize(ref ItemID.Sets.ExoticPlantsForDyeTrade, nextItem);
-			Array.Resize(ref ItemID.Sets.ForceConsumption, nextItem);
-			Array.Resize(ref ItemID.Sets.ForcesBreaksSleeping, nextItem);
-			Array.Resize(ref ItemID.Sets.GamepadSmartQuickReach, nextItem);
-			Array.Resize(ref ItemID.Sets.GamepadWholeScreenUseRange, nextItem);
-			Array.Resize(ref ItemID.Sets.Glowsticks, nextItem);
-			Array.Resize(ref ItemID.Sets.gunProj, nextItem);
-			Array.Resize(ref ItemID.Sets.HasAProjectileThatHasAUsabilityCheck, nextItem);
-			Array.Resize(ref ItemID.Sets.IgnoresEncumberingStone, nextItem);
-			Array.Resize(ref ItemID.Sets.IsAKite, nextItem);
-			ItemID.Sets.IsAMaterial = new bool[nextItem]; // clears it, which is desired.
-			Array.Resize(ref ItemID.Sets.IsAPickup, nextItem);
-			Array.Resize(ref ItemID.Sets.IsChainsaw, nextItem);
-			Array.Resize(ref ItemID.Sets.IsDrill, nextItem);
-			Array.Resize(ref ItemID.Sets.IsFishingCrate, nextItem);
-			Array.Resize(ref ItemID.Sets.IsFishingCrateHardmode, nextItem);
-			Array.Resize(ref ItemID.Sets.IsFood, nextItem);
-			Array.Resize(ref ItemID.Sets.IsLavaBait, nextItem);
-			Array.Resize(ref ItemID.Sets.IsPaintScraper, nextItem);
-			Array.Resize(ref ItemID.Sets.ItemIconPulse, nextItem);
-			Array.Resize(ref ItemID.Sets.ItemNoGravity, nextItem);
-			Array.Resize(ref ItemID.Sets.ItemsThatAllowRepeatedRightClick, nextItem);
-			Array.Resize(ref ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn, nextItem);
-			Array.Resize(ref ItemID.Sets.LockOnIgnoresCollision, nextItem);
-			Array.Resize(ref ItemID.Sets.NebulaPickup, nextItem);
-			Array.Resize(ref ItemID.Sets.NeverAppearsAsNewInInventory, nextItem);
-			Array.Resize(ref ItemID.Sets.SingleUseInGamepad, nextItem);
-			Array.Resize(ref ItemID.Sets.SkipsInitialUseSound, nextItem);
-			Array.Resize(ref ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed, nextItem);
-			Array.Resize(ref ItemID.Sets.Torches, nextItem);
-			Array.Resize(ref ItemID.Sets.TrapSigned, nextItem);
-			Array.Resize(ref ItemID.Sets.UsesCursedByPlanteraTooltip, nextItem);
-			Array.Resize(ref ItemID.Sets.WaterTorches, nextItem);
-			Array.Resize(ref ItemID.Sets.Yoyo, nextItem);
-			
-			//Non-bool arrays
-			Array.Resize(ref ItemID.Sets.BannerStrength, nextItem);
-			Array.Resize(ref ItemID.Sets.BonusMeleeSpeedMultiplier, nextItem);
-			Array.Resize(ref ItemID.Sets.ExtractinatorMode, nextItem);
-			Array.Resize(ref ItemID.Sets.GamepadExtraRange, nextItem);
-			Array.Resize(ref ItemID.Sets.ItemSpawnDecaySpeed, nextItem);
-			Array.Resize(ref ItemID.Sets.KillsToBanner, nextItem);
-			Array.Resize(ref ItemID.Sets.LockOnAimAbove, nextItem);
-			Array.Resize(ref ItemID.Sets.LockOnAimCompensation, nextItem);
-			Array.Resize(ref ItemID.Sets.NewItemSpawnPriority, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityBossSpawns, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityExtractibles, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityMaterials, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityPainting, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityRopes, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityTerraforming, nextItem);
-			Array.Resize(ref ItemID.Sets.SortingPriorityWiring, nextItem);
-			Array.Resize(ref ItemID.Sets.StaffMinionSlotsRequired, nextItem);
-			//Array.Resize(ref ItemID.Sets.TextureCopyLoad, nextItem); //not needed?
-			Array.Resize(ref ItemID.Sets.ToolTipDamageMultiplier, nextItem);
 
-			for (int k = ItemID.Count; k < nextItem; k++) {
-				Lang._itemNameCache[k] = LocalizedText.Empty;
-				Lang._itemTooltipCache[k] = ItemTooltip.None;
-				Item.cachedItemSpawnsByType[k] = -1;
+			//Sets
+			typeof(ItemID.Sets).TypeInitializer.Invoke(null, null);
 
-				ItemID.Sets.BannerStrength[k] = new ItemID.BannerEffect(1f);
-				ItemID.Sets.BonusMeleeSpeedMultiplier[k] = 1f;
-				ItemID.Sets.ExtractinatorMode[k] = -1;
-				ItemID.Sets.ItemSpawnDecaySpeed[k] = 1;
-				ItemID.Sets.KillsToBanner[k] = 50;
-				//ItemID.Sets.TextureCopyLoad[k] = -1;
-				ItemID.Sets.SortingPriorityBossSpawns[k] = -1;
-				ItemID.Sets.SortingPriorityExtractibles[k] = -1;
-				ItemID.Sets.SortingPriorityMaterials[k] = -1;
-				ItemID.Sets.SortingPriorityPainting[k] = -1;
-				ItemID.Sets.SortingPriorityRopes[k] = -1;
-				ItemID.Sets.SortingPriorityTerraforming[k] = -1;
-				ItemID.Sets.SortingPriorityWiring[k] = -1;
-				ItemID.Sets.StaffMinionSlotsRequired[k] = 1;
-				ItemID.Sets.ToolTipDamageMultiplier[k] = 1;
-			}
+			//Etc
 
 			if (unloading)
 				Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
