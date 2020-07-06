@@ -8,6 +8,10 @@ namespace Terraria.ModLoader.Setup
 {
 	public class SetupDebugTask : SetupOperation
 	{
+		private static readonly Version MinMSBuildVersion = new Version(15, 5); //Minimal MSBuild version for the '/restore' flag to work.
+
+		private bool msBuildIsMissing;
+		private bool msBuildIsOutdated;
 		private bool roslynCompileFailed;
 		private bool tMLFNACompileFailed;
 
@@ -20,7 +24,8 @@ namespace Terraria.ModLoader.Setup
 
 			taskInterface.SetStatus("Compiling RoslynWrapper");
 
-			CheckMSBuildVersion(new Version(15, 5)); //Check if MSBuild is present, and if its version is 15.5 or newer. It's needed for the '/restore' flag to work.
+			msBuildIsMissing = !CheckIfMSBuildIsPresent();
+			msBuildIsOutdated = GetMSBuildVersion() < MinMSBuildVersion; 
 
 			//Compile Roslyn.
 
@@ -29,14 +34,16 @@ namespace Terraria.ModLoader.Setup
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
 
-			if (roslynCompileFailed)
-				return;
-
 			var roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
 				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
 				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
-			foreach (var dll in roslynRefs)
-				Copy(Path.Combine("RoslynWrapper/bin/Release/net46", dll), Path.Combine(modCompile, dll));
+
+			foreach (var dll in roslynRefs) {
+				string path = Path.Combine("RoslynWrapper/bin/Release/net46", dll);
+
+				if (!roslynCompileFailed || File.Exists(path))
+					Copy(path, Path.Combine(modCompile, dll));
+			}
 
 			//Compile FNA tML.
 
@@ -51,17 +58,13 @@ namespace Terraria.ModLoader.Setup
 			) != 0;
 		}
 
-		private void CheckMSBuildVersion(Version minVersion) {
-			//Check if MSBuild is on PATH.
-
-			bool msBuildOnPath = RunCmd("RoslynWrapper", "where",
+		private bool CheckIfMSBuildIsPresent()
+			=> RunCmd("RoslynWrapper", "where",
 				"msbuild",
 				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
 			) == 0;
 
-			if (!msBuildOnPath)
-				throw new Exception("msbuild not found on PATH");
-
+		private Version GetMSBuildVersion() {
 			//Try to get its version.
 
 			string msBuildVersionOutput = null;
@@ -75,8 +78,7 @@ namespace Terraria.ModLoader.Setup
 			if (!Version.TryParse(msBuildVersionOutput.Substring(lastLineBreak+1, msBuildVersionOutput.Length-lastLineBreak-1), out var msBuildVersion))
 				throw new Exception($"Couldn't get MSBuild version.");
 
-			if (msBuildVersion<minVersion)
-				throw new Exception($"MSBuild {minVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed.");
+			return msBuildVersion;
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
@@ -101,6 +103,12 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		public override void FinishedDialog() {
+			if (msBuildIsMissing)
+				throw new Exception("MSBuild could not be found on PATH.");
+
+			if (msBuildIsOutdated)
+				throw new Exception($"MSBuild {MinMSBuildVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed.");
+
 			if (roslynCompileFailed)
 				MessageBox.Show("MSBuild Error", "Failed to compile RoslynWrapper.sln.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
