@@ -214,10 +214,11 @@ namespace Terraria.ModLoader.Core
 			if (!Directory.Exists(modReferencesPath))
 				Directory.CreateDirectory(modReferencesPath);
 
-			var tMLPath = Assembly.GetExecutingAssembly().Location;
-			var touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
-			var touchFile = Path.Combine(modReferencesPath, "touch");
-			var lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
+			string tMLPath = Assembly.GetExecutingAssembly().Location;
+			string touchStamp = $"{tMLPath} @ {File.GetLastWriteTime(tMLPath)}";
+			string touchFile = Path.Combine(modReferencesPath, "touch");
+			string lastTouch = File.Exists(touchFile) ? File.ReadAllText(touchFile) : null;
+
 			if (touchStamp == lastTouch) {
 				referencesUpdated = true;
 				return;
@@ -227,19 +228,22 @@ namespace Terraria.ModLoader.Core
 			var libs = GetTerrariaReferences(null, PlatformUtilities.IsXNA).ToList();
 
 			// delete any extra references that no-longer exist
-			foreach (var file in Directory.GetFiles(modReferencesPath, "*.dll"))
+			foreach (string file in Directory.GetFiles(modReferencesPath, "*.dll"))
 				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
 					File.Delete(file);
 
 			// replace tML lib with inferred paths based on names 
 			libs.RemoveAt(0);
 
-			var tMLDir = Path.GetDirectoryName(tMLPath);
+			string tMLDir = Path.GetDirectoryName(tMLPath);
+
 #if CLIENT
-			var tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
+			string tMLServerName = Path.GetFileName(tMLPath).Replace("tModLoader", "tModLoaderServer");
+
 			if (tMLServerName == "Terraria.exe")
 				tMLServerName = "tModLoaderServer.exe";
-			var tMLServerPath = Path.Combine(tMLDir, tMLServerName);
+
+			string tMLServerPath = Path.Combine(tMLDir, tMLServerName);
 #else
 			var tMLServerPath = tMLPath;
 			var tMLClientName = Path.GetFileName(tMLPath).Replace("tModLoaderServer", "tModLoader");
@@ -247,7 +251,8 @@ namespace Terraria.ModLoader.Core
 			if (!File.Exists(tMLPath))
 				tMLPath = Path.Combine(tMLDir, "Terraria.exe");
 #endif
-			var tMLBuildServerPath = tMLServerPath;
+			string tMLBuildServerPath = tMLServerPath;
+
 			if (FrameworkVersion.Framework == Framework.Mono)
 				tMLBuildServerPath = tMLServerPath.Substring(0, tMLServerPath.Length - 4);
 
@@ -255,14 +260,18 @@ namespace Terraria.ModLoader.Core
 			{
 				if (name == null)
 					name = Path.GetFileNameWithoutExtension(path);
+
 				if (Path.GetDirectoryName(path) == modReferencesPath)
 					path = "$(MSBuildThisFileDirectory)" + Path.GetFileName(path);
+
 				return $"    <Reference Include=\"{System.Security.SecurityElement.Escape(name)}\">\n      <HintPath>{System.Security.SecurityElement.Escape(path)}</HintPath>\n    </Reference>";
 			}
+
 			var referencesXMLList = libs.Select(p => MakeRef(p)).ToList();
+
 			referencesXMLList.Insert(0, MakeRef("$(tMLPath)", "Terraria"));
 
-			var tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
+			string tModLoaderTargets = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <PropertyGroup>
     <TerrariaSteamPath>{System.Security.SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
@@ -687,10 +696,11 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static IEnumerable<string> GetTerrariaReferences(string tempDir, bool xna) {
-			var refs = new List<string>();
-			refs.Add(GetTerrariaReference(xna));
+			var refs = new List<string> {
+				GetTerrariaReference(xna)
+			};
 
-			var xnaAndFnaLibs = new[] {
+			string[] xnaAndFnaLibs = new[] {
 				"Microsoft.Xna.Framework.dll",
 				"Microsoft.Xna.Framework.Game.dll",
 				"Microsoft.Xna.Framework.Graphics.dll",
@@ -700,6 +710,7 @@ namespace Terraria.ModLoader.Core
 
 			if (xna == PlatformUtilities.IsXNA) {
 				var executingAssembly = Assembly.GetExecutingAssembly();
+
 				// find xna/fna in the currently referenced assemblies (eg, via GAC)
 				refs.AddRange(executingAssembly.GetReferencedAssemblies().Select(refName => Assembly.Load(refName).Location).Where(loc => xnaAndFnaLibs.Contains(Path.GetFileName(loc))));
 
@@ -710,8 +721,9 @@ namespace Terraria.ModLoader.Core
 				}
 
 				//extract embedded resource dlls to the references path rather than the tempDir
-				foreach (var resName in executingAssembly.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
-					var path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
+				foreach (string resName in executingAssembly.GetManifestResourceNames().Where(n => n.EndsWith(".dll"))) {
+					string path = Path.Combine(modReferencesPath, Path.GetFileName(resName));
+
 					using (Stream res = executingAssembly.GetManifestResourceStream(resName), file = File.Create(path))
 						res.CopyTo(file);
 
@@ -724,8 +736,10 @@ namespace Terraria.ModLoader.Core
 
 				//extract embedded resource dlls to a temporary folder
 				var terrariaModule = AssemblyDefinition.ReadAssembly(refs[0]).MainModule;
+
 				foreach (var res in terrariaModule.Resources.OfType<EmbeddedResource>().Where(res => res.Name.EndsWith(".dll"))) {
-					var path = Path.Combine(tempDir, Path.GetFileName(res.Name));
+					string path = Path.Combine(tempDir, Path.GetFileName(res.Name));
+
 					using (Stream s = res.GetResourceStream(), file = File.Create(path))
 						s.CopyTo(file);
 
