@@ -9,8 +9,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleBar : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileShine[Type] = 1100;
 			Main.tileSolid[Type] = true;
 			Main.tileSolidTop[Type] = true;
@@ -24,8 +23,7 @@ namespace ExampleMod.Tiles
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.MetalBar")); // localized text for "Metal Bar"
 		}
 
-		public override bool Drop(int i, int j)
-		{
+		public override bool Drop(int i, int j) {
 			Tile t = Main.tile[i, j];
 			int style = t.frameX / 18;
 			if (style == 0) // It can be useful to share a single tile with multiple styles. This code will let you drop the appropriate bar if you had multiple.

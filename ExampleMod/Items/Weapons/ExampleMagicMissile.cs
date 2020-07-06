@@ -26,7 +26,7 @@ namespace ExampleMod.Items.Weapons
 			item.noMelee = true;
 			item.channel = true; //Channel so that you can held the weapon [Important]
 			item.knockBack = 8;
-			item.value = Item.sellPrice(silver : 50);
+			item.value = Item.sellPrice(silver: 50);
 			item.rare = ItemRarityID.Orange;
 			item.UseSound = SoundID.Item9;
 			item.shoot = ProjectileType<Projectiles.MagicMissile>();

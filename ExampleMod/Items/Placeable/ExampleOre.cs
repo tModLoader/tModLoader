@@ -6,13 +6,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleOre : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 58;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.useTurn = true;
 			item.useAnimation = 15;

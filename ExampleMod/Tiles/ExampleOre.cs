@@ -8,8 +8,7 @@ namespace ExampleMod.Tiles
 {
 	public class ExampleOre : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			TileID.Sets.Ore[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileValue[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector

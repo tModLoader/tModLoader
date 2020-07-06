@@ -70,7 +70,7 @@ namespace ExampleMod.Projectiles
 
 					// This code block is very similar to the previous one, but only runs once after the player stops channeling their weapon.
 					projectile.netUpdate = true;
-					
+
 					float maxDistance = 14f; // This also sets the maximun speed the projectile can reach after it stops following the cursor.
 					Vector2 vectorToCursor = Main.MouseWorld - projectile.Center;
 					float distanceToCursor = vectorToCursor.Length();
@@ -93,7 +93,7 @@ namespace ExampleMod.Projectiles
 					projectile.ai[0] = 1f;
 				}
 			}
-			
+
 			// Set the rotation so the projectile points towards where it's going.
 			if (projectile.velocity != Vector2.Zero) {
 				projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver4;

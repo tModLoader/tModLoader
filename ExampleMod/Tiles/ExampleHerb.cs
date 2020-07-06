@@ -23,8 +23,7 @@ namespace ExampleMod.Tiles
 	{
 		private const int FrameWidth = 18; //a field for readibilty and to kick out those magic numbers
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileCut[Type] = true;
 			Main.tileNoFail[Type] = true;
@@ -47,14 +46,12 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 		}
 
-		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
-		{
+		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
 			if (i % 2 == 1)
 				spriteEffects = SpriteEffects.FlipHorizontally;
 		}
 
-		public override bool Drop(int i, int j)
-		{
+		public override bool Drop(int i, int j) {
 			PlantStage stage = GetStage(i, j); //The current stage of the herb
 
 			//Only drop items if the herb is grown
@@ -64,8 +61,7 @@ namespace ExampleMod.Tiles
 			return false;
 		}
 
-		public override void RandomUpdate(int i, int j)
-		{
+		public override void RandomUpdate(int i, int j) {
 			Tile tile = Framing.GetTileSafely(i, j); //Safe way of getting a tile instance
 			PlantStage stage = GetStage(i, j); //The current stage of the herb
 
@@ -81,8 +77,7 @@ namespace ExampleMod.Tiles
 		}
 
 		//A method to quickly get the current stage of the herb
-		private PlantStage GetStage(int i, int j)
-		{
+		private PlantStage GetStage(int i, int j) {
 			Tile tile = Framing.GetTileSafely(i, j); //Always use Framing.GetTileSafely instead of Main.tile as it prevents any errors caused from other mods
 			return (PlantStage)(tile.frameX / FrameWidth);
 		}

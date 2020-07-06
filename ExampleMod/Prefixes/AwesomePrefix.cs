@@ -41,7 +41,7 @@ namespace ExampleMod.Prefixes
 			return false;
 		}
 
-		public override void Apply(Item item) 
+		public override void Apply(Item item)
 			=> item.GetGlobalItem<ExampleInstancedGlobalItem>().awesome = _power;
 
 		public override void ModifyValue(ref float valueMult) {

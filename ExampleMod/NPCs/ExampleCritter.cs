@@ -92,8 +92,8 @@ namespace ExampleMod.NPCs
 				// goto next positions us before the instruction we searched for, so we can insert our array modifying code right here
 				c.EmitDelegate<Func<short[], short[]>>(arr => {
 					// resize the array and add our custom snail
-					Array.Resize(ref arr, arr.Length+1);
-					arr[arr.Length-1] = (short)npc.type;
+					Array.Resize(ref arr, arr.Length + 1);
+					arr[arr.Length - 1] = (short)npc.type;
 					return arr;
 				});
 

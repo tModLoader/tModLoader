@@ -12,40 +12,35 @@ namespace ExampleMod.Items.Accessories
 	[AutoloadEquip(EquipType.Back)]
 	class WaspNest : ModItem
 	{
-		public override bool Autoload(ref string name)
-        {
-            IL.Terraria.Player.beeType += HookBeeType;
-            return base.Autoload(ref name);
+		public override bool Autoload(ref string name) {
+			IL.Terraria.Player.beeType += HookBeeType;
+			return base.Autoload(ref name);
 		}
 
 		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/tModLoader/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade
 		private static int implementation;
-		private void HookBeeType(ILContext il)
-		{
+		private void HookBeeType(ILContext il) {
 			var c = new ILCursor(il);
 
 			// Try to find where 566 is placed onto the stack
 			if (!c.TryGotoNext(i => i.MatchLdcI4(566)))
 				return; // Patch unable to be applied
 
-            // Showcase different patch approaches
-            if (implementation == 0)
-			{
+			// Showcase different patch approaches
+			if (implementation == 0) {
 				// Move the cursor after 566 and onto the ret op.
 				c.Index++;
 				// Push the Player instance onto the stack
 				c.Emit(Ldarg_0);
 				// Call a delegate using the int and Player from the stack.
-				c.EmitDelegate<Func<int, Player, int>>((returnValue, player) =>
-				{
+				c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
 					// Regular c# code
 					if (player.GetModPlayer<ExamplePlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1)
 						return ProjectileID.Beenade;
 					return returnValue;
 				});
 			}
-			else if (implementation == 1)
-			{
+			else if (implementation == 1) {
 				// Make a label to use later
 				var label = c.DefineLabel();
 				// Push the Player instance onto the stack
@@ -60,8 +55,7 @@ namespace ExampleMod.Items.Accessories
 				// Set the label to the current cursor, which is still the instruction pushing 566 (which is followed by Ret)
 				c.MarkLabel(label);
 			}
-			else
-			{
+			else {
 				var label = c.DefineLabel();
 
 				// Here we simply adapt the dnSpy output. This approach is tedious but easier if you don't understand IL instructions.
@@ -89,18 +83,16 @@ namespace ExampleMod.Items.Accessories
 			}
 
 
-            // change implementation every time the mod is reloaded
-            implementation = (implementation+1)%3;
-        }
+			// change implementation every time the mod is reloaded
+			implementation = (implementation + 1) % 3;
+		}
 
-        public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			sbyte realBackSlot = item.backSlot;
 			item.CloneDefaults(ItemID.HiveBackpack);
 			item.value = Item.sellPrice(0, 5, 0, 0);
@@ -108,8 +100,7 @@ namespace ExampleMod.Items.Accessories
 			item.backSlot = realBackSlot;
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+		public override void UpdateAccessory(Player player, bool hideVisual) {
 			// The original Hive Pack sets strongBees.
 			player.strongBees = true;
 			// Here we add an additional effect

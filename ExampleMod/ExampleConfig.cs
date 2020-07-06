@@ -139,7 +139,7 @@ namespace ExampleMod
 		public SimpleData SomeClassA;
 		// EntityDefinition classes store the identity of an Entity (Item, NPC, Projectile, etc) added by a mod or vanilla. Only the identity is preserved, not other mod data or stack.
 		// When using XDefinition classes, you can the .Type property to get the ID of the item. You can use .IsUnloaded to check if the item in question is loaded.
-		public ItemDefinition itemDefinitionExample; 
+		public ItemDefinition itemDefinitionExample;
 		public NPCDefinition npcDefinitionExample = new NPCDefinition(NPCID.Bunny);
 		public ProjectileDefinition projectileDefinitionExample = new ProjectileDefinition("ExampleMod", nameof(Projectiles.Wisp));
 
@@ -495,7 +495,8 @@ namespace ExampleMod
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
 	[Label("ModConfig Showcase G: Misc")]
-	public class ModConfigShowcaseMisc : ModConfig {
+	public class ModConfigShowcaseMisc : ModConfig
+	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Label("Custom UI Element")]
@@ -521,7 +522,7 @@ namespace ExampleMod
 
 		// You can put multiple attributes in the same [] if you like.
 		// ColorHueSliderAttribute displays Hue Saturation Lightness. Passing in false means only Hue is shown.
-		[DefaultValue(typeof(Color), "255, 0, 0, 255"), ColorHSLSlider(false), ColorNoAlpha]  
+		[DefaultValue(typeof(Color), "255, 0, 0, 255"), ColorHSLSlider(false), ColorNoAlpha]
 		public Color hsl;
 
 		// In this example we inherit from a tmodloader config UIElement to slightly customize the colors.
@@ -540,7 +541,7 @@ namespace ExampleMod
 		public SimpleData simpleDataExample; // you can also initialize in the constructor, see initialization in public ModConfigShowcaseMisc() below.
 
 		// This annotation allows the UI to null out this class. You need to make sure to initialize fields without the NullAllowed annotation in constructor or initializer or you might have issues. Of course, if you allow nulls, you'll need to make sure the rest of your mod will handle them correctly. Try to avoid null unless you have a good reason to use them, as null objects will only complicate the rest of your code.
-		[NullAllowed] 
+		[NullAllowed]
 		[JsonDefaultValue("{\"boost\": 777}")] // With NullAllowed, you can specify a default value like this.
 		public SimpleData simpleDataExample2;
 
@@ -565,8 +566,7 @@ namespace ExampleMod
 			// We can use [JsonExtensionData] to capture un-de-serialized data and manually restore them to new fields.
 			// Imagine in a previous version of this mod, we had a field "OldListOfInts" and we want to preserve that data in "ListOfInts".
 			// To test this, insert the following into ExampleMod_ModConfigShowcase.json: "OldListOfInts": [ 99, 999],
-			if (_additionalData.TryGetValue("OldListOfInts", out var token))
-			{
+			if (_additionalData.TryGetValue("OldListOfInts", out var token)) {
 				var OldListOfInts = token.ToObject<List<int>>();
 				ListOfInts.AddRange(OldListOfInts);
 			}
@@ -710,8 +710,7 @@ namespace ExampleMod
 
 		// Here you need to create an object from the given string (reverting ToString basically)
 		// This has to be static and it must be named FromString
-		public static ClassUsedAsKey FromString(string s)
-		{
+		public static ClassUsedAsKey FromString(string s) {
 			// This following code depends on your implementation of ToString, here we just have two values separated by a ','
 			string[] vars = s.Split(new char[] { ',' }, 2, StringSplitOptions.RemoveEmptyEntries);
 			// The System.Convert class provides methods to transform data types between each other, here using the string overload

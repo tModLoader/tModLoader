@@ -11,13 +11,11 @@ namespace ExampleMod.NPCs
 	// This NPC is simply an exhibition of the DrawBehind method. The npc cycles between all the available "layers" that a ModNPC can be drawn at. Spawn this NPC with something like Cheat Sheet or Hero's Mod to view the effect.
 	class DrawBehindNPC : ModNPC
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Main.npcFrameCount[npc.type] = 6;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			npc.width = 30;
 			npc.height = 40;
 			npc.aiStyle = -1;
@@ -31,13 +29,11 @@ namespace ExampleMod.NPCs
 			npc.knockBackResist = .2f;
 		}
 
-		public override void FindFrame(int frameHeight)
-		{
+		public override void FindFrame(int frameHeight) {
 			npc.frame.Y = (int)(npc.ai[0] / 40) * frameHeight;
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			npc.ai[0] = (npc.ai[0] + 1) % 240;
 
 			// These are the defaults
@@ -59,8 +55,7 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override void DrawBehind(int index)
-		{
+		public override void DrawBehind(int index) {
 			// The 6 available positions are as follows:  
 			switch ((int)(npc.ai[0] / 40)) {
 				case 0: // Behind tiles and walls

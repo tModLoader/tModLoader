@@ -124,14 +124,13 @@ namespace ExampleMod.NPCs
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
 				return "Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?";
-			} 
+			}
 			switch (Main.rand.Next(4)) {
 				case 0:
 					return "Sometimes I feel like I'm different from everyone else here.";
 				case 1:
 					return "What's your favorite color? My favorite colors are white and black.";
-				case 2:
-					{
+				case 2: {
 						// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
 						Main.npcChatCornerItem = ItemID.HiveBackpack;
 						return $"Hey, if you find a [i:{ItemID.HiveBackpack}], I can upgrade it for you.";
@@ -176,9 +175,9 @@ namespace ExampleMod.NPCs
 					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
 					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ItemType<Items.Accessories.WaspNest>())}";
-					
+
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-					
+
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
 					Main.LocalPlayer.QuickSpawnItem(ItemType<Items.Accessories.WaspNest>());
 
@@ -250,10 +249,8 @@ namespace ExampleMod.NPCs
 				nextSlot++;
 			}
 
-			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null)
-			{
-				foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList)
-				{
+			if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
+				foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
 					if (item.IsUnloaded)
 						continue;
 					shop.item[nextSlot].SetDefaults(item.Type);
@@ -261,7 +258,7 @@ namespace ExampleMod.NPCs
 					shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 					nextSlot++;
 					// TODO: Have tModLoader handle index issues.
-				}	
+				}
 			}
 		}
 

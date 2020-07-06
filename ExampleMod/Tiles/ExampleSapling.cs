@@ -51,8 +51,7 @@ namespace ExampleMod.Tiles
 
 		public override void RandomUpdate(int i, int j) {
 			// A random chance to slow down growth
-			if (WorldGen.genRand.Next(20) == 0)
-			{
+			if (WorldGen.genRand.Next(20) == 0) {
 				Tile tile = Framing.GetTileSafely(i, j); // Safely get the tile at the given coordinates
 				bool growSucess; // A bool to see if the tree growing was sucessful.
 

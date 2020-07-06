@@ -15,8 +15,8 @@ namespace ExampleMod.Gores
 		}
 
 		public override bool Update(Gore gore) {
-			gore.alpha = gore.position.Y < Main.worldSurface * 16.0 + 8.0 
-				? 0 
+			gore.alpha = gore.position.Y < Main.worldSurface * 16.0 + 8.0
+				? 0
 				: 100;
 
 			int frameDuration = 4;

@@ -6,13 +6,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleBar : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			ItemID.Sets.SortingPriorityMaterials[item.type] = 59; // influences the inventory sort order. 59 is PlatinumBar, higher is more valuable.
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;
@@ -27,8 +25,7 @@ namespace ExampleMod.Items.Placeable
 			item.placeStyle = 0;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemType<ExampleOre>(), 4);
 			recipe.SetResult(this);

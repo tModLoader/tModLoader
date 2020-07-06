@@ -26,16 +26,14 @@ namespace ExampleMod.Items.Placeable
 		}
 
 		// We use Autoload to prevent the regular loading of this class and instead load 2 versions of this class that we provide.
-		public override bool Autoload(ref string name)
-		{
+		public override bool Autoload(ref string name) {
 			// We could also call AddItem in ExampleMod.Load, but keeping the code here is a little more organized. (The approach needs the empty constructor above.)
 			mod.AddItem(ExampleTrapA, new ExampleTrap(0));
 			mod.AddItem(ExampleTrapB, new ExampleTrap(1));
 			return false; // returning false prevents the autoload, which is what we want since we loaded the 2 versions we wanted already.
 		}
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// In mod.AddItem above, we set ModItem.Name to either ExampleTrapA or ExampleTrapB via the AddItem method. We check this now to know which item we are calling SetStaticDefaults on.
 			if (Name == ExampleTrapA)
 				DisplayName.SetDefault("Example Trap - Ichor Bullet");
@@ -43,8 +41,7 @@ namespace ExampleMod.Items.Placeable
 				DisplayName.SetDefault("Example Trap - Chlorophyte Bullet");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.useTurn = true;
 			item.useAnimation = 15;
@@ -61,8 +58,7 @@ namespace ExampleMod.Items.Placeable
 			item.mech = true; // lets you see wires while holding.
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.DartTrap);
 			recipe.SetResult(this);

@@ -17,32 +17,32 @@ float2 uImageSize1;
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
-    float4 color = tex2D(uImage0, coords);
+	float4 color = tex2D(uImage0, coords);
 
-    if (!any(color))
-        return color;
+	if (!any(color))
+		return color;
 
-    int choice = uTime % 4;
+	int choice = uTime % 4;
 
-    if(choice == 0)
-        color.r = 1;
-    else if(choice == 1)
-        color.g = 1;
-    else if (choice == 2)
-        color.b = 1;
-        //color = float4(0, 0, 1, 1);
-    //else if (choice == 3)
-    //   color = color;
+	if(choice == 0)
+		color.r = 1;
+	else if(choice == 1)
+		color.g = 1;
+	else if (choice == 2)
+		color.b = 1;
+		//color = float4(0, 0, 1, 1);
+	//else if (choice == 3)
+	//   color = color;
 
-    return color;
+	return color;
 
-    //return color * tex2D(uImage0, coords).a;
+	//return color * tex2D(uImage0, coords).a;
 }
 
 technique Technique1
 {
-    pass ExampleDyePass
-    {
-        PixelShader = compile ps_2_0 PixelShaderFunction();
-    }
+	pass ExampleDyePass
+	{
+		PixelShader = compile ps_2_0 PixelShaderFunction();
+	}
 }

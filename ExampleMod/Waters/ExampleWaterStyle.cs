@@ -11,13 +11,13 @@ namespace ExampleMod.Waters
 		public override bool ChooseWaterStyle()
 			=> Main.bgStyle == mod.GetSurfaceBgStyleSlot("ExampleSurfaceBgStyle");
 
-		public override int ChooseWaterfallStyle() 
+		public override int ChooseWaterfallStyle()
 			=> mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
 
-		public override int GetSplashDust() 
+		public override int GetSplashDust()
 			=> DustType<ExampleWaterSplash>();
 
-		public override int GetDropletGore() 
+		public override int GetDropletGore()
 			=> mod.GetGoreSlot("Gores/ExampleDroplet");
 
 		public override void LightColorMultiplier(ref float r, ref float g, ref float b) {
@@ -26,7 +26,7 @@ namespace ExampleMod.Waters
 			b = 1f;
 		}
 
-		public override Color BiomeHairColor() 
+		public override Color BiomeHairColor()
 			=> Color.White;
 	}
 }

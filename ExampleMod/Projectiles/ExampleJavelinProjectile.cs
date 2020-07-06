@@ -63,7 +63,7 @@ namespace ExampleMod.Projectiles
 		public override void Kill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y); // Play a death sound
 			Vector2 usePos = projectile.position; // Position to use for dusts
-			
+
 			// Please note the usage of MathHelper, please use this!
 			// We subtract 90 degrees as radians to the rotation vector to offset the sprite as its default rotation in the sprite isn't aligned properly.
 			Vector2 rotVector = (projectile.rotation - MathHelper.ToRadians(90f)).ToRotationVector2(); // rotation vector to use for dust velocity
@@ -142,20 +142,19 @@ namespace ExampleMod.Projectiles
 		/*
 		 * The following code handles the javelin sticking to the enemy hit.
 		 */
-		private void UpdateStickyJavelins(NPC target)
-		{
+		private void UpdateStickyJavelins(NPC target) {
 			int currentJavelinIndex = 0; // The javelin index
 
 			for (int i = 0; i < Main.maxProjectiles; i++) // Loop all projectiles
 			{
 				Projectile currentProjectile = Main.projectile[i];
 				if (i != projectile.whoAmI // Make sure the looped projectile is not the current javelin
-				    && currentProjectile.active // Make sure the projectile is active
-				    && currentProjectile.owner == Main.myPlayer // Make sure the projectile's owner is the client's player
-				    && currentProjectile.type == projectile.type // Make sure the projectile is of the same type as this javelin
-				    && currentProjectile.modProjectile is ExampleJavelinProjectile javelinProjectile // Use a pattern match cast so we can access the projectile like an ExampleJavelinProjectile
-				    && javelinProjectile.IsStickingToTarget // the previous pattern match allows us to use our properties
-				    && javelinProjectile.TargetWhoAmI == target.whoAmI) {
+					&& currentProjectile.active // Make sure the projectile is active
+					&& currentProjectile.owner == Main.myPlayer // Make sure the projectile's owner is the client's player
+					&& currentProjectile.type == projectile.type // Make sure the projectile is of the same type as this javelin
+					&& currentProjectile.modProjectile is ExampleJavelinProjectile javelinProjectile // Use a pattern match cast so we can access the projectile like an ExampleJavelinProjectile
+					&& javelinProjectile.IsStickingToTarget // the previous pattern match allows us to use our properties
+					&& javelinProjectile.TargetWhoAmI == target.whoAmI) {
 
 					_stickingJavelins[currentJavelinIndex++] = new Point(i, currentProjectile.timeLeft); // Add the current projectile's index and timeleft to the point array
 					if (currentJavelinIndex >= _stickingJavelins.Length)  // If the javelin's index is bigger than or equal to the point array's length, break
@@ -164,8 +163,7 @@ namespace ExampleMod.Projectiles
 			}
 
 			// Remove the oldest sticky javelin if we exceeded the maximum
-			if (currentJavelinIndex >= MAX_STICKY_JAVELINS)
-			{
+			if (currentJavelinIndex >= MAX_STICKY_JAVELINS) {
 				int oldJavelinIndex = 0;
 				// Loop our point array
 				for (int i = 1; i < MAX_STICKY_JAVELINS; i++) {
@@ -195,8 +193,7 @@ namespace ExampleMod.Projectiles
 			else NormalAI();
 		}
 
-		private void UpdateAlpha()
-		{
+		private void UpdateAlpha() {
 			// Slowly remove alpha as it is present
 			if (projectile.alpha > 0) {
 				projectile.alpha -= ALPHA_REDUCTION;
@@ -208,8 +205,7 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		private void NormalAI()
-		{
+		private void NormalAI() {
 			TargetWhoAmI++;
 
 			// For a little while, the javelin will travel with the same speed, but after this, the javelin drops velocity very quickly.
@@ -226,7 +222,7 @@ namespace ExampleMod.Projectiles
 			// Please notice the MathHelper usage, offset the rotation by 90 degrees (to radians because rotation uses radians) because the sprite's rotation is not aligned!
 			projectile.rotation =
 				projectile.velocity.ToRotation() +
-				MathHelper.ToRadians(90f); 
+				MathHelper.ToRadians(90f);
 
 			// Spawn some random dusts as the javelin travels
 			if (Main.rand.NextBool(3)) {
@@ -243,8 +239,7 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		private void StickyAI()
-		{
+		private void StickyAI() {
 			// These 2 could probably be moved to the ModifyNPCHit hook, but in vanilla they are present in the AI
 			projectile.ignoreWater = true; // Make sure the projectile ignores water
 			projectile.tileCollide = false; // Make sure the projectile doesn't collide with tiles anymore
@@ -258,7 +253,7 @@ namespace ExampleMod.Projectiles
 				projectile.Kill();
 			}
 			else if (Main.npc[projTargetIndex].active && !Main.npc[projTargetIndex].dontTakeDamage) { // If the target is active and can take damage
-				// Set the projectile's position relative to the target's center
+																									  // Set the projectile's position relative to the target's center
 				projectile.Center = Main.npc[projTargetIndex].Center - projectile.velocity * 2f;
 				projectile.gfxOffY = Main.npc[projTargetIndex].gfxOffY;
 				if (hitEffect) { // Perform a hit effect here

@@ -65,11 +65,11 @@ namespace ExampleMod.Projectiles
 					new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, r,
 					new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);
 			}
-			
+
 			// Draws the laser 'tail'
 			spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
 				new Rectangle(0, 0, 28, 26), Color.White, r, new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);
-			
+
 			// Draws the laser 'head'
 			spriteBatch.Draw(texture, start + (Distance + step) * unit - Main.screenPosition,
 				new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);
@@ -117,8 +117,7 @@ namespace ExampleMod.Projectiles
 			CastLights();
 		}
 
-		private void SpawnDusts(Player player)
-		{
+		private void SpawnDusts(Player player) {
 			Vector2 unit = projectile.velocity * -1;
 			Vector2 dustPos = player.Center + projectile.velocity * Distance;
 
@@ -153,10 +152,8 @@ namespace ExampleMod.Projectiles
 		/*
 		 * Sets the end of the laser position based on where it collides with something
 		 */
-		private void SetLaserPosition(Player player)
-		{
-			for (Distance = MOVE_DISTANCE; Distance <= 2200f; Distance += 5f)
-			{
+		private void SetLaserPosition(Player player) {
+			for (Distance = MOVE_DISTANCE; Distance <= 2200f; Distance += 5f) {
 				var start = player.Center + projectile.velocity * Distance;
 				if (!Collision.CanHit(player.Center, 1, 1, start, 1, 1)) {
 					Distance -= 5f;
@@ -165,8 +162,7 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		private void ChargeLaser(Player player)
-		{
+		private void ChargeLaser(Player player) {
 			// Kill the projectile if the player stops channeling
 			if (!player.channel) {
 				projectile.Kill();
@@ -196,8 +192,7 @@ namespace ExampleMod.Projectiles
 			}
 		}
 
-		private void UpdatePlayer(Player player)
-		{
+		private void UpdatePlayer(Player player) {
 			// Multiplayer support here, only run this code if the client running it is the owner of the projectile
 			if (projectile.owner == Main.myPlayer) {
 				Vector2 diff = Main.MouseWorld - player.Center;
@@ -214,8 +209,7 @@ namespace ExampleMod.Projectiles
 			player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * dir, projectile.velocity.X * dir); // Set the item rotation to where we are shooting
 		}
 
-		private void CastLights()
-		{
+		private void CastLights() {
 			// Cast a light along the line of the laser
 			DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
 			Utils.PlotTileLine(projectile.Center, projectile.Center + projectile.velocity * (Distance - MOVE_DISTANCE), 26, DelegateMethods.CastLight);

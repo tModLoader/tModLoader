@@ -33,4 +33,4 @@ namespace ExampleMod.Tiles.Trees
 			return mod.GetTexture("Tiles/Trees/ExampleTree_Branches");
 		}
 	}
-} 
+}

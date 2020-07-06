@@ -66,13 +66,10 @@ namespace ExampleMod.Items
 					overrideColor = Color.Magenta
 				});
 			}
-			if (GetInstance<ExampleConfigClient>().ShowModOriginTooltip)
-			{
-				foreach (TooltipLine line3 in tooltips)
-				{
-					if (line3.mod == "Terraria" && line3.Name == "ItemName")
-					{
-						line3.text = line3.text + (item.modItem != null ? " [" + item.modItem.mod.DisplayName + "]": "");
+			if (GetInstance<ExampleConfigClient>().ShowModOriginTooltip) {
+				foreach (TooltipLine line3 in tooltips) {
+					if (line3.mod == "Terraria" && line3.Name == "ItemName") {
+						line3.text = line3.text + (item.modItem != null ? " [" + item.modItem.mod.DisplayName + "]" : "");
 					}
 				}
 			}

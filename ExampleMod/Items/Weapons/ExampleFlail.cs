@@ -7,8 +7,7 @@ namespace ExampleMod.Items.Weapons
 {
 	public class ExampleFlail : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 22;
 			item.height = 20;
 			item.value = Item.sellPrice(silver: 5);
@@ -28,8 +27,7 @@ namespace ExampleMod.Items.Weapons
 			item.channel = true;
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			var recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Chain);
 			recipe.AddIngredient(ModContent.ItemType<ExampleItem>(), 10);

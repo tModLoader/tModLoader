@@ -566,7 +566,7 @@ namespace ExampleMod
 		}
 
 		public override void OnConsumeMana(Item item, int manaConsumed) {
-			if(!manaHeart) {
+			if (!manaHeart) {
 				return;
 			}
 
@@ -577,12 +577,12 @@ namespace ExampleMod
 			}
 
 			if (Main.netMode != NetmodeID.Server) {
-				SoundEngine.PlaySound(SoundID.Item4,player.position);
+				SoundEngine.PlaySound(SoundID.Item4, player.position);
 
 				player.statLife += 20;
 
 				if (Main.myPlayer == player.whoAmI) {
-					player.HealEffect(20,true);
+					player.HealEffect(20, true);
 				}
 
 				if (player.statLife > player.statLifeMax2) {
@@ -750,8 +750,7 @@ namespace ExampleMod
 			layers.Add(MiscEffects);
 		}*/
 
-		public override bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText)
-		{
+		public override bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText) {
 			if (nurse.life != nurse.lifeMax) {
 				chatText = "Sorry, I'm hurt, you'll have to wait. Ouch!";
 				return false;
@@ -760,27 +759,21 @@ namespace ExampleMod
 			return base.ModifyNurseHeal(nurse, ref health, ref removeDebuffs, ref chatText);
 		}
 
-		public override void PostBuyItem(NPC vendor, Item[] shop, Item item)
-		{
+		public override void PostBuyItem(NPC vendor, Item[] shop, Item item) {
 			// Here we use PostBuyItem to limit the player to only buying 1 item from the ExamplePersonFreeGiftList by removing items from the shop.
-			if (vendor.type == NPCType<ExamplePerson>() && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
-			{
+			if (vendor.type == NPCType<ExamplePerson>() && item.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift) {
 				examplePersonGiftReceived = true;
-				foreach (var shopItem in shop)
-				{
-					if(!shopItem.IsAir && shopItem.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift)
-					{
+				foreach (var shopItem in shop) {
+					if (!shopItem.IsAir && shopItem.GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift) {
 						shopItem.TurnToAir();
 					}
 				}
 			}
 		}
 
-		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
-		{
+		public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item) {
 			// Here we use PostSellItem to let the player buy a different item from the ExamplePersonFreeGiftList when the player sells the item back.
-			if (vendor.type == NPCType<ExamplePerson>() && (GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false))
-			{
+			if (vendor.type == NPCType<ExamplePerson>() && (GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList?.Any(x => x.Type == item.type) ?? false)) {
 				examplePersonGiftReceived = false;
 				item.TurnToAir();
 				Main.NewText("You are returning your free gift? Come back in a second and I'll show you the free gifts again.");

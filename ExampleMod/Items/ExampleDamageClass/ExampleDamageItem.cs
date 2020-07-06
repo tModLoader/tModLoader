@@ -58,7 +58,7 @@ namespace ExampleMod.Items.ExampleDamageClass
 				tt.text = damageValue + " example " + damageWord;
 			}
 
-			if(exampleResourceCost > 0) {
+			if (exampleResourceCost > 0) {
 				tooltips.Add(new TooltipLine(mod, "Example Resource Cost", $"Uses {exampleResourceCost} example resource"));
 			}
 		}

@@ -12,7 +12,7 @@ namespace ExampleMod.NPCs
 	public class ExampleGlobalNPC : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		
+
 		public bool eFlames;
 		public bool exampleJavelin;
 

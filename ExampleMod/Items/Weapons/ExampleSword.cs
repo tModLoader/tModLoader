@@ -27,7 +27,7 @@ namespace ExampleMod.Items.Weapons
 			item.UseSound = SoundID.Item1; // The sound when the weapon is being used
 			item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button
 			item.crit = 6; // The critical strike chance the weapon has. The player, by default, has 4 critical strike chance
-			
+
 			//The useStyle of the item. 
 			//Use useStyle 1 for normal swinging or for throwing
 			//use useStyle 2 for an item that drinks such as a potion,

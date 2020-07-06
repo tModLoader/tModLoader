@@ -9,8 +9,7 @@ namespace ExampleMod.Items
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{
-		public override bool Autoload(ref string name)
-		{
+		public override bool Autoload(ref string name) {
 			return !GetInstance<ExampleConfigServer>().DisableExampleWings;
 		}
 

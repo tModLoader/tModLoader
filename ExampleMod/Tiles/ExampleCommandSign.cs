@@ -12,8 +12,7 @@ namespace ExampleMod.Tiles
 	// This is an example mod for ExampleSign and ExampleCommandCaller combined into one
 	public class ExampleCommandSign : ModTile
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// Credits to Dark;Light for finding this flag
 			// Keep in mind that the max amount of signs is 1000 (the size of the tileSign array)
 			// The Main.tileSign flag will do the following:
@@ -82,30 +81,25 @@ namespace ExampleMod.Tiles
 			adjTiles = new int[] { Type };
 		}
 
-		public override bool HasSmartInteract()
-		{
+		public override bool HasSmartInteract() {
 			return true;
 		}
 
-		public override void PlaceInWorld(int i, int j, Item item)
-		{
+		public override void PlaceInWorld(int i, int j, Item item) {
 			Main.sign[Sign.ReadSign(i, j, true)].text = "Type in a command, right-click sign to activate it!";
 		}
 
-		public override bool NewRightClick(int i, int j)
-		{
+		public override bool NewRightClick(int i, int j) {
 			// Uses the text from the sign to run a command
 			Main.ExecuteCommand(Main.sign[Sign.ReadSign(i, j, true)].text, new ExampleCommandCaller());
 			return true;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num)
-		{
+		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType("ExampleCommandSign"));
 			Sign.KillSign(i, j);
 		}
@@ -118,8 +112,7 @@ namespace ExampleMod.Tiles
 
 			public Player Player => null;
 
-			public void Reply(string text, Color color = default(Color))
-			{
+			public void Reply(string text, Color color = default(Color)) {
 				foreach (string value in text.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries))
 					Main.NewText(value);
 			}

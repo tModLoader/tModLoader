@@ -16,13 +16,13 @@ namespace ExampleMod
 			}
 		}
 
-		public static Angle operator +(Angle a1, Angle a2) 
+		public static Angle operator +(Angle a1, Angle a2)
 			=> new Angle(a1.Value + a2.Value);
 
-		public static Angle operator -(Angle a1, Angle a2) 
+		public static Angle operator -(Angle a1, Angle a2)
 			=> new Angle(a1.Value - a2.Value);
 
-		public Angle Opposite() 
+		public Angle Opposite()
 			=> new Angle(Value + (float)Math.PI);
 
 		public bool ClockwiseFrom(Angle other) {

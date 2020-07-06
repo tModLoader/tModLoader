@@ -21,7 +21,7 @@ namespace ExampleMod.UI
 		public override void OnInitialize() {
 			// Create a UIElement for all the elements to sit on top of, this simplifies the numbers as nested elements can be positioned relative to the top left corner of this element. 
 			// UIElement is invisible and has no padding. You can use a UIPanel if you wish for a background.
-			area = new UIElement(); 
+			area = new UIElement();
 			area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
 			area.Top.Set(30, 0f); // Placing it just a bit below the top of the screen.
 			area.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.

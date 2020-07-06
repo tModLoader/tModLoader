@@ -12,13 +12,11 @@ namespace ExampleMod.Projectiles
 		// The folder path to the flail chain sprite
 		private const string ChainTexturePath = "ExampleMod/Projectiles/ExampleFlailProjectileChain";
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Flail Ball"); // Set the projectile name to Example Flail Ball
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			projectile.width = 22;
 			projectile.height = 22;
 			projectile.friendly = true;
@@ -28,8 +26,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		// This AI code is adapted from the aiStyle 15. We need to re-implement this to customize the behavior of our flail
-		public override void AI()
-		{
+		public override void AI() {
 			// Spawn some dust visuals
 			var dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 172, projectile.velocity.X * 0.4f, projectile.velocity.Y * 0.4f, 100, default, 1.5f);
 			dust.noGravity = true;
@@ -131,8 +128,7 @@ namespace ExampleMod.Projectiles
 			// Here is where a flail like Flower Pow could spawn additional projectiles or other custom behaviors
 		}
 
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
+		public override bool OnTileCollide(Vector2 oldVelocity) {
 			// This custom OnTileCollide code makes the projectile bounce off tiles at 1/5th the original speed, and plays sound and spawns dust if the projectile was going fast enough.
 			bool shouldMakeSound = false;
 
@@ -168,8 +164,7 @@ namespace ExampleMod.Projectiles
 			return false;
 		}
 
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			var player = Main.player[projectile.owner];
 
 			Vector2 mountedCenter = player.MountedCenter;

@@ -1,7 +1,7 @@
 ﻿using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace ExampleMod.Items.Placeable 
+namespace ExampleMod.Items.Placeable
 {
 	public class ExampleSand : ModItem
 	{

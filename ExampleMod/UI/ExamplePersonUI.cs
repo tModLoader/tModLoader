@@ -34,7 +34,7 @@ namespace ExampleMod.UI
 		// OnDeactivate is called when the UserInterface switches to a different state. In this mod, we switch between no state (null) and this state (ExamplePersonUI).
 		// Using OnDeactivate is useful for clearing out Item slots and returning them to the player, as we do here.
 		public override void OnDeactivate() {
-			if(_vanillaItemSlot.Item.IsAir) {
+			if (_vanillaItemSlot.Item.IsAir) {
 				return;
 			}
 
@@ -77,10 +77,10 @@ namespace ExampleMod.UI
 			const int SlotX = 50;
 			const int SlotY = 270;
 
-			if(_vanillaItemSlot.Item.IsAir) {
+			if (_vanillaItemSlot.Item.IsAir) {
 				const string Message = "Place an item here to Awesomeify";
 
-				ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch,FontAssets.MouseText.Value, Message, new Vector2(SlotX + 50, SlotY), new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor), 0f, Vector2.Zero, Vector2.One, -1f, 2f);
+				ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText.Value, Message, new Vector2(SlotX + 50, SlotY), new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor), 0f, Vector2.Zero, Vector2.One, -1f, 2f);
 				return;
 			}
 
@@ -89,7 +89,7 @@ namespace ExampleMod.UI
 			int[] coins = Utils.CoinsSplit(awesomePrice);
 			var coinsText = new StringBuilder();
 
-			for(int i = 0;i < 4;i++) {
+			for (int i = 0; i < 4; i++) {
 				coinsText.Append($"[c/{Colors.AlphaDarken(Colors.CoinPlatinum).Hex3()}:{coins[3 - i]} {Language.GetTextValue($"LegacyInterface.{15 + i}")}]");
 			}
 
@@ -104,21 +104,21 @@ namespace ExampleMod.UI
 
 			Main.spriteBatch.Draw(reforgeTexture, new Vector2(reforgeX, reforgeY), null, Color.White, 0f, reforgeTexture.Size() / 2f, 0.8f, SpriteEffects.None, 0f);
 
-			if(!hoveringOverReforgeButton) {
+			if (!hoveringOverReforgeButton) {
 				tickPlayed = false;
 				return;
 			}
 
 			Main.hoverItemName = Language.GetTextValue("LegacyInterface.19");
 
-			if(!tickPlayed) {
+			if (!tickPlayed) {
 				SoundEngine.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
 			}
 
 			tickPlayed = true;
 			Main.LocalPlayer.mouseInterface = true;
 
-			if(!Main.mouseLeftRelease || !Main.mouseLeft || !Main.LocalPlayer.CanBuyItem(awesomePrice, -1) || !ItemLoader.PreReforge(_vanillaItemSlot.Item)) {
+			if (!Main.mouseLeftRelease || !Main.mouseLeft || !Main.LocalPlayer.CanBuyItem(awesomePrice, -1) || !ItemLoader.PreReforge(_vanillaItemSlot.Item)) {
 				return;
 			}
 
@@ -134,9 +134,10 @@ namespace ExampleMod.UI
 			reforgeItem = reforgeItem.CloneWithModdedDataFrom(_vanillaItemSlot.Item);
 
 			// This is the main effect of this slot. Giving the Awesome prefix 90% of the time and the ReallyAwesome prefix the other 10% of the time. All for a constant 1 gold. Useless, but informative.
-			if(Main.rand.NextBool(10)) {
+			if (Main.rand.NextBool(10)) {
 				reforgeItem.Prefix(GetInstance<ExampleMod>().PrefixType("ReallyAwesome"));
-			} else {
+			}
+			else {
 				reforgeItem.Prefix(GetInstance<ExampleMod>().PrefixType("Awesome"));
 			}
 

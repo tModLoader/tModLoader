@@ -155,7 +155,7 @@ namespace ExampleMod.UI
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			CalculatedStyle innerDimensions = GetInnerDimensions();	
+			CalculatedStyle innerDimensions = GetInnerDimensions();
 			//Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 
 			float shopx = innerDimensions.X;

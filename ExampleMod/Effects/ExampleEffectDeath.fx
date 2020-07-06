@@ -34,8 +34,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 
 technique Technique1
 {
-    pass DeathAnimation
-    {
-        PixelShader = compile ps_2_0 PixelShaderFunction();
-    }
+	pass DeathAnimation
+	{
+		PixelShader = compile ps_2_0 PixelShaderFunction();
+	}
 }

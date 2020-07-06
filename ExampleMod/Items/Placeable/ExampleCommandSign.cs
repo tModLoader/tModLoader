@@ -5,13 +5,11 @@ namespace ExampleMod.Items.Placeable
 {
 	public class ExampleCommandSign : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sign.");
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			item.width = 26;
 			item.height = 22;
 			item.maxStack = 99;
@@ -25,8 +23,7 @@ namespace ExampleMod.Items.Placeable
 			item.createTile = mod.TileType("ExampleCommandSign");
 		}
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Sign);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 6);
