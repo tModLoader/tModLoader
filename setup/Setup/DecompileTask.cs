@@ -128,6 +128,7 @@ namespace Terraria.ModLoader.Setup
 			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude, serverOnly ? null : "SERVER");
 
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
+			items.Clear();
 			items.Add(WriteCommonConfigurationFile());
 
 			ExecuteParallel(items);
@@ -423,7 +424,7 @@ namespace Terraria.ModLoader.Setup
 
 					w.WriteStartElement("PropertyGroup");
 					w.WriteElementString("TargetFramework", "net40");
-					w.WriteElementString("Configurations", "WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease");
+					w.WriteElementString("Configurations", "Debug;Release;ServerDebug;ServerRelease");
 					w.WriteElementString("AssemblySearchPaths", "$(AssemblySearchPaths);{GAC}");
 					w.WriteElementString("PlatformTarget", "x86");
 					w.WriteElementString("AllowUnsafeBlocks", "true");
@@ -431,21 +432,6 @@ namespace Terraria.ModLoader.Setup
 					w.WriteEndElement(); // </PropertyGroup>
 
 					//configurations
-					w.WriteStartElement("PropertyGroup");
-					w.WriteAttributeString("Condition", "$(Configuration.Contains('Windows'))");
-					w.WriteElementString("DefineConstants", "$(DefineConstants);WINDOWS;XNA"); //We'll need a FNA version too in the future.
-					w.WriteEndElement(); // </PropertyGroup>
-
-					w.WriteStartElement("PropertyGroup");
-					w.WriteAttributeString("Condition", "$(Configuration.Contains('Linux'))");
-					w.WriteElementString("DefineConstants", "$(DefineConstants);LINUX;FNA");
-					w.WriteEndElement(); // </PropertyGroup>
-
-					w.WriteStartElement("PropertyGroup");
-					w.WriteAttributeString("Condition", "$(Configuration.Contains('Mac'))");
-					w.WriteElementString("DefineConstants", "$(DefineConstants);MAC;FNA");
-					w.WriteEndElement(); // </PropertyGroup>
-
 					w.WriteStartElement("PropertyGroup");
 					w.WriteAttributeString("Condition", "$(Configuration.Contains('Server'))");
 					w.WriteElementString("DefineConstants", "$(DefineConstants);SERVER");

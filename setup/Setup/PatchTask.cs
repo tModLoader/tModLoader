@@ -16,11 +16,7 @@ namespace Terraria.ModLoader.Setup
 	{
 		private static string[] nonSourceDirs = { "bin", "obj", ".vs" };
 		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
-			EnumerateFiles(dir).Where(f => {
-				string[] split = f.relPath.Split('/', '\\');
-
-				return split.Length<2 || !nonSourceDirs.Contains(split[1]);
-			});
+			EnumerateFiles(dir).Where(f => !f.relPath.Split('/', '\\').Any(nonSourceDirs.Contains));
 
 		public readonly string baseDir;
 		public readonly string patchedDir;

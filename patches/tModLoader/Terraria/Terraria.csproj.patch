@@ -1,12 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,12 +_,14 @@
-   <Import Project="../Configuration.targets" />
-   <Import Project="../../TerrariaSteamPath.targets" />
-   <PropertyGroup>
-+    <TargetFramework>net45</TargetFramework>
-     <OutputType>WinExe</OutputType>
-     <Version>1.4.0.5</Version>
+@@ -7,7 +_,8 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2020 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
