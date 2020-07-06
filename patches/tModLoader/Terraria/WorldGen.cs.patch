@@ -1498,12 +1498,13 @@
  				if (tileCache.type == 518) {
  					int num14 = (int)tileCache.liquid / 16;
  					num14 -= 3;
-@@ -43844,6 +_,9 @@
+@@ -43844,6 +_,10 @@
  			if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
  				return t.frameX < 54;
  
-+			if (TileLoader.OpenDoorID(t) < 0)
-+				return true;
++			// something might be meant to go here but it's not this - Chicken Bones (I don't know what a "locked door" even is)
++			//if (TileLoader.OpenDoorID(t) < 0)
++			//	return true;
 +
  			return false;
  		}
