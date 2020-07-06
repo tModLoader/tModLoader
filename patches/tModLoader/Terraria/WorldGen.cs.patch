@@ -1407,7 +1407,7 @@
  		private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
  
  		private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) {
-+			if (TileLoader.Drop(x, y, Main.tile[x, y].type))
++			if (!TileLoader.Drop(x, y, Main.tile[x, y].type))
 +				return;
 +
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
