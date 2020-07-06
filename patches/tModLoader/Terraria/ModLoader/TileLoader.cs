@@ -460,68 +460,40 @@ namespace Terraria.ModLoader
 		//replace type check in WorldGen.CheckRoom
 		public static int CloseDoorID(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
+
 			if (modTile != null) {
 				return modTile.closeDoorID;
 			}
+
 			if (tile.type == TileID.OpenDoor) {
 				return TileID.ClosedDoor;
 			}
+
 			return -1;
 		}
 		public static bool IsClosedDoor(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
+
 			if (modTile != null) {
 				return modTile.openDoorID > -1;
 			}
+
 			return tile.type == TileID.ClosedDoor;
 		}
+
 		//in Terraria.UI.ChestUI add this to Lang lookups
-		public static string ModChestName(int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
-				return modTile.chest;
-			}
-			return "";
-		}
+		public static string ModChestName(int type) => GetTile(type)?.chest ?? string.Empty;
 
-		public static bool IsDresser(int type) {
-			if (type == TileID.Dressers) {
-				return true;
-			}
-			return ModDresserName(type).Length > 0;
-		}
+		public static bool IsDresser(int type) => type == TileID.Dressers || ModDresserName(type).Length > 0;
 
-		public static string ModDresserName(int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile != null) {
-				return modTile.dresser;
-			}
-			return "";
-		}
+		public static string ModDresserName(int type) => GetTile(type)?.dresser ?? string.Empty;
+
 		//in Terraria.Player.CheckSpawn add this to bed type check
-		public static bool IsModBed(int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile == null) {
-				return false;
-			}
-			return modTile.bed;
-		}
+		public static bool IsModBed(int type) => GetTile(type)?.bed ?? false;
 
-		public static bool IsTorch(int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile == null) {
-				return type == TileID.Torches;
-			}
-			return modTile.torch;
-		}
+		public static bool IsTorch(int type) => GetTile(type)?.torch ?? type == TileID.Torches;
 
-		public static bool IsSapling(int type) {
-			ModTile modTile = GetTile(type);
-			if (modTile == null) {
-				return type == TileID.Saplings;
-			}
-			return modTile.sapling;
-		}
+		public static bool IsSapling(int type) => GetTile(type)?.sapling ?? type == TileID.Saplings;
 
 		public static bool IsModMusicBox(Tile tile) {
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
@@ -614,16 +586,21 @@ namespace Terraria.ModLoader
 					return false;
 				}
 			}
+
 			ModTile modTile = GetTile(type);
+
 			if (modTile != null) {
 				if (!modTile.Drop(i, j)) {
 					return false;
 				}
+
 				if (modTile.drop > 0) {
 					Item.NewItem(i * 16, j * 16, 16, 16, modTile.drop, 1, false, -1);
 				}
+
 				return false;
 			}
+
 			return true;
 		}
 		//in Terraria.WorldGen.CanKillTile after check for tile.active() add
@@ -814,12 +791,15 @@ namespace Terraria.ModLoader
 		public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
 			ModTile modTile = GetTile(type);
 			bool flag = true;
+			
 			if (modTile != null) {
 				flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
 			}
+
 			foreach (var hook in HookTileFrame) {
 				flag &= hook(i, j, type, ref resetFrame, ref noBreak);
 			}
+
 			return flag;
 		}
 		//in Terraria.Player.ItemCheck in if statements for mining
