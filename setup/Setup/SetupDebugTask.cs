@@ -50,7 +50,7 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
-			var modLoaderCsPath = Path.Combine("src", "tModLoader", "Terraria.ModLoader", "ModLoader.cs");
+			var modLoaderCsPath = Path.Combine("src", "tModLoader", "Terraria", "ModLoader", "ModLoader.cs");
 			var r = new Regex(@"new Version\((.+?)\).+?string branchName.+?""(.*?)"".+?int beta.+?(\d+?)", RegexOptions.Singleline);
 			var match = r.Match(File.ReadAllText(modLoaderCsPath));
 
