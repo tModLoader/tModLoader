@@ -378,6 +378,11 @@ namespace Terraria.ModLoader
 
 		internal void PrepareAssets()
 		{
+			//Open the file.
+
+			if (File != null)
+				fileHandle = File.Open();
+
 			//Create the asset repository
 
 			var sources = new List<IContentSource>();

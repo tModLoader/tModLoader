@@ -17,14 +17,11 @@ namespace Terraria.ModLoader.Assets
 		private readonly RejectedAssetCollection Rejections = new RejectedAssetCollection();
 
 		private TmodFile file;
-		private IDisposable fileHandle;
 
 		public IContentValidator ContentValidator { get; set; }
 
 		public TModContentSource(TmodFile file) {
 			this.file = file ?? throw new ArgumentNullException(nameof(file));
-
-			fileHandle = file.Open();
 		}
 
 		//Rejections
@@ -38,10 +35,7 @@ namespace Terraria.ModLoader.Assets
 		public Stream OpenStream(string assetName) => new MemoryStream(file.GetBytes(assetName)); //This has to return a seekable stream, so we can't just return the deflate one.
 		//Etc
 		public void Dispose() {
-			fileHandle?.Dispose();
-
 			file = null;
-			fileHandle = null;
 
 			ClearRejections();
 		}
