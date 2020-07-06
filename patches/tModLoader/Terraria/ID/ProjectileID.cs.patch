@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,5 +_,9 @@
+@@ -1,12 +_,16 @@
  using Terraria.WorldBuilding;
  
 +using ReLogic.Reflection;
@@ -10,6 +10,14 @@
  namespace Terraria.ID
  {
  	public class ProjectileID
+ 	{
+ 		public static class Sets
+ 		{
+-			public static SetFactory Factory = new SetFactory(950);
++			public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
+ 			public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
+ 			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915);
+ 			public static bool[] ImmediatelyUpdatesNPCBuffFlags = Factory.CreateBoolSet(636);
 @@ -1210,5 +_,38 @@
  		public const short FlamingMace = 948;
  		public const short TorchGod = 949;

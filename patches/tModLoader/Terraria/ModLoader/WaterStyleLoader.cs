@@ -41,9 +41,12 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays() {
-			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, nextWaterStyle);
-			Array.Resize(ref Main.liquidAlpha, nextWaterStyle);
+			//Textures
 			Array.Resize(ref TextureAssets.Liquid, nextWaterStyle);
+			Array.Resize(ref LiquidRenderer.Instance._liquidTextures, nextWaterStyle);
+
+			//Etc
+			Array.Resize(ref Main.liquidAlpha, nextWaterStyle);
 		}
 
 		internal static void Unload() {
@@ -154,6 +157,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays() {
+			//Textures
 			Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, nextWaterfallStyle);
 		}
 

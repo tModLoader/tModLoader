@@ -82,19 +82,20 @@ namespace Terraria.ModLoader
 		public static int ItemCount => nextItem;
 
 		internal static void ResizeArrays(bool unloading) {
+			//Textures
 			Array.Resize(ref TextureAssets.Item, nextItem);
 			Array.Resize(ref TextureAssets.ItemFlame, nextItem);
+
+			//Sets
+			typeof(ItemID.Sets).TypeInitializer.Invoke(null, null);
+
+			//Etc
 			Array.Resize(ref Main.itemAnimations, nextItem);
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
 			Array.Resize(ref Item.staff, nextItem);
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);
 			Array.Resize(ref Lang._itemTooltipCache, nextItem);
-
-			//Sets
-			typeof(ItemID.Sets).TypeInitializer.Invoke(null, null);
-
-			//Etc
 
 			if (unloading)
 				Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);

@@ -39,13 +39,13 @@ namespace Terraria.ModLoader
 
 		//in Terraria.GameContent.ChildSafety make SafeGore internal and not readonly
 		internal static void ResizeAndFillArrays() {
+
 			//Textures
 			Array.Resize(ref TextureAssets.Gore, nextGore);
+
 			//Sets
+			typeof(GoreID.Sets).TypeInitializer.Invoke(null, null);
 			Array.Resize(ref ChildSafety.SafeGore, nextGore);
-			Array.Resize(ref GoreID.Sets.SpecialAI, nextGore);
-			Array.Resize(ref GoreID.Sets.DisappearSpeed, nextGore);
-			Array.Resize(ref GoreID.Sets.DisappearSpeedAlpha, nextGore);
 
 			for (int k = GoreID.Count; k < nextGore; k++) {
 				GoreID.Sets.DisappearSpeed[k] = 1;

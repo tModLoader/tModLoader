@@ -53,6 +53,7 @@ namespace Terraria.ModLoader
 		public static int GetBossHeadSlot(string texture) => bossHeads.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
+			//Textures
 			Array.Resize(ref TextureAssets.NpcHead, nextHead);
 			Array.Resize(ref TextureAssets.NpcHeadBoss, nextBossHead);
 
@@ -63,6 +64,8 @@ namespace Terraria.ModLoader
 			foreach (string texture in bossHeads.Keys) {
 				TextureAssets.NpcHeadBoss[bossHeads[texture]] = ModContent.GetTexture(texture);
 			}
+
+			//Sets. The arrays modified here are resized in NPCLoader.
 
 			foreach (int npc in npcToBossHead.Keys) {
 				NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];

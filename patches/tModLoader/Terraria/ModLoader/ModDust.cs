@@ -66,6 +66,7 @@ namespace Terraria.ModLoader
 		//make Terraria.GameContent.ChildSafety.SafeDust public and not readonly
 		internal static void ResizeArrays() {
 			Array.Resize(ref ChildSafety.SafeDust, nextDust);
+
 			for (int k = DustID.Count; k < nextDust; k++) {
 				ChildSafety.SafeDust[k] = true;
 			}

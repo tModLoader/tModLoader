@@ -80,6 +80,10 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays() {
 			//Textures
 			Array.Resize(ref TextureAssets.Buff, nextBuff);
+
+			//Sets
+			typeof(BuffID.Sets).TypeInitializer.Invoke(null, null);
+
 			//Etc
 			Array.Resize(ref Main.pvpBuff, nextBuff);
 			Array.Resize(ref Main.persistentBuff, nextBuff);

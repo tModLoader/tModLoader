@@ -102,6 +102,10 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays(bool unloading) {
 			//Textures
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
+
+			//Sets
+			typeof(NPCID.Sets).TypeInitializer.Invoke(null, null);
+
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
@@ -112,51 +116,10 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
 			Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
-			//Sets
-			Array.Resize(ref NPCID.Sets.TrailingMode, nextNPC);
-			Array.Resize(ref NPCID.Sets.BelongsToInvasionOldOnesArmy, nextNPC);
-			Array.Resize(ref NPCID.Sets.TeleportationImmune, nextNPC);
-			Array.Resize(ref NPCID.Sets.UsesNewTargetting, nextNPC);
-			Array.Resize(ref NPCID.Sets.FighterUsesDD2PortalAppearEffect, nextNPC);
-			Array.Resize(ref NPCID.Sets.StatueSpawnedDropRarity, nextNPC);
-			Array.Resize(ref NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue, nextNPC);
-			Array.Resize(ref NPCID.Sets.NeedsExpertScaling, nextNPC);
-			Array.Resize(ref NPCID.Sets.ProjectileNPC, nextNPC);
-			Array.Resize(ref NPCID.Sets.SavesAndLoads, nextNPC);
-			Array.Resize(ref NPCID.Sets.TrailCacheLength, nextNPC);
-			Array.Resize(ref NPCID.Sets.MPAllowedEnemies, nextNPC);
-			Array.Resize(ref NPCID.Sets.TownCritter, nextNPC);
-			Array.Resize(ref NPCID.Sets.HatOffsetY, nextNPC);
-			Array.Resize(ref NPCID.Sets.FaceEmote, nextNPC);
-			Array.Resize(ref NPCID.Sets.ExtraFramesCount, nextNPC);
-			Array.Resize(ref NPCID.Sets.AttackFrameCount, nextNPC);
-			Array.Resize(ref NPCID.Sets.DangerDetectRange, nextNPC);
-			Array.Resize(ref NPCID.Sets.AttackTime, nextNPC);
-			Array.Resize(ref NPCID.Sets.AttackAverageChance, nextNPC);
-			Array.Resize(ref NPCID.Sets.AttackType, nextNPC);
-			Array.Resize(ref NPCID.Sets.PrettySafe, nextNPC);
-			Array.Resize(ref NPCID.Sets.MagicAuraColor, nextNPC);
-			Array.Resize(ref NPCID.Sets.BossHeadTextures, nextNPC);
-			Array.Resize(ref NPCID.Sets.PositiveNPCTypesExcludedFromDeathTally, nextNPC);
-			Array.Resize(ref NPCID.Sets.ShouldBeCountedAsBoss, nextNPC);
-			Array.Resize(ref NPCID.Sets.MustAlwaysDraw, nextNPC);
-			Array.Resize(ref NPCID.Sets.ExtraTextureCount, nextNPC);
-			Array.Resize(ref NPCID.Sets.NPCFramingGroup, nextNPC);
-			Array.Resize(ref NPCID.Sets.TownNPCsFramingGroups, nextNPC);
 
 			for (int k = NPCID.Count; k < nextNPC; k++) {
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
-				NPCID.Sets.TrailingMode[k] = -1;
-				NPCID.Sets.StatueSpawnedDropRarity[k] = -1f;
-				NPCID.Sets.TrailCacheLength[k] = 10;
-				NPCID.Sets.DangerDetectRange[k] = -1;
-				NPCID.Sets.AttackTime[k] = -1;
-				NPCID.Sets.AttackAverageChance[k] = 1;
-				NPCID.Sets.AttackType[k] = -1;
-				NPCID.Sets.PrettySafe[k] = -1;
-				NPCID.Sets.MagicAuraColor[k] = Color.White;
-				NPCID.Sets.BossHeadTextures[k] = -1;
 			}
 
 			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();

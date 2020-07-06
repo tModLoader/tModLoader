@@ -12,8 +12,9 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class MountLoader
 	{
-		private static int nextMount = MountID.Count;
 		internal static readonly IDictionary<int, ModMountData> mountDatas = new Dictionary<int, ModMountData>();
+
+		public static int MountCount { get; private set; } = MountID.Count;
 
 		/// <summary>
 		/// Gets the ModMountData instance corresponding to the given type. Returns null if no ModMountData has the given type.
@@ -28,21 +29,23 @@ namespace Terraria.ModLoader
 		}
 
 		internal static int ReserveMountID() {
-			if (ModNet.AllowVanillaClients) throw new Exception("Adding mounts breaks vanilla client compatibility");
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding mounts breaks vanilla client compatibility");
 
-			int reserveID = nextMount;
-			nextMount++;
-			return reserveID;
+			return MountCount++;
 		}
 
 		internal static void ResizeArrays() {
-			Array.Resize(ref MountID.Sets.Cart, nextMount);
-			Array.Resize(ref Mount.mounts, nextMount);
+			//Sets
+			typeof(MountID.Sets).TypeInitializer.Invoke(null, null);
+
+			//Etc
+			Array.Resize(ref Mount.mounts, MountCount);
 		}
 
 		internal static void Unload() {
 			mountDatas.Clear();
-			nextMount = MountID.Count;
+			MountCount = MountID.Count;
 		}
 
 		internal static bool IsModMountData(Mount.MountData mountData) {

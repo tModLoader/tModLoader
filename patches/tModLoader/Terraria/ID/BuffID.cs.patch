@@ -8,6 +8,15 @@
  namespace Terraria.ID
  {
  	public class BuffID
+@@ -10,7 +_,7 @@
+ 				public bool faceLeft;
+ 			}
+ 
+-			public static SetFactory Factory = new SetFactory(323);
++			public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
+ 			public static bool[] IsWellFed = Factory.CreateBoolSet(26, 206, 207);
+ 			public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28);
+ 			public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet(313);
 @@ -592,5 +_,32 @@
  		public const int BrainOfConfusionBuff = 321;
  		public const int EmpressBlade = 322;

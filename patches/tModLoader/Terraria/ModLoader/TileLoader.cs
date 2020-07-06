@@ -121,6 +121,10 @@ namespace Terraria.ModLoader
 			//Textures
 			Array.Resize(ref TextureAssets.Tile, nextTile);
 			Array.Resize(ref TextureAssets.HighlightMask, nextTile);
+
+			//Sets
+			typeof(TileID.Sets).TypeInitializer.Invoke(null, null);
+
 			//Etc
 			Array.Resize(ref Main.tileLighted, nextTile);
 			Array.Resize(ref Main.tileMergeDirt, nextTile);
@@ -162,7 +166,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileMerge, nextTile);
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 
-			for(int k = 0;k < nextTile;k++) { //oh dear
+			for (int k = 0; k < nextTile; k++) { //oh dear
 				Array.Resize(ref Main.tileMerge[k], nextTile);
 			}
 
@@ -170,125 +174,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
-
-			//Sets (bool)
-			Array.Resize(ref TileID.Sets.Conversion.GolfGrass, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Grass, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.HardenedSand, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Ice, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.MergesWithDirtInASpecialWay, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Moss, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.MossBrick, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Sand, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Sandstone, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Stone, nextTile);
-			Array.Resize(ref TileID.Sets.Conversion.Thorn, nextTile);
-			Array.Resize(ref TileID.Sets.ForAdvancedCollision.ForSandshark, nextTile);
-			
-			Array.Resize(ref TileID.Sets.AllBlocksWithSmoothBordersToResolveHalfBlockIssue, nextTile);
-			Array.Resize(ref TileID.Sets.AllowLightInWater, nextTile);
-			Array.Resize(ref TileID.Sets.AllTiles, nextTile);
-			Array.Resize(ref TileID.Sets.AvoidedByNPCs, nextTile);
-			Array.Resize(ref TileID.Sets.BasicChest, nextTile);
-			Array.Resize(ref TileID.Sets.BasicChestFake, nextTile);
-			Array.Resize(ref TileID.Sets.BasicDresser, nextTile);
-			Array.Resize(ref TileID.Sets.BlocksStairs, nextTile);
-			Array.Resize(ref TileID.Sets.BlocksStairsAbove, nextTile);
-			Array.Resize(ref TileID.Sets.BlocksWaterDrawingBehindSelf, nextTile);
-			Array.Resize(ref TileID.Sets.Boulders, nextTile);
-			Array.Resize(ref TileID.Sets.BreakableWhenPlacing, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeClearedDuringGeneration, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeClearedDuringOreRunner, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeDugByShovel, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeSatOnForNPCs, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeSatOnForPlayers, nextTile);
-			Array.Resize(ref TileID.Sets.CanBeSleptIn, nextTile);
-			Array.Resize(ref TileID.Sets.ChecksForMerge, nextTile);
-			Array.Resize(ref TileID.Sets.Clouds, nextTile);
-			Array.Resize(ref TileID.Sets.CommonSapling, nextTile);
-			Array.Resize(ref TileID.Sets.Corrupt, nextTile);
-			Array.Resize(ref TileID.Sets.CrackedBricks, nextTile);
-			Array.Resize(ref TileID.Sets.Crimson, nextTile);
-			Array.Resize(ref TileID.Sets.DoesntGetReplacedWithTileReplacement, nextTile);
-			Array.Resize(ref TileID.Sets.DoesntPlaceWithTileReplacement, nextTile);
-			Array.Resize(ref TileID.Sets.DrawsWalls, nextTile);
-			Array.Resize(ref TileID.Sets.Falling, nextTile);
-			Array.Resize(ref TileID.Sets.ForcedDirtMerging, nextTile);
-			Array.Resize(ref TileID.Sets.FramesOnKillWall, nextTile);
-			Array.Resize(ref TileID.Sets.FriendlyFairyCanLureTo, nextTile);
-			Array.Resize(ref TileID.Sets.GeneralPlacementTiles, nextTile);
-			Array.Resize(ref TileID.Sets.GetsCheckedForLeaves, nextTile);
-			Array.Resize(ref TileID.Sets.GetsDestroyedForMeteors, nextTile);
-			Array.Resize(ref TileID.Sets.Grass, nextTile);
-			Array.Resize(ref TileID.Sets.GrassSpecial, nextTile);
-			Array.Resize(ref TileID.Sets.Hallow, nextTile);
-			Array.Resize(ref TileID.Sets.HasOutlines, nextTile);
-			Array.Resize(ref TileID.Sets.HasSlopeFrames, nextTile);
-			Array.Resize(ref TileID.Sets.HellSpecial, nextTile);
-			Array.Resize(ref TileID.Sets.HousingWalls, nextTile);
-			Array.Resize(ref TileID.Sets.Ices, nextTile);
-			Array.Resize(ref TileID.Sets.IcesSlush, nextTile);
-			Array.Resize(ref TileID.Sets.IcesSnow, nextTile);
-			Array.Resize(ref TileID.Sets.IgnoredInHouseScore, nextTile);
-			Array.Resize(ref TileID.Sets.IgnoreSmartCursorPriorityAxe, nextTile);
-			Array.Resize(ref TileID.Sets.IgnoresNearbyHalfbricksWhenDrawn, nextTile);
-			Array.Resize(ref TileID.Sets.IgnoresTileReplacementDropCheckWhenBeingPlaced, nextTile);
-			Array.Resize(ref TileID.Sets.InteractibleByNPCs, nextTile);
-			Array.Resize(ref TileID.Sets.IsAContainer, nextTile);
-			Array.Resize(ref TileID.Sets.IsAMechanism, nextTile);
-			Array.Resize(ref TileID.Sets.IsATreeTrunk, nextTile);
-			Array.Resize(ref TileID.Sets.IsATrigger, nextTile);
-			Array.Resize(ref TileID.Sets.IsBeam, nextTile);
-			Array.Resize(ref TileID.Sets.isDesertBiomeSand, nextTile);
-			Array.Resize(ref TileID.Sets.IsShakeable, nextTile);
-			Array.Resize(ref TileID.Sets.IsSkippedForNPCSpawningGroundTypeCheck, nextTile);
-			Array.Resize(ref TileID.Sets.IsVine, nextTile);
-			Array.Resize(ref TileID.Sets.JungleSpecial, nextTile);
-			Array.Resize(ref TileID.Sets.Leaves, nextTile);
-			Array.Resize(ref TileID.Sets.MergesWithClouds, nextTile);
-			Array.Resize(ref TileID.Sets.Mud, nextTile);
-			Array.Resize(ref TileID.Sets.NeedsGrassFraming, nextTile);
-			Array.Resize(ref TileID.Sets.NonSolidSaveSlopes, nextTile);
-			Array.Resize(ref TileID.Sets.NotReallySolid, nextTile);
-			Array.Resize(ref TileID.Sets.Ore, nextTile);
-			Array.Resize(ref TileID.Sets.OreMergesWithMud, nextTile);
-			Array.Resize(ref TileID.Sets.Paintings, nextTile);
-			Array.Resize(ref TileID.Sets.Platforms, nextTile);
-			Array.Resize(ref TileID.Sets.PreventsTileRemovalIfOnTopOfIt, nextTile);
-			Array.Resize(ref TileID.Sets.PreventsTileReplaceIfOnTopOfIt, nextTile);
-			Array.Resize(ref TileID.Sets.ReplaceTileBreakDown, nextTile);
-			Array.Resize(ref TileID.Sets.ReplaceTileBreakUp, nextTile);
-			Array.Resize(ref TileID.Sets.ResetsHalfBrickPlacementAttempt, nextTile);
-			Array.Resize(ref TileID.Sets.ReverseVineThreads, nextTile);
-			Array.Resize(ref TileID.Sets.SlowlyDiesInWater, nextTile);
-			Array.Resize(ref TileID.Sets.Snow, nextTile);
-			Array.Resize(ref TileID.Sets.SpreadOverground, nextTile);
-			Array.Resize(ref TileID.Sets.SpreadUnderground, nextTile);
-			Array.Resize(ref TileID.Sets.Stone, nextTile);
-			Array.Resize(ref TileID.Sets.SwaysInWindBasic, nextTile);
-			Array.Resize(ref TileID.Sets.TeamTiles, nextTile);
-			Array.Resize(ref TileID.Sets.TileInteractRead, nextTile);
-			Array.Resize(ref TileID.Sets.tileMossBrick, nextTile);
-			Array.Resize(ref TileID.Sets.VineThreads, nextTile);
-
-			//Sets (non-bool)
-			Array.Resize(ref TileID.Sets.ConveyorDirection, nextTile);
-			Array.Resize(ref TileID.Sets.DrawFlipMode, nextTile);
-			Array.Resize(ref TileID.Sets.DrawTileInSolidLayer, nextTile);
-			Array.Resize(ref TileID.Sets.GemsparkFramingTypes, nextTile);
-			Array.Resize(ref TileID.Sets.NeedsGrassFramingDirt, nextTile);
-			Array.Resize(ref TileID.Sets.SmartCursorPickaxePriorityOverride, nextTile);
-			Array.Resize(ref TileID.Sets.TouchDamageHot, nextTile);
-			Array.Resize(ref TileID.Sets.TouchDamageOther, nextTile);
-			Array.Resize(ref TileID.Sets.TouchDamageSands, nextTile);
-			Array.Resize(ref TileID.Sets.TouchDamageVines, nextTile);
-
-			for (int k = TileID.Count; k < nextTile; k++) {
-				TileID.Sets.AllTiles[k] = true;
-				TileID.Sets.CanBeClearedDuringGeneration[k] = true;
-				TileID.Sets.GeneralPlacementTiles[k] = true;
-				TileID.Sets.ResetsHalfBrickPlacementAttempt[k] = true;
-			}
 
 			while (TileObjectData._data.Count < nextTile) {
 				TileObjectData._data.Add(null);
