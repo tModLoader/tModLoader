@@ -1646,6 +1646,19 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -35863,7 +_,11 @@
+ 
+ 			Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoA / 255f)), (byte)((float)(int)color.G * ((float)LogoA / 255f)), (byte)((float)(int)color.B * ((float)LogoA / 255f)), (byte)((float)(int)color.A * ((float)LogoA / 255f)));
+ 			Microsoft.Xna.Framework.Color color3 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoB / 255f)), (byte)((float)(int)color.G * ((float)LogoB / 255f)), (byte)((float)(int)color.B * ((float)LogoB / 255f)), (byte)((float)(int)color.A * ((float)LogoB / 255f)));
+-			if (playOldTile) {
++			if (ModLoader.ModLoader.ShowTMLLogo) {
++				var modLoaderLogo = ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.Logo").Value;
++
++				spriteBatch.Draw(modLoaderLogo, new Vector2(screenWidth / 2, 100f), new Rectangle(0, 0, modLoaderLogo.Width, modLoaderLogo.Height), color, logoRotation, new Vector2(modLoaderLogo.Width * 0.5f, modLoaderLogo.Height * 0.5f), logoScale * 0.84f, SpriteEffects.None, 0f);
++			} else if (playOldTile) {
+ 				spriteBatch.Draw(TextureAssets.Logo3.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(TextureAssets.Logo4.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
+ 			}
 @@ -35926,8 +_,21 @@
  			if (menuMode == -1)
  				menuMode = 0;

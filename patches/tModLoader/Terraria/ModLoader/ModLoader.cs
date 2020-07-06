@@ -36,6 +36,7 @@ namespace Terraria.ModLoader
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
+		public static bool ShowTMLLogo = true; //Temporary. There won't be a need for this when menu themes are implemented.
 
 		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
