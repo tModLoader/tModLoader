@@ -1,29 +1,28 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items
 {
 	public class ExampleItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded item.");
+			Tooltip.SetDefault("This is a modded item."); //The (English) text shown below your weapon's name
 		}
 
 		public override void SetDefaults() {
-			item.width = 20;
-			item.height = 20;
-			item.maxStack = 999;
-			item.value = 100;
-			item.rare = ItemRarityID.Blue;
+			item.width = 20; //The item texture's width
+			item.height = 20; //The item texture's height
+
+			item.maxStack = 999; //The item's max stack value
+			item.value = Item.buyPrice(silver: 1); //The value of the item in copper coins.
+			item.rare = ItemRarityID.Blue; //The rarity of the weapon.
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
+			//This recipe makes 999 ExampleItems out of 1 dirt block.
+			var recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.DirtBlock);
-			recipe.SetResult(this, 999);
-			recipe.AddRecipe();
-			recipe = new ModRecipe(mod);
-			recipe.AddRecipeGroup("ExampleMod:ExampleItem");
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();
 
