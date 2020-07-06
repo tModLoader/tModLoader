@@ -390,6 +390,7 @@ namespace Terraria.ModLoader
 
 			if (!Main.dedServ) {
 				assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+				assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
 				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
 			}
 
