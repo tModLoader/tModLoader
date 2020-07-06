@@ -97,6 +97,11 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Lang._itemNameCache, nextItem);
 			Array.Resize(ref Lang._itemTooltipCache, nextItem);
 
+			for (int k = ItemID.Count; k < nextItem; k++) {
+				Lang._itemNameCache[k] = LocalizedText.Empty;
+				Lang._itemTooltipCache[k] = ItemTooltip.None;
+			}
+
 			if (unloading)
 				Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
 			else
