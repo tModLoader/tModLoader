@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.Setup
 				throw new Exception("MSBuild could not be found on PATH.");
 
 			if (msBuildIsOutdated)
-				throw new Exception($"MSBuild {MinMSBuildVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed.");
+				throw new Exception($"MSBuild {MinMSBuildVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed. Or just build RoslynWrapper manually.");
 
 			if (roslynCompileFailed)
 				MessageBox.Show("MSBuild Error", "Failed to compile RoslynWrapper.sln.", MessageBoxButtons.OK, MessageBoxIcon.Error);
