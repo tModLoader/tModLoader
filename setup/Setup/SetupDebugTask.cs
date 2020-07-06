@@ -19,12 +19,10 @@ namespace Terraria.ModLoader.Setup
 			UpdateModCompileVersion(modCompile);
 
 			taskInterface.SetStatus("Compiling RoslynWrapper");
-			bool msBuildOnPath = RunCmd("RoslynWrapper", "where",
-				"msbuild",
-				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
-			) == 0;
-			if (!msBuildOnPath)
-				throw new Exception("msbuild not found on PATH");
+
+			CheckMSBuildVersion(new Version(15, 5)); //Check if MSBuild is present, and if its version is 15.5 or newer. It's needed for the '/restore' flag to work.
+
+			//Compile Roslyn.
 
 			roslynCompileFailed = RunCmd("RoslynWrapper", "msbuild",
 				"RoslynWrapper.sln /restore /p:Configuration=Release",
@@ -40,6 +38,7 @@ namespace Terraria.ModLoader.Setup
 			foreach (var dll in roslynRefs)
 				Copy(Path.Combine("RoslynWrapper/bin/Release/net46", dll), Path.Combine(modCompile, dll));
 
+			//Compile FNA tML.
 
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
 			var references = new[] { "FNA.dll" };
@@ -50,6 +49,34 @@ namespace Terraria.ModLoader.Setup
 				"tModLoader.sln /restore /p:Configuration=MacRelease",
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
+		}
+
+		private void CheckMSBuildVersion(Version minVersion) {
+			//Check if MSBuild is on PATH.
+
+			bool msBuildOnPath = RunCmd("RoslynWrapper", "where",
+				"msbuild",
+				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
+			) == 0;
+
+			if (!msBuildOnPath)
+				throw new Exception("msbuild not found on PATH");
+
+			//Try to get its version.
+
+			string msBuildVersionOutput = null;
+
+			RunCmd("RoslynWrapper", "msbuild", "/version",
+				str => msBuildVersionOutput = str, null, null, taskInterface.CancellationToken
+			);
+
+			int lastLineBreak = msBuildVersionOutput.LastIndexOf('\n');
+
+			if (!Version.TryParse(msBuildVersionOutput.Substring(lastLineBreak+1, msBuildVersionOutput.Length-lastLineBreak-1), out var msBuildVersion))
+				throw new Exception($"Couldn't get MSBuild version.");
+
+			if (msBuildVersion<minVersion)
+				throw new Exception($"MSBuild {minVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed.");
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
