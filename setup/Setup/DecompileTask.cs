@@ -128,7 +128,6 @@ namespace Terraria.ModLoader.Setup
 			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude, serverOnly ? null : "SERVER");
 
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
-			items.Clear();
 			items.Add(WriteCommonConfigurationFile());
 
 			ExecuteParallel(items);
