@@ -31,15 +31,16 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class ModLoader
 	{
-		public static readonly Version version = new Version(0, 11, 7, 2);
+		public static readonly Version version = new Version(0, 12);
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
-		public static readonly string branchName = "";
+		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
-		public static readonly int beta = 0;
+		internal const bool IsBeta = true;
+		public static readonly int beta = 1;
 
 		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
 		public static readonly string versionedName = $"tModLoader v{version}" +
