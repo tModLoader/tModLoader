@@ -306,10 +306,10 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
-+			WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			//WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
-+			WorldHooks.PostWorldGen();
++			//WorldHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
@@ -1212,14 +1212,15 @@
  
  			bool result = false;
  			if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
-@@ -36770,6 +_,7 @@
+@@ -36770,7 +_,7 @@
  									return false;
  								break;
  							case 3:
+-							case 20:
 +							case int _ when TileLoader.IsSapling(num):
- 							case 20:
  							case 24:
  							case 27:
+ 							case 32:
 @@ -37012,7 +_,7 @@
  							SquareTileFrame(i, j);
  						}
@@ -1229,15 +1230,16 @@
  						if (Main.tile[i - 1, j] == null)
  							Main.tile[i - 1, j] = new Tile();
  
-@@ -37143,6 +_,7 @@
- 								PlaceOnTable1x1(i, j, num, style);
- 								SquareTileFrame(i, j);
- 								break;
-+							case int _ when TileLoader.IsDresser(num):
- 							case 14:
+@@ -37147,7 +_,7 @@
  							case 26:
  							case 86:
-@@ -37168,12 +_,14 @@
+ 							case 87:
+-							case 88:
++							case int _ when TileLoader.IsDresser(num):
+ 							case 89:
+ 							case 114:
+ 							case 186:
+@@ -37168,13 +_,15 @@
  								PlaceJunglePlant(i, j, (ushort)num, 0, 0);
  								SquareTileFrame(i, j);
  								break;
@@ -1251,9 +1253,11 @@
 +									int dummyStyle = 0;
 -									if (Main.tile[i, j + 1].active() && (type == 2 || type == 109 || type == 147 || type == 60 || type == 23 || type == 199 || type == 53 || type == 234 || type == 116 || type == 112)) {
 +									if (Main.tile[i, j + 1].active() && (type == 2 || type == 109 || type == 147 || type == 60 || type == 23 || type == 199 || type == 53 || type == 234 || type == 116 || type == 112 || TileLoader.SaplingGrowthType(type, ref dummyType, ref dummyStyle))) {
- 										Place1x2(i, j, (ushort)num, style);
+-										Place1x2(i, j, (ushort)num, style);
++										Place1x2(i, j, (ushort)dummyType, dummyStyle);
  										SquareTileFrame(i, j);
  									}
+ 
 @@ -37369,6 +_,9 @@
  											case 314:
  												Minecart.PlaceTrack(tile, style);
@@ -1592,10 +1596,11 @@
  									CheckTorch(i, j);
  									break;
  								case 442:
-@@ -52038,6 +_,7 @@
+@@ -52037,7 +_,7 @@
+ 															if (num != 354 && num != 406 && num != 412 && num != 355 && num != 452 && num != 455 && num != 491 && num != 499) {
  																switch (num) {
  																	case 15:
- 																	case 20:
+-																	case 20:
 +																	case int _ when TileLoader.IsSapling(num):
  																	case 216:
  																	case 338:
