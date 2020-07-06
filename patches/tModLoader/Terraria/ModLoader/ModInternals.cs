@@ -386,10 +386,12 @@ namespace Terraria.ModLoader
 				sources.Add(new TModContentSource(File));
 			}
 
-			var assetReaderCollection = AssetInitializer.assetReaderCollection;
+			var assetReaderCollection = new AssetReaderCollection();
 
-			assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
-			assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
+			if (!Main.dedServ) {
+				assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
+			}
 
 			var delayedLoadTypes = new List<Type> {
 				typeof(Texture2D),

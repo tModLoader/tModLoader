@@ -501,18 +501,22 @@ namespace Terraria.ModLoader
 			ProjectileLoader.ResizeArrays();
 			NPCLoader.ResizeArrays(unloading);
 			NPCHeadLoader.ResizeAndFillArrays();
-			ModGore.ResizeAndFillArrays();
-			SoundLoader.ResizeAndFillArrays();
 			MountLoader.ResizeArrays();
 			BuffLoader.ResizeArrays();
 			PlayerHooks.RebuildHooks();
-			BackgroundTextureLoader.ResizeAndFillArrays();
-			UgBgStyleLoader.ResizeAndFillArrays();
-			SurfaceBgStyleLoader.ResizeAndFillArrays();
-			GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
-			WaterStyleLoader.ResizeArrays();
-			WaterfallStyleLoader.ResizeArrays();
 			WorldHooks.ResizeArrays();
+
+			if (!Main.dedServ) {
+				SoundLoader.ResizeAndFillArrays();
+				BackgroundTextureLoader.ResizeAndFillArrays();
+				UgBgStyleLoader.ResizeAndFillArrays();
+				SurfaceBgStyleLoader.ResizeAndFillArrays();
+				GlobalBgStyleLoader.ResizeAndFillArrays(unloading);
+				ModGore.ResizeAndFillArrays();
+				WaterStyleLoader.ResizeArrays();
+				WaterfallStyleLoader.ResizeArrays();
+			}
+
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}

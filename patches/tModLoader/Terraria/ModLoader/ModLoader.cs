@@ -124,6 +124,10 @@ namespace Terraria.ModLoader
 
 		internal static void PrepareAssets()
 		{
+			if (Main.dedServ) {
+				return;
+			}
+
 			var assetReaderCollection = AssetInitializer.assetReaderCollection;
 
 			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
