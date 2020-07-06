@@ -68,6 +68,10 @@ namespace Terraria.ModLoader
 		internal static void ResizeArrays(bool unloading = false) {
 			//Textures
 			Array.Resize(ref TextureAssets.Wall, nextWall);
+
+			//Sets
+			typeof(WallID.Sets).TypeInitializer.Invoke(null, null);
+
 			//Etc
 			Array.Resize(ref Main.wallHouse, nextWall);
 			Array.Resize(ref Main.wallDungeon, nextWall);
@@ -76,15 +80,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.wallLargeFrames, nextWall);
 			Array.Resize(ref Main.wallFrame, nextWall);
 			Array.Resize(ref Main.wallFrameCounter, nextWall);
-			//Sets
-			Array.Resize(ref WallID.Sets.Conversion.Grass, nextWall);
-			Array.Resize(ref WallID.Sets.Conversion.Stone, nextWall);
-			Array.Resize(ref WallID.Sets.Conversion.Sandstone, nextWall);
-			Array.Resize(ref WallID.Sets.Conversion.HardenedSand, nextWall);
-			Array.Resize(ref WallID.Sets.Transparent, nextWall);
-			Array.Resize(ref WallID.Sets.Corrupt, nextWall);
-			Array.Resize(ref WallID.Sets.Crimson, nextWall);
-			Array.Resize(ref WallID.Sets.Hallow, nextWall);
 
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalWalls, g => g.KillSound);
 			ModLoader.BuildGlobalHook(ref HookNumDust, globalWalls, g => g.NumDust);
