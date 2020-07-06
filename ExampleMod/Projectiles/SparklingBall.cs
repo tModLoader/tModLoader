@@ -39,7 +39,7 @@ namespace ExampleMod.Projectiles
 					projectile.velocity.Y = -oldVelocity.Y;
 				}
 				projectile.velocity *= 0.75f;
-				Main.PlaySound(SoundID.Item10, projectile.position);
+				SoundEngine.PlaySound(SoundID.Item10, projectile.position);
 			}
 			return false;
 		}
@@ -48,7 +48,7 @@ namespace ExampleMod.Projectiles
 			for (int k = 0; k < 5; k++) {
 				Dust.NewDust(projectile.position + projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), projectile.oldVelocity.X * 0.5f, projectile.oldVelocity.Y * 0.5f);
 			}
-			Main.PlaySound(SoundID.Item25, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item25, projectile.position);
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {

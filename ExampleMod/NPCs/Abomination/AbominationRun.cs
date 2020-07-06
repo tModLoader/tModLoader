@@ -46,7 +46,7 @@ namespace ExampleMod.NPCs.Abomination
 
 		public override void AI() {
 			if (npc.localAI[0] == 0f) {
-				Main.PlaySound(SoundID.Roar, npc.position, 0);
+				SoundEngine.PlaySound(SoundID.Roar, npc.position, 0);
 				npc.localAI[0] = 1f;
 			}
 			npc.velocity.Y += 1f;

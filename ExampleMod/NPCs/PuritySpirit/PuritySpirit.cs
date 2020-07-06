@@ -774,10 +774,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 		private void PlaySound(int type, int style) {
 			if (Main.netMode != NetmodeID.Server) {
 				if (targets.Contains(Main.myPlayer)) {
-					Main.PlaySound(type, -1, -1, style);
+					SoundEngine.PlaySound(type, -1, -1, style);
 				}
 				else {
-					Main.PlaySound(type, (int)npc.position.X, (int)npc.position.Y, style);
+					SoundEngine.PlaySound(type, (int)npc.position.X, (int)npc.position.Y, style);
 				}
 			}
 			else {
@@ -816,10 +816,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 				int soundType = reader.ReadInt32();
 				int style = reader.ReadInt32();
 				if (targets.Contains(Main.myPlayer)) {
-					Main.PlaySound(soundType, -1, -1, style);
+					SoundEngine.PlaySound(soundType, -1, -1, style);
 				}
 				else {
-					Main.PlaySound(soundType, (int)npc.position.X, (int)npc.position.Y, style);
+					SoundEngine.PlaySound(soundType, (int)npc.position.X, (int)npc.position.Y, style);
 				}
 			}
 			else if (type == PuritySpiritMessageType.Damage) {

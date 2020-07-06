@@ -42,7 +42,7 @@ namespace ExampleMod.Projectiles
 			// OnTileCollide can trigger quite quickly, so using soundDelay helps prevent the sound from overlapping too much.
 			if (projectile.soundDelay == 0) {
 				// We use WithVolume since the sound is a bit too loud, and WithPitchVariance to give the sound some random pitch variance.
-				Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/BananaImpact").WithVolume(.7f).WithPitchVariance(.5f));
+				SoundEngine.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/BananaImpact").WithVolume(.7f).WithPitchVariance(.5f));
 			}
 			projectile.soundDelay = 10;
 
@@ -119,7 +119,7 @@ namespace ExampleMod.Projectiles
 				}
 			}
 			// Play explosion sound
-			Main.PlaySound(SoundID.Item15, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item15, projectile.position);
 			// Smoke Dust spawn
 			for (int i = 0; i < 50; i++) {
 				int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 2f);

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -96,7 +97,7 @@ namespace ExampleMod.UI
 				if (hoveringOverReforgeButton) {
 					Main.hoverItemName = Language.GetTextValue("LegacyInterface.19");
 					if (!tickPlayed) {
-						Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
+						SoundEngine.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
 					}
 					tickPlayed = true;
 					Main.LocalPlayer.mouseInterface = true;
@@ -121,7 +122,7 @@ namespace ExampleMod.UI
 						_vanillaItemSlot.Item.stack = stack;
 						ItemLoader.PostReforge(_vanillaItemSlot.Item);
 						ItemText.NewText(_vanillaItemSlot.Item, _vanillaItemSlot.Item.stack, true, false);
-						Main.PlaySound(SoundID.Item37, -1, -1);
+						SoundEngine.PlaySound(SoundID.Item37, -1, -1);
 					}
 				}
 				else {

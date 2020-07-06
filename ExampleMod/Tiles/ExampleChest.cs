@@ -103,13 +103,13 @@ namespace ExampleMod.Tiles
 				top--;
 			}
 			if (player.sign >= 0) {
-				Main.PlaySound(SoundID.MenuClose);
+				SoundEngine.PlaySound(SoundID.MenuClose);
 				player.sign = -1;
 				Main.editSign = false;
 				Main.npcChatText = "";
 			}
 			if (Main.editChest) {
-				Main.PlaySound(SoundID.MenuTick);
+				SoundEngine.PlaySound(SoundID.MenuTick);
 				Main.editChest = false;
 				Main.npcChatText = "";
 			}
@@ -122,7 +122,7 @@ namespace ExampleMod.Tiles
 				if (left == player.chestX && top == player.chestY && player.chest >= 0) {
 					player.chest = -1;
 					Recipe.FindRecipes();
-					Main.PlaySound(SoundID.MenuClose);
+					SoundEngine.PlaySound(SoundID.MenuClose);
 				}
 				else {
 					NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
@@ -144,7 +144,7 @@ namespace ExampleMod.Tiles
 						Main.stackSplit = 600;
 						if (chest == player.chest) {
 							player.chest = -1;
-							Main.PlaySound(SoundID.MenuClose);
+							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else {
 							player.chest = chest;
@@ -152,7 +152,7 @@ namespace ExampleMod.Tiles
 							Main.recBigList = false;
 							player.chestX = left;
 							player.chestY = top;
-							Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 						}
 						Recipe.FindRecipes();
 					}

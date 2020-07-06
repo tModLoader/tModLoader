@@ -162,7 +162,7 @@ namespace ExampleMod.Projectiles
 				projectile.netUpdate = true;
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 				// Play the sound
-				Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
+				SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
 			}
 
 			return false;

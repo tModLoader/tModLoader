@@ -127,8 +127,8 @@ namespace ExampleMod.NPCs
 				}
 
 				if (npc.ai[3] % 60f == 1f) {
-					//Main.PlaySound(4, npc.Center, 22);
-					Main.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
+					//SoundEngine.PlaySound(4, npc.Center, 22);
+					SoundEngine.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
 				}
 				if (npc.ai[3] >= 180f) {
 					npc.life = 0;
@@ -144,7 +144,7 @@ namespace ExampleMod.NPCs
 				npc.ai[0] = 1f;
 			}
 			if (npc.ai[1] != 3f && npc.ai[1] != 2f) {
-				Main.PlaySound(SoundID.Roar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
+				SoundEngine.PlaySound(SoundID.Roar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
 				npc.ai[1] = 2f;
 			}
 			if (Main.player[npc.target].dead || Math.Abs(npc.position.X - Main.player[npc.target].position.X) > 2000f || Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f) {

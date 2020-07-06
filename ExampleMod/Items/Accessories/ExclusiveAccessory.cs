@@ -147,7 +147,7 @@ namespace ExampleMod.Items.Accessories
 
 			// Here we add additional things that happen on right clicking this item
 			Main.NewText("I just equipped " + item.Name + " in place of " + previousItemName + "!");
-			Main.PlaySound(SoundID.MaxMana, (int)player.position.X, (int)player.position.Y);
+			SoundEngine.PlaySound(SoundID.MaxMana, (int)player.position.X, (int)player.position.Y);
 		}
 	}
 

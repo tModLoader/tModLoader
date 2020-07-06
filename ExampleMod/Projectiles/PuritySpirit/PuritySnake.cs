@@ -44,10 +44,10 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (projectile.localAI[0] % 10 == 0) {
 				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0) {
-					Main.PlaySound(SoundID.Item20);
+					SoundEngine.PlaySound(SoundID.Item20);
 				}
 				else {
-					Main.PlaySound(SoundID.Item20, projectile.position);
+					SoundEngine.PlaySound(SoundID.Item20, projectile.position);
 				}
 			}
 			if (projectile.localAI[0] > 60f) {

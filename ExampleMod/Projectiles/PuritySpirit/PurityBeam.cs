@@ -36,10 +36,10 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (projectile.ai[1] == charge) {
 				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0) {
-					Main.PlaySound(SoundID.Zombie, -1, -1, 104);
+					SoundEngine.PlaySound(SoundID.Zombie, -1, -1, 104);
 				}
 				else {
-					Main.PlaySound(SoundID.Zombie, projectile.Center, 104);
+					SoundEngine.PlaySound(SoundID.Zombie, projectile.Center, 104);
 				}
 				projectile.hostile = true;
 			}

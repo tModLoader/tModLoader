@@ -6,13 +6,16 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.World.Generation;
+using Terraria.WorldBuilding;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod
@@ -132,6 +135,7 @@ namespace ExampleMod
 			// The first step is an Ore. Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
 			// First, we find out which step "Shinies" is.
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
+
 			if (ShiniesIndex != -1) {
 				// Next, we insert our step directly after the original "Shinies" step. 
 				// ExampleModOres is a method seen below.
@@ -140,22 +144,25 @@ namespace ExampleMod
 
 			// This second step that we add will go after "Traps" and follows the same pattern.
 			int TrapsIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Traps"));
+
 			if (TrapsIndex != -1) {
 				tasks.Insert(TrapsIndex + 1, new PassLegacy("Example Mod Traps", ExampleModTraps));
 			}
 
 			int LivingTreesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Living Trees"));
+
 			if (LivingTreesIndex != -1) {
-				tasks.Insert(LivingTreesIndex + 1, new PassLegacy("Post Terrain", delegate (GenerationProgress progress) {
+				tasks.Insert(LivingTreesIndex + 1, new PassLegacy("Post Terrain", (progress, configuration) => {
 					// We can inline the world generation code like this, but if exceptions happen within this code 
 					// the error messages are difficult to read, so making methods is better. This is called an anonymous method.
 					progress.Message = "What is it Lassie, did Timmy fall down a well?";
+
 					MakeWells();
 				}));
 			}
 		}
 
-		private void ExampleModOres(GenerationProgress progress) {
+		private void ExampleModOres(GenerationProgress progress, GameConfiguration _) {
 			// progress.Message is the message shown to the user while the following code is running. Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes. 
 			progress.Message = "Example Mod Ores";
 
@@ -179,7 +186,7 @@ namespace ExampleMod
 			}
 		}
 
-		private void ExampleModTraps(GenerationProgress progress) {
+		private void ExampleModTraps(GenerationProgress progress, GameConfiguration _) {
 			progress.Message = "Example Mod Traps";
 
 			// Computers are fast, so WorldGen code sometimes looks stupid.
@@ -408,7 +415,7 @@ namespace ExampleMod
 			exampleTiles = tileCounts[TileType<ExampleBlock>()] + tileCounts[TileType<ExampleSand>()];
 
 			// We can also add to vanilla biome counts if appropriate. Here we are adding to the ZoneDesert since we have a sand tile in the mod.
-			Main.sandTiles += tileCounts[TileType<ExampleSand>()];
+			SceneMetrics.DesertTileThreshold += tileCounts[TileType<ExampleSand>()];
 		}
 
 		public override void PreUpdate() {
@@ -424,14 +431,14 @@ namespace ExampleMod
 				if (VolcanoCooldown <= 0 && Main.rand.NextBool(VolcanoChance) && !GetInstance<ExampleConfigServer>().DisableVolcanoes) {
 					string key = "Mods.ExampleMod.VolcanoWarning";
 					Color messageColor = Color.Orange;
-					if (Main.netMode == NetmodeID.Server) // Server
-					{
-						NetMessage.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
+
+					if (Main.netMode == NetmodeID.Server) { // Server
+						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(key), messageColor);
 					}
-					else if (Main.netMode == NetmodeID.SinglePlayer) // Single Player
-					{
+					else if (Main.netMode == NetmodeID.SinglePlayer) { // Single Player
 						Main.NewText(Language.GetTextValue(key), messageColor);
 					}
+
 					VolcanoCountdown = DefaultVolcanoCountdown;
 					VolcanoCooldown = DefaultVolcanoCooldown;
 				}
@@ -486,31 +493,40 @@ namespace ExampleMod
 
 		// In ExampleMod, we use PostDrawTiles to draw the TEScoreBoard area. PostDrawTiles draws before players, npc, and projectiles, so it works well.
 		public override void PostDrawTiles() {
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.instance.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+			
 			var screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			
 			screenRect.Inflate(TEScoreBoard.drawBorderWidth, TEScoreBoard.drawBorderWidth);
+			
 			int scoreBoardType = TileEntityType<TEScoreBoard>();
+			
 			foreach (var item in TileEntity.ByID) {
 				if (item.Value.type == scoreBoardType) {
 					var scoreBoard = item.Value as TEScoreBoard;
 					Rectangle scoreBoardArea = scoreBoard.GetPlayArea();
+
 					// We only want to draw while the area is visible. 
+
 					if (screenRect.Intersects(scoreBoardArea)) {
 						scoreBoardArea.Offset((int)-Main.screenPosition.X, (int)-Main.screenPosition.Y);
 						DrawBorderedRect(Main.spriteBatch, Color.LightBlue * 0.1f, Color.Blue * 0.3f, scoreBoardArea.TopLeft(), scoreBoardArea.Size(), TEScoreBoard.drawBorderWidth);
 					}
 				}
 			}
+
 			Main.spriteBatch.End();
 		}
 
 		// A helper method that draws a bordered rectangle. 
 		public static void DrawBorderedRect(SpriteBatch spriteBatch, Color color, Color borderColor, Vector2 position, Vector2 size, int borderWidth) {
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), color);
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y - borderWidth, (int)size.X + borderWidth * 2, borderWidth), borderColor);
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y + (int)size.Y, (int)size.X + borderWidth * 2, borderWidth), borderColor);
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
-			spriteBatch.Draw(Main.magicPixel, new Rectangle((int)position.X + (int)size.X, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
+			var magicPixel = TextureAssets.MagicPixel.Value;
+
+			spriteBatch.Draw(magicPixel, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), color);
+			spriteBatch.Draw(magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y - borderWidth, (int)size.X + borderWidth * 2, borderWidth), borderColor);
+			spriteBatch.Draw(magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y + (int)size.Y, (int)size.X + borderWidth * 2, borderWidth), borderColor);
+			spriteBatch.Draw(magicPixel, new Rectangle((int)position.X - borderWidth, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
+			spriteBatch.Draw(magicPixel, new Rectangle((int)position.X + (int)size.X, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
 		}
 	}
 }

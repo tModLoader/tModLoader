@@ -68,7 +68,7 @@ namespace ExampleMod.NPCs
 					npc.velocity.X = 0.01f * npc.direction;
 				}
 				if (ai == -60f || ai == -120f) {
-					Main.PlaySound(SoundID.NPCDeath6, npc.position);
+					SoundEngine.PlaySound(SoundID.NPCDeath6, npc.position);
 				}
 				if (ai == -1f) {
 					for (int k = 0; k < 255; k++) {

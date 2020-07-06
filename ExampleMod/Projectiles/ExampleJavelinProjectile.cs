@@ -61,7 +61,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		public override void Kill(int timeLeft) {
-			Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y); // Play a death sound
+			SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y); // Play a death sound
 			Vector2 usePos = projectile.position; // Position to use for dusts
 			
 			// Please note the usage of MathHelper, please use this!

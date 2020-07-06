@@ -57,13 +57,13 @@ namespace ExampleMod.Tiles
 				left = Player.tileTargetX - left;
 				int top = Player.tileTargetY - (int)(Main.tile[Player.tileTargetX, Player.tileTargetY].frameY / 18);
 				if (player.sign > -1) {
-					Main.PlaySound(SoundID.MenuClose);
+					SoundEngine.PlaySound(SoundID.MenuClose);
 					player.sign = -1;
 					Main.editSign = false;
 					Main.npcChatText = string.Empty;
 				}
 				if (Main.editChest) {
-					Main.PlaySound(SoundID.MenuTick);
+					SoundEngine.PlaySound(SoundID.MenuTick);
 					Main.editChest = false;
 					Main.npcChatText = string.Empty;
 				}
@@ -75,7 +75,7 @@ namespace ExampleMod.Tiles
 					if (left == player.chestX && top == player.chestY && player.chest != -1) {
 						player.chest = -1;
 						Recipe.FindRecipes();
-						Main.PlaySound(SoundID.MenuClose);
+						SoundEngine.PlaySound(SoundID.MenuClose);
 					}
 					else {
 						NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
@@ -90,13 +90,13 @@ namespace ExampleMod.Tiles
 						if (num213 == player.chest) {
 							player.chest = -1;
 							Recipe.FindRecipes();
-							Main.PlaySound(SoundID.MenuClose);
+							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else if (num213 != player.chest && player.chest == -1) {
 							player.chest = num213;
 							Main.playerInventory = true;
 							Main.recBigList = false;
-							Main.PlaySound(SoundID.MenuOpen);
+							SoundEngine.PlaySound(SoundID.MenuOpen);
 							player.chestX = left;
 							player.chestY = top;
 						}
@@ -104,7 +104,7 @@ namespace ExampleMod.Tiles
 							player.chest = num213;
 							Main.playerInventory = true;
 							Main.recBigList = false;
-							Main.PlaySound(SoundID.MenuTick);
+							SoundEngine.PlaySound(SoundID.MenuTick);
 							player.chestX = left;
 							player.chestY = top;
 						}

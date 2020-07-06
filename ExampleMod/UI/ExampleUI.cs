@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -82,12 +83,12 @@ namespace ExampleMod.UI
 		}
 
 		private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuOpen);
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			MoneyDisplay.ResetCoins();
 		}
 
 		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
-			Main.PlaySound(SoundID.MenuClose);
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			Visible = false;
 		}
 

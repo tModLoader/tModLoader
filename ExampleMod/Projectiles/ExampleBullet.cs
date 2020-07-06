@@ -40,7 +40,7 @@ namespace ExampleMod.Projectiles
 			}
 			else {
 				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-				Main.PlaySound(SoundID.Item10, projectile.position);
+				SoundEngine.PlaySound(SoundID.Item10, projectile.position);
 				if (projectile.velocity.X != oldVelocity.X) {
 					projectile.velocity.X = -oldVelocity.X;
 				}
@@ -66,7 +66,7 @@ namespace ExampleMod.Projectiles
 		{
 			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
 			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-			Main.PlaySound(SoundID.Item10, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item10, projectile.position);
 		}
 	}
 }

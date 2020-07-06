@@ -54,7 +54,7 @@ namespace ExampleMod.Projectiles.Pets
 						Vector2 vectorToEnemy = Main.npc[i].Center - projectile.Center;
 						projectile.velocity += 10f * Vector2.Normalize(vectorToEnemy);
 						projectile.ai[1] = 0f;
-						Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/WatchOut"));
+						SoundEngine.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/WatchOut"));
 						break;
 					}
 				}

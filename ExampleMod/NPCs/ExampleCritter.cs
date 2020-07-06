@@ -180,7 +180,7 @@ namespace ExampleMod.NPCs
 				npc.life = 0;
 				npc.HitEffect();
 				npc.active = false;
-				Main.PlaySound(SoundID.NPCDeath16, npc.position); // plays a fizzle sound
+				SoundEngine.PlaySound(SoundID.NPCDeath16, npc.position); // plays a fizzle sound
 			}
 			return base.PreAI();
 		}

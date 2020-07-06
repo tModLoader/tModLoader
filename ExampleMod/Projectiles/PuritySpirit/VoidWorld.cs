@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -43,10 +44,10 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (!Main.dedServ && projectile.localAI[0] >= 180f && projectile.localAI[0] < 480f && Main.rand.NextBool(10)) {
 				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0) {
-					Main.PlaySound(SoundID.Item14);
+					SoundEngine.PlaySound(SoundID.Item14);
 				}
 				else {
-					Main.PlaySound(SoundID.Item14, projectile.position);
+					SoundEngine.PlaySound(SoundID.Item14, projectile.position);
 				}
 			}
 			projectile.position = NextPosition();

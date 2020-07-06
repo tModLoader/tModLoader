@@ -8,7 +8,7 @@ using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.World.Generation;
+using Terraria.WorldBuilding;
 using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Tiles
@@ -99,17 +99,20 @@ namespace ExampleMod.Tiles
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
 			int ResetIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Reset"));
 			if (ResetIndex != -1) {
-				tasks.Insert(ResetIndex + 1, new PassLegacy("Example Mod Statue Setup", delegate (GenerationProgress progress) {
+				tasks.Insert(ResetIndex + 1, new PassLegacy("Example Mod Statue Setup", (progress, configuration) => {
 					progress.Message = "Adding ExampleMod Statue";
 
 					// Not necessary, just a precaution.
 					if (WorldGen.statueList.Any(point => point.X == TileType<ExampleStatue>())) {
 						return;
 					}
+
 					// Make space in the statueList array, and then add a Point16 of (TileID, PlaceStyle)
 					Array.Resize(ref WorldGen.statueList, WorldGen.statueList.Length + 1);
+
 					for (int i = WorldGen.statueList.Length - 1; i < WorldGen.statueList.Length; i++) {
 						WorldGen.statueList[i] = new Point16(TileType<ExampleStatue>(), 0);
+
 						// Do this if you want the statue to spawn with wire and pressure plate
 						// WorldGen.StatuesWithTraps.Add(i);
 					}

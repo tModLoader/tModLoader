@@ -47,10 +47,10 @@ namespace ExampleMod.NPCs.PuritySpirit
 			PuritySpirit modOwner = (PuritySpirit)owner.modNPC;
 			if (npc.localAI[0] == 0f) {
 				if (modOwner.targets.Contains(Main.myPlayer)) {
-					Main.PlaySound(SoundID.Item2);
+					SoundEngine.PlaySound(SoundID.Item2);
 				}
 				else {
-					Main.PlaySound(SoundID.Item2, npc.position);
+					SoundEngine.PlaySound(SoundID.Item2, npc.position);
 				}
 				npc.localAI[0] = 1f;
 			}

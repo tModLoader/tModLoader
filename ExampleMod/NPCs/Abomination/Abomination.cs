@@ -293,7 +293,7 @@ namespace ExampleMod.NPCs.Abomination
 				damage = 0;
 				crit = true;
 				dontDamage = false;
-				Main.PlaySound(npc.HitSound, npc.position);
+				SoundEngine.PlaySound(npc.HitSound, npc.position);
 				return false;
 			}
 			return true;

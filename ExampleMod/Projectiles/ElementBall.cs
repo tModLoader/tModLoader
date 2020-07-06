@@ -44,7 +44,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		public virtual void PlaySound() {
-			Main.PlaySound(SoundID.Item20, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item20, projectile.position);
 		}
 
 		public virtual void CreateDust() {

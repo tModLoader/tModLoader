@@ -24,7 +24,7 @@ namespace ExampleMod.Projectiles
 		}
 
 		public override void PlaySound() {
-			Main.PlaySound(SoundID.Item33, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item33, projectile.position);
 		}
 
 		public override string GetName() {

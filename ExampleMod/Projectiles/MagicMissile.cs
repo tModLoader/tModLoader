@@ -27,7 +27,7 @@ namespace ExampleMod.Projectiles
 			// This part makes the projectile do a shime sound every 10 ticks as long as it is moving.
 			if (projectile.soundDelay == 0 && Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y) > 2f) {
 				projectile.soundDelay = 10;
-				Main.PlaySound(SoundID.Item9, projectile.position);
+				SoundEngine.PlaySound(SoundID.Item9, projectile.position);
 			}
 
 			Vector2 dustPosition = projectile.Center + new Vector2(Main.rand.Next(-4, 5), Main.rand.Next(-4, 5));
@@ -126,7 +126,7 @@ namespace ExampleMod.Projectiles
 				projectile.Center = projectile.position;
 			}
 
-			Main.PlaySound(SoundID.Item10, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item10, projectile.position);
 			for (int i = 0; i < 10; i++) {
 				Dust dust = Dust.NewDustDirect(projectile.position - projectile.velocity, projectile.width, projectile.height, DustType<Sparkle>(), 0, 0, 100, Color.Lime, 0.8f);
 				dust.noGravity = true;

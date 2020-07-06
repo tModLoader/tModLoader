@@ -7,6 +7,7 @@ using ExampleMod.Tiles;
 using ExampleMod.Walls;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -20,8 +21,6 @@ namespace ExampleMod.NPCs
 	{
 		public override string Texture => "ExampleMod/NPCs/ExamplePerson";
 
-		public override string[] AltTextures => new[] { "ExampleMod/NPCs/ExamplePerson_Alt_1" };
-
 		public override bool Autoload(ref string name) {
 			name = "Example Person";
 			return mod.Properties.Autoload;
@@ -31,6 +30,7 @@ namespace ExampleMod.NPCs
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[npc.type] = 25;
+
 			NPCID.Sets.ExtraFramesCount[npc.type] = 9;
 			NPCID.Sets.AttackFrameCount[npc.type] = 4;
 			NPCID.Sets.DangerDetectRange[npc.type] = 700;
@@ -172,15 +172,19 @@ namespace ExampleMod.NPCs
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
 			if (firstButton) {
 				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
-				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-				{
-					Main.PlaySound(SoundID.Item37); // Reforge/Anvil sound
+				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
+					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
+
 					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ItemType<Items.Accessories.WaspNest>())}";
+					
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
+					
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
 					Main.LocalPlayer.QuickSpawnItem(ItemType<Items.Accessories.WaspNest>());
+
 					return;
 				}
+
 				shop = true;
 			}
 			else {

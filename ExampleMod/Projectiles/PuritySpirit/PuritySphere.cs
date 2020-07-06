@@ -80,10 +80,10 @@ namespace ExampleMod.Projectiles.PuritySpirit
 			if (timer == maxTimer) {
 				ExamplePlayer modPlayer = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
 				if (modPlayer.heroLives > 0) {
-					Main.PlaySound(SoundID.Item12);
+					SoundEngine.PlaySound(SoundID.Item12);
 				}
 				else {
-					Main.PlaySound(SoundID.Item12, projectile.position);
+					SoundEngine.PlaySound(SoundID.Item12, projectile.position);
 				}
 				projectile.hostile = true;
 			}

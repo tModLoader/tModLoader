@@ -26,7 +26,7 @@ namespace ExampleMod.Commands
 				throw new UsageException(args[1] + " is not an integer");
 			}
 
-			Main.PlaySound(type, -1, -1, style);
+			SoundEngine.PlaySound(type, -1, -1, style);
 		}
 	}
 }

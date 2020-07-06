@@ -46,7 +46,7 @@ namespace ExampleMod.Items.Weapons
 
 		public override int ConsumeItem(int type, int numRequired) {
 			if (type == ItemID.Ectoplasm && Main.LocalPlayer.adjTile[TileType<ExampleWorkbench>()]) {
-				Main.PlaySound(SoundID.Item, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
+				SoundEngine.PlaySound(SoundID.Item, -1, -1, mod.GetSoundSlot(SoundType.Item, "Sounds/Item/Wooo"));
 				return Main.rand.NextBool() ? 0 : 1; //You have half chance to not consume your materials
 			}
 			return base.ConsumeItem(type, numRequired);

@@ -23,7 +23,7 @@ namespace ExampleMod.Projectiles.Minions
 
 		public override void AI() {
 			if (projectile.localAI[0] == 0f) {
-				Main.PlaySound(SoundID.Item20, projectile.position);
+				SoundEngine.PlaySound(SoundID.Item20, projectile.position);
 				projectile.localAI[0] = 1f;
 			}
 			int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, 66, 0f, 0f, 100, new Color(0, 255, 0), 1.5f);
