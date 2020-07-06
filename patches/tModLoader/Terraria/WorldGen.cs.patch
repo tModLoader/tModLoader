@@ -306,10 +306,10 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
-+			//WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			WorldHooks.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
-+			//WorldHooks.PostWorldGen();
++			WorldHooks.PostWorldGen();
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
