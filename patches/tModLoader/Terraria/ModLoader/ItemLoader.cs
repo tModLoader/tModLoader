@@ -100,6 +100,7 @@ namespace Terraria.ModLoader
 			for (int k = ItemID.Count; k < nextItem; k++) {
 				Lang._itemNameCache[k] = LocalizedText.Empty;
 				Lang._itemTooltipCache[k] = ItemTooltip.None;
+				Item.cachedItemSpawnsByType[k] = -1;
 			}
 
 			if (unloading)
