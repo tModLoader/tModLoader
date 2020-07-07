@@ -1,0 +1,38 @@
+--- src/Terraria/Terraria/GameContent/TilePaintSystemV2.cs
++++ src/tModLoader/Terraria/GameContent/TilePaintSystemV2.cs
+@@ -74,7 +_,7 @@
+ 			public TreeFoliageVariantKey Key;
+ 
+ 			public override void Prepare() {
+-				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
++				Asset<Texture2D> asset = TextureAssets.TreeTop[Key.TextureIndex];
+ 				PrepareTextureIfNecessary(asset.Value);
+ 			}
+ 
+@@ -88,7 +_,7 @@
+ 			public TreeFoliageVariantKey Key;
+ 
+ 			public override void Prepare() {
+-				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
++				Asset<Texture2D> asset = TextureAssets.TreeBranch[Key.TextureIndex];
+ 				PrepareTextureIfNecessary(asset.Value);
+ 			}
+ 
+@@ -102,7 +_,7 @@
+ 			public TileVariationkey Key;
+ 
+ 			public override void Prepare() {
+-				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++				Asset<Texture2D> asset = TextureAssets.Tile[Key.TileType];
+ 				PrepareTextureIfNecessary(asset.Value);
+ 			}
+ 
+@@ -116,7 +_,7 @@
+ 			public WallVariationKey Key;
+ 
+ 			public override void Prepare() {
+-				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
++				Asset<Texture2D> asset = TextureAssets.Wall[Key.WallType];
+ 				PrepareTextureIfNecessary(asset.Value);
+ 			}
+ 
