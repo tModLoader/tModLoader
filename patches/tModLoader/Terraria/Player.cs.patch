@@ -2493,6 +2493,15 @@
  					FreeUpPetsAndMinions(item);
  
  				if (flag3)
+@@ -29112,6 +_,8 @@
+ 				itemAnimation--;
+ 			}
+ 
++			ItemLoader.HoldItem(item2, this);
++
+ 			if (itemAnimation > 0)
+ 				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
+ 			else
 @@ -29160,7 +_,7 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
@@ -2502,6 +2511,16 @@
  						ItemCheck_Shoot(i, item, weaponDamage);
  
  					ItemCheck_UseWiringTools(item);
+@@ -29228,6 +_,9 @@
+ 							if (inventory[selectedItem].type == 3106)
+ 								knockBack += knockBack * (1f - stealth);
+ 
++							ItemLoader.GetWeaponKnockback(item, this, ref knockBack);
++							PlayerHooks.GetWeaponKnockback(this, item, ref knockBack);
++
+ 							List<ushort> ignoreList2 = ItemCheck_GetTileCutIgnoreList(item);
+ 							ItemCheck_CutTiles(item, itemRectangle, ignoreList2);
+ 							ItemCheck_MeleeHitNPCs(item, itemRectangle, num, knockBack);
 @@ -29238,6 +_,9 @@
  				}
  
@@ -2622,6 +2641,25 @@
  		}
  
  		private void ItemCheck_EmitFoodParticles(Item sItem) {
+@@ -29851,11 +_,18 @@
+ 				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
+ 					continue;
+ 
++				if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerHooks.CanHitPvp(this, sItem, player))
++					continue; //TODO: PvP crit hook?
++
+ 				bool flag = false;
+ 				if (Main.rand.Next(1, 101) <= 10)
+ 					flag = true;
+ 
+ 				int num = Main.DamageVar(damage, luck);
++
++				ItemLoader.ModifyHitPvp(sItem, this, player, ref num, ref flag);
++				PlayerHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
++
+ 				StatusToPlayerPvP(sItem.type, i);
+ 				OnHit(player.Center.X, player.Center.Y, player);
+ 				PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
 @@ -29900,6 +_,8 @@
  				if (sItem.type == 1826 && Main.npc[i].value > 0f)
  					pumpkinSword(i, (int)((double)damage * 1.5), knockBack);
@@ -2630,6 +2668,40 @@
 +				PlayerHooks.OnHitPvp(this, sItem, Main.player[i], num2, flag);
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
+ 
+@@ -29951,6 +_,11 @@
+ 							}
+ 
+ 							int num4 = Main.DamageVar(num, luck);
++
++							ItemLoader.ModifyHitNPC(sItem, this, Main.npc[i], ref num4, ref knockBack, ref flag);
++							NPCLoader.ModifyHitByItem(Main.npc[i], this, sItem, ref num4, ref knockBack, ref flag);
++							PlayerHooks.ModifyHitNPC(this, sItem, Main.npc[i], ref num4, ref knockBack, ref flag);
++
+ 							StatusToNPC(sItem.type, i);
+ 							if (Main.npc[i].life > 5)
+ 								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
+@@ -29959,6 +_,11 @@
+ 								num4 += Main.npc[i].checkArmorPenetration(armorPenetration);
+ 
+ 							int dmgDone = (int)Main.npc[i].StrikeNPC(num4, knockBack, direction, flag);
++
++							ItemLoader.OnHitNPC(sItem, this, Main.npc[i], dmgDone, knockBack, flag);
++							NPCLoader.OnHitByItem(Main.npc[i], this, sItem, dmgDone, knockBack, flag);
++							PlayerHooks.OnHitNPC(this, sItem, Main.npc[i], dmgDone, knockBack, flag);
++
+ 							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num4, dmgDone);
+ 							int num5 = Item.NPCtoBanner(Main.npc[i].BannerID());
+ 							if (num5 >= 0)
+@@ -30488,6 +_,9 @@
+ 				Main.dust[num30].velocity.Y *= 2f;
+ 			}
+ 
++			ItemLoader.MeleeEffects(sItem, this, itemRectangle);
++			PlayerHooks.MeleeEffects(this, sItem, itemRectangle);
++
+ 			return itemRectangle;
+ 		}
  
 @@ -30543,6 +_,7 @@
  				}
@@ -2660,6 +2732,17 @@
  				if (sItem.axe > 0) {
  					AchievementsHelper.CurrentlyMining = true;
  					if (!WorldGen.CanKillTile(x, y))
+@@ -31002,7 +_,9 @@
+ 					if (!poundRelease)
+ 						return;
+ 
++					if (TileLoader.Slope(x, y, Main.tile[x, y].type)) {
++					}
+-					if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
++					else if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
+ 						if (tile.halfBrick()) {
+ 							WorldGen.PoundTile(x, y);
+ 							if (Main.netMode == 1)
 @@ -31594,7 +_,8 @@
  				}
  
@@ -2720,6 +2803,15 @@
  					int num181 = Projectile.NewProjectile(vector.X, vector.Y, num2, num3, projToShoot, Damage, KnockBack, i);
  					if (sItem.type == 726)
  						Main.projectile[num181].magic = true;
+@@ -33662,6 +_,8 @@
+ 		}
+ 
+ 		private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
++			ItemLoader.HoldStyle(sItem, this);
++
+ 			if (!CanVisuallyHoldItem(sItem))
+ 				return;
+ 
 @@ -33903,10 +_,12 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
@@ -2733,6 +2825,15 @@
 + 			if (GetManaCost(sItem)>0)
  				manaRegenDelay = (int)maxRegenDelay;
  		}
+ 
+@@ -33967,6 +_,8 @@
+ 		}
+ 
+ 		public void ItemCheck_ApplyUseStyle(float mountOffset, Item sItem, Rectangle heldItemFrame) {
++			ItemLoader.UseStyle(sItem, this); //Do we need this to run on servers?
++
+ 			if (Main.dedServ)
+ 				return;
  
 @@ -34657,6 +_,8 @@
  		}

@@ -53,48 +53,8 @@
 
 //Mirsario:
 	//Player:
-		//In ItemCheck:
-+			ItemLoader.HoldItem(item, this);
-
-			if (itemAnimation > 0) {
-				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
-+				ItemLoader.UseStyle(item, this);
-			} else {
-				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
-+				ItemLoader.HoldStyle(item, this);
-			}
-			
-		//Early in ItemCheck_MeleeHitPVP:
-			if (!ItemLoader.CanHitPvp(item, this, player) || !PlayerHooks.CanHitPvp(this, item, player))
-				continue; //TODO: PvP crit hook?
-			
-		//In ItemCheck_MeleeHitPVP, after DamageVar call, add:
-			ItemLoader.ModifyHitPvp(item, this, player, ref num, ref flag);
-			PlayerHooks.ModifyHitPvp(this, item, player, ref num, ref flag);
-			
-		//In ItemCheck_MeleeHitNPCs, after DamageVar call:
-			ItemLoader.ModifyHitNPC(item, this, Main.npc[i], ref num4, ref knockBack, ref flag);
-			NPCLoader.ModifyHitByItem(Main.npc[i], this, item, ref num4, ref knockBack, ref flag);
-			PlayerHooks.ModifyHitNPC(this, item, Main.npc[i], ref num4, ref knockBack, ref flag);
-		
-		//In ItemCheck_MeleeHitNPCs, before NPCtoBanner call:
-			ItemLoader.OnHitNPC(item, this, Main.npc[i], num4, knockBack, flag);
-			NPCLoader.OnHitByItem(Main.npc[i], this, item, num4, knockBack, flag);
-			PlayerHooks.OnHitNPC(this, item, Main.npc[i], num4, knockBack, flag);
-			
-		//In ItemCheck, after 'knockBack += knockBack * (1f - stealth);' line:
-			ItemLoader.GetWeaponKnockback(item, this, ref knockBack);
-			PlayerHooks.GetWeaponKnockback(this, item, ref knockBack);
-			
-		//At the end of ItemCheck_EmitUseVisuals, add:
-			ItemLoader.MeleeEffects(item, this, itemRectangle);
-			PlayerHooks.MeleeEffects(this, item, itemRectangle);
-			
-		//In ItemCheck_UseMiningTools_TryPoundingTile, apply this:
--			if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
-+			if (TileLoader.Slope(x, y, Main.tile[x, u].type)) {
-+			}	
-+			else if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
+		//In ItemCheck_MeleeHitNPCs:
+			//Reimplement CanHitNPC hooks.
 			
 		//These giant patches:
 //{
