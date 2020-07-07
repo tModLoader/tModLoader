@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -87,7 +88,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.ItemFlame, nextItem);
 
 			//Sets
-			typeof(ItemID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(ItemID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.itemAnimations, nextItem);

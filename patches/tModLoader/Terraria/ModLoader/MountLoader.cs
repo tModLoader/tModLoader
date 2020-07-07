@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -37,7 +38,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeArrays() {
 			//Sets
-			typeof(MountID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(MountID.Sets));
 
 			//Etc
 			Array.Resize(ref Mount.mounts, MountCount);

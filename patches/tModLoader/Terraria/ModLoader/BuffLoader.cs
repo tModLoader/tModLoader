@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.GameContent;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -82,7 +83,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Buff, nextBuff);
 
 			//Sets
-			typeof(BuffID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(BuffID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.pvpBuff, nextBuff);

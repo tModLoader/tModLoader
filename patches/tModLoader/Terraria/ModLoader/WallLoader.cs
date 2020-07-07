@@ -5,6 +5,7 @@ using System.IO;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -70,7 +71,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Wall, nextWall);
 
 			//Sets
-			typeof(WallID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(WallID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.wallHouse, nextWall);

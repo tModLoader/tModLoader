@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Projectile, nextProjectile);
 
 			//Sets
-			typeof(ProjectileID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(ProjectileID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.projHostile, nextProjectile);

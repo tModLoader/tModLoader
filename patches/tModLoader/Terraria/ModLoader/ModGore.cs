@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -44,7 +45,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Gore, nextGore);
 
 			//Sets
-			typeof(GoreID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(GoreID.Sets));
 			Array.Resize(ref ChildSafety.SafeGore, nextGore);
 
 			for (int k = GoreID.Count; k < nextGore; k++) {

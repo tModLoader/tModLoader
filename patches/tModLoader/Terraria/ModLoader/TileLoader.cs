@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader
@@ -123,7 +124,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 			//Sets
-			typeof(TileID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(TileID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.tileLighted, nextTile);

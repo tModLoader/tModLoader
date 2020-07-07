@@ -11,6 +11,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -104,7 +105,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
 
 			//Sets
-			typeof(NPCID.Sets).TypeInitializer.Invoke(null, null);
+			LoaderUtils.ReloadSets(typeof(NPCID.Sets));
 
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
