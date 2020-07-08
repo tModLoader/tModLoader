@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Items
 			new ModRecipe(mod)
 				.AddIngredient(ItemID.DirtBlock)
 				.SetResult(this, 999)
-				.AddRecipe();
+				.Build();
 
 			/*
 			// Start a new Recipe. (Prepend with "ModRecipe " if 1st recipe in code block.)

@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 				.AddIngredient(ItemID.WorkBench)
 				.AddIngredient(ItemType<ExampleItem>(), 10)
 				.SetResult(this)
-				.AddRecipe();
+				.Build();
 		}
 	}
 }
