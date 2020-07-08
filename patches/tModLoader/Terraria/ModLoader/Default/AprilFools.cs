@@ -47,7 +47,7 @@ namespace Terraria.ModLoader.Default
 				new ModRecipe(mod)
 					.AddIngredient(ItemID.DirtBlock)
 					.SetResult(this)
-					.Build();
+					.AddRecipe();
 			}
 		}
 	}
