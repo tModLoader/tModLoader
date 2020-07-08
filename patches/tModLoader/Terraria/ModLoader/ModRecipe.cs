@@ -5,7 +5,7 @@ using Terraria.ModLoader.Exceptions;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the AddRecipe method.
+	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the <para cref="Build"/> method.
 	/// </summary>
 	public class ModRecipe : Recipe
 	{
@@ -73,8 +73,8 @@ namespace Terraria.ModLoader
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
 		public ModRecipe AddIngredient(int itemID, int stack = 1) {
-			if (numIngredients >= maxRecipes)
-				throw new RecipeException($"Recipe already has maximum number of ingredients, which is {maxRecipes}.");
+			if (numIngredients >= maxRequirements)
+				throw new RecipeException($"Recipe already has the maximum number of ingredients, which is {maxRequirements}.");
 			
 			requiredItem[numIngredients].SetDefaults(itemID, false);
 			requiredItem[numIngredients].stack = stack;
@@ -153,11 +153,11 @@ namespace Terraria.ModLoader
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
 		public ModRecipe AddTile(int tileID) {
-			if (numTiles == 14)
-				throw new RecipeException("Recipe already has maximum number of tiles. 14 is the max.");
-			
+			if (numTiles >= maxRequirements)
+				throw new RecipeException($"Recipe already has the maximum number of required tiles, which is {maxRequirements}.");
+
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
-				throw new RecipeException("No tile has ID " + tileID);
+				throw new RecipeException($"No tile has ID '{tileID}'.");
 			
 			requiredTile[numTiles++] = tileID;
 
@@ -216,12 +216,12 @@ namespace Terraria.ModLoader
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void AddRecipe() {
+		public void Build() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 			
-			if (numIngredients > 14 || numTiles > 14)
-				throw new RecipeException("A recipe with either too many tiles or too many ingredients has been added. 14 is the max.");
+			if (numIngredients >= maxRequirements || numTiles >= maxRequirements)
+				throw new RecipeException($"A recipe with either too many tiles or too many ingredients has been added. {maxRequirements} is the max.");
 
 			for (int k = 0; k < maxRequirements; k++) {
 				if (requiredTile[k] == TileID.Bottles) {
