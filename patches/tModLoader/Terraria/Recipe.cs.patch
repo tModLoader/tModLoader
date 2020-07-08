@@ -26,13 +26,12 @@
  					return true;
  			}
  
-@@ -113,6 +_,10 @@
+@@ -113,6 +_,9 @@
  					break;
  
  				int num = item2.stack;
-+				ModRecipe modRecipe = this as ModRecipe;
-+				if (modRecipe != null)
-+					num = modRecipe.ConsumeItem(item2.type, item2.stack);
++				if (this is ModRecipe modRecipe)
++					num = modRecipe.HookConsumeItem?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
 +
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  					if (num > 1) {

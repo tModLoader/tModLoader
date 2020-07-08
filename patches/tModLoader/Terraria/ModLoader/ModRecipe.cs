@@ -7,65 +7,25 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the <para cref="AddRecipe"/> method.
 	/// </summary>
-	public class ModRecipe : Recipe
+	public sealed class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
+
 		private int numIngredients = 0;
 		private int numTiles = 0;
+
+		internal Action<ModRecipe, Item> HookOnCraft { get; private set; }
+		internal Func<ModRecipe, bool> HookRecipeAvailable { get; private set; }
+		internal Func<ModRecipe, int, int, int> HookConsumeItem { get; private set; }
 
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
-		public int RecipeIndex {
-			get;
-			private set;
-		}
+		public int RecipeIndex { get; private set; }
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="mod">The mod the recipe originates from.</param>
-		public ModRecipe(Mod mod) {
+		private ModRecipe(Mod mod) {
 			this.mod = mod;
 		}
-
-		/// <summary>
-		/// Sets the result of this recipe with the given item type and stack size.
-		/// </summary>
-		/// <param name="itemID">The item identifier.</param>
-		/// <param name="stack">The stack.</param>
-		public ModRecipe SetResult(int itemID, int stack = 1) {
-			createItem.SetDefaults(itemID, false);
-			createItem.stack = stack;
-
-			return this;
-		}
-
-		/// <summary>
-		/// Sets the result of this recipe with the given item name from the given mod, and with the given stack stack. If the mod parameter is null, then it will automatically use an item from the mod creating this recipe.
-		/// </summary>
-		/// <param name="mod">The mod the item originates from.</param>
-		/// <param name="itemName">Name of the item.</param>
-		/// <param name="stack">The stack.</param>
-		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-		public ModRecipe SetResult(Mod mod, string itemName, int stack = 1) {
-			if (mod == null)
-				mod = this.mod;
-
-			int type = mod.ItemType(itemName);
-			
-			if (type == 0)
-				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
-
-			return SetResult(type, stack);
-		}
-
-		/// <summary>
-		/// Sets the result of this recipe to the given type of item and stack size. Useful in ModItem.AddRecipes.
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <param name="stack">The stack.</param>
-		public ModRecipe SetResult(ModItem item, int stack = 1) => SetResult(item.item.type, stack);
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -189,28 +149,31 @@ namespace Terraria.ModLoader
 		public ModRecipe AddTile(ModTile tile) => AddTile(tile.Type);
 
 		/// <summary>
-		/// Whether or not the conditions are met for this recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
+		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
-		/// <returns>Whether or not the conditions are met for this recipe to be available for the player to use.</returns>
-		public virtual bool RecipeAvailable() => true;
+		public ModRecipe SetCondition(Func<ModRecipe, bool> condition) {
+			HookRecipeAvailable = condition;
 
-		/// <summary>
-		/// Allows you to make anything happen when the player uses this recipe. The <paramref name="item"/> parameter is the item the player has just crafted.
-		/// </summary>
-		/// <param name="item">The item.</param>
-		public virtual void OnCraft(Item item) {
+			return this;
 		}
 
-		//in Terraria.Recipe.Create before alchemy table check add
-		//  ModRecipe modRecipe = this as ModRecipe;
-		//  if(modRecipe != null) { num = modRecipe.ConsumeItem(item.type, item.stack); }		
 		/// <summary>
-		/// Allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="numRequired">The number required.</param>
-		/// <returns></returns>
-		public virtual int ConsumeItem(int type, int numRequired) => numRequired;
+		public ModRecipe SetOnCraftCallback(Action<ModRecipe, Item> callback) {
+			HookOnCraft = callback;
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+		/// </summary>
+		public ModRecipe SetConsumeItemCallback(Func<ModRecipe, int, int, int> callback) {
+			HookConsumeItem = callback;
+
+			return this;
+		}
 
 		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
@@ -250,6 +213,15 @@ namespace Terraria.ModLoader
 			mod.recipes.Add(this);
 
 			numRecipes++;
+		}
+
+		internal static ModRecipe Create(Mod mod, int result, int amount) {
+			var recipe = new ModRecipe(mod);
+
+			recipe.createItem.SetDefaults(result, false);
+			recipe.createItem.stack = amount;
+
+			return recipe;
 		}
 	}
 }
