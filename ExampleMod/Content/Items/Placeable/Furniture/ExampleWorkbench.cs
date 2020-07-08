@@ -28,11 +28,11 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void AddRecipes() {
-			var recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.WorkBench);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			new ModRecipe(mod)
+				.AddIngredient(ItemID.WorkBench)
+				.AddIngredient(ItemType<ExampleItem>(), 10)
+				.SetResult(this)
+				.AddRecipe();
 		}
 	}
 }

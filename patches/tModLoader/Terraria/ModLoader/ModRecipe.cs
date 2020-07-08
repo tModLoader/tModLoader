@@ -34,9 +34,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
-		public void SetResult(int itemID, int stack = 1) {
-			this.createItem.SetDefaults(itemID, false);
-			this.createItem.stack = stack;
+		public ModRecipe SetResult(int itemID, int stack = 1) {
+			createItem.SetDefaults(itemID, false);
+			createItem.stack = stack;
+
+			return this;
 		}
 
 		/// <summary>
@@ -46,17 +48,16 @@ namespace Terraria.ModLoader
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-		public void SetResult(Mod mod, string itemName, int stack = 1) {
-			if (mod == null) {
+		public ModRecipe SetResult(Mod mod, string itemName, int stack = 1) {
+			if (mod == null)
 				mod = this.mod;
-			}
+
 			int type = mod.ItemType(itemName);
-			if (type == 0) {
-				string message = "The item " + itemName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
-				message += "If you are trying to use a vanilla item, try removing the first argument.";
-				throw new RecipeException(message);
-			}
-			this.SetResult(type, stack);
+			
+			if (type == 0)
+				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
+
+			return SetResult(type, stack);
 		}
 
 		/// <summary>
@@ -64,21 +65,23 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
-		public void SetResult(ModItem item, int stack = 1) {
-			this.SetResult(item.item.type, stack);
-		}
+		public ModRecipe SetResult(ModItem item, int stack = 1) => SetResult(item.item.type, stack);
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
 		/// </summary>
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
-		public void AddIngredient(int itemID, int stack = 1) {
-			if (numIngredients == 14)
-				throw new RecipeException("Recipe already has maximum number of ingredients. 14 is the max.");
-			this.requiredItem[numIngredients].SetDefaults(itemID, false);
-			this.requiredItem[numIngredients].stack = stack;
+		public ModRecipe AddIngredient(int itemID, int stack = 1) {
+			if (numIngredients >= maxRecipes)
+				throw new RecipeException($"Recipe already has maximum number of ingredients, which is {maxRecipes}.");
+			
+			requiredItem[numIngredients].SetDefaults(itemID, false);
+			requiredItem[numIngredients].stack = stack;
+			
 			numIngredients++;
+
+			return this;
 		}
 
 		/// <summary>
@@ -88,17 +91,16 @@ namespace Terraria.ModLoader
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-		public void AddIngredient(Mod mod, string itemName, int stack = 1) {
-			if (mod == null) {
+		public ModRecipe AddIngredient(Mod mod, string itemName, int stack = 1) {
+			if (mod == null)
 				mod = this.mod;
-			}
+			
 			int type = mod.ItemType(itemName);
-			if (type == 0) {
-				string message = "The item " + itemName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
-				message += "If you are trying to use a vanilla item, try removing the first argument.";
-				throw new RecipeException(message);
-			}
-			this.AddIngredient(type, stack);
+
+			if (type == 0)
+				throw new RecipeException($"The item {itemName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla item, try removing the first argument.");
+
+			return AddIngredient(type, stack);
 		}
 
 		/// <summary>
@@ -106,9 +108,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
-		public void AddIngredient(ModItem item, int stack = 1) {
-			this.AddIngredient(item.item.type, stack);
-		}
+		public ModRecipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.item.type, stack);
 
 		/// <summary>
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size. Vanilla recipe groups consist of "Wood", "IronBar", "PresurePlate", "Sand", and "Fragment".
@@ -116,17 +116,17 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
-		public void AddRecipeGroup(string name, int stack = 1) {
-			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name)) {
+		public ModRecipe AddRecipeGroup(string name, int stack = 1) {
+			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
 				throw new RecipeException($"A recipe group with the name {name} does not exist.");
-			}
 
 			int id = RecipeGroup.recipeGroupIDs[name];
-			RecipeGroup rec = RecipeGroup.recipeGroups[id];
+			var group = RecipeGroup.recipeGroups[id];
 			
-			AddIngredient(rec.IconicItemId, stack);
-
+			AddIngredient(group.IconicItemId, stack);
 			RequireGroup(name);
+
+			return this;
 		}
 
 		/// <summary>
@@ -135,16 +135,16 @@ namespace Terraria.ModLoader
 		/// <param name="recipeGroupId">The RecipeGroupID.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
-		public void AddRecipeGroup(int recipeGroupId, int stack = 1)
-		{
-			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId)) {
+		public ModRecipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
+			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
-			}
 			
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
 			
 			AddIngredient(rec.IconicItemId, stack);
 			RequireGroup(recipeGroupId);
+
+			return this;
 		}
 
 		/// <summary>
@@ -152,7 +152,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
-		public void AddTile(int tileID) {
+		public ModRecipe AddTile(int tileID) {
 			if (numTiles == 14)
 				throw new RecipeException("Recipe already has maximum number of tiles. 14 is the max.");
 			
@@ -160,6 +160,8 @@ namespace Terraria.ModLoader
 				throw new RecipeException("No tile has ID " + tileID);
 			
 			requiredTile[numTiles++] = tileID;
+
+			return this;
 		}
 
 		/// <summary>
@@ -168,34 +170,29 @@ namespace Terraria.ModLoader
 		/// <param name="mod">The mod.</param>
 		/// <param name="tileName">Name of the tile.</param>
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).</exception>
-		public void AddTile(Mod mod, string tileName) {
-			if (mod == null) {
+		public ModRecipe AddTile(Mod mod, string tileName) {
+			if (mod == null)
 				mod = this.mod;
-			}
+
 			int type = mod.TileType(tileName);
-			if (type == 0) {
-				string message = "The tile " + tileName + " does not exist in the mod " + mod.Name + "." + Environment.NewLine;
-				message += "If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).";
-				throw new RecipeException(message);
-			}
-			this.AddTile(type);
+			
+			if (type == 0)
+				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).");
+
+			return AddTile(type);
 		}
 
 		/// <summary>
 		/// Adds a required crafting station to this recipe of the given type of tile.
 		/// </summary>
 		/// <param name="tile">The tile.</param>
-		public void AddTile(ModTile tile) {
-			this.AddTile(tile.Type);
-		}
+		public ModRecipe AddTile(ModTile tile) => AddTile(tile.Type);
 
 		/// <summary>
 		/// Whether or not the conditions are met for this recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <returns>Whether or not the conditions are met for this recipe to be available for the player to use.</returns>
-		public virtual bool RecipeAvailable() {
-			return true;
-		}
+		public virtual bool RecipeAvailable() => true;
 
 		/// <summary>
 		/// Allows you to make anything happen when the player uses this recipe. The <paramref name="item"/> parameter is the item the player has just crafted.
@@ -213,41 +210,46 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="numRequired">The number required.</param>
 		/// <returns></returns>
-		public virtual int ConsumeItem(int type, int numRequired) {
-			return numRequired;
-		}
+		public virtual int ConsumeItem(int type, int numRequired) => numRequired;
 
 		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
 		public void AddRecipe() {
-			if (this.createItem == null || this.createItem.type == 0) {
+			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
-			}
-			if (this.numIngredients > 14 || this.numTiles > 14) {
+			
+			if (numIngredients > 14 || numTiles > 14)
 				throw new RecipeException("A recipe with either too many tiles or too many ingredients has been added. 14 is the max.");
-			}
-			for (int k = 0; k < Recipe.maxRequirements; k++) {
-				if (this.requiredTile[k] == TileID.Bottles) {
-					this.alchemy = true;
+
+			for (int k = 0; k < maxRequirements; k++) {
+				if (requiredTile[k] == TileID.Bottles) {
+					alchemy = true;
 					break;
 				}
 			}
-			if (Recipe.numRecipes >= Recipe.maxRecipes) {
-				Recipe.maxRecipes += 500;
-				Array.Resize(ref Main.recipe, Recipe.maxRecipes);
-				Array.Resize(ref Main.availableRecipe, Recipe.maxRecipes);
-				Array.Resize(ref Main.availableRecipeY, Recipe.maxRecipes);
-				for (int k = Recipe.numRecipes; k < Recipe.maxRecipes; k++) {
+
+			if (numRecipes >= maxRecipes) {
+				maxRecipes += 500;
+				
+				Array.Resize(ref Main.recipe, maxRecipes);
+				Array.Resize(ref Main.availableRecipe, maxRecipes);
+				Array.Resize(ref Main.availableRecipeY, maxRecipes);
+
+				for (int k = numRecipes; k < maxRecipes; k++) {
 					Main.recipe[k] = new Recipe();
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}
-			Main.recipe[Recipe.numRecipes] = this;
-			this.RecipeIndex = Recipe.numRecipes;
+			
+			Main.recipe[numRecipes] = this;
+			
+			RecipeIndex = numRecipes;
+			
 			mod.recipes.Add(this);
-			Recipe.numRecipes++;
+
+			numRecipes++;
 		}
 	}
 }
