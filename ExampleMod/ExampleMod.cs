@@ -1,19 +1,14 @@
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
-		public ExampleMod() {
-			// By default, all Autoload properties are True. You only need to change this if you know what you are doing.
-
-			/*Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true,
-				AutoloadBackgrounds = true
-			};*/
+		public override void AddRecipes() {
+			ModRecipe recipe = new ModRecipe(this);
+			recipe.SetResult(ItemID.WingsSolar);
+			recipe.AddRecipe();
 		}
 	}
 }
-

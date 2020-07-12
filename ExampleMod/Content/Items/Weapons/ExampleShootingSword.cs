@@ -8,45 +8,45 @@ using static Terraria.ModLoader.ModContent;
 namespace ExampleMod.Content.Items.Weapons
 {
 	/// <summary>
-	/// Star Wrath/Starfury style weapon. Spawn projectiles from sky that aim towards mouse.
-	/// See Source code for Star Wrath projectile to see how it passes through tiles.
-	/// For a detailed sword guide see <see cref="ExampleSword"/>
+	///     Star Wrath/Starfury style weapon. Spawn projectiles from sky that aim towards mouse.
+	///     See Source code for Star Wrath projectile to see how it passes through tiles.
+	///     For a detailed sword guide see <see cref="ExampleSword" />
 	/// </summary>
 	public class ExampleShootingSword : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded sword that shoots Star Wrath-like projectiles."); 
+			Tooltip.SetDefault("This is a modded sword that shoots Star Wrath-like projectiles.");
 		}
 
 		public override void SetDefaults() {
-			item.width = 40; 
+			item.width = 40;
 			item.height = 40;
 
-			item.useStyle = ItemUseStyleID.Swing; 
+			item.useStyle = ItemUseStyleID.Swing;
 			item.useTime = 20;
-			item.useAnimation = 20; 
+			item.useAnimation = 20;
 			item.autoReuse = true;
-			
-			item.melee = true; 
+
+			item.melee = true;
 			item.damage = 50;
 			item.knockBack = 6;
 			item.crit = 6;
 
-			item.value = Item.buyPrice(gold: 5); 
-			item.rare = ItemRarityID.Pink; 
-			item.UseSound = SoundID.Item1; 
+			item.value = Item.buyPrice(gold: 5);
+			item.rare = ItemRarityID.Pink;
+			item.UseSound = SoundID.Item1;
 
 			item.shoot = ProjectileID.StarWrath; // ID of the projectiles the sword will shoot
 			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod); 
-			recipe.AddIngredient(ItemType<ExampleItem>(), 100); 
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
 			recipe.AddIngredient(ItemID.Wood);
 			recipe.AddTile(TileType<ExampleWorkbench>());
-			recipe.SetResult(this); 
-			recipe.AddRecipe(); 
+			recipe.SetResult(this);
+			recipe.AddRecipe();
 		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {

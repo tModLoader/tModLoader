@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items
 			recipe.AddRecipe();
 
 			// NOTE: this is a subject to change
-			
+
 			/*
 			// Start a new Recipe. (Prepend with "ModRecipe " if 1st recipe in code block.)
 			recipe = new ModRecipe(mod);
