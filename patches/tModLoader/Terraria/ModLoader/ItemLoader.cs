@@ -1307,7 +1307,7 @@ namespace Terraria.ModLoader
 				texture?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 				return;
 			}
-
+			
 			item.modItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 
 			foreach (var g in HookHorizontalWingSpeeds.arr)

@@ -1441,6 +1441,24 @@
  			}
  			else {
  				if (jumpBoost) {
+@@ -13302,7 +_,7 @@
+ 					velocity.X = maxRunSpeed;
+ 				}
+ 			}
+-
++			
+ 			if (controlLeft && velocity.X > 0f - maxRunSpeed) {
+ 				if (!mount.Active || !mount.Cart || velocity.Y == 0f) {
+ 					if (velocity.X > runSlowdown)
+@@ -13407,7 +_,7 @@
+ 						direction = -1;
+ 				}
+ 				else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
+-					direction = -1;
++					direction = -1 ;
+ 				}
+ 
+ 				if (velocity.Y == 0f || wingsLogic > 0 || mount.CanFly()) {
 @@ -13747,7 +_,7 @@
  			}
  
@@ -1703,14 +1721,17 @@
  		}
  
  		private void UpdateControlHolds() {
-@@ -19442,6 +_,7 @@
+@@ -19442,7 +_,9 @@
  
  				runAcceleration *= wingStats.AccRunAccelerationMult;
  			}
+-
++			
 +			ItemLoader.HorizontalWingSpeeds(this);
- 
++			
  			if (wingsLogic == 45)
  				runSlowdown *= 6f;
+ 		}
 @@ -19551,7 +_,7 @@
  			}
  		}

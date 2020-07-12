@@ -3,6 +3,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -73,7 +74,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.AccNeck, nextEquip[EquipType.Neck]);
 			Array.Resize(ref TextureAssets.AccFace, nextEquip[EquipType.Face]);
 			Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
-
+			Array.Resize(ref ArmorIDs.Wing.Sets.Stats, nextEquip[EquipType.Wings]);
+			
 			foreach (EquipType type in EquipTypes) {
 				foreach (var entry in equipTextures[type]) {
 					int slot = entry.Key;
