@@ -57,29 +57,6 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadLegacy(BinaryReader reader) {
-			var list = new List<TagCompound>();
-			int count = reader.ReadInt32();
-			for (int k = 0; k < count; k++) {
-				string modName = reader.ReadString();
-				if (modName.Length == 0) {
-					list.Add(new TagCompound());
-				}
-				else {
-					var tag = new TagCompound {
-						["mod"] = modName,
-						["name"] = reader.ReadString(),
-					};
-					if (reader.ReadBoolean()) {
-						tag.Set("frameX", reader.ReadInt16());
-						tag.Set("frameY", reader.ReadInt16());
-					}
-					list.Add(tag);
-				}
-			}
-			Load(new TagCompound { ["list"] = list });
-		}
-
 		private void RestoreTiles(List<ushort> canRestore) {
 			ushort mysteryType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("MysteryTile");
 			for (int x = 0; x < Main.maxTilesX; x++) {

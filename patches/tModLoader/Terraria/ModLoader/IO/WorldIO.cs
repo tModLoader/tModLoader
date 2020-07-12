@@ -41,12 +41,14 @@ namespace Terraria.ModLoader.IO
 		internal static void Load(string path, bool isCloudSave) {
 			customDataFail = null;
 			path = Path.ChangeExtension(path, ".twld");
+
 			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
 
-			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				LoadLegacy(buf);
+				//LoadLegacy(buf);
 				return;
 			}
 
@@ -281,12 +283,10 @@ namespace Terraria.ModLoader.IO
 			foreach (var tag in list) {
 				var mod = ModLoader.GetMod(tag.GetString("mod"));
 				var modWorld = mod?.GetModWorld(tag.GetString("name"));
+
 				if (modWorld != null) {
 					try {
-						if (tag.ContainsKey("legacyData"))
-							modWorld.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
-						else
-							modWorld.Load(tag.GetCompound("data"));
+						modWorld.Load(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(mod,
@@ -322,144 +322,6 @@ namespace Terraria.ModLoader.IO
 					if (!(tile.active() && Main.tileSign[(int)tile.type])) {
 						Main.sign[i] = null;
 					}
-				}
-			}
-		}
-
-		private static void LoadLegacy(byte[] buffer) {
-			const int numByteFlags = 1;
-			using (MemoryStream stream = new MemoryStream(buffer)) {
-				using (BinaryReader reader = new BinaryReader(stream)) {
-					byte limit = reader.ReadByte();
-					if (limit == 0) {
-						return;
-					}
-					byte[] flags = reader.ReadBytes(limit);
-					if (flags.Length < numByteFlags) {
-						Array.Resize(ref flags, numByteFlags);
-					}
-					try {
-						LoadLegacyModWorld(flags, reader);
-					}
-					catch (CustomModDataException e) {
-						customDataFail = e;
-						throw;
-					}
-				}
-			}
-		}
-
-		private static void LoadLegacyModWorld(byte[] flags, BinaryReader reader) {
-			if (flags.Length == 0) {
-				return;
-			}
-			if ((flags[0] & 1) == 1) {
-				LoadLegacyChests(reader);
-			}
-			if ((flags[0] & 2) == 2) {
-				TileIO.LoadLegacyTiles(reader);
-			}
-			if ((flags[0] & 4) == 4) {
-				LoadLegacyNPCKillCounts(reader);
-			}
-			if ((flags[0] & 8) == 8) {
-				TileIO.ReadContainers(reader);
-			}
-			if ((flags[0] & 16) == 16) {
-				LoadLegacyAnglerQuest(reader);
-			}
-			if ((flags[0] & 32) == 32) {
-				LoadLegacyModData(reader);
-			}
-		}
-
-		private static void LoadLegacyChests(BinaryReader reader) {
-			short count = reader.ReadInt16();
-			for (int k = 0; k < count; k++) {
-				LoadLegacyChest(reader);
-			}
-		}
-
-		private static void LoadLegacyChest(BinaryReader reader) {
-			int x = reader.ReadInt32();
-			int y = reader.ReadInt32();
-			int chest = Chest.FindChest(x, y);
-			if (chest < 0) {
-				chest = Chest.CreateChest(x, y);
-			}
-			if (chest >= 0) {
-				ItemIO.LoadLegacyInventory(Main.chest[chest].item, reader, true);
-			}
-			else {
-				ItemIO.LoadLegacyInventory(new Item[40], reader, true);
-			}
-		}
-
-		private static void LoadLegacyNPCKillCounts(BinaryReader reader) {
-			ushort numCounts = reader.ReadUInt16();
-			for (ushort k = 0; k < numCounts; k++) {
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				int count = reader.ReadInt32();
-				Mod mod = ModLoader.GetMod(modName);
-				int type = mod == null ? 0 : mod.NPCType(name);
-				if (type > 0) {
-					NPC.killCount[type] = count;
-				}
-			}
-		}
-
-		private static void LoadLegacyAnglerQuest(BinaryReader reader) {
-			string modName = reader.ReadString();
-			string name = reader.ReadString();
-			Mod mod = ModLoader.GetMod(modName);
-			int type = 0;
-			if (mod != null) {
-				type = mod.ItemType(name);
-			}
-			bool flag = false;
-			if (type > 0) {
-				for (int k = 0; k < Main.anglerQuestItemNetIDs.Length; k++) {
-					if (Main.anglerQuestItemNetIDs[k] == type) {
-						Main.anglerQuest = k;
-						flag = true;
-						break;
-					}
-				}
-			}
-			if (!flag) {
-				Main.AnglerQuestSwap();
-			}
-		}
-
-		private static void LoadLegacyModData(BinaryReader reader) {
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModLoader.GetMod(modName);
-				ModWorld modWorld = mod == null ? null : mod.GetModWorld(name);
-				if (modWorld != null) {
-					using (MemoryStream stream = new MemoryStream(data)) {
-						using (BinaryReader customReader = new BinaryReader(stream)) {
-							try {
-								modWorld.LoadLegacy(customReader);
-							}
-							catch (Exception e) {
-								throw new CustomModDataException(mod,
-									"Error in reading custom world data for " + mod.Name, e);
-							}
-						}
-					}
-				}
-				else {
-					var tag = new TagCompound {
-						["mod"] = modName,
-						["name"] = name,
-						["legacyData"] = data
-					};
-					ModContent.GetInstance<MysteryWorld>().data.Add(tag);
 				}
 			}
 		}
