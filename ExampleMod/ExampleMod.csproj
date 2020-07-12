@@ -5,7 +5,7 @@
 	<AssemblyName>ExampleMod</AssemblyName>
 	<TargetFramework>net45</TargetFramework>
 	<PlatformTarget>x86</PlatformTarget>
-	<LangVersion>7.3</LangVersion>
+	<LangVersion>8</LangVersion>
   </PropertyGroup>
   <Target Name="BuildMod" AfterTargets="Build">
 	<Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
