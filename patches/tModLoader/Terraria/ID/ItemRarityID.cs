@@ -3,7 +3,7 @@ namespace Terraria.ID
 	/// <summary>Enumerates the values used with Item.rare</summary>
 	public static class ItemRarityID
 	{
-		/// <summary>Minus thirteen (-12)\nMaster: Fiery Red\nFlag: item.master</summary>
+		/// <summary>Minus thirteen (-13)\nMaster: Fiery Red\nFlag: item.master</summary>
 		public const int Master = -13;
 		/// <summary>Minus twelve (-12)\nExpert: Rainbow\nFlag: item.expert</summary>
 		public const int Expert = -12;
