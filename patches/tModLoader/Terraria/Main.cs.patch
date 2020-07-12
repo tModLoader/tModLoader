@@ -1075,11 +1075,15 @@
  			if (num == -11)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(175f * num2), (byte)(0f * num2), mouseTextColor);
  
-@@ -14805,6 +_,9 @@
- 			if (HoverItem.expert || num == -12)
+@@ -14802,9 +_,12 @@
+ 			if (num >= 11)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
+ 
+-			if (HoverItem.expert || num == -12)
++			if (HoverItem.expert || num == ItemRarityID.Expert)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num2), (byte)((float)DiscoG * num2), (byte)((float)DiscoB * num2), mouseTextColor);
  
-+			if (HoverItem.master || num == -13)
++			if (HoverItem.master || num == ItemRarityID.Master)
 +				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(masterColor * 200f * num2), 0, mouseTextColor);
 +
  			if (diff == 1)

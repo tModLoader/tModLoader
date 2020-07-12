@@ -275,38 +275,6 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -42601,6 +_,7 @@
- 					useAnimation = 20;
- 					useTime = 20;
- 					rare = -13;
-+					master = true;
- 					noMelee = true;
- 					noUseGraphic = true;
- 					mountType = 44 + type - 4792;
-@@ -42630,6 +_,7 @@
- 					DefaultToVanitypet(881 + type - 4797, 284 + type - 4797);
- 					value = buyPrice(0, 25);
- 					rare = -13;
-+					master = true;
- 					break;
- 				case 4818:
- 					noMelee = true;
-@@ -43160,6 +_,7 @@
- 					DefaultToPlacableTile((ushort)617, type - 4924);
- 					SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 5));
- 					rare = -13;
-+					master = true;
- 					maxStack = 99;
- 					break;
- 				case 4951:
-@@ -43277,6 +_,7 @@
- 					DefaultToVanitypet(934, 317);
- 					value = buyPrice(0, 25);
- 					rare = -13;
-+					master = true;
- 					break;
- 				case 4961:
- 					DefaultToCapturedCritter(661);
 @@ -44349,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
@@ -334,6 +302,18 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
+@@ -44387,6 +_,11 @@
+ 				SetDefaults5(type);
+ 			}
+ 
++			//Set 'master' bool for vanilla items with master rarity.
++			if (type < ItemID.Count && rare == ItemRarityID.Master) {
++				master = true;
++			}
++
+ 			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
+ 			if (hairDye != 0)
+ 				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
 @@ -44536,11 +_,12 @@
  				maxStack = 999;
  
