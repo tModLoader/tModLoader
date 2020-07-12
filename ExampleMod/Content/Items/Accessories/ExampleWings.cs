@@ -10,12 +10,13 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{
-		// public override bool Autoload(ref string name) {
-		// return !GetInstance<ExampleConfigServer>().DisableExampleWings;
-		// }
-
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wing.");
+
+			// These wings use the same values as the solar wings
+			// Fly time: 180 ticks = 3 seconds
+			// Fly speed: 9
+			// Acceleration multiplier: 2.5
 			ArmorIDs.Wing.Sets.Stats[item.wingSlot] = new WingStats(180, 9f, 2.5f);
 		}
 
@@ -27,11 +28,6 @@ namespace ExampleMod.Content.Items.Accessories
 			item.accessory = true;
 		}
 
-		// These wings use the same values as the solar wings
-		// public override void UpdateAccessory(Player player, bool hideVisual) {
-		// 	player.wingTimeMax = 180;
-		// }
-
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
 			ascentWhenFalling = 0.85f;
@@ -40,11 +36,6 @@ namespace ExampleMod.Content.Items.Accessories
 			maxAscentMultiplier = 3f;
 			constantAscend = 0.135f;
 		}
-
-		// public override void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration) {
-		// 	speed = 9f;
-		// 	acceleration *= 2.5f;
-		// }
 
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
