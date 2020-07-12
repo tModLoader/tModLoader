@@ -21,6 +21,18 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
+@@ -81,9 +_,9 @@
+ namespace Terraria
+ {
+ #if CLIENT
+-	public class Main : Game
++	public partial class Main : Game
+ #else
+-	public class Main : Terraria.Server.Game
++	public partial class Main : Terraria.Server.Game
+ #endif
+ 	{
+ 		public delegate void OnPlayerSelected(PlayerFileData player);
 @@ -234,7 +_,7 @@
  		public static NPCHeadRenderer BossNPCHeadRenderer = null;
  		public static string versionNumber = "v1.4.0.5";
@@ -39,41 +51,6 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -267,6 +_,7 @@
- 		public static bool drawBackGore;
- 		public static ulong LobbyId = 0uL;
- 		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
-+		public static bool playerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
- 		public WaterfallManager waterfallManager;
- 		public static WorldSections sectionManager;
- 		public static bool ServerSideCharacter;
-@@ -279,6 +_,7 @@
- 		public static ulong TileFrameSeed = (ulong)Guid.NewGuid().GetHashCode();
- 		private static ulong _drawCycleCounter;
- 		public static ContentManager ShaderContentManager;
-+		internal static TMLContentManager AlternateContentManager;
- 		public static Ref<Effect> ScreenShaderRef = new Ref<Effect>();
- 		public static Ref<Effect> PixelShaderRef = new Ref<Effect>();
- 		public static Ref<Effect> TileShaderRef = new Ref<Effect>();
-@@ -288,6 +_,8 @@
- 		public static bool UseHeatDistortion = true;
- 		public static int npcStreamSpeed = 30;
- 		public static int musicError;
-+		public static int soundError;
-+		public static int ambientError;
- 		public static bool dedServFPS;
- 		public static int dedServCount1;
- 		public static int dedServCount2;
-@@ -433,6 +_,9 @@
- 		private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
- 		public static bool mouseLeft;
- 		public static bool mouseRight;
-+		public static bool mouseMiddle;
-+		public static bool mouseXButton1;
-+		public static bool mouseXButton2;
- 		public static bool isMouseLeftConsumedByUI = false;
- 		public static float essScale = 1f;
- 		public static int essDir = -1;
 @@ -536,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -131,14 +108,6 @@
  		public static int renderCount = 99;
  		private const int MF_BYPOSITION = 1024;
  		public static GraphicsDeviceManager graphics;
-@@ -656,6 +_,7 @@
- 		public static bool maxQ = true;
- 		public static float gfxQuality = 1f;
- 		public static float gfxRate = 0.01f;
-+		public static Microsoft.Xna.Framework.Color DiscoColor => new Microsoft.Xna.Framework.Color(DiscoR, DiscoG, DiscoB);
- 		public int DiscoStyle;
- 		public static int DiscoR = 255;
- 		public static int DiscoB;
 @@ -699,7 +_,7 @@
  		public const int maxItems = 400;
  		public const int maxProjectiles = 1000;
@@ -148,7 +117,7 @@
  		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  		public static UIManageControls ManageControlsMenu = new UIManageControls();
  		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
-@@ -754,7 +_,14 @@
+@@ -754,7 +_,15 @@
  		public static int LogoA = 255;
  		public static int LogoB;
  		public static bool LogoT;
@@ -158,6 +127,7 @@
 +			get => _statusText;
 +			set {
 +				Logging.LogStatusChange(_statusText, value);
++
 +				_statusText = value;
 +			}
 +		}
@@ -173,45 +143,6 @@
  		public static bool[] musicNoCrossFade = new bool[89];
  		public static float[] musicFade = new float[89];
  		public static float musicVolume = 1f;
-@@ -1015,9 +_,14 @@
- 			0.75f
- 		};
- 		public static byte mouseTextColor;
-+		public static Microsoft.Xna.Framework.Color mouseTextColorReal
-+			=> new Microsoft.Xna.Framework.Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
- 		public static int mouseTextColorChange = 1;
- 		public static bool mouseLeftRelease;
- 		public static bool mouseRightRelease;
-+		public static bool mouseMiddleRelease = false;
-+		public static bool mouseXButton1Release = false;
-+		public static bool mouseXButton2Release = false;
- 		public static bool playerInventory;
- 		public static int stackSplit;
- 		public static bool preventStackSplitReset;
-@@ -1033,6 +_,7 @@
- 		public static bool recFastScroll;
- 		public static bool recBigList;
- 		public static int recStart;
-+		public static Point16 trashSlotOffset = Point16.Zero;
- 		public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
- 		public static int[] availableRecipe = new int[Recipe.maxRecipes];
- 		public static float[] availableRecipeY = new float[Recipe.maxRecipes];
-@@ -1118,6 +_,7 @@
- 		public static bool Support4K = true;
- 		public static float MinimumZoomComparerX = 1920f;
- 		public static float MinimumZoomComparerY = 1200f;
-+		public static bool Support8K = true; // provide option to disable 8k (but leave 4k)
- 		private static int _renderTargetMaxSize = 2048;
- #if XNA
- 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
-@@ -1132,6 +_,7 @@
- 		public static float temporaryGUIScaleSlider = -1f;
- 		public static bool temporaryGUIScaleSliderUpdate = false;
- 		public static bool InGuideCraftMenu;
-+		public static bool HidePlayerCraftingMenu = false;
- 		public static bool InReforgeMenu;
- 		public static Item HoverItem = new Item();
- 		private static int backSpaceCount;
 @@ -1153,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -233,15 +164,7 @@
  		public static string getIP = defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer;
-@@ -1941,6 +_,7 @@
- 		public static string oldStatusText = "";
- 		public static string autoGenFileLocation = null;
- 		public static bool autoShutdown;
-+		public static bool showServerConsole = false;
- #if WINDOWS
- 		private uint previousExecutionState;
- #endif
-@@ -1989,16 +_,18 @@
+@@ -1989,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld;
@@ -251,8 +174,6 @@
  		private static bool _needsLanguageSelect = true;
 -		private static Item tooltipPrefixComparisonItem = new Item();
 +		public static Item tooltipPrefixComparisonItem = new Item();
-+		[Obsolete("Use Main.tooltipPrefixComparisonItem instead")]
-+		public static ref Item cpItem => ref tooltipPrefixComparisonItem;
  		private MouseTextCache _mouseTextCache;
  		public int textBlinkerCount;
  		public int textBlinkerState;
@@ -2152,11 +2073,11 @@
  				}
  			}
  
-+			HidePlayerCraftingMenu = false;
++			hidePlayerCraftingMenu = false;
  			CreativeMenu.Draw(spriteBatch);
  			bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
 -			if (!InReforgeMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
-+			if (!InReforgeMenu && !HidePlayerCraftingMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
++			if (!InReforgeMenu && !hidePlayerCraftingMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
