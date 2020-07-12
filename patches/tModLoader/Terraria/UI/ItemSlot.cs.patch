@@ -226,7 +226,7 @@
  				}
  
 -				if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
-+				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode)) {
++				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
  					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
