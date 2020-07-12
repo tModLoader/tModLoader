@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using System;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
  using Terraria.Enums;
+ using Terraria.GameContent;
 @@ -10,11 +_,29 @@
  using Terraria.ID;
  using Terraria.UI;
@@ -38,6 +39,15 @@
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
  		public const int luckPotionDuration2 = 18000;
+@@ -59,6 +_,8 @@
+ 		public short makeNPC;
+ 		public bool expertOnly;
+ 		public bool expert;
++		public bool masterOnly;
++		public bool master;
+ 		public bool isAShopItem;
+ 		public short hairDye = -1;
+ 		public byte paint;
 @@ -177,11 +_,11 @@
  			}
  		}
@@ -265,6 +275,38 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -42601,6 +_,7 @@
+ 					useAnimation = 20;
+ 					useTime = 20;
+ 					rare = -13;
++					master = true;
+ 					noMelee = true;
+ 					noUseGraphic = true;
+ 					mountType = 44 + type - 4792;
+@@ -42630,6 +_,7 @@
+ 					DefaultToVanitypet(881 + type - 4797, 284 + type - 4797);
+ 					value = buyPrice(0, 25);
+ 					rare = -13;
++					master = true;
+ 					break;
+ 				case 4818:
+ 					noMelee = true;
+@@ -43160,6 +_,7 @@
+ 					DefaultToPlacableTile((ushort)617, type - 4924);
+ 					SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 5));
+ 					rare = -13;
++					master = true;
+ 					maxStack = 99;
+ 					break;
+ 				case 4951:
+@@ -43277,6 +_,7 @@
+ 					DefaultToVanitypet(934, 317);
+ 					value = buyPrice(0, 25);
+ 					rare = -13;
++					master = true;
+ 					break;
+ 				case 4961:
+ 					DefaultToCapturedCritter(661);
 @@ -44349,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
@@ -306,7 +348,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44550,6 +_,8 @@
+@@ -44550,14 +_,18 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -315,6 +357,16 @@
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
+ 			shopSpecialCurrency = -1;
+ 			shopCustomPrice = null;
+ 			expert = false;
++			master = false;
+ 			isAShopItem = false;
+ 			expertOnly = false;
++			masterOnly = false;
+ 			instanced = false;
+ 			questItem = false;
+ 			fishingPole = 0;
 @@ -44652,6 +_,10 @@
  		}
  
