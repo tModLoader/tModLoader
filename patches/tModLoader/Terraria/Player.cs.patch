@@ -946,15 +946,16 @@
  				hasFootball = true;
 +		}
  
-+		public void VanillaUpdateEquip(Item item) {
 -			for (int k = 0; k < 10; k++) {
+-				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
+-					continue;
++		public void VanillaUpdateEquip(Item item) {
 +			// for (int k = 0; k < 10; k++)
 +			// fake array and loop to keep patches small
 +			Item[] armor = {item};
 +			int k = 0;
 +			{
- 				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode))
--					continue;
++				if (!IsAValidEquipmentSlotForIteration(k) || (armor[k].expertOnly && !Main.expertMode) || (armor[k].masterOnly && !Main.masterMode))
 +					return;
  
  				int type2 = armor[k].type;
@@ -1145,6 +1146,15 @@
  			if (whoAmI == Main.myPlayer && Main.SceneMetrics.HasClock && accWatch < 3)
  				accWatch++;
  
+@@ -9234,7 +_,7 @@
+ 		}
+ 
+ 		private void ApplyEquipFunctional(int itemSlot, Item currentItem) {
+-			if (currentItem.expertOnly && !Main.expertMode)
++			if ((currentItem.expertOnly && !Main.expertMode) || (currentItem.masterOnly && !Main.masterMode))
+ 				return;
+ 
+ 			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
 @@ -9347,10 +_,13 @@
  				meleeCrit += 5;
  				magicCrit += 5;
@@ -1459,6 +1469,15 @@
  				velocity.Y -= num * gravDir;
  				if (gravDir == 1f) {
  					if (velocity.Y > 0f)
+@@ -15239,7 +_,7 @@
+ 						Position.Y = projectile.position.Y + (float)(projectile.height / 2) - (float)(height / 2);
+ 						RemoveAllGrapplingHooks();
+ 						int num4 = 13;
+-						if (miscEquips[2].stack > 0 && miscEquips[2].mountType >= 0 && MountID.Sets.Cart[miscEquips[2].mountType] && (!miscEquips[2].expertOnly || Main.expertMode))
++						if (miscEquips[2].stack > 0 && miscEquips[2].mountType >= 0 && MountID.Sets.Cart[miscEquips[2].mountType] && (!miscEquips[2].expertOnly || Main.expertMode) && (!miscEquips[2].masterOnly || Main.masterMode))
+ 							num4 = miscEquips[2].mountType;
+ 
+ 						int num5 = height + Mount.GetHeightBoost(num4);
 @@ -15376,6 +_,7 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
@@ -2872,7 +2891,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,6 +_,8 @@
+@@ -35546,48 +_,69 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -2881,7 +2900,24 @@
  			return KnockBack;
  		}
  
-@@ -35563,31 +_,47 @@
+ 		public int GetWeaponCrit(Item sItem) {
++			int crit = 0;
+ 			if (sItem.melee)
+-				return meleeCrit;
++				crit += meleeCrit;
+ 
+ 			if (sItem.ranged)
+-				return rangedCrit;
++				crit += rangedCrit;
+ 
+ 			if (sItem.magic)
+-				return magicCrit;
++				crit += magicCrit;
+ 
++			ItemLoader.GetWeaponCrit(sItem, this, ref crit);
++			PlayerHooks.GetWeaponCrit(this, sItem, ref crit);
+-			return 0;
++			return crit;
  		}
  
  		public int GetWeaponDamage(Item sItem) {

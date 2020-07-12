@@ -221,6 +221,15 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
+@@ -1666,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
+ 				}
+ 
+-				if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
++				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode)) {
+ 					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
+ 					Color white = Color.White;
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num9, SpriteEffects.None, 0f);
 @@ -1858,7 +_,7 @@
  					return false;
  
