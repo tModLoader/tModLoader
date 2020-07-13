@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.Default
 			if (CheckAprilFools()) {
 				CreateRecipe()
 					.AddIngredient(ItemID.DirtBlock)
-					.AddRecipe();
+					.Register();
 			}
 		}
 	}

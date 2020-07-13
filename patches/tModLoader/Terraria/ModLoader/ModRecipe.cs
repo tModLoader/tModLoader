@@ -5,7 +5,7 @@ using Terraria.ModLoader.Exceptions;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the <para cref="AddRecipe"/> method.
+	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the <para cref="Register"/> method.
 	/// </summary>
 	public sealed class ModRecipe : Recipe
 	{
@@ -179,7 +179,7 @@ namespace Terraria.ModLoader
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void AddRecipe() {
+		public void Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 			
