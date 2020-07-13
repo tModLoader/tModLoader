@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items.Consumables
 {
 	// Making an item like Life Fruit (That goes above 500) involves a lot of code, as there are many things to consider. (An alternate that approaches 500 can simply follow vanilla code, however.):
 	//	You can't make player.statLifeMax more than 500 (it won't save), so you'll have to maintain your extra life within your mod.
@@ -14,7 +14,7 @@ namespace ExampleMod.Items
 		public override string Texture => "Terraria/Item_" + ItemID.LifeFruit;
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Permanently increases maximum life by 2\nUp to 10 can be used");
+			Tooltip.SetDefault("Permanently increases maximum life by 10\nUp to 10 can be used");
 		}
 
 		public override void SetDefaults() {
@@ -30,14 +30,14 @@ namespace ExampleMod.Items
 
 		public override bool UseItem(Player player) {
 			// Do not do this: player.statLifeMax += 2;
-			player.statLifeMax2 += 2;
-			player.statLife += 2;
+			player.statLifeMax2 += 10;
+			player.statLife += 10;
 			if (Main.myPlayer == player.whoAmI) {
 				// This spawns the green numbers showing the heal value and informs other clients as well.
-				player.HealEffect(2, true);
+				player.HealEffect(10, true);
 			}
 			// This is very important. This is what makes it permanent.
-			player.GetModPlayer<ExamplePlayer>().exampleLifeFruits += 1;
+			player.GetModPlayer<ExamplePlayer>().exampleLifeFruits++;
 			// This handles the 2 achievements related to using any life increasing item or getting to exactly 500 hp and 200 mp.
 			// Ignored since our item is only useable after this achievement is reached
 			// AchievementsHelper.HandleSpecialEvent(player, 2);
@@ -47,7 +47,7 @@ namespace ExampleMod.Items
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemType<ExampleItem>());
-			recipe.SetResult(this, 11);
+			recipe.SetResult(this, 10);
 			recipe.AddRecipe();
 		}
 	}
