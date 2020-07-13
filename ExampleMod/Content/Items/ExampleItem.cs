@@ -40,6 +40,7 @@ namespace ExampleMod.Content.Items
 			
 			//The reason why the said chaining works is that all methods on ModRecipe, with the exception of Register(), return its own instance,
 			//which lets you call subsequent methods on that return value, without having to type a local variable's name.
+			//When using chaining, note that only the last line is supposed to have a semicolon (;).
 
 			//Start a new Recipe. (Prepend with "ModRecipe " if 1st recipe in code block.)
 			CreateRecipe()
