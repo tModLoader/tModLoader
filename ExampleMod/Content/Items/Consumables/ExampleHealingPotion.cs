@@ -42,11 +42,9 @@ namespace ExampleMod.Content.Items.Consumables
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
-		}
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() => CreateRecipe()
+			.AddIngredient(ItemType<ExampleItem>(), 10)
+			.Register();
 	}
 }

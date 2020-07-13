@@ -50,12 +50,10 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>());
-			recipe.SetResult(this, 10);
-			recipe.AddRecipe();
-		}
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() => CreateRecipe(10)
+			.AddIngredient(ItemType<ExampleItem>())
+			.Register();
 	}
 
 	public class ExampleLifeFruitPlayer : ModPlayer

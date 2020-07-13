@@ -32,14 +32,12 @@ namespace ExampleMod.Content.Items.Weapons
 			item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod); //This creates a new ModRecipe, associated with the mod that this content piece comes from.
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10); //ItemType<Class Of A Modded Item>() returns the id of the provided ModItem class' item. Here, 10 is the amount of that ingredient required for this recipe.
-			recipe.AddIngredient(ItemID.Wood); //You can use ItemID.TheItemYouWantToUse to get IDs of vanilla items. Note that the amount argument is ommited here, defaulting to 1.
-			recipe.AddTile(TileType<ExampleWorkbench>()); //Set the crafting tile to ExampleWorkbench
-			recipe.SetResult(this); //Set the result to this item (ExampleSword)
-			recipe.AddRecipe(); //When you're done, call this to register the recipe.
-		}
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() => CreateRecipe()
+			.AddIngredient(ItemType<ExampleItem>(), 10)
+			.AddIngredient(ItemID.Wood)
+			.AddTile(TileType<ExampleWorkbench>())
+			.Register();								
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {

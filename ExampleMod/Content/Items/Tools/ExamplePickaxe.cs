@@ -31,13 +31,11 @@ namespace ExampleMod.Content.Items.Tools
 			item.pick = 220; // How strong the pickaxe is, see https://terraria.gamepedia.com/Pickaxe_power for a list of common values
 		}
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
-		}
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() => CreateRecipe()
+			.AddIngredient(ItemType<ExampleItem>(), 10)
+			.AddTile(TileType<ExampleWorkbench>())
+			.Register();
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {

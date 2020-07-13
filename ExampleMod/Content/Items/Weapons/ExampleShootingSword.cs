@@ -40,14 +40,12 @@ namespace ExampleMod.Content.Items.Weapons
 			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
-			recipe.AddIngredient(ItemID.Wood);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
-		}
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() => CreateRecipe()
+			.AddIngredient(ItemType<ExampleItem>(), 100)
+			.AddIngredient(ItemID.Wood)
+			.AddTile(TileType<ExampleWorkbench>())
+			.Register();
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
