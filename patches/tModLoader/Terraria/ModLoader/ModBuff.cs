@@ -1,3 +1,5 @@
+using System;
+
 namespace Terraria.ModLoader
 {
 	/// <summary>
@@ -25,7 +27,21 @@ namespace Terraria.ModLoader
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		protected sealed override void AddInstance() => Mod.AddBuff(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddBuff can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mod.buffs.ContainsKey(Name))
+				throw new Exception("You tried to add 2 ModBuff with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
+
+			Type = BuffLoader.ReserveBuffID();
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffName.{Name}");
+			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
+
+			Mod.buffs[Name] = this;
+			BuffLoader.buffs.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// This is where all buff related assignments go. For example:

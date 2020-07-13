@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Terraria.ModLoader
 {
@@ -12,7 +13,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance() => Mod.AddUgBgStyle(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddUgBgStyle can only be called from Mod.Load or Mod.Autoload");
+
+			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
+
+			Mod.ugBgStyles[Name] = this;
+			UgBgStyleLoader.ugBgStyles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -37,7 +47,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance() => Mod.AddSurfaceBgStyle(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddSurfaceBgStyle can only be called from Mod.Load or Mod.Autoload");
+
+			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
+
+			Mod.surfaceBgStyles[Name] = this;
+			SurfaceBgStyleLoader.surfaceBgStyles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -90,7 +109,14 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBgStyle:ModType
 	{
-		protected sealed override void AddInstance() => Mod.AddGlobalBgStyle(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddGlobalBgStyle can only be called from Mod.Load or Mod.Autoload");
+
+			Mod.globalBgStyles[Name] = this;
+			GlobalBgStyleLoader.globalBgStyles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.

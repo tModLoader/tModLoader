@@ -98,7 +98,16 @@ namespace Terraria.ModLoader
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
-		protected sealed override void AddInstance() => Mod.AddDust(this);
+		protected sealed override void AddInstance(){
+			if (!Mod.loading)
+				throw new Exception("AddDust can only be called from Mod.Load or Mod.Autoload");
+
+			Type = ModDust.ReserveDustID();
+
+			Mod.dusts[Name] = this;
+			ModDust.dusts.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to set this ModDust's updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.

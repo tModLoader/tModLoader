@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -46,19 +47,61 @@ namespace Terraria.ModLoader
 
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
-			var extraTextures = new Dictionary<MountTextureType, string>();
-			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
-				extraTextures[textureType] = texture + "_" + textureType.ToString();
-			}
 			Load();
-			SetExtraTextures(extraTextures);
-			mod.AddMount(this);
+			
+			if (!Mod.loading)
+				throw new Exception("AddMount can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
+				Mount.Initialize();
+
+			Type = MountLoader.ReserveMountID();
+
+			Mod.mountDatas[Name] = this;
+			MountLoader.mountDatas[Type] = this;
+			ContentInstance.Register(this);
+
+			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
+				string extraTexture = GetExtraTexture(textureType);
+				
+				if(string.IsNullOrEmpty(extraTexture) || !ModContent.TryGetTexture(extraTexture, out var textureAsset)) {
+					continue;
+				}
+
+				switch (textureType) {
+					case MountTextureType.Back:
+						mountData.backTexture = textureAsset;
+						break;
+					case MountTextureType.BackGlow:
+						mountData.backTextureGlow = textureAsset;
+						break;
+					case MountTextureType.BackExtra:
+						mountData.backTextureExtra = textureAsset;
+						break;
+					case MountTextureType.BackExtraGlow:
+						mountData.backTextureExtraGlow = textureAsset;
+						break;
+					case MountTextureType.Front:
+						mountData.frontTexture = textureAsset;
+						break;
+					case MountTextureType.FrontGlow:
+						mountData.frontTextureGlow = textureAsset;
+						break;
+					case MountTextureType.FrontExtra:
+						mountData.frontTextureExtra = textureAsset;
+						break;
+					case MountTextureType.FrontExtraGlow:
+						mountData.frontTextureExtraGlow = textureAsset;
+						break;
+				}
+			}
 		}
+		
+		protected virtual string GetExtraTexture(MountTextureType textureType) => texture + "_" + textureType;
 
 		public virtual void Load(){}
 		public virtual void Unload(){}
 
-		public virtual void SetExtraTextures(IDictionary<MountTextureType, string> extraTextures){}
 
 		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();

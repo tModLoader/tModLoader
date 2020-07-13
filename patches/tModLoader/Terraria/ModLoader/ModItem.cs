@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -42,6 +43,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
+		public virtual string ArmTexture => Texture + "_Arms";
+
+		public virtual string FemaleTexture => Texture + "_FemaleBody";
+
 		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
 		public bool projOnSwing;
 
@@ -65,11 +70,26 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void AddInstance() {
-			Mod.AddItem(this);
+			if (!Mod.loading)
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorAddItemOnlyInLoad"));
+
+			if (Mod.items.ContainsKey(Name))
+				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
+			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+
+			item.ResetStats(ItemLoader.ReserveItemID());
+			item.modItem = this;
+
+			Mod.items[Name] = this;
+			ItemLoader.items.Add(this);
+			ContentInstance.Register(this);
+
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, Name, Texture + '_' + equip, Texture + "_Arms", Texture + "_FemaleBody");
+					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
 				}
 			}
 		}

@@ -292,7 +292,7 @@ namespace Terraria.ModLoader
 				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
 
 				if (typeof(ILoadable).IsAssignableFrom(type)) {
-					//The first one should be the most derived.
+					//The most derived attributes should be first.
 					var autoload = (AutoloadAttribute)type.GetCustomAttributes(typeof(AutoloadAttribute), true).FirstOrDefault();
 					if (autoload!=null && (autoload.Value ?? Properties.Autoload)) {
 						AutoloadInstance(type);

@@ -17,7 +17,24 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance() => Mod.AddGlobalItem(this);
+		protected sealed override void AddInstance(){
+			if (!Mod.loading)
+				throw new Exception("AddGlobalItem can only be called from Mod.Load or Mod.Autoload");
+
+			ItemLoader.VerifyGlobalItem(this);
+
+			Mod.globalItems[Name] = this;
+			index = ItemLoader.globalItems.Count;
+			ItemLoader.globalIndexes[Mod.Name + ':' + Name] = ItemLoader.globalItems.Count;
+			if (ItemLoader.globalIndexesByType.ContainsKey(GetType())) {
+				ItemLoader.globalIndexesByType[GetType()] = -1;
+			}
+			else {
+				ItemLoader.globalIndexesByType[GetType()] = ItemLoader.globalItems.Count;
+			}
+			ItemLoader.globalItems.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether to create a new GlobalItem instance for every Item that exists. 

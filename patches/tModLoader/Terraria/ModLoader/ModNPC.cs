@@ -89,7 +89,19 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void AddInstance() {
-			Mod.AddNPC(this);
+			if (!Mod.loading)
+				throw new Exception("AddNPC can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mod.npcs.ContainsKey(Name))
+				throw new Exception("You tried to add 2 ModNPC with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
+
+			npc.type = NPCLoader.ReserveNPCID();
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
+
+			Mod.npcs[Name] = this;
+			NPCLoader.npcs.Add(this);
+			ContentInstance.Register(this);
+
 			Type type = GetType();
 			var autoloadHead = type.GetAttribute<AutoloadHead>();
 			if (autoloadHead != null) {

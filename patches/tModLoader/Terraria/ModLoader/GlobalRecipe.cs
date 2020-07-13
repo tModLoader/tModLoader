@@ -1,11 +1,20 @@
-﻿namespace Terraria.ModLoader
+﻿using System;
+
+namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class provides hooks that control all recipes in the game.
 	/// </summary>
 	public class GlobalRecipe:ModType
 	{
-		protected sealed override void AddInstance() => Mod.AddGlobalRecipe(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddGlobalRecipe can only be called from Mod.Load or Mod.Autoload");
+
+			Mod.globalRecipes[Name] = this;
+			RecipeHooks.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether or not the conditions are met for the given recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).

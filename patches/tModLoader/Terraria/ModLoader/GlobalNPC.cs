@@ -13,7 +13,24 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance() => Mod.AddGlobalNPC(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddGlobalNPC can only be called from Mod.Load or Mod.Autoload");
+
+			NPCLoader.VerifyGlobalNPC(this);
+
+			Mod.globalNPCs[Name] = this;
+			index = NPCLoader.globalNPCs.Count;
+			NPCLoader.globalIndexes[Mod.Name + ':' + Name] = NPCLoader.globalNPCs.Count;
+			if (NPCLoader.globalIndexesByType.ContainsKey(GetType())) {
+				NPCLoader.globalIndexesByType[GetType()] = -1;
+			}
+			else {
+				NPCLoader.globalIndexesByType[GetType()] = NPCLoader.globalNPCs.Count;
+			}
+			NPCLoader.globalNPCs.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether to create a new GlobalNPC instance for every NPC that exists. 

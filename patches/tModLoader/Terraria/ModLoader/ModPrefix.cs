@@ -107,7 +107,21 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		protected sealed override void AddInstance() => Mod.AddPrefix(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddPrefix can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mod.prefixes.ContainsKey(Name))
+				throw new Exception($"You tried to add 2 ModPrefixes with the same name: {Name}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddPrefix with 2 prefixes of the same name.");
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			Type = ModPrefix.ReservePrefixID();
+
+			Mod.prefixes[Name] = this;
+			ModPrefix.prefixes.Add(this);
+			ModPrefix.categoryPrefixes[Category].Add(this);
+			ContentInstance.Register(this);
+		}
 
 		public virtual void AutoDefaults() {
 			if (DisplayName.IsDefault())

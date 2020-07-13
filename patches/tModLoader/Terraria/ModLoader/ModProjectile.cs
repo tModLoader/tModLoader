@@ -72,7 +72,20 @@ namespace Terraria.ModLoader
 			projectile.modProjectile = this;
 		}
 
-		protected sealed override void AddInstance() => Mod.AddProjectile(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddProjectile can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mod.projectiles.ContainsKey(projectile.Name))
+				throw new Exception("You tried to add 2 ModProjectile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
+
+			projectile.type = ProjectileLoader.ReserveProjectileID();
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
+
+			Mod.projectiles[Name] = this;
+			ProjectileLoader.projectiles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.

@@ -185,7 +185,17 @@ namespace Terraria.ModLoader
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
 			Load();
-			mod.AddTileEntity(this);
+
+			if (!Mod.loading)
+				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
+
+			int id = ModTileEntity.ReserveTileEntityID();
+			Type = id;
+			type = (byte)id;
+
+			Mod.tileEntities[Name] = this;
+			ModTileEntity.tileEntities.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		public virtual void Load() {}

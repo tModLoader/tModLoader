@@ -9,7 +9,11 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBuff:ModType
 	{
-		protected sealed override void AddInstance() => Mod.AddGlobalBuff(this);
+		protected sealed override void AddInstance() {
+			Mod.globalBuffs[Name] = this;
+			BuffLoader.globalBuffs.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to make the buff with the given ID give certain effects to a player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.

@@ -39,7 +39,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		protected sealed override void AddInstance() => Mod.AddPlayer(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddPlayer can only be called from Mod.Load or Mod.Autoload");
+
+			Mod.players[Name] = this;
+			PlayerHooks.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.

@@ -47,18 +47,18 @@ namespace Terraria.ModLoader.Default
 				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
 			}*/
 			
-			AddItem(new MysteryItem());
-			AddGlobalItem(new MysteryGlobalItem());
-			AddItem(new StartBag());
-			AddItem(new AprilFools());
-			AddTile(new MysteryTile());
-			AddTile(new MysteryTile("PendingMysteryTile"));
-			AddTileEntity(new MysteryTileEntity());
-			AddPlayer(new MysteryPlayer());
-			AddModWorld(new MysteryWorld());
-			AddModWorld(new MysteryTilesWorld());
-			AddCommand(new HelpCommand());
-			AddCommand(new ModlistCommand());
+			AddContent<MysteryItem>();
+			AddContent<MysteryGlobalItem>();
+			AddContent<StartBag>();
+			AddContent<AprilFools>();
+			AddContent(new MysteryTile());
+			AddContent(new MysteryTile("PendingMysteryTile"));
+			AddContent<MysteryTileEntity>();
+			AddContent<MysteryPlayer>();
+			AddContent<MysteryWorld>();
+			AddContent<MysteryTilesWorld>();
+			AddContent<HelpCommand>();
+			AddContent<ModlistCommand>();
 			/*AddPatronSets();
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
 			AddDeveloperSets();
@@ -111,9 +111,9 @@ namespace Terraria.ModLoader.Default
 			}*/
 
 			// Adds the item to ModLoader, as well as the normal assets
-			AddItem(item);
+			AddContent(item);
 			// AddEquipTexture adds the arms and female body assets automatically, if EquipType is Body
-			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
+			AddEquipTexture(item, equipType, item.Texture + '_' + equipType);
 		}
 
 		internal static Texture2D ReadTexture(string file) {

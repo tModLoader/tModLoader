@@ -13,7 +13,24 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance() => Mod.AddGlobalProjectile(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddGlobalProjectile can only be called from Mod.Load or Mod.Autoload");
+
+			ProjectileLoader.VerifyGlobalProjectile(this);
+
+			Mod.globalProjectiles[Name] = this;
+			index = ProjectileLoader.globalProjectiles.Count;
+			ProjectileLoader.globalIndexes[Name + ':' + Name] = ProjectileLoader.globalProjectiles.Count;
+			if (ProjectileLoader.globalIndexesByType.ContainsKey(GetType())) {
+				ProjectileLoader.globalIndexesByType[GetType()] = -1;
+			}
+			else {
+				ProjectileLoader.globalIndexesByType[GetType()] = ProjectileLoader.globalProjectiles.Count;
+			}
+			ProjectileLoader.globalProjectiles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 

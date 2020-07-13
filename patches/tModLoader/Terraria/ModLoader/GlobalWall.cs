@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Terraria.ModLoader
 {
@@ -7,7 +8,14 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalWall:ModType
 	{
-		protected sealed override void AddInstance() => Mod.AddGlobalWall(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddGlobalWall can only be called from Mod.Load or Mod.Autoload");
+
+			Mod.globalWalls[Name] = this;
+			WallLoader.globalWalls.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to modify the properties of any wall in the game. Most properties are stored as arrays throughout the Terraria code.

@@ -30,7 +30,14 @@ namespace Terraria.ModLoader
 		{
 			Mod = mod;
 			
-			mod.AddWaterStyle(this);
+			if (!Mod.loading)
+				throw new Exception("AddWaterStyle can only be called from Mod.Load or Mod.Autoload");
+
+			Type = WaterStyleLoader.ReserveStyle();
+			
+			Mod.waterStyles[Name] = this;
+			WaterStyleLoader.waterStyles.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		public virtual void Load(){}
@@ -85,7 +92,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Type {get;internal set;}
 
-		protected sealed override void AddInstance() => Mod.AddWaterfallStyle(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddWaterfallStyle can only be called from Mod.Load or Mod.Autoload");
+
+			Type = WaterfallStyleLoader.ReserveStyle();
+
+			Mod.waterfallStyles[Name] = this;
+			WaterfallStyleLoader.waterfallStyles.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to create light at a tile occupied by a waterfall of this style.

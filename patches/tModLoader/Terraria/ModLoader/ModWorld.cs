@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.ModLoader.IO;
@@ -10,7 +11,14 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class ModWorld:ModType
 	{
-		protected sealed override void AddInstance() => Mod.AddModWorld(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddModWorld can only be called from Mod.Load or Mod.Autoload");
+
+			Mod.worlds[Name] = this;
+			WorldHooks.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Called whenever the world is loaded. This can be used to initialize data structures, etc.

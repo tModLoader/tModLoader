@@ -97,7 +97,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		protected sealed override void AddInstance() => Mod.AddWall(this);
+		protected sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddWall can only be called from Mod.Load or Mod.Autoload");
+
+			Type = (ushort)WallLoader.ReserveWallID();
+
+			Mod.walls[Name] = this;
+			WallLoader.walls.Add(this);
+			ContentInstance.Register(this);
+		}
 
 		/// <summary>
 		/// Allows you to set the properties of this wall. Many properties are stored as arrays throughout Terraria's code.
