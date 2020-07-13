@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReLogic</name>
+    </assembly>
+    <members>
+        <member name="M:ReLogic.Content.Readers.IAssetReader.GetAssociatedTypes">
+            <summary> Returns an array of types that should be associated with this reader's supported formats. It's okay to return null here, if the reader's possibilities are too ambiguous. </summary>
+        </member>
+    </members>
+</doc>

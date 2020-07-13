@@ -21,6 +21,18 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
+@@ -81,9 +_,9 @@
+ namespace Terraria
+ {
+ #if CLIENT
+-	public class Main : Game
++	public partial class Main : Game
+ #else
+-	public class Main : Terraria.Server.Game
++	public partial class Main : Terraria.Server.Game
+ #endif
+ 	{
+ 		public delegate void OnPlayerSelected(PlayerFileData player);
 @@ -234,7 +_,7 @@
  		public static NPCHeadRenderer BossNPCHeadRenderer = null;
  		public static string versionNumber = "v1.4.0.5";
@@ -39,41 +51,6 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -267,6 +_,7 @@
- 		public static bool drawBackGore;
- 		public static ulong LobbyId = 0uL;
- 		private static Microsoft.Xna.Framework.Color[] _mapColorCacheArray = new Microsoft.Xna.Framework.Color[30000];
-+		public static bool playerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
- 		public WaterfallManager waterfallManager;
- 		public static WorldSections sectionManager;
- 		public static bool ServerSideCharacter;
-@@ -279,6 +_,7 @@
- 		public static ulong TileFrameSeed = (ulong)Guid.NewGuid().GetHashCode();
- 		private static ulong _drawCycleCounter;
- 		public static ContentManager ShaderContentManager;
-+		internal static TMLContentManager AlternateContentManager;
- 		public static Ref<Effect> ScreenShaderRef = new Ref<Effect>();
- 		public static Ref<Effect> PixelShaderRef = new Ref<Effect>();
- 		public static Ref<Effect> TileShaderRef = new Ref<Effect>();
-@@ -288,6 +_,8 @@
- 		public static bool UseHeatDistortion = true;
- 		public static int npcStreamSpeed = 30;
- 		public static int musicError;
-+		public static int soundError;
-+		public static int ambientError;
- 		public static bool dedServFPS;
- 		public static int dedServCount1;
- 		public static int dedServCount2;
-@@ -433,6 +_,9 @@
- 		private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
- 		public static bool mouseLeft;
- 		public static bool mouseRight;
-+		public static bool mouseMiddle;
-+		public static bool mouseXButton1;
-+		public static bool mouseXButton2;
- 		public static bool isMouseLeftConsumedByUI = false;
- 		public static float essScale = 1f;
- 		public static int essDir = -1;
 @@ -536,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -131,14 +108,6 @@
  		public static int renderCount = 99;
  		private const int MF_BYPOSITION = 1024;
  		public static GraphicsDeviceManager graphics;
-@@ -656,6 +_,7 @@
- 		public static bool maxQ = true;
- 		public static float gfxQuality = 1f;
- 		public static float gfxRate = 0.01f;
-+		public static Microsoft.Xna.Framework.Color DiscoColor => new Microsoft.Xna.Framework.Color(DiscoR, DiscoG, DiscoB);
- 		public int DiscoStyle;
- 		public static int DiscoR = 255;
- 		public static int DiscoB;
 @@ -699,7 +_,7 @@
  		public const int maxItems = 400;
  		public const int maxProjectiles = 1000;
@@ -148,7 +117,7 @@
  		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  		public static UIManageControls ManageControlsMenu = new UIManageControls();
  		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
-@@ -754,7 +_,14 @@
+@@ -754,7 +_,15 @@
  		public static int LogoA = 255;
  		public static int LogoB;
  		public static bool LogoT;
@@ -158,6 +127,7 @@
 +			get => _statusText;
 +			set {
 +				Logging.LogStatusChange(_statusText, value);
++
 +				_statusText = value;
 +			}
 +		}
@@ -173,45 +143,6 @@
  		public static bool[] musicNoCrossFade = new bool[89];
  		public static float[] musicFade = new float[89];
  		public static float musicVolume = 1f;
-@@ -1015,9 +_,14 @@
- 			0.75f
- 		};
- 		public static byte mouseTextColor;
-+		public static Microsoft.Xna.Framework.Color mouseTextColorReal
-+			=> new Microsoft.Xna.Framework.Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
- 		public static int mouseTextColorChange = 1;
- 		public static bool mouseLeftRelease;
- 		public static bool mouseRightRelease;
-+		public static bool mouseMiddleRelease = false;
-+		public static bool mouseXButton1Release = false;
-+		public static bool mouseXButton2Release = false;
- 		public static bool playerInventory;
- 		public static int stackSplit;
- 		public static bool preventStackSplitReset;
-@@ -1033,6 +_,7 @@
- 		public static bool recFastScroll;
- 		public static bool recBigList;
- 		public static int recStart;
-+		public static Point16 trashSlotOffset = Point16.Zero;
- 		public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
- 		public static int[] availableRecipe = new int[Recipe.maxRecipes];
- 		public static float[] availableRecipeY = new float[Recipe.maxRecipes];
-@@ -1118,6 +_,7 @@
- 		public static bool Support4K = true;
- 		public static float MinimumZoomComparerX = 1920f;
- 		public static float MinimumZoomComparerY = 1200f;
-+		public static bool Support8K = true; // provide option to disable 8k (but leave 4k)
- 		private static int _renderTargetMaxSize = 2048;
- #if XNA
- 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
-@@ -1132,6 +_,7 @@
- 		public static float temporaryGUIScaleSlider = -1f;
- 		public static bool temporaryGUIScaleSliderUpdate = false;
- 		public static bool InGuideCraftMenu;
-+		public static bool HidePlayerCraftingMenu = false;
- 		public static bool InReforgeMenu;
- 		public static Item HoverItem = new Item();
- 		private static int backSpaceCount;
 @@ -1153,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -233,15 +164,7 @@
  		public static string getIP = defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer;
-@@ -1941,6 +_,7 @@
- 		public static string oldStatusText = "";
- 		public static string autoGenFileLocation = null;
- 		public static bool autoShutdown;
-+		public static bool showServerConsole = false;
- #if WINDOWS
- 		private uint previousExecutionState;
- #endif
-@@ -1989,16 +_,18 @@
+@@ -1989,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld;
@@ -251,8 +174,6 @@
  		private static bool _needsLanguageSelect = true;
 -		private static Item tooltipPrefixComparisonItem = new Item();
 +		public static Item tooltipPrefixComparisonItem = new Item();
-+		[Obsolete("Use Main.tooltipPrefixComparisonItem instead")]
-+		public static ref Item cpItem => ref tooltipPrefixComparisonItem;
  		private MouseTextCache _mouseTextCache;
  		public int textBlinkerCount;
  		public int textBlinkerState;
@@ -1065,16 +986,629 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1) {
  				if ((float)X + vector.X + 4f > (float)hackedScreenWidth)
  					X = (int)((float)hackedScreenWidth - vector.X - 4f);
+@@ -14757,9 +_,6 @@
+ 
+ 			float num2 = (float)(int)mouseTextColor / 255f;
+ 			Microsoft.Xna.Framework.Color baseColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
+-			if (num == -13)
+-				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(masterColor * 200f * num2), 0, mouseTextColor);
+-
+ 			if (num == -11)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(175f * num2), (byte)(0f * num2), mouseTextColor);
+ 
+@@ -14802,9 +_,12 @@
+ 			if (num >= 11)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
+ 
+-			if (HoverItem.expert || num == -12)
++			if (HoverItem.expert || num == ItemRarityID.Expert)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num2), (byte)((float)DiscoG * num2), (byte)((float)DiscoB * num2), mouseTextColor);
+ 
++			if (HoverItem.master || num == ItemRarityID.Master)
++				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(masterColor * 200f * num2), 0, mouseTextColor);
++
+ 			if (diff == 1)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
+ 
+@@ -14844,8 +_,9 @@
+ 				array2[i] = false;
+ 				array3[i] = false;
+ 			}
++			string[] tooltipNames = new string[num2];
+ 
+-			MouseText_DrawItemTooltip_GetLinesInfo(HoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
++			MouseText_DrawItemTooltip_GetLinesInfo(HoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames);
+ 			float num3 = (float)(int)mouseTextColor / 255f;
+ 			float num4 = num3;
+ 			int a = mouseTextColor;
+@@ -14853,6 +_,7 @@
+ 				LocalPlayer.GetItemExpectedPrice(hoverItem, out int calcForSelling, out int calcForBuying);
+ 				int num5 = (hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling;
+ 				if (hoverItem.shopSpecialCurrency != -1) {
++					tooltipNames[numLines] = "SpecialPrice";
+ 					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
+ 					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
+ 				}
+@@ -14912,7 +_,8 @@
+ 						array[numLines] = Lang.tip[49].Value + " " + text;
+ 					else
+ 						array[numLines] = Lang.tip[50].Value + " " + text;
+-
++						
++					tooltipNames[numLines] = "Price";
+ 					numLines++;
+ 					if (num6 > 0)
+ 						color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
+@@ -14925,12 +_,16 @@
+ 				}
+ 				else if (hoverItem.type != 3817) {
+ 					array[numLines] = Lang.tip[51].Value;
++					tooltipNames[numLines] = "Price";
+ 					numLines++;
+ 					color = new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(120f * num4), (byte)(120f * num4), a);
+ 				}
+ 			}
+ 
+ 			Vector2 zero = Vector2.Zero;
++			Color?[] overrideColor;
++			List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out overrideColor);
++			List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Microsoft.Xna.Framework.Color.White)).ToList();
+ 			int num12 = 0;
+ 			for (int j = 0; j < numLines; j++) {
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
+@@ -15002,9 +_,6 @@
+ 					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+ 					black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
+ 					if (k == 0) {
+-						if (rare == -13)
+-							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
+-
+ 						if (rare == -11)
+ 							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
+ 
+@@ -15052,6 +_,9 @@
+ 
+ 						if (hoverItem.expert || rare == -12)
+ 							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
++
++						if (hoverItem.master || rare == -13)
++							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
+ 					}
+ 					else if (array2[k]) {
+ 						black = (array3[k] ? new Microsoft.Xna.Framework.Color((byte)(190f * num4), (byte)(120f * num4), (byte)(120f * num4), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(190f * num4), (byte)(120f * num4), a));
+@@ -15070,77 +_,72 @@
+ 			}
+ 		}
+ 
+-		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
++		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames) {
+ 			toolTipLine[0] = item.HoverName;
++			toolTipNames[0] = "ItemName";
+-			if (item.favorited) {
++			if (item.favorited)
++			{
+ 				toolTipLine[numLines++] = Lang.tip[56].Value;
++				toolTipNames[numLines - 1] = "Favorite";
+ 				toolTipLine[numLines++] = Lang.tip[57].Value;
++				toolTipNames[numLines - 1] = "FavoriteDesc";
+ 				if (LocalPlayer.chest != -1) {
+ 					ChestUI.GetContainerUsageInfo(out bool _, out Item[] chestinv);
+-					if (ChestUI.IsBlockedFromTransferIntoChest(item, chestinv))
++					if (ChestUI.IsBlockedFromTransferIntoChest(item, chestinv)) {
+ 						toolTipLine[numLines++] = Language.GetTextValue("UI.ItemCannotBePlacedInsideItself");
++						toolTipNames[numLines - 1] = "NoTransfer";
++					}
+ 				}
+ 			}
+ 
+-			if (item.social) {
++			if (item.social)
++			{
+ 				toolTipLine[numLines] = Lang.tip[0].Value;
++				toolTipNames[numLines] = "Social";
+ 				numLines++;
+ 				toolTipLine[numLines] = Lang.tip[1].Value;
++				toolTipNames[numLines] = "SocialDesc";
+ 				numLines++;
+ 			}
+ 			else {
+ 				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
+-					float num = 5E-06f;
+-					int damage = item.damage;
++					LocalizedText tip = item.melee ? Lang.tip[2] : (item.ranged ? Lang.tip[3] : (item.magic ? Lang.tip[4] : ((!item.summon) ? Lang.tip[55] : Lang.tip[53])));
++					int damage = player[myPlayer].GetWeaponDamage(item);
+ 					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
+-					if (item.melee) {
+-						toolTipLine[numLines] = string.Concat((int)(player[myPlayer].meleeDamage * (float)damage + num));
+-						toolTipLine[numLines] += Lang.tip[2].Value;
+-					}
+-					else if (item.ranged) {
+-						float num2 = (float)damage * player[myPlayer].rangedDamage;
+-						if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
+-							num2 *= player[myPlayer].arrowDamage;
+-							if (player[myPlayer].archery)
+-								num2 *= 1.2f;
+-						}
+-
+-						if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn)
+-							num2 *= player[myPlayer].bulletDamage;
+-
+-						if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly)
+-							num2 *= player[myPlayer].rocketDamage;
+-
+-						toolTipLine[numLines] = string.Concat((int)(num2 + num));
+-						toolTipLine[numLines] += Lang.tip[3].Value;
+-					}
+-					else if (item.magic) {
+-						toolTipLine[numLines] = string.Concat((int)(player[myPlayer].magicDamage * (float)damage + num));
+-						toolTipLine[numLines] += Lang.tip[4].Value;
+-					}
+-					else if (item.summon) {
+-						toolTipLine[numLines] = string.Concat((int)(player[myPlayer].minionDamage * (float)damage + num));
+-						toolTipLine[numLines] += Lang.tip[53].Value;
+-					}
+-					else {
+-						toolTipLine[numLines] = string.Concat(damage);
+-						toolTipLine[numLines] += Lang.tip[55].Value;
+-					}
++					toolTipLine[numLines] = damage + tip.Value;
++					toolTipNames[numLines] = "Damage";
+ 
+ 					numLines++;
+ 					if (item.melee) {
+-						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+-						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
++						int crit = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
++						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
++						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
+ 						numLines++;
+ 					}
+ 					else if (item.ranged) {
+-						int num4 = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+-						toolTipLine[numLines] = num4 + Lang.tip[5].Value;
++						int crit = player[myPlayer].rangedCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
++						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
++						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
+ 						numLines++;
+ 					}
+ 					else if (item.magic) {
+-						int num5 = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
+-						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
++						int crit = player[myPlayer].magicCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
++						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
++						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
++						numLines++;
++					}
++					else if (!item.summon) {
++						int crit = item.crit;
++						ItemLoader.GetWeaponCrit(item, player[myPlayer], ref crit);
++						PlayerHooks.GetWeaponCrit(player[myPlayer], item, ref crit);
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
+ 						numLines++;
+ 					}
+ 
+@@ -15162,6 +_,7 @@
+ 						else
+ 							toolTipLine[numLines] = Lang.tip[13].Value;
+ 
++						toolTipNames[numLines] = "Speed";
+ 						numLines++;
+ 					}
+ 
 @@ -15175,6 +_,8 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
-+					ItemLoader.GetWeaponKnockback(HoverItem, player[myPlayer], ref num6);
-+					PlayerHooks.GetWeaponKnockback(player[myPlayer], HoverItem, ref num6);
++					ItemLoader.GetWeaponKnockback(item, player[myPlayer], ref num6);
++					PlayerHooks.GetWeaponKnockback(player[myPlayer], item, ref num6);
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
-@@ -15605,7 +_,7 @@
+@@ -15194,67 +_,80 @@
+ 					else
+ 						toolTipLine[numLines] = Lang.tip[22].Value;
+ 
++					toolTipNames[numLines] = "Knockback";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.fishingPole > 0) {
+ 					toolTipLine[numLines] = Language.GetTextValue("GameUI.PrecentFishingPower", item.fishingPole);
++					toolTipNames[numLines] = "FishingPower";
+ 					numLines++;
+ 					toolTipLine[numLines] = Language.GetTextValue("GameUI.BaitRequired");
++					toolTipNames[numLines] = "NeedsBait";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.bait > 0) {
+ 					toolTipLine[numLines] = Language.GetTextValue("GameUI.BaitPower", item.bait);
++					toolTipNames[numLines] = "BaitPower";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.headSlot > 0 || item.bodySlot > 0 || item.legSlot > 0 || item.accessory || projHook[item.shoot] || item.mountType != -1 || (item.buffType > 0 && (lightPet[item.buffType] || vanityPet[item.buffType]))) {
+ 					if ((item.type == 854 || item.type == 3035) && npcShop > 0)
+ 						toolTipLine[numLines] = Lang.tip[60].Value;
+-					else
++					else {
+ 						toolTipLine[numLines] = Lang.tip[23].Value;
+-
++						toolTipNames[numLines] = "Equipable";
++					}
+ 					numLines++;
+ 				}
+ 
+ 				if (item.tileWand > 0) {
+ 					toolTipLine[numLines] = Lang.tip[52].Value + Lang.GetItemNameValue(item.tileWand);
++					toolTipNames[numLines] = "WandConsumes";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.questItem) {
+ 					toolTipLine[numLines] = Lang.inter[65].Value;
++					toolTipNames[numLines] = "Quest";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.vanity) {
+ 					toolTipLine[numLines] = Lang.tip[24].Value;
++					toolTipNames[numLines] = "Vanity";
+ 					numLines++;
+ 				}
+ 
+ 				if (!item.vanity && item.FitsAccessoryVanitySlot) {
+ 					toolTipLine[numLines] = Language.GetText("Misc.CanBePlacedInVanity").Value;
++					toolTipNames[numLines] = "VanityLegal";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.defense > 0) {
+ 					toolTipLine[numLines] = item.defense + Lang.tip[25].Value;
++					toolTipNames[numLines] = "Defense";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.pick > 0) {
+ 					toolTipLine[numLines] = item.pick + Lang.tip[26].Value;
++					toolTipNames[numLines] = "PickPower";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.axe > 0) {
+ 					toolTipLine[numLines] = item.axe * 5 + Lang.tip[27].Value;
++					toolTipNames[numLines] = "AxePower";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.hammer > 0) {
+ 					toolTipLine[numLines] = item.hammer + Lang.tip[28].Value;
++					toolTipNames[numLines] = "HammerPower";
+ 					numLines++;
+ 				}
+ 
+@@ -15265,41 +_,49 @@
+ 					else
+ 						toolTipLine[numLines] = tileBoost + Lang.tip[54].Value;
+ 
++					toolTipNames[numLines] = "TileBoost";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.healLife > 0) {
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
++					toolTipNames[numLines] = "HealLife";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.healMana > 0) {
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
++					toolTipNames[numLines] = "HealMana";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
++					toolTipNames[numLines] = "UseMana";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.createWall > 0 || item.createTile > -1) {
+ 					if (item.type != 213 && item.tileWand < 1) {
+ 						toolTipLine[numLines] = Lang.tip[33].Value;
++						toolTipNames[numLines] = "Placeable";
+ 						numLines++;
+ 					}
+ 				}
+ 				else if (item.ammo > 0 && !item.notAmmo) {
+ 					toolTipLine[numLines] = Lang.tip[34].Value;
++					toolTipNames[numLines] = "Ammo";
+ 					numLines++;
+ 				}
+ 				else if (item.consumable) {
+ 					toolTipLine[numLines] = Lang.tip[35].Value;
++					toolTipNames[numLines] = "Consumable";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.material) {
+ 					toolTipLine[numLines] = Lang.tip[36].Value;
++					toolTipNames[numLines] = "Material";
+ 					numLines++;
+ 				}
+ 
+@@ -15307,10 +_,12 @@
+ 					for (int i = 0; i < item.ToolTip.Lines; i++) {
+ 						if (i == 0 && ItemID.Sets.UsesCursedByPlanteraTooltip[item.type] && !NPC.downedPlantBoss) {
+ 							toolTipLine[numLines] = Lang.tip[59].Value;
++							toolTipNames[numLines] = "Tooltip" + i.ToString();
+ 							numLines++;
+ 						}
+ 						else {
+ 							toolTipLine[numLines] = item.ToolTip.GetLine(i);
++							toolTipNames[numLines] = "Tooltip" + i.ToString();
+ 							numLines++;
+ 						}
+ 					}
+@@ -15318,16 +_,19 @@
+ 
+ 				if ((item.type == 3818 || item.type == 3819 || item.type == 3820 || item.type == 3824 || item.type == 3825 || item.type == 3826 || item.type == 3829 || item.type == 3830 || item.type == 3831 || item.type == 3832 || item.type == 3833 || item.type == 3834) && !player[myPlayer].downedDD2EventAnyDifficulty) {
+ 					toolTipLine[numLines] = Lang.misc[104].Value;
++					toolTipNames[numLines] = "EtherianManaWarning";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.buffType > 0 && BuffID.Sets.IsWellFed[item.buffType] && expertMode) {
+ 					toolTipLine[numLines] = Lang.misc[40].Value;
++					toolTipNames[numLines] = "WellFedExpert";
+ 					numLines++;
+ 				}
+ 
+ 				if (item.buffTime > 0) {
+ 					string text = (item.buffTime / 60 < 60) ? Language.GetTextValue("CommonItemTooltip.SecondDuration", Math.Round((double)item.buffTime / 60.0)) : Language.GetTextValue("CommonItemTooltip.MinuteDuration", Math.Round((double)(item.buffTime / 60) / 60.0));
++					toolTipNames[numLines] = "BuffTime";
+ 					toolTipLine[numLines] = text;
+ 					numLines++;
+ 				}
+@@ -15335,6 +_,7 @@
+ 				if (item.type == 3262 || item.type == 3282 || item.type == 3283 || item.type == 3284 || item.type == 3285 || item.type == 3286 || item.type == 3316 || item.type == 3315 || item.type == 3317 || item.type == 3291 || item.type == 3389) {
+ 					toolTipLine[numLines] = " ";
+ 					yoyoLogo = numLines;
++					toolTipNames[numLines] = "OneDropLogo";
+ 					numLines++;
+ 				}
+ 
+@@ -15358,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixDamage";
+ 						numLines++;
+ 					}
+ 
+@@ -15375,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixSpeed";
+ 						numLines++;
+ 					}
+ 
+@@ -15389,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixCritChance";
+ 						numLines++;
+ 					}
+ 
+@@ -15405,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixUseMana";
+ 						numLines++;
+ 					}
+ 
+@@ -15421,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixSize";
+ 						numLines++;
+ 					}
+ 
+@@ -15437,6 +_,7 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixShootSpeed";
+ 						numLines++;
+ 					}
+ 
+@@ -15453,137 +_,160 @@
+ 							badPreFixLine[numLines] = true;
+ 
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixKnockback";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 62) {
+ 						toolTipLine[numLines] = "+1" + Lang.tip[25].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDefense";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 63) {
+ 						toolTipLine[numLines] = "+2" + Lang.tip[25].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDefense";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 64) {
+ 						toolTipLine[numLines] = "+3" + Lang.tip[25].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDefense";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 65) {
+ 						toolTipLine[numLines] = "+4" + Lang.tip[25].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDefense";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 66) {
+ 						toolTipLine[numLines] = "+20 " + Lang.tip[31].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMaxMana";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 67) {
+ 						toolTipLine[numLines] = "+2" + Lang.tip[5].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccCritChance";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 68) {
+ 						toolTipLine[numLines] = "+4" + Lang.tip[5].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccCritChance";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 69) {
+ 						toolTipLine[numLines] = "+1" + Lang.tip[39].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDamage";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 70) {
+ 						toolTipLine[numLines] = "+2" + Lang.tip[39].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDamage";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 71) {
+ 						toolTipLine[numLines] = "+3" + Lang.tip[39].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDamage";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 72) {
+ 						toolTipLine[numLines] = "+4" + Lang.tip[39].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccDamage";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 73) {
+ 						toolTipLine[numLines] = "+1" + Lang.tip[46].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMoveSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 74) {
+ 						toolTipLine[numLines] = "+2" + Lang.tip[46].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMoveSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 75) {
+ 						toolTipLine[numLines] = "+3" + Lang.tip[46].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMoveSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 76) {
+ 						toolTipLine[numLines] = "+4" + Lang.tip[46].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMoveSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 77) {
+ 						toolTipLine[numLines] = "+1" + Lang.tip[47].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMeleeSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 78) {
+ 						toolTipLine[numLines] = "+2" + Lang.tip[47].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMeleeSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 79) {
+ 						toolTipLine[numLines] = "+3" + Lang.tip[47].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMeleeSpeed";
+ 						numLines++;
+ 					}
+ 
+ 					if (item.prefix == 80) {
+ 						toolTipLine[numLines] = "+4" + Lang.tip[47].Value;
+ 						preFixLine[numLines] = true;
++						toolTipNames[numLines] = "PrefixAccMeleeSpeed";
+ 						numLines++;
+ 					}
+ 				}
+ 
+ 				if (item.wornArmor && player[myPlayer].setBonus != "") {
+ 					toolTipLine[numLines] = Lang.tip[48].Value + " " + player[myPlayer].setBonus;
++					toolTipNames[numLines] = "SetBonus";
+ 					numLines++;
+ 				}
+ 			}
+ 
+ 			if (item.expert) {
+ 				toolTipLine[numLines] = Language.GetTextValue("GameUI.Expert");
++				toolTipNames[numLines] = "Expert";
+ 				numLines++;
+ 			}
+ 
+-			if (item.rare == -13) {
++			if (item.master) {
+ 				toolTipLine[numLines] = Language.GetTextValue("GameUI.Master");
++				toolTipNames[numLines] = "Master";
+ 				numLines++;
+ 			}
+ 
+@@ -15592,6 +_,7 @@
+ 				if (amountNeeded - sacrificeCount > 0) {
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
+ 					researchLine = numLines;
++					toolTipNames[numLines] = "JourneyResearch";
+ 					numLines++;
+ 				}
+ 			}
+@@ -15601,11 +_,12 @@
+ 				string[] array = bestiaryNotes.Split('\n');
+ 				foreach (string text2 in array) {
+ 					toolTipLine[numLines++] = text2;
++					toolTipNames[numLines - 1] = "BestiaryNotes";
+ 				}
  			}
  		}
  
@@ -1539,11 +2073,11 @@
  				}
  			}
  
-+			HidePlayerCraftingMenu = false;
++			hidePlayerCraftingMenu = false;
  			CreativeMenu.Draw(spriteBatch);
  			bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
 -			if (!InReforgeMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
-+			if (!InReforgeMenu && !HidePlayerCraftingMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
++			if (!InReforgeMenu && !hidePlayerCraftingMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
@@ -1572,6 +2106,15 @@
  		}
  
  		private static void DrawPVPIcons() {
+@@ -31426,6 +_,8 @@
+ 						rare = item[i].rare;
+ 						if (item[i].expert)
+ 							rare = -12;
++						if (item[i].master)
++							rare = -13;
+ 
+ 						MouseTextHackZoom(text, rare, 0);
+ 						mouseText = true;
 @@ -31471,7 +_,7 @@
  					bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == k);
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {
@@ -2315,7 +2858,7 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
-@@ -48991,6 +_,14 @@
+@@ -48991,6 +_,15 @@
  			}
  		}
  
@@ -2323,8 +2866,9 @@
 +			NewText(newText, color.R, color.G, color.B);
 +		}
 +
-+		public static void NewText(object o, Microsoft.Xna.Framework.Color color = default) {
-+			NewText(o.ToString(), color.R, color.G, color.B);
++		public static void NewText(object o, Color? color = null) {
++			if (color == null) color = Color.White;
++			NewText(o.ToString(), color.Value.R, color.Value.G, color.Value.B);
 +		}
 +
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {

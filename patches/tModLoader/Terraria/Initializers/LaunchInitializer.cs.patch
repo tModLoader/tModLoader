@@ -20,7 +20,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -38,6 +_,30 @@
+@@ -38,6 +_,29 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -38,7 +38,6 @@
 +					}
 +				}
 +
-+				Main.showSplash = false;
 +				ModLoader.ModLoader.OnSuccessfulLoad += () => {
 +					WorldGen.clearWorld();
 +					Main.LoadPlayers();

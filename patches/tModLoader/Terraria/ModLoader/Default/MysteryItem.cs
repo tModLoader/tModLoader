@@ -55,21 +55,6 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override void LoadLegacy(BinaryReader reader) {
-			string modName = reader.ReadString();
-			bool hasGlobal = false;
-			if (modName.Length == 0) {
-				hasGlobal = true;
-				modName = reader.ReadString();
-			}
-			Load(new TagCompound {
-				["mod"] = modName,
-				["name"] = reader.ReadString(),
-				["hasGlobalSaving"] = hasGlobal,
-				["legacyData"] = ItemIO.LegacyModData(int.MaxValue, reader, hasGlobal)
-			});
-		}
-
 		public override void NetSend(BinaryWriter writer) {
 			TagIO.Write(data ?? new TagCompound(), writer);
 		}

@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/DataStructures/PlayerDrawLayers.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerDrawLayers.cs
+@@ -1766,7 +_,7 @@
+ 		}
+ 
+ 		public static void DrawPlayer_25_Shield(ref PlayerDrawSet drawinfo) {
+-			if (drawinfo.drawPlayer.shield <= 0 || drawinfo.drawPlayer.shield >= 10)
++			if (drawinfo.drawPlayer.shield <= 0 || drawinfo.drawPlayer.shield >= TextureAssets.AccShield.Length)
+ 				return;
+ 
+ 			Vector2 zero = Vector2.Zero;

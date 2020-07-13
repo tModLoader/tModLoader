@@ -6,7 +6,7 @@
      <RootNamespace>Terraria</RootNamespace>
 -	<OutputName>Terraria</OutputName>
 +	<OutputName>tModLoader</OutputName>
-+	<LangVersion>7.3</LangVersion>
++	<LangVersion>8.0</LangVersion>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <OutputType>Exe</OutputType>

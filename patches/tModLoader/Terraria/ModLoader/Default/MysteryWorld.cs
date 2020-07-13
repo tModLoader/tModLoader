@@ -29,18 +29,5 @@ namespace Terraria.ModLoader.Default
 			WorldIO.LoadNPCs(tag.GetList<TagCompound>("mysteryNPCs"));
 			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("mysteryKillCounts"));
 		}
-
-		public override void LoadLegacy(BinaryReader reader) {
-			var list = new List<TagCompound>();
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				list.Add(new TagCompound {
-					["mod"] = reader.ReadString(),
-					["name"] = reader.ReadString(),
-					["legacyData"] = reader.ReadBytes(reader.ReadUInt16())
-				});
-			}
-			Load(new TagCompound { ["list"] = list });
-		}
 	}
 }

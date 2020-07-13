@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items.Tools
 {
 	internal class ExampleHookItem : ModItem
 	{
@@ -14,24 +14,7 @@ namespace ExampleMod.Items
 		}
 
 		public override void SetDefaults() {
-			/*
-				this.noUseGraphic = true;
-				this.damage = 0;
-				this.knockBack = 7f;
-				this.useStyle = 5;
-				this.name = "Amethyst Hook";
-				this.shootSpeed = 10f;
-				this.shoot = 230;
-				this.width = 18;
-				this.height = 28;
-				this.useSound = 1;
-				this.useAnimation = 20;
-				this.useTime = 20;
-				this.rare = 1;
-				this.noMelee = true;
-				this.value = 20000;
-			*/
-			// Instead of copying these values, we can clone and modify the ones we want to copy
+			// Copy values from the Amethyst Hook
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // how quickly the hook is shot.
 			item.shoot = ProjectileType<ExampleHookProjectile>();
@@ -45,16 +28,6 @@ namespace ExampleMod.Items
 		}
 
 		public override void SetDefaults() {
-			/*	this.netImportant = true;
-				this.name = "Gem Hook";
-				this.width = 18;
-				this.height = 18;
-				this.aiStyle = 7;
-				this.friendly = true;
-				this.penetrate = -1;
-				this.tileCollide = false;
-				this.timeLeft *= 10;
-			*/
 			projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
 		}
 
@@ -66,11 +39,8 @@ namespace ExampleMod.Items
 					hooksOut++;
 				}
 			}
-			if (hooksOut > 2) // This hook can have 3 hooks out.
-			{
-				return false;
-			}
-			return true;
+
+			return hooksOut <= 2;
 		}
 
 		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
@@ -106,7 +76,7 @@ namespace ExampleMod.Items
 
 		// Amethyst Hook is 300, Static Hook is 600
 		public override float GrappleRange() {
-			return 200f;
+			return 500f;
 		}
 
 		public override void NumGrappleHooks(Player player, ref int numHooks) {
@@ -115,48 +85,36 @@ namespace ExampleMod.Items
 
 		// default is 11, Lunar is 24
 		public override void GrappleRetreatSpeed(Player player, ref float speed) {
-			speed = 14f;
+			speed = 18f;
 		}
 
 		public override void GrapplePullSpeed(Player player, ref float speed) {
-			speed = 4;
+			speed = 10;
 		}
+
+		private Texture2D chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain").Value;
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
 			Vector2 center = projectile.Center;
 			Vector2 distToProj = playerCenter - projectile.Center;
-			float projRotation = distToProj.ToRotation() - 1.57f;
+			float projRotation = distToProj.ToRotation() - MathHelper.PiOver2;
 			float distance = distToProj.Length();
 			while (distance > 30f && !float.IsNaN(distance)) {
-				distToProj.Normalize();				//get unit vector
-				distToProj *= 24f;					//speed = 24
-				center += distToProj;				//update draw position
-				distToProj = playerCenter - center;	//update distance
+				distToProj.Normalize(); //get unit vector
+				distToProj *= 24f; //speed = 24
+				center += distToProj; //update draw position
+				distToProj = playerCenter - center; //update distance
 				distance = distToProj.Length();
 				Color drawColor = lightColor;
 
 				//Draw chain
-				spriteBatch.Draw(mod.GetTexture("Items/ExampleHookChain"), new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
-					new Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height), drawColor, projRotation,
-					new Vector2(Main.chain30Texture.Width * 0.5f, Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(chainTexture, new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
+					new Rectangle(0, 0, chainTexture.Width, chainTexture.Height), drawColor, projRotation,
+					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 			}
+
 			return true;
 		}
 	}
-
-	// Animated hook example
-	// Multiple, 
-	// only 1 connected, spawn mult
-	// Light the path
-	// Gem Hooks: 1 spawn only
-	// Thorn: 4 spawns, 3 connected
-	// Dual: 2/1 
-	// Lunar: 5/4 -- Cycle hooks, more than 1 at once
-	// AntiGravity -- Push player to position
-	// Static -- move player with keys, don't pull to wall
-	// Christmas -- light ends
-	// Web slinger -- 9/8, can shoot more than 1 at once
-	// Bat hook -- Fast reeling
-
 }

@@ -107,33 +107,6 @@ namespace Terraria.ModLoader.IO
 			WorldIO.ValidateSigns();
 		}
 
-		internal static void LoadLegacyTiles(BinaryReader reader) {
-			TileTables tables = TileTables.Create();
-			ushort count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				ushort type = reader.ReadUInt16();
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				Mod mod = ModLoader.GetMod(modName);
-				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
-				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
-					tables.tileModNames[type] = modName;
-					tables.tileNames[type] = name;
-				}
-				tables.frameImportant[type] = reader.ReadBoolean();
-			}
-			count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				ushort wall = reader.ReadUInt16();
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				Mod mod = ModLoader.GetMod(modName);
-				tables.walls[wall] = mod == null ? (ushort)0 : (ushort)mod.WallType(name);
-			}
-			ReadTileData(reader, tables);
-		}
-
 		internal static void WriteTileData(BinaryWriter writer, bool[] hasTile, bool[] hasWall) {
 			byte skip = 0;
 			bool nextModTile = false;
@@ -482,44 +455,56 @@ namespace Terraria.ModLoader.IO
 
 		internal static void ReadContainers(BinaryReader reader) {
 			byte[] flags = new byte[1];
+
 			reader.Read(flags, 0, reader.ReadByte());
+
 			if ((flags[0] & 1) == 1) {
-				ContainerTables tables = ContainerTables.Create();
+				var tables = ContainerTables.Create();
 				int count = reader.ReadUInt16();
+
 				for (int k = 0; k < count; k++) {
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
+
 					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
 				}
+
 				count = reader.ReadUInt16();
+
 				for (int k = 0; k < count; k++) {
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
+
 					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
 				}
+
 				count = reader.ReadUInt16();
+
 				for (int k = 0; k < count; k++) {
 					int slot = reader.ReadUInt16();
 					string modName = reader.ReadString();
 					string name = reader.ReadString();
 					Mod mod = ModLoader.GetMod(modName);
+
 					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
 				}
+
 				ReadContainerData(reader, tables);
 			}
-			//legacy load
-			if ((flags[0] & 2) == 2) {
+
+			//legacy load //Let's not care anymore.
+			/*if ((flags[0] & 2) == 2) {
 				int count = reader.ReadInt32();
 				for (int k = 0; k < count; k++) {
 					int id = reader.ReadInt32();
 					TEItemFrame itemFrame = TileEntity.ByID[id] as TEItemFrame;
 					ItemIO.LoadLegacy(itemFrame.item, reader, true);
 				}
-			}
+			}*/
 		}
 
 		internal static void WriteContainerData(BinaryWriter writer) {

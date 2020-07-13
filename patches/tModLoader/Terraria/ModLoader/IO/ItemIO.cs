@@ -62,17 +62,13 @@ namespace Terraria.ModLoader.IO
 
 			if (modName == "Terraria") {
 				item.netDefaults(tag.GetInt("id"));
-				if (tag.ContainsKey("legacyData"))
-					LoadLegacyModData(item, tag.GetByteArray("legacyData"), tag.GetBool("hasGlobalSaving"));
 			}
 			else {
 				int type = ModLoader.GetMod(modName)?.ItemType(tag.GetString("name")) ?? 0;
 				if (type > 0) {
 					item.netDefaults(type);
-					if (tag.ContainsKey("legacyData"))
-						LoadLegacyModData(item, tag.GetByteArray("legacyData"), tag.GetBool("hasGlobalSaving"));
-					else
-						item.modItem.Load(tag.GetCompound("data"));
+
+					item.modItem.Load(tag.GetCompound("data"));
 				}
 				else {
 					item.netDefaults(ModContent.ItemType<MysteryItem>());
@@ -188,46 +184,6 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static void LoadLegacy(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
-			string modName = reader.ReadString();
-			bool hasGlobalSaving = false;
-			if (modName.Length == 0) {
-				hasGlobalSaving = true;
-				modName = reader.ReadString();
-			}
-			if (modName == "Terraria") {
-				item.netDefaults(reader.ReadInt32());
-				LoadLegacyModData(item, LegacyModData(item.type, reader, hasGlobalSaving), hasGlobalSaving);
-			}
-			else {
-				string itemName = reader.ReadString();
-				int type = ModLoader.GetMod(modName)?.ItemType(itemName) ?? 0;
-				byte[] data = LegacyModData(type == 0 ? int.MaxValue : type, reader, hasGlobalSaving);
-				if (type != 0) {
-					item.netDefaults(type);
-					LoadLegacyModData(item, data, hasGlobalSaving);
-				}
-				else {
-					item.netDefaults(ModContent.ItemType<MysteryItem>());
-					var tag = new TagCompound {
-						["mod"] = modName,
-						["name"] = itemName,
-						["hasGlobalSaving"] = hasGlobalSaving,
-						["legacyData"] = data
-					};
-					((MysteryItem)item.modItem).Setup(tag);
-				}
-			}
-
-			item.Prefix(reader.ReadByte());
-
-			if (readStack)
-				item.stack = reader.ReadInt32();
-
-			if (readFavorite)
-				item.favorited = reader.ReadBoolean();
-		}
-
 		internal static byte[] LegacyModData(int type, BinaryReader reader, bool hasGlobalSaving = true) {
 			using (MemoryStream memoryStream = new MemoryStream()) {
 				using (BinaryWriter writer = new BinaryWriter(memoryStream)) {
@@ -249,53 +205,6 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				return memoryStream.ToArray();
-			}
-		}
-
-		internal static void LoadLegacyModData(Item item, byte[] data, bool hasGlobalSaving = true) {
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(data))) {
-				if (item.modItem != null) {
-					byte[] modData = reader.ReadBytes(reader.ReadUInt16());
-					if (modData.Length > 0) {
-						using (BinaryReader customReader = new BinaryReader(new MemoryStream(modData))) {
-							try {
-								item.modItem.LoadLegacy(customReader);
-							}
-							catch (Exception e) {
-								throw new CustomModDataException(item.modItem.mod,
-									"Error in reading custom item data for " + item.modItem.mod.Name, e);
-							}
-						}
-					}
-				}
-				if (hasGlobalSaving) {
-					int count = reader.ReadUInt16();
-					for (int k = 0; k < count; k++) {
-						string modName = reader.ReadString();
-						string globalName = reader.ReadString();
-						byte[] globalData = reader.ReadBytes(reader.ReadUInt16());
-						GlobalItem globalItem = ModLoader.GetMod(modName)?.GetGlobalItem(globalName);
-						//could support legacy global data in mystery globals but eh...
-						if (globalItem != null && globalData.Length > 0) {
-							using (BinaryReader customReader = new BinaryReader(new MemoryStream(globalData))) {
-								try {
-									globalItem.LoadLegacy(item, customReader);
-								}
-								catch (Exception e) {
-									throw new CustomModDataException(globalItem.mod,
-										"Error in reading custom global item data for " + globalItem.mod.Name, e);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		public static void LoadLegacyInventory(Item[] inv, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				LoadLegacy(inv[reader.ReadUInt16()], reader, readStack, readFavorite);
 			}
 		}
 

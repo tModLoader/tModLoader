@@ -1,12 +1,12 @@
-using ExampleMod.Dusts;
-using ExampleMod.Tiles;
+using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items.Tools
 {
 	public class ExampleHamaxe : ModItem
 	{
@@ -21,14 +21,15 @@ namespace ExampleMod.Items
 			item.height = 40;
 			item.useTime = 15;
 			item.useAnimation = 15;
-			item.axe = 30;		//How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
-			item.hammer = 100;	//How much hammer power the weapon has
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.knockBack = 6;
 			item.value = 10000;
 			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
+
+			item.axe = 30; //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
+			item.hammer = 100; //How much hammer power the weapon has
 		}
 
 		public override void AddRecipes() {
@@ -41,7 +42,7 @@ namespace ExampleMod.Items
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
 			}
 		}
 	}

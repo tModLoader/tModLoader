@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using System;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
  using Terraria.Enums;
+ using Terraria.GameContent;
 @@ -10,11 +_,29 @@
  using Terraria.ID;
  using Terraria.UI;
@@ -38,6 +39,15 @@
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
  		public const int luckPotionDuration2 = 18000;
+@@ -59,6 +_,8 @@
+ 		public short makeNPC;
+ 		public bool expertOnly;
+ 		public bool expert;
++		public bool masterOnly;
++		public bool master;
+ 		public bool isAShopItem;
+ 		public short hairDye = -1;
+ 		public byte paint;
 @@ -177,11 +_,11 @@
  			}
  		}
@@ -292,6 +302,18 @@
  			if (type == 0) {
  				netID = 0;
  				stack = 0;
+@@ -44387,6 +_,11 @@
+ 				SetDefaults5(type);
+ 			}
+ 
++			//Set 'master' bool for vanilla items with master rarity.
++			if (type < ItemID.Count && rare == ItemRarityID.Master) {
++				master = true;
++			}
++
+ 			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
+ 			if (hairDye != 0)
+ 				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
 @@ -44536,11 +_,12 @@
  				maxStack = 999;
  
@@ -306,7 +328,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44550,6 +_,8 @@
+@@ -44550,14 +_,18 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -315,6 +337,16 @@
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
+ 			shopSpecialCurrency = -1;
+ 			shopCustomPrice = null;
+ 			expert = false;
++			master = false;
+ 			isAShopItem = false;
+ 			expertOnly = false;
++			masterOnly = false;
+ 			instanced = false;
+ 			questItem = false;
+ 			fishingPole = 0;
 @@ -44652,6 +_,10 @@
  		}
  
