@@ -291,18 +291,17 @@ namespace Terraria.ModLoader
 				if (type.IsAbstract){continue;}
 				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
 
-				if (typeof(ILoadable).IsAssignableFrom(type)) {
-					//The most derived attributes should be first.
-					var autoload = (AutoloadAttribute)type.GetCustomAttributes(typeof(AutoloadAttribute), true).FirstOrDefault();
-					if (autoload!=null && (autoload.Value ?? Properties.Autoload)) {
-						AutoloadInstance(type);
-					}
-				}
-				else if (type.IsSubclassOf(typeof(ModGore))) {
+				if (type.IsSubclassOf(typeof(ModGore))) {
 					modGores.Add(type);
 				}
 				else if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
+				}
+				else if (typeof(ILoadable).IsAssignableFrom(type)) {
+					bool? autoload = AutoloadAttribute.GetValue(type);
+					if (autoload ?? Properties.Autoload) {
+						AutoloadInstance(type);
+					}
 				}
 			}
 			if (Properties.AutoloadGores) {

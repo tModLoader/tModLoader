@@ -3,7 +3,6 @@
 	/// <summary>
 	/// Allows for implementing types to be loaded and unloaded.
 	/// </summary>
-	[Autoload]
 	public interface ILoadable
 	{
 		/// <summary>
