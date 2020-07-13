@@ -71,6 +71,14 @@ namespace Terraria.ModLoader
 		public ModRecipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.item.type, stack);
 
 		/// <summary>
+		/// Adds an ingredient to this recipe of the given type of item and stack size.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <param name="stack">The stack.</param>
+		public ModRecipe AddIngredient<T>(int stack = 1) where T : ModItem
+			=> AddIngredient(ModContent.ItemType<T>(), stack);
+
+		/// <summary>
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size. Vanilla recipe groups consist of "Wood", "IronBar", "PresurePlate", "Sand", and "Fragment".
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -147,6 +155,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tile">The tile.</param>
 		public ModRecipe AddTile(ModTile tile) => AddTile(tile.Type);
+
+		/// <summary>
+		/// Adds a required crafting station to this recipe of the given type of tile.
+		/// </summary>
+		/// <param name="tile">The tile.</param>
+		public ModRecipe AddTile<T>() where T : ModTile
+			=> AddTile(ModContent.TileType<T>());
 
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).

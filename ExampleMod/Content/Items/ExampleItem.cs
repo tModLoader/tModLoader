@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Items
 				//We can also specify the current item as an ingredient
 				.AddIngredient(this, 2)
 				//Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
-				.AddIngredient(ItemType<ExampleSword>(), 3)
+				.AddIngredient<ExampleSword>(3)
 				//An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower. 
 				.AddIngredient(mod, "ExampleSword", 3)
 
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Items
 				//To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/tModLoader/tModLoader/wiki/Vanilla-Tile-IDs
 				.AddTile(TileID.WorkBenches)
 				//Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
-				.AddTile(TileType<ExampleWorkbench>())
+				.AddTile<ExampleWorkbench>()
 				//An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
 				.AddTile(mod, "ExampleWorkbench")
 
