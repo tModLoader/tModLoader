@@ -19,8 +19,8 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void SetDefaults() {
-			item.width = 40;
-			item.height = 40;
+			item.width = 26;
+			item.height = 42;
 
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTime = 20;
