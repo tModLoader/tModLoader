@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//The following recipe showcases and explains all methods (functions) present on ModRecipe, and uses an 'advanced' style called 'chaining'.//
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+
 			//The reason why the said chaining works is that all methods on ModRecipe, with the exception of Register(), return its own instance,
 			//which lets you call subsequent methods on that return value, without having to type a local variable's name.
 			//When using chaining, note that only the last line is supposed to have a semicolon (;).
@@ -70,6 +70,12 @@ namespace ExampleMod.Content.Items
 				.AddTile<ExampleWorkbench>()
 				//An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
 				.AddTile(mod, "ExampleWorkbench")
+
+				//Adds a custom condition that the player should be standing in honey for the recipe to work.
+				.AddCondition(r => Main.LocalPlayer.honeyWet)
+
+				// Marks the recipe as an alchemy recipe. This makes it require an alchemy table, and gives a 1/3 chance for each ingredient to not be consumed. See https://terraria.gamepedia.com/Alchemy_Table.
+				.IsAlchemy()
 
 				//When you're done, call this to register the recipe. Note that there's a semicolon at the end of the chain.
 				.Register();

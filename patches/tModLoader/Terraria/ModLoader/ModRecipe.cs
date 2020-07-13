@@ -159,9 +159,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds a required crafting station to this recipe of the given type of tile.
 		/// </summary>
-		/// <param name="tile">The tile.</param>
 		public ModRecipe AddTile<T>() where T : ModTile
 			=> AddTile(ModContent.TileType<T>());
+
+		/// <summary>
+		/// Marks the recipe as an alchemy recipe. This makes it require an alchemy table, and gives a 1/3 chance for each ingredient to not be consumed. See https://terraria.gamepedia.com/Alchemy_Table.
+		/// </summary>
+		public ModRecipe IsAlchemy() {
+			alchemy = true;
+
+			return this;
+		}
 
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
