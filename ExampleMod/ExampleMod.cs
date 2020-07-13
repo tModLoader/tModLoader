@@ -1,4 +1,6 @@
-using Terraria.ID;
+using ExampleMod.Content.Items.Consumables;
+using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -11,7 +13,7 @@ namespace ExampleMod
 				// This message syncs ExamplePlayer.exampleLifeFruits
 				case ExampleModMessageType.ExamplePlayerSyncPlayer:
 					byte playernumber = reader.ReadByte();
-					ExamplePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExamplePlayer>();
+					ExampleLifeFruitPlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleLifeFruitPlayer>();
 					examplePlayer.exampleLifeFruits = reader.ReadInt32();
 					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
 					break;
