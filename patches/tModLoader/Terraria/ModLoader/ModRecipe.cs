@@ -151,8 +151,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
-		public ModRecipe SetCondition(Func<ModRecipe, bool> condition) {
-			HookRecipeAvailable = condition;
+		public ModRecipe AddCondition(Func<ModRecipe, bool> condition) {
+			HookRecipeAvailable += condition;
 
 			return this;
 		}
@@ -160,8 +160,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
-		public ModRecipe SetOnCraftCallback(Action<ModRecipe, Item> callback) {
-			HookOnCraft = callback;
+		public ModRecipe AddOnCraftCallback(Action<ModRecipe, Item> callback) {
+			HookOnCraft += callback;
 
 			return this;
 		}
@@ -169,8 +169,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 		/// </summary>
-		public ModRecipe SetConsumeItemCallback(Func<ModRecipe, int, int, int> callback) {
-			HookConsumeItem = callback;
+		public ModRecipe AddConsumeItemCallback(Func<ModRecipe, int, int, int> callback) {
+			HookConsumeItem += callback;
 
 			return this;
 		}
