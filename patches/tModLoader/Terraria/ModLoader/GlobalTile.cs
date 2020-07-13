@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[soilType] = cactus;
 		}
 
-		protected sealed override void AddInstance(string name) => mod.AddGlobalTile(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalTile(this);
 
 		/// <summary>
 		/// Allows you to modify the properties of any tile in the game. Most properties are stored as arrays throughout the Terraria code.

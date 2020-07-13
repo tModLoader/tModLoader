@@ -14,12 +14,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal ID of this type of wall.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The default type of sound made when this wall is hit. Defaults to 0.
 		/// </summary>
@@ -59,7 +55,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -101,7 +97,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		protected sealed override void AddInstance(string name, string texture) => mod.AddWall(name, this, texture);
+		protected sealed override void AddInstance() => Mod.AddWall(this);
 
 		/// <summary>
 		/// Allows you to set the properties of this wall. Many properties are stored as arrays throughout Terraria's code.

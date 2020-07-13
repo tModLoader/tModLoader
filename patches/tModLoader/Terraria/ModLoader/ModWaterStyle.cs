@@ -6,58 +6,35 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
-	public abstract class ModWaterStyle:IAutoloadable
+	public abstract class ModWaterStyle:IModType
 	{
 		/// <summary>
 		/// The mod that added this style of water.
 		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mod Mod {get;internal set;}
 
 		/// <summary>
 		/// The internal name of this water style.
 		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public virtual string Name => GetType().Name;
 
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
-		internal string texture;
-		internal string blockTexture;
+		public virtual string Texture => GetType().FullName.Replace('.', '/');
+		public virtual string BlockTexture => Texture + "_Block";
 
-		bool IAutoloadable.Autoload(Mod mod)
+		void ILoadable.Load(Mod mod)
 		{
-			Type type = GetType();
-			this.mod = mod;
-			string name = type.Name;
-			string texture = type.FullName.Replace('.', '/');
-			string blockTexture = texture + "_Block";
-			if(Autoload(ref name, ref texture, ref blockTexture))
-			{
-				mod.AddWaterStyle(name, this, texture, blockTexture);
-				return true;
-			}
-			return false;
+			Mod = mod;
+			
+			mod.AddWaterStyle(this);
 		}
 
-		void IAutoloadable.Unload(){}
-
-		/// <summary>
-		/// Allows you to automatically add a ModWaterStyle instead of using Mod.AddWaterStyle. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, and texture is initialized to the namespace and overriding class name with periods replaced with slashes. BlockTexture is initialized to texture with "_Block" added at the end. Use this to either force or stop an autoload, change the name that identifies this type of ModWaterStyle, and/or change the texture paths used by this ModWaterStyle.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture, ref string blockTexture) {
-			return mod.Properties.Autoload;
-		}
+		public virtual void Load(){}
+		public virtual void Unload(){}
 
 		/// <summary>
 		/// Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default.
@@ -106,14 +83,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this waterfall style.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
-		internal string texture;
-
-		protected sealed override void AddInstance(string name, string texture) => mod.AddWaterfallStyle(name, this, texture);
+		protected sealed override void AddInstance() => Mod.AddWaterfallStyle(this);
 
 		/// <summary>
 		/// Allows you to create light at a tile occupied by a waterfall of this style.

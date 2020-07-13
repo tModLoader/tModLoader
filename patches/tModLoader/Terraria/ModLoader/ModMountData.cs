@@ -11,41 +11,31 @@ namespace Terraria.ModLoader
 	/// Only one instance of ModMountData will exist for each mount, so storing player specific data on the ModMountData is not good. 
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public class ModMountData:IAutoloadable
+	public class ModMountData:IModType
 	{
 		internal string texture;
 
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMountData.
 		/// </summary>
-		public Mount.MountData mountData {
-			get;
-			internal set;
-		}
+		public Mount.MountData mountData {get;internal set;}
 
 		/// <summary>
 		/// The mod which has added this ModMountData.
 		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mod Mod {get;internal set;}
 
 		/// <summary>
 		/// The index of this ModMountData in the Mount.mounts array.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		/// <summary>
 		/// The name of this type of mount.
 		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public virtual string Name => GetType().Name;
+
+		public virtual string Texture => GetType().FullName.Replace('.', '/');
 
 		/// <summary>
 		/// Constructor
@@ -54,40 +44,27 @@ namespace Terraria.ModLoader
 			mountData = new Mount.MountData();
 		}
 
-		bool IAutoloadable.Autoload(Mod mod) {
-			Type type = GetType();
-			this.mod = mod;
-			string name = type.Name;
-			string texture = type.FullName.Replace('.', '/');
+		void ILoadable.Load(Mod mod) {
+			Mod = mod;
 			var extraTextures = new Dictionary<MountTextureType, string>();
 			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
 				extraTextures[textureType] = texture + "_" + textureType.ToString();
 			}
-			if (Autoload(ref name, ref texture, extraTextures)) {
-				mod.AddMount(name, this, texture, extraTextures);
-				return true;
-			}
-			return false;
+			Load();
+			SetExtraTextures(extraTextures);
+			mod.AddMount(this);
 		}
 
-		void IAutoloadable.Unload(){}
+		public virtual void Load(){}
+		public virtual void Unload(){}
 
-		/// <summary>
-		/// Allows you to automatically load a mount instead of using Mod.AddMount. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name, texture is initialized to the namespace and overriding class name with periods replaced with slashes, and extraTextures is initialized to a dictionary containing all MountTextureTypes as keys, with texture + "_" + the texture type name as values. Use this method to either force or stop an autoload, change the default display name and texture path, and to modify the extra mount textures.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="texture"></param>
-		/// <param name="extraTextures"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name, ref string texture, IDictionary<MountTextureType, string> extraTextures) {
-			return mod.Properties.Autoload;
-		}
+		public virtual void SetExtraTextures(IDictionary<MountTextureType, string> extraTextures){}
 
 		internal void SetupMount(Mount.MountData mountData) {
 			ModMountData newMountData = (ModMountData)MemberwiseClone();
 			newMountData.mountData = mountData;
 			mountData.modMountData = newMountData;
-			newMountData.mod = mod;
+			newMountData.Mod = Mod;
 			newMountData.SetDefaults();
 		}
 

@@ -20,18 +20,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The NPC object that this ModNPC controls.
 		/// </summary>
-		public NPC npc {
-			get;
-			internal set;
-		}
+		public NPC npc {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this NPC.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The file name of this NPC's texture file in the mod loader's file space.
@@ -91,20 +85,19 @@ namespace Terraria.ModLoader
 		/// ModNPC constructor.
 		/// </summary>
 		public ModNPC() {
-			npc = new NPC();
-			npc.modNPC = this;
+			npc = new NPC{modNPC = this};
 		}
 
-		protected sealed override void AddInstance(string name) {
-			mod.AddNPC(name, this);
+		protected sealed override void AddInstance() {
+			Mod.AddNPC(this);
 			Type type = GetType();
 			var autoloadHead = type.GetAttribute<AutoloadHead>();
 			if (autoloadHead != null) {
-				mod.AddNPCHeadTexture(npc.type, HeadTexture);
+				Mod.AddNPCHeadTexture(npc.type, HeadTexture);
 			}
 			var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
 			if (autoloadBossHead != null) {
-				mod.AddBossHeadTexture(BossHeadTexture, npc.type);
+				Mod.AddBossHeadTexture(BossHeadTexture, npc.type);
 			}
 		}
 
@@ -112,8 +105,7 @@ namespace Terraria.ModLoader
 			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
 			newNPC.npc = npc;
 			npc.modNPC = newNPC;
-			newNPC.mod = mod;
-			newNPC.Name = Name;
+			newNPC.Mod = Mod;
 			newNPC.SetDefaults();
 		}
 
@@ -145,8 +137,7 @@ namespace Terraria.ModLoader
 
 			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
 			copy.npc = npcClone;
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.aiType = aiType;
 			copy.animationType = animationType;
 			copy.bossBag = bossBag;
@@ -179,7 +170,7 @@ namespace Terraria.ModLoader
 				NPCLoader.bannerToItem[banner] = bannerItem;
 			}
 			else if (banner != 0 || bannerItem != 0) {
-				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", mod.DisplayName, Name));
+				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.DisplayName, Name));
 			}
 
 			if (npc.lifeMax > 32767 || npc.boss) {

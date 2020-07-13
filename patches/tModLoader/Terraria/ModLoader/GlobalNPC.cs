@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance(string name) => mod.AddGlobalNPC(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalNPC(this);
 
 		/// <summary>
 		/// Whether to create a new GlobalNPC instance for every NPC that exists. 
@@ -48,8 +48,7 @@ namespace Terraria.ModLoader
 				return Clone();
 			}
 			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index;
 			copy.instanceIndex = instanceIndex;
 			return copy;

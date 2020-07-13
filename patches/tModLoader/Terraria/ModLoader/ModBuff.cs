@@ -8,34 +8,24 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The buff id of this buff.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		/// <summary>
 		/// The translations of this buff's display name.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The translations of this buff's description.
 		/// </summary>
-		public ModTranslation Description {
-			get;
-			internal set;
-		}
+		public ModTranslation Description {get;internal set;}
 
-		internal string texture;
 		/// <summary>If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode. Defaults to false.</summary>
 		public bool longerExpertDebuff = false;
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		protected sealed override void AddInstance(string name, string texture) => mod.AddBuff(name, this, texture);
+		protected sealed override void AddInstance() => Mod.AddBuff(this);
 
 		/// <summary>
 		/// This is where all buff related assignments go. For example:

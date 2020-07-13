@@ -17,17 +17,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {
-			get;
-			internal set;
-		}
+		public Player player {get;internal set;}
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Name = Name;
-			modPlayer.mod = mod;
+			modPlayer.Mod = Mod;
 			modPlayer.player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
@@ -35,7 +31,7 @@ namespace Terraria.ModLoader
 		}
 
 		public bool TypeEquals(ModPlayer other) {
-			return mod == other.mod && Name == other.Name;
+			return Mod == other.Mod && Name == other.Name;
 		}
 
 		/// <summary>
@@ -43,7 +39,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		protected sealed override void AddInstance(string name) => mod.AddPlayer(name, this);
+		protected sealed override void AddInstance() => Mod.AddPlayer(this);
 
 		/// <summary>
 		/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.

@@ -2,6 +2,14 @@ namespace Terraria.ModLoader.Default
 {
 	public class MysteryTile : ModTile
 	{
+		public override string Name{get;}
+
+		public override string Texture => "ModLoader/MysteryTile";
+
+		public MysteryTile(string name = null) {
+			Name = name ?? base.Name;
+		}
+
 		public override void SetDefaults() {
 			Main.tileSolid[Type] = true;
 			Main.tileFrameImportant[Type] = true;

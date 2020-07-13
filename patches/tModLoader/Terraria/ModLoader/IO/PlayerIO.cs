@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.IO
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
 			var modItem = ItemLoader.GetItem(itemId);
-			return modItem.mod.Name + '/' + modItem.Name;
+			return modItem.Mod.Name + '/' + modItem.Name;
 		}
 
 		public static void LoadHairDye(Player player, string hairDyeItemName) {
@@ -118,7 +118,7 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = modPlayer.mod.Name,
+					["mod"] = modPlayer.Mod.Name,
 					["name"] = modPlayer.Name,
 					["data"] = data
 				});
@@ -158,7 +158,7 @@ namespace Terraria.ModLoader.IO
 				if (BuffLoader.IsModBuff(buff)) {
 					var modBuff = BuffLoader.GetBuff(buff);
 					list.Add(new TagCompound {
-						["mod"] = modBuff.mod.Name,
+						["mod"] = modBuff.Mod.Name,
 						["name"] = modBuff.Name,
 						["time"] = player.buffTime[k]
 					});

@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.IO
 				tag.Set("id", item.netID);
 			}
 			else {
-				tag.Set("mod", item.modItem.mod.Name);
+				tag.Set("mod", item.modItem.Mod.Name);
 				tag.Set("name", item.modItem.Name);
 				tag.Set("data", item.modItem.Save());
 			}
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.IO
 			if (item.prefix >= PrefixID.Count) {
 				ModPrefix modPrefix = ModPrefix.GetPrefix(item.prefix);
 				if (modPrefix != null) {
-					tag.Set("modPrefixMod", modPrefix.mod.Name);
+					tag.Set("modPrefixMod", modPrefix.Mod.Name);
 					tag.Set("modPrefixName", modPrefix.Name);
 				}
 			}
@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.IO
 					continue;
 
 				list.Add(new TagCompound {
-					["mod"] = globalItemInstance.mod.Name,
+					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
 					["data"] = globalItemInstance.Save(item)
 				});
@@ -175,7 +175,7 @@ namespace Terraria.ModLoader.IO
 				reader.SafeRead(r => item.modItem?.NetRecieve(r));
 			}
 			catch (IOException) {
-				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.mod.Name} mod.");
+				Logging.tML.Error($"Above IOException error caused by {item.modItem.Name} from the {item.modItem.Mod.Name} mod.");
 			}
 
 			foreach (var globalItem in ItemLoader.NetGlobals) {
@@ -183,7 +183,7 @@ namespace Terraria.ModLoader.IO
 					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
 				}
 				catch (IOException) {
-					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.mod.Name} mod while reading {item.Name}.");
+					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
 				}
 			}
 		}
@@ -262,8 +262,8 @@ namespace Terraria.ModLoader.IO
 								item.modItem.LoadLegacy(customReader);
 							}
 							catch (Exception e) {
-								throw new CustomModDataException(item.modItem.mod,
-									"Error in reading custom item data for " + item.modItem.mod.Name, e);
+								throw new CustomModDataException(item.modItem.Mod,
+									"Error in reading custom item data for " + item.modItem.Mod.Name, e);
 							}
 						}
 					}
@@ -282,8 +282,8 @@ namespace Terraria.ModLoader.IO
 									globalItem.LoadLegacy(item, customReader);
 								}
 								catch (Exception e) {
-									throw new CustomModDataException(globalItem.mod,
-										"Error in reading custom global item data for " + globalItem.mod.Name, e);
+									throw new CustomModDataException(globalItem.Mod,
+										"Error in reading custom global item data for " + globalItem.Mod.Name, e);
 								}
 							}
 						}

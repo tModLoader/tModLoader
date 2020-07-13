@@ -10,12 +10,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
-		public int Slot {
-			get;
-			internal set;
-		}
+		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance(string name) => mod.AddUgBgStyle(name, this);
+		protected sealed override void AddInstance() => Mod.AddUgBgStyle(this);
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -38,12 +35,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The ID of this surface background style.
 		/// </summary>
-		public int Slot {
-			get;
-			internal set;
-		}
+		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance(string name) => mod.AddSurfaceBgStyle(name, this);
+		protected sealed override void AddInstance() => Mod.AddSurfaceBgStyle(this);
 
 		/// <summary>
 		/// Whether or not the conditions have been met for this background style to draw its backgrounds. Returns false by default.
@@ -96,7 +90,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBgStyle:ModType
 	{
-		protected sealed override void AddInstance(string name) => mod.AddGlobalBgStyle(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalBgStyle(this);
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.

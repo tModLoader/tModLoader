@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Default
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
 			if (AprilFools.CheckAprilFools()) {
 				Item item = new Item();
-				item.SetDefaults(mod.ItemType("AprilFools"));
+				item.SetDefaults(Mod.ItemType("AprilFools"));
 				items.Add(item);
 			}
 		}

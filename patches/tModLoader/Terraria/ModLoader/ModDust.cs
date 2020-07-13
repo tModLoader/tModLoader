@@ -20,18 +20,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The sprite sheet that this type of dust uses. Normally a sprite sheet will consist of a vertical alignment of three 10 x 10 pixel squares, each one containing a possible look for the dust.
 		/// </summary>
-		public Texture2D Texture {
-			get;
-			internal set;
-		}
+		public Texture2D Texture2D{get;private set;}
+
 
 		/// <summary>
 		/// The ID of this type of dust.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		internal static int DustCount => nextDust;
 
@@ -88,16 +83,22 @@ namespace Terraria.ModLoader
 		//  ModDust modDust = ModDust.GetDust(dust.type);
 		//  if(modDust != null) { modDust.Draw(dust, color5, scale); continue; }
 		internal void Draw(Dust dust, Color alpha, float scale) {
-			Main.spriteBatch.Draw(Texture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
-			if (dust.color != default(Microsoft.Xna.Framework.Color)) {
-				Main.spriteBatch.Draw(Texture, dust.position - Main.screenPosition, new Microsoft.Xna.Framework.Rectangle?(dust.frame), dust.GetColor(alpha), dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(Texture2D, dust.position - Main.screenPosition, dust.frame, alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
+			if (dust.color != default) {
+				Main.spriteBatch.Draw(Texture2D, dust.position - Main.screenPosition, dust.frame, dust.GetColor(alpha), dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
 			}
-			if (alpha == Microsoft.Xna.Framework.Color.Black) {
+			if (alpha == Color.Black) {
 				dust.active = false;
 			}
 		}
 
-		protected sealed override void AddInstance(string name, string texture) => mod.AddDust(name, this, texture);
+		public sealed override void Load()
+		{
+			base.Load();
+			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
+		}
+
+		protected sealed override void AddInstance() => Mod.AddDust(this);
 
 		/// <summary>
 		/// Allows you to set this ModDust's updateType field and modify the Terraria.GameContent.ChildSafety.SafeDust array.

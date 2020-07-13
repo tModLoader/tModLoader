@@ -79,15 +79,9 @@ namespace Terraria.ModLoader
 			prefix = wr.Get();
 		}
 
-		public byte Type {
-			get;
-			internal set;
-		}
+		public byte Type {get;internal set;}
 
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
@@ -113,7 +107,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		protected sealed override void AddInstance(string name) => mod.AddPrefix(name, this);
+		protected sealed override void AddInstance() => Mod.AddPrefix(this);
 
 		public virtual void AutoDefaults() {
 			if (DisplayName.IsDefault())

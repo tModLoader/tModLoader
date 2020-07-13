@@ -67,14 +67,14 @@ namespace Terraria.ModLoader.IO
 				if (MapLoader.entryToTile.ContainsKey(type)) {
 					ModTile tile = TileLoader.GetTile(MapLoader.entryToTile[type]);
 					writer.Write(true);
-					writer.Write(tile.mod.Name);
+					writer.Write(tile.Mod.Name);
 					writer.Write(tile.Name);
 					writer.Write((ushort)(type - MapHelper.tileLookup[tile.Type]));
 				}
 				else if (MapLoader.entryToWall.ContainsKey(type)) {
 					ModWall wall = WallLoader.GetWall(MapLoader.entryToWall[type]);
 					writer.Write(false);
-					writer.Write(wall.mod.Name);
+					writer.Write(wall.Mod.Name);
 					writer.Write(wall.Name);
 					writer.Write((ushort)(type - MapHelper.wallLookup[wall.Type]));
 				}

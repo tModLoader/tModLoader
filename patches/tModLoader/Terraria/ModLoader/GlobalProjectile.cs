@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance(string name) => mod.AddGlobalProjectile(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalProjectile(this);
 
 		/// <summary>
 		/// Whether to create a new GlobalProjectile instance for every Projectile that exists. 
@@ -48,8 +48,7 @@ namespace Terraria.ModLoader
 				return Clone();
 			}
 			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index;
 			copy.instanceIndex = instanceIndex;
 			return copy;

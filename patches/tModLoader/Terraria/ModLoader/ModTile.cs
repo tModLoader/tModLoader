@@ -14,16 +14,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal ID of this type of tile.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
 		/// </summary>
-		public virtual string HighlightTexture => texture + "_Highlight";
+		public virtual string HighlightTexture => Texture + "_Highlight";
 		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
@@ -131,7 +127,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -197,7 +193,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		protected sealed override void AddInstance(string name, string texture) => mod.AddTile(name, this, texture);
+		protected sealed override void AddInstance() => Mod.AddTile(this);
 
 		/// <summary>
 		/// Allows you to set the properties of this tile. Many properties are stored as arrays throughout Terraria's code.

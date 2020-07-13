@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class ModWorld:ModType
 	{
-		protected sealed override void AddInstance(string name) => mod.AddModWorld(name, this);
+		protected sealed override void AddInstance() => Mod.AddModWorld(this);
 
 		/// <summary>
 		/// Called whenever the world is loaded. This can be used to initialize data structures, etc.

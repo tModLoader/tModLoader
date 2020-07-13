@@ -113,22 +113,21 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="item">The item.</param>
 		/// <exception cref="System.Exception">You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.</exception>
-		public void AddItem(string name, ModItem item) {
+		public void AddItem(ModItem item) {
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorAddItemOnlyInLoad"));
 
-			if (items.ContainsKey(name))
-				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", name));
+			if (items.ContainsKey(item.Name))
+				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", item.Name));
 
-			item.mod = this;
-			item.Name = name;
-			item.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ItemName.{1}", Name, name));
-			item.Tooltip = GetOrCreateTranslation(string.Format("Mods.{0}.ItemTooltip.{1}", Name, name), true);
+			item.Mod = this;
+			item.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ItemName.{1}", Name, item.Name));
+			item.Tooltip = GetOrCreateTranslation(string.Format("Mods.{0}.ItemTooltip.{1}", Name, item.Name), true);
 
 			item.item.ResetStats(ItemLoader.ReserveItemID());
 			item.item.modItem = item;
 
-			items[name] = item;
+			items[item.Name] = item;
 			ItemLoader.items.Add(item);
 			ContentInstance.Register(item);
 		}
@@ -168,18 +167,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalItem">The global item.</param>
-		public void AddGlobalItem(string name, GlobalItem globalItem) {
+		public void AddGlobalItem(GlobalItem globalItem) {
 			if (!loading)
 				throw new Exception("AddGlobalItem can only be called from Mod.Load or Mod.Autoload");
 
 			ItemLoader.VerifyGlobalItem(globalItem);
 
-			globalItem.mod = this;
-			globalItem.Name = name;
+			globalItem.Mod = this;
 
-			globalItems[name] = globalItem;
+			globalItems[globalItem.Name] = globalItem;
 			globalItem.index = ItemLoader.globalItems.Count;
-			ItemLoader.globalIndexes[Name + ':' + name] = ItemLoader.globalItems.Count;
+			ItemLoader.globalIndexes[Name + ':' + globalItem.Name] = ItemLoader.globalItems.Count;
 			if (ItemLoader.globalIndexesByType.ContainsKey(globalItem.GetType())) {
 				ItemLoader.globalIndexesByType[globalItem.GetType()] = -1;
 			}
@@ -218,8 +216,7 @@ namespace Terraria.ModLoader
 		/// <param name="armTexture">The arm texture (for body slots).</param>
 		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
-		public int AddEquipTexture(ModItem item, EquipType type, string name, string texture,
-			string armTexture = "", string femaleTexture = "") {
+		public int AddEquipTexture(ModItem item, EquipType type, string name, string texture, string armTexture = "", string femaleTexture = "") {
 			return AddEquipTexture(new EquipTexture(), item, type, name, texture, armTexture, femaleTexture);
 		}
 
@@ -236,8 +233,7 @@ namespace Terraria.ModLoader
 		/// <param name="armTexture">The arm texture (for body slots).</param>
 		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
-		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string name, string texture,
-			string armTexture = "", string femaleTexture = "") {
+		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string name, string texture, string armTexture = "", string femaleTexture = "") {
 			if (!loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -303,19 +299,18 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="prefix">The prefix.</param>
 		/// <exception cref="System.Exception">You tried to add 2 ModItems with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.</exception>
-		public void AddPrefix(string name, ModPrefix prefix) {
+		public void AddPrefix(ModPrefix prefix) {
 			if (!loading)
 				throw new Exception("AddPrefix can only be called from Mod.Load or Mod.Autoload");
 
-			if (prefixes.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModPrefixes with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddPrefix with 2 prefixes of the same name.");
+			if (prefixes.ContainsKey(prefix.Name))
+				throw new Exception("You tried to add 2 ModPrefixes with the same name: " + prefix.Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddPrefix with 2 prefixes of the same name.");
 
-			prefix.mod = this;
-			prefix.Name = name;
-			prefix.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.Prefix.{1}", Name, name));
+			prefix.Mod = this;
+			prefix.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.Prefix.{1}", Name, prefix.Name));
 			prefix.Type = ModPrefix.ReservePrefixID();
 
-			prefixes[name] = prefix;
+			prefixes[prefix.Name] = prefix;
 			ModPrefix.prefixes.Add(prefix);
 			ModPrefix.categoryPrefixes[prefix.Category].Add(prefix);
 			ContentInstance.Register(prefix);
@@ -357,16 +352,14 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="dust">The dust.</param>
 		/// <param name="texture">The texture.</param>
-		public void AddDust(string name, ModDust dust, string texture = "") {
+		public void AddDust(ModDust dust) {
 			if (!loading)
 				throw new Exception("AddDust can only be called from Mod.Load or Mod.Autoload");
 
-			dust.mod = this;
-			dust.Name = name;
+			dust.Mod = this;
 			dust.Type = ModDust.ReserveDustID();
-			dust.Texture = !string.IsNullOrEmpty(texture) ? ModContent.GetTexture(texture).Value : TextureAssets.Dust.Value;
 
-			dusts[name] = dust;
+			dusts[dust.Name] = dust;
 			ModDust.dusts.Add(dust);
 			ContentInstance.Register(dust);
 		}
@@ -407,19 +400,17 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="tile">The tile.</param>
 		/// <param name="texture">The texture.</param>
-		public void AddTile(string name, ModTile tile, string texture) {
+		public void AddTile(ModTile tile) {
 			if (!loading)
 				throw new Exception("AddItem can only be called from Mod.Load or Mod.Autoload");
 
-			if (tiles.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModTile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
+			if (tiles.ContainsKey(tile.Name))
+				throw new Exception("You tried to add 2 ModTile with the same name: " + tile.Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
 
-			tile.mod = this;
-			tile.Name = name;
+			tile.Mod = this;
 			tile.Type = (ushort)TileLoader.ReserveTileID();
-			tile.texture = texture;
 
-			tiles[name] = tile;
+			tiles[tile.Name] = tile;
 			TileLoader.tiles.Add(tile);
 			ContentInstance.Register(tile);
 		}
@@ -459,14 +450,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalTile">The global tile.</param>
-		public void AddGlobalTile(string name, GlobalTile globalTile) {
+		public void AddGlobalTile(GlobalTile globalTile) {
 			if (!loading)
 				throw new Exception("AddGlobalTile can only be called from Mod.Load or Mod.Autoload");
 
-			globalTile.mod = this;
-			globalTile.Name = name;
+			globalTile.Mod = this;
 
-			globalTiles[name] = globalTile;
+			globalTiles[globalTile.Name] = globalTile;
 			TileLoader.globalTiles.Add(globalTile);
 			ContentInstance.Register(globalTile);
 		}
@@ -489,17 +479,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Manually add a tile entity during Load.
 		/// </summary>
-		public void AddTileEntity(string name, ModTileEntity entity) {
+		public void AddTileEntity(ModTileEntity entity) {
 			if (!loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
 			int id = ModTileEntity.ReserveTileEntityID();
-			entity.mod = this;
-			entity.Name = name;
+			entity.Mod = this;
 			entity.Type = id;
 			entity.type = (byte)id;
 
-			tileEntities[name] = entity;
+			tileEntities[entity.Name] = entity;
 			ModTileEntity.tileEntities.Add(entity);
 			ContentInstance.Register(entity);
 		}
@@ -541,16 +530,14 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="wall">The wall.</param>
 		/// <param name="texture">The texture.</param>
-		public void AddWall(string name, ModWall wall, string texture) {
+		public void AddWall(ModWall wall) {
 			if (!loading)
 				throw new Exception("AddWall can only be called from Mod.Load or Mod.Autoload");
 
-			wall.mod = this;
-			wall.Name = name;
+			wall.Mod = this;
 			wall.Type = (ushort)WallLoader.ReserveWallID();
-			wall.texture = texture;
 
-			walls[name] = wall;
+			walls[wall.Name] = wall;
 			WallLoader.walls.Add(wall);
 			ContentInstance.Register(wall);
 		}
@@ -585,14 +572,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalWall">The global wall.</param>
-		public void AddGlobalWall(string name, GlobalWall globalWall) {
+		public void AddGlobalWall(GlobalWall globalWall) {
 			if (!loading)
 				throw new Exception("AddGlobalWall can only be called from Mod.Load or Mod.Autoload");
 
-			globalWall.mod = this;
-			globalWall.Name = name;
+			globalWall.Mod = this;
 
-			globalWalls[name] = globalWall;
+			globalWalls[globalWall.Name] = globalWall;
 			WallLoader.globalWalls.Add(globalWall);
 			ContentInstance.Register(globalWall);
 		}
@@ -612,19 +598,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="projectile">The projectile.</param>
-		public void AddProjectile(string name, ModProjectile projectile) {
+		public void AddProjectile(ModProjectile projectile) {
 			if (!loading)
 				throw new Exception("AddProjectile can only be called from Mod.Load or Mod.Autoload");
 
-			if (projectiles.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModProjectile with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
+			if (projectiles.ContainsKey(projectile.Name))
+				throw new Exception("You tried to add 2 ModProjectile with the same name: " + projectile.Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
 
-			projectile.mod = this;
-			projectile.Name = name;
+			projectile.Mod = this;
 			projectile.projectile.type = ProjectileLoader.ReserveProjectileID();
-			projectile.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ProjectileName.{1}", Name, name));
+			projectile.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.ProjectileName.{1}", Name, projectile.Name));
 
-			projectiles[name] = projectile;
+			projectiles[projectile.Name] = projectile;
 			ProjectileLoader.projectiles.Add(projectile);
 			ContentInstance.Register(projectile);
 		}
@@ -659,18 +644,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalProjectile">The global projectile.</param>
-		public void AddGlobalProjectile(string name, GlobalProjectile globalProjectile) {
+		public void AddGlobalProjectile(GlobalProjectile globalProjectile) {
 			if (!loading)
 				throw new Exception("AddGlobalProjectile can only be called from Mod.Load or Mod.Autoload");
 
 			ProjectileLoader.VerifyGlobalProjectile(globalProjectile);
 
-			globalProjectile.mod = this;
-			globalProjectile.Name = name;
+			globalProjectile.Mod = this;
 
-			globalProjectiles[name] = globalProjectile;
+			globalProjectiles[globalProjectile.Name] = globalProjectile;
 			globalProjectile.index = ProjectileLoader.globalProjectiles.Count;
-			ProjectileLoader.globalIndexes[Name + ':' + name] = ProjectileLoader.globalProjectiles.Count;
+			ProjectileLoader.globalIndexes[Name + ':' + globalProjectile.Name] = ProjectileLoader.globalProjectiles.Count;
 			if (ProjectileLoader.globalIndexesByType.ContainsKey(globalProjectile.GetType())) {
 				ProjectileLoader.globalIndexesByType[globalProjectile.GetType()] = -1;
 			}
@@ -696,19 +680,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="npc">The NPC.</param>
-		public void AddNPC(string name, ModNPC npc) {
+		public void AddNPC(ModNPC npc) {
 			if (!loading)
 				throw new Exception("AddNPC can only be called from Mod.Load or Mod.Autoload");
 
-			if (npcs.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModNPC with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
+			if (npcs.ContainsKey(npc.Name))
+				throw new Exception("You tried to add 2 ModNPC with the same name: " + npc.Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
 
-			npc.mod = this;
-			npc.Name = name;
+			npc.Mod = this;
 			npc.npc.type = NPCLoader.ReserveNPCID();
-			npc.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.NPCName.{1}", Name, name));
+			npc.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.NPCName.{1}", Name, npc.Name));
 
-			npcs[name] = npc;
+			npcs[npc.Name] = npc;
 			NPCLoader.npcs.Add(npc);
 			ContentInstance.Register(npc);
 		}
@@ -743,18 +726,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalNPC">The global NPC.</param>
-		public void AddGlobalNPC(string name, GlobalNPC globalNPC) {
+		public void AddGlobalNPC(GlobalNPC globalNPC) {
 			if (!loading)
 				throw new Exception("AddGlobalNPC can only be called from Mod.Load or Mod.Autoload");
 
 			NPCLoader.VerifyGlobalNPC(globalNPC);
 
-			globalNPC.mod = this;
-			globalNPC.Name = name;
+			globalNPC.Mod = this;
 
-			globalNPCs[name] = globalNPC;
+			globalNPCs[globalNPC.Name] = globalNPC;
 			globalNPC.index = NPCLoader.globalNPCs.Count;
-			NPCLoader.globalIndexes[Name + ':' + name] = NPCLoader.globalNPCs.Count;
+			NPCLoader.globalIndexes[Name + ':' + globalNPC.Name] = NPCLoader.globalNPCs.Count;
 			if (NPCLoader.globalIndexesByType.ContainsKey(globalNPC.GetType())) {
 				NPCLoader.globalIndexesByType[globalNPC.GetType()] = -1;
 			}
@@ -820,14 +802,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="player">The player.</param>
-		public void AddPlayer(string name, ModPlayer player) {
+		public void AddPlayer(ModPlayer player) {
 			if (!loading)
 				throw new Exception("AddPlayer can only be called from Mod.Load or Mod.Autoload");
 
-			player.mod = this;
-			player.Name = name;
+			player.Mod = this;
 
-			players[name] = player;
+			players[player.Name] = player;
 			PlayerHooks.Add(player);
 			ContentInstance.Register(player);
 		}
@@ -848,21 +829,19 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="buff">The buff.</param>
 		/// <param name="texture">The texture.</param>
-		public void AddBuff(string name, ModBuff buff, string texture) {
+		public void AddBuff(ModBuff buff) {
 			if (!loading)
 				throw new Exception("AddBuff can only be called from Mod.Load or Mod.Autoload");
 
-			if (buffs.ContainsKey(name))
-				throw new Exception("You tried to add 2 ModBuff with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
+			if (buffs.ContainsKey(buff.Name))
+				throw new Exception("You tried to add 2 ModBuff with the same name: " + buff.Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
 
-			buff.mod = this;
-			buff.Name = name;
+			buff.Mod = this;
 			buff.Type = BuffLoader.ReserveBuffID();
-			buff.texture = texture;
-			buff.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.BuffName.{1}", Name, name));
-			buff.Description = GetOrCreateTranslation(string.Format("Mods.{0}.BuffDescription.{1}", Name, name));
+			buff.DisplayName = GetOrCreateTranslation(string.Format("Mods.{0}.BuffName.{1}", Name, buff.Name));
+			buff.Description = GetOrCreateTranslation(string.Format("Mods.{0}.BuffDescription.{1}", Name, buff.Name));
 
-			buffs[name] = buff;
+			buffs[buff.Name] = buff;
 			BuffLoader.buffs.Add(buff);
 			ContentInstance.Register(buff);
 		}
@@ -897,11 +876,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalBuff">The global buff.</param>
-		public void AddGlobalBuff(string name, GlobalBuff globalBuff) {
-			globalBuff.mod = this;
-			globalBuff.Name = name;
+		public void AddGlobalBuff(GlobalBuff globalBuff) {
+			globalBuff.Mod = this;
 
-			globalBuffs[name] = globalBuff;
+			globalBuffs[globalBuff.Name] = globalBuff;
 			BuffLoader.globalBuffs.Add(globalBuff);
 			ContentInstance.Register(globalBuff);
 		}
@@ -923,24 +901,23 @@ namespace Terraria.ModLoader
 		/// <param name="mount">The mount.</param>
 		/// <param name="texture">The texture.</param>
 		/// <param name="extraTextures">The extra textures.</param>
-		public void AddMount(string name, ModMountData mount, string texture,
-			IDictionary<MountTextureType, string> extraTextures = null) {
+		public void AddMount(ModMountData mount) {
 			if (!loading)
 				throw new Exception("AddMount can only be called from Mod.Load or Mod.Autoload");
 
 			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
 				Mount.Initialize();
 
-			mount.mod = this;
-			mount.Name = name;
+			mount.Mod = this;
 			mount.Type = MountLoader.ReserveMountID();
-			mount.texture = texture;
 
-			mountDatas[name] = mount;
+			mountDatas[mount.Name] = mount;
 			MountLoader.mountDatas[mount.Type] = mount;
 			ContentInstance.Register(mount);
 
-			if (extraTextures == null)
+			var extraTextures = new Dictionary<MountTextureType, string>();
+			mount.SetExtraTextures(extraTextures);
+			if (extraTextures.Count == 0)
 				return;
 
 			foreach (var entry in extraTextures) {
@@ -1008,14 +985,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="modWorld">The mod world.</param>
-		public void AddModWorld(string name, ModWorld modWorld) {
+		public void AddModWorld(ModWorld modWorld) {
 			if (!loading)
 				throw new Exception("AddModWorld can only be called from Mod.Load or Mod.Autoload");
 
-			modWorld.mod = this;
-			modWorld.Name = name;
+			modWorld.Mod = this;
 
-			worlds[name] = modWorld;
+			worlds[modWorld.Name] = modWorld;
 			WorldHooks.Add(modWorld);
 			ContentInstance.Register(modWorld);
 		}
@@ -1040,15 +1016,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="ugBgStyle">The ug bg style.</param>
-		public void AddUgBgStyle(string name, ModUgBgStyle ugBgStyle) {
+		public void AddUgBgStyle(ModUgBgStyle ugBgStyle) {
 			if (!loading)
 				throw new Exception("AddUgBgStyle can only be called from Mod.Load or Mod.Autoload");
 
-			ugBgStyle.mod = this;
-			ugBgStyle.Name = name;
+			ugBgStyle.Mod = this;
 			ugBgStyle.Slot = UgBgStyleLoader.ReserveBackgroundSlot();
 
-			ugBgStyles[name] = ugBgStyle;
+			ugBgStyles[ugBgStyle.Name] = ugBgStyle;
 			UgBgStyleLoader.ugBgStyles.Add(ugBgStyle);
 			ContentInstance.Register(ugBgStyle);
 		}
@@ -1068,15 +1043,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="surfaceBgStyle">The surface bg style.</param>
-		public void AddSurfaceBgStyle(string name, ModSurfaceBgStyle surfaceBgStyle) {
+		public void AddSurfaceBgStyle(ModSurfaceBgStyle surfaceBgStyle) {
 			if (!loading)
 				throw new Exception("AddSurfaceBgStyle can only be called from Mod.Load or Mod.Autoload");
 
-			surfaceBgStyle.mod = this;
-			surfaceBgStyle.Name = name;
+			surfaceBgStyle.Mod = this;
 			surfaceBgStyle.Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
 
-			surfaceBgStyles[name] = surfaceBgStyle;
+			surfaceBgStyles[surfaceBgStyle.Name] = surfaceBgStyle;
 			SurfaceBgStyleLoader.surfaceBgStyles.Add(surfaceBgStyle);
 			ContentInstance.Register(surfaceBgStyle);
 		}
@@ -1105,14 +1079,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalBgStyle">The global bg style.</param>
-		public void AddGlobalBgStyle(string name, GlobalBgStyle globalBgStyle) {
+		public void AddGlobalBgStyle(GlobalBgStyle globalBgStyle) {
 			if (!loading)
 				throw new Exception("AddGlobalBgStyle can only be called from Mod.Load or Mod.Autoload");
 
-			globalBgStyle.mod = this;
-			globalBgStyle.Name = name;
+			globalBgStyle.Mod = this;
 
-			globalBgStyles[name] = globalBgStyle;
+			globalBgStyles[globalBgStyle.Name] = globalBgStyle;
 			GlobalBgStyleLoader.globalBgStyles.Add(globalBgStyle);
 			ContentInstance.Register(globalBgStyle);
 		}
@@ -1134,17 +1107,14 @@ namespace Terraria.ModLoader
 		/// <param name="waterStyle">The water style.</param>
 		/// <param name="texture">The texture.</param>
 		/// <param name="blockTexture">The block texture.</param>
-		public void AddWaterStyle(string name, ModWaterStyle waterStyle, string texture, string blockTexture) {
+		public void AddWaterStyle(ModWaterStyle waterStyle) {
 			if (!loading)
 				throw new Exception("AddWaterStyle can only be called from Mod.Load or Mod.Autoload");
 
-			waterStyle.mod = this;
-			waterStyle.Name = name;
+			waterStyle.Mod = this;
 			waterStyle.Type = WaterStyleLoader.ReserveStyle();
-			waterStyle.texture = texture;
-			waterStyle.blockTexture = blockTexture;
-
-			waterStyles[name] = waterStyle;
+			
+			waterStyles[waterStyle.Name] = waterStyle;
 			WaterStyleLoader.waterStyles.Add(waterStyle);
 			ContentInstance.Register(waterStyle);
 		}
@@ -1165,16 +1135,14 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="waterfallStyle">The waterfall style.</param>
 		/// <param name="texture">The texture.</param>
-		public void AddWaterfallStyle(string name, ModWaterfallStyle waterfallStyle, string texture) {
+		public void AddWaterfallStyle(ModWaterfallStyle waterfallStyle) {
 			if (!loading)
 				throw new Exception("AddWaterfallStyle can only be called from Mod.Load or Mod.Autoload");
 
-			waterfallStyle.mod = this;
-			waterfallStyle.Name = name;
+			waterfallStyle.Mod = this;
 			waterfallStyle.Type = WaterfallStyleLoader.ReserveStyle();
-			waterfallStyle.texture = texture;
 
-			waterfallStyles[name] = waterfallStyle;
+			waterfallStyles[waterfallStyle.Name] = waterfallStyle;
 			WaterfallStyleLoader.waterfallStyles.Add(waterfallStyle);
 			ContentInstance.Register(waterfallStyle);
 		}
@@ -1290,14 +1258,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="globalRecipe">The global recipe.</param>
-		public void AddGlobalRecipe(string name, GlobalRecipe globalRecipe) {
+		public void AddGlobalRecipe(GlobalRecipe globalRecipe) {
 			if (!loading)
 				throw new Exception("AddGlobalRecipe can only be called from Mod.Load or Mod.Autoload");
 
-			globalRecipe.mod = this;
-			globalRecipe.Name = name;
+			globalRecipe.Mod = this;
 
-			globalRecipes[name] = globalRecipe;
+			globalRecipes[globalRecipe.Name] = globalRecipe;
 			RecipeHooks.Add(globalRecipe);
 			ContentInstance.Register(globalRecipe);
 		}
@@ -1315,12 +1282,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Manually add a Command during Load
 		/// </summary>
-		public void AddCommand(string name, ModCommand mc) {
+		public void AddCommand(ModCommand mc) {
 			if (!loading)
 				throw new Exception("AddCommand can only be called from Mod.Load or Mod.Autoload");
 
-			mc.mod = this;
-			mc.Name = name;
+			mc.Mod = this;
 			CommandManager.Add(mc);
 		}
 

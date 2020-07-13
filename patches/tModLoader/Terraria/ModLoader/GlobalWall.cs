@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalWall:ModType
 	{
-		protected sealed override void AddInstance(string name) => mod.AddGlobalWall(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalWall(this);
 
 		/// <summary>
 		/// Allows you to modify the properties of any wall in the game. Most properties are stored as arrays throughout the Terraria code.

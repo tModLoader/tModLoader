@@ -7,6 +7,8 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	internal abstract class PatreonItem : ModItem
 	{
+		public override string Name => $"{SetName}_{ItemEquipType}";
+
 		// Make sure the name and classname prefix match exactly.
 		public abstract string SetName { get; }
 		public abstract EquipType ItemEquipType { get; }
@@ -31,7 +33,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			var line = new TooltipLine(mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
+			var line = new TooltipLine(Mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
 				overrideColor = Color.Aquamarine
 			};
 			tooltips.Add(line);

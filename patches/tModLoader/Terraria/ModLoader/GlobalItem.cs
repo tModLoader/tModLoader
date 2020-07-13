@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance(string name) => mod.AddGlobalItem(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalItem(this);
 
 		/// <summary>
 		/// Whether to create a new GlobalItem instance for every Item that exists. 
@@ -60,8 +60,7 @@ namespace Terraria.ModLoader
 				return Clone();
 
 			var copy = (GlobalItem)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index; //not necessary, but consistency
 			copy.instanceIndex = instanceIndex;//shouldn't be used, but someone might
 			return copy;

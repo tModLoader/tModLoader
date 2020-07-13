@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
 		
-		protected sealed override void AddInstance(string name) => mod.AddCommand(name, this);
+		protected sealed override void AddInstance() => Mod.AddCommand(this);
 		/// <summary>The code that is executed when the command is triggered.</summary>
 		public abstract void Action(CommandCaller caller, string input, string[] args);
 	}

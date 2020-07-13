@@ -5,7 +5,7 @@
 	/// </summary>
 	public class GlobalRecipe:ModType
 	{
-		protected sealed override void AddInstance(string name) => mod.AddGlobalRecipe(name, this);
+		protected sealed override void AddInstance() => Mod.AddGlobalRecipe(this);
 
 		/// <summary>
 		/// Whether or not the conditions are met for the given recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).

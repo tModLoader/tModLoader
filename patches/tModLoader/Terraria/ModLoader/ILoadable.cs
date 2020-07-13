@@ -1,20 +1,20 @@
 ﻿namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// Allows for implementing types to be autoloaded.
+	/// Allows for implementing types to be loaded and unloaded.
 	/// </summary>
-	public interface IAutoloadable
+	[Autoload]
+	public interface ILoadable
 	{
 		/// <summary>
 		/// Called when loading the type.
 		/// </summary>
 		/// <param name="mod">The mod instance associated with this type.</param>
-		/// <returns>True is this type needs to be unloaded, otherwise false.</returns>
-		bool Autoload(Mod mod);
+		public abstract void Load(Mod mod);
 
 		/// <summary>
 		/// Called during unloading when needed.
 		/// </summary>
-		void Unload();
+		public abstract void Unload();
 	}
 }

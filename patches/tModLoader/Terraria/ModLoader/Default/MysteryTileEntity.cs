@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Default
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && (tile.type == mod.TileType("MysteryTile") || tile.type == mod.TileType("PendingMysteryTile"));
+			return tile.active() && (tile.type == Mod.TileType("MysteryTile") || tile.type == Mod.TileType("PendingMysteryTile"));
 		}
 
 		public override TagCompound Save() {

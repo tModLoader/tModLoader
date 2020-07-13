@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -26,26 +25,17 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The item.
 		/// </value>
-		public Item item {
-			get;
-			internal set;
-		}
+		public Item item {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {
-			get;
-			internal set;
-		}
+		public ModTranslation Tooltip {get;internal set;}
 
 		/// <summary>
 		/// The file name of this item's texture file in the mod loader's file space.
@@ -74,12 +64,12 @@ namespace Terraria.ModLoader
 			item = new Item { modItem = this };
 		}
 
-		protected sealed override void AddInstance(string name) {
-			mod.AddItem(name, this);
+		protected sealed override void AddInstance() {
+			Mod.AddItem(this);
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					mod.AddEquipTexture(this, equip, Name, Texture + '_' + equip, Texture + "_Arms", Texture + "_FemaleBody");
+					Mod.AddEquipTexture(this, equip, Name, Texture + '_' + equip, Texture + "_Arms", Texture + "_FemaleBody");
 				}
 			}
 		}
@@ -125,8 +115,7 @@ namespace Terraria.ModLoader
 
 			var copy = (ModItem)Activator.CreateInstance(GetType());
 			copy.item = itemClone;
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
 			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
 			return copy;

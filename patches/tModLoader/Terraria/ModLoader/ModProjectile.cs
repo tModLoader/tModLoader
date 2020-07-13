@@ -72,7 +72,7 @@ namespace Terraria.ModLoader
 			projectile.modProjectile = this;
 		}
 
-		protected sealed override void AddInstance(string name) => mod.AddProjectile(name, this);
+		protected sealed override void AddInstance() => Mod.AddProjectile(this);
 
 		/// <summary>
 		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.
@@ -102,8 +102,7 @@ namespace Terraria.ModLoader
 
 			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
 			copy.projectile = projectileClone;
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.aiType = aiType;
 			copy.cooldownSlot = cooldownSlot;
 			copy.drawOffsetX = drawOffsetX;

@@ -62,7 +62,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
-		internal readonly IList<IAutoloadable> loadables = new List<IAutoloadable>();
+		internal readonly IList<ILoadable> loadables = new List<ILoadable>();
 
 		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
 		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
@@ -150,7 +150,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModTile tile in tiles.Values) {
-				TextureAssets.Tile[tile.Type] = ModContent.GetTexture(tile.texture);
+				TextureAssets.Tile[tile.Type] = ModContent.GetTexture(tile.Texture);
 
 				TileLoader.SetDefaults(tile);
 
@@ -168,7 +168,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModWall wall in walls.Values) {
-				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.texture);
+				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.Texture);
 
 				wall.SetDefaults();
 			}
@@ -199,18 +199,18 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModBuff buff in buffs.Values) {
-				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.texture);
+				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.Texture);
 
 				buff.SetDefaults();
 			}
 
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
-				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.texture);
-				TextureAssets.Liquid[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
+				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.Texture);
+				TextureAssets.Liquid[waterStyle.Type] = ModContent.GetTexture(waterStyle.BlockTexture);
 			}
 
 			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values) {
-				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.texture);
+				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.Texture);
 			}
 		}
 
@@ -291,8 +291,12 @@ namespace Terraria.ModLoader
 				if (type.IsAbstract){continue;}
 				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
 
-				if (typeof(IAutoloadable).IsAssignableFrom(type)) {
-					AutoloadInstance(type);
+				if (typeof(ILoadable).IsAssignableFrom(type)) {
+					//The first one should be the most derived.
+					var autoload = (AutoloadAttribute)type.GetCustomAttributes(typeof(AutoloadAttribute), true).FirstOrDefault();
+					if (autoload!=null && (autoload.Value ?? Properties.Autoload)) {
+						AutoloadInstance(type);
+					}
 				}
 				else if (type.IsSubclassOf(typeof(ModGore))) {
 					modGores.Add(type);
@@ -355,9 +359,9 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadInstance(Type type) {
-			var loadable = (IAutoloadable)Activator.CreateInstance(type);
-			if(loadable.Autoload(this)) {
-				loadables.Add(loadable);			}
+			var loadable = (ILoadable)Activator.CreateInstance(type);
+			loadable.Load(this);
+			loadables.Add(loadable);
 		}
 
 		private void AutoloadBackgrounds() {
