@@ -2856,8 +2856,8 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
  			}
-+			else if(!Main.dedServ)
-+				ItemLoader.UseStyle(sItem, this);
++			// else if(!Main.dedServ)
++				// ItemLoader.UseStyle(sItem, this);
  		}
  
  		private void ItemCheck_ApplyManaRegenDelay(Item sItem) {
