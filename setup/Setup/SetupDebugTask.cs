@@ -25,20 +25,24 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus("Compiling RoslynWrapper");
 
 			msBuildIsMissing = !CheckIfMSBuildIsPresent();
-			msBuildIsOutdated = GetMSBuildVersion() < MinMSBuildVersion; 
+			msBuildIsOutdated = msBuildIsMissing || GetMSBuildVersion() < MinMSBuildVersion;
+
+			bool msBuildReady = !msBuildIsMissing && !msBuildIsOutdated;
 
 			//Compile Roslyn.
 
-			roslynCompileFailed = RunCmd("RoslynWrapper", "msbuild",
+			roslynCompileFailed = !msBuildReady || RunCmd("RoslynWrapper", "msbuild",
 				"RoslynWrapper.sln /restore /p:Configuration=Release",
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
 
-			var roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
+			//Try to install Roslyn's libraries.
+
+			string[] roslynRefs = new[] {"RoslynWrapper.dll", "Microsoft.CodeAnalysis.dll", "Microsoft.CodeAnalysis.CSharp.dll",
 				"System.Collections.Immutable.dll", "System.Reflection.Metadata.dll", "System.IO.FileSystem.dll", "System.IO.FileSystem.Primitives.dll",
 				"System.Security.Cryptography.Algorithms.dll", "System.Security.Cryptography.Encoding.dll", "System.Security.Cryptography.Primitives.dll", "System.Security.Cryptography.X509Certificates.dll" };
 
-			foreach (var dll in roslynRefs) {
+			foreach (string dll in roslynRefs) {
 				string path = Path.Combine("RoslynWrapper/bin/Release/net46", dll);
 
 				if (!roslynCompileFailed || File.Exists(path))
@@ -48,11 +52,13 @@ namespace Terraria.ModLoader.Setup
 			//Compile FNA tML.
 
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
-			var references = new[] { "FNA.dll" };
-			foreach (var dll in references)
+
+			string[] references = new[] { "FNA.dll" };
+
+			foreach (string dll in references)
 				Copy("references/" + dll, Path.Combine(modCompile, dll));
 
-			tMLFNACompileFailed = RunCmd("solutions", "msbuild",
+			tMLFNACompileFailed = !msBuildReady || RunCmd("solutions", "msbuild",
 				"tModLoader.sln /restore /p:Configuration=MacRelease",
 				null, null, null, taskInterface.CancellationToken
 			) != 0;
