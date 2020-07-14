@@ -42,21 +42,21 @@ namespace Terraria.ModLoader.Default
 			Instance = this;
 
 			/*if (!Main.dedServ) {
-				AddTexture("MysteryItem", ReadTexture("MysteryItem"));
+				AddTexture("UnloadedItem", ReadTexture("UnloadedItem"));
 				AddTexture("StartBag", ReadTexture("StartBag"));
-				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
+				AddTexture("UnloadedTile", ReadTexture("UnloadedTile"));
 			}*/
 			
-			AddItem("MysteryItem", new MysteryItem());
-			AddGlobalItem("MysteryGlobalItem", new MysteryGlobalItem());
+			AddItem("UnloadedItem", new UnloadedItem());
+			AddGlobalItem("UnloadedGlobalItem", new UnloadedGlobalItem());
 			AddItem("StartBag", new StartBag());
 			AddItem("AprilFools", new AprilFools());
-			AddTile("MysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
-			AddTile("PendingMysteryTile", new MysteryTile(), "ModLoader/MysteryTile");
-			AddTileEntity("MysteryTileEntity", new MysteryTileEntity());
-			AddPlayer("MysteryPlayer", new MysteryPlayer());
-			AddModWorld("MysteryWorld", new MysteryWorld());
-			AddModWorld("MysteryTilesWorld", new MysteryTilesWorld());
+			AddTile("UnloadedTile", new UnloadedTile(), "ModLoader/UnloadedTile");
+			AddTile("PendingUnloadedTile", new UnloadedTile(), "ModLoader/UnloadedTile");
+			AddTileEntity("UnloadedTileEntity", new UnloadedTileEntity());
+			AddPlayer("UnloadedPlayer", new UnloadedPlayer());
+			AddModWorld("UnloadedWorld", new UnloadedWorld());
+			AddModWorld("UnloadedTilesWorld", new UnloadedTilesWorld());
 			AddCommand("HelpCommand", new HelpCommand());
 			AddCommand("ModlistCommand", new ModlistCommand());
 			/*AddPatronSets();

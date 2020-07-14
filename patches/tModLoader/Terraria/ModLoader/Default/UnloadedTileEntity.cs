@@ -2,7 +2,7 @@
 
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryTileEntity : ModTileEntity
+	public class UnloadedTileEntity : ModTileEntity
 	{
 		private string modName;
 		private string tileEntityName;
@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Default
 
 		public override bool ValidTile(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && (tile.type == mod.TileType("MysteryTile") || tile.type == mod.TileType("PendingMysteryTile"));
+			return tile.active() && (tile.type == mod.TileType("UnloadedTile") || tile.type == mod.TileType("PendingUnloadedTile"));
 		}
 
 		public override TagCompound Save() {

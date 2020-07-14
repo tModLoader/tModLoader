@@ -4,7 +4,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryPlayer : ModPlayer
+	public class UnloadedPlayer : ModPlayer
 	{
 		internal IList<TagCompound> data;
 

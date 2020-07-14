@@ -5,13 +5,13 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryItem : ModItem
+	public class UnloadedItem : ModItem
 	{
 		private string modName;
 		private string itemName;
 		private TagCompound data;
 
-		public override string Texture => "ModLoader/MysteryItem";
+		public override string Texture => "ModLoader/UnloadedItem";
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
@@ -68,7 +68,7 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => true;
 
 		public override ModItem Clone() {
-			var clone = (MysteryItem)base.Clone();
+			var clone = (UnloadedItem)base.Clone();
 			clone.data = (TagCompound)data?.Clone();
 			return clone;
 		}

@@ -3,7 +3,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryGlobalItem : GlobalItem
+	public class UnloadedGlobalItem : GlobalItem
 	{
 		internal IList<TagCompound> data = new List<TagCompound>();
 
@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => true;
 
 		public override GlobalItem Clone() {
-			MysteryGlobalItem clone = (MysteryGlobalItem)base.Clone();
+			UnloadedGlobalItem clone = (UnloadedGlobalItem)base.Clone();
 			if (data != null) {
 				clone.data = TagIO.Clone(data);
 			}

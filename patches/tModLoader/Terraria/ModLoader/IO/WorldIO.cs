@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().mysteryNPCs.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().unloadedNPCs.Add(tag);
 				}
 			}
 		}
@@ -195,7 +195,7 @@ namespace Terraria.ModLoader.IO
 					NPC.killCount[type] = tag.GetInt("count");
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().mysteryKillCounts.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().unloadedKillCounts.Add(tag);
 				}
 			}
 		}
@@ -294,7 +294,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					ModContent.GetInstance<MysteryWorld>().data.Add(tag);
+					ModContent.GetInstance<UnloadedWorld>().data.Add(tag);
 				}
 			}
 		}

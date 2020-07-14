@@ -2,7 +2,7 @@
 
 namespace Terraria.ModLoader.Default
 {
-	internal class MysteryTileInfo
+	internal class UnloadedTileInfo
 	{
 		public readonly string modName;
 		public readonly string name;
@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Default
 		public readonly short frameX;
 		public readonly short frameY;
 
-		public MysteryTileInfo(string modName, string name) {
+		public UnloadedTileInfo(string modName, string name) {
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = false;
@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Default
 			this.frameY = -1;
 		}
 
-		public MysteryTileInfo(string modName, string name, short frameX, short frameY) {
+		public UnloadedTileInfo(string modName, string name, short frameX, short frameY) {
 			this.modName = modName;
 			this.name = name;
 			this.frameImportant = true;
@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override bool Equals(object obj) {
-			MysteryTileInfo other = obj as MysteryTileInfo;
+			UnloadedTileInfo other = obj as UnloadedTileInfo;
 			if (other == null) {
 				return false;
 			}

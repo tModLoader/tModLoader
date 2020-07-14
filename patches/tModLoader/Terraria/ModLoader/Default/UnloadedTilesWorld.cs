@@ -5,10 +5,10 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	class MysteryTilesWorld : ModWorld
+	class UnloadedTilesWorld : ModWorld
 	{
-		internal List<MysteryTileInfo> infos = new List<MysteryTileInfo>();
-		internal List<MysteryTileInfo> pendingInfos = new List<MysteryTileInfo>();
+		internal List<UnloadedTileInfo> infos = new List<UnloadedTileInfo>();
+		internal List<UnloadedTileInfo> pendingInfos = new List<UnloadedTileInfo>();
 
 		public override void Initialize() {
 			infos.Clear();
@@ -35,8 +35,8 @@ namespace Terraria.ModLoader.Default
 				string name = infoTag.GetString("name");
 				bool frameImportant = infoTag.ContainsKey("frameX");
 				var info = frameImportant ?
-					new MysteryTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) :
-					new MysteryTileInfo(modName, name);
+					new UnloadedTileInfo(modName, name, infoTag.GetShort("frameX"), infoTag.GetShort("frameY")) :
+					new UnloadedTileInfo(modName, name);
 				infos.Add(info);
 
 				int type = ModLoader.GetMod(modName)?.TileType(name) ?? 0;
@@ -58,15 +58,15 @@ namespace Terraria.ModLoader.Default
 		}
 
 		private void RestoreTiles(List<ushort> canRestore) {
-			ushort mysteryType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("MysteryTile");
+			ushort unloadedType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("UnloadedTile");
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
-					if (Main.tile[x, y].type == mysteryType) {
+					if (Main.tile[x, y].type == unloadedType) {
 						Tile tile = Main.tile[x, y];
-						MysteryTileFrame frame = new MysteryTileFrame(tile.frameX, tile.frameY);
+						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
 						int frameID = frame.FrameID;
 						if (canRestore[frameID] > 0) {
-							MysteryTileInfo info = infos[frameID];
+							UnloadedTileInfo info = infos[frameID];
 							tile.type = canRestore[frameID];
 							tile.frameX = info.frameX;
 							tile.frameY = info.frameY;
@@ -91,15 +91,15 @@ namespace Terraria.ModLoader.Default
 				}
 				truePendingID.Add(nextID);
 			}
-			ushort pendingType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
-			ushort mysteryType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("MysteryTile");
+			ushort pendingType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile");
+			ushort unloadedType = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("UnloadedTile");
 			for (int x = 0; x < Main.maxTilesX; x++) {
 				for (int y = 0; y < Main.maxTilesY; y++) {
 					if (Main.tile[x, y].type == pendingType) {
 						Tile tile = Main.tile[x, y];
-						MysteryTileFrame frame = new MysteryTileFrame(tile.frameX, tile.frameY);
-						frame = new MysteryTileFrame(truePendingID[frame.FrameID]);
-						tile.type = mysteryType;
+						UnloadedTileFrame frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
+						frame = new UnloadedTileFrame(truePendingID[frame.FrameID]);
+						tile.type = unloadedType;
 						tile.frameX = frame.FrameX;
 						tile.frameY = frame.FrameY;
 					}

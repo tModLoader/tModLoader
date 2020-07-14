@@ -4,30 +4,30 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryWorld : ModWorld
+	public class UnloadedWorld : ModWorld
 	{
 		internal IList<TagCompound> data;
-		internal IList<TagCompound> mysteryNPCs;
-		internal IList<TagCompound> mysteryKillCounts;
+		internal IList<TagCompound> unloadedNPCs;
+		internal IList<TagCompound> unloadedKillCounts;
 
 		public override void Initialize() {
 			data = new List<TagCompound>();
-			mysteryNPCs = new List<TagCompound>();
-			mysteryKillCounts = new List<TagCompound>();
+			unloadedNPCs = new List<TagCompound>();
+			unloadedKillCounts = new List<TagCompound>();
 		}
 
 		public override TagCompound Save() {
 			return new TagCompound {
 				["list"] = data,
-				["mysteryNPCs"] = mysteryNPCs,
-				["mysteryKillCounts"] = mysteryKillCounts
+				["unloadedNPCs"] = unloadedNPCs,
+				["unloadedKillCounts"] = unloadedKillCounts
 			};
 		}
 
 		public override void Load(TagCompound tag) {
 			WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
-			WorldIO.LoadNPCs(tag.GetList<TagCompound>("mysteryNPCs"));
-			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("mysteryKillCounts"));
+			WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
+			WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));
 		}
 	}
 }

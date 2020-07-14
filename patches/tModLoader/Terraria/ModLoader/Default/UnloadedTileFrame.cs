@@ -1,6 +1,6 @@
 ﻿namespace Terraria.ModLoader.Default
 {
-	internal class MysteryTileFrame
+	internal class UnloadedTileFrame
 	{
 		private short frameX;
 		private short frameY;
@@ -18,11 +18,11 @@
 			}
 		}
 
-		public MysteryTileFrame(int value) {
+		public UnloadedTileFrame(int value) {
 			FrameID = value;
 		}
 
-		public MysteryTileFrame(short frameX, short frameY) {
+		public UnloadedTileFrame(short frameX, short frameY) {
 			this.frameX = frameX;
 			this.frameY = frameY;
 		}

@@ -1,6 +1,6 @@
 namespace Terraria.ModLoader.Default
 {
-	public class MysteryTile : ModTile
+	public class UnloadedTile : ModTile
 	{
 		public override void SetDefaults() {
 			Main.tileSolid[Type] = true;
@@ -11,8 +11,8 @@ namespace Terraria.ModLoader.Default
 		{
 			var tile = Main.tile[i, j];
 			if(tile != null && tile.type == Type) {
-				var frame = new MysteryTileFrame(tile.frameX, tile.frameY);
-				var info = ModContent.GetInstance<MysteryTilesWorld>().infos[frame.FrameID];
+				var frame = new UnloadedTileFrame(tile.frameX, tile.frameY);
+				var info = ModContent.GetInstance<UnloadedTilesWorld>().infos[frame.FrameID];
 
 				if(info != null) {
 					Main.LocalPlayer.cursorItemIconEnabled = true;

@@ -142,7 +142,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
+					player.GetModPlayer<UnloadedPlayer>().data.Add(tag);
 				}
 			}
 		}
