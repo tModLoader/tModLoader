@@ -2,8 +2,8 @@ using ExampleMod.Content.Items.Weapons;
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent; //This lets us access methods (like ItemType) from ModContent without having to type its name.
 
 namespace ExampleMod.Content.Items
 {
@@ -23,12 +23,12 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void AddRecipes() {
-			////////////////////////////////////////////////////////////////////////////////////////////
-			//The following basic recipe makes a full stack (999) of ExampleItems out of 1 dirt block.//
-			////////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
+			//The following basic recipe makes 100 ExampleItems out of 1 dirt block.//
+			//////////////////////////////////////////////////////////////////////////
 
 			//This creates a new ModRecipe, associated with the mod that this content piece comes from.
-			var recipe = CreateRecipe(item.maxStack);
+			var recipe = CreateRecipe(999);
 			//This adds a requirement of 1 dirt block to the recipe.
 			recipe.AddIngredient(ItemID.DirtBlock);
 			//When you're done, call this to register the recipe.
@@ -71,8 +71,8 @@ namespace ExampleMod.Content.Items
 				//An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
 				.AddTile(mod, "ExampleWorkbench")
 
-				//Adds a custom condition that the player should be standing in honey for the recipe to work.
-				.AddCondition(r => Main.LocalPlayer.honeyWet)
+				//Adds a custom condition, that it must be night for the recipe to work. This uses a lambda expression to create a delegate, you can learn more about both through Google.
+				.AddCondition(NetworkText.FromLiteral("Night Time"), r => !Main.dayTime)
 
 				// Marks the recipe as an alchemy recipe. This makes it require an alchemy table, and gives a 1/3 chance for each ingredient to not be consumed. See https://terraria.gamepedia.com/Alchemy_Table.
 				.IsAlchemy()

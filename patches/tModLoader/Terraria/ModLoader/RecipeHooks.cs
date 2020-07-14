@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader
@@ -52,7 +53,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			if (recipe is ModRecipe modRecipe && modRecipe.HookRecipeAvailable?.Invoke(modRecipe) == false) {
+			if (recipe is ModRecipe modRecipe && !modRecipe.Conditions.Values.Any(func => !func.Invoke(modRecipe))) {
 				return false;
 			}
 
@@ -72,7 +73,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe) {
 			if (recipe is ModRecipe modRecipe) {
-				modRecipe.HookOnCraft?.Invoke(modRecipe, item);
+				modRecipe.OnCraftHooks?.Invoke(modRecipe, item);
 			}
 
 			foreach (GlobalRecipe globalRecipe in globalRecipes) {

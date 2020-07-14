@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
@@ -10,13 +12,15 @@ namespace Terraria.ModLoader
 	public sealed class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
+		public readonly IReadOnlyDictionary<NetworkText, Func<ModRecipe, bool>> Conditions;
+
+		private readonly Dictionary<NetworkText, Func<ModRecipe, bool>> ConditionHooks;
 
 		private int numIngredients = 0;
 		private int numTiles = 0;
 
-		internal Action<ModRecipe, Item> HookOnCraft { get; private set; }
-		internal Func<ModRecipe, bool> HookRecipeAvailable { get; private set; }
-		internal Func<ModRecipe, int, int, int> HookConsumeItem { get; private set; }
+		internal Action<ModRecipe, Item> OnCraftHooks { get; private set; }
+		internal Func<ModRecipe, int, int, int> ConsumeItemHooks { get; private set; }
 
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
@@ -25,6 +29,8 @@ namespace Terraria.ModLoader
 
 		private ModRecipe(Mod mod) {
 			this.mod = mod;
+
+			Conditions = ConditionHooks = new Dictionary<NetworkText, Func<ModRecipe, bool>>();
 		}
 
 		/// <summary>
@@ -174,8 +180,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
-		public ModRecipe AddCondition(Func<ModRecipe, bool> condition) {
-			HookRecipeAvailable += condition;
+		/// <param name="condition">The predicate delegate condition.</param>
+		/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
+		public ModRecipe AddCondition(NetworkText description, Func<ModRecipe, bool> condition) {
+			if (Conditions.ContainsKey(description))
+				throw new ArgumentException("Cannot have more than one condition with the same description.");
+
+			ConditionHooks.Add(description, condition);
 
 			return this;
 		}
@@ -184,7 +195,7 @@ namespace Terraria.ModLoader
 		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
 		public ModRecipe AddOnCraftCallback(Action<ModRecipe, Item> callback) {
-			HookOnCraft += callback;
+			OnCraftHooks += callback;
 
 			return this;
 		}
@@ -193,7 +204,7 @@ namespace Terraria.ModLoader
 		/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 		/// </summary>
 		public ModRecipe AddConsumeItemCallback(Func<ModRecipe, int, int, int> callback) {
-			HookConsumeItem += callback;
+			ConsumeItemHooks += callback;
 
 			return this;
 		}

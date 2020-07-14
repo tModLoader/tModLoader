@@ -31,7 +31,7 @@
  
  				int num = item2.stack;
 +				if (this is ModRecipe modRecipe)
-+					num = modRecipe.HookConsumeItem?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
++					num = modRecipe.ConsumeItemHooks?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
 +
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  					if (num > 1) {
