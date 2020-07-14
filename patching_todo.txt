@@ -16,7 +16,6 @@
 			we can now let the game use ApplyItemTime, it has our hook built in.
 		//Fishing submethods will need to use Item instead of values.
 		//Ensure all ItemLoader.ConsumeItems have been added.
-		//Change all CheckMana() to use version with item passed in
 		//Replace ItemLoader.AutoLightSelect with data sets.
 			There are sets for Torches and Water Torches already.
 			Add ItemID.Sets.Glowsticks and implement it in SmartSelect_PickToolForStrategy (both places).
@@ -34,9 +33,6 @@
 
 	//TileLoader
 		//Multiply item.axe by 1.2f before adding into the damage.
-
-	//WorldGen
-		//Add TileLoader.IsClosedDoor into WorldGen.IsLockedDoor check.
 
 	//Needs checking:
 		//WaterStyleLoader.WaterStyleCount
