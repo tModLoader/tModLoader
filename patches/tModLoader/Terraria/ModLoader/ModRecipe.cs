@@ -217,9 +217,6 @@ namespace Terraria.ModLoader
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 			
-			if (numIngredients >= maxRequirements || numTiles >= maxRequirements)
-				throw new RecipeException($"A recipe with either too many tiles or too many ingredients has been added. {maxRequirements} is the max.");
-
 			for (int k = 0; k < maxRequirements; k++) {
 				if (requiredTile[k] == TileID.Bottles) {
 					alchemy = true;
