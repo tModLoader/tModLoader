@@ -3630,7 +3630,7 @@
  			num = list[Main.rand.Next(list.Count)];
  			Item item = new Item();
  			item.SetDefaults(num);
-@@ -38098,7 +_,53 @@
+@@ -38098,6 +_,52 @@
  			}
  		}
  
@@ -3680,11 +3680,9 @@
 +			return false;
 +		}
 +
--		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
-+		private bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
+ 		public bool CheckMana(int amount, bool pay = false, bool blockQuickMana = false) {
  			int num = (int)((float)amount * manaCost);
  			if (statMana >= num) {
- 				if (pay)
 @@ -38130,7 +_,7 @@
  		public bool ConsumeSolarFlare() {
  			if (setSolar && solarShields > 0) {
