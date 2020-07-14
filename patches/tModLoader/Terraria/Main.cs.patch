@@ -1010,348 +1010,160 @@
  			if (diff == 1)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
-@@ -14837,107 +_,114 @@
- 
- 			int num2 = 30;
- 			int numLines = 1;
--			string[] array = new string[num2];
-+			string[] tooltipLines = new string[num2];
- 			bool[] array2 = new bool[num2];
- 			bool[] array3 = new bool[num2];
- 			for (int i = 0; i < num2; i++) {
+@@ -14844,8 +_,9 @@
  				array2[i] = false;
  				array3[i] = false;
  			}
 +			string[] tooltipNames = new string[num2];
  
 -			MouseText_DrawItemTooltip_GetLinesInfo(HoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
-+			MouseText_DrawItemTooltip_GetLinesInfo(HoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, tooltipLines, array2, array3, tooltipNames);
++			MouseText_DrawItemTooltip_GetLinesInfo(HoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames);
  			float num3 = (float)(int)mouseTextColor / 255f;
--			float num4 = num3;
-+			float colorThing = num3;
+ 			float num4 = num3;
  			int a = mouseTextColor;
- 			if (npcShop > 0 && hoverItem.value >= 0 && (hoverItem.type < 71 || hoverItem.type > 74)) {
+@@ -14853,6 +_,7 @@
  				LocalPlayer.GetItemExpectedPrice(hoverItem, out int calcForSelling, out int calcForBuying);
  				int num5 = (hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling;
  				if (hoverItem.shopSpecialCurrency != -1) {
 +					tooltipNames[numLines] = "SpecialPrice";
--					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
-+					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, tooltipLines, ref numLines, num5);
--					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
-+					color = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(255f * colorThing), (byte)(255f * colorThing), a);
+ 					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
+ 					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
  				}
- 				else if (num5 > 0) {
- 					string text = "";
--					int num6 = 0;
-+					int costPlatinum = 0;
--					int num7 = 0;
-+					int costGold = 0;
--					int num8 = 0;
-+					int costSilver = 0;
--					int num9 = 0;
-+					int costCopper = 0;
--					int num10 = num5 * hoverItem.stack;
-+					int costSomething = num5 * hoverItem.stack;
- 					if (!hoverItem.buy) {
--						num10 = num5 / 5;
-+						costSomething = num5 / 5;
--						if (num10 < 1)
-+						if (costSomething < 1)
--							num10 = 1;
-+							costSomething = 1;
- 
--						int num11 = num10;
-+						int num11 = costSomething;
--						num10 *= hoverItem.stack;
-+						costSomething *= hoverItem.stack;
- 						int amount = shopSellbackHelper.GetAmount(hoverItem);
- 						if (amount > 0)
--							num10 += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);
-+							costSomething += (-num11 + calcForBuying) * Math.Min(amount, hoverItem.stack);
- 					}
- 
--					if (num10 < 1)
-+					if (costSomething < 1)
--						num10 = 1;
-+						costSomething = 1;
- 
--					if (num10 >= 1000000) {
-+					if (costSomething >= 1000000) {
--						num6 = num10 / 1000000;
-+						costPlatinum = costSomething / 1000000;
--						num10 -= num6 * 1000000;
-+						costSomething -= costPlatinum * 1000000;
- 					}
- 
--					if (num10 >= 10000) {
-+					if (costSomething >= 10000) {
--						num7 = num10 / 10000;
-+						costGold = costSomething / 10000;
--						num10 -= num7 * 10000;
-+						costSomething -= costGold * 10000;
- 					}
- 
--					if (num10 >= 100) {
-+					if (costSomething >= 100) {
--						num8 = num10 / 100;
-+						costSilver = costSomething / 100;
--						num10 -= num8 * 100;
-+						costSomething -= costSilver * 100;
- 					}
- 
--					if (num10 >= 1)
-+					if (costSomething >= 1)
--						num9 = num10;
-+						costCopper = costSomething;
- 
--					if (num6 > 0)
-+					if (costPlatinum > 0)
--						text = text + num6 + " " + Lang.inter[15].Value + " ";
-+						text = text + costPlatinum + " " + Lang.inter[15].Value + " ";
- 
--					if (num7 > 0)
-+					if (costGold > 0)
--						text = text + num7 + " " + Lang.inter[16].Value + " ";
-+						text = text + costGold + " " + Lang.inter[16].Value + " ";
- 
--					if (num8 > 0)
-+					if (costSilver > 0)
--						text = text + num8 + " " + Lang.inter[17].Value + " ";
-+						text = text + costSilver + " " + Lang.inter[17].Value + " ";
- 
--					if (num9 > 0)
-+					if (costCopper > 0)
--						text = text + num9 + " " + Lang.inter[18].Value + " ";
-+						text = text + costCopper + " " + Lang.inter[18].Value + " ";
- 
- 					if (!hoverItem.buy)
--						array[numLines] = Lang.tip[49].Value + " " + text;
-+						tooltipLines[numLines] = Lang.tip[49].Value + " " + text;
+@@ -14913,6 +_,7 @@
  					else
--						array[numLines] = Lang.tip[50].Value + " " + text;
-+						tooltipLines[numLines] = Lang.tip[50].Value + " " + text;
+ 						array[numLines] = Lang.tip[50].Value + " " + text;
  
 +					tooltipNames[numLines] = "Price";
  					numLines++;
--					if (num6 > 0)
-+					if (costPlatinum > 0)
--						color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
-+						color = new Microsoft.Xna.Framework.Color((byte)(220f * colorThing), (byte)(220f * colorThing), (byte)(198f * colorThing), a);
--					else if (num7 > 0)
-+					else if (costGold > 0)
--						color = new Microsoft.Xna.Framework.Color((byte)(224f * num4), (byte)(201f * num4), (byte)(92f * num4), a);
-+						color = new Microsoft.Xna.Framework.Color((byte)(224f * colorThing), (byte)(201f * colorThing), (byte)(92f * colorThing), a);
--					else if (num8 > 0)
-+					else if (costSilver > 0)
--						color = new Microsoft.Xna.Framework.Color((byte)(181f * num4), (byte)(192f * num4), (byte)(193f * num4), a);
-+						color = new Microsoft.Xna.Framework.Color((byte)(181f * colorThing), (byte)(192f * colorThing), (byte)(193f * colorThing), a);
--					else if (num9 > 0)
-+					else if (costCopper > 0)
--						color = new Microsoft.Xna.Framework.Color((byte)(246f * num4), (byte)(138f * num4), (byte)(96f * num4), a);
-+						color = new Microsoft.Xna.Framework.Color((byte)(246f * colorThing), (byte)(138f * colorThing), (byte)(96f * colorThing), a);
+ 					if (num6 > 0)
+ 						color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
+@@ -14925,12 +_,16 @@
  				}
  				else if (hoverItem.type != 3817) {
--					array[numLines] = Lang.tip[51].Value;
-+					tooltipLines[numLines] = Lang.tip[51].Value;
+ 					array[numLines] = Lang.tip[51].Value;
 +					tooltipNames[numLines] = "Price";
  					numLines++;
--					color = new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(120f * num4), (byte)(120f * num4), a);
-+					color = new Microsoft.Xna.Framework.Color((byte)(120f * colorThing), (byte)(120f * colorThing), (byte)(120f * colorThing), a);
+ 					color = new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(120f * num4), (byte)(120f * num4), a);
  				}
  			}
  
  			Vector2 zero = Vector2.Zero;
 +			Microsoft.Xna.Framework.Color?[] overrideColor;
-+			List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref tooltipLines, ref array2, ref array3, ref yoyoLogo, out overrideColor);
++			List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out overrideColor);
 +			List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Microsoft.Xna.Framework.Color.White)).ToList();
--			int num12 = 0;
-+			int yOffset = 0;
+ 			int num12 = 0;
  			for (int j = 0; j < numLines; j++) {
--				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-+				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, tooltipLines[j], Vector2.One);
- 				if (stringSize.X > zero.X)
- 					zero.X = stringSize.X;
- 
--				zero.Y += stringSize.Y + (float)num12;
-+				zero.Y += stringSize.Y + (float)yOffset;
- 			}
- 
- 			if (yoyoLogo != -1)
-@@ -14969,178 +_,190 @@
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
+@@ -14969,42 +_,45 @@
  				Utils.DrawInvBG(spriteBatch, new Microsoft.Xna.Framework.Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Microsoft.Xna.Framework.Color(23, 25, 81, 255) * 0.925f);
  			}
  
 +			bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), ref X, ref Y);
  			for (int k = 0; k < numLines; k++) {
--				if (k == yoyoLogo) {
--					float num19 = 1f;
--					int num20 = (int)((float)(int)mouseTextColor * num19);
--					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
--					for (int l = 0; l < 5; l++) {
--						int num21 = X;
--						int num22 = Y + num16;
--						if (l == 4)
--							color2 = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
--
--						switch (l) {
--							case 0:
--								num21--;
--								break;
--							case 1:
--								num21++;
--								break;
--							case 2:
--								num22--;
--								break;
--							case 3:
--								num22++;
--								break;
--						}
--
--						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--					}
--				}
--				else {
 +				drawableLines[k].OriginalX = X;
+-				if (k == yoyoLogo) {
 +				drawableLines[k].OriginalY = Y;
+-					float num19 = 1f;
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
+-					int num20 = (int)((float)(int)mouseTextColor * num19);
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
- 					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
--					black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
--					if (k == 0) {
--						if (rare == -13)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
+-					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
++					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
 +					drawableLines[k].color = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
-+					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref yOffset) && globalCanDraw) {
++					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) && globalCanDraw) {
+-					for (int l = 0; l < 5; l++) {
 +						for (int l = 0; l < 5; l++) {
+-						int num21 = X;
 +							int num21 = X;
+-						int num22 = Y + num16;
 +							int num22 = Y + num16;
+-						if (l == 4)
 +							if (l == 4)
+-							color2 = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
 +								black = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
  
+-						switch (l) {
 +							switch (l) {
+-							case 0:
 +								case 0:
+-								num21--;
 +									num21--;
+-								break;
 +									break;
+-							case 1:
 +								case 1:
+-								num21++;
 +									num21++;
+-								break;
 +									break;
+-							case 2:
 +								case 2:
+-								num22--;
 +									num22--;
+-								break;
 +									break;
+-							case 3:
 +								case 3:
+-								num22++;
 +									num22++;
+-								break;
 +									break;
 +							}
 +							Microsoft.Xna.Framework.Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].color;
 +							spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? black : drawColor2, drawableLines[k].rotation, drawableLines[k].origin, (drawableLines[k].baseScale.X + drawableLines[k].baseScale.Y) / 2f, SpriteEffects.None, 0f);
-+						}
-+					}
+ 						}
+-
+-						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					}
 +					ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
-+				}
-+				else {
-+					Microsoft.Xna.Framework.Color lineColor = Microsoft.Xna.Framework.Color.Black;
-+					lineColor = new Microsoft.Xna.Framework.Color(colorThing, colorThing, colorThing, colorThing);
+ 				}
+ 				else {
+ 					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+ 					black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
+-					if (k == 0) {
+-						if (rare == -13)
+-							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
+-
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "ItemName") {
  						if (rare == -11)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(175f * colorThing), (byte)(0f * colorThing), a);
+ 							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
  
- 						if (rare == -1)
--							black = new Microsoft.Xna.Framework.Color((byte)(130f * num4), (byte)(130f * num4), (byte)(130f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(130f * colorThing), (byte)(130f * colorThing), (byte)(130f * colorThing), a);
- 
- 						if (rare == 1)
--							black = new Microsoft.Xna.Framework.Color((byte)(150f * num4), (byte)(150f * num4), (byte)(255f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(150f * colorThing), (byte)(150f * colorThing), (byte)(255f * colorThing), a);
- 
- 						if (rare == 2)
--							black = new Microsoft.Xna.Framework.Color((byte)(150f * num4), (byte)(255f * num4), (byte)(150f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(150f * colorThing), (byte)(255f * colorThing), (byte)(150f * colorThing), a);
- 
- 						if (rare == 3)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(200f * num4), (byte)(150f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(200f * colorThing), (byte)(150f * colorThing), a);
- 
- 						if (rare == 4)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(150f * num4), (byte)(150f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(150f * colorThing), (byte)(150f * colorThing), a);
- 
- 						if (rare == 5)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(150f * num4), (byte)(255f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(150f * colorThing), (byte)(255f * colorThing), a);
- 
- 						if (rare == 6)
--							black = new Microsoft.Xna.Framework.Color((byte)(210f * num4), (byte)(160f * num4), (byte)(255f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(210f * colorThing), (byte)(160f * colorThing), (byte)(255f * colorThing), a);
- 
- 						if (rare == 7)
--							black = new Microsoft.Xna.Framework.Color((byte)(150f * num4), (byte)(255f * num4), (byte)(10f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(150f * colorThing), (byte)(255f * colorThing), (byte)(10f * colorThing), a);
- 
- 						if (rare == 8)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(10f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(255f * colorThing), (byte)(10f * colorThing), a);
- 
- 						if (rare == 9)
--							black = new Microsoft.Xna.Framework.Color((byte)(5f * num4), (byte)(200f * num4), (byte)(255f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(5f * colorThing), (byte)(200f * colorThing), (byte)(255f * colorThing), a);
- 
- 						if (rare == 10)
--							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(40f * colorThing), (byte)(100f * colorThing), a);
- 
- 						if (rare >= 11)
--							black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(180f * colorThing), (byte)(40f * colorThing), (byte)(255f * colorThing), a);
- 
- 						if (diff == 1)
--							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * colorThing), (byte)((float)(int)mcColor.G * colorThing), (byte)((float)(int)mcColor.B * colorThing), a);
- 
- 						if (diff == 2)
--							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)hcColor.R * num4), (byte)((float)(int)hcColor.G * num4), (byte)((float)(int)hcColor.B * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)hcColor.R * colorThing), (byte)((float)(int)hcColor.G * colorThing), (byte)((float)(int)hcColor.B * colorThing), a);
+@@ -15052,95 +_,104 @@
  
  						if (hoverItem.expert || rare == -12)
--							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * colorThing), (byte)((float)DiscoG * colorThing), (byte)((float)DiscoB * colorThing), a);
+ 							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
 +
 +						if (hoverItem.master || rare == -13)
-+							lineColor = new Microsoft.Xna.Framework.Color((byte)(255f * colorThing), (byte)(masterColor * 200f * colorThing), 0, a);
++							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
  					}
  					else if (array2[k]) {
--						black = (array3[k] ? new Microsoft.Xna.Framework.Color((byte)(190f * num4), (byte)(120f * num4), (byte)(120f * num4), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(190f * num4), (byte)(120f * num4), a));
-+						lineColor = (array3[k] ? new Microsoft.Xna.Framework.Color((byte)(190f * colorThing), (byte)(120f * colorThing), (byte)(120f * colorThing), a) : new Microsoft.Xna.Framework.Color((byte)(120f * colorThing), (byte)(190f * colorThing), (byte)(120f * colorThing), a));
+ 						black = (array3[k] ? new Microsoft.Xna.Framework.Color((byte)(190f * num4), (byte)(120f * num4), (byte)(120f * num4), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(190f * num4), (byte)(120f * num4), a));
  					}
 -					else if (k == numLines - 1) {
 +					else if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "Price") {
--						black = color;
-+						lineColor = color;
+ 						black = color;
  					}
  
 -					if (k == researchLine)
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
--						black = Colors.JourneyMode;
-+						lineColor = Colors.JourneyMode;
+ 						black = Colors.JourneyMode;
  
--					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
-+					drawableLines[k].color = lineColor;
-+					Microsoft.Xna.Framework.Color realLineColor = lineColor;
++					drawableLines[k].color = black;
++					Microsoft.Xna.Framework.Color realLineColor = black;
 +
 +					if (overrideColor[k].HasValue) {
-+						realLineColor = overrideColor[k].Value * colorThing;
++						realLineColor = overrideColor[k].Value * num4;
 +						drawableLines[k].overrideColor = realLineColor;
 +					}
 +
-+					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref yOffset) && globalCanDraw) {
-+						ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, tooltipLines[k], new Vector2(X, Y + num16), realLineColor, 0f, Vector2.Zero, Vector2.One);
++					if (ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) && globalCanDraw) {
+-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
++						ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), realLineColor, 0f, Vector2.Zero, Vector2.One);
 +					}
 +					ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
  				}
  
--				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
-+				num16 += (int)(FontAssets.MouseText.Value.MeasureString(tooltipLines[k]).Y + (float)yOffset);
+ 				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
  			}
  		}
  
