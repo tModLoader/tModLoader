@@ -13,10 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddGlobalProjectile can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			Mod.globalProjectiles[Name] = this;

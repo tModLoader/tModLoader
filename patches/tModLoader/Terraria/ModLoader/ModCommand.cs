@@ -50,10 +50,7 @@ namespace Terraria.ModLoader
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
 		
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddCommand can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			CommandManager.Add(this);
 		}
 

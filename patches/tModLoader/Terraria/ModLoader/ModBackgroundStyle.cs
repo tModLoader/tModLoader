@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Terraria.ModLoader
 {
@@ -13,10 +12,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddUgBgStyle can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
 
 			Mod.ugBgStyles[Name] = this;
@@ -47,10 +43,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddSurfaceBgStyle can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
 
 			Mod.surfaceBgStyles[Name] = this;
@@ -109,10 +102,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBgStyle:ModType
 	{
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddGlobalBgStyle can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Mod.globalBgStyles[Name] = this;
 			GlobalBgStyleLoader.globalBgStyles.Add(this);
 			ContentInstance.Register(this);

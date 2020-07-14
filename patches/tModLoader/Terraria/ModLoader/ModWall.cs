@@ -97,10 +97,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddWall can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Type = (ushort)WallLoader.ReserveWallID();
 
 			Mod.walls[Name] = this;

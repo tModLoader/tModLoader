@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public class ModNPC:ModType
+	public class ModNPC:ModTexturedType
 	{
 		//add modNPC property to Terraria.NPC (internal set)
 		//set modNPC to null at beginning of Terraria.NPC.SetDefaults
@@ -27,10 +27,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation DisplayName {get;internal set;}
 
-		/// <summary>
-		/// The file name of this NPC's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
 		/// The file name of this NPC's head texture file, to be used in autoloading.
 		/// </summary>
@@ -88,10 +84,7 @@ namespace Terraria.ModLoader
 			npc = new NPC{modNPC = this};
 		}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddNPC can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			if (Mod.npcs.ContainsKey(Name))
 				throw new Exception("You tried to add 2 ModNPC with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
 

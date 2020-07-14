@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBuff:ModType
 	{
-		protected sealed override void AddInstance() {
+		internal sealed override void AddInstance() {
 			Mod.globalBuffs[Name] = this;
 			BuffLoader.globalBuffs.Add(this);
 			ContentInstance.Register(this);

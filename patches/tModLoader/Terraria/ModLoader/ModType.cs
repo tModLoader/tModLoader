@@ -11,7 +11,7 @@
 		public Mod Mod { get; internal set; }
 
 		/// <summary>
-		/// The internal name of this instance.
+		/// The internal name of this.
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
@@ -28,7 +28,7 @@
 		/// <summary>
 		/// DO NOT CALL THIS! This is called automatically in ILoadable.Load
 		/// </summary>
-		protected abstract void AddInstance();
+		internal virtual void AddInstance(){}
 	}
 
 }

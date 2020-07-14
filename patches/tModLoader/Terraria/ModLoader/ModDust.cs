@@ -98,10 +98,7 @@ namespace Terraria.ModLoader
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
-		protected sealed override void AddInstance(){
-			if (!Mod.loading)
-				throw new Exception("AddDust can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Type = ModDust.ReserveDustID();
 
 			Mod.dusts[Name] = this;

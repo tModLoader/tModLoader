@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
 	/// </summary>
-	public class ModProjectile:ModType
+	public class ModProjectile : ModTexturedType
 	{
 		//add modProjectile property to Terraria.Projectile (internal set)
 		//set modProjectile to null at beginning of Terraria.Projectile.SetDefaults
@@ -21,23 +21,13 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The projectile.
 		/// </value>
-		public Projectile projectile {
-			get;
-			internal set;
-		}
+		public Projectile projectile { get; internal set; }
 
 		/// <summary>
 		/// The translations for the display name of this projectile.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName { get; internal set; }
 
-		/// <summary>
-		/// The file name of this projectile's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 		/// <summary>
 		/// The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored.
 		/// </summary>
@@ -68,14 +58,10 @@ namespace Terraria.ModLoader
 		public bool drawHeldProjInFrontOfHeldItemAndArms = false;
 
 		public ModProjectile() {
-			projectile = new Projectile();
-			projectile.modProjectile = this;
+			projectile = new Projectile { modProjectile = this };
 		}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddProjectile can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			if (Mod.projectiles.ContainsKey(projectile.Name))
 				throw new Exception("You tried to add 2 ModProjectile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
 

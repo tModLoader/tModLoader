@@ -107,7 +107,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		protected sealed override void AddInstance() {
+		internal sealed override void AddInstance() {
 			if (!Mod.loading)
 				throw new Exception("AddPrefix can only be called from Mod.Load or Mod.Autoload");
 

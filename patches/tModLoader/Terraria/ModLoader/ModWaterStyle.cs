@@ -1,47 +1,26 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
-	public abstract class ModWaterStyle:IModType
+	public abstract class ModWaterStyle:ModTexturedType
 	{
-		/// <summary>
-		/// The mod that added this style of water.
-		/// </summary>
-		public Mod Mod {get;internal set;}
-
-		/// <summary>
-		/// The internal name of this water style.
-		/// </summary>
-		public virtual string Name => GetType().Name;
-
 		/// <summary>
 		/// The ID of the water style.
 		/// </summary>
 		public int Type {get;internal set;}
 
-		public virtual string Texture => GetType().FullName.Replace('.', '/');
 		public virtual string BlockTexture => Texture + "_Block";
 
-		void ILoadable.Load(Mod mod)
-		{
-			Mod = mod;
-			
-			if (!Mod.loading)
-				throw new Exception("AddWaterStyle can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Type = WaterStyleLoader.ReserveStyle();
 			
 			Mod.waterStyles[Name] = this;
 			WaterStyleLoader.waterStyles.Add(this);
 			ContentInstance.Register(this);
 		}
-
-		public virtual void Load(){}
-		public virtual void Unload(){}
 
 		/// <summary>
 		/// Whether the conditions have been met for this water style to be used. Typically Main.bgStyle is checked to determine whether a water style should be used. Returns false by default.
@@ -92,10 +71,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Type {get;internal set;}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddWaterfallStyle can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Type = WaterfallStyleLoader.ReserveStyle();
 
 			Mod.waterfallStyles[Name] = this;

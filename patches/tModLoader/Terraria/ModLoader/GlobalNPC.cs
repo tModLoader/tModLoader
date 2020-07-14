@@ -13,10 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddGlobalNPC can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			Mod.globalNPCs[Name] = this;

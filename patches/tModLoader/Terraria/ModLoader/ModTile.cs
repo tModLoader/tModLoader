@@ -193,10 +193,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		protected sealed override void AddInstance(){
-			if (!Mod.loading)
-				throw new Exception("AddItem can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			if (Mod.tiles.ContainsKey(Name))
 				throw new Exception("You tried to add 2 ModTile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
 

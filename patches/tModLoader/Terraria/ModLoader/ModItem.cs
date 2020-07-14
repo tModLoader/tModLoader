@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public class ModItem:ModType
+	public class ModItem:ModTexturedType
 	{
 		//add modItem property to Terraria.Item (internal set)
 		//set modItem to null at beginning of Terraria.Item.ResetStats		
@@ -37,11 +37,6 @@ namespace Terraria.ModLoader
 		/// The translations for the display name of this tooltip.
 		/// </summary>
 		public ModTranslation Tooltip {get;internal set;}
-
-		/// <summary>
-		/// The file name of this item's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
 		public virtual string ArmTexture => Texture + "_Arms";
 
@@ -69,10 +64,7 @@ namespace Terraria.ModLoader
 			item = new Item { modItem = this };
 		}
 
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorAddItemOnlyInLoad"));
-
+		internal sealed override void AddInstance() {
 			if (Mod.items.ContainsKey(Name))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
 

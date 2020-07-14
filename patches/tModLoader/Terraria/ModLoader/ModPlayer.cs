@@ -39,10 +39,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		protected sealed override void AddInstance() {
-			if (!Mod.loading)
-				throw new Exception("AddPlayer can only be called from Mod.Load or Mod.Autoload");
-
+		internal sealed override void AddInstance() {
 			Mod.players[Name] = this;
 			PlayerHooks.Add(this);
 			ContentInstance.Register(this);
