@@ -184,23 +184,13 @@ namespace Terraria.ModLoader
 		public ModRecipe AddCondition(NetworkText description, Predicate<ModRecipe> condition) => AddCondition(new Condition(description, condition));
 
 		/// <summary>
-		/// Adds a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
-		/// </summary>
-		/// <param name="condition">The condition object.</param>
-		public ModRecipe AddCondition(Condition condition) {
-			Conditions.Add(condition);
-
-			return this;
-		}
-
-		/// <summary>
-		/// Adds an array of condition delegates that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+		/// Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="conditions">An array of conditions.</param>
 		public ModRecipe AddCondition(params Condition[] conditions) => AddCondition(conditions);
 
 		/// <summary>
-		/// Adds a collectiom of condition delegates that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+		/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="conditions">A collection of conditions.</param>
 		public ModRecipe AddCondition(IEnumerable<Condition> conditions) {
