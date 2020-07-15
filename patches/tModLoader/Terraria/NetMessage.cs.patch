@@ -137,6 +137,14 @@
  						writer.Write(number3);
  						writer.Write((byte)(number4 + 1f));
  						writer.Write((byte)number5);
+@@ -537,6 +_,7 @@
+ 							Item item3 = Main.chest[number].item[(byte)number2];
+ 							writer.Write((short)number);
+ 							writer.Write((byte)number2);
++							writer.Write((bool)(number3 == 1)); // New, passed as third parameter, default 0. 1 if sent from within a RequestChestOpen packet
+ 							short value2 = (short)item3.netID;
+ 							if (item3.Name == null)
+ 								value2 = 0;
 @@ -544,6 +_,7 @@
  							writer.Write((short)item3.stack);
  							writer.Write(item3.prefix);
