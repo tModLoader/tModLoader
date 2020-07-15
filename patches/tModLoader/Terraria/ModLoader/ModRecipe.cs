@@ -18,9 +18,12 @@ namespace Terraria.ModLoader
 
 		private int numIngredients = 0;
 		private int numTiles = 0;
-
-		internal Action<ModRecipe, Item> OnCraftHooks { get; private set; }
-		internal Func<ModRecipe, int, int, int> ConsumeItemHooks { get; private set; }
+		
+		public delegate void OnCraftCallback(ModRecipe recipe, Item item);
+		public delegate int ConsumeItemCallback(ModRecipe recipe, int type, int amount);
+		
+		internal OnCraftCallback OnCraftHooks { get; private set; }
+		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
@@ -192,9 +195,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
+		/// </summary>
+		/// <param name="condition">The condition object.</param>
+		public ModRecipe AddCondition(Condition condition) {
+			if (Conditions.ContainsKey(condition.description))
+				throw new ArgumentException("Cannot have more than one condition with the same description.");
+
+			ConditionHooks.Add(condition.description, condition.callback);
+
+			return this;
+		}
+		
+		/// <summary>
 		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
-		public ModRecipe AddOnCraftCallback(Action<ModRecipe, Item> callback) {
+		public ModRecipe AddOnCraftCallback(OnCraftCallback callback) {
 			OnCraftHooks += callback;
 
 			return this;
@@ -203,7 +219,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 		/// </summary>
-		public ModRecipe AddConsumeItemCallback(Func<ModRecipe, int, int, int> callback) {
+		public ModRecipe AddConsumeItemCallback(ConsumeItemCallback callback) {
 			ConsumeItemHooks += callback;
 
 			return this;
