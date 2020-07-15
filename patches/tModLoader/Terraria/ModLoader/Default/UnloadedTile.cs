@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Default
 
 		public override string Texture => "ModLoader/UnloadedTile";
 
-		public MysteryTile(string name = null) {
+		public UnloadedTile(string name = null) {
 			Name = name ?? base.Name;
 		}
 
