@@ -1,4 +1,5 @@
-﻿using Terraria.Localization;
+﻿using System;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -14,8 +15,6 @@ namespace Terraria
 
 		public sealed class Condition : ICondition
 		{
-			public delegate bool RecipePredicate(ModRecipe recipe);
-
 			#region Conditions
 
 			//Liquids
@@ -61,16 +60,16 @@ namespace Terraria
 			#endregion
 
 			private readonly NetworkText DescriptionText;
-			private readonly RecipePredicate Callback;
+			private readonly Predicate<ModRecipe> Predicate;
 
 			public string Description => DescriptionText.ToString();
 
-			public Condition(NetworkText description, RecipePredicate callback) {
-				DescriptionText = description;
-				Callback = callback;
+			public Condition(NetworkText description, Predicate<ModRecipe> predicate) {
+				DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
+				Predicate = predicate ?? throw new ArgumentNullException(nameof(description));
 			}
 
-			public bool RecipeAvailable(ModRecipe recipe) => Callback(recipe);
+			public bool RecipeAvailable(ModRecipe recipe) => Predicate(recipe);
 		}
 	}
 }
