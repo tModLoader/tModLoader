@@ -2391,19 +2391,18 @@
  			if (num5 > 0) {
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
  				if (Main.SmartCursorEnabled || PlayerInput.UsingGamepad)
-@@ -28740,21 +_,21 @@
+@@ -28740,8 +_,8 @@
  
  		public PlayerFishingConditions GetFishingConditions() {
  			PlayerFishingConditions result = default(PlayerFishingConditions);
 -			Fishing_GetBestFishingPole(out result.PolePower, out result.PoleItemType);
 -			Fishing_GetBait(out result.BaitPower, out result.BaitItemType);
--			if (result.BaitItemType == 2673)
 +			Fishing_GetBestFishingPole(out result.Pole);
 +			Fishing_GetBait(out result.Bait);
-+			if (result.Bait?.type == ItemID.TruffleWorm)
+ 			if (result.BaitItemType == 2673)
  				return result;
  
- 			if (result.BaitPower == 0 || result.PolePower == 0)
+@@ -28749,12 +_,12 @@
  				return result;
  
  			int num = result.BaitPower + result.PolePower + fishingSkill;

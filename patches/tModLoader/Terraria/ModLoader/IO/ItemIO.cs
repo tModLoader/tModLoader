@@ -71,8 +71,8 @@ namespace Terraria.ModLoader.IO
 					item.modItem.Load(tag.GetCompound("data"));
 				}
 				else {
-					item.netDefaults(ModContent.ItemType<MysteryItem>());
-					((MysteryItem)item.modItem).Setup(tag);
+					item.netDefaults(ModContent.ItemType<UnloadedItem>());
+					((UnloadedItem)item.modItem).Setup(tag);
 				}
 			}
 
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.IO
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
-			if (!(item.modItem is MysteryItem))
+			if (!(item.modItem is UnloadedItem))
 				LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 		}
 
@@ -98,8 +98,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static List<TagCompound> SaveGlobals(Item item) {
-			if (item.modItem is MysteryItem)
-				return null; //MysteryItems cannot have global data
+			if (item.modItem is UnloadedItem)
+				return null; // UnloadedItems cannot have global data
 
 			var list = new List<TagCompound>();
 			foreach (var globalItem in ItemLoader.globalItems) {
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					item.GetGlobalItem<MysteryGlobalItem>().data.Add(tag);
+					item.GetGlobalItem<UnloadedGlobalItem>().data.Add(tag);
 				}
 			}
 		}

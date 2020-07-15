@@ -1,12 +1,12 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,11 +_,20 @@
+@@ -1,11 +_,19 @@
  <Project>
    <PropertyGroup>
      <TargetFramework>net40</TargetFramework>
 -    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
+-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
 +    <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
-     <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
      <PlatformTarget>x86</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <Optimize>true</Optimize>

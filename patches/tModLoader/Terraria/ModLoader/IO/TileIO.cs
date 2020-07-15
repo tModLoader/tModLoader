@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.IO
 				Mod mod = ModLoader.GetMod(modName);
 				tables.tiles[type] = mod == null ? (ushort)0 : (ushort)mod.TileType(name);
 				if (tables.tiles[type] == 0) {
-					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile");
+					tables.tiles[type] = (ushort)ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile");
 					tables.tileModNames[type] = modName;
 					tables.tileNames[type] = name;
 				}
@@ -267,23 +267,23 @@ namespace Terraria.ModLoader.IO
 					tile.frameX = -1;
 					tile.frameY = -1;
 				}
-				if (tile.type == ModContent.GetInstance<ModLoaderMod>().TileType("PendingMysteryTile")
+				if (tile.type == ModContent.GetInstance<ModLoaderMod>().TileType("PendingUnloadedTile")
 					&& tables.tileNames.ContainsKey(saveType)) {
-					MysteryTileInfo info;
+					UnloadedTileInfo info;
 					if (tables.frameImportant[saveType]) {
-						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType],
 							tile.frameX, tile.frameY);
 					}
 					else {
-						info = new MysteryTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
+						info = new UnloadedTileInfo(tables.tileModNames[saveType], tables.tileNames[saveType]);
 					}
-					MysteryTilesWorld modWorld = ModContent.GetInstance<MysteryTilesWorld>();
+					UnloadedTilesWorld modWorld = ModContent.GetInstance<UnloadedTilesWorld>();
 					int pendingFrameID = modWorld.pendingInfos.IndexOf(info);
 					if (pendingFrameID < 0) {
 						pendingFrameID = modWorld.pendingInfos.Count;
 						modWorld.pendingInfos.Add(info);
 					}
-					MysteryTileFrame pendingFrame = new MysteryTileFrame(pendingFrameID);
+					UnloadedTileFrame pendingFrame = new UnloadedTileFrame(pendingFrameID);
 					tile.frameX = pendingFrame.FrameX;
 					tile.frameY = pendingFrame.FrameY;
 				}
@@ -595,8 +595,8 @@ namespace Terraria.ModLoader.IO
 					if (tag.ContainsKey("data")) {
 						try {
 							newEntity.Load(tag.GetCompound("data"));
-							if (newEntity is MysteryTileEntity) {
-								((MysteryTileEntity)newEntity).TryRestore(ref newEntity);
+							if (newEntity is UnloadedTileEntity) {
+								((UnloadedTileEntity)newEntity).TryRestore(ref newEntity);
 							}
 						}
 						catch (Exception e) {
@@ -606,11 +606,11 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					tileEntity = ModContent.GetInstance<ModLoaderMod>().GetTileEntity("MysteryTileEntity");
+					tileEntity = ModContent.GetInstance<ModLoaderMod>().GetTileEntity("UnloadedTileEntity");
 					newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 					newEntity.type = (byte)tileEntity.Type;
 					newEntity.Position = new Point16(tag.GetShort("X"), tag.GetShort("Y"));
-					((MysteryTileEntity)newEntity).SetData(tag);
+					((UnloadedTileEntity)newEntity).SetData(tag);
 				}
 				if (tileEntity.ValidTile(newEntity.Position.X, newEntity.Position.Y)) {
 					newEntity.ID = TileEntity.AssignNewID();
