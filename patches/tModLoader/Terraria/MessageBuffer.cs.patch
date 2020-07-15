@@ -207,14 +207,38 @@
  						float num163 = reader.ReadSingle();
  						int num164 = reader.ReadByte() - 1;
  						byte b14 = reader.ReadByte();
-@@ -1358,6 +_,7 @@
+@@ -1330,7 +_,7 @@
+ 						int num10 = Chest.FindChest(x2, y2);
+ 						if (num10 > -1 && Chest.UsingChest(num10) == -1) {
+ 							for (int l = 0; l < 40; l++) {
+-								NetMessage.SendData(32, whoAmI, -1, null, num10, l);
++								NetMessage.SendData(32, whoAmI, -1, null, num10, l, 1); //New, the 1 indicates the item is synced synced within RequestChestOpen
+ 							}
+ 
+ 							NetMessage.SendData(33, whoAmI, -1, null, num10);
+@@ -1346,6 +_,7 @@
+ 				case 32: {
+ 						int num215 = reader.ReadInt16();
+ 						int num216 = reader.ReadByte();
++						bool skipRecipes = !ModNet.AllowVanillaClients && reader.ReadBoolean(); // New, third parameter, sent as '(bool)(number3 == 1)', 1 meaning the item is synced within RequestChestOpen
+ 						int stack4 = reader.ReadInt16();
+ 						int pre2 = reader.ReadByte();
+ 						int type14 = reader.ReadInt16();
+@@ -1358,7 +_,13 @@
  						Main.chest[num215].item[num216].netDefaults(type14);
  						Main.chest[num215].item[num216].Prefix(pre2);
  						Main.chest[num215].item[num216].stack = stack4;
 +						ItemIO.ReceiveModData(Main.chest[num215].item[num216], reader);
- 						Recipe.FindRecipes();
++						if (!skipRecipes)
+-						Recipe.FindRecipes();
++							Recipe.FindRecipes();
++						// New, skips FindRecipes if item is synced within RequestChestOpen.
++						// Note that in this case, SyncPlayerChestIndex (80), which is sent at the end of RequestChestOpen,
++						// calls FindRecipes for the current chest, so the client is still aware of new recipes.
++						// In 1.4, the commit adding this patch is redundant because it uses a param called canDelayCheck for FindRecipes, fixing the same problem as this commit
  						break;
  					}
+ 				case 33: {
 @@ -1413,6 +_,7 @@
  						break;
  					}
