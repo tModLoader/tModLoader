@@ -12,7 +12,7 @@ namespace Terraria.ModLoader
 	public sealed class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
-		public readonly IList<Condition> Conditions;
+		public readonly List<Condition> Conditions;
 
 		private int numIngredients = 0;
 		private int numTiles = 0;
@@ -59,8 +59,7 @@ namespace Terraria.ModLoader
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
 		public ModRecipe AddIngredient(Mod mod, string itemName, int stack = 1) {
-			if (mod == null)
-				mod = this.mod;
+			mod ??= this.mod;
 			
 			int type = mod.ItemType(itemName);
 
@@ -146,8 +145,7 @@ namespace Terraria.ModLoader
 		/// <param name="tileName">Name of the tile.</param>
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).</exception>
 		public ModRecipe AddTile(Mod mod, string tileName) {
-			if (mod == null)
-				mod = this.mod;
+			mod ??= this.mod;
 
 			int type = mod.TileType(tileName);
 			
@@ -186,7 +184,7 @@ namespace Terraria.ModLoader
 		public ModRecipe AddCondition(NetworkText description, Predicate<ModRecipe> condition) => AddCondition(new Condition(description, condition));
 
 		/// <summary>
-		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
+		/// Adds a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="condition">The condition object.</param>
 		public ModRecipe AddCondition(Condition condition) {
@@ -194,7 +192,23 @@ namespace Terraria.ModLoader
 
 			return this;
 		}
-		
+
+		/// <summary>
+		/// Adds an array of condition delegates that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+		/// </summary>
+		/// <param name="conditions">An array of conditions.</param>
+		public ModRecipe AddCondition(params Condition[] conditions) => AddCondition(conditions);
+
+		/// <summary>
+		/// Adds a collectiom of condition delegates that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+		/// </summary>
+		/// <param name="conditions">A collection of conditions.</param>
+		public ModRecipe AddCondition(IEnumerable<Condition> conditions) {
+			Conditions.AddRange(conditions);
+
+			return this;
+		}
+
 		/// <summary>
 		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
