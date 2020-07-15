@@ -3692,12 +3692,14 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
-@@ -38234,7 +_,7 @@
+@@ -38234,7 +_,9 @@
  			flag &= (list.Count <= 1);
  			flag = (flag && flag2);
  			if (flag) {
++				Item item = new Item();
++				item.SetDefaults(ItemID.AncientBattleArmorShirt);
 -				flag = CheckMana(20, pay: true);
-+				flag = CheckMana(new Item(), 20, pay: true);
++				flag = CheckMana(item, pay: true);
  				if (flag)
  					manaRegenDelay = (int)maxRegenDelay;
  			}
