@@ -12,9 +12,7 @@ namespace Terraria.ModLoader
 	public sealed class ModRecipe : Recipe
 	{
 		public readonly Mod mod;
-		public readonly IReadOnlyDictionary<NetworkText, Func<ModRecipe, bool>> Conditions;
-
-		private readonly Dictionary<NetworkText, Func<ModRecipe, bool>> ConditionHooks;
+		public readonly IList<Condition> Conditions;
 
 		private int numIngredients = 0;
 		private int numTiles = 0;
@@ -33,7 +31,7 @@ namespace Terraria.ModLoader
 		private ModRecipe(Mod mod) {
 			this.mod = mod;
 
-			Conditions = ConditionHooks = new Dictionary<NetworkText, Func<ModRecipe, bool>>();
+			Conditions = new List<Condition>();
 		}
 
 		/// <summary>
@@ -185,24 +183,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="condition">The predicate delegate condition.</param>
 		/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-		public ModRecipe AddCondition(NetworkText description, Func<ModRecipe, bool> condition) {
-			if (Conditions.ContainsKey(description))
-				throw new ArgumentException("Cannot have more than one condition with the same description.");
-
-			ConditionHooks.Add(description, condition);
-
-			return this;
-		}
+		public ModRecipe AddCondition(NetworkText description, Func<ModRecipe, bool> condition) => AddCondition(new Condition(description, condition));
 
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="condition">The condition object.</param>
 		public ModRecipe AddCondition(Condition condition) {
-			if (Conditions.ContainsKey(condition.description))
-				throw new ArgumentException("Cannot have more than one condition with the same description.");
-
-			ConditionHooks.Add(condition.description, condition.callback);
+			Conditions.Add(condition);
 
 			return this;
 		}

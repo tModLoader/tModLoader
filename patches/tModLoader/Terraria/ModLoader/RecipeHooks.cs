@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			if (recipe is ModRecipe modRecipe && !modRecipe.Conditions.Values.All(func => func.Invoke(modRecipe))) {
+			if (recipe is ModRecipe modRecipe && !modRecipe.Conditions.All(c => c.Callback.Invoke(modRecipe))) {
 				return false;
 			}
 

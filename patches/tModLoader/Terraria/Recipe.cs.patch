@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,11 +_,64 @@
+@@ -3,11 +_,67 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -13,13 +13,15 @@
 +		public class Condition
 +		{
 +			#region Conditions
++
++			//Liquids
 +			public static readonly Condition NearWater = new Condition(NetworkText.FromKey("tModLoader.NearWater"), _ => Main.LocalPlayer.adjWater);
 +			public static readonly Condition NearLava = new Condition(NetworkText.FromKey("tModLoader.NearLava"), _ => Main.LocalPlayer.adjLava);
 +			public static readonly Condition NearHoney = new Condition(NetworkText.FromKey("tModLoader.NearHoney"), _ => Main.LocalPlayer.adjHoney);
-+
++			//Time
 +			public static readonly Condition TimeDay = new Condition(NetworkText.FromKey("tModLoader.TimeDay"), _ => Main.dayTime);
 +			public static readonly Condition TimeNight = new Condition(NetworkText.FromKey("tModLoader.TimeNight"), _ => !Main.dayTime);
-+
++			//Biomes
 +			public static readonly Condition InDungeon = new Condition(NetworkText.FromKey("tModLoader.InDungeon"), _ => Main.LocalPlayer.ZoneDungeon);
 +			public static readonly Condition InCorrupt = new Condition(NetworkText.FromKey("tModLoader.InCorrupt"), _ => Main.LocalPlayer.ZoneCorrupt);
 +			public static readonly Condition InHallow = new Condition(NetworkText.FromKey("tModLoader.InHallow"), _ => Main.LocalPlayer.ZoneHallow);
@@ -51,14 +53,15 @@
 +			public static readonly Condition InGemCave = new Condition(NetworkText.FromKey("tModLoader.InGemCave"), _ => Main.LocalPlayer.ZoneGemCave);
 +			public static readonly Condition InLihzhardTemple = new Condition(NetworkText.FromKey("tModLoader.InLihzardTemple"), _ => Main.LocalPlayer.ZoneLihzhardTemple);
 +			public static readonly Condition InGraveyardBiome = new Condition(NetworkText.FromKey("tModLoader.InGraveyardBiome"), _ => Main.LocalPlayer.ZoneGraveyard);
++
 +			#endregion
 +
-+			public readonly NetworkText description;
-+			public readonly Func<ModRecipe, bool> callback;
++			public readonly NetworkText Description;
++			public readonly Func<ModRecipe, bool> Callback;
 +
 +			public Condition(NetworkText description, Func<ModRecipe, bool> callback) {
-+				this.description = description;
-+				this.callback = callback;
++				Description = description;
++				Callback = callback;
 +			}
 +		}
 +	
