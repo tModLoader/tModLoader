@@ -183,7 +183,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="condition">The predicate delegate condition.</param>
 		/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-		public ModRecipe AddCondition(NetworkText description, Func<ModRecipe, bool> condition) => AddCondition(new Condition(description, condition));
+		public ModRecipe AddCondition(NetworkText description, Recipe.Condition.RecipePredicate condition) => AddCondition(new Condition(description, condition));
 
 		/// <summary>
 		/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
