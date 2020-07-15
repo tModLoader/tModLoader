@@ -8,10 +8,6 @@ namespace Terraria.ModLoader.Setup
 {
 	public class SetupDebugTask : SetupOperation
 	{
-		private static readonly Version MinMSBuildVersion = new Version(15, 5); //Minimal MSBuild version for the '/restore' flag to work.
-
-		private bool msBuildIsMissing;
-		private bool msBuildIsOutdated;
 		private bool roslynCompileFailed;
 		private bool tMLFNACompileFailed;
 
@@ -24,17 +20,8 @@ namespace Terraria.ModLoader.Setup
 
 			taskInterface.SetStatus("Compiling RoslynWrapper");
 
-			msBuildIsMissing = !CheckIfMSBuildIsPresent();
-			msBuildIsOutdated = msBuildIsMissing || GetMSBuildVersion() < MinMSBuildVersion;
-
-			bool msBuildReady = !msBuildIsMissing && !msBuildIsOutdated;
-
 			//Compile Roslyn.
-
-			roslynCompileFailed = !msBuildReady || RunCmd("RoslynWrapper", "msbuild",
-				"RoslynWrapper.sln /restore /p:Configuration=Release",
-				null, null, null, taskInterface.CancellationToken
-			) != 0;
+			roslynCompileFailed = RunCmd("RoslynWrapper", "dotnet", "build", cancel: taskInterface.CancellationToken) != 0;
 
 			//Try to install Roslyn's libraries.
 
@@ -50,41 +37,8 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			//Compile FNA tML.
-
 			taskInterface.SetStatus("Compiling tModLoader.FNA.exe");
-
-			string[] references = new[] { "FNA.dll" };
-
-			foreach (string dll in references)
-				Copy("references/" + dll, Path.Combine(modCompile, dll));
-
-			tMLFNACompileFailed = !msBuildReady || RunCmd("solutions", "msbuild",
-				"tModLoader.sln /restore /p:Configuration=MacRelease",
-				null, null, null, taskInterface.CancellationToken
-			) != 0;
-		}
-
-		private bool CheckIfMSBuildIsPresent()
-			=> RunCmd("RoslynWrapper", "where",
-				"msbuild",
-				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
-			) == 0;
-
-		private Version GetMSBuildVersion() {
-			//Try to get its version.
-
-			string msBuildVersionOutput = null;
-
-			RunCmd("RoslynWrapper", "msbuild", "/version",
-				str => msBuildVersionOutput = str, null, null, taskInterface.CancellationToken
-			);
-
-			int lastLineBreak = msBuildVersionOutput.LastIndexOf('\n');
-
-			if (!Version.TryParse(msBuildVersionOutput.Substring(lastLineBreak+1, msBuildVersionOutput.Length-lastLineBreak-1), out var msBuildVersion))
-				throw new Exception($"Couldn't get MSBuild version.");
-
-			return msBuildVersion;
+			tMLFNACompileFailed = RunCmd("src/tModLoader/Terraria", "dotnet", "build -c MacRelease", cancel: taskInterface.CancellationToken) != 0;
 		}
 
 		private void UpdateModCompileVersion(string modCompileDir) {
@@ -109,12 +63,6 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		public override void FinishedDialog() {
-			if (msBuildIsMissing)
-				throw new Exception("MSBuild could not be found on PATH.");
-
-			if (msBuildIsOutdated)
-				throw new Exception($"MSBuild {MinMSBuildVersion} or newer is required. Ensure that 'msbuild' on PATH points to the newest one installed. Or just build RoslynWrapper manually.");
-
 			if (roslynCompileFailed)
 				MessageBox.Show("MSBuild Error", "Failed to compile RoslynWrapper.sln.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

@@ -50,6 +50,8 @@ namespace Terraria.ModLoader.Setup
 			XnaToFna(fnaPath);
 
 			File.Delete(Path.ChangeExtension(fnaPath, "pdb"));
+
+			MessageBox.Show("Success. Make sure you diff tModLoader after this");
 		}
 
 		public static void HookGen(string inputPath, string outputPath)
