@@ -51,7 +51,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modItem = ItemLoader.GetItem(type);
-+			return $"{modItem.mod.Name} {modItem.Name}";
++			return $"{modItem.Mod.Name} {modItem.Name}";
 +		}
 +
 +		public static string GetUniqueKey(Item item) => GetUniqueKey(item.type);

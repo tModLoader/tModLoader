@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 
 		public override void AddRecipes() {
 			if (CheckAprilFools()) {
-				new ModRecipe(mod)
+				new ModRecipe(Mod)
 					.AddIngredient(ItemID.DirtBlock)
 					.SetResult(this)
 					.AddRecipe();

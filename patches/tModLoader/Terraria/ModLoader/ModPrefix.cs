@@ -7,7 +7,7 @@ using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModPrefix
+	public abstract class ModPrefix:ModType
 	{
 		private static byte nextPrefix = PrefixID.Count;
 
@@ -79,25 +79,9 @@ namespace Terraria.ModLoader
 			prefix = wr.Get();
 		}
 
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public byte Type {get;internal set;}
 
-		public string Name {
-			get;
-			internal set;
-		}
-
-		public byte Type {
-			get;
-			internal set;
-		}
-
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
@@ -123,8 +107,20 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			if (!Mod.loading)
+				throw new Exception("AddPrefix can only be called from Mod.Load or Mod.Autoload");
+
+			if (Mod.prefixes.ContainsKey(Name))
+				throw new Exception($"You tried to add 2 ModPrefixes with the same name: {Name}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddPrefix with 2 prefixes of the same name.");
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Prefix.{Name}");
+			Type = ModPrefix.ReservePrefixID();
+
+			Mod.prefixes[Name] = this;
+			ModPrefix.prefixes.Add(this);
+			ModPrefix.categoryPrefixes[Category].Add(this);
+			ContentInstance.Register(this);
 		}
 
 		public virtual void AutoDefaults() {

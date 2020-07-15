@@ -47,18 +47,18 @@ namespace Terraria.ModLoader.Default
 				AddTexture("UnloadedTile", ReadTexture("UnloadedTile"));
 			}*/
 			
-			AddItem("UnloadedItem", new UnloadedItem());
-			AddGlobalItem("UnloadedGlobalItem", new UnloadedGlobalItem());
-			AddItem("StartBag", new StartBag());
-			AddItem("AprilFools", new AprilFools());
-			AddTile("UnloadedTile", new UnloadedTile(), "ModLoader/UnloadedTile");
-			AddTile("PendingUnloadedTile", new UnloadedTile(), "ModLoader/UnloadedTile");
-			AddTileEntity("UnloadedTileEntity", new UnloadedTileEntity());
-			AddPlayer("UnloadedPlayer", new UnloadedPlayer());
-			AddModWorld("UnloadedWorld", new UnloadedWorld());
-			AddModWorld("UnloadedTilesWorld", new UnloadedTilesWorld());
-			AddCommand("HelpCommand", new HelpCommand());
-			AddCommand("ModlistCommand", new ModlistCommand());
+			AddContent<UnloadedItem>();
+			AddContent<UnloadedGlobalItem>();
+			AddContent<StartBag>();
+			AddContent<AprilFools>();
+			AddContent(new UnloadedTile());
+			AddContent(new UnloadedTile("PendingUnloadedTile"));
+			AddContent<UnloadedTileEntity>();
+			AddContent<UnloadedPlayer>();
+			AddContent<UnloadedWorld>();
+			AddContent<UnloadedTilesWorld>();
+			AddContent<HelpCommand>();
+			AddContent<ModlistCommand>();
 			/*AddPatronSets();
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
 			AddDeveloperSets();
@@ -84,7 +84,7 @@ namespace Terraria.ModLoader.Default
 			};
 
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
-				AddItemAndEquipType(patronItem, "Patreon", patronItem.SetName, patronItem.ItemEquipType);
+				AddItemAndEquipType(patronItem, patronItem.ItemEquipType);
 			}
 		}
 
@@ -94,12 +94,12 @@ namespace Terraria.ModLoader.Default
 			};
 
 			foreach (var developerItem in DeveloperSets.SelectMany(x => x)) {
-				AddItemAndEquipType(developerItem, "Developer", developerItem.SetName, developerItem.ItemEquipType);
+				AddItemAndEquipType(developerItem, developerItem.ItemEquipType);
 			}
 		}
 
 		// Adds the given patreon item to ModLoader, and handles loading its assets automatically
-		private void AddItemAndEquipType(ModItem item, string prefix, string name, EquipType equipType) {
+		private void AddItemAndEquipType(ModItem item, EquipType equipType) {
 			// If a client, we need to add several textures
 			/*if (!Main.dedServ) {
 				AddTexture($"{prefix}.{name}_{equipType}", ReadTexture($"{prefix}.{name}_{equipType}"));
@@ -111,9 +111,9 @@ namespace Terraria.ModLoader.Default
 			}*/
 
 			// Adds the item to ModLoader, as well as the normal assets
-			AddItem($"{name}_{equipType}", item);
+			AddContent(item);
 			// AddEquipTexture adds the arms and female body assets automatically, if EquipType is Body
-			AddEquipTexture(item, equipType, item.Name, item.Texture + '_' + equipType, item.Texture + "_Arms", item.Texture + "_FemaleBody");
+			AddEquipTexture(item, equipType, item.Texture + '_' + equipType);
 		}
 
 		internal static Texture2D ReadTexture(string file) {

@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.IO
 					var modTile = TileLoader.GetTile(type);
 					tileList.Add(new TagCompound {
 						["value"] = (short)type,
-						["mod"] = modTile.mod.Name,
+						["mod"] = modTile.Mod.Name,
 						["name"] = modTile.Name,
 						["framed"] = Main.tileFrameImportant[type],
 					});
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.IO
 					var modWall = WallLoader.GetWall(wall);
 					wallList.Add(new TagCompound {
 						["value"] = (short)wall,
-						["mod"] = modWall.mod.Name,
+						["mod"] = modWall.Mod.Name,
 						["name"] = modWall.Name,
 					});
 				}
@@ -408,21 +408,21 @@ namespace Terraria.ModLoader.IO
 				foreach (int slot in headSlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Head][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)bodySlots.Count);
 				foreach (int slot in bodySlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Body][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				writer.Write((ushort)legSlots.Count);
 				foreach (int slot in legSlots) {
 					writer.Write((ushort)slot);
 					ModItem item = ItemLoader.GetItem(EquipLoader.slotToId[EquipType.Legs][slot]);
-					writer.Write(item.mod.Name);
+					writer.Write(item.Mod.Name);
 					writer.Write(item.Name);
 				}
 				WriteContainerData(writer);
@@ -572,7 +572,7 @@ namespace Terraria.ModLoader.IO
 				if (pair.Value.type >= ModTileEntity.numVanilla) {
 					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
 					list.Add(new TagCompound {
-						["mod"] = tileEntity.mod.Name,
+						["mod"] = tileEntity.Mod.Name,
 						["name"] = tileEntity.Name,
 						["X"] = tileEntity.Position.X,
 						["Y"] = tileEntity.Position.Y,

@@ -313,9 +313,9 @@ namespace Terraria.ModLoader.Default.Developer
 		}
 
 		public override bool IsVanitySet(int head, int body, int legs) {
-			return head == mod.GetEquipSlot($"{SetName}_{EquipType.Head}", EquipType.Head)
-				   && body == mod.GetEquipSlot($"{SetName}_{EquipType.Body}", EquipType.Body)
-				   && legs == mod.GetEquipSlot($"{SetName}_{EquipType.Legs}", EquipType.Legs);
+			return head == Mod.GetEquipSlot($"{SetName}_{EquipType.Head}", EquipType.Head)
+				   && body == Mod.GetEquipSlot($"{SetName}_{EquipType.Body}", EquipType.Body)
+				   && legs == Mod.GetEquipSlot($"{SetName}_{EquipType.Legs}", EquipType.Legs);
 		}
 
 		public override void UpdateVanitySet(Player player) {
