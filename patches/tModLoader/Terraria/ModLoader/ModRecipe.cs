@@ -187,7 +187,7 @@ namespace Terraria.ModLoader
 		/// Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="conditions">An array of conditions.</param>
-		public ModRecipe AddCondition(params Condition[] conditions) => AddCondition(conditions);
+		public ModRecipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
 
 		/// <summary>
 		/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
