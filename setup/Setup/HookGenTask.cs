@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
+using System;
 using System.IO;
 using System.Windows;
 using XnaToFna;
@@ -16,7 +17,7 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			string targetExePath = @"src\tModLoader\bin\WindowsDebug\net45\Terraria.exe";
+			string targetExePath = @"src\tModLoader\Terraria\bin\WindowsDebug\net45\Terraria.exe";
 			if (!File.Exists(targetExePath)) {
 				var result = MessageBox.Show($"\"{targetExePath}\" does not exist. Use Vanilla exe instead?", "tML exe not found", MessageBoxButton.YesNo);
 				if (result != MessageBoxResult.Yes) {
@@ -54,7 +55,8 @@ namespace Terraria.ModLoader.Setup
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
-
+				
+				DependencyDirs = { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5" },
 				MissingDependencyThrow = false,
 			};
 
