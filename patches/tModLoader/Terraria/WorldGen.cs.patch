@@ -1498,15 +1498,6 @@
  				if (tileCache.type == 518) {
  					int num14 = (int)tileCache.liquid / 16;
  					num14 -= 3;
-@@ -43844,7 +_,7 @@
- 			if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
- 				return t.frameX < 54;
- 
--			return false;
-+			return TileLoader.IsClosedDoor(t);
- 		}
- 
- 		public static void DropDoorItem(int x, int y, int doorStyle) {
 @@ -45447,6 +_,8 @@
  			if (gen)
  				return;
