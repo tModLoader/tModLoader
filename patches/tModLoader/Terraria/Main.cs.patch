@@ -1037,7 +1037,7 @@
  					numLines++;
  					if (num6 > 0)
  						color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
-@@ -14925,12 +_,16 @@
+@@ -14925,12 +_,15 @@
  				}
  				else if (hoverItem.type != 3817) {
  					array[numLines] = Lang.tip[51].Value;
@@ -1048,9 +1048,8 @@
  			}
  
  			Vector2 zero = Vector2.Zero;
-+			Microsoft.Xna.Framework.Color?[] overrideColor;
-+			List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out overrideColor);
-+			List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Microsoft.Xna.Framework.Color.White)).ToList();
++			List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor);
++			List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
  			int num12 = 0;
  			for (int j = 0; j < numLines; j++) {
  				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
@@ -1063,12 +1062,13 @@
 -				if (k == yoyoLogo) {
 -					float num19 = 1f;
 -					int num20 = (int)((float)(int)mouseTextColor * num19);
+-					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
 +				drawableLines[k].OriginalX = X;
 +				drawableLines[k].OriginalY = Y;
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
- 					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
-+					drawableLines[k].color = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
++					Color color2 = Color.Black;
++					drawableLines[k].color = new Color(num20, num20, num20, num20);
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
@@ -1081,7 +1081,7 @@
  						}
 -
 -						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+						Microsoft.Xna.Framework.Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].color;
++						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].color;
 +						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].rotation, drawableLines[k].origin, (drawableLines[k].baseScale.X + drawableLines[k].baseScale.Y) / 2f, SpriteEffects.None, 0f);
  					}
  				}
@@ -1117,7 +1117,7 @@
  						black = Colors.JourneyMode;
  
 +					drawableLines[k].color = black;
-+					Microsoft.Xna.Framework.Color realLineColor = black;
++					Color realLineColor = black;
 +
 +					if (overrideColor[k].HasValue) {
 +						realLineColor = overrideColor[k].Value * num4;
