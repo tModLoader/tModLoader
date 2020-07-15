@@ -171,7 +171,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1250,14 +_,24 @@
+@@ -1250,12 +_,19 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -190,12 +190,7 @@
 +						Main.mouseItem.value *= 5; // preserve item value for items sold to the shop
  
  					Main.mouseItem.stack = 0;
-+
-+					Main.mouseItem = inv[slot].Clone();
-+					Main.mouseItem.stack = 1;
  				}
- 
- 				if (!inv[slot].buyOnce)
 @@ -1267,6 +_,8 @@
  				RefreshStackSplitCooldown();
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
