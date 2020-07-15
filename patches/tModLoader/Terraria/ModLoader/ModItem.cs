@@ -1010,13 +1010,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to load pre-v0.9 custom data that you have saved for this item.
-		/// </summary>
-		/// <param name="reader">The reader.</param>
-		public virtual void LoadLegacy(BinaryReader reader) {
-		}
-
-		/// <summary>
 		/// Allows you to send custom data for this item between client and server.
 		/// </summary>
 		/// <param name="writer">The writer.</param>

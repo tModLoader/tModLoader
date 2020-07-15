@@ -36,12 +36,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to load pre-v0.9 custom data you have saved for this world.
-		/// </summary>
-		public virtual void LoadLegacy(BinaryReader reader) {
-		}
-
-		/// <summary>
 		/// Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.
 		/// </summary>
 		public virtual void NetSend(BinaryWriter writer) {

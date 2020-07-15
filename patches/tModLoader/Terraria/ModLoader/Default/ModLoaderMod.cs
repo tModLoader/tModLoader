@@ -42,21 +42,21 @@ namespace Terraria.ModLoader.Default
 			Instance = this;
 
 			/*if (!Main.dedServ) {
-				AddTexture("MysteryItem", ReadTexture("MysteryItem"));
+				AddTexture("UnloadedItem", ReadTexture("UnloadedItem"));
 				AddTexture("StartBag", ReadTexture("StartBag"));
-				AddTexture("MysteryTile", ReadTexture("MysteryTile"));
+				AddTexture("UnloadedTile", ReadTexture("UnloadedTile"));
 			}*/
 			
-			AddContent<MysteryItem>();
-			AddContent<MysteryGlobalItem>();
+			AddContent<UnloadedItem>();
+			AddContent<UnloadedGlobalItem>();
 			AddContent<StartBag>();
 			AddContent<AprilFools>();
-			AddContent(new MysteryTile());
-			AddContent(new MysteryTile("PendingMysteryTile"));
-			AddContent<MysteryTileEntity>();
-			AddContent<MysteryPlayer>();
-			AddContent<MysteryWorld>();
-			AddContent<MysteryTilesWorld>();
+			AddContent(new UnloadedTile());
+			AddContent(new UnloadedTile("PendingUnloadedTile"));
+			AddContent<UnloadedTileEntity>();
+			AddContent<UnloadedPlayer>();
+			AddContent<UnloadedWorld>();
+			AddContent<UnloadedTilesWorld>();
 			AddContent<HelpCommand>();
 			AddContent<ModlistCommand>();
 			/*AddPatronSets();

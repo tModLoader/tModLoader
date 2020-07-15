@@ -49,12 +49,14 @@ namespace Terraria.ModLoader.IO
 		//add near end of Terraria.Player.LoadPlayer before accessory check
 		internal static void Load(Player player, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
+
 			if (!FileUtilities.Exists(path, isCloudSave))
 				return;
 
-			var buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				LoadLegacy(player, buf);
+				//LoadLegacy(player, buf);
 				return;
 			}
 
@@ -132,10 +134,7 @@ namespace Terraria.ModLoader.IO
 				var modPlayer = mod == null ? null : player.GetModPlayer(mod, tag.GetString("name"));
 				if (modPlayer != null) {
 					try {
-						if (tag.ContainsKey("legacyData"))
-							modPlayer.LoadLegacy(new BinaryReader(new MemoryStream(tag.GetByteArray("legacyData"))));
-						else
-							modPlayer.Load(tag.GetCompound("data"));
+						modPlayer.Load(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(mod,
@@ -143,7 +142,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				else {
-					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
+					player.GetModPlayer<UnloadedPlayer>().data.Add(tag);
 				}
 			}
 		}
@@ -210,125 +209,6 @@ namespace Terraria.ModLoader.IO
 				Array.Copy(player.buffTime, index, player.buffTime, index + 1, Player.MaxBuffs - index - 1);
 				player.buffType[index] = type;
 				player.buffTime[index] = tag.GetInt("time");
-			}
-		}
-
-		private static void LoadLegacy(Player player, byte[] buffer) {
-			const int numFlagBytes = 2;
-			RijndaelManaged rijndaelManaged = new RijndaelManaged();
-			rijndaelManaged.Padding = PaddingMode.None;
-			using (MemoryStream stream = new MemoryStream(buffer)) {
-				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(Player.ENCRYPTION_KEY, Player.ENCRYPTION_KEY), CryptoStreamMode.Read)) {
-					using (BinaryReader reader = new BinaryReader(cryptoStream)) {
-						byte limit = reader.ReadByte();
-						if (limit == 0) {
-							return;
-						}
-						byte[] flags = reader.ReadBytes(limit);
-						if (flags.Length < numFlagBytes) {
-							Array.Resize(ref flags, numFlagBytes);
-						}
-						LoadLegacyModPlayer(player, flags, reader);
-					}
-				}
-			}
-		}
-
-		private static void LoadLegacyModPlayer(Player player, byte[] flags, BinaryReader reader) {
-			if ((flags[0] & 1) == 1) {
-				ItemIO.LoadLegacyInventory(player.armor, reader);
-			}
-			if ((flags[0] & 2) == 2) {
-				ItemIO.LoadLegacyInventory(player.dye, reader);
-			}
-			if ((flags[0] & 4) == 4) {
-				ItemIO.LoadLegacyInventory(player.inventory, reader, true, true);
-			}
-			if ((flags[0] & 8) == 8) {
-				ItemIO.LoadLegacyInventory(player.miscEquips, reader);
-			}
-			if ((flags[0] & 16) == 16) {
-				ItemIO.LoadLegacyInventory(player.miscDyes, reader);
-			}
-			if ((flags[0] & 32) == 32) {
-				ItemIO.LoadLegacyInventory(player.bank.item, reader, true);
-			}
-			if ((flags[0] & 64) == 64) {
-				ItemIO.LoadLegacyInventory(player.bank2.item, reader, true);
-			}
-			if ((flags[0] & 128) == 128) {
-				LoadLegacyModData(player, reader);
-			}
-			if ((flags[1] & 1) == 1) {
-				LoadLegacyModBuffs(player, reader);
-			}
-		}
-
-		private static void LoadLegacyModData(Player player, BinaryReader reader) {
-			int count = reader.ReadUInt16();
-			for (int k = 0; k < count; k++) {
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				byte[] data = reader.ReadBytes(reader.ReadUInt16());
-				Mod mod = ModLoader.GetMod(modName);
-				ModPlayer modPlayer = mod == null ? null : player.GetModPlayer(mod, name);
-				if (modPlayer != null) {
-					using (MemoryStream stream = new MemoryStream(data)) {
-						using (BinaryReader customReader = new BinaryReader(stream)) {
-							try {
-								modPlayer.LoadLegacy(customReader);
-							}
-							catch (Exception e) {
-								throw new CustomModDataException(mod,
-									"Error in reading custom player data for " + mod.Name, e);
-							}
-						}
-					}
-				}
-				else {
-					var tag = new TagCompound {
-						["mod"] = modName,
-						["name"] = name,
-						["legacyData"] = data
-					};
-					player.GetModPlayer<MysteryPlayer>().data.Add(tag);
-				}
-			}
-		}
-
-		private static void LoadLegacyModBuffs(Player player, BinaryReader reader) {
-			int num = reader.ReadByte();
-			int minusIndex = 0;
-			for (int k = 0; k < num; k++) {
-				int index = reader.ReadByte() - minusIndex;
-				string modName = reader.ReadString();
-				string name = reader.ReadString();
-				int time = reader.ReadInt32();
-				Mod mod = ModLoader.GetMod(modName);
-				int type = mod == null ? 0 : mod.BuffType(name);
-				if (type > 0) {
-					for (int j = Player.MaxBuffs - 1; j > index; j--) {
-						player.buffType[j] = player.buffType[j - 1];
-						player.buffTime[j] = player.buffTime[j - 1];
-					}
-					player.buffType[index] = type;
-					player.buffTime[index] = time;
-				}
-				else {
-					minusIndex++;
-				}
-			}
-			for (int k = 1; k < Player.MaxBuffs; k++) {
-				if (player.buffType[k] > 0) {
-					int j = k - 1;
-					while (player.buffType[j] == 0) {
-						player.buffType[j] = player.buffType[j + 1];
-						player.buffTime[j] = player.buffTime[j + 1];
-						player.buffType[j + 1] = 0;
-						player.buffTime[j + 1] = 0;
-						j--;
-					}
-				}
 			}
 		}
 

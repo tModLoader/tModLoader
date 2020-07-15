@@ -85,13 +85,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to load pre-v0.9 custom data you have saved for this player.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void LoadLegacy(BinaryReader reader) {
-		}
-
-		/// <summary>
 		/// Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.
 		/// </summary>
 		/// <param name="items"></param>
