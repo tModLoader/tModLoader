@@ -76,22 +76,54 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
-		private static HookList HookSetupStartInventoryOld = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
 
 		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false) {
 			IList<Item> items = new List<Item>();
 			Item item = new Item();
-			item.SetDefaults(ItemID.CopperShortsword);
-			item.Prefix(-1);
-			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ItemID.CopperPickaxe);
-			item.Prefix(-1);
-			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ItemID.CopperAxe);
-			item.Prefix(-1);
-			items.Add(item);
+
+			if (player.difficulty == PlayerDifficultyID.Creative) {
+				item.SetDefaults(ItemID.IronShortsword);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.IronPickaxe);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.IronAxe);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.IronHammer);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(4281); // TODO: ItemID.FinchStaff
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.Torch);
+				item.stack = 100;
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.Rope);
+				item.stack = 100;
+				items.Add(item);
+			}
+			else {
+				item.SetDefaults(ItemID.CopperShortsword);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.CopperPickaxe);
+				item.Prefix(-1);
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.CopperAxe);
+				item.Prefix(-1);
+				items.Add(item);
+			}
+
 			if (Main.runningCollectorsEdition && !mediumcoreDeath) {
 				item = new Item();
 				item.SetDefaults(ItemID.Carrot);
@@ -99,9 +131,6 @@ namespace Terraria.ModLoader
 			}
 			foreach (int index in HookSetupStartInventory.arr) {
 				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
-			}
-			foreach (int index in HookSetupStartInventoryOld.arr) {
-				player.modPlayers[index].SetupStartInventory(items);
 			}
 			IDictionary<int, int> counts = new Dictionary<int, int>();
 			foreach (Item item0 in items) {
@@ -150,10 +179,6 @@ namespace Terraria.ModLoader
 				}
 				player.inventory[49] = bag;
 			}
-		}
-
-		public static void SetStartInventory(Player player) {
-			SetStartInventory(player, SetupStartInventory(player));
 		}
 
 		private static HookList HookPreSavePlayer = AddHook<Action>(p => p.PreSavePlayer);
