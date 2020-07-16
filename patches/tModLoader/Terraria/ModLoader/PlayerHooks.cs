@@ -75,94 +75,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
-
-		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false) {
-			IList<Item> items = new List<Item>();
-			Item item = new Item();
-
-			if (player.difficulty == PlayerDifficultyID.Creative) {
-				item.SetDefaults(ItemID.IronShortsword);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.IronPickaxe);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.IronAxe);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.IronHammer);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(4281); // TODO: ItemID.FinchStaff
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.Torch);
-				item.stack = 100;
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.Rope);
-				item.stack = 100;
-				items.Add(item);
-			}
-			else {
-				item.SetDefaults(ItemID.CopperShortsword);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.CopperPickaxe);
-				item.Prefix(-1);
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.CopperAxe);
-				item.Prefix(-1);
-				items.Add(item);
-			}
-
-			if (Main.runningCollectorsEdition && !mediumcoreDeath) {
-				item = new Item();
-				item.SetDefaults(ItemID.Carrot);
-				items.Add(item);
-			}
-			foreach (int index in HookSetupStartInventory.arr) {
-				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
-			}
-			IDictionary<int, int> counts = new Dictionary<int, int>();
-			foreach (Item item0 in items) {
-				if (item0.maxStack > 1) {
-					if (!counts.ContainsKey(item0.netID)) {
-						counts[item0.netID] = 0;
-					}
-					counts[item0.netID] += item0.stack;
-				}
-			}
-			int k = 0;
-			while (k < items.Count) {
-				bool flag = true;
-				int id = items[k].netID;
-				if (counts.ContainsKey(id)) {
-					items[k].stack = counts[id];
-					if (items[k].stack > items[k].maxStack) {
-						items[k].stack = items[k].maxStack;
-					}
-					counts[id] -= items[k].stack;
-					if (items[k].stack <= 0) {
-						items.RemoveAt(k);
-						flag = false;
-					}
-				}
-				if (flag) {
-					k++;
-				}
-			}
-			return items;
-		}
-
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
 				for (int k = 0; k < items.Count && k < 49; k++)
@@ -1226,6 +1138,29 @@ namespace Terraria.ModLoader
 		public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price) {
 			foreach (int index in HookPostNurseHeal.arr) {
 				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
+			}
+		}
+
+		private static HookList HookAddStartingItems = AddHook<Func<bool, IEnumerable<Item>>>(p => p.AddStartingItems);
+
+		public static IReadOnlyDictionary<string, List<Item>> AddStartingItems(Player player, bool mediumCoreDeath = false) {
+			var additions = new Dictionary<string, List<Item>>();
+
+			additions.Add("Terraria", player.inventory.Where(item => !item.IsAir).ToList());
+
+			foreach (int index in HookAddStartingItems.arr) {
+				ModPlayer modPlayer = player.modPlayers[index];
+				additions.Add(modPlayer.mod.Name, modPlayer.AddStartingItems(mediumCoreDeath).ToList());
+			}
+
+			return additions;
+		}
+
+		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
+
+		public static void ModifyStartingInventory(Player player, IReadOnlyDictionary<string, List<Item>> additions, bool mediumCoreDeath = false) {
+			foreach (int index in HookModifyStartingInventory.arr) {
+				player.modPlayers[index].ModifyStartingInventory(additions, mediumCoreDeath);
 			}
 		}
 	}

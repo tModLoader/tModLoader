@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,6 +_,10 @@
+@@ -34,6 +_,11 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -8,6 +8,7 @@
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
++using System.Linq;
  
  namespace Terraria
  {
@@ -3144,11 +3145,13 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -36245,24 +_,46 @@
+@@ -36245,24 +_,48 @@
  		}
  
  		public void DropItems() {
-+			IList<Item> startInventory = PlayerHooks.SetupStartInventory(this, true);
++			var additions = PlayerHooks.AddStartingItems(this, true);
++			PlayerHooks.ModifyStartingInventory(this, additions, true);
++			List<Item> startInventory = additions.Values.SelectMany(i => i).ToList();
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory) {
 +				if (!startCounts.ContainsKey(item.netID))
