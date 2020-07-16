@@ -81,10 +81,12 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() => CreateRecipe()
-			.AddIngredient(ItemType<ExampleItem>(), 60)
-			.AddTile(TileType<ExampleWorkbench>())
-			.Register();
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(60)
+				.AddTile<ExampleWorkbench>()
+				.Register();
+		}
 	}
 
 	public class ExampleDashPlayer : ModPlayer

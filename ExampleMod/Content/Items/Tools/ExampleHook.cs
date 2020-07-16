@@ -19,6 +19,12 @@ namespace ExampleMod.Content.Items.Tools
 			item.shootSpeed = 18f; // how quickly the hook is shot.
 			item.shoot = ProjectileType<ExampleHookProjectile>();
 		}
+
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(100)
+				.Register();
+		}
 	}
 
 	internal class ExampleHookProjectile : ModProjectile

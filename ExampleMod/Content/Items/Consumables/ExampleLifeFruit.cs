@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -51,9 +50,11 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() => CreateRecipe(10)
-			.AddIngredient(ItemType<ExampleItem>())
-			.Register();
+		public override void AddRecipes() {
+			CreateRecipe(10)
+				.AddIngredient<ExampleItem>(1000)
+				.Register();
+		}
 	}
 
 	public class ExampleLifeFruitPlayer : ModPlayer

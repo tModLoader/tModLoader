@@ -27,9 +27,11 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			item.value = 150;
 		}
 
-		public override void AddRecipes() => CreateRecipe()
-			.AddIngredient(ItemID.WorkBench)
-			.AddIngredient(ItemType<ExampleItem>(), 10)
-			.Register();
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient(ItemID.WorkBench)
+				.AddIngredient<ExampleItem>(10)
+				.Register();
+		}
 	}
 }

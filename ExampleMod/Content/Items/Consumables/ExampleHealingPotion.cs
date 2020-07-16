@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -43,8 +42,11 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() => CreateRecipe()
-			.AddIngredient(ItemType<ExampleItem>(), 10)
-			.Register();
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(10)
+				.AddTile(TileID.Bottles) //Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
+				.Register();
+		}
 	}
 }
