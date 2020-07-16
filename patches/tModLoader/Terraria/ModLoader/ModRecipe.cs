@@ -2,23 +2,24 @@ using System;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Exceptions;
 
-namespace Terraria.ModLoader
+namespace Terraria
 {
 	/// <summary>
-	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of ModRecipe, then calling the <para cref="Register"/> method.
+	/// This class extends Terraria.Recipe, meaning you can use it in a similar manner to vanilla recipes. However, it provides methods that simplify recipe creation. Recipes are added by creating new instances of Recipe, then calling the <para cref="Register"/> method.
 	/// </summary>
-	public sealed class ModRecipe : Recipe
+	public partial class  Recipe
 	{
-		public readonly Mod mod;
+		public readonly Mod Mod;
 		public readonly List<Condition> Conditions;
 
 		private int numIngredients = 0;
 		private int numTiles = 0;
 		
-		public delegate void OnCraftCallback(ModRecipe recipe, Item item);
-		public delegate int ConsumeItemCallback(ModRecipe recipe, int type, int amount);
+		public delegate void OnCraftCallback(Recipe recipe, Item item);
+		public delegate int ConsumeItemCallback(Recipe recipe, int type, int amount);
 		
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
@@ -28,18 +29,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int RecipeIndex { get; private set; }
 
-		private ModRecipe(Mod mod) {
-			this.mod = mod;
-
-			Conditions = new List<Condition>();
-		}
-
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
 		/// </summary>
 		/// <param name="itemID">The item identifier.</param>
 		/// <param name="stack">The stack.</param>
-		public ModRecipe AddIngredient(int itemID, int stack = 1) {
+		public Recipe AddIngredient(int itemID, int stack = 1) {
 			if (numIngredients >= maxRequirements)
 				throw new RecipeException($"Recipe already has the maximum number of ingredients, which is {maxRequirements}.");
 			
@@ -47,7 +42,7 @@ namespace Terraria.ModLoader
 			requiredItem[numIngredients].stack = stack;
 			
 			numIngredients++;
-
+			
 			return this;
 		}
 
@@ -58,8 +53,8 @@ namespace Terraria.ModLoader
 		/// <param name="itemName">Name of the item.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-		public ModRecipe AddIngredient(Mod mod, string itemName, int stack = 1) {
-			mod ??= this.mod;
+		public Recipe AddIngredient(Mod mod, string itemName, int stack = 1) {
+			mod ??= this.Mod;
 			
 			int type = mod.ItemType(itemName);
 
@@ -74,14 +69,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
-		public ModRecipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.item.type, stack);
+		public Recipe AddIngredient(ModItem item, int stack = 1) => AddIngredient(item.item.type, stack);
 
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
-		public ModRecipe AddIngredient<T>(int stack = 1) where T : ModItem
+		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 			=> AddIngredient(ModContent.ItemType<T>(), stack);
 
 		/// <summary>
@@ -90,7 +85,7 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
-		public ModRecipe AddRecipeGroup(string name, int stack = 1) {
+		public Recipe AddRecipeGroup(string name, int stack = 1) {
 			if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
 				throw new RecipeException($"A recipe group with the name {name} does not exist.");
 
@@ -109,7 +104,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipeGroupId">The RecipeGroupID.</param>
 		/// <param name="stack">The stack.</param>
 		/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
-		public ModRecipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
+		public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
 			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
 			
@@ -126,7 +121,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tileID">The tile identifier.</param>
 		/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
-		public ModRecipe AddTile(int tileID) {
+		public Recipe AddTile(int tileID) {
 			if (numTiles >= maxRequirements)
 				throw new RecipeException($"Recipe already has the maximum number of required tiles, which is {maxRequirements}.");
 
@@ -143,14 +138,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="mod">The mod.</param>
 		/// <param name="tileName">Name of the tile.</param>
-		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).</exception>
-		public ModRecipe AddTile(Mod mod, string tileName) {
-			mod ??= this.mod;
+		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
+		public Recipe AddTile(Mod mod, string tileName) {
+			mod ??= this.Mod;
 
 			int type = mod.TileType(tileName);
 			
 			if (type == 0)
-				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using ModRecipe.AddTile(tileID).");
+				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
 			return AddTile(type);
 		}
@@ -159,18 +154,18 @@ namespace Terraria.ModLoader
 		/// Adds a required crafting station to this recipe of the given type of tile.
 		/// </summary>
 		/// <param name="tile">The tile.</param>
-		public ModRecipe AddTile(ModTile tile) => AddTile(tile.Type);
+		public Recipe AddTile(ModTile tile) => AddTile(tile.Type);
 
 		/// <summary>
 		/// Adds a required crafting station to this recipe of the given type of tile.
 		/// </summary>
-		public ModRecipe AddTile<T>() where T : ModTile
+		public Recipe AddTile<T>() where T : ModTile
 			=> AddTile(ModContent.TileType<T>());
 
 		/// <summary>
 		/// Marks the recipe as an alchemy recipe. This makes it require an alchemy table, and gives a 1/3 chance for each ingredient to not be consumed. See https://terraria.gamepedia.com/Alchemy_Table.
 		/// </summary>
-		public ModRecipe IsAlchemy() {
+		public Recipe IsAlchemy() {
 			alchemy = true;
 
 			return this;
@@ -181,19 +176,19 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="condition">The predicate delegate condition.</param>
 		/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-		public ModRecipe AddCondition(NetworkText description, Predicate<ModRecipe> condition) => AddCondition(new Condition(description, condition));
+		public Recipe AddCondition(NetworkText description, Predicate<Recipe> condition) => AddCondition(new Condition(description, condition));
 
 		/// <summary>
 		/// Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="conditions">An array of conditions.</param>
-		public ModRecipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
+		public Recipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
 
 		/// <summary>
 		/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
 		/// <param name="conditions">A collection of conditions.</param>
-		public ModRecipe AddCondition(IEnumerable<Condition> conditions) {
+		public Recipe AddCondition(IEnumerable<Condition> conditions) {
 			Conditions.AddRange(conditions);
 
 			return this;
@@ -202,7 +197,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 		/// </summary>
-		public ModRecipe AddOnCraftCallback(OnCraftCallback callback) {
+		public Recipe AddOnCraftCallback(OnCraftCallback callback) {
 			OnCraftHooks += callback;
 
 			return this;
@@ -211,7 +206,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 		/// </summary>
-		public ModRecipe AddConsumeItemCallback(ConsumeItemCallback callback) {
+		public Recipe AddConsumeItemCallback(ConsumeItemCallback callback) {
 			ConsumeItemHooks += callback;
 
 			return this;
@@ -240,7 +235,7 @@ namespace Terraria.ModLoader
 				Array.Resize(ref Main.availableRecipeY, maxRecipes);
 
 				for (int k = numRecipes; k < maxRecipes; k++) {
-					Main.recipe[k] = new Recipe();
+					Main.recipe[k] = new Recipe(null);
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}
@@ -249,13 +244,13 @@ namespace Terraria.ModLoader
 			
 			RecipeIndex = numRecipes;
 			
-			mod.recipes.Add(this);
+			Mod.recipes.Add(this);
 
 			numRecipes++;
 		}
 
-		internal static ModRecipe Create(Mod mod, int result, int amount) {
-			var recipe = new ModRecipe(mod);
+		internal static Recipe Create(Mod mod, int result, int amount) {
+			var recipe = new Recipe(mod);
 
 			recipe.createItem.SetDefaults(result, false);
 			recipe.createItem.stack = amount;

@@ -10,7 +10,7 @@ namespace Terraria
 		{
 			string Description { get; }
 
-			bool RecipeAvailable(ModRecipe recipe);
+			bool RecipeAvailable(Recipe recipe);
 		}
 
 		public sealed class Condition : ICondition
@@ -60,16 +60,16 @@ namespace Terraria
 			#endregion
 
 			private readonly NetworkText DescriptionText;
-			private readonly Predicate<ModRecipe> Predicate;
+			private readonly Predicate<Recipe> Predicate;
 
 			public string Description => DescriptionText.ToString();
 
-			public Condition(NetworkText description, Predicate<ModRecipe> predicate) {
+			public Condition(NetworkText description, Predicate<Recipe> predicate) {
 				DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
 				Predicate = predicate ?? throw new ArgumentNullException(nameof(description));
 			}
 
-			public bool RecipeAvailable(ModRecipe recipe) => Predicate(recipe);
+			public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
 		}
 	}
 }

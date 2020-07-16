@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,10 +_,11 @@
+@@ -3,32 +_,48 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -13,6 +13,56 @@
  	{
  		public static int maxRequirements = 15;
  		public static int maxRecipes = 3000;
+ 		public static int numRecipes;
++		protected static bool _hasDelayedFindRecipes;
+-		private static Recipe currentRecipe = new Recipe();
++		private static Recipe currentRecipe = new Recipe(null);
++		
+ 		public Item createItem = new Item();
+ 		public Item[] requiredItem = new Item[maxRequirements];
+ 		public int[] requiredTile = new int[maxRequirements];
+ 		public int[] acceptedGroups = new int[maxRequirements];
++		
++		#region Legacy
+-		public bool needHoney;
++		private bool needHoney;
+-		public bool needWater;
++		private bool needWater;
+-		public bool needLava;
++		private bool needLava;
+-		public bool anyWood;
++		private bool anyWood;
+-		public bool anyIronBar;
++		private bool anyIronBar;
+-		public bool anyPressurePlate;
++		private bool anyPressurePlate;
+-		public bool anySand;
++		private bool anySand;
+-		public bool anyFragment;
++		private bool anyFragment;
+-		public bool alchemy;
++		private bool alchemy;
+-		public bool needSnowBiome;
++		private bool needSnowBiome;
+-		public bool needGraveyardBiome;
++		private bool needGraveyardBiome;
+-		private static bool _hasDelayedFindRecipes;
++		#endregion
+ 
++		public Recipe(Mod mod) {
++			Mod = mod;
++			Conditions = new List<Condition>();
++			
++			for (int i = 0; i < maxRequirements; i++) {
++				requiredItem[i] = new Item();
++				requiredTile[i] = -1;
++				acceptedGroups[i] = -1;
++			}
++		}
++		
+ 		public void RequireGroup(string name) {
+ 			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
+ 				return;
 @@ -72,7 +_,7 @@
  				if (num == -1)
  					break;
@@ -22,7 +72,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -88,7 +_,7 @@
+@@ -88,21 +_,13 @@
  				if (num == -1)
  					break;
  
@@ -31,91 +81,298 @@
  					return true;
  			}
  
-@@ -113,6 +_,9 @@
+ 			return false;
+ 		}
+-
+-		public Recipe() {
+-			for (int i = 0; i < maxRequirements; i++) {
+-				requiredItem[i] = new Item();
+-				requiredTile[i] = -1;
+-				acceptedGroups[i] = -1;
+-			}
+-		}
+-
++	
+ 		public void Create() {
+ 			Item[] array = null;
+ 			Item item = null;
+@@ -113,31 +_,18 @@
  					break;
  
  				int num = item2.stack;
-+				if (this is ModRecipe modRecipe)
-+					num = modRecipe.ConsumeItemHooks?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
-+
- 				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
- 					if (num > 1) {
- 						int num2 = 0;
-@@ -193,6 +_,9 @@
- 		}
+-				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
+-					if (num > 1) {
+-						int num2 = 0;
+-						for (int j = 0; j < num; j++) {
+-							if (Main.rand.Next(3) == 0)
+-								num2++;
+-						}
+-
+-						num -= num2;
+-					}
+-					else if (Main.rand.Next(3) == 0) {
+-						num = 0;
+-					}
+-				}
++				num = modRecipe.ConsumeItemHooks?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
  
- 		public bool useWood(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Wood];
-+			return anyWood && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
- 			if (!anyWood)
- 				return false;
+ 				if (num <= 0)
+ 					continue;
  
-@@ -221,9 +_,13 @@
- 							return true;
+-				array = Main.player[Main.myPlayer].inventory;
++				array = Main.LocalPlayer.inventory;
+ 				for (int k = 0; k < 58; k++) {
+ 					item = array[k];
+ 					if (num <= 0)
+ 						break;
+ 
+-					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
++					if (item.IsTheSameAs(item2) || AcceptedByItemGroups(item.type, item2.type)) {
+ 						if (item.stack > num) {
+ 							item.stack -= num;
+ 							num = 0;
+@@ -149,144 +_,49 @@
  					}
- 			}
-+			*/
- 		}
+ 				}
  
- 		public bool useIronBar(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.IronBar];
-+			return this.anyIronBar && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
- 			if (!anyIronBar)
- 				return false;
+-				if (Main.player[Main.myPlayer].chest == -1)
++				if (Main.LocalPlayer.chest == -1)
+ 					continue;
  
-@@ -234,9 +_,13 @@
- 				return false;
+-				if (Main.player[Main.myPlayer].chest > -1)
+-					array = Main.chest[Main.player[Main.myPlayer].chest].item;
+-				else if (Main.player[Main.myPlayer].chest == -2)
+-					array = Main.player[Main.myPlayer].bank.item;
+-				else if (Main.player[Main.myPlayer].chest == -3)
+-					array = Main.player[Main.myPlayer].bank2.item;
+-				else if (Main.player[Main.myPlayer].chest == -4)
+-					array = Main.player[Main.myPlayer].bank3.item;
+-				else if (Main.player[Main.myPlayer].chest == -5)
+-					array = Main.player[Main.myPlayer].bank4.item;
++				if (Main.LocalPlayer.chest > -1)
++					array = Main.chest[Main.LocalPlayer.chest].item;
++				else if (Main.LocalPlayer.chest == -2)
++					array = Main.LocalPlayer.bank.item;
++				else if (Main.LocalPlayer.chest == -3)
++					array = Main.LocalPlayer.bank2.item;
++				else if (Main.LocalPlayer.chest == -4)
++					array = Main.LocalPlayer.bank3.item;
++				else if (Main.LocalPlayer.chest == -5)
++					array = Main.LocalPlayer.bank4.item;
  
- 			return true;
-+			*/
- 		}
+ 				for (int l = 0; l < 40; l++) {
+ 					item = array[l];
+ 					if (num <= 0)
+ 						break;
  
- 		public bool useSand(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Sand];
-+			return this.anySand && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
- 			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
- 				return false;
+-					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
++					if (!item.IsTheSameAs(item2) && !AcceptedByItemGroups(item.type, item2.type))
+ 						continue;
  
-@@ -244,9 +_,13 @@
- 				return true;
+ 					if (item.stack > num) {
+ 						item.stack -= num;
+-						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++						if (Main.netMode == 1 && Main.LocalPlayer.chest >= 0)
+-							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
++							NetMessage.SendData(32, -1, -1, null, Main.LocalPlayer.chest, l);
  
- 			return false;
-+			*/
- 		}
- 
- 		public bool useFragment(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.Fragment];
-+			return this.anyFragment && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
- 			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
- 				return false;
- 
-@@ -254,9 +_,13 @@
- 				return true;
- 
- 			return false;
-+			*/
- 		}
- 
- 		public bool usePressurePlate(int invType, int reqType) {
-+			RecipeGroup rec = RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate];
-+			return anyPressurePlate && rec.ContainsItem(invType) && rec.ContainsItem(reqType);
-+			/*
- 			if (!anyPressurePlate)
- 				return false;
- 
-@@ -285,6 +_,7 @@
- 							return true;
+ 						num = 0;
  					}
+ 					else {
+ 						num -= item.stack;
+ 						array[l] = new Item();
+-						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++						if (Main.netMode == 1 && Main.LocalPlayer.chest >= 0)
+-							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
++							NetMessage.SendData(32, -1, -1, null, Main.LocalPlayer.chest, l);
+ 					}
+ 				}
  			}
-+			*/
+ 
+ 			AchievementsHelper.NotifyItemCraft(this);
+-			AchievementsHelper.NotifyItemPickup(Main.player[Main.myPlayer], createItem);
++			AchievementsHelper.NotifyItemPickup(Main.LocalPlayer, createItem);
+ 			FindRecipes();
  		}
  
+-		public bool useWood(int invType, int reqType) {
+-			if (!anyWood)
+-				return false;
+-
+-			switch (reqType) {
+-				default:
+-					return false;
+-				case 9:
+-				case 619:
+-				case 620:
+-				case 621:
+-				case 911:
+-				case 1729:
+-				case 2503:
+-				case 2504:
+-					switch (invType) {
+-						default:
+-							return false;
+-						case 9:
+-						case 619:
+-						case 620:
+-						case 621:
+-						case 911:
+-						case 1729:
+-						case 2503:
+-						case 2504:
+-							return true;
+-					}
+-			}
+-		}
+-
+-		public bool useIronBar(int invType, int reqType) {
+-			if (!anyIronBar)
+-				return false;
+-
+-			if (reqType != 22 && reqType != 704)
+-				return false;
+-
+-			if (invType != 22 && invType != 704)
+-				return false;
+-
+-			return true;
+-		}
+-
+-		public bool useSand(int invType, int reqType) {
+-			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
+-				return false;
+-
+-			if (anySand && (invType == 169 || invType == 408 || invType == 1246 || invType == 370 || invType == 3272 || invType == 3338 || invType == 3274 || invType == 3275))
+-				return true;
+-
+-			return false;
+-		}
+-
+-		public bool useFragment(int invType, int reqType) {
+-			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
+-				return false;
+-
+-			if (anyFragment && (invType == 3458 || invType == 3456 || invType == 3457 || invType == 3459))
+-				return true;
+-
+-			return false;
+-		}
+-
+-		public bool usePressurePlate(int invType, int reqType) {
+-			if (!anyPressurePlate)
+-				return false;
+-
+-			switch (reqType) {
+-				default:
+-					return false;
+-				case 529:
+-				case 541:
+-				case 542:
+-				case 543:
+-				case 852:
+-				case 853:
+-				case 1151:
+-				case 4261:
+-					switch (invType) {
+-						default:
+-							return false;
+-						case 529:
+-						case 541:
+-						case 542:
+-						case 543:
+-						case 852:
+-						case 853:
+-						case 1151:
+-						case 4261:
+-							return true;
+-					}
+-			}
+-		}
+-
  		public static void GetThroughDelayedFindRecipes() {
-@@ -402,7 +_,7 @@
+ 			if (_hasDelayedFindRecipes) {
+ 				_hasDelayedFindRecipes = false;
+@@ -310,7 +_,7 @@
+ 			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
+ 				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
+ 					for (int k = 0; k < maxRequirements && Main.recipe[j].requiredItem[k].type != 0; k++) {
+-						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
++						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
+ 							Main.availableRecipe[Main.numAvailableRecipes] = j;
+ 							Main.numAvailableRecipes++;
+ 							break;
+@@ -322,7 +_,7 @@
+ 				Dictionary<int, int> dictionary = new Dictionary<int, int>();
+ 				Item[] array = null;
+ 				Item item = null;
+-				array = Main.player[Main.myPlayer].inventory;
++				array = Main.LocalPlayer.inventory;
+ 				for (int l = 0; l < 58; l++) {
+ 					item = array[l];
+ 					if (item.stack > 0) {
+@@ -333,17 +_,17 @@
+ 					}
+ 				}
+ 
+-				if (Main.player[Main.myPlayer].chest != -1) {
+-					if (Main.player[Main.myPlayer].chest > -1)
+-						array = Main.chest[Main.player[Main.myPlayer].chest].item;
+-					else if (Main.player[Main.myPlayer].chest == -2)
+-						array = Main.player[Main.myPlayer].bank.item;
+-					else if (Main.player[Main.myPlayer].chest == -3)
+-						array = Main.player[Main.myPlayer].bank2.item;
+-					else if (Main.player[Main.myPlayer].chest == -4)
+-						array = Main.player[Main.myPlayer].bank3.item;
+-					else if (Main.player[Main.myPlayer].chest == -5)
+-						array = Main.player[Main.myPlayer].bank4.item;
++				if (Main.LocalPlayer.chest != -1) {
++					if (Main.LocalPlayer.chest > -1)
++						array = Main.chest[Main.LocalPlayer.chest].item;
++					else if (Main.LocalPlayer.chest == -2)
++						array = Main.LocalPlayer.bank.item;
++					else if (Main.LocalPlayer.chest == -3)
++						array = Main.LocalPlayer.bank2.item;
++					else if (Main.LocalPlayer.chest == -4)
++						array = Main.LocalPlayer.bank3.item;
++					else if (Main.LocalPlayer.chest == -5)
++						array = Main.LocalPlayer.bank4.item;
+ 
+ 					for (int m = 0; m < 40; m++) {
+ 						item = array[m];
+@@ -360,7 +_,7 @@
+ 					bool flag = true;
+ 					if (flag) {
+ 						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
+-							if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
++							if (!Main.LocalPlayer.adjTile[Main.recipe[n].requiredTile[num3]]) {
+ 								flag = false;
+ 								break;
+ 							}
+@@ -376,7 +_,7 @@
+ 							int num5 = item.stack;
+ 							bool flag2 = false;
+ 							foreach (int key in dictionary.Keys) {
+-								if (Main.recipe[n].useWood(key, item.type) || Main.recipe[n].useSand(key, item.type) || Main.recipe[n].useIronBar(key, item.type) || Main.recipe[n].useFragment(key, item.type) || Main.recipe[n].AcceptedByItemGroups(key, item.type) || Main.recipe[n].usePressurePlate(key, item.type)) {
++								if (Main.recipe[n].AcceptedByItemGroups(key, item.type)) {
+ 									num5 -= dictionary[key];
+ 									flag2 = true;
+ 								}
+@@ -393,16 +_,16 @@
+ 					}
+ 
+ 					if (flag) {
+-						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater || Main.player[Main.myPlayer].adjTile[172];
++						bool num6 = !Main.recipe[n].needWater || Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[172];
+-						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.player[Main.myPlayer].adjHoney;
++						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.LocalPlayer.adjHoney;
+-						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.player[Main.myPlayer].adjLava;
++						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.LocalPlayer.adjLava;
+-						bool flag5 = !Main.recipe[n].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
++						bool flag5 = !Main.recipe[n].needSnowBiome || Main.LocalPlayer.ZoneSnow;
+-						bool flag6 = !Main.recipe[n].needGraveyardBiome || Main.player[Main.myPlayer].ZoneGraveyard;
++						bool flag6 = !Main.recipe[n].needGraveyardBiome || Main.LocalPlayer.ZoneGraveyard;
+ 						if (!(num6 && flag3 && flag4 && flag5 && flag6))
  							flag = false;
  					}
  
@@ -124,7 +381,7 @@
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
-@@ -451,6 +_,8 @@
+@@ -451,12 +_,16 @@
  			RecipeGroupID.Turtles = RecipeGroup.RegisterGroup("Turtles", rec);
  			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Language.GetTextValue("Misc.Fruit"), 4009, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297);
  			RecipeGroupID.Fruit = RecipeGroup.RegisterGroup("Fruit", rec);
@@ -133,8 +390,20 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13052,7 +_,10 @@
+ 			int num = 5;
+ 			int stack = 2;
+ 			SetupRecipeGroups();
++			
++			#region Legacy
+ 			currentRecipe.createItem.SetDefaults(8);
+ 			currentRecipe.createItem.stack = 3;
+ 			currentRecipe.requiredItem[0].SetDefaults(23);
+@@ -13050,9 +_,14 @@
+ 			currentRecipe.requiredItem[0].SetDefaults(73);
+ 			currentRecipe.requiredItem[0].stack = 100;
  			AddRecipe();
++			#endregion
++			
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
 +			RecipeHooks.AddRecipes();
@@ -144,3 +413,86 @@
  			UpdateMaterialFieldForAllRecipes();
  		}
  
+@@ -13075,6 +_,7 @@
+ 			}
+ 		}
+ 
++		#region Legacy
+ 		private static void AddSolarFurniture() {
+ 			currentRecipe.createItem.SetDefaults(4229);
+ 			currentRecipe.createItem.stack = 10;
+@@ -13962,8 +_,9 @@
+ 				}
+ 			}
+ 		}
+-
+-		public void SetIngridients(params int[] ingridients) {
++		
++		// meme man: i cn spek engrish
++		private void SetIngridients(params int[] ingridients) {
+ 			if (ingridients.Length == 1) {
+ 				ingridients = new int[2] {
+ 					ingridients[0],
+@@ -13981,30 +_,46 @@
+ 			}
+ 		}
+ 
+-		public void SetCraftingStation(params int[] tileIDs) {
++		private void SetCraftingStation(params int[] tileIDs) {
+ 			for (int i = 0; i < tileIDs.Length; i++) {
+ 				requiredTile[i] = tileIDs[i];
+ 			}
+ 		}
+ 
+ 		private static void AddRecipe() {
+-			if (currentRecipe.requiredTile[0] == 13)
+-				currentRecipe.alchemy = true;
+-
++			if (currentRecipe.requiredTile[0] == TileID.Bottles || currentRecipe.alchemy) {
++				currentRecipe.AddConsumeItemCallback((recipe, type, amount) => {
++					if (Main.LocalPlayer.alchemyTable) {
++						int num2 = 0;
++						for (int j = 0; j < amount; j++) {
++							if (Main.rand.NextBool(3)) num2++;
++						}
++
++						amount -= num2;
++					}
++
++					return amount;
++				});
++			}
++
++			if (currentRecipe.needGraveyardBiome) currentRecipe.AddCondition(Condition.InGraveyardBiome);
++			if (currentRecipe.needSnowBiome) currentRecipe.AddCondition(Condition.InSnow);
++			if (currentRecipe.needWater) currentRecipe.AddCondition(Condition.NearWater);
++			if (currentRecipe.needLava) currentRecipe.AddCondition(Condition.NearLava);
++			if (currentRecipe.needHoney) currentRecipe.AddCondition(Condition.NearHoney);
++			
++			if (currentRecipe.anyFragment) currentRecipe.RequireGroup(RecipeGroupID.Fragment);
++			if (currentRecipe.anySand) currentRecipe.RequireGroup(RecipeGroupID.Sand);
++			if (currentRecipe.anyWood) currentRecipe.RequireGroup(RecipeGroupID.Wood);
++			if (currentRecipe.anyIronBar) currentRecipe.RequireGroup(RecipeGroupID.IronBar);
++			if (currentRecipe.anyPressurePlate) currentRecipe.RequireGroup(RecipeGroupID.PressurePlate);
++			
+ 			Main.recipe[numRecipes] = currentRecipe;
+-			currentRecipe = new Recipe();
++			currentRecipe = new Recipe(null);
+ 			numRecipes++;
+ 		}
+-
+-		public static int GetRequiredTileStyle(int tileID) {
+-			if (tileID == 26) {
+-				if (!WorldGen.crimson)
+-					return 0;
+-
+-				return 1;
+-			}
+-
+-			return 0;
+-		}
++		#endregion
++
++		public static int GetRequiredTileStyle(int type) => type == TileID.DemonAltar && WorldGen.crimson ? 1 : 0;
+ 	}
+ }

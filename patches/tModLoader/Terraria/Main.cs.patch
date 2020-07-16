@@ -674,6 +674,15 @@
  #if SERVER
  			netMode = 2;
  #endif
+@@ -4900,7 +_,7 @@
+ 			Initialize_TileAndNPCData2();
+ 			Initialize_Items();
+ 			for (int i = 0; i < Recipe.maxRecipes; i++) {
+-				recipe[i] = new Recipe();
++				recipe[i] = new Recipe(null);
+ 				availableRecipeY[i] = 65 * i;
+ 			}
+ 
 @@ -4991,7 +_,7 @@
  			}
  
@@ -2081,6 +2090,94 @@
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
+@@ -30831,21 +_,8 @@
+ 					_requiredObjecsForCraftingText.Add(mapObjectName);
+ 				}
+ 
+-				if (recipe.needWater)
+-					_requiredObjecsForCraftingText.Add(Lang.inter[53].Value);
+-
+-				if (recipe.needHoney)
+-					_requiredObjecsForCraftingText.Add(Lang.inter[58].Value);
+-
+-				if (recipe.needLava)
+-					_requiredObjecsForCraftingText.Add(Lang.inter[56].Value);
+-
+-				if (recipe.needSnowBiome)
+-					_requiredObjecsForCraftingText.Add(Lang.inter[123].Value);
+-
+-				if (recipe.needGraveyardBiome)
+-					_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
+-
++				if (recipe.Conditions.Count > 0) _requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description));
++				
+ 				if (_requiredObjecsForCraftingText.Count == 0) {
+ 					string value = Lang.inter[23].Value;
+ 					_requiredObjecsForCraftingText.Add(value);
+@@ -30885,7 +_,7 @@
+ 				for (int i = 0; i < Recipe.maxRequirements; i++) {
+ 					int num5 = (i + 1) * 26;
+ 					if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
+-						if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
++						if (i == 0)
+ 							spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[23].Value, new Vector2(inventoryX, inventoryY + 118 + num5), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 
+ 						break;
+@@ -30896,30 +_,30 @@
+ 					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.GetMapObjectName(MapHelper.TileToLookup(num6, Recipe.GetRequiredTileStyle(num6))), new Vector2(inventoryX, inventoryY + 118 + num5), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				}
+ 
+-				if (recipe[availableRecipe[num3]].needWater) {
+-					int num7 = (num4 + 1) * 26;
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[53].Value, new Vector2(inventoryX, inventoryY + 118 + num7), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-				}
+-
+-				if (recipe[availableRecipe[num3]].needHoney) {
+-					int num8 = (num4 + 1) * 26;
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[58].Value, new Vector2(inventoryX, inventoryY + 118 + num8), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-				}
+-
+-				if (recipe[availableRecipe[num3]].needLava) {
+-					int num9 = (num4 + 1) * 26;
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[56].Value, new Vector2(inventoryX, inventoryY + 118 + num9), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-				}
+-
+-				if (recipe[availableRecipe[num3]].needSnowBiome) {
+-					int num10 = (num4 + 1) * 26;
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[123].Value, new Vector2(inventoryX, inventoryY + 118 + num10), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-				}
+-
+-				if (recipe[availableRecipe[num3]].needGraveyardBiome) {
+-					int num11 = (num4 + 1) * 26;
+-					spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[124].Value, new Vector2(inventoryX, inventoryY + 118 + num11), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-				}
++				// if (recipe[availableRecipe[num3]].needWater) {
++				// 	int num7 = (num4 + 1) * 26;
++				// 	spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[53].Value, new Vector2(inventoryX, inventoryY + 118 + num7), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				// }
++				//
++				// if (recipe[availableRecipe[num3]].needHoney) {
++				// 	int num8 = (num4 + 1) * 26;
++				// 	spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[58].Value, new Vector2(inventoryX, inventoryY + 118 + num8), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				// }
++				//
++				// if (recipe[availableRecipe[num3]].needLava) {
++				// 	int num9 = (num4 + 1) * 26;
++				// 	spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[56].Value, new Vector2(inventoryX, inventoryY + 118 + num9), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				// }
++				//
++				// if (recipe[availableRecipe[num3]].needSnowBiome) {
++				// 	int num10 = (num4 + 1) * 26;
++				// 	spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[123].Value, new Vector2(inventoryX, inventoryY + 118 + num10), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				// }
++				//
++				// if (recipe[availableRecipe[num3]].needGraveyardBiome) {
++				// 	int num11 = (num4 + 1) * 26;
++				// 	spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[124].Value, new Vector2(inventoryX, inventoryY + 118 + num11), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				// }
+ 			}
+ 			else {
+ 				text = Lang.inter[24].Value;
 @@ -31011,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
@@ -2093,6 +2190,34 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+@@ -31123,16 +_,17 @@
+ 			if (recipe[availableRecipe[focusRecipe]].ProcessGroupsForText(recipe[availableRecipe[focusRecipe]].requiredItem[i].type, out string theText))
+ 				HoverItem.SetNameOverride(theText);
+ 
++			// todo: fix this
+-			if (recipe[availableRecipe[focusRecipe]].anyIronBar && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 22)
++			// if (recipe[availableRecipe[focusRecipe]].anyIronBar && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 22)
+-				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(22));
++			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(22));
+-			else if (recipe[availableRecipe[focusRecipe]].anyWood && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 9)
++			// else if (recipe[availableRecipe[focusRecipe]].anyWood && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 9)
+-				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(9));
++			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(9));
+-			else if (recipe[availableRecipe[focusRecipe]].anySand && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 169)
++			// else if (recipe[availableRecipe[focusRecipe]].anySand && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 169)
+-				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(169));
++			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(169));
+-			else if (recipe[availableRecipe[focusRecipe]].anyFragment && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 3458)
++			// else if (recipe[availableRecipe[focusRecipe]].anyFragment && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 3458)
+-				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[51].Value);
++			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[51].Value);
+-			else if (recipe[availableRecipe[focusRecipe]].anyPressurePlate && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 542)
++			// else if (recipe[availableRecipe[focusRecipe]].anyPressurePlate && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 542)
+-				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[38].Value);
++			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[38].Value);
+ 
+ 			if (recipe[availableRecipe[focusRecipe]].requiredItem[i].stack > 1)
+ 				hoverItemName = hoverItemName + " (" + recipe[availableRecipe[focusRecipe]].requiredItem[i].stack + ")";
 @@ -31247,8 +_,11 @@
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);

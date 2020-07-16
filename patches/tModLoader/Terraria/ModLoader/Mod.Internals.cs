@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
-		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
+		internal readonly IList<Recipe> recipes = new List<Recipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();

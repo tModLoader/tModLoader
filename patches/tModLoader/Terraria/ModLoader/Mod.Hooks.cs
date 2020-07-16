@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override this method to add recipes to the game. It is recommended that you do so through instances of ModRecipe, since it provides methods that simplify recipe creation.
+		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
 		/// </summary>
 		public virtual void AddRecipes()
 		{

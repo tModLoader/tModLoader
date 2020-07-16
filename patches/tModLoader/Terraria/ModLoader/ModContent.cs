@@ -415,7 +415,7 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				token.ThrowIfCancellationRequested();
-				Main.recipe[k] = new Recipe();
+				Main.recipe[k] = new Recipe(null);
 			}
 
 			Recipe.numRecipes = 0;
@@ -471,7 +471,7 @@ namespace Terraria.ModLoader
 			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
-				Main.recipe[k] = new Recipe();
+				Main.recipe[k] = new Recipe(null);
 			}
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
