@@ -22,8 +22,7 @@ namespace Terraria.ModLoader.IO
 			}
 			catch (Exception e) {
 				throw new IOException(
-					$"NBT Deserialization (type={typeof(T)}," +
-					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
+					$"NBT Deserialization (type={typeof(T)},entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
 			}
 		}
 
@@ -35,13 +34,9 @@ namespace Terraria.ModLoader.IO
 			}
 			catch (Exception e) {
 				throw new IOException(
-					$"NBT Deserialization (type={typeof(T)}," +
-					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
+					$"NBT Deserialization (type={typeof(T)},entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
 			}
 		}
-
-		// adding default param to Set overload is a breaking changefor now.
-		public void Set(string key, object value) => Set(key, value, false);
 
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
@@ -56,7 +51,7 @@ namespace Terraria.ModLoader.IO
 			}
 			catch (IOException e) {
 				string valueInfo = "value=" + value;
-				if (value.GetType().ToString() != value.ToString()) valueInfo = "type=" + value.GetType() + "," + valueInfo;
+				if (value.GetType().ToString() != value.ToString()) valueInfo = $"type={value.GetType()},{valueInfo}";
 				throw new IOException($"NBT Serialization (key={key},{valueInfo})", e);
 			}
 
