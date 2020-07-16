@@ -3700,3 +3700,24 @@
  				if (buffType[i] >= type && buffType[i] < type + 3)
  					DelBuff(i);
  			}
+@@ -38411,6 +_,20 @@
+ 
+ 			if (list != null)
+ 				TouchedTiles = list;
++		}
++
++		public Item[] GetPlayerChest() {
++			if (chest > -1)
++				return Main.chest[chest].item;
++			if (chest == -2)
++				return bank.item;
++			if (chest == -3)
++				return bank2.item;
++			if (chest == -4)
++				return Main.LocalPlayer.bank3.item;
++			if (chest == -5)
++				return bank4.item;
++			return new Item[0];
+ 		}
+ 	}
+ }

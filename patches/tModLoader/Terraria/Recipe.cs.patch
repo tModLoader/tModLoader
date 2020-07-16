@@ -72,7 +72,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -88,21 +_,13 @@
+@@ -88,205 +_,78 @@
  				if (num == -1)
  					break;
  
@@ -94,12 +94,17 @@
 -
 +	
  		public void Create() {
- 			Item[] array = null;
- 			Item item = null;
-@@ -113,31 +_,18 @@
+-			Item[] array = null;
+-			Item item = null;
+-			Item item2 = null;
+ 			for (int i = 0; i < maxRequirements; i++) {
+-				item2 = requiredItem[i];
++				Item ingredient = requiredItem[i];
+-				if (item2.type == 0)
++				if (ingredient.type == 0)
  					break;
  
- 				int num = item2.stack;
+-				int num = item2.stack;
 -				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
 -					if (num > 1) {
 -						int num2 = 0;
@@ -114,24 +119,39 @@
 -						num = 0;
 -					}
 -				}
-+				num = modRecipe.ConsumeItemHooks?.Invoke(modRecipe, item2.type, item2.stack) ?? num;
- 
- 				if (num <= 0)
+-
+-				if (num <= 0)
++				int amount = ingredient.stack;
++				amount = ConsumeItemHooks?.Invoke(this, ingredient.type, ingredient.stack) ?? amount;
++
++				if (amount <= 0)
  					continue;
  
++				Item[] array = Main.LocalPlayer.inventory;
 -				array = Main.player[Main.myPlayer].inventory;
-+				array = Main.LocalPlayer.inventory;
- 				for (int k = 0; k < 58; k++) {
- 					item = array[k];
- 					if (num <= 0)
++				Item arrItem;
+-				for (int k = 0; k < 58; k++) {
++				for (int k = 0; k < array.Length; k++) {
+-					item = array[k];
++					arrItem = array[k];
+-					if (num <= 0)
++					if (amount <= 0)
  						break;
  
 -					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
-+					if (item.IsTheSameAs(item2) || AcceptedByItemGroups(item.type, item2.type)) {
- 						if (item.stack > num) {
- 							item.stack -= num;
- 							num = 0;
-@@ -149,144 +_,49 @@
++					if (arrItem.IsTheSameAs(ingredient) || AcceptedByItemGroups(arrItem.type, ingredient.type)) {
+-						if (item.stack > num) {
++						if (arrItem.stack > amount) {
+-							item.stack -= num;
++							arrItem.stack -= amount;
+-							num = 0;
++							amount = 0;
+ 						}
+ 						else {
+-							num -= item.stack;
++							amount -= arrItem.stack;
+ 							array[k] = new Item();
+ 						}
  					}
  				}
  
@@ -149,37 +169,35 @@
 -					array = Main.player[Main.myPlayer].bank3.item;
 -				else if (Main.player[Main.myPlayer].chest == -5)
 -					array = Main.player[Main.myPlayer].bank4.item;
-+				if (Main.LocalPlayer.chest > -1)
-+					array = Main.chest[Main.LocalPlayer.chest].item;
-+				else if (Main.LocalPlayer.chest == -2)
-+					array = Main.LocalPlayer.bank.item;
-+				else if (Main.LocalPlayer.chest == -3)
-+					array = Main.LocalPlayer.bank2.item;
-+				else if (Main.LocalPlayer.chest == -4)
-+					array = Main.LocalPlayer.bank3.item;
-+				else if (Main.LocalPlayer.chest == -5)
-+					array = Main.LocalPlayer.bank4.item;
++				array = Main.LocalPlayer.GetPlayerChest();
  
- 				for (int l = 0; l < 40; l++) {
- 					item = array[l];
- 					if (num <= 0)
+-				for (int l = 0; l < 40; l++) {
++				for (int l = 0; l < array.Length; l++) {
+-					item = array[l];
++					arrItem = array[l];
+-					if (num <= 0)
++					if (amount <= 0)
  						break;
  
 -					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
-+					if (!item.IsTheSameAs(item2) && !AcceptedByItemGroups(item.type, item2.type))
++					if (!arrItem.IsTheSameAs(ingredient) && !AcceptedByItemGroups(arrItem.type, ingredient.type))
  						continue;
  
- 					if (item.stack > num) {
- 						item.stack -= num;
+-					if (item.stack > num) {
++					if (arrItem.stack > amount) {
+-						item.stack -= num;
++						arrItem.stack -= amount;
 -						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
 +						if (Main.netMode == 1 && Main.LocalPlayer.chest >= 0)
 -							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
 +							NetMessage.SendData(32, -1, -1, null, Main.LocalPlayer.chest, l);
  
- 						num = 0;
+-						num = 0;
++						amount = 0;
  					}
  					else {
- 						num -= item.stack;
+-						num -= item.stack;
++						amount -= arrItem.stack;
  						array[l] = new Item();
 -						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
 +						if (Main.netMode == 1 && Main.LocalPlayer.chest >= 0)
@@ -302,16 +320,21 @@
  							Main.availableRecipe[Main.numAvailableRecipes] = j;
  							Main.numAvailableRecipes++;
  							break;
-@@ -322,7 +_,7 @@
+@@ -320,10 +_,9 @@
+ 			}
+ 			else {
  				Dictionary<int, int> dictionary = new Dictionary<int, int>();
- 				Item[] array = null;
- 				Item item = null;
+-				Item[] array = null;
+-				Item item = null;
 -				array = Main.player[Main.myPlayer].inventory;
-+				array = Main.LocalPlayer.inventory;
- 				for (int l = 0; l < 58; l++) {
+-				for (int l = 0; l < 58; l++) {
++				Item item;
++				Item[] array = Main.LocalPlayer.inventory;
++				for (int l = 0; l < array.Length; l++) {
  					item = array[l];
  					if (item.stack > 0) {
-@@ -333,17 +_,17 @@
+ 						if (dictionary.ContainsKey(item.netID))
+@@ -333,19 +_,10 @@
  					}
  				}
  
@@ -327,28 +350,37 @@
 -					else if (Main.player[Main.myPlayer].chest == -5)
 -						array = Main.player[Main.myPlayer].bank4.item;
 +				if (Main.LocalPlayer.chest != -1) {
-+					if (Main.LocalPlayer.chest > -1)
-+						array = Main.chest[Main.LocalPlayer.chest].item;
-+					else if (Main.LocalPlayer.chest == -2)
-+						array = Main.LocalPlayer.bank.item;
-+					else if (Main.LocalPlayer.chest == -3)
-+						array = Main.LocalPlayer.bank2.item;
-+					else if (Main.LocalPlayer.chest == -4)
-+						array = Main.LocalPlayer.bank3.item;
-+					else if (Main.LocalPlayer.chest == -5)
-+						array = Main.LocalPlayer.bank4.item;
++					array = Main.LocalPlayer.GetPlayerChest();
  
- 					for (int m = 0; m < 40; m++) {
+-					for (int m = 0; m < 40; m++) {
++					for (int m = 0; m < array.Length; m++) {
  						item = array[m];
-@@ -360,7 +_,7 @@
- 					bool flag = true;
- 					if (flag) {
- 						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
+ 						if (item != null && item.stack > 0) {
+ 							if (dictionary.ContainsKey(item.netID))
+@@ -357,17 +_,15 @@
+ 				}
+ 
+ 				for (int n = 0; n < maxRecipes && Main.recipe[n].createItem.type != 0; n++) {
+-					bool flag = true;
+-					if (flag) {
+-						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
 -							if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
-+							if (!Main.LocalPlayer.adjTile[Main.recipe[n].requiredTile[num3]]) {
- 								flag = false;
- 								break;
- 							}
+-								flag = false;
+-								break;
+-							}
++					bool available = true;	
++					for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
++						if (!Main.LocalPlayer.adjTile[Main.recipe[n].requiredTile[num3]]) {
++							available = false;
++							break;
+ 						}
+ 					}
+ 
+-					if (flag) {
++					if (available) {
+ 						for (int num4 = 0; num4 < maxRequirements; num4++) {
+ 							item = Main.recipe[n].requiredItem[num4];
+ 							if (item.type == 0)
 @@ -376,7 +_,7 @@
  							int num5 = item.stack;
  							bool flag2 = false;
@@ -358,26 +390,29 @@
  									num5 -= dictionary[key];
  									flag2 = true;
  								}
-@@ -393,16 +_,16 @@
- 					}
+@@ -386,23 +_,13 @@
+ 								num5 -= dictionary[item.netID];
  
- 					if (flag) {
--						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater || Main.player[Main.myPlayer].adjTile[172];
-+						bool num6 = !Main.recipe[n].needWater || Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[172];
--						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.player[Main.myPlayer].adjHoney;
-+						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.LocalPlayer.adjHoney;
--						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.player[Main.myPlayer].adjLava;
-+						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.LocalPlayer.adjLava;
--						bool flag5 = !Main.recipe[n].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
-+						bool flag5 = !Main.recipe[n].needSnowBiome || Main.LocalPlayer.ZoneSnow;
--						bool flag6 = !Main.recipe[n].needGraveyardBiome || Main.player[Main.myPlayer].ZoneGraveyard;
-+						bool flag6 = !Main.recipe[n].needGraveyardBiome || Main.LocalPlayer.ZoneGraveyard;
- 						if (!(num6 && flag3 && flag4 && flag5 && flag6))
- 							flag = false;
+ 							if (num5 > 0) {
+-								flag = false;
++								available = false;
+ 								break;
+ 							}
+ 						}
  					}
  
 -					if (flag) {
-+					if (flag && RecipeHooks.RecipeAvailable(Main.recipe[n])) {
+-						bool num6 = !Main.recipe[n].needWater || Main.player[Main.myPlayer].adjWater || Main.player[Main.myPlayer].adjTile[172];
+-						bool flag3 = !Main.recipe[n].needHoney || Main.recipe[n].needHoney == Main.player[Main.myPlayer].adjHoney;
+-						bool flag4 = !Main.recipe[n].needLava || Main.recipe[n].needLava == Main.player[Main.myPlayer].adjLava;
+-						bool flag5 = !Main.recipe[n].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
+-						bool flag6 = !Main.recipe[n].needGraveyardBiome || Main.player[Main.myPlayer].ZoneGraveyard;
+-						if (!(num6 && flag3 && flag4 && flag5 && flag6))
+-							flag = false;
+-					}
+-
+-					if (flag) {
++					if (available && RecipeHooks.RecipeAvailable(Main.recipe[n])) {
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
