@@ -47,6 +47,7 @@ namespace ExampleMod.Content.Items.Consumables
 			var recipe = CreateRecipe();
 
 			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
+			recipe.AddTile(TileID.Bottles); //Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
 
 			recipe.Register();
 		}
