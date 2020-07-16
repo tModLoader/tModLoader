@@ -65,7 +65,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = mod.GetPacket();
+			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);
