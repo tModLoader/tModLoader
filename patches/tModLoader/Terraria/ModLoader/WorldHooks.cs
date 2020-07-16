@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		internal static void WriteNetWorldOrder(BinaryWriter w) {
 			w.Write((short)NetWorlds.Length);
 			foreach (var netWorld in NetWorlds) {
-				w.Write(netWorld.mod.netID);
+				w.Write(netWorld.Mod.netID);
 				w.Write(netWorld.Name);
 			}
 		}

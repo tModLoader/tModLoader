@@ -26,7 +26,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 
 		public override void ModifyDrawLayers(List<PlayerLayer> layers) {
-			if (player.head == mod.GetEquipSlot("toplayz_Head", EquipType.Head)) {
+			if (player.head == Mod.GetEquipSlot("toplayz_Head", EquipType.Head)) {
 				var headLayer = layers.FirstOrDefault(x => x.Name.Equals("Head"));
 				var armsLayer = layers.FirstOrDefault(x => x.Name.Equals("Arms"));
 				//				var bodyLayer = layers.FirstOrDefault(x => x.Name.Equals("Body"));

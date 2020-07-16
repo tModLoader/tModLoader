@@ -229,7 +229,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			if (data.Length > 0) {
-				writer.Write(modPlayer.mod.Name);
+				writer.Write(modPlayer.Mod.Name);
 				writer.Write(modPlayer.Name);
 				writer.Write((byte)data.Length);
 				writer.Write(data);

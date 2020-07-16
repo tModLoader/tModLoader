@@ -32,7 +32,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modProjectile = ProjectileLoader.GetProjectile(type);
-+			return $"{modProjectile.mod.Name} {modProjectile.Name}";
++			return $"{modProjectile.Mod.Name} {modProjectile.Name}";
 +		}
 +
 +		public static string GetUniqueKey(Projectile projectile) => GetUniqueKey(projectile.type);

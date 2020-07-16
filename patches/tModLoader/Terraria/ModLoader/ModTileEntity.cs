@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 	/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 	/// </summary>
 	/// <seealso cref="Terraria.DataStructures.TileEntity" />
-	public abstract class ModTileEntity : TileEntity
+	public abstract class ModTileEntity : TileEntity, IModType
 	{
 		public const int numVanilla = 3;
 		private static int nextTileEntity = numVanilla;
@@ -20,26 +20,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod that added this ModTileEntity.
 		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
+		public Mod Mod {get;internal set;}
 
 		/// <summary>
 		/// The internal name of this ModTileEntity.
 		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public string Name => GetType().Name;
 
 		/// <summary>
 		/// The numeric type used to identify this kind of tile entity.
 		/// </summary>
-		public int Type {
-			get;
-			internal set;
-		}
+		public int Type {get;internal set;}
 
 		internal static int ReserveTileEntityID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tile entities breaks vanilla client compatibility");
@@ -130,8 +121,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity) {
 			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());
-			newEntity.mod = tileEntity.mod;
-			newEntity.Name = tileEntity.Name;
+			newEntity.Mod = tileEntity.Mod;
 			newEntity.Type = tileEntity.Type;
 			return newEntity;
 		}
@@ -192,12 +182,24 @@ namespace Terraria.ModLoader
 			NetReceive(reader, networkSend);
 		}
 
-		/// <summary>
-		/// Allows you to automatically load a tile entity instead of using Mod.AddTileEntity. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload, or change the default display name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		void ILoadable.Load(Mod mod) {
+			Mod = mod;
+			Load();
+
+			if (!Mod.loading)
+				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
+
+			int id = ModTileEntity.ReserveTileEntityID();
+			Type = id;
+			type = (byte)id;
+
+			Mod.tileEntities[Name] = this;
+			ModTileEntity.tileEntities.Add(this);
+			ContentInstance.Register(this);
 		}
+
+		public virtual void Load() {}
+		void ILoadable.Unload(){}
 
 		/// <summary>
 		/// Allows you to save custom data for this tile entity.

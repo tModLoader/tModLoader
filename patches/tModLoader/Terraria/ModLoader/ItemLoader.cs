@@ -1722,7 +1722,7 @@ namespace Terraria.ModLoader
 		internal static void WriteNetGlobalOrder(BinaryWriter w) {
 			w.Write((short)NetGlobals.Length);
 			foreach (var globalItem in NetGlobals) {
-				w.Write(globalItem.mod.netID);
+				w.Write(globalItem.Mod.netID);
 				w.Write(globalItem.Name);
 			}
 		}

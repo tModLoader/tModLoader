@@ -7,29 +7,12 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify the behavior of any buff in the game.
 	/// </summary>
-	public class GlobalBuff
+	public class GlobalBuff:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalBuff belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this GlobalBuff instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Allows you to automatically load a GlobalBuff instead of using Mod.AddGlobalBuff. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			Mod.globalBuffs[Name] = this;
+			BuffLoader.globalBuffs.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		/// <summary>

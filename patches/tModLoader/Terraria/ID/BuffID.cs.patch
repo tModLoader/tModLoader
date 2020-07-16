@@ -31,7 +31,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modBuff = BuffLoader.GetBuff(type);
-+			return $"{modBuff.mod.Name} {modBuff.Name}";
++			return $"{modBuff.Mod.Name} {modBuff.Name}";
 +		}
 +
 +		public static int TypeFromUniqueKey(string key) {

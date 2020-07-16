@@ -1,12 +1,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
 	/// </summary>
-	public class ModItem
+	public class ModItem:ModTexturedType
 	{
 		//add modItem property to Terraria.Item (internal set)
 		//set modItem to null at beginning of Terraria.Item.ResetStats		
@@ -25,50 +26,21 @@ namespace Terraria.ModLoader
 		/// <value>
 		/// The item.
 		/// </value>
-		public Item item {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// Gets the mod.
-		/// </summary>
-		/// <value>
-		/// The mod that added this ModItem.
-		/// </value>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The internal name of this ModItem.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
+		public Item item {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
-		public ModTranslation DisplayName {
-			get;
-			internal set;
-		}
+		public ModTranslation DisplayName {get;internal set;}
 
 		/// <summary>
 		/// The translations for the display name of this tooltip.
 		/// </summary>
-		public ModTranslation Tooltip {
-			get;
-			internal set;
-		}
+		public ModTranslation Tooltip {get;internal set;}
 
-		/// <summary>
-		/// The file name of this item's texture file in the mod loader's file space.
-		/// </summary>
-		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
+		public virtual string ArmTexture => Texture + "_Arms";
+
+		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
 		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
 		public bool projOnSwing;
@@ -92,14 +64,26 @@ namespace Terraria.ModLoader
 			item = new Item { modItem = this };
 		}
 
-		/// <summary>
-		/// Allows you to automatically load an item instead of using Mod.AddItem. 
-		/// Return true to allow autoloading; by default returns the mod's autoload property. 
-		/// Use this method to force or stop an autoload or change the internal name.
-		/// </summary>
-		/// <param name="name">The name, initialized to the name of this type.</param>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			if (Mod.items.ContainsKey(Name))
+				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
+
+			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
+			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
+
+			item.ResetStats(ItemLoader.ReserveItemID());
+			item.modItem = this;
+
+			Mod.items[Name] = this;
+			ItemLoader.items.Add(this);
+			ContentInstance.Register(this);
+
+			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
+			if (autoloadEquip != null) {
+				foreach (var equip in autoloadEquip.equipTypes) {
+					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
+				}
+			}
 		}
 
 		/// <summary>
@@ -143,8 +127,7 @@ namespace Terraria.ModLoader
 
 			var copy = (ModItem)Activator.CreateInstance(GetType());
 			copy.item = itemClone;
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
 			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
 			return copy;

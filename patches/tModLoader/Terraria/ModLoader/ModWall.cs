@@ -9,33 +9,13 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 	/// </summary>
-	public class ModWall
+	public class ModWall:ModTexturedType
 	{
-		/// <summary>
-		/// The mod which has added this type of ModWall.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of wall.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The internal ID of this type of wall.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The default type of sound made when this wall is hit. Defaults to 0.
 		/// </summary>
@@ -75,7 +55,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -117,11 +97,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Allows you to modify the name and texture path of this wall when it is autoloaded. Return true to autoload this wall. When a wall is autoloaded, that means you do not need to manually call Mod.AddWall. By default returns the mod's autoload property.
-		/// </summary>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			Type = (ushort)WallLoader.ReserveWallID();
+
+			Mod.walls[Name] = this;
+			WallLoader.walls.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		/// <summary>
