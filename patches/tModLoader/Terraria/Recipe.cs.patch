@@ -468,7 +468,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -13981,30 +_,46 @@
+@@ -13981,30 +_,33 @@
  			}
  		}
  
@@ -482,22 +482,8 @@
  		private static void AddRecipe() {
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
--
-+			if (currentRecipe.requiredTile[0] == TileID.Bottles || currentRecipe.alchemy) {
-+				currentRecipe.AddConsumeItemCallback((recipe, type, amount) => {
-+					if (Main.LocalPlayer.alchemyTable) {
-+						int num2 = 0;
-+						for (int j = 0; j < amount; j++) {
-+							if (Main.rand.NextBool(3)) num2++;
-+						}
-+
-+						amount -= num2;
-+					}
-+
-+					return amount;
-+				});
-+			}
-+
++			if (currentRecipe.requiredTile[0] == TileID.Bottles || currentRecipe.alchemy) currentRecipe.AddConsumeItemCallback(AlchemyConsumeCallback);
+ 
 +			if (currentRecipe.needGraveyardBiome) currentRecipe.AddCondition(Condition.InGraveyardBiome);
 +			if (currentRecipe.needSnowBiome) currentRecipe.AddCondition(Condition.InSnow);
 +			if (currentRecipe.needWater) currentRecipe.AddCondition(Condition.NearWater);
