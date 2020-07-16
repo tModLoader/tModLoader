@@ -74,19 +74,24 @@ namespace Terraria
 
 			public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
 		}
-		
-		public static readonly ConsumeItemCallback AlchemyConsumeCallback = (recipe, type, amount) => {
-			if (Main.LocalPlayer.alchemyTable) {
-				int reduce = 0;
-				for (int j = 0; j < amount; j++) {
-					if (Main.rand.NextBool(3)) reduce++;
+
+		public static class ConsumptionRules
+		{
+			/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
+			public static int Alchemy(Recipe _, int type, int amount) {
+				if (!Main.LocalPlayer.alchemyTable)
+					return amount;
+
+				int amountUsed = 0;
+
+				for (int i = 0; i < amount; i++) {
+					if (!Main.rand.NextBool(3))
+						amountUsed++;
 				}
 
-				amount -= reduce;
+				return amountUsed;
 			}
-
-			return amount;
-		};
+		}
 		
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions;
@@ -300,7 +305,7 @@ namespace Terraria
 			
 			for (int k = 0; k < maxRequirements; k++) {
 				if (requiredTile[k] == TileID.Bottles) {
-					AddConsumeItemCallback(AlchemyConsumeCallback);
+					AddConsumeItemCallback(ConsumptionRules.Alchemy);
 					break;
 				}
 			}

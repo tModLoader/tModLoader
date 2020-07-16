@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,33 +_,49 @@
+@@ -3,33 +_,48 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -9,12 +9,12 @@
  namespace Terraria
  {
 -	public class Recipe
-+	public partial class Recipe
++	public sealed partial class Recipe
  	{
  		public static int maxRequirements = 15;
  		public static int maxRecipes = 3000;
  		public static int numRecipes;
-+		protected static bool _hasDelayedFindRecipes;
++		private static bool _hasDelayedFindRecipes;
 -		private static Recipe currentRecipe = new Recipe();
 +		private static Recipe currentRecipe = new Recipe(null);
 +		
@@ -41,7 +41,6 @@
 -		public bool anyFragment;
 +		private bool anyFragment;
 -		public bool alchemy;
-+		private bool alchemy;
 -		public bool needSnowBiome;
 +		private bool needSnowBiome;
 -		public bool needGraveyardBiome;
@@ -507,7 +506,7 @@
  		private static void AddRecipe() {
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
-+			if (currentRecipe.requiredTile[0] == TileID.Bottles || currentRecipe.alchemy) currentRecipe.AddConsumeItemCallback(AlchemyConsumeCallback);
++			if (currentRecipe.requiredTile[0] == TileID.Bottles) currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
  
 +			if (currentRecipe.needGraveyardBiome) currentRecipe.AddCondition(Condition.InGraveyardBiome);
 +			if (currentRecipe.needSnowBiome) currentRecipe.AddCondition(Condition.InSnow);
