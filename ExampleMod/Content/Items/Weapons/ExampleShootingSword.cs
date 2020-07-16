@@ -41,7 +41,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
+			ModRecipe recipe = new ModRecipe(Mod);
 			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
 			recipe.AddIngredient(ItemID.Wood);
 			recipe.AddTile(TileType<ExampleWorkbench>());

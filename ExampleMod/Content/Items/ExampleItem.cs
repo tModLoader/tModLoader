@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items
 
 		public override void AddRecipes() {
 			//This recipe makes 999 ExampleItems out of 1 dirt block.
-			ModRecipe recipe = new ModRecipe(mod);
+			ModRecipe recipe = new ModRecipe(Mod);
 			recipe.AddIngredient(ItemID.DirtBlock);
 			recipe.SetResult(this, 999);
 			recipe.AddRecipe();

@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
+			ModRecipe recipe = new ModRecipe(Mod);
 			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

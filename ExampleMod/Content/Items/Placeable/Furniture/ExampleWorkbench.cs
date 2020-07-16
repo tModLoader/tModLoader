@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
+			ModRecipe recipe = new ModRecipe(Mod);
 			recipe.AddIngredient(ItemID.WorkBench);
 			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
 			recipe.SetResult(this);

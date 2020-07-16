@@ -51,7 +51,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
+			ModRecipe recipe = new ModRecipe(Mod);
 			recipe.AddIngredient(ItemType<ExampleItem>());
 			recipe.SetResult(this, 10);
 			recipe.AddRecipe();
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = mod.GetPacket();
+			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(exampleLifeFruits);

@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod); //This creates a new ModRecipe, associated with the mod that this content piece comes from.
+			ModRecipe recipe = new ModRecipe(Mod); //This creates a new ModRecipe, associated with the mod that this content piece comes from.
 			recipe.AddIngredient(ItemType<ExampleItem>(), 10); //ItemType<Class Of A Modded Item>() returns the id of the provided ModItem class' item. Here, 10 is the amount of that ingredient required for this recipe.
 			recipe.AddIngredient(ItemID.Wood); //You can use ItemID.TheItemYouWantToUse to get IDs of vanilla items. Note that the amount argument is ommited here, defaulting to 1.
 			recipe.AddTile(TileType<ExampleWorkbench>()); //Set the crafting tile to ExampleWorkbench
