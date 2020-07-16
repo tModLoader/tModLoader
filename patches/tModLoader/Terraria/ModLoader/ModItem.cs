@@ -1078,6 +1078,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public ModRecipe CreateRecipe(int amount = 1) => ModRecipe.Create(mod, item.type, amount);
+		public ModRecipe CreateRecipe(int amount = 1) => ModRecipe.Create(Mod, item.type, amount);
 	}
 }

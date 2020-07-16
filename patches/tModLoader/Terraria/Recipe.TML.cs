@@ -2,6 +2,8 @@
 using Terraria.Localization;
 using Terraria.ModLoader;
 
+#pragma warning disable IDE0060 //Remove unused parameter.
+
 namespace Terraria
 {
 	public partial class Recipe
@@ -70,6 +72,26 @@ namespace Terraria
 			}
 
 			public bool RecipeAvailable(ModRecipe recipe) => Predicate(recipe);
+		}
+
+		public static class ConsumptionRules
+		{
+			/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
+			public static int Alchemy(ModRecipe _, int type, int amount) {
+				if (!Main.LocalPlayer.alchemyTable) {
+					return amount;
+				}
+
+				int amountUsed = 0;
+
+				for (int i = 0; i < amount; i++) {
+					if (Main.rand.Next(3) != 0) {
+						amountUsed++;
+					}
+				}
+
+				return amountUsed;
+			}
 		}
 	}
 }
