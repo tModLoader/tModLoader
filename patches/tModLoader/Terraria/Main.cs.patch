@@ -2244,7 +2244,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31118,24 +_,18 @@
+@@ -31118,24 +_,14 @@
  		}
  
  		private static void SetRecipeMaterialDisplayName(int i) {
@@ -2256,7 +2256,7 @@
 +			HoverItem = recipe.requiredItem[i].Clone();
 +			if (recipe.ProcessGroupsForText(recipe.requiredItem[i].type, out string theText))
  				HoverItem.SetNameOverride(theText);
- 
+-
 -			if (recipe[availableRecipe[focusRecipe]].anyIronBar && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 22)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(22));
 -			else if (recipe[availableRecipe[focusRecipe]].anyWood && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 9)
@@ -2270,9 +2270,6 @@
 -
 -			if (recipe[availableRecipe[focusRecipe]].requiredItem[i].stack > 1)
 -				hoverItemName = hoverItemName + " (" + recipe[availableRecipe[focusRecipe]].requiredItem[i].stack + ")";
-+			int? recipeGroupID = recipe.acceptedGroups.FirstOrDefault(x => x != -1);
-+			if (recipeGroupID != null)
-+				HoverItem.SetNameOverride(RecipeGroup.recipeGroups[recipeGroupID.Value].GetText());
 +			
 +			if (recipe.requiredItem[i].stack > 1)
 +				hoverItemName = hoverItemName + " (" + recipe.requiredItem[i].stack + ")";
