@@ -2244,34 +2244,41 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31123,16 +_,17 @@
- 			if (recipe[availableRecipe[focusRecipe]].ProcessGroupsForText(recipe[availableRecipe[focusRecipe]].requiredItem[i].type, out string theText))
+@@ -31118,24 +_,18 @@
+ 		}
+ 
+ 		private static void SetRecipeMaterialDisplayName(int i) {
+-			hoverItemName = recipe[availableRecipe[focusRecipe]].requiredItem[i].Name;
+-			HoverItem = recipe[availableRecipe[focusRecipe]].requiredItem[i].Clone();
+-			if (recipe[availableRecipe[focusRecipe]].ProcessGroupsForText(recipe[availableRecipe[focusRecipe]].requiredItem[i].type, out string theText))
++			Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
++			hoverItemName = recipe.requiredItem[i].Name;
++			HoverItem = recipe.requiredItem[i].Clone();
++			if (recipe.ProcessGroupsForText(recipe.requiredItem[i].type, out string theText))
  				HoverItem.SetNameOverride(theText);
  
-+			// todo: fix this
 -			if (recipe[availableRecipe[focusRecipe]].anyIronBar && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 22)
-+			// if (recipe[availableRecipe[focusRecipe]].anyIronBar && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 22)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(22));
-+			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(22));
 -			else if (recipe[availableRecipe[focusRecipe]].anyWood && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 9)
-+			// else if (recipe[availableRecipe[focusRecipe]].anyWood && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 9)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(9));
-+			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(9));
 -			else if (recipe[availableRecipe[focusRecipe]].anySand && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 169)
-+			// else if (recipe[availableRecipe[focusRecipe]].anySand && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 169)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(169));
-+			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.GetItemNameValue(169));
 -			else if (recipe[availableRecipe[focusRecipe]].anyFragment && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 3458)
-+			// else if (recipe[availableRecipe[focusRecipe]].anyFragment && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 3458)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[51].Value);
-+			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[51].Value);
 -			else if (recipe[availableRecipe[focusRecipe]].anyPressurePlate && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 542)
-+			// else if (recipe[availableRecipe[focusRecipe]].anyPressurePlate && recipe[availableRecipe[focusRecipe]].requiredItem[i].type == 542)
 -				HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[38].Value);
-+			// 	HoverItem.SetNameOverride(Lang.misc[37].Value + " " + Lang.misc[38].Value);
+-
+-			if (recipe[availableRecipe[focusRecipe]].requiredItem[i].stack > 1)
+-				hoverItemName = hoverItemName + " (" + recipe[availableRecipe[focusRecipe]].requiredItem[i].stack + ")";
++			int? recipeGroupID = recipe.acceptedGroups.FirstOrDefault(x => x != -1);
++			if (recipeGroupID != null)
++				HoverItem.SetNameOverride(RecipeGroup.recipeGroups[recipeGroupID.Value].GetText());
++			
++			if (recipe.requiredItem[i].stack > 1)
++				hoverItemName = hoverItemName + " (" + recipe.requiredItem[i].stack + ")";
+ 		}
  
- 			if (recipe[availableRecipe[focusRecipe]].requiredItem[i].stack > 1)
- 				hoverItemName = hoverItemName + " (" + recipe[availableRecipe[focusRecipe]].requiredItem[i].stack + ")";
+ 		private void DrawHotbarLockIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp) {
 @@ -31247,8 +_,11 @@
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
