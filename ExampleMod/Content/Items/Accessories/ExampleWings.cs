@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -39,12 +38,10 @@ namespace ExampleMod.Content.Items.Accessories
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-
-			recipe.AddIngredient(ItemType<ExampleItem>(), 60);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-
-			recipe.Register();
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(60)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

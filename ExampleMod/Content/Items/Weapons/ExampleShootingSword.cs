@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -40,17 +39,6 @@ namespace ExampleMod.Content.Items.Weapons
 			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-
-			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
-			recipe.AddIngredient(ItemID.Wood);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-
-			recipe.Register();
-		}
-
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			float ceilingLimit = target.Y;
@@ -79,6 +67,15 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 
 			return false;
+		}
+
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(100)
+				.AddRecipeGroup(RecipeGroupID.Wood, 10)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

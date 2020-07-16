@@ -32,20 +32,18 @@ namespace ExampleMod.Content.Items.Tools
 			item.hammer = 100; //How much hammer power the weapon has
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-
-			recipe.Register();
-		}
-
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
 			}
+		}
+		
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(10)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

@@ -70,11 +70,9 @@ namespace ExampleMod.Content.Items.Tools
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-
-			recipe.AddIngredient(ItemType<ExampleItem>());
-
-			recipe.Register();
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(100)
+				.Register();
 		}
 	}
 }
