@@ -32,8 +32,8 @@ namespace ExampleMod.Content.Items
 				.AddIngredient(ItemID.DirtBlock, 10)
 				.AddCondition(Recipe.Condition.TimeNight)
 				.Register();
-
-
+			
+			
 			//////////////////////////////////////////////////////////////////////////
 			//The following basic recipe makes 999 ExampleItems out of 1 dirt block.//
 			//////////////////////////////////////////////////////////////////////////

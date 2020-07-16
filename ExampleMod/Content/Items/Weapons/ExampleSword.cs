@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items.Weapons
 			//60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 60);
 		}
-		
+
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
