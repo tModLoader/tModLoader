@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,32 +_,48 @@
+@@ -3,33 +_,49 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -60,10 +60,28 @@
 +			}
 +		}
 +		
- 		public void RequireGroup(string name) {
+-		public void RequireGroup(string name) {
++		internal void RequireGroup(string name) {
  			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
  				return;
-@@ -72,7 +_,7 @@
+ 
+@@ -49,7 +_,7 @@
+ 			acceptedGroups[num] = value;
+ 		}
+ 
+-		public void RequireGroup(int id) {
++		internal void RequireGroup(int id) {
+ 			int num = 0;
+ 			while (true) {
+ 				if (num < maxRequirements) {
+@@ -66,13 +_,13 @@
+ 			acceptedGroups[num] = id;
+ 		}
+ 
+-		public bool ProcessGroupsForText(int type, out string theText) {
++		internal bool ProcessGroupsForText(int type, out string theText) {
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				int num = acceptedGroups[i];
  				if (num == -1)
  					break;
  
@@ -72,7 +90,14 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -88,205 +_,78 @@
+@@ -82,211 +_,84 @@
+ 			return false;
+ 		}
+ 
+-		public bool AcceptedByItemGroups(int invType, int reqType) {
++		internal bool AcceptedByItemGroups(int invType, int reqType) {
+ 			for (int i = 0; i < maxRequirements; i++) {
+ 				int num = acceptedGroups[i];
  				if (num == -1)
  					break;
  
