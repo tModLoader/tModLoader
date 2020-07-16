@@ -21,7 +21,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modPrefix = ModPrefix.GetPrefix(type);
-+			return $"{modPrefix.mod.Name} {modPrefix.Name}";
++			return $"{modPrefix.Mod.Name} {modPrefix.Name}";
 +		}
 +
 +		public static int TypeFromUniqueKey(string key) {

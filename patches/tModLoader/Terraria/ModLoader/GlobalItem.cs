@@ -12,32 +12,25 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public class GlobalItem
+	public class GlobalItem:ModType
 	{
-		/// <summary>
-		/// The mod to which this GlobalItem belongs.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this GlobalItem instance.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		internal int index;
 		internal int instanceIndex;
 
-		/// <summary>
-		/// Allows you to automatically load a GlobalItem instead of using Mod.AddGlobalItem. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name.
-		/// </summary>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			ItemLoader.VerifyGlobalItem(this);
+
+			Mod.globalItems[Name] = this;
+			index = ItemLoader.globalItems.Count;
+			ItemLoader.globalIndexes[Mod.Name + ':' + Name] = ItemLoader.globalItems.Count;
+			if (ItemLoader.globalIndexesByType.ContainsKey(GetType())) {
+				ItemLoader.globalIndexesByType[GetType()] = -1;
+			}
+			else {
+				ItemLoader.globalIndexesByType[GetType()] = ItemLoader.globalItems.Count;
+			}
+			ItemLoader.globalItems.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		/// <summary>
@@ -81,8 +74,7 @@ namespace Terraria.ModLoader
 				return Clone();
 
 			var copy = (GlobalItem)Activator.CreateInstance(GetType());
-			copy.mod = mod;
-			copy.Name = Name;
+			copy.Mod = Mod;
 			copy.index = index; //not necessary, but consistency
 			copy.instanceIndex = instanceIndex;//shouldn't be used, but someone might
 			return copy;

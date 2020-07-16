@@ -62,6 +62,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModWaterfallStyle> waterfallStyles = new Dictionary<string, ModWaterfallStyle>();
 		internal readonly IDictionary<string, GlobalRecipe> globalRecipes = new Dictionary<string, GlobalRecipe>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
+		internal readonly IList<ILoadable> loadables = new List<ILoadable>();
 
 		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
 		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
@@ -149,7 +150,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModTile tile in tiles.Values) {
-				TextureAssets.Tile[tile.Type] = ModContent.GetTexture(tile.texture);
+				TextureAssets.Tile[tile.Type] = ModContent.GetTexture(tile.Texture);
 
 				TileLoader.SetDefaults(tile);
 
@@ -167,7 +168,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModWall wall in walls.Values) {
-				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.texture);
+				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.Texture);
 
 				wall.SetDefaults();
 			}
@@ -198,23 +199,28 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModBuff buff in buffs.Values) {
-				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.texture);
+				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.Texture);
 
 				buff.SetDefaults();
 			}
 
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
-				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.texture);
-				TextureAssets.Liquid[waterStyle.Type] = ModContent.GetTexture(waterStyle.blockTexture);
+				LiquidRenderer.Instance._liquidTextures[waterStyle.Type] = ModContent.GetTexture(waterStyle.Texture);
+				TextureAssets.Liquid[waterStyle.Type] = ModContent.GetTexture(waterStyle.BlockTexture);
 			}
 
 			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values) {
-				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.texture);
+				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.Texture);
 			}
 		}
 
 		internal void UnloadContent() {
 			Unload();
+			foreach(var loadable in loadables.Reverse()) {
+				loadable.Unload();
+			}
+			loadables.Clear();
+
 			recipes.Clear();
 			items.Clear();
 			globalItems.Clear();
@@ -278,91 +284,24 @@ namespace Terraria.ModLoader
 			AutoloadLocalization();
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
+
+			Type modType = GetType();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				if (type.IsAbstract || type.GetConstructor(new Type[0]) == null)//don't autoload things with no default constructor
-				{
-					continue;
-				}
-				if (type.IsSubclassOf(typeof(ModItem))) {
-					AutoloadItem(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalItem))) {
-					AutoloadGlobalItem(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModPrefix))) {
-					AutoloadPrefix(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModDust))) {
-					AutoloadDust(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModTile))) {
-					AutoloadTile(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalTile))) {
-					AutoloadGlobalTile(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModTileEntity))) {
-					AutoloadTileEntity(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWall))) {
-					AutoloadWall(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalWall))) {
-					AutoloadGlobalWall(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModProjectile))) {
-					AutoloadProjectile(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalProjectile))) {
-					AutoloadGlobalProjectile(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModNPC))) {
-					AutoloadNPC(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalNPC))) {
-					AutoloadGlobalNPC(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModPlayer))) {
-					AutoloadPlayer(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModBuff))) {
-					AutoloadBuff(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalBuff))) {
-					AutoloadGlobalBuff(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModMountData))) {
-					AutoloadMountData(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModGore))) {
+				if (type == modType){continue;}
+				if (type.IsAbstract){continue;}
+				if (type.GetConstructor(new Type[0]) == null){continue;}//don't autoload things with no default constructor
+
+				if (type.IsSubclassOf(typeof(ModGore))) {
 					modGores.Add(type);
 				}
 				else if (type.IsSubclassOf(typeof(ModSound))) {
 					modSounds.Add(type);
 				}
-				else if (type.IsSubclassOf(typeof(ModWorld))) {
-					AutoloadModWorld(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModUgBgStyle))) {
-					AutoloadUgBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModSurfaceBgStyle))) {
-					AutoloadSurfaceBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalBgStyle))) {
-					AutoloadGlobalBgStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWaterStyle))) {
-					AutoloadWaterStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModWaterfallStyle))) {
-					AutoloadWaterfallStyle(type);
-				}
-				else if (type.IsSubclassOf(typeof(GlobalRecipe))) {
-					AutoloadGlobalRecipe(type);
-				}
-				else if (type.IsSubclassOf(typeof(ModCommand))) {
-					AutoloadCommand(type);
+				else if (typeof(ILoadable).IsAssignableFrom(type)) {
+					bool? autoload = AutoloadAttribute.GetValue(type);
+					if (autoload ?? Properties.Autoload) {
+						AutoloadInstance(type);
+					}
 				}
 			}
 			if (Properties.AutoloadGores) {
@@ -418,190 +357,10 @@ namespace Terraria.ModLoader
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
 		}
 
-		private void AutoloadItem(Type type) {
-			ModItem item = (ModItem)Activator.CreateInstance(type);
-			item.mod = this;
-			string name = type.Name;
-			if (item.Autoload(ref name)) {
-				AddItem(name, item);
-				var autoloadEquip = type.GetAttribute<AutoloadEquip>();
-				if (autoloadEquip != null)
-					foreach (var equip in autoloadEquip.equipTypes)
-						AddEquipTexture(item, equip, item.Name, item.Texture + '_' + equip,
-							item.Texture + "_Arms", item.Texture + "_FemaleBody");
-			}
-		}
-
-		private void AutoloadGlobalItem(Type type) {
-			GlobalItem globalItem = (GlobalItem)Activator.CreateInstance(type);
-			globalItem.mod = this;
-			string name = type.Name;
-			if (globalItem.Autoload(ref name)) {
-				AddGlobalItem(name, globalItem);
-			}
-		}
-
-		private void AutoloadPrefix(Type type) {
-			ModPrefix prefix = (ModPrefix)Activator.CreateInstance(type);
-			prefix.mod = this;
-			string name = type.Name;
-			if (prefix.Autoload(ref name)) {
-				AddPrefix(name, prefix);
-			}
-		}
-
-		private void AutoloadDust(Type type) {
-			ModDust dust = (ModDust)Activator.CreateInstance(type);
-			dust.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (dust.Autoload(ref name, ref texture)) {
-				AddDust(name, dust, texture);
-			}
-		}
-
-		private void AutoloadTile(Type type) {
-			ModTile tile = (ModTile)Activator.CreateInstance(type);
-			tile.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (tile.Autoload(ref name, ref texture)) {
-				AddTile(name, tile, texture);
-			}
-		}
-
-		private void AutoloadGlobalTile(Type type) {
-			GlobalTile globalTile = (GlobalTile)Activator.CreateInstance(type);
-			globalTile.mod = this;
-			string name = type.Name;
-			if (globalTile.Autoload(ref name)) {
-				AddGlobalTile(name, globalTile);
-			}
-		}
-
-		private void AutoloadTileEntity(Type type) {
-			ModTileEntity tileEntity = (ModTileEntity)Activator.CreateInstance(type);
-			tileEntity.mod = this;
-			string name = type.Name;
-			if (tileEntity.Autoload(ref name)) {
-				AddTileEntity(name, tileEntity);
-			}
-		}
-
-		private void AutoloadWall(Type type) {
-			ModWall wall = (ModWall)Activator.CreateInstance(type);
-			wall.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (wall.Autoload(ref name, ref texture)) {
-				AddWall(name, wall, texture);
-			}
-		}
-
-		private void AutoloadGlobalWall(Type type) {
-			GlobalWall globalWall = (GlobalWall)Activator.CreateInstance(type);
-			globalWall.mod = this;
-			string name = type.Name;
-			if (globalWall.Autoload(ref name)) {
-				AddGlobalWall(name, globalWall);
-			}
-		}
-
-		private void AutoloadProjectile(Type type) {
-			ModProjectile projectile = (ModProjectile)Activator.CreateInstance(type);
-			projectile.mod = this;
-			string name = type.Name;
-			if (projectile.Autoload(ref name)) {
-				AddProjectile(name, projectile);
-			}
-		}
-
-		private void AutoloadGlobalProjectile(Type type) {
-			GlobalProjectile globalProjectile = (GlobalProjectile)Activator.CreateInstance(type);
-			globalProjectile.mod = this;
-			string name = type.Name;
-			if (globalProjectile.Autoload(ref name)) {
-				AddGlobalProjectile(name, globalProjectile);
-			}
-		}
-
-		private void AutoloadNPC(Type type) {
-			ModNPC npc = (ModNPC)Activator.CreateInstance(type);
-			npc.mod = this;
-			string name = type.Name;
-			if (npc.Autoload(ref name)) {
-				AddNPC(name, npc);
-				var autoloadHead = type.GetAttribute<AutoloadHead>();
-				if (autoloadHead != null) {
-					string headTexture = npc.HeadTexture;
-					AddNPCHeadTexture(npc.npc.type, headTexture);
-				}
-				var autoloadBossHead = type.GetAttribute<AutoloadBossHead>();
-				if (autoloadBossHead != null) {
-					string headTexture = npc.BossHeadTexture;
-					AddBossHeadTexture(headTexture, npc.npc.type);
-				}
-			}
-		}
-
-		private void AutoloadGlobalNPC(Type type) {
-			GlobalNPC globalNPC = (GlobalNPC)Activator.CreateInstance(type);
-			globalNPC.mod = this;
-			string name = type.Name;
-			if (globalNPC.Autoload(ref name)) {
-				AddGlobalNPC(name, globalNPC);
-			}
-		}
-
-		private void AutoloadPlayer(Type type) {
-			ModPlayer player = (ModPlayer)Activator.CreateInstance(type);
-			player.mod = this;
-			string name = type.Name;
-			if (player.Autoload(ref name)) {
-				AddPlayer(name, player);
-			}
-		}
-
-		private void AutoloadBuff(Type type) {
-			ModBuff buff = (ModBuff)Activator.CreateInstance(type);
-			buff.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (buff.Autoload(ref name, ref texture)) {
-				AddBuff(name, buff, texture);
-			}
-		}
-
-		private void AutoloadGlobalBuff(Type type) {
-			GlobalBuff globalBuff = (GlobalBuff)Activator.CreateInstance(type);
-			globalBuff.mod = this;
-			string name = type.Name;
-			if (globalBuff.Autoload(ref name)) {
-				AddGlobalBuff(name, globalBuff);
-			}
-		}
-
-		private void AutoloadMountData(Type type) {
-			ModMountData mount = (ModMountData)Activator.CreateInstance(type);
-			mount.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			var extraTextures = new Dictionary<MountTextureType, string>();
-			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
-				extraTextures[textureType] = texture + "_" + textureType.ToString();
-			}
-			if (mount.Autoload(ref name, ref texture, extraTextures)) {
-				AddMount(name, mount, texture, extraTextures);
-			}
-		}
-
-		private void AutoloadModWorld(Type type) {
-			ModWorld modWorld = (ModWorld)Activator.CreateInstance(type);
-			modWorld.mod = this;
-			string name = type.Name;
-			if (modWorld.Autoload(ref name)) {
-				AddModWorld(name, modWorld);
-			}
+		private void AutoloadInstance(Type type) {
+			var loadable = (ILoadable)Activator.CreateInstance(type);
+			loadable.Load(this);
+			loadables.Add(loadable);
 		}
 
 		private void AutoloadBackgrounds() {
@@ -610,60 +369,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private void AutoloadUgBgStyle(Type type) {
-			ModUgBgStyle ugBgStyle = (ModUgBgStyle)Activator.CreateInstance(type);
-			ugBgStyle.mod = this;
-			string name = type.Name;
-			if (ugBgStyle.Autoload(ref name)) {
-				AddUgBgStyle(name, ugBgStyle);
-			}
-		}
-
-		private void AutoloadSurfaceBgStyle(Type type) {
-			ModSurfaceBgStyle surfaceBgStyle = (ModSurfaceBgStyle)Activator.CreateInstance(type);
-			surfaceBgStyle.mod = this;
-			string name = type.Name;
-			if (surfaceBgStyle.Autoload(ref name)) {
-				AddSurfaceBgStyle(name, surfaceBgStyle);
-			}
-		}
-
-		private void AutoloadGlobalBgStyle(Type type) {
-			GlobalBgStyle globalBgStyle = (GlobalBgStyle)Activator.CreateInstance(type);
-			globalBgStyle.mod = this;
-			string name = type.Name;
-			if (globalBgStyle.Autoload(ref name)) {
-				AddGlobalBgStyle(name, globalBgStyle);
-			}
-		}
-
-		private void AutoloadWaterStyle(Type type) {
-			ModWaterStyle waterStyle = (ModWaterStyle)Activator.CreateInstance(type);
-			waterStyle.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			string blockTexture = texture + "_Block";
-			if (waterStyle.Autoload(ref name, ref texture, ref blockTexture)) {
-				AddWaterStyle(name, waterStyle, texture, blockTexture);
-			}
-		}
-
-		private void AutoloadWaterfallStyle(Type type) {
-			ModWaterfallStyle waterfallStyle = (ModWaterfallStyle)Activator.CreateInstance(type);
-			waterfallStyle.mod = this;
-			string name = type.Name;
-			string texture = (type.Namespace + "." + type.Name).Replace('.', '/');
-			if (waterfallStyle.Autoload(ref name, ref texture)) {
-				AddWaterfallStyle(name, waterfallStyle, texture);
-			}
-		}
-
 		private void AutoloadGores(IList<Type> modGores) {
-			var modGoreNames = modGores.ToDictionary(t => t.Namespace + "." + t.Name);
+			var modGoreNames = modGores.ToDictionary(t => t.FullName);
 
 			foreach (string texturePath in Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
 				ModGore modGore = null;
-
 				if (modGoreNames.TryGetValue($"{Name}.{texturePath.Replace('/', '.')}", out Type t))
 					modGore = (ModGore)Activator.CreateInstance(t);
 
@@ -672,7 +382,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void AutoloadSounds(IList<Type> modSounds) {
-			var modSoundNames = modSounds.ToDictionary(t => t.Namespace + "." + t.Name);
+			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
 
 			const string SoundFolder = "Sounds/";
 
@@ -691,7 +401,6 @@ namespace Terraria.ModLoader
 				}
 
 				ModSound modSound = null;
-
 				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
 					modSound = (ModSound)Activator.CreateInstance(t);
 
@@ -705,23 +414,6 @@ namespace Terraria.ModLoader
 					AddSound(SoundType.Music, Name + '/' + music);
 				}
 			}
-		}
-
-		private void AutoloadGlobalRecipe(Type type) {
-			GlobalRecipe globalRecipe = (GlobalRecipe)Activator.CreateInstance(type);
-			globalRecipe.mod = this;
-			string name = type.Name;
-			if (globalRecipe.Autoload(ref name)) {
-				AddGlobalRecipe(name, globalRecipe);
-			}
-		}
-
-		private void AutoloadCommand(Type type) {
-			var mc = (ModCommand)Activator.CreateInstance(type);
-			mc.mod = this;
-			var name = type.Name;
-			if (mc.Autoload(ref name))
-				AddCommand(name, mc);
 		}
 
 		/// <summary>

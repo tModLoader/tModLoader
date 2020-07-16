@@ -6,6 +6,8 @@ namespace Terraria.ModLoader.Default.Developer
 {
 	internal abstract class DeveloperItem : ModItem
 	{
+		public override string Name => $"{SetName}_{ItemEquipType}";
+
 		public virtual string TooltipBrief { get; }
 		public abstract string SetName { get; }
 		public abstract EquipType ItemEquipType { get; }
@@ -30,7 +32,7 @@ namespace Terraria.ModLoader.Default.Developer
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			var line = new TooltipLine(mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
+			var line = new TooltipLine(Mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
 				overrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);

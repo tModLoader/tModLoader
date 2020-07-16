@@ -36,7 +36,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modNPC = NPCLoader.GetNPC(type);
-+			return $"{modNPC.mod.Name} {modNPC.Name}";
++			return $"{modNPC.Mod.Name} {modNPC.Name}";
 +		}
 +
 +		public static int TypeFromUniqueKey(string key) {

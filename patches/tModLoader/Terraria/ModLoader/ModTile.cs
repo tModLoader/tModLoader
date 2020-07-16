@@ -9,37 +9,17 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
 	/// </summary>
-	public class ModTile
+	public class ModTile:ModTexturedType
 	{
-		/// <summary>
-		/// The mod which has added this type of ModTile.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this type of tile.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The internal ID of this type of tile.
 		/// </summary>
-		public ushort Type {
-			get;
-			internal set;
-		}
+		public ushort Type {get;internal set;}
 
-		internal string texture;
 		/// <summary>
 		/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
 		/// </summary>
-		public virtual string HighlightTexture => texture + "_Highlight";
+		public virtual string HighlightTexture => Texture + "_Highlight";
 		/// <summary>
 		/// The default type of sound made when this tile is hit. Defaults to 0.
 		/// </summary>
@@ -147,7 +127,7 @@ namespace Terraria.ModLoader
 			if (string.IsNullOrEmpty(key)) {
 				key = Name;
 			}
-			return mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", mod.Name, key));
+			return Mod.GetOrCreateTranslation(string.Format("Mods.{0}.MapObject.{1}", Mod.Name, key));
 		}
 
 		/// <summary>
@@ -213,14 +193,15 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		/// <summary>
-		/// Allows you to modify the name and texture path of this tile when it is autoloaded. Return true to autoload this tile. When a tile is autoloaded, that means you do not need to manually call Mod.AddTile. By default returns the mod's autoload property.
-		/// </summary>
-		/// <param name="name">The internal name.</param>
-		/// <param name="texture">The texture path.</param>
-		/// <returns>Whether or not to autoload this tile.</returns>
-		public virtual bool Autoload(ref string name, ref string texture) {
-			return mod.Properties.Autoload;
+		internal sealed override void AddInstance() {
+			if (Mod.tiles.ContainsKey(Name))
+				throw new Exception("You tried to add 2 ModTile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
+
+			Type = (ushort)TileLoader.ReserveTileID();
+
+			Mod.tiles[Name] = this;
+			TileLoader.tiles.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		/// <summary>

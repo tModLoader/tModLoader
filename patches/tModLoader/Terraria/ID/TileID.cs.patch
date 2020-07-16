@@ -49,7 +49,7 @@
 +				return "Terraria " + Search.GetName(type);
 +
 +			var modTile = TileLoader.GetTile(type);
-+			return $"{modTile.mod.Name} {modTile.Name}";
++			return $"{modTile.Mod.Name} {modTile.Name}";
 +		}
 +
 +		public static int TypeFromUniqueKey(string key) {

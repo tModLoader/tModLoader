@@ -12,38 +12,18 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public class ModPlayer
+	public class ModPlayer:ModType
 	{
-		/// <summary>
-		/// The mod that added this type of ModPlayer.
-		/// </summary>
-		public Mod mod {
-			get;
-			internal set;
-		}
-
-		/// <summary>
-		/// The name of this ModPlayer. Used for distinguishing between multiple ModPlayers added by a single Mod, in addition to the argument passed to Player.GetModPlayer.
-		/// </summary>
-		public string Name {
-			get;
-			internal set;
-		}
-
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player player {
-			get;
-			internal set;
-		}
+		public Player player {get;internal set;}
 
 		internal int index;
 
 		internal ModPlayer CreateFor(Player newPlayer) {
 			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Name = Name;
-			modPlayer.mod = mod;
+			modPlayer.Mod = Mod;
 			modPlayer.player = newPlayer;
 			modPlayer.index = index;
 			modPlayer.Initialize();
@@ -51,21 +31,18 @@ namespace Terraria.ModLoader
 		}
 
 		public bool TypeEquals(ModPlayer other) {
-			return mod == other.mod && Name == other.Name;
+			return Mod == other.Mod && Name == other.Name;
 		}
 
 		/// <summary>
 		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
-
-		/// <summary>
-		/// Allows you to automatically add a ModPlayer instead of using Mod.AddPlayer. Return true to allow autoloading; by default returns the mod's autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModPlayer.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public virtual bool Autoload(ref string name) {
-			return mod.Properties.Autoload;
+		
+		internal sealed override void AddInstance() {
+			Mod.players[Name] = this;
+			PlayerHooks.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		/// <summary>
