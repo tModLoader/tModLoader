@@ -23,29 +23,8 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void AddRecipes() {
-			
-			
-			
-			
-			
-			CreateRecipe(100)
-				.AddIngredient(ItemID.DirtBlock, 10)
-				.AddCondition(Recipe.Condition.TimeDay)
-				.AddCondition(Recipe.Condition.InCrimson)
-				.Register();
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			//////////////////////////////////////////////////////////////////////////
-			//The following basic recipe makes 100 ExampleItems out of 1 dirt block.//
+			//The following basic recipe makes 999 ExampleItems out of 1 dirt block.//
 			//////////////////////////////////////////////////////////////////////////
 
 			//This creates a new ModRecipe, associated with the mod that this content piece comes from.
@@ -76,7 +55,7 @@ namespace ExampleMod.Content.Items
 				//Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
 				.AddIngredient<ExampleSword>(3)
 				//An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower. 
-				.AddIngredient(mod, "ExampleSword", 3)
+				.AddIngredient(Mod, "ExampleSword", 3)
 
 				//RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 				//Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
@@ -90,13 +69,16 @@ namespace ExampleMod.Content.Items
 				//Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 				.AddTile<ExampleWorkbench>()
 				//An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
-				.AddTile(mod, "ExampleWorkbench")
+				.AddTile(Mod, "ExampleWorkbench")
 
-				//Adds a custom condition, that it must be night for the recipe to work. This uses a lambda expression to create a delegate, you can learn more about both through Google.
-				.AddCondition(NetworkText.FromLiteral("Night Time"), r => !Main.dayTime)
-
-				// Marks the recipe as an alchemy recipe. This makes it require an alchemy table, and gives a 1/3 chance for each ingredient to not be consumed. See https://terraria.gamepedia.com/Alchemy_Table.
-				.IsAlchemy()
+				//Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
+				.AddCondition(Recipe.Condition.InDesert)
+				.AddCondition(Recipe.Condition.NearWater)
+				.AddCondition(Recipe.Condition.TimeNight)
+				//Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
+				//The first argument is a NetworkText instance, i.e. localized text. The key used here is defined in 'Localization/*.lang' files.
+				//The second argument uses a lambda expression to create a delegate, you can learn more about both in Google.
+				.AddCondition(NetworkText.FromKey("RecipeConditions.LowHealth"), r => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
 
 				//When you're done, call this to register the recipe. Note that there's a semicolon at the end of the chain.
 				.Register();
