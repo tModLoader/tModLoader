@@ -23,6 +23,17 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void AddRecipes() {
+			CreateRecipe(1000)
+				.AddIngredient(ItemID.DirtBlock, 10)
+				.AddCondition(Recipe.Condition.TimeDay)
+				.Register();
+
+			CreateRecipe(100)
+				.AddIngredient(ItemID.DirtBlock, 10)
+				.AddCondition(Recipe.Condition.TimeNight)
+				.Register();
+			
+			
 			//////////////////////////////////////////////////////////////////////////
 			//The following basic recipe makes 999 ExampleItems out of 1 dirt block.//
 			//////////////////////////////////////////////////////////////////////////

@@ -32,17 +32,6 @@ namespace ExampleMod.Content.Items.Weapons
 			item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-
-			recipe.AddIngredient(ItemType<ExampleItem>(), 10);
-			recipe.AddIngredient(ItemID.Wood);
-			recipe.AddTile(TileType<ExampleWorkbench>());
-
-			recipe.Register();
-		}
-
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
 				//Emit dusts when the sword is swung
@@ -54,6 +43,15 @@ namespace ExampleMod.Content.Items.Weapons
 			//Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			//60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 60);
+		}
+
+		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>(10)
+				.AddIngredient(ItemID.Wood)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }
