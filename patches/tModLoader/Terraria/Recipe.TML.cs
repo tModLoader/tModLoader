@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -302,17 +303,12 @@ namespace Terraria
 		public void Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
-			
-			for (int k = 0; k < maxRequirements; k++) {
-				if (requiredTile[k] == TileID.Bottles) {
-					AddConsumeItemCallback(ConsumptionRules.Alchemy);
-					break;
-				}
-			}
+
+			if (requiredTile.Contains(TileID.Bottles)) AddConsumeItemCallback(ConsumptionRules.Alchemy);
 
 			if (numRecipes >= maxRecipes) {
 				maxRecipes += 500;
-				
+
 				Array.Resize(ref Main.recipe, maxRecipes);
 				Array.Resize(ref Main.availableRecipe, maxRecipes);
 				Array.Resize(ref Main.availableRecipeY, maxRecipes);

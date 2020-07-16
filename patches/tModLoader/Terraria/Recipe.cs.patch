@@ -89,7 +89,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -82,211 +_,84 @@
+@@ -82,211 +_,88 @@
  			return false;
  		}
  
@@ -141,13 +141,14 @@
 -					}
 -					else if (Main.rand.Next(3) == 0) {
 -						num = 0;
--					}
--				}
--
--				if (num <= 0)
 +				int amount = ingredient.stack;
-+				amount = ConsumeItemHooks?.Invoke(this, ingredient.type, ingredient.stack) ?? amount;
-+
++				if (ConsumeItemHooks != null) {
++					foreach (var func in ConsumeItemHooks.GetInvocationList()) {
++						amount = ((ConsumeItemCallback)func).Invoke(this, ingredient.type, amount);
+ 					}
+ 				}
+ 
+-				if (num <= 0)
 +				if (amount <= 0)
  					continue;
  
@@ -507,19 +508,19 @@
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
 +			if (currentRecipe.requiredTile[0] == TileID.Bottles) currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
- 
++
 +			if (currentRecipe.needGraveyardBiome) currentRecipe.AddCondition(Condition.InGraveyardBiome);
 +			if (currentRecipe.needSnowBiome) currentRecipe.AddCondition(Condition.InSnow);
 +			if (currentRecipe.needWater) currentRecipe.AddCondition(Condition.NearWater);
 +			if (currentRecipe.needLava) currentRecipe.AddCondition(Condition.NearLava);
 +			if (currentRecipe.needHoney) currentRecipe.AddCondition(Condition.NearHoney);
-+			
++
 +			if (currentRecipe.anyFragment) currentRecipe.RequireGroup(RecipeGroupID.Fragment);
 +			if (currentRecipe.anySand) currentRecipe.RequireGroup(RecipeGroupID.Sand);
 +			if (currentRecipe.anyWood) currentRecipe.RequireGroup(RecipeGroupID.Wood);
 +			if (currentRecipe.anyIronBar) currentRecipe.RequireGroup(RecipeGroupID.IronBar);
 +			if (currentRecipe.anyPressurePlate) currentRecipe.RequireGroup(RecipeGroupID.PressurePlate);
-+			
+ 
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
 +			currentRecipe = new Recipe(null);
