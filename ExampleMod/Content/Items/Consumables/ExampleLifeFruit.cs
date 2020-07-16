@@ -51,9 +51,13 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() => CreateRecipe(10)
-			.AddIngredient(ItemType<ExampleItem>())
-			.Register();
+		public override void AddRecipes() {
+			var recipe = CreateRecipe(10);
+
+			recipe.AddIngredient(ItemType<ExampleItem>());
+
+			recipe.Register();
+		}
 	}
 
 	public class ExampleLifeFruitPlayer : ModPlayer

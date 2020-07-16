@@ -41,11 +41,15 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() => CreateRecipe()
-			.AddIngredient(ItemType<ExampleItem>(), 100)
-			.AddIngredient(ItemID.Wood)
-			.AddTile(TileType<ExampleWorkbench>())
-			.Register();
+		public override void AddRecipes() {
+			var recipe = CreateRecipe();
+
+			recipe.AddIngredient(ItemType<ExampleItem>(), 100);
+			recipe.AddIngredient(ItemID.Wood);
+			recipe.AddTile(TileType<ExampleWorkbench>());
+
+			recipe.Register();
+		}
 
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
