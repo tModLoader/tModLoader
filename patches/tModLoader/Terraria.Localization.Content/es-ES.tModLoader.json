@@ -34,7 +34,7 @@
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
 		"ModsTypeToSearch": "Buscar",
 		"ModsSearchByModName": "Buscar por nombre de mod",
-		"ModsSearchByAuthor": "Buscar por nombre de autor",
+		"ModsSearchByAuthor": "Buscar por autor",
 		"ModsSortRecently": "Ordenar por actualizaciones recientes",
 		"ModsSortNamesAlph": "Ordenar por nombre (orden alfabético)",
 		"ModsSortNamesReverseAlph": "Ordenar por nombre (orden alfabético inverso)",
@@ -120,8 +120,8 @@
 		"ModPackModsAvailableStatus": "{0} totales, {1} activo(s), {2} desactivado(s), {3} faltante(s)",
 		"ModPackModsMissing": "No se han encontrado los siguientes mods:\n{0}",
 		"ModPackModsContained": "Esta lista contiene los siguientes mods:\n{0}",
-		"ModPackMissing": " - Faltante(s)",
-		"ModPackDisabled": " - Desactivado(s)",
+		"ModPackMissing": " - Faltante",
+		"ModPackDisabled": " - Desactivado",
 		"ModPackLoadingSpecifiedModPack": "Cargando el pack especificado: {0}",
 		"ModPackDoesNotExist": "El pack {0} no existe.",
 		"ModPackMalformed": "El pack {0} no se ha leído correctamente, podría estar dañado.",
@@ -176,7 +176,7 @@
 		"MBOfflineWithReason": "Sin conexión ({0})",
 		"MBBusy": "Ocupado",
 		"MBUnknown": "Desconocido",
-		"MBOfflineTroubleshooting": "No se puede acceder al Navegador de Mods. Esto puede deberse a diversas razones.\n 1. Revisa tu conexión a Internet.\n 2. El Navegador de Mods podría estar sin conexión. Si funcionaba antes, espera unas horas.\n 3. Haz doble clic en este mensaje para abrir el sitio web del Navegador de Mods. Puedes usarlo para descargar manualmente los mods. Si esto funciona, verifica tu firewall para permitir el acceso de Terraria.exe o intenta desactivar tu VPN si usas uno.\n 4. Si ese sitio web no funciona, el servidor del Navegador de Mods podría estar bloqueado por tu Gobierno, Proveedor de Servicios de Internet, Router, o Filtro Web. Si este es el caso, tendrás que averiguarlo por tu cuenta.",
+		"MBOfflineTroubleshooting": "No se puede acceder al Navegador de Mods. Esto puede deberse a diversas razones.\n 1. Revisa tu conexión a internet.\n 2. El Navegador de Mods podría estar sin conexión. Si funcionaba antes, espera unas horas.\n 3. Haz doble clic en este mensaje para abrir el sitio web del Navegador de Mods. Puedes usarlo para descargar manualmente los mods. Si esto funciona, verifica tu firewall para permitir el acceso de Terraria.exe o intenta desactivar tu VPN si usas uno.\n 4. Si ese sitio web no funciona, el servidor del Navegador de Mods podría estar bloqueado por tu Gobierno, Proveedor de Servicios de Internet, Router, o Filtro Web. Si este es el caso, tendrás que averiguarlo por tu cuenta.",
 		"MBClickToViewDependencyMods": "Mods necesarios:\n{0}",
 		"MBModsNotFoundOnline": "Los siguientes mods no se encuentran en el Navegador de Mods: {0}",
 		"MBFilterDependencies": "Dependencias",
@@ -237,7 +237,7 @@
 		"ReloadModsReminder": "Has actualizado un mod desactivado. Recuerda activarlo y recargar los mods para que funcione.",
 		"EnableModsReminder": "Tus últimos mods descargados están desactivados. Recuerda activarlos y recargarlos si tienes intención de jugar con ellos.",
 		"DontShowAgain": "No mostrar de nuevo",
-		"ModControls": "Controles de Mods",
+		"ModControls": "Controles de mods",
 
 		// Player and World Select
 		"MigratePlayersMessage": "No tienes jugadores.\nSi quieres transferir tus jugadores de la versión clásica a tModLoader,\npor favor cópialos de /Terraria/Players a /Terraria/ModLoader/Players.\nCopia el archivo .plr y la carpeta de nombre similar.\nPulsa aquí para abrir esas carpetas.\nCuando hayas copiado los jugadores que querías, pulsa atrás.",
@@ -265,7 +265,7 @@
 		"MSOpenSources": "Abrir fuente",
 		"MSManagePublished": "Gestionar publicaciones",
 		"MSPublish": "Publicar",
-		"MSModSourcesCantHaveSpaces": "(Las carpetas de Fuentes de mods no pueden tener espacios)",
+		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden tener espacios)",
 		"MSCreateMod": "Crear mod",
 
 		// Developer Mode UI
@@ -361,11 +361,11 @@
 		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSION>.exe\"",
 		"DefaultExtraMessage": "Restaura tu instalación de Terraria e instala tModLoader por Steam o siguiendo las instrucciones del README.txt para la instalación manual.",
 		"ClientLogHint": "Se ha generado un archivo de registro del cliente con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",
-		"OutOfMemoryHint": "\n\nSugerencia: Intenta ejecutar menos mods a la vez, o determina si un mod está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64 bits",
+		"OutOfMemoryHint": "\n\nSugerencia: Intenta ejecutar menos mods a la vez, o determina si un mod está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64-bit",
 		"ModExceptionHint": "\n\nSugerencia: Esto es probablemente culpa de un mod. Desactiva los mods uno por uno y comprueba si el problema persiste",
 		"OneDriveHint": "\n\nSugerencia: Intenta instalar y activar OneDrive. Haz clic con el botón derecho del ratón en tu carpeta de Documentos y activa \"Guardar siempre en este dispositivo\"",
-		"AntivirusHint": "\n\nSugerencia: Si tienes un antivirus, prueba a añadir Terraria a su lista blanca/de exclusiones",
-		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, intenta desinstalar Terraria completamente, luego vuelve a instalarlo a través de Steam, y después vuelve a instalar tModLoader"
+		"AntivirusHint": "\n\nSugerencia: Si tienes un antivirus, prueba a añadir Terraria a su lista de exclusiones",
+		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, intenta desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "Aumenta un {0}% el daño"
