@@ -44,10 +44,13 @@ namespace ExampleMod.Content.Projectiles
 			else {
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 				SoundEngine.PlaySound(SoundID.Item10, projectile.position);
+				
+				// If the projectile hits the left or right side of the tile, reverse the X velocity
 				if (Math.Abs(projectile.velocity.X - oldVelocity.X) > float.Epsilon) {
 					projectile.velocity.X = -oldVelocity.X;
 				}
 
+				// If the projectile hits the top or bottom side of the tile, reverse the Y velocity
 				if (Math.Abs(projectile.velocity.Y - oldVelocity.Y) > float.Epsilon) {
 					projectile.velocity.Y = -oldVelocity.Y;
 				}

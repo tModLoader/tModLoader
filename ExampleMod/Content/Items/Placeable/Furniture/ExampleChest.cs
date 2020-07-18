@@ -2,12 +2,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable.Furniture
 {
-	public class ExampleClock : ModItem
+	public class ExampleChest : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded clock.");
+			Tooltip.SetDefault("This is a modded chest.");
 		}
 
 		public override void SetDefaults() {
@@ -18,18 +18,18 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
 			item.value = 500;
-			item.createTile = TileType<Tiles.ExampleClock>();
+			item.createTile = TileType<Tiles.Furniture.ExampleChest>();
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.GrandfatherClock);
-			recipe.AddIngredient(ItemType<ExampleBlock>(), 10);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.Chest)
+				.AddIngredient<ExampleBlock>(10)
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

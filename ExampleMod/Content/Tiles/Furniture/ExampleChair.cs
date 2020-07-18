@@ -1,4 +1,4 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Enums;
@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleChair : ModTile
 	{
@@ -34,12 +34,8 @@ namespace ExampleMod.Tiles
 			adjTiles = new int[] { TileID.Chairs };
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = fail ? 1 : 3;
-		}
+		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ItemType<Items.Placeable.ExampleChair>());
-		}
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 32, ItemType<Items.Placeable.Furniture.ExampleChair>());
 	}
 }

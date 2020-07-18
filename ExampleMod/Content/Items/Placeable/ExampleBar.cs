@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleBar : ModItem
 	{
@@ -15,7 +15,7 @@ namespace ExampleMod.Items.Placeable
 			item.height = 20;
 			item.maxStack = 99;
 			item.value = 750;
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
@@ -26,10 +26,11 @@ namespace ExampleMod.Items.Placeable
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleOre>(), 4);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			// todo: implement
+			// CreateRecipe()
+			// 	.AddIngredient<ExampleOre>(4)
+			// 	.AddTile(TileID.Furnaces)
+			// 	.Register();
 		}
 	}
 }

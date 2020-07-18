@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles
 {
 	public class ExampleBar : ModTile
 	{

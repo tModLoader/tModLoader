@@ -1,4 +1,4 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleBed : ModTile
 	{
@@ -26,44 +26,40 @@ namespace ExampleMod.Tiles
 			bed = true;
 		}
 
-		public override bool HasSmartInteract() {
-			return true;
-		}
+		public override bool HasSmartInteract() => true;
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = 1;
-		}
+		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 64, 32, ItemType<Items.Placeable.ExampleBed>());
-		}
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ItemType<Items.Placeable.Furniture.ExampleBed>());
 
 		public override bool NewRightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
-			int spawnX = i - tile.frameX / 18;
+			int spawnX = i - (tile.frameX / 18);
 			int spawnY = j + 2;
 			spawnX += tile.frameX >= 72 ? 5 : 2;
 			if (tile.frameY % 38 != 0) {
 				spawnY--;
 			}
+
 			player.FindSpawn();
 			if (player.SpawnX == spawnX && player.SpawnY == spawnY) {
 				player.RemoveSpawn();
-				Main.NewText("Spawn point removed!", 255, 240, 20, false);
+				Main.NewText("Spawn point removed!", 255, 240, 20);
 			}
 			else if (Player.CheckSpawn(spawnX, spawnY)) {
 				player.ChangeSpawn(spawnX, spawnY);
-				Main.NewText("Spawn point set!", 255, 240, 20, false);
+				Main.NewText("Spawn point set!", 255, 240, 20);
 			}
+
 			return true;
 		}
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
-			player.showItemIcon = true;
-			player.showItemIcon2 = ItemType<Items.Placeable.ExampleBed>();
+			player.cursorItemIconEnabled = true;
+			player.cursorItemIconID = ItemType<Items.Placeable.Furniture.ExampleBed>();
 		}
 	}
 }
