@@ -736,7 +736,7 @@ namespace Terraria.ModLoader
 		public static bool RightClick(int i, int j) {
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
-			GetTile(type)?.RightClick(i, j);
+			
 			if (GetTile(type)?.RightClick(i, j) ?? false)
 				returnValue = true;
 
