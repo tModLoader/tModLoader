@@ -32,4 +32,14 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 				.Register();
 		}
 	}
+	
+	public class ExampleChestKey : ModItem
+	{
+		public override void SetDefaults() {
+			item.CloneDefaults(ItemID.GoldenKey);
+			item.width = 14;
+			item.height = 20;
+			item.maxStack = 99;
+		}
+	}
 }

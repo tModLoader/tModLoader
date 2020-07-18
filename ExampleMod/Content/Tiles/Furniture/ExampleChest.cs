@@ -1,4 +1,5 @@
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items.Placeable.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -207,16 +208,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconEnabled = false;
 				player.cursorItemIconID = 0;
 			}
-		}
-	}
-
-	public class ExampleChestKey : ModItem
-	{
-		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.GoldenKey);
-			item.width = 14;
-			item.height = 20;
-			item.maxStack = 99;
 		}
 	}
 }
