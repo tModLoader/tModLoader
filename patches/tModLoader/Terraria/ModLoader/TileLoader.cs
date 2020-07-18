@@ -156,7 +156,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFrameImportant, nextTile);
 			Array.Resize(ref Main.tilePile, nextTile);
 			Array.Resize(ref Main.tileBlendAll, nextTile);
-			Array.Resize(ref Main.tileGlowMask, nextTile);
 			Array.Resize(ref Main.tileContainer, nextTile);
 			Array.Resize(ref Main.tileSign, nextTile);
 			Array.Resize(ref Main.tileSand, nextTile);
@@ -166,15 +165,20 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref Main.tileMerge, nextTile);
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
-
-			for (int k = 0; k < nextTile; k++) { //oh dear
-				Array.Resize(ref Main.tileMerge[k], nextTile);
-			}
+			Array.Resize(ref Main.tileGlowMask, nextTile);
 
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
+
+			for (int i = 0; i < nextTile; i++) { //oh dear
+				Array.Resize(ref Main.tileMerge[i], nextTile);
+			}
+
+			for (int i = TileID.Count; i < nextTile; i++) {
+				Main.tileGlowMask[i] = -1; //If we don't this, every modded tile will have a glowmask by default.
+			}
 
 			while (TileObjectData._data.Count < nextTile) {
 				TileObjectData._data.Add(null);
