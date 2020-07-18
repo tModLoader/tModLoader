@@ -92,7 +92,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Chest.DestroyChest(i, j);
 		}
 
-		public override bool NewRightClick(int i, int j) {
+		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			Main.mouseRightRelease = false;

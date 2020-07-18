@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ItemType<Items.Placeable.Furniture.ExampleBed>());
 
-		public override bool NewRightClick(int i, int j) {
+		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 			Tile tile = Main.tile[i, j];
 			int spawnX = i - (tile.frameX / 18);

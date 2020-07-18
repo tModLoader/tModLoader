@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			adjTiles = new int[] { TileID.GrandfatherClocks };
 		}
 
-		public override bool NewRightClick(int x, int y) {
+		public override bool RightClick(int x, int y) {
 			string text = "AM";
 			//Get current weird time
 			double time = Main.time;
