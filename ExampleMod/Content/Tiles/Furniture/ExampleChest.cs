@@ -23,8 +23,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 
-			// todo: what was this supposed to do?
-			// Main.tileValue[Type] = 500;
+			Main.tileOreFinderPriority[Type] = 500;
 
 			TileID.Sets.HasOutlines[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
