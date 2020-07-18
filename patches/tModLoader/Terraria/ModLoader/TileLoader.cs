@@ -737,7 +737,7 @@ namespace Terraria.ModLoader
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
 			GetTile(type)?.RightClick(i, j);
-			if (GetTile(type)?.NewRightClick(i, j) ?? false)
+			if (GetTile(type)?.RightClick(i, j) ?? false)
 				returnValue = true;
 
 			foreach (var hook in HookRightClick) {
