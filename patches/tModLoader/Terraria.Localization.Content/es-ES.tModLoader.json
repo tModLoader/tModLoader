@@ -94,7 +94,7 @@
 		"RuntimeErrorSilentlyCaughtException": "Excepción silenciosa: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(ver {0} para ver el registro completo)",
 		"OpenLogs": "Abrir registros",
-		"OpenWebHelp": "Abrir página de ayuda en la web",
+		"OpenWebHelp": "Abrir página de ayuda en el navegador",
 		"SkipToMainMenu": "Omitir carga de mods",
 		"Retry": "Reintentar",
 		"Exit": "Salir",
@@ -102,7 +102,7 @@
 
 		// Mod Info
 		"ModInfoHeader": "Info del mod: ",
-		"ModInfoVisitHomepage": "Visita la página web del mod para más información.",
+		"ModInfoVisitHomepage": "Visita la página web del mod para más información",
 		"ModInfoExtract": "Extraer",
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
@@ -285,7 +285,7 @@
 		"DMTutorialWelcome": "Bienvenido al modding con tModLoader. Echa un vistazo a la Wiki para obtener más información y tutoriales.",
 		"DMTutorial": "Tutorial",
 		"DMUpdateScripts": "Actualizar scripts",
-		"DMScriptsRequireRestart": "Los scripts de inicio han sido actualizados y requieren que tModLoader sea reiniciado.",
+		"DMScriptsRequireRestart": "Los scripts de inicio han sido actualizados y requieren que tModLoader se reinicie.",
 		"DMUpdateMonoToDownloadModCompile": "Se pueden descargar librerías adicionales desde GitHub cuando se ejecuta una versión actualizada de Mono.",
 
 		// Extract Mod
