@@ -7,7 +7,6 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	// bug: shield visual doesn't get rendered
 	[AutoloadEquip(EquipType.Shield)]
 	public class ExampleShield : ModItem
 	{
