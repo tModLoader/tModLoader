@@ -97,6 +97,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool sapling = false;
 
+		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
+		
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
