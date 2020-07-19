@@ -4,7 +4,6 @@ using System.IO;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent; //This lets us access methods (like ItemType) from ModContent without having to type its name.
 
 namespace ExampleMod
 {
@@ -14,12 +13,7 @@ namespace ExampleMod
 			//Creates and registers the new recipe group with the specified name
 			RecipeGroup.RegisterGroup(
 				"ExampleMod:ExampleItem",
-				new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<ExampleItem>())}", new[] {
-					ModContent.ItemType<ExampleItem>(),
-					//ModContent.ItemType<EquipMaterial>(),
-					//ModContent.ItemType<BossItem>()
-				}
-			));
+				new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<ExampleItem>())}", ModContent.ItemType<ExampleItem>()));
 		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
