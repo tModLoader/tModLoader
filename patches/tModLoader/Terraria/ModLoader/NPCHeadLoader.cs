@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
+using Terraria.Graphics.Renderers;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -55,7 +56,9 @@ namespace Terraria.ModLoader
 		internal static void ResizeAndFillArrays() {
 			//Textures
 			Array.Resize(ref TextureAssets.NpcHead, nextHead);
+			Main.TownNPCHeadRenderer = new NPCHeadRenderer(TextureAssets.NpcHead);
 			Array.Resize(ref TextureAssets.NpcHeadBoss, nextBossHead);
+			Main.BossNPCHeadRenderer = new NPCHeadRenderer(TextureAssets.NpcHeadBoss);
 
 			foreach (string texture in heads.Keys) {
 				TextureAssets.NpcHead[heads[texture]] = ModContent.GetTexture(texture);

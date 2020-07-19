@@ -1,0 +1,64 @@
+--- src/Terraria/Terraria/ID/ContentSamples.cs
++++ src/tModLoader/Terraria/ID/ContentSamples.cs
+@@ -2,6 +_,7 @@
+ using System.Linq;
+ using Terraria.GameContent.Bestiary;
+ using Terraria.Graphics.Shaders;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID
+ {
+@@ -680,11 +_,11 @@
+ 			NpcNetIdsByPersistentIds.Clear();
+ 			NpcPersistentIdsByNetIds.Clear();
+ 			NpcBestiarySortingId.Clear();
+-			for (int i = -65; i < 663; i++) {
++			for (int i = -65; i < NPCLoader.NPCCount; i++) {
+ 				NPC nPC = new NPC();
+ 				nPC.SetDefaults(i);
+ 				NpcsByNetId[i] = nPC;
+-				string name = NPCID.Search.GetName(nPC.netID);
++				string name = nPC.modNPC != null ? nPC.modNPC.Name : NPCID.Search.GetName(nPC.netID);
+ 				NpcPersistentIdsByNetIds[i] = name;
+ 				NpcBestiaryCreditIdsByNpcNetIds[i] = name;
+ 				NpcNetIdsByPersistentIds[name] = i;
+@@ -692,18 +_,18 @@
+ 
+ 			ModifyNPCIds();
+ 			ProjectilesByType.Clear();
+-			for (int j = 0; j < 950; j++) {
++			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
+ 				Projectile projectile = new Projectile();
+ 				projectile.SetDefaults(j);
+ 				ProjectilesByType[j] = projectile;
+ 			}
+ 
+ 			ItemsByType.Clear();
+-			for (int k = 0; k < 5045; k++) {
++			for (int k = 0; k < ItemLoader.ItemCount; k++) {
+ 				Item item = new Item();
+ 				item.SetDefaults(k);
+ 				ItemsByType[k] = item;
+-				string name2 = ItemID.Search.GetName(item.netID);
++				string name2 = item.modItem != null ? item.modItem.Name :  ItemID.Search.GetName(item.netID);
+ 				ItemPersistentIdsByNetIds[k] = name2;
+ 				ItemNetIdsByPersistentIds[name2] = k;
+ 			}
+@@ -712,7 +_,7 @@
+ 				Item item2 = new Item();
+ 				item2.SetDefaults(item3);
+ 				ItemsByType[item3] = item2;
+-				string name3 = ItemID.Search.GetName(item2.netID);
++				string name3 = item2.modItem != null ? item2.modItem.Name :  ItemID.Search.GetName(item2.netID);
+ 				ItemPersistentIdsByNetIds[item3] = name3;
+ 				ItemNetIdsByPersistentIds[name3] = item3;
+ 			}
+@@ -858,7 +_,7 @@
+ 			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
+ 			nPCSpawnParams.gameModeData = Main.RegisterdGameModes[0];
+ 			NPCSpawnParams spawnparams = nPCSpawnParams;
+-			for (int i = -65; i < 663; i++) {
++			for (int i = -65; i < NPCLoader.NPCCount; i++) {
+ 				NPC nPC = new NPC();
+ 				nPC.SetDefaults(i, spawnparams);
+ 				NpcBestiaryRarityStars[i] = GetNPCBestiaryRarityStarsCount(nPC);

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
@@ -383,6 +384,11 @@ namespace Terraria.ModLoader
 			ItemSorting.SetupWhiteLists();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
+			
+			for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
+				NPCID.Search.Add(GetModNPC(i).Name, i);  
+			}
+			ContentSamples.Initialize();
 		}
 
 		private static void CacheVanillaState() {

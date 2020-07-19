@@ -122,7 +122,7 @@ namespace Terraria.ModLoader
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
-
+			
 			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
 
 			for (int i = 0; i < InstancedGlobals.Length; i++) {
