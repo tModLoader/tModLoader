@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Items.Tools
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
 			}
 		}
-		
+
 		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()

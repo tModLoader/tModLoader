@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 				.Register();
 		}
 	}
-	
+
 	public class ExampleChestKey : ModItem
 	{
 		public override void SetDefaults() {

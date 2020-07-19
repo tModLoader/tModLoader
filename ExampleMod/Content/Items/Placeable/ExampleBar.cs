@@ -26,11 +26,10 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void AddRecipes() {
-			// todo: implement
-			// CreateRecipe()
-			// 	.AddIngredient<ExampleOre>(4)
-			// 	.AddTile(TileID.Furnaces)
-			// 	.Register();
+			CreateRecipe()
+				.AddIngredient<ExampleOre>(4)
+				.AddTile(TileID.Furnaces)
+				.Register();
 		}
 	}
 }

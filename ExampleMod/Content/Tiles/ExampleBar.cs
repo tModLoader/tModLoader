@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Tiles
 			{
 				Item.NewItem(i * 16, j * 16, 16, 16, ItemType<Items.Placeable.ExampleBar>());
 			}
+
 			return base.Drop(i, j);
 		}
 	}

@@ -1,8 +1,8 @@
+using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ID;
 
-namespace ExampleMod.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExamplePlatform : ModItem
 	{
@@ -18,17 +18,16 @@ namespace ExampleMod.Items.Placeable
 			item.autoReuse = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExamplePlatform>();
+			item.createTile = TileType<Tiles.Furniture.ExamplePlatform>();
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleBlock>());
-			recipe.SetResult(this, 2);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
-			recipe.AddRecipe();
+			CreateRecipe(2)
+				.AddIngredient<ExampleBlock>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

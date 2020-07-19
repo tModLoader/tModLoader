@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleOre : ModItem
 	{
@@ -11,7 +11,7 @@ namespace ExampleMod.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
 			item.useAnimation = 15;
 			item.useTime = 10;

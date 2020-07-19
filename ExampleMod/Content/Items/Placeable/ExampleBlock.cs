@@ -1,4 +1,6 @@
-﻿using Terraria.ID;
+﻿using ExampleMod.Content.Items.Placeable.Furniture;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -7,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleBlock : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded block.");
+			Tooltip.SetDefault("This is a modded tile.");
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it
@@ -46,25 +48,27 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void AddRecipes() {
 			CreateRecipe(10)
 				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 
-			// CreateRecipe()
-			// 	.AddIngredient<ExampleWall>(4)
-			// 	.Register();
+			CreateRecipe()
+				.AddIngredient<ExampleWall>(4)
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 
-			// CreateRecipe()
-			// 	.AddIngredient<ExamplePlatform>(2)
-			// 	.Register();
+			CreateRecipe()
+				.AddIngredient<ExamplePlatform>(2)
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 		}
 
-		// todo: implement
-		// public override void ExtractinatorUse(ref int resultType, ref int resultStack) {
-		// 	if (Main.rand.NextBool(30)) {
-		// 		resultType = ItemType<FoulOrb>();
-		// 		if (Main.rand.NextBool(5)) {
-		// 			resultStack += Main.rand.Next(2);
-		// 		}
-		// 	}
-		// }
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack) {
+			if (Main.rand.NextBool(3)) {
+				resultType = ItemType<ExampleOre>();
+				if (Main.rand.NextBool(5)) {
+					resultStack += Main.rand.Next(2);
+				}
+			}
+		}
 	}
 }

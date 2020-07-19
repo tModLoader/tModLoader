@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Tiles.Furniture;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -23,6 +24,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>(100)
+				.AddTile<ExampleWorkbench>()
 				.Register();
 		}
 	}
