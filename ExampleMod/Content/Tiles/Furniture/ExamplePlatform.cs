@@ -1,4 +1,4 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExamplePlatform : ModTile
 	{
@@ -31,17 +31,13 @@ namespace ExampleMod.Tiles
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			AddMapEntry(new Color(200, 200, 200));
 			dustType = DustType<Sparkle>();
-			drop = ItemType<Items.Placeable.ExamplePlatform>();
+			drop = ItemType<Items.Placeable.Furniture.ExamplePlatform>();
 			disableSmartCursor = true;
 			adjTiles = new int[] { TileID.Platforms };
 		}
 
-		public override void PostSetDefaults() {
-			Main.tileNoSunLight[Type] = false;
-		}
+		public override void PostSetDefaults() => Main.tileNoSunLight[Type] = false;
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = fail ? 1 : 3;
-		}
+		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 	}
 }
