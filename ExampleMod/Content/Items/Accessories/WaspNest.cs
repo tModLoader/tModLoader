@@ -20,7 +20,9 @@ namespace ExampleMod.Content.Items.Accessories
 			ILCursor c = new ILCursor(il);
 
 			// Try to find where 566 is placed onto the stack
-			if (!c.TryGotoNext(i => i.MatchLdcI4(566))) return; // Patch unable to be applied
+			if (!c.TryGotoNext(i => i.MatchLdcI4(566))) {
+				return; // Patch unable to be applied
+			}
 
 			// Move the cursor after 566 and onto the ret op.
 			c.Index++;
@@ -29,7 +31,10 @@ namespace ExampleMod.Content.Items.Accessories
 			// Call a delegate using the int and Player from the stack.
 			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
 				// Regular c# code
-				if (player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1) return ProjectileID.Beenade;
+				if (player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1) {
+					return ProjectileID.Beenade;
+				}
+
 				return returnValue;
 			});
 		}

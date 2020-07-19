@@ -1,5 +1,6 @@
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.Localization;
@@ -25,6 +26,12 @@ namespace ExampleMod
 					ExampleLifeFruitPlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleLifeFruitPlayer>();
 					examplePlayer.exampleLifeFruits = reader.ReadInt32();
 					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+					break;
+				case ExampleModMessageType.ExampleTeleportToStatue:
+					if (Main.npc[reader.ReadByte()].modNPC is ExamplePerson person && person.npc.active) {
+						person.StatueTeleport();
+					}
+
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

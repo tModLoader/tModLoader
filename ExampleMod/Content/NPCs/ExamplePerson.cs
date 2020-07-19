@@ -64,7 +64,9 @@ namespace ExampleMod.Content.NPCs
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
 			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
-				if (!player.active) continue;
+				if (!player.active) {
+					continue;
+				}
 
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
 				if (player.inventory.Any(item => item.type == ItemType<ExampleItem>() || item.type == ItemType<Items.Placeable.ExampleBlock>())) {
@@ -123,7 +125,10 @@ namespace ExampleMod.Content.NPCs
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.NextBool(4)) chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
+			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
+				chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
+			}
+
 			chat.Add("Sometimes I feel like I'm different from everyone else here.");
 			chat.Add("What's your favorite color? My favorite colors are white and black.");
 			chat.Add("What? I don't have any arms or legs? Oh, don't be ridiculous!");
@@ -135,7 +140,9 @@ namespace ExampleMod.Content.NPCs
 		public override void SetChatButtons(ref string button, ref string button2) {
 			button = Language.GetTextValue("LegacyInterface.28");
 			button2 = "Awesomeify";
-			if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) button = "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
+			if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
+				button = "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
+			}
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
@@ -173,7 +180,9 @@ namespace ExampleMod.Content.NPCs
 			shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
 			shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
 
-			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
+			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
+				shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
+			}
 
 			// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
 			// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
@@ -235,8 +244,12 @@ namespace ExampleMod.Content.NPCs
 		public void StatueTeleport() {
 			for (int i = 0; i < 30; i++) {
 				Vector2 position = Main.rand.NextVector2Square(-20, 21);
-				if (Math.Abs(position.X) > Math.Abs(position.Y)) position.X = Math.Sign(position.X) * 20;
-				else position.Y = Math.Sign(position.Y) * 20;
+				if (Math.Abs(position.X) > Math.Abs(position.Y)) {
+					position.X = Math.Sign(position.X) * 20;
+				}
+				else {
+					position.Y = Math.Sign(position.Y) * 20;
+				}
 
 				Dust.NewDustPerfect(npc.Center + position, DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}

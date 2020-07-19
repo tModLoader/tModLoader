@@ -56,7 +56,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
-			if (Main.dayTime) return false;
+			if (Main.dayTime) {
+				return false;
+			}
+
 			dustType = this.dustType;
 			return true;
 		}
@@ -191,7 +194,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.cursorItemIconText == "Example Chest") {
 					player.cursorItemIconID = ItemType<Items.Placeable.Furniture.ExampleChest>();
-					if (Main.tile[left, top].frameX / 36 == 1) player.cursorItemIconID = ItemType<ExampleChestKey>();
+					if (Main.tile[left, top].frameX / 36 == 1) {
+						player.cursorItemIconID = ItemType<ExampleChestKey>();
+					}
+
 					player.cursorItemIconText = "";
 				}
 			}

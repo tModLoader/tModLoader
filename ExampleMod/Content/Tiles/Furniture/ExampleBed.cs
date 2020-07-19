@@ -41,7 +41,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Tile tile = Main.tile[i, j];
 			int spawnX = (i - (tile.frameX / 18)) + (tile.frameX >= 72 ? 5 : 2);
 			int spawnY = j + 2;
-			if (tile.frameY % 38 != 0) spawnY--;
+			if (tile.frameY % 38 != 0) {
+				spawnY--;
+			}
 
 			if (!Player.IsHoveringOverABottomSideOfABed(i, j)) {
 				if (player.IsWithinSnappngRangeToTile(i, j, 96)) {

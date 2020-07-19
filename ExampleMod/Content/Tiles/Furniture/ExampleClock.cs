@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.NewText($"Time: {intTime}:{text2} {text}", 255, 240, 20);
 			return true;
 		}
-		
+
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 48, 32, ItemType<Items.Placeable.Furniture.ExampleClock>());
