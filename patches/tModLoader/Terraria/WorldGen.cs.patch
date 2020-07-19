@@ -1307,10 +1307,19 @@
  			int num = KillWall_GetItemDrops(tileCache);
 -			if (num > 0)
 +
-+			if (WallLoader.Drop(i, j, Main.tile[i,j].type, ref num) && num > 0)
++			if (WallLoader.Drop(i, j, Main.tile[i,j].wall, ref num) && num > 0)
  				Item.NewItem(i * 16, j * 16, 16, 16, num);
  		}
  
+@@ -38039,7 +_,7 @@
+ 
+ 						if (tileCache.wall >= 138 && tileCache.wall <= 141)
+ 							result = 2210 + tileCache.wall - 138;
+-
++						
+ 						return result;
+ 					}
+ 			}
 @@ -38600,6 +_,9 @@
  			if (tileCache.wall == 245)
  				num = 195;
@@ -1356,6 +1365,15 @@
  				int num2 = tile.frameX / 18;
  				int y3 = y - tile.frameY / 18;
  				num2 %= 3;
+@@ -38885,7 +_,7 @@
+ 		}
+ 
+ 		public static bool ReplaceWall(int x, int y, ushort targetWall) {
+-			if (targetWall >= 316)
++			if (targetWall >= WallLoader.WallCount)
+ 				return false;
+ 
+ 			Tile tile = Main.tile[x, y];
 @@ -38917,7 +_,7 @@
  				return false;
  
