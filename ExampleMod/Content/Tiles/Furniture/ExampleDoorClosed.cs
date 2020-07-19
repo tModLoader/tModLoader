@@ -1,5 +1,5 @@
-using ExampleMod.Dusts;
-using ExampleMod.Items.Placeable;
+using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items.Placeable.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles.Furniture
 {
 	// TODO: Smart Cursor Outlines and tModLoader support
 	public class ExampleDoorClosed : ModTile
@@ -50,23 +50,17 @@ namespace ExampleMod.Tiles
 			openDoorID = TileType<ExampleDoorOpen>();
 		}
 
-		public override bool HasSmartInteract() {
-			return true;
-		}
+		public override bool HasSmartInteract() => true;
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = 1;
-		}
+		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 48, ItemType<ExampleDoor>());
-		}
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 16, 48, ItemType<ExampleDoor>());
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
-			player.showItemIcon = true;
-			player.showItemIcon2 = ItemType<ExampleDoor>();
+			player.cursorItemIconEnabled = true;
+			player.cursorItemIconID = ItemType<ExampleDoor>();
 		}
 	}
 }

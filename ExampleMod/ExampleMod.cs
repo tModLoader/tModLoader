@@ -35,6 +35,7 @@ namespace ExampleMod
 
 	internal enum ExampleModMessageType : byte
 	{
-		ExamplePlayerSyncPlayer
+		ExamplePlayerSyncPlayer,
+		ExampleTeleportToStatue
 	}
 }
