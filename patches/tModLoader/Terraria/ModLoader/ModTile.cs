@@ -96,7 +96,11 @@ namespace Terraria.ModLoader
 		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
 		/// </summary>
 		public bool sapling = false;
-
+		/// <summary>
+		/// Whether or not this tile is a clock.
+		/// </summary>
+		public bool clock = false;
+		
 		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
 		
 		/// <summary>

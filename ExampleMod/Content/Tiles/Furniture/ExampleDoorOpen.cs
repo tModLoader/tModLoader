@@ -11,7 +11,6 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
-	// bug: automatic opening doesn't work
 	public class ExampleDoorOpen : ModTile
 	{
 		public override void SetDefaults() {

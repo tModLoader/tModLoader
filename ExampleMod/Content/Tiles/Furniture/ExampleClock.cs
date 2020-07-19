@@ -23,6 +23,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = DustType<Sparkle>();
 			adjTiles = new int[] { TileID.GrandfatherClocks };
+			clock = true;
 		}
 
 		public override bool RightClick(int x, int y) {
