@@ -312,7 +312,7 @@ namespace Terraria.ModLoader
 				else if (typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
 					if (autoload.NeedsAutoloading) {
-						AutoloadInstance(type);
+						AddContent((ILoadable)Activator.CreateInstance(type));
 					}
 				}
 			}
@@ -367,12 +367,6 @@ namespace Terraria.ModLoader
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
-		}
-
-		private void AutoloadInstance(Type type) {
-			var loadable = (ILoadable)Activator.CreateInstance(type);
-			loadable.Load(this);
-			loadables.Add(loadable);
 		}
 
 		private void AutoloadBackgrounds() {
