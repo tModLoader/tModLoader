@@ -385,8 +385,14 @@ namespace Terraria.ModLoader
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
 			
-			for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) NPCID.Search.Add(GetModNPC(i).Name, i);
-			for (int i = ItemID.Count; i < ItemLoader.ItemCount; i++) ItemID.Search.Add(GetModItem(i).Name, i);
+			for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
+				NPCID.Search.Add(GetModNPC(i).Name, i);
+			}
+
+			for (int i = ItemID.Count; i < ItemLoader.ItemCount; i++) {
+				ItemID.Search.Add(GetModItem(i).Name, i);
+			}
+
 			ContentSamples.Initialize();
 		}
 
