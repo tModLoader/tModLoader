@@ -1,3 +1,4 @@
+using ExampleMod.Content;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
@@ -8,6 +9,10 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
+		public override void AddRecipes() => ExampleRecipes.Load(this);
+
+		public override void Unload() => ExampleRecipes.Unload();
+
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			ExampleModMessageType msgType = (ExampleModMessageType)reader.ReadByte();
 			switch (msgType) {

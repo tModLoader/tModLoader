@@ -166,58 +166,58 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
-			// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
-			// nextSlot++;
-			// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
-			// nextSlot++;
-			shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
-			shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
-			shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
-			shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
-			shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
-			shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
-			shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
-
-			if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-				shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
-			}
-
-			// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-			// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
-			// 	nextSlot++;
-			// }
-
-			if (Main.moonPhase < 2) {
-				shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-			}
-			else if (Main.moonPhase < 4) {
-				// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-			}
-			else if (Main.moonPhase < 6) {
-				// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-			}
-
-			// todo: Here is an example of how your npc can sell items from other mods.
-			// var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
-			// if (modSummonersAssociation != null) {
-			// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-			// 	nextSlot++;
-			// }
-
-			// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-			// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-			// 		if (item.IsUnloaded) continue;
-			// 		shop.item[nextSlot].SetDefaults(item.Type);
-			// 		shop.item[nextSlot].shopCustomPrice = 0;
-			// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-			// 		nextSlot++;
-			// 		// TODO: Have tModLoader handle index issues.
-			// 	}
-			// }
-		}
+		// public override void SetupShop(Chest shop, ref int nextSlot) {
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
+		// 	// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
+		// 	// nextSlot++;
+		// 	// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
+		// 	// nextSlot++;
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
+		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
+		//
+		// 	if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
+		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
+		// 	}
+		//
+		// 	// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
+		// 	// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
+		// 	// 	nextSlot++;
+		// 	// }
+		//
+		// 	if (Main.moonPhase < 2) {
+		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
+		// 	}
+		// 	else if (Main.moonPhase < 4) {
+		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
+		// 		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
+		// 	}
+		// 	else if (Main.moonPhase < 6) {
+		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
+		// 	}
+		//
+		// 	// todo: Here is an example of how your npc can sell items from other mods.
+		// 	// var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
+		// 	// if (modSummonersAssociation != null) {
+		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
+		// 	// 	nextSlot++;
+		// 	// }
+		//
+		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
+		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
+		// 	// 		if (item.IsUnloaded) continue;
+		// 	// 		shop.item[nextSlot].SetDefaults(item.Type);
+		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
+		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
+		// 	// 		nextSlot++;
+		// 	// 		// TODO: Have tModLoader handle index issues.
+		// 	// 	}
+		// 	// }
+		// }
 
 		// TODO: implement
 		// public override void NPCLoot() {

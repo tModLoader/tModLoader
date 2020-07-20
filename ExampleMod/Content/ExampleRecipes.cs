@@ -8,17 +8,17 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content
 {
-	public class ExampleRecipes : ILoadable
+	public static class ExampleRecipes 
 	{
-		public RecipeGroup ExampleRecipeGroup;
+		public static RecipeGroup ExampleRecipeGroup;
 
-		public void AddRecipeGroups() {
+		public static void AddRecipeGroups() {
 			// Store this recipe group in a variable so we can use it later
 			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemType<ExampleItem>())}", ItemType<ExampleItem>());
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 		}
 
-		public void Load(Mod mod) {
+		public static void Load(Mod mod) {
 			AddRecipeGroups();
 			
 			// Create a recipe that creates one Example Healing Potion
@@ -96,7 +96,8 @@ namespace ExampleMod.Content
 			// 	.Register();
 		}
 
-		public void Unload() {
+		public static void Unload() {
+			ExampleRecipeGroup = null;
 		}
 	}
 }
