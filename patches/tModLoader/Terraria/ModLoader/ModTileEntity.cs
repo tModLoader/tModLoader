@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 			return type >= numVanilla && type < nextTileEntity ? tileEntities[type - numVanilla] : null;
 		}
 
-		internal static void Unload() {
+		internal static void UnloadAll() {
 			nextTileEntity = numVanilla;
 			tileEntities.Clear();
 		}
@@ -182,9 +182,8 @@ namespace Terraria.ModLoader
 			NetReceive(reader, networkSend);
 		}
 
-		void ILoadable.Load(Mod mod) {
+		public virtual void Load(Mod mod) {
 			Mod = mod;
-			Load();
 
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
@@ -198,8 +197,7 @@ namespace Terraria.ModLoader
 			ContentInstance.Register(this);
 		}
 
-		public virtual void Load() {}
-		void ILoadable.Unload(){}
+		public virtual void Unload(){}
 
 		/// <summary>
 		/// Allows you to save custom data for this tile entity.

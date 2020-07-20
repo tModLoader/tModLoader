@@ -50,7 +50,8 @@ namespace Terraria.ModLoader
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
 		
-		internal sealed override void AddInstance() {
+		public override void Load(Mod mod) {
+			base.Load(mod);
 			CommandManager.Add(this);
 		}
 
