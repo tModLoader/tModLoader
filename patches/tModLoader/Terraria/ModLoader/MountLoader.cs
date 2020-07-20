@@ -38,6 +38,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeArrays() {
 			//Sets
+			typeof(MountID).TypeInitializer?.Invoke(null, null);
 			LoaderUtils.ReloadSets(typeof(MountID.Sets));
 
 			//Etc

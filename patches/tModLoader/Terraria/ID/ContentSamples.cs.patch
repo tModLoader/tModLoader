@@ -1,14 +1,23 @@
 --- src/Terraria/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
-@@ -2,6 +_,7 @@
+@@ -1,7 +_,10 @@
++using System;
+ using System.Collections.Generic;
  using System.Linq;
  using Terraria.GameContent.Bestiary;
  using Terraria.Graphics.Shaders;
 +using Terraria.ModLoader;
++using Terraria.Utilities;
  
  namespace Terraria.ID
  {
-@@ -680,7 +_,7 @@
+@@ -676,11 +_,13 @@
+ 		public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
+ 
+ 		public static void Initialize() {
++			Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
++		
+ 			NpcsByNetId.Clear();
  			NpcNetIdsByPersistentIds.Clear();
  			NpcPersistentIdsByNetIds.Clear();
  			NpcBestiarySortingId.Clear();

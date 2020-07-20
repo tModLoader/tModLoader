@@ -68,6 +68,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Projectile, nextProjectile);
 
 			//Sets
+			typeof(ProjectileID).TypeInitializer.Invoke(null, null);
 			LoaderUtils.ReloadSets(typeof(ProjectileID.Sets));
 
 			//Etc

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
+using ReLogic.Reflection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,7 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -385,17 +387,9 @@ namespace Terraria.ModLoader
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
 			
-			for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
-				NPCID.Search.Add(GetModNPC(i).Name, i);
-			}
-
-			for (int i = ItemID.Count; i < ItemLoader.ItemCount; i++) {
-				ItemID.Search.Add(GetModItem(i).Name, i);
-			}
-
 			ContentSamples.Initialize();
 		}
-
+		
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 		}
@@ -497,7 +491,16 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
-
+			
+			// ItemID.Search = IdDictionary.Create<ItemID, short>();
+			// NPCID.Search = IdDictionary.Create<NPCID, short>();
+			// ProjectileID.Search = IdDictionary.Create<ProjectileID, short>();
+			// TileID.Search = IdDictionary.Create<TileID, ushort>();
+			// WallID.Search = IdDictionary.Create<WallID, ushort>();
+			// BuffID.Search = IdDictionary.Create<BuffID, int>();
+			
+			ContentSamples.Initialize();
+			
 			CleanupModReferences();
 		}
 

@@ -138,6 +138,7 @@ namespace Terraria.ModLoader
 				ItemLoader.SetDefaults(item.item, false);
 				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
+				ItemID.Search.Add(item.Name, item.item.type);
 			}
 
 			foreach (ModPrefix prefix in prefixes.Values) {
@@ -161,6 +162,8 @@ namespace Terraria.ModLoader
 				if (!string.IsNullOrEmpty(tile.chest)) {
 					TileID.Sets.BasicChest[tile.Type] = true;
 				}
+				
+				TileID.Search.Add(tile.Name, tile.Type);
 			}
 
 			foreach (GlobalTile globalTile in globalTiles.Values) {
@@ -171,6 +174,8 @@ namespace Terraria.ModLoader
 				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.Texture);
 
 				wall.SetDefaults();
+				
+				WallID.Search.Add(wall.Name, wall.Type);
 			}
 
 			foreach (GlobalWall globalWall in globalWalls.Values) {
@@ -181,12 +186,16 @@ namespace Terraria.ModLoader
 				ProjectileLoader.SetDefaults(projectile.projectile, false);
 				projectile.AutoStaticDefaults();
 				projectile.SetStaticDefaults();
+				
+				ProjectileID.Search.Add(projectile.Name, projectile.projectile.type);
 			}
 
 			foreach (ModNPC npc in npcs.Values) {
 				NPCLoader.SetDefaults(npc.npc, false);
 				npc.AutoStaticDefaults();
 				npc.SetStaticDefaults();
+				
+				NPCID.Search.Add(npc.Name, npc.npc.type);
 			}
 
 			foreach (ModMountData modMountData in mountDatas.Values) {
@@ -202,6 +211,8 @@ namespace Terraria.ModLoader
 				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.Texture);
 
 				buff.SetDefaults();
+				
+				BuffID.Search.Add(buff.Name, buff.Type);
 			}
 
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
