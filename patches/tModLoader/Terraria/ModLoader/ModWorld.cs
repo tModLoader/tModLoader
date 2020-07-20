@@ -10,7 +10,8 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class ModWorld:ModType
 	{
-		internal sealed override void AddInstance() {
+		public override void Load(Mod mod) {
+			base.Load(mod);
 			Mod.worlds[Name] = this;
 			WorldHooks.Add(this);
 			ContentInstance.Register(this);

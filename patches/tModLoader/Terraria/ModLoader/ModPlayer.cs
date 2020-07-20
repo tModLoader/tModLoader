@@ -39,7 +39,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
 		
-		internal sealed override void AddInstance() {
+		public override void Load(Mod mod) {
+			base.Load(mod);
 			Mod.players[Name] = this;
 			PlayerHooks.Add(this);
 			ContentInstance.Register(this);

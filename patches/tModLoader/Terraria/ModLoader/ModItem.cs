@@ -46,7 +46,8 @@ namespace Terraria.ModLoader
 			item = new Item { modItem = this };
 		}
 
-		internal sealed override void AddInstance() {
+		public override void Load(Mod mod) {
+			base.Load(mod);
 			if (Mod.items.ContainsKey(Name))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
 
