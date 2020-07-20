@@ -17,7 +17,8 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		internal sealed override void AddInstance() {
+		public override void Load(Mod mod) {
+			base.Load(mod);
 			ItemLoader.VerifyGlobalItem(this);
 
 			Mod.globalItems[Name] = this;

@@ -15,20 +15,10 @@
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
-		void ILoadable.Load(Mod mod) {
-			Mod = mod;
-			Load();
-			AddInstance();
-		}
-
-		public virtual void Load(){}
+		/// <summary>Make sure to call base.Mod(mod) to load in your type.</summary>
+		public virtual void Load(Mod mod) => Mod = mod;
 
 		public virtual void Unload(){}
-
-		/// <summary>
-		/// DO NOT CALL THIS! This is called automatically in ILoadable.Load
-		/// </summary>
-		internal virtual void AddInstance(){}
 	}
 
 }
