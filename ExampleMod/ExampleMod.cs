@@ -3,6 +3,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Dyes;
@@ -20,8 +21,7 @@ namespace ExampleMod
 		public override void Load() {
 			// DO NOT LOAD ASSETS ON SEVER!
 			if (!Main.dedServ) {
-				// todo: implement
-				// GameShaders.Armor.BindShader(ModContent.ItemType<ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
+				GameShaders.Armor.BindShader(ModContent.ItemType<ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Assets/Effects/ExampleEffect").Value), "ExampleDyePass"));
 				GameShaders.Hair.BindShader(ModContent.ItemType<ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
 			}
 		}
