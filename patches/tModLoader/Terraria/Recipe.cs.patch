@@ -168,30 +168,7 @@
  
  		public static void GetThroughDelayedFindRecipes() {
  			if (_hasDelayedFindRecipes) {
-@@ -310,7 +_,7 @@
- 			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
- 				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
- 					for (int k = 0; k < maxRequirements && Main.recipe[j].requiredItem[k].type != 0; k++) {
--						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
-+						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
- 							Main.availableRecipe[Main.numAvailableRecipes] = j;
- 							Main.numAvailableRecipes++;
- 							break;
-@@ -320,10 +_,9 @@
- 			}
- 			else {
- 				Dictionary<int, int> dictionary = new Dictionary<int, int>();
--				Item[] array = null;
--				Item item = null;
--				array = Main.player[Main.myPlayer].inventory;
--				for (int l = 0; l < 58; l++) {
-+				Item item;
-+				Item[] array = Main.player[Main.myPlayer].inventory;
-+				for (int l = 0; l < array.Length; l++) {
- 					item = array[l];
- 					if (item.stack > 0) {
- 						if (dictionary.ContainsKey(item.netID))
-@@ -350,20 +_,18 @@
+@@ -350,7 +_,7 @@
  						if (item != null && item.stack > 0) {
  							if (dictionary.ContainsKey(item.netID))
  								dictionary[item.netID] += item.stack;
@@ -200,33 +177,6 @@
  								dictionary[item.netID] = item.stack;
  						}
  					}
- 				}
- 
- 				for (int n = 0; n < maxRecipes && Main.recipe[n].createItem.type != 0; n++) {
--					bool flag = true;
-+					bool flag = true;	
--					if (flag) {
--						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
-+					for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
--							if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
-+						if (!Main.player[Main.myPlayer].adjTile[Main.recipe[n].requiredTile[num3]]) {
--								flag = false;
-+							flag = false;
--								break;
-+							break;
--							}
- 						}
- 					}
- 
-@@ -376,7 +_,7 @@
- 							int num5 = item.stack;
- 							bool flag2 = false;
- 							foreach (int key in dictionary.Keys) {
--								if (Main.recipe[n].useWood(key, item.type) || Main.recipe[n].useSand(key, item.type) || Main.recipe[n].useIronBar(key, item.type) || Main.recipe[n].useFragment(key, item.type) || Main.recipe[n].AcceptedByItemGroups(key, item.type) || Main.recipe[n].usePressurePlate(key, item.type)) {
-+								if (Main.recipe[n].AcceptedByItemGroups(key, item.type)) {
- 									num5 -= dictionary[key];
- 									flag2 = true;
- 								}
 @@ -401,8 +_,8 @@
  						if (!(num6 && flag3 && flag4 && flag5 && flag6))
  							flag = false;
