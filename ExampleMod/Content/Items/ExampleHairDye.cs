@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items
 {
 	internal class ExampleHairDye : ModItem
 	{
@@ -13,7 +13,7 @@ namespace ExampleMod.Items
 			item.value = Item.buyPrice(gold: 5);
 			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item3;
-			item.useStyle = ItemUseStyleID.EatingUsing;
+			item.useStyle = ItemUseStyleID.EatFood;
 			item.useTurn = true;
 			item.useAnimation = 17;
 			item.useTime = 17;

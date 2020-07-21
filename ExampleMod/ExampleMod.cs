@@ -1,8 +1,12 @@
 using ExampleMod.Content;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
+using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.Dyes;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -10,8 +14,17 @@ namespace ExampleMod
 	public class ExampleMod : Mod
 	{
 		public const string AssetPath = "ExampleMod/Assets/";
-		
+
 		public override void AddRecipes() => ExampleRecipes.Load(this);
+
+		public override void Load() {
+			// DO NOT LOAD ASSETS ON SEVER!
+			if (!Main.dedServ) {
+				// todo: implement
+				// GameShaders.Armor.BindShader(ModContent.ItemType<ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffect")), "ExampleDyePass"));
+				GameShaders.Hair.BindShader(ModContent.ItemType<ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
+			}
+		}
 
 		public override void Unload() => ExampleRecipes.Unload();
 
