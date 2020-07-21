@@ -198,6 +198,15 @@
  		public TilePaintSystemV2 TilePaintSystem;
  		public TileDrawing TilesRenderer;
  		public WallDrawing WallsRenderer;
+@@ -2013,7 +_,7 @@
+ 		private List<int> _npcsWithBannersToDraw = new List<int>();
+ 		private bool _imeToggle;
+ 		private List<int> _npcTypesThatAlreadyDrewAHead = new List<int>();
+-		private int[] _npcIndexWhoHoldsHeadIndex = new int[45];
++		internal int[] _npcIndexWhoHoldsHeadIndex = new int[45];
+ 		private static List<string> _requiredObjecsForCraftingText = new List<string>();
+ 		private static bool _preventCraftingBecauseClickWasUsedToChangeFocusedRecipe;
+ 		private static int _currentRecipeBeingCrafted = -1;
 @@ -2023,7 +_,7 @@
  		public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  		public static bool mouseText;

@@ -506,7 +506,9 @@ namespace Terraria.ModLoader
 				throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
 			int slot = NPCHeadLoader.ReserveHeadSlot();
+
 			NPCHeadLoader.heads[texture] = slot;
+			
 			if (!Main.dedServ) {
 				ModContent.GetTexture(texture);
 			}
@@ -514,6 +516,7 @@ namespace Terraria.ModLoader
 			{
 				throw new MissingResourceException(texture);
 			}*/
+
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
 		}
