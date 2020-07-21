@@ -125,8 +125,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 			//Sets
-			typeof(TileID).TypeInitializer.Invoke(null, null);
-			LoaderUtils.ReloadSets(typeof(TileID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(TileID), true);
 
 			//Etc
 			Array.Resize(ref Main.tileLighted, nextTile);

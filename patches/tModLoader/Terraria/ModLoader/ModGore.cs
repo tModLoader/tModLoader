@@ -45,8 +45,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Gore, nextGore);
 
 			//Sets
-			typeof(GoreID).TypeInitializer?.Invoke(null, null);
-			LoaderUtils.ReloadSets(typeof(GoreID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(GoreID), true);
 			Array.Resize(ref ChildSafety.SafeGore, nextGore);
 
 			for (int k = GoreID.Count; k < nextGore; k++) {

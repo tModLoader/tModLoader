@@ -88,8 +88,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.ItemFlame, nextItem);
 
 			//Sets
-			typeof(ItemID).TypeInitializer.Invoke(null, null);
-			LoaderUtils.ReloadSets(typeof(ItemID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
 			
 			//Etc
 			Array.Resize(ref Main.itemAnimations, nextItem);

@@ -83,8 +83,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Buff, nextBuff);
 
 			//Sets
-			typeof(BuffID).TypeInitializer.Invoke(null, null);
-			LoaderUtils.ReloadSets(typeof(BuffID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(BuffID), true);
 
 			//Etc
 			Array.Resize(ref Main.pvpBuff, nextBuff);
