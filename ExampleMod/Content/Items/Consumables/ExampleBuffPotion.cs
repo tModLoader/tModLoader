@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleBuffPotion : ModItem
 	{
@@ -14,7 +14,7 @@ namespace ExampleMod.Items
 		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;
-			item.useStyle = ItemUseStyleID.EatingUsing;
+			item.useStyle = ItemUseStyleID.EatFood;
 			item.useAnimation = 15;
 			item.useTime = 15;
 			item.useTurn = true;

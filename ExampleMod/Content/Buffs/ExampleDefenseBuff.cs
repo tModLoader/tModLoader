@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Buffs
+namespace ExampleMod.Content.Buffs
 {
 	public class ExampleDefenseBuff : ModBuff
 	{
