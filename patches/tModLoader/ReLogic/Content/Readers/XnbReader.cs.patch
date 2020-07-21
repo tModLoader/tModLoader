@@ -1,10 +1,16 @@
 --- src/Terraria/ReLogic/Content/Readers/XnbReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
+@@ -1,4 +_,5 @@
+ using Microsoft.Xna.Framework.Content;
++using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.IO;
+ using System.Threading;
 @@ -48,5 +_,7 @@
  		public void Dispose() {
  			Dispose(disposing: true);
  		}
 +
-+		public Type[] GetAssociatedTypes() => null;
++		public Type[] GetAssociatedTypes() => new[] { typeof(Effect) };
  	}
  }

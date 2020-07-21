@@ -34,7 +34,6 @@ namespace Terraria.ModLoader
 
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
-		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<ModRecipe> recipes = new List<ModRecipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
@@ -267,10 +266,6 @@ namespace Terraria.ModLoader
 				{
 					sound.Value.Dispose();
 				}
-				foreach (var effect in effects)
-				{
-					effect.Value.Dispose();
-				}
 				foreach (var texture in textures)
 				{
 					texture.Value.Dispose();
@@ -278,7 +273,6 @@ namespace Terraria.ModLoader
 				*/
 			}
 
-			effects.Clear();
 			musics.Clear();
 
 			Assets.Dispose();
@@ -352,7 +346,8 @@ namespace Terraria.ModLoader
 			var delayedLoadTypes = new List<Type> {
 				typeof(Texture2D),
 				typeof(DynamicSpriteFont),
-				typeof(SpriteFont)
+				typeof(SpriteFont),
+				typeof(Effect)
 			};
 
 			SetupAssetRepository(sources, assetReaderCollection, delayedLoadTypes);
