@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items
 {
 	public class ExampleQuestFish : ModItem
 	{
@@ -19,13 +19,9 @@ namespace ExampleMod.Items
 			item.rare = ItemRarityID.Quest;
 		}
 
-		public override bool IsQuestFish() {
-			return true;
-		}
+		public override bool IsQuestFish() => true;
 
-		public override bool IsAnglerQuestAvailable() {
-			return Main.hardMode;
-		}
+		public override bool IsAnglerQuestAvailable() => Main.hardMode;
 
 		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
 			description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
