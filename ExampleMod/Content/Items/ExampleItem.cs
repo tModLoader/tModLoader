@@ -1,8 +1,5 @@
-using ExampleMod.Content.Items.Weapons;
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items

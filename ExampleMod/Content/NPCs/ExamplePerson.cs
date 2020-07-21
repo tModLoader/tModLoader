@@ -1,10 +1,6 @@
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
-using ExampleMod.Content.Items.Ammo;
-using ExampleMod.Content.Items.Consumables;
-using ExampleMod.Content.Items.Tools;
-using ExampleMod.Content.Items.Weapons;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;

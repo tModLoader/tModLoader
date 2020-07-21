@@ -12,7 +12,7 @@ namespace ExampleMod.Content
 	public class ExampleLightPetItem : ModItem
 	{
 		public override string Texture => ExampleMod.AssetPath + "Textures/Items/ExampleLightPet";
-		
+
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
@@ -85,7 +85,7 @@ namespace ExampleMod.Content
 	public class ExampleLightPetProjectile : ModProjectile
 	{
 		public override string Texture => ExampleMod.AssetPath + "Textures/Projectiles/ExampleLightPet";
-		
+
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Annoying Light");
 			Main.projFrames[projectile.type] = 1;
@@ -110,7 +110,7 @@ namespace ExampleMod.Content
 		private const int FullBrightTicks = 200;
 		private const int FadeOutTicks = 30;
 		private const int Range = 500;
-		
+
 		// This comes from the formula for calculating the diagonal of a square (a * √2)
 		private const int RangeHypoteneus = (int)(1.41421356237f * Range);
 

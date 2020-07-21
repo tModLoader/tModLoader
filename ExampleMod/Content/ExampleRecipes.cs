@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content
 {
-	public static class ExampleRecipes 
+	public static class ExampleRecipes
 	{
 		public static RecipeGroup ExampleRecipeGroup;
 
@@ -20,7 +20,7 @@ namespace ExampleMod.Content
 
 		public static void Load(Mod mod) {
 			AddRecipeGroups();
-			
+
 			// Create a recipe that creates one Example Healing Potion
 			mod.CreateRecipe(ItemType<ExampleHealingPotion>())
 				// Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
@@ -40,10 +40,10 @@ namespace ExampleMod.Content
 				// Recipe.Condition contains common conditions - biomes, near liquids, time
 				.AddCondition(Recipe.Condition.InDesert, Recipe.Condition.NearWater, Recipe.Condition.TimeNight)
 				.Register();
-			
+
 			// todo: add more examples (string based, from other mods)
-			
-			
+
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//The following recipe showcases and explains all methods (functions) present on ModRecipe, and uses an 'advanced' style called 'chaining'.//
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
