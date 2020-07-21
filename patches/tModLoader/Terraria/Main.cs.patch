@@ -134,6 +134,19 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
+@@ -820,7 +_,11 @@
+ 		public static float invAlpha = 1f;
+ 		public static float invDir = 1f;
+ 		[ThreadStatic]
+-		public static UnifiedRandom rand;
++		public static UnifiedRandom _rand;
++		public static UnifiedRandom rand {
++			get => _rand ??= new UnifiedRandom();
++			set => _rand = value;
++		}
+ 		public static bool allChestStackHover;
+ 		public static bool inventorySortMouseOver;
+ 		public static float GraveyardVisualIntensity;
 @@ -837,7 +_,7 @@
  		public static AudioEngine engine;
  		public static SoundBank soundBank;
