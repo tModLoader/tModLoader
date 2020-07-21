@@ -81,9 +81,8 @@ namespace Terraria
 		public static class ConsumptionRules
 		{
 			/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
-			public static int Alchemy(Recipe _, int type, int amount) {
-				if (!Main.LocalPlayer.alchemyTable)
-					return amount;
+			public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
+				if (!Main.LocalPlayer.alchemyTable) return;
 
 				int amountUsed = 0;
 
@@ -92,8 +91,8 @@ namespace Terraria
 						amountUsed++;
 				}
 
-				return amountUsed;
-			}
+				amount = amountUsed;
+			};
 		}
 		
 		public readonly Mod Mod;
@@ -337,26 +336,6 @@ namespace Terraria
 			recipe.createItem.stack = amount;
 
 			return recipe;
-		}
-
-		public static class ConsumptionRules
-		{
-			/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
-			public static int Alchemy(ModRecipe _, int type, int amount) {
-				if (!Main.LocalPlayer.alchemyTable) {
-					return amount;
-				}
-
-				int amountUsed = 0;
-
-				for (int i = 0; i < amount; i++) {
-					if (Main.rand.Next(3) != 0) {
-						amountUsed++;
-					}
-				}
-
-				return amountUsed;
-			}
 		}
 	}
 }

@@ -115,14 +115,60 @@
  				if (num <= 0)
  					continue;
  
-@@ -287,6 +_,7 @@
+@@ -192,7 +_,8 @@
+ 			FindRecipes();
+ 		}
+ 
++		#region Legacy
+-		public bool useWood(int invType, int reqType) {
++		private bool useWood(int invType, int reqType) {
+ 			if (!anyWood)
+ 				return false;
+ 
+@@ -223,7 +_,7 @@
  			}
  		}
  
-+
+-		public bool useIronBar(int invType, int reqType) {
++		private bool useIronBar(int invType, int reqType) {
+ 			if (!anyIronBar)
+ 				return false;
+ 
+@@ -236,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public bool useSand(int invType, int reqType) {
++		private bool useSand(int invType, int reqType) {
+ 			if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
+ 				return false;
+ 
+@@ -246,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		public bool useFragment(int invType, int reqType) {
++		private bool useFragment(int invType, int reqType) {
+ 			if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
+ 				return false;
+ 
+@@ -256,7 +_,7 @@
+ 			return false;
+ 		}
+ 
+-		public bool usePressurePlate(int invType, int reqType) {
++		private bool usePressurePlate(int invType, int reqType) {
+ 			if (!anyPressurePlate)
+ 				return false;
+ 
+@@ -286,6 +_,7 @@
+ 					}
+ 			}
+ 		}
++		#endregion
+ 
  		public static void GetThroughDelayedFindRecipes() {
  			if (_hasDelayedFindRecipes) {
- 				_hasDelayedFindRecipes = false;
 @@ -310,7 +_,7 @@
  			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
  				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
@@ -260,6 +306,15 @@
  			UpdateMaterialFieldForAllRecipes();
  		}
  
+@@ -13067,7 +_,7 @@
+ 		}
+ 
+ 		public static void UpdateWhichItemsAreMaterials() {
+-			for (int i = 0; i < 5045; i++) {
++			for (int i = 0; i < ItemLoader.ItemCount; i++) {
+ 				Item item = new Item();
+ 				item.SetDefaults(i, noMatCheck: true);
+ 				item.checkMat();
 @@ -13075,6 +_,7 @@
  			}
  		}
