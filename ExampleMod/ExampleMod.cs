@@ -9,6 +9,8 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
+		public const string AssetPath = "ExampleMod/Assets/";
+		
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
 		public override void Unload() => ExampleRecipes.Unload();
