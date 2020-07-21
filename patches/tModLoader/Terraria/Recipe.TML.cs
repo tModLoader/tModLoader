@@ -315,7 +315,7 @@ namespace Terraria
 				Array.Resize(ref Main.availableRecipeY, maxRecipes);
 
 				for (int k = numRecipes; k < maxRecipes; k++) {
-					Main.recipe[k] = new Recipe(null);
+					Main.recipe[k] = new Recipe();
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}

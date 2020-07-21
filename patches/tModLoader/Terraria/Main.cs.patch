@@ -674,15 +674,6 @@
  #if SERVER
  			netMode = 2;
  #endif
-@@ -4900,7 +_,7 @@
- 			Initialize_TileAndNPCData2();
- 			Initialize_Items();
- 			for (int i = 0; i < Recipe.maxRecipes; i++) {
--				recipe[i] = new Recipe();
-+				recipe[i] = new Recipe(null);
- 				availableRecipeY[i] = 65 * i;
- 			}
- 
 @@ -4991,7 +_,7 @@
  			}
  

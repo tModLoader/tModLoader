@@ -191,7 +191,7 @@ namespace Terraria.ModLoader
 					for (int j = k; j < Recipe.numRecipes - 1; j++) {
 						Main.recipe[j] = Main.recipe[j + 1];
 					}
-					Main.recipe[Recipe.numRecipes - 1] = new Recipe(null);
+					Main.recipe[Recipe.numRecipes - 1] = new Recipe();
 					Recipe.numRecipes--;
 					return true;
 				}
