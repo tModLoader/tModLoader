@@ -17,22 +17,17 @@
  		public RecipeGroup(Func<string> getName, params int[] validItems) {
  			GetText = getName;
  			ValidItems = new HashSet<int>(validItems);
-@@ -19,10 +_,14 @@
+@@ -19,10 +_,12 @@
  		}
  
  		public static int RegisterGroup(string name, RecipeGroup rec) {
 -			int num = nextRecipeGroupIndex++;
--			recipeGroups.Add(num, rec);
--			recipeGroupIDs.Add(name, num);
--			return num;
-+			rec.ID = nextRecipeGroupIndex++;
-+			recipeGroups.Add(rec.ID, rec);
-+			recipeGroupIDs.Add(name, rec.ID);
-+			return rec.ID;
-+		}
-+
-+		public bool ContainsItem(int type) {
-+			return ValidItemsLookup?[type] ?? ValidItems.Contains(type);
++			int num = rec.ID = nextRecipeGroupIndex++;
+ 			recipeGroups.Add(num, rec);
+ 			recipeGroupIDs.Add(name, num);
+ 			return num;
  		}
++
++		public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
  	}
  }
