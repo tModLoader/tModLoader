@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -3,33 +_,38 @@
+@@ -3,10 +_,11 @@
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
  using Terraria.Localization;
@@ -13,16 +13,11 @@
  	{
  		public static int maxRequirements = 15;
  		public static int maxRecipes = 3000;
- 		public static int numRecipes;
-+		private static bool _hasDelayedFindRecipes;
- 		private static Recipe currentRecipe = new Recipe();
-+		
- 		public Item createItem = new Item();
+@@ -16,20 +_,21 @@
  		public Item[] requiredItem = new Item[maxRequirements];
  		public int[] requiredTile = new int[maxRequirements];
  		public int[] acceptedGroups = new int[maxRequirements];
 +		
-+		#region Legacy
 -		public bool needHoney;
 +		internal bool needHoney;
 -		public bool needWater;
@@ -45,10 +40,8 @@
 +		internal bool needSnowBiome;
 -		public bool needGraveyardBiome;
 +		internal bool needGraveyardBiome;
--		private static bool _hasDelayedFindRecipes;
-+		#endregion
--
-+		
+ 		private static bool _hasDelayedFindRecipes;
+ 
 -		public void RequireGroup(string name) {
 +		internal void RequireGroup(string name) {
  			if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
@@ -114,11 +107,10 @@
  				if (num <= 0)
  					continue;
  
-@@ -192,7 +_,8 @@
+@@ -192,7 +_,7 @@
  			FindRecipes();
  		}
  
-+		#region Legacy
 -		public bool useWood(int invType, int reqType) {
 +		private bool useWood(int invType, int reqType) {
  			if (!anyWood)
@@ -160,35 +152,16 @@
  			if (!anyPressurePlate)
  				return false;
  
-@@ -286,6 +_,7 @@
- 					}
- 			}
- 		}
-+		#endregion
- 
- 		public static void GetThroughDelayedFindRecipes() {
- 			if (_hasDelayedFindRecipes) {
-@@ -350,7 +_,7 @@
- 						if (item != null && item.stack > 0) {
- 							if (dictionary.ContainsKey(item.netID))
- 								dictionary[item.netID] += item.stack;
--							else
-+							else 
- 								dictionary[item.netID] = item.stack;
- 						}
- 					}
-@@ -401,8 +_,8 @@
- 						if (!(num6 && flag3 && flag4 && flag5 && flag6))
+@@ -402,7 +_,7 @@
  							flag = false;
  					}
--
+ 
 -					if (flag) {
-+					
 +					if (flag && RecipeHooks.RecipeAvailable(Main.recipe[n])) {
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
-@@ -451,12 +_,16 @@
+@@ -451,6 +_,8 @@
  			RecipeGroupID.Turtles = RecipeGroup.RegisterGroup("Turtles", rec);
  			rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Language.GetTextValue("Misc.Fruit"), 4009, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297);
  			RecipeGroupID.Fruit = RecipeGroup.RegisterGroup("Fruit", rec);
@@ -197,20 +170,8 @@
  		}
  
  		public static void SetupRecipes() {
- 			int num = 5;
- 			int stack = 2;
- 			SetupRecipeGroups();
-+			
-+			#region Legacy
- 			currentRecipe.createItem.SetDefaults(8);
- 			currentRecipe.createItem.stack = 3;
- 			currentRecipe.requiredItem[0].SetDefaults(23);
-@@ -13050,9 +_,14 @@
- 			currentRecipe.requiredItem[0].SetDefaults(73);
- 			currentRecipe.requiredItem[0].stack = 100;
+@@ -13052,7 +_,10 @@
  			AddRecipe();
-+			#endregion
-+			
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
 +			RecipeHooks.AddRecipes();
@@ -229,14 +190,6 @@
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
-@@ -13075,6 +_,7 @@
- 			}
- 		}
- 
-+		#region Legacy
- 		private static void AddSolarFurniture() {
- 			currentRecipe.createItem.SetDefaults(4229);
- 			currentRecipe.createItem.stack = 10;
 @@ -13962,8 +_,9 @@
  				}
  			}
@@ -249,7 +202,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -13981,30 +_,33 @@
+@@ -13981,15 +_,39 @@
  			}
  		}
  
@@ -263,37 +216,32 @@
  		private static void AddRecipe() {
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
-+			if (currentRecipe.requiredTile[0] == TileID.Bottles) currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
++			if (currentRecipe.requiredTile[0] == TileID.Bottles)
++				currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
-+			if (currentRecipe.needGraveyardBiome) currentRecipe.AddCondition(Condition.InGraveyardBiome);
-+			if (currentRecipe.needSnowBiome) currentRecipe.AddCondition(Condition.InSnow);
-+			if (currentRecipe.needWater) currentRecipe.AddCondition(Condition.NearWater);
-+			if (currentRecipe.needLava) currentRecipe.AddCondition(Condition.NearLava);
-+			if (currentRecipe.needHoney) currentRecipe.AddCondition(Condition.NearHoney);
++			void ReplaceCondition(ref bool field, Recipe.Condition cond) {
++				if (field)
++					currentRecipe.AddCondition(cond);
 +
-+			if (currentRecipe.anyFragment) currentRecipe.RequireGroup(RecipeGroupID.Fragment);
-+			if (currentRecipe.anySand) currentRecipe.RequireGroup(RecipeGroupID.Sand);
-+			if (currentRecipe.anyWood) currentRecipe.RequireGroup(RecipeGroupID.Wood);
-+			if (currentRecipe.anyIronBar) currentRecipe.RequireGroup(RecipeGroupID.IronBar);
-+			if (currentRecipe.anyPressurePlate) currentRecipe.RequireGroup(RecipeGroupID.PressurePlate);
++				field = false;
++			}
++			ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
++			ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
++			ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
++			ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
++			ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++
++			void ReplaceGroup(ref bool field, int group) {
++				if (field)
++					currentRecipe.AddRecipeGroup(group);
++
++				field = false;
++			}
++			ReplaceGroup(ref currentRecipe.anyFragment, RecipeGroupID.Fragment);
++			ReplaceGroup(ref currentRecipe.anySand, RecipeGroupID.Sand);
++			ReplaceGroup(ref currentRecipe.anyWood, RecipeGroupID.Wood);
++			ReplaceGroup(ref currentRecipe.anyIronBar, RecipeGroupID.IronBar);
++			ReplaceGroup(ref currentRecipe.anyPressurePlate, RecipeGroupID.PressurePlate);
  
  			Main.recipe[numRecipes] = currentRecipe;
  			currentRecipe = new Recipe();
- 			numRecipes++;
- 		}
--
--		public static int GetRequiredTileStyle(int tileID) {
--			if (tileID == 26) {
--				if (!WorldGen.crimson)
--					return 0;
--
--				return 1;
--			}
--
--			return 0;
--		}
-+		#endregion
-+
-+		public static int GetRequiredTileStyle(int type) => type == TileID.DemonAltar && WorldGen.crimson ? 1 : 0;
- 	}
- }
