@@ -34,7 +34,6 @@ namespace Terraria.ModLoader
 
 		//Entities
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
-		internal readonly IDictionary<string, Effect> effects = new Dictionary<string, Effect>();
 		internal readonly IList<Recipe> recipes = new List<Recipe>();
 		internal readonly IDictionary<string, ModItem> items = new Dictionary<string, ModItem>();
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
@@ -138,6 +137,7 @@ namespace Terraria.ModLoader
 				ItemLoader.SetDefaults(item.item, false);
 				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
+				ItemID.Search.Add(item.Name, item.item.type);
 			}
 
 			foreach (ModPrefix prefix in prefixes.Values) {
@@ -161,6 +161,8 @@ namespace Terraria.ModLoader
 				if (!string.IsNullOrEmpty(tile.chest)) {
 					TileID.Sets.BasicChest[tile.Type] = true;
 				}
+				
+				TileID.Search.Add(tile.Name, tile.Type);
 			}
 
 			foreach (GlobalTile globalTile in globalTiles.Values) {
@@ -171,6 +173,8 @@ namespace Terraria.ModLoader
 				TextureAssets.Wall[wall.Type] = ModContent.GetTexture(wall.Texture);
 
 				wall.SetDefaults();
+				
+				WallID.Search.Add(wall.Name, wall.Type);
 			}
 
 			foreach (GlobalWall globalWall in globalWalls.Values) {
@@ -181,12 +185,16 @@ namespace Terraria.ModLoader
 				ProjectileLoader.SetDefaults(projectile.projectile, false);
 				projectile.AutoStaticDefaults();
 				projectile.SetStaticDefaults();
+				
+				ProjectileID.Search.Add(projectile.Name, projectile.projectile.type);
 			}
 
 			foreach (ModNPC npc in npcs.Values) {
 				NPCLoader.SetDefaults(npc.npc, false);
 				npc.AutoStaticDefaults();
 				npc.SetStaticDefaults();
+				
+				NPCID.Search.Add(npc.Name, npc.npc.type);
 			}
 
 			foreach (ModMountData modMountData in mountDatas.Values) {
@@ -202,6 +210,8 @@ namespace Terraria.ModLoader
 				TextureAssets.Buff[buff.Type] = ModContent.GetTexture(buff.Texture);
 
 				buff.SetDefaults();
+				
+				BuffID.Search.Add(buff.Name, buff.Type);
 			}
 
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
@@ -256,10 +266,6 @@ namespace Terraria.ModLoader
 				{
 					sound.Value.Dispose();
 				}
-				foreach (var effect in effects)
-				{
-					effect.Value.Dispose();
-				}
 				foreach (var texture in textures)
 				{
 					texture.Value.Dispose();
@@ -267,7 +273,6 @@ namespace Terraria.ModLoader
 				*/
 			}
 
-			effects.Clear();
 			musics.Clear();
 
 			Assets.Dispose();
@@ -341,7 +346,8 @@ namespace Terraria.ModLoader
 			var delayedLoadTypes = new List<Type> {
 				typeof(Texture2D),
 				typeof(DynamicSpriteFont),
-				typeof(SpriteFont)
+				typeof(SpriteFont),
+				typeof(Effect)
 			};
 
 			SetupAssetRepository(sources, assetReaderCollection, delayedLoadTypes);

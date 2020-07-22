@@ -32,9 +32,9 @@ namespace Terraria.ModLoader.Setup
 
 		public PatchTask(ITaskInterface taskInterface, string baseDir, string patchedDir, string patchDir, ProgramSetting<DateTime> cutoff) : base(taskInterface)
 		{
-			this.baseDir = baseDir;
-			this.patchedDir = patchedDir;
-			this.patchDir = patchDir;
+			this.baseDir = PreparePath(baseDir);
+			this.patchedDir = PreparePath(patchedDir);
+			this.patchDir = PreparePath(patchDir);
 			this.cutoff = cutoff;
 		}
 
@@ -50,33 +50,33 @@ namespace Terraria.ModLoader.Setup
 		{
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 
-			taskInterface.SetStatus("Deleting Old Src");
-
-			if (Directory.Exists(patchedDir)) {
-				//Delete directories' files without deleting the directories themselves. This prevents weird UnauthorizedAccessExceptions from the directory being in a state of limbo.
-				DeleteAllFiles(patchedDir);
-			}
-
-			var removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
+			string removedFileList = Path.Combine(patchDir, DiffTask.RemovedFileList);
 			var noCopy = File.Exists(removedFileList) ? new HashSet<string>(File.ReadAllLines(removedFileList)) : new HashSet<string>();
 
 			var items = new List<WorkItem>();
+			var newFiles = new HashSet<string>();
+
 			foreach (var (file, relPath) in EnumerateFiles(patchDir)) {
 				if (relPath.EndsWith(".patch")) {
-					items.Add(new WorkItem("Patching: " + relPath, () => Patch(file)));
+					items.Add(new WorkItem("Patching: " + relPath, () => newFiles.Add(PreparePath(Patch(file).PatchedPath))));
 					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
 				}
 				else if (relPath != DiffTask.RemovedFileList) {
-					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchedDir, relPath))));
+					string destination = Path.Combine(patchedDir, relPath);
+
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, destination)));
+					newFiles.Add(destination);
 				}
 			}
 
-			foreach (var (file, relPath) in EnumerateSrcFiles(baseDir))
-				if (!noCopy.Contains(relPath))
-					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchedDir, relPath))));
+			foreach (var (file, relPath) in EnumerateSrcFiles(baseDir)) {
+				if (!noCopy.Contains(relPath)) {
+					string destination = Path.Combine(patchedDir, relPath);
 
-			//Delete empty directories, since the directory was recursively wiped instead of being deleted.
-			DeleteEmptyDirs(patchedDir);
+					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, destination)));
+					newFiles.Add(destination);
+				}
+			}
 
 			try
 			{
@@ -91,6 +91,18 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			cutoff.Set(DateTime.Now);
+
+			//Remove files and directories that weren't in patches and original src.
+
+			taskInterface.SetStatus("Deleting Old Src");
+
+			foreach (var (file, relPath) in EnumerateSrcFiles(patchedDir))
+				if (!newFiles.Contains(file))
+					File.Delete(file);
+
+			DeleteEmptyDirs(patchedDir);
+
+			//Show patch reviewer if there were any fuzzy patches.
 
 			if (fuzzy > 0)
 				taskInterface.Invoke(new Action(() => ShowReviewWindow(results)));
@@ -116,7 +128,7 @@ namespace Terraria.ModLoader.Setup
 				"Patch Results", MessageBoxButtons.OK, Failed() ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 		}
 
-		private void Patch(string patchPath)
+		private FilePatcher Patch(string patchPath)
 		{
 			var patcher = FilePatcher.FromPatchFile(patchPath);
 			patcher.Patch(mode);
@@ -144,6 +156,8 @@ namespace Terraria.ModLoader.Setup
 				log.AppendLine(res.Summary());
 
 			Log(log.ToString());
+
+			return patcher;
 		}
 
 		private void Log(string text)

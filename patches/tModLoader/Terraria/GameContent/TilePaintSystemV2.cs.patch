@@ -18,11 +18,12 @@
  				PrepareTextureIfNecessary(asset.Value);
  			}
  
-@@ -102,7 +_,7 @@
+@@ -102,7 +_,8 @@
  			public TileVariationkey Key;
  
  			public override void Prepare() {
 -				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++				Main.instance.LoadTiles(Key.TileType);
 +				Asset<Texture2D> asset = TextureAssets.Tile[Key.TileType];
  				PrepareTextureIfNecessary(asset.Value);
  			}

@@ -408,7 +408,7 @@
  						}
  					}
  
-+					if (!ProjectileLoader.OnTileCollide(this, velocity)) {
++					if (!ProjectileLoader.OnTileCollide(this, lastVelocity)) {
 +					}
 -					if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
 +					else if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {

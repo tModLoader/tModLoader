@@ -1926,7 +1926,7 @@
  												if (inventory[num76].stack <= 0)
  													inventory[num76] = new Item();
  											}
-@@ -22204,6 +_,10 @@
+@@ -22204,13 +_,17 @@
  					if (flag14)
  						LaunchMinecartHook(myX, myY);
  				}
@@ -1937,6 +1937,14 @@
  			}
  
  			if (flag2)
+ 				tileInteractionHappened = true;
+ 		}
+ 
+-		private static bool IsHoveringOverABottomSideOfABed(int myX, int myY) {
++		public static bool IsHoveringOverABottomSideOfABed(int myX, int myY) {
+ 			short frameX = Main.tile[myX, myY].frameX;
+ 			bool flag = frameX / 72 == 1;
+ 			bool flag2 = frameX % 72 < 36;
 @@ -23149,7 +_,7 @@
  				cursorItemIconID = 3747;
  			}

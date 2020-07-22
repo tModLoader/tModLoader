@@ -38,7 +38,7 @@ namespace Terraria.ModLoader
 
 		internal static void ResizeArrays() {
 			//Sets
-			LoaderUtils.ReloadSets(typeof(MountID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(MountID), true);
 
 			//Etc
 			Array.Resize(ref Mount.mounts, MountCount);

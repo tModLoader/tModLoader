@@ -506,7 +506,9 @@ namespace Terraria.ModLoader
 				throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
 			int slot = NPCHeadLoader.ReserveHeadSlot();
+
 			NPCHeadLoader.heads[texture] = slot;
+			
 			if (!Main.dedServ) {
 				ModContent.GetTexture(texture);
 			}
@@ -514,6 +516,7 @@ namespace Terraria.ModLoader
 			{
 				throw new MissingResourceException(texture);
 			}*/
+
 			NPCHeadLoader.npcToHead[npcType] = slot;
 			NPCHeadLoader.headToNPC[slot] = npcType;
 		}
@@ -974,17 +977,12 @@ namespace Terraria.ModLoader
 		/// Gets an Effect loaded from the specified path.
 		/// </summary>
 		/// <exception cref="MissingResourceException"></exception>
-		public Effect GetEffect(string name) {
-			if (!effects.TryGetValue(name, out var effect))
-				throw new MissingResourceException(name);
-
-			return effect;
-		}
+		public Asset<Effect> GetEffect(string name) => Assets.Request<Effect>(name);
 
 		/// <summary>
 		/// Used to check if a custom Effect exists
 		/// </summary>
-		public bool EffectExists(string name) => effects.ContainsKey(name);
+		public bool EffectExists(string name) => Assets.HasAsset<Effect>(name);
 
 		/// <summary>
 		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.

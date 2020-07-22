@@ -7,7 +7,6 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	// bug: shield visual doesn't get rendered
 	[AutoloadEquip(EquipType.Shield)]
 	public class ExampleShield : ModItem
 	{
@@ -33,7 +32,9 @@ namespace ExampleMod.Content.Items.Accessories
 			ExampleDashPlayer mp = player.GetModPlayer<ExampleDashPlayer>();
 
 			// If the dash is not active, immediately return so we don't do any of the logic for it
-			if (!mp.DashActive) return;
+			if (!mp.DashActive) {
+				return;
+			}
 
 			// This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
 			// Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
@@ -129,21 +130,37 @@ namespace ExampleMod.Content.Items.Accessories
 
 				//Set the flag for the ExampleDashAccessory being equipped if we have it equipped OR immediately return if any of the accessories are
 				// one of the higher-priority ones
-				if (item.type == ItemType<ExampleShield>()) dashAccessoryEquipped = true;
-				else if (item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi) return;
+				if (item.type == ItemType<ExampleShield>()) {
+					dashAccessoryEquipped = true;
+				}
+				else if (item.type == ItemID.EoCShield || item.type == ItemID.MasterNinjaGear || item.type == ItemID.Tabi) {
+					return;
+				}
 			}
 
 			//If we don't have the ExampleDashAccessory equipped or the player has the Solor armor set equipped, return immediately
 			//Also return if the player is currently on a mount, since dashes on a mount look weird, or if the dash was already activated
-			if (!dashAccessoryEquipped || player.setSolar || player.mount.Active || DashActive) return;
+			if (!dashAccessoryEquipped || player.setSolar || player.mount.Active || DashActive) {
+				return;
+			}
 
 			//When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
 			//If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-			if (player.controlDown && player.releaseDown && player.doubleTapCardinalTimer[DashDown] < 15) DashDir = DashDown;
-			else if (player.controlUp && player.releaseUp && player.doubleTapCardinalTimer[DashUp] < 15) DashDir = DashUp;
-			else if (player.controlRight && player.releaseRight && player.doubleTapCardinalTimer[DashRight] < 15) DashDir = DashRight;
-			else if (player.controlLeft && player.releaseLeft && player.doubleTapCardinalTimer[DashLeft] < 15) DashDir = DashLeft;
-			else return; //No dash was activated, return
+			if (player.controlDown && player.releaseDown && player.doubleTapCardinalTimer[DashDown] < 15) {
+				DashDir = DashDown;
+			}
+			else if (player.controlUp && player.releaseUp && player.doubleTapCardinalTimer[DashUp] < 15) {
+				DashDir = DashUp;
+			}
+			else if (player.controlRight && player.releaseRight && player.doubleTapCardinalTimer[DashRight] < 15) {
+				DashDir = DashRight;
+			}
+			else if (player.controlLeft && player.releaseLeft && player.doubleTapCardinalTimer[DashLeft] < 15) {
+				DashDir = DashLeft;
+			}
+			else {
+				return; //No dash was activated, return
+			}
 
 			DashActive = true;
 

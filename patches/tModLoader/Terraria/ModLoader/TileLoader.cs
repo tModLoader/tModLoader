@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ObjectData;
@@ -124,7 +125,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 			//Sets
-			LoaderUtils.ReloadSets(typeof(TileID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(TileID), true);
 
 			//Etc
 			Array.Resize(ref Main.tileLighted, nextTile);
@@ -156,7 +157,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFrameImportant, nextTile);
 			Array.Resize(ref Main.tilePile, nextTile);
 			Array.Resize(ref Main.tileBlendAll, nextTile);
-			Array.Resize(ref Main.tileGlowMask, nextTile);
 			Array.Resize(ref Main.tileContainer, nextTile);
 			Array.Resize(ref Main.tileSign, nextTile);
 			Array.Resize(ref Main.tileSand, nextTile);
@@ -166,15 +166,23 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref Main.tileMerge, nextTile);
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
-
-			for (int k = 0; k < nextTile; k++) { //oh dear
-				Array.Resize(ref Main.tileMerge[k], nextTile);
-			}
-
+			Array.Resize(ref Main.tileGlowMask, nextTile);
+			Array.Resize(ref Main.tileCracked, nextTile);
+			
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
+			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);	
+			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);	
+		
+			for (int i = 0; i < nextTile; i++) { //oh dear
+				Array.Resize(ref Main.tileMerge[i], nextTile);
+			}
+
+			for (int i = TileID.Count; i < nextTile; i++) {
+				Main.tileGlowMask[i] = -1; //If we don't this, every modded tile will have a glowmask by default.
+			}
 
 			while (TileObjectData._data.Count < nextTile) {
 				TileObjectData._data.Add(null);
@@ -736,8 +744,8 @@ namespace Terraria.ModLoader
 		public static bool RightClick(int i, int j) {
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
-			GetTile(type)?.RightClick(i, j);
-			if (GetTile(type)?.NewRightClick(i, j) ?? false)
+			
+			if (GetTile(type)?.RightClick(i, j) ?? false)
 				returnValue = true;
 
 			foreach (var hook in HookRightClick) {

@@ -105,7 +105,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
 
 			//Sets
-			LoaderUtils.ReloadSets(typeof(NPCID.Sets));
+			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
 
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
-
+			
 			InstancedGlobals = globalNPCs.Where(g => g.InstancePerEntity).ToArray();
 
 			for (int i = 0; i < InstancedGlobals.Length; i++) {

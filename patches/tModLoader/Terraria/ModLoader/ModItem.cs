@@ -42,24 +42,6 @@ namespace Terraria.ModLoader
 
 		public virtual string FemaleTexture => Texture + "_FemaleBody";
 
-		[Obsolete("override ModItem.OnlyShootOnSwing property", true)]
-		public bool projOnSwing;
-
-		[Obsolete("override ModItem.BossBagNPC property", true)]
-		public int bossBagNPC;
-
-		[Obsolete]
-		private bool ProjOnSwing_Obsolete {
-			get => projOnSwing;
-			set => projOnSwing = value;
-		}
-
-		[Obsolete]
-		private int BossBagNPC_Obsolete {
-			get => bossBagNPC;
-			set => bossBagNPC = value;
-		}
-
 		public ModItem() {
 			item = new Item { modItem = this };
 		}
@@ -128,8 +110,6 @@ namespace Terraria.ModLoader
 			var copy = (ModItem)Activator.CreateInstance(GetType());
 			copy.item = itemClone;
 			copy.Mod = Mod;
-			copy.ProjOnSwing_Obsolete = ProjOnSwing_Obsolete;
-			copy.BossBagNPC_Obsolete = BossBagNPC_Obsolete;
 			return copy;
 		}
 
@@ -982,12 +962,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
 		/// </summary>
-		public virtual bool OnlyShootOnSwing => ProjOnSwing_Obsolete;
+		public virtual bool OnlyShootOnSwing => false;
 
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
-		public virtual int BossBagNPC => BossBagNPC_Obsolete;
+		public virtual int BossBagNPC => 0;
 
 		/// <summary>
 		/// Set this to true to prevent this weapon or ammo item from being adjusted by damage modifiers.

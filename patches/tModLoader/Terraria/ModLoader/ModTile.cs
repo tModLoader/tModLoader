@@ -96,7 +96,13 @@ namespace Terraria.ModLoader
 		/// Whether or not this tile is a sapling, which can grow into a modded tree or palm tree.
 		/// </summary>
 		public bool sapling = false;
-
+		/// <summary>
+		/// Whether or not this tile is a clock.
+		/// </summary>
+		public bool clock = false;
+		
+		public bool IsDoor => openDoorID != -1 || closeDoorID != -1;
+		
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -441,21 +447,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen when this tile is right-clicked by the player.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		[Obsolete("ModTile.RightClick will return a bool value later. This version is deprecated since v0.11.5, please use ModTile.NewRightClick instead and return true if a tile interaction has occurred.")]
-		public virtual void RightClick(int i, int j) {
-		}
-
-		/// <summary>
 		/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</returns>
-		public virtual bool NewRightClick(int i, int j) {
+		public virtual bool RightClick(int i, int j) {
 			return false;
 		}
 
