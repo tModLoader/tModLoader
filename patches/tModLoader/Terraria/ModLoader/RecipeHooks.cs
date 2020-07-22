@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This is where all ModRecipe and GlobalRecipe hooks are gathered and called.
+	/// This is where all Recipe and GlobalRecipe hooks are gathered and called.
 	/// </summary>
 	public static class RecipeHooks
 	{
@@ -53,17 +53,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			if (recipe is ModRecipe modRecipe && !modRecipe.Conditions.All(c => c.RecipeAvailable(modRecipe))) {
-				return false;
-			}
-
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				if (!globalRecipe.RecipeAvailable(recipe)) {
-					return false;
-				}
-			}
-
-			return true;
+			return recipe.Conditions.All(c => c.RecipeAvailable(recipe)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe));
 		}
 
 		/// <summary>
@@ -72,9 +62,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item crafted.</param>
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe) {
-			if (recipe is ModRecipe modRecipe) {
-				modRecipe.OnCraftHooks?.Invoke(modRecipe, item);
-			}
+			recipe.OnCraftHooks?.Invoke(recipe, item);
 
 			foreach (GlobalRecipe globalRecipe in globalRecipes) {
 				globalRecipe.OnCraft(item, recipe);

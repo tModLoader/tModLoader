@@ -1019,7 +1019,7 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public ModRecipe CreateRecipe(int result, int amount = 1) => ModRecipe.Create(this, result, amount);
+		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
 
 		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
 		public T GetConfig<T>() where T : ModConfig => (T)GetConfig(typeof(T).Name);

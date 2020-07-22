@@ -310,7 +310,7 @@ namespace {modNameTrimmed}.Items
 
 		public override void AddRecipes() 
 		{{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = new Recipe(mod);
 			recipe.AddIngredient(ItemID.DirtBlock, 10);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this);

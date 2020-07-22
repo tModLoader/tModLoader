@@ -2157,6 +2157,15 @@
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
+@@ -30846,6 +_,8 @@
+ 				if (recipe.needGraveyardBiome)
+ 					_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
+ 
++				_requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description));
++
+ 				if (_requiredObjecsForCraftingText.Count == 0) {
+ 					string value = Lang.inter[23].Value;
+ 					_requiredObjecsForCraftingText.Add(value);
 @@ -31011,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
