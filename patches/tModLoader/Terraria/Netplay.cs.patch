@@ -55,15 +55,6 @@
  		private static void OpenPort(int port) {
  #if SERVER && WINDOWS
  			string localIPAddress = GetLocalIPAddress();
-@@ -360,7 +_,7 @@
- 
- 		private static void UpdateClient() {
- 			if (Main.netMode == 1 && Connection.Socket.IsConnected() && NetMessage.buffer[256].checkBytes)
--				NetMessage.CheckBytes();
-+				InvokeOnMainThread(() => NetMessage.CheckBytes());
- 		}
- 
- 		public static void AddCurrentServerToRecentList() {
 @@ -421,6 +_,7 @@
  		}
  
