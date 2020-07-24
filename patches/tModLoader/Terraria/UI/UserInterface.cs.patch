@@ -166,7 +166,7 @@
  			if (PlayerInput.ScrollWheelDeltaForUI != 0) {
  				uIElement?.ScrollWheel(new UIScrollWheelEvent(uIElement, MousePosition, PlayerInput.ScrollWheelDeltaForUI));
 -				PlayerInput.ScrollWheelDeltaForUI = 0;
-+				// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after ModHooks.UpdateUI(gameTime);
++				// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after SystemHooks.UpdateUI(gameTime);
  			}
  
  			_wasMouseDown = flag;
