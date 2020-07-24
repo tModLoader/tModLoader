@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModBuff> buffs = new Dictionary<string, ModBuff>();
 		internal readonly IDictionary<string, GlobalBuff> globalBuffs = new Dictionary<string, GlobalBuff>();
 		internal readonly IDictionary<string, ModWorld> worlds = new Dictionary<string, ModWorld>();
+		internal readonly IDictionary<string, ModSystem> systems = new Dictionary<string, ModSystem>();
 		internal readonly IDictionary<string, ModUgBgStyle> ugBgStyles = new Dictionary<string, ModUgBgStyle>();
 		internal readonly IDictionary<string, ModSurfaceBgStyle> surfaceBgStyles = new Dictionary<string, ModSurfaceBgStyle>();
 		internal readonly IDictionary<string, GlobalBgStyle> globalBgStyles = new Dictionary<string, GlobalBgStyle>();

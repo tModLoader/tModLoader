@@ -53,12 +53,11 @@
  		}
  
  		public Vector2 GetNavigatorDirections() {
-@@ -567,6 +_,9 @@
+@@ -567,6 +_,8 @@
  
  			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  				HotbarScrollCD--;
 +
-+			ModHooks.HotKeyPressed();
 +			PlayerHooks.ProcessTriggers(p, this);
  		}
  
