@@ -290,6 +290,7 @@ namespace Terraria.ModLoader
 			IList<Type> modGores = new List<Type>();
 			IList<Type> modSounds = new List<Type>();
 
+
 			Type modType = GetType();
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
 				if (type == modType){continue;}
@@ -303,9 +304,9 @@ namespace Terraria.ModLoader
 					modSounds.Add(type);
 				}
 				else if (typeof(ILoadable).IsAssignableFrom(type)) {
-					bool? autoload = AutoloadAttribute.GetValue(type);
-					if (autoload ?? Properties.Autoload) {
-						AutoloadInstance(type);
+					var autoload = AutoloadAttribute.GetValue(type);
+					if (autoload.NeedsAutoloading) {
+						AddContent((ILoadable)Activator.CreateInstance(type));
 					}
 				}
 			}
@@ -361,12 +362,6 @@ namespace Terraria.ModLoader
 			var assetLoader = new AssetLoader(assetReaderCollection);
 
 			Assets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, sources.ToArray());
-		}
-
-		private void AutoloadInstance(Type type) {
-			var loadable = (ILoadable)Activator.CreateInstance(type);
-			loadable.Load(this);
-			loadables.Add(loadable);
 		}
 
 		private void AutoloadBackgrounds() {

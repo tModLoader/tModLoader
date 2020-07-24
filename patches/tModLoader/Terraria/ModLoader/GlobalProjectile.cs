@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			Mod.globalProjectiles[Name] = this;

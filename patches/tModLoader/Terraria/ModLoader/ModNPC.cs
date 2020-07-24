@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 			npc = new NPC{modNPC = this};
 		}
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			if (Mod.npcs.ContainsKey(Name))
 				throw new Exception("You tried to add 2 ModNPC with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
 

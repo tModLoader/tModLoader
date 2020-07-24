@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 
 		public virtual string BlockTexture => Texture + "_Block";
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			Type = WaterStyleLoader.ReserveStyle();
 			
 			Mod.waterStyles[Name] = this;
@@ -71,7 +71,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Type {get;internal set;}
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			Type = WaterfallStyleLoader.ReserveStyle();
 
 			Mod.waterfallStyles[Name] = this;

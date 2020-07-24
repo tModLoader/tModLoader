@@ -18,17 +18,14 @@
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
 			Load();
-			AddInstance();
+			Register();
 		}
 
 		public virtual void Load(){}
 
 		public virtual void Unload(){}
 
-		/// <summary>
-		/// DO NOT CALL THIS! This is called automatically in ILoadable.Load
-		/// </summary>
-		internal virtual void AddInstance(){}
+		protected abstract void Register();
 	}
 
 }

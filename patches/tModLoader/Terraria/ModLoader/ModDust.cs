@@ -10,6 +10,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public class ModDust:ModTexturedType
 	{
 		private static int nextDust = DustID.Count;
@@ -92,18 +93,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public sealed override void Load()
-		{
-			base.Load();
-			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
-		}
-
-		internal sealed override void AddInstance() {
+		protected override void Register() {
 			Type = ModDust.ReserveDustID();
 
 			Mod.dusts[Name] = this;
 			ModDust.dusts.Add(this);
 			ContentInstance.Register(this);
+			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 
 		/// <summary>

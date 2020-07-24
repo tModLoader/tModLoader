@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		internal int index;
 		internal int instanceIndex;
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			Mod.globalNPCs[Name] = this;

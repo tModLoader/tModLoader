@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -100,7 +101,7 @@ namespace ExampleMod.Content.Items.Tools
 			speed = 10;
 		}
 
-		private Texture2D chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain").Value;
+		private Asset<Texture2D> chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
@@ -117,8 +118,8 @@ namespace ExampleMod.Content.Items.Tools
 				Color drawColor = lightColor;
 
 				//Draw chain
-				spriteBatch.Draw(chainTexture, new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
-					new Rectangle(0, 0, chainTexture.Width, chainTexture.Height), drawColor, projRotation,
+				spriteBatch.Draw(chainTexture.Value, new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
+					new Rectangle(0, 0, chainTexture.Width(), chainTexture.Height()), drawColor, projRotation,
 					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 			}
 

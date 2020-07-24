@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Core
 				.Union(Directory.GetFiles(ModLoader.ModPath, "temporaryDownload.tmod", SearchOption.TopDirectoryOnly)); // Old tML remnant
 		}
 
-		private static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
+		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
 		internal static List<Mod> LoadMods(CancellationToken token) {
 			CommandLineModPackOverride();

@@ -49,8 +49,8 @@ namespace Terraria.ModLoader
 		public virtual string Usage => "/" + Command;
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
-		
-		internal sealed override void AddInstance() {
+
+		protected override void Register() {
 			CommandManager.Add(this);
 		}
 

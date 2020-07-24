@@ -97,7 +97,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		internal sealed override void AddInstance() {
+		protected override void Register() {
 			Type = (ushort)WallLoader.ReserveWallID();
 
 			Mod.walls[Name] = this;

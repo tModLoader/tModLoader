@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[soilType] = cactus;
 		}
 
-		internal sealed override void AddInstance() {
+		protected sealed override void Register() {
 			Mod.globalTiles[Name] = this;
 			TileLoader.globalTiles.Add(this);
 			ContentInstance.Register(this);
