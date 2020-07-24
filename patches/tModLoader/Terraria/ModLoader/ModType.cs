@@ -15,10 +15,17 @@
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
-		/// <summary>Make sure to call base.Mod(mod) to load in your type.</summary>
-		public virtual void Load(Mod mod) => Mod = mod;
+		void ILoadable.Load(Mod mod) {
+			Mod = mod;
+			Load();
+			Register();
+		}
+
+		public virtual void Load(){}
 
 		public virtual void Unload(){}
+
+		protected abstract void Register();
 	}
 
 }

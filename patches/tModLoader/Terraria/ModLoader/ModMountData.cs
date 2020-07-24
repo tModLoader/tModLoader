@@ -31,8 +31,7 @@ namespace Terraria.ModLoader
 			mountData = new Mount.MountData();
 		}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected sealed override void Register() {
 			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
 				Mount.Initialize();
 

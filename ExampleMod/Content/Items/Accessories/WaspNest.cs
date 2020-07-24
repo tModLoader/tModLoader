@@ -11,8 +11,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class WaspNest : ModItem
 	{
 		// Only gets run once per type
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		public override void Load() {
 			IL.Terraria.Player.beeType += HookBeeType;
 		}
 

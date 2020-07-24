@@ -61,8 +61,7 @@ namespace Terraria.ModLoader
 			projectile = new Projectile { modProjectile = this };
 		}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected sealed override void Register() {
 			if (Mod.projectiles.ContainsKey(projectile.Name))
 				throw new Exception("You tried to add 2 ModProjectile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
 

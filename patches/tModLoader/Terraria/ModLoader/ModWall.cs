@@ -97,8 +97,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected override void Register() {
 			Type = (ushort)WallLoader.ReserveWallID();
 
 			Mod.walls[Name] = this;

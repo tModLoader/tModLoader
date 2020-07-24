@@ -5,8 +5,7 @@
 	/// </summary>
 	public class GlobalRecipe:ModType
 	{
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected sealed override void Register() {
 			Mod.globalRecipes[Name] = this;
 			RecipeHooks.Add(this);
 			ContentInstance.Register(this);

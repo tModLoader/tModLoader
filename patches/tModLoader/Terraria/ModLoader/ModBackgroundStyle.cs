@@ -12,8 +12,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected override void Register() {
 			Slot = UgBgStyleLoader.ReserveBackgroundSlot();
 
 			Mod.ugBgStyles[Name] = this;
@@ -44,8 +43,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot {get;internal set;}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected override void Register() {
 			Slot = SurfaceBgStyleLoader.ReserveBackgroundSlot();
 
 			Mod.surfaceBgStyles[Name] = this;
@@ -104,8 +102,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public class GlobalBgStyle:ModType
 	{
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected override void Register() {
 			Mod.globalBgStyles[Name] = this;
 			GlobalBgStyleLoader.globalBgStyles.Add(this);
 			ContentInstance.Register(this);

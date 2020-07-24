@@ -27,8 +27,7 @@ namespace Terraria.ModLoader
 		/// <summary>Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true.</summary>
 		public bool canBeCleared = true;
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected override void Register() {
 			if (Mod.buffs.ContainsKey(Name))
 				throw new Exception("You tried to add 2 ModBuff with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddBuff with 2 buffs of the same name.");
 

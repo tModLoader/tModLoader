@@ -199,8 +199,7 @@ namespace Terraria.ModLoader
 			TileLoader.cacti[Type] = cactus;
 		}
 
-		public override void Load(Mod mod) {
-			base.Load(mod);
+		protected sealed override void Register() {
 			if (Mod.tiles.ContainsKey(Name))
 				throw new Exception("You tried to add 2 ModTile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddTile with 2 tiles of the same name.");
 
