@@ -47,7 +47,15 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -142,13 +_,18 @@
+@@ -138,17 +_,25 @@
+ 			if (_data.IsCloudSave)
+ 				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
+ 			else
++				if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient())
++					_buttonLabel.SetText(Language.GetTextValue("tModLoader.CloudWarning"));
++				else
+-				_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
++					_buttonLabel.SetText(Language.GetTextValue("UI.MoveToCloud"));
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
@@ -67,6 +75,19 @@
  		private void DeleteMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
+@@ -164,8 +_,11 @@
+ 		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+ 			if (_data.IsCloudSave)
+ 				_data.MoveToLocal();
+-			else
++			else {
++				if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient())
++					return; //Don't allow both the move to cloud, and the setting of the label
+ 				_data.MoveToCloud();
++			}
+ 
+ 			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
+ 			if (_data.IsCloudSave)
 @@ -194,7 +_,7 @@
  		}
  

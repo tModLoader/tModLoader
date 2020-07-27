@@ -14,6 +14,8 @@ namespace Terraria.ModLoader.Engine
 		public const uint TMLAppID = 1281930;
 		public const uint TerrariaAppID = 105600;
 
+		public const float SteamCloudQuotaLimitRatio = 0.9f;
+
 		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
 		public static bool IsSteamApp => SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
@@ -48,6 +50,15 @@ namespace Terraria.ModLoader.Engine
 			bool exists = File.Exists("steam_appid.txt");
 			File.WriteAllText("steam_appid.txt", TerrariaAppID.ToString());
 			return exists;
+		}
+
+		public static bool CheckSteamCloudStorageSufficient()
+		{
+			if (IsSteamApp)
+				if (SteamRemoteStorage.GetQuota(out ulong pnTotalBytes, out ulong puAvailableBytes))
+					if (1f - puAvailableBytes / (float)pnTotalBytes > SteamCloudQuotaLimitRatio)
+						return false;
+			return true;
 		}
 	}
 }
