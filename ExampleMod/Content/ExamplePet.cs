@@ -9,7 +9,7 @@ namespace ExampleMod.Content
 {
 	public class ExamplePetItem : ModItem
 	{
-		public override string Texture => ExampleMod.AssetPath + "Textures/Items/ExamplePet";
+		public override string Texture => ExampleMod.AssetPath + "Textures/Items/ExamplePet"; // Gets the texture for your pet.
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Paper Airplane");
@@ -17,9 +17,9 @@ namespace ExampleMod.Content
 		}
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.ZephyrFish);
-			item.shoot = ProjectileType<ExamplePetProjectile>();
-			item.buffType = BuffType<ExamplePetBuff>();
+			item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish item.
+			item.shoot = ProjectileType<ExamplePetProjectile>(); // "Shoot" your pet projectile.
+			item.buffType = BuffType<ExamplePetBuff>(); // Apply buff upon usage of the item.
 		}
 
 		public override void AddRecipes() {
@@ -47,7 +47,7 @@ namespace ExampleMod.Content
 			Main.vanityPet[Type] = true;
 		}
 
-		public override void Update(Player player, ref int buffIndex) {
+		public override void Update(Player player, ref int buffIndex) { // This method gets called every frame your buff is active on your player.
 			player.buffTime[buffIndex] = 18000;
 			player.GetModPlayer<ExamplePetPlayer>().ExamplePet = true;
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[ProjectileType<ExamplePetProjectile>()] <= 0;
@@ -57,7 +57,7 @@ namespace ExampleMod.Content
 		}
 	}
 
-	public class ExamplePetProjectile : ModProjectile
+	public class ExamplePetProjectile : ModProjectile // We can make multiple classes in one file for much easier organization.
 	{
 		public override string Texture => ExampleMod.AssetPath + "Textures/Projectiles/ExamplePet";
 
@@ -69,7 +69,7 @@ namespace ExampleMod.Content
 
 		public override void SetDefaults() {
 			projectile.CloneDefaults(ProjectileID.ZephyrFish);
-			aiType = ProjectileID.ZephyrFish;
+			aiType = ProjectileID.ZephyrFish; // Copy the AI of the Zephyr Fish.
 		}
 
 		public override bool PreAI() {
