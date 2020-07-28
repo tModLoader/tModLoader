@@ -37,7 +37,6 @@ namespace ExampleMod.Content.Items.Weapons
             .AddIngredient<ExampleItem>()
             .AddTile<ExampleWorkbench>()
             .Register();
-            
 		}
 	}
 }
