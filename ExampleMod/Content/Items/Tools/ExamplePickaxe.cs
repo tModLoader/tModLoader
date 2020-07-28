@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Tools
 			item.useAnimation = 10;
 			item.useStyle = ItemUseStyleID.Swing;
 			item.knockBack = 6;
-			item.value = Item.buyPrice(gold: 1);
+			item.value = Item.buyPrice(gold: 1); //buy this item for one gold - change gold to any coin and change the value to any number <= 100
 			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
