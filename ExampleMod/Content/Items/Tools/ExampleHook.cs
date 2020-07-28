@@ -12,14 +12,14 @@ namespace ExampleMod.Content.Items.Tools
 	internal class ExampleHookItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Hook");
+			DisplayName.SetDefault("Example Hook"); //the item's name in-game
 		}
 
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>();
+			item.shoot = ProjectileType<ExampleHookProjectile>(); //shoot your hook's projectile
 		}
 
 		public override void AddRecipes() {
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
+			projectile.CloneDefaults(ProjectileID.GemHookAmethyst); //copies the attributes of the Amethyst hook's projectile
 		}
 
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
@@ -89,20 +89,20 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void NumGrappleHooks(Player player, ref int numHooks) {
-			numHooks = 2;
+			numHooks = 2; //the amount of hooks that can be shot out
 		}
 
 		// default is 11, Lunar is 24
 		public override void GrappleRetreatSpeed(Player player, ref float speed) {
-			speed = 18f;
+			speed = 18f; //how fast the grapple returns to you after meeting its max shoot distance
 		}
 
 		public override void GrapplePullSpeed(Player player, ref float speed) {
-			speed = 10;
+			speed = 10; //how fast you get pulled to the grappling hook projectile's landing position
 		}
 
 		private Asset<Texture2D> chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
-
+		//update texture
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
 			Vector2 center = projectile.Center;
@@ -122,7 +122,6 @@ namespace ExampleMod.Content.Items.Tools
 					new Rectangle(0, 0, chainTexture.Width(), chainTexture.Height()), drawColor, projRotation,
 					chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 			}
-
 			return true;
 		}
 	}
