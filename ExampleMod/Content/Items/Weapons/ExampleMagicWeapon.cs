@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetDefaults() {
 			item.damage = 25;
 			item.magic = true; // Makes the damage register as magic.
-      // Important note: if your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). be sure to have a damage type.
+      // Important note: If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
 			item.width = 34;
 			item.height = 40;
 			item.useTime = 20;
@@ -32,11 +32,11 @@ namespace ExampleMod.Content.Items.Weapons
 			item.mana = 11; // This is how much mana the item uses.
 		}
 		public override void AddRecipes() {
-        CreateRecipe()
-			.AddIngredient(ItemID.FallenStar, 5)
-			.AddIngredient<ExampleItem>()
-			.AddTile<ExampleWorkbench>()
-			.Register();
+        	CreateRecipe()
+				.AddIngredient(ItemID.FallenStar, 5)
+				.AddIngredient<ExampleItem>()
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }
