@@ -8,11 +8,11 @@ namespace ExampleMod.Content.Items.Ammo
 	public class ExampleBullet : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded bullet ammo.");
+			Tooltip.SetDefault("This is a modded bullet ammo."); //item description, can be set to whatever you want.
 		}
 
 		public override void SetDefaults() {
-			item.damage = 12;
+			item.damage = 12; //The damage for projectiles isn't actually 12, it actually is the damage combined with the projectile and the item together
 			item.ranged = true;
 			item.width = 8;
 			item.height = 8;
