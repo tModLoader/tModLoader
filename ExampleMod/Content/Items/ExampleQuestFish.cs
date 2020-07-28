@@ -16,16 +16,16 @@ namespace ExampleMod.Content.Items
 			item.width = 26;
 			item.height = 26;
 			item.uniqueStack = true;
-			item.rare = ItemRarityID.Quest;
+			item.rare = ItemRarityID.Quest; //
 		}
 
-		public override bool IsQuestFish() => true;
+		public override bool IsQuestFish() => true; // makes the item a quest fish
 
-		public override bool IsAnglerQuestAvailable() => Main.hardMode;
+		public override bool IsAnglerQuestAvailable() => Main.hardMode; // makes the quest only appear in hard mode
 
 		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
-			description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
-			catchLocation = "Caught anywhere while standing upside-down.";
+			/* how the angler describes the fish to the player*/ description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
+			/* what it says on the bottom of the angler's text box of how to catch the fish */ catchLocation = "Caught anywhere while standing upside-down.";
 		}
 	}
 }
