@@ -59,6 +59,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether or not your rarity's color is animated.
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool Animated() => false;
+
+		/// <summary>
 		/// Your ModRarity's color.
 		/// Returns White by default.
 		/// </summary>
