@@ -1,0 +1,24 @@
+--- src/Terraria/Terraria/ItemText.cs
++++ src/tModLoader/Terraria/ItemText.cs
+@@ -1,5 +_,7 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -159,8 +_,12 @@
+ 				Main.itemText[num2].color = new Color(5, 200, 255);
+ 			else if (newItem.rare == 10)
+ 				Main.itemText[num2].color = new Color(255, 40, 100);
+-			else if (newItem.rare >= 11)
++			else if (newItem.rare == 11)
+ 				Main.itemText[num2].color = new Color(180, 40, 255);
++			else if (newItem.rare > 11)
++				for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++					if (newItem.rare == i)
++						Main.itemText[num2].color = ModRarity.GetRarity(newItem.rare).RarityColor();
+ 
+ 			Main.itemText[num2].expert = newItem.expert;
+ 			Main.itemText[num2].name = newItem.AffixName();

@@ -1408,6 +1408,22 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1) {
  				if ((float)X + vector.X + 4f > (float)hackedScreenWidth)
  					X = (int)((float)hackedScreenWidth - vector.X - 4f);
+@@ -11848,9 +_,14 @@
+ 			if (rare == 10)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num), (byte)(40f * num), (byte)(100f * num), mouseTextColor);
+ 
+-			if (rare >= 11)
++			if (rare == 11)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num), (byte)(40f * num), (byte)(255f * num), mouseTextColor);
+ 
++			if (rare > 11)
++				for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++					if (rare == i)
++						baseColor = ModRarity.GetRarity(rare).RarityColor() * num;
++
+ 			if (HoverItem.expert || rare == -12)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num), (byte)((float)DiscoG * num), (byte)((float)DiscoB * num), mouseTextColor);
+ 
 @@ -11881,30 +_,57 @@
  			if (HoverItem.ranged && player[myPlayer].shroomiteStealth)
  				HoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
@@ -1974,6 +1990,22 @@
  				}
  				else {
  					Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+@@ -12565,9 +_,14 @@
+ 						if (rare == 10)
+ 							black = new Microsoft.Xna.Framework.Color((byte)(255f * num18), (byte)(40f * num18), (byte)(100f * num18), a);
+ 
+-						if (rare >= 11)
++						if (rare == 11)
+ 							black = new Microsoft.Xna.Framework.Color((byte)(180f * num18), (byte)(40f * num18), (byte)(255f * num18), a);
+ 
++						if (rare > 11)
++							for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++								if (rare == i)
++									black = ModRarity.GetRarity(i).RarityColor() * num18;
++
+ 						if (diff == 1)
+ 							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num18), (byte)((float)(int)mcColor.G * num18), (byte)((float)(int)mcColor.B * num18), a);
+ 
 @@ -12580,18 +_,30 @@
  					else if (array2[l]) {
  						black = (array3[l] ? new Microsoft.Xna.Framework.Color((byte)(190f * num18), (byte)(120f * num18), (byte)(120f * num18), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num18), (byte)(190f * num18), (byte)(120f * num18), a));

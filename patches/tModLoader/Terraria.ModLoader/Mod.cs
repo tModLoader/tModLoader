@@ -476,6 +476,53 @@ namespace Terraria.ModLoader
 		[Obsolete("Use ModContent.PrefixType<T> instead", true)]
 		public byte PrefixType<T>() where T : ModPrefix => ModContent.PrefixType<T>();
 
+		public void AddRarity(string name, ModRarity rarity)
+		{
+			if (!loading)
+				throw new Exception("AddRarity can only be called from Mod.Load or Mod.Autoload");
+
+			if (rarities.ContainsKey(name))
+				throw new Exception("You tried to add 2 ModRarities with the same name: " + name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddRarity with 2 rarities of the same name.");
+
+			rarity.mod = this;
+			rarity.Name = name;
+			rarity.Type = ModRarity.ReserveRarityID();
+
+			rarities[name] = rarity;
+			ModRarity.rarities.Add(rarity);
+			ContentInstance.Register(rarity);
+		}
+
+		/// <summary>
+		/// Gets the ModRarity instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModRarity with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public ModRarity GetRarity(string name) => rarities.TryGetValue(name, out var rarity) ? rarity : null;
+
+		/// <summary>
+		/// Same as the other GetRarity, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
+		public T GetRarity<T>() where T : ModRarity => ModContent.GetInstance<T>();
+
+		/// <summary>
+		/// Gets the internal ID / type of the ModRarity corresponding to the name. Returns 0 if no ModRarity with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public int RarityType(string name) => GetRarity(name)?.Type ?? 0;
+
+		/// <summary>
+		/// Same as the other RarityType, but assumes that the class name and internal name are the same.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		[Obsolete("Use ModContent.RarityType<T> instead", true)]
+		public int RarityType<T>() where T : ModRarity => ModContent.RarityType<T>();
+
 		/// <summary>
 		/// Adds a type of dust to your mod with the specified name. Create an instance of ModDust normally, preferably through the constructor of an overriding class. Leave the texture as an empty string to use the vanilla dust sprite sheet.
 		/// </summary>

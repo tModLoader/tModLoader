@@ -34,6 +34,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, GlobalItem> globalItems = new Dictionary<string, GlobalItem>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IDictionary<string, ModPrefix> prefixes = new Dictionary<string, ModPrefix>();
+		internal readonly IDictionary<string, ModRarity> rarities = new Dictionary<string, ModRarity>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();
@@ -259,6 +260,9 @@ namespace Terraria.ModLoader
 				else if (type.IsSubclassOf(typeof(ModPrefix))) {
 					AutoloadPrefix(type);
 				}
+				else if (type.IsSubclassOf(typeof(ModRarity))) {
+					AutoloadRarity(type);
+				}
 				else if (type.IsSubclassOf(typeof(ModDust))) {
 					AutoloadDust(type);
 				}
@@ -372,6 +376,15 @@ namespace Terraria.ModLoader
 			string name = type.Name;
 			if (prefix.Autoload(ref name)) {
 				AddPrefix(name, prefix);
+			}
+		}
+
+		private void AutoloadRarity(Type type) {
+			ModRarity rarity = (ModRarity)Activator.CreateInstance(type);
+			rarity.mod = this;
+			string name = type.Name;
+			if (rarity.Autoload(ref name)) {
+				AddRarity(name, rarity);
 			}
 		}
 

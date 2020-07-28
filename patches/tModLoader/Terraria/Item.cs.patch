@@ -194,16 +194,53 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)crit * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -980,6 +_,9 @@
+@@ -980,21 +_,37 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
 +				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
 +
- 			if ((double)num14 >= 1.2)
- 				rare += 2;
- 			else if ((double)num14 >= 1.05)
++			if (rare <= 11) {
+-			if ((double)num14 >= 1.2)
++				if ((double)num14 >= 1.2)
+-				rare += 2;
++					rare += 2;
+-			else if ((double)num14 >= 1.05)
++				else if ((double)num14 >= 1.05)
+-				rare++;
++					rare++;
+-			else if ((double)num14 <= 0.8)
++				else if ((double)num14 <= 0.8)
+-				rare -= 2;
++					rare -= 2;
+-			else if ((double)num14 <= 0.95)
++				else if ((double)num14 <= 0.95)
+-				rare--;
++					rare--;
++			}
++			else {
++				if ((double)num14 >= 1.2)
++					rare = ModRarity.GetRarity(rare).RarityPlusTwo();
++				else if ((double)num14 >= 1.05)
++					rare = ModRarity.GetRarity(rare).RarityPlusOne();
++				else if ((double)num14 <= 0.8)
++					rare = ModRarity.GetRarity(rare).RarityMinusTwo();
++				else if ((double)num14 <= 0.95)
++					rare = ModRarity.GetRarity(rare).RarityMinusOne();
++			}
+ 
+ 			if (rare > -11) {
+ 				if (rare < -1)
+ 					rare = -1;
+ 
+ 				if (rare > 11)
+-					rare = 11;
++					if (rare >= ModRarity.RarityCount)
++						rare = ModRarity.RarityCount - 1;
+ 			}
+ 
+ 			num14 *= num14;
 @@ -1024,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
