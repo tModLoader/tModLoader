@@ -21,9 +21,10 @@ namespace ExampleMod.Content.Items.Placeable
 			item.useTime = 7;
 			item.useStyle = ItemUseStyleID.Swing;
 			item.consumable = true;
-			item.createWall = WallType<Walls.ExampleWall>(); // create the wall type "ExampleWall" if you are not using your folder of origin for your wall, you must put the path to your custom wall
+			item.createWall = WallType<Walls.ExampleWall>(); // The ID of the wall that this item should place when used. ModContent.WallType<T>() method returns an integer ID of the wall provided to it through its generic type argument (the type in angle brackets).
+
 		}
-		// see ExampleItem.cs for how to make recipes
+		// See ExampleItem.cs for how to make recipes
 		public override void AddRecipes() {
 			CreateRecipe(4)
 				.AddIngredient<ExampleBlock>()
