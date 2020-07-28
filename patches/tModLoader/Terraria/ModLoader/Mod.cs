@@ -292,27 +292,11 @@ namespace Terraria.ModLoader
 		public ModRarity GetRarity(string name) => rarities.TryGetValue(name, out var rarity) ? rarity : null;
 
 		/// <summary>
-		/// Same as the other GetRarity, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetRarity<T>() where T : ModRarity => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the internal ID / type of the ModRarity corresponding to the name. Returns 0 if no ModRarity with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public int RarityType(string name) => GetRarity(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Same as the other RarityType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.RarityType<T> instead", true)]
-		public int RarityType<T>() where T : ModRarity => ModContent.RarityType<T>();
 
 		/// <summary>
 		/// Gets the ModDust of this mod corresponding to the given name. Returns null if no ModDust with the given name is found.
