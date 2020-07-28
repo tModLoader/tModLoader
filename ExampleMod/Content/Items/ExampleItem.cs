@@ -1,6 +1,6 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria; // Uses the Terraria file, which gives access to all vanilla functions.
+using Terraria.ID; // Gives access to all IDs of Terraria - for example, see line 19. ItemRarityID would not work without this using directive.
+using Terraria.ModLoader; // Allows the use of all functions made my tModLoader.
 
 namespace ExampleMod.Content.Items
 {
@@ -15,8 +15,8 @@ namespace ExampleMod.Content.Items
 			item.height = 20; //The item texture's height
 
 			item.maxStack = 999; //The item's max stack value
-			item.value = Item.buyPrice(silver: 1); //The value of the item in copper coins.
-			item.rare = ItemRarityID.Blue; //The rarity of the weapon.
+			item.value = Item.buyPrice(silver: 1); //The value of the item in copper/silver/gold/platinum coins
+			item.rare = ItemRarityID.Blue; // The rarity of the weapon.
 		}
 
 		public override void AddRecipes() {
