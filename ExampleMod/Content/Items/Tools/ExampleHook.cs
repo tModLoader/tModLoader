@@ -12,14 +12,14 @@ namespace ExampleMod.Content.Items.Tools
 	internal class ExampleHookItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Hook"); //the item's name in-game
+			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
 		}
 
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			item.CloneDefaults(ItemID.AmethystHook);
 			item.shootSpeed = 18f; // how quickly the hook is shot.
-			item.shoot = ProjectileType<ExampleHookProjectile>(); //shoot your hook's projectile
+			item.shoot = ProjectileType<ExampleHookProjectile>(); // Shoot your hook's projectile.
 		}
 
 		public override void AddRecipes() {
@@ -37,10 +37,10 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			projectile.CloneDefaults(ProjectileID.GemHookAmethyst); //copies the attributes of the Amethyst hook's projectile
+			projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
 		}
 
-		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook
+		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook.
 		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
 			for (int l = 0; l < 1000; l++) {
@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Items.Tools
 		//	}
 		//}
 
-		// Amethyst Hook is 300, Static Hook is 600
+		// Amethyst Hook is 300, Static Hook is 600.
 		public override float GrappleRange() {
 			return 500f;
 		}
@@ -102,7 +102,7 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		private Asset<Texture2D> chainTexture = GetTexture("ExampleMod/Content/Items/Tools/ExampleHookChain");
-		//update texture
+		// Update/ Change texture
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor) {
 			Vector2 playerCenter = Main.player[projectile.owner].MountedCenter;
 			Vector2 center = projectile.Center;
