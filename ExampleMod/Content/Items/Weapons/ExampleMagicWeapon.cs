@@ -32,11 +32,11 @@ namespace ExampleMod.Content.Items.Weapons
 			item.mana = 11; // This is how much mana the item uses.
 		}
 		public override void AddRecipes() {
-        CreateRecipe(51)
-            .AddIngredient(ItemID.FallenStar, 5)
-            .AddIngredient<ExampleItem>()
-            .AddTile<ExampleWorkbench>()
-            .Register();
+        CreateRecipe()
+			.AddIngredient(ItemID.FallenStar, 5)
+			.AddIngredient<ExampleItem>()
+			.AddTile<ExampleWorkbench>()
+			.Register();
 		}
 	}
 }
