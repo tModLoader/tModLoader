@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items
 			item.width = 26;
 			item.height = 26;
 			item.uniqueStack = true; // Make this item only stack one time.
-			item.rare = ItemRarityID.Quest; // Also known as -11
+			item.rare = ItemRarityID.Quest; // Sets the item's rarity. This exact line uses a special rarity for quest items.
 		}
 
 		public override bool IsQuestFish() => true; // Makes the item a quest fish
