@@ -71,27 +71,27 @@ namespace Terraria.ModLoader
 		public virtual Color RarityColor() => Color.White;
 
 		/// <summary>
-		/// Your modded rarity plus one. Used for prefixes. Returns +1 by default.
+		/// Your modded rarity plus one. Used for prefixes. Returns your modded rarity by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int RarityPlusOne() => GetRarity(Type).Type + 1;
+		public virtual int RarityPlusOne() => GetRarity(Type).Type;
 
 		/// <summary>
-		/// Your modded rarity plus two. Used for prefixes. Returns +2 by default.
+		/// Your modded rarity plus two. Used for prefixes. Returns your modded rarity by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int RarityPlusTwo() => GetRarity(Type).Type + 2;
+		public virtual int RarityPlusTwo() => GetRarity(Type).Type;
 
 		/// <summary>
-		/// Your modded rarity minus one. Used for prefixes. Returns -1 by default.
+		/// Your modded rarity minus one. Used for prefixes. Returns your modded rarity by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int RarityMinusOne() => GetRarity(Type).Type - 1;
+		public virtual int RarityMinusOne() => GetRarity(Type).Type;
 
 		/// <summary>
-		/// Your modded rarity minus two. Used for prefixes. Returns -2 by default.
+		/// Your modded rarity minus two. Used for prefixes. Returns your modded rarity by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual int RarityMinusTwo() => GetRarity(Type).Type - 2;
+		public virtual int RarityMinusTwo() => GetRarity(Type).Type;
 	}
 }
