@@ -11,18 +11,18 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
-		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}"; //copies the texture for the Ice Mirror, make your own texture if need be
+		public override string Texture => $"Terraria/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
 		public override void SetDefaults() {
-			item.CloneDefaults(ItemID.IceMirror); // copies the defaults from the Ice Mirror
-			item.color = Color.Violet; // sets the item color
+			item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
+			item.color = Color.Violet; // Sets the item color
 		}
 
 		// UseStyle is called each frame that the item is being actively used.
 		public override void UseStyle(Player player) {
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {
-				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // makes dust from the player's position and copies the hitbox of which the dust may spawn. change these arguments if needed
+				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
 			}
 
 			// This sets up the itemTime correctly.
