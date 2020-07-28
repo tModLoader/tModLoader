@@ -301,6 +301,11 @@ namespace Terraria.ModLoader
 		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
+		/// </summary>
+		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
 		/// </summary>
 		public static int DustType<T>() where T : ModDust => GetInstance<T>()?.Type ?? 0;
@@ -454,6 +459,7 @@ namespace Terraria.ModLoader
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
+			ModRarity.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
 			ModTileEntity.UnloadAll();

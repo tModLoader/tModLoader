@@ -1018,10 +1018,19 @@
  			if (num == -11)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(175f * num2), (byte)(0f * num2), mouseTextColor);
  
-@@ -14802,9 +_,12 @@
- 			if (num >= 11)
+@@ -14799,12 +_,20 @@
+ 			if (num == 10)
+ 				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(40f * num2), (byte)(100f * num2), mouseTextColor);
+ 
+-			if (num >= 11)
++			if (num == 11)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
  
++			if (num > 11)
++				for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++					if (num == i)
++						baseColor = ModRarity.GetRarity(i).RarityColor() * num2;
++
 -			if (HoverItem.expert || num == -12)
 +			if (HoverItem.expert || num == ItemRarityID.Expert)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num2), (byte)((float)DiscoG * num2), (byte)((float)DiscoB * num2), mouseTextColor);
@@ -1117,6 +1126,22 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "ItemName") {
  						if (rare == -11)
  							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
+ 
+@@ -15041,9 +_,14 @@
+ 						if (rare == 10)
+ 							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
+ 
+-						if (rare >= 11)
++						if (rare == 11)
+ 							black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
+ 
++						if (rare > 11)
++							for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++								if (rare == i)
++									black = ModRarity.GetRarity(i).RarityColor() * num4;
++
+ 						if (diff == 1)
+ 							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
 @@ -15052,95 +_,105 @@
  

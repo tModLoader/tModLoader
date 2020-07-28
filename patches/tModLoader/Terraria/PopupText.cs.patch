@@ -1,5 +1,14 @@
 --- src/Terraria/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
+@@ -1,6 +_,8 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.GameContent;
++using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
 @@ -184,7 +_,6 @@
  				Main.popupText[num2].position.X = newItem.position.X + (float)newItem.width * 0.5f - vector2.X * 0.5f;
  				Main.popupText[num2].position.Y = newItem.position.Y + (float)newItem.height * 0.25f - vector2.Y * 0.5f;
@@ -17,8 +26,17 @@
  				else if (newItem.rare == -11)
  					Main.popupText[num2].color = new Color(255, 175, 0);
  				else if (newItem.rare == -1)
-@@ -215,6 +_,7 @@
+@@ -211,10 +_,15 @@
+ 					Main.popupText[num2].color = new Color(5, 200, 255);
+ 				else if (newItem.rare == 10)
+ 					Main.popupText[num2].color = new Color(255, 40, 100);
+-				else if (newItem.rare >= 11)
++				else if (newItem.rare == 11)
  					Main.popupText[num2].color = new Color(180, 40, 255);
++				else if (newItem.rare > 11)
++					for (int i = ItemRarityID.Count; i < ModRarity.RarityCount; i++)
++						if (newItem.rare == i)
++							Main.popupText[num2].color = ModRarity.GetRarity(i).RarityColor();
  
  				Main.popupText[num2].expert = newItem.expert;
 +				Main.popupText[num2].master = newItem.master;
