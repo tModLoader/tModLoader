@@ -38,14 +38,14 @@ namespace ExampleMod.Content.Items.Weapons
 			item.shoot = ProjectileID.StarWrath; // ID of the projectiles the sword will shoot
 			item.shootSpeed = 8f; // Speed of the projectiles the sword will shoot
 		}
-
+		// This method gets called when firing your weapon/sword.
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			float ceilingLimit = target.Y;
 			if (ceilingLimit > player.Center.Y - 200f) {
 				ceilingLimit = player.Center.Y - 200f;
 			}
-
+			// Loop these functions 3 times.
 			for (int i = 0; i < 3; i++) {
 				position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
 				position.Y -= 100 * i;
