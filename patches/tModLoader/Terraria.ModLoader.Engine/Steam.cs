@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Engine
 
 		public static bool CheckSteamCloudStorageSufficient()
 		{
-			if (IsSteamApp)
+			if (SocialAPI.Cloud != null)
 				if (SteamRemoteStorage.GetQuota(out ulong pnTotalBytes, out ulong puAvailableBytes))
 					if (1f - puAvailableBytes / (float)pnTotalBytes > SteamCloudQuotaLimitRatio)
 						return false;
