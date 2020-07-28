@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Ammo
 			item.width = 8;
 			item.height = 8;
 			item.maxStack = 999;
-			item.consumable = true; // You need to set the item consumable so that the ammo would automatically consumed.
+			item.consumable = true; // This marks the item as consumable, making it automatically be consumed when it's used as ammunition, or something else, if possible.
 			item.knockBack = 1.5f;
 			item.value = 10;
 			item.rare = ItemRarityID.Green;
