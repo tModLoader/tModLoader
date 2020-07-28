@@ -14,17 +14,17 @@ namespace ExampleMod.Content.Items.Placeable
 			item.width = 20;
 			item.height = 20;
 			item.maxStack = 99;
-			item.value = 750;
+			item.value = 750; // reminder: each time you increase the value by one is adding 1 copper. (1 = 1 copper, 100 = 1 silver, 1000 = 1 gold, 10000 = 1 platinum)
 			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
 			item.autoReuse = true;
 			item.consumable = true;
-			item.createTile = TileType<Tiles.ExampleBar>();
+			item.createTile = TileType<Tiles.ExampleBar>(); // place this tile
 			item.placeStyle = 0;
 		}
-
+		// check ExampleItem.cs to see how recipes work
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleOre>(4)
