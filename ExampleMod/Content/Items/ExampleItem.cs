@@ -1,6 +1,6 @@
-using Terraria; // Uses the Terraria file, which gives access to all vanilla functions.
-using Terraria.ID; // Gives access to all IDs of Terraria - for example, see line 19. ItemRarityID would not work without this using directive.
-using Terraria.ModLoader; // Allows the use of all functions made my tModLoader.
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
