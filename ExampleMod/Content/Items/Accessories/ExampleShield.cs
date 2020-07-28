@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	[AutoloadEquip(EquipType.Shield)]
+	[AutoloadEquip(EquipType.Shield)] // load sprite as a shield when eqipped on the player
 	public class ExampleShield : ModItem
 	{
 		public override void SetStaticDefaults() {
@@ -26,8 +26,8 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.allDamage += 1f; // Increase player damage by 100%
-			player.endurance = 1f - (0.1f * (1f - player.endurance));
+			player.allDamage += 1f; // Increase ALL player damage by 100%
+			player.endurance = 1f - (0.1f * (1f - player.endurance));  // % damage reduction
 
 			ExampleDashPlayer mp = player.GetModPlayer<ExampleDashPlayer>();
 
