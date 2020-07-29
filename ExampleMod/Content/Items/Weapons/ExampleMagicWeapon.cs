@@ -1,3 +1,4 @@
+using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,7 +16,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.height = 40;
 			item.useTime = 20;
 			item.useAnimation = 20;
-			item.useStyle = ItemUseStyleID.HoldingOut; // Makes the player use a 'hold out' use style for the item.
+			item.useStyle = ItemUseStyleID.Shoot; // Makes the player use a 'Shoot' use style for the item.
 			item.noMelee = true; // Makes the item not do damage with it's melee hitbox.
 			item.knockBack = 6;
 			item.value = 10000;
