@@ -75,7 +75,11 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private void UpdateDownloadProgressAndTelemetry(float progress, long bytesReceived, long totalBytesNeeded) {
 			downloadTimer.Stop();
 			_progressBar.UpdateProgress(progress);
-			SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)(bytesReceived / downloadTimer.Elapsed.TotalSeconds), 2, true)}/s)";
+
+			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
+			double speed = elapsedSeconds > 0.0 ? bytesReceived / elapsedSeconds : 0.0;
+
+			SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 			downloadTimer.Start();
 		}
 

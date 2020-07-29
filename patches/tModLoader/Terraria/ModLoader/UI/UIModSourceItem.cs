@@ -213,10 +213,11 @@ namespace Terraria.ModLoader.UI
 					client.UploadProgressChanged += (s, e) => {
 						uploadTimer.Stop();
 
-						double speed = e.BytesSent / uploadTimer.Elapsed.TotalSeconds;
+						double elapsedSeconds = uploadTimer.Elapsed.TotalSeconds;
+						double speed = elapsedSeconds > 0.0 ? e.BytesSent / elapsedSeconds : 0.0;
 
 						Interface.progress.SubProgressText = $"{UIMemoryBar.SizeSuffix(e.BytesSent, 2)} / {UIMemoryBar.SizeSuffix(e.TotalBytesToSend, 2)}" + 
-						$"({ UIMemoryBar.SizeSuffix((long)(e.BytesSent / uploadTimer.Elapsed.TotalSeconds), 2, true)}/s)";
+						$"({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 
 						Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 						Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;

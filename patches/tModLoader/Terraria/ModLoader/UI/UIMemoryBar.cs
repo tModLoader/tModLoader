@@ -162,14 +162,8 @@ namespace Terraria.ModLoader.UI
 
 		private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-		internal static string SizeSuffix(long value, int decimalPlaces = 1, bool dontStackOverFlow = false) {
-			if (value < 0) { 
-				if (dontStackOverFlow) { // A StackOverflowException is sometimes caused by values being too large, passed from the mod upload/download telemetry
-					return "0.0 bytes";
-				}
-
-				return "-" + SizeSuffix(-value); 
-			}
+		internal static string SizeSuffix(long value, int decimalPlaces = 1) {
+			if (value < 0) { return "-" + SizeSuffix(-value); }
 			if (value == 0) { return "0.0 bytes"; }
 
 			// mag is 0 for bytes, 1 for KB, 2, for MB, etc.
