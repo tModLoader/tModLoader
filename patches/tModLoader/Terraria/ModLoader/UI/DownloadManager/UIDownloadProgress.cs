@@ -72,11 +72,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				.ContinueWith(HandleNextDownload, _cts.Token);
 		}
 
-		private void UpdateDownloadProgressAndTelemetry(float progress, float bytesRecieved, float totalBytesNeeded) {
+		private void UpdateDownloadProgressAndTelemetry(float progress, long bytesReceived, long totalBytesNeeded) {
 			downloadTimer.Stop();
 			_progressBar.UpdateProgress(progress);
-			SubProgressText = $"{bytesRecieved / 1000000:N2} MB / {totalBytesNeeded / 1000000:N2} MB " +
-							$"({bytesRecieved / 1000 / downloadTimer.Elapsed.TotalSeconds:N2} KB/s)";
+			SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)(bytesReceived / downloadTimer.Elapsed.TotalSeconds), 2, true)}/s)";
 			downloadTimer.Start();
 		}
 
