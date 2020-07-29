@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ namespace Terraria.ModLoader.UI
 		private readonly UIText _modName;
 		private readonly LocalMod _builtMod;
 		private bool _upgradePotentialChecked;
+		private Stopwatch uploadTimer;
 
 		public UIModSourceItem(string mod, LocalMod builtMod) {
 			_mod = mod;
@@ -204,10 +206,20 @@ namespace Terraria.ModLoader.UI
 					throw new WebException($"You need to specify an author in build.txt");
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
+				uploadTimer = new Stopwatch();
 				using (PatientWebClient client = new PatientWebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
 					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
-					client.UploadProgressChanged += (s, e) => Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
+					client.UploadProgressChanged += (s, e) => {
+						uploadTimer.Stop();
+
+						Interface.progress.SubProgressText = $"{(float)e.BytesSent / 1000000:N2} MB / {(float)e.TotalBytesToSend / 1000000:N2} MB " +
+							$"({e.BytesSent / 1000 / uploadTimer.Elapsed.TotalSeconds:N2} KB/s)";
+
+						Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
+						Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
+						uploadTimer.Start();
+					};
 					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
 
 					var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", System.Globalization.NumberFormatInfo.InvariantInfo);

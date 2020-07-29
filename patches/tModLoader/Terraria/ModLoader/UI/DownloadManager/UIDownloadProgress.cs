@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private DownloadFile _downloadFile;
 		private readonly List<DownloadFile> _downloads = new List<DownloadFile>();
 		internal CancellationTokenSource _cts;
+
+		private Stopwatch downloadTimer;
 
 		public override void OnActivate() {
 			base.OnActivate();
@@ -60,12 +63,21 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void DownloadMods() {
+			downloadTimer = new Stopwatch();
 			_downloadFile = _downloads.First();
 			if (_downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
 			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", _downloadFile.DisplayText);
-			_downloadFile.Download(_cts.Token, _progressBar.UpdateProgress)
+			_downloadFile.Download(_cts.Token, UpdateDownloadProgressAndTelemetry)
 				.ContinueWith(HandleNextDownload, _cts.Token);
+		}
+
+		private void UpdateDownloadProgressAndTelemetry(float progress, float bytesRecieved, float totalBytesNeeded) {
+			downloadTimer.Stop();
+			_progressBar.UpdateProgress(progress);
+			SubProgressText = $"{bytesRecieved / 1000000:N2} MB / {totalBytesNeeded / 1000000:N2} MB " +
+							$"({bytesRecieved / 1000 / downloadTimer.Elapsed.TotalSeconds:N2} KB/s)";
+			downloadTimer.Start();
 		}
 
 		private void HandleNextDownload(Task<DownloadFile> task) {
