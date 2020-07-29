@@ -41,7 +41,7 @@ namespace Terraria.ModLoader
 		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
 		internal const bool IsBeta = true;
-		public static readonly int beta = 1;
+		public static readonly int beta = 0;
 
 		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
 		public static readonly string versionedName = $"tModLoader v{version}" +

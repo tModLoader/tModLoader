@@ -21,6 +21,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		public override void OnActivate() {
 			base.OnActivate();
 
+			downloadTimer = new Stopwatch();
+
 			if (_downloads.Count <= 0) {
 				Logging.tML.Warn("UIDownloadProgress was activated but no downloads were present.");
 				Main.menuMode = gotoMenu;
@@ -31,6 +33,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			OnCancel += () => {
 				_cts.Cancel();
 			};
+			downloadTimer.Restart();
 			DownloadMods();
 		}
 
@@ -63,7 +66,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void DownloadMods() {
-			downloadTimer = new Stopwatch();
+			downloadTimer.Start();
 			_downloadFile = _downloads.First();
 			if (_downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
@@ -73,14 +76,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded) {
-			downloadTimer.Stop();
 			_progressBar.UpdateProgress(progress);
 
 			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
 			double speed = elapsedSeconds > 0.0 ? bytesReceived / elapsedSeconds : 0.0;
 
 			SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
-			downloadTimer.Start();
 		}
 
 		private void HandleNextDownload(Task<DownloadFile> task) {
@@ -92,6 +93,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				OnDownloadsComplete?.Invoke();
 				return;
 			}
+
+			downloadTimer.Restart();
 
 			DownloadMods();
 		}

@@ -180,7 +180,7 @@ namespace Terraria.ModLoader.UI
 							Content = modFile.GetBytes("icon.png")
 						});
 				}
-				if (bp.beta)
+				if (bp.beta && false)
 					throw new WebException(Language.GetTextValue("tModLoader.BetaModCantPublishError"));
 				if (bp.buildVersion != modFile.tModLoaderVersion)
 					throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
@@ -207,20 +207,18 @@ namespace Terraria.ModLoader.UI
 				ServicePointManager.Expect100Continue = false;
 				string url = "http://javid.ddns.net/tModLoader/publishmod.php";
 				uploadTimer = new Stopwatch();
+				uploadTimer.Start();
 				using (PatientWebClient client = new PatientWebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 					client.UploadProgressChanged += (s, e) => {
-						uploadTimer.Stop();
-
 						double elapsedSeconds = uploadTimer.Elapsed.TotalSeconds;
 						double speed = elapsedSeconds > 0.0 ? e.BytesSent / elapsedSeconds : 0.0;
 
-						Interface.progress.SubProgressText = $"{UIMemoryBar.SizeSuffix(e.BytesSent, 2)} / {UIMemoryBar.SizeSuffix(e.TotalBytesToSend, 2)}" + 
+						Interface.progress.SubProgressText = $"{UIMemoryBar.SizeSuffix(e.BytesSent, 2)} / {UIMemoryBar.SizeSuffix(e.TotalBytesToSend, 2)} " + 
 						$"({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 
-						Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 						Interface.progress.Progress = (float)e.BytesSent / e.TotalBytesToSend;
-						uploadTimer.Start();
 					};
 					client.UploadDataCompleted += (s, e) => PublishUploadDataComplete(s, e, modFile);
 
