@@ -1,8 +1,5 @@
 using Terraria.ID;
-using Terraria;
-using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace ExampleMod.Content.Items.Weapons
 {
