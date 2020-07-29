@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,11 +_,29 @@
+@@ -10,11 +_,25 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -28,10 +28,6 @@
 +
 +		/// <summary>Gets the global item. Use this overload when you dynamically add GlobalItems manually.</summary>
 +		public GlobalItem GetGlobalItem(Mod mod, string name) => ItemLoader.GetGlobalItem(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		[Obsolete("Use GetGlobalItem<T>() instead", true)]
-+		public T GetGlobalItem<T>(Mod mod) where T : GlobalItem => (T)GetGlobalItem(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global item. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
 +		public T GetGlobalItem<T>() where T : GlobalItem => (T)ModContent.GetInstance<T>().Instance(this);

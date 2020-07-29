@@ -2919,7 +2919,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,48 +_,69 @@
+@@ -35546,48 +_,68 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -3013,7 +3013,6 @@
 +			float flat = 0f;
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref add, ref mult, ref flat);
 +			int damage = (int)(sItem.damage * add * mult + 5E-06f + flat);
-+			CombinedHooks.GetWeaponDamage(this, sItem, ref damage);
 +			return Math.Max(0, damage);
  		}
  
@@ -3473,7 +3472,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,31 @@
+@@ -37381,7 +_,28 @@
  			return -1;
  		}
  
@@ -3484,9 +3483,6 @@
 +		private ModPlayer GetModPlayer(int? index) => index.HasValue ? modPlayers[index.Value] : null;
 +
 +		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
-+
-+		[Obsolete("Use GetModPlayer<T>() instead", true)]
-+		public T GetModPlayer<T>(Mod mod) where T : ModPlayer => (T)GetModPlayer(mod, typeof(T).Name);
 +
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +

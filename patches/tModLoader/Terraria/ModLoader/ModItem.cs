@@ -270,29 +270,6 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// Note that tModLoader follows vanilla principle of only allowing one effective damage class at a time.
-		/// This means that if you want your own custom damage class, all vanilla damage classes must be set to false.
-		/// Vanilla checks classes in this order: melee, ranged, magic, thrown, summon
-		/// So if you set both melee class and another class to true, only the melee damage will actually be used.
-		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">The damage.</param>
-		[Obsolete("Use ModifyWeaponDamage", true)]
-		public virtual void GetWeaponDamage(Player player, ref int damage) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
-		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field.</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		[Obsolete("Use ModifyWeaponDamage overload with the additional flat parameter")]
-		public virtual void ModifyWeaponDamage(Player player, ref float add, ref float mult) {
-		}
-
-		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05`</param>
@@ -338,10 +315,6 @@ namespace Terraria.ModLoader
 		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 		}
 		
-		[Obsolete("PickAmmo now has a weapon parameter that represents the item using the ammo.")]
-		public virtual void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-		}
-
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
 		/// If false is returned, the OnConsumeAmmo hook is never called.
@@ -648,14 +621,8 @@ namespace Terraria.ModLoader
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 		/// Reforging preserves modded data on the item. 
 		/// </summary>
-		public virtual bool NewPreReforge() {
+		public virtual bool PreReforge() {
 			return true;
-		}
-
-		// @todo: PreReforge marked obsolete until v0.11
-		[method: Obsolete("PreReforge now returns a bool to control whether the reforge takes place. For now, use NewPreReforge")]
-		public virtual void PreReforge() {
-			item.modItem?.NewPreReforge();
 		}
 
 		/// <summary>

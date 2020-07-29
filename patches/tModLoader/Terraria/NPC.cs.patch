@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -21,11 +_,26 @@
+@@ -21,11 +_,22 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -16,10 +16,6 @@
 +
 +		/// <summary>Gets the global NPC. Use this overload when you dynamically add GlobalNPC manually.</summary>
 +		public GlobalNPC GetGlobalNPC(Mod mod, string name) => NPCLoader.GetGlobalNPC(this, mod, name);
-+
-+		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		[Obsolete("Use GetGlobalNPC<T>() instead", true)]
-+		public T GetGlobalNPC<T>(Mod mod) where T : GlobalNPC => (T)GetGlobalNPC(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
 +		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)ModContent.GetInstance<T>().Instance(this);

@@ -425,25 +425,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponDamage(Item item, Player player, ref int damage);
-		[Obsolete]
-		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(g => g.GetWeaponDamage);
-		/// <summary>
-		/// Calls ModItem.GetWeaponDamage, then all GlobalItem.GetWeaponDamage hooks.
-		/// </summary>
-		[Obsolete]
-		public static void GetWeaponDamage(Item item, Player player, ref int damage) {
-			if (item.IsAir)
-				return;
-
-			item.modItem?.GetWeaponDamage(player, ref damage);
-
-			foreach (var g in HookGetWeaponDamage.arr)
-				g.Instance(item).GetWeaponDamage(item, player, ref damage);
-		}
-
-		private delegate void DelegateModifyWeaponDamageOld(Item item, Player player, ref float add, ref float mult);
-		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
@@ -453,11 +434,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult);
 			item.modItem?.ModifyWeaponDamage(player, ref add, ref mult, ref flat);
 
-			foreach (var g in HookModifyWeaponDamageOld.arr)
-				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult);
 			foreach (var g in HookModifyWeaponDamage.arr)
 				g.Instance(item).ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
 		}
@@ -500,9 +478,6 @@ namespace Terraria.ModLoader
 			return item.modItem == null || !item.modItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
-		private delegate void DelegateOldPickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback); // deprecated
-		private static HookList HookOldPickAmmo = AddHook<DelegateOldPickAmmo>(g => g.PickAmmo); // deprecated
-
 		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 		/// <summary>
@@ -510,13 +485,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 			ammo.modItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
-			ammo.modItem?.PickAmmo(player, ref type, ref speed, ref damage, ref knockback); // deprecated
 
 			foreach (var g in HookPickAmmo.arr) {
 				g.Instance(ammo).PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
-			}
-			foreach (var g in HookOldPickAmmo.arr) {
-				g.Instance(ammo).PickAmmo(ammo, player, ref type, ref speed, ref damage, ref knockback); // deprecated
 			}
 		}
 
@@ -1108,14 +1079,16 @@ namespace Terraria.ModLoader
 		}
 
 		// @todo: PreReforge marked obsolete until v0.11
-		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.NewPreReforge);
+		private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.PreReforge);
 		/// <summary>
 		/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 		/// </summary>
 		public static bool PreReforge(Item item) {
-			bool b = item.modItem?.NewPreReforge() ?? true;
+			bool b = item.modItem?.PreReforge() ?? true;
+
 			foreach (var g in HookPreReforge.arr)
-				b &= g.Instance(item).NewPreReforge(item);
+				b &= g.Instance(item).PreReforge(item);
+
 			return b;
 		}
 

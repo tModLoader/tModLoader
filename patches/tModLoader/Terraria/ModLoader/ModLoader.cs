@@ -52,16 +52,6 @@ namespace Terraria.ModLoader
 													(branchName.Length == 0 ? "" : $"-{branchName.ToLower()}") +
 													(beta == 0 ? "" : $"-beta{beta}");
 
-		[Obsolete("Use Platform.IsWindows")]
-		public static readonly bool windows = Platform.IsWindows;
-		[Obsolete("Use Platform.IsLinux")]
-		public static readonly bool linux = Platform.IsLinux;
-		[Obsolete("Use Platform.IsOSX")]
-		public static readonly bool mac = Platform.IsOSX;
-
-		[Obsolete("Use CompressedPlatformRepresentation instead")]
-		public static readonly string compressedPlatformRepresentation = Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m");
-
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (GoGVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
 
 		public static string ModPath => ModOrganizer.modPath;
@@ -103,15 +93,6 @@ namespace Terraria.ModLoader
 		}
 
 		public static Mod GetMod(int index) => index >= 0 && index < Mods.Length ? Mods[index] : null;
-
-		[Obsolete("Use ModLoader.Mods", true)]
-		public static Mod[] LoadedMods => Mods;
-
-		[Obsolete("Use ModLoader.Mods.Length", true)]
-		public static int ModCount => Mods.Length;
-
-		[Obsolete("Use ModLoader.Mods.Select(m => m.Name)", true)]
-		public static string[] GetLoadedMods() => Mods.Reverse().Select(m => m.Name).ToArray();
 
 		internal static void EngineInit()
 		{

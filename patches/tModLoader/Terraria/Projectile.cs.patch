@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
-@@ -27,6 +_,20 @@
+@@ -27,6 +_,16 @@
  {
  	public class Projectile : Entity
  	{
@@ -18,10 +18,6 @@
 +
 +		/// <summary>Gets the global projectile. Use this overload when you dynamically add GlobalProjectile manually.</summary>
 +		public GlobalProjectile GetGlobalProjectile(Mod mod, string name) => ProjectileLoader.GetGlobalProjectile(this, mod, name).Instance(this);
-+
-+		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		[Obsolete("Use GetGlobalProjectile<T>() instead", true)]
-+		public T GetGlobalProjectile<T>(Mod mod) where T : GlobalProjectile => (T)GetGlobalProjectile(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global projectile. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
 +		public T GetGlobalProjectile<T>() where T : GlobalProjectile => (T)ModContent.GetInstance<T>().Instance(this);

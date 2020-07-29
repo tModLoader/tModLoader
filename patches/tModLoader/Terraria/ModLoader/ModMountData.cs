@@ -93,10 +93,6 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults() {
 		}
 
-		[Obsolete("JumpHeight now has a Player parameter.")]
-		public virtual void JumpHeight(ref int jumpHeight, float xVelocity) {
-		}
-
 		/// <summary>
 		/// Allows you to modify the mount's jump height based on its state.
 		/// </summary>
@@ -104,10 +100,6 @@ namespace Terraria.ModLoader
 		/// <param name="jumpHeight"></param>
 		/// <param name="xVelocity"></param>
 		public virtual void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity) {
-		}
-
-		[Obsolete("JumpSpeed now has a Player parameter.")]
-		public virtual void JumpSpeed(ref float jumpSeed, float xVelocity) {
 		}
 
 		/// <summary>
