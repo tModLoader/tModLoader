@@ -209,7 +209,6 @@ namespace Terraria.ModLoader.UI
 				uploadTimer = new Stopwatch();
 				using (PatientWebClient client = new PatientWebClient()) {
 					ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
-					Interface.progress.Show(displayText: $"Uploading: {modFile.name}", gotoMenu: Interface.modSourcesID, cancel: client.CancelAsync);
 					client.UploadProgressChanged += (s, e) => {
 						uploadTimer.Stop();
 

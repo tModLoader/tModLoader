@@ -68,11 +68,11 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			if (_downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
 			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", _downloadFile.DisplayText);
-			_downloadFile.Download(_cts.Token, UpdateDownloadProgressAndTelemetry)
+			_downloadFile.Download(_cts.Token, UpdateDownloadProgress)
 				.ContinueWith(HandleNextDownload, _cts.Token);
 		}
 
-		private void UpdateDownloadProgressAndTelemetry(float progress, long bytesReceived, long totalBytesNeeded) {
+		private void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded) {
 			downloadTimer.Stop();
 			_progressBar.UpdateProgress(progress);
 
