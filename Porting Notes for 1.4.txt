@@ -15,36 +15,3 @@
  						else
  							Main.mouseItem.Prefix(-1);
  						Main.mouseItem.position = player.Center - new Vector2(Main.mouseItem.width, Main.mouseItem.headSlot) / 2f;
-
-//Netplay
-@@ -456,16 +696,21 @@
- 				}
- 
- 				int num3 = 0;
-+				if (NetMessage.buffer.Any(b => b.checkBytes) || Clients.Any(c => c.PendingTermination)) {
-+					InvokeOnMainThread(() => {
-+						for (int k = 0; k < 256; k++) {
-+							if (NetMessage.buffer[k].checkBytes)
-+								NetMessage.CheckBytes(k);
-+
-+							if (Clients[k].PendingTermination) {
-+								Clients[k].Reset();
-+								NetMessage.SyncDisconnectedPlayer(k);
-+							}
-+						}
-+					});
-+				}
-+
- 				for (int k = 0; k < 256; k++) {
--					if (NetMessage.buffer[k].checkBytes)
--						NetMessage.CheckBytes(k);
--
--					if (Clients[k].PendingTermination) {
--						Clients[k].Reset();
--						NetMessage.SyncDisconnectedPlayer(k);
--						continue;
--					}
--
- 					if (Clients[k].IsConnected()) {
- 						if (!Clients[k].IsActive)
- 							Clients[k].State = 0;
