@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an example magic weapon");
 		}
+
 		public override void SetDefaults() {
 			item.damage = 25;
 			item.magic = true; // Makes the damage register as magic. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type.
@@ -28,6 +29,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.crit = 32; // The percent chance at hitting an enemy with a crit, plus the default amount of 4.
 			item.mana = 11; // This is how much mana the item uses.
 		}
+
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.FallenStar, 5)
