@@ -44,14 +44,61 @@
  						}
  
  						Recipe.FindRecipes();
-@@ -712,20 +_,24 @@
- 			if (inv[slot].type <= 0)
- 				return;
+@@ -683,28 +_,34 @@
+ 		}
  
+ 		private static bool LeftClick_SellOrTrash(Item[] inv, int context, int slot) {
+-			bool flag = false;
+-			bool result = false;
+-			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
+-				if ((uint)context <= 4u || context == 7)
+-					flag = true;
+-
+-				if (ControlInUse && flag) {
+-					SellOrTrash(inv, context, slot);
+-					result = true;
+-				}
++			Player player = Main.player[Main.myPlayer];
 +			if (PlayerHooks.ShiftClickSlot(player, inv, context, slot)) {
-+			}
--			if (Main.npcShop > 0 && !inv[slot].favorited) {
-+			else if (Main.npcShop > 0 && !inv[slot].favorited) {
++				return true;
+ 			}
+ 			else {
++				bool flag = false;
++				bool result = false;
++				if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
++					if ((uint)context <= 4u || context == 7)
++						flag = true;
++
++					if (ControlInUse && flag) {
++						SellOrTrash(inv, context, slot);
++						result = true;
++					}
++				}
++				else {
+-				if ((uint)context <= 4u)
++					if ((uint)context <= 4u)
+-					flag = (Main.player[Main.myPlayer].chest == -1);
++						flag = (Main.player[Main.myPlayer].chest == -1);
+ 
+-				if (ShiftInUse && flag) {
++					if (ShiftInUse && flag) {
+-					SellOrTrash(inv, context, slot);
++						SellOrTrash(inv, context, slot);
+-					result = true;
++						result = true;
++					}
+ 				}
++
++				return result;
+ 			}
+-
+-			return result;
+ 		}
+ 
+ 		private static void SellOrTrash(Item[] inv, int context, int slot) {
+@@ -714,18 +_,20 @@
+ 
+ 			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
 +				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerHooks.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
