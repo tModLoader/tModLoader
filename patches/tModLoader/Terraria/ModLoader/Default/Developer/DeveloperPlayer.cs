@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Terraria.ModLoader.Default.Developer.Jofairden;
 
 namespace Terraria.ModLoader.Default.Developer
 {
