@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ItemLoader.VerifyGlobalItem(this);
 
-			Mod.globalItems[Name] = this;
+			ModTypeLookup<GlobalItem>.Register(this);
 			index = ItemLoader.globalItems.Count;
 			ItemLoader.globalIndexes[Mod.Name + ':' + Name] = ItemLoader.globalItems.Count;
 			if (ItemLoader.globalIndexesByType.ContainsKey(GetType())) {

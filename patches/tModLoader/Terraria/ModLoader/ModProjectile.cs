@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -62,15 +63,21 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			if (Mod.projectiles.ContainsKey(projectile.Name))
-				throw new Exception("You tried to add 2 ModProjectile with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddProjectile with 2 projectiles of the same name.");
+			ModTypeLookup<ModProjectile>.Register(this);
 
 			projectile.type = ProjectileLoader.ReserveProjectileID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
 
-			Mod.projectiles[Name] = this;
 			ProjectileLoader.projectiles.Add(this);
 			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			ProjectileLoader.SetDefaults(projectile, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+
+			ProjectileID.Search.Add(Name, projectile.type);
 		}
 
 		/// <summary>

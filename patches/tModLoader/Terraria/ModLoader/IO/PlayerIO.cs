@@ -106,9 +106,7 @@ namespace Terraria.ModLoader.IO
 				return;
 
 			// no mystery hair dye at this stage
-			ModContent.SplitName(hairDyeItemName, out string modName, out string itemName);
-			var modItem = ModLoader.GetMod(modName)?.GetItem(itemName);
-			if (modItem != null)
+			if (ModContent.TryGet<ModItem>(hairDyeItemName, out var modItem))
 				player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.item.type);
 		}
 

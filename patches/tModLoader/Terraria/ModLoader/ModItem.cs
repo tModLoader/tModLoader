@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -47,8 +48,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			if (Mod.items.ContainsKey(Name))
-				throw new Exception(Language.GetTextValue("tModLoader.LoadError2ModItemSameName", Name));
+			ModTypeLookup<ModItem>.Register(this);
 
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemName.{Name}");
 			Tooltip = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ItemTooltip.{Name}", true);
@@ -56,7 +56,6 @@ namespace Terraria.ModLoader
 			item.ResetStats(ItemLoader.ReserveItemID());
 			item.modItem = this;
 
-			Mod.items[Name] = this;
 			ItemLoader.items.Add(this);
 			ContentInstance.Register(this);
 
@@ -66,6 +65,13 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, Texture + '_' + equip);
 				}
 			}
+		}
+
+		public override void SetupContent() {
+			ItemLoader.SetDefaults(item, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+			ItemID.Search.Add(Name, item.type);
 		}
 
 		/// <summary>

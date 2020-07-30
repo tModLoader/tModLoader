@@ -84,8 +84,10 @@
 		"LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
 		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {0}. Perhaps it should be in Fonts/ or Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
-		"LoadErrorAddItemOnlyInLoad": "AddItem can only be called from Mod.Load or Mod.Autoload",
-		"LoadError2ModItemSameName": "You tried to add 2 ModItems with the same name: {0}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddItem with 2 items of the same name.",
+
+		"LoadErrorNotLoading": "Mod.AddContent can only be called during loading",
+		"LoadErrorDuplicateName": "Cannot add two {0} with the same name: {1}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddContent with 2 {0} of the same name.",
+
 		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",

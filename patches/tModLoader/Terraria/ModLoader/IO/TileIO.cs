@@ -463,34 +463,19 @@ namespace Terraria.ModLoader.IO
 				int count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.headSlots[slot] = mod?.GetItem(name).item.headSlot ?? 0;
+					tables.headSlots[reader.ReadUInt16()] = ModContent.TryGet<ModItem>(reader.ReadString(), reader.ReadString(), out var item) ? item.item.headSlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.bodySlots[slot] = mod?.GetItem(name).item.bodySlot ?? 0;
+					tables.bodySlots[reader.ReadUInt16()] = ModContent.TryGet<ModItem>(reader.ReadString(), reader.ReadString(), out var item) ? item.item.bodySlot : 0;
 				}
 
 				count = reader.ReadUInt16();
 
 				for (int k = 0; k < count; k++) {
-					int slot = reader.ReadUInt16();
-					string modName = reader.ReadString();
-					string name = reader.ReadString();
-					Mod mod = ModLoader.GetMod(modName);
-
-					tables.legSlots[slot] = mod?.GetItem(name).item.legSlot ?? 0;
+					tables.legSlots[reader.ReadUInt16()] = ModContent.TryGet<ModItem>(reader.ReadString(), reader.ReadString(), out var item) ? item.item.legSlot : 0;
 				}
 
 				ReadContainerData(reader, tables);

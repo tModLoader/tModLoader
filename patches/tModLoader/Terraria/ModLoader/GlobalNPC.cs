@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
-			Mod.globalNPCs[Name] = this;
+			ModTypeLookup<GlobalNPC>.Register(this);
 			index = NPCLoader.globalNPCs.Count;
 			NPCLoader.globalIndexes[Mod.Name + ':' + Name] = NPCLoader.globalNPCs.Count;
 			if (NPCLoader.globalIndexesByType.ContainsKey(GetType())) {

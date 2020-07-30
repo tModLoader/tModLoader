@@ -118,16 +118,13 @@ namespace Terraria.ModLoader.IO
 
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				var mod = ModLoader.GetMod(tag.GetString("mod"));
-				var globalItem = mod?.GetGlobalItem(tag.GetString("name"));
-				if (globalItem != null) {
+				if (ModContent.TryGet<GlobalItem>(tag.GetString("mod"), tag.GetString("name"), out var globalItem)) {
 					var globalItemInstance = globalItem.Instance(item);
 					try {
 						globalItemInstance.Load(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(mod,
-							"Error in reading custom player data for " + mod.Name, e);
+						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
 					}
 				}
 				else {

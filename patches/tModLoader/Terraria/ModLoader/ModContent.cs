@@ -32,6 +32,12 @@ namespace Terraria.ModLoader
 	{
 		public static T GetInstance<T>() where T : class => ContentInstance<T>.Instance;
 
+		public static T Get<T>(string fullname) where T : IModType => ModTypeLookup<T>.Get(fullname);
+		public static T Get<T>(string modName, string name) where T : IModType => ModTypeLookup<T>.Get($"{modName}/{name}");
+
+		public static bool TryGet<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
+		public static bool TryGet<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue($"{modName}/{name}", out value);
+
 		public static void SplitName(string name, out string domain, out string subName) {
 			int slash = name.IndexOf('/');
 			if (slash < 0)
