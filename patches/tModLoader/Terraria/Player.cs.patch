@@ -1049,7 +1049,7 @@
 +			//equippedAnyTileRangeAcc = false;
 +		}
 +		public void VanillaUpdateAccessory(int i, Item item, bool hideVisual, ref bool flag, ref bool flag2, ref bool flag3) {
-+			// for (int l = 3; l < 8 + this.extraAccessorySlots; l++)
++			// for (int l = 3; l < 10 + extraAccessorySlots; l++)
 +			// fake array and loop to keep patches small
 +			var armor = new[] { item }; int l = 0;
 +			{
@@ -1114,7 +1114,7 @@
 +			bool flag = false;
 +			bool flag2 = false;
 +			bool flag3 = false;
-+			for (int l = 3; l < 8 + extraAccessorySlots; l++) {
++			for (int l = 3; l < 10 + extraAccessorySlots; l++) {
 +				VanillaUpdateAccessory(i, armor[l], hideVisibleAccessory[l], ref flag, ref flag2, ref flag3);
  			}
  
