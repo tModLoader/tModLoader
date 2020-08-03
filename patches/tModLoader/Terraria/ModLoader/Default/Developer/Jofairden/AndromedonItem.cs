@@ -16,6 +16,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		private static int? ShaderId;
 
+		public override string Texture => $"ModLoader/Developer.Jofairden.{SetName}_{EquipTypeSuffix}";
+
 		public sealed override void SetStaticDefaults() {
 			DisplayName.SetDefault($"Andromedon {EquipTypeSuffix}");
 			Tooltip.SetDefault("The power of the Andromedon flows within you");
@@ -35,59 +37,59 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);
 		}
 
-		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
+		public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
-							  (int)(drawInfo.position.X + drawPlayer.width / 2f - drawPlayer.bodyFrame.Width / 2f - Main.screenPosition.X),
-							  (int)(drawInfo.position.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f - Main.screenPosition.Y))
+							  (int)(drawInfo.Position.X + drawPlayer.width / 2f - drawPlayer.bodyFrame.Width / 2f - Main.screenPosition.X),
+							  (int)(drawInfo.Position.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f - Main.screenPosition.Y))
 						  + drawPlayer.headPosition
-						  + drawInfo.headOrigin;
+						  + drawInfo.headVect;
 
 			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.bodyFrame,
-				Origin = drawInfo.headOrigin,
+				Origin = drawInfo.headVect,
 				Rotation = drawPlayer.headRotation,
 				Texture = texture
 			};
 		}
 
-		public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
+		public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
-							  (int)(drawInfo.position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2f + drawPlayer.width / 2f),
-							  (int)(drawInfo.position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f))
+							  (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2f + drawPlayer.width / 2f),
+							  (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.bodyFrame.Height + 4f))
 						  + drawPlayer.bodyPosition
-						  + drawInfo.bodyOrigin;
+						  + drawInfo.bodyVect;
 
 			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.bodyFrame,
-				Origin = drawInfo.bodyOrigin,
+				Origin = drawInfo.bodyVect,
 				Rotation = drawPlayer.bodyRotation,
 				Texture = texture
 			};
 		}
 
-		public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawInfo drawInfo, Texture2D texture) {
+		public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
 			Player drawPlayer = drawInfo.drawPlayer;
 			Vector2 pos = new Vector2(
-							  (int)(drawInfo.position.X - Main.screenPosition.X - drawPlayer.legFrame.Width / 2f + drawPlayer.width / 2f),
-							  (int)(drawInfo.position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.legFrame.Height + 4f))
+							  (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.legFrame.Width / 2f + drawPlayer.width / 2f),
+							  (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawPlayer.height - drawPlayer.legFrame.Height + 4f))
 						  + drawPlayer.legPosition
-						  + drawInfo.legOrigin;
+						  + drawInfo.legVect;
 
 			return new DrawDataInfo {
 				Position = pos,
 				Frame = drawPlayer.legFrame,
-				Origin = drawInfo.legOrigin,
+				Origin = drawInfo.legVect,
 				Rotation = drawPlayer.legRotation,
 				Texture = texture
 			};
 		}
 
-		public static PlayerLayer CreateShaderLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc) {
-			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) => {
+		public static PlayerLayer CreateShaderLayer(string name, PlayerLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
+			return new LegacyPlayerLayer(ModLoader.GetMod("ModLoaderMod"), name, parent, (ref PlayerDrawSet drawInfo) => {
 				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
@@ -129,8 +131,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			});
 		}
 
-		public static PlayerLayer CreateGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawInfo, DrawDataInfo> getDataFunc) {
-			return new PlayerLayer("ModLoaderMod", name, parent, (drawInfo) => {
+		public static PlayerLayer CreateGlowLayer(string name, PlayerLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
+			return new LegacyPlayerLayer(ModLoader.GetMod("ModLoaderMod"), name, parent, (ref PlayerDrawSet drawInfo) => {
 				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
@@ -164,7 +166,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 					data.shader = ShaderId.Value;
 				}
 
-				throw new NotImplementedException(); //TODO: Reimplement //Main.playerDrawData.Add(data);
+				drawInfo.DrawDataCache.Add(data);
 			});
 		}
 	}

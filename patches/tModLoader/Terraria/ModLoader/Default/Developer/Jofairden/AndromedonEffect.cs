@@ -70,54 +70,43 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			_lastLife = player.statLife;
 		}
 
-		public void ModifyDrawLayers(Mod mod, Player player, List<PlayerLayer> layers) {
+		public IEnumerable<PlayerLayer> AddDrawLayers(Mod mod, Player player) {
+			if (LayerStrength < 0f) {
+				yield break;
+			}
+
 			_headSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Head}", EquipType.Head);
 			_bodySlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
 			_legSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
 
-			if (LayerStrength >= 0f) {
-				int i;
+			static PlayerLayer Layer(PlayerLayer layer, float depth) {
+				layer.visible = true;
+				layer.depth = depth;
 
-				if (player.head == _headSlot) {
-					PowerRanger_Head.GlowLayer.visible = true;
+				return layer;
+			}
 
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Head"));
-					if (i != -1) {
-						if (ShaderStrength > 0f) {
-							PowerRanger_Head.ShaderLayer.visible = true;
-							layers.Insert(i - 1, PowerRanger_Head.ShaderLayer);
-						}
-						layers.Insert(i + 2, PowerRanger_Head.GlowLayer);
-					}
+			if (player.head == _headSlot) {
+				yield return Layer(PowerRanger_Head.GlowLayer, PlayerLayer.Head.depth + 0.5f);
+
+				if (ShaderStrength > 0f) {
+					yield return Layer(PowerRanger_Head.ShaderLayer, PlayerLayer.Head.depth - 0.5f);
 				}
+			}
 
-				if (player.body == _bodySlot) {
-					if (ShaderStrength > 0f) {
-						PowerRanger_Body.ShaderLayer.visible = true;
-						i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Body"));
-						if (i != -1) {
-							layers.Insert(i - 1, PowerRanger_Body.ShaderLayer);
-						}
-					}
+			if (player.body == _bodySlot) {
+				yield return Layer(PowerRanger_Body.GlowLayer, PlayerLayer.Torso.depth + 0.5f);
 
-					PowerRanger_Body.GlowLayer.visible = true;
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Arms"));
-					if (i != -1) {
-						layers.Insert(i + 1, PowerRanger_Body.GlowLayer);
-					}
+				if (ShaderStrength > 0f) {
+					yield return Layer(PowerRanger_Body.ShaderLayer, PlayerLayer.Torso.depth - 0.5f);
 				}
+			}
 
-				if (player.legs == _legSlot) {
-					PowerRanger_Legs.GlowLayer.visible = true;
+			if (player.legs == _legSlot) {
+				yield return Layer(PowerRanger_Legs.GlowLayer, PlayerLayer.Leggings.depth + 0.5f);
 
-					i = layers.FindIndex(x => x.mod.Equals("Terraria") && x.Name.Equals("Legs"));
-					if (i != -1) {
-						if (ShaderStrength > 0f) {
-							PowerRanger_Legs.ShaderLayer.visible = true;
-							layers.Insert(i - 1, PowerRanger_Legs.ShaderLayer);
-						}
-						layers.Insert(i + 2, PowerRanger_Legs.GlowLayer);
-					}
+				if (ShaderStrength > 0f) {
+					yield return Layer(PowerRanger_Legs.ShaderLayer, PlayerLayer.Leggings.depth - 0.5f);
 				}
 			}
 		}

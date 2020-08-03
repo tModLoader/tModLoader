@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ModLoader.IO;
@@ -733,21 +734,27 @@ namespace Terraria.ModLoader
 		/// <param name="b"></param>
 		/// <param name="a"></param>
 		/// <param name="fullBright"></param>
-		public virtual void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+		public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
 		}
 
 		/// <summary>
 		/// Allows you to modify the drawing parameters of the player before drawing begins.
 		/// </summary>
 		/// <param name="drawInfo"></param>
-		public virtual void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
+		/// Allows you to add your own player draw layers.
+		/// Return an enumerable with the layers you want to add.
+		/// </summary>
+		public virtual IEnumerable<PlayerLayer> AddDrawLayers() => Enumerable.Empty<PlayerLayer>();
+
+		/// <summary>
+		/// Allows you to modify the layers that are about to be drawn, either their depth, or whether or not they'll be visible. Note that there can be nested layers.
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(List<PlayerLayer> layers) {
+		public virtual void ModifyDrawLayers(IReadOnlyDictionary<string, List<PlayerLayer>> layers) {
 		}
 
 		/// <summary>

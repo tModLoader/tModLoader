@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
@@ -12,17 +13,19 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			item.Size = new Vector2(34, 22);
 		}
 
-		private static Texture2D _glowTexture;
-		private static Texture2D _shaderTexture;
+		private static Asset<Texture2D> _glowTexture;
+		private static Asset<Texture2D> _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonBodyGlow", PlayerLayer.Body, drawInfo => {
-			_glowTexture ??= ModLoaderMod.ReadTexture($"Developer.PowerRanger_Body_Body_Glow");
-			return GetBodyDrawDataInfo(drawInfo, _glowTexture);
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonBodyGlow", PlayerLayer.Torso, drawInfo => {
+			_glowTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Body_Body_Glow");
+
+			return GetBodyDrawDataInfo(drawInfo, _glowTexture.Value);
 		});
 
-		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonBodyShader", PlayerLayer.Body, drawInfo => {
-			_shaderTexture ??= ModLoaderMod.ReadTexture($"Developer.PowerRanger_Body_Body_Shader");
-			return GetBodyDrawDataInfo(drawInfo, _shaderTexture);
+		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonBodyShader", PlayerLayer.Torso, drawInfo => {
+			_shaderTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Body_Body_Shader");
+
+			return GetBodyDrawDataInfo(drawInfo, _shaderTexture.Value);
 		});
 	}
 }

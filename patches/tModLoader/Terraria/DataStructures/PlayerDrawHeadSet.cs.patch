@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/DataStructures/PlayerDrawHeadSet.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadSet.cs
+@@ -100,7 +_,7 @@
+ 			helmetOffset = drawPlayer.GetHelmetDrawOffset();
+ 			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out bool _, out helmetIsOverFullHair);
+ 			helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
+-			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 266 && drawPlayer.head != 28);
++			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head != 28);
+ 		}
+ 	}
+ }
