@@ -1107,7 +1107,7 @@
 +				VanillaUpdateInventory(inventory[j]);
 +			}
 +
-+			for (int k = 0; k < 8 + extraAccessorySlots; k++) {
++			for (int k = 0; k < 10 + extraAccessorySlots; k++) {
 +				VanillaUpdateEquip(armor[k]);
 +			}
 +
