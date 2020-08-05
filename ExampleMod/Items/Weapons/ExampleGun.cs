@@ -16,7 +16,7 @@ namespace ExampleMod.Items.Weapons
 			item.ranged = true; // sets the damage type to ranged
 			item.width = 40; // hitbox width of the item
 			item.height = 20; // hitbox height of the item
-			item.useTime = 20; //how fast the item can be used (measured in ticks)
+			item.useTime = 20; // The item's use time in ticks (60 ticks == 1 second.)
 			item.useAnimation = 20; // how long it takes for the item to be used (measured in ticks)
 			item.useStyle = ItemUseStyleID.HoldingOut; // how you use the item (swinging, holding out, etc)
 			item.noMelee = true; //so the item's animation doesn't do damage
