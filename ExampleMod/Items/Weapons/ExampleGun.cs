@@ -17,7 +17,7 @@ namespace ExampleMod.Items.Weapons
 			item.width = 40; // hitbox width of the item
 			item.height = 20; // hitbox height of the item
 			item.useTime = 20; // The item's use time in ticks (60 ticks == 1 second.)
-			item.useAnimation = 20; // how long it takes for the item to be used (measured in ticks)
+			item.useAnimation = 20; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			item.useStyle = ItemUseStyleID.HoldingOut; // how you use the item (swinging, holding out, etc)
 			item.noMelee = true; //so the item's animation doesn't do damage
 			item.knockBack = 4; // how far back enemies will be pushed
