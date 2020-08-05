@@ -1,4 +1,13 @@
-msbuild tModLoader.sln /restore /p:Configuration=WindowsDebug
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=WindowsServerDebug
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
+@echo off
+
+chdir "../src/tModLoader/Terraria"
+
+echo Building WindowsDebug (1/2)
+dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+
+echo Building WindowsServerDebug (2/2)
+dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
