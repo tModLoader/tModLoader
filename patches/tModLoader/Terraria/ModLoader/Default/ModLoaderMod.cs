@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Default.Developer;
+using Terraria.ModLoader.Default.Developer.Jofairden;
 using Terraria.ModLoader.Default.Patreon;
 
 namespace Terraria.ModLoader.Default

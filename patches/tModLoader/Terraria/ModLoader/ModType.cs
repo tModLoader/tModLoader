@@ -17,15 +17,15 @@
 
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
-			Load();
+
 			Register();
+			Load();
 		}
 
-		public virtual void Load(){}
+		public virtual void Load() { }
 
-		public virtual void Unload(){}
+		public virtual void Unload() { }
 
 		protected abstract void Register();
 	}
-
 }

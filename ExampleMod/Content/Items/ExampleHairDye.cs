@@ -1,11 +1,25 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.GameContent.Dyes;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
-	internal class ExampleHairDye : ModItem
+	public class ExampleHairDye : ModItem
 	{
+		public override void Load() {
+			//Avoid loading assets on dedicated servers. They don't use graphics cards.
+			if (!Main.dedServ) {
+				//The following code creates a hair color-returning delegate (anonymous method), and associates it with this item's type Id.
+				GameShaders.Hair.BindShader(
+					item.type,
+					new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Main.DiscoColor) //Returning Main.DiscoColor will make our hair an animated rainbow. You can return any Color here.
+				);
+			}
+		}
+
 		public override void SetDefaults() {
 			item.width = 20;
 			item.height = 26;
