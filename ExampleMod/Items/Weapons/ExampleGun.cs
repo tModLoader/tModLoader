@@ -20,7 +20,7 @@ namespace ExampleMod.Items.Weapons
 			item.useAnimation = 20; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			item.useStyle = ItemUseStyleID.HoldingOut; // how you use the item (swinging, holding out, etc)
 			item.noMelee = true; //so the item's animation doesn't do damage
-			item.knockBack = 4; // how far back enemies will be pushed
+			item.knockBack = 4; // Sets the item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
 			item.value = 10000; // how much the item sells for (measured in copper)
 			item.rare = ItemRarityID.Green; // the color that the item's name will be in-game
 			item.UseSound = SoundID.Item11; // when you use an item, the sound the item makes
