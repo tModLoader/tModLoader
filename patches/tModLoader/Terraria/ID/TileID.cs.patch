@@ -1,15 +1,11 @@
 --- src/Terraria/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,5 +_,9 @@
+@@ -1,4 +_,5 @@
  using ReLogic.Reflection;
- 
-+using ReLogic.Reflection;
-+using System;
 +using Terraria.ModLoader;
-+
+ 
  namespace Terraria.ID
  {
- 	public class TileID
 @@ -91,7 +_,7 @@
  				};
  			}
