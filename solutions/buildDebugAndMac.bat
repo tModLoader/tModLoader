@@ -1,8 +1,19 @@
-msbuild tModLoader.sln /restore /p:Configuration=WindowsDebug
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
+@echo off
 
-msbuild tModLoader.sln /restore /p:Configuration=WindowsServerDebug
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
+chdir "../src/tModLoader/Terraria"
 
-msbuild tModLoader.sln /restore /p:Configuration=MacRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
+echo Building WindowsDebug (1/3)
+dotnet build -c WindowsDebug --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+
+echo Building WindowsServerDebug (2/3)
+dotnet build -c WindowsServerDebug --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+
+echo Building MacRelease (3/3)
+dotnet build -c MacRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)

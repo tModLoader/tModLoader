@@ -1,18 +1,42 @@
-msbuild tModLoader.sln /restore /t:clean /p:Configuration=WindowsRelease
-msbuild tModLoader.sln /t:clean /p:Configuration=WindowsServerRelease
-msbuild tModLoader.sln /t:clean /p:Configuration=MacRelease
-msbuild tModLoader.sln /t:clean /p:Configuration=MacServerRelease
-msbuild tModLoader.sln /t:clean /p:Configuration=LinuxRelease
-msbuild tModLoader.sln /t:clean /p:Configuration=LinuxServerRelease
-msbuild tModLoader.sln /p:Configuration=WindowsRelease /p:GenerateDocumentation=true /p:DocumentationFile=tModLoader.xml
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=WindowsServerRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=MacRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=MacServerRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=LinuxRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
-msbuild tModLoader.sln /p:Configuration=LinuxServerRelease
-@IF %ERRORLEVEL% NEQ 0 (EXIT /B %ERRORLEVEL%)
+@echo off
+
+chdir "../src/tModLoader/Terraria"
+
+echo Cleaning up output folders...
+
+dotnet clean -c WindowsRelease --nologo -v q
+dotnet clean -c WindowsServerRelease --nologo -v q
+dotnet clean -c MacRelease --nologo -v q
+dotnet clean -c MacServerRelease --nologo -v q
+dotnet clean -c LinuxRelease --nologo -v q
+dotnet clean -c LinuxServerRelease --nologo -v q
+
+echo.
+echo Building WindowsRelease (1/6)
+dotnet build -c WindowsRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+echo Building WindowsServerRelease (2/6)
+dotnet build -c WindowsServerRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+echo Building MacRelease (3/6)
+dotnet build -c MacRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+echo Building MacServerRelease (4/6)
+dotnet build -c MacServerRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+echo Building LinuxRelease (5/6)
+dotnet build -c LinuxRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+
+echo.
+echo Building LinuxServerRelease (6/6)
+dotnet build -c LinuxServerRelease --nologo -v q /clp:ErrorsOnly
+@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
