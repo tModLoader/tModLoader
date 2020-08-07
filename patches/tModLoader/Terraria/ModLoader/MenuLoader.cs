@@ -25,18 +25,10 @@ namespace Terraria.ModLoader
 			moddedMenus.Add(modMenu);
 		}
 
-		private static void GotoNextModMenu() {
-			List<ModMenu> menus = AvailableMenus;
-			int index = menus.IndexOf(currentModMenu);
-			index = Utils.Repeat(index + 1, menus.Count);
-			currentModMenu = menus[index];
-		}
+		private static void OffsetModMenu(int offset) {
+			var menus = AvailableMenus;
 
-		private static void GotoPreviousModMenu() {
-			List<ModMenu> menus = AvailableMenus;
-			int index = menus.IndexOf(currentModMenu);
-			index = Utils.Repeat(index - 1, menus.Count);
-			currentModMenu = menus[index];
+			currentModMenu = menus[Utils.Repeat(menus.IndexOf(currentModMenu) + offset, menus.Count)];
 		}
 
 		internal static void GotoSavedModMenu() {
@@ -86,11 +78,11 @@ namespace Terraria.ModLoader
 			if (mouseover) {
 				if (Main.mouseLeftRelease && Main.mouseLeft) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					GotoNextModMenu();
+					OffsetModMenu(1);
 				}
 				else if (Main.mouseRightRelease && Main.mouseRight) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					GotoPreviousModMenu();
+					OffsetModMenu(-1);
 				}
 			}
 
