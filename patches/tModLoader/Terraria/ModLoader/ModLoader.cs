@@ -36,7 +36,6 @@ namespace Terraria.ModLoader
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
-		public static bool ShowTMLLogo = true; //Temporary. There won't be a need for this when menu themes are implemented.
 
 		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
@@ -62,6 +61,8 @@ namespace Terraria.ModLoader
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
 
+		internal static string lastUsedModMenuName = nameof(MenutML);
+
 		private static string steamID64 = "";
 		internal static string SteamID64 {
 			get => GoGVerifier.IsGoG ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
@@ -82,6 +83,12 @@ namespace Terraria.ModLoader
 
 		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
+
+		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
+
+		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
+
+		internal static int currentModMenuIndex;
 
 		/// <summary>
 		/// Gets the instance of the Mod with the specified name.
@@ -130,6 +137,8 @@ namespace Terraria.ModLoader
 		private static void Load(CancellationToken token = default)
 		{
 			try {
+				moddedMenus.Clear();
+
 				if (isLoading)
 					throw new Exception("Load called twice");
 				isLoading = true;
@@ -153,6 +162,8 @@ namespace Terraria.ModLoader
 				else {
 					Main.menuMode = 0;
 				}
+
+				InitialiseModMenus();
 			}
 			catch when (token.IsCancellationRequested) {
 				// cancel needs to reload with ModLoaderMod and all others skipped
@@ -199,6 +210,22 @@ namespace Terraria.ModLoader
 				isLoading = false;
 				OnSuccessfulLoad = null;
 				skipLoad = false;
+			}
+		}
+
+		private static void InitialiseModMenus() {
+			moddedMenus.Add(new MenutML());
+			moddedMenus.Add(new MenuJourneysEnd());
+			moddedMenus.Add(new MenuOldVanilla());
+			moddedMenus.AddRange(Enumerable.ToList(from mod in Mods from menu in mod.loadables.Where(l => l is ModMenu modMenu) select (ModMenu)menu));
+			moddedMenus.ForEach(m => m.Load());
+			if (lastUsedModMenuName == nameof(MenuOldVanilla)) {
+				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
+			}
+			int index = AvailableMenus.FindIndex(m => m.GetType().Name == lastUsedModMenuName);
+			if (index != -1) {
+				currentModMenuIndex = index;
+				AvailableMenus[currentModMenuIndex].SelectionInit();
 			}
 		}
 
@@ -264,6 +291,8 @@ namespace Terraria.ModLoader
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
+
+			moddedMenus?.ForEach(m => m.Unload());
 
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
@@ -369,6 +398,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
+			Main.Configuration.Put("LastSelectedModMenu", lastUsedModMenuName);
 		}
 
 		internal static void LoadConfiguration()
@@ -385,6 +415,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+			Main.Configuration.Get("LastSelectedModMenu", ref lastUsedModMenuName);
 		}
 
 		internal static void MigrateSettings()
