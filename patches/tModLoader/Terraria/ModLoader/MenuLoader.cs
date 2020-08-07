@@ -13,11 +13,11 @@ namespace Terraria.ModLoader
 {
 	internal static class MenuLoader
 	{
+		internal static ModMenu currentModMenu;
+
 		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
-
-		internal static int currentModMenuIndex;
 
 		internal static string lastUsedModMenuName = nameof(MenutML);
 
@@ -25,18 +25,33 @@ namespace Terraria.ModLoader
 			moddedMenus.Add(modMenu);
 		}
 
+		private static void GotoNextModMenu() {
+			List<ModMenu> menus = AvailableMenus;
+			int index = menus.IndexOf(currentModMenu);
+			index = Utils.Repeat(index + 1, menus.Count);
+			currentModMenu = menus[index];
+		}
+
+		private static void GotoPreviousModMenu() {
+			List<ModMenu> menus = AvailableMenus;
+			int index = menus.IndexOf(currentModMenu);
+			index = Utils.Repeat(index - 1, menus.Count);
+			currentModMenu = menus[index];
+		}
+
 		internal static void GotoSavedModMenu() {
 			if (lastUsedModMenuName == nameof(MenuOldVanilla)) {
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
-			int index = AvailableMenus.FindIndex(m => m.GetType().Name == lastUsedModMenuName);
+			List<ModMenu> menus = AvailableMenus;
+			int index = menus.FindIndex(m => m.GetType().Name == lastUsedModMenuName);
 			if (index != -1) {
-				currentModMenuIndex = index;
-				AvailableMenus[currentModMenuIndex].SelectionInit();
+				currentModMenu = menus[index];
+				currentModMenu.SelectionInit();
 			}
 		}
 
-		internal static void UpdateAndDrawModMenu(ModMenu currentMenu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale, int count) {
+		internal static void UpdateAndDrawModMenu(ModMenu currentMenu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
 			if (lastUsedModMenuName != currentMenu.GetType().Name) {
 				currentMenu.SelectionInit();
 				lastUsedModMenuName = currentMenu.GetType().Name;
@@ -66,22 +81,18 @@ namespace Terraria.ModLoader
 
 			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY) || logoRect.Contains(Main.mouseX, Main.mouseY);
 
-			if (mouseover && count > 1) {
+			if (mouseover) {
 				if (Main.mouseLeftRelease && Main.mouseLeft) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					if (++currentModMenuIndex > count - 1) {
-						currentModMenuIndex = 0;
-					}
+					GotoNextModMenu();
 				}
 				else if (Main.mouseRightRelease && Main.mouseRight) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					if (--currentModMenuIndex < 0) {
-						currentModMenuIndex = count - 1;
-					}
+					GotoPreviousModMenu();
 				}
 			}
 
-			if (count > 1 && Main.menuMode == 0) {
+			if (Main.menuMode == 0) {
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
 			}
