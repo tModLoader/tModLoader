@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Steamworks;
 using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.UI;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader.Default
 {
 	/// <summary>
 	/// This is the default modmenu - the one that tML uses and the default one upon entering the game for the first time.

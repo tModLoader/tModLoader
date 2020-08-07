@@ -8,13 +8,14 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -66,6 +_,12 @@
+@@ -66,6 +_,13 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.Core;
++using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
@@ -874,8 +875,8 @@
  				if (netMode != 2) {
 -					if (WorldGen.drunkWorldGen) {
 -						newMusic = 60;
-+					if (ModLoader.ModLoader.AvailableMenus.Count > 0) {
-+						newMusic = ModLoader.ModLoader.AvailableMenus[ModLoader.ModLoader.currentModMenuIndex].Music; // TODO: Music loader to make music function properly.
++					if (MenuLoader.AvailableMenus.Count > 0) {
++						newMusic = MenuLoader.AvailableMenus[MenuLoader.currentModMenuIndex].Music; // TODO: Music loader to make music function properly.
  					}
 -					else if (playOldTile) {
 +					else if (WorldGen.drunkWorldGen) {
@@ -2418,13 +2419,13 @@
 +				bool oldPlayOldTile = playOldTile;
  				playOldTile = true;
 +				if (!oldPlayOldTile && playOldTile) {
-+					ModLoader.ModLoader.currentModMenuIndex = ModLoader.ModLoader.AvailableMenus.FindIndex(m => m is MenuOldVanilla);
++					MenuLoader.currentModMenuIndex = MenuLoader.AvailableMenus.FindIndex(m => m is MenuOldVanilla);
 +				}
 +			}
  
  			screenPosition.X += MenuXMovement;
  			if (screenPosition.X > 2.1474835E+09f)
-@@ -35861,15 +_,53 @@
+@@ -35861,15 +_,15 @@
  					logoScaleSpeed -= 1f;
  			}
  
@@ -2433,8 +2434,8 @@
 -			if (playOldTile) {
 -				spriteBatch.Draw(TextureAssets.Logo3.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 -				spriteBatch.Draw(TextureAssets.Logo4.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
-+			int count = ModLoader.ModLoader.AvailableMenus.Count;
-+			ModMenu currentMenu = count != 0 ? ModLoader.ModLoader.AvailableMenus[ModLoader.ModLoader.currentModMenuIndex] : null;
++			int count = MenuLoader.AvailableMenus.Count;
++			ModMenu currentMenu = count != 0 ? MenuLoader.AvailableMenus[MenuLoader.currentModMenuIndex] : null;
 +			if (count == 0) {
 +				var modLoaderLogo = ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.Logo").Value;
 +
@@ -2443,45 +2444,7 @@
  			else {
 -				spriteBatch.Draw(TextureAssets.Logo.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 -				spriteBatch.Draw(TextureAssets.Logo2.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
-+				if (ModLoader.ModLoader.lastUsedModMenuName != currentMenu.GetType().Name) {
-+					currentMenu.SelectionInit();
-+					ModLoader.ModLoader.lastUsedModMenuName = currentMenu.GetType().Name;
-+				}
-+				currentMenu.userInterface.Update(gameTime);
-+				currentMenu.userInterface.Draw(spriteBatch, gameTime);
-+				currentMenu.Update(menuMode == 0);
-+				currentMenu.timeActive++;
-+				Texture2D logo = currentMenu.Logo.Value;
-+				float scale = 1;
-+				Vector2 logoDrawPos = new Vector2(screenWidth / 2, 100f);
-+				if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
-+					spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * scale, SpriteEffects.None, 0f);
-+				}
-+				currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
-+				string modName = currentMenu.NameOnMenu ?? currentMenu.Mod?.DisplayName ?? "tModLoader";
-+				string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}";
-+				Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
-+				Rectangle switchTextRect = menuMode == 0 ? new Rectangle((int)(screenWidth / 2 - (size.X / 2)), (int)(screenHeight - 2 - size.Y), (int)size.X, (int)size.Y) : Rectangle.Empty;
-+				Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
-+				bool mouseover = switchTextRect.Contains(mouseX, mouseY) || logoRect.Contains(mouseX, mouseY);
-+				if (mouseover && count > 1) {
-+					if (mouseLeftRelease && mouseLeft) {
-+						SoundEngine.PlaySound(SoundID.MenuTick);
-+						if (++ModLoader.ModLoader.currentModMenuIndex > count - 1) {
-+							ModLoader.ModLoader.currentModMenuIndex = 0;
-+						}
-+					}
-+					else if (mouseRightRelease && mouseRight) {
-+						SoundEngine.PlaySound(SoundID.MenuTick);
-+						if (--ModLoader.ModLoader.currentModMenuIndex < 0) {
-+							ModLoader.ModLoader.currentModMenuIndex = count - 1;
-+						}
-+					}
-+				}
-+				if (count > 1 && menuMode == 0) {
-+					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
-+						switchTextRect.Contains(mouseX, mouseY) ? OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
-+				}
++				MenuLoader.UpdateAndDrawModMenu(currentMenu, spriteBatch, gameTime, color, logoRotation, logoScale, count);
  			}
  
  			if (dayTime) {
@@ -3108,7 +3071,7 @@
  					flag = true;
  				}
  			}
-@@ -47628,16 +_,26 @@
+@@ -47628,16 +_,25 @@
  
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
@@ -3120,22 +3083,20 @@
 -			Texture2D value = TextureAssets.Sun.Value;
 +			Texture2D value;
 +			Texture2D value2;
-+			ModMenu menu = ModLoader.ModLoader.AvailableMenus.Count > 0 ? ModLoader.ModLoader.AvailableMenus[ModLoader.ModLoader.currentModMenuIndex] : null;
++			ModMenu menu = MenuLoader.AvailableMenus.Count > 0 ? MenuLoader.AvailableMenus[MenuLoader.currentModMenuIndex] : null;
  			int num = moonType;
 +			if (gameMenu && menu != null) {
 +				value = menu.SunTexture.Value;
 +				value2 = menu.MoonTexture.Value;
++				goto SkipVanillaTextures;
 +			}
-+			else {
-+				value = TextureAssets.Sun.Value;
--			if (!TextureAssets.Moon.IndexInRange(num))
-+				if (!TextureAssets.Moon.IndexInRange(num))
--				num = Utils.Clamp(num, 0, 8);
-+					num = Utils.Clamp(num, 0, 8);
- 
++			value = TextureAssets.Sun.Value;
+ 			if (!TextureAssets.Moon.IndexInRange(num))
+ 				num = Utils.Clamp(num, 0, 8);
+-
 -			Texture2D value2 = TextureAssets.Moon[num].Value;
-+				value2 = TextureAssets.Moon[num].Value;
-+			}
++			value2 = TextureAssets.Moon[num].Value;
++			SkipVanillaTextures:
  			int num2 = sceneArea.bgTopY;
  			int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  			int num4 = 0;

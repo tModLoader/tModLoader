@@ -60,6 +60,9 @@ namespace Terraria.ModLoader.Default
 			AddContent<UnloadedTilesWorld>();
 			AddContent<HelpCommand>();
 			AddContent<ModlistCommand>();
+			AddContent<MenutML>();
+			AddContent<MenuJourneysEnd>();
+			AddContent<MenuOldVanilla>();
 			/*AddPatronSets();
 			AddPlayer("PatronModPlayer", new PatronModPlayer());
 			AddDeveloperSets();

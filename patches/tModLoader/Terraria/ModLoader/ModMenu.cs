@@ -13,16 +13,12 @@ namespace Terraria.ModLoader
 	{
 		internal UserInterface userInterface;
 
-		/// <summary>
-		/// The amount of time (in ticks) that this ModMenu has been active for. Resets when the menu is not selected.
-		/// </summary>
-		public int timeActive;
-
-		protected override void Register() {
+		protected sealed override void Register() {
+			MenuLoader.moddedMenus.Add(this);
+			ContentInstance.Register(this);
 		}
 
 		internal void SelectionInit() {
-			timeActive = 0;
 			userInterface = new UserInterface();
 			OnSelected(userInterface);
 		}
