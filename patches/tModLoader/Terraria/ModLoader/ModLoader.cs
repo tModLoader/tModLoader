@@ -218,7 +218,6 @@ namespace Terraria.ModLoader
 			moddedMenus.Add(new MenuJourneysEnd());
 			moddedMenus.Add(new MenuOldVanilla());
 			moddedMenus.AddRange(Enumerable.ToList(from mod in Mods from menu in mod.loadables.Where(l => l is ModMenu modMenu) select (ModMenu)menu));
-			moddedMenus.ForEach(m => m.Load());
 			if (lastUsedModMenuName == nameof(MenuOldVanilla)) {
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
@@ -291,8 +290,6 @@ namespace Terraria.ModLoader
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-
-			moddedMenus?.ForEach(m => m.Unload());
 
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
