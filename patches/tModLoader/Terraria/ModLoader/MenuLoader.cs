@@ -19,7 +19,7 @@ namespace Terraria.ModLoader
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
 
-		internal static string lastUsedModMenuName = nameof(MenutML);
+		internal static string lastUsedModMenuName = $"ModLoader/{nameof(MenutML)}";
 
 		internal static void Add(ModMenu modMenu) {
 			moddedMenus.Add(modMenu);
@@ -44,17 +44,19 @@ namespace Terraria.ModLoader
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
 			List<ModMenu> menus = AvailableMenus;
-			int index = menus.FindIndex(m => m.GetType().Name == lastUsedModMenuName);
+			int index = menus.FindIndex(m => GetModMenuName(m) == lastUsedModMenuName);
 			if (index != -1) {
 				currentModMenu = menus[index];
 				currentModMenu.SelectionInit();
 			}
 		}
 
+		private static string GetModMenuName(ModMenu menu) => $"{menu.Mod.Name}/{menu.Name}";
+
 		internal static void UpdateAndDrawModMenu(ModMenu currentMenu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
-			if (lastUsedModMenuName != currentMenu.GetType().Name) {
+			if (lastUsedModMenuName != GetModMenuName(currentMenu)) {
 				currentMenu.SelectionInit();
-				lastUsedModMenuName = currentMenu.GetType().Name;
+				lastUsedModMenuName = GetModMenuName(currentMenu);
 			}
 
 			currentMenu.userInterface?.Update(gameTime);
