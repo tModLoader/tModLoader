@@ -129,8 +129,6 @@ namespace Terraria.ModLoader
 		private static void Load(CancellationToken token = default)
 		{
 			try {
-				MenuLoader.moddedMenus.Clear();
-
 				if (isLoading)
 					throw new Exception("Load called twice");
 				isLoading = true;

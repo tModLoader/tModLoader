@@ -13,13 +13,17 @@ namespace Terraria.ModLoader
 {
 	internal static class MenuLoader
 	{
-		internal static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
+		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
 
 		internal static int currentModMenuIndex;
 
 		internal static string lastUsedModMenuName = nameof(MenutML);
+
+		internal static void Add(ModMenu modMenu) {
+			moddedMenus.Add(modMenu);
+		}
 
 		internal static void GotoSavedModMenu() {
 			if (lastUsedModMenuName == nameof(MenuOldVanilla)) {
@@ -81,6 +85,10 @@ namespace Terraria.ModLoader
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
 			}
+		}
+
+		internal static void Unload() {
+			moddedMenus.Clear();
 		}
 	}
 }

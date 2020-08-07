@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 		internal UserInterface userInterface;
 
 		protected sealed override void Register() {
-			MenuLoader.moddedMenus.Add(this);
+			MenuLoader.Add(this);
 			ContentInstance.Register(this);
 		}
 
