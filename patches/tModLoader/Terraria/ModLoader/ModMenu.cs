@@ -13,6 +13,8 @@ namespace Terraria.ModLoader
 	{
 		internal UserInterface userInterface;
 
+		internal bool isNew;
+
 		protected sealed override void Register() {
 			MenuLoader.Add(this);
 			ContentInstance.Register(this);

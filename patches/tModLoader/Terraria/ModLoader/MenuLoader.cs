@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -16,6 +18,8 @@ namespace Terraria.ModLoader
 		internal static ModMenu currentModMenu;
 
 		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
+
+		private static List<ModMenu> lastAvailableMenus;
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
 
@@ -37,10 +41,13 @@ namespace Terraria.ModLoader
 			}
 			List<ModMenu> menus = AvailableMenus;
 			int index = menus.FindIndex(m => GetModMenuName(m) == lastUsedModMenuName);
-			if (index != -1) {
-				currentModMenu = menus[index];
-				currentModMenu.SelectionInit();
+			if (index == -1) {
+				index = 0;
 			}
+			currentModMenu = menus[index];
+			currentModMenu.SelectionInit();
+			lastUsedModMenuName = GetModMenuName(currentModMenu);
+			lastAvailableMenus = AvailableMenus;
 		}
 
 		private static string GetModMenuName(ModMenu menu) => $"{menu.Mod.Name}/{menu.Name}";
@@ -65,8 +72,14 @@ namespace Terraria.ModLoader
 			}
 			currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
 
+			if (currentModMenu.isNew) {
+				currentModMenu.isNew = false;
+			}
+
+			int newMenus = AvailableMenus.Count(m => m.isNew);
+
 			string modName = currentMenu.NameOnMenu ?? currentMenu.Mod?.DisplayName ?? "tModLoader";
-			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}";
+			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}{(newMenus == 0 ? "" : $" ({newMenus} New)")}";
 
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 
@@ -90,6 +103,14 @@ namespace Terraria.ModLoader
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
 			}
+
+			foreach (ModMenu menu in AvailableMenus) {
+				if (!lastAvailableMenus.Contains(menu)) {
+					menu.isNew = true;
+				}
+			}
+
+			lastAvailableMenus = AvailableMenus;
 		}
 
 		internal static void Unload() {
