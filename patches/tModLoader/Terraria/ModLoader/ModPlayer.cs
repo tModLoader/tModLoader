@@ -930,9 +930,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the items that will be added to the player's inventory. Useful if you want to stop vanilla or other mods from adding an item.
 		/// </summary>
-		/// <param name="additions">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
+		/// <param name="itemsByMod">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> additions, bool mediumCoreDeath) {
+		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 		}
 	}
 }

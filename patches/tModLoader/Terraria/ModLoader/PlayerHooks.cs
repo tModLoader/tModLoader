@@ -1142,26 +1142,26 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookAddStartingItems = AddHook<Func<bool, IEnumerable<Item>>>(p => p.AddStartingItems);
+		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
 
-		public static IReadOnlyDictionary<string, List<Item>> AddStartingItems(Player player, bool mediumCoreDeath = false) {
-			var additions = new Dictionary<string, List<Item>>();
+		public static List<Item> GetStartingItems(Player player, bool mediumCoreDeath = false) {
+			var itemsByMod = new Dictionary<string, List<Item>>();
 
-			additions.Add("Terraria", player.inventory.Where(item => !item.IsAir).ToList());
+			itemsByMod["Terraria"] = mediumCoreDeath ? new List<Item>() : player.inventory.Where(item => !item.IsAir).ToList();
 
 			foreach (int index in HookAddStartingItems.arr) {
 				ModPlayer modPlayer = player.modPlayers[index];
-				additions.Add(modPlayer.mod.Name, modPlayer.AddStartingItems(mediumCoreDeath).ToList());
+				itemsByMod[modPlayer.mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
 			}
 
-			return additions;
-		}
-
-		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
-
-		public static void ModifyStartingInventory(Player player, IReadOnlyDictionary<string, List<Item>> additions, bool mediumCoreDeath = false) {
 			foreach (int index in HookModifyStartingInventory.arr) {
-				player.modPlayers[index].ModifyStartingInventory(additions, mediumCoreDeath);
+				player.modPlayers[index].ModifyStartingInventory(itemsByMod, mediumCoreDeath);
 			}
+
+			return itemsByMod
+				.OrderBy(kv => kv.Key == "Terraria" ? "" : kv.Key)
+				.SelectMany(kv => kv.Value)
+				.ToList();
 		}
 	}
 }

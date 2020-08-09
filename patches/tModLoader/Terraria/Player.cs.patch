@@ -3145,13 +3145,11 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -36245,24 +_,48 @@
+@@ -36245,24 +_,46 @@
  		}
  
  		public void DropItems() {
-+			var additions = PlayerHooks.AddStartingItems(this, true);
-+			PlayerHooks.ModifyStartingInventory(this, additions, true);
-+			List<Item> startInventory = additions.Values.SelectMany(i => i).ToList();
++			List<Item> startInventory = PlayerHooks.GetStartingItems(this, true);
 +			IDictionary<int, int> startCounts = new Dictionary<int, int>();
 +			foreach (Item item in startInventory) {
 +				if (!startCounts.ContainsKey(item.netID))
@@ -3695,17 +3693,6 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
-@@ -38234,7 +_,9 @@
- 			flag &= (list.Count <= 1);
- 			flag = (flag && flag2);
- 			if (flag) {
-+				Item item = new Item();
-+				item.SetDefaults(ItemID.AncientBattleArmorShirt);
--				flag = CheckMana(20, pay: true);
-+				flag = CheckMana(item, pay: true);
- 				if (flag)
- 					manaRegenDelay = (int)maxRegenDelay;
- 			}
 @@ -38368,7 +_,7 @@
  				return;
  

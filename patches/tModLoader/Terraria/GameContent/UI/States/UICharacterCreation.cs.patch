@@ -8,14 +8,12 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1053,6 +_,10 @@
+@@ -1053,6 +_,8 @@
  
  			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
 +
-+			var inventoryAdditions = PlayerHooks.AddStartingItems(_player);
-+			PlayerHooks.ModifyStartingInventory(_player, inventoryAdditions);
-+			PlayerHooks.SetStartInventory(_player, inventoryAdditions.Values.SelectMany(i => i).ToList());
++			PlayerHooks.SetStartInventory(_player, PlayerHooks.GetStartingItems(_player));
  		}
  
  		private bool GetHexColor(string hexString, out Vector3 hsl) {
