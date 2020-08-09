@@ -72,6 +72,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates;
+		internal static bool notifyNewMainMenuThemes = true;
 
 		internal static bool skipLoad;
 
@@ -370,6 +371,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
+			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.lastUsedModMenuName);
 		}
 
@@ -387,6 +389,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.lastUsedModMenuName);
 		}
 

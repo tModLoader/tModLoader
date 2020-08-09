@@ -79,7 +79,7 @@ namespace Terraria.ModLoader
 			int newMenus = AvailableMenus.Count(m => m.isNew);
 
 			string modName = currentMenu.NameOnMenu ?? currentMenu.Mod?.DisplayName ?? "tModLoader";
-			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}{(newMenus == 0 ? "" : $" ({newMenus} New)")}";
+			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
 
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 

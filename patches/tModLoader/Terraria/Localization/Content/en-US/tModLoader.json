@@ -8,7 +8,7 @@
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"tModLoaderSettings": "tModLoader Settings",
-		"ModMenuSwap":  "Switch Menu Theme",
+		"ModMenuSwap": "Switch Menu Theme",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",
@@ -223,6 +223,8 @@
 		"AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
 		"ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
 		"ShowMemoryEstimatesNo": "Show Mod Memory Estimates: Off",
+		"ShowModMenuNotificationsYes": "Notify when new main menu theme unlocked: On",
+		"ShowModMenuNotificationsNo": "Notify when new main menu theme unlocked: Off",
 		"ClearMBCredentials": "Clear Mod Browser Credentials",
 		"AutomaticallyEnableNewlyDownloadedModsYes": "Automatically enabled newly downloaded mods: On",
 		"AutomaticallyEnableNewlyDownloadedModsNo": "Automatically enabled newly downloaded mods: Off",
