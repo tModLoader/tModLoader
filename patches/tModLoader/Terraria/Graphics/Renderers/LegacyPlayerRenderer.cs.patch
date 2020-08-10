@@ -42,7 +42,7 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -115,79 +_,115 @@
+@@ -115,79 +_,114 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
@@ -186,13 +186,12 @@
 +				vanillaLayers[i].depth = i;
 +			}
 +
-+			var readOnlyVanillaLayers = vanillaLayers.ToList().AsReadOnly();
 +			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
 +				{ "Terraria", vanillaLayers }
 +			};
 +
 +			//Add OOP layers.
-+			PlayerLayerHooks.AddDrawLayers(drawPlayer, layers, readOnlyVanillaLayers);
++			PlayerLayerHooks.AddDrawLayers(drawPlayer, layers);
 +			//Add legacy layers.
 +			PlayerHooks.AddDrawLayers(drawPlayer, layers);
 +

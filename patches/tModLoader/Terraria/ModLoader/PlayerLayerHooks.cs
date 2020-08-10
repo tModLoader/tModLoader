@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() => ModLayers.Clear();
 
-		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers, IReadOnlyList<PlayerDrawLayer> vanillaLayers) {
+		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers) {
 			foreach (var layer in ModLayers) {
 				layer.GetDefaults(drawPlayer, out layer.visible, out layer.depth);
 
