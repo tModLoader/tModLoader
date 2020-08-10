@@ -13,17 +13,22 @@ namespace Terraria.ModLoader
 		private readonly string CustomName;
 
 		public override string Name => CustomName;
+		public override bool IsHeadLayer => HeadLayer;
+
+		private readonly bool HeadLayer;
 
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
-		public LegacyPlayerLayer(Mod mod, string name, LayerFunction layer) {
+		public LegacyPlayerLayer(Mod mod, string name, bool isHeadLayer, LayerFunction layer) {
 			Mod = mod;
 			CustomName = name;
 			Layer = layer;
+			HeadLayer = isHeadLayer;
 		}
 
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, parent layer, and drawing action. </summary>
-		public LegacyPlayerLayer(Mod mod, string name, PlayerLayer parent, LayerFunction layer) : this(mod, name, layer) {
+		public LegacyPlayerLayer(Mod mod, string name, bool isHeadLayer, PlayerLayer parent, LayerFunction layer) : this(mod, name, isHeadLayer, layer) {
 			Parent = parent;
+			HeadLayer = isHeadLayer;
 		}
 
 		public override bool Setup(Player drawPlayer, IReadOnlyList<PlayerLayer> vanillaLayers) => false;

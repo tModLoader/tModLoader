@@ -758,13 +758,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the drawing of the player head on the minimap. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
-		/// </summary>
-		/// <param name="layers"></param>
-		public virtual void ModifyDrawHeadLayers(List<PlayerHeadLayer> layers) {
-		}
-
-		/// <summary>
 		/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
 		/// </summary>
 		public virtual void ModifyScreenPosition() {

@@ -13,45 +13,40 @@
  
  namespace Terraria.Graphics.Renderers
  {
-@@ -35,15 +_,25 @@
- 			_gore.Clear();
- 			PlayerDrawHeadSet drawinfo = default(PlayerDrawHeadSet);
- 			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
--			PlayerDrawHeadLayers.DrawPlayer_00_BackHelmet(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_01_FaceSkin(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_02_DrawArmorWithFullHair(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_03_HelmetHair(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_04_JungleRose(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_05_TallHats(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_06_NormalHats(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_07_JustHair(ref drawinfo);
--			PlayerDrawHeadLayers.DrawPlayer_08_FaceAcc(ref drawinfo);
-+
-+			var layers = new List<PlayerHeadLayer> {
-+				PlayerHeadLayer.BackHelmet,
-+				PlayerHeadLayer.FaceSkin,
-+				PlayerHeadLayer.DrawArmorWithFullHair,
-+				PlayerHeadLayer.HelmetHair,
-+				PlayerHeadLayer.JungleRose,
-+				PlayerHeadLayer.TallHats,
-+				PlayerHeadLayer.NormalHats,
-+				PlayerHeadLayer.JustHair,
-+				PlayerHeadLayer.FaceAcc
-+			};
-+
-+			PlayerHooks.ModifyDrawHeadLayers(drawPlayer, layers);
-+
-+			foreach (var layer in layers) {
-+				layer.Draw(ref drawinfo);
-+			}
-+
- 			CreateOutlines(alpha, scale, borderColor);
- 			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
+@@ -30,6 +_,7 @@
  		}
-@@ -116,78 +_,100 @@
+ 
+ 		public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color)) {
++			/*
+ 			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
- 			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
+@@ -46,6 +_,9 @@
+ 			PlayerDrawHeadLayers.DrawPlayer_08_FaceAcc(ref drawinfo);
+ 			CreateOutlines(alpha, scale, borderColor);
+ 			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
++			*/
++
++			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, 0f, scale, false, true);
+ 		}
+ 
+ 		private void CreateOutlines(float alpha, float scale, Color borderColor) {
+@@ -108,6 +_,10 @@
+ 		}
+ 
+ 		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
++			DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
++		}
++
++		private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f, bool useLighting = true, bool headOnly = false) {
+ 			if (drawPlayer.ShouldNotDraw)
+ 				return;
+ 
+@@ -115,79 +_,103 @@
+ 			_drawData.Clear();
+ 			_dust.Clear();
+ 			_gore.Clear();
+-			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_01_BackHair(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
@@ -71,6 +66,7 @@
 -			PlayerDrawLayers.DrawPlayer_09_BackAc(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_10_Wings(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_11_Balloons(ref drawinfo);
++			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
 +
 +			var vanillaLayers = new List<PlayerLayer> {
 +				PlayerLayer.TorsoIndent, //{
@@ -200,7 +196,9 @@
 +			PlayerHooks.ModifyDrawLayers(drawPlayer, new ReadOnlyDictionary<string, List<PlayerLayer>>(layers));
 +
 +			foreach (var layer in layers.SelectMany(pair => pair.Value).OrderBy(l => l.depth)) {
-+				layer.Draw(ref drawinfo);
++				if (!headOnly || layer.IsHeadLayer) {
++					layer.Draw(ref drawinfo);
++				}
 +			}
 +
  			PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawinfo);

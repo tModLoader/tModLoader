@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		}
 
 		public void UpdateEffects(Player player) {
-			if (!HasAura) {
+			if (!HasAura && false) {
 				if (ShaderStrength > 0f) {
 					ShaderStrength -= 0.02f;
 				}

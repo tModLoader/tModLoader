@@ -26,13 +26,13 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		private static Asset<Texture2D> _glowTexture;
 		private static Asset<Texture2D> _shaderTexture;
 
-		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonHeadGlow", PlayerLayer.Head, drawInfo => {
+		public static PlayerLayer GlowLayer = CreateGlowLayer("AndromedonHeadGlow", true, PlayerLayer.Head, drawInfo => {
 			_glowTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Head_Head_Glow");
 
 			return GetHeadDrawDataInfo(drawInfo, _glowTexture.Value);
 		});
 
-		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonHeadShader", PlayerLayer.Torso, drawInfo => {
+		public static PlayerLayer ShaderLayer = CreateShaderLayer("AndromedonHeadShader", true, PlayerLayer.Torso, drawInfo => {
 			_shaderTexture ??= ModContent.GetTexture("ModLoader/Developer.Jofairden.PowerRanger_Head_Head_Shader");
 
 			return GetHeadDrawDataInfo(drawInfo, _shaderTexture.Value);

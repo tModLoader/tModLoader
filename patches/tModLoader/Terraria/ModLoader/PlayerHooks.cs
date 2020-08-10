@@ -973,18 +973,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyDrawHeadLayers = AddHook<Action<List<PlayerHeadLayer>>>(p => p.ModifyDrawHeadLayers);
-
-		public static void ModifyDrawHeadLayers(Player drawPlayer, List<PlayerHeadLayer> layers) {
-			foreach (PlayerHeadLayer layer in layers) {
-				layer.visible = true;
-			}
-
-			foreach (int index in HookModifyDrawHeadLayers.arr) {
-				drawPlayer.modPlayers[index].ModifyDrawHeadLayers(layers);
-			}
-		}
-
 		private static HookList HookModifyScreenPosition = AddHook<Action>(p => p.ModifyScreenPosition);
 
 		public static void ModifyScreenPosition(Player player) {
