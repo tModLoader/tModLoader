@@ -15,7 +15,6 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class EquipLoader
 	{
-		//in Terraria.Main.DrawPlayer and Terraria.Main.DrawPlayerHead get rid of checks for slot too high (not necessary for loading)
 		internal static readonly IDictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
 
 		internal static readonly IDictionary<EquipType, IDictionary<int, EquipTexture>> equipTextures =
