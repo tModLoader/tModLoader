@@ -25,9 +25,20 @@ namespace ExampleMod.Common
 		public override void Draw(ref PlayerDrawSet drawInfo) {
 			//The following code draws ExampleItem's texture behind the player's head.
 
-			var exampleItemTexture = ModContent.GetTexture(ItemLoader.GetItem(ModContent.ItemType<ExampleItem>()).Texture).Value;
+			var exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem").Value;
 
-			drawInfo.DrawDataCache.Add(new DrawData(exampleItemTexture, drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition, null, Color.White, 0f, exampleItemTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0));
+			//Queues a drawing of a sprite. Do not use SpriteBatch in drawlayers!
+			drawInfo.DrawDataCache.Add(new DrawData(
+				exampleItemTexture, //The texture to render.
+				drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition, //Position to render at.
+				null, //Source rectangle.
+				Color.White, //Color.
+				0f, //Rotation.
+				exampleItemTexture.Size() * 0.5f, //Origin. Uses the texture's center.
+				1f, //Scale.
+				SpriteEffects.None, //SpriteEffects.
+				0 //'Layer'. This is always 0 in Terraria.
+			));
 		}
 	}
 }
