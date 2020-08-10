@@ -27,7 +27,7 @@ namespace ExampleMod.Common
 		}
 
 		public override void Draw(ref PlayerDrawSet drawInfo) {
-			//The following code draws ExampleItem's texture behind the player's head/
+			//The following code draws ExampleItem's texture behind the player's head.
 
 			var exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem").Value;
 
