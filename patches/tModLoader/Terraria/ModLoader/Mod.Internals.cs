@@ -135,9 +135,11 @@ namespace Terraria.ModLoader
 		internal void SetupContent() {
 			foreach (ModItem item in items.Values) {
 				ItemLoader.SetDefaults(item.item, false);
+				
 				item.AutoStaticDefaults();
 				item.SetStaticDefaults();
-				ItemID.Search.Add(item.Name, item.item.type);
+
+				ItemID.Search.Add($"{item.Mod.Name}/{item.Name}", item.item.type);
 			}
 
 			foreach (ModPrefix prefix in prefixes.Values) {
@@ -162,7 +164,7 @@ namespace Terraria.ModLoader
 					TileID.Sets.BasicChest[tile.Type] = true;
 				}
 				
-				TileID.Search.Add(tile.Name, tile.Type);
+				TileID.Search.Add($"{tile.Mod.Name}/{tile.Name}", tile.Type);
 			}
 
 			foreach (GlobalTile globalTile in globalTiles.Values) {
@@ -174,7 +176,7 @@ namespace Terraria.ModLoader
 
 				wall.SetDefaults();
 				
-				WallID.Search.Add(wall.Name, wall.Type);
+				WallID.Search.Add($"{wall.Mod.Name}/{wall.Name}", wall.Type);
 			}
 
 			foreach (GlobalWall globalWall in globalWalls.Values) {
@@ -183,10 +185,11 @@ namespace Terraria.ModLoader
 
 			foreach (ModProjectile projectile in projectiles.Values) {
 				ProjectileLoader.SetDefaults(projectile.projectile, false);
+
 				projectile.AutoStaticDefaults();
 				projectile.SetStaticDefaults();
 				
-				ProjectileID.Search.Add(projectile.Name, projectile.projectile.type);
+				ProjectileID.Search.Add($"{projectile.Mod.Name}/{projectile.Name}", projectile.projectile.type);
 			}
 
 			foreach (ModNPC npc in npcs.Values) {
@@ -194,7 +197,7 @@ namespace Terraria.ModLoader
 				npc.AutoStaticDefaults();
 				npc.SetStaticDefaults();
 				
-				NPCID.Search.Add(npc.Name, npc.npc.type);
+				NPCID.Search.Add($"{npc.Mod.Name}/{npc.Name}", npc.npc.type);
 			}
 
 			foreach (ModMountData modMountData in mountDatas.Values) {
@@ -211,7 +214,7 @@ namespace Terraria.ModLoader
 
 				buff.SetDefaults();
 				
-				BuffID.Search.Add(buff.Name, buff.Type);
+				BuffID.Search.Add($"{buff.Mod.Name}/{buff.Name}", buff.Type);
 			}
 
 			foreach (ModWaterStyle waterStyle in waterStyles.Values) {
