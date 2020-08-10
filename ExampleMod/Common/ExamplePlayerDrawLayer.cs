@@ -18,7 +18,7 @@ namespace ExampleMod.Common
 			depth = Head.depth - 0.5f; //Set the layer's depth. Layer depth determines the order that layers will get drawn in.
 			Parent = Head; //Sets the layer's parent. This layer won't be drawn if its parent is hidden.
 
-			//Return whether or not this layer should be added. In this example, the layer will only be drawn when the player helds an ExampleItem.
+			//Return whether or not this layer should be added. In this example, the layer will only be drawn when the player holds an ExampleItem.
 			return drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
 		}
 
