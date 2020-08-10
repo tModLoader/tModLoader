@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 		public delegate void LayerFunction(ref InfoType info);
 
 		/// <summary> The parent of this DrawLayer. If the parent is not drawn, this layer will not be drawn either. Defaults to null, which skips the parent check.</summary>
-		public DrawLayer<InfoType> Parent { get; protected set; }
+		public virtual DrawLayer<InfoType> Parent { get; }
 
 		/// <summary> Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before all drawing-related hooks are called. For modded layers, you must set this to true or false yourself. </summary>
 		public bool visible = true;

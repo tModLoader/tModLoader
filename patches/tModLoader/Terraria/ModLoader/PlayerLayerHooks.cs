@@ -12,17 +12,15 @@ namespace Terraria.ModLoader
 
 		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers, IReadOnlyList<PlayerDrawLayer> vanillaLayers) {
 			foreach (var layer in ModLayers) {
-				layer.depth = 0f;
+				layer.GetDefaults(drawPlayer, out layer.visible, out layer.depth);
 
-				if (layer.Setup(drawPlayer, vanillaLayers)) {
-					string modName = layer.Mod.Name;
+				string modName = layer.Mod.Name;
 
-					if (!layers.TryGetValue(modName, out var list)) {
-						layers[modName] = list = new List<PlayerDrawLayer>();
-					}
-
-					list.Add(layer);
+				if (!layers.TryGetValue(modName, out var list)) {
+					layers[modName] = list = new List<PlayerDrawLayer>();
 				}
+
+				list.Add(layer);
 			}
 		}
 	}

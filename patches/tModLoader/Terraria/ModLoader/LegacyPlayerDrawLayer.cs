@@ -11,11 +11,11 @@ namespace Terraria.ModLoader
 		public readonly LayerFunction Layer;
 
 		private readonly string CustomName;
+		private readonly bool HeadLayer;
 
 		public override string Name => CustomName;
 		public override bool IsHeadLayer => HeadLayer;
-
-		private readonly bool HeadLayer;
+		public override DrawLayer<PlayerDrawSet> Parent { get; }
 
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
 		public LegacyPlayerDrawLayer(Mod mod, string name, bool isHeadLayer, LayerFunction layer) {
@@ -28,10 +28,12 @@ namespace Terraria.ModLoader
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, parent layer, and drawing action. </summary>
 		public LegacyPlayerDrawLayer(Mod mod, string name, bool isHeadLayer, PlayerDrawLayer parent, LayerFunction layer) : this(mod, name, isHeadLayer, layer) {
 			Parent = parent;
-			HeadLayer = isHeadLayer;
 		}
 
-		public override bool Setup(Player drawPlayer, IReadOnlyList<PlayerDrawLayer> vanillaLayers) => false;
+		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
+			depth = 0f;
+			visible = true;
+		}
 
 		public override void Draw(ref PlayerDrawSet drawInfo) => Layer(ref drawInfo);
 	}

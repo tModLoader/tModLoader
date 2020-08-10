@@ -1,8 +1,6 @@
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -11,19 +9,25 @@ namespace ExampleMod.Common
 {
 	public class ExamplePlayerDrawLayer : PlayerDrawLayer
 	{
-		public override bool IsHeadLayer => true; //Makes this layer appear on the minimap player head icon.
+		//Returning true in this property makes this layer appear on the minimap player head icon.
+		public override bool IsHeadLayer => true;
 
-		//Setup is called every time a player is rendered, and lets you setup its depth, parent, and whether or not it should be drawn.
-		public override bool Setup(Player drawPlayer, IReadOnlyList<PlayerDrawLayer> vanillaLayers) {
-			depth = Head.depth - 0.5f; //Set the layer's depth. Layer depth determines the order that layers will get drawn in.
-			Parent = Head; //Sets the layer's parent. This layer won't be drawn if its parent is hidden.
+		//This sets the layer's parent. Layers don't get drawn if their parent layer is not visible, so smart use of this could help you improve compatibility with other mods.
+		public override DrawLayer<PlayerDrawSet> Parent => Head;
 
-			//Return whether or not this layer should be added. In this example, the layer will only be drawn when the player holds an ExampleItem.
-			return drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
+		//GetDefaults is called before the layer is queued for drawing, and lets us control the layer's default depth and visibility. Note that other modders may call this method on your layer too.
+		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
+			//The layer will be visible only if the player is holding an ExampleItem in their hands. Or if another modder forces this layer to be visible.
+			visible = drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
+			//The layer will be drawn right before the vanilla 'Head' layer.
+			depth = Head.depth - 0.1f;
+
+			//If you'd like to reference another PlayerDrawLayer's defaults,
+			//you can do so by getting its instance via ModContent.GetInstance<OtherDrawLayer>(), and calling GetDefaults on it.
 		}
 
 		public override void Draw(ref PlayerDrawSet drawInfo) {
-			//The following code draws ExampleItem's texture behind the player's head.
+			//The following code draws ExampleItem's texture behind the player's head/
 
 			var exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem").Value;
 

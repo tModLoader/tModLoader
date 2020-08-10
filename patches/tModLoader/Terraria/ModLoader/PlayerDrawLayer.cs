@@ -152,10 +152,11 @@ namespace Terraria.ModLoader
 		/// <summary> Returns whether or not this layer should be rendered for the minimap icon. </summary>
 		public virtual bool IsHeadLayer => false;
 
-		/// <summary> Used for automatically setting up the layer every time a player is drawn. Set <see cref="DrawLayer.depth"/>, and return whether or not you want the layer to be added at this moment in time. </summary>
+		/// <summary> Returns the layer's default depth and visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information. </summary>
 		/// <param name="drawPlayer"> The player that's currently being drawn. </param>
-		/// <param name="vanillaLayers"> A readonly list of to-be-rendered vanilla layers. </param>
-		public abstract bool Setup(Player drawPlayer, IReadOnlyList<PlayerDrawLayer> vanillaLayers);
+		/// <param name="visible"> Whether or not this layer will be visible by default. Modders can hide and unhide layers later, if needed. </param>
+		/// <param name="depth"> The depth that this layer wishes to have. </param>
+		public abstract void GetDefaults(Player drawPlayer, out bool visible, out float depth);
 
 		protected override void Register() => PlayerLayerHooks.Add(this);
 
