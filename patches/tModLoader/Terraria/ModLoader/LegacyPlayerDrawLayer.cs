@@ -13,6 +13,8 @@ namespace Terraria.ModLoader
 		private readonly string CustomName;
 		private readonly bool HeadLayer;
 
+		internal float defaultDepth;
+
 		public override string Name => CustomName;
 		public override bool IsHeadLayer => HeadLayer;
 		public override DrawLayer<PlayerDrawSet> Parent { get; }
@@ -31,7 +33,7 @@ namespace Terraria.ModLoader
 		}
 
 		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
-			depth = 0f;
+			depth = defaultDepth;
 			visible = true;
 		}
 

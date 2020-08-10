@@ -42,7 +42,7 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -115,79 +_,114 @@
+@@ -115,79 +_,116 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
@@ -183,7 +183,9 @@
 +			vanillaLayers.Add(PlayerDrawLayer.BeetleBuff);
 +
 +			for (int i = 0; i < vanillaLayers.Count; i++) {
-+				vanillaLayers[i].depth = i;
++				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
++
++				layer.defaultDepth = layer.depth = i;
 +			}
 +
 +			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
