@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			}
 		}
 
-		public override void ModifyDrawLayers(IReadOnlyDictionary<string, List<PlayerDrawLayer>> layers) {
+		public override void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
 			if (player.head == Mod.GetEquipSlot("toplayz_Head", EquipType.Head)) {
 				// If not falling or swinging frames
 				if (player.bodyFrame.Y != 5 * 56

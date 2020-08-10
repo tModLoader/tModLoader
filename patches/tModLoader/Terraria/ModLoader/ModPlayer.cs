@@ -751,10 +751,10 @@ namespace Terraria.ModLoader
 		public virtual IEnumerable<PlayerDrawLayer> AddDrawLayers() => Enumerable.Empty<PlayerDrawLayer>();
 
 		/// <summary>
-		/// Allows you to modify the layers that are about to be drawn, either their depth, or whether or not they'll be visible. Note that there can be nested layers.
+		/// Allows you to modify the layers that are about to be drawn, either their depth, or whether or not they'll be visible.
 		/// </summary>
 		/// <param name="layers"></param>
-		public virtual void ModifyDrawLayers(IReadOnlyDictionary<string, List<PlayerDrawLayer>> layers) {
+		public virtual void ModifyDrawLayers(IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {
 		}
 
 		/// <summary>
