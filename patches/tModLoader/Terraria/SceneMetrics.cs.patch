@@ -13,7 +13,7 @@
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
 -		private readonly int[] _tileCounts = new int[623];
-+		internal int[] _tileCounts = new int[623];
++		internal int[] _tileCounts = new int[TileLoader.TileCount];
  		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
