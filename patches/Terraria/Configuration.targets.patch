@@ -15,10 +15,10 @@
 +    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
-+    <DefineConstants>$(DefineConstants);LINUX;FNA</DefineConstants>
++    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
-+    <DefineConstants>$(DefineConstants);MAC;FNA</DefineConstants>
++    <DefineConstants>$(DefineConstants);MAC;FNA;MONO</DefineConstants>
    </PropertyGroup>
    <PropertyGroup Condition="$(Configuration.Contains('Server'))">
      <DefineConstants>$(DefineConstants);SERVER</DefineConstants>

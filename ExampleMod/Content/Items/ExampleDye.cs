@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items
 {
 	public class ExampleDye : ModItem
 	{
-		public override void Load() {
+		public override void SetStaticDefaults() {
 			//Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ) {
 				//The following code creates an effect (shader) reference and associates it with this item's type Id.

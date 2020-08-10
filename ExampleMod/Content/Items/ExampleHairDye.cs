@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items
 {
 	public class ExampleHairDye : ModItem
 	{
-		public override void Load() {
+		public override void SetStaticDefaults() {
 			//Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ) {
 				//The following code creates a hair color-returning delegate (anonymous method), and associates it with this item's type Id.
