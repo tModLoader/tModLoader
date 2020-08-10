@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Initializers;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
@@ -79,6 +80,7 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
+			WingStatsInitializer.Load();
 			
 			foreach (EquipType type in EquipTypes) {
 				foreach (var entry in equipTextures[type]) {
