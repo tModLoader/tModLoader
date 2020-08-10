@@ -68,45 +68,45 @@
 -			PlayerDrawLayers.DrawPlayer_11_Balloons(ref drawinfo);
 +			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, useLighting);
 +
-+			var vanillaLayers = new List<PlayerLayer> {
-+				PlayerLayer.TorsoIndent, //{
-+				PlayerLayer.HairBack,
-+				PlayerLayer.JimsCloak,
-+				PlayerLayer.HeadBack,
-+				PlayerLayer.TorsoUnindent, //}
-+				PlayerLayer.MountBack,
-+				PlayerLayer.Carpet,
-+				PlayerLayer.PortableStool,
-+				PlayerLayer.TorsoIndent, //{
-+				PlayerLayer.ElectrifiedDebuffBack,
-+				PlayerLayer.ForbiddenSetRing,
-+				PlayerLayer.SafemanSun,
-+				PlayerLayer.WebbedDebuffBack,
-+				PlayerLayer.LeinforsHairShampoo,
-+				PlayerLayer.TorsoUnindent, //}
-+				PlayerLayer.Backpacks,
-+				PlayerLayer.BackAcc,
-+				PlayerLayer.Wings,
-+				PlayerLayer.BalloonAcc,
++			var vanillaLayers = new List<PlayerDrawLayer> {
++				PlayerDrawLayer.TorsoIndent, //{
++				PlayerDrawLayer.HairBack,
++				PlayerDrawLayer.JimsCloak,
++				PlayerDrawLayer.HeadBack,
++				PlayerDrawLayer.TorsoUnindent, //}
++				PlayerDrawLayer.MountBack,
++				PlayerDrawLayer.Carpet,
++				PlayerDrawLayer.PortableStool,
++				PlayerDrawLayer.TorsoIndent, //{
++				PlayerDrawLayer.ElectrifiedDebuffBack,
++				PlayerDrawLayer.ForbiddenSetRing,
++				PlayerDrawLayer.SafemanSun,
++				PlayerDrawLayer.WebbedDebuffBack,
++				PlayerDrawLayer.LeinforsHairShampoo,
++				PlayerDrawLayer.TorsoUnindent, //}
++				PlayerDrawLayer.Backpacks,
++				PlayerDrawLayer.BackAcc,
++				PlayerDrawLayer.Wings,
++				PlayerDrawLayer.BalloonAcc,
 +			};
 +
  			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.HeldItem);
++				vanillaLayers.Add(PlayerDrawLayer.HeldItem);
  
 -			PlayerDrawLayers.DrawPlayer_12_Skin(ref drawinfo);
-+			vanillaLayers.Add(PlayerLayer.Skin);
++			vanillaLayers.Add(PlayerDrawLayer.Skin);
  			if (drawinfo.drawPlayer.wearsRobe && drawinfo.drawPlayer.body != 166) {
 -				PlayerDrawLayers.DrawPlayer_14_Shoes(ref drawinfo);
 -				PlayerDrawLayers.DrawPlayer_13_Leggings(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.Shoes);
-+				vanillaLayers.Add(PlayerLayer.Leggings);
++				vanillaLayers.Add(PlayerDrawLayer.Shoes);
++				vanillaLayers.Add(PlayerDrawLayer.Leggings);
  			}
  			else {
 -				PlayerDrawLayers.DrawPlayer_13_Leggings(ref drawinfo);
 -				PlayerDrawLayers.DrawPlayer_14_Shoes(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.Leggings);
-+				vanillaLayers.Add(PlayerLayer.Shoes);
++				vanillaLayers.Add(PlayerDrawLayer.Leggings);
++				vanillaLayers.Add(PlayerDrawLayer.Shoes);
  			}
  
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
@@ -118,22 +118,22 @@
 -			PlayerDrawLayers.DrawPlayer_20_NeckAcc(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_21_Head(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_22_FaceAcc(ref drawinfo);
-+			vanillaLayers.Add(PlayerLayer.TorsoIndent); //{
-+			vanillaLayers.Add(PlayerLayer.SkinLongCoat);
-+			vanillaLayers.Add(PlayerLayer.ArmorLongCoat);
-+			vanillaLayers.Add(PlayerLayer.Torso);
-+			vanillaLayers.Add(PlayerLayer.OffhandAcc);
-+			vanillaLayers.Add(PlayerLayer.WaistAcc);
-+			vanillaLayers.Add(PlayerLayer.NeckAcc);
-+			vanillaLayers.Add(PlayerLayer.Head);
-+			vanillaLayers.Add(PlayerLayer.FaceAcc);
++			vanillaLayers.Add(PlayerDrawLayer.TorsoIndent); //{
++			vanillaLayers.Add(PlayerDrawLayer.SkinLongCoat);
++			vanillaLayers.Add(PlayerDrawLayer.ArmorLongCoat);
++			vanillaLayers.Add(PlayerDrawLayer.Torso);
++			vanillaLayers.Add(PlayerDrawLayer.OffhandAcc);
++			vanillaLayers.Add(PlayerDrawLayer.WaistAcc);
++			vanillaLayers.Add(PlayerDrawLayer.NeckAcc);
++			vanillaLayers.Add(PlayerDrawLayer.Head);
++			vanillaLayers.Add(PlayerDrawLayer.FaceAcc);
  			if (drawinfo.drawFrontAccInNeckAccLayer) {
 -				PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
 -				PlayerDrawLayers.DrawPlayer_32_FrontAcc(ref drawinfo);
 -				PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.TorsoUnindent); //}
-+				vanillaLayers.Add(PlayerLayer.FrontAcc);
-+				vanillaLayers.Add(PlayerLayer.TorsoIndent); //{
++				vanillaLayers.Add(PlayerDrawLayer.TorsoUnindent); //}
++				vanillaLayers.Add(PlayerDrawLayer.FrontAcc);
++				vanillaLayers.Add(PlayerDrawLayer.TorsoIndent); //{
  			}
  
 -			PlayerDrawLayers.DrawPlayer_23_MountFront(ref drawinfo);
@@ -142,27 +142,27 @@
 -			PlayerDrawLayers.DrawPlayer_extra_MountPlus(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_26_SolarShield(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_MountMinus(ref drawinfo);
-+			vanillaLayers.Add(PlayerLayer.MountFront);
-+			vanillaLayers.Add(PlayerLayer.Pulley);
-+			vanillaLayers.Add(PlayerLayer.Shield);
-+			vanillaLayers.Add(PlayerLayer.MountIndent); //{
-+			vanillaLayers.Add(PlayerLayer.SolarShield);
-+			vanillaLayers.Add(PlayerLayer.MountUnindent); //}
++			vanillaLayers.Add(PlayerDrawLayer.MountFront);
++			vanillaLayers.Add(PlayerDrawLayer.Pulley);
++			vanillaLayers.Add(PlayerDrawLayer.Shield);
++			vanillaLayers.Add(PlayerDrawLayer.MountIndent); //{
++			vanillaLayers.Add(PlayerDrawLayer.SolarShield);
++			vanillaLayers.Add(PlayerDrawLayer.MountUnindent); //}
  			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.HeldItem);
++				vanillaLayers.Add(PlayerDrawLayer.HeldItem);
  
 -			PlayerDrawLayers.DrawPlayer_28_ArmOverItem(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_29_OnhandAcc(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_30_BladedGlove(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
-+			vanillaLayers.Add(PlayerLayer.ArmOverItem);
-+			vanillaLayers.Add(PlayerLayer.HandOnAcc);
-+			vanillaLayers.Add(PlayerLayer.BladedGlove);
-+			vanillaLayers.Add(PlayerLayer.TorsoUnindent); //}
++			vanillaLayers.Add(PlayerDrawLayer.ArmOverItem);
++			vanillaLayers.Add(PlayerDrawLayer.HandOnAcc);
++			vanillaLayers.Add(PlayerDrawLayer.BladedGlove);
++			vanillaLayers.Add(PlayerDrawLayer.TorsoUnindent); //}
  			if (!drawinfo.drawFrontAccInNeckAccLayer)
 -				PlayerDrawLayers.DrawPlayer_32_FrontAcc(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.FrontAcc);
++				vanillaLayers.Add(PlayerDrawLayer.FrontAcc);
  
  			if (drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm)
 -				PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawinfo);
@@ -173,27 +173,27 @@
 -			PlayerDrawLayers.DrawPlayer_35_IceBarrier(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
 -			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
-+				vanillaLayers.Add(PlayerLayer.HeldItem);
++				vanillaLayers.Add(PlayerDrawLayer.HeldItem);
 +
-+			vanillaLayers.Add(PlayerLayer.ProjectileOverArm);
-+			vanillaLayers.Add(PlayerLayer.FrozenOrWebbedDebuff);
-+			vanillaLayers.Add(PlayerLayer.ElectrifiedDebuffFront);
-+			vanillaLayers.Add(PlayerLayer.IceBarrier);
-+			vanillaLayers.Add(PlayerLayer.CaptureTheGem);
-+			vanillaLayers.Add(PlayerLayer.BeetleBuff);
++			vanillaLayers.Add(PlayerDrawLayer.ProjectileOverArm);
++			vanillaLayers.Add(PlayerDrawLayer.FrozenOrWebbedDebuff);
++			vanillaLayers.Add(PlayerDrawLayer.ElectrifiedDebuffFront);
++			vanillaLayers.Add(PlayerDrawLayer.IceBarrier);
++			vanillaLayers.Add(PlayerDrawLayer.CaptureTheGem);
++			vanillaLayers.Add(PlayerDrawLayer.BeetleBuff);
 +
 +			for (int i = 0; i < vanillaLayers.Count; i++) {
 +				vanillaLayers[i].depth = i;
 +			}
 +
 +			var readOnlyVanillaLayers = vanillaLayers.ToList().AsReadOnly();
-+			var layers = new Dictionary<string, List<PlayerLayer>> {
++			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
 +				{ "Terraria", vanillaLayers }
 +			};
 +
 +			PlayerLayerHooks.ModifyDrawLayers(drawPlayer, layers, readOnlyVanillaLayers);
 +			PlayerHooks.AddDrawLayers(drawPlayer, layers);
-+			PlayerHooks.ModifyDrawLayers(drawPlayer, new ReadOnlyDictionary<string, List<PlayerLayer>>(layers));
++			PlayerHooks.ModifyDrawLayers(drawPlayer, new ReadOnlyDictionary<string, List<PlayerDrawLayer>>(layers));
 +
 +			foreach (var layer in layers.SelectMany(pair => pair.Value).OrderBy(l => l.depth)) {
 +				if (!headOnly || layer.IsHeadLayer) {

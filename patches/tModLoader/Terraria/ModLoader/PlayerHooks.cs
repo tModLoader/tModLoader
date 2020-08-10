@@ -946,9 +946,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookAddDrawLayers = AddHook<Func<IEnumerable<PlayerLayer>>>(p => p.AddDrawLayers);
+		private static HookList HookAddDrawLayers = AddHook<Func<IEnumerable<PlayerDrawLayer>>>(p => p.AddDrawLayers);
 
-		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerLayer>> layers) {
+		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers) {
 			foreach (int index in HookAddDrawLayers.arr) {
 				var modPlayer = drawPlayer.modPlayers[index];
 				var newLayers = modPlayer.AddDrawLayers();
@@ -957,7 +957,7 @@ namespace Terraria.ModLoader
 					string modName = modPlayer.Mod.Name;
 
 					if (!layers.TryGetValue(modName, out var list)) {
-						layers[modName] = list = new List<PlayerLayer>();
+						layers[modName] = list = new List<PlayerDrawLayer>();
 					}
 
 					list.AddRange(newLayers);
@@ -965,9 +965,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, List<PlayerLayer>>>>(p => p.ModifyDrawLayers);
+		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, List<PlayerDrawLayer>>>>(p => p.ModifyDrawLayers);
 
-		public static void ModifyDrawLayers(Player drawPlayer, IReadOnlyDictionary<string, List<PlayerLayer>> layers) {
+		public static void ModifyDrawLayers(Player drawPlayer, IReadOnlyDictionary<string, List<PlayerDrawLayer>> layers) {
 			foreach (int index in HookModifyDrawLayers.arr) {
 				drawPlayer.modPlayers[index].ModifyDrawLayers(layers);
 			}

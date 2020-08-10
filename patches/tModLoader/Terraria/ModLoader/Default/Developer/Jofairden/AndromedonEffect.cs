@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			_lastLife = player.statLife;
 		}
 
-		public IEnumerable<PlayerLayer> AddDrawLayers(Mod mod, Player player) {
+		public IEnumerable<PlayerDrawLayer> AddDrawLayers(Mod mod, Player player) {
 			if (LayerStrength < 0f) {
 				yield break;
 			}
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			_bodySlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
 			_legSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
 
-			static PlayerLayer Layer(PlayerLayer layer, float depth) {
+			static PlayerDrawLayer Layer(PlayerDrawLayer layer, float depth) {
 				layer.visible = true;
 				layer.depth = depth;
 
@@ -87,26 +87,26 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			}
 
 			if (player.head == _headSlot) {
-				yield return Layer(PowerRanger_Head.GlowLayer, PlayerLayer.Head.depth + 0.5f);
+				yield return Layer(PowerRanger_Head.GlowLayer, PlayerDrawLayer.Head.depth + 0.5f);
 
 				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Head.ShaderLayer, PlayerLayer.Head.depth - 0.5f);
+					yield return Layer(PowerRanger_Head.ShaderLayer, PlayerDrawLayer.Head.depth - 0.5f);
 				}
 			}
 
 			if (player.body == _bodySlot) {
-				yield return Layer(PowerRanger_Body.GlowLayer, PlayerLayer.Torso.depth + 0.5f);
+				yield return Layer(PowerRanger_Body.GlowLayer, PlayerDrawLayer.Torso.depth + 0.5f);
 
 				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Body.ShaderLayer, PlayerLayer.Torso.depth - 0.5f);
+					yield return Layer(PowerRanger_Body.ShaderLayer, PlayerDrawLayer.Torso.depth - 0.5f);
 				}
 			}
 
 			if (player.legs == _legSlot) {
-				yield return Layer(PowerRanger_Legs.GlowLayer, PlayerLayer.Leggings.depth + 0.5f);
+				yield return Layer(PowerRanger_Legs.GlowLayer, PlayerDrawLayer.Leggings.depth + 0.5f);
 
 				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Legs.ShaderLayer, PlayerLayer.Leggings.depth - 0.5f);
+					yield return Layer(PowerRanger_Legs.ShaderLayer, PlayerDrawLayer.Leggings.depth - 0.5f);
 				}
 			}
 		}

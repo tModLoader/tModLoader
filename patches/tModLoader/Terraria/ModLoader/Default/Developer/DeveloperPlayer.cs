@@ -32,6 +32,6 @@ namespace Terraria.ModLoader.Default.Developer
 			AndromedonEffect?.UpdateAura(player);
 		}
 
-		public override IEnumerable<PlayerLayer> AddDrawLayers() => AndromedonEffect?.AddDrawLayers(Mod, player) ?? base.AddDrawLayers();
+		public override IEnumerable<PlayerDrawLayer> AddDrawLayers() => AndromedonEffect?.AddDrawLayers(Mod, player) ?? base.AddDrawLayers();
 	}
 }

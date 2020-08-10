@@ -88,8 +88,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			};
 		}
 
-		public static PlayerLayer CreateShaderLayer(string name, bool isHeadLayer, PlayerLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
-			return new LegacyPlayerLayer(ModLoader.GetMod("ModLoaderMod"), name, isHeadLayer, parent, (ref PlayerDrawSet drawInfo) => {
+		public static PlayerDrawLayer CreateShaderLayer(string name, bool isHeadLayer, PlayerDrawLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
+			return new LegacyPlayerDrawLayer(ModLoader.GetMod("ModLoaderMod"), name, isHeadLayer, parent, (ref PlayerDrawSet drawInfo) => {
 				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
@@ -131,8 +131,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			});
 		}
 
-		public static PlayerLayer CreateGlowLayer(string name, bool isHeadLayer, PlayerLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
-			return new LegacyPlayerLayer(ModLoader.GetMod("ModLoaderMod"), name, isHeadLayer, parent, (ref PlayerDrawSet drawInfo) => {
+		public static PlayerDrawLayer CreateGlowLayer(string name, bool isHeadLayer, PlayerDrawLayer parent, Func<PlayerDrawSet, DrawDataInfo> getDataFunc) {
+			return new LegacyPlayerDrawLayer(ModLoader.GetMod("ModLoaderMod"), name, isHeadLayer, parent, (ref PlayerDrawSet drawInfo) => {
 				if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
 					return;
 				}
