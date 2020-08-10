@@ -128,6 +128,8 @@ namespace Terraria.ModLoader
 			LoaderUtils.ResetStaticMembers(typeof(TileID), true);
 
 			//Etc
+			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
+			Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref Main.tileLighted, nextTile);
 			Array.Resize(ref Main.tileMergeDirt, nextTile);
 			Array.Resize(ref Main.tileCut, nextTile);
@@ -163,7 +165,6 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileFlame, nextTile);
 			Array.Resize(ref Main.tileFrame, nextTile);
 			Array.Resize(ref Main.tileFrameCounter, nextTile);
-			Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
 			Array.Resize(ref Main.tileMerge, nextTile);
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 			Array.Resize(ref Main.tileGlowMask, nextTile);

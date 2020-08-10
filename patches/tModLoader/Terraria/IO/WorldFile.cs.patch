@@ -140,7 +140,7 @@
 -				writer.Write(TileEntity.ByID.Count);
 +				writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
  				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
-+					if (item.Value.type < ModTileEntity.numVanilla)
++					if (item.Value.type < ModTileEntity.NumVanilla)
 -					TileEntity.Write(writer, item.Value);
 +						TileEntity.Write(writer, item.Value);
  				}
