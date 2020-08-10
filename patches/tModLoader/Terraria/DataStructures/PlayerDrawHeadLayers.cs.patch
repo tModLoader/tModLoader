@@ -4,7 +4,7 @@
  
  namespace Terraria.DataStructures
  {
-+	//Made this internal, so that modders don't confuse this with Terraria.ModLoader.PlayerHeadLayer --Mirsario.
++	//Made this internal for less confusion. 'Head-only' draw layers are no longer used, even internally. There are still some fix patches below, though, just in case some modder messes with this via reflection. --Mirsario.
 -	public static class PlayerDrawHeadLayers
 +	internal static class PlayerDrawHeadLayers
  	{
