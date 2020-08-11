@@ -9,6 +9,19 @@ namespace Terraria.ModLoader
 	partial class ModSystem
 	{
 		/// <summary>
+		/// Override this method to initialize your system. This is guaranteed to be called after all content has been autoloaded.
+		/// </summary>
+		public new virtual void Load() {
+			//TODO: The 'new' modifier is temporary, as removal of ModType.Load is being considered for being quite useless. 
+		}
+
+		/// <summary>
+		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
+		/// </summary>
+		public virtual void PostSetupContent() {
+		}
+
+		/// <summary>
 		/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
 		/// </summary>
 		public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform) {

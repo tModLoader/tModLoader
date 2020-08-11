@@ -134,6 +134,10 @@ namespace Terraria.ModLoader
 		}
 
 		internal void SetupContent() {
+			foreach (ModSystem system in systems.Values) {
+				system.Load();
+			}
+
 			foreach (ModItem item in items.Values) {
 				ItemLoader.SetDefaults(item.item, false);
 				
@@ -225,6 +229,10 @@ namespace Terraria.ModLoader
 
 			foreach (ModWaterfallStyle waterfallStyle in waterfallStyles.Values) {
 				Main.instance.waterfallManager.waterfallTexture[waterfallStyle.Type] = ModContent.GetTexture(waterfallStyle.Texture);
+			}
+
+			foreach (ModSystem system in systems.Values) {
+				system.PostSetupContent();
 			}
 		}
 
