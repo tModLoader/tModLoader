@@ -35,10 +35,9 @@ namespace Terraria.ModLoader.Tags
 
 		internal static void Initialize() {
 			//The following associates TagShortcuts with TagData instances.
-			var updateDataMethod = typeof(TagShortcut<>).GetMethod(nameof(TagShortcut<TagGroup>.UpdateData),BindingFlags.Instance|BindingFlags.NonPublic);
 
-			foreach (object obj in TagShortcuts) {
-				updateDataMethod.Invoke(obj, null);
+			foreach (TagShortcut shortcut in TagShortcuts) {
+				shortcut.UpdateData();
 			}
 		}
 	}
