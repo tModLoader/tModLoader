@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -19,7 +17,7 @@ namespace Terraria.ModLoader
 
 		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
 
-		private static List<ModMenu> lastAvailableMenus;
+		private static List<ModMenu> lastAvailableMenus = new List<ModMenu>();
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
 
@@ -64,8 +62,8 @@ namespace Terraria.ModLoader
 
 			Texture2D logo = currentMenu.Logo.Value;
 
-			float scale = 1;
 			Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
+			float scale = 1;
 
 			if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
 				spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * scale, SpriteEffects.None, 0f);
@@ -78,7 +76,7 @@ namespace Terraria.ModLoader
 
 			int newMenus = AvailableMenus.Count(m => m.isNew);
 
-			string modName = currentMenu.NameOnMenu ?? currentMenu.Mod?.DisplayName ?? "tModLoader";
+			string modName = currentMenu.NameOnMenu ?? currentMenu.Mod.DisplayName;
 			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
 
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);

@@ -429,6 +429,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
+			MenuLoader.currentModMenu = null; // This is necessary to do before anything else because the main menu drawing is on a separate thread and it can cause issues with trying to use disposed textures
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {

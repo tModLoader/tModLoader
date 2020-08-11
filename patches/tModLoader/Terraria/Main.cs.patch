@@ -3085,8 +3085,8 @@
 +			ModMenu menu = MenuLoader.currentModMenu;
  			int num = moonType;
 +			if (gameMenu && menu != null) {
-+				value = menu.SunTexture.Value;
-+				value2 = menu.MoonTexture.Value;
++				value = menu.SunTexture?.Value ?? TextureAssets.Sun.Value;
++				value2 = menu.MoonTexture?.Value ?? TextureAssets.Moon[Utils.Clamp(num, 0, 8)].Value;
 +				goto SkipVanillaTextures;
 +			}
 +			value = TextureAssets.Sun.Value;
@@ -3099,6 +3099,27 @@
  			int num2 = sceneArea.bgTopY;
  			int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  			int num4 = 0;
+@@ -47711,7 +_,11 @@
+ 
+ 				moonColor *= num13;
+ 				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
++				if (menu != null) {
++					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
++					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
++				}
+-				if (WorldGen.drunkWorldGen)
++				else if (WorldGen.drunkWorldGen)
+ 					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
+ 				else if (pumpkinMoon)
+ 					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
+@@ -47720,7 +_,6 @@
+ 				else
+ 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
+ 			}
+-
+ 			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
+ 			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
+ 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
 @@ -47831,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);

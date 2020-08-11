@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The icon texture shown when this ModMenu is active. If not overridden, it will use the tModLoader logo.
+		/// The logo texture shown when this ModMenu is active. If not overridden, it will use the tModLoader logo.
 		/// </summary>
 		public virtual Asset<Texture2D> Logo => ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.Logo");
 
