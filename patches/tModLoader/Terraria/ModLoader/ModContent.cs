@@ -18,6 +18,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Tags;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -505,6 +506,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static void ResizeArrays(bool unloading = false) {
+			ContentTags.Initialize();
 			ItemLoader.ResizeArrays(unloading);
 			EquipLoader.ResizeAndFillArrays();
 			ModPrefix.ResizeArrays();

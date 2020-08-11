@@ -13,5 +13,18 @@ namespace Terraria.ModLoader.Tags
 			entryList = new List<int>();
 			readonlyEntryList = entryList.AsReadOnly();
 		}
+
+		public void Set(int id, bool value) {
+			idToValue[id] = value;
+
+			if (!value) {
+				entryList.Remove(id);
+			}
+			else if (!entryList.Contains(id)) {
+				entryList.Add(id);
+			}
+		}
+
+		public bool Has(int id) => idToValue[id];
 	}
 }

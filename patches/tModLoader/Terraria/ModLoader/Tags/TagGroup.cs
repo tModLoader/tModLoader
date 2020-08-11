@@ -11,42 +11,35 @@ namespace Terraria.ModLoader.Tags
 	{
 		public abstract int TypeCount { get; }
 
-		internal Dictionary<string, TagData> TagToIds = new Dictionary<string, TagData>(StringComparer.InvariantCultureIgnoreCase);
+		internal Dictionary<string, TagData> TagNameToData = new Dictionary<string, TagData>(StringComparer.InvariantCultureIgnoreCase);
 
 		protected sealed override void Register() => ContentInstance.Register(this);
 
 		public sealed override void Unload() {
-			TagToIds.Clear();
+			TagNameToData.Clear();
 
-			TagToIds = null;
+			TagNameToData = null;
 		}
 
-		private TagData GetTagData(string tagName) {
-			if (!TagToIds.TryGetValue(tagName, out var data)) {
-				TagToIds[tagName] = data = new TagData(TypeCount);
+		/// <summary> Sets whether or not the content piece with the provided Id has the provided tag. </summary>
+		/// <param name="tagName">The name of the tag.</param>
+		/// <param name="id">The content id.</param>
+		/// <param name="value">Whether or not the tag should be present for the provided content id.</param>
+		public void SetTag(string tagName, int id, bool value = true)
+			=> GetTagData(tagName).Set(id, value);
+
+		/// <summary> Returns whether or not the content piece with the Id has the provided tag. </summary>
+		/// <param name="tagName">The name of the tag.</param>
+		/// <param name="id">The content id.</param>
+		public bool HasTag(string tagName, int id)
+			=> GetTagData(tagName).Has(id);
+
+		internal TagData GetTagData(string tagName) {
+			if (!TagNameToData.TryGetValue(tagName, out var data)) {
+				TagNameToData[tagName] = data = new TagData(TypeCount);
 			}
 
 			return data;
 		}
-
-		public void AddTag(string tagName, int id) {
-			var data = GetTagData(tagName);
-
-			data.idToValue[id] = true;
-
-			if (!data.entryList.Contains(id)) {
-				data.entryList.Add(id);
-			}
-		}
-
-		public void RemoveTag(string tagName, int id) {
-			var data = GetTagData(tagName);
-
-			data.idToValue[id] = false;
-
-			data.entryList.Remove(id);
-		}
-
-		public bool HasTag(string tagName, int id) => GetTagData(tagName).idToValue[id];
 	}
 }
