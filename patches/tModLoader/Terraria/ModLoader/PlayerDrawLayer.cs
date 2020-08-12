@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Terraria.DataStructures;
+﻿using Terraria.DataStructures;
 using static Terraria.DataStructures.PlayerDrawLayers;
 
 namespace Terraria.ModLoader

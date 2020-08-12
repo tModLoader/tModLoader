@@ -2,7 +2,6 @@
 
 namespace Terraria.ModLoader
 {
-	/// <summary> This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData. </summary>
 	[Autoload(false)]
 	internal sealed class LegacyPlayerDrawLayer : PlayerDrawLayer
 	{
