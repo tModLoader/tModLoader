@@ -1,6 +1,7 @@
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -9,6 +10,8 @@ namespace ExampleMod.Common
 {
 	public class ExamplePlayerDrawLayer : PlayerDrawLayer
 	{
+		private Asset<Texture2D> exampleItemTexture;
+
 		//Returning true in this property makes this layer appear on the minimap player head icon.
 		public override bool IsHeadLayer => true;
 
@@ -29,12 +32,17 @@ namespace ExampleMod.Common
 		public override void Draw(ref PlayerDrawSet drawInfo) {
 			//The following code draws ExampleItem's texture behind the player's head.
 
-			var exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem").Value;
+			if (exampleItemTexture == null) {
+				exampleItemTexture = ModContent.GetTexture("ExampleMod/Content/Items/ExampleItem");
+			}
+
+			var position = drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition;
+			position = new Vector2((int)position.X, (int)position.Y); //You'll sometimes want to do this, to avoid quivering.
 
 			//Queues a drawing of a sprite. Do not use SpriteBatch in drawlayers!
 			drawInfo.DrawDataCache.Add(new DrawData(
-				exampleItemTexture, //The texture to render.
-				drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition, //Position to render at.
+				exampleItemTexture.Value, //The texture to render.
+				position, //Position to render at.
 				null, //Source rectangle.
 				Color.White, //Color.
 				0f, //Rotation.
