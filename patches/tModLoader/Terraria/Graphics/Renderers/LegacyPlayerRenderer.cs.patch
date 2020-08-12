@@ -42,7 +42,7 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -115,79 +_,114 @@
+@@ -115,79 +_,115 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
@@ -185,6 +185,7 @@
 +			for (int i = 0; i < vanillaLayers.Count; i++) {
 +				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
 +
++				layer.visible = true;
 +				layer.defaultDepth = layer.depth = i;
 +			}
 +
@@ -207,7 +208,7 @@
 +			PlayerHooks.ModifyDrawLayers(drawPlayer, readonlyLayers);
 +
 +			foreach (var layer in readonlyLayers.SelectMany(pair => pair.Value).OrderBy(l => l.depth)) {
-+				if (!headOnly || layer.IsHeadLayer) {
++				if (layer.visible && (!headOnly || layer.IsHeadLayer)) {
 +					layer.Draw(ref drawinfo);
 +				}
 +			}
