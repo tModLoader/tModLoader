@@ -473,7 +473,7 @@ namespace Terraria.ModLoader
 			GlobalBgStyleLoader.Unload();
 			WaterStyleLoader.Unload();
 			WaterfallStyleLoader.Unload();
-			PlayerLayerHooks.Unload();
+			PlayerDrawLayerHooks.Unload();
 			WorldHooks.Unload();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {

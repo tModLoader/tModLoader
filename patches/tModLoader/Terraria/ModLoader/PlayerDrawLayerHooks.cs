@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Terraria.ModLoader
 {
-	public static class PlayerLayerHooks
+	public static class PlayerDrawLayerHooks
 	{
 		internal static readonly IList<PlayerDrawLayer> ModLayers = new List<PlayerDrawLayer>();
 

@@ -157,7 +157,7 @@ namespace Terraria.ModLoader
 		/// <param name="depth"> The depth that this layer wishes to have. </param>
 		public abstract void GetDefaults(Player drawPlayer, out bool visible, out float depth);
 
-		protected override void Register() => PlayerLayerHooks.Add(this);
+		protected override void Register() => PlayerDrawLayerHooks.Add(this);
 
 		private static PlayerDrawLayer CreateVanillaLayer(string name, bool isHeadLayer, LayerFunction layer) => new LegacyPlayerDrawLayer(null, name, isHeadLayer, layer);
 	}
