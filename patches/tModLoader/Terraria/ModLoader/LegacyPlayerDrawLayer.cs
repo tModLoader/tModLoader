@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Terraria.DataStructures;
+﻿using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
 	/// <summary> This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData. </summary>
 	[Autoload(false)]
-	public sealed class LegacyPlayerDrawLayer : PlayerDrawLayer
+	internal sealed class LegacyPlayerDrawLayer : PlayerDrawLayer
 	{
 		/// <summary> The delegate of this method, which can either do the actual drawing or add draw data, depending on what kind of layer this is. </summary>
 		public readonly LayerFunction Layer;
