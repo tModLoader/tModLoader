@@ -18,7 +18,7 @@
  		}
  
  		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, int inactiveLayerDepth) {
-@@ -121,14 +_,15 @@
+@@ -121,7 +_,7 @@
  			scale = Vector2.One;
  			shader = 0;
  			ignorePlayerRotation = false;
@@ -27,12 +27,3 @@
  		}
  
  		public void Draw(SpriteBatch sb) {
- 			if (useDestinationRectangle)
- 				sb.Draw(texture, destinationRectangle, sourceRect, color, rotation, origin, effect, 0f);
- 			else
--				sb.Draw(texture, position, sourceRect, color, rotation, origin, scale, effect, 0f);
-+				//tML addition: cast position coordinates to int to avoid having to do that in modded layers to avoid sprites quivering.
-+				sb.Draw(texture, new Vector2((int)position.X, (int)position.Y), sourceRect, color, rotation, origin, scale, effect, 0f);
- 		}
- 	}
- }
