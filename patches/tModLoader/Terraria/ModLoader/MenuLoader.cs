@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -45,44 +44,43 @@ namespace Terraria.ModLoader
 			}
 			currentModMenu = menus[index];
 			currentModMenu.SelectionInit();
-			lastUsedModMenuName = GetModMenuName(currentModMenu);
 			lastAvailableMenus = AvailableMenus;
 		}
 
 		private static string GetModMenuName(ModMenu menu) => $"{menu.Mod.Name}/{menu.Name}";
 
-		internal static void UpdateAndDrawModMenu(ModMenu currentMenu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
-			if (lastUsedModMenuName != GetModMenuName(currentMenu)) {
-				currentMenu.SelectionInit();
-				lastUsedModMenuName = GetModMenuName(currentMenu);
+		internal static void UpdateAndDrawModMenu(ModMenu menu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
+			if (lastUsedModMenuName != GetModMenuName(menu)) {
+				menu.SelectionInit();
+				lastUsedModMenuName = GetModMenuName(menu);
 			}
 
-			currentMenu.userInterface?.Update(gameTime);
-			currentMenu.userInterface?.Draw(spriteBatch, gameTime);
-			currentMenu.Update(Main.menuMode == 0);
+			menu.userInterface?.Update(gameTime);
+			menu.userInterface?.Draw(spriteBatch, gameTime);
+			menu.Update(Main.menuMode == 0);
 
-			Texture2D logo = currentMenu.Logo.Value;
+			Texture2D logo = menu.Logo.Value;
 
 			Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
 			float scale = 1;
 
-			if (currentMenu is MenuJourneysEnd) {
+			if (menu is MenuJourneysEnd) {
 				Color color2 = new Color((byte)(color.R * (Main.LogoA / 255f)), (byte)(color.G * (Main.LogoA / 255f)), (byte)(color.B * (Main.LogoA / 255f)), (byte)(color.A * (Main.LogoA / 255f)));
 				Color color3 = new Color((byte)(color.R * (Main.LogoB / 255f)), (byte)(color.G * (Main.LogoB / 255f)), (byte)(color.B * (Main.LogoB / 255f)), (byte)(color.A * (Main.LogoB / 255f)));
 				spriteBatch.Draw(TextureAssets.Logo.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 				spriteBatch.Draw(TextureAssets.Logo2.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 			}
-			else if (currentMenu is MenuOldVanilla) {
+			else if (menu is MenuOldVanilla) {
 				Color color2 = new Color((byte)(color.R * (Main.LogoA / 255f)), (byte)(color.G * (Main.LogoA / 255f)), (byte)(color.B * (Main.LogoA / 255f)), (byte)(color.A * (Main.LogoA / 255f)));
 				Color color3 = new Color((byte)(color.R * (Main.LogoB / 255f)), (byte)(color.G * (Main.LogoB / 255f)), (byte)(color.B * (Main.LogoB / 255f)), (byte)(color.A * (Main.LogoB / 255f)));
 				spriteBatch.Draw(TextureAssets.Logo3.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 				spriteBatch.Draw(TextureAssets.Logo4.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 			}
 			else {
-				if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
-					spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (currentMenu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
+				if (menu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
+					spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (menu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
 				}
-				currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
+				menu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
 			}
 
 			if (currentModMenu.isNew) {
@@ -91,8 +89,7 @@ namespace Terraria.ModLoader
 
 			int newMenus = AvailableMenus.Count(m => m.isNew);
 
-			string modName = currentMenu.NameOnMenu ?? currentMenu.Mod.DisplayName;
-			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {modName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
+			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {menu.DisplayName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
 
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 
@@ -117,9 +114,9 @@ namespace Terraria.ModLoader
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
 			}
 
-			foreach (ModMenu menu in AvailableMenus) {
-				if (!lastAvailableMenus.Contains(menu)) {
-					menu.isNew = true;
+			foreach (ModMenu modMenu in AvailableMenus) {
+				if (!lastAvailableMenus.Contains(modMenu)) {
+					modMenu.isNew = true;
 				}
 			}
 

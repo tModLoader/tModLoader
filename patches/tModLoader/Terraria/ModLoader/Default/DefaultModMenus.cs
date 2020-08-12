@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Default
 	/// </summary>
 	internal class MenuJourneysEnd : ModMenu
 	{
-		public override string NameOnMenu => "Journey's End";
+		public override string DisplayName => "Journey's End";
 	}
 
 	/// <summary>
@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Default
 	{
 		public override bool IsAvailable => Main.instance.playOldTile;
 
-		public override string NameOnMenu => "Terraria 1.3.5.3";
+		public override string DisplayName => "Terraria 1.3.5.3";
 
 		public override int Music => MusicID.Title;
 	}

@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>
-		public virtual string NameOnMenu => null;
+		public virtual string DisplayName => Mod.DisplayName;
 
 		/// <summary>
 		/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
