@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Terraria.ModLoader
 {
@@ -22,6 +24,37 @@ namespace Terraria.ModLoader
 
 				list.Add(layer);
 			}
+		}
+
+		public static IEnumerable<PlayerDrawLayer> GetDrawLayers(Player drawPlayer, List<PlayerDrawLayer> vanillaLayers) {
+			for (int i = 0; i < vanillaLayers.Count; i++) {
+				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
+
+				layer.visible = true;
+				layer.defaultDepth = layer.depth = i;
+			}
+
+			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
+				{ "Terraria", vanillaLayers }
+			};
+
+			//Add OOP layers.
+			AddDrawLayers(drawPlayer, layers);
+
+			//Actually make layer lists readonly
+			var readonlyLayersBackingDictionary = new Dictionary<string, IReadOnlyList<PlayerDrawLayer>>();
+			var readonlyLayers = new ReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>(readonlyLayersBackingDictionary);
+
+			foreach (var pair in layers) {
+				readonlyLayersBackingDictionary[pair.Key] = pair.Value.AsReadOnly();
+			}
+
+			//Modify draw layers, but not the collections.
+			PlayerHooks.ModifyDrawLayers(drawPlayer, readonlyLayers);
+
+			return layers
+				.SelectMany(pair => pair.Value)
+				.OrderBy(l => l.depth);
 		}
 	}
 }
