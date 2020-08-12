@@ -42,7 +42,7 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -115,79 +_,116 @@
+@@ -115,79 +_,114 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
@@ -194,8 +194,6 @@
 +
 +			//Add OOP layers.
 +			PlayerLayerHooks.AddDrawLayers(drawPlayer, layers);
-+			//Add legacy layers.
-+			PlayerHooks.AddDrawLayers(drawPlayer, layers);
 +
 +			//Actually make layer lists readonly
 +			var readonlyLayersBackingDictionary = new Dictionary<string, IReadOnlyList<PlayerDrawLayer>>();

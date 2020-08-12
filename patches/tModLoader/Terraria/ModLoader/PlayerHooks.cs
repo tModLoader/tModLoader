@@ -946,25 +946,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookAddDrawLayers = AddHook<Func<IEnumerable<PlayerDrawLayer>>>(p => p.AddDrawLayers);
-
-		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers) {
-			foreach (int index in HookAddDrawLayers.arr) {
-				var modPlayer = drawPlayer.modPlayers[index];
-				var newLayers = modPlayer.AddDrawLayers();
-
-				if (newLayers != null) {
-					string modName = modPlayer.Mod.Name;
-
-					if (!layers.TryGetValue(modName, out var list)) {
-						layers[modName] = list = new List<PlayerDrawLayer>();
-					}
-
-					list.AddRange(newLayers);
-				}
-			}
-		}
-
 		private static HookList HookModifyDrawLayers = AddHook<Action<IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>>>>(p => p.ModifyDrawLayers);
 
 		public static void ModifyDrawLayers(Player drawPlayer, IReadOnlyDictionary<string, IReadOnlyList<PlayerDrawLayer>> layers) {

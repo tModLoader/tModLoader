@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
@@ -68,47 +67,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 				_auraTime = 300 + diff;
 			}
 			_lastLife = player.statLife;
-		}
-
-		public IEnumerable<PlayerDrawLayer> AddDrawLayers(Mod mod, Player player) {
-			if (LayerStrength < 0f) {
-				yield break;
-			}
-
-			_headSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Head}", EquipType.Head);
-			_bodySlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Body}", EquipType.Body);
-			_legSlot ??= mod.GetEquipSlot($"PowerRanger_{EquipType.Legs}", EquipType.Legs);
-
-			static PlayerDrawLayer Layer(PlayerDrawLayer layer, float depth) {
-				layer.visible = true;
-				layer.depth = depth;
-
-				return layer;
-			}
-
-			if (player.head == _headSlot) {
-				yield return Layer(PowerRanger_Head.GlowLayer, PlayerDrawLayer.Head.depth + 0.5f);
-
-				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Head.ShaderLayer, PlayerDrawLayer.Head.depth - 0.5f);
-				}
-			}
-
-			if (player.body == _bodySlot) {
-				yield return Layer(PowerRanger_Body.GlowLayer, PlayerDrawLayer.Torso.depth + 0.5f);
-
-				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Body.ShaderLayer, PlayerDrawLayer.Torso.depth - 0.5f);
-				}
-			}
-
-			if (player.legs == _legSlot) {
-				yield return Layer(PowerRanger_Legs.GlowLayer, PlayerDrawLayer.Leggings.depth + 0.5f);
-
-				if (ShaderStrength > 0f) {
-					yield return Layer(PowerRanger_Legs.ShaderLayer, PlayerDrawLayer.Leggings.depth - 0.5f);
-				}
-			}
 		}
 
 		public object Clone() {

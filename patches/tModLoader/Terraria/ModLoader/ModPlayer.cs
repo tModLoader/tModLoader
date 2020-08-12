@@ -745,12 +745,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add your own player draw layers.
-		/// Return an enumerable with the layers you want to add.
-		/// </summary>
-		public virtual IEnumerable<PlayerDrawLayer> AddDrawLayers() => Enumerable.Empty<PlayerDrawLayer>();
-
-		/// <summary>
 		/// Allows you to modify the layers that are about to be drawn, either their depth, or whether or not they'll be visible.
 		/// </summary>
 		/// <param name="layers"></param>
