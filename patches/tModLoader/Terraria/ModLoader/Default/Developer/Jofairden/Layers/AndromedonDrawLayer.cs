@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		public abstract DrawDataInfo GetData(PlayerDrawSet info);
 
 		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
-			visible = drawPlayer.GetModPlayer<DeveloperPlayer>().AndromedonEffect.LayerStrength > 0f;
+			visible = drawPlayer.shadow == 0f && !drawPlayer.invis && drawPlayer.GetModPlayer<DeveloperPlayer>().AndromedonEffect.LayerStrength > 0f;
 			depth = 0f;
 		}
 

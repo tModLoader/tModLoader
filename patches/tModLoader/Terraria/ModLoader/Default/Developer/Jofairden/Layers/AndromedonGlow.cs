@@ -10,10 +10,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	internal abstract class AndromedonGlow : AndromedonDrawLayer
 	{
 		public override void Draw(ref PlayerDrawSet drawInfo) {
-			if (drawInfo.shadow != 0f || drawInfo.drawPlayer.invis) {
-				return;
-			}
-
 			var drawDataInfo = GetData(drawInfo);
 			var drawPlayer = drawInfo.drawPlayer;
 			var devPlayer = drawPlayer.GetModPlayer<DeveloperPlayer>();
