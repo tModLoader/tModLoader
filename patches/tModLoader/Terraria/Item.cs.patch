@@ -8,7 +8,7 @@
  using Terraria.Audio;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,11 +_,25 @@
+@@ -10,11 +_,29 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -265,7 +265,7 @@
  
 -				if (rare > 11)
 -					rare = 11;
-+				if (rare > RarityLoader.RarityCount)
++				if (rare > RarityLoader.RarityCount - 1)
 +					rare = RarityLoader.RarityCount - 1;
  			}
  
