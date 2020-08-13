@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	{
 		public int Type { get; internal set; }
 
-		protected override void Register() {
+		protected sealed override void Register() {
 			if (!Mod.loading)
 				throw new Exception("AddRarity can only be called from Mod.Load or Mod.Autoload");
 
@@ -26,12 +26,12 @@ namespace Terraria.ModLoader
 		/// Returns White by default.
 		/// </summary>
 		/// <returns></returns>
-		public virtual Color RarityColor() => Color.White;
+		public virtual Color RarityColor => Color.White;
 
 		/// <summary>
 		/// Allows you to modify which rarities will come before and after this when a modifier is applied (since modifiers can affect rarity)
 		/// </summary>
 		/// <param name="vanillaOffset">The amount by which the rarity would be offset in vanilla. -2 is the most it can go down, and +2 is the most it can go up by.</param>
-		public virtual int ModifyRarityOffset(int vanillaOffset) => Type;
+		public virtual int ModifyOffsetRarity(int vanillaOffset) => Type;
 	}
 }

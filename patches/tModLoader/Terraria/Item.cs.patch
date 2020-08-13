@@ -250,7 +250,7 @@
 +					offset -= 2;
 +				else if (num14 <= 0.95)
 +					offset--;
-+				rare = RarityLoader.GetRarity(rare).ModifyRarityOffset(offset);
++				rare = RarityLoader.GetRarity(rare).ModifyOffsetRarity(offset);
 +				goto SkipVanillaRarity;
 +			}
 +

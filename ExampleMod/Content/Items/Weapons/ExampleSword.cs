@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.crit = 6; //The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins.
-			item.rare = ItemRarityID.Green; //The rarity of the weapon.
+			item.rare = ModContent.RarityType<ExampleModRarity>(); // Give this item our custom rarity.
 			item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 
