@@ -429,7 +429,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
-			MenuLoader.currentModMenu = null; // This is necessary to do before anything else because the main menu drawing is on a separate thread and it can cause issues with trying to use disposed textures
+			MenuLoader.CurrentModMenu = null; // This is required - if a modded menu is active on this thread, then the unload thread can dispose of its textures and cause a crash. This assignment will make it default to the tML menu.
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -13,15 +14,29 @@ namespace Terraria.ModLoader
 {
 	internal static class MenuLoader
 	{
-		internal static ModMenu currentModMenu;
+		internal static ModMenu CurrentModMenu {
+			get {
+				loadedSavedModMenu = false;
+				return currentModMenu ??= moddedMenus[0]; // If it is null, default to the tML one.
+			}
+			set => currentModMenu = value;
+		}
 
-		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>();
+		private static ModMenu currentModMenu;
+
+		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>() {
+			new MenutML(),
+			new MenuJourneysEnd(),
+			new MenuOldVanilla()
+		};
 
 		private static List<ModMenu> lastAvailableMenus = new List<ModMenu>();
 
 		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
 
 		internal static string lastUsedModMenuName = $"ModLoader/{nameof(MenutML)}";
+
+		private static bool loadedSavedModMenu;
 
 		internal static void Add(ModMenu modMenu) {
 			moddedMenus.Add(modMenu);
@@ -38,21 +53,20 @@ namespace Terraria.ModLoader
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
 			List<ModMenu> menus = AvailableMenus;
-			int index = menus.FindIndex(m => GetModMenuName(m) == lastUsedModMenuName);
+			int index = menus.FindIndex(m => m.Name == lastUsedModMenuName);
 			if (index == -1) {
 				index = 0;
 			}
 			currentModMenu = menus[index];
 			currentModMenu.SelectionInit();
 			lastAvailableMenus = AvailableMenus;
+			loadedSavedModMenu = true;
 		}
 
-		private static string GetModMenuName(ModMenu menu) => $"{menu.Mod.Name}/{menu.Name}";
-
 		internal static void UpdateAndDrawModMenu(ModMenu menu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
-			if (lastUsedModMenuName != GetModMenuName(menu)) {
+			if (lastUsedModMenuName != menu.Name && loadedSavedModMenu) {
 				menu.SelectionInit();
-				lastUsedModMenuName = GetModMenuName(menu);
+				lastUsedModMenuName = menu.Name;
 			}
 
 			menu.userInterface?.Update(gameTime);
@@ -124,7 +138,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			moddedMenus.Clear();
+			moddedMenus.RemoveAll(menu => !(menu is IDefaultModMenu)); // Always have the default menus in the list, by checking its attribute
 		}
 	}
 }

@@ -17,6 +17,8 @@ namespace Terraria.ModLoader
 
 		internal static Asset<Texture2D> modLoaderLogo;
 
+		public sealed override string Name => $"{Mod?.Name ?? "ModLoader"}/{base.Name}";
+
 		protected sealed override void Register() {
 			MenuLoader.Add(this);
 			ContentInstance.Register(this);
@@ -60,7 +62,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>
-		public virtual string DisplayName => Mod.DisplayName;
+		public virtual string DisplayName => Mod?.DisplayName ?? "tModLoader";
 
 		/// <summary>
 		/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
