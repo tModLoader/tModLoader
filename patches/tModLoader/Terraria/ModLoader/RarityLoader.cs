@@ -23,9 +23,7 @@ namespace Terraria.ModLoader
 			if (ModNet.AllowVanillaClients)
 				throw new Exception("Adding rarities breaks vanilla client compatibility");
 
-			int reserveID = RarityCount;
-			RarityCount++;
-			return reserveID;
+			return RarityCount++;
 		}
 
 		internal static ModRarity GetRarity(int type) {
