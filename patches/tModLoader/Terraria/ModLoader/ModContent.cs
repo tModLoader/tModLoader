@@ -460,7 +460,6 @@ namespace Terraria.ModLoader
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();
-			ModRarity.Unload();
 			ModDust.Unload();
 			TileLoader.Unload();
 			ModTileEntity.UnloadAll();
@@ -471,6 +470,7 @@ namespace Terraria.ModLoader
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
+			RarityLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

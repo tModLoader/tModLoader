@@ -43,13 +43,13 @@ namespace Terraria.ID
 		public static readonly IdDictionary Search = IdDictionary.Create<ItemRarityID, int>();
 
 		public static string GetUniqueKey(int type) {
-			if (type < -13 || (type > -11 && type < -1) || type > ModRarity.RarityCount)
+			if (type < Master || (type > Quest && type < Gray) || type > RarityLoader.RarityCount)
 				throw new ArgumentOutOfRangeException("Invalid type: " + type);
 
 			if (type < Count)
 				return "Terraria " + Search.GetName(type);
 
-			var modRarity = ModRarity.GetRarity(type);
+			var modRarity = RarityLoader.GetRarity(type);
 			return $"{modRarity.Mod.Name} {modRarity.Name}";
 		}
 

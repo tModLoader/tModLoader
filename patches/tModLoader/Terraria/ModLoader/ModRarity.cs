@@ -1,68 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	public abstract class ModRarity : ModType
 	{
-		private static int nextRarity = ItemRarityID.Count;
-
-		internal static readonly IList<ModRarity> rarities = new List<ModRarity>();
-
-		internal static int ReserveRarityID() {
-			if (ModNet.AllowVanillaClients)
-				throw new Exception("Adding item breaks vanilla client compatibility");
-			if (nextRarity == 0)
-				throw new Exception("ItemRarity ID limit has been broken");
-
-			int reserveID = nextRarity;
-			nextRarity++;
-			return reserveID;
-		}
-
-		/// <summary>
-		/// Returns the ModRarity associated with specified type
-		/// If not a ModRarity, returns null.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public static ModRarity GetRarity(int type) {
-			return type >= ItemRarityID.Count && type < RarityCount ? rarities[type - ItemRarityID.Count] : null;
-		}
-
-		public static int RarityCount => nextRarity;
-
-		internal static void Unload() {
-			rarities.Clear();
-			nextRarity = ItemRarityID.Count;
-		}
-
 		public int Type { get; internal set; }
 
 		protected override void Register() {
 			if (!Mod.loading)
 				throw new Exception("AddRarity can only be called from Mod.Load or Mod.Autoload");
 
-			if (Mod.prefixes.ContainsKey(Name))
+			if (Mod.rarities.ContainsKey(Name))
 				throw new Exception($"You tried to add 2 ModRarities with the same name: {Name}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddRarity with 2 rarities of the same name.");
 
-			Type = ReserveRarityID();
+			Type = RarityLoader.ReserveRarityID();
 
 			Mod.rarities[Name] = this;
-			rarities.Add(this);
+			RarityLoader.Add(this);
 			ContentInstance.Register(this);
 		}
-
-		/// <summary>
-		/// Whether or not your rarity's color is animated.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool Animated() => false;
 
 		/// <summary>
 		/// Your ModRarity's color.
@@ -72,27 +29,9 @@ namespace Terraria.ModLoader
 		public virtual Color RarityColor() => Color.White;
 
 		/// <summary>
-		/// Your modded rarity plus one. Used for prefixes. Returns your modded rarity by default.
+		/// Allows you to modify which rarities will come before and after this when a modifier is applied (since modifiers can affect rarity)
 		/// </summary>
-		/// <returns></returns>
-		public virtual int RarityPlusOne() => GetRarity(Type).Type;
-
-		/// <summary>
-		/// Your modded rarity plus two. Used for prefixes. Returns your modded rarity by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual int RarityPlusTwo() => GetRarity(Type).Type;
-
-		/// <summary>
-		/// Your modded rarity minus one. Used for prefixes. Returns your modded rarity by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual int RarityMinusOne() => GetRarity(Type).Type;
-
-		/// <summary>
-		/// Your modded rarity minus two. Used for prefixes. Returns your modded rarity by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual int RarityMinusTwo() => GetRarity(Type).Type;
+		/// <param name="vanillaOffset">The amount by which the rarity would be offset in vanilla. -2 is the most it can go down, and +2 is the most it can go up by.</param>
+		public virtual int ModifyRarityOffset(int vanillaOffset) => Type;
 	}
 }
