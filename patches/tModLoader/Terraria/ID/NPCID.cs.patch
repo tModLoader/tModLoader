@@ -1,11 +1,8 @@
 --- src/Terraria/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -1,7 +_,10 @@
- using Microsoft.Xna.Framework;
+@@ -2,6 +_,7 @@
  using ReLogic.Reflection;
  using System;
-+using ReLogic.Reflection;
-+using System;
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
@@ -20,42 +17,3 @@
  			public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  				{ 259, 0 },
  				{ 260, 0 },
-@@ -5666,6 +_,38 @@
- 				return NetIdMap[-id - 1];
- 
- 			return id;
-+		}
-+
-+		public static string GetUniqueKey(NPC npc) => GetUniqueKey(npc.type);
-+
-+		public static string GetUniqueKey(int type) {
-+			if (type < -65 || type >= NPCLoader.NPCCount)
-+				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+
-+			if (type < Count)
-+				return "Terraria " + Search.GetName(type);
-+
-+			var modNPC = NPCLoader.GetNPC(type);
-+			return $"{modNPC.Mod.Name} {modNPC.Name}";
-+		}
-+
-+		public static int TypeFromUniqueKey(string key) {
-+			string[] parts = key.Split(new char[] { ' ' }, 2);
-+			if (parts.Length != 2)
-+				return 0;
-+
-+			return TypeFromUniqueKey(parts[0], parts[1]);
-+		}
-+
-+		public static int TypeFromUniqueKey(string mod, string name) {
-+			if (mod == "Terraria") {
-+				if (!Search.ContainsName(name))
-+					return 0;
-+
-+				return Search.GetId(name);
-+			}
-+
-+			return ModLoader.ModLoader.GetMod(mod)?.NPCType(name) ?? 0;
- 		}
- 	}
- }

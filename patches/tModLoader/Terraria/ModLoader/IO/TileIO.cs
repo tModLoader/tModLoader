@@ -569,7 +569,7 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveTileEntities() {
 			List<TagCompound> list = new List<TagCompound>();
 			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
-				if (pair.Value.type >= ModTileEntity.numVanilla) {
+				if (pair.Value.type >= ModTileEntity.NumVanilla) {
 					ModTileEntity tileEntity = (ModTileEntity)pair.Value;
 					list.Add(new TagCompound {
 						["mod"] = tileEntity.Mod.Name,

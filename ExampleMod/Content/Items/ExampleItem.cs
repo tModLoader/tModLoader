@@ -15,8 +15,8 @@ namespace ExampleMod.Content.Items
 			item.height = 20; //The item texture's height
 
 			item.maxStack = 999; //The item's max stack value
-			item.value = Item.buyPrice(silver: 1); //The value of the item in copper coins.
-			item.rare = ItemRarityID.Blue; //The rarity of the weapon.
+			item.value = Item.buyPrice(silver: 1); //The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+			item.rare = ItemRarityID.Blue; // The rarity of the weapon.
 		}
 
 		public override void AddRecipes() {

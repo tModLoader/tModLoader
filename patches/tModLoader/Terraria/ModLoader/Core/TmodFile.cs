@@ -83,9 +83,6 @@ namespace Terraria.ModLoader.Core
 
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
-		[Obsolete("Use GetStream or GetBytes instead", true)]
-		public byte[] GetFile(string fileName) => GetBytes(fileName);
-
 		public byte[] GetBytes(FileEntry entry) {
 			if (entry.cachedBytes != null && !entry.IsCompressed)
 				return entry.cachedBytes;

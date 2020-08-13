@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Threading;
-using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.Engine;
 
@@ -11,20 +10,9 @@ namespace Terraria.ModLoader.UI
 	{
 		public int modCount;
 
-		private UIText subProgress;
 		private string stageText;
 
 		private CancellationTokenSource _cts;
-
-		public override void OnInitialize() {
-			base.OnInitialize();
-			subProgress = new UIText("", 0.5f, true) {
-				Top = { Pixels = 65 },
-				HAlign = 0.5f,
-				VAlign = 0.5f
-			};
-			Append(subProgress);
-		}
 
 		public override void OnActivate() {
 			base.OnActivate();
@@ -48,10 +36,6 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			GLCallLocker.SpeedrunActions();
-		}
-
-		public string SubProgressText {
-			set => subProgress?.SetText(value);
 		}
 
 		public void SetLoadStage(string stageText, int modCount = -1) {

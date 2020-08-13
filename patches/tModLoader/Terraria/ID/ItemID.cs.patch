@@ -1,9 +1,7 @@
 --- src/Terraria/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -1,7 +_,9 @@
- using Microsoft.Xna.Framework;
+@@ -2,6 +_,7 @@
  using ReLogic.Reflection;
-+using System;
  using System.Collections.Generic;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
@@ -37,41 +35,3 @@
  			public static short[] Workbenches = new short[41] {
  				36,
  				635,
-@@ -6844,6 +_,37 @@
- 				return value;
- 
- 			return 0;
-+		}
-+
-+		public static string GetUniqueKey(int type) {
-+			if (type < 0 || type >= ItemLoader.ItemCount)
-+				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+
-+			if (type < Count)
-+				return "Terraria " + Search.GetName(type);
-+
-+			var modItem = ItemLoader.GetItem(type);
-+			return $"{modItem.Mod.Name} {modItem.Name}";
-+		}
-+
-+		public static string GetUniqueKey(Item item) => GetUniqueKey(item.type);
-+
-+		public static int TypeFromUniqueKey(string key) {
-+			string[] parts = key.Split(new char[] { ' ' }, 2);
-+			if (parts.Length != 2)
-+				return 0;
-+
-+			return TypeFromUniqueKey(parts[0], parts[1]);
-+		}
-+		public static int TypeFromUniqueKey(string mod, string name) {
-+			if (mod == "Terraria") {
-+				if (!Search.ContainsName(name))
-+					return 0;
-+
-+				return Search.GetId(name);
-+			}
-+
-+			return ModLoader.ModLoader.GetMod(mod)?.ItemType(name) ?? 0;
- 		}
- 	}
- }

@@ -76,7 +76,6 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookSetupStartInventory = AddHook<Action<List<Item>, bool>>(p => p.SetupStartInventory);
-		private static HookList HookSetupStartInventoryOld = AddHook<Action<List<Item>>>(p => p.SetupStartInventory);
 
 		public static IList<Item> SetupStartInventory(Player player, bool mediumcoreDeath = false) {
 			IList<Item> items = new List<Item>();
@@ -99,9 +98,6 @@ namespace Terraria.ModLoader
 			}
 			foreach (int index in HookSetupStartInventory.arr) {
 				player.modPlayers[index].SetupStartInventory(items, mediumcoreDeath);
-			}
-			foreach (int index in HookSetupStartInventoryOld.arr) {
-				player.modPlayers[index].SetupStartInventory(items);
 			}
 			IDictionary<int, int> counts = new Dictionary<int, int>();
 			foreach (Item item0 in items) {
@@ -605,21 +601,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateGetWeaponDamage(Item item, ref int damage);
-		[Obsolete]
-		private static HookList HookGetWeaponDamage = AddHook<DelegateGetWeaponDamage>(p => p.GetWeaponDamage);
-		[Obsolete]
-		public static void GetWeaponDamage(Player player, Item item, ref int damage) {
-			if (item.IsAir)
-				return;
-
-			foreach (int index in HookGetWeaponDamage.arr) {
-				player.modPlayers[index].GetWeaponDamage(item, ref damage);
-			}
-		}
-
-		private delegate void DelegateModifyWeaponDamageOld(Item item, ref float add, ref float mult);
-		private static HookList HookModifyWeaponDamageOld = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		private delegate void DelegateModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
@@ -629,9 +610,6 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookModifyWeaponDamageOld.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult);
-			}
 			foreach (int index in HookModifyWeaponDamage.arr) {
 				player.modPlayers[index].ModifyWeaponDamage(item, ref add, ref mult, ref flat);
 			}

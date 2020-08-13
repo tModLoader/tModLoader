@@ -26,15 +26,15 @@ namespace ExampleMod.Content.Items.Tools
 			item.value = 10000;
 			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item1;
-			item.autoReuse = true;
+			item.autoReuse = true; // Automatically re-swing/re-use this item after its swinging animation is over.
 
 			item.axe = 30; //How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
 			item.hammer = 100; //How much hammer power the weapon has
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
-			if (Main.rand.NextBool(10)) {
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>());
+			if (Main.rand.NextBool(10)) { // This creates a 1/10 chance that a dust will spawn every frame that this item is in its 'Swinging' animation.
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustType<Sparkle>()); //Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
 			}
 		}
 

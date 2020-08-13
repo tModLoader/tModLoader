@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -21,11 +_,26 @@
+@@ -21,11 +_,22 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -16,10 +16,6 @@
 +
 +		/// <summary>Gets the global NPC. Use this overload when you dynamically add GlobalNPC manually.</summary>
 +		public GlobalNPC GetGlobalNPC(Mod mod, string name) => NPCLoader.GetGlobalNPC(this, mod, name);
-+
-+		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added by this particular mod.</summary>
-+		[Obsolete("Use GetGlobalNPC<T>() instead", true)]
-+		public T GetGlobalNPC<T>(Mod mod) where T : GlobalNPC => (T)GetGlobalNPC(mod, typeof(T).Name);
 +
 +		/// <summary>Gets the global NPC. Use this overload when you know only 1 instance will ever be added among all mods. 99% of mods should use this.</summary>
 +		public T GetGlobalNPC<T>() where T : GlobalNPC => (T)ModContent.GetInstance<T>().Instance(this);
@@ -589,14 +585,7 @@
  								flag6 = true;
  							}
  							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
-@@ -60464,12 +_,14 @@
- 						if (Main.player[num7].ZoneTowerSolar || Main.player[num7].ZoneTowerNebula || Main.player[num7].ZoneTowerVortex || Main.player[num7].ZoneTowerStardust)
- 							flag6 = true;
- 
-+						NPCLoader.EditSpawnRate(Main.player[num7], ref spawnRate, ref maxSpawns);
- 						num9 = (int)(Main.player[num7].position.X + (float)(Main.player[num7].width / 2)) / 16;
- 						num10 = (int)(Main.player[num7].position.Y + (float)(Main.player[num7].height / 2)) / 16;
- 						if (Main.wallHouse[Main.tile[num9, num10].wall])
+@@ -60470,6 +_,7 @@
  							flag5 = true;
  
  						if (Main.tile[num9, num10].wall == 87)
@@ -604,6 +593,14 @@
  							flag4 = true;
  
  						flag2 = false;
+@@ -60747,6 +_,7 @@
+ 								}
+ 							}
+ 						}
++						NPCLoader.EditSpawnRate(Main.player[num7], ref spawnRate, ref maxSpawns);
+ 
+ 						flag15 = false;
+ 						if (Main.player[num7].active && !Main.player[num7].dead && Main.player[num7].nearbyActiveNPCs < (float)maxSpawns && Main.rand.Next(spawnRate) == 0) {
 @@ -60772,6 +_,7 @@
  								safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num12);
  							}

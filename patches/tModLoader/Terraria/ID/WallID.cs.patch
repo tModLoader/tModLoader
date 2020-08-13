@@ -1,8 +1,7 @@
 --- src/Terraria/Terraria/ID/WallID.cs
 +++ src/tModLoader/Terraria/ID/WallID.cs
-@@ -1,3 +_,7 @@
+@@ -1,3 +_,6 @@
 +using ReLogic.Reflection;
-+using System;
 +using Terraria.ModLoader;
 +
  namespace Terraria.ID
@@ -17,36 +16,10 @@
  			public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
  			public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);
  			public static bool[] Corrupt = Factory.CreateBoolSet(69, 217, 220, 3);
-@@ -343,5 +_,32 @@
+@@ -343,5 +_,6 @@
  		public const ushort AmberStoneWallEcho = 314;
  		public const ushort BambooFence = 315;
  		public const ushort Count = 316;
 +		public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
-+
-+		public static string GetUniqueKey(int type) {
-+			if (type < 0 || type >= WallLoader.WallCount)
-+				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+
-+			if (type < Count)
-+				return "Terraria " + Search.GetName(type);
-+
-+			var modWall = WallLoader.GetWall(type);
-+			return $"{modWall.Mod.Name} {modWall.Name}";
-+		}
-+
-+		public static int TypeFromUniqueKey(string key) {
-+			string[] parts = key.Split(new char[] { ' ' }, 2);
-+			if (parts.Length != 2)
-+				return 0;
-+
-+			if (parts[0] == "Terraria") {
-+				if (!Search.ContainsName(parts[1]))
-+					return 0;
-+
-+				return Search.GetId(parts[1]);
-+			}
-+
-+			return ModLoader.ModLoader.GetMod(parts[0])?.WallType(parts[1]) ?? 0;
-+		}
  	}
  }

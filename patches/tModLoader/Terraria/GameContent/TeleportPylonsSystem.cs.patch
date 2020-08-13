@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/TeleportPylonsSystem.cs
++++ src/tModLoader/Terraria/GameContent/TeleportPylonsSystem.cs
+@@ -16,7 +_,7 @@
+ 		private List<TeleportPylonInfo> _pylonsOld = new List<TeleportPylonInfo>();
+ 		private int _cooldownForUpdatingPylonsList;
+ 		private const int CooldownTimePerPylonsListUpdate = int.MaxValue;
+-		private SceneMetrics _sceneMetrics = new SceneMetrics(Main.ActiveWorld);
++		internal SceneMetrics _sceneMetrics = new SceneMetrics(Main.ActiveWorld);
+ 
+ 		public List<TeleportPylonInfo> Pylons => _pylons;
+ 

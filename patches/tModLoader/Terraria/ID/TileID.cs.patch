@@ -1,15 +1,11 @@
 --- src/Terraria/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,5 +_,9 @@
+@@ -1,4 +_,5 @@
  using ReLogic.Reflection;
- 
-+using ReLogic.Reflection;
-+using System;
 +using Terraria.ModLoader;
-+
+ 
  namespace Terraria.ID
  {
- 	public class TileID
 @@ -91,7 +_,7 @@
  				};
  			}
@@ -36,37 +32,8 @@
  			public static bool[] Corrupt = Factory.CreateBoolSet(23, 25, 112, 163, 398, 400);
  			public static bool[] Hallow = Factory.CreateBoolSet(109, 117, 116, 164, 402, 403, 115);
  			public static bool[] Crimson = Factory.CreateBoolSet(199, 203, 234, 200, 399, 401, 205);
-@@ -822,5 +_,33 @@
- 		public const ushort SliceOfCake = 621;
- 		public const ushort TeaKettle = 622;
+@@ -824,3 +_,4 @@
  		public const ushort Count = 623;
-+
-+		public static string GetUniqueKey(int type) {
-+			if (type < 0 || type >= TileLoader.TileCount)
-+				throw new ArgumentOutOfRangeException("Invalid type: " + type);
-+
-+			if (type < Count)
-+				return "Terraria " + Search.GetName(type);
-+
-+			var modTile = TileLoader.GetTile(type);
-+			return $"{modTile.Mod.Name} {modTile.Name}";
-+		}
-+
-+		public static int TypeFromUniqueKey(string key) {
-+			string[] parts = key.Split(new char[] { ' ' }, 2);
-+			if (parts.Length != 2)
-+				return 0;
-+
-+			if (parts[0] == "Terraria") {
-+				if (!Search.ContainsName(parts[1]))
-+					return 0;
-+
-+				return Search.GetId(parts[1]);
-+			}
-+
-+			// Should probably return -1 if not found since 0 is Dirt, but TileType also does 0.
-+			return ModLoader.ModLoader.GetMod(parts[0])?.TileType(parts[1]) ?? 0;
-+		}
  	}
  }
 +

@@ -13,6 +13,7 @@ namespace ExampleMod.Content.Items.Placeable
 			ItemID.Sets.ExtractinatorMode[item.type] = item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it
+			// Sorry Itorius, I feel you
 
 			// DisplayName.AddTranslation(GameCulture.German, "Beispielblock");
 			// Tooltip.AddTranslation(GameCulture.German, "Dies ist ein modded Block");
@@ -51,7 +52,7 @@ namespace ExampleMod.Content.Items.Placeable
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 
-			CreateRecipe()
+			CreateRecipe() // Add multiple recipes set to one item.
 				.AddIngredient<ExampleWall>(4)
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
@@ -62,11 +63,11 @@ namespace ExampleMod.Content.Items.Placeable
 				.Register();
 		}
 
-		public override void ExtractinatorUse(ref int resultType, ref int resultStack) {
+		public override void ExtractinatorUse(ref int resultType, ref int resultStack) { // Calls upon use of an extractinator. Below is the chance you will get ExampleOre from the extractinator.
 			if (Main.rand.NextBool(3)) {
-				resultType = ItemType<ExampleOre>();
+				resultType = ItemType<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
 				if (Main.rand.NextBool(5)) {
-					resultStack += Main.rand.Next(2);
+					resultStack += Main.rand.Next(2); // Add a chance to get more than one of ExampleOre from the extractinator.
 				}
 			}
 		}

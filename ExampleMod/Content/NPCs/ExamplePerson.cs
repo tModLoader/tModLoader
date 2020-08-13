@@ -24,20 +24,20 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
-			Main.npcFrameCount[npc.type] = 25;
+			Main.npcFrameCount[npc.type] = 25; // The amount of frames the NPC has
 
-			NPCID.Sets.ExtraFramesCount[npc.type] = 9;
+			NPCID.Sets.ExtraFramesCount[npc.type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs. 
 			NPCID.Sets.AttackFrameCount[npc.type] = 4;
-			NPCID.Sets.DangerDetectRange[npc.type] = 700;
+			NPCID.Sets.DangerDetectRange[npc.type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
 			NPCID.Sets.AttackType[npc.type] = 0;
-			NPCID.Sets.AttackTime[npc.type] = 90;
+			NPCID.Sets.AttackTime[npc.type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[npc.type] = 30;
-			NPCID.Sets.HatOffsetY[npc.type] = 4;
+			NPCID.Sets.HatOffsetY[npc.type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 		}
 
 		public override void SetDefaults() {
-			npc.townNPC = true;
-			npc.friendly = true;
+			npc.townNPC = true; // Sets NPC to be a Town NPC
+			npc.friendly = true; // NPC Will not attack player
 			npc.width = 18;
 			npc.height = 40;
 			npc.aiStyle = 7;
@@ -57,7 +57,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public override bool CanTownNPCSpawn(int numTownNPCs, int money) { // Reqirements for the town NPC to spawn.
 			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
 				if (!player.active) {
@@ -94,7 +94,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override string TownNPCName() {
 			switch (WorldGen.genRand.Next(4)) {
-				case 0:
+				case 0: // The cases are potential names for the NPC.
 					return "Someone";
 				case 1:
 					return "Somebody";
@@ -124,7 +124,7 @@ namespace ExampleMod.Content.NPCs
 			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
 				chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
 			}
-
+			// These are things that the NPC has a chance of telling you when you talk to it.
 			chat.Add("Sometimes I feel like I'm different from everyone else here.");
 			chat.Add("What's your favorite color? My favorite colors are white and black.");
 			chat.Add("What? I don't have any arms or legs? Oh, don't be ridiculous!");
@@ -133,7 +133,7 @@ namespace ExampleMod.Content.NPCs
 			return chat; // chat is implicitly cast to a string.
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) {
+		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
 			button2 = "Awesomeify";
 			if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
@@ -161,6 +161,7 @@ namespace ExampleMod.Content.NPCs
 				shop = true;
 			}
 		}
+		// Not completely finished, but below is what the NPC will sell
 
 		// public override void SetupShop(Chest shop, ref int nextSlot) {
 		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());

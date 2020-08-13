@@ -124,28 +124,11 @@ namespace Terraria.ModLoader
 		public ModItem GetItem(string name) => items.TryGetValue(name, out var item) ? item : null;
 
 		/// <summary>
-		/// Same as the other GetItem, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetItem<T>() where T : ModItem => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public int ItemType(string name) => GetItem(name)?.item.type ?? 0;
-
-		/// <summary>
-		/// Same as the other ItemType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.ItemType<T> instead", true)]
-		public int ItemType<T>() where T : ModItem => ModContent.ItemType<T>();
-
 
 		/// <summary>
 		/// Gets the GlobalItem instance with the given name from this mod.
@@ -262,14 +245,6 @@ namespace Terraria.ModLoader
 		public ModPrefix GetPrefix(string name) => prefixes.TryGetValue(name, out var prefix) ? prefix : null;
 
 		/// <summary>
-		/// Same as the other GetPrefix, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetPrefix<T>() where T : ModPrefix => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the internal ID / type of the ModPrefix corresponding to the name. Returns 0 if no ModPrefix with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -281,7 +256,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		[Obsolete("Use ModContent.PrefixType<T> instead", true)]
 		public byte PrefixType<T>() where T : ModPrefix => ModContent.PrefixType<T>();
 
 		/// <summary>
@@ -306,27 +280,11 @@ namespace Terraria.ModLoader
 		public ModDust GetDust(string name) => dusts.TryGetValue(name, out var dust) ? dust : null;
 
 		/// <summary>
-		/// Same as the other GetDust, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetDust<T>() where T : ModDust => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the type of the ModDust of this mod with the given name. Returns 0 if no ModDust with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public int DustType(string name) => GetDust(name)?.Type ?? 0;
-
-		/// <summary>
-		/// Same as the other DustType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.DustType<T> instead", true)]
-		public int DustType<T>() where T : ModDust => ModContent.DustType<T>();
 
 		/// <summary>
 		/// Gets the ModTile of this mod corresponding to the given name. Returns null if no ModTile with the given name is found.
@@ -336,14 +294,6 @@ namespace Terraria.ModLoader
 		public ModTile GetTile(string name) => tiles.TryGetValue(name, out var tile) ? tile : null;
 
 		/// <summary>
-		/// Same as the other GetTile, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetTile<T>() where T : ModTile => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the type of the ModTile of this mod with the given name. Returns 0 if no ModTile with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -351,27 +301,11 @@ namespace Terraria.ModLoader
 		public int TileType(string name) => GetTile(name)?.Type ?? 0;
 
 		/// <summary>
-		/// Same as the other TileType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.TileType<T> instead", true)]
-		public int TileType<T>() where T : ModTile => ModContent.TileType<T>();
-
-		/// <summary>
 		/// Gets the GlobalTile instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalTile GetGlobalTile(string name) => globalTiles.TryGetValue(name, out var globalTile) ? globalTile : null;
-
-		/// <summary>
-		/// Same as the other GetGlobalTile, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalTile<T>() where T : GlobalTile => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the ModTileEntity of this mod corresponding to the given name. Returns null if no ModTileEntity with the given name is found.
@@ -382,14 +316,6 @@ namespace Terraria.ModLoader
 			tileEntities.TryGetValue(name, out var tileEntity) ? tileEntity : null;
 
 		/// <summary>
-		/// Same as the other GetTileEntity, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetTileEntity<T>() where T : ModTileEntity => ModContent.GetInstance<T>();
-
-		/// <summary>
 		/// Gets the type of the ModTileEntity of this mod with the given name. Returns -1 if no ModTileEntity with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
@@ -397,22 +323,11 @@ namespace Terraria.ModLoader
 		public int TileEntityType(string name) => GetTileEntity(name)?.Type ?? -1;
 
 		/// <summary>
-		/// Same as the other TileEntityType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.TileEntityType<T> instead", true)]
-		public int TileEntityType<T>() where T : ModTileEntity => ModContent.TileEntityType<T>();
-
-		/// <summary>
 		/// Gets the ModWall of this mod corresponding to the given name. Returns null if no ModWall with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModWall GetWall(string name) => walls.TryGetValue(name, out var wall) ? wall : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetWall<T>() where T : ModWall => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the type of the ModWall of this mod with the given name. Returns 0 if no ModWall with the given name is found.
@@ -422,22 +337,11 @@ namespace Terraria.ModLoader
 		public int WallType(string name) => GetWall(name)?.Type ?? 0;
 
 		/// <summary>
-		/// Same as the other WallType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.WallType<T> instead", true)]
-		public int WallType<T>() where T : ModWall => ModContent.WallType<T>();
-
-		/// <summary>
 		/// Gets the GlobalWall instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalWall GetGlobalWall(string name) => globalWalls.TryGetValue(name, out var globalWall) ? globalWall : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalWall<T>() where T : GlobalWall => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the ModProjectile of this mod corresponding to the given name. Returns null if no ModProjectile with the given name is found.
@@ -445,9 +349,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModProjectile GetProjectile(string name) => projectiles.TryGetValue(name, out var proj) ? proj : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetProjectile<T>() where T : ModProjectile => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the type of the ModProjectile of this mod with the given name. Returns 0 if no ModProjectile with the given name is found.
@@ -457,22 +358,11 @@ namespace Terraria.ModLoader
 		public int ProjectileType(string name) => GetProjectile(name)?.projectile.type ?? 0;
 
 		/// <summary>
-		/// Same as the other ProjectileType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.ProjectileType<T> instead", true)]
-		public int ProjectileType<T>() where T : ModProjectile => ModContent.ProjectileType<T>();
-
-		/// <summary>
 		/// Gets the GlobalProjectile instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalProjectile GetGlobalProjectile(string name) => globalProjectiles.TryGetValue(name, out var globalProj) ? globalProj : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalProjectile<T>() where T : GlobalProjectile => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the ModNPC of this mod corresponding to the given name. Returns null if no ModNPC with the given name is found.
@@ -480,9 +370,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModNPC GetNPC(string name) => npcs.TryGetValue(name, out var npc) ? npc : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetNPC<T>() where T : ModNPC => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the type of the ModNPC of this mod with the given name. Returns 0 if no ModNPC with the given name is found.
@@ -492,22 +379,11 @@ namespace Terraria.ModLoader
 		public int NPCType(string name) => GetNPC(name)?.npc.type ?? 0;
 
 		/// <summary>
-		/// Same as the other NPCType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.NPCType<T> instead", true)]
-		public int NPCType<T>() where T : ModNPC => ModContent.NPCType<T>();
-
-		/// <summary>
 		/// Gets the GlobalNPC instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalNPC GetGlobalNPC(string name) => globalNPCs.TryGetValue(name, out var globalNPC) ? globalNPC : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalNPC<T>() where T : GlobalNPC => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Assigns a head texture to the given town NPC type.
@@ -559,18 +435,12 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public ModPlayer GetPlayer(string name) => players.TryGetValue(name, out var player) ? player : null;
 
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetPlayer<T>() where T : ModPlayer => ModContent.GetInstance<T>();
-
 		/// <summary>
 		/// Gets the ModBuff of this mod corresponding to the given name. Returns null if no ModBuff with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModBuff GetBuff(string name) => buffs.TryGetValue(name, out var buff) ? buff : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetBuff<T>() where T : ModBuff => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the type of the ModBuff of this mod corresponding to the given name. Returns 0 if no ModBuff with the given name is found.
@@ -580,22 +450,11 @@ namespace Terraria.ModLoader
 		public int BuffType(string name) => GetBuff(name)?.Type ?? 0;
 
 		/// <summary>
-		/// Same as the other BuffType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.BuffType<T> instead", true)]
-		public int BuffType<T>() where T : ModBuff => ModContent.BuffType<T>();
-
-		/// <summary>
 		/// Gets the GlobalBuff with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalBuff GetGlobalBuff(string name) => globalBuffs.TryGetValue(name, out var globalBuff) ? globalBuff : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalBuff<T>() where T : GlobalBuff => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the ModMountData instance of this mod corresponding to the given name. Returns null if no ModMountData has the given name.
@@ -603,9 +462,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModMountData GetMount(string name) => mountDatas.TryGetValue(name, out var modMountData) ? modMountData : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetMount<T>() where T : ModMountData => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Gets the ID of the ModMountData instance corresponding to the given name. Returns 0 if no ModMountData has the given name.
@@ -615,27 +471,11 @@ namespace Terraria.ModLoader
 		public int MountType(string name) => GetMount(name)?.Type ?? 0;
 
 		/// <summary>
-		/// Same as the other MountType, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.MountType<T> instead", true)]
-		public int MountType<T>() where T : ModMountData => ModContent.MountType<T>();
-
-		/// <summary>
 		/// Gets the ModWorld instance with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModWorld GetModWorld(string name) => worlds.TryGetValue(name, out var world) ? world : null;
-
-		/// <summary>
-		/// Same as the other GetModWorld, but assumes that the class name and internal name are the same.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetModWorld<T>() where T : ModWorld => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Returns the underground background style corresponding to the given name.
@@ -644,18 +484,12 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public ModUgBgStyle GetUgBgStyle(string name) => ugBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
 
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetUgBgStyle<T>() where T : ModUgBgStyle => ModContent.GetInstance<T>();
-
 		/// <summary>
 		/// Returns the surface background style corresponding to the given name.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModSurfaceBgStyle GetSurfaceBgStyle(string name) => surfaceBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetSurfaceBgStyle<T>() where T : ModSurfaceBgStyle => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Returns the Slot of the surface background style corresponding to the given name.
@@ -673,9 +507,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public GlobalBgStyle GetGlobalBgStyle(string name) => globalBgStyles.TryGetValue(name, out var bgStyle) ? bgStyle : null;
 
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalBgStyle<T>() where T : GlobalBgStyle => ModContent.GetInstance<T>();
-
 		/// <summary>
 		/// Returns the water style with the given name from this mod.
 		/// </summary>
@@ -683,18 +514,12 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public ModWaterStyle GetWaterStyle(string name) => waterStyles.TryGetValue(name, out var waterStyle) ? waterStyle : null;
 
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetWaterStyle<T>() where T : ModWaterStyle => ModContent.GetInstance<T>();
-
 		/// <summary>
 		/// Returns the waterfall style with the given name from this mod.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public ModWaterfallStyle GetWaterfallStyle(string name) => waterfallStyles.TryGetValue(name, out var waterfallStyle) ? waterfallStyle : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetWaterfallStyle<T>() where T : ModWaterfallStyle => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Returns the waterfall style corresponding to the given name.
@@ -798,9 +623,6 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
 		public GlobalRecipe GetGlobalRecipe(string name) => globalRecipes.TryGetValue(name, out var globalRecipe) ? globalRecipe : null;
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetGlobalRecipe<T>() where T : GlobalRecipe => ModContent.GetInstance<T>();
 
 		/// <summary>
 		/// Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. When music with the given ID is playing, equipped music boxes have a chance to change their ID to the given item type. When an item with the given item type is equipped, it will play the music that has musicSlot as its ID. When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
@@ -1034,8 +856,5 @@ namespace Terraria.ModLoader
 		}
 
 		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
-
-		[Obsolete("Use ModContent.GetInstance<T> instead", true)]
-		public T GetConfig<T>() where T : ModConfig => (T)GetConfig(typeof(T).Name);
 	}
 }

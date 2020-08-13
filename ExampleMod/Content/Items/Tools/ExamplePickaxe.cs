@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Tools
 			item.useAnimation = 10;
 			item.useStyle = ItemUseStyleID.Swing;
 			item.knockBack = 6;
-			item.value = Item.buyPrice(gold: 1);
+			item.value = Item.buyPrice(gold: 1); // Buy this item for one gold - change gold to any coin and change the value to any number <= 100
 			item.rare = ItemRarityID.Green;
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Tools
 			}
 		}
 
-		//Please see ExampleItem.cs for a detailed explanation of recipe creation.
+		// Please see ExampleItem.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>(100)
