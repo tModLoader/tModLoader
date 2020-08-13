@@ -32,6 +32,7 @@ namespace Terraria.ModLoader
 		/// Allows you to modify which rarities will come before and after this when a modifier is applied (since modifiers can affect rarity)
 		/// </summary>
 		/// <param name="vanillaOffset">The amount by which the rarity would be offset in vanilla. -2 is the most it can go down, and +2 is the most it can go up by.</param>
-		public virtual int ModifyOffsetRarity(int vanillaOffset) => Type;
+		public virtual void ModifyOffsetRarity(int vanillaOffset, ref int newType) {
+		}
 	}
 }
