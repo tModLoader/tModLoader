@@ -1,11 +1,11 @@
 --- src/Terraria/Terraria/ID/Colors.cs
 +++ src/tModLoader/Terraria/ID/Colors.cs
-@@ -16,6 +_,8 @@
- 		public static readonly Color RarityLime = new Color(150, 255, 10);
- 		public static readonly Color RarityYellow = new Color(255, 255, 10);
- 		public static readonly Color RarityCyan = new Color(5, 200, 255);
-+		public static readonly Color RarityDarkRed = new Color(255, 40, 100);
-+		public static readonly Color RarityDarkPurple = new Color(180, 40, 255);
- 		public static readonly Color CoinPlatinum = new Color(220, 220, 198);
- 		public static readonly Color CoinGold = new Color(224, 201, 92);
- 		public static readonly Color CoinSilver = new Color(181, 192, 193);
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.ID
+ {
+-	public static class Colors
++	public static partial class Colors
+ 	{
+ 		public static readonly Color RarityAmber = new Color(255, 175, 0);
+ 		public static readonly Color RarityTrash = new Color(130, 130, 130);

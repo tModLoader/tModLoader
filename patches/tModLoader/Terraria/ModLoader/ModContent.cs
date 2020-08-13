@@ -389,7 +389,7 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
-			ItemRarity.Initialize();
+			RarityLoader.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
 			
@@ -497,7 +497,6 @@ namespace Terraria.ModLoader
 			ModNet.Unload();
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
-			ItemRarity.Initialize();
 			EffectsTracker.RemoveModEffects();
 			
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();

@@ -262,8 +262,7 @@
  				rare--;
  
 +			SkipVanillaRarity:
--			if (rare > -11) {
-+			if (rare > ItemRarityID.Quest) {
+ 			if (rare > -11) {
  				if (rare < -1)
  					rare = -1;
  

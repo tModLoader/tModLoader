@@ -1,3 +1,4 @@
+using ExampleMod.Content.Rarities;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -28,7 +29,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.crit = 6; //The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins.
-			item.rare = ModContent.RarityType<ExampleModRarity>(); // Give this item our custom rarity.
+			item.rare = RarityType<ExampleModRarity>(); // Give this item our custom rarity.
 			item.UseSound = SoundID.Item1; //The sound when the weapon is being used.
 		}
 

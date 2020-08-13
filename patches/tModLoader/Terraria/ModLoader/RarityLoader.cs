@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
@@ -12,6 +13,10 @@ namespace Terraria.ModLoader
 
 		internal static void Add(ModRarity rarity) {
 			rarities.Add(rarity);
+		}
+
+		internal static void Initialize() {
+			ItemRarity.Initialize();
 		}
 
 		internal static int ReserveRarityID() {
@@ -29,6 +34,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			rarities.Clear();
+			ItemRarity.Initialize();
 			RarityCount = ItemRarityID.Count;
 		}
 	}
