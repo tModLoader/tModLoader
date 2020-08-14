@@ -1,4 +1,6 @@
 ﻿using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader.Default
 {
@@ -16,6 +18,8 @@ namespace Terraria.ModLoader.Default
 	internal class MenuJourneysEnd : ModMenu
 	{
 		public override string DisplayName => "Journey's End";
+
+		public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor) => false;
 	}
 
 	/// <summary>
@@ -28,5 +32,7 @@ namespace Terraria.ModLoader.Default
 		public override string DisplayName => "Terraria 1.3.5.3";
 
 		public override int Music => MusicID.Title;
+
+		public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor) => false;
 	}
 }
