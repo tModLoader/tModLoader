@@ -13,11 +13,9 @@ namespace Terraria.ModLoader
 
 			if (Mod.rarities.ContainsKey(Name))
 				throw new Exception($"You tried to add 2 ModRarities with the same name: {Name}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddRarity with 2 rarities of the same name.");
-
-			Type = RarityLoader.ReserveRarityID();
-
+			
 			Mod.rarities[Name] = this;
-			RarityLoader.Add(this);
+			Type = RarityLoader.Add(this);
 			ContentInstance.Register(this);
 		}
 
@@ -31,8 +29,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify which rarities will come before and after this when a modifier is applied (since modifiers can affect rarity)
 		/// </summary>
-		/// <param name="vanillaOffset">The amount by which the rarity would be offset in vanilla. -2 is the most it can go down, and +2 is the most it can go up by.</param>
-		public virtual void ModifyOffsetRarity(int vanillaOffset, ref int newType) {
-		}
+		/// <param name="offset">The amount by which the rarity would be offset in vanilla. -2 is the most it can go down, and +2 is the most it can go up by.</param>
+		/// <param name="valueMult">The combined stat and prefix value scale. Can be used to implement super high or low value rarity adjustments outside normal vanilla ranges</param>
+		/// <returns>The adjusted rarity type. Return <code>Type</code> for no change.</returns>
+		public virtual int GetPrefixedRarity(int offset, float valueMult) => Type;
 	}
 }

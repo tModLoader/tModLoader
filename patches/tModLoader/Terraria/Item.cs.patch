@@ -229,35 +229,24 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1064,6 +_,23 @@
+@@ -1064,6 +_,10 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
 +				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
 +
-+			if (rare >= ItemRarityID.Count) {
-+				int offset = 0;
-+				if (num14 >= 1.2)
-+					offset += 2;
-+				else if (num14 >= 1.05)
-+					offset++;
-+				else if (num14 <= 0.8)
-+					offset -= 2;
-+				else if (num14 <= 0.95)
-+					offset--;
-+				RarityLoader.GetRarity(rare).ModifyOffsetRarity(offset, ref rare);
-+				goto SkipVanillaRarity;
-+			}
-+
++			int baseRarity = rare;
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1073,12 +_,13 @@
+@@ -1073,12 +_,15 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
-+			SkipVanillaRarity:
++			if (baseRarity >= ItemRarityID.Count)
++				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++
  			if (rare > -11) {
  				if (rare < -1)
  					rare = -1;

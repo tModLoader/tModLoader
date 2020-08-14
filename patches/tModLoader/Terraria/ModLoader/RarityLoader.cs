@@ -7,23 +7,19 @@ namespace Terraria.ModLoader
 {
 	public static class RarityLoader
 	{
-		public static int RarityCount { get; private set; } = ItemRarityID.Count;
-
+		public static int RarityCount => ItemRarityID.Count + rarities.Count;
 		internal static readonly List<ModRarity> rarities = new List<ModRarity>();
 
-		internal static void Add(ModRarity rarity) {
+		internal static int Add(ModRarity rarity) {
+			if (ModNet.AllowVanillaClients)
+				throw new Exception("Adding rarities breaks vanilla client compatibility");
+
 			rarities.Add(rarity);
+			return RarityCount - 1;
 		}
 
 		internal static void Initialize() {
 			ItemRarity.Initialize();
-		}
-
-		internal static int ReserveRarityID() {
-			if (ModNet.AllowVanillaClients)
-				throw new Exception("Adding rarities breaks vanilla client compatibility");
-
-			return RarityCount++;
 		}
 
 		internal static ModRarity GetRarity(int type) {
@@ -33,7 +29,6 @@ namespace Terraria.ModLoader
 		internal static void Unload() {
 			rarities.Clear();
 			ItemRarity.Initialize();
-			RarityCount = ItemRarityID.Count;
 		}
 	}
 }
