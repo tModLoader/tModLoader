@@ -229,16 +229,35 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1064,6 +_,9 @@
+@@ -1064,6 +_,10 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
 +			if (num >= PrefixID.Count)
 +				ModPrefix.GetPrefix((byte)num)?.ModifyValue(ref num14);
 +
++			int baseRarity = rare;
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
+@@ -1073,12 +_,15 @@
+ 			else if ((double)num14 <= 0.95)
+ 				rare--;
+ 
++			if (baseRarity >= ItemRarityID.Count)
++				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++
+ 			if (rare > -11) {
+ 				if (rare < -1)
+ 					rare = -1;
+ 
+-				if (rare > 11)
+-					rare = 11;
++				if (rare > RarityLoader.RarityCount - 1)
++					rare = RarityLoader.RarityCount - 1;
+ 			}
+ 
+ 			num14 *= num14;
 @@ -1116,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  

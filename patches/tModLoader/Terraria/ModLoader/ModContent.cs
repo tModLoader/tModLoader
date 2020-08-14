@@ -301,6 +301,11 @@ namespace Terraria.ModLoader
 		public static byte PrefixType<T>() where T : ModPrefix => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModRarity by class. Assumes one instance per class.
+		/// </summary>
+		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
 		/// </summary>
 		public static int DustType<T>() where T : ModDust => GetInstance<T>()?.Type ?? 0;
@@ -384,6 +389,7 @@ namespace Terraria.ModLoader
 			RefreshModLanguage(Language.ActiveCulture);
 			MapLoader.SetupModMap();
 			ItemSorting.SetupWhiteLists();
+			RarityLoader.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupRecipes(token);
 			
@@ -464,6 +470,7 @@ namespace Terraria.ModLoader
 			PlayerHooks.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
+			RarityLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();
