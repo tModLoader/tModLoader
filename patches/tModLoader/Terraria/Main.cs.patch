@@ -869,22 +869,25 @@
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
-@@ -9511,11 +_,11 @@
- 
- 			if (gameMenu) {
- 				if (netMode != 2) {
--					if (WorldGen.drunkWorldGen) {
--						newMusic = 60;
-+					if (MenuLoader.AvailableMenus.Count > 0) {
-+						newMusic = MenuLoader.CurrentModMenu?.Music ?? 50; // TODO: Music loader to make music function properly.
+@@ -9514,13 +_,11 @@
+ 					if (WorldGen.drunkWorldGen) {
+ 						newMusic = 60;
  					}
 -					else if (playOldTile) {
-+					else if (WorldGen.drunkWorldGen) {
 -						newMusic = 6;
-+						newMusic = 60;
- 					}
- 					else if (!_isAsyncLoadComplete) {
- 						newMusic = 50;
+-					}
+-					else if (!_isAsyncLoadComplete) {
+-						newMusic = 50;
+-					}
+-					else if (!music[50].IsPlaying) {
++					else {
++						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
++					}
++
++					if (_isAsyncLoadComplete && newMusic == 50 && !music[50].IsPlaying) {
+ 						newMusic = 51;
+ 						if (musicNoCrossFade[51])
+ 							musicFade[51] = 1f;
 @@ -9536,12 +_,18 @@
  			float num4 = maxTilesX / 4200;
  			num4 *= num4;
@@ -2410,17 +2413,14 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
-@@ -35810,8 +_,13 @@
+@@ -35810,8 +_,10 @@
  			screenLastPosition = screenPosition;
  			screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);
  			MenuXMovement = 4f;
 -			if (alreadyGrabbingSunOrMoon)
-+			if (alreadyGrabbingSunOrMoon) {
-+				bool oldPlayOldTile = playOldTile;
++			if (alreadyGrabbingSunOrMoon && !playOldTile) {
  				playOldTile = true;
-+				if (!oldPlayOldTile && playOldTile) {
-+					MenuLoader.CurrentModMenu = MenuLoader.AvailableMenus.FirstOrDefault(m => m is MenuOldVanilla);
-+				}
++				MenuLoader.ActivateOldVanillaMenu();
 +			}
  
  			screenPosition.X += MenuXMovement;
@@ -2439,7 +2439,7 @@
 -				spriteBatch.Draw(TextureAssets.Logo.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 -				spriteBatch.Draw(TextureAssets.Logo2.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 -			}
-+			MenuLoader.UpdateAndDrawModMenu(MenuLoader.CurrentModMenu, spriteBatch, gameTime, color, logoRotation, logoScale);
++			MenuLoader.UpdateAndDrawModMenu(spriteBatch, gameTime, color, logoRotation, logoScale);
  
  			if (dayTime) {
  				LogoA += 2;
@@ -3078,7 +3078,7 @@
 -			Texture2D value = TextureAssets.Sun.Value;
 +			Texture2D value;
 +			Texture2D value2;
-+			ModMenu menu = MenuLoader.CurrentModMenu;
++			ModMenu menu = MenuLoader.CurrentMenu;
  			int num = moonType;
 +			if (gameMenu) {
 +				value = menu.SunTexture?.Value ?? TextureAssets.Sun.Value;

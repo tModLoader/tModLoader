@@ -23,9 +23,9 @@ namespace ExampleMod.Content
 
 		/*public override ModSurfaceBgStyle MenuBackgroundStyle => Mod.GetSurfaceBgStyle(""); TODO: Reimplement backgrounds */
 
-		public override string NameOnMenu => "Example ModMenu";
+		public override string DisplayName => "Example ModMenu";
 
-		public override void OnSelected(UserInterface userInterface) {
+		public override void OnSelected() {
 			SoundEngine.PlaySound(SoundID.Thunder); // Plays a thunder sound when this ModMenu is selected
 		}
 

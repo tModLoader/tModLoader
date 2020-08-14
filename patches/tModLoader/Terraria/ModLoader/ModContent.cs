@@ -388,6 +388,7 @@ namespace Terraria.ModLoader
 			SetupRecipes(token);
 			
 			ContentSamples.Initialize();
+			MenuLoader.GotoSavedModMenu();
 		}
 		
 		private static void CacheVanillaState() {
@@ -429,7 +430,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
-			MenuLoader.CurrentModMenu = null; // This is required - if a modded menu is active on this thread, then the unload thread can dispose of its textures and cause a crash. This assignment will make it default to the tML menu.
+			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {
@@ -492,7 +493,6 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
-			MenuLoader.Unload();
 			
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();

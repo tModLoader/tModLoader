@@ -153,8 +153,6 @@ namespace Terraria.ModLoader
 				else {
 					Main.menuMode = 0;
 				}
-
-				MenuLoader.GotoSavedModMenu();
 			}
 			catch when (token.IsCancellationRequested) {
 				// cancel needs to reload with ModLoaderMod and all others skipped
@@ -372,7 +370,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
-			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.lastUsedModMenuName);
+			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void LoadConfiguration()
@@ -390,7 +389,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
-			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.lastUsedModMenuName);
+			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void MigrateSettings()

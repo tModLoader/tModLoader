@@ -11,28 +11,24 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModMenu : ModType
 	{
-		internal UserInterface userInterface;
-
-		internal bool isNew;
-
 		internal static Asset<Texture2D> modLoaderLogo;
 
-		public sealed override string Name => $"{Mod?.Name ?? "ModLoader"}/{base.Name}";
+		public UserInterface UserInterface { get; } = new UserInterface();
+
+		public bool IsNew { get; internal set; }
+
+		//TODO: change this to use FullName when #1034 is merged
+		public string MenuName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
 		protected sealed override void Register() {
 			MenuLoader.Add(this);
 			ContentInstance.Register(this);
 		}
 
-		internal void SelectionInit() {
-			userInterface = new UserInterface();
-			OnSelected(userInterface);
-		}
-
 		/// <summary>
 		/// The logo texture shown when this ModMenu is active. If not overridden, it will use the tModLoader logo.
 		/// </summary>
-		public virtual Asset<Texture2D> Logo => modLoaderLogo ?? ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.Logo");
+		public virtual Asset<Texture2D> Logo => modLoaderLogo ??= ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.Logo");
 
 		/// <summary>
 		/// The sun texture shown when this ModMenu is active. If not overridden, it will use the vanilla sun.
@@ -62,12 +58,20 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Controls the name that shows up at the base of the screen when this ModMenu is active. If not overridden, it will use this mod's display name.
 		/// </summary>
-		public virtual string DisplayName => Mod?.DisplayName ?? "tModLoader";
+		public virtual string DisplayName => Mod.DisplayName;
+
+		public bool IsSelected => MenuLoader.CurrentMenu == this;
 
 		/// <summary>
 		/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
 		/// </summary>
-		public virtual void OnSelected(UserInterface userInterface) {
+		public virtual void OnSelected() {
+		}
+
+		/// <summary>
+		/// Called when this ModMenu is deselected.
+		/// </summary>
+		public virtual void OnDeselected() {
 		}
 
 		/// <summary>

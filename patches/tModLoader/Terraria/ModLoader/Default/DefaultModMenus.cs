@@ -5,14 +5,15 @@ namespace Terraria.ModLoader.Default
 	/// <summary>
 	/// This is the default modmenu - the one that tML uses and the default one upon entering the game for the first time.
 	/// </summary>
-	internal class MenutML : ModMenu, IDefaultModMenu
+	internal class MenutML : ModMenu
 	{
+		public override string DisplayName => "tModLoader";
 	}
 
 	/// <summary>
 	/// The Journey's End theme converted into a ModMenu, so that it better fits with the new system.
 	/// </summary>
-	internal class MenuJourneysEnd : ModMenu, IDefaultModMenu
+	internal class MenuJourneysEnd : ModMenu
 	{
 		public override string DisplayName => "Journey's End";
 	}
@@ -20,7 +21,7 @@ namespace Terraria.ModLoader.Default
 	/// <summary>
 	/// The Terraria 1.3.5.3 theme converted into a ModMenu, so that it better fits with the new system.
 	/// </summary>
-	internal class MenuOldVanilla : ModMenu, IDefaultModMenu
+	internal class MenuOldVanilla : ModMenu
 	{
 		public override bool IsAvailable => Main.instance.playOldTile;
 
@@ -28,6 +29,4 @@ namespace Terraria.ModLoader.Default
 
 		public override int Music => MusicID.Title;
 	}
-
-	internal interface IDefaultModMenu { }
 }

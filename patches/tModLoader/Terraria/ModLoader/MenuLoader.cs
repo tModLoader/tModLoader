@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -11,98 +12,121 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader
 {
-	internal static class MenuLoader
+	public static class MenuLoader
 	{
-		internal static ModMenu CurrentModMenu {
-			get {
-				loadedSavedModMenu = false;
-				return currentModMenu ??= moddedMenus[0]; // If it is null, default to the tML one.
-			}
-			set => currentModMenu = value;
-		}
+		internal static readonly MenutML MenutML = new MenutML();
+		internal static readonly MenuJourneysEnd MenuJourneysEnd = new MenuJourneysEnd();
+		internal static readonly MenuOldVanilla MenuOldVanilla = new MenuOldVanilla();
 
-		private static ModMenu currentModMenu;
-
-		private static readonly List<ModMenu> moddedMenus = new List<ModMenu>() {
-			new MenutML(),
-			new MenuJourneysEnd(),
-			new MenuOldVanilla()
+		private static readonly List<ModMenu> menus = new List<ModMenu>() {
+			MenutML,
+			MenuJourneysEnd,
+			MenuOldVanilla
 		};
 
-		private static List<ModMenu> lastAvailableMenus = new List<ModMenu>();
+		private static readonly int DefaultMenuCount = menus.Count;
 
-		internal static List<ModMenu> AvailableMenus => moddedMenus.Where(m => m.IsAvailable).ToList();
+		private static ModMenu currentMenu = MenutML;
+		public static ModMenu CurrentMenu => currentMenu;
 
-		internal static string lastUsedModMenuName = $"ModLoader/{nameof(MenutML)}";
+		private static ModMenu switchToMenu = null;
+		private static bool loading = true;
 
-		private static bool loadedSavedModMenu;
+		internal static string LastSelectedModMenu = MenutML.MenuName;
+		internal static string KnownMenuSaveString = string.Join(",", menus.Select(m => m.MenuName));
+
+		private static string[] KnownMenus => KnownMenuSaveString.Split(',');
+
+		private static void AddKnownMenu(string name) {
+			var newSaveString = string.Join(",", KnownMenus.Concat(new [] { name }).Distinct());
+			if (newSaveString != KnownMenuSaveString) {
+				KnownMenuSaveString = newSaveString;
+				Main.SaveSettings();
+			}
+		}
 
 		internal static void Add(ModMenu modMenu) {
-			moddedMenus.Add(modMenu);
+			lock (menus) {
+				menus.Add(modMenu);
+			}
 		}
 
 		private static void OffsetModMenu(int offset) {
-			var menus = AvailableMenus;
-
-			currentModMenu = menus[Utils.Repeat(menus.IndexOf(currentModMenu) + offset, menus.Count)];
+			lock (menus) {
+				switchToMenu = currentMenu;
+				do {
+					switchToMenu = menus[Utils.Repeat(menus.IndexOf(switchToMenu) + offset, menus.Count)];
+				} while (!switchToMenu.IsAvailable);
+			}
 		}
 
 		internal static void GotoSavedModMenu() {
-			if (lastUsedModMenuName == nameof(MenuOldVanilla)) {
+			if (LastSelectedModMenu == MenuOldVanilla.MenuName) {
 				Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 			}
-			List<ModMenu> menus = AvailableMenus;
-			int index = menus.FindIndex(m => m.Name == lastUsedModMenuName);
-			if (index == -1) {
-				index = 0;
-			}
-			currentModMenu = menus[index];
-			currentModMenu.SelectionInit();
-			lastAvailableMenus = AvailableMenus;
-			loadedSavedModMenu = true;
+
+			switchToMenu = menus.SingleOrDefault(m => m.MenuName == LastSelectedModMenu && m.IsAvailable) ?? MenutML;
+			loading = false;
 		}
 
-		internal static void UpdateAndDrawModMenu(ModMenu menu, SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
-			if (lastUsedModMenuName != menu.Name && loadedSavedModMenu) {
-				menu.SelectionInit();
-				lastUsedModMenuName = menu.Name;
+		public static void ActivateOldVanillaMenu() {
+			switchToMenu = MenuOldVanilla;
+		}
+
+		internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
+			if (switchToMenu != null && switchToMenu != currentMenu) {
+				currentMenu.OnDeselected();
+				currentMenu = switchToMenu;
+				currentMenu.OnSelected();
+				if (currentMenu.IsNew) {
+					currentMenu.IsNew = false;
+					AddKnownMenu(currentMenu.MenuName);
+				}
+			}
+			switchToMenu = null;
+
+			if (!loading && currentMenu.MenuName != LastSelectedModMenu) {
+				LastSelectedModMenu = currentMenu.MenuName;
+				Main.SaveSettings();
 			}
 
-			menu.userInterface?.Update(gameTime);
-			menu.userInterface?.Draw(spriteBatch, gameTime);
-			menu.Update(Main.menuMode == 0);
+			currentMenu.UserInterface.Update(gameTime);
+			currentMenu.UserInterface.Draw(spriteBatch, gameTime);
+			currentMenu.Update(Main.menuMode == 0);
 
-			Texture2D logo = menu.Logo.Value;
-
+			Texture2D logo = currentMenu.Logo.Value;
 			Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
 			float scale = 1;
 
-			if (menu is MenuJourneysEnd) {
+			if (currentMenu is MenuJourneysEnd) {
 				Color color2 = new Color((byte)(color.R * (Main.LogoA / 255f)), (byte)(color.G * (Main.LogoA / 255f)), (byte)(color.B * (Main.LogoA / 255f)), (byte)(color.A * (Main.LogoA / 255f)));
 				Color color3 = new Color((byte)(color.R * (Main.LogoB / 255f)), (byte)(color.G * (Main.LogoB / 255f)), (byte)(color.B * (Main.LogoB / 255f)), (byte)(color.A * (Main.LogoB / 255f)));
 				spriteBatch.Draw(TextureAssets.Logo.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 				spriteBatch.Draw(TextureAssets.Logo2.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 			}
-			else if (menu is MenuOldVanilla) {
+			else if (currentMenu is MenuOldVanilla) {
 				Color color2 = new Color((byte)(color.R * (Main.LogoA / 255f)), (byte)(color.G * (Main.LogoA / 255f)), (byte)(color.B * (Main.LogoA / 255f)), (byte)(color.A * (Main.LogoA / 255f)));
 				Color color3 = new Color((byte)(color.R * (Main.LogoB / 255f)), (byte)(color.G * (Main.LogoB / 255f)), (byte)(color.B * (Main.LogoB / 255f)), (byte)(color.A * (Main.LogoB / 255f)));
 				spriteBatch.Draw(TextureAssets.Logo3.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 				spriteBatch.Draw(TextureAssets.Logo4.Value, logoDrawPos, new Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
 			}
 			else {
-				if (menu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
-					spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (menu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
+				if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
+					spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (currentMenu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
 				}
-				menu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
+				currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
 			}
 
-			if (currentModMenu.isNew) {
-				currentModMenu.isNew = false;
+			int newMenus;
+			lock (menus) {
+				var knownMenus = KnownMenus;
+				foreach (ModMenu menu in menus) {
+					menu.IsNew = menu.IsAvailable && !knownMenus.Contains(menu.MenuName);
+				}
+				newMenus = menus.Count(m => m.IsNew);
 			}
 
-			int newMenus = AvailableMenus.Count(m => m.isNew);
-
-			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {menu.DisplayName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
+			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {currentMenu.DisplayName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
 
 			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
 
@@ -111,7 +135,7 @@ namespace Terraria.ModLoader
 
 			bool mouseover = switchTextRect.Contains(Main.mouseX, Main.mouseY) || logoRect.Contains(Main.mouseX, Main.mouseY);
 
-			if (mouseover) {
+			if (mouseover && !Main.alreadyGrabbingSunOrMoon) {
 				if (Main.mouseLeftRelease && Main.mouseLeft) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					OffsetModMenu(1);
@@ -126,18 +150,17 @@ namespace Terraria.ModLoader
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 					switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);
 			}
-
-			foreach (ModMenu modMenu in AvailableMenus) {
-				if (!lastAvailableMenus.Contains(modMenu)) {
-					modMenu.isNew = true;
-				}
-			}
-
-			lastAvailableMenus = AvailableMenus;
 		}
 
 		internal static void Unload() {
-			moddedMenus.RemoveAll(menu => !(menu is IDefaultModMenu)); // Always have the default menus in the list, by checking its attribute
+			loading = true;
+			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
+				switchToMenu = MenutML;
+			}
+
+			lock (menus) {
+				menus.RemoveRange(DefaultMenuCount, menus.Count - DefaultMenuCount);
+			}
 		}
 	}
 }
