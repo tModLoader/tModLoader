@@ -394,6 +394,7 @@ namespace Terraria.ModLoader
 			SetupRecipes(token);
 			
 			ContentSamples.Initialize();
+			MenuLoader.GotoSavedModMenu();
 		}
 		
 		private static void CacheVanillaState() {
@@ -435,6 +436,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void UnloadModContent() {
+			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				try {

@@ -86,5 +86,7 @@ namespace Terraria
 
 			return r.Next(consequent) < antecedent;
 		}
+
+		public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
 	}
 }
