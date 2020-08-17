@@ -36,7 +36,6 @@ namespace Terraria.ModLoader
 		public static Version LastLaunchedTModLoaderVersion;
 		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
-		public static bool ShowTMLLogo = true; //Temporary. There won't be a need for this when menu themes are implemented.
 
 		public static readonly string branchName = "1.4";
 		// beta > 0 cannot publish to mod browser
@@ -73,6 +72,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates;
+		internal static bool notifyNewMainMenuThemes = true;
 
 		internal static bool skipLoad;
 
@@ -369,6 +369,9 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", version.ToString());
+			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void LoadConfiguration()
@@ -385,6 +388,9 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
+			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
+			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 		}
 
 		internal static void MigrateSettings()

@@ -18,18 +18,12 @@ namespace ExampleMod
 
 		public override void AddRecipes() => ExampleRecipes.Load(this);
 
-		public override void Load() {
-			// DO NOT LOAD ASSETS ON SEVER!
-			if (!Main.dedServ) {
-				GameShaders.Armor.BindShader(ModContent.ItemType<ExampleDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Assets/Effects/ExampleEffect").Value), "ExampleDyePass"));
-				GameShaders.Hair.BindShader(ModContent.ItemType<ExampleHairDye>(), new LegacyHairShaderData().UseLegacyMethod((Player player, Color newColor, ref bool lighting) => Color.Green));
-			}
-		}
-
 		public override void Unload() => ExampleRecipes.Unload();
 
+		//TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			ExampleModMessageType msgType = (ExampleModMessageType)reader.ReadByte();
+
 			switch (msgType) {
 				// This message syncs ExamplePlayer.exampleLifeFruits
 				case ExampleModMessageType.ExamplePlayerSyncPlayer:

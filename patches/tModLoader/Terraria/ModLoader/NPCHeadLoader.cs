@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -54,11 +56,16 @@ namespace Terraria.ModLoader
 		public static int GetBossHeadSlot(string texture) => bossHeads.TryGetValue(texture, out int slot) ? slot : -1;
 
 		internal static void ResizeAndFillArrays() {
+			static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures) {
+				Main.ContentThatNeedsRenderTargets.Remove(renderer);
+				Main.ContentThatNeedsRenderTargets.Add(renderer = new NPCHeadRenderer(textures));
+			}
+
 			//Textures
 			Array.Resize(ref TextureAssets.NpcHead, nextHead);
 			Array.Resize(ref TextureAssets.NpcHeadBoss, nextBossHead);
-			Main.TownNPCHeadRenderer = new NPCHeadRenderer(TextureAssets.NpcHead);
-			Main.BossNPCHeadRenderer = new NPCHeadRenderer(TextureAssets.NpcHeadBoss);
+			ResetHeadRenderer(ref Main.TownNPCHeadRenderer, TextureAssets.NpcHead);
+			ResetHeadRenderer(ref Main.BossNPCHeadRenderer, TextureAssets.NpcHeadBoss);
 
 			foreach (string texture in heads.Keys) {
 				TextureAssets.NpcHead[heads[texture]] = ModContent.GetTexture(texture);

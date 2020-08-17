@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 
 		public HttpWebRequest Request { get; private set; }
 
-		public event Action<float> OnUpdateProgress;
+		public event ProgressUpdated OnUpdateProgress;
 		public event Action OnComplete;
 
 		public readonly string Url;
@@ -28,6 +28,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		// Note: these will be completely ignored on old Mono versions
 		public SecurityProtocolType SecurityProtocol = Tls12;
 		public Version ProtocolVersion = HttpVersion.Version11;
+
+		public delegate void ProgressUpdated(float progress, long bytesReceived, long totalBytesNeeded);
 
 		public DownloadFile(string url, string filePath, string displayText) {
 			Url = url;
@@ -42,7 +44,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			return true;
 		}
 
-		public Task<DownloadFile> Download(CancellationToken token, Action<float> updateProgressAction = null) {
+		public Task<DownloadFile> Download(CancellationToken token, ProgressUpdated updateProgressAction = null) {
 			SetupDownloadRequest();
 			if (updateProgressAction != null) OnUpdateProgress = updateProgressAction;
 			return Task.Factory.FromAsync(
@@ -85,7 +87,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 					token.ThrowIfCancellationRequested();
 					_fileStream.Write(buf, 0, r);
 					currentIndex += r;
-					OnUpdateProgress?.Invoke((float)(currentIndex / (double)contentLength));
+					OnUpdateProgress?.Invoke((float)(currentIndex / (double)contentLength), currentIndex, response.ContentLength);
 				}
 			}
 			catch (OperationCanceledException e) {

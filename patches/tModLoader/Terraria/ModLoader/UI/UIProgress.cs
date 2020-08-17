@@ -19,9 +19,16 @@ namespace Terraria.ModLoader.UI
 		// separate variable copied to progress bar in Update, allows for thread safety and setting display text before UI initialization
 		public string DisplayText;
 
+		// Little text used by the mod loading progress and mod upload progress
+		protected UIText subProgress;
+
 		public float Progress {
 			get => _progressBar?.Progress ?? 0f;
 			set => _progressBar?.UpdateProgress(value);
+		}
+
+		public string SubProgressText {
+			set => subProgress?.SetText(value);
 		}
 
 		public override void OnInitialize() {
@@ -41,6 +48,13 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_cancelButton.OnClick += CancelClick;
 			Append(_cancelButton);
+
+			subProgress = new UIText("", 0.5f, true) {
+				Top = { Pixels = 65 },
+				HAlign = 0.5f,
+				VAlign = 0.5f
+			};
+			Append(subProgress);
 		}
 
 		private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,8 +16,12 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		private readonly List<DownloadFile> _downloads = new List<DownloadFile>();
 		internal CancellationTokenSource _cts;
 
+		private Stopwatch downloadTimer;
+
 		public override void OnActivate() {
 			base.OnActivate();
+
+			downloadTimer = new Stopwatch();
 
 			if (_downloads.Count <= 0) {
 				Logging.tML.Warn("UIDownloadProgress was activated but no downloads were present.");
@@ -28,6 +33,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			OnCancel += () => {
 				_cts.Cancel();
 			};
+			downloadTimer.Restart();
 			DownloadMods();
 		}
 
@@ -60,12 +66,22 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private void DownloadMods() {
+			downloadTimer.Start();
 			_downloadFile = _downloads.First();
 			if (_downloadFile == null) return;
 			_progressBar.UpdateProgress(0f);
 			_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", _downloadFile.DisplayText);
-			_downloadFile.Download(_cts.Token, _progressBar.UpdateProgress)
+			_downloadFile.Download(_cts.Token, UpdateDownloadProgress)
 				.ContinueWith(HandleNextDownload, _cts.Token);
+		}
+
+		private void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded) {
+			_progressBar.UpdateProgress(progress);
+
+			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
+			double speed = elapsedSeconds > 0.0 ? bytesReceived / elapsedSeconds : 0.0;
+
+			SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 		}
 
 		private void HandleNextDownload(Task<DownloadFile> task) {
@@ -77,6 +93,8 @@ namespace Terraria.ModLoader.UI.DownloadManager
 				OnDownloadsComplete?.Invoke();
 				return;
 			}
+
+			downloadTimer.Restart();
 
 			DownloadMods();
 		}

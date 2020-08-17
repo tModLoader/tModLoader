@@ -75,14 +75,14 @@ namespace Terraria.ModLoader.Config
 	{
 		public ItemDefinition() : base() {
 		}
-		public ItemDefinition(int type) : base(ItemID.GetUniqueKey(type)) {
+		public ItemDefinition(int type) : base(ItemID.Search.GetName(type)) {
 		}
 		public ItemDefinition(string key) : base(key) {
 		}
 		public ItemDefinition(string mod, string name) : base(mod, name) {
 		}
 
-		public override int Type => ItemID.TypeFromUniqueKey(base.mod, base.name);
+		public override int Type => ItemID.Search.TryGetId($"{mod}/{name}", out int id) ? id : -1;
 
 		public static ItemDefinition FromString(string s) => new ItemDefinition(s);
 
@@ -94,11 +94,11 @@ namespace Terraria.ModLoader.Config
 	public class ProjectileDefinition : EntityDefinition
 	{
 		public ProjectileDefinition() : base() { }
-		public ProjectileDefinition(int type) : base(ProjectileID.GetUniqueKey(type)) { }
+		public ProjectileDefinition(int type) : base(ProjectileID.Search.GetName(type)) { }
 		public ProjectileDefinition(string key) : base(key) { }
 		public ProjectileDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => ProjectileID.TypeFromUniqueKey(mod, name);
+		public override int Type => ProjectileID.Search.GetId($"{mod}/{name}");
 
 		public static ProjectileDefinition FromString(string s) => new ProjectileDefinition(s);
 
@@ -110,11 +110,11 @@ namespace Terraria.ModLoader.Config
 	public class NPCDefinition : EntityDefinition
 	{
 		public NPCDefinition() : base() { }
-		public NPCDefinition(int type) : base(NPCID.GetUniqueKey(type)) { }
+		public NPCDefinition(int type) : base(NPCID.Search.GetName(type)) { }
 		public NPCDefinition(string key) : base(key) { }
 		public NPCDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => NPCID.TypeFromUniqueKey(mod, name);
+		public override int Type => NPCID.Search.GetId($"{mod}/{name}");
 
 		public static NPCDefinition FromString(string s) => new NPCDefinition(s);
 
@@ -126,11 +126,11 @@ namespace Terraria.ModLoader.Config
 	public class PrefixDefinition : EntityDefinition
 	{
 		public PrefixDefinition() : base() { }
-		public PrefixDefinition(int type) : base(PrefixID.GetUniqueKey((byte)type)) { }
+		public PrefixDefinition(int type) : base(PrefixID.Search.GetName(type)) { }
 		public PrefixDefinition(string key) : base(key) { }
 		public PrefixDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => PrefixID.TypeFromUniqueKey(mod, name);
+		public override int Type => PrefixID.Search.GetId($"{mod}/{name}");
 
 		public static PrefixDefinition FromString(string s) => new PrefixDefinition(s);
 

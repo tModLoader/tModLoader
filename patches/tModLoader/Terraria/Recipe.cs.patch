@@ -233,7 +233,7 @@
 +
 +			void ReplaceGroup(ref bool field, int group) {
 +				if (field)
-+					currentRecipe.AddRecipeGroup(group);
++					currentRecipe.RequireGroup(group);
 +
 +				field = false;
 +			}
