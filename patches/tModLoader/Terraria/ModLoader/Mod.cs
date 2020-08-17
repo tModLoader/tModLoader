@@ -116,6 +116,10 @@ namespace Terraria.ModLoader
 			loadables.Add(instance);
 		}
 
+		public IEnumerable<ILoadable> GetContent() => content;
+
+		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
+
 		/// <summary>
 		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
 		/// (The item parameter may be null if you don't want to associate an item with the texture.) 
@@ -173,14 +177,14 @@ namespace Terraria.ModLoader
 				ModContent.GetTexture(item.ArmTexture); //ensure texture exists
 				EquipLoader.armTextures[slot] = item.ArmTexture;
 			}
-			if (item != null) {
-				if (!EquipLoader.idToSlot.TryGetValue(item.item.type, out IDictionary<EquipType, int> slots))
-					EquipLoader.idToSlot[item.item.type] = slots = new Dictionary<EquipType, int>();
 
-				slots[type] = slot;
-				if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
-					EquipLoader.slotToId[type][slot] = item.item.type;
-			}
+			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out IDictionary<EquipType, int> slots))
+				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
+
+			slots[type] = slot;
+			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+				EquipLoader.slotToId[type][slot] = item.Type;
+
 			return slot;
 		}
 

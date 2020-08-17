@@ -20,7 +20,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The NPC object that this ModNPC controls.
 		/// </summary>
-		public NPC npc {get;internal set;}
+		public NPC npc {get;internal set; }
+
+		/// <summary>
+		/// Shorthand for npc.type;
+		/// </summary>
+		public int Type => npc.type;
 
 		/// <summary>
 		/// The translations for the display name of this NPC.

@@ -30,6 +30,11 @@ namespace Terraria.ModLoader
 		public Item item {get;internal set;}
 
 		/// <summary>
+		/// Shorthand for item.type;
+		/// </summary>
+		public int Type => item.type;
+
+		/// <summary>
 		/// The translations for the display name of this item.
 		/// </summary>
 		public ModTranslation DisplayName {get;internal set;}

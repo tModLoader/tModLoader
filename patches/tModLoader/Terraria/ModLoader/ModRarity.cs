@@ -8,13 +8,7 @@ namespace Terraria.ModLoader
 		public int Type { get; internal set; }
 
 		protected sealed override void Register() {
-			if (!Mod.loading)
-				throw new Exception("AddRarity can only be called from Mod.Load or Mod.Autoload");
-
-			if (Mod.rarities.ContainsKey(Name))
-				throw new Exception($"You tried to add 2 ModRarities with the same name: {Name}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddRarity with 2 rarities of the same name.");
-			
-			Mod.rarities[Name] = this;
+			ModTypeLookup<ModRarity>.Register(this);
 			Type = RarityLoader.Add(this);
 			ContentInstance.Register(this);
 		}

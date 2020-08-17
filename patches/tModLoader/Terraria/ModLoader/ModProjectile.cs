@@ -25,6 +25,11 @@ namespace Terraria.ModLoader
 		public Projectile projectile { get; internal set; }
 
 		/// <summary>
+		/// Shorthand for projectile.type;
+		/// </summary>
+		public int Type => projectile.type;
+
+		/// <summary>
 		/// The translations for the display name of this projectile.
 		/// </summary>
 		public ModTranslation DisplayName { get; internal set; }

@@ -38,8 +38,9 @@ namespace Terraria.ModLoader
 		public static bool TryGet<T>(string fullname, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(fullname, out value);
 		public static bool TryGet<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue($"{modName}/{name}", out value);
 
+		private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 		public static void SplitName(string name, out string domain, out string subName) {
-			int slash = name.IndexOf('/');
+			int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
 			if (slash < 0)
 				throw new MissingResourceException("Missing mod qualifier: " + name);
 
@@ -299,7 +300,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 		/// </summary>
-		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.item.type ?? 0;
+		public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.
@@ -334,12 +335,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Get the id (type) of a ModProjectile by class. Assumes one instance per class.
 		/// </summary>
-		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.projectile.type ?? 0;
+		public static int ProjectileType<T>() where T : ModProjectile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModNPC by class. Assumes one instance per class.
 		/// </summary>
-		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.npc.type ?? 0;
+		public static int NPCType<T>() where T : ModNPC => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
 		/// Get the id (type) of a ModBuff by class. Assumes one instance per class.
