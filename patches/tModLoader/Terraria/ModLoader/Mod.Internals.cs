@@ -40,6 +40,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IDictionary<string, ModPrefix> prefixes = new Dictionary<string, ModPrefix>();
 		internal readonly IDictionary<string, ModRarity> rarities = new Dictionary<string, ModRarity>();
+		internal readonly IDictionary<string, ModDamageClass> damageClasses = new Dictionary<string, ModDamageClass>();
 		internal readonly IDictionary<string, ModDust> dusts = new Dictionary<string, ModDust>();
 		internal readonly IDictionary<string, ModTile> tiles = new Dictionary<string, ModTile>();
 		internal readonly IDictionary<string, GlobalTile> globalTiles = new Dictionary<string, GlobalTile>();

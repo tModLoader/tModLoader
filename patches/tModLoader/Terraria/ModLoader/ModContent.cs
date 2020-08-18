@@ -306,6 +306,11 @@ namespace Terraria.ModLoader
 		public static int RarityType<T>() where T : ModRarity => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModDamageClass by class. Assumes one instance per class.
+		/// </summary>
+		public static int DamageClassType<T>() where T : ModDamageClass => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModDust by class. Assumes one instance per class.
 		/// </summary>
 		public static int DustType<T>() where T : ModDust => GetInstance<T>()?.Type ?? 0;
@@ -473,6 +478,7 @@ namespace Terraria.ModLoader
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();
+			DamageClassLoader.Unload();
 			ModGore.Unload();
 			SoundLoader.Unload();
 			DisposeMusic();

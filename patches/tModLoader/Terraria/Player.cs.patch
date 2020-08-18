@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,6 +_,10 @@
+@@ -34,10 +_,14 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -11,6 +11,11 @@
  
  namespace Terraria
  {
+-	public class Player : Entity
++	public partial class Player : Entity
+ 	{
+ 		public static class BuilderAccToggleIDs
+ 		{
 @@ -184,15 +_,21 @@
  
  			public static void PlayerConnect(int playerIndex) {
@@ -1398,9 +1403,11 @@
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
-@@ -12711,6 +_,7 @@
+@@ -12710,7 +_,9 @@
+ 				}
  			}
  
++			ResetDamageClassDictionaries();
  			mount.CheckMountBuff(this);
 +			PlayerHooks.ResetEffects(this);
  		}
@@ -2919,7 +2926,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,48 +_,68 @@
+@@ -35546,48 +_,81 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -2930,6 +2937,11 @@
  
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = 0;
++			int damageType = sItem?.modItem?.DamageType ?? -1;
++			if (DamageClassLoader.DamageTypeExists(damageType)) {
++				crit += GetCrit(damageType);
++				goto SkipVanillaCrit;
++			}
  			if (sItem.melee)
 -				return meleeCrit;
 +				crit += meleeCrit;
@@ -2942,6 +2954,7 @@
 -				return magicCrit;
 +				crit += magicCrit;
  
++			SkipVanillaCrit:
 +			ItemLoader.GetWeaponCrit(sItem, this, ref crit);
 +			PlayerHooks.GetWeaponCrit(this, sItem, ref crit);
 -			return 0;
@@ -2976,6 +2989,12 @@
 -			return num;
 +			float add = allDamage;
 +			float mult = allDamageMult;
++			int damageType = sItem?.modItem?.DamageType ?? -1;
++			if (DamageClassLoader.DamageTypeExists(damageType)) {
++				add += GetDamage(damageType);
++				mult *= GetDamageMult(damageType);
++				goto SkipVanillaDamage;
++			}
 +			if (sItem.melee) {
 +				add += meleeDamage - 1;
 +				mult *= meleeDamageMult;
@@ -3007,6 +3026,7 @@
 +				mult *= minionDamageMult;
 +			}
 +
++			SkipVanillaDamage:
 +			if (sItem.modItem?.IgnoreDamageModifiers == true)
 +				return sItem.damage;
 +
@@ -3472,7 +3492,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,28 @@
+@@ -37381,7 +_,29 @@
  			return -1;
  		}
  
@@ -3487,6 +3507,7 @@
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +
 +		public Player(bool startupInventory = true) {
++			ResetDamageClassDictionaries();
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.

@@ -1,3 +1,4 @@
+using ExampleMod.Content.DamageClasses;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -11,7 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleShield : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded shield.");
+			Tooltip.SetDefault("This is a modded shield.\n10% increased example damage");
 		}
 
 		public override void SetDefaults() {
@@ -26,6 +27,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
+			player.SetDamage<ExampleDamageClass>(0.1f); // Increase the player damage for ExampleDamageClass by 10%.
 			player.allDamage += 1f; // Increase ALL player damage by 100%
 			player.endurance = 1f - (0.1f * (1f - player.endurance));  // The percentage of damage reduction
 

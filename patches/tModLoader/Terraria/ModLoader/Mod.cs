@@ -273,6 +273,20 @@ namespace Terraria.ModLoader
 		public int RarityType(string name) => GetRarity(name)?.Type ?? 0;
 
 		/// <summary>
+		/// Gets the ModDamageClass instance corresponding to the name. Because this method is in the Mod class, conflicts between mods are avoided. Returns null if no ModDamageClass with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public ModDamageClass GetDamageClass(string name) => damageClasses.TryGetValue(name, out var damageClass) ? damageClass : null;
+
+		/// <summary>
+		/// Gets the internal ID / type of the ModDamageClass corresponding to the name. Returns 0 if no ModDamageClass with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public int DamageClassType(string name) => GetDamageClass(name)?.Type ?? 0;
+
+		/// <summary>
 		/// Gets the ModDust of this mod corresponding to the given name. Returns null if no ModDust with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>

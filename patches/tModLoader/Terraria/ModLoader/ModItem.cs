@@ -75,6 +75,11 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
+		/// The custom damage type of this ModItem. Assign to ModContent.DamageClassType<T>().
+		/// </summary>
+		public virtual int DamageType => -1;
+
+		/// <summary>
 		/// Returns a clone of this ModItem. 
 		/// Allows you to decide which fields of your ModItem class are copied over when an item stack is split or something similar happens. 
 		/// By default this will return a memberwise clone; you will want to override this if your ModItem contains object references. 
