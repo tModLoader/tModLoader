@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.SetDamage<ExampleDamageClass>(0.25f); // This method will add the given value onto the given damage class' damage stat - in this case, 0.25f or a 25% increase.
+			player.ModifyDamage<ExampleDamageClass>(0.25f); // This method will add the given value onto the given damage class' damage stat - in this case, 0.25f or a 25% increase.
 		}
 	}
 }

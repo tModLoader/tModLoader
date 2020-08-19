@@ -1352,8 +1352,8 @@
 -					float num = 5E-06f;
 -					int damage = item.damage;
 +					LocalizedText tip = item.melee ? Lang.tip[2] : (item.ranged ? Lang.tip[3] : (item.magic ? Lang.tip[4] : ((!item.summon) ? Lang.tip[55] : Lang.tip[53])));
-+					if (DamageClassLoader.DamageClassExists(item?.modItem?.DamageType)) {
-+						tip = new LocalizedText("", $" {item?.modItem?.DamageType.ClassName} damage");
++					if (item.DamageType != null) {
++						tip = new LocalizedText("", $" {item.DamageType.ClassName} damage");
 +					}
 +					int damage = player[myPlayer].GetWeaponDamage(item);
  					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);

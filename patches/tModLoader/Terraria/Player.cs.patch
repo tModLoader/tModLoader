@@ -2937,8 +2937,8 @@
  
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = 0;
-+			if (DamageClassLoader.DamageClassExists(sItem?.modItem?.DamageType)) {
-+				crit += GetCrit(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
++			if (sItem.DamageType != null) {
++				crit += GetCrit(sItem.DamageType.index);
 +				goto SkipVanillaCrit;
 +			}
  			if (sItem.melee)
@@ -2988,9 +2988,9 @@
 -			return num;
 +			float add = allDamage;
 +			float mult = allDamageMult;
-+			if (DamageClassLoader.DamageClassExists(sItem?.modItem?.DamageType)) {
-+				add += GetDamage(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
-+				mult *= GetDamageMult(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
++			if (sItem.DamageType != null) {
++				add += GetDamage(sItem.DamageType.index);
++				mult *= GetDamageMult(sItem.DamageType.index);
 +				goto SkipVanillaDamage;
 +			}
 +			if (sItem.melee) {

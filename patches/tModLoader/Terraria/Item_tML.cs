@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Terraria
@@ -10,6 +11,11 @@ namespace Terraria
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
+
+		/// <summary>
+		/// The custom damage type of this Item. Assign to ModContent.DamageClassType<T>().
+		/// </summary>
+		public ModDamageClass DamageType { get; set; }
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
