@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; // TODO: remove when sprite is made for this
 
-		public override int DamageType => ModContent.DamageClassType<ExampleDamageClass>();
+		public override ModDamageClass DamageType => ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.
 
 		public override void SetDefaults() {
 			item.width = 40;

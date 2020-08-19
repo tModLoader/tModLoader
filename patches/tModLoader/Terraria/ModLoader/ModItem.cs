@@ -77,7 +77,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The custom damage type of this ModItem. Assign to ModContent.DamageClassType<T>().
 		/// </summary>
-		public virtual int DamageType => -1;
+		public virtual ModDamageClass DamageType => null;
 
 		/// <summary>
 		/// Returns a clone of this ModItem. 

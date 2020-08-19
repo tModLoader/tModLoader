@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
 	public partial class Player
 	{
-		private readonly IDictionary<int, int> crits = new Dictionary<int, int>();
-		private readonly IDictionary<int, float> damages = new Dictionary<int, float>();
-		private readonly IDictionary<int, float> damageMults = new Dictionary<int, float>();
+		private DamageClassData[] damageData = new DamageClassData[0];
 
 		internal void ResetDamageClassDictionaries() {
+			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 			for (int i = 0; i < DamageClassLoader.DamageClassCount; i++) {
-				crits[i] = 0;
-				damages[i] = 0;
-				damageMults[i] = 1;
+				damageData[i] = new DamageClassData(0, 0, 1);
 			}
 		}
 
@@ -22,9 +19,10 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount that should be added to the crit. Can be negative too.</param>
 		public void SetCrit<T>(int changeAmount) where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
-			if (crits.ContainsKey(damageClassType)) {
-				crits[damageClassType] += changeAmount;
+			int damageClassType = DamageClassLoader.GetIndex<T>();
+			if (ContainsIndex(damageData, damageClassType)) {
+				ref var data = ref damageData[damageClassType];
+				data.crit += changeAmount;
 			}
 		}
 
@@ -33,9 +31,10 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage. Can be negative too.</param>
 		public void SetDamage<T>(float changeAmount) where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
-			if (damages.ContainsKey(damageClassType)) {
-				damages[damageClassType] += changeAmount;
+			int damageClassType = DamageClassLoader.GetIndex<T>();
+			if (ContainsIndex(damageData, damageClassType)) {
+				ref var data = ref damageData[damageClassType];
+				data.damage += changeAmount;
 			}
 		}
 
@@ -44,9 +43,10 @@ namespace Terraria
 		/// </summary>
 		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage multiplier. Can be negative too.</param>
 		public void SetDamageMult<T>(float changeAmount) where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
-			if (damageMults.ContainsKey(damageClassType)) {
-				damageMults[damageClassType] += changeAmount;
+			int damageClassType = DamageClassLoader.GetIndex<T>();
+			if (ContainsIndex(damageData, damageClassType)) {
+				ref var data = ref damageData[damageClassType];
+				data.damageMult += changeAmount;
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Terraria
 		/// Gets the crit stat for this damage type on this player.
 		/// </summary>
 		public int GetCrit<T>() where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
+			int damageClassType = DamageClassLoader.GetIndex<T>();
 			return GetCrit(damageClassType);
 		}
 
@@ -62,7 +62,7 @@ namespace Terraria
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
 		public float GetDamage<T>() where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
+			int damageClassType = DamageClassLoader.GetIndex<T>();
 			return GetDamage(damageClassType);
 		}
 
@@ -70,14 +70,29 @@ namespace Terraria
 		/// Gets the damage multiplier stat for this damage type on this player.
 		/// </summary>
 		public float GetDamageMult<T>() where T : ModDamageClass {
-			int damageClassType = ModContent.DamageClassType<T>();
+			int damageClassType = DamageClassLoader.GetIndex<T>();
 			return GetDamageMult(damageClassType);
 		}
 
-		internal int GetCrit(int damageClassType) => crits.TryGetValue(damageClassType, out int crit) ? crit : 0;
+		internal int GetCrit(int damageClassType) => damageData[damageClassType].crit;
 		
-		internal float GetDamage(int damageClassType) => damages.TryGetValue(damageClassType, out float damage) ? damage : 0;
+		internal float GetDamage(int damageClassType) => damageData[damageClassType].damage;
 		
-		internal float GetDamageMult(int damageClassType) => damageMults.TryGetValue(damageClassType, out float damageMult) ? damageMult : 1;
+		internal float GetDamageMult(int damageClassType) => damageData[damageClassType].damageMult;
+
+		private bool ContainsIndex(Array array, int index) => index >= 0 && index <= array.Length - 1;
+	}
+
+	public struct DamageClassData
+	{
+		public int crit;
+		public float damage;
+		public float damageMult;
+
+		public DamageClassData(int crit, float damage, float damageMult) {
+			this.crit = crit;
+			this.damage = damage;
+			this.damageMult = damageMult;
+		}
 	}
 }

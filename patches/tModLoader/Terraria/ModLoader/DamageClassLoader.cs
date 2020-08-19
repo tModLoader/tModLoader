@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader
 {
@@ -8,14 +9,15 @@ namespace Terraria.ModLoader
 
 		internal static List<ModDamageClass> damageClasses = new List<ModDamageClass>();
 
-		internal static bool DamageTypeExists(int type) => type >= 0 && type < DamageClassCount;
+		internal static bool DamageClassExists(ModDamageClass damageClass) => damageClass == null ? false : damageClasses.Contains(damageClass);
 
-		internal static int Add(ModDamageClass damageClass) {
+		internal static void Add(ModDamageClass damageClass) {
 			damageClasses.Add(damageClass);
-			return damageClasses.Count - 1;
 		}
 
-		internal static ModDamageClass GetDamageClass(int type) => damageClasses[type];
+		internal static int GetIndex<T>() => damageClasses.FindIndex(d => d.GetType() == typeof(T));
+
+		internal static int GetIndex(ModDamageClass damageClass) => damageClasses.FindIndex(d => d == damageClass);
 
 		internal static void Unload() {
 			damageClasses.Clear();

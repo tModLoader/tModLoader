@@ -280,13 +280,6 @@ namespace Terraria.ModLoader
 		public ModDamageClass GetDamageClass(string name) => damageClasses.TryGetValue(name, out var damageClass) ? damageClass : null;
 
 		/// <summary>
-		/// Gets the internal ID / type of the ModDamageClass corresponding to the name. Returns 0 if no ModDamageClass with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int DamageClassType(string name) => GetDamageClass(name)?.Type ?? 0;
-
-		/// <summary>
 		/// Gets the ModDust of this mod corresponding to the given name. Returns null if no ModDust with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>

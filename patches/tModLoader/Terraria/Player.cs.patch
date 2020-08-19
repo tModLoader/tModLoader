@@ -2926,7 +2926,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,48 +_,81 @@
+@@ -35546,48 +_,79 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -2937,9 +2937,8 @@
  
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = 0;
-+			int damageType = sItem?.modItem?.DamageType ?? -1;
-+			if (DamageClassLoader.DamageTypeExists(damageType)) {
-+				crit += GetCrit(damageType);
++			if (DamageClassLoader.DamageClassExists(sItem?.modItem?.DamageType)) {
++				crit += GetCrit(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
 +				goto SkipVanillaCrit;
 +			}
  			if (sItem.melee)
@@ -2989,10 +2988,9 @@
 -			return num;
 +			float add = allDamage;
 +			float mult = allDamageMult;
-+			int damageType = sItem?.modItem?.DamageType ?? -1;
-+			if (DamageClassLoader.DamageTypeExists(damageType)) {
-+				add += GetDamage(damageType);
-+				mult *= GetDamageMult(damageType);
++			if (DamageClassLoader.DamageClassExists(sItem?.modItem?.DamageType)) {
++				add += GetDamage(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
++				mult *= GetDamageMult(DamageClassLoader.GetIndex(sItem?.modItem?.DamageType));
 +				goto SkipVanillaDamage;
 +			}
 +			if (sItem.melee) {
