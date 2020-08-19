@@ -43,7 +43,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set the jump height multiplier, disable default double jump sound, and add visuals when this jump is initiated.
 		/// </summary>
-		/// /// <param name="jumpHeight">Jump height multiplier, 1f by default</param>
+		/// <param name="jumpHeight">Jump height multiplier, 1f by default</param>
 		/// <param name="playSound">if left on true, will play the default double jump sound</param>
 		public virtual void Jump(ref float jumpHeight, ref bool playSound)
 		{
