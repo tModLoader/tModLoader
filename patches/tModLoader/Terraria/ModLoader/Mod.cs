@@ -436,6 +436,13 @@ namespace Terraria.ModLoader
 		public ModPlayer GetPlayer(string name) => players.TryGetValue(name, out var player) ? player : null;
 
 		/// <summary>
+		/// Gets the ModExtraJump of this mod corresponding to the given name. Returns null if no ModExtraJump with the given name is found.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns></returns>
+		public ModExtraJump GetExtraJump(string name) => extraJumps.TryGetValue(name, out var extraJump) ? extraJump : null;
+
+		/// <summary>
 		/// Gets the ModBuff of this mod corresponding to the given name. Returns null if no ModBuff with the given name is found.
 		/// </summary>
 		/// <param name="name">The name.</param>

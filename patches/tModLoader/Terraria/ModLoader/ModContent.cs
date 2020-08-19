@@ -470,6 +470,7 @@ namespace Terraria.ModLoader
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
 			PlayerHooks.Unload();
+			ModExtraJumpLoader.Unload();
 			BuffLoader.Unload();
 			MountLoader.Unload();
 			RarityLoader.Unload();

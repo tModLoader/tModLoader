@@ -1398,6 +1398,14 @@
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
+@@ -12668,6 +_,7 @@
+ 			hasJumpOption_Santank = false;
+ 			hasJumpOption_WallOfFleshGoat = false;
+ 			hasJumpOption_Basilisk = false;
++			ModExtraJumpLoader.ResetAllEnable(this);
+ 			defendedByPaladin = false;
+ 			hasPaladinShield = false;
+ 			preventAllItemPickups = false;
 @@ -12711,6 +_,7 @@
  			}
  
@@ -1468,6 +1476,77 @@
  				for (int i = 0; i < num2; i++) {
  					WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  				}
+@@ -13923,7 +_,7 @@
+ 						}
+ 					}
+ 				}
+-				else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++				else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || ModExtraJumpLoader.AnyJumpAgain(this) || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
+ 					if (mount.Active && MountID.Sets.Cart[mount.Type])
+ 						base.position.Y -= 0.001f;
+ 
+@@ -13946,6 +_,8 @@
+ 					bool flag10 = false;
+ 					bool flag11 = false;
+ 					bool flag12 = false;
++					bool cloud = false;
++					bool anyModExtraJump = false;
+ 					if (!flag2 && !flag) {
+ 						if (canJumpAgain_Basilisk) {
+ 							flag12 = true;
+@@ -13980,8 +_,12 @@
+ 							canJumpAgain_Sail = false;
+ 							flag8 = true;
+ 						}
+-						else {
++						else if (canJumpAgain_Cloud) {
+ 							canJumpAgain_Cloud = false;
++							cloud = true;
++						}
++						else if (ModExtraJumpLoader.SetNextJump(this)) {
++							anyModExtraJump = true;
+ 						}
+ 					}
+ 
+@@ -14189,7 +_,7 @@
+ 							Main.gore[num19].velocity += Main.rand.NextVector2Circular(1f, 1f) * 0.5f;
+ 						}
+ 					}
+-					else {
++					else if (cloud) {
+ 						isPerformingJump_Cloud = true;
+ 						int num20 = height;
+ 						if (gravDir == -1f)
+@@ -14214,6 +_,9 @@
+ 						Main.gore[num23].velocity.X = Main.gore[num23].velocity.X * 0.1f - velocity.X * 0.1f;
+ 						Main.gore[num23].velocity.Y = Main.gore[num23].velocity.Y * 0.1f - velocity.Y * 0.05f;
+ 					}
++					else if (anyModExtraJump) {
++						ModExtraJumpLoader.Jump(this);
++					}
+ 				}
+ 
+ 				releaseJump = false;
+@@ -14655,7 +_,7 @@
+ 
+ 		public void CarpetMovement() {
+ 			bool flag = false;
+-			if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
++			if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && !ModExtraJumpLoader.AnyJumpAgain(this) && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
+ 				if (controlJump && canCarpet) {
+ 					canCarpet = false;
+ 					carpetTime = 300;
+@@ -14766,6 +_,10 @@
+ 				}
+ 			}
+ 
++			if ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f)) {
++				ModExtraJumpLoader.PerformingJump(this);
++			}
++
+ 			if (!isPerformingJump_Blizzard || !hasJumpOption_Blizzard || canJumpAgain_Blizzard || ((gravDir != 1f || !(velocity.Y < 0f)) && (gravDir != -1f || !(velocity.Y > 0f))))
+ 				return;
+ 
 @@ -14837,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
@@ -1496,7 +1575,7 @@
  							num4 = miscEquips[2].mountType;
  
  						int num5 = height + Mount.GetHeightBoost(num4);
-@@ -15376,6 +_,7 @@
+@@ -15376,17 +_,18 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
  
@@ -1504,6 +1583,28 @@
  			float num10 = num8;
  			num10 = ((!(num8 > num9)) ? 1f : (num9 / num8));
  			preferedPlayerVelocityX *= num10;
+ 			preferedPlayerVelocityY *= num10;
+ 		}
+ 
+-		private void RefreshMovementAbilities(bool doubleJumps = true) {
++		private void RefreshMovementAbilities(bool extraJumps = true) {
+ 			wingTime = wingTimeMax;
+ 			rocketTime = rocketTimeMax;
+ 			rocketDelay = 0;
+-			if (doubleJumps)
++			if (extraJumps)
+ 				RefreshDoubleJumps();
+ 		}
+ 
+@@ -15417,6 +_,8 @@
+ 
+ 			if (hasJumpOption_Basilisk)
+ 				canJumpAgain_Basilisk = true;
++
++			ModExtraJumpLoader.SetJumpState(this);
+ 		}
+ 
+ 		public void StickyMovement() {
 @@ -16011,6 +_,7 @@
  			slippy2 = (num3 == 197);
  			powerrun = (num3 == 198);
@@ -1646,6 +1747,32 @@
  			}
  
  			lastTileRangeX = tileRangeX;
+@@ -17727,6 +_,7 @@
+ 				canJumpAgain_Santank = false;
+ 				canJumpAgain_WallOfFleshGoat = false;
+ 				canJumpAgain_Basilisk = false;
++				ModExtraJumpLoader.ResetAllJumps(this);
+ 			}
+ 			else if (base.velocity.Y == 0f || sliding) {
+ 				RefreshDoubleJumps();
+@@ -17758,6 +_,8 @@
+ 
+ 				if (!hasJumpOption_Basilisk)
+ 					canJumpAgain_Basilisk = false;
++
++				ModExtraJumpLoader.ToggleJumpState(this);
+ 			}
+ 
+ 			if (!carpet) {
+@@ -18169,6 +_,8 @@
+ 					maxRunSpeed *= 1.5f;
+ 				}
+ 
++				ModExtraJumpLoader.HorizontalJumpSpeed(this);
++
+ 				if (inventory[selectedItem].type == 3106 && stealth < 1f) {
+ 					float num44 = maxRunSpeed / 2f * (1f - stealth);
+ 					maxRunSpeed -= num44;
 @@ -18206,6 +_,7 @@
  						mount.UpdateDrill(this, controlUp, controlDown);
  				}
@@ -2105,6 +2232,14 @@
  			else if (shieldRaised) {
  				bodyFrame.Y = bodyFrame.Height * 10;
  			}
+@@ -25178,6 +_,7 @@
+ 			isPerformingJump_Sail = false;
+ 			isPerformingJump_Unicorn = false;
+ 			isPerformingJump_Santank = false;
++			ModExtraJumpLoader.ResetAllVisualEffects(this);
+ 		}
+ 
+ 		private void UpdateVisibleAccessories() {
 @@ -25433,6 +_,8 @@
  			if (drawPlayer.body == 36 && drawPlayer.head == 56)
  				armorEffectDrawOutlines = true;
@@ -3472,7 +3607,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,28 @@
+@@ -37381,7 +_,44 @@
  			return -1;
  		}
  
@@ -3485,6 +3620,21 @@
 +		public ModPlayer GetModPlayer(Mod mod, string name) => GetModPlayer(mod.GetPlayer(name)?.index);
 +
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
++		
++		internal ModExtraJump[] modExtraJumps = new ModExtraJump[0];
++
++		/// <summary>
++		/// This is the jump that will be executed next/is currently in progress
++		/// </summary>
++		internal ModExtraJump activeJump;
++
++		private ModExtraJump GetModExtraJump(int? index) => index.HasValue ? modExtraJumps[index.Value] : null;
++
++		public ModExtraJump GetModExtraJump(Mod mod, string name) => GetModExtraJump(mod.GetExtraJump(name)?.index);
++
++		public T GetModExtraJump<T>() where T : ModExtraJump => (T)GetModExtraJump(ModContent.GetInstance<T>()?.index);
++
++		public void EnableExtraJump<T>() where T : ModExtraJump => GetModExtraJump<T>().hasJumpOption = true;
 +
 +		public Player(bool startupInventory = true) {
 +			buffType = new int[MaxBuffs];
@@ -3499,6 +3649,7 @@
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
++			ModExtraJumpLoader.SetupPlayer(this);
  			width = 20;
  			height = 42;
  			name = string.Empty;
