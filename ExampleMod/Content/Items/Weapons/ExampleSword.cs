@@ -1,4 +1,3 @@
-using ExampleMod.Content.DamageClasses;
 using ExampleMod.Content.Rarities;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
@@ -11,8 +10,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
-		public override int DamageType => DamageClassType<ExampleDamageClass>(); // Make this item part of our custom damage class.
-
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sword."); //The (English) text shown below your weapon's name.
 		}
