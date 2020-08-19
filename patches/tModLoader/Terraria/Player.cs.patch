@@ -56,19 +56,69 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[323];
-@@ -1037,6 +_,12 @@
- 		public int meleeCrit = 4;
- 		public int magicCrit = 4;
- 		public int rangedCrit = 4;
+@@ -1034,16 +_,55 @@
+ 		public bool parryDamageBuff;
+ 		public bool ballistaPanic;
+ 		public bool JustDroppedAnItem;
+-		public int meleeCrit = 4;
+-		public int magicCrit = 4;
+-		public int rangedCrit = 4;
+-		public float meleeDamage = 1f;
+-		public float magicDamage = 1f;
+-		public float rangedDamage = 1f;
++		internal int meleeCrit {
++			get => GetCrit(DamageClassLoader.Melee);
++			set => ModifyCrit(DamageClassLoader.Melee, value);
++		}
++		internal int magicCrit {
++			get => GetCrit(DamageClassLoader.Magic);
++			set => ModifyCrit(DamageClassLoader.Magic, value);
++		}
++		internal int rangedCrit {
++			get => GetCrit(DamageClassLoader.Ranged);
++			set => ModifyCrit(DamageClassLoader.Ranged, value);
++		}
 +		public float allDamage; // added to better support new damage classes
 +		public float allDamageMult;
-+		public float meleeDamageMult;
-+		public float rangedDamageMult;
-+		public float magicDamageMult;
-+		public float minionDamageMult;
- 		public float meleeDamage = 1f;
- 		public float magicDamage = 1f;
- 		public float rangedDamage = 1f;
++		internal float meleeDamageMult {
++			get => GetDamageMult(DamageClassLoader.Melee);
++			set => ModifyDamageMult(DamageClassLoader.Melee, value);
++		}
++		internal float rangedDamageMult {
++			get => GetDamageMult(DamageClassLoader.Ranged);
++			set => ModifyDamageMult(DamageClassLoader.Ranged, value);
++		}
++		internal float magicDamageMult {
++			get => GetDamageMult(DamageClassLoader.Magic);
++			set => ModifyDamageMult(DamageClassLoader.Magic, value);
++		}
++		internal float minionDamageMult {
++			get => GetDamageMult(DamageClassLoader.Summon);
++			set => ModifyDamageMult(DamageClassLoader.Melee, value);
++		}
++		internal float meleeDamage {
++			get => GetDamage(DamageClassLoader.Melee);
++			set => ModifyDamage(DamageClassLoader.Melee, value);
++		}
++		internal float magicDamage {
++			get => GetDamage(DamageClassLoader.Magic);
++			set => ModifyDamage(DamageClassLoader.Magic, value);
++		}
++		internal float rangedDamage {
++			get => GetDamage(DamageClassLoader.Ranged);
++			set => ModifyDamage(DamageClassLoader.Ranged, value);
++		}
+ 		public float bulletDamage = 1f;
+ 		public float arrowDamage = 1f;
+ 		public float rocketDamage = 1f;
+-		public float minionDamage = 1f;
++		internal float minionDamage {
++			get => GetDamage(DamageClassLoader.Summon);
++			set => ModifyDamage(DamageClassLoader.Summon, value);
++		}
+ 		public float minionKB;
+ 		public float meleeSpeed = 1f;
+ 		public float moveSpeed = 1f;
 @@ -1080,8 +_,26 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -2938,7 +2988,7 @@
  		public int GetWeaponCrit(Item sItem) {
 +			int crit = 0;
 +			if (sItem.DamageType != null) {
-+				crit += GetCrit(sItem.DamageType.index);
++				crit += GetCrit(sItem.DamageType);
 +				goto SkipVanillaCrit;
 +			}
  			if (sItem.melee)
@@ -2989,8 +3039,8 @@
 +			float add = allDamage;
 +			float mult = allDamageMult;
 +			if (sItem.DamageType != null) {
-+				add += GetDamage(sItem.DamageType.index);
-+				mult *= GetDamageMult(sItem.DamageType.index);
++				add += GetDamage(sItem.DamageType);
++				mult *= GetDamageMult(sItem.DamageType);
 +				goto SkipVanillaDamage;
 +			}
 +			if (sItem.melee) {

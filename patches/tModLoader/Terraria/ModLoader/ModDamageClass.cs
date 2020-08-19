@@ -7,7 +7,7 @@
 		/// <summary>
 		/// This is the name that will show up when an item tooltip displays 'X [name] damage'.
 		/// </summary>
-		public virtual string ClassName => "";
+		public virtual string ClassName => Name;
 
 		protected override void Register() {
 			Mod.damageClasses[Name] = this;

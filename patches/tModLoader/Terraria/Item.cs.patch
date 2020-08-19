@@ -44,6 +44,33 @@
  		public bool isAShopItem;
  		public short hairDye = -1;
  		public byte paint;
+@@ -145,10 +_,22 @@
+ 		public int netID;
+ 		public int crit;
+ 		public byte prefix;
+-		public bool melee;
+-		public bool magic;
+-		public bool ranged;
+-		public bool summon;
++		internal bool melee {
++			get => DamageType == DamageClassLoader.Melee;
++			set => DamageType = DamageClassLoader.Melee;
++		}
++		internal bool magic {
++			get => DamageType == DamageClassLoader.Magic;
++			set => DamageType = DamageClassLoader.Magic;
++		}
++		internal bool ranged {
++			get => DamageType == DamageClassLoader.Ranged;
++			set => DamageType = DamageClassLoader.Ranged;
++		}
++		internal bool summon {
++			get => DamageType == DamageClassLoader.Summon;
++			set => DamageType = DamageClassLoader.Summon;
++		}
+ 		public bool sentry;
+ 		public int reuseDelay;
+ 		public bool newAndShiny;
 @@ -156,6 +_,12 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;

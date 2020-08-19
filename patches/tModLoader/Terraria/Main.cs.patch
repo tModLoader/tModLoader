@@ -1278,7 +1278,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15052,95 +_,108 @@
+@@ -15052,95 +_,112 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1351,9 +1351,13 @@
  				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
 -					float num = 5E-06f;
 -					int damage = item.damage;
-+					LocalizedText tip = item.melee ? Lang.tip[2] : (item.ranged ? Lang.tip[3] : (item.magic ? Lang.tip[4] : ((!item.summon) ? Lang.tip[55] : Lang.tip[53])));
++					LocalizedText tip;
 +					if (item.DamageType != null) {
-+						tip = new LocalizedText("", $" {item.DamageType.ClassName} damage");
++						bool classIsVanilla = item.DamageType.index < DamageClassLoader.defaultDamageClassCount;
++						tip = new LocalizedText("", classIsVanilla ? $"{item.DamageType.ClassName}" : $" {item.DamageType.ClassName} damage");
++					}
++					else {
++						tip = Lang.tip[55]; // No damage class
 +					}
 +					int damage = player[myPlayer].GetWeaponDamage(item);
  					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
