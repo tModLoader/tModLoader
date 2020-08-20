@@ -1485,29 +1485,30 @@
  					if (mount.Active && MountID.Sets.Cart[mount.Type])
  						base.position.Y -= 0.001f;
  
-@@ -13946,6 +_,8 @@
+@@ -13946,7 +_,11 @@
  					bool flag10 = false;
  					bool flag11 = false;
  					bool flag12 = false;
 +					bool cloud = false;
 +					bool anyModExtraJump = false;
  					if (!flag2 && !flag) {
++						if (modExtraJumps.Length > 0)
++							goto jumpDecision;
  						if (canJumpAgain_Basilisk) {
  							flag12 = true;
-@@ -13980,8 +_,12 @@
- 							canJumpAgain_Sail = false;
- 							flag8 = true;
+ 							canJumpAgain_Basilisk = false;
+@@ -13982,7 +_,11 @@
  						}
--						else {
-+						else if (canJumpAgain_Cloud) {
+ 						else {
  							canJumpAgain_Cloud = false;
 +							cloud = true;
-+						}
-+						else if (ModExtraJumpLoader.SetNextJump(this)) {
-+							anyModExtraJump = true;
  						}
++
++						jumpDecision:
++							ModExtraJumpLoader.SetNextJumpCombined(this, ref flag12, ref flag11, ref flag10, ref flag9, ref flag5, ref flag6, ref flag7, ref flag8, ref cloud, ref anyModExtraJump);
  					}
  
+ 					canRocket = false;
 @@ -14189,7 +_,7 @@
  							Main.gore[num19].velocity += Main.rand.NextVector2Circular(1f, 1f) * 0.5f;
  						}
@@ -3607,7 +3608,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,44 @@
+@@ -37381,7 +_,45 @@
  			return -1;
  		}
  
@@ -3621,10 +3622,11 @@
 +
 +		public T GetModPlayer<T>() where T : ModPlayer => (T)GetModPlayer(ModContent.GetInstance<T>()?.index);
 +		
++		//TODO needs to be renamed together with the class if fully OOPed
 +		internal ModExtraJump[] modExtraJumps = new ModExtraJump[0];
 +
 +		/// <summary>
-+		/// This is the jump that will be executed next/is currently in progress
++		/// This is the modded jump that will be executed next/is currently in progress
 +		/// </summary>
 +		internal ModExtraJump activeJump;
 +

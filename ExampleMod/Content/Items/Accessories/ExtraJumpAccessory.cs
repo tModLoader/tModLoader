@@ -21,13 +21,10 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			// Jumps are usually executed in alphabetic order
-			//player.EnableDoubleJump<ExampleDoubleJump1>();
-			//player.EnableDoubleJump<ExampleDoubleJump2>();
-			//player.EnableDoubleJump<ExampleDoubleJump3>();
-			// Uncomment this to see the simple extra jump example
-			// player.EnableDoubleJump<SimpleExtraJump>();
+			// Jumps are usually executed in reverse alphabetic order if they have the same parent
 			player.EnableExtraJump<ExtraJumps.SimpleExtraJump>();
+			player.EnableExtraJump<ExtraJumps.SimpleExtraJumpBeforeSandstorm>();
+			player.EnableExtraJump<ExtraJumps.SimpleExtraJumpAfterSandstorm>();
 		}
 
 		public override void AddRecipes() {
