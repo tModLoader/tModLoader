@@ -1,6 +1,6 @@
 ﻿namespace Terraria.ModLoader
 {
-	public abstract class ModDamageClass : ModType
+	public abstract class DamageClass : ModType
 	{
 		internal int index;
 
@@ -14,5 +14,10 @@
 			index = DamageClassLoader.Add(this);
 			ContentInstance.Register(this);
 		}
+
+		public static Melee Melee { get; private set; } = new Melee();
+		public static Ranged Ranged { get; private set; } = new Ranged();
+		public static Magic Magic { get; private set; } = new Magic();
+		public static Summon Summon { get; private set; } = new Summon();
 	}
 }

@@ -1353,7 +1353,7 @@
 -					int damage = item.damage;
 +					LocalizedText tip;
 +					if (item.DamageType != null) {
-+						bool classIsVanilla = item.DamageType.index < DamageClassLoader.defaultDamageClassCount;
++						bool classIsVanilla = item.DamageType.index < DamageClassLoader.DefaultDamageClassCount;
 +						tip = new LocalizedText("", classIsVanilla ? $"{item.DamageType.ClassName}" : $" {item.DamageType.ClassName} damage");
 +					}
 +					else {

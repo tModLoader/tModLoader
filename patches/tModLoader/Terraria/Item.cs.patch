@@ -53,20 +53,20 @@
 -		public bool ranged;
 -		public bool summon;
 +		internal bool melee {
-+			get => DamageType == DamageClassLoader.Melee;
-+			set => DamageType = DamageClassLoader.Melee;
++			get => DamageType == DamageClass.Melee;
++			set => DamageType = DamageClass.Melee;
 +		}
 +		internal bool magic {
-+			get => DamageType == DamageClassLoader.Magic;
-+			set => DamageType = DamageClassLoader.Magic;
++			get => DamageType == DamageClass.Magic;
++			set => DamageType = DamageClass.Magic;
 +		}
 +		internal bool ranged {
-+			get => DamageType == DamageClassLoader.Ranged;
-+			set => DamageType = DamageClassLoader.Ranged;
++			get => DamageType == DamageClass.Ranged;
++			set => DamageType = DamageClass.Ranged;
 +		}
 +		internal bool summon {
-+			get => DamageType == DamageClassLoader.Summon;
-+			set => DamageType = DamageClassLoader.Summon;
++			get => DamageType == DamageClass.Summon;
++			set => DamageType = DamageClass.Summon;
 +		}
  		public bool sentry;
  		public int reuseDelay;

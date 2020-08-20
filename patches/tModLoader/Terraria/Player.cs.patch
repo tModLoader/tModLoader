@@ -67,54 +67,54 @@
 -		public float magicDamage = 1f;
 -		public float rangedDamage = 1f;
 +		internal int meleeCrit {
-+			get => GetCrit(DamageClassLoader.Melee);
-+			set => ModifyCrit(DamageClassLoader.Melee, value);
++			get => GetCrit(DamageClass.Melee);
++			set => AddCrit(DamageClass.Melee, value);
 +		}
 +		internal int magicCrit {
-+			get => GetCrit(DamageClassLoader.Magic);
-+			set => ModifyCrit(DamageClassLoader.Magic, value);
++			get => GetCrit(DamageClass.Magic);
++			set => AddCrit(DamageClass.Magic, value);
 +		}
 +		internal int rangedCrit {
-+			get => GetCrit(DamageClassLoader.Ranged);
-+			set => ModifyCrit(DamageClassLoader.Ranged, value);
++			get => GetCrit(DamageClass.Ranged);
++			set => AddCrit(DamageClass.Ranged, value);
 +		}
 +		public float allDamage; // added to better support new damage classes
 +		public float allDamageMult;
 +		internal float meleeDamageMult {
-+			get => GetDamageMult(DamageClassLoader.Melee);
-+			set => ModifyDamageMult(DamageClassLoader.Melee, value);
++			get => GetDamageMult(DamageClass.Melee);
++			set => AddDamageMult(DamageClass.Melee, value);
 +		}
 +		internal float rangedDamageMult {
-+			get => GetDamageMult(DamageClassLoader.Ranged);
-+			set => ModifyDamageMult(DamageClassLoader.Ranged, value);
++			get => GetDamageMult(DamageClass.Ranged);
++			set => AddDamageMult(DamageClass.Ranged, value);
 +		}
 +		internal float magicDamageMult {
-+			get => GetDamageMult(DamageClassLoader.Magic);
-+			set => ModifyDamageMult(DamageClassLoader.Magic, value);
++			get => GetDamageMult(DamageClass.Magic);
++			set => AddDamageMult(DamageClass.Magic, value);
 +		}
 +		internal float minionDamageMult {
-+			get => GetDamageMult(DamageClassLoader.Summon);
-+			set => ModifyDamageMult(DamageClassLoader.Melee, value);
++			get => GetDamageMult(DamageClass.Summon);
++			set => AddDamageMult(DamageClass.Melee, value);
 +		}
 +		internal float meleeDamage {
-+			get => GetDamage(DamageClassLoader.Melee);
-+			set => ModifyDamage(DamageClassLoader.Melee, value);
++			get => GetDamage(DamageClass.Melee);
++			set => AddDamage(DamageClass.Melee, value);
 +		}
 +		internal float magicDamage {
-+			get => GetDamage(DamageClassLoader.Magic);
-+			set => ModifyDamage(DamageClassLoader.Magic, value);
++			get => GetDamage(DamageClass.Magic);
++			set => AddDamage(DamageClass.Magic, value);
 +		}
 +		internal float rangedDamage {
-+			get => GetDamage(DamageClassLoader.Ranged);
-+			set => ModifyDamage(DamageClassLoader.Ranged, value);
++			get => GetDamage(DamageClass.Ranged);
++			set => AddDamage(DamageClass.Ranged, value);
 +		}
  		public float bulletDamage = 1f;
  		public float arrowDamage = 1f;
  		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
 +		internal float minionDamage {
-+			get => GetDamage(DamageClassLoader.Summon);
-+			set => ModifyDamage(DamageClassLoader.Summon, value);
++			get => GetDamage(DamageClass.Summon);
++			set => AddDamage(DamageClass.Summon, value);
 +		}
  		public float minionKB;
  		public float meleeSpeed = 1f;

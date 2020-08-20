@@ -15,7 +15,7 @@ namespace Terraria
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
-		public ModDamageClass DamageType { get; set; }
+		public DamageClass DamageType { get; set; }
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {

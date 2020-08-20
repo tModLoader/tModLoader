@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public ModDamageClass GetDamageClass(string name) => damageClasses.TryGetValue(name, out var damageClass) ? damageClass : null;
+		public DamageClass GetDamageClass(string name) => damageClasses.TryGetValue(name, out var damageClass) ? damageClass : null;
 
 		/// <summary>
 		/// Gets the ModDust of this mod corresponding to the given name. Returns null if no ModDust with the given name is found.

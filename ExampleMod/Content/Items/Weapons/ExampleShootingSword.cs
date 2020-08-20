@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 20;
 			item.autoReuse = true;
 
-			item.DamageType = DamageClassLoader.Melee;
+			item.DamageType = DamageClass.Melee;
 			item.damage = 50;
 			item.knockBack = 6;
 			item.crit = 6;
