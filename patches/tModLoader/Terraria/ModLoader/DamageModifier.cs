@@ -30,7 +30,6 @@
 		public static explicit operator float(DamageModifier m) =>
 			m.additive * m.multiplicative;
 
-
 		public static DamageModifier operator +(float add, DamageModifier m) => m + add;
 		public static DamageModifier operator *(float mul, DamageModifier m) => m * mul;
 

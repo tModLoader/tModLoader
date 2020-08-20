@@ -3089,7 +3089,7 @@
 -
 -			return num;
 +			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true)) {
-+				return sItem.damage * (int)allDamage;
++				return (int)(sItem.damage * (float)allDamage);
 +			}
 +
 +			DamageModifier damage = allDamage;
