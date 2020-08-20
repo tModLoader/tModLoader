@@ -13,7 +13,7 @@ namespace Terraria
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
 		/// <summary>
-		/// The custom damage type of this Item. Assign to ModContent.DamageClassType<T>().
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public ModDamageClass DamageType { get; set; }
 
