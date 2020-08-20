@@ -13,8 +13,8 @@ namespace Terraria.ModLoader
 	{
 		private static readonly IList<ModExtraJump> extraJumps = new List<ModExtraJump>();
 
-		internal static void SetNextJumpCombined(Player player, ref bool basilisk, ref bool goat, ref bool santank, ref bool unicorn, ref bool sandstorm, ref bool blizzard, ref bool fart, ref bool sail, ref bool cloud, ref bool anyModExtraJump) {
-			// This method is only called if atleast one modded jump exists, making sure the vanilla checks exist
+		internal static void SetNextJump(Player player, ref bool basilisk, ref bool goat, ref bool santank, ref bool unicorn, ref bool sandstorm, ref bool blizzard, ref bool fart, ref bool sail, ref bool cloud, ref bool anyModExtraJump) {
+			// This method is only called if atleast one modded jump exists
 			foreach (var extraJump in player.modExtraJumps) {
 				if (extraJump.index == VanillaExtraJump.Mounts.index) {
 					if (player.canJumpAgain_Basilisk) {
@@ -138,7 +138,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Do the jump if a valid <see cref="Player.activeJump"/> is found in <see cref="SetNextJumpCombined"/>.
+		/// Do the jump if a valid <see cref="Player.activeJump"/> is found in <see cref="SetNextJump"/>.
 		/// </summary>
 		/// <param name="player">Jumping player</param>
 		internal static void Jump(Player player) {
