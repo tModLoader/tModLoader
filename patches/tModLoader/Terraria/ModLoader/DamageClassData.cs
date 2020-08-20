@@ -3,13 +3,11 @@
 	internal struct DamageClassData
 	{
 		public int crit;
-		public float damage;
-		public float damageMult;
+		public DamageModifier damage;
 
-		public DamageClassData(int crit, float damage, float damageMult) {
+		public DamageClassData(int crit, DamageModifier damage) {
 			this.crit = crit;
 			this.damage = damage;
-			this.damageMult = damageMult;
 		}
 	}
 }

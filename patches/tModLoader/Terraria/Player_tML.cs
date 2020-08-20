@@ -8,9 +8,16 @@ namespace Terraria
 
 		internal void ResetDamageClassDictionaries() {
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
-			for (int i = 0; i < DamageClassLoader.DamageClassCount; i++) {
-				damageData[i] = new DamageClassData(4, 0, 1);
+			for (int i = 0; i < damageData.Length; i++) {
+				damageData[i] = new DamageClassData(4, DamageModifier.One); // Default values from vanilla - 4 crit, 0 add, 1x mult.
 			}
+		}
+
+		public void AddDamageModifier<T>(DamageModifier changeAmount) where T : DamageClass => AddDamageModifier(ModContent.GetInstance<T>(), changeAmount);
+
+		public void AddDamageModifier(DamageClass damageClass, DamageModifier changeAmount) {
+			ref var data = ref damageData[damageClass.index];
+			data.damage &= changeAmount;
 		}
 
 		/// <summary>
@@ -22,13 +29,13 @@ namespace Terraria
 		/// <summary>
 		/// Edits the damage value for the given damage type on this player.
 		/// </summary>
-		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage. Can be negative too.</param>
+		/// <param name="changeAmount">The amount that should be added to the damage, as a damage modifier.</param>
 		public void AddDamage<T>(float changeAmount) where T : DamageClass => AddDamage(ModContent.GetInstance<T>(), changeAmount);
 
 		/// <summary>
-		/// Edits the damage multiplier's value for the given damage type on this player.
+		/// Edits the damage value for the given damage type on this player.
 		/// </summary>
-		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage multiplier. Can be negative too.</param>
+		/// <param name="changeAmount">The amount that should be added to the damage, as a damage modifier.</param>
 		public void AddDamageMult<T>(float changeAmount) where T : DamageClass => AddDamageMult(ModContent.GetInstance<T>(), changeAmount);
 
 		/// <summary>
@@ -46,19 +53,19 @@ namespace Terraria
 		/// <summary>
 		/// Edits the damage value for the given damage type on this player.
 		/// </summary>
-		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage. Can be negative too.</param>
+		/// <param name="changeAmount">The amount that should be added to the damage for this class.</param>
 		public void AddDamage(DamageClass damageClass, float changeAmount) {
 			ref var data = ref damageData[damageClass.index];
 			data.damage += changeAmount;
 		}
 
 		/// <summary>
-		/// Edits the damage multiplier's value for the given damage type on this player.
+		/// Edits the damage value for the given damage type on this player.
 		/// </summary>
-		/// <param name="changeAmount">The amount (as a percentage, 0.01f is 1%) that should be added to the damage multiplier. Can be negative too.</param>
+		/// <param name="changeAmount">The amount that should be added to the damage multiplier for this class.</param>
 		public void AddDamageMult(DamageClass damageClass, float changeAmount) {
 			ref var data = ref damageData[damageClass.index];
-			data.damageMult += changeAmount;
+			data.damage *= changeAmount;
 		}
 
 		/// <summary>
@@ -69,12 +76,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
-		public float GetDamage<T>() where T : DamageClass => GetDamage(ModContent.GetInstance<T>());
-
-		/// <summary>
-		/// Gets the damage multiplier stat for this damage type on this player.
-		/// </summary>
-		public float GetDamageMult<T>() where T : DamageClass => GetDamageMult(ModContent.GetInstance<T>());
+		public DamageModifier GetDamage<T>() where T : DamageClass => GetDamage(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit stat for this damage type on this player.
@@ -84,11 +86,6 @@ namespace Terraria
 		/// <summary>
 		/// Gets the damage stat for this damage type on this player.
 		/// </summary>
-		public float GetDamage(DamageClass damageClass) => damageData[damageClass.index].damage;
-
-		/// <summary>
-		/// Gets the damage multiplier stat for this damage type on this player.
-		/// </summary>
-		public float GetDamageMult(DamageClass damageClass) => damageData[damageClass.index].damageMult;
+		public DamageModifier GetDamage(DamageClass damageClass) => damageData[damageClass.index].damage;
 	}
 }

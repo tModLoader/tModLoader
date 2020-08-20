@@ -56,7 +56,7 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[323];
-@@ -1034,16 +_,55 @@
+@@ -1034,16 +_,38 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -66,6 +66,10 @@
 -		public float meleeDamage = 1f;
 -		public float magicDamage = 1f;
 -		public float rangedDamage = 1f;
+-		public float bulletDamage = 1f;
+-		public float arrowDamage = 1f;
+-		public float rocketDamage = 1f;
+-		public float minionDamage = 1f;
 +		internal int meleeCrit {
 +			get => GetCrit(DamageClass.Melee);
 +			set => AddCrit(DamageClass.Melee, value);
@@ -78,43 +82,25 @@
 +			get => GetCrit(DamageClass.Ranged);
 +			set => AddCrit(DamageClass.Ranged, value);
 +		}
-+		public float allDamage; // added to better support new damage classes
-+		public float allDamageMult;
-+		internal float meleeDamageMult {
-+			get => GetDamageMult(DamageClass.Melee);
-+			set => AddDamageMult(DamageClass.Melee, value);
-+		}
-+		internal float rangedDamageMult {
-+			get => GetDamageMult(DamageClass.Ranged);
-+			set => AddDamageMult(DamageClass.Ranged, value);
-+		}
-+		internal float magicDamageMult {
-+			get => GetDamageMult(DamageClass.Magic);
-+			set => AddDamageMult(DamageClass.Magic, value);
-+		}
-+		internal float minionDamageMult {
-+			get => GetDamageMult(DamageClass.Summon);
-+			set => AddDamageMult(DamageClass.Melee, value);
-+		}
-+		internal float meleeDamage {
++		public DamageModifier allDamage = DamageModifier.One;
++		internal DamageModifier meleeDamage {
 +			get => GetDamage(DamageClass.Melee);
-+			set => AddDamage(DamageClass.Melee, value);
++			set => AddDamageModifier(DamageClass.Melee, value);
 +		}
-+		internal float magicDamage {
++		internal DamageModifier magicDamage {
 +			get => GetDamage(DamageClass.Magic);
-+			set => AddDamage(DamageClass.Magic, value);
++			set => AddDamageModifier(DamageClass.Magic, value);
 +		}
-+		internal float rangedDamage {
++		internal DamageModifier rangedDamage {
 +			get => GetDamage(DamageClass.Ranged);
-+			set => AddDamage(DamageClass.Ranged, value);
++			set => AddDamageModifier(DamageClass.Ranged, value);
 +		}
- 		public float bulletDamage = 1f;
- 		public float arrowDamage = 1f;
- 		public float rocketDamage = 1f;
--		public float minionDamage = 1f;
-+		internal float minionDamage {
++		public DamageModifier bulletDamage = DamageModifier.One;
++		public DamageModifier arrowDamage = DamageModifier.One;
++		public DamageModifier rocketDamage = DamageModifier.One;
++		internal DamageModifier minionDamage {
 +			get => GetDamage(DamageClass.Summon);
-+			set => AddDamage(DamageClass.Summon, value);
++			set => AddDamageModifier(DamageClass.Summon, value);
 +		}
  		public float minionKB;
  		public float meleeSpeed = 1f;
@@ -1436,23 +1422,35 @@
  								SmartSelect_SelectItem(i);
  								return;
  						}
-@@ -12344,10 +_,16 @@
+@@ -12344,10 +_,11 @@
  			lifeRegen = 0;
  			manaCost = 1f;
  			meleeSpeed = 1f;
-+			allDamage = 1f;
- 			meleeDamage = 1f;
- 			rangedDamage = 1f;
- 			magicDamage = 1f;
- 			minionDamage = 1f;
-+			allDamageMult = 1f;
-+			meleeDamageMult = 1f;
-+			rangedDamageMult = 1f;
-+			magicDamageMult = 1f;
-+			minionDamageMult = 1f;
+-			meleeDamage = 1f;
+-			rangedDamage = 1f;
+-			magicDamage = 1f;
+-			minionDamage = 1f;
++			allDamage = DamageModifier.One;
++			meleeDamage = DamageModifier.One;
++			rangedDamage = DamageModifier.One;
++			magicDamage = DamageModifier.One;
++			minionDamage = DamageModifier.One;
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
+@@ -12392,9 +_,9 @@
+ 			ammoCost80 = false;
+ 			ammoCost75 = false;
+ 			manaRegenBuff = false;
+-			arrowDamage = 1f;
+-			bulletDamage = 1f;
+-			rocketDamage = 1f;
++			arrowDamage = DamageModifier.One;
++			bulletDamage = DamageModifier.One;
++			rocketDamage = DamageModifier.One;
+ 			coolWhipBuff = false;
+ 			yoraiz0rEye = 0;
+ 			yoraiz0rDarkness = false;
 @@ -12710,7 +_,9 @@
  				}
  			}
@@ -1516,6 +1514,42 @@
  				}
  
  				if (velocity.Y == 0f || wingsLogic > 0 || mount.CanFly()) {
+@@ -13522,7 +_,7 @@
+ 				if (flag4)
+ 					num5 = 30;
+ 
+-				float damage = (float)num5 * meleeDamage;
++				float damage = (float)num5 * meleeDamage.additive;
+ 				float knockback = 10f;
+ 				if (flag4)
+ 					knockback = 7f;
+@@ -13539,7 +_,7 @@
+ 
+ 				rect2.Width = 2;
+ 				rect2.Inflate(6, 12);
+-				float damage2 = 100f * minionDamage;
++				float damage2 = 100f * minionDamage.additive;
+ 				float knockback2 = 12f;
+ 				int nPCImmuneTime2 = 30;
+ 				int playerImmuneTime2 = 6;
+@@ -13553,7 +_,7 @@
+ 
+ 				rect3.Width = 2;
+ 				rect3.Inflate(6, 12);
+-				float damage3 = 120f * minionDamage;
++				float damage3 = 120f * minionDamage.additive;
+ 				float knockback3 = 12f;
+ 				int nPCImmuneTime3 = 30;
+ 				int playerImmuneTime3 = 6;
+@@ -13567,7 +_,7 @@
+ 
+ 				rect4.Width = 2;
+ 				rect4.Inflate(6, 12);
+-				float damage4 = 90f * minionDamage;
++				float damage4 = 90f * minionDamage.additive;
+ 				float knockback4 = 10f;
+ 				int nPCImmuneTime4 = 30;
+ 				int playerImmuneTime4 = 6;
 @@ -13747,7 +_,7 @@
  			}
  
@@ -1525,6 +1559,33 @@
  				for (int i = 0; i < num2; i++) {
  					WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  				}
+@@ -13842,7 +_,7 @@
+ 
+ 					Rectangle rect2 = nPC.getRect();
+ 					if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(base.position, width, height, nPC.position, nPC.width, nPC.height))) {
+-						float num = 40f * minionDamage;
++						float num = 40f * minionDamage.additive;
+ 						float knockback = 5f;
+ 						int direction = base.direction;
+ 						if (velocity.X < 0f)
+@@ -14244,7 +_,7 @@
+ 
+ 						Rectangle rect = nPC.getRect();
+ 						if (rectangle.Intersects(rect) && (nPC.noTileCollide || CanHit(nPC))) {
+-							float num = 30f * meleeDamage;
++							float num = 30f * meleeDamage.additive;
+ 							float num2 = 9f;
+ 							bool crit = false;
+ 							if (kbGlove)
+@@ -14294,7 +_,7 @@
+ 							ConsumeSolarFlare();
+ 						}
+ 
+-						float num4 = 150f * meleeDamage;
++						float num4 = 150f * meleeDamage.additive;
+ 						float num5 = 9f;
+ 						bool crit2 = false;
+ 						if (kbGlove)
 @@ -14837,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
@@ -1665,15 +1726,6 @@
  			if (maxTurretsOld != maxTurrets) {
  				UpdateMaxTurrets();
  				maxTurretsOld = maxTurrets;
-@@ -17625,7 +_,7 @@
- 			}
- 
- 			if (manaSick)
--				magicDamage *= 1f - manaSickReduction;
-+				magicDamageMult *= 1f - manaSickReduction;
- 
- 			float num32 = meleeSpeed - 1f;
- 			num32 *= ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type];
 @@ -17680,6 +_,7 @@
  			}
  
@@ -1696,7 +1748,7 @@
  
  			if (witheredWeapon) {
 -				meleeDamage *= 0.5f;
-+				allDamageMult *= 0.5f;
++				allDamage *= 0.5f;
 -				rangedDamage *= 0.5f;
 -				magicDamage *= 0.5f;
 -				minionDamage *= 0.5f;
@@ -2976,7 +3028,7 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -35546,48 +_,79 @@
+@@ -35546,48 +_,74 @@
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
  
@@ -3036,52 +3088,47 @@
 -			}
 -
 -			return num;
-+			float add = allDamage;
-+			float mult = allDamageMult;
-+			if (sItem.DamageType != null) {
-+				add += GetDamage(sItem.DamageType);
-+				mult *= GetDamageMult(sItem.DamageType);
-+				goto SkipVanillaDamage;
++			if (sItem.DamageType == null && (!sItem.modItem?.IgnoreDamageModifiers ?? true)) {
++				return sItem.damage * (int)allDamage;
 +			}
++
++			DamageModifier damage = allDamage;
++			damage &= GetDamage(sItem.DamageType);
++
 +			if (sItem.melee) {
-+				add += meleeDamage - 1;
-+				mult *= meleeDamageMult;
++				damage &= meleeDamage;
 +			}
 +
 +			if (sItem.ranged) {
-+				add += rangedDamage - 1;
-+				mult *= rangedDamageMult;
++				damage &= rangedDamage;
 +				if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
-+					mult *= arrowDamage;
++					damage &= arrowDamage;
 +
 +				if (sItem.useAmmo == AmmoID.Arrow && archery)
-+					mult *= 1.2f;
++					damage *= 1.2f;
 +
 +				if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
-+					mult *= bulletDamage;
++					damage &= bulletDamage;
 +
 +				if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
-+					mult *= rocketDamage;
++					damage &= rocketDamage;
 +			}
 +
 +			if (sItem.magic) {
-+				add += magicDamage - 1;
-+				mult *= magicDamageMult;
++				damage &= magicDamage;
 +			}
 +
 +			if (sItem.summon) {
-+				add += minionDamage - 1;
-+				mult *= minionDamageMult;
++				damage &= minionDamage;
 +			}
 +
-+			SkipVanillaDamage:
 +			if (sItem.modItem?.IgnoreDamageModifiers == true)
 +				return sItem.damage;
 +
 +			float flat = 0f;
-+			CombinedHooks.ModifyWeaponDamage(this, sItem, ref add, ref mult, ref flat);
-+			int damage = (int)(sItem.damage * add * mult + 5E-06f + flat);
-+			return Math.Max(0, damage);
++			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
++			int damageNum = (int)((sItem.damage * (float)damage) + flat);
++			return Math.Max(0, damageNum);
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
@@ -3540,7 +3587,7 @@
  				}
  
  				return playerFileData;
-@@ -37381,7 +_,29 @@
+@@ -37381,7 +_,24 @@
  			return -1;
  		}
  
@@ -3559,12 +3606,7 @@
 +			buffType = new int[MaxBuffs];
 +			buffTime = new int[MaxBuffs];
 +			buffImmune = new bool[BuffLoader.BuffCount]; // TODO: Move all these patches to field initializers.
-+			allDamage = 1f;
-+			allDamageMult = 1f;
-+			meleeDamageMult = 1f;
-+			rangedDamageMult = 1f;
-+			magicDamageMult = 1f;
-+			minionDamageMult = 1f;
++			allDamage = DamageModifier.One;
 +			ownedProjectileCounts = new int[ProjectileLoader.ProjectileCount];
 +			npcTypeNoAggro = new bool[NPCLoader.NPCCount];
 +			PlayerHooks.SetupPlayer(this);
@@ -3764,6 +3806,15 @@
  					if (buffType[i] >= 170 && buffType[i] <= 172)
  						DelBuff(i);
  				}
+@@ -38250,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
++			int damage = (int)(20f * (1f + magicDamage.additive + minionDamage.additive - 2f));
+ 			_ = Main.projectile[Projectile.NewProjectile(MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
+ 		}
+ 
 @@ -38368,7 +_,7 @@
  				return;
  
