@@ -1,7 +1,8 @@
+using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items
+namespace ExampleMod.Content.Items
 {
 	public class BossItem : ExampleItem
 	{
@@ -10,10 +11,9 @@ namespace ExampleMod.Items
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<ExampleItem>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.Register();
 		}
 	}
 }

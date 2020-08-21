@@ -1,9 +1,12 @@
+﻿using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.Audio;
 
-namespace ExampleMod.Items
+
+namespace ExampleMod.Content.Items.Consumables
 {
 	public class PlanteraItem : ModItem
 	{
@@ -21,7 +24,7 @@ namespace ExampleMod.Items
 			item.rare = ItemRarityID.Blue;
 			item.useAnimation = 30;
 			item.useTime = 30;
-			item.useStyle = ItemUseStyleID.HoldingUp;
+			item.useStyle = ItemUseStyleID.HoldUp;
 			item.consumable = true;
 		}
 
@@ -36,11 +39,10 @@ namespace ExampleMod.Items
 		}
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemType<BossItem>(), 10);
-			recipe.AddTile(TileType<Tiles.ExampleWorkbench>());
-			recipe.SetResult(this, 20);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient<BossItem>(10)
+				.AddTile<ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

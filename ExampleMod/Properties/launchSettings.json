@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Terraria": {
+      "commandName": "Executable",
+      "executablePath": "$(tMLPath)",
+      "workingDirectory": "$(TerrariaSteamPath)"
+    }
+  }
+}

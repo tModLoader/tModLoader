@@ -4,6 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace ExampleMod.Content.Items
 {
 	public class ExampleSoul : ModItem
