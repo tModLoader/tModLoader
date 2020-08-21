@@ -1,6 +1,8 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Drawing.Imaging;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -9,7 +11,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles
+namespace ExampleMod.Content.Tiles
 {
 	public class ExampleTorch : ModTile
 	{
@@ -46,9 +48,7 @@ namespace ExampleMod.Tiles
 			torch = true;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = Main.rand.Next(1, 3);
-		}
+		public override void NumDust(int i, int j, bool fail, ref int num) => num = Main.rand.Next(1, 3);
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			Tile tile = Main.tile[i, j];
@@ -90,7 +90,7 @@ namespace ExampleMod.Tiles
 			for (int k = 0; k < 7; k++) {
 				float x = (float)Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
 				float y = (float)Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
-				Main.spriteBatch.Draw(mod.GetTexture("Tiles/ExampleTorch_Flame"), new Vector2((float)(i * 16 - (int)Main.screenPosition.X) - (width - 16f) / 2f + x, (float)(j * 16 - (int)Main.screenPosition.Y + offsetY) + y) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+				Main.spriteBatch.Draw(GetTexture("Content/Tiles/ExampleTorch_Flame").Value, new Vector2((float)(i * 16 - (int)Main.screenPosition.X) - (width - 16f) / 2f + x, (float)(j * 16 - (int)Main.screenPosition.Y + offsetY) + y) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 			}
 		}
 	}

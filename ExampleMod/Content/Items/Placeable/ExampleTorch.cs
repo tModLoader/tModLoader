@@ -1,11 +1,12 @@
-using ExampleMod.Dusts;
+using ExampleMod.Content.Tiles;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Items.Placeable
+namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleTorch : ModItem
 	{
@@ -14,19 +15,19 @@ namespace ExampleMod.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			item.width = 10;
-			item.height = 12;
-			item.maxStack = 99;
-			item.holdStyle = 1;
+			item.flame = true;
 			item.noWet = true;
+			item.useStyle = ItemUseStyleID.Swing;
 			item.useTurn = true;
-			item.autoReuse = true;
 			item.useAnimation = 15;
 			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.holdStyle = ItemHoldStyleID.HoldFront;
+			item.autoReuse = true;
+			item.maxStack = 999;
 			item.consumable = true;
 			item.createTile = TileType<Tiles.ExampleTorch>();
-			item.flame = true;
+			item.width = 10;
+			item.height = 12;
 			item.value = 50;
 		}
 
@@ -44,16 +45,14 @@ namespace ExampleMod.Items.Placeable
 			}
 		}
 
-		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			dryTorch = true;
-		}
+		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) => dryTorch = true;
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.Torch, 3);
-			recipe.AddIngredient(ItemType<ExampleBlock>());
-			recipe.SetResult(this, 3);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.Torch, 3)
+				.AddIngredient<ExampleBlock>()
+				.AddTile(TileID.Furnaces)
+				.Register();
 		}
 	}
 }
