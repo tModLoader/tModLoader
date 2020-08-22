@@ -769,7 +769,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public bool TextureExists(string name)=> Assets.HasAsset<Texture2D>(name);
+		public bool TextureExists(string name) => Assets.HasAsset<Texture2D>(name);
 
 		/// <summary>
 		/// Shorthand for calling ModContent.GetSound(this.FileName(name)).
