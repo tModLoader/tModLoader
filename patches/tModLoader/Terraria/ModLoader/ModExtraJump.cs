@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// A VanillaExtraJump to facilitate parenting, it's logic is never updated. The order is:
+	/// A vanilla jump to facilitate parenting, it's logic is never updated. The order is:
 	/// <see cref="Mounts"/>,
 	/// <see cref="Sandstorm"/>,
 	/// <see cref="Blizzard"/>,
@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 	}
 
 	/// <summary>
-	/// A ModExtraJump instance represents an addition to a Player instance that handles jumping logic. A ModExtraJump is tied to the player instance, use <see cref="Player.EnableExtraJump"/> to hasJumpOption a jump like you would hasJumpOption any effect through an accessory or armor
+	/// A ModExtraJump instance represents an addition to a Player instance that handles jumping logic. A ModExtraJump is tied to the player instance, use <see cref="Player.EnableExtraJump"/> to enable a jump like you would enable any other effect through an accessory or armor
 	/// </summary>
 	public class ModExtraJump : ModType
 	{
