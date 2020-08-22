@@ -1576,7 +1576,7 @@
  							num4 = miscEquips[2].mountType;
  
  						int num5 = height + Mount.GetHeightBoost(num4);
-@@ -15376,17 +_,18 @@
+@@ -15376,6 +_,7 @@
  			if (Main.projectile[grappling[0]].type >= 646 && Main.projectile[grappling[0]].type <= 649)
  				num9 = 16f;
  
@@ -1584,19 +1584,6 @@
  			float num10 = num8;
  			num10 = ((!(num8 > num9)) ? 1f : (num9 / num8));
  			preferedPlayerVelocityX *= num10;
- 			preferedPlayerVelocityY *= num10;
- 		}
- 
--		private void RefreshMovementAbilities(bool doubleJumps = true) {
-+		private void RefreshMovementAbilities(bool extraJumps = true) {
- 			wingTime = wingTimeMax;
- 			rocketTime = rocketTimeMax;
- 			rocketDelay = 0;
--			if (doubleJumps)
-+			if (extraJumps)
- 				RefreshDoubleJumps();
- 		}
- 
 @@ -15417,6 +_,8 @@
  
  			if (hasJumpOption_Basilisk)
