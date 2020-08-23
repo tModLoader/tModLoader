@@ -65,7 +65,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
 		}
 
-
 		/// <summary>
 		/// Called for every wall the world randomly decides to update in a given tick. Useful for things such as growing or spreading.
 		/// </summary>
