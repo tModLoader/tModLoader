@@ -31,8 +31,7 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, Music> musics = new Dictionary<string, Music>();
 		internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
-		internal readonly IList<ILoadable> loadables = new List<ILoadable>();
-		internal readonly IList<ModType> content = new List<ModType>();
+		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
 		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
@@ -104,17 +103,17 @@ namespace Terraria.ModLoader
 		}
 
 		internal void SetupContent() {
-			foreach (var e in content) {
+			foreach (var e in content.OfType<ModType>()) {
 				e.SetupContent();
 			}
 		}
 
 		internal void UnloadContent() {
 			Unload();
-			foreach(var loadable in loadables.Reverse()) {
+			foreach(var loadable in content.Reverse()) {
 				loadable.Unload();
 			}
-			loadables.Clear();
+			content.Clear();
 			content.Clear();
 
 			equipTextures.Clear();
