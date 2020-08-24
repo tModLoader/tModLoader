@@ -6,17 +6,34 @@ namespace Terraria.ModLoader
 	/// <typeparam name="InfoType"></typeparam>
 	public abstract class DrawLayer<InfoType> : ModType
 	{
+		/// <summary> Layer constraints are used to control locations of draw layers, and point to a position before or after a specified layer. </summary>
+		public struct LayerConstraint
+		{
+			/// <summary> Whether or not layers that use this constraint should be placed before or after the referenced layer. </summary>
+			public DrawLayer<InfoType> layer;
+			/// <summary> The layer this constraint points to. </summary>
+			public bool before;
+
+			/// <summary> Creates a new Layer constraint, which can be used to control locations of draw layers. </summary>
+			/// <param name="layer"> The layer this constraint points to. </param>
+			/// <param name="before"> Whether or not layers that use this constraint should be placed before or after the referenced layer. </param>
+			public LayerConstraint(DrawLayer<InfoType> layer, bool before) {
+				this.layer = layer;
+				this.before = before;
+			}
+		}
+
 		/// <summary> The delegate used for draw layers. </summary>
 		public delegate void LayerFunction(ref InfoType info);
-
-		/// <summary> The parent of this DrawLayer. If the parent is not drawn, this layer will not be drawn either. Defaults to null, which skips the parent check.</summary>
-		public virtual DrawLayer<InfoType> Parent { get; }
 
 		/// <summary> Whether or not this DrawLayer should be drawn. For vanilla layers, this will be set to true before all drawing-related hooks are called. For modded layers, you must set this to true or false yourself. </summary>
 		public bool visible = true;
 
-		/// <summary> This layer's depth. Determines the order in which layers will appear. </summary>
-		public float depth;
+		/// <summary> If this is true, this layer will appear before the parent. </summary>
+		public LayerConstraint constraint;
+
+		/// <summary> The parent of this DrawLayer. Affects layer sorting, and if the parent is not drawn, this layer will not be drawn either. Defaults to null, which skips the parent check.</summary>
+		public virtual DrawLayer<InfoType> Parent { get; set; }
 
 		protected DrawLayer() {
 		}
@@ -44,5 +61,7 @@ namespace Terraria.ModLoader
 
 		/// <summary> Draws this layer. </summary>
 		public abstract void Draw(ref InfoType drawInfo);
+
+		public override string ToString() => Name;
 	}
 }

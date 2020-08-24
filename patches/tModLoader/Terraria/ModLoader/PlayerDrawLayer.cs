@@ -154,8 +154,8 @@ namespace Terraria.ModLoader
 		/// <summary> Returns the layer's default depth and visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information. </summary>
 		/// <param name="drawPlayer"> The player that's currently being drawn. </param>
 		/// <param name="visible"> Whether or not this layer will be visible by default. Modders can hide and unhide layers later, if needed. </param>
-		/// <param name="depth"> The depth that this layer wishes to have. </param>
-		public abstract void GetDefaults(Player drawPlayer, out bool visible, out float depth);
+		/// <param name="constraint"> The constraint that this layer should use by default. Use this to make the layer appear before or after another specific layer. </param>
+		public abstract void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint);
 
 		protected override void Register() => PlayerDrawLayerHooks.Add(this);
 

@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.Default.Patreon
 					&& player.bodyFrame.Y != 1 * 56
 					&& player.bodyFrame.Y != 2 * 56) {
 
-					PlayerDrawLayer.ArmOverItem.depth = PlayerDrawLayer.Head.depth - 0.5f;
+					PlayerDrawLayer.ArmOverItem.constraint = new PlayerDrawLayer.LayerConstraint(PlayerDrawLayer.Head, true);
 				}
 
 				// If falling frame

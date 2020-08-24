@@ -11,11 +11,9 @@ namespace Terraria.ModLoader
 		private readonly string CustomName;
 		private readonly bool HeadLayer;
 
-		internal float defaultDepth;
-
 		public override string Name => CustomName;
 		public override bool IsHeadLayer => HeadLayer;
-		public override DrawLayer<PlayerDrawSet> Parent { get; }
+		public override DrawLayer<PlayerDrawSet> Parent { get; set; }
 
 		/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
 		public LegacyPlayerDrawLayer(Mod mod, string name, bool isHeadLayer, LayerFunction layer) {
@@ -30,9 +28,9 @@ namespace Terraria.ModLoader
 			Parent = parent;
 		}
 
-		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
-			depth = defaultDepth;
+		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
 			visible = true;
+			constraint = default;
 		}
 
 		public override void Draw(ref PlayerDrawSet drawInfo) => Layer(ref drawInfo);

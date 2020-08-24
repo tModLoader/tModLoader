@@ -16,10 +16,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetHeadDrawDataInfo(info, _glowTexture.Value);
 		}
 
-		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
+		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
 			base.GetDefaults(drawPlayer, out visible, out _);
 
-			depth = Head.depth + 0.5f;
+			constraint = new LayerConstraint(Head, false);
 		}
 	}
 }

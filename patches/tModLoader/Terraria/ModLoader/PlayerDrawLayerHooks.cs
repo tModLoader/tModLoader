@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -14,7 +16,7 @@ namespace Terraria.ModLoader
 
 		public static void AddDrawLayers(Player drawPlayer, Dictionary<string, List<PlayerDrawLayer>> layers) {
 			foreach (var layer in ModLayers) {
-				layer.GetDefaults(drawPlayer, out layer.visible, out layer.depth);
+				layer.GetDefaults(drawPlayer, out layer.visible, out layer.constraint);
 
 				string modName = layer.Mod.Name;
 
@@ -31,7 +33,7 @@ namespace Terraria.ModLoader
 				var layer = (LegacyPlayerDrawLayer)vanillaLayers[i];
 
 				layer.visible = true;
-				layer.defaultDepth = layer.depth = i;
+				layer.constraint = i > 0 ? new PlayerDrawLayer.LayerConstraint(vanillaLayers[i - 1], false) : default;
 			}
 
 			var layers = new Dictionary<string, List<PlayerDrawLayer>> {
@@ -52,9 +54,13 @@ namespace Terraria.ModLoader
 			//Modify draw layers, but not the collections.
 			PlayerHooks.ModifyDrawLayers(drawPlayer, readonlyLayers);
 
-			return layers
+			var array = layers
 				.SelectMany(pair => pair.Value)
-				.OrderBy(l => l.depth);
+				.ToArray();
+
+			//TODO: Sort the array based on layer constraints.
+
+			return array;
 		}
 	}
 }

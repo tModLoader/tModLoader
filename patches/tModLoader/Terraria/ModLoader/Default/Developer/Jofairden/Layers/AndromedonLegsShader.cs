@@ -14,10 +14,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			return GetLegDrawDataInfo(info, _shaderTexture.Value);
 		}
 
-		public override void GetDefaults(Player drawPlayer, out bool visible, out float depth) {
+		public override void GetDefaults(Player drawPlayer, out bool visible, out LayerConstraint constraint) {
 			base.GetDefaults(drawPlayer, out visible, out _);
 
-			depth = Leggings.depth - 0.5f;
+			constraint = new LayerConstraint(Leggings, true);
 		}
 	}
 }
