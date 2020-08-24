@@ -4,9 +4,20 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
+	internal class ModTypeLookup
+	{
+		public static event Action OnClear;
+
+		public static void Clear() => OnClear?.Invoke();
+	}
+
 	internal class ModTypeLookup<T> where T : IModType
 	{
 		private static Dictionary<string, T> dict = new Dictionary<string, T>();
+
+		static ModTypeLookup() {
+			ModTypeLookup.OnClear += () => dict.Clear();
+		}
 
 		public static void Register(T instance) {
 			if (!instance.Mod.loading)
@@ -17,8 +28,6 @@ namespace Terraria.ModLoader
 
 			dict[instance.FullName] = instance;
 		}
-
-		public static void Clear() => dict.Clear();
 
 		public static T Get(string fullname) => dict[fullname];
 

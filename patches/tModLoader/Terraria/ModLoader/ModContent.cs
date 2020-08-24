@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Content.Readers;
-using ReLogic.Reflection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +9,6 @@ using System.Threading;
 using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
@@ -20,7 +17,6 @@ using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -466,6 +462,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			ContentInstance.Clear();
+			ModTypeLookup.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			ModPrefix.Unload();

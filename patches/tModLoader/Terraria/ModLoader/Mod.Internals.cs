@@ -114,12 +114,12 @@ namespace Terraria.ModLoader
 				loadable.Unload();
 			}
 			content.Clear();
-			content.Clear();
 
 			equipTextures.Clear();
 			translations.Clear();
 
 			if (!Main.dedServ) {
+				// TODO: restore this
 				// Manually Dispose IDisposables to free up unmanaged memory immediately
 				/* Skip this for now, too many mods don't unload properly and run into exceptions.
 				foreach (var sound in sounds)
@@ -135,7 +135,7 @@ namespace Terraria.ModLoader
 
 			musics.Clear();
 
-			Assets.Dispose();
+			Assets?.Dispose();
 		} 
 
 		internal void Autoload() {
