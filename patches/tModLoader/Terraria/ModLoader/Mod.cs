@@ -114,6 +114,7 @@ namespace Terraria.ModLoader
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 			instance.Load(this);
 			content.Add(instance);
+			ContentInstance.Register(instance);
 		}
 
 		public IEnumerable<ILoadable> GetContent() => content;

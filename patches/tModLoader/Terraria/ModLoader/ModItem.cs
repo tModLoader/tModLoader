@@ -62,7 +62,6 @@ namespace Terraria.ModLoader
 			item.modItem = this;
 
 			ItemLoader.items.Add(this);
-			ContentInstance.Register(this);
 
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {

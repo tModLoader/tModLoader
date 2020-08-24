@@ -104,7 +104,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModWall>.Register(this);
 			WallLoader.walls.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

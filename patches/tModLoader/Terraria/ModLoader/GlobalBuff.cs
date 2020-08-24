@@ -12,7 +12,6 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalBuff>.Register(this);
 			BuffLoader.globalBuffs.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

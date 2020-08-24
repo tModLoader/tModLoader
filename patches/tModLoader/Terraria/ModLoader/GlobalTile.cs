@@ -49,7 +49,6 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalTile>.Register(this);
 			TileLoader.globalTiles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

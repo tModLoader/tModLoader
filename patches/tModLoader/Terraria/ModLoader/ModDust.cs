@@ -98,7 +98,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModDust>.Register(this);
 			ModDust.dusts.Add(this);
-			ContentInstance.Register(this);
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
 		}
 

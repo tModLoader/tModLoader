@@ -10,7 +10,6 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalWall>.Register(this);
 			WallLoader.globalWalls.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

@@ -48,7 +48,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModSurfaceBgStyle>.Register(this);
 			SurfaceBgStyleLoader.surfaceBgStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
@@ -105,7 +104,6 @@ namespace Terraria.ModLoader
 		protected override void Register() {
 			ModTypeLookup<GlobalBgStyle>.Register(this);
 			GlobalBgStyleLoader.globalBgStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

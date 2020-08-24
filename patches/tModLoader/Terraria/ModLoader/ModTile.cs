@@ -208,7 +208,6 @@ namespace Terraria.ModLoader
 			Type = (ushort)TileLoader.ReserveTileID();
 
 			TileLoader.tiles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

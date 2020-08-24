@@ -37,7 +37,6 @@ namespace Terraria.ModLoader
 			Description = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.BuffDescription.{Name}");
 
 			BuffLoader.buffs.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

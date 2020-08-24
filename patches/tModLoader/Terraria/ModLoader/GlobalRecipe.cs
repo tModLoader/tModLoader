@@ -8,7 +8,6 @@
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalRecipe>.Register(this);
 			RecipeHooks.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

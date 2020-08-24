@@ -115,7 +115,6 @@ namespace Terraria.ModLoader
 
 			ModPrefix.prefixes.Add(this);
 			ModPrefix.categoryPrefixes[Category].Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

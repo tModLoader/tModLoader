@@ -10,7 +10,6 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModRarity>.Register(this);
 			Type = RarityLoader.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

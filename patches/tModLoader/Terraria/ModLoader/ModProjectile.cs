@@ -74,7 +74,6 @@ namespace Terraria.ModLoader
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

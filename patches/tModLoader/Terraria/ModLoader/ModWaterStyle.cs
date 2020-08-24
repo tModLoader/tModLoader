@@ -21,7 +21,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModWaterStyle>.Register(this);
 			WaterStyleLoader.waterStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {
@@ -83,7 +82,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModWaterfallStyle>.Register(this);
 			WaterfallStyleLoader.waterfallStyles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public override void SetupContent() {

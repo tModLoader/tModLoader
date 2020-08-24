@@ -204,7 +204,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModTileEntity>.Register(this);
 			tileEntities.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		public virtual void Unload(){}

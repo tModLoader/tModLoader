@@ -39,7 +39,6 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<ModMountData>.Register(this);
 			MountLoader.mountDatas[Type] = this;
-			ContentInstance.Register(this);
 
 			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
 				string extraTexture = GetExtraTexture(textureType);

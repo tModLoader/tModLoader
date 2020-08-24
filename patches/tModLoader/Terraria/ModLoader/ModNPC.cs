@@ -96,7 +96,6 @@ namespace Terraria.ModLoader
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);
-			ContentInstance.Register(this);
 
 			Type type = GetType();
 			var autoloadHead = type.GetAttribute<AutoloadHead>();

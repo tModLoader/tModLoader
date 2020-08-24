@@ -26,7 +26,6 @@ namespace Terraria.ModLoader
 				ProjectileLoader.globalIndexesByType[GetType()] = ProjectileLoader.globalProjectiles.Count;
 			}
 			ProjectileLoader.globalProjectiles.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

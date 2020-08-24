@@ -30,7 +30,6 @@ namespace Terraria.ModLoader
 				ItemLoader.globalIndexesByType[GetType()] = ItemLoader.globalItems.Count;
 			}
 			ItemLoader.globalItems.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

@@ -26,7 +26,6 @@ namespace Terraria.ModLoader
 				NPCLoader.globalIndexesByType[GetType()] = NPCLoader.globalNPCs.Count;
 			}
 			NPCLoader.globalNPCs.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

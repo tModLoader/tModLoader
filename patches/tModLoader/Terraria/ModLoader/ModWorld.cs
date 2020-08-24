@@ -13,7 +13,6 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModWorld>.Register(this);
 			WorldHooks.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
