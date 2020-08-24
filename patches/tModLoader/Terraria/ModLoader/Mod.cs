@@ -14,10 +14,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.UI;
-using Terraria.GameContent;
 using ReLogic.Content;
-using ReLogic.Content.Sources;
 using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader

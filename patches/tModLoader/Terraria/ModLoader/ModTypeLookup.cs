@@ -20,9 +20,6 @@ namespace Terraria.ModLoader
 		}
 
 		public static void Register(T instance) {
-			if (!instance.Mod.loading)
-				throw new Exception("AddBackgroundTexture can only be called from Mod.Load or IModContent.Load");
-
 			if (dict.ContainsKey(instance.FullName))
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, instance.FullName));
 
