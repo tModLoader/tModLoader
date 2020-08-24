@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 			AutoStaticDefaults();
 			SetStaticDefaults();
 
-			ProjectileID.Search.Add(Name, projectile.type);
+			ProjectileID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

@@ -234,7 +234,7 @@ namespace Terraria.ModLoader
 			if (!string.IsNullOrEmpty(chest))
 				TileID.Sets.BasicChest[Type] = true;
 
-			TileID.Search.Add(Name, Type);
+			TileID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

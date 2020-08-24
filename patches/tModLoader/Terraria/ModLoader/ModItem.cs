@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 			ItemLoader.SetDefaults(item, false);
 			AutoStaticDefaults();
 			SetStaticDefaults();
-			ItemID.Search.Add(Name, item.type);
+			ItemID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

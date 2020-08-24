@@ -114,7 +114,7 @@ namespace Terraria.ModLoader
 			AutoStaticDefaults();
 			SetStaticDefaults();
 
-			NPCID.Search.Add(Name, npc.type);
+			NPCID.Search.Add(FullName, Type);
 		}
 
 		internal void SetupNPC(NPC npc) {

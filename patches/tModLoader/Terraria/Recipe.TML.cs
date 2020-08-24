@@ -301,7 +301,8 @@ namespace Terraria
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
-			if (requiredTile.Contains(TileID.Bottles)) AddConsumeItemCallback(ConsumptionRules.Alchemy);
+			if (requiredTile.Contains(TileID.Bottles))
+				AddConsumeItemCallback(ConsumptionRules.Alchemy);
 
 			if (numRecipes >= maxRecipes) {
 				maxRecipes += 500;
@@ -316,12 +317,8 @@ namespace Terraria
 				}
 			}
 			
-			Main.recipe[numRecipes] = this;
-			
+			Main.recipe[numRecipes] = this;			
 			RecipeIndex = numRecipes;
-			
-			Mod.recipes.Add(this);
-
 			numRecipes++;
 		}
 
