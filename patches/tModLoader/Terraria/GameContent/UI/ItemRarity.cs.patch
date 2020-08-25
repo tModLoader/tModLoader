@@ -1,0 +1,22 @@
+--- src/Terraria/Terraria/GameContent/UI/ItemRarity.cs
++++ src/tModLoader/Terraria/GameContent/UI/ItemRarity.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using System.Collections.Generic;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI
+ {
+@@ -21,6 +_,11 @@
+ 			_rarities.Add(7, Colors.RarityLime);
+ 			_rarities.Add(8, Colors.RarityYellow);
+ 			_rarities.Add(9, Colors.RarityCyan);
++			_rarities.Add(10, Colors.RarityDarkRed);
++			_rarities.Add(11, Colors.RarityDarkPurple);
++
++			for (int i = ItemRarityID.Count; i < RarityLoader.RarityCount; i++)
++				_rarities.Add(i, RarityLoader.GetRarity(i).RarityColor);
+ 		}
+ 
+ 		public static Color GetColor(int rarity) {

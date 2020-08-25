@@ -108,7 +108,7 @@ namespace Terraria.ModLoader
 				Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
 			else
 				Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
-					.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.item.type))
+					.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 					.ToArray();
 
 			FindVanillaWings();
@@ -1704,7 +1704,7 @@ namespace Terraria.ModLoader
 			short n = r.ReadInt16();
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
-				NetGlobals[i] = ModNet.GetMod(r.ReadInt16()).GetGlobalItem(r.ReadString());
+				NetGlobals[i] = ModContent.Get<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 		}
 
 		private static bool HasMethod(Type t, string method, params Type[] args) {

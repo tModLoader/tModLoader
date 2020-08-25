@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -100,9 +102,14 @@ namespace Terraria.ModLoader
 		protected override void Register() {
 			Type = (ushort)WallLoader.ReserveWallID();
 
-			Mod.walls[Name] = this;
+			ModTypeLookup<ModWall>.Register(this);
 			WallLoader.walls.Add(this);
-			ContentInstance.Register(this);
+		}
+
+		public override void SetupContent() {
+			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
+			SetDefaults();
+			WallID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

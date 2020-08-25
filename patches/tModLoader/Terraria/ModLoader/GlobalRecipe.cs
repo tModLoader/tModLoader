@@ -6,9 +6,8 @@
 	public class GlobalRecipe:ModType
 	{
 		protected sealed override void Register() {
-			Mod.globalRecipes[Name] = this;
+			ModTypeLookup<GlobalRecipe>.Register(this);
 			RecipeHooks.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

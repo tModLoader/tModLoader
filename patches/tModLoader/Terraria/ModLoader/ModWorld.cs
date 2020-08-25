@@ -11,9 +11,8 @@ namespace Terraria.ModLoader
 	public class ModWorld:ModType
 	{
 		protected sealed override void Register() {
-			Mod.worlds[Name] = this;
+			ModTypeLookup<ModWorld>.Register(this);
 			WorldHooks.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>
