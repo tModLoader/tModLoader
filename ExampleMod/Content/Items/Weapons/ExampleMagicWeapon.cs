@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.noMelee = true; // Makes the item not do damage with it's melee hitbox.
 			item.knockBack = 6;
 			item.value = 10000;
-			item.rare = 4;
+			item.rare = ItemRarityID.LightRed;
 			item.UseSound = SoundID.Item71;
 			item.autoReuse = true;
 			item.shoot = ProjectileID.BlackBolt; // Shoot a black bolt, also known as the projectile shot from the onyx blaster.

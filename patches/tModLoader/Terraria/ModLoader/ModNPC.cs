@@ -20,7 +20,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The NPC object that this ModNPC controls.
 		/// </summary>
-		public NPC npc {get;internal set;}
+		public NPC npc {get;internal set; }
+
+		/// <summary>
+		/// Shorthand for npc.type;
+		/// </summary>
+		public int Type => npc.type;
 
 		/// <summary>
 		/// The translations for the display name of this NPC.
@@ -85,15 +90,12 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			if (Mod.npcs.ContainsKey(Name))
-				throw new Exception("You tried to add 2 ModNPC with the same name: " + Name + ". Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddNPC with 2 npcs of the same name.");
+			ModTypeLookup<ModNPC>.Register(this);
 
 			npc.type = NPCLoader.ReserveNPCID();
 			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
 
-			Mod.npcs[Name] = this;
 			NPCLoader.npcs.Add(this);
-			ContentInstance.Register(this);
 
 			Type type = GetType();
 			var autoloadHead = type.GetAttribute<AutoloadHead>();
@@ -104,6 +106,14 @@ namespace Terraria.ModLoader
 			if (autoloadBossHead != null) {
 				Mod.AddBossHeadTexture(BossHeadTexture, npc.type);
 			}
+		}
+
+		public override void SetupContent() {
+			NPCLoader.SetDefaults(npc, false);
+			AutoStaticDefaults();
+			SetStaticDefaults();
+
+			NPCID.Search.Add(FullName, Type);
 		}
 
 		internal void SetupNPC(NPC npc) {
