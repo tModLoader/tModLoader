@@ -33,35 +33,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-		private SoundEffect LoadSound(Stream stream, int length, string extension) {
-			switch (extension) {
-				case ".wav": 
-					if (!stream.CanSeek)
-						stream = new MemoryStream(stream.ReadBytes(length));
-
-					return SoundEffect.FromStream(stream);
-				case ".mp3":
-					using (var mp3Stream = new MP3Stream(stream))
-					using (var ms = new MemoryStream()) {
-						mp3Stream.CopyTo(ms);
-
-						return new SoundEffect(ms.ToArray(), mp3Stream.Frequency, (AudioChannels)mp3Stream.ChannelCount);
-					}
-				case ".ogg":
-					using (var reader = new VorbisReader(stream, true)) {
-						byte[] buffer = new byte[reader.TotalSamples * 2 * reader.Channels];
-						float[] floatBuf = new float[buffer.Length / 2];
-						
-						reader.ReadSamples(floatBuf, 0, floatBuf.Length);
-						MusicStreamingOGG.Convert(floatBuf, buffer);
-
-						return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels);
-					}
-			}
-
-			throw new ResourceLoadException("Unknown sound extension "+extension);
-		}
-
 		private Music LoadMusic(string path, string extension) {
 			path = $"tmod:{Name}/{path}{extension}";
 			
@@ -171,9 +142,17 @@ namespace Terraria.ModLoader
 			var assetReaderCollection = new AssetReaderCollection();
 
 			if (!Main.dedServ) {
+				//TODO: Now, how do we unhardcode this?
+				
+				//Ambiguous
+				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
+				//Textures
 				assetReaderCollection.RegisterReader(new PngReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
 				assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
-				assetReaderCollection.RegisterReader(new XnbReader(Main.instance.Services), ".xnb");
+				//Audio
+				assetReaderCollection.RegisterReader(new WavReader(), ".wav");
+				assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
+				assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
 			}
 
 			var delayedLoadTypes = new List<Type> {
