@@ -50,7 +50,7 @@ namespace Terraria.ModLoader
 		/// <summary>A short description of this command.</summary>
 		public virtual string Description => "";
 
-		protected override void Register() {
+		protected override sealed void Register() {
 			CommandManager.Add(this);
 		}
 
