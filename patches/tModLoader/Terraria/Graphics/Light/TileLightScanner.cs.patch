@@ -16,14 +16,6 @@
  
  			if (lightColor.X < num)
  				lightColor.X = num;
-@@ -1879,6 +_,7 @@
- 							case 0:
- 								R = 0f;
- 								G = 0.05f;
-+								G = 0.05f;
- 								B = 0.25f;
- 								break;
- 							case 1:
 @@ -1929,6 +_,7 @@
  						B = 0.15f;
  						break;
