@@ -1,10 +1,8 @@
 ﻿using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria.Audio;
-
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -13,7 +11,8 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Plantera");
 			Tooltip.SetDefault("The wrath of the jungle");
-			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know this is a boss summoning item.
+
+			ItemID.Sets.SortingPriorityBossSpawns[item.type] = 12; // This helps sort inventory know that this is a boss summoning item.
 		}
 
 		public override void SetDefaults() {
@@ -34,7 +33,12 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override bool UseItem(Player player) {
 			NPC.SpawnOnPlayer(player.whoAmI, NPCID.Plantera);
-			SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+
+			// Avoid trying to call sounds on dedicated servers.
+			if (!Main.dedServ) {
+				SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+			}
+
 			return true;
 		}
 

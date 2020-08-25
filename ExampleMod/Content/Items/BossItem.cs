@@ -1,7 +1,3 @@
-using Terraria;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-
 namespace ExampleMod.Content.Items
 {
 	public class BossItem : ExampleItem
