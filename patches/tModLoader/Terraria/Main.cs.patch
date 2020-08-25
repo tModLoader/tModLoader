@@ -865,7 +865,7 @@
  					}
  				}
 +
-+				ModHooks.UpdateMusic(ref modMusic, ref modPriority);
++				SystemHooks.UpdateMusic(ref modMusic, ref modPriority);
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
