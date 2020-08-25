@@ -15,7 +15,6 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.Tags;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
