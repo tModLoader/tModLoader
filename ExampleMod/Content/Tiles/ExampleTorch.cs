@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleTorch : ModTile
 	{
-		private static Asset<Texture2D> flameTexture;
+		private Asset<Texture2D> flameTexture;
 
 		public override void SetDefaults() {
 			// Properties
@@ -108,7 +108,7 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (uint)i);
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);
 			int width = 20;
 			int height = 20;
@@ -117,10 +117,10 @@ namespace ExampleMod.Content.Tiles
 			int frameY = tile.frameY;
 
 			for (int k = 0; k < 7; k++) {
-				float x = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
-				float y = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
+				float xx = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
+				float yy = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				Main.spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + x, j * 16 - (int)Main.screenPosition.Y + offsetY + y) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(xx * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + xx, yy * 16 - (int)Main.screenPosition.Y + offsetY + yy) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
 			}
 		}
 	}

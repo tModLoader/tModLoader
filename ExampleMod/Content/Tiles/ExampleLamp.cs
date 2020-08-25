@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
@@ -14,6 +15,8 @@ namespace ExampleMod.Content.Tiles
 	// If you can't figure out how to recreate a vanilla tile, see that guide for instructions on how to figure it out yourself.
 	internal class ExampleLamp : ModTile
 	{
+		private Asset<Texture2D> flameTexture;
+
 		public override void SetDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
@@ -32,6 +35,11 @@ namespace ExampleMod.Content.Tiles
 
 			// Etc
 			AddMapEntry(new Color(253, 221, 3), Language.GetText("MapObject.FloorLamp"));
+
+			// Assets
+			if (!Main.dedServ) {
+				flameTexture = GetTexture("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
+			}
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
@@ -73,12 +81,12 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawEffects(int x, int y, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
 			if (Main.gamePaused || !Main.instance.IsActive || Lighting.UpdateEveryFrame && !Main.rand.NextBool(4)) {
 				return;
 			}
 
-			Tile tile = Main.tile[x, y];
+			Tile tile = Main.tile[i, j];
 
 			short frameX = tile.frameX;
 			short frameY = tile.frameY;
@@ -99,7 +107,7 @@ namespace ExampleMod.Content.Tiles
 
 				// We can support different dust for different styles here
 				if (dustChoice != -1) {
-					var dust = Dust.NewDustDirect(new Vector2(x * 16 + 4, y * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default, 1f);
+					var dust = Dust.NewDustDirect(new Vector2(i * 16 + 4, j * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default, 1f);
 
 					if (Main.rand.Next(3) != 0) {
 						dust.noGravity = true;
@@ -111,10 +119,10 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void PostDraw(int x, int y, SpriteBatch spriteBatch) {
+		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 			SpriteEffects effects = SpriteEffects.None;
 
-			if (x % 2 == 1) {
+			if (i % 2 == 1) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
@@ -124,23 +132,21 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			Tile tile = Main.tile[x, y];
+			Tile tile = Main.tile[i, j];
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;
 
-			TileLoader.SetDrawPositions(x, y, ref width, ref offsetY, ref height);
+			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
 
-			var flameTexture = GetTexture("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
-
-			ulong seed = Main.TileFrameSeed ^ (ulong)((long)y << 32 | (uint)x);
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
 
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
-				float shakeX = Utils.RandomInt(ref seed, -10, 11) * 0.15f;
-				float shakeY = Utils.RandomInt(ref seed, -10, 1) * 0.35f;
+				float shakeX = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
+				float shakeY = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				Main.spriteBatch.Draw(flameTexture.Value, new Vector2(x * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, y * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(tile.frameX, tile.frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(tile.frameX, tile.frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
 			}
 		}
 	}
