@@ -166,7 +166,8 @@ namespace Terraria.ModLoader.UI
 			if (loadedMod != null) {
 				_loaded = true;
 				
-				int[] values = { loadedMod.items.Count, loadedMod.npcs.Count, loadedMod.tiles.Count, loadedMod.walls.Count, loadedMod.buffs.Count, loadedMod.mountDatas.Count };
+				// TODO: refactor and add nicer icons (and maybe not iterate 6 times)
+				int[] values = { loadedMod.GetContent<ModItem>().Count(), loadedMod.GetContent<ModNPC>().Count(), loadedMod.GetContent<ModTile>().Count(), loadedMod.GetContent<ModWall>().Count(), loadedMod.GetContent<ModBuff>().Count(), loadedMod.GetContent<ModMountData>().Count() };
 				string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
 				int xOffset = -40;
 
@@ -194,7 +195,7 @@ namespace Terraria.ModLoader.UI
 		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 			Mod loadedMod = ModLoader.GetMod(ModName);
 			var dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
-			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
+			/*var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
 				.Concat(loadedMod.npcs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
 				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
@@ -205,7 +206,9 @@ namespace Terraria.ModLoader.UI
 
 			result = result.Select(x => x.Remove(0, $"Mods.{ModName}.".Length));
 
-			Platform.Get<IClipboard>().Value = string.Join("\n", result);
+			Platform.Get<IClipboard>().Value = string.Join("\n", result);*/
+
+			// TODO: ITranslatable or something?
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {

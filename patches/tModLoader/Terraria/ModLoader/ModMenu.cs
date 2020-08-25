@@ -22,7 +22,6 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			MenuLoader.Add(this);
-			ContentInstance.Register(this);
 		}
 
 		/// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Terraria.ModLoader
+﻿using System;
+
+namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// The base type for most modded things.
@@ -15,6 +17,8 @@
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
+		public string FullName => $"{Mod.Name}/{Name}";
+
 		void ILoadable.Load(Mod mod) {
 			Mod = mod;
 			Load();
@@ -23,9 +27,11 @@
 
 		public virtual void Load(){}
 
-		public virtual void Unload(){}
-
 		protected abstract void Register();
+
+		public virtual void SetupContent() {}
+
+		public virtual void Unload(){}
 	}
 
 }

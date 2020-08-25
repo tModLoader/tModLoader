@@ -135,7 +135,7 @@ namespace Terraria.ModLoader.Default
 				int randomIndex = Main.rand.Next(PatronSets.Length);
 
 				foreach (var patreonItem in PatronSets[randomIndex]) {
-					player.QuickSpawnItem(patreonItem.item.type);
+					player.QuickSpawnItem(patreonItem.Type);
 				}
 
 				return true;
@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.Default
 				int randomIndex = Main.rand.Next(DeveloperSets.Length);
 
 				foreach (var developerItem in DeveloperSets[randomIndex]) {
-					player.QuickSpawnItem(developerItem.item.type);
+					player.QuickSpawnItem(developerItem.Type);
 				}
 
 				return true;
