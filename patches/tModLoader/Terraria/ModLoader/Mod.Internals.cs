@@ -33,34 +33,6 @@ namespace Terraria.ModLoader
 		internal readonly IDictionary<string, ModTranslation> translations = new Dictionary<string, ModTranslation>();
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-		//TODO: (!!!) The rawimg loading here should be turned into an IAssetReader
-		/*private void LoadTexture(string path, Stream stream, bool rawimg) {
-			try {
-				var texTask = rawimg
-					? ImageIO.RawToTexture2DAsync(Main.instance.GraphicsDevice, new BinaryReader(stream))
-					: ImageIO.PngToTexture2DAsync(Main.instance.GraphicsDevice, stream);
-				
-				AsyncLoadQueue.Enqueue(texTask.ContinueWith(t => {
-					if (t.Exception != null)
-						throw new ResourceLoadException(
-							Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), t.Exception);
-
-					var tex = t.Result;
-					
-					tex.Name = Name + "/" + path;
-
-					lock (textures)
-						textures[path] = tex;
-				}));
-			}
-			catch (Exception e) {
-				throw new ResourceLoadException(Language.GetTextValue("tModLoader.LoadErrorTextureFailedToLoad", path), e);
-			}
-			finally {
-				stream.Close();
-			}
-		}*/
-
 		private SoundEffect LoadSound(Stream stream, int length, string extension) {
 			switch (extension) {
 				case ".wav": 
