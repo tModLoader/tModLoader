@@ -394,22 +394,6 @@ namespace Terraria.ModLoader
 			return SoundLoader.tileToMusic.ContainsKey(tile.type)
 			&& SoundLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
-		//in Terraria.ObjectData.TileObject data make the following public:
-		//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
-		internal static void SetDefaults(ModTile tile) {
-			tile.SetDefaults();
-			if (TileObjectData.newTile.Width > 1 || TileObjectData.newTile.Height > 1) {
-				TileObjectData.FixNewTile();
-				throw new Exception("It appears that you have an error surrounding TileObjectData.AddTile in " + tile.GetType().FullName) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#tileobjectdataaddtile-issues" };
-			}
-			if (Main.tileLavaDeath[tile.Type]) {
-				Main.tileObsidianKill[tile.Type] = true;
-			}
-			if (Main.tileSolid[tile.Type]) {
-				Main.tileNoSunLight[tile.Type] = true;
-			}
-			tile.PostSetDefaults();
-		}
 
 		public static bool HasSmartInteract(int type) {
 			return GetTile(type)?.HasSmartInteract() ?? false;

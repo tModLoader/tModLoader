@@ -96,10 +96,13 @@ namespace Terraria.ModLoader
 		protected override void Register() {
 			Type = ModDust.ReserveDustID();
 
-			Mod.dusts[Name] = this;
+			ModTypeLookup<ModDust>.Register(this);
 			ModDust.dusts.Add(this);
-			ContentInstance.Register(this);
 			Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.GetTexture(Texture).Value : TextureAssets.Dust.Value;
+		}
+
+		public override void SetupContent() {
+			SetDefaults();
 		}
 
 		/// <summary>
